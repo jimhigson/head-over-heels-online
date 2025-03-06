@@ -181,7 +181,7 @@ export class InputStateTracker {
 
   constructor(
     private keyboardStateMap: KeyboardStateMap,
-    public hudInputState: HudInputState,
+    public readonly hudInputState: HudInputState,
   ) {}
 
   /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */

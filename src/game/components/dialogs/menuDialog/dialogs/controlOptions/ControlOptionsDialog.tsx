@@ -7,6 +7,7 @@ import {
   selectIsAssigningKeys,
   useIsAnalogueControl,
   useIsAssigningKeys,
+  useIsOnScreenControls,
   useIsScreenRelativeControl,
 } from "../../../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
@@ -376,6 +377,21 @@ export const ControlOptionsDialog = () => {
                   }
                 />
               }
+            />
+            <MenuItem
+              id="controlOptions"
+              label={
+                <BitmapText
+                  className={`inline-block w-6 ${multilineTextClass}`}
+                >
+                  on- screen controls
+                </BitmapText>
+              }
+              valueElement={<Switch value={useIsOnScreenControls()} />}
+              onSelect={useDispatchActionCallback(
+                toggleBoolean,
+                "userSettings.onScreenControls",
+              )}
             />
             {showAll ?
               <>

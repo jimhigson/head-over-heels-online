@@ -362,7 +362,7 @@ export class OnScreenButtonRenderer<
   BT extends "menu" ? Container : ButtonRenderingContainer
 > {
   constructor(
-    public button: Button<BT>,
+    public readonly button: Button<BT>,
     gameState: GameState<RoomId>,
   ) {
     super(button, gameState, buttonAppearances[button.which]);

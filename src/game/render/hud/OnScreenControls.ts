@@ -3,13 +3,12 @@ import { Container } from "pixi.js";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 
-import type { TickOptions } from "./HudRenderer";
+import type { HudRendererTickOptions } from "./HudRenderer";
 import { objectValues } from "iter-tools";
 import { OnScreenJoystick } from "./OnScreenJoystick";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
-import { hudLowlightAndOutlineFilters } from "./hudFilters";
 
 const mainButtonsSpreadXPx = 28;
 const mainButtonsSpreadYPx = 14;
@@ -19,7 +18,10 @@ export class OnScreenControls<RoomId extends string> {
 
   #hudElements;
 
-  constructor(private gameState: GameState<RoomId>) {
+  constructor(
+    private gameState: GameState<RoomId>,
+    private colourise: boolean,
+  ) {
     this.#hudElements = {
       mainButtonNest: new Container({ label: "mainButtonNest" }),
       buttons: {
@@ -121,13 +123,13 @@ export class OnScreenControls<RoomId extends string> {
     this.#hudElements.joystick.container.y = screenSize.y - 28;
   }
 
-  tick({ screenSize, colourise }: TickOptions<RoomId>): void {
+  tick({ screenSize }: HudRendererTickOptions<RoomId>): void {
     this.#updateElementPositions(screenSize);
     for (const b of objectValues(this.#hudElements.buttons)) {
-      b.tick({ colourise });
+      b.tick({ colourise: this.colourise });
     }
     //this.#updateShowAndHide();
-    this.#hudElements.joystick.tick(colourise);
+    this.#hudElements.joystick.tick(this.colourise);
   }
 
   get container() {

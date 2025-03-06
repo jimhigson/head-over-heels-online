@@ -9,12 +9,15 @@ import { CRTFilter } from "pixi-filters/crt";
 import { AdvancedBloomFilter } from "pixi-filters/advanced-bloom";
 import { emptySet } from "../../utils/empty";
 import { store } from "../../store/store";
-import { selectIsPaused } from "../../store/selectors";
+import {
+  selectIsColourised,
+  selectIsPaused,
+  selectOnScreenControls,
+} from "../../store/selectors";
 import {
   defaultUserSettings,
   type DisplaySettings,
 } from "../../store/gameMenusSlice";
-import { detectDeviceType } from "../../utils/detectDeviceType";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -62,9 +65,10 @@ export class MainLoop<RoomId extends string> {
     this.#app = app;
     this.#gameState = gameState;
 
+    const storeState = store.getState();
     const {
       upscale: { gameEngineUpscale },
-    } = store.getState();
+    } = storeState;
 
     app.stage.addChild(this.#worldContainer);
 
@@ -82,7 +86,11 @@ export class MainLoop<RoomId extends string> {
     });
     this.#worldContainer.addChild(this.#roomRenderer.container);
 
-    this.#hudRenderer = new HudRenderer(gameState, detectDeviceType());
+    this.#hudRenderer = new HudRenderer(
+      gameState,
+      selectOnScreenControls(storeState),
+      selectIsColourised(storeState),
+    );
     app.stage.addChild(this.#hudRenderer.container);
 
     this.#initFilters();
@@ -105,15 +113,29 @@ export class MainLoop<RoomId extends string> {
       upscale: tickUpscale,
     } = store.getState();
 
+    const colouriseHud =
+      !isPaused &&
+      !(
+        tickDisplaySettings?.uncolourised ??
+        defaultUserSettings.displaySettings.uncolourised
+      );
+
+    if (
+      this.#hudRenderer.colourise !== colouriseHud ||
+      this.#hudRenderer.onScreenControls !== selectOnScreenControls(tickState)
+    ) {
+      this.#hudRenderer.destroy();
+      this.#hudRenderer = new HudRenderer(
+        this.#gameState,
+        selectOnScreenControls(tickState),
+        colouriseHud,
+      );
+      this.#app.stage.addChild(this.#hudRenderer.container);
+    }
+
     this.#hudRenderer.tick({
       gameState: this.#gameState,
       screenSize: tickUpscale.gameEngineScreenSize,
-      colourise:
-        !isPaused &&
-        !(
-          tickDisplaySettings?.uncolourised ??
-          defaultUserSettings.displaySettings.uncolourised
-        ),
     });
 
     // note that progressing the game state can change/reload the room,

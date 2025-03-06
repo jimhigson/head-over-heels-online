@@ -44,6 +44,10 @@
 [x] text larger in dialogs - probably by increasing the scale size inside dialogs
 [ ] hitting hte joystick with a tap sometimes moves <1px
 
+### menus
+[ ] control menus - allow different column width for non-select keys options
+    (multiple <MenuItems /> components)
+
 ### Controls
 
 [ ] joystick/pads that declare the d-pad as axes - treat like buttons
