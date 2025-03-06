@@ -12,7 +12,8 @@ export const OnScreenControlsMenuItem = () => {
       valueElement={<Switch value={useIsOnScreenControls()} />}
       onSelect={useDispatchActionCallback(
         toggleBoolean,
-        "userSettings.onScreenControls"
-      )} />
+        "userSettings.onScreenControls",
+      )}
+    />
   );
 };
