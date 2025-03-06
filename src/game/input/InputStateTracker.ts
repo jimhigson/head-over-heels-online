@@ -19,10 +19,7 @@ import type { Key } from "./keys";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import type { GamepadState } from "./GamepadState";
 import { extractGamepadsState } from "./GamepadState";
-import {
-  rotateInputVector45,
-  snapToCardinal,
-} from "./analogueControlAdjustments";
+import { rotateInputVector45, snapXy } from "./analogueControlAdjustments";
 import { iterate } from "../../utils/iterate";
 import { emptyArray } from "../../utils/empty";
 import type { HudInputState } from "./hudInputState";
@@ -33,8 +30,6 @@ import {
 } from "../../store/selectors";
 
 export const analogueDeadzone = 0.2;
-const snapAngleRadians = 13 * (Math.PI / 180);
-
 /* how long to keep buffered input for - this is essentially a sensitivity setting
   - this could be configurable as in the original game */
 const bufferLengthMs = 45;
@@ -340,7 +335,7 @@ export class InputStateTracker {
     const shouldRotate = screenRelativeControl && inputDirectionMode;
     const maybeRotate = shouldRotate ? rotateInputVector45 : (v: Xyz) => v;
 
-    const v = snapToCardinal(
+    const v = snapXy[inputDirectionMode](
       addXyz(
         maybeRotate(
           inputDirectionMode === "4-way" ?
@@ -350,7 +345,6 @@ export class InputStateTracker {
         // hudinput is never rotated
         this.hudInputState.directionVector,
       ),
-      snapAngleRadians,
     );
 
     // ensure length is not > 1

@@ -1,10 +1,17 @@
+import type { InputDirectionMode } from "../../store/gameMenusSlice";
+import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   dotProductXyz,
   lengthXyz,
+  originXyz,
   scaleXyz,
   unitVector,
+  vectorClosestDirectionXy4,
+  vectorClosestDirectionXy8,
   type Xyz,
 } from "../../utils/vectors/vectors";
+
+export const snapAngleRadians = 13 * (Math.PI / 180);
 
 const rad = -Math.PI / 4; // 45 degrees in radians
 export const rotateInputVector45 = (vector: Xyz): Xyz => {
@@ -36,16 +43,25 @@ export const isometricInputVector = (input: Xyz): Xyz => {
   return scaleXyz(newDirection, inputMagnitude / lengthXyz(newDirection));
 };
 
-// if an input vector is close to an axis, snap it to that axis
-export const snapToCardinal = (
-  vector: { x: number; y: number },
-  thresholdRad: number,
-): { x: number; y: number } => {
+export const strictSnapXy4 = (input: Xyz) => {
+  const direction = vectorClosestDirectionXy4(input);
+  return direction === undefined ? originXyz : unitVectors[direction];
+};
+export const strictSnapXy8 = (input: Xyz) => {
+  const direction = vectorClosestDirectionXy8(input);
+  return direction === undefined ? originXyz : unitVectors[direction];
+};
+
+/**
+ * if an input vector is close to an axis, snap it to that axis
+ * while still allowing a range of arbitrary values
+ */
+export const lightlySnapXy4 = (vector: Xyz): Xyz => {
   const { x, y } = vector;
   const magnitude = Math.sqrt(x * x + y * y);
-  if (magnitude === 0) return { x: 0, y: 0 }; // Handle zero vector case
+  if (magnitude === 0) return originXyz; // Handle zero vector case
 
-  const threshold = Math.cos(thresholdRad); // Convert radians to cosine threshold
+  const threshold = Math.cos(snapAngleRadians); // Convert radians to cosine threshold
 
   // Normalize vector
   const normX = x / magnitude;
@@ -57,11 +73,18 @@ export const snapToCardinal = (
 
   // Determine closest direction within threshold
   if (dotRight > dotUp) {
-    if (dotRight >= threshold) return { x: Math.sign(x) * magnitude, y: 0 };
+    if (dotRight >= threshold)
+      return { x: Math.sign(x) * magnitude, y: 0, z: 0 };
   } else {
-    if (dotUp >= threshold) return { x: 0, y: Math.sign(y) * magnitude };
+    if (dotUp >= threshold) return { x: 0, y: Math.sign(y) * magnitude, z: 0 };
   }
 
   // Return original if no snapping occurs
   return vector;
+};
+
+export const snapXy: Record<InputDirectionMode, (input: Xyz) => Xyz> = {
+  "4-way": strictSnapXy4,
+  "8-way": strictSnapXy8,
+  analogue: lightlySnapXy4,
 };

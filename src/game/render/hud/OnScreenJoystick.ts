@@ -4,12 +4,10 @@ import { createSprite } from "../createSprite";
 import { store } from "../../../store/store";
 import { selectTotalUpscale } from "../../../store/selectors";
 import { objectValues } from "iter-tools";
-import type { Xyz } from "../../../utils/vectors/vectors";
 import {
   lengthXyz,
   originXyz,
   scaleXyz,
-  vectorClosestDirectionXy4,
   vectorClosestDirectionXy8,
   type DirectionXy8,
 } from "../../../utils/vectors/vectors";
@@ -26,7 +24,6 @@ import {
 import { objectEntriesIter } from "../../../utils/entries";
 import { noFilters } from "../filters/standardFilters";
 import type { InputDirectionMode } from "../../../store/gameMenusSlice";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 
 const joystickArrowOffset = 13;
 const sensitivity = 2;
@@ -133,18 +130,6 @@ export class OnScreenJoystick {
     });
   }
 
-  snapXy4(input: Xyz) {
-    return unitVectors[vectorClosestDirectionXy4(input)];
-  }
-  snapXy8(input: Xyz) {
-    console.log(
-      input,
-      vectorClosestDirectionXy8(input),
-      unitVectors[vectorClosestDirectionXy8(input)],
-    );
-    return unitVectors[vectorClosestDirectionXy8(input)];
-  }
-
   handlePointer = (e: FederatedPointerEvent) => {
     if (e.pointerId !== this.#curPointerId) return;
 
@@ -165,12 +150,7 @@ export class OnScreenJoystick {
       z: 0,
     });
 
-    const snapped =
-      this.inputDirectionMode === "4-way" ?
-        this.snapXy4(onScreenDirectionVector)
-      : this.inputDirectionMode === "8-way" ?
-        this.snapXy8(onScreenDirectionVector)
-      : scaleXyz(onScreenDirectionVector, sensitivity);
+    const snapped = scaleXyz(onScreenDirectionVector, sensitivity);
 
     this.inputStateTracker.hudInputState.directionVector = snapped;
   };

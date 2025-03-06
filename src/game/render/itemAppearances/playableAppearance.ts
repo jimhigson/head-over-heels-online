@@ -193,7 +193,7 @@ export const playableAppearance = <
     state: { action, facing, teleporting },
   } = subject;
 
-  const facingXy8 = vectorClosestDirectionXy8(facing);
+  const facingXy8 = vectorClosestDirectionXy8(facing) ?? "towards";
 
   const highlighted =
     subject.type === "headOverHeels" ?

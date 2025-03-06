@@ -89,6 +89,7 @@ export class MainLoop<RoomId extends string> {
       gameState,
       selectOnScreenControls(storeState),
       selectIsColourised(storeState),
+      selectInputDirectionMode(storeState),
     );
     app.stage.addChild(this.#hudRenderer.container);
 

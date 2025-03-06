@@ -348,7 +348,7 @@ export const itemAppearances: {
     },
     currentlyRenderedProps,
   }) {
-    const facingXy4 = vectorClosestDirectionXy4(facing);
+    const facingXy4 = vectorClosestDirectionXy4(facing) ?? "towards";
 
     const render =
       currentlyRenderedProps === undefined ||
