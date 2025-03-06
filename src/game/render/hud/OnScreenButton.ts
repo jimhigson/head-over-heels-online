@@ -91,16 +91,6 @@ const buttonAppearances: {
       (a) => inputStateTracker.currentActionPress(a) !== "released",
     );
 
-    const needsRender =
-      currentlyRenderedProps === undefined ||
-      pressed !== currentlyRenderedProps.pressed ||
-      colourise !== currentlyRenderedProps.colourise ||
-      standingOnTeleporter !== currentlyRenderedProps.standingOnTeleporter;
-
-    if (!needsRender) {
-      return "no-update";
-    }
-
     const container =
       previousRendering === null ?
         arcadeStyleButtonRendering({
@@ -156,28 +146,18 @@ const buttonAppearances: {
     const heelsAbilities = selectHeelsAbilities(playable);
     const hasBag = heelsAbilities?.hasBag ?? false;
     const carrying = heelsAbilities?.carrying ?? null;
-    const toPick = findItemToPickup(
-      playable as PlayableItem<"heels" | "headOverHeels", string>,
-      selectCurrentRoomState(gameState) as RoomState<SceneryName, string>,
-    );
+    const willPickUp: boolean =
+      carrying === null &&
+      findItemToPickup(
+        playable as PlayableItem<"heels" | "headOverHeels", string>,
+        selectCurrentRoomState(gameState) as RoomState<SceneryName, string>,
+      ) !== undefined;
 
     const pressed = button.actions.every(
       (a) => inputStateTracker.currentActionPress(a) !== "released",
     );
 
-    const disabled = toPick === undefined && carrying === null;
-
-    const needsRender =
-      currentlyRenderedProps === undefined ||
-      pressed !== currentlyRenderedProps.pressed ||
-      colourise !== currentlyRenderedProps.colourise ||
-      hasBag !== currentlyRenderedProps.hasBag ||
-      carrying !== currentlyRenderedProps.carrying ||
-      disabled !== currentlyRenderedProps.disabled;
-
-    if (!needsRender) {
-      return "no-update";
-    }
+    const disabled = hasBag && !willPickUp && carrying === null;
 
     const container =
       previousRendering === null ?
@@ -187,9 +167,9 @@ const buttonAppearances: {
         })
       : previousRendering;
 
-    if (!hasBag) {
-      container.visible = false;
-    } else {
+    container.visible = hasBag;
+
+    if (hasBag) {
       if (disabled !== currentlyRenderedProps?.disabled) {
         setDisabled(container, disabled, colourise);
       }
@@ -217,9 +197,16 @@ const buttonAppearances: {
       }
     }
 
+    const renderProps: ButtonRenderProps["carry"] = {
+      pressed,
+      hasBag,
+      colourise,
+      carrying,
+      disabled,
+    };
     return {
       container,
-      renderProps: { pressed, hasBag, colourise, carrying, disabled },
+      renderProps,
     };
   },
   fire({
@@ -241,17 +228,6 @@ const buttonAppearances: {
       (a) => inputStateTracker.currentActionPress(a) !== "released",
     );
 
-    const needsRender =
-      currentlyRenderedProps === undefined ||
-      pressed !== currentlyRenderedProps.pressed ||
-      colourise !== currentlyRenderedProps.colourise ||
-      hasHooter !== currentlyRenderedProps.hasHooter ||
-      doughnuts !== currentlyRenderedProps.doughnuts;
-
-    if (!needsRender) {
-      return "no-update";
-    }
-
     const container =
       previousRendering === null ?
         arcadeStyleButtonRendering({
@@ -260,10 +236,10 @@ const buttonAppearances: {
         })
       : previousRendering;
 
-    if (!hasHooter && doughnuts === 0) {
-      container.visible = false;
-    } else {
-      container.visible = true;
+    const visible = hasHooter || doughnuts > 0;
+    container.visible = visible;
+
+    if (visible) {
       if (currentlyRenderedProps?.pressed !== pressed) {
         setPressed(container, pressed);
       }
@@ -289,6 +265,8 @@ const buttonAppearances: {
         doughnutsCountNumber.y = textYForButtonCentre;
         doughnutsCountNumber.filters = hudOutlineFilter;
         showOnSurface(container, bgSprite, doughnutsCountNumber);
+
+        setDisabled(container, doughnuts === 0, colourise);
       }
     }
 

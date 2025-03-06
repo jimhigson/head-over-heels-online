@@ -102,7 +102,8 @@ export const setDisabled = (
   colourise: boolean,
 ) => {
   if (colourise) {
-    button.filters = disabled ? greyFilter() : noFilters;
+    // the whole button doesn't get grey'd out, just the surface details:
+    button[surfaceContentSym].filters = disabled ? greyFilter() : noFilters;
   }
 };
 
