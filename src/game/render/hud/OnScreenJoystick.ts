@@ -117,18 +117,28 @@ export class OnScreenJoystick {
       this.handlePointer(e);
       this.container.on("globalpointermove", this.handlePointer);
 
-      this.container.on("pointerup", () => {
-        this.container.off("globalpointermove", this.handlePointer);
-        this.#curPointerId = undefined;
-        inputStateTracker.hudInputState.directionVector = originXyz;
-      });
-      this.container.on("pointerupoutside", () => {
-        this.container.off("globalpointermove", this.handlePointer);
-        this.#curPointerId = undefined;
-        inputStateTracker.hudInputState.directionVector = originXyz;
-      });
+      this.container.on("pointerup", this.stopHandlingPointer);
+      this.container.on("pointerupoutside", this.stopHandlingPointer);
     });
   }
+
+  /**
+   * @param e if given, the stopping is conditional on the pointerId matching, otherwise
+   * it is unconditional
+   */
+  stopHandlingPointer = (e?: FederatedPointerEvent) => {
+    if (
+      // nothing to stop:
+      this.#curPointerId === undefined ||
+      // wrong pointer:
+      (e !== undefined && e.pointerId !== this.#curPointerId)
+    )
+      return;
+
+    this.container.off("globalpointermove", this.handlePointer);
+    this.#curPointerId = undefined;
+    this.inputStateTracker.hudInputState.directionVector = originXyz;
+  };
 
   handlePointer = (e: FederatedPointerEvent) => {
     if (e.pointerId !== this.#curPointerId) return;
@@ -157,6 +167,12 @@ export class OnScreenJoystick {
 
   tick(colourise: boolean) {
     const { directionVector } = this.inputStateTracker;
+    const menusOpen = store.getState().openMenus.length > 0;
+
+    if (menusOpen) {
+      this.stopHandlingPointer();
+      return;
+    }
 
     const highlightDirectionXy8 =
       lengthXyz(directionVector) > analogueDeadzone ?
