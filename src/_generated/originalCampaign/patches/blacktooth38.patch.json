@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "op": "add",
+    "path": "/items/extraBlock",
+    "value": {
+      "config": { "style": "artificial", "times": { "x": 5 } },
+      "position": { "x": 0, "y": 5, "z": 0 },
+      "type": "block",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraMonster",
+    "value": {
+      "config": {
+        "which": "dalek",
+        "activated": true,
+        "movement": "patrol-randomly-diagonal"
+      },
+      "position": { "x": 0, "y": 5, "z": 10 },
+      "type": "monster",
+      "isExtra": true
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier",
+    "value": {
+      "config": { "axis": "x", "times": { "x": 5 } },
+      "position": { "x": 0, "y": 4.5, "z": 1 },
+      "type": "barrier",
+      "isExtra": true
+    }
+  }
+]

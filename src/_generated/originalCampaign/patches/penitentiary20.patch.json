@@ -2,47 +2,47 @@
   { "op": "replace", "path": "/color/shade", "value": "dimmed" },
   {
     "op": "add",
-    "path": "/items/hintAboveR",
-    "value": {
-      "type": "block",
-      "position": { "x": -1, "y": -1, "z": 14 },
-      "config": { "style": "organic", "times": { "y": 8 } }
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/hintAboveT",
-    "value": {
-      "type": "block",
-      "position": { "x": 0, "y": -1, "z": 14 },
-      "config": { "style": "organic", "times": { "x": 6 } }
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/hintAboveA",
     "value": {
-      "type": "block",
+      "config": { "style": "organic", "times": { "x": 6 } },
       "position": { "x": 0, "y": 6, "z": 14 },
-      "config": { "style": "organic", "times": { "x": 6 } }
+      "type": "block"
     }
   },
   {
     "op": "add",
     "path": "/items/hintAboveL",
     "value": {
-      "type": "block",
+      "config": { "style": "organic", "times": { "y": 8 } },
       "position": { "x": 6, "y": -1, "z": 14 },
-      "config": { "style": "organic", "times": { "y": 8 } }
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/hintAboveR",
+    "value": {
+      "config": { "style": "organic", "times": { "y": 8 } },
+      "position": { "x": -1, "y": -1, "z": 14 },
+      "type": "block"
     }
   },
   {
     "op": "add",
     "path": "/items/hintAboveSingle",
     "value": {
-      "type": "block",
+      "config": { "disappearing": "onStand", "style": "organic" },
       "position": { "x": 0, "y": 0, "z": 14 },
-      "config": { "style": "organic", "disappearing": "onStand" }
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/hintAboveT",
+    "value": {
+      "config": { "style": "organic", "times": { "x": 6 } },
+      "position": { "x": 0, "y": -1, "z": 14 },
+      "type": "block"
     }
   },
   { "op": "add", "path": "/size/z", "value": 14 }

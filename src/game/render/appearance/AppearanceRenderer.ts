@@ -7,20 +7,6 @@ import type {
   AppearanceWithKnownRoomId,
 } from "./Appearance";
 
-/*
-const assignMouseActions = <RoomId extends string>(
-  item: AnyItemInPlay<RoomId>,
-  container: Container,
-  gameState: GameState<RoomId>,
-) => {
-  if (container !== undefined) {
-    container.eventMode = "static";
-    container.on("pointertap", () => {
-      gameState.events.emit("itemClicked", { item, container });
-    });
-  }
-};
-*/
 /**
  * track changes of a subject over time, updating the rendering as necessary using a pluggable
  * appearance function.
