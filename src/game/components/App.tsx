@@ -24,9 +24,7 @@ const AppInner = () => {
         </InputStateProvider>
       </Route>
       <Route path="/sprites">
-        <CssVariables>
-          <SpritePage />
-        </CssVariables>
+        <SpritePage />
       </Route>
     </CssVariables>
   );
