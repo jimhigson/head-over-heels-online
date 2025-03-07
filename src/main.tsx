@@ -17,7 +17,7 @@ const loadPolyfillIfNeeded = async () => {
     typeof globalThis.Iterator.prototype.map !== "function";
   if (polyfillNeeded) {
     console.info("loading iterator helper polyfill (needed on this browser)");
-    importEsIteratorPolyfillsOnce();
+    await importEsIteratorPolyfillsOnce();
     console.info("polyfill loaded");
   } else {
     console.info("iterator helper polyfill not needed on this browser");
