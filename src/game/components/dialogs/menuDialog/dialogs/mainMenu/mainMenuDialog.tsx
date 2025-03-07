@@ -9,12 +9,13 @@ import { MenuItems } from "../../MenuItems";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
 import { BitmapText } from "../../../../Sprite";
-import { Border, Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/dialog";
 import { useIsGameRunning } from "../../../../../../store/selectors";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { useCallback } from "react";
 import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
+import { Border } from "../../../../../../ui/Border";
 
 const PlayGameLabel = () => {
   const isGameRunning = useIsGameRunning();
@@ -30,12 +31,12 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   const isGameRunning = useIsGameRunning();
 
   const showCrowns = useDispatchActionCallback(goToSubmenu, "crowns");
-  const showStats = useDispatchActionCallback(goToSubmenu, "score");
+  const showScore = useDispatchActionCallback(goToSubmenu, "score");
 
   const showProgress = useCallback(() => {
     showCrowns();
-    showStats();
-  }, [showCrowns, showStats]);
+    showScore();
+  }, [showCrowns, showScore]);
 
   return (
     <DialogPortal>

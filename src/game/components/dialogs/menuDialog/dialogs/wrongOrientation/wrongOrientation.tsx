@@ -1,12 +1,13 @@
-import { Border, Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BitmapText } from "../../../../Sprite";
 import { multilineTextClass } from "../../multilineTextClass";
+import { LoadingBorder } from "../../../../../../ui/LoadingBorder";
 
 export const WrongOrientationDialog = () => {
   return (
     <DialogPortal>
-      <Border className="loading-border zx:zx-loading-border" />
+      <LoadingBorder />
       <Dialog className="bg-pink zx:bg-zxMagenta text-zxBlack !h-tallDialog !w-wideDialog !py-1">
         <div className={`flex flex-col gap-y-1 ${multilineTextClass}`}>
           <BitmapText className="sprites-double-height text-white">

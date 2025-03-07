@@ -68,5 +68,25 @@
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.language": "en-GB,en-US",
-  "javascript.preferences.importModuleSpecifier": "relative"
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#d79689",
+    "activityBar.background": "#d79689",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#e7f7ea",
+    "activityBarBadge.foreground": "#15202b",
+    "commandCenter.border": "#15202b99",
+    "sash.hoverBorder": "#d79689",
+    "statusBar.background": "#ca7463",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#bb543f",
+    "statusBarItem.remoteBackground": "#ca7463",
+    "statusBarItem.remoteForeground": "#15202b",
+    "titleBar.activeBackground": "#ca7463",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#ca746399",
+    "titleBar.inactiveForeground": "#15202b99"
+  },
+  "peacock.color": "CA7463"
 }

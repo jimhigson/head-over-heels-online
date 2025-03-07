@@ -1,5 +1,4 @@
 import { type InputPress } from "../game/input/InputState";
-import { type BooleanAction } from "src/game/input/actions";
 import type {
   InputStateTrackerInterface,
   PressStatus,
@@ -11,6 +10,7 @@ import type { GameState } from "../game/gameState/GameState";
 import type { TestRoomId } from "./basicRoom";
 import { unitVectors } from "../utils/vectors/unitVectors";
 import type { HudInputState } from "../game/input/hudInputState";
+import type { BooleanAction } from "../game/input/actions";
 
 export class MockInputStateTracker implements InputStateTrackerInterface {
   /** returns any new taps since the last frame */

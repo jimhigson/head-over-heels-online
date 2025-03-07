@@ -1,4 +1,5 @@
-import { Border, Dialog } from "../../../../../ui/dialog";
+import { Dialog } from "../../../../../ui/dialog";
+import { Border } from "../../../../../ui/Border";
 import type { ManualPageName } from "../../../../../manual/pages";
 import { manualPages, pageTitle } from "../../../../../manual/pages";
 import {

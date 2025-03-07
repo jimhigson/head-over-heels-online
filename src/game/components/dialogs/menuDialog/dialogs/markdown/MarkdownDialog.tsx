@@ -8,7 +8,8 @@ import {
   markdownPages,
   type MarkdownPageName,
 } from "../../../../../../manual/pages";
-import { Border, Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/dialog";
+import { Border } from "../../../../../../ui/Border";
 import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
