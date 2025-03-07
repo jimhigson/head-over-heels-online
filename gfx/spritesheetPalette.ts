@@ -6,7 +6,7 @@ export const spritesheetPalette = {
   midGrey: new Color("#7F7773"),
   lightGrey: new Color("#BBB1AB"),
   white: new Color("#FBFEFB"),
-  pastelBlue: new Color("#5C99EF"),
+  pastelBlue: new Color("#75ACFF"),
   metallicBlue: new Color("#366CAA"),
   pink: new Color("#D68ED1"),
   moss: new Color("#9E9600"),

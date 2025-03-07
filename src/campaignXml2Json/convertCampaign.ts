@@ -104,4 +104,7 @@ for (const roomName of allRoomNames) {
   }
 }
 
-await writeOut(rooms);
+const main = async () => {
+  await writeOut(rooms);
+};
+main();

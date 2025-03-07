@@ -10,7 +10,7 @@ import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 import { isTextureId } from "../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../sprites/escapeCharForTailwind";
-import { spriteSheet } from "../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../sprites/spriteSheet";
 import { ClassnameWrap } from "../../utils/react/ClassnameWrap";
 
 export interface CssSpriteProps {
@@ -73,7 +73,7 @@ export const BitmapText = ({
                   c.charCodeAt(0),
                   textureId,
                   "we have:",
-                  Object.keys(spriteSheet.textures),
+                  Object.keys(loadedSpriteSheet().textures),
                 );
               }
               const imgSpriteEle = (

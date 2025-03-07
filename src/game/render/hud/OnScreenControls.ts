@@ -142,6 +142,7 @@ export class OnScreenControls<RoomId extends string> {
 
   destroy() {
     this.#container.destroy();
+    this.#hudElements.joystick.destroy();
   }
 }
 export const buttonSpriteSize = spritesheetData.frames.button.frame;
