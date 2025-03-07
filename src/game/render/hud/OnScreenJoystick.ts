@@ -111,36 +111,34 @@ export class OnScreenJoystick {
       this.container.addChild(arrowSprite);
     }
 
-    this.container.on("pointerenter", (e) => {
-      // allows tapping without movement:
-      this.#curPointerId = e.pointerId;
-      this.handlePointer(e);
-      this.container.on("globalpointermove", this.handlePointer);
-
-      this.container.on("pointerup", this.stopHandlingPointer);
-      this.container.on("pointerupoutside", this.stopHandlingPointer);
-    });
+    this.container.on("pointerenter", this.handlePointerEnter);
+    this.container.on("globalpointermove", this.usePointerLocation);
+    this.container.on("pointerup", this.stopCurrentPointer);
+    this.container.on("pointerupoutside", this.stopCurrentPointer);
   }
+
+  handlePointerEnter = (e: FederatedPointerEvent) => {
+    // already handling a pointer:
+    if (this.#curPointerId !== undefined) {
+      // switching from an old pointer to a new one
+      this.stopCurrentPointer();
+    }
+
+    // allows tapping without movement:
+    this.#curPointerId = e.pointerId;
+    this.usePointerLocation(e);
+  };
 
   /**
    * @param e if given, the stopping is conditional on the pointerId matching, otherwise
    * it is unconditional
    */
-  stopHandlingPointer = (e?: FederatedPointerEvent) => {
-    if (
-      // nothing to stop:
-      this.#curPointerId === undefined ||
-      // wrong pointer:
-      (e !== undefined && e.pointerId !== this.#curPointerId)
-    )
-      return;
-
-    this.container.off("globalpointermove", this.handlePointer);
+  stopCurrentPointer = () => {
     this.#curPointerId = undefined;
     this.inputStateTracker.hudInputState.directionVector = originXyz;
   };
 
-  handlePointer = (e: FederatedPointerEvent) => {
+  usePointerLocation = (e: FederatedPointerEvent) => {
     if (e.pointerId !== this.#curPointerId) return;
 
     const scale = selectTotalUpscale(store.getState());
@@ -170,7 +168,7 @@ export class OnScreenJoystick {
     const menusOpen = store.getState().openMenus.length > 0;
 
     if (menusOpen) {
-      this.stopHandlingPointer();
+      this.stopCurrentPointer();
       return;
     }
 
@@ -187,5 +185,14 @@ export class OnScreenJoystick {
     }
 
     this.#joystickSprite.filters = colourise ? noFilters : hudLowlightedFilter;
+  }
+
+  destroy() {
+    this.stopCurrentPointer();
+    this.container.off("pointerenter", this.handlePointerEnter);
+    this.container.off("globalpointermove", this.usePointerLocation);
+    this.container.off("pointerup", this.stopCurrentPointer);
+    this.container.off("pointerupoutside", this.stopCurrentPointer);
+    this.container.destroy();
   }
 }

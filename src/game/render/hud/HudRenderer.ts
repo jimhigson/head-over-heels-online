@@ -508,5 +508,6 @@ export class HudRenderer<RoomId extends string> {
 
   destroy() {
     this.#container.destroy();
+    this.#controls?.destroy();
   }
 }
