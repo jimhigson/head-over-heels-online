@@ -25,9 +25,8 @@ const calculateScore = (
 };
 
 const ScoreDialogContents = () => {
-  // somehow, this is stopping when the promise is already resolved and throwing up to a non-existent suspense boundary.
-  // use loading context instead
-  console.log(importOriginalCampaign());
+  // somehow, this is stopping when the promise is already resolved and throwing up to the suspense
+  // boundary, even though to get here you must already have the campaign imported :-/
   const { campaign } = use(importOriginalCampaign());
 
   const planetsLiberatedCount = useAppSelector(selectPlanetsLiberatedCount);

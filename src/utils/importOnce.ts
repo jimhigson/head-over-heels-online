@@ -23,6 +23,8 @@ export const importOnce = <M, Args extends Array<unknown> = []>(
 /**
  * Like importOnce, but for react; the returned function throws a promise
  * if called but not loaded to take up to the nearest suspense boundary
+ *
+ * TODO: isn't this the same as use(importOnce())?
  */
 export const importOnceForReactSuspense = <
   Result,
