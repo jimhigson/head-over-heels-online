@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { load, spriteSheet } from "../sprites/spriteSheet";
 import { spritesheetData, type TextureId } from "../sprites/spriteSheetData";
 
 declare module "react" {
@@ -12,26 +10,12 @@ declare module "react" {
 }
 
 export const SpritePage = () => {
-  const [loaded, setLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    const go = async () => {
-      await load();
-      setLoaded(true);
-    };
-    go();
-  });
-
-  if (!loaded) {
-    return null;
-  }
-
-  const textureIds = Object.keys(spriteSheet.textures).sort() as TextureId[];
+  const textureIds = Object.keys(spritesheetData.frames).sort() as TextureId[];
   return (
     <div className="flex flex-wrap p-[8px] bg-pureBlack">
       <title>Sprites</title>
       {textureIds.map((textureId) => {
-        const { frame } = spriteSheet.data.frames[textureId];
+        const { frame } = spritesheetData.frames[textureId];
         return (
           <div key={textureId} className="bg-shadow m-[8px] p-[16px]">
             <div

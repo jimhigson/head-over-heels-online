@@ -61,13 +61,10 @@ export default tseslint.config(
       "no-restricted-syntax": [
         "error",
         {
-          "selector": "Program > ExpressionStatement > AwaitExpression",
-          "message": "Top-level await is poorly supported by safari with dynamic imports."
+          selector: "Program > ExpressionStatement > AwaitExpression",
+          message:
+            "Top-level await is poorly supported by safari with dynamic imports.",
         },
-        {
-          "selector": "Program > TryStatement > BlockStatement > ExpressionStatement > AwaitExpression",
-          "message": "Top-level await inside try-catch is not allowed."
-        }
       ],
     },
   },

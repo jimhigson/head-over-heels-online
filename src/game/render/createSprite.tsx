@@ -11,7 +11,7 @@ import {
   type AnimationId,
   type TextureId,
 } from "../../sprites/spriteSheetData";
-import { spriteSheet } from "../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../sprites/spriteSheet";
 import { originalGameFrameDuration } from "../../originalGame";
 import { type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
@@ -80,7 +80,7 @@ export const createSprite = (options: CreateSpriteOptions): Container => {
     if (isAnimatedOptions(options)) {
       sprite = createAnimatedSprite(options);
     } else {
-      sprite = new Sprite(spriteSheet.textures[options.textureId]);
+      sprite = new Sprite(loadedSpriteSheet().textures[options.textureId]);
     }
 
     if (times !== undefined) {
@@ -113,8 +113,9 @@ export const createSprite = (options: CreateSpriteOptions): Container => {
     if (anchor === undefined && pivot === undefined) {
       if (!isAnimatedOptions(options)) {
         // I allow a non-standard pivot property on my sprites:
-        const spriteDataFrame = spriteSheet.data.frames[options.textureId]
-          .frame as SpritesheetFrameData["frame"] & { pivot: Xy };
+        const spriteDataFrame = loadedSpriteSheet().data.frames[
+          options.textureId
+        ].frame as SpritesheetFrameData["frame"] & { pivot: Xy };
         // what the spritesheet calls a anchor, I actually use as
         // a pivot - not sure if pixi means it to be used that way
         if (spriteDataFrame.pivot !== undefined) {
@@ -159,7 +160,7 @@ function createAnimatedSprite({
   reverse,
   playOnce,
 }: AnimatedCreateSpriteOptions) {
-  const frames = spriteSheet.animations[animationId];
+  const frames = loadedSpriteSheet().animations[animationId];
 
   const animatedSpriteFrames: AnimatedSpriteFrames = frames.map((frame) => ({
     texture: frame,

@@ -6,7 +6,7 @@ import {
   replaceWithHalfbriteFilter,
 } from "../filters/standardFilters";
 import { buttonColours } from "./buttonColours";
-import { spriteSheet } from "../../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { showTextInContainer } from "./showNumberInContainer";
 import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
@@ -92,7 +92,7 @@ export const setPressed = (
   pressed: boolean,
 ) => {
   button[buttonSpriteSym].texture =
-    spriteSheet.textures[pressed ? "button.pressed" : "button"];
+    loadedSpriteSheet().textures[pressed ? "button.pressed" : "button"];
   button[depressContainerSym].y = pressed ? 1 : 0;
 };
 

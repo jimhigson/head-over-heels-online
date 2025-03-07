@@ -10,7 +10,7 @@ import type {
   IndividualCharacterName,
 } from "../../../model/modelTypes";
 import { individualCharacterNames } from "../../../model/modelTypes";
-import { spriteSheet } from "../../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 import type { TextureId } from "../../../sprites/spriteSheetData";
 import {
   hudCharTextureSize,
@@ -209,7 +209,7 @@ export class HudRenderer<RoomId extends string> {
     container.pivot = { x: 4, y: 16 };
 
     const icon = new Sprite({
-      texture: spriteSheet.textures[textureId],
+      texture: loadedSpriteSheet().textures[textureId],
       anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
       filters: hudIconFilter,
       y: textOnTop ? 0 : 8,
@@ -239,7 +239,7 @@ export class HudRenderer<RoomId extends string> {
 
   #characterSprite(characterName: IndividualCharacterName) {
     const characterSprite = new Sprite(
-      spriteSheet.textures[
+      loadedSpriteSheet().textures[
         `${characterName}.walking.${characterName === "head" ? "right" : "towards"}.2`
       ],
     );

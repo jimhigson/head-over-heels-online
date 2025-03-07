@@ -19,7 +19,7 @@ import type Cheats from "../game/components/cheats/Cheats.tsx";
 import { importOriginalCampaign } from "../_generated/originalCampaign/campaign.import.ts";
 import { importCheats } from "../game/components/cheats/Cheats.import.ts";
 import { importGameMain } from "../game/gameMain.import.ts";
-import { importSpritesheet } from "../sprites/spriteSheet.import.ts";
+import { load as loadSpritesheet } from "../sprites/spriteSheet";
 import { importTestCampaign } from "../testCampaign.import.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
@@ -44,19 +44,16 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
       // to avoid top-level await in Safari, load the sprites early:
 
       const [
-        spriteSheet,
         gameMain,
         originalCampaignImport,
         testCampaignImport,
+        //spriteSheet,
       ] = await Promise.all([
-        importSpritesheet(),
         importGameMain(),
         importOriginalCampaign(),
         cheatsOn ? importTestCampaign() : undefined,
+        loadSpritesheet(),
       ]);
-
-      // top-level await in safari is not great, so the spritesheet doesn't self-load
-      await spriteSheet.load();
 
       const campaign =
         cheatsOn ?

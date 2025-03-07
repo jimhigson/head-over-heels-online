@@ -3,22 +3,48 @@ import spritesheetUrl from "../../gfx/sprites.png";
 
 import { spritesheetData } from "./spriteSheetData";
 
-let spritesTexture: Texture;
-try {
-  spritesTexture = await Assets.load<Texture>(spritesheetUrl);
-} catch (_e) {
-  // allows the game to run in vitest without using @pixi/node to load the
-  // sprites in node. This could be dangerous in an actual browser where
-  // we want an error if the sprites don't load
-  spritesTexture = Texture.EMPTY;
-}
+type AppSpritesheet = Spritesheet<typeof spritesheetData>;
 
-export const spriteSheet = new Spritesheet(spritesTexture, spritesheetData);
+let loadedSpritesheet: AppSpritesheet | undefined = undefined;
 
-// must be called before spritesheet is used. Safari doesn't like top-level
-// await so can't do that here
 export const load = async () => {
+  if (loadedSpritesheet !== undefined) {
+    return loadedSpritesheet;
+  }
+
+  let spritesTexture: Texture;
+  try {
+    spritesTexture = await Assets.load<Texture>(spritesheetUrl);
+  } catch (_e) {
+    console.warn(
+      "did not load textures - hopefully this is running on a server!",
+    );
+    // allows the game to run in vitest without using @pixi/node to load the
+    // sprites in node. This could be dangerous in an actual browser where
+    // we want an error if the sprites don't load
+    spritesTexture = Texture.EMPTY;
+  }
+
+  const spriteSheet = new Spritesheet(spritesTexture, spritesheetData);
+
   await spriteSheet.parse();
   spriteSheet.textureSource.scaleMode = "nearest";
+  loadedSpritesheet = spriteSheet;
   return spriteSheet;
+};
+
+/**
+ * NOTE: this is only safe to call after the spritesheet has had load() called
+ * and it resolved! - this is a sync export since we need to get the spritesheet
+ * inside the update/render loop synchronously many times
+ */
+export const loadedSpriteSheet = (): AppSpritesheet => {
+  if (loadedSpritesheet === undefined) {
+    throw new Error(
+      `spritesheet not loaded - only call this from inside code 
+      (like in a render loop) that is protected and only executed once 
+      loading has happened`,
+    );
+  }
+  return loadedSpritesheet;
 };
