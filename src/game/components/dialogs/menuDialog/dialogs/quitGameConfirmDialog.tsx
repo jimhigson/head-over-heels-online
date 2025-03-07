@@ -1,4 +1,5 @@
-import { Border, Dialog } from "../../../../../ui/dialog";
+import { Dialog } from "../../../../../ui/dialog";
+import { Border } from "../../../../../ui/Border";
 import { DialogPortal } from "../../../../../ui/DialogPortal";
 import {
   backToParentMenu,

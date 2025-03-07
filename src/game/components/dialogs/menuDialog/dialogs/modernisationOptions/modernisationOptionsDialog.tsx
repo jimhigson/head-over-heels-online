@@ -6,7 +6,8 @@ import {
 import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
-import { Border, Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/dialog";
+import { Border } from "../../../../../../ui/Border";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { MenuItem } from "../../MenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";

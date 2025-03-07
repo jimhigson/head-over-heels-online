@@ -21,8 +21,19 @@ import { importCheats } from "../game/components/cheats/Cheats.import.ts";
 import { importGameMain } from "../game/gameMain.import.ts";
 import { load as loadSpritesheet } from "../sprites/spriteSheet";
 import { importTestCampaign } from "../testCampaign.import.ts";
+import { useLoading } from "../game/components/LoadingContext.tsx";
+import { importOnce } from "../utils/importOnce.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
+
+const loadGameAssets = importOnce((cheatsOn: boolean) => {
+  return Promise.all([
+    importGameMain(),
+    importOriginalCampaign(),
+    cheatsOn ? importTestCampaign() : undefined,
+    loadSpritesheet(),
+  ]);
+});
 
 const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   const [gameApi, setGameApi] = useState<
@@ -31,45 +42,42 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   const isGameRunning = useIsGameRunning();
   const inputState = useInputStateTracker();
   const cheatsOn = useCheatsOn();
+  const { loadingStarted, loadingFinished } = useLoading();
 
   useEffect(() => {
     if (!isGameRunning) {
       setGameApi(undefined);
+      // the game isn't running, but we will pre-load the assets.
+      // they can't load twice so this is ok
+      loadGameAssets(cheatsOn);
       return;
     }
-    let stopped = false;
+    let thisEffectCancelled = false;
     let thisEffectGameApi: GameApi<OriginalCampaignRoomId> | undefined;
 
     const go = async () => {
       // to avoid top-level await in Safari, load the sprites early:
-
+      loadingStarted();
       const [
         gameMain,
         originalCampaignImport,
         testCampaignImport,
         //spriteSheet,
-      ] = await Promise.all([
-        importGameMain(),
-        importOriginalCampaign(),
-        cheatsOn ? importTestCampaign() : undefined,
-        loadSpritesheet(),
-      ]);
+      ] = await loadGameAssets(cheatsOn);
+      loadingFinished();
 
-      const campaign =
-        cheatsOn ?
-          {
-            rooms: {
-              ...originalCampaignImport.campaign.rooms,
-              ...testCampaignImport?.testCampaign.rooms,
-            },
-          }
-        : originalCampaignImport.campaign;
+      if (!thisEffectCancelled) {
+        const campaign =
+          cheatsOn ?
+            {
+              rooms: {
+                ...originalCampaignImport.campaign.rooms,
+                ...testCampaignImport?.testCampaign.rooms,
+              },
+            }
+          : originalCampaignImport.campaign;
 
-      thisEffectGameApi = await gameMain.default(campaign, inputState);
-
-      if (stopped) {
-        thisEffectGameApi.stop();
-      } else {
+        thisEffectGameApi = await gameMain.default(campaign, inputState);
         setGameApi(thisEffectGameApi);
       }
     };
@@ -78,9 +86,9 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
 
     return () => {
       thisEffectGameApi?.stop();
-      stopped = true;
+      thisEffectCancelled = true;
     };
-  }, [cheatsOn, isGameRunning, inputState]);
+  }, [cheatsOn, isGameRunning, inputState, loadingStarted, loadingFinished]);
 
   return gameApi;
 };

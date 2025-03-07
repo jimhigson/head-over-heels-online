@@ -6,6 +6,7 @@ import type { CSSRuleObject } from "tailwindcss/types/config";
 import { imageSize } from "image-size";
 import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
 import spritesheetPalette from "../gfx/spritesheetPalette.json";
+import { halfbriteHex } from "./utils/colour/halfBrite";
 
 const spritesheetSize = imageSize("gfx/sprites.png");
 
@@ -74,13 +75,13 @@ export const spritesTailwindPlugin = plugin(
     };
 
     utilities[".loading-border"] = {
-      "--c1": spritesheetPalette.highlightBeige,
-      "--c2": spritesheetPalette.pink,
-      "--stripeWidth": "48px",
+      "--c1": spritesheetPalette.pureBlack,
+      "--c2": halfbriteHex(spritesheetPalette.metallicBlue),
+      "--stripeWidth": "5vh",
       background: `repeating-linear-gradient(
           to bottom,
-          var(--c1) 0, var(--c1) var(--stripeWidth),
-          var(--c2) var(--stripeWidth), var(--c2) calc(2 * var(--stripeWidth))
+          var(--c1) 0, var(--c1) calc(1.5 * var(--stripeWidth)),
+          var(--c2) calc(1.5 * var(--stripeWidth)), var(--c2) calc(2 * var(--stripeWidth))
         )`,
       // smooth scrolling effect:
       backgroundSize: "100% calc(2 * var(--stripeWidth))",

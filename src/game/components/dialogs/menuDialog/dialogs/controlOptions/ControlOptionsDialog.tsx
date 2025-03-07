@@ -14,7 +14,8 @@ import {
 } from "../../../../../../store/gameMenusSlice";
 import { store } from "../../../../../../store/store";
 import { useActionTap, useInputTap } from "../../../useActionTap";
-import { Border, Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/dialog";
+import { Border } from "../../../../../../ui/Border";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BackMenuItem } from "../../BackMenuItem";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";

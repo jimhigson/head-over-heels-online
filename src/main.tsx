@@ -1,51 +1,42 @@
-import type { FunctionComponent } from "react";
-import { StrictMode, useEffect, useState } from "react";
+import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { Border, Dialog } from "./ui/dialog";
+import { Dialog } from "./ui/dialog";
 import { importAppOnce } from "./game/components/App.import";
-import { importOnce } from "./utils/importOnce";
+import { importOnceForReactSuspense } from "./utils/importOnce";
+import { LoadingBorder } from "./ui/LoadingBorder";
 
-const importEsIteratorPolyfillsOnce = importOnce(
-  // TODO: this could be made smaller by only importing the methods we need
-  () => import("es-iterator-helpers/auto"),
-);
-
-const loadPolyfillIfNeeded = async () => {
+const loadApp = importOnceForReactSuspense(async () => {
   const polyfillNeeded =
     !globalThis.Iterator ||
     typeof globalThis.Iterator.prototype.map !== "function";
   if (polyfillNeeded) {
     console.info("loading iterator helper polyfill (needed on this browser)");
-    await importEsIteratorPolyfillsOnce();
+    await import("es-iterator-helpers/auto");
     console.info("iterator helper polyfill loaded");
   } else {
     console.info("iterator helper polyfill not needed on this browser");
   }
-};
+
+  return (await importAppOnce()).App;
+});
 
 const AppLoader = () => {
-  const [App, setApp] = useState<FunctionComponent | null>(null);
-
-  useEffect(() => {
-    const load = async () => {
-      await loadPolyfillIfNeeded();
-      const { App } = await importAppOnce();
-      setApp(() => App);
-    };
-    load();
-  }, []);
-
-  return App ?
-      <App />
-    : <>
-        <Border className="loading-border" />
-        <Dialog className="bg-metallicBlueHalfbrite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
-      </>;
+  const App = loadApp();
+  return <App />;
 };
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AppLoader />
+    <Suspense
+      fallback={
+        <>
+          <LoadingBorder />
+          <Dialog className="bg-metallicBlueHalfbrite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
+        </>
+      }
+    >
+      <AppLoader />
+    </Suspense>
   </StrictMode>,
 );

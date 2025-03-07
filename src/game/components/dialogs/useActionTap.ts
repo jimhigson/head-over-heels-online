@@ -2,10 +2,10 @@ import { useEffect, useMemo } from "react";
 import { useInputStateTracker } from "../../input/InputStateProvider";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { InputPress } from "../../input/InputState";
-import type { BooleanAction } from "src/game/input/actions";
 
 import { Ticker } from "pixi.js";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import type { BooleanAction } from "../../input/actions";
 
 export type UseActionInputProps = {
   /** MUST be cached using useCallback or useMemo, or will re-assign on every render

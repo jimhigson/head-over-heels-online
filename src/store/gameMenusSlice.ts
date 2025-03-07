@@ -7,7 +7,6 @@ import type {
   InputAssignment,
   InputPress,
 } from "../game/input/InputState";
-import type { BooleanAction } from "src/game/input/actions";
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import type { Upscale } from "../game/render/calculateUpscale";
@@ -28,6 +27,7 @@ import {
   selectInputDirectionMode,
 } from "./selectors";
 import { defaultUserSettings } from "./defaultUserSettings";
+import type { BooleanAction } from "../game/input/actions";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 

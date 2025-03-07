@@ -1,5 +1,5 @@
+import type { BooleanAction } from "../../input/actions";
 import { BitmapText } from "../Sprite";
-import type { BooleanAction } from "src/game/input/actions";
 import { CurrentKeyAssignments } from "./menuDialog/CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
 
