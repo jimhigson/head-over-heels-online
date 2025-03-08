@@ -42,6 +42,7 @@ export const addItemFromJsonToRoom = <
     loadItemFromJson(
       itemId,
       itemJson as JsonItemUnion<RoomId>,
+      room.roomJson,
       gameState.pickupsCollected[room.id],
     ),
   );

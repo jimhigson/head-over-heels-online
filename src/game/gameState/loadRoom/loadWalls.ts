@@ -13,6 +13,7 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { multiplyBoundingBox } from "../../collision/boundingBoxes";
 import type { SceneryName } from "../../../sprites/planets";
+import type { RoomJson } from "../../../model/RoomJson";
 
 const wallRenderHeight = 50;
 
@@ -20,37 +21,45 @@ const wallRenderHeight = 50;
 // jump over the wall in some cases in rooms without a ceiling portal
 export const wallThicknessBlocks = 1;
 
-export const xAxisWallAabb = {
+export const xAxisWallAabb = (
+  roomHeight: number = defaultRoomHeightBlocks,
+) => ({
   x: blockSizePx.w,
   y: blockSizePx.d * wallThicknessBlocks,
-  z: defaultRoomHeightBlocks * blockSizePx.h,
-};
+  z: roomHeight * blockSizePx.h,
+});
 export const xAxisWallRenderAabb = {
-  x: xAxisWallAabb.x,
+  x: blockSizePx.w,
   y: 0,
   // for rendering it extends to the drawn height of the wall tile:
   z: wallRenderHeight,
 };
-export const yAxisWallAabb = {
+export const yAxisWallAabb = (
+  roomHeight: number = defaultRoomHeightBlocks,
+) => ({
   x: blockSizePx.w * wallThicknessBlocks,
   y: blockSizePx.d,
-  z: defaultRoomHeightBlocks * blockSizePx.h,
-};
+  z: roomHeight * blockSizePx.h,
+});
 export const yAxisWallRenderAabb = {
   x: 0,
-  y: yAxisWallAabb.y,
+  y: blockSizePx.d,
   z: wallRenderHeight,
 };
 
 export const loadWall = <RoomId extends string>(
+  itemId: string,
   jsonWall: JsonItem<"wall", SceneryName, RoomId>,
-  id: string,
+  roomJson: RoomJson<SceneryName, RoomId>,
 ): ItemInPlay<"wall", SceneryName, RoomId> => {
   const {
     config: { direction, times },
     position,
   } = jsonWall;
 
+  const {
+    size: { z: roomSizeZ },
+  } = roomJson;
   const axis = doorAlongAxis(direction);
   const crossAxis = perpendicularAxisXy(axis);
 
@@ -63,10 +72,10 @@ export const loadWall = <RoomId extends string>(
 
   return {
     type: "wall",
-    id,
+    id: itemId,
     config: jsonWall.config,
     aabb: multiplyBoundingBox(
-      axis === "y" ? yAxisWallAabb : xAxisWallAabb,
+      axis === "y" ? yAxisWallAabb(roomSizeZ) : xAxisWallAabb(roomSizeZ),
       times,
     ),
     renders: !isHidden,

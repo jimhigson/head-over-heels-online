@@ -24,7 +24,13 @@ function* loadItems<RoomId extends string>(
     if (item.type === "player" && !isFirstLoad) {
       continue;
     }
-    yield* loadItemFromJson(id, item, roomPickupsCollected, scrollsRead);
+    yield* loadItemFromJson(
+      id,
+      item,
+      roomJson,
+      roomPickupsCollected,
+      scrollsRead,
+    );
   }
 }
 
