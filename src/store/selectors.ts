@@ -81,6 +81,10 @@ export const selectIsCrtFilter = (state: RootState): boolean =>
 export const selectIsInfiniteLivesPoke = (state: RootState): boolean =>
   state.userSettings.infiniteLivesPoke ?? defaultUserSettings.infiniteLivesPoke;
 
+export const selectIsInfiniteDoughnutsPoke = (state: RootState): boolean =>
+  state.userSettings.infiniteDoughnutsPoke ??
+  defaultUserSettings.infiniteDoughnutsPoke;
+
 export const selectHasAllPlanetCrowns = (state: RootState) => {
   return (
     state.planetsLiberated.egyptus &&

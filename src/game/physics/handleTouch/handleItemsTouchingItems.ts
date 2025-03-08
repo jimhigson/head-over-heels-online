@@ -69,6 +69,8 @@ export const handleItemsTouchingItems = <RoomId extends string>(
   }
   // is the thing that moved has disappearing (more unusual case but could be a powerup falling on player for example,
   // flip and treat like it is the thing that was touched):
+  // this could even mean that the 'wall' touches a firedDoughnut when the doughnut (which is dissapearing on touch)
+  // hits the wall
   if (
     e.movingItem.state.disappear &&
     // solid check: eg, firedDoughnuts don't disappear on touching the stopAutowalk in front of a door

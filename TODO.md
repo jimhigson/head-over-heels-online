@@ -61,6 +61,9 @@
 
 ### Details and bugs
 
+[ ] doughnut white fade can be shown under walls - try firing at left wall in start room for example
+    - maybe the doughnut explosion is slightly inside the wall?
+
 [ ] destroy and recreate hud renderer when display settings change (like room renderer is) - this way
     it can not care about colourisation (or anything else) changing when it ticks
 

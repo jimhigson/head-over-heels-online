@@ -12,6 +12,10 @@ import { smallItemAabb } from "../../collision/boundingBoxes";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
 import { store } from "../../../store/store";
+import {
+  selectIsInfiniteDoughnutsPoke,
+  selectIsInfiniteLivesPoke,
+} from "../../../store/selectors";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
@@ -40,7 +44,8 @@ export const defaultPlayerState = () =>
 export const loadPlayer = <RoomId extends string>(
   jsonItem: JsonItem<"player", SceneryName, RoomId>,
 ): PlayableItem<CharacterName, RoomId> => {
-  const { infiniteLivesPoke } = store.getState().userSettings;
+  const infiniteLivesPoke = selectIsInfiniteLivesPoke(store.getState());
+  const infiniteDoughnutsPoke = selectIsInfiniteDoughnutsPoke(store.getState());
 
   if (jsonItem.config.which === "head") {
     return {
@@ -60,7 +65,7 @@ export const loadPlayer = <RoomId extends string>(
             Number.POSITIVE_INFINITY
           : originalGameStartingLives,
         shieldCollectedAt: Number.NEGATIVE_INFINITY,
-        doughnuts: 0,
+        doughnuts: infiniteDoughnutsPoke ? Number.POSITIVE_INFINITY : 0,
         doughnutLastFireTime: Number.NEGATIVE_INFINITY,
         switchedToAt: Number.NEGATIVE_INFINITY,
         position: positionCentredInBlock(jsonItem),
