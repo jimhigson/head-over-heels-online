@@ -23,7 +23,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      position: { x: 1, y: 3, z: 0 },
+      position: { x: 1, y: 3, z: 7 },
       type: "monster",
     },
     "monster@2,4,0": {
@@ -32,7 +32,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      position: { x: 2, y: 4, z: 0 },
+      position: { x: 2, y: 4, z: 8 },
       type: "monster",
     },
     "portableBlock@2,3,0": {
