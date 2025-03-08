@@ -8,7 +8,7 @@ function* characterSprites(n: number | string) {
   const chars =
     typeof n === "string" ? n.split("")
     : Number.isFinite(n) ? n.toString().split("")
-    : "-";
+    : "∞";
   const l = chars.length;
   for (let i = 0; i < l; i++) {
     const textureId = `hud.char.${chars[i]}`;

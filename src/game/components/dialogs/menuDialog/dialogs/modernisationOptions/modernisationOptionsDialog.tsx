@@ -18,6 +18,7 @@ import Portal from "@mutabazia/react-portal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import {
   selectIsCrtFilter,
+  selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
   selectShowFps,
   useIsColourised,
@@ -107,7 +108,7 @@ export const ModernisationOptionsDialog = () => {
               <MenuItem
                 doubleHeightWhenFocussed
                 id="livesModel"
-                label="Infinite Lives poke"
+                label="∞ Lives poke"
                 hint={
                   <BlockyMarkdown
                     className={markdownClassname}
@@ -120,6 +121,21 @@ export const ModernisationOptionsDialog = () => {
                 onSelect={useDispatchActionCallback(
                   toggleBoolean,
                   "userSettings.infiniteLivesPoke",
+                )}
+                disabled={useIsGameRunning()}
+              />
+              <MenuItem
+                doubleHeightWhenFocussed
+                id="infiniteDoughnutsPoke"
+                label="∞ doughnuts poke"
+                valueElement={
+                  <Switch
+                    value={useAppSelector(selectIsInfiniteDoughnutsPoke)}
+                  />
+                }
+                onSelect={useDispatchActionCallback(
+                  toggleBoolean,
+                  "userSettings.infiniteDoughnutsPoke",
                 )}
                 disabled={useIsGameRunning()}
               />

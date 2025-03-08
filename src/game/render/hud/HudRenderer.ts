@@ -445,6 +445,8 @@ export class HudRenderer<RoomId extends string> {
 
     hudHighligtedFilter.targetColor = colorScheme.hud.lives.original;
 
+    // TODO: now that this renderer is recreated if colourised changes, we don't need
+    // to do quite so much here on every frame:
     this.#hudElements.head.livesText.filters =
       this.colourise ?
         this.#characterIsActive(gameState, "head") ?

@@ -132,5 +132,12 @@ export const hudSpritesheetData = {
     "hud.char.🕹": {
       frame: { x: 502, y: 2, ...hudCharTextureSize },
     },
+    "hud.char.∞": {
+      frame: {
+        x: 511,
+        y: 2,
+        ...{ w: hudCharTextureSize.w * 2, h: hudCharTextureSize.h },
+      },
+    },
   },
 } as const satisfies Pick<SpritesheetData, "frames">;

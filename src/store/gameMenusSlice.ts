@@ -56,6 +56,7 @@ export type UserSettings = {
   inputAssignment?: InputAssignment;
   displaySettings: DisplaySettings;
   infiniteLivesPoke?: boolean;
+  infiniteDoughnutsPoke?: boolean;
   // optional because was introduced without a version bump in persist. Select with !!
   showFps?: boolean;
   inputDirectionMode?: InputDirectionMode;

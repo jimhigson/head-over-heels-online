@@ -6,6 +6,7 @@ import type { UserSettings } from "./gameMenusSlice";
 export const defaultUserSettings: RequiredDeep<UserSettings> = {
   inputAssignment: keyAssignmentPresets.default.inputAssignment,
   infiniteLivesPoke: false,
+  infiniteDoughnutsPoke: false,
 
   displaySettings: {
     showBoundingBoxes: "none",
