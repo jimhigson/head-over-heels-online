@@ -16,7 +16,7 @@ export type TestRoomId = typeof firstRoomId | typeof secondRoomId;
 export type TestRoomJson = RoomJson<"blacktooth", TestRoomId>;
 export type ItemsInTestRoomJson = TestRoomJson["items"];
 
-const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
+export const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
   id,
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },

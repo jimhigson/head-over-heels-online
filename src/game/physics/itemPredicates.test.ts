@@ -7,6 +7,7 @@ import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItem";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
+import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 
 const player = loadPlayer({
   type: "player",
@@ -26,6 +27,7 @@ const monster = first(
       },
       position: originXyz,
     },
+    basicEmptyRoom("firstRoom"),
     {},
   ),
 )!;
@@ -41,6 +43,7 @@ const movableBlock = first(
       },
       position: originXyz,
     },
+    basicEmptyRoom("firstRoom"),
     {},
   ),
 )!;

@@ -4,6 +4,7 @@ import { findStandingOnWithHighestPriorityAndMostOverlap } from "./checkStanding
 import { first } from "iter-tools";
 import type { FreeItem } from "../physics/itemPredicates";
 import type { SceneryName } from "../../sprites/planets";
+import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 
 test("prefers blocks over conveyors even if the conveyor has more overlap", () => {
   const result = findStandingOnWithHighestPriorityAndMostOverlap(
@@ -18,6 +19,7 @@ test("prefers blocks over conveyors even if the conveyor has more overlap", () =
           },
           position: { x: 2.1, y: 0, z: 1 },
         },
+        basicEmptyRoom("firstRoom"),
         {},
       ),
     ) as FreeItem<SceneryName, string>,
@@ -31,6 +33,7 @@ test("prefers blocks over conveyors even if the conveyor has more overlap", () =
           },
           position: { x: 2, y: 0, z: 0 },
         },
+        basicEmptyRoom("firstRoom"),
         {},
       ),
 
@@ -43,6 +46,7 @@ test("prefers blocks over conveyors even if the conveyor has more overlap", () =
           },
           position: { x: 3, y: 0, z: 0 },
         },
+        basicEmptyRoom("firstRoom"),
         {},
       ),
     ],
@@ -64,6 +68,7 @@ test("given two blocks, choses one with most overlap", () => {
           },
           position: { x: 2.2, y: 0, z: 1 },
         },
+        basicEmptyRoom("firstRoom"),
         {},
       ),
     ) as FreeItem<SceneryName, string>,
@@ -77,6 +82,7 @@ test("given two blocks, choses one with most overlap", () => {
           },
           position: { x: 2, y: 0, z: 0 },
         },
+        basicEmptyRoom("firstRoom"),
         {},
       ),
 
@@ -89,6 +95,7 @@ test("given two blocks, choses one with most overlap", () => {
           },
           position: { x: 3, y: 0, z: 0 },
         },
+        basicEmptyRoom("firstRoom"),
         {},
       ),
     ],
