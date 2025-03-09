@@ -17,7 +17,7 @@ export const room = inferRoomJson({
       position: { x: 1, y: 8, z: 3 },
       type: "door",
     },
-    "walkway": {
+    walkway: {
       type: "block",
       position: { x: 3, y: 0, z: 5 },
       config: { style: "artificial", times: { y: 8 } },

@@ -4,6 +4,7 @@ import { first } from "iter-tools";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItem";
+import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
 
 const makeHeels = (position: Xyz) =>
   first(
@@ -14,6 +15,7 @@ const makeHeels = (position: Xyz) =>
         position,
         config: { which: "heels" },
       },
+      basicEmptyRoom("firstRoom"),
       {},
     ),
   ) as ItemInPlay<"heels">;
@@ -27,6 +29,7 @@ const makeBlock = (position: Xyz) =>
         position,
         config: { style: "organic" },
       },
+      basicEmptyRoom("firstRoom"),
       {},
     ),
   ) as ItemInPlay<"block">;
@@ -40,6 +43,7 @@ const makePortableBlock = (position: Xyz) =>
         position,
         config: { style: "cube" },
       },
+      basicEmptyRoom("firstRoom"),
       {},
     ),
   ) as ItemInPlay<"block">;

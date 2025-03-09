@@ -17,8 +17,8 @@ import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
 import type { ScrollsRead } from "../../../store/gameMenusSlice";
 import { loadWall } from "./loadWalls";
-import { RoomJson } from "../../../model/RoomJson";
-import { SceneryName } from "../../../sprites/planets";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { SceneryName } from "../../../sprites/planets";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;
