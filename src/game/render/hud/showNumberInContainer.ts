@@ -25,6 +25,7 @@ export function showNumberInContainer(
 ) {
   container.removeChildren();
   iterateToContainer(characterSprites(n), container);
+  return container;
 }
 
 export function showTextInContainer(container: Container, n: number | string) {
