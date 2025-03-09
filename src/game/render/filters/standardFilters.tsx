@@ -8,7 +8,7 @@ import { colorScheme, getColorScheme } from "../../hintColours";
 import type { UnknownRoomState } from "../../../model/modelTypes";
 import { emptyArray } from "../../../utils/empty";
 import { RevertColouriseFilter } from "./RevertColouriseFilter";
-import { halfBrite } from "../../../utils/colour/halfBrite";
+import { halfbrite } from "../../../utils/colour/halfBrite";
 import { HalfBriteFilter } from "./HalfBriteFilter";
 
 const replaceMapForShades = ({ basic, dimmed }: Shades): PaletteSwaps => ({
@@ -46,7 +46,7 @@ export const doughnuttedFilter = new PaletteSwapFilter({
 });
 
 export const replaceWithHalfbriteFilter = (c: Color) =>
-  new PaletteSwapFilter({ replaceLight: c, replaceDark: halfBrite(c) });
+  new PaletteSwapFilter({ replaceLight: c, replaceDark: halfbrite(c) });
 
 export const edgePaletteSwapFilters = (
   room: UnknownRoomState,

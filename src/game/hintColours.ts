@@ -6,7 +6,7 @@ import {
   zxSpectrumColors,
 } from "../originalGame";
 import { spritesheetPalette } from "../../gfx/spritesheetPalette";
-import { halfBrite } from "../utils/colour/halfBrite";
+import { halfbrite } from "../utils/colour/halfBrite";
 
 // not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
 // use to convert: https://convertacolor.com/
@@ -24,18 +24,18 @@ export const yellowShades = {
 export const magentaShades = {
   original: new Color(zxSpectrumColors.zxMagenta),
   basic: spritesheetPalette.pink,
-  dimmed: halfBrite(spritesheetPalette.pink),
+  dimmed: halfbrite(spritesheetPalette.pink),
 };
 export const cyanShades = {
   original: new Color(zxSpectrumColors.zxCyan),
   basic: spritesheetPalette.pastelBlue,
   //dimmed: spritesheetPalette.shadow,
-  dimmed: halfBrite(spritesheetPalette.pastelBlue), // trying to be halfway between basic and spritesheet shadow
+  dimmed: halfbrite(spritesheetPalette.pastelBlue), // trying to be halfway between basic and spritesheet shadow
 };
 export const greenShades = {
   original: new Color(zxSpectrumColors.zxGreen),
   basic: spritesheetPalette.moss,
-  dimmed: halfBrite(spritesheetPalette.moss),
+  dimmed: halfbrite(spritesheetPalette.moss),
 };
 
 export type ColorScheme = {
@@ -163,3 +163,8 @@ export const colorScheme = {
 
 export const getColorScheme = (colour: ZxSpectrumRoomColour): ColorScheme =>
   colorScheme[colour.hue][colour.shade];
+
+export const accentColours = {
+  head: spritesheetPalette.pastelBlue,
+  heels: spritesheetPalette.pink,
+};

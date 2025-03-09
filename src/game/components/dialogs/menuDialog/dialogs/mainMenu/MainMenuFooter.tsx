@@ -5,7 +5,7 @@ export const MainMenuFooter = () => (
   <>
     <div className="flex justify-center gap-2 leading-none">
       <div className="flex flex-col gap-y-oneScaledPix items-center">
-        <BitmapText className="text-metallicBlue zx:text-zxBlack">
+        <BitmapText className="text-pastelBlue zx:text-zxBlack">
           1987 original
         </BitmapText>
         <div className="flex gap-1">

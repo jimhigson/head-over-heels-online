@@ -37,7 +37,6 @@ import {
   hudOutlinedTextFilters,
   hudOutlineFilter,
   hudTextFilter,
-  hudLowlightAndOutlineFilters,
   hudLowlightedFilter,
 } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
@@ -286,6 +285,7 @@ export class HudRenderer<RoomId extends string> {
       highlighted ?
         colourise ? noFilters
         : hudHighligtedFilter
+      : colourise ? halfBriteFilter
       : hudLowlightedFilter
     );
   }
@@ -449,15 +449,15 @@ export class HudRenderer<RoomId extends string> {
     // to do quite so much here on every frame:
     this.#hudElements.head.livesText.filters =
       this.colourise ?
-        this.#characterIsActive(gameState, "head") ?
-          hudLivesTextFilter.colourised.head
-        : hudLowlightAndOutlineFilters
+        hudLivesTextFilter.colourised.head[
+          this.#characterIsActive(gameState, "head") ? "active" : "inactive"
+        ]
       : hudLivesTextFilter.original;
     this.#hudElements.heels.livesText.filters =
       this.colourise ?
-        this.#characterIsActive(gameState, "heels") ?
-          hudLivesTextFilter.colourised.heels
-        : hudLowlightAndOutlineFilters
+        hudLivesTextFilter.colourised.heels[
+          this.#characterIsActive(gameState, "heels") ? "active" : "inactive"
+        ]
       : hudLivesTextFilter.original;
   }
 
