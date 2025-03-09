@@ -10,7 +10,6 @@ import {
   selectHeadAbilities,
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { showTextInContainer } from "./showNumberInContainer";
 import type { ButtonRenderingContainer } from "./arcadeStyleButtonRendering";
 import {
   arcadeStyleButtonRendering,
@@ -28,6 +27,7 @@ import type { SceneryName } from "../../../sprites/planets";
 import type { CarriedItem } from "../../../model/ItemStateMap";
 import type { EmptyObject } from "type-fest";
 import { emptyObject } from "../../../utils/empty";
+import { showNumberInContainer } from "./showNumberInContainer";
 
 export type ButtonType = "jump" | "carry" | "fire" | "carryAndJump" | "menu";
 
@@ -259,9 +259,9 @@ const buttonAppearances: {
           }) as Container;
         }
 
-        const doughnutsCountNumber = showTextInContainer(
+        const doughnutsCountNumber = showNumberInContainer(
           new Container(),
-          String(doughnuts),
+          doughnuts,
         );
         doughnutsCountNumber.y = textYForButtonCentre;
         doughnutsCountNumber.filters = hudOutlineFilter;
