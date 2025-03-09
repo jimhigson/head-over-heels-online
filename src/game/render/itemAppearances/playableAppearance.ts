@@ -5,7 +5,6 @@ import type {
   ItemAppearanceReturn,
 } from "./ItemAppearance";
 import { stackSprites } from "./createStackedSprites";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
 import type {
   IndividualCharacterName,
@@ -29,6 +28,7 @@ import {
   switchCharacterHighlightTime,
 } from "../../physics/mechanicsConstants";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
+import { accentColours } from "../../hintColours";
 
 const playableCreateSpriteOptions = ({
   name,
@@ -117,11 +117,6 @@ export const isFlashing = (playableItem: PlayableItem): boolean => {
   );
 };
 
-const highlightColours = {
-  head: spritesheetPalette.pastelBlue,
-  heels: spritesheetPalette.pink,
-};
-
 const addFilterToContainer = (container: Container, newFilter: Filter) => {
   if (!container.filters) {
     // If no filters exist, assign the new filter directly
@@ -158,7 +153,7 @@ const applyFilters = (
     addFilterToContainer(
       container,
       new OutlineFilter({
-        outlineColor: highlightColours[name],
+        outlineColor: accentColours[name],
         upscale: store.getState().upscale.gameEngineUpscale,
         // player can move between pixels:
         lowRes: false,
@@ -170,10 +165,7 @@ const applyFilters = (
 
   const currentlyFlashing = currentlyRenderedProps?.flashing ?? false;
   if (flashing && !currentlyFlashing) {
-    addFilterToContainer(
-      container,
-      new OneColourFilter(highlightColours[name]),
-    );
+    addFilterToContainer(container, new OneColourFilter(accentColours[name]));
   } else if (!flashing && currentlyFlashing) {
     removeFilterFromContainer(container, OneColourFilter);
   }

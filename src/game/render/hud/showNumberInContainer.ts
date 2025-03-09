@@ -8,7 +8,9 @@ function* characterSprites(n: number | string) {
   const chars =
     typeof n === "string" ? n.split("")
     : Number.isFinite(n) ? n.toString().split("")
-    : "∞";
+      // an infinite value means that pokes are on - in this case
+      // there's no point showing this number
+    : "";
   const l = chars.length;
   for (let i = 0; i < l; i++) {
     const textureId = `hud.char.${chars[i]}`;

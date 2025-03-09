@@ -1,5 +1,7 @@
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { store } from "../../../store/store";
+import { halfbrite } from "../../../utils/colour/halfBrite";
+import { accentColours } from "../../hintColours";
 import { OutlineFilter } from "../filters/outlineFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 
@@ -48,13 +50,25 @@ export const hudLivesTextFilter = {
     hudHighligtedFilter,
   ] as OutlineAndColouriseFilter,
   colourised: {
-    head: [
-      hudOutlineFilter,
-      new RevertColouriseFilter(spritesheetPalette.pastelBlue),
-    ] as OutlineAndColouriseFilter,
-    heels: [
-      hudOutlineFilter,
-      new RevertColouriseFilter(spritesheetPalette.pink),
-    ] as OutlineAndColouriseFilter,
+    head: {
+      active: [
+        hudOutlineFilter,
+        new RevertColouriseFilter(accentColours.head),
+      ] as OutlineAndColouriseFilter,
+      inactive: [
+        hudOutlineFilter,
+        new RevertColouriseFilter(halfbrite(accentColours.head)),
+      ] as OutlineAndColouriseFilter,
+    },
+    heels: {
+      active: [
+        hudOutlineFilter,
+        new RevertColouriseFilter(accentColours.heels),
+      ] as OutlineAndColouriseFilter,
+      inactive: [
+        hudOutlineFilter,
+        new RevertColouriseFilter(halfbrite(accentColours.heels)),
+      ] as OutlineAndColouriseFilter,
+    },
   },
 };

@@ -10,7 +10,7 @@ import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { showTextInContainer } from "./showNumberInContainer";
 import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
-import { halfBrite } from "../../../utils/colour/halfBrite";
+import { halfbrite } from "../../../utils/colour/halfBrite";
 import type { Button } from "./OnScreenButtonRenderer";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 
@@ -116,7 +116,7 @@ export const createTextForButtonSurface = (
   jumpTextContainer.filters = new PaletteSwapFilter({
     white:
       colourise ?
-        halfBrite(buttonColours.colourised[which])
+        halfbrite(buttonColours.colourised[which])
       : spritesheetPalette.pureBlack,
   });
   return jumpTextContainer;
