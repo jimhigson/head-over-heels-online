@@ -12,13 +12,15 @@ import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
 import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import {
+  type ItemInPlayType,
+} from "../../../model/ItemInPlay";
+import { iterateStoodOnByItems } from "src/model/stoodOnItemsLookup";
 import type { BlockStyle } from "../../../model/json/ItemConfigMap";
 import {
   wallTileSize,
   smallItemTextureSize,
 } from "../../../sprites/textureSizes";
-import { iterate } from "../../../utils/iterate";
 import type { Xy } from "../../../utils/vectors/vectors";
 import {
   directionAxis,
@@ -282,8 +284,10 @@ export const itemAppearances: {
       state: { stoodOnBy },
     },
     currentlyRenderedProps,
+    renderContext: { room },
   }) {
-    const flashing = iterate(stoodOnBy).find(isPlayableItem) !== undefined;
+    const flashing =
+      iterateStoodOnByItems(stoodOnBy, room).find(isPlayableItem) !== undefined;
 
     const render =
       currentlyRenderedProps === undefined ||

@@ -15,10 +15,11 @@ import {
   removeStandingOn,
   setStandingOn,
 } from "../gameState/mutators/modifyStandingOn";
-import type {
-  UnionOfAllItemInPlayTypes,
-  AnyItemInPlay,
+import {
+  type UnionOfAllItemInPlayTypes,
+  type AnyItemInPlay,
 } from "../../model/ItemInPlay";
+import { stoodOnItem } from "src/model/stoodOnItemsLookup";
 import type { SceneryName } from "../../sprites/planets";
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
@@ -281,9 +282,12 @@ export const moveItem = <RoomId extends string>({
     // check if we landed on the item we collided with to take over the standingOn slot::
     if (isFreeItem(subjectItem) && backingOffMtv.z > 0) {
       // moving vertically down onto the item
+
       if (
-        subjectItem.state.standingOn === null ||
-        !sortedCollisions.includes(subjectItem.state.standingOn)
+        subjectItem.state.standingOnItemId === null ||
+        !sortedCollisions.includes(
+          stoodOnItem(subjectItem.state.standingOnItemId, room),
+        )
       ) {
         if (log)
           console.log(

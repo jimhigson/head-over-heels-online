@@ -1,4 +1,3 @@
-import type { FreeItem } from "../game/physics/itemPredicates";
 import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
 import type { Aabb, Xyz } from "../utils/vectors/vectors";
@@ -60,7 +59,7 @@ export type ItemInPlayConfig<
 
 export type Disappear = "onStand" | "onTouch" | "onTouchByPlayer" | null;
 
-export type BaseItemState<RoomId extends string = string> = {
+export type BaseItemState<RoomItemId extends string = string> = {
   position: Readonly<Xyz>;
 
   /**
@@ -71,16 +70,23 @@ export type BaseItemState<RoomId extends string = string> = {
    */
   expires: number | null;
 
-  /** what is standing on this item? */
-  stoodOnBy: Set<FreeItem<SceneryName, RoomId>>;
+  /**
+   * ids of items stood on by this item
+   * - these are ids, not object references to maintain serialisability
+   */
+  stoodOnBy: Set<RoomItemId>;
 
   disappear: Disappear;
 };
 
-export type ItemState<T extends ItemInPlayType, RoomId extends string> =
-  T extends keyof ItemStateMap<RoomId> ?
-    BaseItemState<RoomId> & ItemStateMap<RoomId>[T]
-  : BaseItemState<RoomId>;
+export type ItemState<
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+> =
+  T extends keyof ItemStateMap<RoomId, RoomItemId> ?
+    BaseItemState<RoomItemId> & ItemStateMap<RoomId, RoomItemId>[T]
+  : BaseItemState<RoomItemId>;
 
 export type ShadowMaskOptions = {
   /** of not defined, the whole item being rendered on can show shadows */
@@ -95,18 +101,20 @@ export type ShadowMaskOptions = {
 
 export type ItemInPlay<
   T extends ItemInPlayType,
-  //S extends ItemState<T> = ItemState<T>,
-  P extends SceneryName = SceneryName,
   RoomId extends string = string,
-  Itemid extends string = string,
+  /** the items ids for items in the same room as this item */
+  RoomItemId extends string = string,
+  /** the items ids for this item */
+  ItemId extends RoomItemId = RoomItemId,
+  ScN extends SceneryName = SceneryName,
 > = {
   type: T;
 
   // borrow the config from the json typings:
-  config: ItemInPlayConfig<T, P, RoomId>;
+  config: ItemInPlayConfig<T, ScN, RoomId>;
 
-  readonly id: Itemid;
-  state: ItemState<T, RoomId>;
+  readonly id: ItemId;
+  state: ItemState<T, RoomId, RoomItemId>;
 
   /**
    * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
@@ -136,8 +144,8 @@ export type ItemInPlay<
 /** Non-union version of any item type */
 export type AnyItemInPlay<
   RoomId extends string = string,
-  ItemId extends string = string,
-> = ItemInPlay<ItemInPlayType, SceneryName, RoomId, ItemId>;
+  RoomItemId extends string = string,
+> = ItemInPlay<ItemInPlayType, RoomId, RoomItemId, RoomItemId, SceneryName>;
 
 /**
  * make a union of ItemInPlay<A> | ItemInPlay<B> | ItemInPlay<C> etc.
@@ -146,9 +154,10 @@ export type AnyItemInPlay<
 export type ItemTypeUnion<
   T extends ItemInPlayType,
   RoomId extends string,
-  ItemId extends string = string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
 > = {
-  [TI in T]: ItemInPlay<TI, SceneryName, RoomId, ItemId>;
+  [TI in T]: ItemInPlay<TI, RoomId, RoomItemId, RoomItemId, ScN>;
 }[T];
 
 /**
@@ -156,5 +165,5 @@ export type ItemTypeUnion<
  */
 export type UnionOfAllItemInPlayTypes<
   RoomId extends string = string,
-  ItemId extends string = string,
-> = ItemTypeUnion<ItemInPlayType, RoomId, ItemId>;
+  RoomItemId extends string = string,
+> = ItemTypeUnion<ItemInPlayType, RoomId, RoomItemId>;

@@ -8,15 +8,21 @@ import type { RoomJson } from "./RoomJson";
  **/
 
 export type RoomStateItems<
-  P extends SceneryName,
   RoomId extends string,
-  ItemId extends string = string,
-> = Record<ItemId, UnionOfAllItemInPlayTypes<RoomId>> & {
-  head?: ItemInPlay<"head", P, RoomId, "head">;
-  heels?: ItemInPlay<"heels", P, RoomId, "heels">;
-  headOverHeels?: ItemInPlay<"headOverHeels", P, RoomId, "headOverHeels">;
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+> = Record<RoomItemId, UnionOfAllItemInPlayTypes<RoomId>> & {
+  head?: ItemInPlay<"head", RoomId, RoomItemId, "head", ScN>;
+  heels?: ItemInPlay<"heels", RoomId, RoomItemId, "heels", ScN>;
+  headOverHeels?: ItemInPlay<
+    "headOverHeels",
+    RoomId,
+    RoomItemId,
+    "headOverHeels",
+    ScN
+  >;
   // every room has a floor edge:
-  floorEdge: ItemInPlay<"floorEdge", P, RoomId, "floorEdge">;
+  floorEdge: ItemInPlay<"floorEdge", RoomId, RoomItemId, "floorEdge", ScN>;
 };
 /**
  * Representation of a room in-play. This is in memory only for the current
@@ -25,14 +31,14 @@ export type RoomStateItems<
  */
 
 export type RoomState<
-  ScN extends SceneryName,
   RoomId extends string,
-  ItemId extends string = string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
 > = Simplify<
-  Omit<RoomJson<ScN, RoomId>, "items"> & {
-    items: RoomStateItems<ScN, RoomId, ItemId>;
+  Omit<RoomJson<RoomId, RoomItemId, ScN>, "items"> & {
+    items: RoomStateItems<RoomId, RoomItemId, ScN>;
     /** the json this room was loaded from */
-    roomJson: RoomJson<ScN, RoomId, ItemId>;
+    roomJson: RoomJson<RoomId, RoomItemId, ScN>;
     /**
      * how long (in ms) this room has been in play for - only advanced while the room
      * is the current room

@@ -1,7 +1,8 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { iterateStoodOnByItems } from "src/model/stoodOnItemsLookup";
+import type { RoomState } from "../../../model/RoomState";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { iterate } from "../../../utils/iterate";
 import type { GameState } from "../../gameState/GameState";
 import { isMovableBlock } from "../itemPredicates";
 import type { MechanicResult } from "../MechanicResult";
@@ -57,7 +58,7 @@ const calculateVelocity = ({
   }
 };
 
-const stationaryLift: MechanicResult<"lift", string> = {
+const stationaryLift: MechanicResult<"lift", string, string> = {
   movementType: "vel",
   vels: { lift: { x: 0, y: 0, z: 0 } },
 };
@@ -65,7 +66,7 @@ const stationaryLift: MechanicResult<"lift", string> = {
 /**
  * walking, but also gliding and changing direction mid-air
  */
-export function moveLift<RoomId extends string>(
+export function moveLift<RoomId extends string, RoomItemId extends string>(
   {
     config: { bottom, top },
     state: {
@@ -74,16 +75,17 @@ export function moveLift<RoomId extends string>(
       stoodOnBy,
     },
   }: ItemInPlay<"lift", SceneryName, RoomId>,
+  room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<"lift", RoomId> {
-  // stepstools are the only items heavy enough to stop lifts - this is needed for blacktooth 78
-  const hasHeavyLoad = iterate(stoodOnBy).some(
+): MechanicResult<"lift", RoomId, RoomItemId> {
+  // stepStool is the only item heavy enough to stop lifts - this is needed for blacktooth 78
+  const hasHeavyLoad = iterateStoodOnByItems(stoodOnBy, room).some(
     (i) => isMovableBlock(i) && i.config.style === "stepStool",
   );
 
   if (hasHeavyLoad) {
-    return stationaryLift as MechanicResult<"lift", RoomId>;
+    return stationaryLift as MechanicResult<"lift", RoomId, RoomItemId>;
   }
 
   const lowestZ = bottom * blockHeight;

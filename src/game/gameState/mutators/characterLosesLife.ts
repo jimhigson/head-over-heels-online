@@ -170,7 +170,7 @@ const resetPlayableToEntryState = <RoomId extends string>(
     // entry state:
     //vels: { ...entryState.vels },
     expires: null,
-    standingOn: null,
+    standingOnItemId: null,
   };
 };
 

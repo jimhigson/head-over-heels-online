@@ -30,26 +30,31 @@ export type ItemAppearanceReturn<T extends ItemInPlayType> =
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,
   RoomId extends string,
+  RoomItemId extends string,
 > = AppearanceOptions<
-  ItemTypeUnion<T, RoomId>,
+  ItemTypeUnion<T, RoomId, RoomItemId>,
   ItemRenderProps<T>,
   RoomId,
   ItemRenderContext<RoomId>
 >;
 
-export type ItemAppearance<T extends ItemInPlayType> = <RoomId extends string>(
-  options: ItemAppearanceOptions<T, RoomId>,
+export type ItemAppearance<T extends ItemInPlayType> = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
 ) => AppearanceReturn<ItemRenderProps<T>>;
 
 /**
- * sometimes it is useful to be able to cast ItemAppearance to a version that
- * knows the room id before the callsite
+ * Like ItemAppearance but sometimes it is useful to be able to cast
+ * ItemAppearance to a version that knows the room id before the callsite
  */
 export type ItemAppearanceWithKnownRoomId<
   T extends ItemInPlayType,
   RoomId extends string,
+  RoomItemId extends string,
 > = (
-  options: ItemAppearanceOptions<T, RoomId>,
+  options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
 ) => AppearanceReturn<ItemRenderProps<T>>;
 
 export const itemStaticSpriteAppearance = <
@@ -75,14 +80,20 @@ export const itemStaticSpriteAppearance = <
  * that handles not rendering again after the first render
  */
 export const itemRenderOnce =
-  <T extends ItemInPlayTypesWithoutRenderProps, RoomId extends string>(
+  <
+    T extends ItemInPlayTypesWithoutRenderProps,
+    RoomId extends string,
+    RoomItemId extends string,
+  >(
     renderWith: (
       appearance: Omit<
-        ItemAppearanceOptions<T, RoomId>,
+        ItemAppearanceOptions<T, RoomId, RoomItemId>,
         "currentlyRenderedProps"
       >,
     ) => Container,
-  ): ((options: ItemAppearanceOptions<T, RoomId>) => ItemAppearanceReturn<T>) =>
+  ): ((
+    options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
+  ) => ItemAppearanceReturn<T>) =>
   // inner function - calls renderWith
   ({ subject, currentlyRenderedProps, gameState, renderContext }) => {
     if (currentlyRenderedProps === undefined) {

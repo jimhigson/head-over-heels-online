@@ -37,19 +37,20 @@ const turnAroundTime = 150;
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
-type ItemWithMovement<RoomId extends string> =
-  | ItemInPlay<"monster", SceneryName, RoomId>
-  | ItemInPlay<"movableBlock", SceneryName, RoomId>;
+type ItemWithMovement<RoomId extends string, RoomItemId extends string> =
+  | ItemInPlay<"monster", SceneryName, RoomId, RoomItemId>
+  | ItemInPlay<"movableBlock", SceneryName, RoomId, RoomItemId>;
 
 const notWalking = Object.freeze({
   movementType: "vel",
   vels: { walking: originXyz },
-} as const satisfies MechanicResult<"monster", string> satisfies MechanicResult<
-  "movableBlock",
+} as const satisfies MechanicResult<
+  "monster",
+  string,
   string
->);
+> satisfies MechanicResult<"movableBlock", string, string>);
 
-const speedForItem = (itemWithMovement: ItemWithMovement<string>) => {
+const speedForItem = (itemWithMovement: ItemWithMovement<string, string>) => {
   if (isMonster(itemWithMovement)) {
     return moveSpeedPixPerMs[itemWithMovement.config.which];
   } else {
@@ -58,17 +59,17 @@ const speedForItem = (itemWithMovement: ItemWithMovement<string>) => {
 };
 
 const rushTripThreshold = blockSizePx.w / 2;
-const rushTowardPlayerXy4 = <RoomId extends string>(
+const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
   {
     state: {
       position,
       vels: { walking },
     },
-  }: ItemWithMovement<RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+  }: ItemWithMovement<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<"monster", RoomId> => {
+): MechanicResult<"monster", RoomId, RoomItemId> => {
   const speed = moveSpeedPixPerMs["homingBot"];
 
   if (!xyEqual(walking, originXy)) {
@@ -153,17 +154,20 @@ const findClosestPlayable = (position: Xyz, room: UnknownRoomState) => {
   );
 };
 
-const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
-  itemWithMovement: ItemWithMovement<RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+const walkAlongShortestAxisTowardsPlayer = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<"monster", RoomId> => {
+): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
-    state: { position, standingOn, timeOfLastDirectionChange, facing },
+    state: { position, standingOnItemId, timeOfLastDirectionChange, facing },
   } = itemWithMovement;
 
-  if (standingOn === null) {
+  if (standingOnItemId === null) {
     return notWalking;
   }
 
@@ -221,19 +225,19 @@ const walkAlongShortestAxisTowardsPlayer = <RoomId extends string>(
   };
 };
 
-const walkTowardIfInSquare = <RoomId extends string>(
-  itemWithMovement: ItemWithMovement<RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+const walkTowardIfInSquare = <RoomId extends string, RoomItemId extends string>(
+  itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
   // set to -1 to run away instead of towards player
   opposite: boolean = false,
-): MechanicResult<"monster", RoomId> => {
+): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
-    state: { position: monsterPosition, standingOn },
+    state: { position: monsterPosition, standingOnItemId },
   } = itemWithMovement;
 
-  if (standingOn === null) {
+  if (standingOnItemId === null) {
     return notWalking;
   }
 
@@ -287,21 +291,24 @@ const walkTowardIfInSquare = <RoomId extends string>(
   };
 };
 
-const randomlyChangeDirection = <RoomId extends string>(
-  itemWithMovement: ItemWithMovement<RoomId>,
+const randomlyChangeDirection = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
   _room: RoomState<SceneryName, RoomId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,
-): MechanicResult<"monster", RoomId> => {
+): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
     state: {
       vels: { walking },
-      standingOn,
+      standingOnItemId,
     },
   } = itemWithMovement;
 
-  if (standingOn === null) {
+  if (standingOnItemId === null) {
     return notWalking;
   }
 
@@ -328,21 +335,24 @@ const randomlyChangeDirection = <RoomId extends string>(
   };
 };
 
-export const keepWalkingInSameDirection = <RoomId extends string>(
-  itemWithMovement: ItemWithMovement<RoomId>,
-  _room: RoomState<SceneryName, RoomId>,
+export const keepWalkingInSameDirection = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
+  _room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<"monster", RoomId> => {
+): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
     state: {
       facing,
       vels: { walking },
-      standingOn,
+      standingOnItemId,
     },
   } = itemWithMovement;
 
-  if (standingOn === null) {
+  if (standingOnItemId === null) {
     return notWalking;
   }
 
@@ -389,7 +399,10 @@ const turnedWalkVector = (
   }
 };
 
-const handleMonsterTouchingItemByTurning = <RoomId extends string>(
+const handleMonsterTouchingItemByTurning = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   {
     movingItem: itemWithMovement,
     touchedItem: {
@@ -397,7 +410,7 @@ const handleMonsterTouchingItemByTurning = <RoomId extends string>(
       aabb: touchedItemAabb,
     },
     deltaMS,
-  }: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>,
+  }: ItemTouchEvent<RoomId, ItemWithMovement<RoomId, RoomItemId>>,
   turnStrategy: TurnStrategy,
 ) => {
   const {
@@ -427,10 +440,13 @@ const handleMonsterTouchingItemByTurning = <RoomId extends string>(
   itemWithMovement.state.durationOfTouch = 0;
 };
 
-const handleMonsterTouchingItemByStopping = <RoomId extends string>({
+const handleMonsterTouchingItemByStopping = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   movingItem: itemWithMovement,
   movementVector,
-}: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>) => {
+}: ItemTouchEvent<RoomId, ItemWithMovement<RoomId, RoomItemId>>) => {
   if (movementVector.z < 0) {
     // don't stop if fell onto the item
     return;
@@ -440,14 +456,14 @@ const handleMonsterTouchingItemByStopping = <RoomId extends string>({
 };
 
 /**
- * 'ai' is maybe a bit much :-)
+ * moves an item with the 'movement' config set, by one tick
  */
-export const tickMovement = <RoomId extends string>(
-  itemWithMovement: ItemWithMovement<RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+export const tickMovement = <RoomId extends string, RoomItemId extends string>(
+  itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<"monster", RoomId> => {
+): MechanicResult<"monster", RoomId, RoomItemId> => {
   if (
     !itemWithMovement.state.activated ||
     (isMonster(itemWithMovement) &&
@@ -524,8 +540,11 @@ export const tickMovement = <RoomId extends string>(
   }
 };
 
-export const handleItemWithMovementTouchingItem = <RoomId extends string>(
-  e: ItemTouchEvent<RoomId, ItemWithMovement<RoomId>>,
+export const handleItemWithMovementTouchingItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  e: ItemTouchEvent<RoomId, ItemWithMovement<RoomId, RoomItemId>>,
 ) => {
   const { movingItem: itemWithMovement, touchedItem } = e;
 

@@ -247,7 +247,7 @@ describe("jumping", () => {
           },
         ],
       });
-      expect(headState(gameState).standingOn).toMatchObject({
+      expect(headState(gameState).standingOnItemId).toMatchObject({
         id: "lowerBlock",
       });
     },
@@ -289,7 +289,7 @@ describe("jumping", () => {
         frameCallbacks: stopJumpingAMomentAfterStartingPlay,
       });
 
-      expect(headState(gameState).standingOn).toMatchObject({
+      expect(headState(gameState).standingOnItemId).toMatchObject({
         id: "highBlock",
       });
     },
@@ -338,13 +338,17 @@ describe("jumping", () => {
         frameCallbacks: [
           stopJumpingAMomentAfterStartingPlay,
           (gameState) => {
-            expect(headState(gameState).standingOn?.type).not.toBe("block");
+            expect(headState(gameState).standingOnItemId?.type).not.toBe(
+              "block",
+            );
             return gameState;
           },
         ],
       });
       expect(headState(gameState).position.z).toBe(0);
-      expect(headState(gameState).standingOn).toMatchObject({ id: "floor" });
+      expect(headState(gameState).standingOnItemId).toMatchObject({
+        id: "floor",
+      });
     },
   );
 });
@@ -447,15 +451,15 @@ describe("doors", () => {
       until(gameState) {
         return (
           gameState.characterRooms.head?.id === "secondRoom" &&
-          headState(gameState).standingOn !== null
+          headState(gameState).standingOnItemId !== null
         );
       },
     });
 
     // both characters are on the floor - ie, haven't jumped on top of each other
     // due to items appearing overlapping and recovering
-    expect(headState(gameState).standingOn?.id).toBe("floor");
-    expect(heelsState(gameState).standingOn?.id).toBe("floor");
+    expect(headState(gameState).standingOnItemId?.id).toBe("floor");
+    expect(heelsState(gameState).standingOnItemId?.id).toBe("floor");
   });
 
   test("character can slide down a wall and through a door", () => {
@@ -495,7 +499,7 @@ describe("doors", () => {
       until(gameState) {
         return (
           gameState.characterRooms.head?.id === "secondRoom" &&
-          headState(gameState).standingOn !== null
+          headState(gameState).standingOnItemId !== null
         );
       },
     });
@@ -612,7 +616,7 @@ describe("teleporter", () => {
         }
       },
       until(gameState) {
-        return heelsState(gameState).standingOn?.id === "teleporterLanding";
+        return heelsState(gameState).standingOnItemId === "teleporterLanding";
       },
     });
   });
@@ -654,7 +658,9 @@ describe("conveyors", () => {
       items: { portableBlock },
     } = selectCurrentRoomState(gameState)!;
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
-    expect(heelsState(gameState).standingOn).toMatchObject({ id: "floor" });
+    expect(heelsState(gameState).standingOnItemId).toMatchObject({
+      id: "floor",
+    });
     expect(heelsState(gameState).position).toEqual({
       x: 1,
       y: blockSizePx.d,
@@ -663,7 +669,7 @@ describe("conveyors", () => {
 
     // the block should have also moved on the conveyor, and now be on heels:
     expect(
-      (portableBlock as ItemInPlay<"portableBlock">).state.standingOn,
+      (portableBlock as ItemInPlay<"portableBlock">).state.standingOnItemId,
     ).toMatchObject({ id: "heels" });
     expect(portableBlock?.state.position).toEqual({
       x: 2,
@@ -825,14 +831,14 @@ describe("lifts", () => {
 
     const gameState = basicGameState(playerOnALift);
     const heelsStandingOnPerFrame: Array<
-      PlayableItem<"heels", TestRoomId>["state"]["standingOn"]
+      PlayableItem<"heels", TestRoomId>["state"]["standingOnItemId"]
     > = [];
 
     playGameThrough(gameState, {
       frameCallbacks(gameState) {
         // give a little time to fall onto the lift:
         if (gameState.gameTime > 200)
-          heelsStandingOnPerFrame.push(heelsState(gameState).standingOn);
+          heelsStandingOnPerFrame.push(heelsState(gameState).standingOnItemId);
       },
       until: 5_000, // run for quite a long time
     });
@@ -932,7 +938,9 @@ describe("lifts", () => {
 
     // heels is now in the above room and standing on the landing
     expect(gameState.characterRooms.heels?.id).toEqual("secondRoom");
-    expect(heelsState(gameState).standingOn).toMatchObject({ id: "landing" });
+    expect(heelsState(gameState).standingOnItemId).toMatchObject({
+      id: "landing",
+    });
   });
 
   test("player partially on lift can be deposited and picked up", () => {
@@ -962,13 +970,13 @@ describe("lifts", () => {
     });
 
     const heelsStandingOnPerFrame: Array<
-      PlayableItem<"heels", TestRoomId>["state"]["standingOn"]
+      PlayableItem<"heels", TestRoomId>["state"]["standingOnItemId"]
     > = [];
 
     playGameThrough(gameState, {
       until: 5_000, // run for quite a long time
       frameCallbacks(gameState) {
-        heelsStandingOnPerFrame.push(heelsState(gameState).standingOn);
+        heelsStandingOnPerFrame.push(heelsState(gameState).standingOnItemId);
       },
     });
 
@@ -1021,7 +1029,45 @@ describe("lifts", () => {
     });
 
     expect(heelsState(gameState).position.z).toBe(blockSizePx.h * 2);
-    expect(heelsState(gameState).standingOn).toMatchObject({ id: "lift" });
+    expect(heelsState(gameState).standingOnItemId).toMatchObject({
+      id: "lift",
+    });
+  });
+
+  test("lift does not move if a heavy item is on it", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 5, y: 5, z: 2 },
+          config: {
+            which: "heels",
+          },
+        },
+        lift: {
+          type: "lift",
+          position: { x: 5, y: 5, z: 0 },
+          config: {
+            bottom: 0,
+            top: defaultRoomHeightBlocks,
+          },
+        },
+        heavyBlock: {
+          type: "movableBlock",
+          config: { style: "stepStool", movement: "free" },
+          position: { x: 5, y: 5, z: 1 },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      until: 5_000,
+    });
+
+    expect(heelsState(gameState).position.z).toBe(blockSizePx.h * 2);
+    expect(heelsState(gameState).standingOnItemId).toMatchObject({
+      id: "heavyBlock",
+    });
   });
 });
 

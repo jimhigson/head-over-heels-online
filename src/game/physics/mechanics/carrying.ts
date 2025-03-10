@@ -62,7 +62,7 @@ export const carrying = <RoomId extends string>(
       pickUpItem(room, heelsAbilities, itemToPickup);
     } else {
       // trying to put down
-      if (carrier.state.standingOn === null) {
+      if (carrier.state.standingOnItemId === null) {
         // can't put down mid-air
         return;
       }

@@ -1,7 +1,6 @@
 import type { ColorSource } from "pixi.js";
 import { Graphics, Container, Text } from "pixi.js";
 import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
-import type { SceneryName } from "../../../sprites/planets";
 import type { Aabb } from "../../../utils/vectors/vectors";
 import { isItemType } from "../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
@@ -81,12 +80,12 @@ const bbColors: Partial<Record<ItemInPlayType, string>> = {
 export class ItemBoundingBoxRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
-  ItemId extends string,
+  RoomItemid extends string,
 > implements Renderer<ItemRenderContext<RoomId>>
 {
   #container: Container;
 
-  constructor(item: ItemInPlay<T, SceneryName, RoomId, ItemId>) {
+  constructor(item: ItemInPlay<T, RoomId, RoomItemid>) {
     const color = bbColors[item.type] ?? "rgba(255,255,255)";
 
     this.#container = new Container({

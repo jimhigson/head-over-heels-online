@@ -1,4 +1,3 @@
-import type { SceneryName } from "../../../sprites/planets";
 import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
 import type { ItemRenderProps } from "../itemAppearances/ItemRenderProps";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
@@ -8,9 +7,9 @@ import type { ItemRenderContext } from "../Renderer";
 export class ItemAppearanceRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
-  ItemId extends string,
+  RoomItemId extends string,
 > extends AppearanceRenderer<
-  ItemInPlay<T, SceneryName, RoomId, ItemId>,
+  ItemInPlay<T, RoomId, RoomItemId>,
   ItemRenderProps<T>,
   RoomId,
   ItemRenderContext<RoomId>

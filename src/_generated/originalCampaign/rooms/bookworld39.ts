@@ -83,4 +83,4 @@ export const room = inferRoomJson({
   roomAbove: "bookworld38",
   roomBelow: "bookworld40",
   size: { x: 8, y: 8 },
-}) satisfies RoomJson<"bookworld", OriginalCampaignRoomId>;
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "bookworld">;

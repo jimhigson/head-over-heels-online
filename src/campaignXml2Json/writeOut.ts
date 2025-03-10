@@ -12,7 +12,7 @@ const roomTs = (room: AnyRoomJson): string =>
   `
 import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";\n
 import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n
-export const room = inferRoomJson(${canonicalize(room)}) satisfies RoomJson<"${room.planet}", OriginalCampaignRoomId>;
+export const room = inferRoomJson(${canonicalize(room)}) satisfies RoomJson<OriginalCampaignRoomId, string, "${room.planet}">;
 `;
 
 const targetDir = "src/_generated/originalCampaign/";

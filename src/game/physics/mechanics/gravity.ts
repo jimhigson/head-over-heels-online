@@ -7,13 +7,15 @@ import { originXyz } from "../../../utils/vectors/vectors";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
+import type { RoomState } from "../../../model/RoomState";
+import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 
 const notFalling = {
   movementType: "vel",
   vels: {
     gravity: originXyz,
   },
-} as const satisfies MechanicResult<FreeItemTypes, string>;
+} as const satisfies MechanicResult<FreeItemTypes, string, string>;
 
 /**
  * handle *only* the vertical speed downwards, and recognising
@@ -21,11 +23,12 @@ const notFalling = {
  *
  * The item can be anything - a player, a pickup etc
  */
-export const gravity = <RoomId extends string>(
-  item: ItemInPlay<FreeItemTypes, SceneryName, RoomId>,
+export const gravity = <RoomId extends string, RoomItemId extends string>(
+  item: ItemInPlay<FreeItemTypes, SceneryName, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<FreeItemTypes, RoomId> => {
+): MechanicResult<FreeItemTypes, RoomId, RoomItemId> => {
   if (!isSolid(item)) {
     // non-solid items do not have gravity - they'd fall through the floor like gravity-impacted ghosts!
     return notFalling;
@@ -37,7 +40,7 @@ export const gravity = <RoomId extends string>(
       vels: {
         gravity: { z: previousVelZ },
       },
-      standingOn,
+      standingOnItemId,
     },
   } = item;
 
@@ -46,15 +49,15 @@ export const gravity = <RoomId extends string>(
   const terminalZ =
     terminalVelocityPixPerMs[effectiveType === "head" ? "head" : "others"];
 
-  if (standingOn !== null) {
+  if (standingOnItemId !== null) {
+    const standingOn = stoodOnItem(standingOnItemId, room);
     // standing on something - no gravity will be applied
-    // TODO: special case for lifts going down:
     if (isItemType("lift")(standingOn)) {
       const liftVelZ = standingOn.state.vels.lift.z;
 
       if (liftVelZ < 0) {
-        // descending on a lift - we need some gravity to keep us on the lift
-        // as it falls - go slightly faster than the lift's downwards speed
+        // NOTE: special case for descending lifts: we need some gravity to keep us
+        // on the lift as it falls - go slightly faster than the lift's downwards speed
         return {
           movementType: "vel",
           vels: {

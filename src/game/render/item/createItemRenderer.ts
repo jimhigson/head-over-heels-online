@@ -1,7 +1,6 @@
 import type { GameState } from "../../gameState/GameState";
 import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
-import { type SceneryName } from "../../../sprites/planets";
 import type {
   AnyItemInPlay,
   ItemInPlay,
@@ -40,24 +39,24 @@ const assignPointerActions = <RoomId extends string>(
 const hasShadowMask = <
   T extends ItemInPlayType,
   RoomId extends string,
-  ItemId extends string,
+  RoomItemId extends string,
 >(
-  item: ItemInPlay<T, SceneryName, RoomId, ItemId>,
+  item: ItemInPlay<T, RoomId, RoomItemId>,
 ): item is SetRequired<typeof item, "shadowMask"> =>
   item.shadowMask !== undefined;
 
 export const createItemRenderer = <
   T extends ItemInPlayType,
   RoomId extends string,
-  ItemId extends string,
+  RoomItemId extends string,
 >({
   item,
   room,
   gameState,
   pixiRenderer,
 }: {
-  item: ItemInPlay<T, SceneryName, RoomId, ItemId>;
-  room: RoomState<SceneryName, RoomId, ItemId>;
+  item: ItemInPlay<T, RoomId, RoomItemId>;
+  room: RoomState<RoomId, RoomItemId>;
   gameState: GameState<RoomId>;
   pixiRenderer: PixiRenderer;
 }): Renderer<ItemRenderContext<RoomId>> | "not-needed" => {
@@ -78,13 +77,14 @@ export const createItemRenderer = <
       item.type
     ] as /* narrow down ItemAppearance to the version that already has our roomid baked in */ ItemAppearanceWithKnownRoomId<
       T,
-      RoomId
+      RoomId,
+      RoomItemId
     >;
 
     const itemAppearanceRenderer = new ItemAppearanceRenderer<
       T,
       RoomId,
-      ItemId
+      RoomItemId
     >(item, gameState, appearance);
     renderers.push(itemAppearanceRenderer);
     if (renderBoundingBoxes) {

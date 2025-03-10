@@ -13,9 +13,9 @@ import type { Xyz } from "../../utils/vectors/vectors";
 
 export const isItemType =
   <T extends ItemInPlayType>(...types: Array<T>) =>
-  <RoomId extends string>(
-    item: AnyItemInPlay<RoomId>,
-  ): item is ItemTypeUnion<T, RoomId> => {
+  <RoomId extends string, RoomItemId extends string>(
+    item: AnyItemInPlay<RoomId, RoomItemId>,
+  ): item is ItemTypeUnion<T, RoomId, RoomItemId> => {
     return (types as Array<string>).includes(item.type);
   };
 
@@ -57,8 +57,9 @@ export const isSolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
 
 // a good example of where OOP would make sense, it a polymorphic isPushable method
 export const isPushable = <
-  P extends SceneryName = SceneryName,
-  RoomId extends string = string,
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
 >(
   item: AnyItemInPlay<RoomId>,
   /**
@@ -66,7 +67,7 @@ export const isPushable = <
    * a door while backing-off-and re-entering the room to clear their area
    */
   forceful: boolean = false,
-): item is FreeItem<P, RoomId> => {
+): item is FreeItem<RoomId, RoomItemId, ScN> => {
   return (
     isFreeItem(item) &&
     // can't push a player while they're autowalking - lets players walk into a room while invincible if
@@ -105,20 +106,33 @@ export const isPlayableItem = <RoomId extends string = string>(
   );
 };
 export function isFreeItem<
-  P extends SceneryName = SceneryName,
-  RoomId extends string = string,
->(item: AnyItemInPlay<RoomId>): item is FreeItem<P, RoomId> {
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  item: AnyItemInPlay<RoomId, RoomItemId>,
+): item is FreeItem<RoomId, RoomItemId, ScN> {
   return (freeItemTypes as ItemInPlayType[]).includes(item.type);
 }
 export type PlayableItem<
   C extends CharacterName = CharacterName,
   RoomId extends string = string,
+  RoomItemId extends string = string,
 > =
   | (C extends "headOverHeels" ?
-      ItemInPlay<"headOverHeels", SceneryName, RoomId, "headOverHeels">
+      ItemInPlay<
+        "headOverHeels",
+        SceneryName,
+        RoomId,
+        RoomItemId,
+        "headOverHeels"
+      >
     : never)
-  | (C extends "head" ? ItemInPlay<"head", SceneryName, RoomId, "head"> : never)
-  | (C extends "heels" ? ItemInPlay<"heels", SceneryName, RoomId, "heels">
+  | (C extends "head" ?
+      ItemInPlay<"head", SceneryName, RoomId, RoomItemId, "head">
+    : never)
+  | (C extends "heels" ?
+      ItemInPlay<"heels", SceneryName, RoomId, RoomItemId, "heels">
     : never);
 
 export const freeItemTypes = [
@@ -138,11 +152,11 @@ export const freeItemTypes = [
 
 export type FreeItemTypes = (typeof freeItemTypes)[number];
 
-export type FreeItem<P extends SceneryName, RoomId extends string> = ItemInPlay<
-  FreeItemTypes,
-  P,
-  RoomId
->;
+export type FreeItem<
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+> = ItemTypeUnion<FreeItemTypes, RoomId, RoomItemId, ScN>;
 
 export const deadlyItemTypes = [
   "monster",
@@ -152,15 +166,18 @@ export const deadlyItemTypes = [
 ] as const satisfies ItemInPlayType[];
 export type DeadlyItemType = (typeof deadlyItemTypes)[number];
 
-export const isDeadly = <RoomId extends string>(
-  item: UnionOfAllItemInPlayTypes<RoomId>,
-): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId> =>
+export const isDeadly = <RoomId extends string, RoomItemId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId, RoomItemId> =>
   isItemType(...deadlyItemTypes)(item) ||
   (item.type === "floor" && item.config.type === "deadly");
 
-export const isMultipliedItem = <RoomId extends string>(
+export const isMultipliedItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   item: AnyItemInPlay<RoomId>,
-): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId> => {
+): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId, RoomItemId> => {
   type ItemConfigMaybeWithMultiplication = {
     times?: undefined | Partial<Xyz>;
   };

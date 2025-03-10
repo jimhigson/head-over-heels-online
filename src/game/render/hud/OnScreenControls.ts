@@ -10,6 +10,7 @@ import type { ButtonType } from "./OnScreenButtonRenderer";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
+import { selectCurrentRoomState } from "../../gameState/GameState";
 
 const mainButtonsSpreadXPx = 26;
 const mainButtonsSpreadYPx = 13;
@@ -127,12 +128,14 @@ export class OnScreenControls<RoomId extends string> {
     this.#hudElements.joystick.container.y = screenSize.y - 28;
   }
 
-  tick({ screenSize }: HudRendererTickOptions<RoomId>): void {
+  tick({ screenSize, gameState }: HudRendererTickOptions<RoomId>): void {
     this.#updateElementPositions(screenSize);
     for (const b of objectValues(this.#hudElements.buttons)) {
-      b.tick({ colourise: this.colourise });
+      b.tick({
+        colourise: this.colourise,
+        room: selectCurrentRoomState(gameState),
+      });
     }
-    //this.#updateShowAndHide();
     this.#hudElements.joystick.tick(this.colourise);
   }
 

@@ -63,6 +63,8 @@ type ButtonRenderProps = {
 
 type ButtonRenderContext = {
   colourise: boolean;
+  // TODO: inject actual types here instead of string?
+  room: RoomState<SceneryName, string>;
 };
 
 const textYForButtonCentre = -11;
@@ -79,14 +81,16 @@ const buttonAppearances: {
     gameState,
     currentlyRenderedProps,
     previousRendering,
-    renderContext: { colourise },
+    renderContext: { colourise, room },
   }) {
     const { inputStateTracker } = gameState;
 
     const playable = selectCurrentPlayableItem(gameState);
 
-    const standingOnTeleporter =
-      playable?.state.standingOn?.type === "teleporter";
+    const standingOnId = playable?.state.standingOnItemId ?? null;
+    const standingOn = standingOnId !== null ? room.items[standingOnId] : null;
+    const isStandingOnTeleporter =
+      standingOn === null ? false : standingOn.type === "teleporter";
 
     const pressed = button.actions.every(
       (a) => inputStateTracker.currentActionPress(a) !== "released",
@@ -104,8 +108,10 @@ const buttonAppearances: {
       setPressed(container, pressed);
     }
 
-    if (standingOnTeleporter !== currentlyRenderedProps?.standingOnTeleporter) {
-      if (standingOnTeleporter) {
+    if (
+      isStandingOnTeleporter !== currentlyRenderedProps?.standingOnTeleporter
+    ) {
+      if (isStandingOnTeleporter) {
         showOnSurface(
           container,
           createSprite({
@@ -130,7 +136,11 @@ const buttonAppearances: {
 
     return {
       container,
-      renderProps: { pressed, standingOnTeleporter, colourise },
+      renderProps: {
+        pressed,
+        standingOnTeleporter: isStandingOnTeleporter,
+        colourise,
+      },
     };
   },
   carry({

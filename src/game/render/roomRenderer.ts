@@ -8,7 +8,6 @@ import { type GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { SceneryName } from "../../sprites/planets";
 import { store } from "../../store/store";
 import type { Upscale } from "./calculateUpscale";
 import type {
@@ -24,7 +23,7 @@ import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
 import type { RoomState } from "../../model/RoomState";
 
-export class RoomRenderer<RoomId extends string, ItemId extends string>
+export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements Renderer<RoomRenderContext>
 {
   /**
@@ -42,7 +41,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
    */
   #incrementalZEdges: GraphEdges<string> = new Map();
   #itemRenderers: Map<
-    ItemId,
+    RoomItemId,
     | Renderer<ItemRenderContext<RoomId>>
     // createItemRenderer explicitly declined to create an instance for this item
     | "not-needed"
@@ -50,7 +49,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
   #roomScroller: ReturnType<typeof positionRoom>;
   #displaySettings: DisplaySettings;
   #upscale: Upscale;
-  #roomState: RoomState<SceneryName, RoomId, ItemId>;
+  #roomState: RoomState<RoomId, RoomItemId>;
   #gameState: GameState<RoomId>;
   #paused: boolean;
   #pixiRenderer: PixiRenderer;
@@ -62,7 +61,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     pixiRenderer,
   }: {
     gameState: GameState<RoomId>;
-    roomState: RoomState<SceneryName, RoomId, ItemId>;
+    roomState: RoomState<RoomId, RoomItemId>;
     paused: boolean;
     pixiRenderer: PixiRenderer;
   }) {
@@ -117,7 +116,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
 
   #tickItems(renderContext: ItemRenderContext<RoomId>) {
     for (const item of objectValues(this.#roomState.items)) {
-      let itemRenderer = this.#itemRenderers.get(item.id as ItemId);
+      let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
 
       if (
         itemRenderer !==
@@ -131,17 +130,17 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
         // have never ticked this item before - either first tick in the room or item was introduced to the
         // room since the last tick
         itemRenderer = createItemRenderer({
-          item: item as UnionOfAllItemInPlayTypes<RoomId, ItemId>,
+          item: item as UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
           room: this.#roomState,
           gameState: this.#gameState,
           pixiRenderer: this.#pixiRenderer,
         });
         if (itemRenderer === "not-needed") {
           // createItemRenderer declined to create a render for this item - record that:
-          this.#itemRenderers.set(item.id as ItemId, "not-needed");
+          this.#itemRenderers.set(item.id as RoomItemId, "not-needed");
           continue;
         }
-        this.#itemRenderers.set(item.id as ItemId, itemRenderer);
+        this.#itemRenderers.set(item.id as RoomItemId, itemRenderer);
 
         const addToContainer =
           item.type === "floorEdge" ?
@@ -160,7 +159,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     for (const [itemId, itemRenderer] of this.#itemRenderers.entries()) {
       if (this.#roomState.items[itemId] === undefined) {
         if (itemRenderer !== "not-needed") itemRenderer.destroy();
-        this.#itemRenderers.delete(itemId as ItemId);
+        this.#itemRenderers.delete(itemId as RoomItemId);
       }
     }
   }
@@ -176,7 +175,7 @@ export class RoomRenderer<RoomId extends string, ItemId extends string>
     );
 
     for (let i = 0; i < order.length; i++) {
-      const itemRenderer = this.#itemRenderers.get(order[i] as ItemId);
+      const itemRenderer = this.#itemRenderers.get(order[i] as RoomItemId);
       if (itemRenderer === undefined || itemRenderer === "not-needed") {
         throw new Error(
           `Item id=${order[i]} does not have a renderer - cannot assign a z-index`,

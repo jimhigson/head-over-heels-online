@@ -5,18 +5,21 @@ import type { SceneryName } from "../../../sprites/planets";
 export const removeStandingOn = <RoomId extends string>(
   item: FreeItem<SceneryName, RoomId>,
 ) => {
-  if (item.state.standingOn !== null) {
-    item.state.standingOn.state.stoodOnBy.delete(item);
+  if (item.state.standingOnItemId !== null) {
+    item.state.standingOnItemId.state.stoodOnBy.delete(item);
   }
-  item.state.standingOn = null;
+  item.state.standingOnItemId = null;
 };
-export const setStandingOn = <RoomId extends string>({
+export const setStandingOn = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   above,
   below,
 }: {
-  above: FreeItem<SceneryName, RoomId>;
-  below: UnionOfAllItemInPlayTypes<RoomId>;
+  above: FreeItem<RoomId, RoomItemId>;
+  below: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 }) => {
-  above.state.standingOn = below;
-  below.state.stoodOnBy.add(above);
+  above.state.standingOnItemId = below.id;
+  below.state.stoodOnBy.add(above.id);
 };

@@ -36,7 +36,7 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
           "\nstoodOnBy:",
           [...item.state.stoodOnBy],
           "\nstandingOn:",
-          isFreeItem(item) ? item.state.standingOn : "n/a (not free to move)",
+          isFreeItem(item) ? item.state.standingOnItemId : "n/a (not free to move)",
           "\ncontainer:",
           container,
         );

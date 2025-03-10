@@ -9,9 +9,9 @@ import type { Floor } from "./modelTypes";
  */
 
 export type RoomJson<
-  S extends SceneryName,
   RoomId extends string,
-  ItemId extends string = string,
+  ItemId extends string,
+  ScN extends SceneryName,
 > = {
   id: RoomId;
   size: {
@@ -24,7 +24,7 @@ export type RoomJson<
     z?: number;
   };
   /** TODO: rename to scenery */
-  planet: S;
+  planet: ScN;
   floor: Floor;
   roomAbove?: RoomId;
   /**
@@ -44,18 +44,18 @@ export type RoomJson<
    */
   items: Record<ItemId, JsonItemUnion<RoomId, NoInfer<ItemId>>>;
 };
-export type AnyRoomJson = RoomJson<SceneryName, string, string>;
+export type AnyRoomJson = RoomJson<string, string, SceneryName>;
 
 /*
  * utility function - pass raw json through this to get type checking and type inference.
  * for example, it should fail if a joystick or switch links to an item that isn't in the room
  */
 export const inferRoomJson = <
-  P extends SceneryName,
   RoomId extends string,
-  ItemId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName,
 >(
-  json: RoomJson<P, RoomId, ItemId>,
-): RoomJson<P, RoomId, ItemId> => {
+  json: RoomJson<RoomId, RoomItemId, ScN>,
+): RoomJson<RoomId, RoomItemId, ScN> => {
   return json;
 };

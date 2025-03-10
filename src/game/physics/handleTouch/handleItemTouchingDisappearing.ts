@@ -26,10 +26,10 @@ export const handleItemTouchingDissapearing = <RoomId extends string>(
         below: e.touchedItem as UnionOfAllItemInPlayTypes<RoomId>,
       });
       const controlMechanicalResults = [
-        jumping(e.movingItem, e.gameState),
+        jumping(e.movingItem, e.room, e.gameState),
         // jumping is no use without also walking - eg, heels needs to be able to head forward at the
         // start of a jump or she will come to a stop after a few jumps:
-        walking(e.movingItem, e.gameState, e.deltaMS),
+        walking(e.movingItem, e.room, e.gameState, e.deltaMS),
       ];
       applyMechanicsResults(e.movingItem, controlMechanicalResults);
     }

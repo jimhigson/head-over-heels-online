@@ -8,7 +8,8 @@ import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import type { RoomState } from "../../model/RoomState";
 
 /**
- * @returns undefined only if both chars have lost all lives (no current room)
+ * @returns currently shown room state, or undefined only if both chars have
+ * lost all lives (no current room)
  */
 export const selectCurrentRoomState = <RoomId extends string>(
   gameState: GameState<RoomId>,

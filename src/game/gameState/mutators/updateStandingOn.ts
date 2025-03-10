@@ -6,6 +6,7 @@ import {
   findStandingOnWithHighestPriorityAndMostOverlap,
 } from "../../collision/checkStandingOn";
 import type { RoomState } from "../../../model/RoomState";
+import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 
 /**
  * remove the standing on if not still applies, and
@@ -22,7 +23,7 @@ export const updateStandingOn = <RoomId extends string>(
   for (const item of objectValues(room.items)) {
     // check what is standing on us - this implies that we're also checking what everything is stood on,
     // but gives us a chance to apply latent movement:
-    for (const stander of item.state.stoodOnBy) {
+    for (const stander of iterateStoodOnByItems(item.state.stoodOnBy, room)) {
       /*console.log(
           stander.id,
           "still stood on",

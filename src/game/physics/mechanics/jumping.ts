@@ -1,5 +1,7 @@
-import type { FreeItemState } from "../../../model/ItemStateMap";
-import type { CharacterName } from "../../../model/modelTypes";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
+import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { originalGameFrameDuration } from "../../../originalGame";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { GameState } from "../../gameState/GameState";
@@ -51,8 +53,8 @@ const getJumpInitialVelocity = (
   ];
 };
 
-const isJumpOffable = <RoomId extends string>(
-  item: FreeItemState<RoomId>["standingOn"],
+const isJumpOffable = <RoomItemId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomItemId> | null,
 ): item is NonNullable<typeof item> => {
   if (item === null) {
     return false;
@@ -65,7 +67,7 @@ const isJumpOffable = <RoomId extends string>(
     // can't jump off of scrolls - the jump after reading is jarring
     return false;
   }
-  if (isPlayableItem(item) && item.state.standingOn === null) {
+  if (isPlayableItem(item) && item.state.standingOnItemId === null) {
     // can't jump off of a character that is jumping. This prevents
     // a 'superjump' by going out of symbiosis while jumping and
     // holding jump
@@ -75,24 +77,25 @@ const isJumpOffable = <RoomId extends string>(
   return true;
 };
 
-export const jumping = <RoomId extends string>(
-  playableItem: PlayableItem,
+export const jumping = <RoomId extends string, RoomItemId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   //_deltaMS: number,
-): MechanicResult<CharacterName, RoomId> => {
+): MechanicResult<CharacterName, RoomId, RoomItemId> => {
   const {
-    state: { standingOn },
+    state: { standingOnItemId },
   } = playableItem;
   const { inputStateTracker } = gameState;
+
+  const standingOn = stoodOnItem(standingOnItemId, room);
 
   const startingAJump =
     inputStateTracker.currentActionPress("jump") !== "released" &&
     isJumpOffable(standingOn);
 
-  if (startingAJump) console.log("starting a jump!");
-
   if (!startingAJump) {
-    if (standingOn !== null) {
+    if (standingOnItemId !== null) {
       return {
         movementType: "steady",
         stateDelta: {
