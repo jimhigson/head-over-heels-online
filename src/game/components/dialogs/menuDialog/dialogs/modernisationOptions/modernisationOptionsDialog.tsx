@@ -27,6 +27,10 @@ import {
 import { Switch } from "../../../../../../ui/Switch";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import {
+  optionsMenuItemColours,
+  optionsMenuScrollClasses,
+} from "../controlOptions/optionsMenuColours";
 
 const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 
@@ -53,27 +57,29 @@ export const ModernisationOptionsDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-moss zx:bg-zxGreenDimmed"
+        className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-pinkHalfbrite zx:bg-zxBlue pb-0">
+      <Dialog className="bg-white zx:bg-zxWhite pb-0">
         <Portal.Provider>
           <div
             className={
               "flex flex-col gap-1 " +
               "overflow-y-scroll scrollbar scrollbar-w-1 " +
               "min-h-full " +
-              "scrollbar-thumb-lightGrey scrollbar-track-pinkHalfbrite " +
-              "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxBlue "
+              optionsMenuScrollClasses
             }
           >
             {isTouchDevice() && (
               <MobileStyleBackButton className="text-highlightBeige" />
             )}
-            <BitmapText className="ml-3 text-moss zx:text-zxGreen sprites-double-height block">
+            <BitmapText
+              TagName="h1"
+              className="ml-3 text-midRed zx:text-zxBlue sprites-double-height block"
+            >
               Options
             </BitmapText>
-            <MenuItems className="text-lightGrey zx:text-zxWhite selectedMenuItem:text-white disabledMenuItem:text-midGrey zx:selectedMenuItem:text-zxGreen">
+            <MenuItems className={optionsMenuItemColours}>
               <MenuItem
                 id="controlOptions"
                 label="Control options"

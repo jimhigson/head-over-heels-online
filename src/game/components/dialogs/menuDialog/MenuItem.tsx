@@ -67,7 +67,7 @@ export const MenuItem = ({
 
   const menuItem = (
     // contents div puts children into the grid layout:
-    <div
+    <li
       {...{
         // data attributes required for MenuItems to this this MenuItem in the dom:
         [menuItemDataAttributeId]: id,
@@ -134,7 +134,7 @@ export const MenuItem = ({
           : hint}
         </Portal>
       )}
-    </div>
+    </li>
   );
 
   if (hintInline && hint && focussed) {

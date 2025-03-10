@@ -26,6 +26,10 @@ import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 import { InputDirectionModeMenuItem } from "./InputDirectionModeMenuItem";
 import { SelectTheKeysMenuItems } from "./SelectTheKeysMenuItems";
 import { OnScreenControlsMenuItem } from "./OnScreenControlsMenuItem";
+import {
+  optionsMenuItemColours,
+  optionsMenuScrollClasses,
+} from "./optionsMenuColours";
 
 const useKeyAssignmentInput = () => {
   const disabled = !useIsAssigningKeys();
@@ -79,7 +83,8 @@ const ExpandToShowAll = ({ showAll }: { showAll: () => void }) => {
 };
 
 const controlOptionsMenuItemsClass =
-  "text-metallicBlueHalfbrite zx:text-zxBlue selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxGreen " +
+  optionsMenuItemColours +
+  " " +
   // a lot of these menu items run multi-line, so always have a block gap between:
   "!gap-y-1 " +
   // on mobile, override the double-height of menu items (put in to give a bitter hit area) since they're big enough already
@@ -103,12 +108,14 @@ export const ControlOptionsDialog = () => {
             "flex flex-col gap-y-1 " +
             "overflow-y-scroll " +
             "scrollbar  scrollbar-w-1 " +
-            "scrollbar-thumb-midGrey scrollbar-track-white " +
-            "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite "
+            optionsMenuScrollClasses
           }
         >
           {isTouchDevice() && <MobileStyleBackButton className="mb-1" />}
-          <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height block">
+          <BitmapText
+            TagName="h1"
+            className="text-midRed zx:text-zxBlue sprites-double-height block"
+          >
             control options
           </BitmapText>
 
@@ -122,7 +129,10 @@ export const ControlOptionsDialog = () => {
 
           {showAll ?
             <>
-              <BitmapText className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3">
+              <BitmapText
+                TagName="h1"
+                className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3"
+              >
                 Select the keys
               </BitmapText>
               <MenuItems className={controlOptionsMenuItemsClass}>

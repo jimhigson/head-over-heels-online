@@ -53,7 +53,10 @@ export const EmulatedResolutionDialog = () => {
       />
       <Dialog className="bg-white">
         <Portal.Provider>
-          <BitmapText className="text-midRed zx:text-zxRed sprites-double-height ml-3">
+          <BitmapText
+            TagName="h1"
+            className="text-midRed zx:text-zxRed sprites-double-height ml-3"
+          >
             Emulated resolution
           </BitmapText>
           <MenuItems className="text-metallicBlue zx:text-zxBlue selectedMenuItem:text-moss zx:selectedMenuItem:text-zxMagenta">

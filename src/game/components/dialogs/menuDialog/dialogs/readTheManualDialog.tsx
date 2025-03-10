@@ -61,7 +61,7 @@ export const ReadTheManualDialog = () => {
           }
         >
           {isTouchDevice() && <MobileStyleBackButton className="mb-1" />}
-          <div
+          <h1
             className={
               "text-moss zx:text-zxBlack mx-auto flex flex-row justify-center items-center w-full" +
               " mb-1"
@@ -72,7 +72,7 @@ export const ReadTheManualDialog = () => {
               Read the manual
             </BitmapText>
             <span className="sprite texture-book.y zx:sprite-revert-to-white sprites-normal-height" />
-          </div>
+          </h1>
           <MenuItems>
             {[
               ...iterate(keys(manualPages)).map((pageName) => {
