@@ -1,6 +1,5 @@
 import type { Container } from "pixi.js";
 import type { MovedItems } from "../mainLoop/progressGameState";
-import type { SceneryName } from "../../sprites/planets";
 import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
 import type { RoomState } from "../../model/RoomState";
 
@@ -13,8 +12,11 @@ export type RoomRenderContext = {
   displaySettings: DisplaySettings;
   onHold: boolean;
 };
-export type ItemRenderContext<RoomId extends string> = RoomRenderContext & {
-  room: RoomState<SceneryName, RoomId>;
+export type ItemRenderContext<
+  RoomId extends string,
+  RoomItemId extends string,
+> = RoomRenderContext & {
+  room: RoomState<RoomId, RoomItemId>;
 };
 
 export interface Renderer<RC extends RenderContext> {

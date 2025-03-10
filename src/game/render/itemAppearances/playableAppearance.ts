@@ -174,12 +174,17 @@ const applyFilters = (
 export const playableAppearance = <
   C extends CharacterName,
   RoomId extends string,
+  RoomItemId extends string,
 >({
   subject,
   currentlyRenderedProps,
   previousRendering,
   gameState,
-}: ItemAppearanceOptions<C, RoomId>): ItemAppearanceReturn<CharacterName> => {
+}: ItemAppearanceOptions<
+  C,
+  RoomId,
+  RoomItemId
+>): ItemAppearanceReturn<CharacterName> => {
   const {
     type,
     state: { action, facing, teleporting },

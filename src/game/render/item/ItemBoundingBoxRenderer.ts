@@ -81,7 +81,7 @@ export class ItemBoundingBoxRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemid extends string,
-> implements Renderer<ItemRenderContext<RoomId>>
+> implements Renderer<ItemRenderContext<RoomId, RoomItemid>>
 {
   #container: Container;
 
@@ -157,7 +157,7 @@ export class ItemBoundingBoxRenderer<
       });
     });*/
   }
-  tick(_renderContext: ItemRenderContext<RoomId>) {}
+  tick(_renderContext: ItemRenderContext<RoomId, RoomItemid>) {}
   destroy(): void {
     this.#container.destroy({ children: true });
   }

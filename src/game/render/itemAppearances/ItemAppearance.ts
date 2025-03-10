@@ -35,7 +35,7 @@ export type ItemAppearanceOptions<
   ItemTypeUnion<T, RoomId, RoomItemId>,
   ItemRenderProps<T>,
   RoomId,
-  ItemRenderContext<RoomId>
+  ItemRenderContext<RoomId, RoomItemId>
 >;
 
 export type ItemAppearance<T extends ItemInPlayType> = <

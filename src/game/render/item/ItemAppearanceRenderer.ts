@@ -12,5 +12,5 @@ export class ItemAppearanceRenderer<
   ItemInPlay<T, RoomId, RoomItemId>,
   ItemRenderProps<T>,
   RoomId,
-  ItemRenderContext<RoomId>
+  ItemRenderContext<RoomId, RoomItemId>
 > {}

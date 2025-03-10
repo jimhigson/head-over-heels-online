@@ -42,7 +42,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #incrementalZEdges: GraphEdges<string> = new Map();
   #itemRenderers: Map<
     RoomItemId,
-    | Renderer<ItemRenderContext<RoomId>>
+    | Renderer<ItemRenderContext<RoomId, RoomItemId>>
     // createItemRenderer explicitly declined to create an instance for this item
     | "not-needed"
   > = new Map();
@@ -114,7 +114,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       );
   }
 
-  #tickItems(renderContext: ItemRenderContext<RoomId>) {
+  #tickItems(renderContext: ItemRenderContext<RoomId, RoomItemId>) {
     for (const item of objectValues(this.#roomState.items)) {
       let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
 
@@ -164,7 +164,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
-  #tickItemsZIndex(renderContext: ItemRenderContext<RoomId>) {
+  #tickItemsZIndex(renderContext: ItemRenderContext<RoomId, RoomItemId>) {
     const { order } = sortByZPairs(
       zEdges(
         this.#roomState.items,

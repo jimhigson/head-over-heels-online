@@ -12,9 +12,7 @@ import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
 import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
-import {
-  type ItemInPlayType,
-} from "../../../model/ItemInPlay";
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { iterateStoodOnByItems } from "src/model/stoodOnItemsLookup";
 import type { BlockStyle } from "../../../model/json/ItemConfigMap";
 import {
@@ -53,8 +51,15 @@ const blockTextureId = (
 
 const carryableOutlineColour = spritesheetPalette.moss;
 
-const singleRenderWithStyleAsTexture = <RoomId extends string>() =>
-  itemRenderOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
+const singleRenderWithStyleAsTexture = <
+  RoomId extends string,
+  RoomItemId extends string,
+>() =>
+  itemRenderOnce<
+    "deadlyBlock" | "slidingDeadly" | "slidingBlock",
+    RoomId,
+    RoomItemId
+  >(
     ({
       subject: {
         config: { style },

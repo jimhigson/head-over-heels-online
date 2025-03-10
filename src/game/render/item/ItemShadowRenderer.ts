@@ -84,8 +84,8 @@ const renderMultipliedXy = (
 export class ItemShadowRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
-  ItemId extends string,
-> implements Renderer<ItemRenderContext<RoomId>>
+  RoomItemId extends string,
+> implements Renderer<ItemRenderContext<RoomId, RoomItemId>>
 {
   #container: Container = new Container({
     label: "ItemShadowRenderer",
@@ -103,10 +103,10 @@ export class ItemShadowRenderer<
   constructor(
     /** the item currently being rendered for = the one that the shadow is cast on  */
     private item: SetRequired<
-      ItemInPlay<T, SceneryName, RoomId, ItemId>,
+      ItemInPlay<T, RoomId, RoomItemId, RoomItemId, SceneryName>,
       "shadowMask"
     >,
-    private room: RoomState<SceneryName, RoomId, ItemId>,
+    private room: RoomState<RoomId, RoomItemId, SceneryName>,
     private pixiRenderer: PixiRenderer,
   ) {
     const {
@@ -159,7 +159,7 @@ export class ItemShadowRenderer<
   /**
    * @returns true iff the item needs z-order resorting for the room
    */
-  tick({ movedItems, progression }: ItemRenderContext<RoomId>) {
+  tick({ movedItems, progression }: ItemRenderContext<RoomId, RoomItemId>) {
     const surfaceMoved = movedItems.has(this.item);
     const itemTop = this.item.state.position.z + this.item.aabb.z;
 

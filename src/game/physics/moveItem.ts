@@ -20,7 +20,6 @@ import {
   type AnyItemInPlay,
 } from "../../model/ItemInPlay";
 import { stoodOnItem } from "src/model/stoodOnItemsLookup";
-import type { SceneryName } from "../../sprites/planets";
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
   xyzEqual,
@@ -35,15 +34,15 @@ import type { RoomState } from "../../model/RoomState";
 
 const log = 0;
 
-type MoveItemOptions<RoomId extends string> = {
-  subjectItem: UnionOfAllItemInPlayTypes<RoomId>;
+type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
+  subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
   posDelta: Xyz;
   gameState: GameState<RoomId> /**
    * if given, the item that pushed this item to cause it to move. This is primarily a protection
    * against infinite loops where two items get stuck pushing each other
    */;
-  room: RoomState<SceneryName, RoomId>;
-  pusher?: AnyItemInPlay;
+  room: RoomState<RoomId, RoomItemId>;
+  pusher?: AnyItemInPlay<RoomId, RoomItemId>;
   deltaMS: number;
   /**
    * if true, anything this movement tries to push will get moved the total amount.
@@ -66,7 +65,7 @@ type MoveItemOptions<RoomId extends string> = {
  * @param subjectItem the item that is wanting to move
  * @param xyzDelta
  */
-export const moveItem = <RoomId extends string>({
+export const moveItem = <RoomId extends string, RoomItemId extends string>({
   subjectItem,
   posDelta,
   gameState,
@@ -76,7 +75,7 @@ export const moveItem = <RoomId extends string>({
   forceful = isItemType("lift")(subjectItem) && pusher === undefined,
   recursionDepth = 0,
   onTouch,
-}: MoveItemOptions<RoomId>) => {
+}: MoveItemOptions<RoomId, RoomItemId>) => {
   if (xyzEqual(posDelta, originXyz)) {
     return;
   }

@@ -46,4 +46,4 @@ export type RoomState<
     roomTime: number;
   }
 >;
-export type UnknownRoomState = RoomState<SceneryName, string>;
+export type UnknownRoomState = RoomState<string, string, SceneryName>;

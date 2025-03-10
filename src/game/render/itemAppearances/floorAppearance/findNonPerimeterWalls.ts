@@ -10,7 +10,7 @@ import { directionAxis } from "../../../../utils/vectors/vectors";
  * 'triple' rooms that were multiple rooms in the original game
  */
 export const findNonPerimeterWalls = (
-  roomJson: RoomJson<SceneryName, string, string>,
+  roomJson: RoomJson<string, string, SceneryName>,
 ): Array<JsonItem<"wall">> => {
   return [
     ...iterate(objectValues(roomJson.items))

@@ -59,7 +59,7 @@ export const createItemRenderer = <
   room: RoomState<RoomId, RoomItemId>;
   gameState: GameState<RoomId>;
   pixiRenderer: PixiRenderer;
-}): Renderer<ItemRenderContext<RoomId>> | "not-needed" => {
+}): Renderer<ItemRenderContext<RoomId, RoomItemId>> | "not-needed" => {
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = selectIsColourised(state);
@@ -70,7 +70,7 @@ export const createItemRenderer = <
     showBoundingBoxes === "all" ||
     (showBoundingBoxes === "non-wall" && item.type !== "wall");
 
-  const renderers: Renderer<ItemRenderContext<RoomId>>[] = [];
+  const renderers: Renderer<ItemRenderContext<RoomId, RoomItemId>>[] = [];
 
   if (item.renders) {
     const appearance = itemAppearances[
@@ -116,16 +116,18 @@ export const createItemRenderer = <
   return new ItemPositionRenderer(item, compositeRenderer);
 };
 
-class CompositeItemRenderer<RoomId extends string>
-  implements Renderer<ItemRenderContext<RoomId>>
+class CompositeItemRenderer<RoomId extends string, RoomItemId extends string>
+  implements Renderer<ItemRenderContext<RoomId, RoomItemId>>
 {
-  #componentRenderers: Renderer<ItemRenderContext<RoomId>>[];
+  #componentRenderers: Renderer<ItemRenderContext<RoomId, RoomItemId>>[];
   #container: Container = new Container({ label: "CompositeRenderer" });
-  constructor(componentRenderers: Renderer<ItemRenderContext<RoomId>>[]) {
+  constructor(
+    componentRenderers: Renderer<ItemRenderContext<RoomId, RoomItemId>>[],
+  ) {
     this.#componentRenderers = componentRenderers;
     this.#container.addChild(...componentRenderers.map((r) => r.container));
   }
-  tick(renderContext: ItemRenderContext<RoomId>) {
+  tick(renderContext: ItemRenderContext<RoomId, RoomItemId>) {
     for (const componentRenderer of this.#componentRenderers) {
       componentRenderer.tick(renderContext);
     }
