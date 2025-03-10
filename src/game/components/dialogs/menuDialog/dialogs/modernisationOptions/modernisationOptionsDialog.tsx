@@ -2,7 +2,7 @@ import {
   backToParentMenu,
   goToSubmenu,
   toggleBoolean,
-} from "../../../../../../store/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenusSlice";
 import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";

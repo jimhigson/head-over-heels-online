@@ -1,4 +1,4 @@
-import { nextInputDirectionMode } from "../../../../../../store/gameMenusSlice";
+import { nextInputDirectionMode } from "../../../../../../store/slices/gameMenusSlice";
 import { useInputDirectionMode } from "../../../../../../store/selectors";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";

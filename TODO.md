@@ -14,6 +14,8 @@
         1 start game sound
         2 walking sound w/repeat frequency by number of stepsh
 
+[ ] saving/fish
+
 [x] 8-way sprites
 
 [,XL] a map
@@ -21,48 +23,43 @@
 
 [,XL] level editor
 
-[1,L] iphone playable
-    * on-screen keyboared
-    * tap on hud to change character    
+[x] iphone playable    
 
 [,?] own levels
 
 [3,M] switch to devcontainers
+    [ ] might be more complex than needed
 
 [ ] switch to OOP on room state/items etc. 
     Eg polymorphism: .isPushable() etc methods
     Eg, .times() hardcoded to return 1,1,1 for most
 
+[ ] custom serviceworker    
+
 ### ui
-[ ] game ui colours when not colourised from real palette (even if not close to original colours)
+[x] game ui colours when colourised from real palette (even if not close to original colours)
 
 ### mobile
-[x] "turn to landscape" screen
-[x] remove address bar in normal browser
-    maybe helpful? https://stackoverflow.com/questions/5206811/hide-iphone-address-bar-with-100-height - although very old!
-    - can't but can do as a PQA
-[x] allow use as a PWA
-[x] hud input controls (only on phone)
-[x] back button on menus
-[x] menu button while playing
-[x] control options - don't show keys etc, or hide behind a collapse and an explanatory banner
-[x] text larger in dialogs - probably by increasing the scale size inside dialogs
 [ ] hitting hte joystick with a tap sometimes moves <1px
 
 ### menus
-[ ] control menus - allow different column width for non-select keys options
+[x] control menus - allow different column width for non-select keys options
     (multiple <MenuItems /> components)
 
 ### Controls
 
 [ ] joystick/pads that declare the d-pad as axes - treat like buttons
-[ ] 8-way mode (make default on touch devices)
+[x] 8-way mode (make default on touch devices)
 
 
 ### Details and bugs
 
+[ ] version number/date on main menu dialog
+
 [ ] doughnut white fade can be shown under walls - try firing at left wall in start room for example
     - maybe the doughnut explosion is slightly inside the wall?
+
+[ ] wall over doors not variable height like other walls
 
 [ ] destroy and recreate hud renderer when display settings change (like room renderer is) - this way
     it can not care about colourisation (or anything else) changing when it ticks
@@ -82,45 +79,12 @@
 [x] input buffering on start to move
 
 [x] consolidation
-    [ ] fix all patches that no longer apply
-        [x] blacktooth23 heels
-        [x] bookworld28 - needs artificial blocks putting back
-        egyptus14
-        egyptus20
-        pen2
-        pen13 - needs a second dissapearing block putting in
-    [x] check all rooms with a diff in their patch against deployed version
-    [x] conveyors don't load correctly(check #blacktoothheels1) - probably also hush puppies (check blacktooth63) and others
-    [x] toaster bbs not correct (check http://localhost:5173/?cheats=1#moonbase1)
-    [x] volcano bbs not correct (check http://localhost:5173/?cheats=1#moonbase4)
-    [x] #blacktooth74 
-        - [x] no multiplied shadows
-        - [x] threshold shadow mask is wrong
-    [ ] part 2
-        [x] remove 'walls' property from json, walls are normal object
-        [x] consolidation can consolidate walls with different configs
-        [x] walls renderer can do multiple different textures
-        floor appearance: 
-            [ ] put floor overdraws back in (in floor appearance)
-            [ ] fix overdraw for triple/non-rectangular rooms: `floorOverdrawForExtraWalls`
-        [x] check rooms:
-            [x] blacktooth85 (wall tiles)
-            [x] egyptus14 (wall tiles)
-            [x] egyptus13 (wall tiles)
-            [x] egyptus19 (wall tiles)
-            [x] egyptus20 (wall tiles)
-            [x] egyptus35 (wall tiles)
-            [x] pen13
-            [x] pen2
-            [x] pen30
-            [x] blacktooth11 = no wall shadows for near-walls
-
 
 input tracker:
     [ ] analogue/digital input as overloading/polymorphism in input tracker
     [ ] treat d-pad-as-axes input correctly for buffering
 
-[ ] version number/date on main menu dialog
+
 
 [x] split campaign patch up per-room
 

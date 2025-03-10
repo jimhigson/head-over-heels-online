@@ -40,7 +40,7 @@ import {
   hudLowlightedFilter,
 } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
-import type { InputDirectionMode } from "../../../store/gameMenusSlice";
+import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 
 const fpsUpdatePeriod = 250;
 

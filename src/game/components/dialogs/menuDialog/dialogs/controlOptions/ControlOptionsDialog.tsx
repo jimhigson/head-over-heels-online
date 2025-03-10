@@ -11,7 +11,7 @@ import {
   backToParentMenu,
   doneAssigningInput,
   inputAddedDuringAssignment,
-} from "../../../../../../store/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenusSlice";
 import { store } from "../../../../../../store/store";
 import { useActionTap, useInputTap } from "../../../useActionTap";
 import { Dialog } from "../../../../../../ui/dialog";

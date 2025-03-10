@@ -10,7 +10,7 @@ import { Border } from "../../../../../../ui/Border";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import { selectPlanetsLiberatedCount } from "../../../../../../store/selectors";
 import { Suspense, use } from "react";
 import { importOriginalCampaign } from "../../../../../../_generated/originalCampaign/campaign.import";

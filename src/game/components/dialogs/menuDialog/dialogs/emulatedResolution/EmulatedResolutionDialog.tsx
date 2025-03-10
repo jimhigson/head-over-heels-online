@@ -10,7 +10,7 @@ import { BackMenuItem } from "../../BackMenuItem";
 import {
   backToParentMenu,
   setEmulatedResolution,
-} from "../../../../../../store/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import type { ResolutionName } from "../../../../../../originalGame";

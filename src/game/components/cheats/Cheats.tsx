@@ -29,10 +29,6 @@ import {
 } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import {
-  setShowBoundingBoxes,
-  setShowShadowMasks,
-} from "../../../store/gameMenusSlice";
 import { useAppDispatch } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
@@ -42,6 +38,10 @@ import {
   useShowBoundingBoxes,
   useShowShadowMasks,
 } from "../../../store/selectors";
+import {
+  setShowBoundingBoxes,
+  setShowShadowMasks,
+} from "../../../store/slices/gameMenusSlice";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;

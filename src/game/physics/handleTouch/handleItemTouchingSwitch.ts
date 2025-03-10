@@ -1,5 +1,5 @@
 import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import { toggleBoolean } from "../../../store/gameMenusSlice";
+import { toggleBoolean } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";

@@ -6,7 +6,10 @@ import { iterate } from "../utils/iterate";
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import { size, objectValues } from "iter-tools";
-import type { InputDirectionMode, ShowBoundingBoxes } from "./gameMenusSlice";
+import type {
+  InputDirectionMode,
+  ShowBoundingBoxes,
+} from "./slices/gameMenusSlice";
 import { defaultUserSettings } from "./defaultUserSettings";
 import type { ResolutionName } from "../originalGame";
 import type { InputAssignment } from "../game/input/InputState";

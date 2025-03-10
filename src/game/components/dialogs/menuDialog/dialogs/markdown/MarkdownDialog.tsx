@@ -13,7 +13,7 @@ import { Border } from "../../../../../../ui/Border";
 import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
