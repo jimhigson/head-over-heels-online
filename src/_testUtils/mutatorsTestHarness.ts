@@ -268,7 +268,7 @@ export const mutatorsTestHarness = () => {
     },
     expectCharacterToBeInRoom(
       playableName: IndividualCharacterName,
-      room: RoomState<SceneryName, TestCampaignRoomId> | undefined,
+      room: RoomState<TestCampaignRoomId, string> | undefined,
     ) {
       if (room === undefined) {
         expect.fail(

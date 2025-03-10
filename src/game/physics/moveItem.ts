@@ -58,7 +58,7 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
 
   recursionDepth?: number;
 
-  onTouch?: (e: ItemTouchEvent<RoomId>) => void;
+  onTouch?: (e: ItemTouchEvent<RoomId, RoomItemId>) => void;
 };
 
 /**

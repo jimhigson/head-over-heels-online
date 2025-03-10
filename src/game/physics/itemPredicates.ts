@@ -120,19 +120,10 @@ export type PlayableItem<
   RoomItemId extends string = string,
 > =
   | (C extends "headOverHeels" ?
-      ItemInPlay<
-        "headOverHeels",
-        SceneryName,
-        RoomId,
-        RoomItemId,
-        "headOverHeels"
-      >
+      ItemInPlay<"headOverHeels", RoomId, RoomItemId, "headOverHeels">
     : never)
-  | (C extends "head" ?
-      ItemInPlay<"head", SceneryName, RoomId, RoomItemId, "head">
-    : never)
-  | (C extends "heels" ?
-      ItemInPlay<"heels", SceneryName, RoomId, RoomItemId, "heels">
+  | (C extends "head" ? ItemInPlay<"head", RoomId, RoomItemId, "head"> : never)
+  | (C extends "heels" ? ItemInPlay<"heels", RoomId, RoomItemId, "heels">
     : never);
 
 export const freeItemTypes = [

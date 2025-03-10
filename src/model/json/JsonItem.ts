@@ -68,22 +68,22 @@ export type DeadlyItemStyle = "volcano" | "toaster" | "spikes";
 /** config used in both json and in-play items */
 export type JsonItemConfig<
   T extends JsonItemType,
-  P extends SceneryName,
   RoomId extends string,
-  ItemId extends string = string,
+  RoomItemId extends string = string,
+  ScN extends SceneryName = SceneryName,
 > =
-  T extends keyof ItemConfigMap<P, RoomId, ItemId> ?
-    ItemConfigMap<P, RoomId, ItemId>[T]
+  T extends keyof ItemConfigMap<RoomId, RoomItemId, ScN> ?
+    ItemConfigMap<RoomId, RoomItemId, ScN>[T]
   : EmptyObject;
 
 export type JsonItem<
   T extends JsonItemType,
-  P extends SceneryName = SceneryName,
   RoomId extends string = string,
-  ItemId extends string = string,
+  RoomItemId extends string = string,
+  ScN extends SceneryName = SceneryName,
 > = {
   type: T;
-  config: JsonItemConfig<T, P, RoomId, ItemId>;
+  config: JsonItemConfig<T, RoomId, RoomItemId, ScN>;
   position: Xyz;
   /** if true, on an original campaign room, the item is an item that has been added for the remake */
   isExtra?: true;
@@ -91,7 +91,7 @@ export type JsonItem<
 
 export type JsonItemUnion<
   RoomId extends string = string,
-  ItemId extends string = string,
+  RoomItemId extends string = string,
 > = {
-  [IT in JsonItemType]: JsonItem<IT, SceneryName, RoomId, ItemId>;
+  [IT in JsonItemType]: JsonItem<IT, RoomId, RoomItemId, SceneryName>;
 }[JsonItemType];
