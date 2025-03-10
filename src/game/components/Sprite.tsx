@@ -7,7 +7,6 @@ import {
 } from "react";
 import "react";
 import { twMerge } from "tailwind-merge";
-import clsx from "clsx";
 import { isTextureId } from "../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../sprites/escapeCharForTailwind";
 import { loadedSpriteSheet } from "../../sprites/spriteSheet";
@@ -28,6 +27,7 @@ export interface BitmapTextProps {
   className?: string;
   noSlitWords?: boolean;
   onClick?: MouseEventHandler<HTMLSpanElement>;
+  TagName?: "span" | "h1";
 }
 
 export const BitmapText = ({
@@ -36,6 +36,7 @@ export const BitmapText = ({
   noSlitWords,
   classnameCycle,
   onClick,
+  TagName = "span",
 }: BitmapTextProps) => {
   const textString =
     // trimming helps for some markdown-rendering:
@@ -51,7 +52,8 @@ export const BitmapText = ({
     : textString.toUpperCase().split(/\s+/);
 
   return (
-    <span className={clsx(className)} onClick={onClick}>
+    <TagName className={className} onClick={onClick}>
+      <span className="sr-only">{textString}</span>
       {words.map((word, wordIndex) => {
         return (
           // me- is margin end - for a space before the next word
@@ -100,7 +102,7 @@ export const BitmapText = ({
           </span>
         );
       })}
-    </span>
+    </TagName>
   );
 };
 

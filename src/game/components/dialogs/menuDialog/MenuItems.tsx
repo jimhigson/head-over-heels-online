@@ -7,6 +7,7 @@ import { store } from "../../../../store/store";
 import {
   menuItemDataAttributeId,
   menuItemDataAttributeHidden,
+  menuItemDataAttributeDisabled,
 } from "./MenuItem";
 import { setFocussedMenuItemId } from "../../../../store/slices/gameMenusSlice";
 
@@ -44,8 +45,11 @@ const moveFocus = (direction: 1 | -1) => {
     newFocusIndex =
       (newFocusIndex + direction + menuItemsDom.length) % menuItemsDom.length;
   } while (
+    // move past hidden/disabled items:
     menuItemsDom[newFocusIndex].getAttribute(menuItemDataAttributeHidden) ===
-    "true"
+      "true" ||
+    menuItemsDom[newFocusIndex].getAttribute(menuItemDataAttributeDisabled) ===
+      "true"
   );
 
   store.dispatch(
@@ -61,7 +65,7 @@ const moveFocus = (direction: 1 | -1) => {
 };
 
 const useMenuNavigationInput = (
-  containerRef: RefObject<HTMLDivElement | null>,
+  containerRef: RefObject<HTMLMenuElement | null>,
 ) => {
   const disabled = useIsAssigningKeys();
 
@@ -90,7 +94,7 @@ export const MenuItems = ({
   className = "",
   children,
 }: PropsWithChildren<{ className?: string }>) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLMenuElement>(null);
 
   // on mount, find the first menu item and set it to selected in the store
   useEffect(() => {
@@ -115,7 +119,7 @@ export const MenuItems = ({
   useMenuNavigationInput(ref);
 
   return (
-    <div
+    <menu
       ref={ref}
       className={twMerge(
         "grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix " +
@@ -126,6 +130,6 @@ export const MenuItems = ({
       )}
     >
       {children}
-    </div>
+    </menu>
   );
 };
