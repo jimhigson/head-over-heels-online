@@ -13,7 +13,6 @@ import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { iterateStoodOnByItems } from "src/model/stoodOnItemsLookup";
 import type { BlockStyle } from "../../../model/json/ItemConfigMap";
 import {
   wallTileSize,
@@ -31,6 +30,7 @@ import { store } from "../../../store/store";
 import { getAtPath } from "../../../utils/getAtPath";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import { monsterAppearance } from "./monsterAppearance";
+import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 
 const blockTextureId = (
   isDark: boolean,

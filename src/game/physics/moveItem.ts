@@ -19,7 +19,6 @@ import {
   type UnionOfAllItemInPlayTypes,
   type AnyItemInPlay,
 } from "../../model/ItemInPlay";
-import { stoodOnItem } from "src/model/stoodOnItemsLookup";
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
   xyzEqual,
@@ -31,6 +30,7 @@ import {
 import type { ItemTouchEvent } from "./handleTouch/ItemTouchEvent";
 import { maxPushRecursionDepth } from "./mechanicsConstants";
 import type { RoomState } from "../../model/RoomState";
+import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 
 const log = 0;
 

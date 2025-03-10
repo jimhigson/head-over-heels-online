@@ -1,6 +1,6 @@
 import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { iterateStoodOnByItems } from "src/model/stoodOnItemsLookup";
 import type { RoomState } from "../../../model/RoomState";
+import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { GameState } from "../../gameState/GameState";
