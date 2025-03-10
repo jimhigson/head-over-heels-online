@@ -22,7 +22,7 @@ export const startingRooms = <RoomId extends string>(
 ): StartingRooms<RoomId> => {
   const results: Partial<StartingRooms<RoomId>> = {};
 
-  for (const r of Object.values<RoomJson<SceneryName, RoomId>>(
+  for (const r of Object.values<RoomJson<RoomId, RoomItemId>>(
     campaign.rooms,
   )) {
     for (const i of Object.values(r.items)) {

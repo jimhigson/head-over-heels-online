@@ -14,16 +14,19 @@ import {
   defaultPlayerState,
 } from "../loadRoom/loadPlayer";
 
-export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
-  headOverHeels: PlayableItem<"headOverHeels", RoomId>,
+export const uncombinePlayablesFromSymbiosis = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  headOverHeels: PlayableItem<"headOverHeels", RoomId, RoomItemId>,
 ) => {
-  const head: PlayableItem<"head", RoomId> = {
+  const head: PlayableItem<"head", RoomId, RoomItemId> = {
     id: "head",
     type: "head",
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
     state: {
-      ...defaultBaseState<RoomId>(),
+      ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
       ...defaultPlayerState(),
       ...headOverHeels.state.head,
@@ -33,13 +36,13 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
       actedOnAt: headOverHeels.state.actedOnAt,
     },
   };
-  const heels: PlayableItem<"heels", RoomId> = {
+  const heels: PlayableItem<"heels", RoomId, RoomItemId> = {
     id: "heels",
     type: "heels",
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
     state: {
-      ...defaultBaseState<RoomId>(),
+      ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
       ...defaultPlayerState(),
       ...headOverHeels.state.heels,
@@ -53,13 +56,16 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
   return { head, heels };
 };
 
-export const combinePlayablesInSymbiosis = <RoomId extends string>({
+export const combinePlayablesInSymbiosis = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   head,
   heels,
 }: {
-  head: PlayableItem<"head", RoomId>;
-  heels: PlayableItem<"heels", RoomId>;
-}): PlayableItem<"headOverHeels", RoomId> => {
+  head: PlayableItem<"head", RoomId, RoomItemId>;
+  heels: PlayableItem<"heels", RoomId, RoomItemId>;
+}): PlayableItem<"headOverHeels", RoomId, RoomItemId> => {
   return {
     type: "headOverHeels",
     id: "headOverHeels",
@@ -68,7 +74,7 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
     config: emptyObject,
     aabb: doubleHeightCharacter,
     state: {
-      ...defaultBaseState<RoomId>(),
+      ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
       ...defaultPlayerState(),
       position: heels.state.position,

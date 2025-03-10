@@ -1,7 +1,6 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXy, originXyz, addXyz } from "../../../utils/vectors/vectors";
@@ -10,12 +9,15 @@ import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { floorBlockMinMax } from "../../render/renderExtent";
 import { defaultBaseState } from "./itemDefaultStates";
 
-export function* loadFloorAndCeiling<RoomId extends string>(
-  roomJson: RoomJson<SceneryName, RoomId>,
+export function* loadFloorAndCeiling<
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  roomJson: RoomJson<RoomId, RoomItemId>,
 ): Generator<
-  | ItemInPlay<"floor", SceneryName, RoomId>
-  | ItemInPlay<"floorEdge", SceneryName, RoomId>
-  | ItemInPlay<"portal", SceneryName, RoomId>
+  | ItemInPlay<"floor", RoomId, RoomItemId>
+  | ItemInPlay<"floorEdge", RoomId, RoomItemId>
+  | ItemInPlay<"portal", RoomId, RoomItemId>
 > {
   const roomHeightBlocks = roomJson.size.z ?? defaultRoomHeightBlocks;
 
@@ -43,11 +45,11 @@ export function* loadFloorAndCeiling<RoomId extends string>(
   });
 
   yield {
-    id: "floorEdge",
+    id: "floorEdge" as RoomItemId,
     ...defaultItemProperties,
     type: "floorEdge",
     state: {
-      ...defaultBaseState<RoomId>(),
+      ...defaultBaseState<RoomItemId>(),
       // unlike the actual floor, the edge is not set down to have some depth:
       position: { ...roomExtendedPosition, z: 0 },
     },
@@ -64,7 +66,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
       ...defaultItemProperties,
       ...{
         type: "floor",
-        id: "floor",
+        id: "floor" as RoomItemId,
         config: {
           type: "none",
         },
@@ -81,13 +83,13 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         renders: true,
         fixedZIndex: -1,
       },
-    } satisfies ItemInPlay<"floor", SceneryName, RoomId>;
+    } satisfies ItemInPlay<"floor", RoomId, RoomItemId>;
     // yield a portal for going to the room below:
     yield {
       ...defaultItemProperties,
       ...{
         type: "portal",
-        id: "floor/portal",
+        id: "floor/portal" as RoomItemId,
         config: {
           toRoom: roomJson.roomBelow,
           // floor and ceiling relative points are the middle of the portal, this fixes
@@ -111,13 +113,13 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         },
         renders: false,
       },
-    } satisfies ItemInPlay<"portal", SceneryName, RoomId>;
+    } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
   } else
     yield {
       ...defaultItemProperties,
       ...{
         type: "floor",
-        id: "floor",
+        id: "floor" as RoomItemId,
         config: {
           type: roomJson.floor === "deadly" ? "deadly" : "standable",
         },
@@ -133,7 +135,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         renders: true,
         fixedZIndex: -1,
       },
-    } satisfies ItemInPlay<"floor", SceneryName, RoomId>;
+    } satisfies ItemInPlay<"floor", RoomId, RoomItemId>;
 
   if (roomJson.roomAbove !== undefined) {
     const ceilingPosition = addXyz(floorPosition, {
@@ -143,7 +145,7 @@ export function* loadFloorAndCeiling<RoomId extends string>(
       ...defaultItemProperties,
       ...{
         type: "portal",
-        id: "ceiling",
+        id: "ceiling" as RoomItemId,
         config: {
           toRoom: roomJson.roomAbove,
           // floor and ceiling relative points are the middle of the portal, this fixes
@@ -169,6 +171,6 @@ export function* loadFloorAndCeiling<RoomId extends string>(
         },
         renders: false,
       },
-    } satisfies ItemInPlay<"portal", SceneryName, RoomId>;
+    } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
   }
 }

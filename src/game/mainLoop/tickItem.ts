@@ -29,7 +29,6 @@ import type {
   ItemInPlay,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import type { SceneryName } from "../../sprites/planets";
 import { iterate } from "../../utils/iterate";
 import { addXyz, scaleXyz, lengthXyz } from "../../utils/vectors/vectors";
 import { applyMechanicsResults } from "./applyMechanicsResults";
@@ -49,8 +48,8 @@ function* itemMechanicResultGen<
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, SceneryName, RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+  item: ItemInPlay<T, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): Generator<MechanicResult<T, RoomId, RoomItemId>> {
@@ -122,7 +121,7 @@ const tickItemStandingOn = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, SceneryName, RoomId, RoomItemId>,
+  item: ItemInPlay<T, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -178,9 +177,13 @@ const tickItemStandingOn = <
  *
  * @param returns true if the tick should halt
  */
-export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
-  item: ItemInPlay<T, SceneryName, RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+export const tickItem = <
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: ItemInPlay<T, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {

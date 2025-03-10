@@ -1,6 +1,5 @@
 import { objectValues } from "iter-tools";
 import { removeStandingOn, setStandingOn } from "./modifyStandingOn";
-import type { SceneryName } from "../../../sprites/planets";
 import {
   spatiallyCheckStandingOn,
   findStandingOnWithHighestPriorityAndMostOverlap,
@@ -12,8 +11,11 @@ import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
  * remove the standing on if not still applies, and
  * set a new standing on if that applies instead
  */
-export const updateStandingOn = <RoomId extends string>(
-  room: RoomState<SceneryName, RoomId>,
+export const updateStandingOn = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  room: RoomState<RoomId, RoomItemId>,
 ) => {
   /**
    * standing on updated here for all - because, eg, if a lift moves down with a player on it,

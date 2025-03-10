@@ -3,7 +3,6 @@ import { loadItemFromJson } from "../gameState/loadRoom/loadItem";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "./checkStandingOn";
 import { first } from "iter-tools";
 import type { FreeItem } from "../physics/itemPredicates";
-import type { SceneryName } from "../../sprites/planets";
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 
 test("prefers blocks over conveyors even if the conveyor has more overlap", () => {
@@ -22,7 +21,7 @@ test("prefers blocks over conveyors even if the conveyor has more overlap", () =
         basicEmptyRoom("firstRoom"),
         {},
       ),
-    ) as FreeItem<SceneryName, string>,
+    ) as FreeItem<string, string>,
     [
       ...loadItemFromJson(
         "conv",
@@ -71,7 +70,7 @@ test("given two blocks, choses one with most overlap", () => {
         basicEmptyRoom("firstRoom"),
         {},
       ),
-    ) as FreeItem<SceneryName, string>,
+    ) as FreeItem<string, string>,
     [
       ...loadItemFromJson(
         "block1",

@@ -1,7 +1,6 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
@@ -21,9 +20,9 @@ import { moveSpeedPixPerMs } from "../mechanicsConstants";
  */
 const aheadStart = blockSizePx.w * Math.sqrt(2) + 1;
 
-export const firing = <RoomId extends string>(
-  firer: PlayableItem<"head" | "headOverHeels", RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+export const firing = <RoomId extends string, RoomItemId extends string>(
+  firer: PlayableItem<"head" | "headOverHeels", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   _deltaMS: number,
 ): undefined => {
@@ -47,11 +46,11 @@ export const firing = <RoomId extends string>(
     doughnuts > 0 &&
     doughnutLastFireTime + maxFireRate < gameTime
   ) {
-    const firedDoughnut: ItemInPlay<"firedDoughnut", SceneryName, RoomId> = {
+    const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
       type: "firedDoughnut",
       ...defaultItemProperties,
       config: emptyObject,
-      id: `firedDoughnut/${gameState.progression}`,
+      id: `firedDoughnut/${gameState.progression}` as RoomItemId,
       shadowCastTexture: "shadow.smallRound",
       state: {
         position: addXyz(

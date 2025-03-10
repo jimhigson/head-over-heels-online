@@ -12,7 +12,6 @@ import { type JsonItem } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { multiplyBoundingBox } from "../../collision/boundingBoxes";
-import type { SceneryName } from "../../../sprites/planets";
 import type { RoomJson } from "../../../model/RoomJson";
 
 const wallRenderHeight = 50;
@@ -47,11 +46,11 @@ export const yAxisWallRenderAabb = {
   z: wallRenderHeight,
 };
 
-export const loadWall = <RoomId extends string>(
-  itemId: string,
-  jsonWall: JsonItem<"wall", SceneryName, RoomId>,
-  roomJson: RoomJson<SceneryName, RoomId>,
-): ItemInPlay<"wall", SceneryName, RoomId> => {
+export const loadWall = <RoomId extends string, RoomItemId extends string>(
+  itemId: RoomItemId,
+  jsonWall: JsonItem<"wall", RoomId, RoomItemId>,
+  roomJson: RoomJson<RoomId, RoomItemId>,
+): ItemInPlay<"wall", RoomId, RoomItemId> => {
   const {
     config: { direction, times },
     position,

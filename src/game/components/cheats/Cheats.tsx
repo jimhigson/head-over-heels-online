@@ -27,7 +27,6 @@ import {
   otherIndividualCharacterName,
   type CharacterName,
 } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { useAppDispatch } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
@@ -197,7 +196,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
 
   const summonItem = <T extends JsonItemType>(
     itemType: T,
-    config: JsonItemConfig<T, SceneryName, RoomId>,
+    config: JsonItemConfig<T, RoomId>,
   ) => {
     const { gameState } = gameApi;
     const playable = selectCurrentPlayableItem(gameState);

@@ -1,6 +1,5 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
-import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
 import { type FreeItemTypes } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
@@ -15,7 +14,7 @@ export function* latentMovement<
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<FreeItemTypes, SceneryName, RoomId, RoomItemId>,
+  item: ItemInPlay<FreeItemTypes, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,

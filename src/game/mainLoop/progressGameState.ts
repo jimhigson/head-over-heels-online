@@ -11,7 +11,6 @@ import {
   selectPlayableItem,
 } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { concat, objectValues } from "iter-tools";
-import type { SceneryName } from "../../sprites/planets";
 import { objectEntriesIter } from "../../utils/entries";
 import { iterate } from "../../utils/iterate";
 import type { Xyz } from "../../utils/vectors/vectors";
@@ -32,7 +31,7 @@ import type { RoomState, RoomStateItems } from "../../model/RoomState";
 
 const itemHasExpired = <RoomId extends string>(
   item: UnionOfAllItemInPlayTypes,
-  room: RoomState<SceneryName, RoomId>,
+  room: RoomState<RoomId>,
 ) => item.state.expires !== null && item.state.expires < room.roomTime;
 
 /**
@@ -41,7 +40,7 @@ const itemHasExpired = <RoomId extends string>(
  */
 
 const snapStationaryItemsToPixelGrid = <RoomId extends string>(
-  room: RoomState<SceneryName, RoomId>,
+  room: RoomState<RoomId>,
   startingPositions: Record<string, Xyz>,
   /** the items which are snapped will be added to this set */
   movedItems: Set<AnyItemInPlay>,
@@ -90,7 +89,7 @@ const itemTickOrderComparator = (
 /* the items that moved while progressing the game state */
 export type MovedItems = Set<AnyItemInPlay>;
 
-const noItems = emptyObject as RoomStateItems<SceneryName, string>;
+const noItems = emptyObject as RoomStateItems<string, string>;
 
 export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -202,9 +201,9 @@ export const _progressGameState = <RoomId extends string>(
   return movedItems;
 };
 
-const advanceTime = <RoomId extends string>(
+const advanceTime = <RoomId extends string, RoomItemId extends string>(
   gameState: GameState<RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+  room: RoomState<RoomId, RoomItemId>,
   deltaMS: number,
 ) => {
   gameState.progression++;

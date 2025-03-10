@@ -1,7 +1,6 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptySet } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -25,8 +24,8 @@ export const doorPortalHeight = blockSizePx.h * 2;
 export const doorPostHeightBlocks = 4;
 export const doorPostHeight = blockSizePx.h * 4;
 
-export function* loadDoor<RoomId extends string>(
-  jsonDoor: JsonItem<"door", SceneryName, RoomId>,
+export function* loadDoor<RoomId extends string, RoomItemId extends string>(
+  jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
   id: string,
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
   const {

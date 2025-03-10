@@ -6,7 +6,6 @@ import type {
   JsonItem,
   JsonItemUnion,
 } from "../../../model/json/JsonItem";
-import type { SceneryName } from "../../../sprites/planets";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../GameState";
@@ -18,6 +17,7 @@ let i = 0;
 export const addItemFromJsonToRoom = <
   T extends JsonItemType,
   RoomId extends string,
+  RoomItemId extends string,
 >({
   gameState,
   room,
@@ -26,13 +26,13 @@ export const addItemFromJsonToRoom = <
   position,
 }: {
   gameState: GameState<RoomId>;
-  room: RoomState<SceneryName, RoomId>;
+  room: RoomState<RoomId, RoomItemId>;
   itemType: T;
-  config: JsonItemConfig<T, SceneryName, RoomId>;
+  config: JsonItemConfig<T, RoomId, RoomItemId>;
   /* the position for the new object to occupy */
   position: Xyz;
 }) => {
-  const itemJson: JsonItem<T, SceneryName, RoomId> = {
+  const itemJson: JsonItem<T, RoomId, RoomItemId> = {
     type: itemType,
     config,
     position: originXyz,
@@ -55,12 +55,15 @@ export const addItemFromJsonToRoom = <
   return item;
 };
 
-export const addItemToRoom = <RoomId extends string>({
+export const addItemToRoom = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   room,
   item,
 }: {
-  room: RoomState<SceneryName, RoomId>;
-  item: UnionOfAllItemInPlayTypes<RoomId>;
+  room: RoomState<RoomId, RoomItemId>;
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 }) => {
   room.items[item.id] = item;
   return item;

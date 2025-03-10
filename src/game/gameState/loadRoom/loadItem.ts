@@ -27,7 +27,7 @@ type ItemConfigMaybeWithMultiplication = {
 export function* loadItemFromJson<RoomId extends string>(
   itemId: string,
   jsonItem: JsonItemUnion<RoomId>,
-  roomJson: RoomJson<SceneryName, RoomId>,
+  roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},

@@ -14,8 +14,15 @@ import type { CharacterName } from "../../../model/modelTypes";
 /**
  * @returns true is the physics needs to halt after this handler
  */
-export const handlePlayerTouchingItem = <RoomId extends string>(
-  e: ItemTouchEvent<RoomId, PlayableItem<CharacterName, RoomId>>,
+export const handlePlayerTouchingItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  e: ItemTouchEvent<
+    RoomId,
+    RoomItemId,
+    PlayableItem<CharacterName, RoomId, RoomItemId>
+  >,
 ) => {
   switch (true) {
     case touchedItemIsType(e, "stopAutowalk"):

@@ -5,15 +5,14 @@ import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
-import type { SceneryName } from "../../../sprites/planets";
 import { entries } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
 import { isSolid } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 import type { RoomStateItems, RoomState } from "../../../model/RoomState";
 
-function* loadItems<RoomId extends string>(
-  roomJson: RoomJson<SceneryName, RoomId>,
+function* loadItems<RoomId extends string, RoomItemId extends string>(
+  roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   isFirstLoad: boolean,
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
@@ -37,13 +36,9 @@ function* loadItems<RoomId extends string>(
 /**
  * convert items from a flat list to an object map, key'd by their ids
  */
-const itemsInItemObjectMap = <
-  P extends SceneryName,
-  RoomId extends string,
-  ItemId extends string,
->(
+const itemsInItemObjectMap = <RoomId extends string, RoomItemId extends string>(
   items: Iterable<UnionOfAllItemInPlayTypes<RoomId>>,
-): RoomStateItems<P, RoomId, ItemId> => {
+): RoomStateItems<RoomId, RoomItemId> => {
   return iterate(items).reduce(
     (ac, cur) => {
       return {
@@ -51,19 +46,19 @@ const itemsInItemObjectMap = <
         [cur.id]: cur,
       };
     },
-    {} as RoomStateItems<P, RoomId, ItemId>,
+    {} as RoomStateItems<RoomId, RoomItemId>,
   );
 };
 
 /**
  * convert a room from it's storage (json) format to its in-play (loaded) format
  */
-export const loadRoom = <P extends SceneryName, RoomId extends string>(
-  roomJson: RoomJson<P, RoomId>,
+export const loadRoom = <RoomId extends string, RoomItemId extends string>(
+  roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   isFirstLoad = false,
-): RoomState<P, RoomId> => {
-  const loadedItems: RoomStateItems<P, RoomId> = {
+): RoomState<RoomId, RoomItemId> => {
+  const loadedItems: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(
       loadItems(roomJson, roomPickupsCollected, isFirstLoad),
@@ -90,7 +85,7 @@ export const loadRoom = <P extends SceneryName, RoomId extends string>(
     }
   }
 
-  const roomState: RoomState<P, RoomId> = {
+  const roomState: RoomState<RoomId, RoomItemId> = {
     ...roomJson,
     roomJson,
     items: {

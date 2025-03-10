@@ -11,7 +11,7 @@ export type RoomStateItems<
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
-> = Record<RoomItemId, UnionOfAllItemInPlayTypes<RoomId>> & {
+> = Record<RoomItemId, UnionOfAllItemInPlayTypes<RoomId, RoomItemId>> & {
   head?: ItemInPlay<"head", RoomId, RoomItemId, "head", ScN>;
   heels?: ItemInPlay<"heels", RoomId, RoomItemId, "heels", ScN>;
   headOverHeels?: ItemInPlay<

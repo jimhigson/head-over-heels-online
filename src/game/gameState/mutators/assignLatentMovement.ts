@@ -1,6 +1,6 @@
 import type { AnyItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
-import type { SceneryName } from "../../../sprites/planets";
+import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { subXyz, xyzEqual, originXyz } from "../../../utils/vectors/vectors";
 import type { FreeItem } from "../../physics/itemPredicates";
@@ -8,9 +8,12 @@ import { originalFramePeriod } from "../../render/animationTimings";
 
 const latency = 2 * originalFramePeriod;
 
-export const assignLatentMovement = <RoomId extends string>(
-  itemToMove: FreeItem<SceneryName, RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+export const assignLatentMovement = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  itemToMove: FreeItem<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   movementDelta: Xyz,
 ) => {
   itemToMove.state.latentMovement.push({
@@ -21,9 +24,12 @@ export const assignLatentMovement = <RoomId extends string>(
   });
 };
 
-export const assignLatentMovementFromStandingOn = <RoomId extends string>(
-  movedItems: Set<AnyItemInPlay>,
-  room: RoomState<SceneryName, RoomId>,
+export const assignLatentMovementFromStandingOn = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  movedItems: Set<AnyItemInPlay<RoomId, RoomItemId>>,
+  room: RoomState<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
 ) => {
   /**
@@ -46,8 +52,11 @@ export const assignLatentMovementFromStandingOn = <RoomId extends string>(
     const latentMovement = { ...movementDelta, z: 0 };
 
     if (!xyzEqual(latentMovement, originXyz)) {
-      for (const stander of moverItem.state.stoodOnBy) {
-        assignLatentMovement(stander, room, latentMovement);
+      for (const standerItem of iterateStoodOnByItems(
+        moverItem.state.stoodOnBy,
+        room,
+      )) {
+        assignLatentMovement(standerItem, room, latentMovement);
       }
     }
   }

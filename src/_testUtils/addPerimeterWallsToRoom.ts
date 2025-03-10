@@ -21,12 +21,13 @@ const rotatingScenery = <S extends SceneryName>(
 
 /** create a new copy of a room, with walls added on all perimeters where there are not doors */
 export const addPerimeterWallsToRoom = <
-  S extends SceneryName,
-  R extends string,
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName,
 >(
-  roomJson: RoomJson<S, R>,
-): RoomJson<S, R> => {
-  const wallBlocks: JsonItem<"wall", S, R>[] = [];
+  roomJson: RoomJson<RoomId, RoomItemId, ScN>,
+): RoomJson<RoomId, RoomItemId, ScN> => {
+  const wallBlocks: JsonItem<"wall", RoomId, RoomItemId>[] = [];
 
   const isDoorAt = (coord: Xy, direction: DirectionXy4) => {
     const axis = directionAxis(direction);
@@ -78,8 +79,8 @@ export const addPerimeterWallsToRoom = <
 
   const wallRuns = [...consolidateItems(wallBlocks)] as JsonItem<
     "wall",
-    S,
-    R
+    ScN,
+    RoomId
   >[];
 
   const roomJsonClone = structuredClone(roomJson);

@@ -197,12 +197,13 @@ export const playableAppearance = <
       // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
       // characters - they were switched to at the same time so it doesn't matter:
       isHighlighted(
-        (subject as PlayableItem<"headOverHeels">).state.head,
+        (subject as PlayableItem<"headOverHeels", RoomId, RoomItemId>).state
+          .head,
         "headOverHeels",
         "headOverHeels",
       )
     : isHighlighted(
-        (subject as PlayableItem<"head" | "heels">).state,
+        (subject as PlayableItem<"head" | "heels", RoomId, RoomItemId>).state,
         subject.type,
         gameState.currentCharacterName,
       );

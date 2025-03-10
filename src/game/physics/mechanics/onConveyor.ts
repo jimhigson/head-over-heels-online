@@ -1,7 +1,6 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
-import type { SceneryName } from "../../../sprites/planets";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   originXyz,
@@ -33,7 +32,7 @@ const resetConveyorStateForItem = {
  * The item can be anything - a player, a pickup etc
  */
 export const onConveyor = <RoomId extends string, RoomItemId extends string>(
-  item: ItemInPlay<FreeItemTypes, SceneryName, RoomId, RoomItemId>,
+  item: ItemInPlay<FreeItemTypes, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,

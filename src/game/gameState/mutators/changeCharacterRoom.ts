@@ -8,7 +8,6 @@ import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { iterate } from "../../../utils/iterate";
 import type { Xyz } from "../../../utils/vectors/vectors";
@@ -29,44 +28,50 @@ import type { RoomState } from "../../../model/RoomState";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
-type ChangeCharacterRoomOptions<RoomId extends string> =
+type ChangeCharacterRoomOptions<
+  RoomId extends string,
+  RoomItemId extends string,
+> =
   | {
       changeType: "portal";
       gameState: GameState<RoomId>;
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
       toRoomId: NoInfer<NoInfer<RoomId>>;
       /* position relative to the portal in the source room */
-      sourceItem: ItemInPlay<"portal", SceneryName, NoInfer<RoomId>>;
+      sourceItem: ItemInPlay<"portal", NoInfer<RoomId>>;
     }
   | {
       changeType: "teleport";
       gameState: GameState<RoomId>;
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
       toRoomId: NoInfer<NoInfer<RoomId>>;
-      sourceItem: ItemInPlay<"teleporter", SceneryName, NoInfer<RoomId>>;
+      sourceItem: ItemInPlay<"teleporter", NoInfer<RoomId>>;
     }
   | {
       changeType: "level-select";
       gameState: GameState<RoomId>;
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
       toRoomId: NoInfer<NoInfer<RoomId>>;
       sourceItem?: undefined;
     };
 
-const findDestinationPortal = <RoomId extends string>(
-  toRoom: RoomState<SceneryName, RoomId>,
-  fromRoom: RoomState<SceneryName, RoomId>,
+const findDestinationPortal = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  toRoom: RoomState<RoomId, RoomItemId>,
+  fromRoom: RoomState<RoomId, RoomItemId>,
   {
     changeType,
     sourceItem: sourcePortal,
-  }: ChangeCharacterRoomOptions<RoomId> & {
+  }: ChangeCharacterRoomOptions<RoomId, RoomItemId> & {
     changeType: "portal" | "level-select";
   },
-): ItemInPlay<"portal", SceneryName, RoomId> | undefined => {
+): ItemInPlay<"portal", RoomId> | undefined => {
   switch (changeType) {
     case "portal":
       return iterate(objectValues(toRoom.items)).find(
-        (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+        (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
           isPortal(i) &&
           i.config.toRoom === fromRoom.id &&
           // portal is going in the opposite direction - see for example the double-door transition
@@ -80,7 +85,7 @@ const findDestinationPortal = <RoomId extends string>(
     case "level-select":
       return (
         iterate(objectValues(toRoom.items)).find(
-          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+          (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // find a door coming from the right room (if the level select was from
             // an adjacent room - this is not guaranteed) but makes clicking through
@@ -92,14 +97,14 @@ const findDestinationPortal = <RoomId extends string>(
         ) ??
         // find a door in the right direction:
         iterate(objectValues(toRoom.items)).find(
-          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+          (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // any horizontal portal (ie, not floor/ceiling)
             i.config.direction.z === 0,
           // fall back to horizontal/vertical portal:
         ) ??
         iterate(objectValues(toRoom.items)).find(
-          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+          (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // any ceiling portal - the floor would mean falling
             // instantly out of the room
@@ -114,11 +119,11 @@ const findDestinationPortal = <RoomId extends string>(
   }
 };
 
-const backOffAndPushBack = <RoomId extends string>(
-  playableItem: PlayableItem<CharacterName, RoomId>,
+const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   portalDirectionXy: Xyz,
   gameState: GameState<RoomId>,
-  toRoom: RoomState<SceneryName, RoomId>,
+  toRoom: RoomState<RoomId, RoomItemId>,
 ) => {
   // back off one square, and push progressively into the room:
   const backOffAndPushLength = 1 * blockSizePx.w;
@@ -141,8 +146,11 @@ const backOffAndPushBack = <RoomId extends string>(
   }
 };
 
-export const changeCharacterRoom = <RoomId extends string>(
-  changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId>,
+export const changeCharacterRoom = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId, RoomItemId>,
 ) => {
   const {
     playableItem,

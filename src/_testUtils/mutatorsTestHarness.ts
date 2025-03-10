@@ -176,7 +176,7 @@ export const mutatorsTestHarness = () => {
       }
       const sourcePortal = iterate(objectValues(sourceRoom.items)).find(
         (i) => i.type === "portal" && i.config.toRoom === roomId,
-      ) as ItemInPlay<"portal", SceneryName, TestCampaignRoomId>;
+      ) as ItemInPlay<"portal", TestCampaignRoomId>;
 
       if (sourcePortal === undefined) {
         throw new Error(
@@ -248,8 +248,8 @@ export const mutatorsTestHarness = () => {
       thisRoom,
       shouldBeACopyOf,
     }: {
-      shouldBeACopyOf: RoomState<SceneryName, TestCampaignRoomId>;
-      thisRoom: RoomState<SceneryName, TestCampaignRoomId> | undefined;
+      shouldBeACopyOf: RoomState<TestCampaignRoomId>;
+      thisRoom: RoomState<TestCampaignRoomId> | undefined;
     }) {
       expect(thisRoom).toBeDefined();
       expect(thisRoom?.id).toEqual(shouldBeACopyOf.id);
@@ -307,7 +307,7 @@ export const mutatorsTestHarness = () => {
     },
     selectRoomOfPlayable(
       playableName: CharacterName,
-    ): RoomState<SceneryName, TestCampaignRoomId> | undefined {
+    ): RoomState<TestCampaignRoomId, string> | undefined {
       return gameState.characterRooms[playableName];
     },
     selectPlayable<C extends CharacterName = CharacterName>(playableName: C) {

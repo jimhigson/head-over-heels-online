@@ -7,7 +7,6 @@ import type {
 } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
-import type { SceneryName } from "../../../sprites/planets";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
@@ -16,21 +15,21 @@ import { isDeadly, isItemType, isPlayableItem } from "../itemPredicates";
 export type ItemTouchEvent<
   RoomId extends string,
   RoomItemId extends string,
-  MovingItem extends AnyItemInPlay<RoomId, RoomItemId> = AnyItemInPlay<
+  MovingItem extends UnionOfAllItemInPlayTypes<
     RoomId,
     RoomItemId
-  >,
-  TouchedItem extends AnyItemInPlay<RoomId, RoomItemId> = AnyItemInPlay<
+  > = UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  TouchedItem extends UnionOfAllItemInPlayTypes<
     RoomId,
     RoomItemId
-  >,
+  > = UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 > = {
   movingItem: MovingItem;
   movementVector: Xyz;
   touchedItem: TouchedItem;
   gameState: GameState<RoomId>;
   deltaMS: number;
-  room: RoomState<SceneryName, RoomId>;
+  room: RoomState<RoomId, RoomItemId>;
 };
 
 /** simplified version of ItemTouchEvent where generics can be completed with just strings: */

@@ -1,6 +1,5 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import {
   crownCollected,
   scrollRead,
@@ -13,11 +12,15 @@ import {
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
-export const handlePlayerTouchingPickup = <RoomId extends string>(
+export const handlePlayerTouchingPickup = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   e: ItemTouchEvent<
     RoomId,
-    PlayableItem<CharacterName, RoomId>,
-    ItemInPlay<"pickup", SceneryName, RoomId>
+    RoomItemId,
+    PlayableItem<CharacterName, RoomId, RoomItemId>,
+    ItemInPlay<"pickup", RoomId>
   >,
 ) => {
   const {

@@ -1,5 +1,4 @@
 import type { PortableItemType } from "../game/physics/itemPredicates";
-import type { SceneryName } from "../sprites/planets";
 import type { Xyz, Xy } from "../utils/vectors/vectors";
 import type { EmptyObject, SwitchSetting } from "./ItemInPlay";
 import type { JsonItemConfig } from "./json/JsonItem";
@@ -66,7 +65,7 @@ export type CarriedItem<
 > = {
   [T in Types]: {
     type: T;
-    config: JsonItemConfig<T, SceneryName, RoomId>;
+    config: JsonItemConfig<T, RoomId>;
   };
 }[Types];
 

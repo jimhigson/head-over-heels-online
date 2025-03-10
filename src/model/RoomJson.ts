@@ -11,7 +11,7 @@ import type { Floor } from "./modelTypes";
 export type RoomJson<
   RoomId extends string,
   ItemId extends string,
-  ScN extends SceneryName,
+  ScN extends SceneryName = SceneryName,
 > = {
   id: RoomId;
   size: {

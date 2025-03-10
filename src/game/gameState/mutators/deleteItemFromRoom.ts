@@ -11,7 +11,7 @@ export const deleteItemFromRoom = <
   room,
   item: itemParam,
 }: {
-  room: RoomState<SceneryName, RoomId, ItemId>;
+  room: RoomState< RoomId, ItemId>;
   item: AnyItemInPlay<RoomId, ItemId> | ItemId;
 }) => {
   const item =

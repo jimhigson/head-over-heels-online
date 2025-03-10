@@ -22,7 +22,6 @@ import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
 import { findItemToPickup } from "../../physics/mechanics/carrying";
-import type { SceneryName } from "../../../sprites/planets";
 import type { CarriedItem } from "../../../model/ItemStateMap";
 import type { EmptyObject } from "type-fest";
 import { emptyObject } from "../../../utils/empty";
@@ -64,7 +63,7 @@ type ButtonRenderProps = {
 type ButtonRenderContext = {
   colourise: boolean;
   // TODO: inject actual types here instead of string?
-  room: RoomState<SceneryName, string>;
+  room: RoomState<string, string>;
 };
 
 const textYForButtonCentre = -11;
@@ -161,7 +160,7 @@ const buttonAppearances: {
       carrying === null &&
       findItemToPickup(
         playable as PlayableItem<"heels" | "headOverHeels", string>,
-        selectCurrentRoomState(gameState) as RoomState<SceneryName, string>,
+        selectCurrentRoomState(gameState) as RoomState<string, string>,
       ) !== undefined;
 
     const pressed = button.actions.every(

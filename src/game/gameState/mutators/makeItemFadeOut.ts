@@ -21,7 +21,7 @@ export const makeItemFadeOut = <RoomId extends string>({
   gameState,
 }: {
   touchedItem: AnyItemInPlay<RoomId>;
-  room: RoomState<SceneryName, RoomId>;
+  room: RoomState< RoomId>;
   gameState: GameState<RoomId>;
 }) => {
   deleteItemFromRoom({ room, item: touchedItem });

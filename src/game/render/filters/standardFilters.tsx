@@ -16,14 +16,16 @@ const replaceMapForShades = ({ basic, dimmed }: Shades): PaletteSwaps => ({
   replaceDark: dimmed,
 });
 
-const replaceMapForRoom = (room: UnknownRoomState): PaletteSwaps =>
+const replaceMapForRoom = (
+  room: Pick<UnknownRoomState, "color">,
+): PaletteSwaps =>
   replaceMapForShades(colorScheme[room.color.hue][room.color.shade].main);
 
 /**
  * if given, will do colour replace - eg, deactivated cyber men
  * still have their backpacks in room colour
  */
-export const greyFilter = (room?: UnknownRoomState) =>
+export const greyFilter = (room?: Pick<UnknownRoomState, "color">) =>
   new PaletteSwapFilter({
     lightBeige: spritesheetPalette.lightGrey,
     redShadow: spritesheetPalette.shadow,
@@ -49,7 +51,7 @@ export const replaceWithHalfbriteFilter = (c: Color) =>
   new PaletteSwapFilter({ replaceLight: c, replaceDark: halfbrite(c) });
 
 export const edgePaletteSwapFilters = (
-  room: UnknownRoomState,
+  room: Pick<UnknownRoomState, "color">,
   side: "right" | "towards",
   colourise: boolean,
 ): Filter =>
@@ -61,8 +63,9 @@ export const edgePaletteSwapFilters = (
     )
   : new RevertColouriseFilter(getColorScheme(room.color).edges[side].original);
 
-export const mainPaletteSwapFilter = (room: UnknownRoomState): Filter =>
-  new PaletteSwapFilter(replaceMapForRoom(room));
+export const mainPaletteSwapFilter = (
+  room: Pick<UnknownRoomState, "color">,
+): Filter => new PaletteSwapFilter(replaceMapForRoom(room));
 
 export const halfBriteFilter = new HalfBriteFilter();
 

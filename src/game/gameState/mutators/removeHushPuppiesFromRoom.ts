@@ -7,7 +7,7 @@ import { isItemType } from "../../physics/itemPredicates";
 import type { RoomState } from "../../../model/RoomState";
 
 export const removeHushPuppiesFromRoom = <RoomId extends string>(
-  room: RoomState<SceneryName, RoomId>,
+  room: RoomState< RoomId>,
   gameState: GameState<RoomId>,
 ) => {
   const hushPuppyInRoomIter = iterate(objectValues(room.items)).filter(

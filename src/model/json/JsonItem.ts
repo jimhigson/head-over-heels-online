@@ -44,7 +44,7 @@ export type RenderItemType = JsonItemType | "door-front" | "door-back";
 export const inHiddenWall = ({
   config: { direction },
   position,
-}: JsonItem<"door" | "wall", SceneryName, string>) =>
+}: JsonItem<"door" | "wall", string, string>) =>
   (direction === "right" && position.x === 0) ||
   (direction === "towards" && position.y === 0);
 

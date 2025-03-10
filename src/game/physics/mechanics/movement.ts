@@ -4,7 +4,6 @@ import { mtv } from "../slidingCollision";
 import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
 import { isMonster, isSolid } from "../itemPredicates";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import type { Xyz, DirectionXy8 } from "../../../utils/vectors/vectors";
@@ -28,7 +27,7 @@ import { emptyObject } from "../../../utils/empty";
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
-import type { RoomState, UnknownRoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
@@ -38,8 +37,8 @@ const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
 type ItemWithMovement<RoomId extends string, RoomItemId extends string> =
-  | ItemInPlay<"monster", SceneryName, RoomId, RoomItemId>
-  | ItemInPlay<"movableBlock", SceneryName, RoomId, RoomItemId>;
+  | ItemInPlay<"monster", RoomId, RoomItemId>
+  | ItemInPlay<"movableBlock", RoomId, RoomItemId>;
 
 const notWalking = Object.freeze({
   movementType: "vel",
@@ -118,7 +117,10 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
   };
 };
 
-const findClosestPlayable = (position: Xyz, room: UnknownRoomState) => {
+const findClosestPlayable = <RoomId extends string, RoomItemId extends string>(
+  position: Xyz,
+  room: RoomState<RoomId, RoomItemId>,
+) => {
   // find closest player in the room:
   const {
     items: {
@@ -296,7 +298,7 @@ const randomlyChangeDirection = <
   RoomItemId extends string,
 >(
   itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
-  _room: RoomState<SceneryName, RoomId>,
+  _room: RoomState<RoomId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,
@@ -410,7 +412,7 @@ const handleMonsterTouchingItemByTurning = <
       aabb: touchedItemAabb,
     },
     deltaMS,
-  }: ItemTouchEvent<RoomId, ItemWithMovement<RoomId, RoomItemId>>,
+  }: ItemTouchEvent<RoomId, RoomItemId, ItemWithMovement<RoomId, RoomItemId>>,
   turnStrategy: TurnStrategy,
 ) => {
   const {
@@ -446,7 +448,11 @@ const handleMonsterTouchingItemByStopping = <
 >({
   movingItem: itemWithMovement,
   movementVector,
-}: ItemTouchEvent<RoomId, ItemWithMovement<RoomId, RoomItemId>>) => {
+}: ItemTouchEvent<
+  RoomId,
+  RoomItemId,
+  ItemWithMovement<RoomId, RoomItemId>
+>) => {
   if (movementVector.z < 0) {
     // don't stop if fell onto the item
     return;
@@ -544,7 +550,7 @@ export const handleItemWithMovementTouchingItem = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  e: ItemTouchEvent<RoomId, ItemWithMovement<RoomId, RoomItemId>>,
+  e: ItemTouchEvent<RoomId, RoomItemId, ItemWithMovement<RoomId, RoomItemId>>,
 ) => {
   const { movingItem: itemWithMovement, touchedItem } = e;
 

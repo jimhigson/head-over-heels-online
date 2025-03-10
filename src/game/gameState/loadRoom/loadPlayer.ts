@@ -4,7 +4,6 @@ import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { PlayableState } from "../../../model/ItemStateMap";
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { CharacterName } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import { emptyObject } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
@@ -41,9 +40,9 @@ export const defaultPlayerState = () =>
     actedOnAt: Number.NEGATIVE_INFINITY,
   }) satisfies Partial<PlayableState<string>>;
 
-export const loadPlayer = <RoomId extends string>(
-  jsonItem: JsonItem<"player", SceneryName, RoomId>,
-): PlayableItem<CharacterName, RoomId> => {
+export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
+  jsonItem: JsonItem<"player", RoomId, RoomItemId>,
+): PlayableItem<CharacterName, RoomId, RoomItemId> => {
   const infiniteLivesPoke = selectIsInfiniteLivesPoke(store.getState());
   const infiniteDoughnutsPoke = selectIsInfiniteDoughnutsPoke(store.getState());
 
@@ -54,7 +53,7 @@ export const loadPlayer = <RoomId extends string>(
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
       state: {
-        ...defaultBaseState<RoomId>(),
+        ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
         ...defaultPlayerState(),
         hasHooter: false,
@@ -80,7 +79,7 @@ export const loadPlayer = <RoomId extends string>(
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
       state: {
-        ...defaultBaseState<RoomId>(),
+        ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
         ...defaultPlayerState(),
         carrying: null,

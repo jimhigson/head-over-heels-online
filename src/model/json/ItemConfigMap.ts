@@ -250,7 +250,7 @@ export type ItemConfigMap<
   };
 };
 
-export type UnknownItemConfigMap = ItemConfigMap<SceneryName, string, string>;
+export type UnknownItemConfigMap = ItemConfigMap<string, string>;
 
 export type AllowedMonsterMovements<
   Which extends UnknownItemConfigMap["monster"]["which"],

@@ -23,7 +23,7 @@ export type GameApi<RoomId extends string> = {
    * @returns the state for the room that is currently being viewed, or undefined if
    * none (game over)
    */
-  currentRoom: RoomState<SceneryName, RoomId> | undefined;
+  currentRoom: RoomState< RoomId> | undefined;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
   stop: () => void;

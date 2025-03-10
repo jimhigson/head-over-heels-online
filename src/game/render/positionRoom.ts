@@ -8,7 +8,7 @@ import { wallTileSize } from "../../sprites/textureSizes";
 import type { Xy } from "../../utils/vectors/vectors";
 import { addXyz, subXy, lengthXy } from "../../utils/vectors/vectors";
 import { detectDeviceType } from "../../utils/detectDeviceType";
-import type { UnknownRoomState } from "../../model/RoomState";
+import type { RoomState } from "../../model/RoomState";
 
 const scrollLimit = 0.33;
 // how much to move the room up (at home position) to bring off the hud
@@ -24,8 +24,8 @@ const scrollSpeedPxPerMs = moveSpeedPixPerMs.heels;
  * put the room on the screen in the right place - either scrolling, or at its home position similar to how
  * it would have been put onto the screen in the original game
  */
-export const positionRoom = (
-  room: UnknownRoomState,
+export const positionRoom = <RoomId extends string, RoomItemId extends string>(
+  room: RoomState<RoomId, RoomItemId>,
   container: Container,
   effectiveScreenSize: Xy,
 ) => {

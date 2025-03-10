@@ -5,7 +5,6 @@ import { objectValues } from "iter-tools";
 import { moveItem } from "../moveItem";
 import type { ItemInPlay, AnyItemInPlay } from "../../../model/ItemInPlay";
 import type { HeelsAbilities, CarriedItem } from "../../../model/ItemStateMap";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { iterate } from "../../../utils/iterate";
 import { addXyz } from "../../../utils/vectors/vectors";
@@ -22,7 +21,7 @@ import type { RoomState } from "../../../model/RoomState";
  */
 export const carrying = <RoomId extends string>(
   carrier: PlayableItem<"heels" | "headOverHeels", RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+  room: RoomState<RoomId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): undefined => {
@@ -48,7 +47,7 @@ export const carrying = <RoomId extends string>(
   for (const portableItem of portableRoomItemsIter) {
     portableItem.state.wouldPickUpNext = false;
   }
-  if (itemToPickup !== undefined) itemToPickup.state.wouldPickUpNext = true;
+  if (itemToPickup !== undefined) itemToPixckup.state.wouldPickUpNext = true;
 
   if (inputStateTracker.currentActionPress("carry") === "tap") {
     if (carrying === null) {
@@ -107,10 +106,14 @@ export const carrying = <RoomId extends string>(
   }
 };
 
-const pickUpItem = <RoomId extends string, T extends PortableItemType>(
-  room: RoomState<SceneryName, RoomId>,
+const pickUpItem = <
+  T extends PortableItemType,
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  room: RoomState<RoomId, RoomItemId>,
   heelsAbilities: HeelsAbilities<RoomId>,
-  itemToPickup: ItemInPlay<T, SceneryName, RoomId>,
+  itemToPickup: ItemInPlay<T, RoomId, RoomItemId>,
 ) => {
   const carrying = {
     type: itemToPickup.type,
@@ -121,9 +124,12 @@ const pickUpItem = <RoomId extends string, T extends PortableItemType>(
   deleteItemFromRoom({ room, item: itemToPickup });
 };
 
-export const findItemToPickup = <RoomId extends string>(
-  carrier: PlayableItem<"heels" | "headOverHeels", RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+export const findItemToPickup = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  carrier: PlayableItem<"heels" | "headOverHeels", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
 ) => {
   return findStandingOnWithHighestPriorityAndMostOverlap(
     carrier,

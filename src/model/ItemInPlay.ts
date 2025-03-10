@@ -20,7 +20,7 @@ export type ItemInPlayType =
 
 export type SwitchSetting = "left" | "right";
 
-type ItemInPlayConfigMap<RoomId extends string> = {
+type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   floor: {
     type: "deadly" | /** can fall through to room below */ "none" | "standable";
   };
@@ -38,7 +38,7 @@ type ItemInPlayConfigMap<RoomId extends string> = {
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config
-  block: Omit<JsonItemConfig<"block", SceneryName, RoomId>, "disappearing">;
+  block: Omit<JsonItemConfig<"block", RoomId, RoomItemId>, "disappearing">;
 };
 
 // type-fest's EmptyObject was creating issues
@@ -48,13 +48,15 @@ export type EmptyObject = {
 
 export type ItemInPlayConfig<
   T extends ItemInPlayType,
-  P extends SceneryName = SceneryName,
   RoomId extends string = string,
+  RoomItemId extends string = string,
+  ScN extends SceneryName = SceneryName,
 > =
   // config type explicitly given for this item type:
-  T extends keyof ItemInPlayConfigMap<RoomId> ? ItemInPlayConfigMap<RoomId>[T]
+  T extends keyof ItemInPlayConfigMap<RoomId, RoomItemId> ?
+    ItemInPlayConfigMap<RoomId, RoomItemId>[T]
   : // fall back to the config from the json types:
-  T extends JsonItemType ? JsonItemConfig<T, P, RoomId>
+  T extends JsonItemType ? JsonItemConfig<T, ScN, RoomId>
   : EmptyObject;
 
 export type Disappear = "onStand" | "onTouch" | "onTouchByPlayer" | null;

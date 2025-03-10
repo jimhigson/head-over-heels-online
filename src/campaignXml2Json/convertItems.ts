@@ -1,4 +1,3 @@
-import type { SceneryName } from "../sprites/planets";
 import type { LooseDoorMap } from "./convertCampaign";
 import { convertXYZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
@@ -64,7 +63,7 @@ const monsterConversions = {
   emperor: "emperor",
 } as const satisfies Record<
   string,
-  ItemConfigMap<SceneryName, string, string>["monster"]["which"]
+  ItemConfigMap<string, string>["monster"]["which"]
 >;
 
 export const convertItemsArray = async (
@@ -239,7 +238,7 @@ const convertItem = async ({
     case "brick2": {
       const styleConversion: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<SceneryName, string, string>["block"]["style"]
+        ItemConfigMap<string, string>["block"]["style"]
       > = {
         brick1: "artificial",
         brick2: "organic",
@@ -263,7 +262,7 @@ const convertItem = async ({
     case "vulcano": {
       const styleConversion: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<SceneryName, string, string>["deadlyBlock"]["style"]
+        ItemConfigMap<string, string>["deadlyBlock"]["style"]
       > = {
         vulcano: "volcano",
         spikes: "spikes",
@@ -322,7 +321,7 @@ const convertItem = async ({
         "reincarnation-fish": "reincarnation",
       } as const satisfies Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<SceneryName, string, string>["pickup"]["gives"]
+        ItemConfigMap<string, string>["pickup"]["gives"]
       >;
 
       return {
@@ -406,7 +405,7 @@ const convertItem = async ({
     case "stool": {
       const conversions: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<SceneryName, string, string>["movableBlock"]["style"]
+        ItemConfigMap<string, string>["movableBlock"]["style"]
       > = {
         stool: "stepStool",
         sandwich: "sandwich",
@@ -471,7 +470,7 @@ const convertItem = async ({
     case "another-portable-brick": {
       const conversions: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<SceneryName, string, string>["portableBlock"]["style"]
+        ItemConfigMap<string, string>["portableBlock"]["style"]
       > = {
         drum: "drum",
         "another-portable-brick": "cube",

@@ -1,14 +1,20 @@
 import type { FreeItem } from "../../physics/itemPredicates";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { SceneryName } from "../../../sprites/planets";
+import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
+import type { RoomState } from "../../../model/RoomState";
 
-export const removeStandingOn = <RoomId extends string>(
-  item: FreeItem<SceneryName, RoomId>,
+export const removeStandingOn = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: FreeItem<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
 ) => {
   if (item.state.standingOnItemId !== null) {
-    item.state.standingOnItemId.state.stoodOnBy.delete(item);
+    const standingOn = stoodOnItem(item.state.standingOnItemId, room);
+    standingOn.state.stoodOnBy.delete(item.id);
+    item.state.standingOnItemId = null;
   }
-  item.state.standingOnItemId = null;
 };
 export const setStandingOn = <
   RoomId extends string,

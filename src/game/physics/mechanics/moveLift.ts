@@ -1,7 +1,6 @@
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { GameState } from "../../gameState/GameState";
 import { isMovableBlock } from "../itemPredicates";
@@ -74,8 +73,8 @@ export function moveLift<RoomId extends string, RoomItemId extends string>(
       position: { z },
       stoodOnBy,
     },
-  }: ItemInPlay<"lift", SceneryName, RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+  }: ItemInPlay<"lift", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"lift", RoomId, RoomItemId> {

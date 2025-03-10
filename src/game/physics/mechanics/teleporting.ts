@@ -1,7 +1,6 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
-import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import type { PressStatus } from "../../input/InputStateTracker";
@@ -55,8 +54,8 @@ export function teleporting<RoomId extends string, RoomItemId extends string>(
           changeType: "teleport",
           sourceItem: standingOn as ItemInPlay<
             "teleporter",
-            SceneryName,
-            RoomId
+            RoomId,
+            RoomItemId
           >,
           playableItem,
           gameState,

@@ -4,7 +4,7 @@ import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 import type { TextureId } from "../../../sprites/spriteSheetData";
 
 export const doorTexture = (
-  room: UnknownRoomState,
+  room: Pick<UnknownRoomState, "planet" | "color">,
   axis: "x" | "y",
   position: "near" | "far" | "top",
 ): DoorFrameTextureName => {
