@@ -9,7 +9,7 @@ import { OnScreenJoystick } from "./OnScreenJoystick";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
-import type { InputDirectionMode } from "../../../store/gameMenusSlice";
+import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 
 const mainButtonsSpreadXPx = 26;
 const mainButtonsSpreadYPx = 13;

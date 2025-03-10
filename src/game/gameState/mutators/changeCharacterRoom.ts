@@ -23,8 +23,8 @@ import type { PlayableItem } from "../../physics/itemPredicates";
 import { isPortal } from "../../physics/itemPredicates";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { store } from "../../../store/store";
-import { roomExplored } from "../../../store/gameMenusSlice";
 import { moveItem } from "../../physics/moveItem";
+import { roomExplored } from "../../../store/slices/gameMenusSlice";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 

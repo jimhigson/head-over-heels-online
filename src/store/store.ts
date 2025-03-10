@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import type { GameMenusState } from "./gameMenusSlice";
-import { gameMenusSlice, initialGameMenuSliceState } from "./gameMenusSlice";
+import type { GameMenusState } from "./slices/gameMenusSlice";
+import {
+  gameMenusSlice,
+  initialGameMenuSliceState,
+} from "./slices/gameMenusSlice";
 import storage from "redux-persist/lib/storage";
 import type { PersistConfig, PersistedState } from "redux-persist";
 import {

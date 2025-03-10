@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 import {
   goToSubmenu,
   assignInputStart,
-} from "../../../../../../store/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenusSlice";
 import {
   selectCurrentInputPreset,
   useIsScreenRelativeControl,

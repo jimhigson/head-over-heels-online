@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { backToParentMenu, goToSubmenu } from "../gameMenusSlice";
+import { backToParentMenu, goToSubmenu } from "../slices/gameMenusSlice";
 import { store } from "../store";
 import { detectDeviceType } from "../../utils/detectDeviceType";
 

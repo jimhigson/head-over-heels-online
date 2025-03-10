@@ -9,7 +9,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { InputPresetMenuItem } from "./InputPresetMenuItem";
 import Portal from "@mutabazia/react-portal";
 import { BackMenuItem } from "../../BackMenuItem";
-import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 

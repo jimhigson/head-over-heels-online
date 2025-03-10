@@ -15,10 +15,10 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import { directionAxis } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
-import type { ScrollsRead } from "../../../store/gameMenusSlice";
 import { loadWall } from "./loadWalls";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { SceneryName } from "../../../sprites/planets";
+import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;

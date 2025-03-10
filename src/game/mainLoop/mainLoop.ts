@@ -15,8 +15,8 @@ import {
   selectIsPaused,
   selectOnScreenControls,
 } from "../../store/selectors";
-import { type DisplaySettings } from "../../store/gameMenusSlice";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
+import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,

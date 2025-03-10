@@ -5,7 +5,7 @@ import { manualPages, pageTitle } from "../../../../../manual/pages";
 import {
   backToParentMenu,
   goToSubmenu,
-} from "../../../../../store/gameMenusSlice";
+} from "../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
 import { keys } from "../../../../../utils/entries";
 import { iterate } from "../../../../../utils/iterate";

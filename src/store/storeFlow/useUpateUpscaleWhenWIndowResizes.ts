@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react";
-import { setUpscale } from "../gameMenusSlice";
+import { setUpscale } from "../slices/gameMenusSlice";
 import { store } from "../store";
 import { useAppDispatch } from "../hooks";
 import { calculateUpscaleForCurrentDevice } from "../../game/render/calculateUpscale";

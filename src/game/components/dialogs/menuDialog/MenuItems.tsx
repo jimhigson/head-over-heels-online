@@ -8,7 +8,7 @@ import {
   menuItemDataAttributeId,
   menuItemDataAttributeHidden,
 } from "./MenuItem";
-import { setFocussedMenuItemId } from "../../../../store/gameMenusSlice";
+import { setFocussedMenuItemId } from "../../../../store/slices/gameMenusSlice";
 
 const findMenuItems = () => {
   const menuItemsDom = document.body.querySelectorAll(

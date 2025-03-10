@@ -1,8 +1,8 @@
 import type { Container } from "pixi.js";
 import type { MovedItems } from "../mainLoop/progressGameState";
-import type { DisplaySettings } from "../../store/gameMenusSlice";
 import type { RoomState } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
+import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
 
 export type RenderContext = object;
 

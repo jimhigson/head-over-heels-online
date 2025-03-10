@@ -12,7 +12,7 @@ import { TextureStyle } from "pixi.js";
 import "pixi.js/advanced-blend-modes";
 import type { InputStateTrackerInterface } from "./input/InputStateTracker";
 import { store } from "../store/store";
-import { roomExplored } from "../store/gameMenusSlice";
+import { roomExplored } from "../store/slices/gameMenusSlice";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 

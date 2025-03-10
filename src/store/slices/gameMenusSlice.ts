@@ -1,33 +1,33 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { ValueOf } from "type-fest";
-import type { DialogId } from "../game/components/dialogs/menuDialog/menus";
+import type { DialogId } from "../../game/components/dialogs/menuDialog/menus";
 import type {
   ActionInputAssignment,
   InputAssignment,
   InputPress,
-} from "../game/input/InputState";
-import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
-import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
-import type { Upscale } from "../game/render/calculateUpscale";
+} from "../../game/input/InputState";
+import type { KeyAssignmentPresetName } from "../../game/input/keyAssignmentPresets";
+import { keyAssignmentPresets } from "../../game/input/keyAssignmentPresets";
+import type { Upscale } from "../../game/render/calculateUpscale";
 import {
   calculateUpscale,
   calculateUpscaleForCurrentDevice,
-} from "../game/render/calculateUpscale";
-import type { ResolutionName } from "../originalGame";
-import { resolutionNames, resolutions } from "../originalGame";
-import { directionsXy4 } from "../utils/vectors/vectors";
-import type { MarkdownPageName } from "../manual/pages";
-import type { PlanetName } from "../sprites/planets";
-import type { ToggleablePaths } from "../utils/Toggleable";
-import { getAtPath, setAtPath } from "../utils/getAtPath";
-import { detectDeviceType } from "../utils/detectDeviceType";
+} from "../../game/render/calculateUpscale";
+import type { ResolutionName } from "../../originalGame";
+import { resolutionNames, resolutions } from "../../originalGame";
+import { directionsXy4 } from "../../utils/vectors/vectors";
+import type { MarkdownPageName } from "../../manual/pages";
+import type { PlanetName } from "../../sprites/planets";
+import type { ToggleablePaths } from "../../utils/Toggleable";
+import { getAtPath, setAtPath } from "../../utils/getAtPath";
+import { detectDeviceType } from "../../utils/detectDeviceType";
 import {
   selectEmulatedResolutionName,
   selectInputDirectionMode,
-} from "./selectors";
-import { defaultUserSettings } from "./defaultUserSettings";
-import type { BooleanAction } from "../game/input/actions";
+} from "../selectors";
+import { defaultUserSettings } from "../defaultUserSettings";
+import type { BooleanAction } from "../../game/input/actions";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 

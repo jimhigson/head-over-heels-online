@@ -3,7 +3,7 @@ import {
   menuOpenOrExitPressed,
   setEmulatedResolution,
   toggleBoolean,
-} from "../gameMenusSlice";
+} from "../slices/gameMenusSlice";
 import { useActionTap } from "../../game/components/dialogs/useActionTap";
 import { useAppSelector } from "../hooks";
 import { useDispatchActionCallback } from "../useDispatchCallback";

@@ -18,8 +18,8 @@ import type {
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import { collision1to1 } from "../../collision/aabbCollision";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import { gameOver } from "../../../store/gameMenusSlice";
 import { store } from "../../../store/store";
+import { gameOver } from "../../../store/slices/gameMenusSlice";
 
 export const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,

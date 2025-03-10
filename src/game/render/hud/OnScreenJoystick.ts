@@ -23,7 +23,7 @@ import {
 } from "./hudFilters";
 import { objectEntriesIter } from "../../../utils/entries";
 import { noFilters } from "../filters/standardFilters";
-import type { InputDirectionMode } from "../../../store/gameMenusSlice";
+import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 
 const joystickArrowOffset = 13;
 const sensitivity = 2;

@@ -2,7 +2,7 @@ import type { EmptyObject } from "type-fest";
 import {
   gameStarted,
   goToSubmenu,
-} from "../../../../../../store/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";

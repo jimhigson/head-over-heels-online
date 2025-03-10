@@ -4,7 +4,7 @@ import { DialogPortal } from "../../../../../ui/DialogPortal";
 import {
   backToParentMenu,
   gameOver,
-} from "../../../../../store/gameMenusSlice";
+} from "../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../BlockyMarkdown";
 import { BitmapText } from "../../../Sprite";

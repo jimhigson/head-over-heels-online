@@ -1,4 +1,4 @@
-import type { InputDirectionMode } from "../../store/gameMenusSlice";
+import type { InputDirectionMode } from "../../store/slices/gameMenusSlice";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   dotProductXyz,

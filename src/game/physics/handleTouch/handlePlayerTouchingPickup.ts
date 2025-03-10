@@ -1,7 +1,10 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
-import { crownCollected, scrollRead } from "../../../store/gameMenusSlice";
+import {
+  crownCollected,
+  scrollRead,
+} from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import {
   selectHeadAbilities,

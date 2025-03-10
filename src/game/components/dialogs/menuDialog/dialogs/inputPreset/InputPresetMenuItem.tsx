@@ -1,4 +1,4 @@
-import { keyAssignmentPresetChosen } from "../../../../../../store/gameMenusSlice";
+import { keyAssignmentPresetChosen } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import {
   type KeyAssignmentPresetName,

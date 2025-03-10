@@ -4,7 +4,7 @@ import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { backToParentMenu } from "../../../../../../store/gameMenusSlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import { useIsLoading } from "../../../../LoadingContext";
 import { LoadingBorder } from "../../../../../../ui/LoadingBorder";
 import { Border } from "../../../../../../ui/Border";

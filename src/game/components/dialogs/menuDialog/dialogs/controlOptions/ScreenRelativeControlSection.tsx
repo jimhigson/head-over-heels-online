@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { toggleBoolean } from "../../../../../../store/gameMenusSlice";
+import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
 import { useIsScreenRelativeControl } from "../../../../../../store/selectors";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
