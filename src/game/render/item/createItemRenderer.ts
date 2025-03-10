@@ -1,7 +1,6 @@
 import type { GameState } from "../../gameState/GameState";
 import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
-import type { RoomState } from "../../../model/modelTypes";
 import { type SceneryName } from "../../../sprites/planets";
 import type {
   AnyItemInPlay,
@@ -22,6 +21,7 @@ import {
 import { itemAppearances } from "../itemAppearances/ItemAppearances";
 import type { SetRequired } from "type-fest";
 import type { ItemAppearanceWithKnownRoomId } from "../itemAppearances/ItemAppearance";
+import type { RoomState } from "../../../model/RoomState";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(

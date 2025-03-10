@@ -4,7 +4,6 @@ import { mtv } from "../slidingCollision";
 import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
 import { isMonster, isSolid } from "../itemPredicates";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState, UnknownRoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -29,6 +28,7 @@ import { emptyObject } from "../../../utils/empty";
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
+import type { RoomState, UnknownRoomState } from "../../../model/RoomState";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern

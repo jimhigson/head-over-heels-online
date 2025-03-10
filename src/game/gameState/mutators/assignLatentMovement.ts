@@ -1,5 +1,5 @@
 import type { AnyItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import type { SceneryName } from "../../../sprites/planets";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { subXyz, xyzEqual, originXyz } from "../../../utils/vectors/vectors";

@@ -14,7 +14,6 @@ import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
 import type { ItemInPlay } from "../model/ItemInPlay";
 import type { PlayableActionState } from "../model/ItemStateMap";
 import type {
-  RoomState,
   Campaign,
   IndividualCharacterName,
   CharacterName,
@@ -25,6 +24,7 @@ import { iterate } from "../utils/iterate";
 import { addXyz } from "../utils/vectors/vectors";
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
 import { MockInputStateTracker } from "./MockInputStateTracker";
+import type { RoomState } from "../model/RoomState";
 
 export type TestCampaignRoomId =
   | "heelsStartingRoom"

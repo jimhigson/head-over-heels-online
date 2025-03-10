@@ -22,12 +22,12 @@ import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
 import { findItemToPickup } from "../../physics/mechanics/carrying";
-import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { CarriedItem } from "../../../model/ItemStateMap";
 import type { EmptyObject } from "type-fest";
 import { emptyObject } from "../../../utils/empty";
 import { showNumberInContainer } from "./showNumberInContainer";
+import type { RoomState } from "../../../model/RoomState";
 
 export type ButtonType = "jump" | "carry" | "fire" | "carryAndJump" | "menu";
 

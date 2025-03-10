@@ -19,7 +19,6 @@ import type {
   UnionOfAllItemInPlayTypes,
   AnyItemInPlay,
 } from "../../model/ItemInPlay";
-import type { RoomState } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
@@ -31,6 +30,7 @@ import {
 } from "../../utils/vectors/vectors";
 import type { ItemTouchEvent } from "./handleTouch/ItemTouchEvent";
 import { maxPushRecursionDepth } from "./mechanicsConstants";
+import type { RoomState } from "../../model/RoomState";
 
 const log = 0;
 

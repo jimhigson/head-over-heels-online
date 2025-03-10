@@ -6,12 +6,12 @@ import type {
   JsonItem,
   JsonItemUnion,
 } from "../../../model/json/JsonItem";
-import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../GameState";
 import { loadItemFromJson } from "../loadRoom/loadItem";
+import type { RoomState } from "../../../model/RoomState";
 
 let i = 0;
 

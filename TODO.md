@@ -54,6 +54,8 @@
 
 ### Details and bugs
 
+[ ] charles robot no longer needs to use latent movement
+
 [ ] version number/date on main menu dialog
 
 [ ] doughnut white fade can be shown under walls - try firing at left wall in start room for example

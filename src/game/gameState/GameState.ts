@@ -1,14 +1,11 @@
 import type { IndividualCharacterName } from "../../model/modelTypes";
-import {
-  type RoomState,
-  type CharacterName,
-  type Campaign,
-} from "../../model/modelTypes";
+import { type CharacterName, type Campaign } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import type { Emitter } from "mitt";
 import type { GameEvents } from "../GameApi";
 import type { PlayableEntryState } from "./PlayableEntryState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
+import type { RoomState } from "../../model/RoomState";
 
 /**
  * @returns undefined only if both chars have lost all lives (no current room)
@@ -37,7 +34,6 @@ type CharacterRooms<RoomId extends string> =
 
 export type GameState<RoomId extends string> = {
   campaign: Campaign<RoomId>;
-  //inputAssignment: InputAssignment;
   currentCharacterName: CharacterName;
   /** 
     if playing combined, which character was paid immediately before combining?

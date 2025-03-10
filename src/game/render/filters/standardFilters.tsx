@@ -5,11 +5,11 @@ import type { PaletteSwaps } from "./PaletteSwapFilter";
 import { PaletteSwapFilter } from "./PaletteSwapFilter";
 import type { Shades } from "../../hintColours";
 import { colorScheme, getColorScheme } from "../../hintColours";
-import type { UnknownRoomState } from "../../../model/modelTypes";
 import { emptyArray } from "../../../utils/empty";
 import { RevertColouriseFilter } from "./RevertColouriseFilter";
 import { halfbrite } from "../../../utils/colour/halfBrite";
 import { HalfBriteFilter } from "./HalfBriteFilter";
+import type { UnknownRoomState } from "../../../model/RoomState";
 
 const replaceMapForShades = ({ basic, dimmed }: Shades): PaletteSwaps => ({
   replaceLight: basic,

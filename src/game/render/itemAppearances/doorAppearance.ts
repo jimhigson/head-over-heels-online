@@ -5,7 +5,6 @@ import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
 } from "../projectToScreen";
-import type { UnknownRoomState } from "../../../model/modelTypes";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   edgePaletteSwapFilters,
@@ -22,6 +21,7 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { iterateToContainer } from "../../iterateToContainer";
 import type { ItemAppearance } from "./ItemAppearance";
 import { itemRenderOnce } from "./ItemAppearance";
+import type { UnknownRoomState } from "../../../model/RoomState";
 
 function* doorLegsGenerator(
   { config: { direction, inHiddenWall, height } }: ItemInPlay<"doorLegs">,

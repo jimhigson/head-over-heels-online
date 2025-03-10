@@ -1,5 +1,5 @@
 import type { AnyItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import type { SceneryName } from "../../../sprites/planets";
 import { isFreeItem } from "../../physics/itemPredicates";
 import { removeStandingOn } from "./modifyStandingOn";

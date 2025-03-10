@@ -4,13 +4,13 @@ import { objectValues } from "iter-tools";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { RoomStateItems, RoomState } from "../../../model/modelTypes";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { SceneryName } from "../../../sprites/planets";
 import { entries } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
 import { isSolid } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
+import type { RoomStateItems, RoomState } from "../../../model/RoomState";
 
 function* loadItems<RoomId extends string>(
   roomJson: RoomJson<SceneryName, RoomId>,

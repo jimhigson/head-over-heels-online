@@ -8,7 +8,6 @@ import { type GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { RoomState } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import { store } from "../../store/store";
 import type { Upscale } from "./calculateUpscale";
@@ -23,6 +22,7 @@ import { noFilters } from "./filters/standardFilters";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
+import type { RoomState } from "../../model/RoomState";
 
 export class RoomRenderer<RoomId extends string, ItemId extends string>
   implements Renderer<RoomRenderContext>

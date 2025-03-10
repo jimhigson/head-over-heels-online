@@ -1,5 +1,5 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import type { SceneryName } from "../../../sprites/planets";
 import type { GameState } from "../../gameState/GameState";
 import { type FreeItemTypes } from "../itemPredicates";

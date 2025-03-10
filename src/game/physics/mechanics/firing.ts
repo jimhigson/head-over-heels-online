@@ -1,6 +1,6 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";

@@ -2,7 +2,6 @@ import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import type { GameState } from "../GameState";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
 import type { AnyItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import {
   originXyz,
@@ -11,6 +10,7 @@ import {
   subXyz,
 } from "../../../utils/vectors/vectors";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
+import type { RoomState } from "../../../model/RoomState";
 
 /**
  * remove an item (with bubbles)

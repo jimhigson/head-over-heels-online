@@ -6,7 +6,7 @@ import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { CharacterName, RoomState } from "../../../model/modelTypes";
+import type { CharacterName } from "../../../model/modelTypes";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
@@ -25,6 +25,7 @@ import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { store } from "../../../store/store";
 import { moveItem } from "../../physics/moveItem";
 import { roomExplored } from "../../../store/slices/gameMenusSlice";
+import type { RoomState } from "../../../model/RoomState";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 

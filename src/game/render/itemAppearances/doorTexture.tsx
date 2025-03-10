@@ -1,4 +1,4 @@
-import type { UnknownRoomState } from "../../../model/modelTypes";
+import type { UnknownRoomState } from "../../../model/RoomState";
 import type { DoorFrameTextureName } from "../../../sprites/doorSpritesheetData";
 import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 import type { TextureId } from "../../../sprites/spriteSheetData";

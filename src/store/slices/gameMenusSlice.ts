@@ -28,6 +28,7 @@ import {
 } from "../selectors";
 import { defaultUserSettings } from "../defaultUserSettings";
 import type { BooleanAction } from "../../game/input/actions";
+import { nextInCycle } from "../../utils/nextInCycle";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -154,11 +155,6 @@ export const initialGameMenuSliceState: GameMenusState = {
   assigningInput: undefined,
 
   cheatsOn,
-};
-
-const nextInCycle = <T>(arr: T[] | Readonly<T[]>, current: T) => {
-  const curIndex = arr.indexOf(current);
-  return arr[(curIndex + 1) % arr.length];
 };
 
 /**

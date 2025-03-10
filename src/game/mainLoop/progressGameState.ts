@@ -26,9 +26,9 @@ import type {
   AnyItemInPlay,
   ItemInPlayType,
 } from "../../model/ItemInPlay";
-import type { RoomState, RoomStateItems } from "../../model/modelTypes";
 import { otherIndividualCharacterName } from "../../model/modelTypes";
 import { emptyObject, emptySet } from "../../utils/empty";
+import type { RoomState, RoomStateItems } from "../../model/RoomState";
 
 const itemHasExpired = <RoomId extends string>(
   item: UnionOfAllItemInPlayTypes,

@@ -5,7 +5,6 @@ import { objectValues } from "iter-tools";
 import { moveItem } from "../moveItem";
 import type { ItemInPlay, AnyItemInPlay } from "../../../model/ItemInPlay";
 import type { HeelsAbilities, CarriedItem } from "../../../model/ItemStateMap";
-import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { iterate } from "../../../utils/iterate";
@@ -16,6 +15,7 @@ import type { GameState } from "../../gameState/GameState";
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
+import type { RoomState } from "../../../model/RoomState";
 
 /**
  * walking, but also gliding and changing direction mid-air

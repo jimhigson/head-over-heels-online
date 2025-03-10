@@ -1,11 +1,11 @@
 import { objectValues } from "iter-tools";
 import { removeStandingOn, setStandingOn } from "./modifyStandingOn";
-import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import {
   spatiallyCheckStandingOn,
   findStandingOnWithHighestPriorityAndMostOverlap,
 } from "../../collision/checkStandingOn";
+import type { RoomState } from "../../../model/RoomState";
 
 /**
  * remove the standing on if not still applies, and

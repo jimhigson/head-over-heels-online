@@ -9,7 +9,6 @@ import { concat, objectEntries, objectValues } from "iter-tools";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../physics/mechanicsConstants";
 import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/modelTypes";
 import type { SceneryName } from "../../../sprites/planets";
 import { iterate } from "../../../utils/iterate";
 import type { Xy, Xyz } from "../../../utils/vectors/vectors";
@@ -18,6 +17,7 @@ import { store } from "../../../store/store";
 import type { ItemRenderContext, Renderer } from "../Renderer";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { ConsolidatableConfig } from "../../../model/json/ItemConfigMap";
+import type { RoomState } from "../../../model/RoomState";
 
 type Cast = {
   /* the sprite of the shadow */
