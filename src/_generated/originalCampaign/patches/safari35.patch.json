@@ -4,5 +4,14 @@
     "path": "/items/movableBlock@7,5,1/config/activated",
     "value": "onStand"
   },
-  { "op": "remove", "path": "/items/deadlyBlock@0,5,0" }
+  {
+    "op": "replace",
+    "path": "/items/deadlyBlock@0,5,0/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/deadlyBlock@0,5,0/config/times/x",
+    "value": 7
+  }
 ]
