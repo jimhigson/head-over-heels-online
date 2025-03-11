@@ -66,10 +66,10 @@ export type HudRendererTickOptions<RoomId extends string> = {
   screenSize: Xy;
 };
 
-export class HudRenderer<RoomId extends string> {
+export class HudRenderer<RoomId extends string, RoomItemId extends string> {
   #container = new Container({ label: "HudRenderer" });
 
-  #controls: OnScreenControls<RoomId> | undefined = undefined;
+  #controls: OnScreenControls<RoomId, RoomItemId> | undefined = undefined;
 
   #hudElements = {
     head: {

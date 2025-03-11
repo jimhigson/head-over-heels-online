@@ -4,10 +4,10 @@ import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
 import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
-import type { SceneryName } from "../../sprites/planets";
 import { fromAllEntries } from "../../utils/entries";
 import type { GameState, PickupsCollected } from "./GameState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
+import { playablesInRoom } from "../../model/RoomState";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -22,9 +22,7 @@ export const startingRooms = <RoomId extends string>(
 ): StartingRooms<RoomId> => {
   const results: Partial<StartingRooms<RoomId>> = {};
 
-  for (const r of Object.values<RoomJson<RoomId, RoomItemId>>(
-    campaign.rooms,
-  )) {
+  for (const r of Object.values<RoomJson<RoomId, RoomItemId>>(campaign.rooms)) {
     for (const i of Object.values(r.items)) {
       if (i.type === "player") {
         const { which } = i.config;
@@ -68,6 +66,10 @@ export const initGameState = <RoomId extends string>({
         true,
       );
 
+  /** TODO: @knownRoomIds - this is not necessary with known its */
+  const head = headRoom && playablesInRoom(headRoom.items).head;
+  const heels = heelsRoom && playablesInRoom(heelsRoom.items).heels;
+
   // create a gameApi
   return {
     // if head isn't in the campaign (unusual!), start with heels
@@ -77,12 +79,8 @@ export const initGameState = <RoomId extends string>({
       heels: heelsRoom,
     },
     entryState: {
-      head:
-        headRoom === undefined ? undefined : entryState(headRoom.items.head!),
-      heels:
-        heelsRoom === undefined ? undefined : (
-          entryState(heelsRoom.items.heels!)
-        ),
+      head: headRoom === undefined ? undefined : entryState(head!),
+      heels: heelsRoom === undefined ? undefined : entryState(heels!),
     },
     inputStateTracker,
     campaign,

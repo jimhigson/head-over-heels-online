@@ -23,6 +23,8 @@ import type {
   JsonItemType,
   JsonItemConfig,
 } from "../../../model/json/JsonItem";
+import type {
+  IndividualCharacterName} from "../../../model/modelTypes";
 import {
   otherIndividualCharacterName,
   type CharacterName,
@@ -541,7 +543,10 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   console.log("playable on window.playable");
 
                   if (playable.id !== "headOverHeels") {
-                    const otherName = otherIndividualCharacterName(playable.id);
+                    /** TODO: @knownRoomIds - remove casts */
+                    const otherName = otherIndividualCharacterName(
+                      playable.id as IndividualCharacterName,
+                    );
                     const otherPlayableRoom =
                       gameApi.gameState.characterRooms[otherName];
                     console.log(

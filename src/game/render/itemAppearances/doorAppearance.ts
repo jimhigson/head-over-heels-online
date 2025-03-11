@@ -21,11 +21,13 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { iterateToContainer } from "../../iterateToContainer";
 import type { ItemAppearance } from "./ItemAppearance";
 import { itemRenderOnce } from "./ItemAppearance";
-import type { UnknownRoomState } from "../../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 
-function* doorLegsGenerator(
-  { config: { direction, inHiddenWall, height } }: ItemInPlay<"doorLegs">,
-  room: UnknownRoomState,
+function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
+  {
+    config: { direction, inHiddenWall, height },
+  }: ItemInPlay<"doorLegs", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
 ): Generator<Container> {
   const axis = doorAlongAxis(direction);
 

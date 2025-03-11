@@ -29,7 +29,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   id: string,
 ): Generator<
   ItemTypeUnion<
-    "doorFrame" | "stopAutowalk" | "portal" | "wall",
+    "doorFrame" | "doorLegs" | "stopAutowalk" | "portal" | "wall",
     RoomId,
     RoomItemId
   >
@@ -71,7 +71,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     ...defaultItemProperties,
     ...{
       type: "doorFrame",
-      id: `${id}/far`,
+      id: `${id}/far` as RoomItemId,
       config: {
         ...jsonDoor.config,
         inHiddenWall: inHidden,
@@ -105,7 +105,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     ...defaultItemProperties,
     ...{
       type: "doorFrame",
-      id: `${id}/near`,
+      id: `${id}/near` as RoomItemId,
       config: {
         ...jsonDoor.config,
         inHiddenWall: inHidden,
@@ -136,7 +136,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     ...defaultItemProperties,
     ...{
       type: "doorFrame",
-      id: `${id}/top`,
+      id: `${id}/top` as RoomItemId,
       config: {
         ...jsonDoor.config,
         inHiddenWall: inHidden,
@@ -173,7 +173,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     ...defaultItemProperties,
     ...{
       type: "wall",
-      id: `${id}/wall`,
+      id: `${id}/wall` as RoomItemId,
       config: {
         style: "none",
         direction: "away", // TODO: look at typings - this isn't needed for hidden walls
@@ -205,7 +205,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     ...defaultItemProperties,
     ...{
       type: "portal",
-      id: `${id}/portal`,
+      id: `${id}/portal` as RoomItemId,
       config: {
         ...jsonDoor.config,
         inHidden,
@@ -249,7 +249,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       ...defaultItemProperties,
       ...{
         type: "doorLegs",
-        id: `${id}/legs`,
+        id: `${id}/legs` as RoomItemId,
         config: {
           ...jsonDoor.config,
           inHiddenWall: inHidden,
@@ -289,7 +289,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     };
   yield {
     type: "stopAutowalk",
-    id: `${id}/stopAutowalk`,
+    id: `${id}/stopAutowalk` as RoomItemId,
     renders: false,
     aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0, z: 2 } as Xyz),
     config: {},

@@ -45,7 +45,7 @@ const topLevelFilters = (
 export class MainLoop<RoomId extends string> {
   #filtersWhenPaused!: Filter[];
   #filtersWhenUnpaused!: Filter[];
-  #hudRenderer: HudRenderer<RoomId>;
+  #hudRenderer: HudRenderer<RoomId, string>;
   /**
    * room renderer can only be undefined if there is no current room - both
    * players have lost all lives
