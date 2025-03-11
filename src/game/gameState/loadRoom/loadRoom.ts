@@ -1,6 +1,5 @@
 import { loadItemFromJson } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
-import { objectValues } from "iter-tools";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
@@ -9,7 +8,12 @@ import { entries } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
 import { isSolid } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
-import type { RoomStateItems, RoomState } from "../../../model/RoomState";
+import {
+  type RoomStateItems,
+  type RoomState,
+  iterateRoomItems,
+  roomItemsIterable,
+} from "../../../model/RoomState";
 
 function* loadItems<RoomId extends string, RoomItemId extends string>(
   roomJson: RoomJson<RoomId, RoomItemId>,
@@ -67,8 +71,8 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>(
 
   // the physics will go nuts if things are overlapping, so check and reject
   // if they are:
-  for (const i of objectValues(loadedItems)) {
-    const collisions = collision1toMany(i, objectValues(loadedItems));
+  for (const i of iterateRoomItems(loadedItems)) {
+    const collisions = collision1toMany(i, roomItemsIterable(loadedItems));
     const solidCol = collisions.find(
       (col) =>
         isSolid(i) &&

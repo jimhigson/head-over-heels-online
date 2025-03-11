@@ -1,5 +1,5 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import type { ItemTypeUnion } from "../../../model/ItemInPlay";
 import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptySet } from "../../../utils/empty";
@@ -27,7 +27,13 @@ export const doorPostHeight = blockSizePx.h * 4;
 export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
   id: string,
-): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
+): Generator<
+  ItemTypeUnion<
+    "doorFrame" | "stopAutowalk" | "portal" | "wall",
+    RoomId,
+    RoomItemId
+  >
+> {
   const {
     config: { direction },
     position,
@@ -166,6 +172,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     ...jsonDoor,
     ...defaultItemProperties,
     ...{
+      type: "wall",
       id: `${id}/wall`,
       config: {
         style: "none",
@@ -173,7 +180,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         tiles: [],
       },
       renders: false,
-      type: "wall",
       state: {
         position: addXyz(
           blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),

@@ -458,8 +458,8 @@ describe("doors", () => {
 
     // both characters are on the floor - ie, haven't jumped on top of each other
     // due to items appearing overlapping and recovering
-    expect(headState(gameState).standingOnItemId?.id).toBe("floor");
-    expect(heelsState(gameState).standingOnItemId?.id).toBe("floor");
+    expect(headState(gameState).standingOnItemId).toBe("floor");
+    expect(heelsState(gameState).standingOnItemId).toBe("floor");
   });
 
   test("character can slide down a wall and through a door", () => {
@@ -982,7 +982,7 @@ describe("lifts", () => {
 
     const categories = Object.groupBy(
       heelsStandingOnPerFrame,
-      (item) => item?.id ?? "null",
+      (itemId) => itemId ?? "null",
     ) as {
       lift?: string[];
       landing?: string[];

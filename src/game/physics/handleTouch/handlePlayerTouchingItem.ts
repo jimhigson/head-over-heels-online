@@ -26,11 +26,11 @@ export const handlePlayerTouchingItem = <
 ) => {
   switch (true) {
     case touchedItemIsType(e, "stopAutowalk"):
-      handlePlayerTouchingStopAutowalk<RoomId>(e);
+      handlePlayerTouchingStopAutowalk<RoomId, RoomItemId>(e);
       break;
 
     case touchedItemIsDeadly(e):
-      handlePlayerTouchingDeadly<RoomId>(e);
+      handlePlayerTouchingDeadly<RoomId, RoomItemId>(e);
       break;
 
     case touchedItemIsType(e, "portal"):

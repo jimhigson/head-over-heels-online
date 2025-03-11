@@ -21,7 +21,8 @@ export const uncombinePlayablesFromSymbiosis = <
   headOverHeels: PlayableItem<"headOverHeels", RoomId, RoomItemId>,
 ) => {
   const head: PlayableItem<"head", RoomId, RoomItemId> = {
-    id: "head",
+    // TODO: remove cast with known ids
+    id: "head" as RoomItemId,
     type: "head",
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
@@ -37,7 +38,8 @@ export const uncombinePlayablesFromSymbiosis = <
     },
   };
   const heels: PlayableItem<"heels", RoomId, RoomItemId> = {
-    id: "heels",
+    // TODO: remove cast with known ids
+    id: "heels" as RoomItemId,
     type: "heels",
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
@@ -67,8 +69,9 @@ export const combinePlayablesInSymbiosis = <
   heels: PlayableItem<"heels", RoomId, RoomItemId>;
 }): PlayableItem<"headOverHeels", RoomId, RoomItemId> => {
   return {
+    // TODO: remove cast with known ids
+    id: "headOverHeels" as RoomItemId,
     type: "headOverHeels",
-    id: "headOverHeels",
     ...defaultItemProperties,
     shadowCastTexture: heels.shadowCastTexture,
     config: emptyObject,

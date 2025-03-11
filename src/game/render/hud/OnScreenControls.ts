@@ -11,11 +11,15 @@ import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import { selectCurrentRoomState } from "../../gameState/GameState";
+import type { RoomState } from "../../../model/RoomState";
 
 const mainButtonsSpreadXPx = 26;
 const mainButtonsSpreadYPx = 13;
 
-export class OnScreenControls<RoomId extends string> {
+export class OnScreenControls<
+  RoomId extends string,
+  RoomItemId extends string,
+> {
   #container = new Container({ label: "OnScreenControls" });
 
   #hudElements;
@@ -133,7 +137,10 @@ export class OnScreenControls<RoomId extends string> {
     for (const b of objectValues(this.#hudElements.buttons)) {
       b.tick({
         colourise: this.colourise,
-        room: selectCurrentRoomState(gameState),
+        room: selectCurrentRoomState(gameState) as RoomState<
+          RoomId,
+          RoomItemId
+        >,
       });
     }
     this.#hudElements.joystick.tick(this.colourise);

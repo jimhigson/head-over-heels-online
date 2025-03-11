@@ -27,7 +27,7 @@ import { emptyObject } from "../../../utils/empty";
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
-import type { RoomState } from "../../../model/RoomState";
+import { playablesInRoom, type RoomState } from "../../../model/RoomState";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
@@ -77,15 +77,9 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
     };
   }
 
-  const {
-    items: {
-      // TODO: when known ids are filled in on RoomStateItems, these casts can be removed
-      ["head" as RoomItemId]: headInRoom,
-      ["heels" as RoomItemId]: heelsInRoom,
-    },
-  } = room;
+  const { head, heels } = playablesInRoom(room.items);
 
-  for (const player of [headInRoom, heelsInRoom]) {
+  for (const player of [head, heels]) {
     if (player === undefined) continue;
 
     const vectorXyToPlayer = subXy(player.state.position, position);
@@ -126,37 +120,29 @@ const findClosestPlayable = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
 ) => {
   // find closest player in the room:
-  const {
-    items: {
-      head: headInRoom,
-      heels: heelsInRoom,
-      headOverHeels: headOverHeelsInRoom,
-    },
-  } = room;
+  const { head, heels, headOverHeels } = playablesInRoom(room.items);
 
-  if (headOverHeelsInRoom !== undefined) {
-    return playerDiedRecently(headOverHeelsInRoom) ? undefined : (
-        room.items.headOverHeels
-      );
+  if (headOverHeels !== undefined) {
+    return playerDiedRecently(headOverHeels) ? undefined : headOverHeels;
   }
 
   const headDistance =
-    headInRoom === undefined ? undefined
-    : playerDiedRecently(headInRoom) ? undefined
-    : headInRoom.state.action === "death" ? undefined
-    : distanceSquaredXy(headInRoom.state.position, position);
+    head === undefined ? undefined
+    : playerDiedRecently(head) ? undefined
+    : head.state.action === "death" ? undefined
+    : distanceSquaredXy(head.state.position, position);
 
   const heelsDistance =
-    heelsInRoom === undefined ? undefined
-    : playerDiedRecently(heelsInRoom) ? undefined
-    : heelsInRoom.state.action === "death" ? undefined
-    : distanceSquaredXy(heelsInRoom.state.position, position);
+    heels === undefined ? undefined
+    : playerDiedRecently(heels) ? undefined
+    : heels.state.action === "death" ? undefined
+    : distanceSquaredXy(heels.state.position, position);
 
   return (
-    headDistance === undefined ? heelsInRoom
-    : heelsDistance === undefined ? headInRoom
-    : headDistance < heelsDistance ? headInRoom
-    : heelsInRoom
+    headDistance === undefined ? heels
+    : heelsDistance === undefined ? head
+    : headDistance < heelsDistance ? head
+    : heels
   );
 };
 
@@ -302,7 +288,7 @@ const randomlyChangeDirection = <
   RoomItemId extends string,
 >(
   itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
-  _room: RoomState<RoomId>,
+  _room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,

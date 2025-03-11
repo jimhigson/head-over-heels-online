@@ -11,7 +11,6 @@ import {
   selectPlayableItem,
 } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { concat, objectValues } from "iter-tools";
-import { objectEntriesIter } from "../../utils/entries";
 import { iterate } from "../../utils/iterate";
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
@@ -27,11 +26,16 @@ import type {
 } from "../../model/ItemInPlay";
 import { otherIndividualCharacterName } from "../../model/modelTypes";
 import { emptyObject, emptySet } from "../../utils/empty";
-import type { RoomState, RoomStateItems } from "../../model/RoomState";
+import {
+  iterateRoomItemEntries,
+  iterateRoomItems,
+  type RoomState,
+  type RoomStateItems,
+} from "../../model/RoomState";
 
-const itemHasExpired = <RoomId extends string>(
+const itemHasExpired = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes,
-  room: RoomState<RoomId>,
+  room: RoomState<RoomId, RoomItemId>,
 ) => item.state.expires !== null && item.state.expires < room.roomTime;
 
 /**
@@ -39,13 +43,16 @@ const itemHasExpired = <RoomId extends string>(
  * only allowed while items are moving
  */
 
-const snapStationaryItemsToPixelGrid = <RoomId extends string>(
-  room: RoomState<RoomId>,
+const snapStationaryItemsToPixelGrid = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  room: RoomState<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
   /** the items which are snapped will be added to this set */
   movedItems: Set<AnyItemInPlay>,
 ) => {
-  for (const item of objectValues(room.items)) {
+  for (const item of iterateRoomItems(room.items)) {
     if (!isFreeItem(item) || room.roomTime === item.state.actedOnAt) {
       // was acted on in this tick - do not snap
       continue;
@@ -137,7 +144,7 @@ export const _progressGameState = <RoomId extends string>(
   // can check later what has moved. DOne per physics tick, not render-tick
   // because otherwise latent movement is double-applied
   const startingPositions = Object.fromEntries(
-    iterate(objectEntriesIter(room.items)).map(([id, item]) => [
+    iterateRoomItemEntries(room.items).map(([id, item]) => [
       id,
       item.state.position,
     ]),

@@ -48,7 +48,8 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
 
   if (jsonItem.config.which === "head") {
     return {
-      id: "head",
+      /** TODO: @knownRoomIds - remove casts */
+      id: "head" as RoomItemId,
       type: "head",
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
@@ -74,7 +75,8 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
     };
   } else {
     return {
-      id: "heels",
+      /** TODO: @knownRoomIds - remove casts */
+      id: "heels" as RoomItemId,
       type: "heels",
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,

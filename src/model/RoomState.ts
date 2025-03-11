@@ -1,8 +1,8 @@
 import type { Simplify, ValueOf } from "type-fest";
 import type { SceneryName } from "../sprites/planets";
-import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
+import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
-import { objectValues } from "iter-tools";
+import { objectEntries, objectValues } from "iter-tools";
 import { iterate } from "../utils/iterate";
 
 /**
@@ -13,21 +13,28 @@ export type RoomStateItems<
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
-> = Record<RoomItemId, UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>>;
-// commented out code pre-completes the types for some known ids - this is useful
-// and should be tried to be re-introduced when there is a lul in refactors
-/*& {
-  head?: ItemInPlay<"head", RoomId, RoomItemId, "head", ScN>;
-  heels?: ItemInPlay<"heels", RoomId, RoomItemId, "heels", ScN>;
+> = Record<
+  RoomItemId,
+  UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>
+>; /* & {
+  // TODO: remove comment if this sticks
+  //  nope, results in unions that are too complex to represent - need to find a simpler
+  //  expression of how this can be iterated
+  // commented out code pre-completes the types for some known ids - this is useful
+  // and should be tried to be re-introduced when there is a lul in refactors
+  // the solution here is probably RoomItemId extends KnownRoomItemIds (everywhere!)
+
+  head?: ItemInPlay<"head", RoomId, RoomItemId, RoomItemId, ScN>;
+  heels?: ItemInPlay<"heels", RoomId, RoomItemId, RoomItemId, ScN>;
   headOverHeels?: ItemInPlay<
     "headOverHeels",
     RoomId,
     RoomItemId,
-    "headOverHeels",
+    RoomItemId,
     ScN
   >;
   // every room has a floor edge:
-  floorEdge: ItemInPlay<"floorEdge", RoomId, RoomItemId, "floorEdge", ScN>;
+  floorEdge: ItemInPlay<"floorEdge", RoomId, RoomItemId, RoomItemId, ScN>;
 };*/
 
 export const roomItemsIterable = <
@@ -48,6 +55,43 @@ export const iterateRoomItems = <
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
 ): IteratorObject<ValueOf<typeof roomItems>> => {
   return iterate(objectValues(roomItems));
+};
+
+export const iterateRoomItemEntries = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
+) => {
+  return iterate(objectEntries(roomItems)) as IteratorObject<
+    [RoomItemId, ValueOf<typeof roomItems>]
+  >;
+};
+
+/**
+ * @deprecated - marked as deprecated only to remind that...
+ * TODO: this would be unecessary if *RoomItemId extends KnownRoomItemIds (everywhere!)* was
+ * implemented
+ */
+export const playablesInRoom = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
+) => {
+  return {
+    head: roomItems["head" as RoomItemId] as
+      | ItemInPlay<"head", RoomId, RoomItemId, RoomItemId, ScN>
+      | undefined,
+    heels: roomItems["heels" as RoomItemId] as
+      | ItemInPlay<"heels", RoomId, RoomItemId, RoomItemId, ScN>
+      | undefined,
+    headOverHeels: roomItems["headOverHeels" as RoomItemId] as
+      | ItemInPlay<"headOverHeels", RoomId, RoomItemId, RoomItemId, ScN>
+      | undefined,
+  };
 };
 
 /**

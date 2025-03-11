@@ -13,7 +13,7 @@ export const firstRoomId = "firstRoom" as const;
 export const secondRoomId = "secondRoom" as const;
 export type TestRoomId = typeof firstRoomId | typeof secondRoomId;
 
-export type TestRoomJson = RoomJson<"blacktooth", TestRoomId>;
+export type TestRoomJson = RoomJson<TestRoomId, string, "blacktooth">;
 export type ItemsInTestRoomJson = TestRoomJson["items"];
 
 export const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({

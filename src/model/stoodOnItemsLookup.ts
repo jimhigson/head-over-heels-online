@@ -1,3 +1,4 @@
+import type { FreeItem } from "../game/physics/itemPredicates";
 import { iterate } from "../utils/iterate";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomState } from "./RoomState";
@@ -16,7 +17,7 @@ export const iterateStoodOnByItems = <
 ) => {
   return iterate(stoodOnBy).map(
     (stoodOnByItemId) => room.items[stoodOnByItemId],
-  );
+  ) as IteratorObject<FreeItem<RoomId, RoomItemId>>; // cast: we know that only free items can stand on something:
 };
 /** utility to get the item object of standing on */
 

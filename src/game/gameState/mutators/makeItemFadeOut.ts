@@ -2,7 +2,6 @@ import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import type { GameState } from "../GameState";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
 import type { AnyItemInPlay } from "../../../model/ItemInPlay";
-import type { SceneryName } from "../../../sprites/planets";
 import {
   originXyz,
   addXyz,
@@ -15,13 +14,16 @@ import type { RoomState } from "../../../model/RoomState";
 /**
  * remove an item (with bubbles)
  */
-export const makeItemFadeOut = <RoomId extends string>({
+export const makeItemFadeOut = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   touchedItem,
   room,
   gameState,
 }: {
-  touchedItem: AnyItemInPlay<RoomId>;
-  room: RoomState< RoomId>;
+  touchedItem: AnyItemInPlay<RoomId, RoomItemId>;
+  room: RoomState<RoomId, RoomItemId>;
   gameState: GameState<RoomId>;
 }) => {
   deleteItemFromRoom({ room, item: touchedItem });

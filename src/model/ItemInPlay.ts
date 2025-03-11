@@ -56,7 +56,7 @@ export type ItemInPlayConfig<
   T extends keyof ItemInPlayConfigMap<RoomId, RoomItemId> ?
     ItemInPlayConfigMap<RoomId, RoomItemId>[T]
   : // fall back to the config from the json types:
-  T extends JsonItemType ? JsonItemConfig<T, ScN, RoomId>
+  T extends JsonItemType ? JsonItemConfig<T, RoomId, RoomItemId, ScN>
   : EmptyObject;
 
 export type Disappear = "onStand" | "onTouch" | "onTouchByPlayer" | null;
@@ -106,14 +106,14 @@ export type ItemInPlay<
   RoomId extends string = string,
   /** the items ids for items in the same room as this item */
   RoomItemId extends string = string,
-  /** the items ids for this item */
+  /** the item id> for this item */
   ItemId extends RoomItemId = RoomItemId,
   ScN extends SceneryName = SceneryName,
 > = {
   type: T;
 
   // borrow the config from the json typings:
-  config: ItemInPlayConfig<T, ScN, RoomId>;
+  config: ItemInPlayConfig<T, RoomId, RoomItemId, ScN>;
 
   readonly id: ItemId;
   state: ItemState<T, RoomId, RoomItemId>;

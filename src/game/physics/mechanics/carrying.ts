@@ -1,7 +1,6 @@
 import type { PlayableItem, PortableItemType } from "../itemPredicates";
 import { isPortable, isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
-import { objectValues } from "iter-tools";
 import { moveItem } from "../moveItem";
 import type { ItemInPlay, AnyItemInPlay } from "../../../model/ItemInPlay";
 import type { HeelsAbilities, CarriedItem } from "../../../model/ItemStateMap";
@@ -13,14 +12,18 @@ import type { GameState } from "../../gameState/GameState";
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
-import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
+import {
+  iterateRoomItems,
+  roomItemsIterable,
+  type RoomState,
+} from "../../../model/RoomState";
 
 /**
  * walking, but also gliding and changing direction mid-air
  */
-export const carrying = <RoomId extends string>(
-  carrier: PlayableItem<"heels" | "headOverHeels", RoomId>,
-  room: RoomState<RoomId>,
+export const carrying = <RoomId extends string, RoomItemId extends string>(
+  carrier: PlayableItem<"heels" | "headOverHeels", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): undefined => {
@@ -66,7 +69,9 @@ export const carrying = <RoomId extends string>(
       // check if there is space above heels (and any items standing on heels):
       // really the ideal here would be do the move and roll back if ti can't be done.
       // that would need a stateless/reducer based approach to updating the world
-      if (!checkSpaceAvailableToPutDown(carrier, objectValues(room.items))) {
+      if (
+        !checkSpaceAvailableToPutDown(carrier, roomItemsIterable(room.items))
+      ) {
         return;
       }
 

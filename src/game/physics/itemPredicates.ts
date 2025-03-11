@@ -96,9 +96,12 @@ export type PortableItemType = (typeof portableItemTypes)[number];
 
 export const isPortable = isItemType(...portableItemTypes);
 
-export const isPlayableItem = <RoomId extends string = string>(
-  item: AnyItemInPlay<RoomId>,
-): item is PlayableItem<CharacterName, RoomId> => {
+export const isPlayableItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: AnyItemInPlay<RoomId, RoomItemId>,
+): item is PlayableItem<CharacterName, RoomId, RoomItemId> => {
   return (
     item.type === "head" ||
     item.type === "heels" ||
