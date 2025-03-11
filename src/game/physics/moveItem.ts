@@ -10,7 +10,6 @@ import type { GameState } from "../gameState/GameState";
 import { isSolid } from "./itemPredicates";
 import { mtv } from "./slidingCollision";
 import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
-import { objectValues } from "iter-tools";
 import {
   removeStandingOn,
   setStandingOn,
@@ -29,7 +28,7 @@ import {
 } from "../../utils/vectors/vectors";
 import type { ItemTouchEvent } from "./handleTouch/ItemTouchEvent";
 import { maxPushRecursionDepth } from "./mechanicsConstants";
-import type { RoomState } from "../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 
 const log = 0;
@@ -108,7 +107,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(
     posDelta,
-    collision1toMany(subjectItem, objectValues(room.items)),
+    collision1toMany(subjectItem, roomItemsIterable(room.items)),
   );
 
   if (log)

@@ -54,6 +54,8 @@
 
 ### Details and bugs
 
+[ ] restore known-id typings at src/model/RoomState.ts
+
 [ ] charles robot no longer needs to use latent movement
 
 [ ] version number/date on main menu dialog

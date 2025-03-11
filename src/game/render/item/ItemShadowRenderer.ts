@@ -5,19 +5,17 @@ import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import type { Collideable } from "../../collision/aabbCollision";
 import { collision1to1 } from "../../collision/aabbCollision";
-import { concat, objectEntries, objectValues } from "iter-tools";
+import { concat, objectEntries } from "iter-tools";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../physics/mechanicsConstants";
 import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
-import type { SceneryName } from "../../../sprites/planets";
-import { iterate } from "../../../utils/iterate";
 import type { Xy, Xyz } from "../../../utils/vectors/vectors";
 import { subXy } from "../../../utils/vectors/vectors";
 import { store } from "../../../store/store";
 import type { ItemRenderContext, Renderer } from "../Renderer";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { ConsolidatableConfig } from "../../../model/json/ItemConfigMap";
-import type { RoomState } from "../../../model/RoomState";
+import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -103,10 +101,10 @@ export class ItemShadowRenderer<
   constructor(
     /** the item currently being rendered for = the one that the shadow is cast on  */
     private item: SetRequired<
-      ItemInPlay<T, RoomId, RoomItemId, RoomItemId, SceneryName>,
+      ItemInPlay<T, RoomId, RoomItemId, RoomItemId>,
       "shadowMask"
     >,
-    private room: RoomState<RoomId, RoomItemId, SceneryName>,
+    private room: RoomState<RoomId, RoomItemId>,
     private pixiRenderer: PixiRenderer,
   ) {
     const {
@@ -163,7 +161,7 @@ export class ItemShadowRenderer<
     const surfaceMoved = movedItems.has(this.item);
     const itemTop = this.item.state.position.z + this.item.aabb.z;
 
-    const shadowCastersIter = iterate(objectValues(this.room.items)).filter(
+    const shadowCastersIter = iterateRoomItems(this.room.items).filter(
       function castsAShadow(
         c,
       ): c is SetRequired<typeof c, "shadowCastTexture"> {

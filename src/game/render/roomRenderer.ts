@@ -1,6 +1,5 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
-import { objectValues } from "iter-tools";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { createItemRenderer } from "./item/createItemRenderer";
 import type { GraphEdges } from "./sortZ/toposort/toposort";
@@ -21,7 +20,7 @@ import { noFilters } from "./filters/standardFilters";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
-import type { RoomState } from "../../model/RoomState";
+import { iterateRoomItems, type RoomState } from "../../model/RoomState";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements Renderer<RoomRenderContext>
@@ -115,7 +114,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   #tickItems(renderContext: ItemRenderContext<RoomId, RoomItemId>) {
-    for (const item of objectValues(this.#roomState.items)) {
+    for (const item of iterateRoomItems(this.#roomState.items)) {
       let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
 
       if (
@@ -191,7 +190,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         {
           ...givenRenderContext,
           // if we have never rendered before, consider that all items have moved:
-          movedItems: new Set(objectValues(this.#roomState.items)),
+          movedItems: new Set(iterateRoomItems(this.#roomState.items)),
         }
       );
 
@@ -201,7 +200,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       !this.#everRendered,
     );
 
-    const itemRenderContext = {
+    const itemRenderContext: ItemRenderContext<RoomId, RoomItemId> = {
       ...renderContext,
       room: this.#roomState,
     };

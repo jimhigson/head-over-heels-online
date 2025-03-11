@@ -1,7 +1,9 @@
-import type { Simplify } from "type-fest";
+import type { Simplify, ValueOf } from "type-fest";
 import type { SceneryName } from "../sprites/planets";
-import type { UnionOfAllItemInPlayTypes, ItemInPlay } from "./ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
+import { objectValues } from "iter-tools";
+import { iterate } from "../utils/iterate";
 
 /**
  * a map of items-in-play in a room
@@ -11,7 +13,10 @@ export type RoomStateItems<
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
-> = Record<RoomItemId, UnionOfAllItemInPlayTypes<RoomId, RoomItemId>> & {
+> = Record<RoomItemId, UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>>;
+// commented out code pre-completes the types for some known ids - this is useful
+// and should be tried to be re-introduced when there is a lul in refactors
+/*& {
   head?: ItemInPlay<"head", RoomId, RoomItemId, "head", ScN>;
   heels?: ItemInPlay<"heels", RoomId, RoomItemId, "heels", ScN>;
   headOverHeels?: ItemInPlay<
@@ -23,13 +28,33 @@ export type RoomStateItems<
   >;
   // every room has a floor edge:
   floorEdge: ItemInPlay<"floorEdge", RoomId, RoomItemId, "floorEdge", ScN>;
+};*/
+
+export const roomItemsIterable = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
+): IterableIterator<ValueOf<typeof roomItems>> => {
+  return objectValues(roomItems);
 };
+
+export const iterateRoomItems = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
+): IteratorObject<ValueOf<typeof roomItems>> => {
+  return iterate(objectValues(roomItems));
+};
+
 /**
  * Representation of a room in-play. This is in memory only for the current
  * one or two rooms (that head and heels are in, but they could be in the same
  * room)
  */
-
 export type RoomState<
   RoomId extends string,
   RoomItemId extends string,

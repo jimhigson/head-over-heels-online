@@ -168,4 +168,5 @@ export type ItemTypeUnion<
 export type UnionOfAllItemInPlayTypes<
   RoomId extends string = string,
   RoomItemId extends string = string,
-> = ItemTypeUnion<ItemInPlayType, RoomId, RoomItemId>;
+  ScN extends SceneryName = SceneryName,
+> = ItemTypeUnion<ItemInPlayType, RoomId, RoomItemId, ScN>;

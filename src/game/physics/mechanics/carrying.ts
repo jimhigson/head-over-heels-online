@@ -6,7 +6,6 @@ import { moveItem } from "../moveItem";
 import type { ItemInPlay, AnyItemInPlay } from "../../../model/ItemInPlay";
 import type { HeelsAbilities, CarriedItem } from "../../../model/ItemStateMap";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { iterate } from "../../../utils/iterate";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
@@ -14,7 +13,7 @@ import type { GameState } from "../../gameState/GameState";
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
-import type { RoomState } from "../../../model/RoomState";
+import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -39,15 +38,13 @@ export const carrying = <RoomId extends string>(
     return;
   }
 
-  const portableRoomItemsIter = iterate(objectValues(room.items)).filter(
-    isPortable,
-  );
+  const portableRoomItemsIter = iterateRoomItems(room.items).filter(isPortable);
   const itemToPickup =
     carrying === null ? findItemToPickup(carrier, room) : undefined;
   for (const portableItem of portableRoomItemsIter) {
     portableItem.state.wouldPickUpNext = false;
   }
-  if (itemToPickup !== undefined) itemToPixckup.state.wouldPickUpNext = true;
+  if (itemToPickup !== undefined) itemToPickup.state.wouldPickUpNext = true;
 
   if (inputStateTracker.currentActionPress("carry") === "tap") {
     if (carrying === null) {
@@ -133,7 +130,7 @@ export const findItemToPickup = <
 ) => {
   return findStandingOnWithHighestPriorityAndMostOverlap(
     carrier,
-    iterate(objectValues(room.items)).filter(isPortable),
+    iterateRoomItems(room.items).filter(isPortable),
   );
 };
 

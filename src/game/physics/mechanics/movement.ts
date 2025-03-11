@@ -78,7 +78,11 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
   }
 
   const {
-    items: { head: headInRoom, heels: heelsInRoom },
+    items: {
+      // TODO: when known ids are filled in on RoomStateItems, these casts can be removed
+      ["head" as RoomItemId]: headInRoom,
+      ["heels" as RoomItemId]: heelsInRoom,
+    },
   } = room;
 
   for (const player of [headInRoom, heelsInRoom]) {
