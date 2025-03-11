@@ -23,8 +23,7 @@ import type {
   JsonItemType,
   JsonItemConfig,
 } from "../../../model/json/JsonItem";
-import type {
-  IndividualCharacterName} from "../../../model/modelTypes";
+import type { IndividualCharacterName } from "../../../model/modelTypes";
 import {
   otherIndividualCharacterName,
   type CharacterName,
@@ -43,6 +42,7 @@ import {
   setShowBoundingBoxes,
   setShowShadowMasks,
 } from "../../../store/slices/gameMenusSlice";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -94,8 +94,13 @@ const SummonPlayableButton = <RoomId extends string>({
 
         if (playableName === "headOverHeels") {
           //sneakily combine the players by moving them to the final room first:
-          const head = gameApi.gameState.characterRooms.head?.items.head;
-          const heels = gameApi.gameState.characterRooms.heels?.items.heels;
+          /** TODO: @knownRoomIds - remove casts */
+          const head = gameApi.gameState.characterRooms.head?.items
+            .head as ItemInPlay<"head", RoomId, string>;
+          /** TODO: @knownRoomIds - remove casts */
+          const heels = gameApi.gameState.characterRooms.heels?.items
+            .heels as ItemInPlay<"heels", RoomId, string>;
+
           if (!head || !heels) {
             console.log(
               "cant summon headOverHeels - one of the individuals is not in the game to combine",
@@ -115,10 +120,17 @@ const SummonPlayableButton = <RoomId extends string>({
             });
 
             swopFromUncombinedToCombinedPlayables(gameApi.gameState);
+
+            /** TODO: @knownRoomIds - remove casts */
+            const headOverHeels = gameApi.gameState.characterRooms
+              .headOverHeels!.items.headOverHeels as ItemInPlay<
+              "headOverHeels",
+              RoomId,
+              string
+            >;
+
             changeCharacterRoom({
-              playableItem:
-                gameApi.gameState.characterRooms.headOverHeels!.items
-                  .headOverHeels!,
+              playableItem: headOverHeels,
               gameState: gameApi.gameState,
               changeType: "level-select",
               toRoomId: roomId,
