@@ -338,8 +338,10 @@ describe("jumping", () => {
         frameCallbacks: [
           stopJumpingAMomentAfterStartingPlay,
           (gameState) => {
-            expect(headState(gameState).standingOnItemId?.type).not.toBe(
-              "block",
+            expect(headState(gameState).standingOnItemId).not.toBeOneOf(
+              "lowBlock",
+              "mediumBlock",
+              "highBlock",
             );
             return gameState;
           },

@@ -1,6 +1,6 @@
 import { consolidateItems } from "../campaignXml2Json/consolidateItems/consolidateItems";
 import type { JsonItem } from "../model/json/JsonItem";
-import type { RoomJson } from "../model/RoomJson";
+import { iterateRoomJsonItems, type RoomJson } from "../model/RoomJson";
 import type { Wall } from "../sprites/planets";
 import { scenery, type SceneryName } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
@@ -32,7 +32,7 @@ export const addPerimeterWallsToRoom = <
   const isDoorAt = (coord: Xy, direction: DirectionXy4) => {
     const axis = directionAxis(direction);
     const crossAxis = perpendicularAxisXy(axis);
-    return Object.values(roomJson.items).some(
+    return iterateRoomJsonItems(roomJson).some(
       (item) =>
         item.type === "door" &&
         item.config.direction === direction &&

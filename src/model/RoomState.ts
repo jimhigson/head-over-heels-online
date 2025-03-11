@@ -53,8 +53,8 @@ export const iterateRoomItems = <
   ScN extends SceneryName = SceneryName,
 >(
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
-): IteratorObject<ValueOf<typeof roomItems>> => {
-  return iterate(objectValues(roomItems));
+) => {
+  return iterate(roomItemsIterable(roomItems));
 };
 
 export const iterateRoomItemEntries = <
