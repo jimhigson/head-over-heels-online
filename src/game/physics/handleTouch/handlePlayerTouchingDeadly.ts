@@ -1,10 +1,10 @@
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import { shieldRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 
 /**
  *
@@ -20,7 +20,7 @@ export function handlePlayerTouchingDeadly<
   RoomId,
   RoomItemId,
   PlayableItem<CharacterName, RoomId, RoomItemId>,
-  ItemInPlay<DeadlyItemType | "floor", RoomId, RoomItemId>
+  ItemTypeUnion<DeadlyItemType | "floor", RoomId, RoomItemId>
 >) {
   if (playableItem.state.action === "death") {
     // player is already showing death animation - do nothing

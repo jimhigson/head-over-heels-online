@@ -1,3 +1,4 @@
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
 import type { Aabb, Xyz } from "../utils/vectors/vectors";
@@ -143,24 +144,14 @@ export type ItemInPlay<
   fixedZIndex?: number;
 };
 
-/** Non-union version of any item type */
+/**
+ * Non-union version of any item type
+ * @deprecated - use UnionOfAllItemInPlayTypes instead wherever possible
+ */
 export type AnyItemInPlay<
   RoomId extends string = string,
   RoomItemId extends string = string,
 > = ItemInPlay<ItemInPlayType, RoomId, RoomItemId, RoomItemId, SceneryName>;
-
-/**
- * make a union of ItemInPlay<A> | ItemInPlay<B> | ItemInPlay<C> etc.
- * By turning item types into a union, we can use type guards to discriminate
- */
-export type ItemTypeUnion<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-  ScN extends SceneryName = SceneryName,
-> = {
-  [TI in T]: ItemInPlay<TI, RoomId, RoomItemId, RoomItemId, ScN>;
-}[T];
 
 /**
  * All Item types as a union

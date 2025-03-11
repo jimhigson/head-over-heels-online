@@ -2,9 +2,9 @@ import { expectTypeOf, test } from "vitest";
 import type {
   ItemInPlay,
   ItemInPlayType,
-  ItemTypeUnion,
   UnionOfAllItemInPlayTypes,
 } from "./ItemInPlay";
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 
 type ItemId = "ball" | "bat";
 
@@ -59,7 +59,7 @@ test("smaller unions are subsets of union of all items types", () => {
   // this should work but doesn't:
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type GenericTypeNarrowsDown1<ItemType extends ItemInPlayType> =
-    // @ts-expect-error - this actually should work but ts isn't getting it - delete this if it starts working
+    // this in only working because of the typegen'd ItemTypeUnion - it doesn't work if converted to a union inside ts itself
     GenericTypeWithExtendsAll<ItemTypeUnion<ItemType, RoomId, ItemId>>;
 
   // proof that it is possible:

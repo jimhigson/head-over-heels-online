@@ -75,7 +75,7 @@ export const createItemRenderer = <
   if (item.renders) {
     const appearance = itemAppearances[
       item.type
-    ] as /* narrow down ItemAppearance to the version that already has our roomid baked in */ ItemAppearanceWithKnownRoomId<
+    ] as /* narrow down ItemAppearance to the version that already has our RoomId/RoomItemId baked in */ ItemAppearanceWithKnownRoomId<
       T,
       RoomId,
       RoomItemId

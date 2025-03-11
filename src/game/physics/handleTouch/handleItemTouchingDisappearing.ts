@@ -8,8 +8,11 @@ import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
 import { setStandingOn } from "../../gameState/mutators/modifyStandingOn";
 import { applyMechanicsResults } from "../../mainLoop/applyMechanicsResults";
 
-export const handleItemTouchingDissapearing = <RoomId extends string>(
-  e: ItemTouchEvent<RoomId>,
+export const handleItemTouchingDissapearing = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  e: ItemTouchEvent<RoomId, RoomItemId>,
 ) => {
   const shouldDisappear =
     e.touchedItem.state.disappear === "onTouch" ||

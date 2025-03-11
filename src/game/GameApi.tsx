@@ -3,7 +3,6 @@ import type { GameState } from "./gameState/GameState";
 import type { Container } from "pixi.js";
 import type { AnyItemInPlay } from "../model/ItemInPlay";
 import type { Campaign } from "../model/modelTypes";
-import type { SceneryName } from "../sprites/planets";
 import type { Xy } from "../utils/vectors/vectors";
 import type { RoomState } from "../model/RoomState";
 
@@ -23,7 +22,7 @@ export type GameApi<RoomId extends string> = {
    * @returns the state for the room that is currently being viewed, or undefined if
    * none (game over)
    */
-  currentRoom: RoomState< RoomId> | undefined;
+  currentRoom: RoomState<RoomId, string> | undefined;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
   stop: () => void;

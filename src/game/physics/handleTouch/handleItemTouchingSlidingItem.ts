@@ -11,10 +11,18 @@ import {
   dotProductXyz,
 } from "../../../utils/vectors/vectors";
 
-export const handleItemTouchingSlidingItem = <RoomId extends string>({
+export const handleItemTouchingSlidingItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   movingItem: touchingItem,
   touchedItem: slidingItem,
-}: ItemTouchEventByItemType<RoomId, ItemInPlayType, SlidingItemTypes>) => {
+}: ItemTouchEventByItemType<
+  RoomId,
+  RoomItemId,
+  ItemInPlayType,
+  SlidingItemTypes
+>) => {
   if (!isSolid(touchingItem)) return;
 
   const {
@@ -40,11 +48,19 @@ export const handleItemTouchingSlidingItem = <RoomId extends string>({
   return false;
 };
 
-export const handleSlidingItemTouchingAnyItem = <RoomId extends string>({
+export const handleSlidingItemTouchingAnyItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   movingItem: slidingItem,
   /** the item that touched this sliding item */
   touchedItem,
-}: ItemTouchEventByItemType<RoomId, SlidingItemTypes, ItemInPlayType>) => {
+}: ItemTouchEventByItemType<
+  RoomId,
+  RoomItemId,
+  SlidingItemTypes,
+  ItemInPlayType
+>) => {
   if (!isSolid(touchedItem)) return;
 
   const slidingVel = slidingItem.state.vels.sliding;

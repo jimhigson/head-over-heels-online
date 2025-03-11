@@ -20,7 +20,7 @@ export const handlePlayerTouchingPickup = <
     RoomId,
     RoomItemId,
     PlayableItem<CharacterName, RoomId, RoomItemId>,
-    ItemInPlay<"pickup", RoomId>
+    ItemInPlay<"pickup", RoomId, RoomItemId>
   >,
 ) => {
   const {

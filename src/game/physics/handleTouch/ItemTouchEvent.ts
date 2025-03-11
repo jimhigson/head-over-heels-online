@@ -1,9 +1,7 @@
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type {
-  AnyItemInPlay,
   ItemInPlayType,
-  ItemInPlay,
   UnionOfAllItemInPlayTypes,
-  ItemTypeUnion,
 } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
@@ -41,26 +39,24 @@ export type ItemTouchEventByItemType<
 > = ItemTouchEvent<
   RoomId,
   RoomItemId,
-  ItemInPlay<MovingItemType, RoomId, RoomItemId>,
-  ItemInPlay<TouchedItemType, RoomId, RoomItemId>
+  ItemTypeUnion<MovingItemType, RoomId, RoomItemId>,
+  ItemTypeUnion<TouchedItemType, RoomId, RoomItemId>
 >;
 
 export const touchedItemIsType = <
   RoomId extends string,
   RoomItemId extends string,
-  MovingItem extends AnyItemInPlay<RoomId, RoomItemId>,
+  MovingItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   TouchedItemType extends ItemInPlayType,
 >(
   e: ItemTouchEvent<RoomId, RoomItemId, MovingItem>,
   ...touchedItemType: Array<TouchedItemType>
-): e is {
-  [T in TouchedItemType]: ItemTouchEvent<
-    RoomId,
-    RoomItemId,
-    MovingItem,
-    ItemInPlay<T, RoomId, RoomItemId>
-  >;
-}[TouchedItemType] => {
+): e is ItemTouchEvent<
+  RoomId,
+  RoomItemId,
+  MovingItem,
+  ItemTypeUnion<TouchedItemType, RoomId, RoomItemId>
+> => {
   return isItemType(...touchedItemType)(e.touchedItem);
 };
 
@@ -68,19 +64,19 @@ export const movingItemIsType = <
   RoomId extends string,
   RoomItemId extends string,
   MovingItemType extends ItemInPlayType,
-  TouchedItem extends AnyItemInPlay<RoomId, RoomItemId>,
+  TouchedItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 >(
   e: ItemTouchEvent<
     RoomId,
     RoomItemId,
-    AnyItemInPlay<RoomId, RoomItemId>,
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
     TouchedItem
   >,
   ...movingItemType: Array<MovingItemType>
 ): e is ItemTouchEvent<
   RoomId,
   RoomItemId,
-  ItemInPlay<MovingItemType, RoomId, RoomItemId>,
+  ItemTypeUnion<MovingItemType, RoomId, RoomItemId>,
   TouchedItem
 > => {
   return isItemType(...movingItemType)(e.movingItem);
@@ -89,12 +85,12 @@ export const movingItemIsType = <
 export const movingItemIsPlayable = <
   RoomId extends string,
   RoomItemId extends string,
-  TouchedItem extends AnyItemInPlay<RoomId, RoomItemId>,
+  TouchedItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 >(
   e: ItemTouchEvent<
     RoomId,
     RoomItemId,
-    AnyItemInPlay<RoomId, RoomItemId>,
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
     TouchedItem
   >,
 ): e is ItemTouchEvent<
@@ -109,7 +105,7 @@ export const movingItemIsPlayable = <
 export const touchedItemIsPlayable = <
   RoomId extends string,
   RoomItemId extends string,
-  MovingItem extends AnyItemInPlay<RoomId, RoomItemId>,
+  MovingItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 >(
   e: ItemTouchEvent<RoomId, RoomItemId, MovingItem>,
 ): e is ItemTouchEvent<
@@ -124,13 +120,13 @@ export const touchedItemIsPlayable = <
 export const touchedItemIsDeadly = <
   RoomId extends string,
   RoomItemId extends string,
-  MovingItem extends AnyItemInPlay<RoomId, RoomItemId>,
+  MovingItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 >(
   e: ItemTouchEvent<
     RoomId,
     RoomItemId,
     MovingItem,
-    AnyItemInPlay<RoomId, RoomItemId>
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
   >,
 ): e is ItemTouchEvent<
   RoomId,

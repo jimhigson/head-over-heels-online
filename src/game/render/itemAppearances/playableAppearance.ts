@@ -172,7 +172,6 @@ const applyFilters = (
 };
 
 export const playableAppearance = <
-  C extends CharacterName,
   RoomId extends string,
   RoomItemId extends string,
 >({
@@ -181,7 +180,7 @@ export const playableAppearance = <
   previousRendering,
   gameState,
 }: ItemAppearanceOptions<
-  C,
+  CharacterName,
   RoomId,
   RoomItemId
 >): ItemAppearanceReturn<CharacterName> => {

@@ -1,15 +1,18 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
-export function handleFiredDoughnutTouchingMonster<RoomId extends string>(
+export function handleFiredDoughnutTouchingMonster<
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   e:
-    | ItemTouchEventByItemType<RoomId, "firedDoughnut", "monster">
-    | ItemTouchEventByItemType<RoomId, "monster", "firedDoughnut">,
+    | ItemTouchEventByItemType<RoomId, RoomItemId, "firedDoughnut", "monster">
+    | ItemTouchEventByItemType<RoomId, RoomItemId, "monster", "firedDoughnut">,
 ) {
-  const monster: ItemInPlay<"monster"> =
-    e.movingItem.type === "monster" ?
-      e.movingItem
-    : (e.touchedItem as ItemInPlay<"monster">);
+  type Monster = ItemInPlay<"monster", RoomId, RoomItemId>;
+
+  const monster: Monster =
+    e.movingItem.type === "monster" ? e.movingItem : (e.touchedItem as Monster);
 
   if (monster.config.which === "emperorsGuardian") {
     // as stated in the manual - the guardian doesn't like doughnuts

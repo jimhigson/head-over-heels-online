@@ -18,7 +18,6 @@ import type {
   IndividualCharacterName,
   CharacterName,
 } from "../model/modelTypes";
-import type { SceneryName } from "../sprites/planets";
 import { blockSizePx } from "../sprites/spritePivots";
 import { iterate } from "../utils/iterate";
 import { addXyz } from "../utils/vectors/vectors";
@@ -248,8 +247,8 @@ export const mutatorsTestHarness = () => {
       thisRoom,
       shouldBeACopyOf,
     }: {
-      shouldBeACopyOf: RoomState<TestCampaignRoomId>;
-      thisRoom: RoomState<TestCampaignRoomId> | undefined;
+      shouldBeACopyOf: RoomState<TestCampaignRoomId, string>;
+      thisRoom: RoomState<TestCampaignRoomId, string> | undefined;
     }) {
       expect(thisRoom).toBeDefined();
       expect(thisRoom?.id).toEqual(shouldBeACopyOf.id);
@@ -348,7 +347,6 @@ export const mutatorsTestHarness = () => {
 
       const portal = room.items[portalItemId] as ItemInPlay<
         "portal",
-        SceneryName,
         TestCampaignRoomId
       >;
 

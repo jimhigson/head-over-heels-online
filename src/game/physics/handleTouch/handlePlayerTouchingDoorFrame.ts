@@ -6,11 +6,19 @@ import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
  * colliding with doors is a special case - since they are so narrow, the playable character
  * slides sideways into their opening, to make them easier to walk through
  */
-export const handlePlayerTouchingDoorFrame = <RoomId extends string>({
+export const handlePlayerTouchingDoorFrame = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   movingItem: player,
   movementVector,
   touchedItem: doorFrame,
-}: ItemTouchEventByItemType<RoomId, CharacterName, "doorFrame">) => {
+}: ItemTouchEventByItemType<
+  RoomId,
+  RoomItemId,
+  CharacterName,
+  "doorFrame"
+>) => {
   const {
     config: { direction, part },
   } = doorFrame;

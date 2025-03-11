@@ -1,6 +1,5 @@
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
-import { objectValues } from "iter-tools";
 import { entryState } from "../PlayableEntryState";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
@@ -26,7 +25,12 @@ import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { store } from "../../../store/store";
 import { moveItem } from "../../physics/moveItem";
 import { roomExplored } from "../../../store/slices/gameMenusSlice";
-import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
+import {
+  iterateRoomItems,
+  roomItemsIterable,
+  type RoomState,
+} from "../../../model/RoomState";
+import type { RoomJson } from "../../../model/RoomJson";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -172,8 +176,10 @@ export const changeCharacterRoom = <
   } = changeCharacterRoomOptions;
 
   /** TODO: @knownRoomIds - remove casts */
-  const leavingRoom =
-    gameState.characterRooms[playableItem.id as CharacterName];
+  const leavingRoom = gameState.characterRooms[
+    playableItem.id as CharacterName
+    // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
+  ] as RoomState<RoomId, RoomItemId>;
 
   if (leavingRoom === undefined) {
     throw new Error(`${playableItem.id} is not in a room on the gameState`);
@@ -223,18 +229,26 @@ export const changeCharacterRoom = <
       // if in symbiosis, there is no other player so no other player's room:
       undefined
     : /** TODO: @knownRoomIds - remove casts */
-      gameState.characterRooms[
+      (gameState.characterRooms[
         otherIndividualCharacterName(playableItem.id as IndividualCharacterName)
-      ];
+        // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
+      ] as RoomState<RoomId, RoomItemId>);
 
-  const toRoomJson = gameState.campaign.rooms[toRoomId];
+  const toRoomJson = gameState.campaign.rooms[toRoomId] as RoomJson<
+    RoomId,
+    RoomItemId
+  >;
   if (toRoomJson === undefined) {
     throw new Error(`room ${toRoomId} does not exist in campaign`);
   }
-  const toRoom =
+  const toRoom: RoomState<RoomId, RoomItemId> =
     otherCharacterLoadedRoom?.id === toRoomId ?
       otherCharacterLoadedRoom
-    : loadRoom(toRoomJson, gameState.pickupsCollected[toRoomId]);
+      // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
+    : (loadRoom(toRoomJson, gameState.pickupsCollected[toRoomId]) as RoomState<
+        RoomId,
+        RoomItemId
+      >);
 
   // take the character out of the previous room:
   deleteItemFromRoom({ room: leavingRoom, item: playableItem });
@@ -274,7 +288,7 @@ export const changeCharacterRoom = <
     );
   } else {
     // find the door (etc) in the new room to enter in:
-    const destinationPortal = findDestinationPortal(
+    const destinationPortal = findDestinationPortal<RoomId, RoomItemId>(
       toRoom,
       leavingRoom,
       changeCharacterRoomOptions,
@@ -354,7 +368,7 @@ export const changeCharacterRoom = <
 
   const collisionsInDestinationRoom = collision1toMany(
     playableItem,
-    objectValues(toRoom.items),
+    roomItemsIterable(toRoom.items),
   );
   if (collisionsInDestinationRoom.length > 0) {
     console.warn(

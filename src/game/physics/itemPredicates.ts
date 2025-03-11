@@ -1,10 +1,10 @@
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ConsolidatableJsonItemType } from "../../campaignXml2Json/consolidateItems/consolidateItems";
 import type {
   ItemInPlayType,
   ItemInPlay,
   AnyItemInPlay,
   UnionOfAllItemInPlayTypes,
-  ItemTypeUnion,
 } from "../../model/ItemInPlay";
 import type { CharacterName } from "../../model/modelTypes";
 import { characterNames } from "../../model/modelTypes";

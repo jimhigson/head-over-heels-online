@@ -22,7 +22,8 @@
     "deploy": "gh-pages -d dist",
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\"",
-    "check:circDep": "dpdm -T --exit-code circular:1 src/main.tsx"
+    "check:circDep": "dpdm -T --exit-code circular:1 src/main.tsx",
+    "genTypes": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType > src/_generated/types/ItemInPlayUnion.ts && prettier src/_generated/types/ --write"
   },
   "dependencies": {
     "@mutabazia/react-portal": "^1.0.7",
@@ -43,6 +44,7 @@
     "snarkdown-in-react": "^2.0.1",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar": "^3.1.0",
+    "ts-morph": "^25.0.1",
     "wouter": "^3.6.0"
   },
   "devDependencies": {

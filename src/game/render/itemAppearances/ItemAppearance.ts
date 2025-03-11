@@ -5,7 +5,7 @@ import type {
   ItemInPlayTypesWithoutRenderProps,
   ItemRenderProps,
 } from "./ItemRenderProps";
-import type { ItemInPlayType, ItemTypeUnion } from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import { emptyObject } from "../../../utils/empty";
 import { isMultipliedItem } from "../../physics/itemPredicates";
 import type {
@@ -13,6 +13,7 @@ import type {
   AppearanceReturn,
 } from "../appearance/Appearance";
 import type { ItemRenderContext } from "../Renderer";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {

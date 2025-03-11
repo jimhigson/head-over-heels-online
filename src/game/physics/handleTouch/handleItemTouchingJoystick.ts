@@ -2,16 +2,23 @@ import { mtv } from "../slidingCollision";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
-import type { SceneryName } from "../../../sprites/planets";
 import { unitVector, scaleXyz } from "../../../utils/vectors/vectors";
 import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
 
-export const handleItemTouchingJoystick = <RoomId extends string>({
+export const handleItemTouchingJoystick = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   movingItem,
   room,
   touchedItem: joystickItem,
   deltaMS,
-}: ItemTouchEventByItemType<RoomId, ItemInPlayType, "joystick">) => {
+}: ItemTouchEventByItemType<
+  RoomId,
+  RoomItemId,
+  ItemInPlayType,
+  "joystick"
+>) => {
   const {
     config: { controls },
     state: { position: joystickPosition },
@@ -34,8 +41,8 @@ export const handleItemTouchingJoystick = <RoomId extends string>({
   for (const sillyOldFaceId of controls) {
     const sillyOldFace = room.items[sillyOldFaceId] as ItemInPlay<
       "charles",
-      SceneryName,
-      RoomId
+      RoomId,
+      RoomItemId
     >;
 
     const posDelta = scaleXyz(unitM, -moveSpeedPixPerMs.charles * deltaMS);

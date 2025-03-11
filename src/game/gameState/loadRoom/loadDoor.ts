@@ -1,5 +1,5 @@
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import type { ItemTypeUnion } from "../../../model/ItemInPlay";
 import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptySet } from "../../../utils/empty";
