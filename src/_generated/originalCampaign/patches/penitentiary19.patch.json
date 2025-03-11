@@ -8,9 +8,9 @@
     "op": "add",
     "path": "/items/walkway",
     "value": {
-      "type": "block",
+      "config": { "style": "artificial", "times": { "y": 8 } },
       "position": { "x": 3, "y": 0, "z": 5 },
-      "config": { "style": "artificial", "times": { "y": 8 } }
+      "type": "block"
     }
   }
 ]

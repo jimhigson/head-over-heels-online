@@ -17,11 +17,6 @@ export const room = inferRoomJson({
       position: { x: 1, y: 8, z: 3 },
       type: "door",
     },
-    walkway: {
-      type: "block",
-      position: { x: 3, y: 0, z: 5 },
-      config: { style: "artificial", times: { y: 8 } },
-    },
     "monster@1,3,0": {
       config: {
         activated: true,
@@ -44,6 +39,11 @@ export const room = inferRoomJson({
       config: { style: "drum" },
       position: { x: 2, y: 3, z: 0 },
       type: "portableBlock",
+    },
+    walkway: {
+      config: { style: "artificial", times: { y: 8 } },
+      position: { x: 3, y: 0, z: 5 },
+      type: "block",
     },
     "wall@0,0,0:2sckOl": {
       config: { direction: "right", tiles: [], times: { y: 8 } },
