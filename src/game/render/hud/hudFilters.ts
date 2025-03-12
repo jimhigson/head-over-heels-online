@@ -9,7 +9,7 @@ export type OutlineAndColouriseFilter = [OutlineFilter, RevertColouriseFilter];
 
 export const hudOutlineFilter = new OutlineFilter({
   outlineColor: spritesheetPalette.pureBlack,
-  upscale: store.getState().upscale.gameEngineUpscale,
+  upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
   // it is ok to snap to pixel grid
   lowRes: true,
 });

@@ -12,8 +12,8 @@ import type {
   DoorLegsConfig,
   DeadlyItemStyle,
 } from "./JsonItem";
-import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 import type { ToggleablePaths } from "../../utils/Toggleable";
+import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 
 export type BlockStyle = "organic" | "artificial" | "tower" | "book";
 

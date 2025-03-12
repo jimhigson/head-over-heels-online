@@ -33,7 +33,11 @@ export const useShowDialogWhenInPortrait = (): void => {
      * @returns
      */
     const handleOrientation = (_e?: Event, andRepeat = true) => {
-      const currentlyShownDialog = store.getState().openMenus.at(0)?.menuId;
+      const {
+        gameMenus: {
+          openMenus: [currentlyShownDialog],
+        },
+      } = store.getState();
 
       const o = orientationNow();
 
@@ -49,13 +53,19 @@ export const useShowDialogWhenInPortrait = (): void => {
         }, 500);
       }
 
-      if (o === "portrait" && currentlyShownDialog !== "wrongOrientation") {
+      if (
+        o === "portrait" &&
+        currentlyShownDialog?.menuId !== "wrongOrientation"
+      ) {
         store.dispatch(goToSubmenu("wrongOrientation"));
         addedDialog = true;
         return;
       }
 
-      if (o === "landscape" && currentlyShownDialog === "wrongOrientation") {
+      if (
+        o === "landscape" &&
+        currentlyShownDialog?.menuId === "wrongOrientation"
+      ) {
         store.dispatch(backToParentMenu());
         addedDialog = false;
       }

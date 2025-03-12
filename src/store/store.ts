@@ -18,6 +18,7 @@ import {
   persistStore,
   createMigrate,
 } from "redux-persist";
+import { savedGamesSlice } from "./slices/savedGamesSlice";
 
 /**
  * A non-migration migration - just throws the user's config away and reverts to
@@ -65,13 +66,17 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
   whitelist: [`userSettings` satisfies keyof GameMenusState],
 };
 
-const persistedReducer = persistReducer(
+const gameMenusPersistedReducer = persistReducer(
   gameMenusSlicePersistConfig,
   gameMenusSlice.reducer,
 );
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
+    [savedGamesSlice.reducerPath]: gameMenusSlice.reducer,
+  },
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

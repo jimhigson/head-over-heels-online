@@ -30,8 +30,9 @@ const ScoreDialogContents = () => {
   const { campaign } = use(importOriginalCampaign());
 
   const planetsLiberatedCount = useAppSelector(selectPlanetsLiberatedCount);
-  const roomsExploredCount = useAppSelector((state) =>
-    size(iterate(objectValues(state.roomsExplored))),
+  const roomsExploredCount = useAppSelector(
+    ({ gameMenus: { roomsExplored } }) =>
+      size(iterate(objectValues(roomsExplored))),
   );
 
   const score = calculateScore(roomsExploredCount, planetsLiberatedCount);

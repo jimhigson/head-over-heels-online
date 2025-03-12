@@ -12,7 +12,7 @@ export const SelectKeysMenuAssignmentValue = ({
   action: BooleanAction;
 }) => {
   const assigning = useAppSelector(
-    (store) => store.assigningInput?.action === action,
+    (store) => store.gameMenus.assigningInput?.action === action,
   );
 
   return (

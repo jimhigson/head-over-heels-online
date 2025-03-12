@@ -20,7 +20,9 @@ function* loadItems<RoomId extends string, RoomItemId extends string>(
   roomPickupsCollected: RoomPickupsCollected,
   isFirstLoad: boolean,
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
-  const { scrollsRead } = store.getState();
+  const {
+    gameMenus: { scrollsRead },
+  } = store.getState();
 
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {

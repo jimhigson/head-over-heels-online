@@ -165,7 +165,7 @@ export class OnScreenJoystick {
 
   tick(colourise: boolean) {
     const { directionVector } = this.inputStateTracker;
-    const menusOpen = store.getState().openMenus.length > 0;
+    const menusOpen = store.getState().gameMenus.openMenus.length > 0;
 
     if (menusOpen) {
       this.stopCurrentPointer();

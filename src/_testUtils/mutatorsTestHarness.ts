@@ -5,8 +5,8 @@ import {
   selectHeelsAbilities,
   selectCurrentPlayableItem,
 } from "../game/gameState/gameStateSelectors/selectPlayableItem";
-import type { StartingRooms } from "../game/gameState/initGameState";
-import { initGameState, startingRooms } from "../game/gameState/initGameState";
+import type { StartingRooms } from "../game/gameState/loadGameState";
+import { loadGameState, startingRooms } from "../game/gameState/loadGameState";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
 import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
 import { setStandingOn } from "../game/gameState/mutators/modifyStandingOn";
@@ -104,7 +104,7 @@ export const testCampaign = {
 } as const satisfies Campaign<TestCampaignRoomId>;
 
 export const mutatorsTestHarness = () => {
-  const gameState = initGameState({
+  const gameState = loadGameState({
     campaign: testCampaign,
     inputStateTracker: new MockInputStateTracker(),
   });

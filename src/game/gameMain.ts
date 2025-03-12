@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
 import { type Campaign } from "../model/modelTypes";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
-import { initGameState } from "./gameState/initGameState";
+import { loadGameState } from "./gameState/loadGameState";
 import type { GameApi } from "./GameApi";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 import { selectCurrentRoomState } from "./gameState/GameState";
@@ -38,7 +38,7 @@ export const gameMain = async <RoomId extends string>(
     },
   });
 
-  const gameState = initGameState({
+  const gameState = loadGameState({
     campaign,
     inputStateTracker,
   });

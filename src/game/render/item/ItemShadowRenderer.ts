@@ -108,8 +108,10 @@ export class ItemShadowRenderer<
     private pixiRenderer: PixiRenderer,
   ) {
     const {
-      userSettings: {
-        displaySettings: { showShadowMasks },
+      gameMenus: {
+        userSettings: {
+          displaySettings: { showShadowMasks },
+        },
       },
     } = store.getState();
 

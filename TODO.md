@@ -39,6 +39,10 @@
 ### ui
 [x] game ui colours when colourised from real palette (even if not close to original colours)
 
+### graphical
+use pixi render groups/layers etc to render outline when switching players in 
+front of other items
+
 ### mobile
 [ ] hitting hte joystick with a tap sometimes moves <1px
 

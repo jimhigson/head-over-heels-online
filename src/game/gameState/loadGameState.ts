@@ -40,7 +40,7 @@ export const startingRooms = <RoomId extends string>(
   return results as StartingRooms<RoomId>;
 };
 
-export const initGameState = <RoomId extends string>({
+export const loadGameState = <RoomId extends string>({
   campaign,
   inputStateTracker,
 }: {

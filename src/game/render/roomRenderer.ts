@@ -65,8 +65,10 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     pixiRenderer: PixiRenderer;
   }) {
     const {
-      userSettings: { displaySettings },
-      upscale,
+      gameMenus: {
+        userSettings: { displaySettings },
+        upscale,
+      },
     } = store.getState();
 
     this.#displaySettings = displaySettings;

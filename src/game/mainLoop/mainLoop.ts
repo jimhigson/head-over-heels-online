@@ -66,7 +66,9 @@ export class MainLoop<RoomId extends string> {
 
     const storeState = store.getState();
     const {
-      upscale: { gameEngineUpscale },
+      gameMenus: {
+        upscale: { gameEngineUpscale },
+      },
     } = storeState;
 
     app.stage.addChild(this.#worldContainer);
@@ -98,7 +100,9 @@ export class MainLoop<RoomId extends string> {
 
   #initFilters() {
     const {
-      userSettings: { displaySettings },
+      gameMenus: {
+        userSettings: { displaySettings },
+      },
     } = store.getState();
 
     this.#filtersWhenPaused = topLevelFilters(displaySettings, true);
@@ -109,8 +113,10 @@ export class MainLoop<RoomId extends string> {
     const tickState = store.getState();
     const isPaused = selectIsPaused(tickState);
     const {
-      userSettings: { displaySettings: tickDisplaySettings },
-      upscale: tickUpscale,
+      gameMenus: {
+        userSettings: { displaySettings: tickDisplaySettings },
+        upscale: tickUpscale,
+      },
     } = store.getState();
 
     const colouriseHud =

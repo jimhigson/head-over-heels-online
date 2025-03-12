@@ -1,4 +1,4 @@
-import { initGameState } from "../game/gameState/initGameState";
+import { loadGameState } from "../game/gameState/loadGameState";
 import type { RoomJson } from "../model/RoomJson";
 import { addPerimeterWallsToRoom } from "./addPerimeterWallsToRoom";
 import type { GameStateWithMockInput } from "./MockInputStateTracker";
@@ -71,7 +71,7 @@ export const basicGameState = ({
       }),
     },
   };
-  const gameState = initGameState<TestRoomId>({
+  const gameState = loadGameState<TestRoomId>({
     campaign,
     inputStateTracker: new MockInputStateTracker(),
   }) as GameStateWithMockInput;

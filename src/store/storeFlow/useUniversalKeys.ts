@@ -11,9 +11,11 @@ import { useEffect } from "react";
 
 export const useUniversalKeys = () => {
   const assigningKeys = useAppSelector(
-    (store) => store.assigningInput !== undefined,
+    (store) => store.gameMenus.assigningInput !== undefined,
   );
-  const menuOpen = useAppSelector((store) => store.openMenus.length > 0);
+  const menuOpen = useAppSelector(
+    (store) => store.gameMenus.openMenus.length > 0,
+  );
 
   useActionTap({
     action: "menu_openOrExit",

@@ -23,7 +23,9 @@ const isMarkdownPage = <D extends DialogId>(
 ): menuId is Extract<D, `markdown/${string}`> => menuId.startsWith("markdown/");
 
 export const Dialogs = (_emptyProps: EmptyObject) => {
-  const dialogId = useAppSelector((state) => state.openMenus.at(0)?.menuId);
+  const dialogId = useAppSelector(
+    (state) => state.gameMenus.openMenus.at(0)?.menuId,
+  );
 
   if (dialogId === undefined) {
     return null;

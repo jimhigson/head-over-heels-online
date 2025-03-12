@@ -206,7 +206,7 @@ export const itemAppearances: {
     // for store switches, ignore the switch's own state and read from the store:
     const setting =
       switchStoreConfig ?
-        getAtPath(store.getState(), switchStoreConfig.path) ? "right"
+        getAtPath(store.getState().gameMenus, switchStoreConfig.path) ? "right"
         : "left"
       : stateSetting;
 
@@ -402,7 +402,7 @@ export const itemAppearances: {
         new OutlineFilter({
           outlineColor: carryableOutlineColour,
           lowRes: false,
-          upscale: store.getState().upscale.gameEngineUpscale,
+          upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
         })
       : undefined;
 
@@ -440,7 +440,7 @@ export const itemAppearances: {
         new OutlineFilter({
           outlineColor: carryableOutlineColour,
           lowRes: false,
-          upscale: store.getState().upscale.gameEngineUpscale,
+          upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
         })
       : undefined;
 
@@ -480,7 +480,7 @@ export const itemAppearances: {
       highlighted ?
         new OutlineFilter({
           outlineColor: carryableOutlineColour,
-          upscale: store.getState().upscale.gameEngineUpscale,
+          upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
           // they might get pushed between pixels so can't skip the res
           lowRes: false,
         })

@@ -176,7 +176,7 @@ export const gameMenusSlice = createSlice({
       if (payload === undefined) {
         emulatedResolution = nextInCycle(
           resolutionNames,
-          selectEmulatedResolutionName(state),
+          selectEmulatedResolutionName({ gameMenus: state }),
         );
       } else {
         emulatedResolution = payload;
@@ -204,7 +204,7 @@ export const gameMenusSlice = createSlice({
     nextInputDirectionMode(state) {
       state.userSettings.inputDirectionMode = nextInCycle(
         inputDirectionModes,
-        selectInputDirectionMode(state),
+        selectInputDirectionMode({ gameMenus: state }),
       );
     },
     /** adds another input to the currently being assigned action */

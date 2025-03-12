@@ -1,9 +1,8 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { ValueOf } from "type-fest";
-import type { GameState } from "../../game/gameState/GameState";
-import type { GameMenusState } from "./gameMenusSlice";
 import type { CharacterName } from "../../model/modelTypes";
+import type { SavedGameState } from "../../game/gameState/SavedGameState";
 
 export type SerialisableCharacterRoom = {
   foo: "bar";
@@ -18,18 +17,16 @@ export type CharacterRooms = Partial<{
   [C in CharacterName]: SerialisableCharacterRoom;
 }>;
 
-export type SavedGame = {
-  screenshotBase64: string;
-  characterRooms: CharacterRooms;
-} & Pick<GameState<string>, "gameTime" | "pickupsCollected"> &
-  Pick<GameMenusState, "planetsLiberated" | "scrollsRead">;
-
-export type SavedGamesState = {
-  current?: SavedGame;
-  fishes: SavedGame[];
+export type SavedGamesSliceState = {
+  /**
+   * the current game is saved in case the game is closed and come back
+   * to later - eg mobile app is switched away from
+   */
+  current?: SavedGameState;
+  fishes: SavedGameState[];
 };
 
-export const initialSavedGameSliceState: SavedGamesState = {
+export const initialSavedGameSliceState: SavedGamesSliceState = {
   fishes: [],
 };
 
@@ -41,8 +38,11 @@ export const savedGamesSlice = createSlice({
   name: "savedGames",
   initialState: initialSavedGameSliceState,
   reducers: {
-    saveCurrent(state, { payload }: PayloadAction<SavedGame>) {
+    saveCurrent(state, { payload }: PayloadAction<SavedGameState>) {
       state.current = payload;
+    },
+    saveFish(state, { payload }: PayloadAction<SavedGameState>) {
+      state.fishes.push(payload);
     },
   },
 });

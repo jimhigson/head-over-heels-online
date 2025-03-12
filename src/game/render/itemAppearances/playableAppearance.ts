@@ -154,7 +154,7 @@ const applyFilters = (
       container,
       new OutlineFilter({
         outlineColor: accentColours[name],
-        upscale: store.getState().upscale.gameEngineUpscale,
+        upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
         // player can move between pixels:
         lowRes: false,
       }),
