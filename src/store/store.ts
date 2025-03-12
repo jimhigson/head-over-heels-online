@@ -74,7 +74,7 @@ const gameMenusPersistedReducer = persistReducer(
 export const store = configureStore({
   reducer: {
     [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
-    [savedGamesSlice.reducerPath]: gameMenusSlice.reducer,
+    [savedGamesSlice.reducerPath]: savedGamesSlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
