@@ -1,6 +1,5 @@
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import type { GameState } from "../../gameState/GameState";
 import type { MechanicResult } from "../MechanicResult";
 import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
@@ -65,8 +64,8 @@ export function moveLift<RoomId extends string, RoomItemId extends string>(
       position: { z },
     },
   }: ItemInPlay<"lift", RoomId, RoomItemId>,
-  _gameState: GameState<RoomId>,
-  _deltaMS: number,
+  // _gameState: GameState<RoomId>,
+  // _deltaMS: number,
 ): MechanicResult<"lift", RoomId, RoomItemId> {
   const lowestZ = bottom * blockHeight;
   const highestZ = top * blockHeight;

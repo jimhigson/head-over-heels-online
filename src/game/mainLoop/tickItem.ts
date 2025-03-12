@@ -100,7 +100,7 @@ function* itemMechanicResultGen<
   }
 
   if (isLift(item)) {
-    yield moveLift(item, room, gameState, deltaMS) as MechanicResult<
+    yield moveLift(item /*, room, gameState, deltaMS*/) as MechanicResult<
       T,
       RoomId,
       RoomItemId
