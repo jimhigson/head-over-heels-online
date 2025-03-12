@@ -279,7 +279,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             z: 0,
           },
           expires: null,
-          stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+          stoodOnBy: {} as StoodOnBy<RoomItemId>,
           disappear: null,
         },
         aabb: addXyz(

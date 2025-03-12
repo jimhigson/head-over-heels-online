@@ -117,12 +117,16 @@ export const handlePlayerTouchingPickup = <
       break;
 
     case "reincarnation": {
-      const savedGameState: SavedGameState = {
-        saveTime: Date.now(),
-        screenshotBase64: "IAMANIMAGE",
-        ...pick(gameState, ...savedGameGameStateFields),
-        ...pick(store.getState().gameMenus, ...savedGameGameMenuSliceFields),
-      };
+      // we stringify->parse (not structuredClone) because we want to
+      // explicitly find circular structures or non-serializable data
+      const savedGameState: SavedGameState = JSON.parse(
+        JSON.stringify({
+          saveTime: Date.now(),
+          screenshotBase64: "IAMANIMAGE",
+          ...pick(gameState, ...savedGameGameStateFields),
+          ...pick(store.getState().gameMenus, ...savedGameGameMenuSliceFields),
+        }),
+      );
       console.log("fish is saving", savedGameState);
       store.dispatch(saveFish(savedGameState));
       break;
