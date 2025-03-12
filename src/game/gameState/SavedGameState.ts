@@ -1,5 +1,8 @@
 import type { SimplifyDeep } from "type-fest";
-import type { GameMenusState } from "../../store/slices/gameMenusSlice";
+import type {
+  gameMenusSlice,
+  GameMenusState,
+} from "../../store/slices/gameMenusSlice";
 import type { GameState } from "./GameState";
 
 /**
@@ -23,10 +26,14 @@ export const savedGameGameMenuSliceFields = [
   "scrollsRead",
 ] as const;
 
-export type SavedGameState = SimplifyDeep<
-  {
-    saveTime: number;
-    screenshotBase64: string;
-  } & Pick<GameState<string>, (typeof savedGameGameStateFields)[number]> &
-    Pick<GameMenusState, (typeof savedGameGameMenuSliceFields)[number]>
->;
+export type SavedGameState = SimplifyDeep<{
+  saveTime: number;
+  screenshotBase64: string;
+  gameState: Pick<GameState<string>, (typeof savedGameGameStateFields)[number]>;
+  store: {
+    [gameMenusSlice.reducerPath]: Pick<
+      GameMenusState,
+      (typeof savedGameGameMenuSliceFields)[number]
+    >;
+  };
+}>;

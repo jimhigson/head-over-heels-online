@@ -18,10 +18,13 @@ export const selectCurrentRoomState = <RoomId extends string>(
 
 export type RoomPickupsCollected = Record<string, true>;
 
-export type PickupsCollected<RoomId extends string> = Record<
-  RoomId,
-  RoomPickupsCollected
->;
+export type PickupsCollected<RoomId extends string> = {
+  /**
+   * optional for each room - if no entry for the room, is considered that nothing is
+   * picked up (keeps the save state size a bit more manageable)
+   */
+  [R in RoomId]?: RoomPickupsCollected;
+};
 
 type CharacterRooms<RoomId extends string> =
   /**

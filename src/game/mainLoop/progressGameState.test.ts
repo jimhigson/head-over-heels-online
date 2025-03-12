@@ -71,7 +71,7 @@ describe("pickups", () => {
 
     // should have recorded collecting the pickup:
     expect(
-      gameState.pickupsCollected[firstRoomId]["pickupTwoSquaresFromHead"],
+      gameState.pickupsCollected[firstRoomId]?.["pickupTwoSquaresFromHead"],
     ).toBe(true);
     // the pickup should have disappeared:
     expect(
@@ -81,7 +81,7 @@ describe("pickups", () => {
 
     // but not this one (included as a control):
     expect(
-      gameState.pickupsCollected[firstRoomId][
+      gameState.pickupsCollected[firstRoomId]?.[
         "pickupCharactersWillNotGetInThisTest"
       ],
     ).toBeFalsy();
@@ -144,7 +144,7 @@ describe("pickups", () => {
     });
 
     // should have recorded collecting the pickup:
-    expect(gameState.pickupsCollected[firstRoomId]["pickupOnTheFloor"]).toBe(
+    expect(gameState.pickupsCollected[firstRoomId]?.["pickupOnTheFloor"]).toBe(
       true,
     );
     // the pickup should have disappeared:
@@ -178,7 +178,7 @@ describe("pickups", () => {
     playGameThrough(gameState);
 
     // should have collected the pickup:
-    expect(gameState.pickupsCollected[firstRoomId]["pickupAboveHeels"]).toBe(
+    expect(gameState.pickupsCollected[firstRoomId]?.["pickupAboveHeels"]).toBe(
       true,
     );
     expect(heelsState(gameState).lives).toBe(10);

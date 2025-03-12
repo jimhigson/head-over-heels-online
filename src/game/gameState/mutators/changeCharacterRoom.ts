@@ -31,6 +31,7 @@ import {
   type RoomState,
 } from "../../../model/RoomState";
 import type { RoomJson } from "../../../model/RoomJson";
+import { emptyObject } from "../../../utils/empty";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -245,10 +246,10 @@ export const changeCharacterRoom = <
     otherCharacterLoadedRoom?.id === toRoomId ?
       otherCharacterLoadedRoom
       // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
-    : (loadRoom(toRoomJson, gameState.pickupsCollected[toRoomId]) as RoomState<
-        RoomId,
-        RoomItemId
-      >);
+    : (loadRoom(
+        toRoomJson,
+        gameState.pickupsCollected[toRoomId] ?? emptyObject,
+      ) as RoomState<RoomId, RoomItemId>);
 
   // take the character out of the previous room:
   deleteItemFromRoom({ room: leavingRoom, item: playableItem });

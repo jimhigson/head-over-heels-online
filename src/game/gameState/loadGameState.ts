@@ -4,10 +4,10 @@ import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
 import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
-import { fromAllEntries } from "../../utils/entries";
 import type { GameState, PickupsCollected } from "./GameState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import { playablesInRoom } from "../../model/RoomState";
+import { emptyObject } from "../../utils/empty";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -49,20 +49,22 @@ export const loadGameState = <RoomId extends string>({
 }): GameState<RoomId> => {
   const starts = startingRooms(campaign);
 
-  const pickupsCollected = fromAllEntries(
-    Object.keys(campaign.rooms).map((roomId) => [roomId, {}]),
-  ) as PickupsCollected<RoomId>;
+  const pickupsCollected = {} as PickupsCollected<RoomId>;
 
   const headRoom =
     starts.head &&
-    loadRoom(campaign.rooms[starts.head], pickupsCollected[starts.head], true);
+    loadRoom(
+      campaign.rooms[starts.head],
+      pickupsCollected[starts.head] ?? emptyObject,
+      true,
+    );
   const heelsRoom =
     starts.heels === starts.head ?
       headRoom
     : starts.heels &&
       loadRoom(
         campaign.rooms[starts.heels],
-        pickupsCollected[starts.heels],
+        pickupsCollected[starts.heels] ?? emptyObject,
         true,
       );
 

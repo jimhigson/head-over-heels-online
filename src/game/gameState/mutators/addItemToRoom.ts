@@ -11,6 +11,7 @@ import { originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../GameState";
 import { loadItemFromJson } from "../loadRoom/loadItem";
 import type { RoomState } from "../../../model/RoomState";
+import { emptyObject } from "../../../utils/empty";
 
 let i = 0;
 
@@ -43,7 +44,7 @@ export const addItemFromJsonToRoom = <
       itemId,
       itemJson as JsonItemUnion<RoomId>,
       room.roomJson,
-      gameState.pickupsCollected[room.id],
+      gameState.pickupsCollected[room.id] ?? emptyObject,
     ),
   );
   if (item === undefined) {

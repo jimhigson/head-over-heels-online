@@ -36,17 +36,17 @@ export const handlePlayerTouchingPickup = <
     touchedItem: pickup,
     room: { id: roomId },
   } = e;
+  const { pickupsCollected } = gameState;
 
-  if (gameState.pickupsCollected[roomId][pickup.id] === true) {
+  if (pickupsCollected[roomId]?.[pickup.id] === true) {
     // ignore already picked up items
     return;
   }
 
-  const roomPickupCollections = gameState.pickupsCollected[roomId] as Record<
-    string,
-    true
-  >;
-  roomPickupCollections[pickup.id] = true;
+  if (pickupsCollected[roomId] === undefined) {
+    pickupsCollected[roomId] = {};
+  }
+  pickupsCollected[roomId][pickup.id] = true;
 
   switch (pickup.config.gives) {
     case "hooter": {
@@ -123,9 +123,14 @@ export const handlePlayerTouchingPickup = <
         JSON.stringify({
           saveTime: Date.now(),
           screenshotBase64: "IAMANIMAGE",
-          ...pick(gameState, ...savedGameGameStateFields),
-          ...pick(store.getState().gameMenus, ...savedGameGameMenuSliceFields),
-        }),
+          gameState: pick(gameState, ...savedGameGameStateFields),
+          store: {
+            gameMenus: pick(
+              store.getState().gameMenus,
+              ...savedGameGameMenuSliceFields,
+            ),
+          },
+        } satisfies SavedGameState),
       );
       console.log("fish is saving", savedGameState);
       store.dispatch(saveFish(savedGameState));

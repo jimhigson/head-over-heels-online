@@ -20,6 +20,7 @@ import { collision1to1 } from "../../collision/aabbCollision";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 import { gameOver } from "../../../store/slices/gameMenusSlice";
+import { emptyObject } from "../../../utils/empty";
 
 export const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -136,7 +137,7 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
 
   const reloadedRoom = loadRoom(
     campaign.rooms[roomId],
-    gameState.pickupsCollected[roomId],
+    gameState.pickupsCollected[roomId] ?? emptyObject,
   );
   for (const playableItem of playableItems) {
     addItemToRoom({ room: reloadedRoom, item: playableItem });
