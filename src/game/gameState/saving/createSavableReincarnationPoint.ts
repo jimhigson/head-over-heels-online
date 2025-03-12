@@ -7,7 +7,7 @@ import {
   type SavedGameState,
 } from "./SavedGameState";
 
-export const saveReincarnationPoint = <RoomId extends string>(
+export const createSavableReincarnationPoint = <RoomId extends string>(
   gameState: GameState<RoomId>,
   storeState: RootState,
 ) => {
@@ -24,5 +24,5 @@ export const saveReincarnationPoint = <RoomId extends string>(
     } satisfies SavedGameState),
   );
 
-  gameState.reincarnationPoint = reincarnationPoint;
+  return reincarnationPoint;
 };

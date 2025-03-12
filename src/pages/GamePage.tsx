@@ -155,8 +155,8 @@ export const GamePage = () => {
         className="origin-top-left"
         ref={setGameDiv}
       />
-      <ConnectInputToStore />
       <GameApiProvider gameApi={gameApi}>
+        <ConnectInputToStore />
         <Dialogs />
         {gameApi && cheatsOn && (
           <Suspense fallback={null}>

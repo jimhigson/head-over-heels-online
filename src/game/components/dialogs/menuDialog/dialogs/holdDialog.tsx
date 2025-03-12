@@ -7,7 +7,7 @@ import { DialogPortal } from "../../../../../ui/DialogPortal";
 export const HoldDialog = () => {
   return (
     <DialogPortal>
-      <Dialog className="!h-min !w-max text-center text-zxBlue p-0">
+      <Dialog className="!h-min !w-max text-center text-zxBlue p-0 bg-transparent">
         <BitmapText className="block w-min mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix">
           hold
         </BitmapText>

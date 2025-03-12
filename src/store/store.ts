@@ -18,6 +18,7 @@ import {
   persistStore,
   createMigrate,
 } from "redux-persist";
+import type { SavedGamesSliceState } from "./slices/savedGamesSlice";
 import { savedGamesSlice } from "./slices/savedGamesSlice";
 
 /**
@@ -63,7 +64,15 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
     { debug: true },
   ),
   storage,
+  // this really says that userSettings should be its own slice, not tacked onto gameMenus!
   whitelist: [`userSettings` satisfies keyof GameMenusState],
+};
+
+const savedGamesSlicePersistConfig: PersistConfig<SavedGamesSliceState> = {
+  key: "hohol/savedGames",
+  version: 1,
+  migrate: createMigrate({}, { debug: true }),
+  storage,
 };
 
 const gameMenusPersistedReducer = persistReducer(
@@ -71,10 +80,15 @@ const gameMenusPersistedReducer = persistReducer(
   gameMenusSlice.reducer,
 );
 
+const gameSavePersistReducer = persistReducer(
+  savedGamesSlicePersistConfig,
+  savedGamesSlice.reducer,
+);
+
 export const store = configureStore({
   reducer: {
     [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
-    [savedGamesSlice.reducerPath]: savedGamesSlice.reducer,
+    [savedGamesSlice.reducerPath]: gameSavePersistReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

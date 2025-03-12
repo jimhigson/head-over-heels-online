@@ -5,10 +5,11 @@ import type { SavedGameState } from "../../game/gameState/saving/SavedGameState"
 
 export type SavedGamesSliceState = {
   /**
-   * the current game is saved in case the game is closed and come back
-   * to later - eg mobile app is switched away from
+   * the current game, saved in case the game is closed and come back
+   * to later - eg mobile app is switched away from, or the user switches
+   * to another tab
    */
-  current?: SavedGameState;
+  stateOnExit?: SavedGameState;
 };
 
 export const initialSavedGameSliceState: SavedGamesSliceState = {};
@@ -21,8 +22,8 @@ export const savedGamesSlice = createSlice({
   name: "savedGames",
   initialState: initialSavedGameSliceState,
   reducers: {
-    saveCurrent(state, { payload }: PayloadAction<SavedGameState>) {
-      state.current = payload;
+    saveStateOnExit(state, { payload }: PayloadAction<SavedGameState>) {
+      state.stateOnExit = payload;
     },
   },
 });
@@ -35,6 +36,6 @@ export type SavedGamesSliceActionCreator = ValueOf<
   typeof savedGamesSlice.actions
 >;
 
-export const { saveCurrent } = savedGamesSlice.actions;
+export const { saveStateOnExit } = savedGamesSlice.actions;
 
 export const savedGamesSliceActions = savedGamesSlice.actions;
