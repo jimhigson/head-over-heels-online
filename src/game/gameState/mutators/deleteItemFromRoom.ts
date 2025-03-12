@@ -17,13 +17,6 @@ export const deleteItemFromRoom = <
   const item =
     typeof itemParam === "string" ? room.items[itemParam] : itemParam;
 
-  if (typeof itemParam === "string") {
-    delete room.items[itemParam];
-  } else {
-    type K = keyof typeof room.items;
-    delete room.items[item.id as K];
-  }
-
   // whatever the deleted item was standing on, it aim't no more:
   if (isFreeItem(item)) {
     removeStandingOn(item, room);
@@ -31,5 +24,12 @@ export const deleteItemFromRoom = <
   // and nothing can be stood on us either:
   for (const standerOn of iterateStoodOnByItems(item.state.stoodOnBy, room)) {
     removeStandingOn(standerOn, room);
+  }
+
+  if (typeof itemParam === "string") {
+    delete room.items[itemParam];
+  } else {
+    type K = keyof typeof room.items;
+    delete room.items[item.id as K];
   }
 };

@@ -31,7 +31,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     position: positionCentredInBlock(jsonItem as JsonItemUnion),
     ...(free ?
       {
-        standingOn: null,
+        standingOnItemId: null,
         vels: {
           gravity: originXyz,
           movingFloor: originXyz,
