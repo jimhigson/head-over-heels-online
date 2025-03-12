@@ -62,6 +62,15 @@ const stationaryLift: MechanicResult<"lift", string, string> = {
   vels: { lift: { x: 0, y: 0, z: 0 } },
 };
 
+const hasHeavyLoad = <RoomId extends string, RoomItemId extends string>(
+  stoodOnBy: Set<RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
+) =>
+  // stepStool is the only item heavy enough to stop lifts - this is needed for blacktooth 78
+  iterateStoodOnByItems(stoodOnBy, room).some(
+    (i) => isMovableBlock(i) && i.config.style === "stepStool",
+  );
+
 /**
  * walking, but also gliding and changing direction mid-air
  */
@@ -78,12 +87,14 @@ export function moveLift<RoomId extends string, RoomItemId extends string>(
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): MechanicResult<"lift", RoomId, RoomItemId> {
-  // stepStool is the only item heavy enough to stop lifts - this is needed for blacktooth 78
-  const hasHeavyLoad = iterateStoodOnByItems(stoodOnBy, room).some(
-    (i) => isMovableBlock(i) && i.config.style === "stepStool",
+  console.log(
+    "moving lift - it is stood on by",
+    stoodOnBy,
+    "hasHeavyLoad",
+    hasHeavyLoad(stoodOnBy, room),
   );
 
-  if (hasHeavyLoad) {
+  if (direction === "up" && hasHeavyLoad(stoodOnBy, room)) {
     return stationaryLift as MechanicResult<"lift", RoomId, RoomItemId>;
   }
 
