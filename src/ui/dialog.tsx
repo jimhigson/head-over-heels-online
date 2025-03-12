@@ -13,7 +13,7 @@ export type DialogProps = {
 
 export const Dialog = ({ children, className, onClick }: DialogProps) => {
   return (
-    <div
+    <dialog
       className={twMerge(
         // pr-0: put scroll bar on menu items up against the edge of the dialog
         "p-1 pr-0 fixed left-[50%] z-dialog top-[50%] translate-y-[-50%] translate-x-[-50%] h-zx w-zx leading-none flex flex-col gap-y-1 " +
@@ -26,6 +26,6 @@ export const Dialog = ({ children, className, onClick }: DialogProps) => {
       onClick={onClick}
     >
       {children}
-    </div>
+    </dialog>
   );
 };

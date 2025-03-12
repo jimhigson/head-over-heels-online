@@ -21,6 +21,7 @@ import { itemAppearances } from "../itemAppearances/ItemAppearances";
 import type { SetRequired } from "type-fest";
 import type { ItemAppearanceWithKnownRoomId } from "../itemAppearances/ItemAppearance";
 import type { RoomState } from "../../../model/RoomState";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
@@ -55,7 +56,7 @@ export const createItemRenderer = <
   gameState,
   pixiRenderer,
 }: {
-  item: ItemInPlay<T, RoomId, RoomItemId>;
+  item: ItemTypeUnion<T, RoomId, RoomItemId>;
   room: RoomState<RoomId, RoomItemId>;
   gameState: GameState<RoomId>;
   pixiRenderer: PixiRenderer;

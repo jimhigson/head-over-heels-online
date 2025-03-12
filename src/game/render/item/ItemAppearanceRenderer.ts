@@ -1,7 +1,8 @@
-import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import type { ItemRenderProps } from "../itemAppearances/ItemRenderProps";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import type { ItemRenderContext } from "../Renderer";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 
 /** specialise appearance renderer (in types only) to handle (specifically) Items more conveniently */
 export class ItemAppearanceRenderer<
@@ -9,7 +10,7 @@ export class ItemAppearanceRenderer<
   RoomId extends string,
   RoomItemId extends string,
 > extends AppearanceRenderer<
-  ItemInPlay<T, RoomId, RoomItemId>,
+  ItemTypeUnion<T, RoomId, RoomItemId>,
   ItemRenderProps<T>,
   RoomId,
   ItemRenderContext<RoomId, RoomItemId>
