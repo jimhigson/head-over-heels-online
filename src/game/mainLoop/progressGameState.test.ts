@@ -1039,7 +1039,7 @@ describe("lifts", () => {
           position: { x: 5, y: 5, z: 0 },
           config: {
             bottom: 0,
-            top: defaultRoomHeightBlocks,
+            top: 5,
           },
         },
         heavyBlock: {
@@ -1051,16 +1051,48 @@ describe("lifts", () => {
     });
 
     playGameThrough(gameState, {
-      until: 5_000,
+      until: 1_000,
     });
 
-    expect(itemState(gameState, "lift")!.position.z).toBe(0);
+    expect(itemState(gameState, "lift")!.position.z).toBeCloseTo(0);
     expect(heelsState(gameState).position.z).toEqual(blockSizePx.h * 2);
     expect(heelsState(gameState).standingOnItemId).toEqual("heavyBlock");
   });
 });
 
-describe("carrying", () => {});
+describe("carrying", () => {
+  test("heels can pick up a cube", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 5, y: 5, z: 1 },
+          config: {
+            which: "heels",
+          },
+        },
+        portable: {
+          type: "portableBlock",
+          position: { x: 5, y: 5, z: 0 },
+          config: {
+            style: "cube",
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      until(gameState) {
+        return heelsState(gameState).carrying === null;
+      },
+      frameCallbacks(gameState) {
+        if (heelsState(gameState).carrying === null) {
+          gameState.inputStateTracker.mockPressing("carry");
+        }
+      },
+    });
+  });
+});
 
 describe("pushing", () => {
   const withBlockToPush: BasicGameStateOptions = {
