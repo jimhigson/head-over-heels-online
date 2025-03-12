@@ -6,6 +6,7 @@ import type { GameMenusState } from "./gameMenusSlice";
 import type { CharacterName } from "../../model/modelTypes";
 
 export type SerialisableCharacterRoom = {
+  foo: "bar";
   // non-serialisable in items state we have:
   // * standingOn (free item state)
   // * stoodOnBy (base item state)
@@ -40,7 +41,9 @@ export const savedGamesSlice = createSlice({
   name: "savedGames",
   initialState: initialSavedGameSliceState,
   reducers: {
-    saveCurrent(state, action: PayloadAction<SavedGame>) {},
+    saveCurrent(state, { payload }: PayloadAction<SavedGame>) {
+      state.current = payload;
+    },
   },
 });
 
