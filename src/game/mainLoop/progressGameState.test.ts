@@ -247,9 +247,7 @@ describe("jumping", () => {
           },
         ],
       });
-      expect(headState(gameState).standingOnItemId).toMatchObject({
-        id: "lowerBlock",
-      });
+      expect(headState(gameState).standingOnItemId).toEqual("lowerBlock");
     },
   );
 
@@ -289,9 +287,7 @@ describe("jumping", () => {
         frameCallbacks: stopJumpingAMomentAfterStartingPlay,
       });
 
-      expect(headState(gameState).standingOnItemId).toMatchObject({
-        id: "highBlock",
-      });
+      expect(headState(gameState).standingOnItemId).toEqual("highBlock");
     },
   );
 
@@ -348,9 +344,7 @@ describe("jumping", () => {
         ],
       });
       expect(headState(gameState).position.z).toBe(0);
-      expect(headState(gameState).standingOnItemId).toMatchObject({
-        id: "floor",
-      });
+      expect(headState(gameState).standingOnItemId).toEqual("floor");
     },
   );
 });
@@ -660,9 +654,7 @@ describe("conveyors", () => {
       items: { portableBlock },
     } = selectCurrentRoomState(gameState)!;
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
-    expect(heelsState(gameState).standingOnItemId).toMatchObject({
-      id: "floor",
-    });
+    expect(heelsState(gameState).standingOnItemId).toEqual("floor");
     expect(heelsState(gameState).position).toEqual({
       x: 1,
       y: blockSizePx.d,
@@ -672,7 +664,7 @@ describe("conveyors", () => {
     // the block should have also moved on the conveyor, and now be on heels:
     expect(
       (portableBlock as ItemInPlay<"portableBlock">).state.standingOnItemId,
-    ).toMatchObject({ id: "heels" });
+    ).toEqual("heels");
     expect(portableBlock?.state.position).toEqual({
       x: 2,
       y: blockSizePx.d,
@@ -846,7 +838,7 @@ describe("lifts", () => {
     });
 
     expect(heelsStandingOnPerFrame).toMatchObject(
-      new Array(heelsStandingOnPerFrame.length).fill({ id: "lift" }),
+      new Array(heelsStandingOnPerFrame.length).fill("lift"),
     );
   });
 
@@ -940,9 +932,7 @@ describe("lifts", () => {
 
     // heels is now in the above room and standing on the landing
     expect(gameState.characterRooms.heels?.id).toEqual("secondRoom");
-    expect(heelsState(gameState).standingOnItemId).toMatchObject({
-      id: "landing",
-    });
+    expect(heelsState(gameState).standingOnItemId).toEqual("landing");
   });
 
   test("player partially on lift can be deposited and picked up", () => {
@@ -1031,12 +1021,10 @@ describe("lifts", () => {
     });
 
     expect(heelsState(gameState).position.z).toBe(blockSizePx.h * 2);
-    expect(heelsState(gameState).standingOnItemId).toMatchObject({
-      id: "lift",
-    });
+    expect(heelsState(gameState).standingOnItemId).toEqual("lift");
   });
 
-  test("lift does not move if a heavy item is on it", () => {
+  test("lift does not move if a heavy item is on it (blacktooth 78)", () => {
     const gameState = basicGameState({
       firstRoomItems: {
         heels: {
@@ -1066,12 +1054,13 @@ describe("lifts", () => {
       until: 5_000,
     });
 
-    expect(heelsState(gameState).position.z).toBe(blockSizePx.h * 2);
-    expect(heelsState(gameState).standingOnItemId).toMatchObject({
-      id: "heavyBlock",
-    });
+    expect(itemState(gameState, "lift")!.position.z).toBe(0);
+    expect(heelsState(gameState).position.z).toEqual(blockSizePx.h * 2);
+    expect(heelsState(gameState).standingOnItemId).toEqual("heavyBlock");
   });
 });
+
+describe("carrying", () => {});
 
 describe("pushing", () => {
   const withBlockToPush: BasicGameStateOptions = {
