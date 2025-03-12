@@ -12,7 +12,7 @@ export const removeStandingOn = <
 ) => {
   if (item.state.standingOnItemId !== null) {
     const standingOn = stoodOnItem(item.state.standingOnItemId, room);
-    standingOn.state.stoodOnBy.delete(item.id);
+    delete standingOn.state.stoodOnBy[item.id];
     item.state.standingOnItemId = null;
   }
 };
@@ -27,5 +27,5 @@ export const setStandingOn = <
   below: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 }) => {
   above.state.standingOnItemId = below.id;
-  below.state.stoodOnBy.add(above.id);
+  below.state.stoodOnBy[above.id] = true;
 };

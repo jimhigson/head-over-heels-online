@@ -34,7 +34,7 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
           "\nposition",
           `(${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
           "\nstoodOnBy:",
-          [...item.state.stoodOnBy],
+          Object.keys(item.state.stoodOnBy),
           "\nstandingOn:",
           isFreeItem(item) ?
             item.state.standingOnItemId

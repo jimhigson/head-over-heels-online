@@ -86,6 +86,13 @@ export const room = inferRoomJson({
       position: { x: 8, y: 5, z: 0 },
       type: "wall",
     },
+    "debug": {
+      config: {
+        gives: 'reincarnation'
+      },
+      position: { x: 7, y: 7, z: 0 },
+      type: "pickup",
+    },
   },
   planet: "jail",
   size: { x: 8, y: 8 },

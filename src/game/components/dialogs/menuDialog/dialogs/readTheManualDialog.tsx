@@ -7,7 +7,7 @@ import {
   goToSubmenu,
 } from "../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
-import { keys } from "../../../../../utils/entries";
+import { keysIter } from "../../../../../utils/entries";
 import { iterate } from "../../../../../utils/iterate";
 import { BitmapText } from "../../../Sprite";
 import { MenuItem } from "../MenuItem";
@@ -75,7 +75,7 @@ export const ReadTheManualDialog = () => {
           </h1>
           <MenuItems>
             {[
-              ...iterate(keys(manualPages)).map((pageName) => {
+              ...iterate(keysIter(manualPages)).map((pageName) => {
                 return <MarkdownMenuItem key={pageName} pageName={pageName} />;
               }),
             ]}

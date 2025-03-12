@@ -1,4 +1,5 @@
 import type { BaseItemState } from "../../../model/ItemInPlay";
+import type { StoodOnBy } from "src/model/StoodOnBy";
 import type { FreeItemState } from "../../../model/ItemStateMap";
 import type { JsonItemUnion, JsonItemType } from "../../../model/json/JsonItem";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -9,7 +10,7 @@ import { positionCentredInBlock } from "./positionCentredInBlock";
 export const defaultBaseState = <RoomItemId extends string>() =>
   ({
     expires: null,
-    stoodOnBy: new Set<RoomItemId>(),
+    stoodOnBy: {} as StoodOnBy<RoomItemId>,
     disappear: null,
   }) satisfies Partial<BaseItemState>;
 

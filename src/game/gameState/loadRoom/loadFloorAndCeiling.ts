@@ -1,5 +1,6 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { StoodOnBy } from "src/model/StoodOnBy";
 import type { RoomJson } from "../../../model/RoomJson";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -77,7 +78,7 @@ export function* loadFloorAndCeiling<
         state: {
           position: roomExtendedPosition,
           expires: null,
-          stoodOnBy: new Set(),
+          stoodOnBy: {} as StoodOnBy<RoomItemId>,
           disappear: null,
         },
         renders: true,
@@ -108,7 +109,7 @@ export function* loadFloorAndCeiling<
         state: {
           position: floorPosition,
           expires: null,
-          stoodOnBy: new Set(),
+          stoodOnBy: {} as StoodOnBy<RoomItemId>,
           disappear: null,
         },
         renders: false,
@@ -129,7 +130,7 @@ export function* loadFloorAndCeiling<
         state: {
           position: roomExtendedPosition,
           expires: null,
-          stoodOnBy: new Set(),
+          stoodOnBy: {} as StoodOnBy<RoomItemId>,
           disappear: null,
         },
         renders: true,
@@ -166,7 +167,7 @@ export function* loadFloorAndCeiling<
         state: {
           position: ceilingPosition,
           expires: null,
-          stoodOnBy: new Set(),
+          stoodOnBy: {} as StoodOnBy<RoomItemId>,
           disappear: null,
         },
         renders: false,

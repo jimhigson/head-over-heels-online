@@ -31,6 +31,7 @@ import { getAtPath } from "../../../utils/getAtPath";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import { monsterAppearance } from "./monsterAppearance";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { stoodOnByCount } from "../../../model/StoodOnBy";
 
 const blockTextureId = (
   isDark: boolean,
@@ -231,7 +232,7 @@ export const itemAppearances: {
     },
     currentlyRenderedProps,
   }) {
-    const moving = stoodOnBy.size > 0;
+    const moving = stoodOnByCount(stoodOnBy) > 0;
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -421,7 +422,7 @@ export const itemAppearances: {
     },
     currentlyRenderedProps,
   }) {
-    const compressed = stoodOnBy.size > 0;
+    const compressed = stoodOnByCount(stoodOnBy) > 0;
 
     const render =
       currentlyRenderedProps === undefined ||

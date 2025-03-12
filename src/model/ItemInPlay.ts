@@ -5,6 +5,7 @@ import type { Aabb, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CharacterName } from "./modelTypes";
+import type { StoodOnBy } from "./StoodOnBy";
 
 /** types of items in-game (as opposed to in the json) - there are a few extra types */
 export type ItemInPlayType =
@@ -77,7 +78,7 @@ export type BaseItemState<RoomItemId extends string = string> = {
    * ids of items stood on by this item
    * - these are ids, not object references to maintain serialisability
    */
-  stoodOnBy: Set<RoomItemId>;
+  stoodOnBy: StoodOnBy<RoomItemId>;
 
   disappear: Disappear;
 };

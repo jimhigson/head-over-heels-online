@@ -1,6 +1,5 @@
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { emptySet } from "../../../utils/empty";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import {
   addXyz,
@@ -13,6 +12,8 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { multiplyBoundingBox } from "../../collision/boundingBoxes";
 import type { RoomJson } from "../../../model/RoomJson";
+import type { StoodOnBy } from "../../../model/StoodOnBy";
+import { emptyObject } from "../../../utils/empty";
 
 const wallRenderHeight = 50;
 
@@ -87,7 +88,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
       ),
     state: {
       position: blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
-      stoodOnBy: emptySet,
+      stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       expires: null,
       disappear: null,
     },

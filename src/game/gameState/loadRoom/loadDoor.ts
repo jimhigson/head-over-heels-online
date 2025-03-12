@@ -1,8 +1,8 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import type { StoodOnBy } from "src/model/StoodOnBy";
 import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { emptySet } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import {
@@ -15,6 +15,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { emptyObject } from "../../../utils/empty";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
@@ -87,7 +88,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           ),
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       aabb: addXyz(
@@ -116,7 +117,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
@@ -153,7 +154,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           },
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       aabb: addXyz(
@@ -188,7 +189,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           },
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       aabb: blockXyzToFineXyz({
@@ -230,7 +231,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           { [axis]: nearPostWidthInAxis },
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       aabb: {
@@ -278,7 +279,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             z: 0,
           },
           expires: null,
-          stoodOnBy: new Set(),
+          stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
           disappear: null,
         },
         aabb: addXyz(
@@ -298,7 +299,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         subXyz(position, scaleXyz(unitVectors[direction], 0.75)),
       ),
       expires: null,
-      stoodOnBy: emptySet,
+      stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       disappear: null,
     },
   };

@@ -1,5 +1,6 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { StoodOnBy } from "src/model/StoodOnBy";
 import type { RoomState } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
@@ -63,7 +64,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
         },
         disappear: "onTouch",
         expires: null,
-        stoodOnBy: new Set(),
+        stoodOnBy: {} as StoodOnBy<RoomItemId>,
       },
     };
 

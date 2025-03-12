@@ -4,11 +4,18 @@ import {
   crownCollected,
   scrollRead,
 } from "../../../store/slices/gameMenusSlice";
+import { saveFish } from "../../../store/slices/savedGamesSlice";
 import { store } from "../../../store/store";
+import { pick } from "../../../utils/pick";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import {
+  savedGameGameMenuSliceFields,
+  savedGameGameStateFields,
+  type SavedGameState,
+} from "../../gameState/SavedGameState";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
@@ -109,9 +116,17 @@ export const handlePlayerTouchingPickup = <
       store.dispatch(scrollRead(pickup.config.page));
       break;
 
-    case "reincarnation":
-      //TODO:
+    case "reincarnation": {
+      const savedGameState: SavedGameState = {
+        saveTime: Date.now(),
+        screenshotBase64: "IAMANIMAGE",
+        ...pick(gameState, ...savedGameGameStateFields),
+        ...pick(store.getState().gameMenus, ...savedGameGameMenuSliceFields),
+      };
+      console.log("fish is saving", savedGameState);
+      store.dispatch(saveFish(savedGameState));
       break;
+    }
 
     case "crown": {
       // a little experiment- let's go straight to the store, even though
