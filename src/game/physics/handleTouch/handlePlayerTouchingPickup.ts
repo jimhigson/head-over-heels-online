@@ -4,18 +4,12 @@ import {
   crownCollected,
   scrollRead,
 } from "../../../store/slices/gameMenusSlice";
-import { saveFish } from "../../../store/slices/savedGamesSlice";
 import { store } from "../../../store/store";
-import { pick } from "../../../utils/pick";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import {
-  savedGameGameMenuSliceFields,
-  savedGameGameStateFields,
-  type SavedGameState,
-} from "../../gameState/SavedGameState";
+import { saveReincarnationPoint } from "../../gameState/saving/saveReincarnationPoint";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
@@ -117,23 +111,7 @@ export const handlePlayerTouchingPickup = <
       break;
 
     case "reincarnation": {
-      // we stringify->parse (not structuredClone) because we want to
-      // explicitly find circular structures or non-serializable data
-      const savedGameState: SavedGameState = JSON.parse(
-        JSON.stringify({
-          saveTime: Date.now(),
-          screenshotBase64: "IAMANIMAGE",
-          gameState: pick(gameState, ...savedGameGameStateFields),
-          store: {
-            gameMenus: pick(
-              store.getState().gameMenus,
-              ...savedGameGameMenuSliceFields,
-            ),
-          },
-        } satisfies SavedGameState),
-      );
-      console.log("fish is saving", savedGameState);
-      store.dispatch(saveFish(savedGameState));
+      saveReincarnationPoint(gameState, store.getState());
       break;
     }
 

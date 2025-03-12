@@ -2,8 +2,8 @@ import type { SimplifyDeep } from "type-fest";
 import type {
   gameMenusSlice,
   GameMenusState,
-} from "../../store/slices/gameMenusSlice";
-import type { GameState } from "./GameState";
+} from "../../../store/slices/gameMenusSlice";
+import type { GameState } from "../GameState";
 
 /**
  * the fields from the game state that are serialised for a saved game
@@ -15,6 +15,7 @@ export const savedGameGameStateFields = [
   "gameTime",
   "pickupsCollected",
   "previousPlayable",
+  "reincarnationPoint",
 ] as const;
 
 /**

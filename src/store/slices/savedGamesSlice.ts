@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { ValueOf } from "type-fest";
-import type { SavedGameState } from "../../game/gameState/SavedGameState";
+import type { SavedGameState } from "../../game/gameState/saving/SavedGameState";
 
 export type SavedGamesSliceState = {
   /**
@@ -9,12 +9,9 @@ export type SavedGamesSliceState = {
    * to later - eg mobile app is switched away from
    */
   current?: SavedGameState;
-  fishes: SavedGameState[];
 };
 
-export const initialSavedGameSliceState: SavedGamesSliceState = {
-  fishes: [],
-};
+export const initialSavedGameSliceState: SavedGamesSliceState = {};
 
 /**
  * a slice for all the state that is controlled in react-land
@@ -27,9 +24,6 @@ export const savedGamesSlice = createSlice({
     saveCurrent(state, { payload }: PayloadAction<SavedGameState>) {
       state.current = payload;
     },
-    saveFish(state, { payload }: PayloadAction<SavedGameState>) {
-      state.fishes.push(payload);
-    },
   },
 });
 
@@ -41,6 +35,6 @@ export type SavedGamesSliceActionCreator = ValueOf<
   typeof savedGamesSlice.actions
 >;
 
-export const { saveCurrent, saveFish } = savedGamesSlice.actions;
+export const { saveCurrent } = savedGamesSlice.actions;
 
 export const savedGamesSliceActions = savedGamesSlice.actions;
