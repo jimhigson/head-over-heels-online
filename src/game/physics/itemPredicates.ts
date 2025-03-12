@@ -55,24 +55,35 @@ export const isSolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
   return !isUnsolid(item, toucher);
 };
 
+/**
+ * 'heavy' items stop lifts from rising (see blacktooth 78) - only
+ * the metal stepstools are heavy
+ */
+export const isHeavyItem = (item: UnionOfAllItemInPlayTypes): boolean => {
+  return isMovableBlock(item) && item.config.style === "stepStool";
+};
+
 // a good example of where OOP would make sense, it a polymorphic isPushable method
 export const isPushable = <
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
 >(
-  item: AnyItemInPlay<RoomId>,
+  // the item doing the pushing
+  pusher: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  pushedItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   /**
    * if true, some pushes are allowed. Ie, a player can push another player through
    * a door while backing-off-and re-entering the room to clear their area
    */
   forceful: boolean = false,
-): item is FreeItem<RoomId, RoomItemId, ScN> => {
+): pushedItem is FreeItem<RoomId, RoomItemId, ScN> => {
   return (
-    isFreeItem(item) &&
+    isFreeItem(pushedItem) &&
     // can't push a player while they're autowalking - lets players walk into a room while invincible if
-    // an enemy is near the door
-    !(!forceful && isPlayableItem(item) && item.state.autoWalk)
+    // an enemy is near the door.
+    !(!forceful && isPlayableItem(pushedItem) && pushedItem.state.autoWalk) &&
+    !(isLift(pusher) && isHeavyItem(pushedItem))
   );
 };
 

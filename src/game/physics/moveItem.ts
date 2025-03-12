@@ -122,20 +122,17 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     );
 
   let touchedJoystick = false;
-  for (const collision of sortedCollisions) {
-    if (
-      //dist - 0.001 > lastProcessedDistance &&
-      !collision1to1(subjectItem, collision)
-    ) {
+  for (const collidedWithItem of sortedCollisions) {
+    if (!collision1to1(subjectItem, collidedWithItem)) {
       // it is possible there is no longer a collision due to previous sliding - we have
       // been protected from this collision by previous collisions so it no longer applies
       continue;
     }
 
-    const collisionIsWithJoystick = isJoystick(collision);
+    const collisionIsWithJoystick = isJoystick(collidedWithItem);
 
     if (
-      pusher !== collision &&
+      pusher !== collidedWithItem &&
       /* each item is only allowed to touch one joystick per frame. Otherwise,
       in rooms such as #blacktooth47market it is possible to touch two at
       once and make silly old face go super-quick */
@@ -143,11 +140,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     ) {
       if (onTouch !== undefined) {
         if (log) {
-          console.log(`handling ${subjectItem.id} touching ${collision.id}`);
+          console.log(
+            `handling ${subjectItem.id} touching ${collidedWithItem.id}`,
+          );
         }
         onTouch({
           movingItem: subjectItem,
-          touchedItem: collision,
+          touchedItem: collidedWithItem,
           movementVector: subXyz(subjectItem.state.position, originalPosition),
           gameState,
           deltaMS,
@@ -167,7 +166,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       }
       return;
     }
-    if (room.items[collision.id] === undefined) {
+    if (room.items[collidedWithItem.id] === undefined) {
       if (log) {
         console.log(
           `collided item ${subjectItem.id} is not in the room, will skip that collision`,
@@ -176,13 +175,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       continue;
     }
 
-    if (!isSolid(collision, subjectItem) || !isSolid(subjectItem)) {
+    if (!isSolid(collidedWithItem, subjectItem) || !isSolid(subjectItem)) {
       if (log)
         console.log(
           `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
           `moving ${subjectItem.id}`,
           "either mover or ",
-          collision.id,
+          collidedWithItem.id,
           "is not solid so not applying mtv",
         );
       continue;
@@ -191,21 +190,24 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     const backingOffMtv = mtv(
       subjectItem.state.position,
       subjectItem.aabb,
-      collision.state.position,
-      collision.aabb,
+      collidedWithItem.state.position,
+      collidedWithItem.aabb,
     );
 
     if (log)
       console.log(
         `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
-        `${subjectItem.id} collided 💥 with ${collision.id} to give backing-off mtv`,
+        `${subjectItem.id} collided 💥 with ${collidedWithItem.id} to give backing-off mtv`,
         backingOffMtv,
       );
 
     // push falling (pushable) items that we intersect:
-    if (isPushable(collision, forceful) && collision !== pusher) {
+    if (
+      isPushable(subjectItem, collidedWithItem, forceful) &&
+      collidedWithItem !== pusher
+    ) {
       const pushCoefficient =
-        forceful || isSlidingItem(collision) ?
+        forceful || isSlidingItem(collidedWithItem) ?
           // lifts don't slow down when stuff is on them
           -1
           // split the difference - the pushed item moves half as far forward as our intersection
@@ -224,7 +226,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       if (log)
         console.log(
           `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
-          `${subjectItem.id} will recursively push ${collision.id} by ${forwardPushVector}
+          `${subjectItem.id} will recursively push ${collidedWithItem.id} by ${forwardPushVector}
           with push coefficient of ${pushCoefficient}`,
         );
 
@@ -232,7 +234,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         // recursively apply push to pushed item
         // (but only if we didn't already recurse down to the maximum depth)
         moveItem({
-          subjectItem: collision,
+          subjectItem: collidedWithItem,
           posDelta: forwardPushVector,
           pusher: subjectItem,
           gameState,
@@ -245,7 +247,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       }
 
       // it is possible we pushed the other item out of the room:
-      if (room.items[collision.id] === undefined) {
+      if (room.items[collidedWithItem.id] === undefined) {
         continue;
       }
 
@@ -256,12 +258,12 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         mtv(
           subjectItem.state.position,
           subjectItem.aabb,
-          collision.state.position,
-          collision.aabb,
+          collidedWithItem.state.position,
+          collidedWithItem.aabb,
         ),
       );
     } else {
-      // collision was not with a freeitem
+      // collision was not with a pushable thing
 
       // back off to slide on the obstacle (we're not pushing it):
       subjectItem.state.position = addXyz(
@@ -272,7 +274,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       if (log)
         console.log(
           `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
-          `${subjectItem.id} can't push ${collision.id} so simply backed off to`,
+          `${subjectItem.id} can't push ${collidedWithItem.id} so simply backed off to`,
           subjectItem.state.position,
         );
     }
@@ -290,14 +292,14 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         if (log)
           console.log(
             `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
-            `${subjectItem.id} is a free item and collided vertically with ${collision.id}`,
-            collision,
-            `so will set ${subjectItem.id} as standing on ${collision.id}`,
+            `${subjectItem.id} is a free item and collided vertically with ${collidedWithItem.id}`,
+            collidedWithItem,
+            `so will set ${subjectItem.id} as standing on ${collidedWithItem.id}`,
           );
 
         // not colliding with the thing we were stood on before - take over the slot:
         removeStandingOn(subjectItem, room);
-        setStandingOn({ above: subjectItem, below: collision });
+        setStandingOn({ above: subjectItem, below: collidedWithItem });
       }
     }
   }
