@@ -23,12 +23,22 @@ import {
 } from "./hudFilters";
 import { objectEntriesIter } from "../../../utils/entries";
 import { noFilters } from "../filters/standardFilters";
+import type { Renderer } from "../Renderer";
+import type { EmptyObject } from "type-fest";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 
 const joystickArrowOffset = 13;
 const sensitivity = 2;
 
-export class OnScreenJoystick {
+type JoystickRenderContext = {
+  inputStateTracker: InputStateTrackerInterface;
+  inputDirectionMode: InputDirectionMode;
+  colourise: boolean;
+};
+
+export class OnScreenJoystickRenderer
+  implements Renderer<JoystickRenderContext, EmptyObject>
+{
   container = new Container({ label: "OnScreenJoystick", eventMode: "static" });
 
   arrowSprites: Partial<Record<DirectionXy8, Container>>;
@@ -41,10 +51,9 @@ export class OnScreenJoystick {
 
   #curPointerId: number | undefined;
 
-  constructor(
-    private inputStateTracker: InputStateTrackerInterface,
-    private inputDirectionMode: InputDirectionMode,
-  ) {
+  constructor(public readonly renderContext: JoystickRenderContext) {
+    const { inputDirectionMode } = renderContext;
+
     this.arrowSprites = {
       away: createSprite({
         textureId: "hud.char.↗",
@@ -135,7 +144,8 @@ export class OnScreenJoystick {
    */
   stopCurrentPointer = () => {
     this.#curPointerId = undefined;
-    this.inputStateTracker.hudInputState.directionVector = originXyz;
+    this.renderContext.inputStateTracker.hudInputState.directionVector =
+      originXyz;
   };
 
   usePointerLocation = (e: FederatedPointerEvent) => {
@@ -160,11 +170,17 @@ export class OnScreenJoystick {
 
     const snapped = scaleXyz(onScreenDirectionVector, sensitivity);
 
-    this.inputStateTracker.hudInputState.directionVector = snapped;
+    this.renderContext.inputStateTracker.hudInputState.directionVector =
+      snapped;
   };
 
-  tick(colourise: boolean) {
-    const { directionVector } = this.inputStateTracker;
+  tick() {
+    const {
+      renderContext: {
+        inputStateTracker: { directionVector },
+        colourise,
+      },
+    } = this;
     const menusOpen = store.getState().gameMenus.openMenus.length > 0;
 
     if (menusOpen) {
@@ -184,6 +200,7 @@ export class OnScreenJoystick {
         : hudLowlightAndOutlineFilters;
     }
 
+    // TODO: this doesn't have to be updated every frame - it never changes!
     this.#joystickSprite.filters = colourise ? noFilters : hudLowlightedFilter;
   }
 

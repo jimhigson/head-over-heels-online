@@ -105,15 +105,12 @@ const xyToTranslateToInsideOfRoom = (
 };
 
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> = itemRenderOnce(
-  ({ subject: doorLegsItem, renderContext: { room } }) => {
+  ({ renderContext: { item, room } }) => {
     return iterateToContainer(
-      doorLegsGenerator(doorLegsItem, room),
+      doorLegsGenerator(item, room),
       new Container({
         filters: mainPaletteSwapFilter(room),
-        ...xyToTranslateToInsideOfRoom(
-          doorLegsItem.config.direction,
-          doorLegsItem.aabb,
-        ),
+        ...xyToTranslateToInsideOfRoom(item.config.direction, item.aabb),
       }),
     );
   },
@@ -121,11 +118,13 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> = itemRenderOnce(
 
 export const doorFrameAppearance: ItemAppearance<"doorFrame"> = itemRenderOnce(
   ({
-    subject: {
-      config: { direction, part },
-      aabb,
+    renderContext: {
+      item: {
+        config: { direction, part },
+        aabb,
+      },
+      room,
     },
-    renderContext: { room },
   }) => {
     const axis = doorAlongAxis(direction);
     return createSprite({

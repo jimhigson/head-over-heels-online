@@ -12,8 +12,7 @@ import type {
   AppearanceOptions,
   AppearanceReturn,
 } from "../appearance/Appearance";
-import type { ItemRenderContext } from "../Renderer";
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemRenderContext, ItemTickContext } from "../Renderer";
 
 export type ItemAppearanceReturn<T extends ItemInPlayType> =
   | {
@@ -33,10 +32,9 @@ export type ItemAppearanceOptions<
   RoomId extends string,
   RoomItemId extends string,
 > = AppearanceOptions<
-  ItemTypeUnion<T, RoomId, RoomItemId>,
-  ItemRenderProps<T>,
-  RoomId,
-  ItemRenderContext<RoomId, RoomItemId>
+  ItemRenderContext<T, RoomId, RoomItemId>,
+  ItemTickContext<RoomId, RoomItemId>,
+  ItemRenderProps<T>
 >;
 
 export type ItemAppearance<T extends ItemInPlayType> = <
@@ -63,7 +61,7 @@ export const itemStaticSpriteAppearance = <
 >(
   createSpriteOptions: CreateSpriteOptions,
 ): ItemAppearance<T> =>
-  itemRenderOnce(({ subject }) => {
+  itemRenderOnce(({ renderContext: { item: subject } }) => {
     if (isMultipliedItem(subject)) {
       return createSprite({
         ...(typeof createSpriteOptions === "string" ?
@@ -96,14 +94,13 @@ export const itemRenderOnce =
     options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
   ) => ItemAppearanceReturn<T>) =>
   // inner function - calls renderWith
-  ({ subject, currentlyRenderedProps, gameState, renderContext }) => {
+  ({ renderContext, currentlyRenderedProps, tickContext }) => {
     if (currentlyRenderedProps === undefined) {
       return {
         container: renderWith({
-          subject,
-          gameState,
-          previousRendering: null,
           renderContext,
+          previousRendering: null,
+          tickContext,
         }),
         renderProps: emptyObject as ItemRenderProps<T>,
       };

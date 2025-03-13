@@ -175,10 +175,9 @@ export const playableAppearance = <
   RoomId extends string,
   RoomItemId extends string,
 >({
-  subject,
   currentlyRenderedProps,
+  renderContext: { item: subject, gameState },
   previousRendering,
-  gameState,
 }: ItemAppearanceOptions<
   CharacterName,
   RoomId,

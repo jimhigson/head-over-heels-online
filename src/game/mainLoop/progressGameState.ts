@@ -94,7 +94,9 @@ const itemTickOrderComparator = (
 };
 
 /* the items that moved while progressing the game state */
-export type MovedItems = Set<AnyItemInPlay>;
+export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<
+  AnyItemInPlay<RoomId, RoomItemId>
+>;
 
 const noItems = emptyObject as RoomStateItems<string, string>;
 
@@ -127,10 +129,13 @@ export const progressGameState = <RoomId extends string>(
   return _progressGameState(gameState, deltaMS * gameState.gameSpeed);
 };
 
-export const _progressGameState = <RoomId extends string>(
+export const _progressGameState = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MovedItems => {
+): MovedItems<RoomId, RoomItemId> => {
   const { inputStateTracker } = gameState;
 
   const room = selectCurrentRoomState(gameState);

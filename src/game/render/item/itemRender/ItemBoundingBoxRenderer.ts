@@ -1,10 +1,11 @@
 import type { ColorSource } from "pixi.js";
 import { Graphics, Container, Text } from "pixi.js";
-import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
-import type { Aabb } from "../../../utils/vectors/vectors";
-import { isItemType } from "../../physics/itemPredicates";
-import { projectWorldXyzToScreenXy } from "../projectToScreen";
-import type { ItemRenderContext, Renderer } from "../Renderer";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { Aabb } from "../../../../utils/vectors/vectors";
+import { isItemType } from "../../../physics/itemPredicates";
+import { projectWorldXyzToScreenXy } from "../../projectToScreen";
+import type { ItemRenderContext } from "../../Renderer";
+import type { ItemRenderer } from "./ItemRenderer";
 
 const cuboidBB = (aabb: Aabb, graphics: Graphics) => {
   graphics
@@ -80,12 +81,16 @@ const bbColors: Partial<Record<ItemInPlayType, string>> = {
 export class ItemBoundingBoxRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
-  RoomItemid extends string,
-> implements Renderer<ItemRenderContext<RoomId, RoomItemid>>
+  RoomItemId extends string,
+> implements ItemRenderer<T, RoomId, RoomItemId>
 {
   #container: Container;
 
-  constructor(item: ItemInPlay<T, RoomId, RoomItemid>) {
+  constructor(
+    public readonly renderContext: ItemRenderContext<T, RoomId, RoomItemId>,
+  ) {
+    const { item } = renderContext;
+
     const color = bbColors[item.type] ?? "rgba(255,255,255)";
 
     this.#container = new Container({
@@ -157,7 +162,9 @@ export class ItemBoundingBoxRenderer<
       });
     });*/
   }
-  tick(_renderContext: ItemRenderContext<RoomId, RoomItemid>) {}
+  tick() {
+    // never updates the rendering!
+  }
   destroy(): void {
     this.#container.destroy({ children: true });
   }

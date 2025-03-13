@@ -3,70 +3,90 @@ import { Container } from "pixi.js";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 
-import type { HudRendererTickOptions } from "./HudRenderer";
 import { objectValues } from "iter-tools";
-import { OnScreenJoystick } from "./OnScreenJoystick";
+import { OnScreenJoystickRenderer } from "./OnScreenJoystick";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
-import { selectCurrentRoomState } from "../../gameState/GameState";
-import type { RoomState } from "../../../model/RoomState";
+import type { Renderer } from "../Renderer";
+import type { HudRendererTickContext } from "./HudRenderer";
+import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 
 const mainButtonsSpreadXPx = 26;
 const mainButtonsSpreadYPx = 13;
 
-export class OnScreenControls<
-  RoomId extends string,
-  RoomItemId extends string,
-> {
+type OnScreenControlsRenderContext<RoomId extends string> = {
+  gameState: GameState<RoomId>;
+  inputDirectionMode: InputDirectionMode;
+  colourise: boolean;
+};
+
+export class OnScreenControls<RoomId extends string, RoomItemId extends string>
+  implements
+    Renderer<
+      OnScreenControlsRenderContext<RoomId>,
+      HudRendererTickContext<RoomId, RoomItemId>,
+      Container
+    >
+{
   #container = new Container({ label: "OnScreenControls" });
 
   #hudElements;
 
   constructor(
-    private gameState: GameState<RoomId>,
-    private colourise: boolean,
-    private inputDirectionMode: InputDirectionMode,
+    public readonly renderContext: OnScreenControlsRenderContext<RoomId>,
   ) {
+    const {
+      gameState: { inputStateTracker },
+      inputDirectionMode,
+      colourise,
+    } = renderContext;
+
     this.#hudElements = {
       mainButtonNest: new Container({ label: "mainButtonNest" }),
       buttons: {
-        jump: new OnScreenButtonRenderer(
-          { which: "jump", actions: ["jump"], id: "jump" },
-          gameState,
-        ),
-        fire: new OnScreenButtonRenderer(
-          { which: "fire", actions: ["fire"], id: "fire" },
-          gameState,
-        ),
-        carry: new OnScreenButtonRenderer(
-          { which: "carry", actions: ["carry"], id: "carry" },
-          gameState,
-        ),
-        carryAndJump: new OnScreenButtonRenderer(
-          {
+        jump: new OnScreenButtonRenderer({
+          button: {
+            which: "jump",
+            actions: ["jump"],
+            id: "jump",
+          },
+          colourise,
+          inputStateTracker,
+        }),
+        fire: new OnScreenButtonRenderer({
+          button: { which: "fire", actions: ["fire"], id: "fire" },
+          colourise,
+          inputStateTracker,
+        }),
+        carry: new OnScreenButtonRenderer({
+          button: { which: "carry", actions: ["carry"], id: "carry" },
+          colourise,
+          inputStateTracker,
+        }),
+        carryAndJump: new OnScreenButtonRenderer({
+          button: {
             which: "carryAndJump",
             actions: ["carry", "jump"],
             id: "carryAndJump",
           },
-          gameState,
-        ),
-        menu: new OnScreenButtonRenderer(
-          {
-            which: "menu",
-            actions: ["menu_openOrExit"],
-            id: "menu",
-          },
-          gameState,
-        ),
+          colourise,
+          inputStateTracker,
+        }),
+        menu: new OnScreenButtonRenderer({
+          button: { which: "menu", actions: ["menu_openOrExit"], id: "menu" },
+          colourise,
+          inputStateTracker,
+        }),
       } satisfies {
-        [N in ButtonType]: OnScreenButtonRenderer<N, RoomId>;
+        [BT in ButtonType]: OnScreenButtonRenderer<BT, RoomId, RoomItemId>;
       },
-      joystick: new OnScreenJoystick(
-        gameState.inputStateTracker,
+      joystick: new OnScreenJoystickRenderer({
+        inputStateTracker,
         inputDirectionMode,
-      ),
+        colourise,
+      }),
     };
 
     const { buttons } = this.#hudElements;
@@ -74,7 +94,7 @@ export class OnScreenControls<
     const { mainButtonNest, joystick } = this.#hudElements;
 
     for (const b of objectValues(buttons)) {
-      if (b.button.which === "menu") {
+      if (b.renderContext.button.which === "menu") {
         this.#container.addChild(buttons.menu.container);
       } else {
         mainButtonNest.addChild(b.container);
@@ -96,12 +116,16 @@ export class OnScreenControls<
 
   #initInteractivity() {
     const {
-      gameState: { inputStateTracker },
+      renderContext: {
+        gameState: { inputStateTracker },
+      },
     } = this;
 
     for (const buttonRenderer of objectValues(this.#hudElements.buttons)) {
       const {
-        button: { actions },
+        renderContext: {
+          button: { actions },
+        },
       } = buttonRenderer;
 
       buttonRenderer.container.eventMode = "static";
@@ -132,18 +156,18 @@ export class OnScreenControls<
     this.#hudElements.joystick.container.y = screenSize.y - 28;
   }
 
-  tick({ screenSize, gameState }: HudRendererTickOptions<RoomId>): void {
+  tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>): void {
+    const { screenSize } = tickContext;
+    const { gameState } = this.renderContext;
+
     this.#updateElementPositions(screenSize);
     for (const b of objectValues(this.#hudElements.buttons)) {
       b.tick({
-        colourise: this.colourise,
-        room: selectCurrentRoomState(gameState) as RoomState<
-          RoomId,
-          RoomItemId
-        >,
+        ...tickContext,
+        currentPlayable: selectCurrentPlayableItem(gameState),
       });
     }
-    this.#hudElements.joystick.tick(this.colourise);
+    this.#hudElements.joystick.tick({ colourise: this.colourise });
   }
 
   get container() {

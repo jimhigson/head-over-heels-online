@@ -41,6 +41,8 @@ import {
 } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
+import type { Renderer } from "../Renderer";
+import type { RoomState } from "../../../model/RoomState";
 
 const fpsUpdatePeriod = 250;
 
@@ -61,15 +63,32 @@ const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
 
-export type HudRendererTickOptions<RoomId extends string> = {
+export type HudRenderContext<RoomId extends string> = {
   gameState: GameState<RoomId>;
+  colourise: boolean;
+  onScreenControls: boolean;
+  inputDirectionMode: InputDirectionMode;
+};
+export type HudRendererTickContext<
+  RoomId extends string,
+  RoomItemId extends string,
+> = {
   screenSize: Xy;
+  room: RoomState<RoomId, RoomItemId>;
 };
 
-export class HudRenderer<RoomId extends string, RoomItemId extends string> {
+export class HudRenderer<RoomId extends string, RoomItemId extends string>
+  implements
+    Renderer<
+      HudRenderContext<RoomId>,
+      HudRendererTickContext<RoomId, RoomItemId>,
+      Container
+    >
+{
   #container = new Container({ label: "HudRenderer" });
 
-  #controls: OnScreenControls<RoomId, RoomItemId> | undefined = undefined;
+  #onScreenControls: OnScreenControls<RoomId, RoomItemId> | undefined =
+    undefined;
 
   #hudElements = {
     head: {
@@ -132,12 +151,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string> {
     fps: this.#makeText({ label: "fps", outline: true }),
   };
 
-  constructor(
-    private gameState: GameState<RoomId>,
-    public readonly onScreenControls: boolean,
-    public readonly colourise: boolean,
-    public readonly inputDirectionMode: InputDirectionMode,
-  ) {
+  constructor(public readonly renderContext: HudRenderContext<RoomId>) {
+    const { onScreenControls } = renderContext;
+
     for (const character of individualCharacterNames) {
       this.#container.addChild(this.#hudElements[character].livesText);
       this.#container.addChild(this.#hudElements[character].sprite);
@@ -163,19 +179,19 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string> {
     this.#initInteractivity();
 
     if (onScreenControls) {
-      this.#controls = new OnScreenControls(
-        gameState,
-        this.colourise,
-        inputDirectionMode,
-      );
-      this.#container.addChild(this.#controls.container);
+      this.#onScreenControls = new OnScreenControls({ ...renderContext });
+      this.#container.addChild(this.#onScreenControls.container);
     }
   }
 
   #initInteractivity() {
     const {
-      inputStateTracker: { hudInputState },
-    } = this.gameState;
+      renderContext: {
+        gameState: {
+          inputStateTracker: { hudInputState },
+        },
+      },
+    } = this;
     for (const character of individualCharacterNames) {
       const { sprite } = this.#hudElements[character];
       sprite.eventMode = "static";
@@ -294,8 +310,12 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string> {
   #tickBagAndCarrying(gameState: GameState<RoomId>) {
     const heelsAbilities = selectAbilities(gameState, "heels");
     const hasBag = heelsAbilities?.hasBag ?? false;
-
     const carrying = heelsAbilities?.carrying ?? null;
+
+    // TODO: colourise will never change in the lifetime of the renderer, this doesn't need to be done each tick
+    const {
+      renderContext: { colourise },
+    } = this;
 
     const { container: carryingContainer } = this.#hudElements.heels.carrying;
     const hasSprite = carryingContainer.children.length > 0;
@@ -308,11 +328,11 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string> {
     if (carrying !== null && !hasSprite) {
       carryingContainer.addChild(createCarriedSprite(carrying));
     }
-    carryingContainer.filters = this.#itemFilter(true, this.colourise);
+    carryingContainer.filters = this.#itemFilter(true, colourise);
 
     this.#hudElements.heels.bag.icon.filters = this.#itemFilter(
       hasBag,
-      this.colourise,
+      colourise,
     );
   }
 
@@ -322,13 +342,18 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string> {
     const hasHooter = headAbilities?.hasHooter ?? false;
     const doughnutCount = headAbilities?.doughnuts ?? 0;
 
+    // TODO: colourise will never change in the lifetime of the renderer, this doesn't need to be done each tick
+    const {
+      renderContext: { colourise },
+    } = this;
+
     this.#hudElements.head.hooter.icon.filters = this.#itemFilter(
       hasHooter,
-      this.colourise,
+      colourise,
     );
     this.#hudElements.head.doughnuts.icon.filters = this.#itemFilter(
       doughnutCount !== 0,
-      this.colourise,
+      colourise,
     );
     showNumberInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
   }
@@ -484,8 +509,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string> {
     }
   }
 
-  tick(tickOptions: HudRendererTickOptions<RoomId>) {
-    const { gameState, screenSize } = tickOptions;
+  tick({ screenSize }: HudRendererTickContext<RoomId, RoomItemId>) {
+    const { gameState } = this.renderContext;
 
     this.#updateColours(gameState);
 
@@ -501,7 +526,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string> {
 
     this.#updateFps();
 
-    this.#controls?.tick(tickOptions);
+    this.#onScreenControls?.tick(tickOptions);
   }
 
   get container() {
@@ -510,6 +535,6 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string> {
 
   destroy() {
     this.#container.destroy();
-    this.#controls?.destroy();
+    this.#onScreenControls?.destroy();
   }
 }

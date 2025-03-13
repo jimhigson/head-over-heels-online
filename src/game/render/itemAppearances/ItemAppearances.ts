@@ -62,8 +62,10 @@ const singleRenderWithStyleAsTexture = <
     RoomItemId
   >(
     ({
-      subject: {
-        config: { style },
+      renderContext: {
+        item: {
+          config: { style },
+        },
       },
     }) => createSprite(style === "book" ? "book.y" : style),
   );
@@ -87,11 +89,13 @@ export const itemAppearances: {
 
   wall: itemRenderOnce(
     ({
-      subject: {
-        id,
-        config: { direction, tiles },
+      renderContext: {
+        item: {
+          id,
+          config: { direction, tiles },
+        },
+        room,
       },
-      renderContext: { room },
     }) => {
       if (direction === "right" || direction === "towards") {
         throw new Error(`this wall should be non-rendering ${id}`);
@@ -140,8 +144,10 @@ export const itemAppearances: {
 
   barrier: itemRenderOnce(
     ({
-      subject: {
-        config: { axis, times },
+      renderContext: {
+        item: {
+          config: { axis, times },
+        },
       },
     }) => {
       return createSprite({
@@ -153,10 +159,12 @@ export const itemAppearances: {
 
   deadlyBlock: itemRenderOnce(
     ({
-      subject: {
-        config: { style, times },
+      renderContext: {
+        item: {
+          config: { style, times },
+        },
+        room,
       },
-      renderContext: { room },
     }) =>
       createSprite({
         textureId: style,
@@ -168,12 +176,14 @@ export const itemAppearances: {
   slidingBlock: singleRenderWithStyleAsTexture(),
 
   block({
-    subject: {
-      config: { style, times },
-      state: { disappear },
+    renderContext: {
+      item: {
+        config: { style, times },
+        state: { disappear },
+      },
+      room,
     },
     currentlyRenderedProps,
-    renderContext: { room },
   }) {
     const render =
       currentlyRenderedProps === undefined ||
@@ -198,9 +208,11 @@ export const itemAppearances: {
   },
 
   switch({
-    subject: {
-      state: { setting: stateSetting },
-      config: { store: switchStoreConfig },
+    renderContext: {
+      item: {
+        state: { setting: stateSetting },
+        config: { store: switchStoreConfig },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -226,9 +238,11 @@ export const itemAppearances: {
   },
 
   conveyor({
-    subject: {
-      config: { direction, times },
-      state: { stoodOnBy },
+    renderContext: {
+      item: {
+        config: { direction, times },
+        state: { stoodOnBy },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -286,11 +300,13 @@ export const itemAppearances: {
   }),
 
   teleporter({
-    subject: {
-      state: { stoodOnBy },
+    renderContext: {
+      item: {
+        state: { stoodOnBy },
+      },
+      room,
     },
     currentlyRenderedProps,
-    renderContext: { room },
   }) {
     const flashing =
       iterateStoodOnByItems(stoodOnBy, room).find(isPlayableItem) !== undefined;
@@ -319,42 +335,54 @@ export const itemAppearances: {
     };
   },
 
-  pickup: itemRenderOnce(({ subject: { config }, renderContext: { room } }) => {
-    if (config.gives === "crown") {
-      return createSprite({
-        textureId: `crown.${config.planet}`,
-      });
-    }
-
-    const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> = {
-      shield: "whiteRabbit",
-      jumps: "whiteRabbit",
-      fast: "whiteRabbit",
-      "extra-life": "whiteRabbit",
-      bag: "bag",
-      doughnuts: "doughnuts",
-      hooter: "hooter",
-      scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
-      reincarnation: {
-        animationId: "fish",
+  pickup: itemRenderOnce(
+    ({
+      renderContext: {
+        item: { config },
+        room,
       },
-    };
-    const createOptions = pickupIcons[config.gives];
+    }) => {
+      if (config.gives === "crown") {
+        return createSprite({
+          textureId: `crown.${config.planet}`,
+        });
+      }
 
-    return createSprite(createOptions);
-  }),
+      const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> =
+        {
+          shield: "whiteRabbit",
+          jumps: "whiteRabbit",
+          fast: "whiteRabbit",
+          "extra-life": "whiteRabbit",
+          bag: "bag",
+          doughnuts: "doughnuts",
+          hooter: "hooter",
+          scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
+          reincarnation: {
+            animationId: "fish",
+          },
+        };
+      const createOptions = pickupIcons[config.gives];
+
+      return createSprite(createOptions);
+    },
+  ),
 
   moveableDeadly: itemRenderOnce(
     ({
-      subject: {
-        config: { style },
+      renderContext: {
+        item: {
+          config: { style },
+        },
       },
     }) => createSprite(style === "deadFish" ? "fish.1" : "puck.deadly"),
   ),
 
   charles({
-    subject: {
-      state: { facing },
+    renderContext: {
+      item: {
+        state: { facing },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -377,16 +405,20 @@ export const itemAppearances: {
 
   movableBlock: itemRenderOnce(
     ({
-      subject: {
-        config: { style },
+      renderContext: {
+        item: {
+          config: { style },
+        },
       },
     }) => createSprite(style),
   ),
 
   portableBlock({
-    subject: {
-      config: { style },
-      state: { wouldPickUpNext: highlighted },
+    renderContext: {
+      item: {
+        config: { style },
+        state: { wouldPickUpNext: highlighted },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -417,8 +449,10 @@ export const itemAppearances: {
   },
 
   spring({
-    subject: {
-      state: { stoodOnBy, wouldPickUpNext: highlighted },
+    renderContext: {
+      item: {
+        state: { stoodOnBy, wouldPickUpNext: highlighted },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -463,9 +497,11 @@ export const itemAppearances: {
   },
 
   sceneryPlayer({
-    subject: {
-      config: { which, startDirection },
-      state: { wouldPickUpNext: highlighted },
+    renderContext: {
+      item: {
+        config: { which, startDirection },
+        state: { wouldPickUpNext: highlighted },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -506,8 +542,10 @@ export const itemAppearances: {
 
   bubbles: itemRenderOnce(
     ({
-      subject: {
-        config: { style },
+      renderContext: {
+        item: {
+          config: { style },
+        },
       },
     }) => {
       return createSprite({

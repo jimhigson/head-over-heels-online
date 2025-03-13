@@ -4,10 +4,9 @@ import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
 import { type ItemAppearance, itemRenderOnce } from "../ItemAppearance";
 import { renderEdge } from "./renderEdge";
-import { defaultUserSettings } from "../../../../store/defaultUserSettings";
 
 export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = itemRenderOnce(
-  ({ renderContext: { displaySettings, onHold, room } }) => {
+  ({ renderContext: { colourised, room } }) => {
     const {
       blockXMin,
       blockYMin,
@@ -49,21 +48,15 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = itemRenderOnce(
         room.roomJson,
       );
 
-    const colourise: boolean =
-      !onHold &&
-      !(
-        displaySettings.uncolourised ??
-        defaultUserSettings.displaySettings.uncolourised
-      );
     towardsEdgeContainer.filters = edgePaletteSwapFilters(
       room,
       "towards",
-      colourise,
+      colourised,
     );
     rightEdgeContainer.filters = edgePaletteSwapFilters(
       room,
       "right",
-      colourise,
+      colourised,
     );
 
     container.addChild(towardsEdgeContainer);

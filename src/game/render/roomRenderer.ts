@@ -1,29 +1,31 @@
-import type { Renderer as PixiRenderer } from "pixi.js";
 import { Container } from "pixi.js";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
-import { createItemRenderer } from "./item/createItemRenderer";
+import { createItemRenderer } from "./item/itemRender/createItemRenderer";
 import type { GraphEdges } from "./sortZ/toposort/toposort";
-import { type GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { store } from "../../store/store";
-import type { Upscale } from "./calculateUpscale";
 import type {
   ItemRenderContext,
+  ItemTickContext,
   Renderer,
   RoomRenderContext,
+  RoomTickContext,
 } from "./Renderer";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
 import { getColorScheme } from "../hintColours";
 import { noFilters } from "./filters/standardFilters";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
-import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
-import { iterateRoomItems, type RoomState } from "../../model/RoomState";
+import { iterateRoomItems } from "../../model/RoomState";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
-  implements Renderer<RoomRenderContext>
+  implements
+    Renderer<
+      RoomRenderContext<RoomId, RoomItemId>,
+      RoomTickContext<RoomId, RoomItemId>
+    >
 {
   /**
    * renders all items *except* the floor edge, since the floor edge is the only
@@ -41,29 +43,18 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #incrementalZEdges: GraphEdges<string> = new Map();
   #itemRenderers: Map<
     RoomItemId,
-    | Renderer<ItemRenderContext<RoomId, RoomItemId>>
+    | Renderer<
+        ItemRenderContext<ItemInPlayType, RoomId, RoomItemId>,
+        ItemTickContext<RoomId, RoomItemId>
+      >
     // createItemRenderer explicitly declined to create an instance for this item
     | "not-needed"
   > = new Map();
   #roomScroller: ReturnType<typeof positionRoom>;
-  #displaySettings: DisplaySettings;
-  #upscale: Upscale;
-  #roomState: RoomState<RoomId, RoomItemId>;
-  #gameState: GameState<RoomId>;
-  #paused: boolean;
-  #pixiRenderer: PixiRenderer;
 
-  constructor({
-    gameState,
-    roomState,
-    paused,
-    pixiRenderer,
-  }: {
-    gameState: GameState<RoomId>;
-    roomState: RoomState<RoomId, RoomItemId>;
-    paused: boolean;
-    pixiRenderer: PixiRenderer;
-  }) {
+  constructor(
+    public readonly renderContext: RoomRenderContext<RoomId, RoomItemId>,
+  ) {
     const {
       gameMenus: {
         userSettings: { displaySettings },
@@ -71,21 +62,9 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       },
     } = store.getState();
 
-    this.#displaySettings = displaySettings;
-    this.#upscale = upscale;
-    this.#roomState = roomState;
-    this.#gameState = gameState;
-    this.#paused = paused;
-    this.#pixiRenderer = pixiRenderer;
+    this.#container.label = `RoomRenderer(${renderContext.room.id})`;
 
-    this.#container.label = `RoomRenderer(${roomState.id})`;
-
-    const colourise = !(
-      displaySettings?.uncolourised ??
-      defaultUserSettings.displaySettings.uncolourised
-    );
-
-    this.initFilters(!paused && colourise, roomState.color);
+    this.initFilters(renderContext.colourised, renderContext.room.color);
 
     const showBoundingBoxes =
       displaySettings?.showBoundingBoxes ??
@@ -94,11 +73,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     if (showBoundingBoxes !== "none") {
       // these aren't really bounding boxes, but it is useful to be abl to turn them on and I don't want to add
       // any more switches:
-      this.#container.addChild(showRoomScrollBounds(roomState.roomJson));
+      this.#container.addChild(
+        showRoomScrollBounds(renderContext.room.roomJson),
+      );
     }
 
     this.#roomScroller = positionRoom(
-      roomState,
+      renderContext.room,
       this.#container,
       upscale.gameEngineScreenSize,
     );
@@ -115,8 +96,10 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       );
   }
 
-  #tickItems(renderContext: ItemRenderContext<RoomId, RoomItemId>) {
-    for (const item of iterateRoomItems(this.#roomState.items)) {
+  #tickItems(tickContext: ItemTickContext<RoomId, RoomItemId>) {
+    const { room } = this.renderContext;
+
+    for (const item of iterateRoomItems(room.items)) {
       let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
 
       if (
@@ -131,11 +114,10 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         // have never ticked this item before - either first tick in the room or item was introduced to the
         // room since the last tick
         itemRenderer = createItemRenderer({
-          item: item as UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-          room: this.#roomState,
-          gameState: this.#gameState,
-          pixiRenderer: this.#pixiRenderer,
+          ...this.renderContext,
+          item,
         });
+
         if (itemRenderer === "not-needed") {
           // createItemRenderer declined to create a render for this item - record that:
           this.#itemRenderers.set(item.id as RoomItemId, "not-needed");
@@ -153,26 +135,26 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           itemRenderer.container.zIndex = item.fixedZIndex;
         }
       }
-      itemRenderer.tick(renderContext);
+      itemRenderer.tick(tickContext);
     }
 
     // remove any renderers for items that no longer exist in the room:
     for (const [itemId, itemRenderer] of this.#itemRenderers.entries()) {
-      if (this.#roomState.items[itemId] === undefined) {
+      if (room.items[itemId] === undefined) {
         if (itemRenderer !== "not-needed") itemRenderer.destroy();
         this.#itemRenderers.delete(itemId as RoomItemId);
       }
     }
   }
 
-  #tickItemsZIndex(renderContext: ItemRenderContext<RoomId, RoomItemId>) {
+  #tickItemsZIndex(tickContext: RoomTickContext<RoomId, RoomItemId>) {
     const { order } = sortByZPairs(
       zEdges(
-        this.#roomState.items,
-        renderContext.movedItems,
+        this.renderContext.room.items,
+        tickContext.movedItems,
         this.#incrementalZEdges,
       ),
-      this.#roomState.items,
+      this.renderContext.room.items,
     );
 
     for (let i = 0; i < order.length; i++) {
@@ -186,31 +168,26 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
-  tick(givenRenderContext: RoomRenderContext) {
-    const renderContext =
-      this.#everRendered ? givenRenderContext : (
+  tick(givenTickContext: RoomTickContext<RoomId, RoomItemId>) {
+    const tickContext =
+      this.#everRendered ? givenTickContext : (
         {
-          ...givenRenderContext,
+          ...givenTickContext,
           // if we have never rendered before, consider that all items have moved:
-          movedItems: new Set(iterateRoomItems(this.#roomState.items)),
+          movedItems: new Set(iterateRoomItems(this.renderContext.room.items)),
         }
       );
 
     this.#roomScroller(
-      selectCurrentPlayableItem(this.#gameState),
-      renderContext.deltaMS,
+      selectCurrentPlayableItem(this.renderContext.gameState),
+      tickContext.deltaMS,
       !this.#everRendered,
     );
 
-    const itemRenderContext: ItemRenderContext<RoomId, RoomItemId> = {
-      ...renderContext,
-      room: this.#roomState,
-    };
+    this.#tickItems(tickContext);
 
-    this.#tickItems(itemRenderContext);
-
-    if (!this.#everRendered || renderContext.movedItems.size > 0) {
-      this.#tickItemsZIndex(itemRenderContext);
+    if (!this.#everRendered || tickContext.movedItems.size > 0) {
+      this.#tickItemsZIndex(tickContext);
     }
 
     this.#everRendered = true;
@@ -223,27 +200,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     });
   }
 
-  get displaySettings() {
-    return this.#displaySettings;
-  }
-
-  get upscale() {
-    return this.#upscale;
-  }
-
-  get everRendered() {
-    return this.#everRendered;
-  }
-
   get container() {
     return this.#container;
-  }
-
-  get roomState() {
-    return this.#roomState;
-  }
-
-  get paused() {
-    return this.#paused;
   }
 }

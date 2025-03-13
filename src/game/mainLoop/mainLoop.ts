@@ -79,13 +79,15 @@ export class MainLoop<RoomId extends string> {
     if (startingRoom === undefined) {
       throw new Error("main loop with no starting room");
     }
+    /*
+    experiment: create the room renderer on tick only
     this.#roomRenderer = new RoomRenderer({
       gameState,
-      roomState: startingRoom,
+      room: startingRoom,
       paused: false,
       pixiRenderer: app.renderer,
     });
-    this.#worldContainer.addChild(this.#roomRenderer.container);
+    this.#worldContainer.addChild(this.#roomRenderer.container);*/
 
     this.#hudRenderer = new HudRenderer(
       gameState,
@@ -119,7 +121,7 @@ export class MainLoop<RoomId extends string> {
       },
     } = store.getState();
 
-    const colouriseHud =
+    const tickColourise =
       !isPaused &&
       !(
         tickDisplaySettings?.uncolourised ??
@@ -127,7 +129,7 @@ export class MainLoop<RoomId extends string> {
       );
 
     if (
-      this.#hudRenderer.colourise !== colouriseHud ||
+      this.#hudRenderer.colourise !== tickColourise ||
       this.#hudRenderer.onScreenControls !==
         selectOnScreenControls(tickState) ||
       this.#hudRenderer.inputDirectionMode !==
@@ -137,7 +139,7 @@ export class MainLoop<RoomId extends string> {
       this.#hudRenderer = new HudRenderer(
         this.#gameState,
         selectOnScreenControls(tickState),
-        colouriseHud,
+        tickColourise,
         selectInputDirectionMode(tickState),
       );
       this.#app.stage.addChild(this.#hudRenderer.container);
@@ -158,19 +160,23 @@ export class MainLoop<RoomId extends string> {
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene
       // graph if it changes - we simply destroy and recreate it entirely:
-      this.#roomRenderer?.roomState !== tickRoom ||
-      this.#roomRenderer?.upscale !== tickUpscale ||
-      this.#roomRenderer?.displaySettings !== tickDisplaySettings ||
-      this.#roomRenderer?.paused !== isPaused
+      this.#roomRenderer?.renderContext.room !== tickRoom ||
+      this.#roomRenderer?.renderContext.upscale !== tickUpscale ||
+      this.#roomRenderer?.renderContext.displaySettings !==
+        tickDisplaySettings ||
+      this.#roomRenderer?.renderContext.paused !== isPaused
     ) {
       this.#roomRenderer?.destroy();
 
       if (tickRoom) {
         this.#roomRenderer = new RoomRenderer({
           gameState: this.#gameState,
-          roomState: tickRoom,
+          room: tickRoom,
           paused: isPaused,
           pixiRenderer: this.#app.renderer,
+          displaySettings: tickDisplaySettings,
+          colourised: tickColourise,
+          upscale: tickUpscale,
         });
         this.#worldContainer.addChild(this.#roomRenderer.container);
         // this isn't the ideal place to emit this from - it gets fired even if just the
@@ -190,8 +196,6 @@ export class MainLoop<RoomId extends string> {
       progression: this.#gameState.progression,
       movedItems,
       deltaMS,
-      displaySettings: tickDisplaySettings,
-      onHold: false,
     });
 
     if (!isPaused) {

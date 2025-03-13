@@ -64,7 +64,7 @@ export type GameState<RoomId extends string> = {
     [C in CharacterName]: PlayableEntryState;
   }>;
 
-  /** TODO: is this really state? */
+  /** TODO: is this really state? - this could be replaced with dispatching actions on the store */
   events: Emitter<GameEvents<RoomId>>;
   // pickups don't respawn, so we keep track of which ones have been picked up
   // outside of the room's state

@@ -1,13 +1,12 @@
-import type { GameState } from "../../gameState/GameState";
-import type { Renderer as PixiRenderer } from "pixi.js";
+import type { GameState } from "../../../gameState/GameState";
 import { Container } from "pixi.js";
 import type {
   AnyItemInPlay,
   ItemInPlay,
   ItemInPlayType,
-} from "../../../model/ItemInPlay";
-import { store } from "../../../store/store";
-import type { ItemRenderContext, Renderer } from "../Renderer";
+} from "../../../../model/ItemInPlay";
+import { store } from "../../../../store/store";
+import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
 import { ItemAppearanceRenderer } from "./ItemAppearanceRenderer";
 import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
@@ -16,12 +15,11 @@ import {
   selectIsColourised,
   selectIsPaused,
   selectShowBoundingBoxes,
-} from "../../../store/selectors";
-import { itemAppearances } from "../itemAppearances/ItemAppearances";
+} from "../../../../store/selectors";
+import { itemAppearances } from "../../itemAppearances/ItemAppearances";
 import type { SetRequired } from "type-fest";
-import type { ItemAppearanceWithKnownRoomId } from "../itemAppearances/ItemAppearance";
-import type { RoomState } from "../../../model/RoomState";
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemAppearanceWithKnownRoomId } from "../../itemAppearances/ItemAppearance";
+import type { ItemRenderer } from "./ItemRenderer";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
@@ -46,34 +44,30 @@ const hasShadowMask = <
 ): item is SetRequired<typeof item, "shadowMask"> =>
   item.shadowMask !== undefined;
 
+/** factory to create the correct combinations of renderer(s) for any item */
 export const createItemRenderer = <
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
->({
-  item,
-  room,
-  gameState,
-  pixiRenderer,
-}: {
-  item: ItemTypeUnion<T, RoomId, RoomItemId>;
-  room: RoomState<RoomId, RoomItemId>;
-  gameState: GameState<RoomId>;
-  pixiRenderer: PixiRenderer;
-}): Renderer<ItemRenderContext<RoomId, RoomItemId>> | "not-needed" => {
+>(
+  itemRenderContext: ItemRenderContext<T, RoomId, RoomItemId>,
+): ItemRenderer<T, RoomId, RoomItemId> | "not-needed" => {
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = selectIsColourised(state);
 
   const isPaused = selectIsPaused(state);
 
+  const { item, gameState } = itemRenderContext;
+
   const renderBoundingBoxes =
     showBoundingBoxes === "all" ||
-    (showBoundingBoxes === "non-wall" && item.type !== "wall");
+    (showBoundingBoxes === "non-wall" &&
+      itemRenderContext.item.type !== "wall");
 
-  const renderers: Renderer<ItemRenderContext<RoomId, RoomItemId>>[] = [];
+  const renderers: ItemRenderer<T, RoomId, RoomItemId>[] = [];
 
-  if (item.renders) {
+  if (itemRenderContext.item.renders) {
     const appearance = itemAppearances[
       item.type
     ] as /* narrow down ItemAppearance to the version that already has our RoomId/RoomItemId baked in */ ItemAppearanceWithKnownRoomId<
@@ -86,7 +80,7 @@ export const createItemRenderer = <
       T,
       RoomId,
       RoomItemId
-    >(item, gameState, appearance);
+    >(itemRenderContext, appearance);
     renderers.push(itemAppearanceRenderer);
     if (renderBoundingBoxes) {
       itemAppearanceRenderer.container.alpha = 0.66;
@@ -95,11 +89,11 @@ export const createItemRenderer = <
     // non-colourised rendering doesn't have shadows (yet) since it prevents
     // the colour revert shader from properly identifying black/non-black pixels
     if (!isPaused && colourise && hasShadowMask(item)) {
-      renderers.push(new ItemShadowRenderer(item, room, pixiRenderer));
+      renderers.push(new ItemShadowRenderer(itemRenderContext));
     }
   }
   if (renderBoundingBoxes) {
-    renderers.push(new ItemBoundingBoxRenderer(item));
+    renderers.push(new ItemBoundingBoxRenderer(itemRenderContext));
   }
 
   if (renderers.length === 0) {
@@ -110,27 +104,33 @@ export const createItemRenderer = <
   const compositeRenderer =
     renderers.length === 1 ?
       renderers[0]
-    : new CompositeItemRenderer(renderers);
+    : new CompositeItemRenderer(renderers, itemRenderContext);
 
   assignPointerActions(item, compositeRenderer.container, gameState);
 
-  return new ItemPositionRenderer(item, compositeRenderer);
+  return new ItemPositionRenderer(itemRenderContext, compositeRenderer);
 };
 
-class CompositeItemRenderer<RoomId extends string, RoomItemId extends string>
-  implements Renderer<ItemRenderContext<RoomId, RoomItemId>>
+class CompositeItemRenderer<
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+> implements ItemRenderer<T, RoomId, RoomItemId>
 {
-  #componentRenderers: Renderer<ItemRenderContext<RoomId, RoomItemId>>[];
+  #componentRenderers: ItemRenderer<T, RoomId, RoomItemId>[];
   #container: Container = new Container({ label: "CompositeRenderer" });
   constructor(
-    componentRenderers: Renderer<ItemRenderContext<RoomId, RoomItemId>>[],
+    componentRenderers: ItemRenderer<T, RoomId, RoomItemId>[],
+    /* the composite renderer doesn't actually use the render context, but it's needed 
+       to implement the interface */
+    public readonly renderContext: ItemRenderContext<T, RoomId, RoomItemId>,
   ) {
     this.#componentRenderers = componentRenderers;
     this.#container.addChild(...componentRenderers.map((r) => r.container));
   }
-  tick(renderContext: ItemRenderContext<RoomId, RoomItemId>) {
+  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
     for (const componentRenderer of this.#componentRenderers) {
-      componentRenderer.tick(renderContext);
+      componentRenderer.tick(tickContext);
     }
   }
   destroy() {
