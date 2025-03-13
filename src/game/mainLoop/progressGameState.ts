@@ -95,7 +95,7 @@ const itemTickOrderComparator = (
 
 /* the items that moved while progressing the game state */
 export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<
-  AnyItemInPlay<RoomId, RoomItemId>
+  UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
 >;
 
 const noItems = emptyObject as RoomStateItems<string, string>;
@@ -103,12 +103,12 @@ const noItems = emptyObject as RoomStateItems<string, string>;
 export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MovedItems => {
+): MovedItems<RoomId, string> => {
   // DEBUG CODE:
   // force extra sub-ticks when gameSpeed > 1, to emulate the game being
   // progressed that many times
   if (gameState.gameSpeed > 1) {
-    let movedItems = new Set<AnyItemInPlay>();
+    let movedItems = new Set() as MovedItems<RoomId, string>;
     for (let i = 0; i < gameState.gameSpeed; i++) {
       const subtickMoves = _progressGameState(gameState, deltaMS);
       const itemsAtEndOfSubtick =
@@ -196,7 +196,7 @@ export const _progressGameState = <
 
   updateStandingOn(room);
 
-  const movedItems = new Set<AnyItemInPlay>(
+  const movedItems = new Set(
     iterate(objectValues(room.items)).filter(
       (i) =>
         // wasn't in the room before (treated like a move)
@@ -204,7 +204,7 @@ export const _progressGameState = <
         // moved on this frame:
         !xyzEqual(i.state.position, startingPositions[i.id]),
     ),
-  );
+  ) as MovedItems<RoomId, RoomItemId>;
   assignLatentMovementFromStandingOn(movedItems, room, startingPositions);
   snapStationaryItemsToPixelGrid(room, startingPositions, movedItems);
 

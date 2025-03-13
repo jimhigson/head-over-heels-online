@@ -1,4 +1,4 @@
-import type { AnyItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import type { Xyz } from "../../../utils/vectors/vectors";
@@ -28,7 +28,7 @@ export const assignLatentMovementFromStandingOn = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  movedItems: Set<AnyItemInPlay<RoomId, RoomItemId>>,
+  movedItems: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
   room: RoomState<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
 ) => {

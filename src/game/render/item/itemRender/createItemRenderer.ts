@@ -2,7 +2,6 @@ import type { GameState } from "../../../gameState/GameState";
 import { Container } from "pixi.js";
 import type {
   AnyItemInPlay,
-  ItemInPlay,
   ItemInPlayType,
 } from "../../../../model/ItemInPlay";
 import { store } from "../../../../store/store";
@@ -10,6 +9,7 @@ import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
 import { ItemAppearanceRenderer } from "./ItemAppearanceRenderer";
 import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
+import type { ItemRenderContextWithRequiredShadowMask } from "./ItemShadowRenderer";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import {
   selectIsColourised,
@@ -17,7 +17,6 @@ import {
   selectShowBoundingBoxes,
 } from "../../../../store/selectors";
 import { itemAppearances } from "../../itemAppearances/ItemAppearances";
-import type { SetRequired } from "type-fest";
 import type { ItemAppearanceWithKnownRoomId } from "../../itemAppearances/ItemAppearance";
 import type { ItemRenderer } from "./ItemRenderer";
 
@@ -40,9 +39,12 @@ const hasShadowMask = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, RoomId, RoomItemId>,
-): item is SetRequired<typeof item, "shadowMask"> =>
-  item.shadowMask !== undefined;
+  itemRenderContext: ItemRenderContext<T, RoomId, RoomItemId>,
+): itemRenderContext is ItemRenderContextWithRequiredShadowMask<
+  T,
+  RoomId,
+  RoomItemId
+> => itemRenderContext.item.shadowMask !== undefined;
 
 /** factory to create the correct combinations of renderer(s) for any item */
 export const createItemRenderer = <
@@ -88,7 +90,7 @@ export const createItemRenderer = <
 
     // non-colourised rendering doesn't have shadows (yet) since it prevents
     // the colour revert shader from properly identifying black/non-black pixels
-    if (!isPaused && colourise && hasShadowMask(item)) {
+    if (colourise && hasShadowMask(itemRenderContext)) {
       renderers.push(new ItemShadowRenderer(itemRenderContext));
     }
   }

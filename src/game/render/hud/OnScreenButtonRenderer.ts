@@ -64,7 +64,7 @@ type ButtonRenderContext<BT extends ButtonType> = {
   inputStateTracker: InputStateTrackerInterface;
 };
 type ButtonTickContext<RoomId extends string, RoomItemId extends string> = {
-  room: RoomState<RoomId, RoomItemId>;
+  room: RoomState<RoomId, RoomItemId> | undefined;
   currentPlayable: PlayableItem | undefined;
 };
 
@@ -90,7 +90,10 @@ const buttonAppearances: {
     tickContext: { room, currentPlayable },
   }) {
     const standingOnId = currentPlayable?.state.standingOnItemId ?? null;
-    const standingOn = standingOnId !== null ? room.items[standingOnId] : null;
+    const standingOn =
+      standingOnId === null ? null
+      : room === undefined ? null
+      : room.items[standingOnId];
     const isStandingOnTeleporter =
       standingOn === null ? false : standingOn.type === "teleporter";
 
@@ -157,6 +160,7 @@ const buttonAppearances: {
     const carrying = heelsAbilities?.carrying ?? null;
     const willPickUp: boolean =
       carrying === null &&
+      room !== undefined &&
       findItemToPickup(
         currentPlayable as PlayableItem<"heels" | "headOverHeels", string>,
         room,

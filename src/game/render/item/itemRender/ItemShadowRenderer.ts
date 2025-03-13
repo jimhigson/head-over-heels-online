@@ -12,11 +12,14 @@ import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import { subXy } from "../../../../utils/vectors/vectors";
 import { store } from "../../../../store/store";
-import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
+  Renderer,
+} from "../../Renderer";
 import { blockSizePx } from "../../../../sprites/spritePivots";
 import type { ConsolidatableConfig } from "../../../../model/json/ItemConfigMap";
 import { iterateRoomItems } from "../../../../model/RoomState";
-import type { ItemRenderer } from "./ItemRenderer";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -80,11 +83,29 @@ const renderMultipliedXy = (
   }
 };
 
+export type ItemRenderContextWithRequiredShadowMask<
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+  BaseContext extends ItemRenderContext<
+    T,
+    RoomId,
+    RoomItemId
+  > = ItemRenderContext<T, RoomId, RoomItemId>,
+  // type-fest's SetRequiredDeep slows ts down too much here:
+> = BaseContext & {
+  item: SetRequired<BaseContext["item"], "shadowMask">;
+};
+
 export class ItemShadowRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
-> implements ItemRenderer<T, RoomId, RoomItemId>
+> implements
+    Renderer<
+      ItemRenderContextWithRequiredShadowMask<T, RoomId, RoomItemId>,
+      ItemTickContext<RoomId, RoomItemId>
+    >
 {
   #container: Container = new Container({
     label: "ItemShadowRenderer",
@@ -100,7 +121,11 @@ export class ItemShadowRenderer<
   #casts = {} as Record<string, Cast>;
 
   constructor(
-    public readonly renderContext: ItemRenderContext<T, RoomId, RoomItemId>,
+    public readonly renderContext: ItemRenderContextWithRequiredShadowMask<
+      T,
+      RoomId,
+      RoomItemId
+    >,
   ) {
     const {
       gameMenus: {
