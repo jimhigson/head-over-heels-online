@@ -5,6 +5,14 @@ import type { RoomJson } from "./RoomJson";
 import { objectEntries, objectValues } from "iter-tools";
 import { iterate } from "../utils/iterate";
 
+/*type RoomItemIdWithKnownIds = (
+  | "head"
+  | "heels"
+  | "headOverHeels"
+  | "floorEdge"
+) &
+  (string & {});*/
+
 /**
  * a map of items-in-play in a room
  **/
@@ -13,10 +21,9 @@ export type RoomStateItems<
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
-> = Record<
-  RoomItemId,
-  UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>
->; /* & {
+> = {
+  [RID in RoomItemId]: UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>;
+}; /* & {
   // TODO: remove comment if this sticks
   //  nope, results in unions that are too complex to represent - need to find a simpler
   //  expression of how this can be iterated
@@ -35,7 +42,38 @@ export type RoomStateItems<
   >;
   // every room has a floor edge:
   floorEdge: ItemInPlay<"floorEdge", RoomId, RoomItemId, RoomItemId, ScN>;
-};*/
+}*/
+
+/**
+ * getter for room items, with some well-known ids built-in and auto-providing
+ * completed types for. This is a substitute since it is no longer possible to
+ * bake well-known ids into the RoomStateItems type
+ */
+export const getRoomItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName,
+  Id extends RoomItemId,
+>(
+  id: Id,
+  roomItems: RoomStateItems<RoomId, RoomItemId, ScN> | undefined,
+) => {
+  return roomItems?.[id] as
+    | (Id extends "head" ?
+        ItemInPlay<"head", RoomId, RoomItemId | "head", "head", ScN>
+      : Id extends "heels" ?
+        ItemInPlay<"heels", RoomId, RoomItemId | "heels", "heels", ScN>
+      : Id extends "headOverHeels" ?
+        ItemInPlay<
+          "headOverHeels",
+          RoomId,
+          RoomItemId | "headOverHeels",
+          "headOverHeels",
+          ScN
+        >
+      : UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>)
+    | undefined;
+};
 
 export const roomItemsIterable = <
   RoomId extends string,

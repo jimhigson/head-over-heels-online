@@ -43,6 +43,7 @@ import {
   setShowShadowMasks,
 } from "../../../store/slices/gameMenusSlice";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { getRoomItem } from "../../../model/RoomState";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -94,12 +95,14 @@ const SummonPlayableButton = <RoomId extends string>({
 
         if (playableName === "headOverHeels") {
           //sneakily combine the players by moving them to the final room first:
-          /** TODO: @knownRoomIds - remove casts */
-          const head = gameApi.gameState.characterRooms.head?.items
-            .head as ItemInPlay<"head", RoomId, string>;
-          /** TODO: @knownRoomIds - remove casts */
-          const heels = gameApi.gameState.characterRooms.heels?.items
-            .heels as ItemInPlay<"heels", RoomId, string>;
+          const head = getRoomItem(
+            "head",
+            gameApi.gameState.characterRooms.head?.items,
+          );
+          const heels = getRoomItem(
+            "heels",
+            gameApi.gameState.characterRooms.heels?.items,
+          );
 
           if (!head || !heels) {
             console.log(

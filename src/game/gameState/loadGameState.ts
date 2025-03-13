@@ -6,7 +6,7 @@ import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
 import type { GameState, PickupsCollected } from "./GameState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
-import { playablesInRoom } from "../../model/RoomState";
+import { getRoomItem } from "../../model/RoomState";
 import { emptyObject } from "../../utils/empty";
 
 export type StartingRooms<RoomId extends string> = Partial<
@@ -68,9 +68,8 @@ export const loadGameState = <RoomId extends string>({
         true,
       );
 
-  /** TODO: @knownRoomIds - this is not necessary with known its */
-  const head = headRoom && playablesInRoom(headRoom.items).head;
-  const heels = heelsRoom && playablesInRoom(heelsRoom.items).heels;
+  const head = getRoomItem("head", headRoom?.items);
+  const heels = getRoomItem("heels", heelsRoom?.items);
 
   // create a gameApi
   return {
