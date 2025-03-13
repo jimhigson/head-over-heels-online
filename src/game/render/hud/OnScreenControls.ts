@@ -167,7 +167,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
         currentPlayable: selectCurrentPlayableItem(gameState),
       });
     }
-    this.#hudElements.joystick.tick({ colourise: this.colourise });
+    this.#hudElements.joystick.tick();
   }
 
   get container() {

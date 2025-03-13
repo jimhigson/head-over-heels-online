@@ -509,7 +509,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
-  tick({ screenSize }: HudRendererTickContext<RoomId, RoomItemId>) {
+  tick({ screenSize, room }: HudRendererTickContext<RoomId, RoomItemId>) {
     const { gameState } = this.renderContext;
 
     this.#updateColours(gameState);
@@ -526,7 +526,10 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     this.#updateFps();
 
-    this.#onScreenControls?.tick(tickOptions);
+    this.#onScreenControls?.tick({
+      screenSize,
+      room,
+    });
   }
 
   get container() {
