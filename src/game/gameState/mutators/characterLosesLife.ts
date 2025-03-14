@@ -316,6 +316,6 @@ export const playableLosesLife = <RoomId extends string>(
   }
 
   if (selectCurrentPlayableItem(gameState) === undefined) {
-    store.dispatch(gameOver());
+    store.dispatch(gameOver({ offerReincarnation: true }));
   }
 };

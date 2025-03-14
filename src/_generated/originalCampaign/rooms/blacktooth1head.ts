@@ -43,6 +43,16 @@ export const room = inferRoomJson({
       position: { x: 2.5, y: 2.5, z: 0 },
       type: "player",
     },
+    testFish: {
+      config: { gives: 'reincarnation' },
+      position: { x: 2.5, y: 4, z: 0 },
+      type: "pickup",
+    },
+    testDeath: {
+      config: { style: 'volcano' },
+      position: { x: 2.5, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
     "pickup@5,0,7": {
       config: { gives: "extra-life" },
       position: { x: 5, y: 0, z: 7 },

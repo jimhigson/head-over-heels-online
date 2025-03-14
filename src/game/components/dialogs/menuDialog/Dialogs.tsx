@@ -6,7 +6,7 @@ import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
 import type { MarkdownPageName } from "../../../../manual/pages";
 import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
 import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
-import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirmDialog";
+import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirm/quitGameConfirmDialog";
 import { ScoreDialog } from "./dialogs/score/ScoreDialog";
 import { HoldDialog } from "./dialogs/holdDialog";
 import { ModernisationOptionsDialog } from "./dialogs/modernisationOptions/modernisationOptionsDialog";
@@ -17,6 +17,7 @@ import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
 import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperorDialog";
 import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
 import { WrongOrientationDialog } from "./dialogs/wrongOrientation/wrongOrientation";
+import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -64,6 +65,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <ProclaimEmperorDialog />;
     case "wrongOrientation":
       return <WrongOrientationDialog />;
+    case "offerReincarnation":
+      return <OfferReincarnationDialog />;
     default:
       dialogId satisfies never;
       return (

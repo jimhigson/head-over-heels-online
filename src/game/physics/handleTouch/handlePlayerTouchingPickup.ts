@@ -3,6 +3,7 @@ import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
 import {
   crownCollected,
+  reincarnationFishEaten,
   scrollRead,
 } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
@@ -117,9 +118,8 @@ export const handlePlayerTouchingPickup = <
       break;
 
     case "reincarnation": {
-      gameState.reincarnationPoint = createSavedGame(
-        gameState,
-        store.getState(),
+      store.dispatch(
+        reincarnationFishEaten(createSavedGame(gameState, store.getState())),
       );
       break;
     }

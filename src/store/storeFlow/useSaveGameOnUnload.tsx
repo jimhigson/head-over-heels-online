@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../hooks";
-import { saveCurrentGame } from "../slices/savedGamesSlice";
 import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
 import { persistor, store } from "../store";
-import { holdPressed } from "../slices/gameMenusSlice";
+import { holdPressed, saveCurrentGame } from "../slices/gameMenusSlice";
 
 export const useSaveGameOnUnload = (): void => {
   const dispatch = useAppDispatch();

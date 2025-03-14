@@ -20,7 +20,7 @@ export type StartingRooms<RoomId extends string> = Partial<
   For a given campaign, get the starting room for the two playable characters.
   This is nothing smarter than a search through every item in every room until we find them
 */
-export const startingRooms = <RoomId extends string>(
+export const startingRoomIds = <RoomId extends string>(
   campaign: Campaign<RoomId>,
   savedGame?: SavedGameState<RoomId>,
 ): StartingRooms<RoomId> => {
@@ -56,60 +56,75 @@ export const loadGameState = <RoomId extends string>({
   campaign,
   inputStateTracker,
   savedGame,
+  writeInto = {},
 }: {
   campaign: Campaign<RoomId>;
   inputStateTracker: InputStateTrackerInterface;
   savedGame?: SavedGameState<RoomId>;
+  writeInto?: Partial<GameState<RoomId>>;
 }): GameState<RoomId> => {
-  const starts = startingRooms(campaign, savedGame);
+  const roomIds = startingRoomIds(campaign, savedGame);
 
   const pickupsCollected = {} as PickupsCollected<RoomId>;
 
   const headRoom =
-    starts.head &&
-    (savedGame?.gameState.characterRooms.head ?
+    savedGame ?
+      savedGame.gameState.characterRooms.head &&
       badJsonClone(savedGame.gameState.characterRooms.head)
-    : loadRoom({
-        roomJson: campaign.rooms[starts.head],
-        roomPickupsCollected: pickupsCollected[starts.head] ?? emptyObject,
+    : roomIds.head &&
+      loadRoom({
+        roomJson: campaign.rooms[roomIds.head],
+        roomPickupsCollected: pickupsCollected[roomIds.head] ?? emptyObject,
         isNewGame: savedGame === undefined,
-      }));
+      });
   const heelsRoom =
-    starts.heels === starts.head ?
-      headRoom
-    : starts.heels &&
-      (savedGame?.gameState.characterRooms.heels ?
-        badJsonClone(savedGame.gameState.characterRooms.heels)
-      : loadRoom({
-          roomJson: campaign.rooms[starts.heels],
-          roomPickupsCollected: pickupsCollected[starts.heels] ?? emptyObject,
-          isNewGame: savedGame === undefined,
-        }));
-
-  const head = getRoomItem("head", headRoom?.items);
-  const heels = getRoomItem("heels", heelsRoom?.items);
+    // first check if in the same room:
+    roomIds.heels === roomIds.head ? headRoom
+    : savedGame ?
+      savedGame.gameState.characterRooms.heels &&
+      badJsonClone(savedGame.gameState.characterRooms.heels)
+    : roomIds.heels &&
+      loadRoom({
+        roomJson: campaign.rooms[roomIds.heels],
+        roomPickupsCollected: pickupsCollected[roomIds.heels] ?? emptyObject,
+        isNewGame: savedGame === undefined,
+      });
 
   // create a gameApi
-  return {
-    // if head isn't in the campaign (unusual!), start with heels
-    currentCharacterName: starts.head === undefined ? "heels" : "head",
+  return Object.assign(writeInto, {
+    events: mitt<GameEvents<RoomId>>(),
+    inputStateTracker,
+    campaign,
+    gameSpeed: 1,
+
+    // saved game can override any of the above
+    ...(savedGame ?
+      badJsonClone(savedGame?.gameState)
+    : {
+        // not saving - initialise some things:
+
+        // if head isn't in the campaign (unusual!), start with heels
+        currentCharacterName: roomIds.head === undefined ? "heels" : "head",
+        entryState: {
+          head:
+            headRoom === undefined ? undefined : (
+              entryState(getRoomItem("head", headRoom?.items)!)
+            ),
+          heels:
+            heelsRoom === undefined ? undefined : (
+              entryState(getRoomItem("heels", heelsRoom?.items)!)
+            ),
+        },
+        pickupsCollected,
+        gameTime: 0,
+        progression: 0,
+      }),
+
+    // if loading, override characterRooms from the save, since we may need two references to
+    // a single object, which json can't do
     characterRooms: {
       head: headRoom,
       heels: heelsRoom,
     },
-    entryState: {
-      head: headRoom === undefined ? undefined : entryState(head!),
-      heels: heelsRoom === undefined ? undefined : entryState(heels!),
-    },
-    inputStateTracker,
-    campaign,
-    events: mitt<GameEvents<RoomId>>(),
-    pickupsCollected,
-    gameTime: 0,
-    progression: 0,
-    gameSpeed: 1,
-
-    // saved game can override any of the above
-    ...(savedGame ? badJsonClone(savedGame?.gameState) : {}),
-  };
+  });
 };

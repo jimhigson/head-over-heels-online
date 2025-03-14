@@ -42,8 +42,9 @@ export const gameMain = async <RoomId extends string>(
     },
   });
 
-  const savedGame = store.getState().savedGames
+  const savedGame = store.getState().gameMenus
     .currentGame as SavedGameState<RoomId>;
+
   const gameState = loadGameState({
     campaign,
     inputStateTracker,
@@ -88,6 +89,14 @@ export const gameMain = async <RoomId extends string>(
     },
     get gameState() {
       return gameState;
+    },
+    reincarnateFrom(savedGame: SavedGameState<RoomId>) {
+      loadGameState({
+        campaign,
+        inputStateTracker,
+        savedGame,
+        writeInto: gameState,
+      });
     },
     stop() {
       console.warn("tearing down game");

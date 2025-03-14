@@ -62,7 +62,12 @@ front of other items
 
 ### Details and bugs
 
-[ ] restore known-id typings at src/model/RoomState.ts
+[ ] remove event bus from gamestate (use store instead)
+
+[ ] adopt a network-first strategy: 
+    https://vite-pwa-org.netlify.app/workbox/inject-manifest#network-first-strategy
+
+[ ] restore known-id typings at src/model/RoomState.ts - `origin/experimental-well-known-ids`
 
 [ ] charles robot no longer needs to use latent movement
 

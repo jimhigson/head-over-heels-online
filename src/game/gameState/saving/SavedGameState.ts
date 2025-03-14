@@ -14,9 +14,9 @@ export const savedGameGameStateFields = [
   "currentCharacterName",
   "entryState",
   "gameTime",
+  "progression",
   "pickupsCollected",
   "previousPlayable",
-  "reincarnationPoint",
 ] as const;
 
 /**
@@ -27,6 +27,7 @@ export const savedGameGameMenuSliceFields = [
   "planetsLiberated",
   "scrollsRead",
   "roomsExplored",
+  "reincarnationPoint",
 ] as const;
 
 type GameMenuSliceSavedField = Subset<

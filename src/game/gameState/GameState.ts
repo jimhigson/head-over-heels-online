@@ -46,13 +46,6 @@ export type GameState<RoomId extends string> = {
   previousPlayable?: IndividualCharacterName;
   inputStateTracker: InputStateTrackerInterface;
 
-  /**
-   * there is only one saved game state from a fish. Why? Because that saved state
-   * itself inherits the reincarnationPoint, so it naturally creates a linked-list
-   * of saves
-   */
-  reincarnationPoint?: SavedGameState;
-
   characterRooms: CharacterRooms<RoomId>;
   /**
    * Some of the state describing how their current room was entered for each character.

@@ -29,7 +29,11 @@ import {
 import { defaultUserSettings } from "../defaultUserSettings";
 import type { BooleanAction } from "../../game/input/actions";
 import { nextInCycle } from "../../utils/nextInCycle";
-import type { SavableFromGameMenusState } from "../../game/gameState/saving/SavedGameState";
+import type {
+  SavableFromGameMenusState,
+  SavedGameState,
+} from "../../game/gameState/saving/SavedGameState";
+import { REHYDRATE } from "redux-persist";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -102,6 +106,21 @@ export type GameMenusState = {
 
   planetsLiberated: Record<PlanetName, boolean>;
   roomsExplored: Record<string, true>; // RoomId ?
+
+  /**
+   * the current game, saved in case the game is closed and come back
+   * to later - eg mobile app is switched away from, or the user switches
+   * to another tab
+   */
+  currentGame?: SavedGameState;
+
+  /**
+   * there is only one saved game state from a fish. Why? Because that saved state
+   * itself inherits the reincarnationPoint, so it naturally creates a linked-list
+   * of saves
+   */
+  reincarnationPoint?: SavedGameState;
+
   gameRunning: boolean;
   /**
     we don't want to show the same scroll twice, even if it is in a different room
@@ -406,12 +425,43 @@ export const gameMenusSlice = createSlice({
     roomExplored(state, { payload: roomId }: PayloadAction<string>) {
       state.roomsExplored[roomId] = true;
     },
-    gameOver(state) {
-      state.gameRunning = false;
-      state.openMenus = [
-        { menuId: "score", scrollableSelection: false },
-        { menuId: "mainMenu", scrollableSelection: true },
-      ];
+    gameOver(
+      state,
+      {
+        payload: { offerReincarnation },
+      }: PayloadAction<{ offerReincarnation: boolean }>,
+    ) {
+      if (offerReincarnation && state.reincarnationPoint !== undefined) {
+        state.openMenus = [
+          { menuId: "score", scrollableSelection: false },
+          { menuId: "offerReincarnation", scrollableSelection: false },
+        ];
+      } else {
+        state.gameRunning = false;
+        delete state.reincarnationPoint;
+        delete state.currentGame;
+        /*
+        keep these for the scores dialog
+        state.planetsLiberated = noPlanetsLiberated;
+        state.roomsExplored = {};
+        state.scrollsRead = {};
+        */
+        state.openMenus = [
+          { menuId: "score", scrollableSelection: false },
+          { menuId: "mainMenu", scrollableSelection: true },
+        ];
+      }
+    },
+    reincarnationFishEaten(state, { payload }: PayloadAction<SavedGameState>) {
+      state.reincarnationPoint = payload;
+    },
+    reincarnationAccepted(state) {
+      delete state.reincarnationPoint;
+      // close the menu offering reincarnation
+      state.openMenus = [];
+    },
+    saveCurrentGame(state, { payload }: PayloadAction<SavedGameState>) {
+      state.currentGame = payload;
     },
     gameRestoreFromSave(
       state,
@@ -419,6 +469,23 @@ export const gameMenusSlice = createSlice({
     ) {
       Object.assign(state, payload);
     },
+  },
+  extraReducers(builder) {
+    type RehydrateAction = PayloadAction<
+      Pick<GameMenusState, "currentGame">,
+      typeof REHYDRATE
+    >;
+
+    builder.addCase<typeof REHYDRATE, RehydrateAction>(
+      REHYDRATE,
+      (state, action) => {
+        if (action.payload.currentGame) {
+          // we have just loaded and a game is already in progress from a previous session
+          state.gameRunning = true;
+          state.openMenus = [{ menuId: "hold", scrollableSelection: false }];
+        }
+      },
+    );
   },
 });
 
@@ -444,7 +511,10 @@ export const {
   keyAssignmentPresetChosen,
   menuOpenOrExitPressed,
   nextInputDirectionMode,
+  reincarnationAccepted,
+  reincarnationFishEaten,
   roomExplored,
+  saveCurrentGame,
   scrollRead,
   setEmulatedResolution,
   setFocussedMenuItemId,
