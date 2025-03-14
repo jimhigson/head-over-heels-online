@@ -139,10 +139,12 @@ export type PlayableItem<
   RoomId extends string = string,
   RoomItemId extends string = string,
 > =
-  | (C extends "headOverHeels" ? ItemInPlay<"headOverHeels", RoomId, RoomItemId>
+  | (C extends "headOverHeels" ?
+      ItemInPlay<"headOverHeels", RoomId, RoomItemId, "headOverHeels">
     : never)
-  | (C extends "head" ? ItemInPlay<"head", RoomId, RoomItemId> : never)
-  | (C extends "heels" ? ItemInPlay<"heels", RoomId, RoomItemId> : never);
+  | (C extends "head" ? ItemInPlay<"head", RoomId, RoomItemId, "head"> : never)
+  | (C extends "heels" ? ItemInPlay<"heels", RoomId, RoomItemId, "heels">
+    : never);
 
 export const freeItemTypes = [
   ...characterNames,

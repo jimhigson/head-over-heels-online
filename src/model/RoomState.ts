@@ -1,4 +1,4 @@
-import type { Simplify, ValueOf } from "type-fest";
+import type { Simplify } from "type-fest";
 import type { SceneryName } from "../sprites/planets";
 import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
@@ -26,10 +26,14 @@ export type RoomStateItems<
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
-> = {
-  [RID in WithWellKnown<RoomItemId>]: RID extends "head" ?
-    ItemInPlay<"head", RoomId, WithWellKnown<RoomItemId>, "head", ScN>
-  : UnionOfAllItemInPlayTypes<RoomId, WithWellKnown<RoomItemId>, ScN>;
+> =
+  // prettier-ignore
+  {
+    [RID in WithWellKnown<RoomItemId>]: 
+          RID extends "head" ?            ItemInPlay<"head",          RoomId, RoomItemId, "head", ScN> 
+      :   RID extends "heels" ?           ItemInPlay<"heels",         RoomId, RoomItemId, "heels", ScN>
+      :   RID extends "headOverHeels" ?   ItemInPlay<"headOverHeels", RoomId, RoomItemId, "headOverHeels", ScN>
+      :                                   UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>;
 }; /* & {
   // TODO: remove comment if this sticks
   //  nope, results in unions that are too complex to represent - need to find a simpler
@@ -55,6 +59,7 @@ export type RoomStateItems<
  * getter for room items, with some well-known ids built-in and auto-providing
  * completed types for. This is a substitute since it is no longer possible to
  * bake well-known ids into the RoomStateItems type
+ * @deprecated
  */
 export const getRoomItem = <
   RoomId extends string,
@@ -65,20 +70,32 @@ export const getRoomItem = <
   id: Id,
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN> | undefined,
 ) => {
+  // prettier-ignore
   return roomItems?.[id] as
-    | (Id extends "head" ? ItemInPlay<"head", RoomId, RoomItemId, "head", ScN>
-      : Id extends "heels" ?
-        ItemInPlay<"heels", RoomId, RoomItemId | "heels", "heels", ScN>
-      : Id extends "headOverHeels" ?
-        ItemInPlay<
-          "headOverHeels",
-          RoomId,
-          RoomItemId | "headOverHeels",
-          "headOverHeels",
-          ScN
-        >
-      : UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>)
+    // TODO: use PlayableItem<'head'> etc here
+    | ( Id extends "head" ?           ItemInPlay<"head", RoomId, RoomItemId, "head", ScN>
+      : Id extends "heels" ?          ItemInPlay<"heels", RoomId, RoomItemId, "heels", ScN>
+      : Id extends "headOverHeels" ?  ItemInPlay<"headOverHeels", RoomId, RoomItemId, "headOverHeels", ScN>
+      :                               UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>)
     | undefined;
+};
+
+export const setRoomItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName,
+>(
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
+) => {
+  type SimplerItems = Record<
+    WithWellKnown<RoomItemId>,
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
+  >;
+
+  // this setter uses casts to work around the type error where we don't know the item is the right
+  // type for the well-known item id:
+  (roomItems as SimplerItems)[item.id] = item;
 };
 
 export const roomItemsIterable = <
@@ -87,10 +104,12 @@ export const roomItemsIterable = <
   ScN extends SceneryName = SceneryName,
 >(
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
-): IterableIterator<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>> => {
-  return objectValues(roomItems) as IterableIterator<
-    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
-  >;
+): IterableIterator<UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>> => {
+  // simplify the types for the iterator
+  type Value = UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>;
+  type SimplerItems = Record<WithWellKnown<RoomItemId>, Value>;
+
+  return objectValues(roomItems as SimplerItems) as IterableIterator<Value>;
 };
 
 export const iterateRoomItems = <
@@ -110,8 +129,12 @@ export const iterateRoomItemEntries = <
 >(
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
 ) => {
-  return iterate(objectEntries(roomItems)) as IteratorObject<
-    [RoomItemId, ValueOf<typeof roomItems>]
+  // simplify the types for the iterator
+  type Value = UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>;
+  type SimplerItems = Record<WithWellKnown<RoomItemId>, Value>;
+
+  return iterate(objectEntries(roomItems as SimplerItems)) as IteratorObject<
+    [RoomItemId, Value]
   >;
 };
 

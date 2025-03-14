@@ -3,7 +3,6 @@ import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv } from "../slidingCollision";
 import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
 import { isMonster, isSolid } from "../itemPredicates";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import type { Xyz, DirectionXy8 } from "../../../utils/vectors/vectors";
@@ -28,6 +27,7 @@ import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { playablesInRoom, type RoomState } from "../../../model/RoomState";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
@@ -36,9 +36,10 @@ const turnAroundTime = 150;
 const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
-type ItemWithMovement<RoomId extends string, RoomItemId extends string> =
-  | ItemInPlay<"monster", RoomId, RoomItemId>
-  | ItemInPlay<"movableBlock", RoomId, RoomItemId>;
+type ItemWithMovement<
+  RoomId extends string,
+  RoomItemId extends string,
+> = ItemTypeUnion<"monster" | "movableBlock", RoomId, RoomItemId>;
 
 const notWalking = Object.freeze({
   movementType: "vel",
@@ -120,7 +121,7 @@ const findClosestPlayable = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
 ) => {
   // find closest player in the room:
-  const { head, heels, headOverHeels } = playablesInRoom(room.items);
+  const { head, heels, headOverHeels } = room.items;
 
   if (headOverHeels !== undefined) {
     return playerDiedRecently(headOverHeels) ? undefined : headOverHeels;

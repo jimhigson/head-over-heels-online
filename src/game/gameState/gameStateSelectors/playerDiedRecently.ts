@@ -2,8 +2,11 @@ import type { CharacterName } from "../../../model/modelTypes";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { afterDeathInvulnerabilityTime } from "../../physics/mechanicsConstants";
 
-export const playerDiedRecently = (
-  playableItem: PlayableItem<CharacterName, string>,
+export const playerDiedRecently = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
 ) => {
   const { gameTime, lastDiedAt } =
     playableItem.type === "headOverHeels" ?

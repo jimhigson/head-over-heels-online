@@ -81,13 +81,13 @@ export type ItemTypeUnion<
   | (T extends "floorEdge" ?
     ItemInPlay<"floorEdge", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
-  | (T extends "head" ? ItemInPlay<"head", RoomId, RoomItemId, RoomItemId, ScN>
+  | (T extends "head" ? ItemInPlay<"head", RoomId, RoomItemId, "head", ScN>
     : never)
   | (T extends "headOverHeels" ?
-    ItemInPlay<"headOverHeels", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"headOverHeels", RoomId, RoomItemId, "headOverHeels", ScN>
     : never)
   | (T extends "heels" ?
-    ItemInPlay<"heels", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"heels", RoomId, RoomItemId, "heels", ScN>
     : never)
   | (T extends "hushPuppy" ?
     ItemInPlay<"hushPuppy", RoomId, RoomItemId, RoomItemId, ScN>

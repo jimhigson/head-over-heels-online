@@ -1,7 +1,7 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { StoodOnBy } from "src/model/StoodOnBy";
-import type { RoomState } from "../../../model/RoomState";
+import { setRoomItem, type RoomState } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
@@ -11,7 +11,6 @@ import {
   unitVector,
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
-import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 
@@ -67,11 +66,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
         stoodOnBy: {} as StoodOnBy<RoomItemId>,
       },
     };
-
-    addItemToRoom({
-      room,
-      item: firedDoughnut,
-    });
+    setRoomItem(firedDoughnut, room.items);
 
     headAbilities.doughnuts -= 1;
     headAbilities.doughnutLastFireTime = headAbilities.gameTime;

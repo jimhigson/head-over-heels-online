@@ -5,6 +5,7 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItem";
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
+import type { PlayableItem } from "../itemPredicates";
 
 const makeHeels = (position: Xyz) =>
   first(
@@ -18,7 +19,7 @@ const makeHeels = (position: Xyz) =>
       basicEmptyRoom("firstRoom"),
       {},
     ),
-  ) as ItemInPlay<"heels">;
+  ) as PlayableItem<"heels">;
 
 const makeBlock = (position: Xyz) =>
   first(

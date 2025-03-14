@@ -10,7 +10,7 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../GameState";
 import { loadItemFromJson } from "../loadRoom/loadItem";
-import type { RoomState } from "../../../model/RoomState";
+import { setRoomItem, type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 
 let i = 0;
@@ -56,6 +56,7 @@ export const addItemFromJsonToRoom = <
   return item;
 };
 
+// TODO: this could be removed now, it is just a pass-through
 export const addItemToRoom = <
   RoomId extends string,
   RoomItemId extends string,
@@ -66,6 +67,6 @@ export const addItemToRoom = <
   room: RoomState<RoomId, RoomItemId>;
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 }) => {
-  room.items[item.id] = item;
+  setRoomItem(item, room.items);
   return item;
 };

@@ -110,15 +110,15 @@ export type ItemInPlay<
   /** the items ids for items in the same room as this item */
   RoomItemId extends string = string,
   /** the item id> for this item */
-  ItemId extends RoomItemId = RoomItemId,
+  ItemId extends WithWellKnown<RoomItemId> = WithWellKnown<RoomItemId>,
   ScN extends SceneryName = SceneryName,
 > = {
+  readonly id: ItemId;
   type: T;
 
   // borrow the config from the json typings:
   config: ItemInPlayConfig<T, RoomId, RoomItemId, ScN>;
 
-  readonly id: ItemId;
   state: ItemState<T, RoomId, RoomItemId>;
 
   /**
