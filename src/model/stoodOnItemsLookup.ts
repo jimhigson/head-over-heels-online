@@ -2,7 +2,7 @@ import type { FreeItem } from "../game/physics/itemPredicates";
 import { iterate } from "../utils/iterate";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { StoodOnBy } from "./StoodOnBy";
-import type { RoomState } from "./RoomState";
+import type { RoomState, WithWellKnown } from "./RoomState";
 import { keysIter } from "../utils/entries";
 
 /**
@@ -24,15 +24,15 @@ export const iterateStoodOnByItems = <
 /** utility to get the item object of standing on */
 
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
-  standingOnItemId: RoomItemId,
+  standingOnItemId: WithWellKnown<RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
 ): UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
-  standingOnItemId: RoomItemId | null,
+  standingOnItemId: WithWellKnown<RoomItemId> | null,
   room: RoomState<RoomId, RoomItemId>,
 ): UnionOfAllItemInPlayTypes<RoomId, RoomItemId> | null;
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
-  standingOnItemId: RoomItemId | null,
+  standingOnItemId: WithWellKnown<RoomItemId> | null,
   room: RoomState<RoomId, RoomItemId>,
 ) {
   return standingOnItemId === null ?

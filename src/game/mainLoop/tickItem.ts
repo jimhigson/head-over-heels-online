@@ -26,7 +26,6 @@ import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
 import { firing } from "../physics/mechanics/firing";
 import type {
   ItemInPlayType,
-  ItemInPlay,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import { iterate } from "../../utils/iterate";
@@ -36,6 +35,7 @@ import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerT
 import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 import type { RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 
 /**
  * biggest movement (in pixels) allowed in one tick - movement of more than this will be
@@ -48,7 +48,7 @@ function* itemMechanicResultGen<
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, RoomId, RoomItemId>,
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -121,7 +121,7 @@ const tickItemStandingOn = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, RoomId, RoomItemId>,
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -182,7 +182,7 @@ export const tickItem = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, RoomId, RoomItemId>,
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,

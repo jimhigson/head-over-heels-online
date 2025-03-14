@@ -49,92 +49,92 @@ export type ItemTypeUnion<
   | (T extends "ball" ? ItemInPlay<"ball", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "barrier" ?
-      ItemInPlay<"barrier", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"barrier", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "block" ?
-      ItemInPlay<"block", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"block", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "bubbles" ?
-      ItemInPlay<"bubbles", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"bubbles", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "charles" ?
-      ItemInPlay<"charles", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"charles", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "conveyor" ?
-      ItemInPlay<"conveyor", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"conveyor", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "deadlyBlock" ?
-      ItemInPlay<"deadlyBlock", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"deadlyBlock", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "doorFrame" ?
-      ItemInPlay<"doorFrame", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"doorFrame", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "doorLegs" ?
-      ItemInPlay<"doorLegs", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"doorLegs", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "firedDoughnut" ?
-      ItemInPlay<"firedDoughnut", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"firedDoughnut", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "floor" ?
-      ItemInPlay<"floor", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"floor", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "floorEdge" ?
-      ItemInPlay<"floorEdge", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"floorEdge", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "head" ? ItemInPlay<"head", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "headOverHeels" ?
-      ItemInPlay<"headOverHeels", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"headOverHeels", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "heels" ?
-      ItemInPlay<"heels", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"heels", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "hushPuppy" ?
-      ItemInPlay<"hushPuppy", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"hushPuppy", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "joystick" ?
-      ItemInPlay<"joystick", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"joystick", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "lift" ? ItemInPlay<"lift", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "monster" ?
-      ItemInPlay<"monster", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"monster", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "movableBlock" ?
-      ItemInPlay<"movableBlock", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"movableBlock", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "moveableDeadly" ?
-      ItemInPlay<"moveableDeadly", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"moveableDeadly", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "pickup" ?
-      ItemInPlay<"pickup", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"pickup", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "portableBlock" ?
-      ItemInPlay<"portableBlock", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"portableBlock", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "portal" ?
-      ItemInPlay<"portal", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"portal", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "sceneryPlayer" ?
-      ItemInPlay<"sceneryPlayer", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"sceneryPlayer", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "slidingBlock" ?
-      ItemInPlay<"slidingBlock", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"slidingBlock", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "slidingDeadly" ?
-      ItemInPlay<"slidingDeadly", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"slidingDeadly", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "spring" ?
-      ItemInPlay<"spring", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"spring", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "stopAutowalk" ?
-      ItemInPlay<"stopAutowalk", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"stopAutowalk", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "switch" ?
-      ItemInPlay<"switch", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"switch", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "teleporter" ?
-      ItemInPlay<"teleporter", RoomId, RoomItemId, RoomItemId, ScN>
+    ItemInPlay<"teleporter", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "wall" ? ItemInPlay<"wall", RoomId, RoomItemId, RoomItemId, ScN>
     : never);

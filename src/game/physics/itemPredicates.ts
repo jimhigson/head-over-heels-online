@@ -14,7 +14,7 @@ import type { Xyz } from "../../utils/vectors/vectors";
 export const isItemType =
   <T extends ItemInPlayType>(...types: Array<T>) =>
   <RoomId extends string, RoomItemId extends string>(
-    item: AnyItemInPlay<RoomId, RoomItemId>,
+    item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   ): item is ItemTypeUnion<T, RoomId, RoomItemId> => {
     return (types as Array<string>).includes(item.type);
   };
@@ -26,7 +26,10 @@ const isNeverSolidItemType = isItemType(
   "floorEdge", // not even really a thing in the room
   "firedDoughnut",
 );
-const isUnsolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
+const isUnsolid = (
+  item: UnionOfAllItemInPlayTypes,
+  toucher?: UnionOfAllItemInPlayTypes,
+) => {
   return (
     isNeverSolidItemType(item) ||
     /*
@@ -51,7 +54,10 @@ const isUnsolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
  * given @param item as being solid. If no mover is given, a general answer is returned,
  * not specific to any mover.
  */
-export const isSolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
+export const isSolid = (
+  item: UnionOfAllItemInPlayTypes,
+  toucher?: UnionOfAllItemInPlayTypes,
+) => {
   return !isUnsolid(item, toucher);
 };
 
@@ -111,7 +117,7 @@ export const isPlayableItem = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: AnyItemInPlay<RoomId, RoomItemId>,
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 ): item is PlayableItem<CharacterName, RoomId, RoomItemId> => {
   return (
     item.type === "head" ||
@@ -124,7 +130,7 @@ export function isFreeItem<
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
 >(
-  item: AnyItemInPlay<RoomId, RoomItemId>,
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>,
 ): item is FreeItem<RoomId, RoomItemId, ScN> {
   return (freeItemTypes as ItemInPlayType[]).includes(item.type);
 }

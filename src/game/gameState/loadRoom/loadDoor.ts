@@ -16,6 +16,7 @@ import {
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { emptyObject } from "../../../utils/empty";
+import type { WithWellKnown } from "../../../model/RoomState";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
@@ -299,7 +300,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         subXyz(position, scaleXyz(unitVectors[direction], 0.75)),
       ),
       expires: null,
-      stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+      stoodOnBy: emptyObject as WithWellKnown<RoomItemId>,
       disappear: null,
     },
   };

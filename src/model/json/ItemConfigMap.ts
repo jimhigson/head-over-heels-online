@@ -14,6 +14,7 @@ import type {
 } from "./JsonItem";
 import type { ToggleablePaths } from "../../utils/Toggleable";
 import type { GameMenusState } from "../../store/slices/gameMenusSlice";
+import type { WithWellKnown } from "../RoomState";
 
 export type BlockStyle = "organic" | "artificial" | "tower" | "book";
 
@@ -232,7 +233,7 @@ export type ItemConfigMap<
   switch: {
     // list of all items (de)activated by this switch
     activates?: {
-      [I in RoomItemId]?: {
+      [I in WithWellKnown<RoomItemId>]?: {
         // state deltas for the impacted items
         left: Record<string, unknown>;
         right: Record<string, unknown>;
@@ -246,7 +247,7 @@ export type ItemConfigMap<
   };
   joystick: {
     // item ids of all the items (probably Charles) that this joystick controls
-    controls: RoomItemId[];
+    controls: WithWellKnown<RoomItemId>[];
   };
 };
 

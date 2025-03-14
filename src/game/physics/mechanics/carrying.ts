@@ -2,7 +2,9 @@ import type { PlayableItem, PortableItemType } from "../itemPredicates";
 import { isPortable, isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
 import { moveItem } from "../moveItem";
-import type { ItemInPlay, AnyItemInPlay } from "../../../model/ItemInPlay";
+import type {
+  UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlay";
 import type { HeelsAbilities, CarriedItem } from "../../../model/ItemStateMap";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
@@ -17,6 +19,7 @@ import {
   roomItemsIterable,
   type RoomState,
 } from "../../../model/RoomState";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -115,7 +118,7 @@ const pickUpItem = <
 >(
   room: RoomState<RoomId, RoomItemId>,
   heelsAbilities: HeelsAbilities<RoomId>,
-  itemToPickup: ItemInPlay<T, RoomId, RoomItemId>,
+  itemToPickup: ItemTypeUnion<T, RoomId, RoomItemId>,
 ) => {
   const carrying = {
     type: itemToPickup.type,
@@ -139,7 +142,9 @@ export const findItemToPickup = <
   );
 };
 
-export const checkSpaceAvailableToPutDown = <T extends AnyItemInPlay>(
+export const checkSpaceAvailableToPutDown = <
+  T extends UnionOfAllItemInPlayTypes,
+>(
   item: T,
   roomItems: Iterable<T>,
 ) => {

@@ -13,16 +13,23 @@ import { iterate } from "../utils/iterate";
 ) &
   (string & {});*/
 
+export type WithWellKnown<RID extends string> =
+  | RID
+  | "head"
+  | "heels"
+  | "headOverHeels";
+
 /**
  * a map of items-in-play in a room
  **/
-
 export type RoomStateItems<
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
 > = {
-  [RID in RoomItemId]: UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>;
+  [RID in WithWellKnown<RoomItemId>]: RID extends "head" ?
+    ItemInPlay<"head", RoomId, WithWellKnown<RoomItemId>, "head", ScN>
+  : UnionOfAllItemInPlayTypes<RoomId, WithWellKnown<RoomItemId>, ScN>;
 }; /* & {
   // TODO: remove comment if this sticks
   //  nope, results in unions that are too complex to represent - need to find a simpler
@@ -59,8 +66,7 @@ export const getRoomItem = <
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN> | undefined,
 ) => {
   return roomItems?.[id] as
-    | (Id extends "head" ?
-        ItemInPlay<"head", RoomId, RoomItemId | "head", "head", ScN>
+    | (Id extends "head" ? ItemInPlay<"head", RoomId, RoomItemId, "head", ScN>
       : Id extends "heels" ?
         ItemInPlay<"heels", RoomId, RoomItemId | "heels", "heels", ScN>
       : Id extends "headOverHeels" ?
@@ -81,8 +87,10 @@ export const roomItemsIterable = <
   ScN extends SceneryName = SceneryName,
 >(
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
-): IterableIterator<ValueOf<typeof roomItems>> => {
-  return objectValues(roomItems);
+): IterableIterator<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>> => {
+  return objectValues(roomItems) as IterableIterator<
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
+  >;
 };
 
 export const iterateRoomItems = <

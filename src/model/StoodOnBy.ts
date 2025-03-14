@@ -4,9 +4,10 @@
  */
 
 import { objectKeys, size } from "iter-tools";
+import type { WithWellKnown } from "./RoomState";
 
 export type StoodOnBy<RoomItemId extends string = string> = {
-  [r in RoomItemId]: true;
+  [r in WithWellKnown<RoomItemId>]: true;
 };
 
 /**

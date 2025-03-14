@@ -2,6 +2,7 @@ import type { PortableItemType } from "../game/physics/itemPredicates";
 import type { Xyz, Xy } from "../utils/vectors/vectors";
 import type { EmptyObject, SwitchSetting } from "./ItemInPlay";
 import type { JsonItemConfig } from "./json/JsonItem";
+import type { WithWellKnown } from "./RoomState";
 
 export type PlayableActionState =
   | "moving"
@@ -23,7 +24,7 @@ export type PlayableTeleportingState =
 
 export type FreeItemState<RoomItemId extends string> = {
   /* id of the single item we are considered to be standing on, or null if not standing on anything */
-  standingOnItemId: RoomItemId | null;
+  standingOnItemId: WithWellKnown<RoomItemId> | null;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
   latentMovement: Array<{ moveAtRoomTime: number; positionDelta: Xyz }>;

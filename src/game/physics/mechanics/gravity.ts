@@ -1,10 +1,10 @@
+import type { FreeItem} from "../itemPredicates";
 import { type FreeItemTypes } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
 import { isSolid } from "../itemPredicates";
 import { originXyz } from "../../../utils/vectors/vectors";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { GameState } from "../../gameState/GameState";
 import type { RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
@@ -23,7 +23,7 @@ const notFalling = {
  * The item can be anything - a player, a pickup etc
  */
 export const gravity = <RoomId extends string, RoomItemId extends string>(
-  item: ItemInPlay<FreeItemTypes, RoomId, RoomItemId>,
+  item: FreeItem<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,

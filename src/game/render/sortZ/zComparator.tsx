@@ -1,14 +1,17 @@
-import type { AnyItemInPlay } from "../../../model/ItemInPlay";
+import type { Simplify } from "type-fest";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
 
-export type DrawOrderComparable = Pick<
-  AnyItemInPlay,
-  "id" | "aabb" | "renders" | "renderAabb" | "fixedZIndex"
-> & {
-  state: { position: { x: number; y: number; z: number } };
-};
+export type DrawOrderComparable = Simplify<
+  Pick<
+    UnionOfAllItemInPlayTypes,
+    "id" | "aabb" | "renders" | "renderAabb" | "fixedZIndex"
+  > & {
+    state: { position: { x: number; y: number; z: number } };
+  }
+>;
 
 /**
  * of the six visible corners of the projected cuboid, we need to find three to be able to compare
