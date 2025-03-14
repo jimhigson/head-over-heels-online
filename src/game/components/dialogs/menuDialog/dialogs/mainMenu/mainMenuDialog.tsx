@@ -16,6 +16,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { useCallback } from "react";
 import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
 import { Border } from "../../../../../../ui/Border";
+import { multilineTextClass } from "../../multilineTextClass";
 
 const PlayGameLabel = () => {
   const isGameRunning = useIsGameRunning();
@@ -92,6 +93,17 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
         </MenuItems>
         {!isGameRunning && <MainMenuFooter />}
       </Dialog>
+      {/* put a small debugging icon in the border or bottom-right */}
+      <div className="flex bg-metallicBlueHalfbrite justify-end group absolute bottom-0 right-2 pl-1 pt-1 z-dialog">
+        <BitmapText
+          className={`text-pastelBlue hidden group-hover:block w-min ${multilineTextClass}`}
+        >
+          {__buildString__ || ""}
+        </BitmapText>
+        <BitmapText className="text-metallicBlue group-hover:hidden">
+          *
+        </BitmapText>
+      </div>
     </DialogPortal>
   );
 };

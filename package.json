@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "BUILD_STRING=\"$(git branch --show-current) $(git rev-list --count HEAD) $(git rev-parse --short HEAD) $(hostname) $(date +%Y-%m-%dT%H:%M:%S%z)\" vite",
+    "build": "BUILD_STRING=\"$(git branch --show-current) $(git rev-list --count HEAD) $(git rev-parse --short HEAD) $(hostname) $(date +%Y-%m-%dT%H:%M:%S%z)\" vite build",
     "watch:type": "tsc --noEmit --watch --project ./tsconfig.app.json",
     "check:type": "tsc --noEmit --project ./tsconfig.app.json",
     "check:lint": "eslint .",

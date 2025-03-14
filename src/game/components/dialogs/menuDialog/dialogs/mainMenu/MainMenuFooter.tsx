@@ -31,6 +31,5 @@ export const MainMenuFooter = () => (
         </address>
       </div>
     </div>
-    <BitmapText>{__buildString__ || ""}</BitmapText>
   </>
 );
