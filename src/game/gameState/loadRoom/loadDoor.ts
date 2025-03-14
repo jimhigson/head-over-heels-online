@@ -1,9 +1,8 @@
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import type { StoodOnBy } from "src/model/StoodOnBy";
 import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { emptySet } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import {
@@ -16,6 +15,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { emptyObject } from "../../../utils/empty";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
@@ -25,10 +25,16 @@ export const doorPortalHeight = blockSizePx.h * 2;
 export const doorPostHeightBlocks = 4;
 export const doorPostHeight = blockSizePx.h * 4;
 
-export function* loadDoor<RoomId extends string>(
-  jsonDoor: JsonItem<"door", SceneryName, RoomId>,
+export function* loadDoor<RoomId extends string, RoomItemId extends string>(
+  jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
   id: string,
-): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
+): Generator<
+  ItemTypeUnion<
+    "doorFrame" | "doorLegs" | "stopAutowalk" | "portal" | "wall",
+    RoomId,
+    RoomItemId
+  >
+> {
   const {
     config: { direction },
     position,
@@ -66,7 +72,7 @@ export function* loadDoor<RoomId extends string>(
     ...defaultItemProperties,
     ...{
       type: "doorFrame",
-      id: `${id}/far`,
+      id: `${id}/far` as RoomItemId,
       config: {
         ...jsonDoor.config,
         inHiddenWall: inHidden,
@@ -82,7 +88,7 @@ export function* loadDoor<RoomId extends string>(
           ),
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       aabb: addXyz(
@@ -100,7 +106,7 @@ export function* loadDoor<RoomId extends string>(
     ...defaultItemProperties,
     ...{
       type: "doorFrame",
-      id: `${id}/near`,
+      id: `${id}/near` as RoomItemId,
       config: {
         ...jsonDoor.config,
         inHiddenWall: inHidden,
@@ -111,7 +117,7 @@ export function* loadDoor<RoomId extends string>(
           addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
@@ -131,7 +137,7 @@ export function* loadDoor<RoomId extends string>(
     ...defaultItemProperties,
     ...{
       type: "doorFrame",
-      id: `${id}/top`,
+      id: `${id}/top` as RoomItemId,
       config: {
         ...jsonDoor.config,
         inHiddenWall: inHidden,
@@ -148,7 +154,7 @@ export function* loadDoor<RoomId extends string>(
           },
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       aabb: addXyz(
@@ -167,14 +173,14 @@ export function* loadDoor<RoomId extends string>(
     ...jsonDoor,
     ...defaultItemProperties,
     ...{
-      id: `${id}/wall`,
+      type: "wall",
+      id: `${id}/wall` as RoomItemId,
       config: {
         style: "none",
         direction: "away", // TODO: look at typings - this isn't needed for hidden walls
         tiles: [],
       },
       renders: false,
-      type: "wall",
       state: {
         position: addXyz(
           blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
@@ -183,7 +189,7 @@ export function* loadDoor<RoomId extends string>(
           },
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       aabb: blockXyzToFineXyz({
@@ -200,7 +206,7 @@ export function* loadDoor<RoomId extends string>(
     ...defaultItemProperties,
     ...{
       type: "portal",
-      id: `${id}/portal`,
+      id: `${id}/portal` as RoomItemId,
       config: {
         ...jsonDoor.config,
         inHidden,
@@ -225,7 +231,7 @@ export function* loadDoor<RoomId extends string>(
           { [axis]: nearPostWidthInAxis },
         ),
         expires: null,
-        stoodOnBy: emptySet,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
       },
       aabb: {
@@ -244,7 +250,7 @@ export function* loadDoor<RoomId extends string>(
       ...defaultItemProperties,
       ...{
         type: "doorLegs",
-        id: `${id}/legs`,
+        id: `${id}/legs` as RoomItemId,
         config: {
           ...jsonDoor.config,
           inHiddenWall: inHidden,
@@ -273,7 +279,7 @@ export function* loadDoor<RoomId extends string>(
             z: 0,
           },
           expires: null,
-          stoodOnBy: new Set(),
+          stoodOnBy: {} as StoodOnBy<RoomItemId>,
           disappear: null,
         },
         aabb: addXyz(
@@ -284,7 +290,7 @@ export function* loadDoor<RoomId extends string>(
     };
   yield {
     type: "stopAutowalk",
-    id: `${id}/stopAutowalk`,
+    id: `${id}/stopAutowalk` as RoomItemId,
     renders: false,
     aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0, z: 2 } as Xyz),
     config: {},
@@ -293,7 +299,7 @@ export function* loadDoor<RoomId extends string>(
         subXyz(position, scaleXyz(unitVectors[direction], 0.75)),
       ),
       expires: null,
-      stoodOnBy: emptySet,
+      stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       disappear: null,
     },
   };

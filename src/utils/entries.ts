@@ -1,10 +1,13 @@
-import { objectEntries } from "iter-tools";
+import { objectEntries, objectKeys } from "iter-tools";
 import { iterate } from "./iterate";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ObjectKeys = <K extends keyof any>(
   o: Partial<Record<K, unknown>>,
 ) => K[];
+export type ObjectKeysIter = <K extends keyof any>(
+  o: Partial<Record<K, unknown>>,
+) => IterableIterator<K>;
 
 export type EntriesOf<O extends object> =
   /*O extends Record<infer K, infer V> ? Array<[K, V]>
@@ -25,6 +28,7 @@ export type ObjectEntriesIter = <K extends keyof any, V>(
 export const entries = Object.entries as ObjectEntries;
 export const objectEntriesIter = objectEntries as ObjectEntriesIter;
 export const keys = Object.keys as ObjectKeys;
+export const keysIter = objectKeys as ObjectKeysIter;
 
 export type ObjectFromEntries = <K extends keyof any, V>(
   o: Iterable<[K, V]>,

@@ -1,23 +1,25 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
 import { AlphaFilter, Container, RenderTexture, Sprite } from "pixi.js";
-import { projectWorldXyzToScreenXy } from "../projectToScreen";
-import type { CreateSpriteOptions } from "../createSprite";
-import { createSprite } from "../createSprite";
-import type { Collideable } from "../../collision/aabbCollision";
-import { collision1to1 } from "../../collision/aabbCollision";
-import { concat, objectEntries, objectValues } from "iter-tools";
+import { projectWorldXyzToScreenXy } from "../../projectToScreen";
+import type { CreateSpriteOptions } from "../../createSprite";
+import { createSprite } from "../../createSprite";
+import type { Collideable } from "../../../collision/aabbCollision";
+import { collision1to1 } from "../../../collision/aabbCollision";
+import { concat, objectEntries } from "iter-tools";
 import type { SetRequired } from "type-fest";
-import { veryHighZ } from "../../physics/mechanicsConstants";
-import type { ItemInPlay, ItemInPlayType } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
-import { iterate } from "../../../utils/iterate";
-import type { Xy, Xyz } from "../../../utils/vectors/vectors";
-import { subXy } from "../../../utils/vectors/vectors";
-import { store } from "../../../store/store";
-import type { ItemRenderContext, Renderer } from "../Renderer";
-import { blockSizePx } from "../../../sprites/spritePivots";
-import type { ConsolidatableConfig } from "../../../model/json/ItemConfigMap";
+import { veryHighZ } from "../../../physics/mechanicsConstants";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
+import { subXy } from "../../../../utils/vectors/vectors";
+import { store } from "../../../../store/store";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
+  Renderer,
+} from "../../Renderer";
+import { blockSizePx } from "../../../../sprites/spritePivots";
+import type { ConsolidatableConfig } from "../../../../model/json/ItemConfigMap";
+import { iterateRoomItems } from "../../../../model/RoomState";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -81,11 +83,29 @@ const renderMultipliedXy = (
   }
 };
 
+export type ItemRenderContextWithRequiredShadowMask<
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+  BaseContext extends ItemRenderContext<
+    T,
+    RoomId,
+    RoomItemId
+  > = ItemRenderContext<T, RoomId, RoomItemId>,
+  // type-fest's SetRequiredDeep slows ts down too much here:
+> = BaseContext & {
+  item: SetRequired<BaseContext["item"], "shadowMask">;
+};
+
 export class ItemShadowRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
-  ItemId extends string,
-> implements Renderer<ItemRenderContext<RoomId>>
+  RoomItemId extends string,
+> implements
+    Renderer<
+      ItemRenderContextWithRequiredShadowMask<T, RoomId, RoomItemId>,
+      ItemTickContext<RoomId, RoomItemId>
+    >
 {
   #container: Container = new Container({
     label: "ItemShadowRenderer",
@@ -101,17 +121,18 @@ export class ItemShadowRenderer<
   #casts = {} as Record<string, Cast>;
 
   constructor(
-    /** the item currently being rendered for = the one that the shadow is cast on  */
-    private item: SetRequired<
-      ItemInPlay<T, SceneryName, RoomId, ItemId>,
-      "shadowMask"
+    public readonly renderContext: ItemRenderContextWithRequiredShadowMask<
+      T,
+      RoomId,
+      RoomItemId
     >,
-    private room: RoomState<SceneryName, RoomId, ItemId>,
-    private pixiRenderer: PixiRenderer,
   ) {
     const {
-      userSettings: {
-        displaySettings: { showShadowMasks },
+      gameMenus: {
+        userSettings: {
+          // TODO: showShadowMasks could be in the renderContext
+          displaySettings: { showShadowMasks },
+        },
       },
     } = store.getState();
 
@@ -123,9 +144,11 @@ export class ItemShadowRenderer<
       this.#container.filters = new AlphaFilter({ alpha: 0.5 });
     }
 
+    const { item, pixiRenderer } = renderContext;
     const {
       shadowMask: { spriteOptions },
     } = item;
+
     if (spriteOptions) {
       const { times } = item.config as ConsolidatableConfig;
 
@@ -159,11 +182,13 @@ export class ItemShadowRenderer<
   /**
    * @returns true iff the item needs z-order resorting for the room
    */
-  tick({ movedItems, progression }: ItemRenderContext<RoomId>) {
-    const surfaceMoved = movedItems.has(this.item);
-    const itemTop = this.item.state.position.z + this.item.aabb.z;
+  tick({ movedItems, progression }: ItemTickContext<RoomId, RoomItemId>) {
+    const { item, pixiRenderer, room } = this.renderContext;
 
-    const shadowCastersIter = iterate(objectValues(this.room.items)).filter(
+    const surfaceMoved = movedItems.has(item);
+    const itemTop = item.state.position.z + item.aabb.z;
+
+    const shadowCastersIter = iterateRoomItems(room.items).filter(
       function castsAShadow(
         c,
       ): c is SetRequired<typeof c, "shadowCastTexture"> {
@@ -172,15 +197,15 @@ export class ItemShadowRenderer<
     );
 
     const spaceAboveSurface: Collideable = {
-      id: this.item.id,
+      id: item.id,
       state: {
         position: {
-          ...this.item.state.position,
+          ...item.state.position,
           z: itemTop,
         },
       },
       aabb: {
-        ...this.item.aabb,
+        ...item.aabb,
         z: veryHighZ,
       },
     };
@@ -218,7 +243,7 @@ export class ItemShadowRenderer<
         const { times } = casterItem.config as ConsolidatableConfig;
 
         const newShadowSprite = renderMultipliedXy(
-          this.pixiRenderer,
+          pixiRenderer,
           casterItem.shadowCastTexture,
           times,
         );
@@ -235,8 +260,8 @@ export class ItemShadowRenderer<
       const { sprite } = this.#casts[casterItem.id];
 
       const screenXy = projectWorldXyzToScreenXy({
-        ...subXy(casterItem.state.position, this.item.state.position),
-        z: this.item.aabb.z,
+        ...subXy(casterItem.state.position, item.state.position),
+        z: item.aabb.z,
       });
       // this fails for composite sprites, since they get their x,y set in the sprite they are rendered to
       sprite.x = screenXy.x;

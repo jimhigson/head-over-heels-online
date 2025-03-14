@@ -22,19 +22,22 @@ import {
 import type { GameState } from "../../gameState/GameState";
 import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import type { PressStatus } from "../../input/InputStateTracker";
+import type { RoomState } from "../../../model/RoomState";
+import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 
 const stopWalking = {
   movementType: "vel",
   vels: { walking: originXyz },
-} as const satisfies MechanicResult<CharacterName, string>;
+} as const satisfies MechanicResult<CharacterName, string, string>;
 
-export const walking = <RoomId extends string>(
-  playableItem: PlayableItem<CharacterName, RoomId>,
+export const walking = <RoomId extends string, RoomItemId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<CharacterName, RoomId> => {
+): MechanicResult<CharacterName, RoomId, RoomItemId> => {
   // we wrap walking implementation and add analysis of how far walked etc
-  const result = walkingImpl(playableItem, gameState, deltaMS);
+  const result = walkingImpl(playableItem, room, gameState, deltaMS);
 
   if (result.movementType === "vel" && result.vels.walking !== undefined) {
     const speed = lengthXyz(result.vels.walking);
@@ -50,7 +53,7 @@ export const walking = <RoomId extends string>(
       // head's walk distance is only counted when standing on something,
       // since this is only really collected for the sake of counting down
       // fast steps, and they don't tick down while in the air:
-      playableItem.state.standingOn !== null
+      playableItem.state.standingOnItemId !== null
     ) {
       result.stateDelta = {
         ...result.stateDelta,
@@ -78,17 +81,18 @@ export const walking = <RoomId extends string>(
  * implementation of the mechanic for walking, but also gliding and
  * (head) changing direction mid-air
  */
-const walkingImpl = <RoomId extends string>(
-  playableItem: PlayableItem<CharacterName, RoomId>,
+const walkingImpl = <RoomId extends string, RoomItemId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   { inputStateTracker, currentCharacterName }: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<CharacterName, RoomId> => {
+): MechanicResult<CharacterName, RoomId, RoomItemId> => {
   const {
     type,
     state: {
       action,
       autoWalk,
-      standingOn,
+      standingOnItemId,
       facing,
       teleporting,
       walkDistance,
@@ -107,11 +111,11 @@ const walkingImpl = <RoomId extends string>(
   const directionInput: Xyz =
     isCurrentCharacter ? inputStateTracker.directionVector : originXyz;
 
-  const isFalling = standingOn === null && gravityVel.z < 0;
+  const isFalling = standingOnItemId === null && gravityVel.z < 0;
   const hasFastSteps =
     type === "head" &&
     fastStepsRemaining(playableItem.state) > 0 &&
-    standingOn !== null;
+    standingOnItemId !== null;
 
   const useSpeedOfCharacter =
     type === "headOverHeels" ?
@@ -136,7 +140,7 @@ const walkingImpl = <RoomId extends string>(
 
   // handle 'walking' while ascending/falling:
   if (type === "heels") {
-    if (standingOn === null) {
+    if (standingOnItemId === null) {
       // heels has mandatory forward motion while jumping, but decelerates:
       if (playableItem.state.jumped) {
         return {
@@ -158,7 +162,9 @@ const walkingImpl = <RoomId extends string>(
         const jumpDirectionXy = unitVector(
           xyEqual(walkVector, originXy) ? facing : walkVector,
         );
-        const isStandingOnSpring = isItemType("spring")(standingOn);
+        const isStandingOnSpring = isItemType("spring")(
+          stoodOnItem(standingOnItemId, room),
+        );
         const walkJumpFraction =
           isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
         return {

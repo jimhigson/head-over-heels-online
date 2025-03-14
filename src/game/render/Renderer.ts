@@ -1,24 +1,58 @@
 import type { Container } from "pixi.js";
 import type { MovedItems } from "../mainLoop/progressGameState";
-import type { RoomState } from "../../model/modelTypes";
-import type { SceneryName } from "../../sprites/planets";
 import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
+import type { RoomState } from "../../model/RoomState";
+import type { GameState } from "../gameState/GameState";
 
-export type RenderContext = object;
+import type { Renderer as PixiRenderer } from "pixi.js";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { Upscale } from "./calculateUpscale";
 
-export type RoomRenderContext = {
-  movedItems: MovedItems;
+export type RoomRenderContext<
+  RoomId extends string,
+  RoomItemId extends string,
+> = {
+  displaySettings: DisplaySettings;
+  gameState: GameState<RoomId>;
+  room: RoomState<RoomId, RoomItemId>;
+  paused: boolean;
+  colourised: boolean;
+  pixiRenderer: PixiRenderer;
+  upscale: Upscale;
+};
+
+export type RoomTickContext<
+  RoomId extends string,
+  RoomItemId extends string,
+> = {
+  movedItems: MovedItems<RoomId, RoomItemId>;
   progression: number;
   deltaMS: number;
-  displaySettings: DisplaySettings;
-  onHold: boolean;
-};
-export type ItemRenderContext<RoomId extends string> = RoomRenderContext & {
-  room: RoomState<SceneryName, RoomId>;
 };
 
-export interface Renderer<RC extends RenderContext> {
-  tick(renderContext: RC): void;
+export type ItemTickContext<
+  RoomId extends string,
+  RoomItemId extends string,
+> = RoomTickContext<RoomId, RoomItemId>;
+
+export type ItemRenderContext<
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+> = RoomRenderContext<RoomId, RoomItemId> & {
+  item: ItemTypeUnion<T, RoomId, RoomItemId>;
+};
+
+export interface Renderer<
+  RenderContext extends object,
+  TickContext extends object,
+  /** the pixi thing rendered to by this renderer */
+  RenderObject extends Container = Container,
+> {
+  tick(tickContext: TickContext): void;
   destroy(): void;
-  container: Container;
+  container: RenderObject;
+  /** get the unchanging render context for this renderer */
+  readonly renderContext: RenderContext;
 }

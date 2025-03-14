@@ -7,7 +7,7 @@ import type { PlayableItem } from "../physics/itemPredicates";
  * is restored
  */
 export type PlayableEntryState = Pick<
-  ItemState<CharacterName, string>,
+  ItemState<CharacterName, string, string>,
   "position" | "facing" | "autoWalk" | "action" | "vels"
 >;
 export const entryState = ({

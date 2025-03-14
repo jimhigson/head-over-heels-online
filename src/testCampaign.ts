@@ -18,9 +18,9 @@ export type TestCampaignRoomId =
 
 // create matrix of rooms - one in each world/colour combination
 const colourRooms = () => {
-  type Entry<P extends SceneryName> = [
+  type Entry<ScN extends SceneryName> = [
     ColorRoomIds,
-    RoomJson<P, TestCampaignRoomId, string>,
+    RoomJson<TestCampaignRoomId, string, ScN>,
   ];
 
   const sampleItems: JsonItemUnion<TestCampaignRoomId>[] = [
@@ -129,7 +129,7 @@ const colourRooms = () => {
   }
   return Object.fromEntries(room()) as Record<
     ColorRoomIds,
-    RoomJson<SceneryName, ColorRoomIds, string>
+    RoomJson<ColorRoomIds, string, SceneryName>
   >;
 };
 
@@ -178,7 +178,7 @@ const rooms = {
         position: { x: 0, y: 0, z: 1 },
       },
     ]),
-  }) satisfies RoomJson<"safari", TestCampaignRoomId>,
+  }) satisfies RoomJson<TestCampaignRoomId, string, "safari">,
 
   laboratory: addPerimeterWallsToRoom({
     size: { x: 18, y: 14 },
@@ -845,7 +845,7 @@ const rooms = {
         position: { x: 17, y: 5, z: 3 },
       },
     ]),
-  }) satisfies RoomJson<"egyptus", TestCampaignRoomId, string>,
+  }) satisfies RoomJson<TestCampaignRoomId, string, "egyptus">,
 
   renderEverything: addPerimeterWallsToRoom({
     size: { x: 18, y: 18 },

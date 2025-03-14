@@ -1,10 +1,10 @@
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ConsolidatableJsonItemType } from "../../campaignXml2Json/consolidateItems/consolidateItems";
 import type {
   ItemInPlayType,
   ItemInPlay,
   AnyItemInPlay,
   UnionOfAllItemInPlayTypes,
-  ItemTypeUnion,
 } from "../../model/ItemInPlay";
 import type { CharacterName } from "../../model/modelTypes";
 import { characterNames } from "../../model/modelTypes";
@@ -13,9 +13,9 @@ import type { Xyz } from "../../utils/vectors/vectors";
 
 export const isItemType =
   <T extends ItemInPlayType>(...types: Array<T>) =>
-  <RoomId extends string>(
-    item: AnyItemInPlay<RoomId>,
-  ): item is ItemTypeUnion<T, RoomId> => {
+  <RoomId extends string, RoomItemId extends string>(
+    item: AnyItemInPlay<RoomId, RoomItemId>,
+  ): item is ItemTypeUnion<T, RoomId, RoomItemId> => {
     return (types as Array<string>).includes(item.type);
   };
 
@@ -55,23 +55,35 @@ export const isSolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
   return !isUnsolid(item, toucher);
 };
 
+/**
+ * 'heavy' items stop lifts from rising (see blacktooth 78) - only
+ * the metal stepstools are heavy
+ */
+export const isHeavyItem = (item: UnionOfAllItemInPlayTypes): boolean => {
+  return isMovableBlock(item) && item.config.style === "stepStool";
+};
+
 // a good example of where OOP would make sense, it a polymorphic isPushable method
 export const isPushable = <
-  P extends SceneryName = SceneryName,
-  RoomId extends string = string,
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
 >(
-  item: AnyItemInPlay<RoomId>,
+  // the item doing the pushing
+  pusher: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  pushedItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   /**
    * if true, some pushes are allowed. Ie, a player can push another player through
    * a door while backing-off-and re-entering the room to clear their area
    */
   forceful: boolean = false,
-): item is FreeItem<P, RoomId> => {
+): pushedItem is FreeItem<RoomId, RoomItemId, ScN> => {
   return (
-    isFreeItem(item) &&
+    isFreeItem(pushedItem) &&
     // can't push a player while they're autowalking - lets players walk into a room while invincible if
-    // an enemy is near the door
-    !(!forceful && isPlayableItem(item) && item.state.autoWalk)
+    // an enemy is near the door.
+    !(!forceful && isPlayableItem(pushedItem) && pushedItem.state.autoWalk) &&
+    !(isLift(pusher) && isHeavyItem(pushedItem))
   );
 };
 
@@ -95,9 +107,12 @@ export type PortableItemType = (typeof portableItemTypes)[number];
 
 export const isPortable = isItemType(...portableItemTypes);
 
-export const isPlayableItem = <RoomId extends string = string>(
-  item: AnyItemInPlay<RoomId>,
-): item is PlayableItem<CharacterName, RoomId> => {
+export const isPlayableItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: AnyItemInPlay<RoomId, RoomItemId>,
+): item is PlayableItem<CharacterName, RoomId, RoomItemId> => {
   return (
     item.type === "head" ||
     item.type === "heels" ||
@@ -105,21 +120,23 @@ export const isPlayableItem = <RoomId extends string = string>(
   );
 };
 export function isFreeItem<
-  P extends SceneryName = SceneryName,
-  RoomId extends string = string,
->(item: AnyItemInPlay<RoomId>): item is FreeItem<P, RoomId> {
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  item: AnyItemInPlay<RoomId, RoomItemId>,
+): item is FreeItem<RoomId, RoomItemId, ScN> {
   return (freeItemTypes as ItemInPlayType[]).includes(item.type);
 }
 export type PlayableItem<
   C extends CharacterName = CharacterName,
   RoomId extends string = string,
+  RoomItemId extends string = string,
 > =
-  | (C extends "headOverHeels" ?
-      ItemInPlay<"headOverHeels", SceneryName, RoomId, "headOverHeels">
+  | (C extends "headOverHeels" ? ItemInPlay<"headOverHeels", RoomId, RoomItemId>
     : never)
-  | (C extends "head" ? ItemInPlay<"head", SceneryName, RoomId, "head"> : never)
-  | (C extends "heels" ? ItemInPlay<"heels", SceneryName, RoomId, "heels">
-    : never);
+  | (C extends "head" ? ItemInPlay<"head", RoomId, RoomItemId> : never)
+  | (C extends "heels" ? ItemInPlay<"heels", RoomId, RoomItemId> : never);
 
 export const freeItemTypes = [
   ...characterNames,
@@ -138,11 +155,11 @@ export const freeItemTypes = [
 
 export type FreeItemTypes = (typeof freeItemTypes)[number];
 
-export type FreeItem<P extends SceneryName, RoomId extends string> = ItemInPlay<
-  FreeItemTypes,
-  P,
-  RoomId
->;
+export type FreeItem<
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+> = ItemTypeUnion<FreeItemTypes, RoomId, RoomItemId, ScN>;
 
 export const deadlyItemTypes = [
   "monster",
@@ -152,15 +169,18 @@ export const deadlyItemTypes = [
 ] as const satisfies ItemInPlayType[];
 export type DeadlyItemType = (typeof deadlyItemTypes)[number];
 
-export const isDeadly = <RoomId extends string>(
-  item: UnionOfAllItemInPlayTypes<RoomId>,
-): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId> =>
+export const isDeadly = <RoomId extends string, RoomItemId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId, RoomItemId> =>
   isItemType(...deadlyItemTypes)(item) ||
   (item.type === "floor" && item.config.type === "deadly");
 
-export const isMultipliedItem = <RoomId extends string>(
+export const isMultipliedItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   item: AnyItemInPlay<RoomId>,
-): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId> => {
+): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId, RoomItemId> => {
   type ItemConfigMaybeWithMultiplication = {
     times?: undefined | Partial<Xyz>;
   };

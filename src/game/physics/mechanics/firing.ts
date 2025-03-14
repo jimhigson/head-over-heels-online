@@ -1,7 +1,7 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
+import type { StoodOnBy } from "src/model/StoodOnBy";
+import type { RoomState } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
@@ -14,6 +14,10 @@ import type { GameState } from "../../gameState/GameState";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
+import {
+  addPokeableNumbers,
+  pokeableToNumber,
+} from "../../../model/ItemStateMap";
 
 /**
  * how far ahead of head the doughnuts start. This has to be enough to clear his bounding box,
@@ -21,9 +25,9 @@ import { moveSpeedPixPerMs } from "../mechanicsConstants";
  */
 const aheadStart = blockSizePx.w * Math.sqrt(2) + 1;
 
-export const firing = <RoomId extends string>(
-  firer: PlayableItem<"head" | "headOverHeels", RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+export const firing = <RoomId extends string, RoomItemId extends string>(
+  firer: PlayableItem<"head" | "headOverHeels", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   _deltaMS: number,
 ): undefined => {
@@ -44,14 +48,14 @@ export const firing = <RoomId extends string>(
   if (
     inputStateTracker.currentActionPress("fire") === "tap" &&
     hasHooter &&
-    doughnuts > 0 &&
+    pokeableToNumber(doughnuts) > 0 &&
     doughnutLastFireTime + maxFireRate < gameTime
   ) {
-    const firedDoughnut: ItemInPlay<"firedDoughnut", SceneryName, RoomId> = {
+    const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
       type: "firedDoughnut",
       ...defaultItemProperties,
       config: emptyObject,
-      id: `firedDoughnut/${gameState.progression}`,
+      id: `firedDoughnut/${gameState.progression}` as RoomItemId,
       shadowCastTexture: "shadow.smallRound",
       state: {
         position: addXyz(
@@ -64,7 +68,7 @@ export const firing = <RoomId extends string>(
         },
         disappear: "onTouch",
         expires: null,
-        stoodOnBy: new Set(),
+        stoodOnBy: {} as StoodOnBy<RoomItemId>,
       },
     };
 
@@ -73,7 +77,7 @@ export const firing = <RoomId extends string>(
       item: firedDoughnut,
     });
 
-    headAbilities.doughnuts -= 1;
+    headAbilities.doughnuts = addPokeableNumbers(headAbilities.doughnuts, -1);
     headAbilities.doughnutLastFireTime = headAbilities.gameTime;
   }
 };

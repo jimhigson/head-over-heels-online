@@ -1,4 +1,4 @@
-import { initGameState } from "../game/gameState/initGameState";
+import { loadGameState } from "../game/gameState/loadGameState";
 import type { RoomJson } from "../model/RoomJson";
 import { addPerimeterWallsToRoom } from "./addPerimeterWallsToRoom";
 import type { GameStateWithMockInput } from "./MockInputStateTracker";
@@ -13,7 +13,7 @@ export const firstRoomId = "firstRoom" as const;
 export const secondRoomId = "secondRoom" as const;
 export type TestRoomId = typeof firstRoomId | typeof secondRoomId;
 
-export type TestRoomJson = RoomJson<"blacktooth", TestRoomId>;
+export type TestRoomJson = RoomJson<TestRoomId, string, "blacktooth">;
 export type ItemsInTestRoomJson = TestRoomJson["items"];
 
 export const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
@@ -71,7 +71,7 @@ export const basicGameState = ({
       }),
     },
   };
-  const gameState = initGameState<TestRoomId>({
+  const gameState = loadGameState<TestRoomId>({
     campaign,
     inputStateTracker: new MockInputStateTracker(),
   }) as GameStateWithMockInput;

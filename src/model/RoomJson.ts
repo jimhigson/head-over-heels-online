@@ -1,17 +1,19 @@
+import { objectValues } from "iter-tools";
 import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
 import type { Xy } from "../utils/vectors/vectors";
 import type { JsonItemUnion } from "./json/JsonItem";
 import type { Floor } from "./modelTypes";
+import { iterate } from "../utils/iterate";
 
 /**
  * serialisation format of a room to be stored in while not in play
  */
 
 export type RoomJson<
-  S extends SceneryName,
   RoomId extends string,
-  ItemId extends string = string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
 > = {
   id: RoomId;
   size: {
@@ -24,7 +26,7 @@ export type RoomJson<
     z?: number;
   };
   /** TODO: rename to scenery */
-  planet: S;
+  planet: ScN;
   floor: Floor;
   roomAbove?: RoomId;
   /**
@@ -42,20 +44,42 @@ export type RoomJson<
    * by keying each item with an id, it makes the diffing easier since the array is no longer
    * position-dependent
    */
-  items: Record<ItemId, JsonItemUnion<RoomId, NoInfer<ItemId>>>;
+  items: Record<RoomItemId, JsonItemUnion<RoomId, NoInfer<RoomItemId>>>;
 };
-export type AnyRoomJson = RoomJson<SceneryName, string, string>;
+export type AnyRoomJson = RoomJson<string, string, SceneryName>;
 
 /*
  * utility function - pass raw json through this to get type checking and type inference.
  * for example, it should fail if a joystick or switch links to an item that isn't in the room
  */
 export const inferRoomJson = <
-  P extends SceneryName,
   RoomId extends string,
-  ItemId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName,
 >(
-  json: RoomJson<P, RoomId, ItemId>,
-): RoomJson<P, RoomId, ItemId> => {
+  json: RoomJson<RoomId, RoomItemId, ScN>,
+): RoomJson<RoomId, RoomItemId, ScN> => {
   return json;
+};
+
+export const roomJsonItemsIterable = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  roomJson: RoomJson<RoomId, RoomItemId, ScN>,
+) => {
+  return objectValues(roomJson.items) as IterableIterator<
+    JsonItemUnion<RoomId, RoomItemId>
+  >;
+};
+
+export const iterateRoomJsonItems = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  roomJson: RoomJson<RoomId, RoomItemId, ScN>,
+) => {
+  return iterate(roomJsonItemsIterable(roomJson));
 };

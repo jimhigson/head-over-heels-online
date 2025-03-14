@@ -1,32 +1,29 @@
 import type { BaseItemState } from "../../../model/ItemInPlay";
+import type { StoodOnBy } from "src/model/StoodOnBy";
 import type { FreeItemState } from "../../../model/ItemStateMap";
 import type { JsonItemUnion, JsonItemType } from "../../../model/json/JsonItem";
-import type { SceneryName } from "../../../sprites/planets";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
-import {
-  type FreeItem,
-  freeItemTypes,
-  slidingItemTypes,
-} from "../../physics/itemPredicates";
+import { freeItemTypes, slidingItemTypes } from "../../physics/itemPredicates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
-export const defaultBaseState = <RoomId extends string>() =>
+export const defaultBaseState = <RoomItemId extends string>() =>
   ({
     expires: null,
-    stoodOnBy: new Set<FreeItem<SceneryName, RoomId>>(),
+    stoodOnBy: {} as StoodOnBy<RoomItemId>,
     disappear: null,
   }) satisfies Partial<BaseItemState>;
 
-export const defaultFreeItemState = () =>
+export const defaultFreeItemState = <RoomItemId extends string>() =>
   ({
-    standingOn: null,
+    standingOnItemId: null,
     vels: {
       gravity: originXyz,
       movingFloor: originXyz,
     },
     latentMovement: [],
-  }) satisfies Partial<FreeItemState>;
+  }) satisfies Partial<FreeItemState<RoomItemId>>;
+
 export const initialState = (jsonItem: JsonItemUnion) => {
   const free = (freeItemTypes as JsonItemType[]).includes(jsonItem.type);
 
@@ -35,7 +32,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     position: positionCentredInBlock(jsonItem as JsonItemUnion),
     ...(free ?
       {
-        standingOn: null,
+        standingOnItemId: null,
         vels: {
           gravity: originXyz,
           movingFloor: originXyz,

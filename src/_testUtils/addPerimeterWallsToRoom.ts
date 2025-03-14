@@ -1,6 +1,6 @@
 import { consolidateItems } from "../campaignXml2Json/consolidateItems/consolidateItems";
 import type { JsonItem } from "../model/json/JsonItem";
-import type { RoomJson } from "../model/RoomJson";
+import { iterateRoomJsonItems, type RoomJson } from "../model/RoomJson";
 import type { Wall } from "../sprites/planets";
 import { scenery, type SceneryName } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
@@ -21,17 +21,18 @@ const rotatingScenery = <S extends SceneryName>(
 
 /** create a new copy of a room, with walls added on all perimeters where there are not doors */
 export const addPerimeterWallsToRoom = <
-  S extends SceneryName,
-  R extends string,
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName,
 >(
-  roomJson: RoomJson<S, R>,
-): RoomJson<S, R> => {
-  const wallBlocks: JsonItem<"wall", S, R>[] = [];
+  roomJson: RoomJson<RoomId, RoomItemId, ScN>,
+): RoomJson<RoomId, RoomItemId, ScN> => {
+  const wallBlocks: JsonItem<"wall", RoomId, RoomItemId>[] = [];
 
   const isDoorAt = (coord: Xy, direction: DirectionXy4) => {
     const axis = directionAxis(direction);
     const crossAxis = perpendicularAxisXy(axis);
-    return Object.values(roomJson.items).some(
+    return iterateRoomJsonItems(roomJson).some(
       (item) =>
         item.type === "door" &&
         item.config.direction === direction &&
@@ -78,8 +79,8 @@ export const addPerimeterWallsToRoom = <
 
   const wallRuns = [...consolidateItems(wallBlocks)] as JsonItem<
     "wall",
-    S,
-    R
+    ScN,
+    RoomId
   >[];
 
   const roomJsonClone = structuredClone(roomJson);

@@ -1,12 +1,9 @@
 import { Container } from "pixi.js";
 import { type BooleanAction } from "../../input/actions";
 import { createSprite } from "../createSprite";
-import type { GameState } from "../../gameState/GameState";
-import { selectCurrentRoomState } from "../../gameState/GameState";
 import type { Appearance } from "../appearance/Appearance";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import {
-  selectCurrentPlayableItem,
   selectHeadAbilities,
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
@@ -22,12 +19,16 @@ import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
 import { findItemToPickup } from "../../physics/mechanics/carrying";
-import type { RoomState } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
-import type { CarriedItem } from "../../../model/ItemStateMap";
+import type { PokeableNumber } from "../../../model/ItemStateMap";
+import {
+  pokeableToNumber,
+  type CarriedItem,
+} from "../../../model/ItemStateMap";
 import type { EmptyObject } from "type-fest";
 import { emptyObject } from "../../../utils/empty";
 import { showNumberInContainer } from "./showNumberInContainer";
+import type { RoomState } from "../../../model/RoomState";
+import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 
 export type ButtonType = "jump" | "carry" | "fire" | "carryAndJump" | "menu";
 
@@ -52,7 +53,7 @@ type ButtonRenderProps = {
     disabled: boolean;
   };
   fire: CommonButtonRenderProps & {
-    doughnuts: number;
+    doughnuts: PokeableNumber;
     hasHooter: boolean;
   };
   carryAndJump: CommonButtonRenderProps & {
@@ -61,32 +62,44 @@ type ButtonRenderProps = {
   menu: EmptyObject;
 };
 
-type ButtonRenderContext = {
+type ButtonRenderContext<BT extends ButtonType> = {
   colourise: boolean;
+  button: Button<BT>;
+  inputStateTracker: InputStateTrackerInterface;
 };
+type ButtonTickContext<RoomId extends string, RoomItemId extends string> = {
+  room: RoomState<RoomId, RoomItemId> | undefined;
+  currentPlayable: PlayableItem | undefined;
+};
+
+type ButtonAppearance<
+  BT extends ButtonType,
+  RoomId extends string,
+  RoomItemId extends string,
+> = Appearance<
+  ButtonRenderContext<BT>,
+  ButtonTickContext<RoomId, RoomItemId>,
+  ButtonRenderProps[BT],
+  BT extends "menu" ? Container : ButtonRenderingContainer
+>;
 
 const textYForButtonCentre = -11;
 const buttonAppearances: {
-  [BT in ButtonType]: Appearance<
-    Button<BT>,
-    ButtonRenderProps[BT],
-    ButtonRenderContext,
-    BT extends "menu" ? Container : ButtonRenderingContainer
-  >;
+  [BT in ButtonType]: ButtonAppearance<BT, string, string>;
 } = {
   jump({
-    subject: button,
-    gameState,
+    renderContext: { button, inputStateTracker, colourise },
     currentlyRenderedProps,
     previousRendering,
-    renderContext: { colourise },
+    tickContext: { room, currentPlayable },
   }) {
-    const { inputStateTracker } = gameState;
-
-    const playable = selectCurrentPlayableItem(gameState);
-
-    const standingOnTeleporter =
-      playable?.state.standingOn?.type === "teleporter";
+    const standingOnId = currentPlayable?.state.standingOnItemId ?? null;
+    const standingOn =
+      standingOnId === null ? null
+      : room === undefined ? null
+      : room.items[standingOnId];
+    const isStandingOnTeleporter =
+      standingOn === null ? false : standingOn.type === "teleporter";
 
     const pressed = button.actions.every(
       (a) => inputStateTracker.currentActionPress(a) !== "released",
@@ -104,8 +117,10 @@ const buttonAppearances: {
       setPressed(container, pressed);
     }
 
-    if (standingOnTeleporter !== currentlyRenderedProps?.standingOnTeleporter) {
-      if (standingOnTeleporter) {
+    if (
+      isStandingOnTeleporter !== currentlyRenderedProps?.standingOnTeleporter
+    ) {
+      if (isStandingOnTeleporter) {
         showOnSurface(
           container,
           createSprite({
@@ -130,28 +145,29 @@ const buttonAppearances: {
 
     return {
       container,
-      renderProps: { pressed, standingOnTeleporter, colourise },
+      renderProps: {
+        pressed,
+        standingOnTeleporter: isStandingOnTeleporter,
+        colourise,
+      },
     };
   },
   carry({
-    subject: button,
-    gameState,
+    renderContext: { button, inputStateTracker, colourise },
     currentlyRenderedProps,
     previousRendering,
-    renderContext: { colourise },
+    tickContext: { currentPlayable, room },
   }) {
-    const { inputStateTracker } = gameState;
-
-    const playable = selectCurrentPlayableItem(gameState)!;
-
-    const heelsAbilities = selectHeelsAbilities(playable);
+    const heelsAbilities =
+      currentPlayable && selectHeelsAbilities(currentPlayable);
     const hasBag = heelsAbilities?.hasBag ?? false;
     const carrying = heelsAbilities?.carrying ?? null;
     const willPickUp: boolean =
       carrying === null &&
+      room !== undefined &&
       findItemToPickup(
-        playable as PlayableItem<"heels" | "headOverHeels", string>,
-        selectCurrentRoomState(gameState) as RoomState<SceneryName, string>,
+        currentPlayable as PlayableItem<"heels" | "headOverHeels", string>,
+        room,
       ) !== undefined;
 
     const pressed = button.actions.every(
@@ -211,17 +227,13 @@ const buttonAppearances: {
     };
   },
   fire({
-    subject: button,
-    gameState,
+    renderContext: { button, inputStateTracker, colourise },
     currentlyRenderedProps,
     previousRendering,
-    renderContext: { colourise },
+    tickContext: { currentPlayable },
   }) {
-    const { inputStateTracker } = gameState;
-
-    const playable = selectCurrentPlayableItem(gameState)!;
-
-    const headAbilities = selectHeadAbilities(playable);
+    const headAbilities =
+      currentPlayable && selectHeadAbilities(currentPlayable);
     const hasHooter = headAbilities?.hasHooter ?? false;
     const doughnuts = headAbilities?.doughnuts ?? 0;
 
@@ -237,7 +249,7 @@ const buttonAppearances: {
         })
       : previousRendering;
 
-    const visible = hasHooter || doughnuts > 0;
+    const visible = hasHooter || pokeableToNumber(doughnuts) > 0;
     container.visible = visible;
 
     if (visible) {
@@ -252,7 +264,7 @@ const buttonAppearances: {
         let bgSprite: Container | undefined;
         if (hasHooter) {
           bgSprite = createSprite({ textureId: "hooter", y: -3 });
-        } else if (doughnuts > 0) {
+        } else if (pokeableToNumber(doughnuts) > 0) {
           bgSprite = createSprite({
             textureId: "doughnuts",
             y: -2,
@@ -277,16 +289,13 @@ const buttonAppearances: {
     };
   },
   carryAndJump({
-    subject: button,
-    gameState,
+    renderContext: { button, inputStateTracker, colourise },
     currentlyRenderedProps,
     previousRendering,
-    renderContext: { colourise },
+    tickContext: { currentPlayable },
   }) {
-    const { inputStateTracker } = gameState;
-
-    const playable = selectCurrentPlayableItem(gameState)!;
-    const heelsAbilities = selectHeelsAbilities(playable);
+    const heelsAbilities =
+      currentPlayable && selectHeelsAbilities(currentPlayable);
     const hasBag = heelsAbilities?.hasBag ?? false;
 
     const pressed = button.actions.every(
@@ -354,17 +363,17 @@ const buttonAppearances: {
 export class OnScreenButtonRenderer<
   BT extends ButtonType,
   RoomId extends string,
+  RoomItemId extends string,
 > extends AppearanceRenderer<
-  Button<BT>,
+  ButtonRenderContext<BT>,
+  ButtonTickContext<RoomId, RoomItemId>,
   ButtonRenderProps[BT],
-  RoomId,
-  ButtonRenderContext,
   BT extends "menu" ? Container : ButtonRenderingContainer
 > {
-  constructor(
-    public readonly button: Button<BT>,
-    gameState: GameState<RoomId>,
-  ) {
-    super(button, gameState, buttonAppearances[button.which]);
+  constructor(renderContext: ButtonRenderContext<BT>) {
+    const appearance = buttonAppearances[
+      renderContext.button.which
+    ] as ButtonAppearance<BT, RoomId, RoomItemId>;
+    super(renderContext, appearance);
   }
 }

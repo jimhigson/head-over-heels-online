@@ -20,7 +20,11 @@ const findMenuItems = () => {
 
 /** @returns true iff declined to handle */
 const moveFocus = (direction: 1 | -1) => {
-  const curFocusId = store.getState().openMenus[0].focussedItemId;
+  const {
+    gameMenus: {
+      openMenus: [{ focussedItemId: curFocusId }],
+    },
+  } = store.getState();
 
   if (curFocusId === undefined) {
     return true; // nothing is selected yet, so can't move the selection up
@@ -101,7 +105,7 @@ export const MenuItems = ({
     if (ref.current === null) {
       return;
     }
-    if (store.getState().openMenus[0].focussedItemId !== undefined) {
+    if (store.getState().gameMenus.openMenus[0].focussedItemId !== undefined) {
       // have already a selection, no need to select the first item
       return;
     }

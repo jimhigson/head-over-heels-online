@@ -1,27 +1,32 @@
 import { loadItemFromJson } from "./loadItem";
 import { collision1toMany } from "../../collision/aabbCollision";
-import { objectValues } from "iter-tools";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { RoomStateItems, RoomState } from "../../../model/modelTypes";
 import type { RoomJson } from "../../../model/RoomJson";
-import type { SceneryName } from "../../../sprites/planets";
 import { entries } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
 import { isSolid } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
+import {
+  type RoomStateItems,
+  type RoomState,
+  iterateRoomItems,
+  roomItemsIterable,
+} from "../../../model/RoomState";
 
-function* loadItems<RoomId extends string>(
-  roomJson: RoomJson<SceneryName, RoomId>,
+function* loadItems<RoomId extends string, RoomItemId extends string>(
+  roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
-  isFirstLoad: boolean,
+  isNewGame: boolean,
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
-  const { scrollsRead } = store.getState();
+  const {
+    gameMenus: { scrollsRead },
+  } = store.getState();
 
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
-    if (item.type === "player" && !isFirstLoad) {
+    if (item.type === "player" && !isNewGame) {
       continue;
     }
     yield* loadItemFromJson(
@@ -37,13 +42,9 @@ function* loadItems<RoomId extends string>(
 /**
  * convert items from a flat list to an object map, key'd by their ids
  */
-const itemsInItemObjectMap = <
-  P extends SceneryName,
-  RoomId extends string,
-  ItemId extends string,
->(
+const itemsInItemObjectMap = <RoomId extends string, RoomItemId extends string>(
   items: Iterable<UnionOfAllItemInPlayTypes<RoomId>>,
-): RoomStateItems<P, RoomId, ItemId> => {
+): RoomStateItems<RoomId, RoomItemId> => {
   return iterate(items).reduce(
     (ac, cur) => {
       return {
@@ -51,29 +52,34 @@ const itemsInItemObjectMap = <
         [cur.id]: cur,
       };
     },
-    {} as RoomStateItems<P, RoomId, ItemId>,
+    {} as RoomStateItems<RoomId, RoomItemId>,
   );
 };
 
 /**
  * convert a room from it's storage (json) format to its in-play (loaded) format
  */
-export const loadRoom = <P extends SceneryName, RoomId extends string>(
-  roomJson: RoomJson<P, RoomId>,
-  roomPickupsCollected: RoomPickupsCollected,
-  isFirstLoad = false,
-): RoomState<P, RoomId> => {
-  const loadedItems: RoomStateItems<P, RoomId> = {
+export const loadRoom = <RoomId extends string, RoomItemId extends string>({
+  roomJson,
+  roomPickupsCollected,
+  isNewGame = false,
+}: {
+  roomJson: RoomJson<RoomId, RoomItemId>;
+  roomPickupsCollected: RoomPickupsCollected;
+  /** if true, this is a new game - ie, load head and heels if they are in the room */
+  isNewGame?: boolean;
+}): RoomState<RoomId, RoomItemId> => {
+  const loadedItems: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(
-      loadItems(roomJson, roomPickupsCollected, isFirstLoad),
+      loadItems(roomJson, roomPickupsCollected, isNewGame),
     ),
   };
 
   // the physics will go nuts if things are overlapping, so check and reject
   // if they are:
-  for (const i of objectValues(loadedItems)) {
-    const collisions = collision1toMany(i, objectValues(loadedItems));
+  for (const i of iterateRoomItems(loadedItems)) {
+    const collisions = collision1toMany(i, roomItemsIterable(loadedItems));
     const solidCol = collisions.find(
       (col) =>
         isSolid(i) &&
@@ -90,7 +96,7 @@ export const loadRoom = <P extends SceneryName, RoomId extends string>(
     }
   }
 
-  const roomState: RoomState<P, RoomId> = {
+  const roomState: RoomState<RoomId, RoomItemId> = {
     ...roomJson,
     roomJson,
     items: {

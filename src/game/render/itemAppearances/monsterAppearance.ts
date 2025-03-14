@@ -13,9 +13,11 @@ import type { ItemAppearance } from "./ItemAppearance";
 import type { ItemRenderProps } from "./ItemRenderProps";
 
 export const monsterAppearance: ItemAppearance<"monster"> = ({
-  subject: { config, state },
+  renderContext: {
+    item: { config, state },
+    room,
+  },
   currentlyRenderedProps,
-  renderContext: { room },
 }) => {
   const { activated, busyLickingDoughnutsOffFace } = state;
 

@@ -17,17 +17,19 @@ import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
 import { loadWall } from "./loadWalls";
 import type { RoomJson } from "../../../model/RoomJson";
-import type { SceneryName } from "../../../sprites/planets";
 import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;
 };
 
-export function* loadItemFromJson<RoomId extends string>(
+export function* loadItemFromJson<
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   itemId: string,
   jsonItem: JsonItemUnion<RoomId>,
-  roomJson: RoomJson<SceneryName, RoomId>,
+  roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
@@ -47,7 +49,7 @@ export function* loadItemFromJson<RoomId extends string>(
 
   switch (jsonItem.type) {
     case "door": {
-      return yield* loadDoor<RoomId>(jsonItem, itemId);
+      return yield* loadDoor<RoomId, RoomItemId>(jsonItem, itemId);
     }
     case "player": {
       yield loadPlayer(jsonItem);

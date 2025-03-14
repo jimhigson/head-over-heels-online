@@ -20,6 +20,11 @@ import { collision1to1 } from "../../collision/aabbCollision";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 import { gameOver } from "../../../store/slices/gameMenusSlice";
+import { emptyObject } from "../../../utils/empty";
+import {
+  addPokeableNumbers,
+  pokeableToNumber,
+} from "../../../model/ItemStateMap";
 
 export const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -27,21 +32,29 @@ export const combinedPlayableLosesLife = <RoomId extends string>(
 ) => {
   const room = gameState.characterRooms["headOverHeels"]!;
 
-  headOverHeels.state.head.lives--;
-  headOverHeels.state.heels.lives--;
+  headOverHeels.state.head.lives = addPokeableNumbers(
+    headOverHeels.state.head.lives,
+    -1,
+  );
+  headOverHeels.state.heels.lives = addPokeableNumbers(
+    headOverHeels.state.heels.lives,
+    -1,
+  );
 
   headOverHeels.state.head.lastDiedAt = headOverHeels.state.head.gameTime;
   headOverHeels.state.heels.lastDiedAt = headOverHeels.state.heels.gameTime;
 
-  const totalLivesRemaining =
-    headOverHeels.state.head.lives + headOverHeels.state.heels.lives;
+  const totalLivesRemaining = addPokeableNumbers(
+    headOverHeels.state.head.lives,
+    headOverHeels.state.heels.lives,
+  );
   if (totalLivesRemaining === 0) {
     gameState.events.emit("gameOver");
     return; // terminal outcome - game over
   }
 
-  const headHasLives = headOverHeels.state.head.lives > 0;
-  const heelsHasLives = headOverHeels.state.heels.lives > 0;
+  const headHasLives = pokeableToNumber(headOverHeels.state.head.lives) > 0;
+  const heelsHasLives = pokeableToNumber(headOverHeels.state.heels.lives) > 0;
 
   //whatever else we're doing, heels can't keep her item:
   headOverHeels.state.heels.carrying = null;
@@ -134,10 +147,10 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
 }) => {
   const { campaign } = gameState;
 
-  const reloadedRoom = loadRoom(
-    campaign.rooms[roomId],
-    gameState.pickupsCollected[roomId],
-  );
+  const reloadedRoom = loadRoom({
+    roomJson: campaign.rooms[roomId],
+    roomPickupsCollected: gameState.pickupsCollected[roomId] ?? emptyObject,
+  });
   for (const playableItem of playableItems) {
     addItemToRoom({ room: reloadedRoom, item: playableItem });
 
@@ -155,7 +168,8 @@ const resetPlayableToEntryState = <RoomId extends string>(
   /** if given, will use someone else's entry state. This is only really useful
    * to give headOverHeels heels' entry state when rejoining after losing a life
    */
-  whoseEntryState: CharacterName = playableItem.id,
+  /** TODO: @knownRoomIds - remove cast */
+  whoseEntryState: CharacterName = playableItem.id as CharacterName,
 ) => {
   const entryState = gameState.entryState[whoseEntryState];
 
@@ -170,20 +184,29 @@ const resetPlayableToEntryState = <RoomId extends string>(
     // entry state:
     //vels: { ...entryState.vels },
     expires: null,
-    standingOn: null,
+    standingOnItemId: null,
   };
 };
 
-export const individualPlayableLosesLife = <RoomId extends string>(
+export const individualPlayableLosesLife = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   gameState: GameState<RoomId>,
-  characterLosingLife: PlayableItem<IndividualCharacterName, RoomId>,
+  characterLosingLife: PlayableItem<
+    IndividualCharacterName,
+    RoomId,
+    RoomItemId
+  >,
 ) => {
   const otherCharacter = selectPlayableItem(
     gameState,
     otherIndividualCharacterName(characterLosingLife.type),
   );
 
-  characterLosingLife.state.lives--;
+  if (characterLosingLife.state.lives !== "infinite") {
+    characterLosingLife.state.lives--;
+  }
   characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
 
   if (characterLosingLife.type === "heels") {
@@ -191,7 +214,9 @@ export const individualPlayableLosesLife = <RoomId extends string>(
   }
 
   if (characterLosingLife.state.lives === 0) {
-    delete gameState.characterRooms[characterLosingLife.id];
+    // TODO: this cast was unnessessary when the ids of items could be baked into the types -
+    /** TODO: @knownRoomIds - remove casts */
+    delete gameState.characterRooms[characterLosingLife.id as CharacterName];
 
     const otherCharacterHasLives = otherCharacter !== undefined;
 
@@ -225,15 +250,22 @@ export const individualPlayableLosesLife = <RoomId extends string>(
       if (enteredInSymbiosis) {
         const headOverHeels = combinePlayablesInSymbiosis({
           // the playable that lost the life will no longer be in the room:
-
-          head:
-            characterLosingLife.id === "head" ?
-              characterLosingLife
-            : roomWithCharacterLosingLife.items.head!,
-          heels:
-            characterLosingLife.id === "heels" ?
-              characterLosingLife
-            : roomWithCharacterLosingLife.items.heels!,
+          /** TODO: @knownRoomIds - remove casts */
+          head: (characterLosingLife.id === "head" ?
+            characterLosingLife
+          : roomWithCharacterLosingLife.items.head!) as PlayableItem<
+            "head",
+            RoomId,
+            RoomItemId
+          >,
+          /** TODO: @knownRoomIds - remove casts */
+          heels: (characterLosingLife.id === "heels" ?
+            characterLosingLife
+          : roomWithCharacterLosingLife.items.heels!) as PlayableItem<
+            "heels",
+            RoomId,
+            RoomItemId
+          >,
         });
 
         resetPlayableToEntryState(gameState, headOverHeels);
@@ -265,7 +297,9 @@ export const individualPlayableLosesLife = <RoomId extends string>(
         playableItems: [characterLosingLife],
         roomId: roomWithCharacterLosingLife.id,
       });
-      gameState.characterRooms[characterLosingLife.id] = reloadedRoom;
+      /** TODO: @knownRoomIds - remove casts */
+      gameState.characterRooms[characterLosingLife.id as CharacterName] =
+        reloadedRoom;
       return; // non-terminal outcome - continue playing in the reloaded room
     }
   }
@@ -282,6 +316,6 @@ export const playableLosesLife = <RoomId extends string>(
   }
 
   if (selectCurrentPlayableItem(gameState) === undefined) {
-    store.dispatch(gameOver());
+    store.dispatch(gameOver({ offerReincarnation: true }));
   }
 };

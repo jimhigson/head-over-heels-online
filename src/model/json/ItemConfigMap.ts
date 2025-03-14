@@ -12,8 +12,8 @@ import type {
   DoorLegsConfig,
   DeadlyItemStyle,
 } from "./JsonItem";
-import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 import type { ToggleablePaths } from "../../utils/Toggleable";
+import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 
 export type BlockStyle = "organic" | "artificial" | "tower" | "book";
 
@@ -40,10 +40,10 @@ export type ConsolidatableConfig = {
 };
 
 export type ItemConfigMap<
-  P extends SceneryName,
   RoomId extends string,
   /** ids of items in this room */
-  ItemId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
 > = {
   door: {
     toRoom: RoomId;
@@ -61,7 +61,7 @@ export type ItemConfigMap<
     relativePoint: Xyz;
   };
   wall: ConsolidatableConfig & {
-    tiles: Array<Wall<P>>;
+    tiles: Array<Wall<ScN>>;
     /** side of the room the wall is on (not the side it is facing) */
     direction: DirectionXy4;
   };
@@ -232,7 +232,7 @@ export type ItemConfigMap<
   switch: {
     // list of all items (de)activated by this switch
     activates?: {
-      [I in ItemId]?: {
+      [I in RoomItemId]?: {
         // state deltas for the impacted items
         left: Record<string, unknown>;
         right: Record<string, unknown>;
@@ -246,11 +246,11 @@ export type ItemConfigMap<
   };
   joystick: {
     // item ids of all the items (probably Charles) that this joystick controls
-    controls: ItemId[];
+    controls: RoomItemId[];
   };
 };
 
-export type UnknownItemConfigMap = ItemConfigMap<SceneryName, string, string>;
+export type UnknownItemConfigMap = ItemConfigMap<string, string>;
 
 export type AllowedMonsterMovements<
   Which extends UnknownItemConfigMap["monster"]["which"],

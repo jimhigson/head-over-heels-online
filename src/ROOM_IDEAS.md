@@ -24,3 +24,5 @@ going back up a hidden lift in a loop (conveyor drops them onto the lift maybe)
 spiky floor but more interesting)
 
 * a room where charles has to move on top of a mojo to get somewhere (or a turtle)
+
+* more use of heavy blocks to stop/start lifts

@@ -11,8 +11,6 @@ import {
   selectPlayableItem,
 } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { concat, objectValues } from "iter-tools";
-import type { SceneryName } from "../../sprites/planets";
-import { objectEntriesIter } from "../../utils/entries";
 import { iterate } from "../../utils/iterate";
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
@@ -26,13 +24,18 @@ import type {
   AnyItemInPlay,
   ItemInPlayType,
 } from "../../model/ItemInPlay";
-import type { RoomState, RoomStateItems } from "../../model/modelTypes";
 import { otherIndividualCharacterName } from "../../model/modelTypes";
 import { emptyObject, emptySet } from "../../utils/empty";
+import {
+  iterateRoomItemEntries,
+  iterateRoomItems,
+  type RoomState,
+  type RoomStateItems,
+} from "../../model/RoomState";
 
-const itemHasExpired = <RoomId extends string>(
+const itemHasExpired = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes,
-  room: RoomState<SceneryName, RoomId>,
+  room: RoomState<RoomId, RoomItemId>,
 ) => item.state.expires !== null && item.state.expires < room.roomTime;
 
 /**
@@ -40,13 +43,16 @@ const itemHasExpired = <RoomId extends string>(
  * only allowed while items are moving
  */
 
-const snapStationaryItemsToPixelGrid = <RoomId extends string>(
-  room: RoomState<SceneryName, RoomId>,
+const snapStationaryItemsToPixelGrid = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  room: RoomState<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
   /** the items which are snapped will be added to this set */
   movedItems: Set<AnyItemInPlay>,
 ) => {
-  for (const item of objectValues(room.items)) {
+  for (const item of iterateRoomItems(room.items)) {
     if (!isFreeItem(item) || room.roomTime === item.state.actedOnAt) {
       // was acted on in this tick - do not snap
       continue;
@@ -88,19 +94,21 @@ const itemTickOrderComparator = (
 };
 
 /* the items that moved while progressing the game state */
-export type MovedItems = Set<AnyItemInPlay>;
+export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<
+  UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
+>;
 
-const noItems = emptyObject as RoomStateItems<SceneryName, string>;
+const noItems = emptyObject as RoomStateItems<string, string>;
 
 export const progressGameState = <RoomId extends string>(
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MovedItems => {
+): MovedItems<RoomId, string> => {
   // DEBUG CODE:
   // force extra sub-ticks when gameSpeed > 1, to emulate the game being
   // progressed that many times
   if (gameState.gameSpeed > 1) {
-    let movedItems = new Set<AnyItemInPlay>();
+    let movedItems = new Set() as MovedItems<RoomId, string>;
     for (let i = 0; i < gameState.gameSpeed; i++) {
       const subtickMoves = _progressGameState(gameState, deltaMS);
       const itemsAtEndOfSubtick =
@@ -121,10 +129,13 @@ export const progressGameState = <RoomId extends string>(
   return _progressGameState(gameState, deltaMS * gameState.gameSpeed);
 };
 
-export const _progressGameState = <RoomId extends string>(
+export const _progressGameState = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MovedItems => {
+): MovedItems<RoomId, RoomItemId> => {
   const { inputStateTracker } = gameState;
 
   const room = selectCurrentRoomState(gameState);
@@ -138,7 +149,7 @@ export const _progressGameState = <RoomId extends string>(
   // can check later what has moved. DOne per physics tick, not render-tick
   // because otherwise latent movement is double-applied
   const startingPositions = Object.fromEntries(
-    iterate(objectEntriesIter(room.items)).map(([id, item]) => [
+    iterateRoomItemEntries(room.items).map(([id, item]) => [
       id,
       item.state.position,
     ]),
@@ -185,7 +196,7 @@ export const _progressGameState = <RoomId extends string>(
 
   updateStandingOn(room);
 
-  const movedItems = new Set<AnyItemInPlay>(
+  const movedItems = new Set(
     iterate(objectValues(room.items)).filter(
       (i) =>
         // wasn't in the room before (treated like a move)
@@ -193,7 +204,7 @@ export const _progressGameState = <RoomId extends string>(
         // moved on this frame:
         !xyzEqual(i.state.position, startingPositions[i.id]),
     ),
-  );
+  ) as MovedItems<RoomId, RoomItemId>;
   assignLatentMovementFromStandingOn(movedItems, room, startingPositions);
   snapStationaryItemsToPixelGrid(room, startingPositions, movedItems);
 
@@ -202,9 +213,9 @@ export const _progressGameState = <RoomId extends string>(
   return movedItems;
 };
 
-const advanceTime = <RoomId extends string>(
+const advanceTime = <RoomId extends string, RoomItemId extends string>(
   gameState: GameState<RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+  room: RoomState<RoomId, RoomItemId>,
   deltaMS: number,
 ) => {
   gameState.progression++;

@@ -16,6 +16,8 @@ const colors = {
   ]),
 
   ...zxSpectrumColors,
+
+  transparent: "transparent",
 } as const;
 
 export type TailwindPalette = keyof typeof colors;

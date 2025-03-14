@@ -116,9 +116,9 @@ export const CurrentKeyAssignments = ({
   flashingCursor = false,
 }: CurrentKeyAssignmentsProp) => {
   const pressAssignments = useAppSelector((state) =>
-    state.assigningInput?.action === action ?
+    state.gameMenus.assigningInput?.action === action ?
       // assigning input so show provisional:
-      state.assigningInput?.presses
+      state.gameMenus.assigningInput?.presses
     : selectInputAssignment(state).presses[action],
   );
 
@@ -127,8 +127,8 @@ export const CurrentKeyAssignments = ({
     if (axisForAction === undefined) {
       return emptyArray;
     }
-    if (state.assigningInput?.action === action) {
-      return state.assigningInput.axes;
+    if (state.gameMenus.assigningInput?.action === action) {
+      return state.gameMenus.assigningInput.axes;
     } else {
       return selectInputAssignment(state).axes[axisForAction.axis];
     }

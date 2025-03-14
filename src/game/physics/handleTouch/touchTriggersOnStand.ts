@@ -3,8 +3,11 @@ import { isFreeItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 /** blocks that disappear on stand, platforms that start moving on stand etc */
-export const touchTriggersOnStand = <RoomId extends string>(
-  e: ItemTouchEvent<RoomId>,
+export const touchTriggersOnStand = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  e: ItemTouchEvent<RoomId, RoomItemId>,
 ): boolean =>
   isFreeItem(e.movingItem) &&
   spatiallyCheckStandingOn(

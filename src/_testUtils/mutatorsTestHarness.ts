@@ -5,8 +5,11 @@ import {
   selectHeelsAbilities,
   selectCurrentPlayableItem,
 } from "../game/gameState/gameStateSelectors/selectPlayableItem";
-import type { StartingRooms } from "../game/gameState/initGameState";
-import { initGameState, startingRooms } from "../game/gameState/initGameState";
+import type { StartingRooms } from "../game/gameState/loadGameState";
+import {
+  loadGameState,
+  startingRoomIds,
+} from "../game/gameState/loadGameState";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
 import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
 import { setStandingOn } from "../game/gameState/mutators/modifyStandingOn";
@@ -14,17 +17,16 @@ import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
 import type { ItemInPlay } from "../model/ItemInPlay";
 import type { PlayableActionState } from "../model/ItemStateMap";
 import type {
-  RoomState,
   Campaign,
   IndividualCharacterName,
   CharacterName,
 } from "../model/modelTypes";
-import type { SceneryName } from "../sprites/planets";
 import { blockSizePx } from "../sprites/spritePivots";
 import { iterate } from "../utils/iterate";
 import { addXyz } from "../utils/vectors/vectors";
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
 import { MockInputStateTracker } from "./MockInputStateTracker";
+import type { RoomState } from "../model/RoomState";
 
 export type TestCampaignRoomId =
   | "heelsStartingRoom"
@@ -105,7 +107,7 @@ export const testCampaign = {
 } as const satisfies Campaign<TestCampaignRoomId>;
 
 export const mutatorsTestHarness = () => {
-  const gameState = initGameState({
+  const gameState = loadGameState({
     campaign: testCampaign,
     inputStateTracker: new MockInputStateTracker(),
   });
@@ -119,7 +121,7 @@ export const mutatorsTestHarness = () => {
     },
     gameState,
     gameOverFn,
-    startingRooms: startingRooms(testCampaign) as Required<
+    startingRooms: startingRoomIds(testCampaign) as Required<
       StartingRooms<TestCampaignRoomId>
     >,
     originalRooms: {
@@ -176,7 +178,7 @@ export const mutatorsTestHarness = () => {
       }
       const sourcePortal = iterate(objectValues(sourceRoom.items)).find(
         (i) => i.type === "portal" && i.config.toRoom === roomId,
-      ) as ItemInPlay<"portal", SceneryName, TestCampaignRoomId>;
+      ) as ItemInPlay<"portal", TestCampaignRoomId>;
 
       if (sourcePortal === undefined) {
         throw new Error(
@@ -248,8 +250,8 @@ export const mutatorsTestHarness = () => {
       thisRoom,
       shouldBeACopyOf,
     }: {
-      shouldBeACopyOf: RoomState<SceneryName, TestCampaignRoomId>;
-      thisRoom: RoomState<SceneryName, TestCampaignRoomId> | undefined;
+      shouldBeACopyOf: RoomState<TestCampaignRoomId, string>;
+      thisRoom: RoomState<TestCampaignRoomId, string> | undefined;
     }) {
       expect(thisRoom).toBeDefined();
       expect(thisRoom?.id).toEqual(shouldBeACopyOf.id);
@@ -268,7 +270,7 @@ export const mutatorsTestHarness = () => {
     },
     expectCharacterToBeInRoom(
       playableName: IndividualCharacterName,
-      room: RoomState<SceneryName, TestCampaignRoomId> | undefined,
+      room: RoomState<TestCampaignRoomId, string> | undefined,
     ) {
       if (room === undefined) {
         expect.fail(
@@ -307,7 +309,7 @@ export const mutatorsTestHarness = () => {
     },
     selectRoomOfPlayable(
       playableName: CharacterName,
-    ): RoomState<SceneryName, TestCampaignRoomId> | undefined {
+    ): RoomState<TestCampaignRoomId, string> | undefined {
       return gameState.characterRooms[playableName];
     },
     selectPlayable<C extends CharacterName = CharacterName>(playableName: C) {
@@ -348,7 +350,6 @@ export const mutatorsTestHarness = () => {
 
       const portal = room.items[portalItemId] as ItemInPlay<
         "portal",
-        SceneryName,
         TestCampaignRoomId
       >;
 

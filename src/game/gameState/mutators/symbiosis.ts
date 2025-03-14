@@ -3,6 +3,7 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { addXyz } from "../../../utils/vectors/vectors";
+import { neverTime } from "../../../utils/veryClose";
 import { doubleHeightCharacter } from "../../collision/boundingBoxes";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import {
@@ -14,38 +15,43 @@ import {
   defaultPlayerState,
 } from "../loadRoom/loadPlayer";
 
-export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
-  headOverHeels: PlayableItem<"headOverHeels", RoomId>,
+export const uncombinePlayablesFromSymbiosis = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  headOverHeels: PlayableItem<"headOverHeels", RoomId, RoomItemId>,
 ) => {
-  const head: PlayableItem<"head", RoomId> = {
-    id: "head",
+  const head: PlayableItem<"head", RoomId, RoomItemId> = {
+    // TODO: remove cast with known ids
+    id: "head" as RoomItemId,
     type: "head",
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
     state: {
-      ...defaultBaseState<RoomId>(),
+      ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
       ...defaultPlayerState(),
       ...headOverHeels.state.head,
       facing: headOverHeels.state.facing,
       position: addXyz(headOverHeels.state.position, { z: blockSizePx.h }),
-      switchedToAt: Number.NEGATIVE_INFINITY,
+      switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
     },
   };
-  const heels: PlayableItem<"heels", RoomId> = {
-    id: "heels",
+  const heels: PlayableItem<"heels", RoomId, RoomItemId> = {
+    // TODO: remove cast with known ids
+    id: "heels" as RoomItemId,
     type: "heels",
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
     state: {
-      ...defaultBaseState<RoomId>(),
+      ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
       ...defaultPlayerState(),
       ...headOverHeels.state.heels,
       facing: headOverHeels.state.facing,
       position: addXyz(headOverHeels.state.position),
-      switchedToAt: Number.NEGATIVE_INFINITY,
+      switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
     },
   };
@@ -53,22 +59,26 @@ export const uncombinePlayablesFromSymbiosis = <RoomId extends string>(
   return { head, heels };
 };
 
-export const combinePlayablesInSymbiosis = <RoomId extends string>({
+export const combinePlayablesInSymbiosis = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   head,
   heels,
 }: {
-  head: PlayableItem<"head", RoomId>;
-  heels: PlayableItem<"heels", RoomId>;
-}): PlayableItem<"headOverHeels", RoomId> => {
+  head: PlayableItem<"head", RoomId, RoomItemId>;
+  heels: PlayableItem<"heels", RoomId, RoomItemId>;
+}): PlayableItem<"headOverHeels", RoomId, RoomItemId> => {
   return {
+    // TODO: remove cast with known ids
+    id: "headOverHeels" as RoomItemId,
     type: "headOverHeels",
-    id: "headOverHeels",
     ...defaultItemProperties,
     shadowCastTexture: heels.shadowCastTexture,
     config: emptyObject,
     aabb: doubleHeightCharacter,
     state: {
-      ...defaultBaseState<RoomId>(),
+      ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
       ...defaultPlayerState(),
       position: heels.state.position,
@@ -91,7 +101,7 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
           "shieldCollectedAt",
           "lastDiedAt",
         ),
-        switchedToAt: Number.NEGATIVE_INFINITY,
+        switchedToAt: neverTime,
       },
       heels: {
         ...pick(
@@ -104,7 +114,7 @@ export const combinePlayablesInSymbiosis = <RoomId extends string>({
           "shieldCollectedAt",
           "lastDiedAt",
         ),
-        switchedToAt: Number.NEGATIVE_INFINITY,
+        switchedToAt: neverTime,
       },
     },
   };

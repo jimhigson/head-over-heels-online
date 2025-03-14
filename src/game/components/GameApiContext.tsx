@@ -28,3 +28,16 @@ export const useGameApi = <RoomId extends string = string>() => {
   }
   return gameApi as unknown as GameApi<RoomId>;
 };
+
+/**
+ * gets the game api, if there is one, otherwise undefined
+ */
+export const useMaybeGameApi = <RoomId extends string = string>():
+  | GameApi<RoomId>
+  | undefined => {
+  const gameApi = useContext(GameApiContext);
+  if (gameApi === null) {
+    throw new Error("useGameApi must be used within a GameApiProvider");
+  }
+  return gameApi as unknown as GameApi<RoomId> | undefined;
+};

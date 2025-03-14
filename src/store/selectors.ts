@@ -13,27 +13,32 @@ import type {
 import { defaultUserSettings } from "./defaultUserSettings";
 import type { ResolutionName } from "../originalGame";
 import type { InputAssignment } from "../game/input/InputState";
+import type { PickDeep } from "type-fest";
 
 export const selectTotalUpscale = (state: RootState): number => {
   const {
-    upscale: { cssUpscale, gameEngineUpscale },
+    gameMenus: {
+      upscale: { cssUpscale, gameEngineUpscale },
+    },
   } = state;
   return cssUpscale * gameEngineUpscale;
 };
 export const useTotalUpscale = () => useAppSelector(selectTotalUpscale);
 
 export const selectInputAssignment = (state: RootState): InputAssignment =>
-  state.userSettings.inputAssignment ?? defaultUserSettings.inputAssignment;
+  state.gameMenus.userSettings.inputAssignment ??
+  defaultUserSettings.inputAssignment;
 
 export const useInputAssignment = () => useAppSelector(selectInputAssignment);
 
-export const selectIsPaused = (state: RootState) => state.openMenus.length > 0;
+export const selectIsPaused = (state: RootState) =>
+  state.gameMenus.openMenus.length > 0;
 
 export const useCheatsOn = (): boolean =>
-  useAppSelector((state) => state.cheatsOn);
+  useAppSelector((state) => state.gameMenus.cheatsOn);
 
 export const selectIsAssigningKeys = (state: RootState): boolean =>
-  state.assigningInput !== undefined;
+  state.gameMenus.assigningInput !== undefined;
 
 export const useIsAssigningKeys = (): boolean =>
   useAppSelector(selectIsAssigningKeys);
@@ -45,7 +50,12 @@ export const selectCurrentInputPreset = (
   for (const [name, preset] of iterate(
     objectEntriesIter(keyAssignmentPresets),
   )) {
-    if (nanoEqual(preset.inputAssignment, state.userSettings.inputAssignment)) {
+    if (
+      nanoEqual(
+        preset.inputAssignment,
+        state.gameMenus.userSettings.inputAssignment,
+      )
+    ) {
       return name;
     }
   }
@@ -53,13 +63,13 @@ export const selectCurrentInputPreset = (
 };
 
 export const selectShowFps = (state: RootState): boolean =>
-  state.userSettings.showFps ?? defaultUserSettings.showFps;
+  state.gameMenus.userSettings.showFps ?? defaultUserSettings.showFps;
 
 export const selectEmulatedResolutionName = (
-  state: RootState,
+  state: PickDeep<RootState, "gameMenus.userSettings">,
 ): ResolutionName => {
   return (
-    state.userSettings.displaySettings.emulatedResolution ??
+    state.gameMenus.userSettings.displaySettings.emulatedResolution ??
     defaultUserSettings.displaySettings.emulatedResolution
   );
 };
@@ -67,53 +77,54 @@ export const useEmulatedResolutionName = () =>
   useAppSelector(selectEmulatedResolutionName);
 
 export const useIsGameRunning = () =>
-  useAppSelector((state: RootState): boolean => state.gameRunning);
+  useAppSelector((state: RootState): boolean => state.gameMenus.gameRunning);
 
 export const selectIsColourised = (state: RootState): boolean =>
   !(
-    state.userSettings.displaySettings.uncolourised ??
+    state.gameMenus.userSettings.displaySettings.uncolourised ??
     defaultUserSettings.displaySettings.uncolourised
   );
 
 export const useIsColourised = () => useAppSelector(selectIsColourised);
 
 export const selectIsCrtFilter = (state: RootState): boolean =>
-  state.userSettings.displaySettings.crtFilter ??
+  state.gameMenus.userSettings.displaySettings.crtFilter ??
   defaultUserSettings.displaySettings.crtFilter;
 
 export const selectIsInfiniteLivesPoke = (state: RootState): boolean =>
-  state.userSettings.infiniteLivesPoke ?? defaultUserSettings.infiniteLivesPoke;
+  state.gameMenus.userSettings.infiniteLivesPoke ??
+  defaultUserSettings.infiniteLivesPoke;
 
 export const selectIsInfiniteDoughnutsPoke = (state: RootState): boolean =>
-  state.userSettings.infiniteDoughnutsPoke ??
+  state.gameMenus.userSettings.infiniteDoughnutsPoke ??
   defaultUserSettings.infiniteDoughnutsPoke;
 
 export const selectHasAllPlanetCrowns = (state: RootState) => {
   return (
-    state.planetsLiberated.egyptus &&
-    state.planetsLiberated.bookworld &&
-    state.planetsLiberated.penitentiary &&
-    state.planetsLiberated.safari
+    state.gameMenus.planetsLiberated.egyptus &&
+    state.gameMenus.planetsLiberated.bookworld &&
+    state.gameMenus.planetsLiberated.penitentiary &&
+    state.gameMenus.planetsLiberated.safari
   );
 };
 
 export const useIsScreenRelativeControl = () =>
-  useAppSelector((state) => state.userSettings.screenRelativeControl);
+  useAppSelector((state) => state.gameMenus.userSettings.screenRelativeControl);
 
 export const selectInputDirectionMode = (
-  state: RootState,
+  state: PickDeep<RootState, "gameMenus.userSettings">,
 ): InputDirectionMode =>
-  state.userSettings.inputDirectionMode ??
+  state.gameMenus.userSettings.inputDirectionMode ??
   defaultUserSettings.inputDirectionMode;
 
 export const useInputDirectionMode = (): InputDirectionMode =>
   useAppSelector(selectInputDirectionMode);
 
 export const selectPlanetsLiberatedCount = (state: RootState) =>
-  size(iterate(objectValues(state.planetsLiberated)).filter(Boolean));
+  size(iterate(objectValues(state.gameMenus.planetsLiberated)).filter(Boolean));
 
 export const selectShowBoundingBoxes = (state: RootState): ShowBoundingBoxes =>
-  state.userSettings.displaySettings.showBoundingBoxes ??
+  state.gameMenus.userSettings.displaySettings.showBoundingBoxes ??
   defaultUserSettings.displaySettings.showBoundingBoxes;
 
 export const useShowBoundingBoxes = (): ShowBoundingBoxes => {
@@ -123,17 +134,18 @@ export const useShowBoundingBoxes = (): ShowBoundingBoxes => {
 export const useShowShadowMasks = (): boolean => {
   return useAppSelector(
     (state: RootState) =>
-      state.userSettings.displaySettings.showShadowMasks ??
+      state.gameMenus.userSettings.displaySettings.showShadowMasks ??
       defaultUserSettings.displaySettings.showShadowMasks,
   );
 };
 
 export const selectScreenRelativeControl = (state: RootState): boolean =>
-  state.userSettings.screenRelativeControl ??
+  state.gameMenus.userSettings.screenRelativeControl ??
   defaultUserSettings.screenRelativeControl;
 
 export const selectOnScreenControls = (state: RootState): boolean =>
-  state.userSettings.onScreenControls ?? defaultUserSettings.onScreenControls;
+  state.gameMenus.userSettings.onScreenControls ??
+  defaultUserSettings.onScreenControls;
 
 export const useIsOnScreenControls = () => {
   return useAppSelector(selectOnScreenControls);

@@ -18,7 +18,7 @@ import { createFloorOverdrawForExtraWalls } from "./createFloorOverdrawForExtraW
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
 export const floorAppearance: ItemAppearance<"floor"> = itemRenderOnce(
-  ({ subject, renderContext: { room } }) => {
+  ({ renderContext: { room, item: subject } }) => {
     const {
       blockXMin,
       blockYMin,

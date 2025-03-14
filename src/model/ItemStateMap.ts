@@ -1,11 +1,6 @@
 import type { PortableItemType } from "../game/physics/itemPredicates";
-import type { SceneryName } from "../sprites/planets";
 import type { Xyz, Xy } from "../utils/vectors/vectors";
-import type {
-  EmptyObject,
-  SwitchSetting,
-  UnionOfAllItemInPlayTypes,
-} from "./ItemInPlay";
+import type { EmptyObject, SwitchSetting } from "./ItemInPlay";
 import type { JsonItemConfig } from "./json/JsonItem";
 
 export type PlayableActionState =
@@ -26,9 +21,9 @@ export type PlayableTeleportingState =
       timeRemaining: number;
     };
 
-export type FreeItemState<RoomId extends string = string> = {
-  /* array of items ids for what we are standing on, in order of most overlap. Empty array if not standing on anything */
-  standingOn: UnionOfAllItemInPlayTypes<RoomId> | null;
+export type FreeItemState<RoomItemId extends string> = {
+  /* id of the single item we are considered to be standing on, or null if not standing on anything */
+  standingOnItemId: RoomItemId | null;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
   latentMovement: Array<{ moveAtRoomTime: number; positionDelta: Xyz }>;
@@ -44,16 +39,17 @@ export type FreeItemState<RoomId extends string = string> = {
   actedOnAt: number;
 };
 
-type SlidingItemState<RoomId extends string> = FreeItemState<RoomId> & {
+type SlidingItemState<RoomItemId extends string> = FreeItemState<RoomItemId> & {
   vels: {
     sliding: Xyz;
   };
 };
 
-type PortableItemState<RoomId extends string> = FreeItemState<RoomId> & {
-  /** if true, this item is the item heels would pick up next - and should be drawn highlighted in the room */
-  wouldPickUpNext: boolean;
-};
+type PortableItemState<RoomItemId extends string> =
+  FreeItemState<RoomItemId> & {
+    /** if true, this item is the item heels would pick up next - and should be drawn highlighted in the room */
+    wouldPickUpNext: boolean;
+  };
 
 type SingleTouch = {
   /**
@@ -69,52 +65,66 @@ export type CarriedItem<
 > = {
   [T in Types]: {
     type: T;
-    config: JsonItemConfig<T, SceneryName, RoomId>;
+    config: JsonItemConfig<T, RoomId>;
   };
 }[Types];
 
-export type PlayableState<RoomId extends string> = FreeItemState<RoomId> & {
-  /**
-   * z will always be zero, but is included to make easier to translate into 3-space velocities later
-   */
-  facing: Xyz;
-  action: PlayableActionState;
+export type PlayableState<RoomItemId extends string> =
+  FreeItemState<RoomItemId> & {
+    /**
+     * z will always be zero, but is included to make easier to translate into 3-space velocities later
+     */
+    facing: Xyz;
+    action: PlayableActionState;
 
-  // Number of pixels the player will walk forward regardless of input. This
-  // puts players properly inside a room when they enter via a door
-  autoWalk: boolean;
+    // Number of pixels the player will walk forward regardless of input. This
+    // puts players properly inside a room when they enter via a door
+    autoWalk: boolean;
 
-  vels: {
-    gravity: Xyz;
-    /** allows the walking mechanic to keep track of its own velocities */
-    walking: Xyz;
-    movingFloor: Xyz;
+    vels: {
+      gravity: Xyz;
+      /** allows the walking mechanic to keep track of its own velocities */
+      walking: Xyz;
+      movingFloor: Xyz;
+    };
+
+    /**
+     * how many pixels have we walked since we were last not walking? Ie, in this run of
+     * walking?
+     *
+     * Used to impose a minimum walk distance of a pixel
+     */
+    walkDistance: number;
+
+    /**
+     * what direction were we facing just before we started walking?
+     */
+    walkStartFacing: Xyz;
+
+    /**
+     * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
+     * we fall (vertical falling, no forward motion)
+     */
+    jumped: boolean;
+
+    teleporting: PlayableTeleportingState | null;
   };
 
-  /**
-   * how many pixels have we walked since we were last not walking? Ie, in this run of
-   * walking?
-   *
-   * Used to impose a minimum walk distance of a pixel
-   */
-  walkDistance: number;
+// we can't rely on Number.POSITIVE_INFINITY in the state because it's not JSON serializable
+export type PokeableNumber = "infinite" | number;
 
-  /**
-   * what direction were we facing just before we started walking?
-   */
-  walkStartFacing: Xyz;
+export const addPokeableNumbers = (
+  a: PokeableNumber,
+  b: PokeableNumber,
+): PokeableNumber =>
+  a === "infinite" || b === "infinite" ? "infinite" : a + b;
 
-  /**
-   * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
-   * we fall (vertical falling, no forward motion)
-   */
-  jumped: boolean;
-
-  teleporting: PlayableTeleportingState | null;
-};
+export const pokeableToNumber = (a: PokeableNumber): number =>
+  // it is ok to use POSITIVE_INFINITY anywhere where it doesn't get serialised
+  a === "infinite" ? Number.POSITIVE_INFINITY : a;
 
 type CommonAbilities = {
-  lives: number;
+  lives: PokeableNumber;
   gameTime: number;
   /**
    * the time a shield was collected at, or null if no shield. The hud should show
@@ -134,7 +144,7 @@ type CommonAbilities = {
 
 export type HeadAbilities = CommonAbilities & {
   hasHooter: boolean;
-  doughnuts: number;
+  doughnuts: PokeableNumber;
   /** time in ms doughnut was last fired, used to limit rate of fire */
   doughnutLastFireTime: number;
   /**
@@ -175,27 +185,28 @@ type ItemWithMovementState = {
   };
 };
 
-export type ItemStateMap<RoomId extends string> = {
-  head: PlayableState<RoomId> & HeadAbilities;
-  heels: PlayableState<RoomId> & HeelsAbilities<RoomId>;
-  headOverHeels: PlayableState<RoomId> & {
+export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
+  head: PlayableState<RoomItemId> & HeadAbilities;
+  heels: PlayableState<RoomItemId> & HeelsAbilities<RoomId>;
+  headOverHeels: PlayableState<RoomItemId> & {
     head: HeadAbilities;
     heels: HeelsAbilities<RoomId>;
   };
-  spring: PortableItemState<RoomId>;
-  portableBlock: PortableItemState<RoomId>;
-  sceneryPlayer: PortableItemState<RoomId>;
-  movableBlock: FreeItemState<RoomId> & ItemWithMovementState;
-  moveableDeadly: FreeItemState<RoomId>;
-  slidingDeadly: SlidingItemState<RoomId>;
-  slidingBlock: SlidingItemState<RoomId>;
+  spring: PortableItemState<RoomItemId>;
+  portableBlock: PortableItemState<RoomItemId>;
+  sceneryPlayer: PortableItemState<RoomItemId>;
+  movableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
+  moveableDeadly: FreeItemState<RoomItemId>;
+  slidingDeadly: SlidingItemState<RoomItemId>;
+  slidingBlock: SlidingItemState<RoomItemId>;
+  ball: SlidingItemState<RoomItemId>;
 
-  monster: FreeItemState<RoomId> &
+  monster: FreeItemState<RoomItemId> &
     ItemWithMovementState & {
       busyLickingDoughnutsOffFace: boolean;
     };
-  pickup: FreeItemState<RoomId>;
-  aliveFish: FreeItemState<RoomId>;
+  pickup: FreeItemState<RoomItemId>;
+  aliveFish: FreeItemState<RoomItemId>;
   lift: {
     direction: "up" | "down";
     vels: {
@@ -215,10 +226,10 @@ export type ItemStateMap<RoomId extends string> = {
   switch: SingleTouch & {
     setting: SwitchSetting;
   };
-  charles: FreeItemState<RoomId> & {
+  charles: FreeItemState<RoomItemId> & {
     // others will follow this soon - facing is changing to a vector
     facing: Xy;
   };
-  ball: SlidingItemState<RoomId>;
-  scroll: FreeItemState<RoomId>;
+
+  scroll: FreeItemState<RoomItemId>;
 };

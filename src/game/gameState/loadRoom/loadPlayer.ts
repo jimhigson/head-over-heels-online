@@ -4,7 +4,6 @@ import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { PlayableState } from "../../../model/ItemStateMap";
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { CharacterName } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import { emptyObject } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
@@ -16,6 +15,7 @@ import {
   selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
 } from "../../../store/selectors";
+import { neverTime } from "../../../utils/veryClose";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
@@ -38,62 +38,58 @@ export const defaultPlayerState = () =>
       gravity: originXyz,
       movingFloor: originXyz,
     },
-    actedOnAt: Number.NEGATIVE_INFINITY,
+    actedOnAt: neverTime,
   }) satisfies Partial<PlayableState<string>>;
 
-export const loadPlayer = <RoomId extends string>(
-  jsonItem: JsonItem<"player", SceneryName, RoomId>,
-): PlayableItem<CharacterName, RoomId> => {
+export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
+  jsonItem: JsonItem<"player", RoomId, RoomItemId>,
+): PlayableItem<CharacterName, RoomId, RoomItemId> => {
   const infiniteLivesPoke = selectIsInfiniteLivesPoke(store.getState());
   const infiniteDoughnutsPoke = selectIsInfiniteDoughnutsPoke(store.getState());
 
   if (jsonItem.config.which === "head") {
     return {
-      id: "head",
+      /** TODO: @knownRoomIds - remove casts */
+      id: "head" as RoomItemId,
       type: "head",
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
       state: {
-        ...defaultBaseState<RoomId>(),
+        ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
         ...defaultPlayerState(),
         hasHooter: false,
         gameWalkDistance: 0,
-        fastStepsStartedAtDistance: Number.NEGATIVE_INFINITY,
-        lives:
-          infiniteLivesPoke ?
-            Number.POSITIVE_INFINITY
-          : originalGameStartingLives,
-        shieldCollectedAt: Number.NEGATIVE_INFINITY,
-        doughnuts: infiniteDoughnutsPoke ? Number.POSITIVE_INFINITY : 0,
-        doughnutLastFireTime: Number.NEGATIVE_INFINITY,
-        switchedToAt: Number.NEGATIVE_INFINITY,
+        fastStepsStartedAtDistance: neverTime,
+        lives: infiniteLivesPoke ? "infinite" : originalGameStartingLives,
+        shieldCollectedAt: neverTime,
+        doughnuts: infiniteDoughnutsPoke ? "infinite" : 0,
+        doughnutLastFireTime: neverTime,
+        switchedToAt: neverTime,
         position: positionCentredInBlock(jsonItem),
-        lastDiedAt: Number.NEGATIVE_INFINITY,
+        lastDiedAt: neverTime,
         gameTime: 0,
       },
     };
   } else {
     return {
-      id: "heels",
+      /** TODO: @knownRoomIds - remove casts */
+      id: "heels" as RoomItemId,
       type: "heels",
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
       state: {
-        ...defaultBaseState<RoomId>(),
+        ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
         ...defaultPlayerState(),
         carrying: null,
         hasBag: false,
         bigJumps: 0,
-        lives:
-          infiniteLivesPoke ?
-            Number.POSITIVE_INFINITY
-          : originalGameStartingLives,
-        shieldCollectedAt: Number.NEGATIVE_INFINITY,
-        switchedToAt: Number.NEGATIVE_INFINITY,
+        lives: infiniteLivesPoke ? "infinite" : originalGameStartingLives,
+        shieldCollectedAt: neverTime,
+        switchedToAt: neverTime,
         position: positionCentredInBlock(jsonItem),
-        lastDiedAt: Number.NEGATIVE_INFINITY,
+        lastDiedAt: neverTime,
         gameTime: 0,
       },
     };

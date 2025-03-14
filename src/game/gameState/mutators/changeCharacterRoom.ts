@@ -1,16 +1,16 @@
 import type { GameState } from "../GameState";
 import { loadRoom } from "../loadRoom/loadRoom";
-import { objectValues } from "iter-tools";
 import { entryState } from "../PlayableEntryState";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { CharacterName, RoomState } from "../../../model/modelTypes";
+import type {
+  CharacterName,
+  IndividualCharacterName,
+} from "../../../model/modelTypes";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { iterate } from "../../../utils/iterate";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import {
   xyzEqual,
@@ -25,47 +25,68 @@ import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { store } from "../../../store/store";
 import { moveItem } from "../../physics/moveItem";
 import { roomExplored } from "../../../store/slices/gameMenusSlice";
+import {
+  iterateRoomItems,
+  roomItemsIterable,
+  type RoomState,
+} from "../../../model/RoomState";
+import type { RoomJson } from "../../../model/RoomJson";
+import { emptyObject } from "../../../utils/empty";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
-type ChangeCharacterRoomOptions<RoomId extends string> =
+type ChangeCharacterRoomOptions<
+  RoomId extends string,
+  RoomItemId extends string,
+> =
   | {
       changeType: "portal";
       gameState: GameState<RoomId>;
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
-      toRoomId: NoInfer<NoInfer<RoomId>>;
+      // infer RoomItemId from the playable item - could take a room parameter too to infer this from
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
+      toRoomId: NoInfer<RoomId>;
       /* position relative to the portal in the source room */
-      sourceItem: ItemInPlay<"portal", SceneryName, NoInfer<RoomId>>;
+      sourceItem: ItemInPlay<"portal", NoInfer<RoomId>, NoInfer<RoomItemId>>;
     }
   | {
       changeType: "teleport";
       gameState: GameState<RoomId>;
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
-      toRoomId: NoInfer<NoInfer<RoomId>>;
-      sourceItem: ItemInPlay<"teleporter", SceneryName, NoInfer<RoomId>>;
+      // infer RoomItemId from the playable item - could take a room parameter too to infer this from
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
+      toRoomId: NoInfer<RoomId>;
+      sourceItem: ItemInPlay<
+        "teleporter",
+        NoInfer<RoomId>,
+        NoInfer<RoomItemId>
+      >;
     }
   | {
       changeType: "level-select";
       gameState: GameState<RoomId>;
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>>;
-      toRoomId: NoInfer<NoInfer<RoomId>>;
+      // infer RoomItemId from the playable item - could take a room parameter too to infer this from
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
+      toRoomId: NoInfer<RoomId>;
       sourceItem?: undefined;
     };
 
-const findDestinationPortal = <RoomId extends string>(
-  toRoom: RoomState<SceneryName, RoomId>,
-  fromRoom: RoomState<SceneryName, RoomId>,
+const findDestinationPortal = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  // TODO: this is wrong! there is no reason why both rooms would have the same RoomItemId type!
+  toRoom: RoomState<RoomId, RoomItemId>,
+  fromRoom: RoomState<RoomId, RoomItemId>,
   {
     changeType,
     sourceItem: sourcePortal,
-  }: ChangeCharacterRoomOptions<RoomId> & {
+  }: ChangeCharacterRoomOptions<RoomId, RoomItemId> & {
     changeType: "portal" | "level-select";
   },
-): ItemInPlay<"portal", SceneryName, RoomId> | undefined => {
+): ItemInPlay<"portal", RoomId, RoomItemId> | undefined => {
   switch (changeType) {
     case "portal":
-      return iterate(objectValues(toRoom.items)).find(
-        (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+      return iterateRoomItems(toRoom.items).find(
+        (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
           isPortal(i) &&
           i.config.toRoom === fromRoom.id &&
           // portal is going in the opposite direction - see for example the double-door transition
@@ -78,8 +99,8 @@ const findDestinationPortal = <RoomId extends string>(
 
     case "level-select":
       return (
-        iterate(objectValues(toRoom.items)).find(
-          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+        iterateRoomItems(toRoom.items).find(
+          (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // find a door coming from the right room (if the level select was from
             // an adjacent room - this is not guaranteed) but makes clicking through
@@ -90,22 +111,22 @@ const findDestinationPortal = <RoomId extends string>(
           // fall back to horizontal/vertical portal:
         ) ??
         // find a door in the right direction:
-        iterate(objectValues(toRoom.items)).find(
-          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+        iterateRoomItems(toRoom.items).find(
+          (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // any horizontal portal (ie, not floor/ceiling)
             i.config.direction.z === 0,
           // fall back to horizontal/vertical portal:
         ) ??
-        iterate(objectValues(toRoom.items)).find(
-          (i): i is ItemInPlay<"portal", SceneryName, RoomId> =>
+        iterateRoomItems(toRoom.items).find(
+          (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // any ceiling portal - the floor would mean falling
             // instantly out of the room
             i.config.direction.z > 0,
         ) ??
         // fall back to any portal:
-        iterate(objectValues(toRoom.items)).find(isPortal)
+        iterateRoomItems(toRoom.items).find(isPortal)
       );
 
     default:
@@ -113,11 +134,11 @@ const findDestinationPortal = <RoomId extends string>(
   }
 };
 
-const backOffAndPushBack = <RoomId extends string>(
-  playableItem: PlayableItem<CharacterName, RoomId>,
+const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   portalDirectionXy: Xyz,
   gameState: GameState<RoomId>,
-  toRoom: RoomState<SceneryName, RoomId>,
+  toRoom: RoomState<RoomId, RoomItemId>,
 ) => {
   // back off one square, and push progressively into the room:
   const backOffAndPushLength = 1 * blockSizePx.w;
@@ -140,8 +161,11 @@ const backOffAndPushBack = <RoomId extends string>(
   }
 };
 
-export const changeCharacterRoom = <RoomId extends string>(
-  changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId>,
+export const changeCharacterRoom = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId, RoomItemId>,
 ) => {
   const {
     playableItem,
@@ -152,7 +176,11 @@ export const changeCharacterRoom = <RoomId extends string>(
     sourceItem,
   } = changeCharacterRoomOptions;
 
-  const leavingRoom = gameState.characterRooms[playableItem.id];
+  /** TODO: @knownRoomIds - remove casts */
+  const leavingRoom = gameState.characterRooms[
+    playableItem.id as CharacterName
+    // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
+  ] as RoomState<RoomId, RoomItemId>;
 
   if (leavingRoom === undefined) {
     throw new Error(`${playableItem.id} is not in a room on the gameState`);
@@ -201,16 +229,28 @@ export const changeCharacterRoom = <RoomId extends string>(
     playableItem.type === "headOverHeels" ?
       // if in symbiosis, there is no other player so no other player's room:
       undefined
-    : gameState.characterRooms[otherIndividualCharacterName(playableItem.id)];
+    : /** TODO: @knownRoomIds - remove casts */
+      (gameState.characterRooms[
+        otherIndividualCharacterName(playableItem.id as IndividualCharacterName)
+        // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
+      ] as RoomState<RoomId, RoomItemId>);
 
-  const toRoomJson = gameState.campaign.rooms[toRoomId];
+  const toRoomJson = gameState.campaign.rooms[toRoomId] as RoomJson<
+    RoomId,
+    RoomItemId
+  >;
   if (toRoomJson === undefined) {
     throw new Error(`room ${toRoomId} does not exist in campaign`);
   }
-  const toRoom =
+  const toRoom: RoomState<RoomId, RoomItemId> =
     otherCharacterLoadedRoom?.id === toRoomId ?
       otherCharacterLoadedRoom
-    : loadRoom(toRoomJson, gameState.pickupsCollected[toRoomId]);
+      // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
+    : (loadRoom({
+        roomJson: toRoomJson,
+        roomPickupsCollected:
+          gameState.pickupsCollected[toRoomId] ?? emptyObject,
+      }) as RoomState<RoomId, RoomItemId>);
 
   // take the character out of the previous room:
   deleteItemFromRoom({ room: leavingRoom, item: playableItem });
@@ -235,7 +275,8 @@ export const changeCharacterRoom = <RoomId extends string>(
   (toRoom.items[playableItem.id] as typeof playableItem) = playableItem;
 
   // update game state to know which room this character is now in:
-  gameState.characterRooms[playableItem.id] = toRoom;
+  /** TODO: @knownRoomIds - remove casts */
+  gameState.characterRooms[playableItem.id as CharacterName] = toRoom;
 
   // character is in the room, now let's update some of their state before the physics starts ticking again:
   if (changeCharacterRoomOptions.changeType === "teleport") {
@@ -249,7 +290,7 @@ export const changeCharacterRoom = <RoomId extends string>(
     );
   } else {
     // find the door (etc) in the new room to enter in:
-    const destinationPortal = findDestinationPortal(
+    const destinationPortal = findDestinationPortal<RoomId, RoomItemId>(
       toRoom,
       leavingRoom,
       changeCharacterRoomOptions,
@@ -329,7 +370,7 @@ export const changeCharacterRoom = <RoomId extends string>(
 
   const collisionsInDestinationRoom = collision1toMany(
     playableItem,
-    objectValues(toRoom.items),
+    roomItemsIterable(toRoom.items),
   );
   if (collisionsInDestinationRoom.length > 0) {
     console.warn(
@@ -344,7 +385,9 @@ export const changeCharacterRoom = <RoomId extends string>(
     );
   }
 
-  gameState.entryState[playableItem.id] = entryState(playableItem);
+  /** TODO: @knownRoomIds - remove casts */
+  gameState.entryState[playableItem.id as CharacterName] =
+    entryState(playableItem);
 
   // delete entry states that no longer apply:
   if (playableItem.id === "headOverHeels") {
@@ -356,9 +399,16 @@ export const changeCharacterRoom = <RoomId extends string>(
     // individual character moving out of the room:
     // there may be an issue here if it leaves the character that didn't move
     // into the new room without an entrystate.
-    if (!gameState.entryState[otherIndividualCharacterName(playableItem.id)]) {
-      gameState.entryState[otherIndividualCharacterName(playableItem.id)] =
-        gameState.entryState.headOverHeels;
+    if (
+      !gameState.entryState[
+        /** TODO: @knownRoomIds - remove casts */
+        otherIndividualCharacterName(playableItem.id as IndividualCharacterName)
+      ]
+    ) {
+      gameState.entryState[
+        /** TODO: @knownRoomIds - remove casts */
+        otherIndividualCharacterName(playableItem.id as IndividualCharacterName)
+      ] = gameState.entryState.headOverHeels;
     }
     delete gameState.entryState.headOverHeels;
   }

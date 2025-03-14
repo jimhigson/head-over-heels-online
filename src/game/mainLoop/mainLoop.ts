@@ -11,7 +11,6 @@ import { emptySet } from "../../utils/empty";
 import { store } from "../../store/store";
 import {
   selectInputDirectionMode,
-  selectIsColourised,
   selectIsPaused,
   selectOnScreenControls,
 } from "../../store/selectors";
@@ -45,7 +44,7 @@ const topLevelFilters = (
 export class MainLoop<RoomId extends string> {
   #filtersWhenPaused!: Filter[];
   #filtersWhenUnpaused!: Filter[];
-  #hudRenderer: HudRenderer<RoomId>;
+  #hudRenderer: HudRenderer<RoomId, string> | undefined;
   /**
    * room renderer can only be undefined if there is no current room - both
    * players have lost all lives
@@ -66,7 +65,9 @@ export class MainLoop<RoomId extends string> {
 
     const storeState = store.getState();
     const {
-      upscale: { gameEngineUpscale },
+      gameMenus: {
+        upscale: { gameEngineUpscale },
+      },
     } = storeState;
 
     app.stage.addChild(this.#worldContainer);
@@ -77,28 +78,32 @@ export class MainLoop<RoomId extends string> {
     if (startingRoom === undefined) {
       throw new Error("main loop with no starting room");
     }
+    /*
+    experiment: create the room renderer on tick only
     this.#roomRenderer = new RoomRenderer({
       gameState,
-      roomState: startingRoom,
+      room: startingRoom,
       paused: false,
       pixiRenderer: app.renderer,
     });
-    this.#worldContainer.addChild(this.#roomRenderer.container);
-
+    this.#worldContainer.addChild(this.#roomRenderer.container);*/
+    /*
     this.#hudRenderer = new HudRenderer(
       gameState,
       selectOnScreenControls(storeState),
       selectIsColourised(storeState),
       selectInputDirectionMode(storeState),
-    );
-    app.stage.addChild(this.#hudRenderer.container);
+    );*/
+    //app.stage.addChild(this.#hudRenderer.container);
 
     this.#initFilters();
   }
 
   #initFilters() {
     const {
-      userSettings: { displaySettings },
+      gameMenus: {
+        userSettings: { displaySettings },
+      },
     } = store.getState();
 
     this.#filtersWhenPaused = topLevelFilters(displaySettings, true);
@@ -109,11 +114,14 @@ export class MainLoop<RoomId extends string> {
     const tickState = store.getState();
     const isPaused = selectIsPaused(tickState);
     const {
-      userSettings: { displaySettings: tickDisplaySettings },
-      upscale: tickUpscale,
+      gameMenus: {
+        userSettings: { displaySettings: tickDisplaySettings },
+        upscale: tickUpscale,
+      },
     } = store.getState();
+    const tickRoom = selectCurrentRoomState(this.#gameState);
 
-    const colouriseHud =
+    const tickColourise =
       !isPaused &&
       !(
         tickDisplaySettings?.uncolourised ??
@@ -121,25 +129,25 @@ export class MainLoop<RoomId extends string> {
       );
 
     if (
-      this.#hudRenderer.colourise !== colouriseHud ||
-      this.#hudRenderer.onScreenControls !==
+      this.#hudRenderer?.renderContext.colourise !== tickColourise ||
+      this.#hudRenderer?.renderContext.onScreenControls !==
         selectOnScreenControls(tickState) ||
-      this.#hudRenderer.inputDirectionMode !==
+      this.#hudRenderer?.renderContext.inputDirectionMode !==
         selectInputDirectionMode(tickState)
     ) {
-      this.#hudRenderer.destroy();
-      this.#hudRenderer = new HudRenderer(
-        this.#gameState,
-        selectOnScreenControls(tickState),
-        colouriseHud,
-        selectInputDirectionMode(tickState),
-      );
+      this.#hudRenderer?.destroy();
+      this.#hudRenderer = new HudRenderer({
+        colourise: tickColourise,
+        gameState: this.#gameState,
+        inputDirectionMode: selectInputDirectionMode(tickState),
+        onScreenControls: selectOnScreenControls(tickState),
+      });
       this.#app.stage.addChild(this.#hudRenderer.container);
     }
 
     this.#hudRenderer.tick({
-      gameState: this.#gameState,
       screenSize: tickUpscale.gameEngineScreenSize,
+      room: tickRoom,
     });
 
     // note that progressing the game state can change/reload the room,
@@ -147,24 +155,26 @@ export class MainLoop<RoomId extends string> {
     const movedItems =
       isPaused ? emptySet : progressGameState(this.#gameState, deltaMS);
 
-    const tickRoom = selectCurrentRoomState(this.#gameState);
-
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene
       // graph if it changes - we simply destroy and recreate it entirely:
-      this.#roomRenderer?.roomState !== tickRoom ||
-      this.#roomRenderer?.upscale !== tickUpscale ||
-      this.#roomRenderer?.displaySettings !== tickDisplaySettings ||
-      this.#roomRenderer?.paused !== isPaused
+      this.#roomRenderer?.renderContext.room !== tickRoom ||
+      this.#roomRenderer?.renderContext.upscale !== tickUpscale ||
+      this.#roomRenderer?.renderContext.displaySettings !==
+        tickDisplaySettings ||
+      this.#roomRenderer?.renderContext.paused !== isPaused
     ) {
       this.#roomRenderer?.destroy();
 
       if (tickRoom) {
         this.#roomRenderer = new RoomRenderer({
           gameState: this.#gameState,
-          roomState: tickRoom,
+          room: tickRoom,
           paused: isPaused,
           pixiRenderer: this.#app.renderer,
+          displaySettings: tickDisplaySettings,
+          colourised: tickColourise,
+          upscale: tickUpscale,
         });
         this.#worldContainer.addChild(this.#roomRenderer.container);
         // this isn't the ideal place to emit this from - it gets fired even if just the
@@ -184,8 +194,6 @@ export class MainLoop<RoomId extends string> {
       progression: this.#gameState.progression,
       movedItems,
       deltaMS,
-      displaySettings: tickDisplaySettings,
-      onHold: false,
     });
 
     if (!isPaused) {
@@ -202,7 +210,7 @@ export class MainLoop<RoomId extends string> {
   stop() {
     this.#app.stage.removeChild(this.#worldContainer);
     this.#roomRenderer?.destroy();
-    this.#hudRenderer.destroy();
+    this.#hudRenderer?.destroy();
     this.#app.ticker.remove(this.tick);
   }
 }

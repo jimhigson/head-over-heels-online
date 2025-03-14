@@ -1,30 +1,30 @@
 import type { IndividualCharacterName } from "../../model/modelTypes";
-import {
-  type RoomState,
-  type CharacterName,
-  type Campaign,
-} from "../../model/modelTypes";
-import type { SceneryName } from "../../sprites/planets";
+import { type CharacterName, type Campaign } from "../../model/modelTypes";
 import type { Emitter } from "mitt";
 import type { GameEvents } from "../GameApi";
 import type { PlayableEntryState } from "./PlayableEntryState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
+import type { RoomState } from "../../model/RoomState";
 
 /**
- * @returns undefined only if both chars have lost all lives (no current room)
+ * @returns currently shown room state, or undefined only if both chars have
+ * lost all lives (no current room)
  */
 export const selectCurrentRoomState = <RoomId extends string>(
   gameState: GameState<RoomId>,
-): RoomState<SceneryName, RoomId> | undefined =>
+): RoomState<RoomId, string> | undefined =>
   // use a ! here because so long as a game is in progress, there should be a current room
   gameState.characterRooms[gameState.currentCharacterName];
 
 export type RoomPickupsCollected = Record<string, true>;
 
-export type PickupsCollected<RoomId extends string> = Record<
-  RoomId,
-  RoomPickupsCollected
->;
+export type PickupsCollected<RoomId extends string> = {
+  /**
+   * optional for each room - if no entry for the room, is considered that nothing is
+   * picked up (keeps the save state size a bit more manageable)
+   */
+  [R in RoomId]?: RoomPickupsCollected;
+};
 
 type CharacterRooms<RoomId extends string> =
   /**
@@ -32,12 +32,11 @@ type CharacterRooms<RoomId extends string> =
    * - all 3 can never exist at the same time
    */
   Partial<{
-    [C in CharacterName]: RoomState<SceneryName, RoomId>;
+    [C in CharacterName]: RoomState<RoomId, string>;
   }>;
 
 export type GameState<RoomId extends string> = {
   campaign: Campaign<RoomId>;
-  //inputAssignment: InputAssignment;
   currentCharacterName: CharacterName;
   /** 
     if playing combined, which character was paid immediately before combining?
@@ -57,7 +56,7 @@ export type GameState<RoomId extends string> = {
     [C in CharacterName]: PlayableEntryState;
   }>;
 
-  /** TODO: is this really state? */
+  /** TODO: is this really state? - this could be replaced with dispatching actions on the store */
   events: Emitter<GameEvents<RoomId>>;
   // pickups don't respawn, so we keep track of which ones have been picked up
   // outside of the room's state

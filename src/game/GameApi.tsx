@@ -2,9 +2,10 @@ import type { Emitter } from "mitt";
 import type { GameState } from "./gameState/GameState";
 import type { Container } from "pixi.js";
 import type { AnyItemInPlay } from "../model/ItemInPlay";
-import type { Campaign, RoomState } from "../model/modelTypes";
-import type { SceneryName } from "../sprites/planets";
+import type { Campaign } from "../model/modelTypes";
 import type { Xy } from "../utils/vectors/vectors";
+import type { RoomState } from "../model/RoomState";
+import type { SavedGameState } from "./gameState/saving/SavedGameState";
 
 export type GameEvents<RoomId extends string> = {
   roomChange: RoomId;
@@ -22,8 +23,9 @@ export type GameApi<RoomId extends string> = {
    * @returns the state for the room that is currently being viewed, or undefined if
    * none (game over)
    */
-  currentRoom: RoomState<SceneryName, RoomId> | undefined;
+  currentRoom: RoomState<RoomId, string> | undefined;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
   stop: () => void;
+  reincarnateFrom: (gameState: SavedGameState<RoomId>) => void;
 };

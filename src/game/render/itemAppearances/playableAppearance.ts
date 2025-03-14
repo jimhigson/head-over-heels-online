@@ -154,7 +154,7 @@ const applyFilters = (
       container,
       new OutlineFilter({
         outlineColor: accentColours[name],
-        upscale: store.getState().upscale.gameEngineUpscale,
+        upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
         // player can move between pixels:
         lowRes: false,
       }),
@@ -172,14 +172,17 @@ const applyFilters = (
 };
 
 export const playableAppearance = <
-  C extends CharacterName,
   RoomId extends string,
+  RoomItemId extends string,
 >({
-  subject,
   currentlyRenderedProps,
+  renderContext: { item: subject, gameState },
   previousRendering,
-  gameState,
-}: ItemAppearanceOptions<C, RoomId>): ItemAppearanceReturn<CharacterName> => {
+}: ItemAppearanceOptions<
+  CharacterName,
+  RoomId,
+  RoomItemId
+>): ItemAppearanceReturn<CharacterName> => {
   const {
     type,
     state: { action, facing, teleporting },
@@ -192,12 +195,13 @@ export const playableAppearance = <
       // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
       // characters - they were switched to at the same time so it doesn't matter:
       isHighlighted(
-        (subject as PlayableItem<"headOverHeels">).state.head,
+        (subject as PlayableItem<"headOverHeels", RoomId, RoomItemId>).state
+          .head,
         "headOverHeels",
         "headOverHeels",
       )
     : isHighlighted(
-        (subject as PlayableItem<"head" | "heels">).state,
+        (subject as PlayableItem<"head" | "heels", RoomId, RoomItemId>).state,
         subject.type,
         gameState.currentCharacterName,
       );

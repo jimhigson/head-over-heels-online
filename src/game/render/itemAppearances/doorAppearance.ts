@@ -5,7 +5,6 @@ import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
 } from "../projectToScreen";
-import type { UnknownRoomState } from "../../../model/modelTypes";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   edgePaletteSwapFilters,
@@ -22,10 +21,13 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { iterateToContainer } from "../../iterateToContainer";
 import type { ItemAppearance } from "./ItemAppearance";
 import { itemRenderOnce } from "./ItemAppearance";
+import type { RoomState } from "../../../model/RoomState";
 
-function* doorLegsGenerator(
-  { config: { direction, inHiddenWall, height } }: ItemInPlay<"doorLegs">,
-  room: UnknownRoomState,
+function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
+  {
+    config: { direction, inHiddenWall, height },
+  }: ItemInPlay<"doorLegs", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
 ): Generator<Container> {
   const axis = doorAlongAxis(direction);
 
@@ -103,15 +105,12 @@ const xyToTranslateToInsideOfRoom = (
 };
 
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> = itemRenderOnce(
-  ({ subject: doorLegsItem, renderContext: { room } }) => {
+  ({ renderContext: { item, room } }) => {
     return iterateToContainer(
-      doorLegsGenerator(doorLegsItem, room),
+      doorLegsGenerator(item, room),
       new Container({
         filters: mainPaletteSwapFilter(room),
-        ...xyToTranslateToInsideOfRoom(
-          doorLegsItem.config.direction,
-          doorLegsItem.aabb,
-        ),
+        ...xyToTranslateToInsideOfRoom(item.config.direction, item.aabb),
       }),
     );
   },
@@ -119,11 +118,13 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> = itemRenderOnce(
 
 export const doorFrameAppearance: ItemAppearance<"doorFrame"> = itemRenderOnce(
   ({
-    subject: {
-      config: { direction, part },
-      aabb,
+    renderContext: {
+      item: {
+        config: { direction, part },
+        aabb,
+      },
+      room,
     },
-    renderContext: { room },
   }) => {
     const axis = doorAlongAxis(direction);
     return createSprite({

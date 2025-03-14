@@ -15,6 +15,10 @@
         2 walking sound w/repeat frequency by number of stepsh
 
 [ ] saving/fish
+    [ ] save on reload page/app close
+        - mostly works but Number.POSITIVE_INFINITY, NEGATIVE_INFINITY etc is breaking it (can't be serialised to JSON)
+            - both are used
+        - does not restore anything to the store on reload ("planetsLiberated", "scrollsRead")
 
 [x] 8-way sprites
 
@@ -39,6 +43,10 @@
 ### ui
 [x] game ui colours when colourised from real palette (even if not close to original colours)
 
+### graphical
+use pixi render groups/layers etc to render outline when switching players in 
+front of other items
+
 ### mobile
 [ ] hitting hte joystick with a tap sometimes moves <1px
 
@@ -53,6 +61,15 @@
 
 
 ### Details and bugs
+
+[ ] remove event bus from gamestate (use store instead)
+
+[ ] adopt a network-first strategy: 
+    https://vite-pwa-org.netlify.app/workbox/inject-manifest#network-first-strategy
+
+[ ] restore known-id typings at src/model/RoomState.ts - `origin/experimental-well-known-ids`
+
+[ ] charles robot no longer needs to use latent movement
 
 [ ] version number/date on main menu dialog
 

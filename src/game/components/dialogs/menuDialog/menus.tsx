@@ -17,6 +17,7 @@ export const dialogIds = [
   "hold",
   "crowns",
   "score",
+  "offerReincarnation",
   "quitGameConfirm",
   "proclaimEmperor",
   ...markdownDialogIds,

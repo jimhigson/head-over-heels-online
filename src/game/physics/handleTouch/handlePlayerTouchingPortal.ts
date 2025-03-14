@@ -2,7 +2,6 @@ import type { ItemTouchEvent } from "./ItemTouchEvent";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import { dotProductXyz } from "../../../utils/vectors/vectors";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 
@@ -10,7 +9,10 @@ import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoo
  *
  * @returns true if the player went through the portal
  */
-export const handlePlayerTouchingPortal = <RoomId extends string>({
+export const handlePlayerTouchingPortal = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   gameState,
   movingItem: playableItem,
   touchedItem: portalItem,
@@ -18,8 +20,9 @@ export const handlePlayerTouchingPortal = <RoomId extends string>({
   movementVector,
 }: ItemTouchEvent<
   RoomId,
-  PlayableItem<CharacterName, RoomId>,
-  ItemInPlay<"portal", SceneryName, RoomId>
+  RoomItemId,
+  PlayableItem<CharacterName, RoomId, RoomItemId>,
+  ItemInPlay<"portal", RoomId, RoomItemId>
 >) => {
   const {
     config: { toRoom, direction: portalDirection },

@@ -54,4 +54,4 @@ export const room = inferRoomJson({
   planet: "penitentiary",
   roomBelow: "penitentiary9",
   size: { x: 2, y: 8 },
-}) satisfies RoomJson<"penitentiary", OriginalCampaignRoomId>;
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "penitentiary">;

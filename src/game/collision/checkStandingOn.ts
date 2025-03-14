@@ -6,15 +6,17 @@ import type {
   AnyItemInPlay,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import type { SceneryName } from "../../sprites/planets";
 import { iterate } from "../../utils/iterate";
 import { addXyz } from "../../utils/vectors/vectors";
 import { epsilon } from "../../utils/veryClose";
 import { collision1to1 } from "./aabbCollision";
 
-export const spatiallyCheckStandingOn = <RoomId extends string>(
-  itemMaybeStanding: FreeItem<SceneryName, RoomId>,
-  itemMaybeBeingStoodOn: AnyItemInPlay<RoomId>,
+export const spatiallyCheckStandingOn = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  itemMaybeStanding: FreeItem<RoomId, RoomItemId>,
+  itemMaybeBeingStoodOn: AnyItemInPlay<RoomId, RoomItemId>,
   /**
     How much overlap is ok? if not given, an epsilon value is used,
     which means to return true the bottom of @param item should equal
@@ -96,9 +98,10 @@ export const spatiallyCheckStandingOn = <RoomId extends string>(
  */
 export const findStandingOnWithHighestPriorityAndMostOverlap = <
   RoomId extends string,
-  Item extends UnionOfAllItemInPlayTypes<RoomId>,
+  RoomItemId extends string,
+  Item extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 >(
-  item: FreeItem<SceneryName, RoomId>,
+  item: FreeItem<RoomId, RoomItemId>,
   itemsMaybeBeingStoodOn: Iterable<Item>,
 ): Item | undefined => {
   const potentiallyStoodOn = iterate(itemsMaybeBeingStoodOn).filter((i) =>

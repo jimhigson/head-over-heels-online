@@ -123,7 +123,9 @@ export const GamePage = () => {
 
   const cheatsOn = useCheatsOn();
   const gameApi = useGame();
-  const { cssUpscale, canvasSize } = useAppSelector((state) => state.upscale);
+  const { cssUpscale, canvasSize } = useAppSelector(
+    (state) => state.gameMenus.upscale,
+  );
 
   usePageAsAnApp();
   useEffect(() => {
@@ -153,8 +155,8 @@ export const GamePage = () => {
         className="origin-top-left"
         ref={setGameDiv}
       />
-      <ConnectInputToStore />
       <GameApiProvider gameApi={gameApi}>
+        <ConnectInputToStore />
         <Dialogs />
         {gameApi && cheatsOn && (
           <Suspense fallback={null}>

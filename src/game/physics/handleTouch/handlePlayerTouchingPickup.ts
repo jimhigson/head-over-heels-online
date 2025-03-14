@@ -1,8 +1,9 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import {
   crownCollected,
+  reincarnationFishEaten,
   scrollRead,
 } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
@@ -10,14 +11,19 @@ import {
   selectHeadAbilities,
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { createSavedGame } from "../../gameState/saving/createSavedGame";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
-export const handlePlayerTouchingPickup = <RoomId extends string>(
+export const handlePlayerTouchingPickup = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   e: ItemTouchEvent<
     RoomId,
-    PlayableItem<CharacterName, RoomId>,
-    ItemInPlay<"pickup", SceneryName, RoomId>
+    RoomItemId,
+    PlayableItem<CharacterName, RoomId, RoomItemId>,
+    ItemInPlay<"pickup", RoomId, RoomItemId>
   >,
 ) => {
   const {
@@ -26,17 +32,17 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     touchedItem: pickup,
     room: { id: roomId },
   } = e;
+  const { pickupsCollected } = gameState;
 
-  if (gameState.pickupsCollected[roomId][pickup.id] === true) {
+  if (pickupsCollected[roomId]?.[pickup.id] === true) {
     // ignore already picked up items
     return;
   }
 
-  const roomPickupCollections = gameState.pickupsCollected[roomId] as Record<
-    string,
-    true
-  >;
-  roomPickupCollections[pickup.id] = true;
+  if (pickupsCollected[roomId] === undefined) {
+    pickupsCollected[roomId] = {};
+  }
+  pickupsCollected[roomId][pickup.id] = true;
 
   switch (pickup.config.gives) {
     case "hooter": {
@@ -51,7 +57,7 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
     case "doughnuts": {
       const toModify = selectHeadAbilities(player);
       if (toModify !== undefined) {
-        toModify.doughnuts += 6;
+        toModify.doughnuts = addPokeableNumbers(toModify.doughnuts, 6);
       }
       break;
     }
@@ -93,11 +99,16 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
 
     case "extra-life":
       if (player.type === "headOverHeels") {
-        player.state.head.lives += 2;
-        player.state.heels.lives += 2;
-        break;
+        player.state.head.lives = addPokeableNumbers(
+          player.state.head.lives,
+          2,
+        );
+        player.state.heels.lives = addPokeableNumbers(
+          player.state.heels.lives,
+          2,
+        );
       } else {
-        player.state.lives += 2;
+        player.state.lives = addPokeableNumbers(player.state.lives, 2);
       }
       break;
 
@@ -106,9 +117,12 @@ export const handlePlayerTouchingPickup = <RoomId extends string>(
       store.dispatch(scrollRead(pickup.config.page));
       break;
 
-    case "reincarnation":
-      //TODO:
+    case "reincarnation": {
+      store.dispatch(
+        reincarnationFishEaten(createSavedGame(gameState, store.getState())),
+      );
       break;
+    }
 
     case "crown": {
       // a little experiment- let's go straight to the store, even though

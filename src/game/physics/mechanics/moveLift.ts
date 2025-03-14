@@ -1,9 +1,5 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { SceneryName } from "../../../sprites/planets";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { iterate } from "../../../utils/iterate";
-import type { GameState } from "../../gameState/GameState";
-import { isMovableBlock } from "../itemPredicates";
 import type { MechanicResult } from "../MechanicResult";
 import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
@@ -57,35 +53,20 @@ const calculateVelocity = ({
   }
 };
 
-const stationaryLift: MechanicResult<"lift", string> = {
-  movementType: "vel",
-  vels: { lift: { x: 0, y: 0, z: 0 } },
-};
-
 /**
  * walking, but also gliding and changing direction mid-air
  */
-export function moveLift<RoomId extends string>(
+export function moveLift<RoomId extends string, RoomItemId extends string>(
   {
     config: { bottom, top },
     state: {
       direction,
       position: { z },
-      stoodOnBy,
     },
-  }: ItemInPlay<"lift", SceneryName, RoomId>,
-  _gameState: GameState<RoomId>,
-  _deltaMS: number,
-): MechanicResult<"lift", RoomId> {
-  // stepstools are the only items heavy enough to stop lifts - this is needed for blacktooth 78
-  const hasHeavyLoad = iterate(stoodOnBy).some(
-    (i) => isMovableBlock(i) && i.config.style === "stepStool",
-  );
-
-  if (hasHeavyLoad) {
-    return stationaryLift as MechanicResult<"lift", RoomId>;
-  }
-
+  }: ItemInPlay<"lift", RoomId, RoomItemId>,
+  // _gameState: GameState<RoomId>,
+  // _deltaMS: number,
+): MechanicResult<"lift", RoomId, RoomItemId> {
   const lowestZ = bottom * blockHeight;
   const highestZ = top * blockHeight;
   const velocity = calculateVelocity({

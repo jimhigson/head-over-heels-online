@@ -52,11 +52,11 @@ export const MenuItem = ({
   const isFirstRender = useRef<boolean>(true);
 
   const scrollIntoView = useAppSelector((state) => {
-    return state.openMenus[0].scrollableSelection;
+    return state.gameMenus.openMenus[0].scrollableSelection;
   });
 
   const focussed = useAppSelector(
-    (state) => state.openMenus[0].focussedItemId === id,
+    (state) => state.gameMenus.openMenus[0].focussedItemId === id,
   );
 
   useActionTap({

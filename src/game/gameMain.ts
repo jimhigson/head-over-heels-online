@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
 import { type Campaign } from "../model/modelTypes";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
-import { initGameState } from "./gameState/initGameState";
+import { loadGameState } from "./gameState/loadGameState";
 import type { GameApi } from "./GameApi";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 import { selectCurrentRoomState } from "./gameState/GameState";
@@ -12,7 +12,11 @@ import { TextureStyle } from "pixi.js";
 import "pixi.js/advanced-blend-modes";
 import type { InputStateTrackerInterface } from "./input/InputStateTracker";
 import { store } from "../store/store";
-import { roomExplored } from "../store/slices/gameMenusSlice";
+import {
+  gameRestoreFromSave,
+  roomExplored,
+} from "../store/slices/gameMenusSlice";
+import type { SavedGameState } from "./gameState/saving/SavedGameState";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -38,12 +42,20 @@ export const gameMain = async <RoomId extends string>(
     },
   });
 
-  const gameState = initGameState({
+  const savedGame = store.getState().gameMenus
+    .currentGame as SavedGameState<RoomId>;
+
+  const gameState = loadGameState({
     campaign,
     inputStateTracker,
+    savedGame,
   });
-  store.dispatch(roomExplored(gameState.characterRooms.head!.id));
-  store.dispatch(roomExplored(gameState.characterRooms.heels!.id));
+  if (savedGame !== undefined) {
+    store.dispatch(gameRestoreFromSave(savedGame.store.gameMenus));
+  } else {
+    store.dispatch(roomExplored(gameState.characterRooms.head!.id));
+    store.dispatch(roomExplored(gameState.characterRooms.heels!.id));
+  }
 
   const loop = new MainLoop(app, gameState).start();
 
@@ -77,6 +89,14 @@ export const gameMain = async <RoomId extends string>(
     },
     get gameState() {
       return gameState;
+    },
+    reincarnateFrom(savedGame: SavedGameState<RoomId>) {
+      loadGameState({
+        campaign,
+        inputStateTracker,
+        savedGame,
+        writeInto: gameState,
+      });
     },
     stop() {
       console.warn("tearing down game");

@@ -1,11 +1,6 @@
 import { Container } from "pixi.js";
-import type { GameState } from "../../gameState/GameState";
-import type { Renderer, RenderContext } from "../Renderer";
-import type {
-  RenderSubject,
-  RenderProps,
-  AppearanceWithKnownRoomId,
-} from "./Appearance";
+import type { Renderer } from "../Renderer";
+import type { Appearance, RenderProps } from "./Appearance";
 
 /**
  * track changes of a subject over time, updating the rendering as necessary using a pluggable
@@ -13,45 +8,44 @@ import type {
  */
 
 export class AppearanceRenderer<
-  S extends RenderSubject,
+  /**
+   * context provided once to this renderer that never changes - if this
+   * changes the renderer has to be destroyed and recreated
+   */
+  RenderContext extends object,
+  TickContext extends object,
   RP extends RenderProps,
-  RoomId extends string,
-  RC extends RenderContext,
-  RenderObject extends Container = Container,
-> implements Renderer<RC>
+  /** the type of the thing returned by this renderer */
+  RenderTarget extends Container = Container,
+> implements Renderer<RenderContext, TickContext>
 {
   #currentlyRenderedProps: RP | undefined = undefined;
-  #container: Container<RenderObject>;
+  #container: Container<RenderTarget>;
 
   constructor(
-    private subject: S,
-    private gameState: GameState<RoomId>,
-    private appearance: AppearanceWithKnownRoomId<
-      S,
+    public readonly renderContext: RenderContext,
+    private appearance: Appearance<
+      RenderContext,
+      TickContext,
       RP,
-      RoomId,
-      RC,
-      RenderObject
+      RenderTarget
     >,
   ) {
     this.#container = new Container({
-      label: `AppearanceRenderer ${subject.id}`,
+      label: `AppearanceRenderer`,
     });
-
-    //assignMouseActions(subject, this.#container, gameState);
   }
 
   destroy() {
     this.#container.destroy({ children: true });
   }
 
-  tick(renderContext: RC) {
+  tick(tickContext: TickContext) {
     const rendering = this.appearance({
-      subject: this.subject,
+      renderContext: this.renderContext,
       currentlyRenderedProps: this.#currentlyRenderedProps,
       previousRendering: this.#container.children.at(0) ?? null,
-      renderContext,
-      gameState: this.gameState,
+      tickContext,
     });
 
     if (rendering !== "no-update") {

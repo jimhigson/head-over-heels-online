@@ -2,7 +2,6 @@ import type { ItemInPlayType } from "../../model/ItemInPlay";
 import type { JsonItemConfig } from "../../model/json/JsonItem";
 import type { CharacterName } from "../../model/modelTypes";
 import { zxSpectrumFrameRate } from "../../originalGame";
-import type { SceneryName } from "../../sprites/planets";
 import { blockSizePx } from "../../sprites/spritePivots";
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
@@ -55,6 +54,11 @@ export const moveSpeedPixPerMs = {
   charles: onePxPerFrameInOriginalGamePxPerMs,
   // moved diagonally in a (1, 1) vector in original - that gives us √2 px per frame
   dalek: Math.SQRT2 * onePxPerFrameInOriginalGamePxPerMs,
+  // moved at different speeds in original depending on direction:
+  //    * orthogonally eg (0,1)
+  //    * diagonally in a (1, 1) vector  -
+  //    that gives us 1 or √2 px per frame - take the average:
+  bubbleRobot: ((Math.SQRT2 + 1) / 2) * onePxPerFrameInOriginalGamePxPerMs,
   cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs,
   skiHead: onePxPerFrameInOriginalGamePxPerMs,
   helicopterBug: onePxPerFrameInOriginalGamePxPerMs,
@@ -66,7 +70,7 @@ export const moveSpeedPixPerMs = {
   // needs to be quite fast, or he is possible to run around using
   // analogue control. This seems to be fast enough.
   emperorsGuardian: Math.SQRT2 * onePxPerFrameInOriginalGamePxPerMs,
-  bubbleRobot: onePxPerFrameInOriginalGamePxPerMs,
+
   computerBot: onePxPerFrameInOriginalGamePxPerMs,
   turtle: onePxPerFrameInOriginalGamePxPerMs,
   ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
@@ -76,7 +80,7 @@ export const moveSpeedPixPerMs = {
   Record<
     | CharacterName
     | ItemInPlayType
-    | JsonItemConfig<"monster", SceneryName, string>["which"],
+    | JsonItemConfig<"monster", string, string>["which"],
     number
   >
 >;

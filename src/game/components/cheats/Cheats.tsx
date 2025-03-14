@@ -23,11 +23,11 @@ import type {
   JsonItemType,
   JsonItemConfig,
 } from "../../../model/json/JsonItem";
+import type { IndividualCharacterName } from "../../../model/modelTypes";
 import {
   otherIndividualCharacterName,
   type CharacterName,
 } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { useAppDispatch } from "../../../store/hooks";
 import type { GameApi } from "../../GameApi";
@@ -42,6 +42,8 @@ import {
   setShowBoundingBoxes,
   setShowShadowMasks,
 } from "../../../store/slices/gameMenusSlice";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { getRoomItem } from "../../../model/RoomState";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -93,8 +95,15 @@ const SummonPlayableButton = <RoomId extends string>({
 
         if (playableName === "headOverHeels") {
           //sneakily combine the players by moving them to the final room first:
-          const head = gameApi.gameState.characterRooms.head?.items.head;
-          const heels = gameApi.gameState.characterRooms.heels?.items.heels;
+          const head = getRoomItem(
+            "head",
+            gameApi.gameState.characterRooms.head?.items,
+          );
+          const heels = getRoomItem(
+            "heels",
+            gameApi.gameState.characterRooms.heels?.items,
+          );
+
           if (!head || !heels) {
             console.log(
               "cant summon headOverHeels - one of the individuals is not in the game to combine",
@@ -114,10 +123,17 @@ const SummonPlayableButton = <RoomId extends string>({
             });
 
             swopFromUncombinedToCombinedPlayables(gameApi.gameState);
+
+            /** TODO: @knownRoomIds - remove casts */
+            const headOverHeels = gameApi.gameState.characterRooms
+              .headOverHeels!.items.headOverHeels as ItemInPlay<
+              "headOverHeels",
+              RoomId,
+              string
+            >;
+
             changeCharacterRoom({
-              playableItem:
-                gameApi.gameState.characterRooms.headOverHeels!.items
-                  .headOverHeels!,
+              playableItem: headOverHeels,
               gameState: gameApi.gameState,
               changeType: "level-select",
               toRoomId: roomId,
@@ -197,7 +213,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
 
   const summonItem = <T extends JsonItemType>(
     itemType: T,
-    config: JsonItemConfig<T, SceneryName, RoomId>,
+    config: JsonItemConfig<T, RoomId>,
   ) => {
     const { gameState } = gameApi;
     const playable = selectCurrentPlayableItem(gameState);
@@ -542,7 +558,10 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   console.log("playable on window.playable");
 
                   if (playable.id !== "headOverHeels") {
-                    const otherName = otherIndividualCharacterName(playable.id);
+                    /** TODO: @knownRoomIds - remove casts */
+                    const otherName = otherIndividualCharacterName(
+                      playable.id as IndividualCharacterName,
+                    );
                     const otherPlayableRoom =
                       gameApi.gameState.characterRooms[otherName];
                     console.log(

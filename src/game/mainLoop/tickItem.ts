@@ -29,13 +29,13 @@ import type {
   ItemInPlay,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import type { RoomState } from "../../model/modelTypes";
-import type { SceneryName } from "../../sprites/planets";
 import { iterate } from "../../utils/iterate";
 import { addXyz, scaleXyz, lengthXyz } from "../../utils/vectors/vectors";
 import { applyMechanicsResults } from "./applyMechanicsResults";
 import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerTouchingPickup";
 import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
+import type { RoomState } from "../../model/RoomState";
+import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 
 /**
  * biggest movement (in pixels) allowed in one tick - movement of more than this will be
@@ -44,30 +44,51 @@ import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouc
 const maxMovementPerTick = 2;
 
 function* itemMechanicResultGen<
-  RoomId extends string,
   T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
 >(
-  item: ItemInPlay<T, SceneryName, RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+  item: ItemInPlay<T, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): Generator<MechanicResult<T, RoomId>> {
+): Generator<MechanicResult<T, RoomId, RoomItemId>> {
   if (isFreeItem(item)) {
-    yield gravity(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
-    yield onConveyor(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+    yield gravity(item, room, gameState, deltaMS) as MechanicResult<
+      T,
+      RoomId,
+      RoomItemId
+    >;
+    yield onConveyor(item, room, gameState, deltaMS) as MechanicResult<
+      T,
+      RoomId,
+      RoomItemId
+    >;
     yield* latentMovement(item, room, gameState, deltaMS) as Generator<
-      MechanicResult<T, RoomId>
+      MechanicResult<T, RoomId, RoomItemId>
     >;
   }
 
   if (isPlayableItem(item)) {
     // walking is allowed if not current for autowalking:
-    yield walking(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+    yield walking(item, room, gameState, deltaMS) as MechanicResult<
+      T,
+      RoomId,
+      RoomItemId
+    >;
 
     if (item.id === gameState.currentCharacterName) {
       // user controls:
-      yield teleporting(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
-      yield jumping(item, gameState /*, deltaMS*/) as MechanicResult<T, RoomId>;
+      yield teleporting(item, room, gameState, deltaMS) as MechanicResult<
+        T,
+        RoomId,
+        RoomItemId
+      >;
+      yield jumping(item, room, gameState /*, deltaMS*/) as MechanicResult<
+        T,
+        RoomId,
+        RoomItemId
+      >;
 
       if (isCarrier(item)) {
         carrying(item, room, gameState, deltaMS);
@@ -79,43 +100,54 @@ function* itemMechanicResultGen<
   }
 
   if (isLift(item)) {
-    yield moveLift(item, gameState, deltaMS) as MechanicResult<T, RoomId>;
+    yield moveLift(item /*, room, gameState, deltaMS*/) as MechanicResult<
+      T,
+      RoomId,
+      RoomItemId
+    >;
   }
 
   if (isMoving(item)) {
     yield tickMovement(item, room, gameState, deltaMS) as MechanicResult<
       T,
-      RoomId
+      RoomId,
+      RoomItemId
     >;
   }
 }
 
-const tickItemStandingOn = <RoomId extends string, T extends ItemInPlayType>(
-  item: ItemInPlay<T, SceneryName, RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+const tickItemStandingOn = <
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: ItemInPlay<T, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  if (!isFreeItem(item) || item.state.standingOn === null) {
+  if (!isFreeItem(item) || item.state.standingOnItemId === null) {
     return;
   }
+
+  const standingOn = stoodOnItem(item.state.standingOnItemId, room);
 
   // walking onto a platform that is activate on stand
   if (isPlayableItem(item)) {
     if (
-      item.state.standingOn.type === "movableBlock" &&
-      item.state.standingOn.config.movement !== "free" &&
-      item.state.standingOn.config.activated === "onStand"
+      standingOn.type === "movableBlock" &&
+      standingOn.config.movement !== "free" &&
+      standingOn.config.activated === "onStand"
     ) {
-      item.state.standingOn.state.activated = true;
+      standingOn.state.activated = true;
     }
 
     // case of walking onto a pickup from another platform, not colliding with it
-    if (item.state.standingOn.type === "pickup") {
+    if (standingOn.type === "pickup") {
       handlePlayerTouchingPickup({
         gameState,
         movingItem: item,
-        touchedItem: item.state.standingOn,
+        touchedItem: standingOn,
         room,
         movementVector: { x: 0, y: 0, z: -1 },
         deltaMS,
@@ -127,12 +159,15 @@ const tickItemStandingOn = <RoomId extends string, T extends ItemInPlayType>(
   // by walking onto it from another item, there would have been no collision with it
   // to set the standing on property
   if (
-    item.state.standingOn.state.disappear === "onStand" ||
-    item.state.standingOn.state.disappear === "onTouch" ||
-    (isPlayableItem(item) &&
-      item.state.standingOn.state.disappear === "onTouchByPlayer")
+    standingOn.state.disappear === "onStand" ||
+    standingOn.state.disappear === "onTouch" ||
+    (isPlayableItem(item) && standingOn.state.disappear === "onTouchByPlayer")
   ) {
-    makeItemFadeOut({ touchedItem: item.state.standingOn, gameState, room });
+    makeItemFadeOut({
+      touchedItem: standingOn,
+      gameState,
+      room,
+    });
   }
 };
 
@@ -142,28 +177,31 @@ const tickItemStandingOn = <RoomId extends string, T extends ItemInPlayType>(
  *
  * @param returns true if the tick should halt
  */
-export const tickItem = <RoomId extends string, T extends ItemInPlayType>(
-  item: ItemInPlay<T, SceneryName, RoomId>,
-  room: RoomState<SceneryName, RoomId>,
+export const tickItem = <
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: ItemInPlay<T, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  if (
-    isPlayableItem(item) &&
-    item.state.standingOn !== null &&
-    isDeadly(item.state.standingOn)
-  ) {
-    // the player has a shield that has only just expired - if they are standing on a deadly
-    // item, it should kill them. This would normally have already killed them, but it is possible
-    // they had a shield that has just expired.
-    handlePlayerTouchingDeadly({
-      gameState,
-      room,
-      movingItem: item,
-      touchedItem: item.state.standingOn,
-      deltaMS,
-      movementVector: { x: 0, y: 0, z: -1 },
-    });
+  if (isPlayableItem(item) && item.state.standingOnItemId !== null) {
+    const stoodOn = stoodOnItem(item.state.standingOnItemId, room);
+    if (isDeadly(stoodOn)) {
+      // the player has a shield that has only just expired - if they are standing on a deadly
+      // item, it should kill them. This would normally have already killed them, but it is possible
+      // they had a shield that has just expired.
+      handlePlayerTouchingDeadly({
+        gameState,
+        room,
+        movingItem: item,
+        touchedItem: stoodOn,
+        deltaMS,
+        movementVector: { x: 0, y: 0, z: -1 },
+      });
+    }
   }
 
   // by spreading the generator onto an array, we run the mechanics at the 'same'

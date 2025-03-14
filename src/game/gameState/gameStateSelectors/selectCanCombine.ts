@@ -12,6 +12,6 @@ export const selectCanCombine = <RoomId extends string>(
     heels !== undefined &&
     head.state.action === "idle" &&
     heels.state.action === "idle" &&
-    head.state.standingOn === heels
+    head.state.standingOnItemId === "heels"
   );
 };

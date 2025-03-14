@@ -3,14 +3,16 @@ import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { hudCharTextureSize } from "../../../sprites/textureSizes";
 import { iterateToContainer } from "../../iterateToContainer";
 import { createSprite } from "../createSprite";
+import type { PokeableNumber } from "../../../model/ItemStateMap";
 
-function* characterSprites(n: number | string) {
+function* characterSprites(n: PokeableNumber | string) {
   const chars =
-    typeof n === "string" ? n.split("")
-    : Number.isFinite(n) ? n.toString().split("")
-      // an infinite value means that pokes are on - in this case
-      // there's no point showing this number
-    : "";
+    typeof n === "string" ?
+      n === "infinite" ?
+        ""
+      : n.split("")
+    : n.toString().split("");
+
   const l = chars.length;
   for (let i = 0; i < l; i++) {
     const textureId = `hud.char.${chars[i]}`;

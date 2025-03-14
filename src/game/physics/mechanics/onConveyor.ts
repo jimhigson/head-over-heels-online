@@ -1,5 +1,6 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { SceneryName } from "../../../sprites/planets";
+import type { RoomState } from "../../../model/RoomState";
+import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   originXyz,
@@ -22,7 +23,7 @@ const resetConveyorStateForItem = {
   vels: {
     movingFloor: originXyz,
   },
-} satisfies MechanicResult<FreeItemTypes, string>;
+} satisfies MechanicResult<FreeItemTypes, string, string>;
 
 /**
  * handle *only* the vertical speed downwards, and recognising
@@ -30,18 +31,21 @@ const resetConveyorStateForItem = {
  *
  * The item can be anything - a player, a pickup etc
  */
-export const onConveyor = <RoomId extends string>(
-  item: ItemInPlay<FreeItemTypes, SceneryName, RoomId>,
+export const onConveyor = <RoomId extends string, RoomItemId extends string>(
+  item: ItemInPlay<FreeItemTypes, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-): MechanicResult<FreeItemTypes, RoomId> => {
+): MechanicResult<FreeItemTypes, RoomId, RoomItemId> => {
   if (isPlayableItem(item) && item.state.teleporting !== null) {
     return resetConveyorStateForItem;
   }
 
   const {
-    state: { standingOn },
+    state: { standingOnItemId },
   } = item;
+
+  const standingOn = stoodOnItem(standingOnItemId, room);
 
   if (standingOn === null || !isItemType("conveyor")(standingOn)) {
     return resetConveyorStateForItem;

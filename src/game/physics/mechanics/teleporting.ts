@@ -1,6 +1,6 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
-import type { SceneryName } from "../../../sprites/planets";
+import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import type { PressStatus } from "../../input/InputStateTracker";
@@ -9,18 +9,21 @@ import { type PlayableItem } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 
-export function teleporting<RoomId extends string>(
-  playableItem: PlayableItem<CharacterName, RoomId>,
+export function teleporting<RoomId extends string, RoomItemId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<CharacterName, RoomId> {
+): MechanicResult<CharacterName, RoomId, RoomItemId> {
   const {
-    state: { teleporting, standingOn },
+    state: { teleporting, standingOnItemId },
   } = playableItem;
 
   const { inputStateTracker } = gameState;
 
   const jumpInput: PressStatus = inputStateTracker.currentActionPress("jump");
+  const standingOn =
+    standingOnItemId === null ? null : room.items[standingOnItemId];
 
   if (teleporting === null) {
     if (
@@ -51,8 +54,8 @@ export function teleporting<RoomId extends string>(
           changeType: "teleport",
           sourceItem: standingOn as ItemInPlay<
             "teleporter",
-            SceneryName,
-            RoomId
+            RoomId,
+            RoomItemId
           >,
           playableItem,
           gameState,

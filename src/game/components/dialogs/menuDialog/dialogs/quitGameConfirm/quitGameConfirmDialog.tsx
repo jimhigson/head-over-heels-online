@@ -1,17 +1,17 @@
-import { Dialog } from "../../../../../ui/dialog";
-import { Border } from "../../../../../ui/Border";
-import { DialogPortal } from "../../../../../ui/DialogPortal";
+import { Dialog } from "../../../../../../ui/dialog";
+import { Border } from "../../../../../../ui/Border";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import {
   backToParentMenu,
   gameOver,
-} from "../../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
-import { BlockyMarkdown } from "../../../BlockyMarkdown";
-import { BitmapText } from "../../../Sprite";
-import { MenuItem } from "../MenuItem";
-import { MenuItems } from "../MenuItems";
-import { SelectedItemHint } from "../SelectedItemHint";
-import { MainMenuHeading } from "./mainMenu/MainMenuHeading";
+} from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { BitmapText } from "../../../../Sprite";
+import { MenuItem } from "../../MenuItem";
+import { MenuItems } from "../../MenuItems";
+import { SelectedItemHint } from "../../SelectedItemHint";
+import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
 import Portal from "@mutabazia/react-portal";
 
 export const QuitGameConfirmDialog = () => {
@@ -42,7 +42,9 @@ export const QuitGameConfirmDialog = () => {
               doubleHeightWhenFocussed
               id="yes"
               label="Yes"
-              onSelect={useDispatchActionCallback(gameOver)}
+              onSelect={useDispatchActionCallback(gameOver, {
+                offerReincarnation: false,
+              })}
               hint={
                 <BlockyMarkdown
                   className="zx:[&_.strong]:text-zxYellow"

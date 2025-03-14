@@ -12,13 +12,12 @@ import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
 import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import type { BlockStyle } from "../../../model/json/ItemConfigMap";
 import {
   wallTileSize,
   smallItemTextureSize,
 } from "../../../sprites/textureSizes";
-import { iterate } from "../../../utils/iterate";
 import type { Xy } from "../../../utils/vectors/vectors";
 import {
   directionAxis,
@@ -31,6 +30,8 @@ import { store } from "../../../store/store";
 import { getAtPath } from "../../../utils/getAtPath";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import { monsterAppearance } from "./monsterAppearance";
+import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { stoodOnByCount } from "../../../model/StoodOnBy";
 
 const blockTextureId = (
   isDark: boolean,
@@ -51,11 +52,20 @@ const blockTextureId = (
 
 const carryableOutlineColour = spritesheetPalette.moss;
 
-const singleRenderWithStyleAsTexture = <RoomId extends string>() =>
-  itemRenderOnce<"deadlyBlock" | "slidingDeadly" | "slidingBlock", RoomId>(
+const singleRenderWithStyleAsTexture = <
+  RoomId extends string,
+  RoomItemId extends string,
+>() =>
+  itemRenderOnce<
+    "deadlyBlock" | "slidingDeadly" | "slidingBlock",
+    RoomId,
+    RoomItemId
+  >(
     ({
-      subject: {
-        config: { style },
+      renderContext: {
+        item: {
+          config: { style },
+        },
       },
     }) => createSprite(style === "book" ? "book.y" : style),
   );
@@ -79,11 +89,13 @@ export const itemAppearances: {
 
   wall: itemRenderOnce(
     ({
-      subject: {
-        id,
-        config: { direction, tiles },
+      renderContext: {
+        item: {
+          id,
+          config: { direction, tiles },
+        },
+        room,
       },
-      renderContext: { room },
     }) => {
       if (direction === "right" || direction === "towards") {
         throw new Error(`this wall should be non-rendering ${id}`);
@@ -132,8 +144,10 @@ export const itemAppearances: {
 
   barrier: itemRenderOnce(
     ({
-      subject: {
-        config: { axis, times },
+      renderContext: {
+        item: {
+          config: { axis, times },
+        },
       },
     }) => {
       return createSprite({
@@ -145,10 +159,12 @@ export const itemAppearances: {
 
   deadlyBlock: itemRenderOnce(
     ({
-      subject: {
-        config: { style, times },
+      renderContext: {
+        item: {
+          config: { style, times },
+        },
+        room,
       },
-      renderContext: { room },
     }) =>
       createSprite({
         textureId: style,
@@ -160,12 +176,14 @@ export const itemAppearances: {
   slidingBlock: singleRenderWithStyleAsTexture(),
 
   block({
-    subject: {
-      config: { style, times },
-      state: { disappear },
+    renderContext: {
+      item: {
+        config: { style, times },
+        state: { disappear },
+      },
+      room,
     },
     currentlyRenderedProps,
-    renderContext: { room },
   }) {
     const render =
       currentlyRenderedProps === undefined ||
@@ -190,16 +208,18 @@ export const itemAppearances: {
   },
 
   switch({
-    subject: {
-      state: { setting: stateSetting },
-      config: { store: switchStoreConfig },
+    renderContext: {
+      item: {
+        state: { setting: stateSetting },
+        config: { store: switchStoreConfig },
+      },
     },
     currentlyRenderedProps,
   }) {
     // for store switches, ignore the switch's own state and read from the store:
     const setting =
       switchStoreConfig ?
-        getAtPath(store.getState(), switchStoreConfig.path) ? "right"
+        getAtPath(store.getState().gameMenus, switchStoreConfig.path) ? "right"
         : "left"
       : stateSetting;
 
@@ -218,13 +238,15 @@ export const itemAppearances: {
   },
 
   conveyor({
-    subject: {
-      config: { direction, times },
-      state: { stoodOnBy },
+    renderContext: {
+      item: {
+        config: { direction, times },
+        state: { stoodOnBy },
+      },
     },
     currentlyRenderedProps,
   }) {
-    const moving = stoodOnBy.size > 0;
+    const moving = stoodOnByCount(stoodOnBy) > 0;
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -278,12 +300,16 @@ export const itemAppearances: {
   }),
 
   teleporter({
-    subject: {
-      state: { stoodOnBy },
+    renderContext: {
+      item: {
+        state: { stoodOnBy },
+      },
+      room,
     },
     currentlyRenderedProps,
   }) {
-    const flashing = iterate(stoodOnBy).find(isPlayableItem) !== undefined;
+    const flashing =
+      iterateStoodOnByItems(stoodOnBy, room).find(isPlayableItem) !== undefined;
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -309,42 +335,54 @@ export const itemAppearances: {
     };
   },
 
-  pickup: itemRenderOnce(({ subject: { config }, renderContext: { room } }) => {
-    if (config.gives === "crown") {
-      return createSprite({
-        textureId: `crown.${config.planet}`,
-      });
-    }
-
-    const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> = {
-      shield: "whiteRabbit",
-      jumps: "whiteRabbit",
-      fast: "whiteRabbit",
-      "extra-life": "whiteRabbit",
-      bag: "bag",
-      doughnuts: "doughnuts",
-      hooter: "hooter",
-      scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
-      reincarnation: {
-        animationId: "fish",
+  pickup: itemRenderOnce(
+    ({
+      renderContext: {
+        item: { config },
+        room,
       },
-    };
-    const createOptions = pickupIcons[config.gives];
+    }) => {
+      if (config.gives === "crown") {
+        return createSprite({
+          textureId: `crown.${config.planet}`,
+        });
+      }
 
-    return createSprite(createOptions);
-  }),
+      const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> =
+        {
+          shield: "whiteRabbit",
+          jumps: "whiteRabbit",
+          fast: "whiteRabbit",
+          "extra-life": "whiteRabbit",
+          bag: "bag",
+          doughnuts: "doughnuts",
+          hooter: "hooter",
+          scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
+          reincarnation: {
+            animationId: "fish",
+          },
+        };
+      const createOptions = pickupIcons[config.gives];
+
+      return createSprite(createOptions);
+    },
+  ),
 
   moveableDeadly: itemRenderOnce(
     ({
-      subject: {
-        config: { style },
+      renderContext: {
+        item: {
+          config: { style },
+        },
       },
     }) => createSprite(style === "deadFish" ? "fish.1" : "puck.deadly"),
   ),
 
   charles({
-    subject: {
-      state: { facing },
+    renderContext: {
+      item: {
+        state: { facing },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -367,16 +405,20 @@ export const itemAppearances: {
 
   movableBlock: itemRenderOnce(
     ({
-      subject: {
-        config: { style },
+      renderContext: {
+        item: {
+          config: { style },
+        },
       },
     }) => createSprite(style),
   ),
 
   portableBlock({
-    subject: {
-      config: { style },
-      state: { wouldPickUpNext: highlighted },
+    renderContext: {
+      item: {
+        config: { style },
+        state: { wouldPickUpNext: highlighted },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -393,7 +435,7 @@ export const itemAppearances: {
         new OutlineFilter({
           outlineColor: carryableOutlineColour,
           lowRes: false,
-          upscale: store.getState().upscale.gameEngineUpscale,
+          upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
         })
       : undefined;
 
@@ -407,12 +449,14 @@ export const itemAppearances: {
   },
 
   spring({
-    subject: {
-      state: { stoodOnBy, wouldPickUpNext: highlighted },
+    renderContext: {
+      item: {
+        state: { stoodOnBy, wouldPickUpNext: highlighted },
+      },
     },
     currentlyRenderedProps,
   }) {
-    const compressed = stoodOnBy.size > 0;
+    const compressed = stoodOnByCount(stoodOnBy) > 0;
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -431,7 +475,7 @@ export const itemAppearances: {
         new OutlineFilter({
           outlineColor: carryableOutlineColour,
           lowRes: false,
-          upscale: store.getState().upscale.gameEngineUpscale,
+          upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
         })
       : undefined;
 
@@ -453,9 +497,11 @@ export const itemAppearances: {
   },
 
   sceneryPlayer({
-    subject: {
-      config: { which, startDirection },
-      state: { wouldPickUpNext: highlighted },
+    renderContext: {
+      item: {
+        config: { which, startDirection },
+        state: { wouldPickUpNext: highlighted },
+      },
     },
     currentlyRenderedProps,
   }) {
@@ -471,7 +517,7 @@ export const itemAppearances: {
       highlighted ?
         new OutlineFilter({
           outlineColor: carryableOutlineColour,
-          upscale: store.getState().upscale.gameEngineUpscale,
+          upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
           // they might get pushed between pixels so can't skip the res
           lowRes: false,
         })
@@ -496,8 +542,10 @@ export const itemAppearances: {
 
   bubbles: itemRenderOnce(
     ({
-      subject: {
-        config: { style },
+      renderContext: {
+        item: {
+          config: { style },
+        },
       },
     }) => {
       return createSprite({

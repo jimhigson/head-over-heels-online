@@ -62,16 +62,22 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
     { debug: true },
   ),
   storage,
-  whitelist: [`userSettings` satisfies keyof GameMenusState],
+  // this really says that userSettings should be its own slice, not tacked onto gameMenus!
+  whitelist: [`userSettings`, "currentGame"] satisfies Array<
+    keyof GameMenusState
+  >,
 };
 
-const persistedReducer = persistReducer(
+const gameMenusPersistedReducer = persistReducer(
   gameMenusSlicePersistConfig,
   gameMenusSlice.reducer,
 );
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
+  },
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

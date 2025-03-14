@@ -1,16 +1,16 @@
 import type { ItemInPlayType, ItemInPlay } from "../../model/ItemInPlay";
-import type { SceneryName } from "../../sprites/planets";
 import { objectEntriesIter } from "../../utils/entries";
 import { originXyz, addXyz, type Xyz } from "../../utils/vectors/vectors";
 import { isFreeItem, isItemType } from "../physics/itemPredicates";
 import type { MechanicResult } from "../physics/MechanicResult";
 
 export const applyMechanicsResults = <
-  RoomId extends string,
   T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
 >(
-  item: ItemInPlay<T, SceneryName, RoomId>,
-  mechanicsResults: Array<MechanicResult<T, RoomId>>,
+  item: ItemInPlay<T, RoomId, RoomItemId>,
+  mechanicsResults: Array<MechanicResult<T, RoomId, RoomItemId>>,
 ) => {
   let accumulatedPosDelta = originXyz;
 

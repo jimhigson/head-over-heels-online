@@ -20,8 +20,11 @@ import { handleFiredDoughnutTouchingMonster } from "./handleFiredDoughnutTouchin
 /**
  * same old - Morties touching Morties
  */
-export const handleItemsTouchingItems = <RoomId extends string>(
-  e: ItemTouchEvent<RoomId>,
+export const handleItemsTouchingItems = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  e: ItemTouchEvent<RoomId, RoomItemId>,
 ) => {
   // if the player moved into something, we handle that:
   if (movingItemIsPlayable(e)) {
