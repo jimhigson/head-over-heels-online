@@ -6,7 +6,10 @@ import {
   selectCurrentPlayableItem,
 } from "../game/gameState/gameStateSelectors/selectPlayableItem";
 import type { StartingRooms } from "../game/gameState/loadGameState";
-import { loadGameState, startingRoomIds } from "../game/gameState/loadGameState";
+import {
+  loadGameState,
+  startingRoomIds,
+} from "../game/gameState/loadGameState";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
 import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
 import { setStandingOn } from "../game/gameState/mutators/modifyStandingOn";

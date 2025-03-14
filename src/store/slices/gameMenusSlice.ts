@@ -472,14 +472,14 @@ export const gameMenusSlice = createSlice({
   },
   extraReducers(builder) {
     type RehydrateAction = PayloadAction<
-      Pick<GameMenusState, "currentGame">,
+      Pick<GameMenusState, "currentGame"> | undefined,
       typeof REHYDRATE
     >;
 
     builder.addCase<typeof REHYDRATE, RehydrateAction>(
       REHYDRATE,
       (state, action) => {
-        if (action.payload.currentGame) {
+        if (action.payload?.currentGame) {
           // we have just loaded and a game is already in progress from a previous session
           state.gameRunning = true;
           state.openMenus = [{ menuId: "hold", scrollableSelection: false }];

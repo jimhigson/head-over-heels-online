@@ -19,8 +19,7 @@ import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
 import { findItemToPickup } from "../../physics/mechanics/carrying";
-import type {
-  PokeableNumber} from "../../../model/ItemStateMap";
+import type { PokeableNumber } from "../../../model/ItemStateMap";
 import {
   pokeableToNumber,
   type CarriedItem,

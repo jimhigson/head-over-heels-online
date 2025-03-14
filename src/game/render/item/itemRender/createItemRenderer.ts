@@ -13,7 +13,6 @@ import type { ItemRenderContextWithRequiredShadowMask } from "./ItemShadowRender
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import {
   selectIsColourised,
-  selectIsPaused,
   selectShowBoundingBoxes,
 } from "../../../../store/selectors";
 import { itemAppearances } from "../../itemAppearances/ItemAppearances";
@@ -57,8 +56,6 @@ export const createItemRenderer = <
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = selectIsColourised(state);
-
-  const isPaused = selectIsPaused(state);
 
   const { item, gameState } = itemRenderContext;
 

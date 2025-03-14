@@ -5,7 +5,6 @@ import type { GameEvents } from "../GameApi";
 import type { PlayableEntryState } from "./PlayableEntryState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import type { RoomState } from "../../model/RoomState";
-import type { SavedGameState } from "./saving/SavedGameState";
 
 /**
  * @returns currently shown room state, or undefined only if both chars have
