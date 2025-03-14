@@ -25,6 +25,9 @@ export const savedGamesSlice = createSlice({
     saveCurrentGame(state, { payload }: PayloadAction<SavedGameState>) {
       state.currentGame = payload;
     },
+    gameQuit(state) {
+      state.currentGame = undefined;
+    },
   },
 });
 

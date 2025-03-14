@@ -98,10 +98,16 @@ export const handlePlayerTouchingPickup = <
 
     case "extra-life":
       if (player.type === "headOverHeels") {
-        addPokeableNumbers(player.state.head.lives, 2);
-        addPokeableNumbers(player.state.heels.lives, 2);
+        player.state.head.lives = addPokeableNumbers(
+          player.state.head.lives,
+          2,
+        );
+        player.state.heels.lives = addPokeableNumbers(
+          player.state.heels.lives,
+          2,
+        );
       } else {
-        addPokeableNumbers(player.state.lives, 2);
+        player.state.lives = addPokeableNumbers(player.state.lives, 2);
       }
       break;
 
