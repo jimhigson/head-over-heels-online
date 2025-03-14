@@ -2,6 +2,7 @@ import type {
   gameMenusSlice,
   GameMenusState,
 } from "../../../store/slices/gameMenusSlice";
+import type { Subset } from "../../../utils/subset";
 import type { GameState } from "../GameState";
 
 /**
@@ -25,7 +26,18 @@ export const savedGameGameStateFields = [
 export const savedGameGameMenuSliceFields = [
   "planetsLiberated",
   "scrollsRead",
+  "roomsExplored",
 ] as const;
+
+type GameMenuSliceSavedField = Subset<
+  keyof GameMenusState,
+  (typeof savedGameGameMenuSliceFields)[number]
+>;
+
+export type SavableFromGameMenusState = Pick<
+  GameMenusState,
+  GameMenuSliceSavedField
+>;
 
 export type SavedGameState<RoomId extends string = string> = {
   saveTime: number;
@@ -34,9 +46,6 @@ export type SavedGameState<RoomId extends string = string> = {
   screenshotBase64: string;
   gameState: Pick<GameState<RoomId>, (typeof savedGameGameStateFields)[number]>;
   store: {
-    [gameMenusSlice.reducerPath]: Pick<
-      GameMenusState,
-      (typeof savedGameGameMenuSliceFields)[number]
-    >;
+    [gameMenusSlice.reducerPath]: SavableFromGameMenusState;
   };
 };

@@ -21,6 +21,10 @@ import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 import { gameOver } from "../../../store/slices/gameMenusSlice";
 import { emptyObject } from "../../../utils/empty";
+import {
+  addPokeableNumbers,
+  pokeableToNumber,
+} from "../../../model/ItemStateMap";
 
 export const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -28,21 +32,29 @@ export const combinedPlayableLosesLife = <RoomId extends string>(
 ) => {
   const room = gameState.characterRooms["headOverHeels"]!;
 
-  headOverHeels.state.head.lives--;
-  headOverHeels.state.heels.lives--;
+  headOverHeels.state.head.lives = addPokeableNumbers(
+    headOverHeels.state.head.lives,
+    -1,
+  );
+  headOverHeels.state.heels.lives = addPokeableNumbers(
+    headOverHeels.state.heels.lives,
+    -1,
+  );
 
   headOverHeels.state.head.lastDiedAt = headOverHeels.state.head.gameTime;
   headOverHeels.state.heels.lastDiedAt = headOverHeels.state.heels.gameTime;
 
-  const totalLivesRemaining =
-    headOverHeels.state.head.lives + headOverHeels.state.heels.lives;
+  const totalLivesRemaining = addPokeableNumbers(
+    headOverHeels.state.head.lives,
+    headOverHeels.state.heels.lives,
+  );
   if (totalLivesRemaining === 0) {
     gameState.events.emit("gameOver");
     return; // terminal outcome - game over
   }
 
-  const headHasLives = headOverHeels.state.head.lives > 0;
-  const heelsHasLives = headOverHeels.state.heels.lives > 0;
+  const headHasLives = pokeableToNumber(headOverHeels.state.head.lives) > 0;
+  const heelsHasLives = pokeableToNumber(headOverHeels.state.heels.lives) > 0;
 
   //whatever else we're doing, heels can't keep her item:
   headOverHeels.state.heels.carrying = null;
@@ -135,9 +147,10 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
 }) => {
   const { campaign } = gameState;
 
-  const reloadedRoom = loadRoom(
-    { roomJson: campaign.rooms[roomId], roomPickupsCollected: gameState.pickupsCollected[roomId] ?? emptyObject },
-  );
+  const reloadedRoom = loadRoom({
+    roomJson: campaign.rooms[roomId],
+    roomPickupsCollected: gameState.pickupsCollected[roomId] ?? emptyObject,
+  });
   for (const playableItem of playableItems) {
     addItemToRoom({ room: reloadedRoom, item: playableItem });
 
@@ -191,7 +204,9 @@ export const individualPlayableLosesLife = <
     otherIndividualCharacterName(characterLosingLife.type),
   );
 
-  characterLosingLife.state.lives--;
+  if (characterLosingLife.state.lives !== "infinite") {
+    characterLosingLife.state.lives--;
+  }
   characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
 
   if (characterLosingLife.type === "heels") {

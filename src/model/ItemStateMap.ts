@@ -110,8 +110,21 @@ export type PlayableState<RoomItemId extends string> =
     teleporting: PlayableTeleportingState | null;
   };
 
+// we can't rely on Number.POSITIVE_INFINITY in the state because it's not JSON serializable
+export type PokeableNumber = "infinite" | number;
+
+export const addPokeableNumbers = (
+  a: PokeableNumber,
+  b: PokeableNumber,
+): PokeableNumber =>
+  a === "infinite" || b === "infinite" ? "infinite" : a + b;
+
+export const pokeableToNumber = (a: PokeableNumber): number =>
+  // it is ok to use POSITIVE_INFINITY anywhere where it doesn't get serialised
+  a === "infinite" ? Number.POSITIVE_INFINITY : a;
+
 type CommonAbilities = {
-  lives: number;
+  lives: PokeableNumber;
   gameTime: number;
   /**
    * the time a shield was collected at, or null if no shield. The hud should show
@@ -131,7 +144,7 @@ type CommonAbilities = {
 
 export type HeadAbilities = CommonAbilities & {
   hasHooter: boolean;
-  doughnuts: number;
+  doughnuts: PokeableNumber;
   /** time in ms doughnut was last fired, used to limit rate of fire */
   doughnutLastFireTime: number;
   /**

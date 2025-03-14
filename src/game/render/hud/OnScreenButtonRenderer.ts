@@ -19,7 +19,12 @@ import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 import { createCarriedSprite } from "./createCarriedSprite";
 import { findItemToPickup } from "../../physics/mechanics/carrying";
-import type { CarriedItem } from "../../../model/ItemStateMap";
+import type {
+  PokeableNumber} from "../../../model/ItemStateMap";
+import {
+  pokeableToNumber,
+  type CarriedItem,
+} from "../../../model/ItemStateMap";
 import type { EmptyObject } from "type-fest";
 import { emptyObject } from "../../../utils/empty";
 import { showNumberInContainer } from "./showNumberInContainer";
@@ -49,7 +54,7 @@ type ButtonRenderProps = {
     disabled: boolean;
   };
   fire: CommonButtonRenderProps & {
-    doughnuts: number;
+    doughnuts: PokeableNumber;
     hasHooter: boolean;
   };
   carryAndJump: CommonButtonRenderProps & {
@@ -245,7 +250,7 @@ const buttonAppearances: {
         })
       : previousRendering;
 
-    const visible = hasHooter || doughnuts > 0;
+    const visible = hasHooter || pokeableToNumber(doughnuts) > 0;
     container.visible = visible;
 
     if (visible) {
@@ -260,7 +265,7 @@ const buttonAppearances: {
         let bgSprite: Container | undefined;
         if (hasHooter) {
           bgSprite = createSprite({ textureId: "hooter", y: -3 });
-        } else if (doughnuts > 0) {
+        } else if (pokeableToNumber(doughnuts) > 0) {
           bgSprite = createSprite({
             textureId: "doughnuts",
             y: -2,

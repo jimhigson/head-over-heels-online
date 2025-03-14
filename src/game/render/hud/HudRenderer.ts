@@ -42,6 +42,7 @@ import { createCarriedSprite } from "./createCarriedSprite";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import type { Renderer } from "../Renderer";
 import type { RoomState } from "../../../model/RoomState";
+import { neverTime } from "../../../utils/veryClose";
 
 const fpsUpdatePeriod = 250;
 
@@ -507,7 +508,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       : hudLivesTextFilter.original;
   }
 
-  #fpsLastUpdated: number = Number.NEGATIVE_INFINITY;
+  #fpsLastUpdated: number = neverTime;
   #updateFps() {
     if (selectShowFps(store.getState())) {
       if (performance.now() > this.#fpsLastUpdated + fpsUpdatePeriod) {

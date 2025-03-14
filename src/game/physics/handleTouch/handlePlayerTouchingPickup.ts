@@ -1,4 +1,5 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
 import {
   crownCollected,
@@ -55,7 +56,7 @@ export const handlePlayerTouchingPickup = <
     case "doughnuts": {
       const toModify = selectHeadAbilities(player);
       if (toModify !== undefined) {
-        toModify.doughnuts += 6;
+        toModify.doughnuts = addPokeableNumbers(toModify.doughnuts, 6);
       }
       break;
     }
@@ -97,11 +98,10 @@ export const handlePlayerTouchingPickup = <
 
     case "extra-life":
       if (player.type === "headOverHeels") {
-        player.state.head.lives += 2;
-        player.state.heels.lives += 2;
-        break;
+        addPokeableNumbers(player.state.head.lives, 2);
+        addPokeableNumbers(player.state.heels.lives, 2);
       } else {
-        player.state.lives += 2;
+        addPokeableNumbers(player.state.lives, 2);
       }
       break;
 

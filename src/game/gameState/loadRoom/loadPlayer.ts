@@ -15,6 +15,7 @@ import {
   selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
 } from "../../../store/selectors";
+import { neverTime } from "../../../utils/veryClose";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
@@ -37,7 +38,7 @@ export const defaultPlayerState = () =>
       gravity: originXyz,
       movingFloor: originXyz,
     },
-    actedOnAt: Number.NEGATIVE_INFINITY,
+    actedOnAt: neverTime,
   }) satisfies Partial<PlayableState<string>>;
 
 export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
@@ -59,17 +60,14 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         ...defaultPlayerState(),
         hasHooter: false,
         gameWalkDistance: 0,
-        fastStepsStartedAtDistance: Number.NEGATIVE_INFINITY,
-        lives:
-          infiniteLivesPoke ?
-            Number.POSITIVE_INFINITY
-          : originalGameStartingLives,
-        shieldCollectedAt: Number.NEGATIVE_INFINITY,
+        fastStepsStartedAtDistance: neverTime,
+        lives: infiniteLivesPoke ? "infinite" : originalGameStartingLives,
+        shieldCollectedAt: neverTime,
         doughnuts: infiniteDoughnutsPoke ? Number.POSITIVE_INFINITY : 0,
-        doughnutLastFireTime: Number.NEGATIVE_INFINITY,
-        switchedToAt: Number.NEGATIVE_INFINITY,
+        doughnutLastFireTime: neverTime,
+        switchedToAt: neverTime,
         position: positionCentredInBlock(jsonItem),
-        lastDiedAt: Number.NEGATIVE_INFINITY,
+        lastDiedAt: neverTime,
         gameTime: 0,
       },
     };
@@ -87,14 +85,11 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         carrying: null,
         hasBag: false,
         bigJumps: 0,
-        lives:
-          infiniteLivesPoke ?
-            Number.POSITIVE_INFINITY
-          : originalGameStartingLives,
-        shieldCollectedAt: Number.NEGATIVE_INFINITY,
-        switchedToAt: Number.NEGATIVE_INFINITY,
+        lives: infiniteLivesPoke ? "infinite" : originalGameStartingLives,
+        shieldCollectedAt: neverTime,
+        switchedToAt: neverTime,
         position: positionCentredInBlock(jsonItem),
-        lastDiedAt: Number.NEGATIVE_INFINITY,
+        lastDiedAt: neverTime,
         gameTime: 0,
       },
     };

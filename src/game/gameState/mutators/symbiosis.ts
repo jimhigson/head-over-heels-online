@@ -3,6 +3,7 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { addXyz } from "../../../utils/vectors/vectors";
+import { neverTime } from "../../../utils/veryClose";
 import { doubleHeightCharacter } from "../../collision/boundingBoxes";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import {
@@ -33,7 +34,7 @@ export const uncombinePlayablesFromSymbiosis = <
       ...headOverHeels.state.head,
       facing: headOverHeels.state.facing,
       position: addXyz(headOverHeels.state.position, { z: blockSizePx.h }),
-      switchedToAt: Number.NEGATIVE_INFINITY,
+      switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
     },
   };
@@ -50,7 +51,7 @@ export const uncombinePlayablesFromSymbiosis = <
       ...headOverHeels.state.heels,
       facing: headOverHeels.state.facing,
       position: addXyz(headOverHeels.state.position),
-      switchedToAt: Number.NEGATIVE_INFINITY,
+      switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
     },
   };
@@ -100,7 +101,7 @@ export const combinePlayablesInSymbiosis = <
           "shieldCollectedAt",
           "lastDiedAt",
         ),
-        switchedToAt: Number.NEGATIVE_INFINITY,
+        switchedToAt: neverTime,
       },
       heels: {
         ...pick(
@@ -113,7 +114,7 @@ export const combinePlayablesInSymbiosis = <
           "shieldCollectedAt",
           "lastDiedAt",
         ),
-        switchedToAt: Number.NEGATIVE_INFINITY,
+        switchedToAt: neverTime,
       },
     },
   };

@@ -14,6 +14,10 @@ import type { GameState } from "../../gameState/GameState";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
+import {
+  addPokeableNumbers,
+  pokeableToNumber,
+} from "../../../model/ItemStateMap";
 
 /**
  * how far ahead of head the doughnuts start. This has to be enough to clear his bounding box,
@@ -44,7 +48,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
   if (
     inputStateTracker.currentActionPress("fire") === "tap" &&
     hasHooter &&
-    doughnuts > 0 &&
+    pokeableToNumber(doughnuts) > 0 &&
     doughnutLastFireTime + maxFireRate < gameTime
   ) {
     const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
@@ -73,7 +77,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
       item: firedDoughnut,
     });
 
-    headAbilities.doughnuts -= 1;
+    headAbilities.doughnuts = addPokeableNumbers(headAbilities.doughnuts, -1);
     headAbilities.doughnutLastFireTime = headAbilities.gameTime;
   }
 };

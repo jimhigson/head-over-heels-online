@@ -29,6 +29,7 @@ import {
 import { defaultUserSettings } from "../defaultUserSettings";
 import type { BooleanAction } from "../../game/input/actions";
 import { nextInCycle } from "../../utils/nextInCycle";
+import type { SavableFromGameMenusState } from "../../game/gameState/saving/SavedGameState";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -412,6 +413,12 @@ export const gameMenusSlice = createSlice({
         { menuId: "mainMenu", scrollableSelection: true },
       ];
     },
+    gameRestoreFromSave(
+      state,
+      { payload }: PayloadAction<SavableFromGameMenusState>,
+    ) {
+      Object.assign(state, payload);
+    },
   },
 });
 
@@ -429,6 +436,7 @@ export const {
   crownCollected,
   doneAssigningInput,
   gameOver,
+  gameRestoreFromSave,
   gameStarted,
   goToSubmenu,
   holdPressed,
