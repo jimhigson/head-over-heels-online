@@ -9,3 +9,5 @@ declare module "*.vert" {
   const content: string;
   export default content;
 }
+
+declare const __buildString__: string;

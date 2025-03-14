@@ -69,4 +69,8 @@ export default defineConfig({
   preview: {
     port: 5201,
   },
+
+  define: {
+    __buildString__: JSON.stringify(process.env.BUILD_STRING),
+  },
 });

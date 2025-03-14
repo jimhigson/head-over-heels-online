@@ -18,7 +18,7 @@ import {
 function* loadItems<RoomId extends string, RoomItemId extends string>(
   roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
-  isFirstLoad: boolean,
+  isNewGame: boolean,
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
   const {
     gameMenus: { scrollsRead },
@@ -26,7 +26,7 @@ function* loadItems<RoomId extends string, RoomItemId extends string>(
 
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
-    if (item.type === "player" && !isFirstLoad) {
+    if (item.type === "player" && !isNewGame) {
       continue;
     }
     yield* loadItemFromJson(
@@ -59,15 +59,20 @@ const itemsInItemObjectMap = <RoomId extends string, RoomItemId extends string>(
 /**
  * convert a room from it's storage (json) format to its in-play (loaded) format
  */
-export const loadRoom = <RoomId extends string, RoomItemId extends string>(
-  roomJson: RoomJson<RoomId, RoomItemId>,
-  roomPickupsCollected: RoomPickupsCollected,
-  isFirstLoad = false,
-): RoomState<RoomId, RoomItemId> => {
+export const loadRoom = <RoomId extends string, RoomItemId extends string>({
+  roomJson,
+  roomPickupsCollected,
+  isNewGame = false,
+}: {
+  roomJson: RoomJson<RoomId, RoomItemId>;
+  roomPickupsCollected: RoomPickupsCollected;
+  /** if true, this is a new game - ie, load head and heels if they are in the room */
+  isNewGame?: boolean;
+}): RoomState<RoomId, RoomItemId> => {
   const loadedItems: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(
-      loadItems(roomJson, roomPickupsCollected, isFirstLoad),
+      loadItems(roomJson, roomPickupsCollected, isNewGame),
     ),
   };
 

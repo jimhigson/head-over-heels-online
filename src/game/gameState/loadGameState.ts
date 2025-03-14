@@ -8,6 +8,9 @@ import type { GameState, PickupsCollected } from "./GameState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import { getRoomItem } from "../../model/RoomState";
 import { emptyObject } from "../../utils/empty";
+import type { SavedGameState } from "./saving/SavedGameState";
+import { transformObject } from "../../utils/entries";
+import { badJsonClone } from "./saving/badJsonClone";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -19,7 +22,16 @@ export type StartingRooms<RoomId extends string> = Partial<
 */
 export const startingRooms = <RoomId extends string>(
   campaign: Campaign<RoomId>,
+  savedGame?: SavedGameState<RoomId>,
 ): StartingRooms<RoomId> => {
+  if (savedGame) {
+    // get the starting rooms from the save:
+    return transformObject(
+      savedGame.gameState.characterRooms,
+      ([charName, room]) => [charName, room.id],
+    );
+  }
+
   const results: Partial<StartingRooms<RoomId>> = {};
 
   for (const r of Object.values<RoomJson<RoomId, string>>(campaign.rooms)) {
@@ -43,30 +55,36 @@ export const startingRooms = <RoomId extends string>(
 export const loadGameState = <RoomId extends string>({
   campaign,
   inputStateTracker,
+  savedGame,
 }: {
   campaign: Campaign<RoomId>;
   inputStateTracker: InputStateTrackerInterface;
+  savedGame?: SavedGameState<RoomId>;
 }): GameState<RoomId> => {
-  const starts = startingRooms(campaign);
+  const starts = startingRooms(campaign, savedGame);
 
   const pickupsCollected = {} as PickupsCollected<RoomId>;
 
   const headRoom =
     starts.head &&
-    loadRoom(
-      campaign.rooms[starts.head],
-      pickupsCollected[starts.head] ?? emptyObject,
-      true,
-    );
+    (savedGame?.gameState.characterRooms.head ?
+      badJsonClone(savedGame.gameState.characterRooms.head)
+    : loadRoom({
+        roomJson: campaign.rooms[starts.head],
+        roomPickupsCollected: pickupsCollected[starts.head] ?? emptyObject,
+        isNewGame: savedGame === undefined,
+      }));
   const heelsRoom =
     starts.heels === starts.head ?
       headRoom
     : starts.heels &&
-      loadRoom(
-        campaign.rooms[starts.heels],
-        pickupsCollected[starts.heels] ?? emptyObject,
-        true,
-      );
+      (savedGame?.gameState.characterRooms.heels ?
+        badJsonClone(savedGame.gameState.characterRooms.heels)
+      : loadRoom({
+          roomJson: campaign.rooms[starts.heels],
+          roomPickupsCollected: pickupsCollected[starts.heels] ?? emptyObject,
+          isNewGame: savedGame === undefined,
+        }));
 
   const head = getRoomItem("head", headRoom?.items);
   const heels = getRoomItem("heels", heelsRoom?.items);
@@ -90,5 +108,8 @@ export const loadGameState = <RoomId extends string>({
     gameTime: 0,
     progression: 0,
     gameSpeed: 1,
+
+    // saved game can override any of the above
+    ...(savedGame ? badJsonClone(savedGame?.gameState) : {}),
   };
 };

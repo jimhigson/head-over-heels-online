@@ -9,7 +9,7 @@ export type SavedGamesSliceState = {
    * to later - eg mobile app is switched away from, or the user switches
    * to another tab
    */
-  stateOnExit?: SavedGameState;
+  currentGame?: SavedGameState;
 };
 
 export const initialSavedGameSliceState: SavedGamesSliceState = {};
@@ -22,8 +22,8 @@ export const savedGamesSlice = createSlice({
   name: "savedGames",
   initialState: initialSavedGameSliceState,
   reducers: {
-    saveStateOnExit(state, { payload }: PayloadAction<SavedGameState>) {
-      state.stateOnExit = payload;
+    saveCurrentGame(state, { payload }: PayloadAction<SavedGameState>) {
+      state.currentGame = payload;
     },
   },
 });
@@ -36,6 +36,6 @@ export type SavedGamesSliceActionCreator = ValueOf<
   typeof savedGamesSlice.actions
 >;
 
-export const { saveStateOnExit } = savedGamesSlice.actions;
+export const { saveCurrentGame } = savedGamesSlice.actions;
 
 export const savedGamesSliceActions = savedGamesSlice.actions;

@@ -15,6 +15,10 @@
         2 walking sound w/repeat frequency by number of stepsh
 
 [ ] saving/fish
+    [ ] save on reload page/app close
+        - mostly works but Number.POSITIVE_INFINITY, NEGATIVE_INFINITY etc is breaking it (can't be serialised to JSON)
+            - both are used
+        - does not restore anything to the store on reload ("planetsLiberated", "scrollsRead")
 
 [x] 8-way sprites
 

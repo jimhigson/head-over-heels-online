@@ -247,8 +247,7 @@ export const changeCharacterRoom = <
       otherCharacterLoadedRoom
       // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
     : (loadRoom(
-        toRoomJson,
-        gameState.pickupsCollected[toRoomId] ?? emptyObject,
+      { roomJson: toRoomJson, roomPickupsCollected: gameState.pickupsCollected[toRoomId] ?? emptyObject },
       ) as RoomState<RoomId, RoomItemId>);
 
   // take the character out of the previous room:

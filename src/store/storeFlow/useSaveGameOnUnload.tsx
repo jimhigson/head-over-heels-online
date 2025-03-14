@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../hooks";
-import { saveStateOnExit } from "../slices/savedGamesSlice";
-import { createSavableReincarnationPoint } from "../../game/gameState/saving/createSavableReincarnationPoint";
+import { saveCurrentGame } from "../slices/savedGamesSlice";
+import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
-import { store } from "../store";
+import { persistor, store } from "../store";
 import { holdPressed } from "../slices/gameMenusSlice";
 
 export const useSaveGameOnUnload = (): void => {
@@ -18,25 +18,29 @@ export const useSaveGameOnUnload = (): void => {
       return;
     }
 
-    const saveIfHidden = () => {
+    const save = () => {
+      console.log("saving current game");
+
+      dispatch(
+        saveCurrentGame(createSavedGame(gameApi.gameState, store.getState())),
+      );
+      // we might not have long before the page goes away so we can't wait for redux-persist's throttled/debounced
+      // updates to write:
+      persistor.flush();
+    };
+    const hold = () => {
       if (document.visibilityState === "hidden") {
-        dispatch(
-          saveStateOnExit(
-            createSavableReincarnationPoint(
-              gameApi.gameState,
-              store.getState(),
-            ),
-          ),
-        );
-        // also show the menu to pause the game (if not already showing a menu)
-        // - in case the user comes back to the page (eg, leaves to another tab, when they come back this tab
-        // is showing the menus)
+        console.log("holding due to visibilityState=hidden");
         dispatch(holdPressed("hold"));
+        // this is also a good time to save since the user might not come back:
+        save();
       }
     };
-    document.addEventListener("visibilitychange", saveIfHidden);
+    document.addEventListener("visibilitychange", hold);
+    window.addEventListener("beforeunload", save);
     return () => {
-      document.removeEventListener("visibilitychange", saveIfHidden);
+      document.removeEventListener("visibilitychange", hold);
+      window.removeEventListener("beforeunload", save);
     };
   }, [dispatch, gameApi]);
 };

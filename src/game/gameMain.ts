@@ -13,6 +13,7 @@ import "pixi.js/advanced-blend-modes";
 import type { InputStateTrackerInterface } from "./input/InputStateTracker";
 import { store } from "../store/store";
 import { roomExplored } from "../store/slices/gameMenusSlice";
+import type { SavedGameState } from "./gameState/saving/SavedGameState";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -38,9 +39,12 @@ export const gameMain = async <RoomId extends string>(
     },
   });
 
+  const savedGame = store.getState().savedGames
+    .currentGame as SavedGameState<RoomId>;
   const gameState = loadGameState({
     campaign,
     inputStateTracker,
+    savedGame,
   });
   store.dispatch(roomExplored(gameState.characterRooms.head!.id));
   store.dispatch(roomExplored(gameState.characterRooms.heels!.id));

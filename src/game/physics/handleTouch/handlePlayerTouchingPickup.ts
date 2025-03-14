@@ -9,7 +9,7 @@ import {
   selectHeadAbilities,
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { createSavableReincarnationPoint } from "../../gameState/saving/createSavableReincarnationPoint";
+import { createSavedGame } from "../../gameState/saving/createSavedGame";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
@@ -111,7 +111,7 @@ export const handlePlayerTouchingPickup = <
       break;
 
     case "reincarnation": {
-      gameState.reincarnationPoint = createSavableReincarnationPoint(
+      gameState.reincarnationPoint = createSavedGame(
         gameState,
         store.getState(),
       );
