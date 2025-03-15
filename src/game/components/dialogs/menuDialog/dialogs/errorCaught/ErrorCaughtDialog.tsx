@@ -1,48 +1,55 @@
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Border } from "../../../../../../ui/Border";
-import { BitmapText } from "../../../../Sprite";
 import { MenuItems } from "../../MenuItems";
 import { MenuItem } from "../../MenuItem";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import {
+  errorDismissed,
+  reincarnationAccepted,
+} from "../../../../../../store/slices/gameMenusSlice";
+import { useAppSelector } from "../../../../../../store/hooks";
 
-const markdown = `
-![](texture-animated-dalek?float-left)If you want to help, please:
+const markdown = `##The game crashed
+Maybe:
 
 * open an [issue on github](https://github.com/jimhigson/head-over-heels-online/issues)
-* email to [jim@blockstack.ing](mailto:jim@blockstack.ing)
-
-Please include the information below, and a description of what you were doing
-`;
+* email [jim@blockstack.ing](mailto:jim@blockstack.ing)
+* rant on the [discord](https://discord.gg/XmV9QNWY)
+* play [this](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;
 
 export const ErrorCaughtDialog = () => {
+  const hasReincarnationPoint = useAppSelector(
+    (state) => state.gameMenus.reincarnationPoint !== undefined,
+  );
+  const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
+
   return (
     <DialogPortal>
       <Border className="loading-border" />
-      <Dialog className="!h-min !w-max text-center text-zxBlue p-0 bg-white">
-        <BitmapText className="sprites-double-height mt-2 resGameboy:mt-0 text-redShadow zx:text-zxWhite">
-          The game crashed
-        </BitmapText>
-        <span className="sprite texture-animated-dalek float-left" />
+      <Dialog className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack">
         <BlockyMarkdown markdown={markdown} />
         <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resGameboy:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resGameboy:!gap-y-1">
           <MenuItem
             doubleHeightWhenFocussed
             id="tryContinue"
-            label="Try to continue"
-            //onSelect={}
+            label="Ignore, hope it goes away"
+            onSelect={useDispatchActionCallback(errorDismissed, "ignore")}
           />
+          {hasReincarnationPoint && (
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="reincarnate"
+              label="Try reincarnating"
+              onSelect={reincarnateCallback}
+            />
+          )}
           <MenuItem
             doubleHeightWhenFocussed
-            id="reload"
-            label="Reload the game"
-            //onSelect={}
-          />
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="clearAndReload"
-            label="Clear all data and reload"
-            //onSelect={}
+            id="clearAllData"
+            label="Clear all data, start again"
+            onSelect={useDispatchActionCallback(errorDismissed, "clearAllData")}
           />
         </MenuItems>
       </Dialog>

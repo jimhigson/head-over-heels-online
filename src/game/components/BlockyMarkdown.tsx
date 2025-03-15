@@ -35,11 +35,23 @@ const markdownComponents: CustomComponentsOption = {
       </div>
     );
   },
+  a: function A({ children, href }: PropsWithChildren<{ href: string }>) {
+    return (
+      <a
+        className="text-white zx:text-zxWhite bg-metallicBlue hover:bg-white hover:text-metallicBlue zx:bg-zxBlue inline-block pl-oneScaledPix pt-oneScaledPix"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <MultipleBitmapText>{children}</MultipleBitmapText>
+      </a>
+    );
+  },
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
     return (
       // clear left allows to go below other lis that have images in them:
       <div className={`mb-1 clear-left ${multilineTextClass}`}>
-        <MultipleBitmapText>{children}</MultipleBitmapText>
+        <MultipleBitmapText>* {children}</MultipleBitmapText>
       </div>
     );
   },

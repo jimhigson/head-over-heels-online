@@ -19,6 +19,7 @@ import {
   errorCaught,
   type DisplaySettings,
 } from "../../store/slices/gameMenusSlice";
+import { pick } from "../../utils/pick";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -119,7 +120,8 @@ export class MainLoop<RoomId extends string> {
     try {
       this.tick(options);
     } catch (e: unknown) {
-      store.dispatch(errorCaught(e as Error));
+      console.error(e);
+      store.dispatch(errorCaught(pick(e as Error, "message", "stack")));
     }
   };
 
