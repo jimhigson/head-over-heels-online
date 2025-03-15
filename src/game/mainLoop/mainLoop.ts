@@ -15,7 +15,10 @@ import {
   selectOnScreenControls,
 } from "../../store/selectors";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
-import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
+import {
+  errorCaught,
+  type DisplaySettings,
+} from "../../store/slices/gameMenusSlice";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -110,7 +113,17 @@ export class MainLoop<RoomId extends string> {
     this.#filtersWhenUnpaused = topLevelFilters(displaySettings, false);
   }
 
-  private tick = ({ deltaMS }: Ticker) => {
+  private tickAndCatch = (
+    options: Parameters<InstanceType<typeof MainLoop>["tick"]>[0],
+  ): void => {
+    try {
+      this.tick(options);
+    } catch (e: unknown) {
+      store.dispatch(errorCaught(e as Error));
+    }
+  };
+
+  private tick = ({ deltaMS }: Ticker): void => {
     const tickState = store.getState();
     const isPaused = selectIsPaused(tickState);
     const {
@@ -204,13 +217,13 @@ export class MainLoop<RoomId extends string> {
   };
 
   start() {
-    this.#app.ticker.add(this.tick);
+    this.#app.ticker.add(this.tickAndCatch);
     return this;
   }
   stop() {
     this.#app.stage.removeChild(this.#worldContainer);
     this.#roomRenderer?.destroy();
     this.#hudRenderer?.destroy();
-    this.#app.ticker.remove(this.tick);
+    this.#app.ticker.remove(this.tickAndCatch);
   }
 }

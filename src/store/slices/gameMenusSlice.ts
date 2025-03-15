@@ -469,6 +469,9 @@ export const gameMenusSlice = createSlice({
     ) {
       Object.assign(state, payload);
     },
+    errorCaught(state, { payload: error }: PayloadAction<Error>) {
+      console.error("error caught", error);
+    },
   },
   extraReducers(builder) {
     type RehydrateAction = PayloadAction<
@@ -502,6 +505,7 @@ export const {
   backToParentMenu,
   crownCollected,
   doneAssigningInput,
+  errorCaught,
   gameOver,
   gameRestoreFromSave,
   gameStarted,
