@@ -62,6 +62,11 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 1 },
       type: "door",
     },
+    extraBlock: {
+      config: { style: "organic" },
+      position: { x: 1, y: 6, z: 0 },
+      type: "block",
+    },
     "monster@6,7,1": {
       config: {
         activated: true,
@@ -74,7 +79,7 @@ export const room = inferRoomJson({
     },
     "portableBlock@7,7,1": {
       config: { style: "drum" },
-      position: { x: 7, y: 7, z: 1 },
+      position: { x: 1, y: 6, z: 1 },
       type: "portableBlock",
     },
     "wall@0,0,0:2sckOl": {
