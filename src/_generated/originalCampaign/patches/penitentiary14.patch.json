@@ -2,6 +2,12 @@
   { "op": "replace", "path": "/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/items/lift@0,1,0/position/x", "value": 7 },
   { "op": "replace", "path": "/items/lift@0,1,0/config/top", "value": 11 },
+  { "op": "replace", "path": "/items/block@2,4,0/position/x", "value": 0 },
+  {
+    "op": "add",
+    "path": "/items/block@2,4,0/config/times",
+    "value": { "x": 5 }
+  },
   {
     "op": "add",
     "path": "/items/liftshaftAway0",

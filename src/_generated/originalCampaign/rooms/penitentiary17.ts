@@ -17,6 +17,16 @@ export const room = inferRoomJson({
       position: { x: 3, y: 8, z: 2 },
       type: "door",
     },
+    extraBarrier1: {
+      config: { axis: "y", times: { y: 8 } },
+      position: { x: 2.5, y: 0, z: 1 },
+      type: "barrier",
+    },
+    extraBarrier2: {
+      config: { axis: "y", times: { y: 8 } },
+      position: { x: 4.5, y: 0, z: 1 },
+      type: "barrier",
+    },
     "wall@0,0,0:2sckOl": {
       config: { direction: "right", tiles: [], times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
