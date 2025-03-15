@@ -1,1 +1,21 @@
-[{ "op": "replace", "path": "/color/hue", "value": "yellow" }]
+[
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier1",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 8 } },
+      "position": { "x": 2.5, "y": 0, "z": 1 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier2",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 8 } },
+      "position": { "x": 4.5, "y": 0, "z": 1 },
+      "type": "barrier"
+    }
+  }
+]

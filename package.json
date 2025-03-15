@@ -16,14 +16,14 @@
     "fix:format": "prettier --experimental-ternaries . --write",
     "check:test": "vitest run",
     "watch:test": "vitest watch",
-    "json": "tsx src/campaignXml2Json/convertCampaign.ts && prettier src/_generated/originalCampaign/rooms --write",
-    "jsonpatch": "tsx src/campaignXml2Json/makeCampaignDiff.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
+    "json": "tsx src/campaignXml2Json/convertCampaign.ts && prettier --experimental-ternaries src/_generated/originalCampaign/rooms --write",
+    "jsonpatch": "tsx src/campaignXml2Json/makeCampaignDiff.ts && prettier --experimental-ternaries src/_generated/originalCampaign/patches/*.json --write",
     "predeploy": "pnpm run check && pnpm run build && echo blockstack.ing > dist/CNAME && cp dist/index.html dist/sprites.html",
     "deploy": "gh-pages -d dist",
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\"",
     "check:circDep": "dpdm -T --exit-code circular:1 src/main.tsx",
-    "genTypes": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType > src/_generated/types/ItemInPlayUnion.ts && prettier src/_generated/types/ --write"
+    "genTypes": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType > src/_generated/types/ItemInPlayUnion.ts && prettier --experimental-ternaries src/_generated/types/ --write"
   },
   "dependencies": {
     "@mutabazia/react-portal": "^1.0.7",

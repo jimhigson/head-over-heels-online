@@ -18,8 +18,8 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@2,4,0": {
-      config: { style: "organic" },
-      position: { x: 2, y: 4, z: 0 },
+      config: { style: "organic", times: { x: 5 } },
+      position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
     "lift@0,1,0": {
