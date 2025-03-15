@@ -18,6 +18,7 @@ import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperor
 import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
 import { WrongOrientationDialog } from "./dialogs/wrongOrientation/wrongOrientation";
 import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
+import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -67,6 +68,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <WrongOrientationDialog />;
     case "offerReincarnation":
       return <OfferReincarnationDialog />;
+    case "errorCaught":
+      return <ErrorCaughtDialog />;
     default:
       dialogId satisfies never;
       return (

@@ -7,19 +7,20 @@ const markdownDialogIds = keys(markdownPages).map(
 ) as `markdown/${MarkdownPageName}`[];
 
 export const dialogIds = [
-  "wrongOrientation",
-  "mainMenu",
   "controlOptions",
-  "inputPreset",
-  "modernisationOptions",
-  "emulatedResolution",
-  "readTheManual",
-  "hold",
   "crowns",
-  "score",
+  "emulatedResolution",
+  "errorCaught",
+  "hold",
+  "inputPreset",
+  "mainMenu",
+  "modernisationOptions",
   "offerReincarnation",
-  "quitGameConfirm",
   "proclaimEmperor",
+  "quitGameConfirm",
+  "readTheManual",
+  "score",
+  "wrongOrientation",
   ...markdownDialogIds,
 ] as const;
 

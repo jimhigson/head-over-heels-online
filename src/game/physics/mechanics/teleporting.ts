@@ -25,12 +25,13 @@ export function teleporting<RoomId extends string, RoomItemId extends string>(
   const standingOn =
     standingOnItemId === null ? null : room.items[standingOnItemId];
 
+  const standingOnATeleporter =
+    standingOn !== null && isItemType("teleporter")(standingOn);
+
   if (teleporting === null) {
-    if (
-      jumpInput !== "released" &&
-      standingOn !== null &&
-      isItemType("teleporter")(standingOn)
-    ) {
+    // not already teleporting - see if we should start:
+    const startTeleporting = jumpInput !== "released" && standingOnATeleporter;
+    if (startTeleporting) {
       return {
         movementType: "steady",
         stateDelta: {
@@ -49,6 +50,19 @@ export function teleporting<RoomId extends string, RoomItemId extends string>(
 
   switch (teleporting.phase) {
     case "out":
+      if (!standingOnATeleporter) {
+        // rare-but-possible case where the player has moved off the teleporter while teleporting,
+        // this can sometimes happen due to vagueness in floating point collision detection
+        // if they were on the edge of the teleporter enough that the mtv will next move them
+        // of it, or if something pushes them - abort teleporting!
+        return {
+          movementType: "steady",
+          stateDelta: {
+            teleporting: null,
+          },
+        };
+      }
+
       if (newTimeRemaining === 0) {
         changeCharacterRoom({
           changeType: "teleport",

@@ -130,6 +130,9 @@ export type GameMenusState = {
 
   // if cheats are on, some cheat/debugging options are available
   cheatsOn: boolean;
+
+  // an error caught by the game engine or menus
+  caughtError?: { message: string; stack?: string };
 };
 
 type BooleanStatePaths = ToggleablePaths<GameMenusState>;
@@ -173,8 +176,13 @@ export const initialGameMenuSliceState: GameMenusState = {
         },
       ],
   assigningInput: undefined,
-
   cheatsOn,
+
+  // optional fields given explicitly as undefined so that on restoring
+  // a blank state after a crash, this can be used to overwrite the store
+  caughtError: undefined,
+  currentGame: undefined,
+  reincarnationPoint: undefined,
 };
 
 /**
@@ -469,6 +477,33 @@ export const gameMenusSlice = createSlice({
     ) {
       Object.assign(state, payload);
     },
+    errorCaught(
+      state,
+      { payload: error }: PayloadAction<{ message: string; stack?: string }>,
+    ) {
+      state.caughtError = error;
+      state.openMenus.push({
+        menuId: "errorCaught",
+        scrollableSelection: false,
+      });
+    },
+    errorDismissed(
+      state,
+      { payload: strategy }: PayloadAction<"ignore" | "clearAllData">,
+    ) {
+      switch (strategy) {
+        case "ignore":
+          state.caughtError = undefined;
+          state.openMenus = [];
+          break;
+        case "clearAllData":
+          Object.assign(state, initialGameMenuSliceState);
+          state.gameRunning = false;
+          break;
+        default:
+          strategy satisfies never;
+      }
+    },
   },
   extraReducers(builder) {
     type RehydrateAction = PayloadAction<
@@ -502,6 +537,8 @@ export const {
   backToParentMenu,
   crownCollected,
   doneAssigningInput,
+  errorCaught,
+  errorDismissed,
   gameOver,
   gameRestoreFromSave,
   gameStarted,
