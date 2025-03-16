@@ -4,7 +4,7 @@ import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
 import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
-import type { GameState, PickupsCollected } from "./GameState";
+import type { CharacterRooms, GameState, PickupsCollected } from "./GameState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import { getRoomItem } from "../../model/RoomState";
 import { emptyObject } from "../../utils/empty";
@@ -89,6 +89,18 @@ export const loadGameState = <RoomId extends string>({
         roomPickupsCollected: pickupsCollected[roomIds.heels] ?? emptyObject,
         isNewGame: savedGame === undefined,
       });
+  //the game can't start in symbiosis (why?) but can be loaded into it
+  const headOverHeelsRoom =
+    savedGame?.gameState.characterRooms.headOverHeels &&
+    badJsonClone(savedGame.gameState.characterRooms.headOverHeels);
+
+  // even if we are loading, override characterRooms from the save, since we may
+  // need two references to a single room state object, which json can't do
+  const characterRooms: CharacterRooms<RoomId> = {
+    head: headRoom,
+    heels: heelsRoom,
+    headOverHeels: headOverHeelsRoom,
+  };
 
   // create a gameApi
   return Object.assign(writeInto, {
@@ -114,17 +126,13 @@ export const loadGameState = <RoomId extends string>({
             heelsRoom === undefined ? undefined : (
               entryState(getRoomItem("heels", heelsRoom?.items)!)
             ),
+          // no headOverHeels: if loading from cold (not at save)
         },
         pickupsCollected,
         gameTime: 0,
         progression: 0,
       }),
 
-    // if loading, override characterRooms from the save, since we may need two references to
-    // a single object, which json can't do
-    characterRooms: {
-      head: headRoom,
-      heels: heelsRoom,
-    },
+    characterRooms,
   });
 };

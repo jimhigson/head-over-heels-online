@@ -67,40 +67,33 @@ export class MainLoop<RoomId extends string> {
     this.#app = app;
     this.#gameState = gameState;
 
-    const storeState = store.getState();
-    const {
-      gameMenus: {
-        upscale: { gameEngineUpscale },
-      },
-    } = storeState;
+    try {
+      const storeState = store.getState();
+      const {
+        gameMenus: {
+          upscale: { gameEngineUpscale },
+        },
+      } = storeState;
 
-    app.stage.addChild(this.#worldContainer);
+      app.stage.addChild(this.#worldContainer);
 
-    app.stage.scale = gameEngineUpscale;
+      app.stage.scale = gameEngineUpscale;
 
-    const startingRoom = selectCurrentRoomState(gameState);
-    if (startingRoom === undefined) {
-      throw new Error("main loop with no starting room");
+      const startingRoom = selectCurrentRoomState(gameState);
+      if (startingRoom === undefined) {
+        throw new Error("main loop with no starting room");
+      }
+
+      this.#initFilters();
+    } catch (e) {
+      this.#handleError(e as Error);
+      return;
     }
-    /*
-    experiment: create the room renderer on tick only
-    this.#roomRenderer = new RoomRenderer({
-      gameState,
-      room: startingRoom,
-      paused: false,
-      pixiRenderer: app.renderer,
-    });
-    this.#worldContainer.addChild(this.#roomRenderer.container);*/
-    /*
-    this.#hudRenderer = new HudRenderer(
-      gameState,
-      selectOnScreenControls(storeState),
-      selectIsColourised(storeState),
-      selectInputDirectionMode(storeState),
-    );*/
-    //app.stage.addChild(this.#hudRenderer.container);
+  }
 
-    this.#initFilters();
+  #handleError(e: Error) {
+    console.error(e);
+    store.dispatch(errorCaught(pick(e as Error, "message", "stack")));
   }
 
   #initFilters() {
@@ -120,8 +113,7 @@ export class MainLoop<RoomId extends string> {
     try {
       this.tick(options);
     } catch (e: unknown) {
-      console.error(e);
-      store.dispatch(errorCaught(pick(e as Error, "message", "stack")));
+      this.#handleError(e as Error);
     }
   };
 
