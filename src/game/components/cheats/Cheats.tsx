@@ -249,7 +249,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div
-          className="absolute [--scale:1] [--block:8px] bottom-[48px] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white"
+          className="absolute [--scale:1] [--block:8px] bottom-[48px] max-h-[calc(100vh-48px)] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll"
           style={{ "--scale": 2 }}
         >
           <Heading>room select:</Heading>
