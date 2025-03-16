@@ -4,7 +4,12 @@ import type {
   ItemAppearanceOptions,
   ItemAppearanceReturn,
 } from "./ItemAppearance";
-import { stackSprites } from "./createStackedSprites";
+import type { StackedSpritesContainer } from "./createStackedSprites";
+import {
+  stackedBottomSym,
+  stackedTopSym,
+  stackSprites,
+} from "./createStackedSprites";
 import { OutlineFilter } from "../filters/outlineFilter";
 import type {
   IndividualCharacterName,
@@ -16,7 +21,8 @@ import {
 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
-import type { Container, Filter } from "pixi.js";
+import type { Filter } from "pixi.js";
+import { Container } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
 import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
@@ -29,6 +35,7 @@ import {
 } from "../../physics/mechanicsConstants";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { accentColours } from "../../hintColours";
+import { shieldRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 
 const playableCreateSpriteOptions = ({
   name,
@@ -79,6 +86,28 @@ const playableCreateSpriteOptions = ({
   return { textureId: `${name}.walking.${facingXy8}.2` };
 };
 
+const playableSpriteSym: unique symbol = Symbol();
+const shineSpriteSym: unique symbol = Symbol();
+type IndividualPlayableRenderingContainer = Container & {
+  [playableSpriteSym]: Container;
+  [shineSpriteSym]: AnimatedSprite;
+};
+
+const individualPlayableContainer = (
+  renderProps: ItemRenderProps<CharacterName> & {
+    name: IndividualCharacterName;
+  },
+) => {
+  const container = new Container() as IndividualPlayableRenderingContainer;
+  const playableSprite = createSprite(playableCreateSpriteOptions(renderProps));
+  container[playableSpriteSym] = playableSprite;
+  container.addChild(playableSprite);
+  container[shineSpriteSym] = createSprite({
+    animationId: `shine`,
+  }) as AnimatedSprite;
+  return container;
+};
+
 export const isHighlighted = (
   {
     gameTime,
@@ -97,6 +126,7 @@ export const isHighlighted = (
   );
 };
 
+/** should player have the flashing effect after losing a life */
 export const isFlashing = (playableItem: PlayableItem): boolean => {
   if (!playerDiedRecently(playableItem)) {
     return false;
@@ -115,6 +145,16 @@ export const isFlashing = (playableItem: PlayableItem): boolean => {
     timeSinceLastDied % afterDeathInvulnerabilityFlashPeriod <
     afterDeathInvulnerabilityFlashPeriod * 0.15
   );
+};
+
+/** should player have the shining effect of invincibility? */
+export const isShining = (playableItem: PlayableItem): boolean => {
+  return playableItem.type === "headOverHeels" ?
+      // in this case, both playables in symbiosis should have the same shield
+      // left, so arbitrarily choose head:
+      shieldRemaining(playableItem.state.head) > 0 ||
+        shieldRemaining(playableItem.state.heels) > 0
+    : shieldRemaining(playableItem.state) > 0;
 };
 
 const addFilterToContainer = (container: Container, newFilter: Filter) => {
@@ -171,6 +211,22 @@ const applyFilters = (
   }
 };
 
+const applyShine = (
+  rendering: IndividualPlayableRenderingContainer,
+  shining: boolean,
+  wasShining: boolean,
+) => {
+  if (shining && !wasShining) {
+    rendering.addChild(rendering[shineSpriteSym]);
+  } else if (!shining && wasShining) {
+    rendering.removeChild(rendering[shineSpriteSym]);
+  }
+};
+
+type PlayableRenderTarget =
+  | IndividualPlayableRenderingContainer
+  | StackedSpritesContainer<IndividualPlayableRenderingContainer>;
+
 export const playableAppearance = <
   RoomId extends string,
   RoomItemId extends string,
@@ -181,8 +237,9 @@ export const playableAppearance = <
 }: ItemAppearanceOptions<
   CharacterName,
   RoomId,
-  RoomItemId
->): ItemAppearanceReturn<CharacterName> => {
+  RoomItemId,
+  PlayableRenderTarget
+>): ItemAppearanceReturn<CharacterName, PlayableRenderTarget> => {
   const {
     type,
     state: { action, facing, teleporting },
@@ -194,19 +251,15 @@ export const playableAppearance = <
     subject.type === "headOverHeels" ?
       // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
       // characters - they were switched to at the same time so it doesn't matter:
-      isHighlighted(
-        (subject as PlayableItem<"headOverHeels", RoomId, RoomItemId>).state
-          .head,
-        "headOverHeels",
-        "headOverHeels",
-      )
+      isHighlighted(subject.state.head, "headOverHeels", "headOverHeels")
     : isHighlighted(
-        (subject as PlayableItem<"head" | "heels", RoomId, RoomItemId>).state,
+        subject.state,
         subject.type,
         gameState.currentCharacterName,
       );
 
-  const flashing = isFlashing(subject as PlayableItem);
+  const flashing = isFlashing(subject);
+  const shining = isShining(subject);
 
   const walkSpeed = lengthXyz(facing);
 
@@ -218,6 +271,7 @@ export const playableAppearance = <
     teleportingPhase,
     flashing,
     highlighted,
+    shining,
   };
 
   const needNewSprites =
@@ -227,42 +281,40 @@ export const playableAppearance = <
     currentlyRenderedProps.facingXy8 !== facingXy8 ||
     currentlyRenderedProps.teleportingPhase !== teleportingPhase;
 
-  const outputContainer: Container =
+  const outputContainer: PlayableRenderTarget =
     !needNewSprites ? previousRendering!
     : type === "headOverHeels" ?
       stackSprites({
-        top: createSprite(
-          playableCreateSpriteOptions({
-            name: "head",
-            ...renderProps,
-          }),
-        ),
-        bottom: createSprite(
-          playableCreateSpriteOptions({
-            name: "heels",
-            ...renderProps,
-          }),
-        ),
-      })
-    : createSprite(
-        playableCreateSpriteOptions({
-          name: type,
+        top: individualPlayableContainer({
+          name: "head",
           ...renderProps,
         }),
-      );
+        bottom: individualPlayableContainer({
+          name: "heels",
+          ...renderProps,
+        }),
+      })
+    : individualPlayableContainer({
+        name: type,
+        ...renderProps,
+      });
 
   if (type === "headOverHeels") {
     applyFilters(
       "head",
       renderProps,
       needNewSprites ? undefined : currentlyRenderedProps,
-      outputContainer.getChildAt(1),
+      (
+        outputContainer as StackedSpritesContainer<IndividualPlayableRenderingContainer>
+      )[stackedTopSym],
     );
     applyFilters(
       "heels",
       renderProps,
       needNewSprites ? undefined : currentlyRenderedProps,
-      outputContainer.getChildAt(0),
+      (
+        outputContainer as StackedSpritesContainer<IndividualPlayableRenderingContainer>
+      )[stackedBottomSym],
     );
   } else {
     applyFilters(
@@ -273,8 +325,20 @@ export const playableAppearance = <
     );
   }
 
+  if (type === "headOverHeels") {
+    // todo
+  } else {
+    applyShine(
+      outputContainer as IndividualPlayableRenderingContainer,
+      shining,
+      needNewSprites ? false : (currentlyRenderedProps?.shining ?? false),
+    );
+  }
+
   // update the animated sprite's speed:
   if (action === "moving" && previousRendering instanceof AnimatedSprite) {
+    // don't think this will work for hoh - would have to apply to two sprites
+    // inside the container
     previousRendering.animationSpeed = walkSpeed * playableWalkAnimationSpeed;
   }
 

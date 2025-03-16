@@ -254,8 +254,8 @@ const frames = {
   ),
   ...seriesOfNumberedTextures(
     "shine",
-    2,
-    smallItemGridLocation({ x: 4, y: 7 }),
+    6,
+    smallItemGridLocation({ x: 4, y: 13 }),
     smallItemTextureSize,
   ),
 } as const satisfies SpritesheetData["frames"];
@@ -319,7 +319,7 @@ export const playableSpritesheetData = {
       ] as const,
       0.5,
     ),
-    shine: withSpeed(seriesOfAnimationFrameTextureIds("shine", 2), 0.5),
+    shine: withSpeed(seriesOfAnimationFrameTextureIds("shine", 6), 0.5),
   },
 } as const satisfies Pick<
   SpritesheetData,

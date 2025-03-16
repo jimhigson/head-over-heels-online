@@ -14,13 +14,16 @@ import type {
 } from "../appearance/Appearance";
 import type { ItemRenderContext, ItemTickContext } from "../Renderer";
 
-export type ItemAppearanceReturn<T extends ItemInPlayType> =
+export type ItemAppearanceReturn<
+  T extends ItemInPlayType,
+  RenderTarget extends Container = Container,
+> =
   | {
       /**
        * a new rendering, since one is required - null to explicitly change the item's rendering
        * to nothing
        */
-      container: Container | null;
+      container: RenderTarget | null;
       /** the render props of the new rendering, to stash and use for checking in the next tick if a new rendering is needed */
       renderProps: ItemRenderProps<T>;
     }
@@ -31,18 +34,20 @@ export type ItemAppearanceOptions<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
+  RenderTarget extends Container = Container,
 > = AppearanceOptions<
   ItemRenderContext<T, RoomId, RoomItemId>,
   ItemTickContext<RoomId, RoomItemId>,
-  ItemRenderProps<T>
+  ItemRenderProps<T>,
+  RenderTarget
 >;
 
-export type ItemAppearance<T extends ItemInPlayType> = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
+export type ItemAppearance<
+  T extends ItemInPlayType,
+  RenderTarget extends Container = Container,
+> = <RoomId extends string, RoomItemId extends string>(
   options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
-) => AppearanceReturn<ItemRenderProps<T>>;
+) => AppearanceReturn<ItemRenderProps<T>, RenderTarget>;
 
 /**
  * Like ItemAppearance but sometimes it is useful to be able to cast
@@ -52,9 +57,10 @@ export type ItemAppearanceWithKnownRoomId<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
+  RenderTarget extends Container = Container,
 > = (
   options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
-) => AppearanceReturn<ItemRenderProps<T>>;
+) => AppearanceReturn<ItemRenderProps<T>, RenderTarget>;
 
 export const itemStaticSpriteAppearance = <
   T extends ItemInPlayTypesWithoutRenderProps,

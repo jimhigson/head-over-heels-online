@@ -21,16 +21,26 @@ export const createStackedSprites = ({
   return container;
 };
 
-export const stackSprites = ({
+export const stackedTopSym: unique symbol = Symbol();
+export const stackedBottomSym: unique symbol = Symbol();
+export type StackedSpritesContainer<Child extends Container> =
+  Container<Child> & {
+    [stackedTopSym]: Child;
+    [stackedBottomSym]: Child;
+  };
+
+export const stackSprites = <C extends Container>({
   top,
   bottom,
 }: {
-  top: Container;
-  bottom: Container;
-}): Container => {
-  const container = new Container();
+  top: C;
+  bottom: C;
+}): StackedSpritesContainer<C> => {
+  const container = new Container<C>() as StackedSpritesContainer<C>;
   container.addChild(bottom);
   top.y = -12;
   container.addChild(top);
+  container[stackedTopSym] = top;
+  container[stackedBottomSym] = bottom;
   return container;
 };
