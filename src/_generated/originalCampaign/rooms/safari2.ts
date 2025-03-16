@@ -14,12 +14,12 @@ export const room = inferRoomJson({
     },
     "block@3,7,1": {
       config: { style: "organic", times: { x: 2 } },
-      position: { x: 3, y: 7, z: 1 },
+      position: { x: 3, y: 11, z: 1 },
       type: "block",
     },
     "block@7,4,0": {
       config: { style: "organic" },
-      position: { x: 7, y: 4, z: 0 },
+      position: { x: 7, y: 6, z: 0 },
       type: "block",
     },
     "deadlyBlock@0,0,0": {
@@ -34,7 +34,7 @@ export const room = inferRoomJson({
     },
     "deadlyBlock@0,7,0": {
       config: { style: "volcano" },
-      position: { x: 0, y: 7, z: 0 },
+      position: { x: 0, y: 9, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@2,3,0": {
@@ -44,7 +44,7 @@ export const room = inferRoomJson({
     },
     "deadlyBlock@4,3,0": {
       config: { style: "volcano" },
-      position: { x: 4, y: 3, z: 0 },
+      position: { x: 4, y: 5, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@6,0,1": {
@@ -64,8 +64,14 @@ export const room = inferRoomJson({
     },
     "door@3,8,3": {
       config: { direction: "away", toRoom: "safari3" },
-      position: { x: 3, y: 8, z: 3 },
+      position: { x: 3, y: 12, z: 3 },
       type: "door",
+    },
+    extraVolcano: {
+      config: { style: "volcano" },
+      isExtra: true,
+      position: { x: 6, y: 10, z: 0 },
+      type: "deadlyBlock",
     },
     "movableBlock@7,1,0": {
       config: {
@@ -78,7 +84,7 @@ export const room = inferRoomJson({
       type: "movableBlock",
     },
     "wall@0,0,0:2sckOl": {
-      config: { direction: "right", tiles: [], times: { y: 8 } },
+      config: { direction: "right", tiles: [], times: { y: 12 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -93,7 +99,7 @@ export const room = inferRoomJson({
         tiles: ["wall", "shield", "wall"],
         times: { x: 3 },
       },
-      position: { x: 0, y: 8, z: 0 },
+      position: { x: 0, y: 12, z: 0 },
       type: "wall",
     },
     "wall@5,0,0": {
@@ -107,7 +113,7 @@ export const room = inferRoomJson({
         tiles: ["wall", "window", "wall"],
         times: { x: 3 },
       },
-      position: { x: 5, y: 8, z: 0 },
+      position: { x: 5, y: 12, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
@@ -122,13 +128,18 @@ export const room = inferRoomJson({
           "wall",
           "window",
           "wall",
+          "shield",
+          "shield",
+          "wall",
+          "window",
+          "wall",
         ],
-        times: { y: 8 },
+        times: { y: 12 },
       },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
   },
   planet: "safari",
-  size: { x: 8, y: 8 },
+  size: { x: 8, y: 12 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "safari">;
