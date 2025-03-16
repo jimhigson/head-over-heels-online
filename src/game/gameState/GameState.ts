@@ -26,7 +26,10 @@ export type PickupsCollected<RoomId extends string> = {
   [R in RoomId]?: RoomPickupsCollected;
 };
 
-type CharacterRooms<RoomId extends string> =
+/**
+ * which room each character is in
+ */
+export type CharacterRooms<RoomId extends string> =
   /**
    * partial here because character can have lost all lives, or headOverHeels doesn't initially exist
    * - all 3 can never exist at the same time
