@@ -1,73 +1,30 @@
 [
+  { "op": "replace", "path": "/items/door@3,8,4/position/x", "value": 6 },
+  { "op": "remove", "path": "/items/wall@5,8,0" },
+  { "op": "replace", "path": "/items/wall@0,8,0/config/times/x", "value": 6 },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,8,0/config/tiles/1",
+    "value": "plain"
+  },
+  { "op": "add", "path": "/items/wall@0,8,0/config/tiles/3", "value": "plain" },
+  { "op": "add", "path": "/items/wall@0,8,0/config/tiles/4", "value": "plain" },
+  { "op": "add", "path": "/items/wall@0,8,0/config/tiles/5", "value": "plain" },
   {
     "op": "add",
-    "path": "/items/towerA0",
+    "path": "/items/towerA",
     "value": {
-      "config": { "style": "tower" },
+      "config": { "style": "tower", "times": { "z": 4 } },
       "position": { "x": 0, "y": 0, "z": 0 },
       "type": "block"
     }
   },
   {
     "op": "add",
-    "path": "/items/towerA1",
+    "path": "/items/towerB",
     "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 0, "z": 1 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/towerA2",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 0, "z": 2 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/towerA3",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 0, "z": 3 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/towerB0",
-    "value": {
-      "config": { "style": "tower" },
+      "config": { "style": "tower", "times": { "z": 4 } },
       "position": { "x": 0, "y": 7, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/towerB1",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 7, "z": 1 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/towerB2",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 7, "z": 2 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/towerB3",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 0, "y": 7, "z": 3 },
       "type": "block"
     }
   }
