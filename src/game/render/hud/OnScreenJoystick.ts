@@ -124,6 +124,9 @@ export class OnScreenJoystickRenderer
     this.container.on("globalpointermove", this.usePointerLocation);
     this.container.on("pointerup", this.stopCurrentPointer);
     this.container.on("pointerupoutside", this.stopCurrentPointer);
+
+    this.#joystickSprite.filters =
+      renderContext.colourise ? noFilters : hudLowlightedFilter;
   }
 
   handlePointerEnter = (e: FederatedPointerEvent) => {
@@ -178,7 +181,6 @@ export class OnScreenJoystickRenderer
     const {
       renderContext: {
         inputStateTracker: { directionVector },
-        colourise,
       },
     } = this;
     const menusOpen = store.getState().gameMenus.openMenus.length > 0;
@@ -199,9 +201,6 @@ export class OnScreenJoystickRenderer
           hudHighlightAndOutlineFilters
         : hudLowlightAndOutlineFilters;
     }
-
-    // TODO: this doesn't have to be updated every frame - it never changes!
-    this.#joystickSprite.filters = colourise ? noFilters : hudLowlightedFilter;
   }
 
   destroy() {
