@@ -124,7 +124,7 @@ export class OnScreenJoystickRenderer
 
     this.container.addChild(this.#joystickSprite);
 
-    this.container.addChild(new Graphics().circle(0, 0, 24).fill("#00000000"));
+    this.container.addChild(new Graphics().circle(0, 0, 32).fill("#00000000"));
     for (const arrowSprite of objectValues(this.arrowSprites)) {
       this.container.addChild(arrowSprite);
     }
