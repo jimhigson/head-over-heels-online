@@ -22,7 +22,6 @@
     "path": "/items/wall@8,0,0/config/tiles/11",
     "value": "window"
   },
-  { "op": "add", "path": "/items/wall@8,0,0/config/tiles/12", "value": "wall" },
   { "op": "replace", "path": "/items/block@7,4,0/position/y", "value": 6 },
   { "op": "replace", "path": "/items/wall@5,8,0/position/y", "value": 12 },
   {
@@ -46,10 +45,10 @@
     "op": "add",
     "path": "/items/extraVolcano",
     "value": {
-      "config": { "style": "volcano" },
-      "position": { "x": 6, "y": 10, "z": 0 },
-      "type": "deadlyBlock",
-      "isExtra": true
+      "config": { "style": "volcano", "times": { "x": 8, "y": 2 } },
+      "isExtra": true,
+      "position": { "x": 0, "y": 10, "z": 0 },
+      "type": "deadlyBlock"
     }
   },
   { "op": "replace", "path": "/size/y", "value": 12 }

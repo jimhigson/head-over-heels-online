@@ -39,7 +39,7 @@ export const room = inferRoomJson({
     },
     "door@3,8,4": {
       config: { direction: "away", toRoom: "blacktooth70" },
-      position: { x: 3, y: 8, z: 4 },
+      position: { x: 6, y: 8, z: 4 },
       type: "door",
     },
     "door@8,3,4": {
@@ -52,44 +52,14 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 5 },
       type: "spring",
     },
-    towerA0: {
-      config: { style: "tower" },
+    towerA: {
+      config: { style: "tower", times: { z: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    towerA1: {
-      config: { style: "tower" },
-      position: { x: 0, y: 0, z: 1 },
-      type: "block",
-    },
-    towerA2: {
-      config: { style: "tower" },
-      position: { x: 0, y: 0, z: 2 },
-      type: "block",
-    },
-    towerA3: {
-      config: { style: "tower" },
-      position: { x: 0, y: 0, z: 3 },
-      type: "block",
-    },
-    towerB0: {
-      config: { style: "tower" },
+    towerB: {
+      config: { style: "tower", times: { z: 4 } },
       position: { x: 0, y: 7, z: 0 },
-      type: "block",
-    },
-    towerB1: {
-      config: { style: "tower" },
-      position: { x: 0, y: 7, z: 1 },
-      type: "block",
-    },
-    towerB2: {
-      config: { style: "tower" },
-      position: { x: 0, y: 7, z: 2 },
-      type: "block",
-    },
-    towerB3: {
-      config: { style: "tower" },
-      position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
     "wall@0,0,0:2scjwz": {
@@ -110,19 +80,10 @@ export const room = inferRoomJson({
     "wall@0,8,0": {
       config: {
         direction: "away",
-        tiles: ["plain", "shield", "plain"],
-        times: { x: 3 },
+        tiles: ["plain", "plain", "plain", "plain", "plain", "plain"],
+        times: { x: 6 },
       },
       position: { x: 0, y: 8, z: 0 },
-      type: "wall",
-    },
-    "wall@5,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["plain", "shield", "plain"],
-        times: { x: 3 },
-      },
-      position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
