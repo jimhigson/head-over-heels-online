@@ -21,12 +21,12 @@ export const createStackedSprites = ({
   return container;
 };
 
-export const stackedTopSym: unique symbol = Symbol();
-export const stackedBottomSym: unique symbol = Symbol();
+export const stackedTopSymbol: unique symbol = Symbol();
+export const stackedBottomSymbol: unique symbol = Symbol();
 export type StackedSpritesContainer<Child extends Container> =
   Container<Child> & {
-    [stackedTopSym]: Child;
-    [stackedBottomSym]: Child;
+    [stackedTopSymbol]: Child;
+    [stackedBottomSymbol]: Child;
   };
 
 export const stackSprites = <C extends Container>({
@@ -40,7 +40,7 @@ export const stackSprites = <C extends Container>({
   container.addChild(bottom);
   top.y = -12;
   container.addChild(top);
-  container[stackedTopSym] = top;
-  container[stackedBottomSym] = bottom;
+  container[stackedTopSymbol] = top;
+  container[stackedBottomSymbol] = bottom;
   return container;
 };

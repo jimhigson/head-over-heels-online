@@ -6,14 +6,14 @@ import type {
 } from "./ItemAppearance";
 import type { StackedSpritesContainer } from "./createStackedSprites";
 import {
-  stackedBottomSym,
-  stackedTopSym,
+  stackedBottomSymbol,
+  stackedTopSymbol,
   stackSprites,
 } from "./createStackedSprites";
 import { OutlineFilter } from "../filters/outlineFilter";
-import type {
-  IndividualCharacterName,
-  CharacterName,
+import {
+  type IndividualCharacterName,
+  type CharacterName,
 } from "../../../model/modelTypes";
 import {
   lengthXyz,
@@ -36,6 +36,8 @@ import {
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { accentColours } from "../../hintColours";
 import { shieldRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 
 const playableCreateSpriteOptions = ({
   name,
@@ -86,25 +88,41 @@ const playableCreateSpriteOptions = ({
   return { textureId: `${name}.walking.${facingXy8}.2` };
 };
 
-const playableSpriteSym: unique symbol = Symbol();
-const shineSpriteSym: unique symbol = Symbol();
+const playableSpriteContainerSymbol: unique symbol = Symbol();
+const shineSpriteSymbol: unique symbol = Symbol();
 type IndividualPlayableRenderingContainer = Container & {
-  [playableSpriteSym]: Container;
-  [shineSpriteSym]: AnimatedSprite;
+  [playableSpriteContainerSymbol]: Container;
+  [shineSpriteSymbol]: AnimatedSprite;
 };
 
-const individualPlayableContainer = (
+const updateIndividualPlayableSprite = (
+  container: IndividualPlayableRenderingContainer,
   renderProps: ItemRenderProps<CharacterName> & {
     name: IndividualCharacterName;
   },
 ) => {
+  container[playableSpriteContainerSymbol].removeChildren();
+  container[playableSpriteContainerSymbol].addChild(
+    createSprite(playableCreateSpriteOptions(renderProps)),
+  );
+};
+
+const createOutputContainer = (
+  name: IndividualCharacterName,
+): IndividualPlayableRenderingContainer => {
   const container = new Container() as IndividualPlayableRenderingContainer;
-  const playableSprite = createSprite(playableCreateSpriteOptions(renderProps));
-  container[playableSpriteSym] = playableSprite;
-  container.addChild(playableSprite);
-  container[shineSpriteSym] = createSprite({
+  const playableSpriteContainer = new Container();
+  container[playableSpriteContainerSymbol] = playableSpriteContainer;
+  container.addChild(playableSpriteContainer);
+  const shineSprite = createSprite({
     animationId: `shine`,
+    filter:
+      name === "heels" ?
+        new PaletteSwapFilter({ pastelBlue: spritesheetPalette.pink })
+      : noFilters,
+    flipX: name === "heels",
   }) as AnimatedSprite;
+  container[shineSpriteSymbol] = shineSprite;
   return container;
 };
 
@@ -217,10 +235,36 @@ const applyShine = (
   wasShining: boolean,
 ) => {
   if (shining && !wasShining) {
-    rendering.addChild(rendering[shineSpriteSym]);
+    rendering.addChild(rendering[shineSpriteSymbol]);
   } else if (!shining && wasShining) {
-    rendering.removeChild(rendering[shineSpriteSym]);
+    rendering.removeChild(rendering[shineSpriteSymbol]);
   }
+};
+
+const updateIndividualsRendering = (
+  individualCharacterName: IndividualCharacterName,
+  individualContainer: IndividualPlayableRenderingContainer,
+  refreshSprites: boolean,
+  renderProps: ItemRenderProps<CharacterName>,
+  currentlyRenderedProps?: ItemRenderProps<CharacterName>,
+) => {
+  if (refreshSprites) {
+    updateIndividualPlayableSprite(individualContainer, {
+      name: individualCharacterName,
+      ...renderProps,
+    });
+  }
+  applyFilters(
+    individualCharacterName,
+    renderProps,
+    currentlyRenderedProps,
+    individualContainer,
+  );
+  applyShine(
+    individualContainer,
+    renderProps.shining,
+    currentlyRenderedProps?.shining ?? false,
+  );
 };
 
 type PlayableRenderTarget =
@@ -281,57 +325,42 @@ export const playableAppearance = <
     currentlyRenderedProps.facingXy8 !== facingXy8 ||
     currentlyRenderedProps.teleportingPhase !== teleportingPhase;
 
-  const outputContainer: PlayableRenderTarget =
-    !needNewSprites ? previousRendering!
-    : type === "headOverHeels" ?
+  let outputContainer: PlayableRenderTarget;
+
+  if (type === "headOverHeels") {
+    outputContainer =
+      previousRendering ??
       stackSprites({
-        top: individualPlayableContainer({
-          name: "head",
-          ...renderProps,
-        }),
-        bottom: individualPlayableContainer({
-          name: "heels",
-          ...renderProps,
-        }),
-      })
-    : individualPlayableContainer({
-        name: type,
-        ...renderProps,
+        top: createOutputContainer("head"),
+        bottom: createOutputContainer("heels"),
       });
 
-  if (type === "headOverHeels") {
-    applyFilters(
-      "head",
-      renderProps,
-      needNewSprites ? undefined : currentlyRenderedProps,
-      (
-        outputContainer as StackedSpritesContainer<IndividualPlayableRenderingContainer>
-      )[stackedTopSym],
-    );
-    applyFilters(
-      "heels",
-      renderProps,
-      needNewSprites ? undefined : currentlyRenderedProps,
-      (
-        outputContainer as StackedSpritesContainer<IndividualPlayableRenderingContainer>
-      )[stackedBottomSym],
-    );
-  } else {
-    applyFilters(
-      type,
-      renderProps,
-      needNewSprites ? undefined : currentlyRenderedProps,
-      outputContainer,
-    );
-  }
+    const stackedContainer =
+      outputContainer as StackedSpritesContainer<IndividualPlayableRenderingContainer>;
 
-  if (type === "headOverHeels") {
-    // todo
+    updateIndividualsRendering(
+      "head",
+      stackedContainer[stackedTopSymbol],
+      needNewSprites,
+      renderProps,
+      currentlyRenderedProps,
+    );
+    updateIndividualsRendering(
+      "heels",
+      stackedContainer[stackedBottomSymbol],
+      needNewSprites,
+      renderProps,
+      currentlyRenderedProps,
+    );
   } else {
-    applyShine(
+    outputContainer = previousRendering ?? createOutputContainer(type);
+
+    updateIndividualsRendering(
+      type,
       outputContainer as IndividualPlayableRenderingContainer,
-      shining,
-      needNewSprites ? false : (currentlyRenderedProps?.shining ?? false),
+      needNewSprites,
+      renderProps,
+      currentlyRenderedProps,
     );
   }
 

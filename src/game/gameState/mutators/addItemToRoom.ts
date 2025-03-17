@@ -38,6 +38,10 @@ export const addItemFromJsonToRoom = <
     config,
     position: originXyz,
   };
+
+  // this simple incrementing int isn't going to work for adding pickups, since they can be stored
+  // as having been collected in the room and decline to generate from the json.
+  // TODO: move next itemId onto gamestate/store and serialise with the saves
   const itemId = `${itemType}/${i++}`;
   const item = first(
     loadItemFromJson(
@@ -48,6 +52,7 @@ export const addItemFromJsonToRoom = <
     ),
   );
   if (item === undefined) {
+    console.error("failed to generate any items for json", itemId, itemJson);
     throw new Error("failed to generate any items");
   }
   item.state.position = position;

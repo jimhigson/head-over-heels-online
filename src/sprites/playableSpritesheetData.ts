@@ -3,7 +3,12 @@ import {
   seriesOfAnimationFrameTextureIds,
   seriesOfNumberedTextures,
 } from "./spriteGenerators";
-import { smallItemGridLocation, smallItemTextureSize } from "./textureSizes";
+import {
+  largeItemGridLocation,
+  largeItemTextureSize,
+  smallItemGridLocation,
+  smallItemTextureSize,
+} from "./textureSizes";
 import type { CharacterName } from "../model/modelTypes";
 import { directionsXy8, type DirectionXy8 } from "../utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
@@ -255,8 +260,8 @@ const frames = {
   ...seriesOfNumberedTextures(
     "shine",
     6,
-    smallItemGridLocation({ x: 4, y: 13 }),
-    smallItemTextureSize,
+    largeItemGridLocation({ x: 4, y: -1 }),
+    largeItemTextureSize,
   ),
 } as const satisfies SpritesheetData["frames"];
 
