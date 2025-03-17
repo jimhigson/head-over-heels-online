@@ -13,7 +13,7 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@6,2,1": {
-      config: { style: "volcano", times: { x: 2 } },
+      config: { style: "volcano" },
       position: { x: 6, y: 2, z: 1 },
       type: "deadlyBlock",
     },
@@ -23,7 +23,7 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@6,4,1": {
-      config: { style: "volcano", times: { x: 2 } },
+      config: { style: "volcano" },
       position: { x: 6, y: 4, z: 1 },
       type: "deadlyBlock",
     },
@@ -33,8 +33,8 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@7,3,1": {
-      config: { style: "volcano", times: { z: 2 } },
-      position: { x: 7, y: 3, z: 1 },
+      config: { style: "volcano" },
+      position: { x: 7, y: 3, z: 2 },
       type: "deadlyBlock",
     },
     "door@3,8,1": {
@@ -98,12 +98,12 @@ export const room = inferRoomJson({
         direction: "left",
         tiles: [
           "plain",
+          "shield",
           "armour",
           "plain",
-          "shield",
+          "armour",
           "shield",
           "plain",
-          "armour",
           "plain",
         ],
         times: { y: 8 },
