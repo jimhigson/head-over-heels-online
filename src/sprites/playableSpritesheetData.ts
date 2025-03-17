@@ -1,6 +1,14 @@
 import type { SpritesheetData } from "pixi.js";
-import { seriesOfNumberedTextures } from "./spriteGenerators";
-import { smallItemGridLocation, smallItemTextureSize } from "./textureSizes";
+import {
+  seriesOfAnimationFrameTextureIds,
+  seriesOfNumberedTextures,
+} from "./spriteGenerators";
+import {
+  largeItemGridLocation,
+  largeItemTextureSize,
+  smallItemGridLocation,
+  smallItemTextureSize,
+} from "./textureSizes";
 import type { CharacterName } from "../model/modelTypes";
 import { directionsXy8, type DirectionXy8 } from "../utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
@@ -249,6 +257,12 @@ const frames = {
     smallItemGridLocation({ x: 10, y: 8 }),
     smallItemTextureSize,
   ),
+  ...seriesOfNumberedTextures(
+    "shine",
+    6,
+    largeItemGridLocation({ x: 4, y: -1 }),
+    largeItemTextureSize,
+  ),
 } as const satisfies SpritesheetData["frames"];
 
 export const playableSpritesheetData = {
@@ -310,6 +324,7 @@ export const playableSpritesheetData = {
       ] as const,
       0.5,
     ),
+    shine: withSpeed(seriesOfAnimationFrameTextureIds("shine", 6), 0.5),
   },
 } as const satisfies Pick<
   SpritesheetData,

@@ -20,8 +20,8 @@ export const SpritePage = () => {
           <div key={textureId} className="bg-shadow m-[8px] p-[16px]">
             <div
               className={`sprite bg-shadow hover:bg-pink hover:border-white border-shadow border border-4 mb-1 box-content`}
-              // most of these textures won't have classes loaded by tailwid,
-              // so inline the relevant info - including by tailwind would inflate
+              // most of these textures won't have classes loaded by tailwind due to ,
+              // so inline the relevant info - including how tailwind would inflate
               // the css in prod
               style={{
                 "--x": `${spritesheetData.frames[textureId].frame.x}px`,

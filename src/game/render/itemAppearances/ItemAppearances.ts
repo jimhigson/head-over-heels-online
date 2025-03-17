@@ -73,9 +73,11 @@ const singleRenderWithStyleAsTexture = <
 export const itemAppearances: {
   [T in ItemInPlayType]: ItemAppearance<T>;
 } = {
-  head: playableAppearance,
-  heels: playableAppearance,
-  headOverHeels: playableAppearance,
+  // casts allow these appearances to use Container specialisations as their output without
+  // clashing with the `itemAppearances` types
+  head: playableAppearance as ItemAppearance<"head">,
+  heels: playableAppearance as ItemAppearance<"heels">,
+  headOverHeels: playableAppearance as ItemAppearance<"headOverHeels">,
   doorFrame: doorFrameAppearance,
   doorLegs: doorLegsAppearance,
   monster: monsterAppearance,

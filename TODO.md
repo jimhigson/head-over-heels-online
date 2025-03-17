@@ -62,6 +62,8 @@ front of other items
 
 ### Details and bugs
 
+[ ] check: does variable speed walking anim work in symbio?
+
 [ ] remove event bus from gamestate (use store instead)
 
 [ ] adopt a network-first strategy: 

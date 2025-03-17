@@ -21,6 +21,7 @@ type PlayableRenderProps = {
 
   highlighted: boolean;
   flashing: boolean;
+  shining: boolean;
 };
 
 type ItemRenderPropsMap = {
