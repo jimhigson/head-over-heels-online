@@ -19,7 +19,7 @@ import {
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import {
-  shieldRemaining,
+  shieldRemainingForAbilities,
   fastStepsRemaining,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
@@ -386,7 +386,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const { text: skillText, container: extraSkillContainer } =
       this.#hudElements[characterName].extraSkill;
 
-    const shieldNumber = shieldRemaining(abilities);
+    const shieldNumber = shieldRemainingForAbilities(abilities);
     const shieldVisible = shieldNumber > 0 || !onScreenControls;
     shieldContainer.visible = shieldVisible;
 

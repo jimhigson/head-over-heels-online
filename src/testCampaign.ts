@@ -825,6 +825,32 @@ const rooms = {
         position: { x: 17, y: 1, z: 0 },
       },
       {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 17, y: 1, z: 1 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 17, y: 1, z: 2 },
+      },
+      // some deadly step to check shields on:
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 16, y: 1, z: 0 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 16, y: 1, z: 1 },
+      },
+      {
+        type: "pickup",
+        config: { gives: "shield" },
+        position: { x: 15, y: 1, z: 0 },
+      },
+      {
         type: "deadlyBlock",
         config: { style: "volcano", times: { y: 4 } },
         position: { x: 17, y: 2, z: 0 },
