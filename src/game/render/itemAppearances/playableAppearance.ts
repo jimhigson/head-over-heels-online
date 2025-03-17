@@ -35,7 +35,10 @@ import {
 } from "../../physics/mechanicsConstants";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { accentColours } from "../../hintColours";
-import { shieldRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import {
+  playableHasShield,
+  shieldRemainingForAbilities,
+} from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 
@@ -170,9 +173,9 @@ export const isShining = (playableItem: PlayableItem): boolean => {
   return playableItem.type === "headOverHeels" ?
       // in this case, both playables in symbiosis should have the same shield
       // left, so arbitrarily choose head:
-      shieldRemaining(playableItem.state.head) > 0 ||
-        shieldRemaining(playableItem.state.heels) > 0
-    : shieldRemaining(playableItem.state) > 0;
+      shieldRemainingForAbilities(playableItem.state.head) > 0 ||
+        shieldRemainingForAbilities(playableItem.state.heels) > 0
+    : shieldRemainingForAbilities(playableItem.state) > 0;
 };
 
 const addFilterToContainer = (container: Container, newFilter: Filter) => {
@@ -303,7 +306,7 @@ export const playableAppearance = <
       );
 
   const flashing = isFlashing(subject);
-  const shining = isShining(subject);
+  const shining = playableHasShield(subject);
 
   const walkSpeed = lengthXyz(facing);
 

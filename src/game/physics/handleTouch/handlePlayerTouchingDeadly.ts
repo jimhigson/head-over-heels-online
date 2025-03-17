@@ -1,7 +1,7 @@
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "../../../model/modelTypes";
-import { shieldRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
@@ -27,14 +27,7 @@ export function handlePlayerTouchingDeadly<
     return;
   }
 
-  const abilities =
-    playableItem.type === "headOverHeels" ?
-      // in this case, both playables in symbiosis should have the same shield
-      // left, so arbitrarily choose head:
-      playableItem.state.head
-    : playableItem.state;
-
-  if (shieldRemaining(abilities) > 0) {
+  if (playableHasShield(playableItem)) {
     // has shield - ignore touching the deadly item
     return;
   }

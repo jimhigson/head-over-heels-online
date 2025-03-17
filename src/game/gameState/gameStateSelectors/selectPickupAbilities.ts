@@ -1,8 +1,9 @@
 import type { HeadAbilities } from "../../../model/ItemStateMap";
 import { blockSizePx } from "../../../sprites/spritePivots";
+import type { PlayableItem } from "../../physics/itemPredicates";
 import { shieldDuration } from "../../physics/mechanicsConstants";
 
-export const shieldRemaining = (abilities?: {
+export const shieldRemainingForAbilities = (abilities?: {
   shieldCollectedAt: number;
   gameTime: number;
 }) => {
@@ -18,6 +19,15 @@ export const shieldRemaining = (abilities?: {
   return hasShield ?
       100 - Math.ceil((gameTime - shieldCollectedAt) / (shieldDuration / 100))
     : 0;
+};
+
+export const playableHasShield = (playableItem: PlayableItem): boolean => {
+  return playableItem.type === "headOverHeels" ?
+      // in this case, both playables in symbiosis should have the same shield
+      // left, so arbitrarily choose head:
+      shieldRemainingForAbilities(playableItem.state.head) > 0 ||
+        shieldRemainingForAbilities(playableItem.state.heels) > 0
+    : shieldRemainingForAbilities(playableItem.state) > 0;
 };
 
 export const fastStepsRemaining = (abilities: HeadAbilities) => {
