@@ -23,7 +23,8 @@
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\"",
     "check:circDep": "dpdm -T --exit-code circular:1 src/main.tsx",
-    "genTypes": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType > src/_generated/types/ItemInPlayUnion.ts && prettier --experimental-ternaries src/_generated/types/ --write"
+    "genTypes": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType > src/_generated/types/ItemInPlayUnion.ts && prettier --experimental-ternaries src/_generated/types/ --write",
+    "prepare": "husky"
   },
   "dependencies": {
     "@mutabazia/react-portal": "^1.0.7",
@@ -34,6 +35,7 @@
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
     "es-iterator-helpers": "^1.2.1",
+    "husky": "^9.1.7",
     "nano-equal": "^2.0.2",
     "natural-orderby": "^5.0.0",
     "pixi.js": "^8.8.1",
@@ -66,6 +68,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "fast-json-patch": "^3.1.1",
     "gh-pages": "^6.3.0",
+    "git-format-staged": "^3.1.1",
     "globals": "^15.15.0",
     "image-size": "^1.2.0",
     "immer": "^10.1.1",

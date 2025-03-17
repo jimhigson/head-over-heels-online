@@ -1,0 +1,5 @@
+echo running pre-commit...
+echo git-format-staged
+git-format-staged --formatter 'prettier --stdin-filepath "{}"' 'src/*.ts' 'src/*.tsx' 'src/*.json' 'src/*.html'
+echo ...pre-commit done
+
