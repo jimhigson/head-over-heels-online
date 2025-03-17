@@ -150,7 +150,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
   #updateElementPositions(screenSize: Xy) {
     this.#hudElements.mainButtonNest.x = screenSize.x - 44;
-    this.#hudElements.mainButtonNest.y = screenSize.y - 14;
+    this.#hudElements.mainButtonNest.y = screenSize.y - 16;
 
     this.#hudElements.joystick.container.x = 34;
     this.#hudElements.joystick.container.y = screenSize.y - 30;
