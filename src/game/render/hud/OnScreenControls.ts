@@ -152,8 +152,8 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     this.#hudElements.mainButtonNest.x = screenSize.x - 44;
     this.#hudElements.mainButtonNest.y = screenSize.y - 14;
 
-    this.#hudElements.joystick.container.x = 32;
-    this.#hudElements.joystick.container.y = screenSize.y - 28;
+    this.#hudElements.joystick.container.x = 34;
+    this.#hudElements.joystick.container.y = screenSize.y - 30;
   }
 
   tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>): void {
