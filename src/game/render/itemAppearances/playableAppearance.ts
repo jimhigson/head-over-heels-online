@@ -109,13 +109,14 @@ const updateIndividualPlayableSprite = (
 
 const createOutputContainer = (
   name: IndividualCharacterName,
+  inSymbio: boolean,
 ): IndividualPlayableRenderingContainer => {
   const container = new Container() as IndividualPlayableRenderingContainer;
   const playableSpriteContainer = new Container();
   container[playableSpriteContainerSymbol] = playableSpriteContainer;
   container.addChild(playableSpriteContainer);
   const shineSprite = createSprite({
-    animationId: `shine`,
+    animationId: inSymbio ? `shine.${name}InSymbio` : "shine",
     filter:
       name === "heels" ?
         new PaletteSwapFilter({ pastelBlue: spritesheetPalette.pink })
@@ -331,8 +332,8 @@ export const playableAppearance = <
     outputContainer =
       previousRendering ??
       stackSprites({
-        top: createOutputContainer("head"),
-        bottom: createOutputContainer("heels"),
+        top: createOutputContainer("head", true),
+        bottom: createOutputContainer("heels", true),
       });
 
     const stackedContainer =
@@ -353,7 +354,7 @@ export const playableAppearance = <
       currentlyRenderedProps,
     );
   } else {
-    outputContainer = previousRendering ?? createOutputContainer(type);
+    outputContainer = previousRendering ?? createOutputContainer(type, false);
 
     updateIndividualsRendering(
       type,

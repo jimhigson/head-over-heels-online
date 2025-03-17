@@ -263,6 +263,13 @@ const frames = {
     largeItemGridLocation({ x: 4, y: -1 }),
     largeItemTextureSize,
   ),
+  // deliberately blank sprite to use as a noop
+  blank: {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
 } as const satisfies SpritesheetData["frames"];
 
 export const playableSpritesheetData = {
@@ -325,6 +332,40 @@ export const playableSpritesheetData = {
       0.5,
     ),
     shine: withSpeed(seriesOfAnimationFrameTextureIds("shine", 6), 0.5),
+    "shine.headInSymbio": withSpeed(
+      [
+        "shine.1",
+        "shine.2",
+        "shine.3",
+        "blank",
+        "blank",
+        "blank",
+        "blank",
+        "blank",
+        "blank",
+        "shine.4",
+        "shine.5",
+        "shine.6",
+      ] as const,
+      0.5,
+    ),
+    "shine.heelsInSymbio": withSpeed(
+      [
+        "blank",
+        "blank",
+        "blank",
+        "shine.1",
+        "shine.2",
+        "shine.3",
+        "shine.4",
+        "shine.5",
+        "shine.6",
+        "blank",
+        "blank",
+        "blank",
+      ] as const,
+      0.5,
+    ),
   },
 } as const satisfies Pick<
   SpritesheetData,
