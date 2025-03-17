@@ -15,7 +15,10 @@ import {
   analogueDeadzone,
   type InputStateTrackerInterface,
 } from "../../input/InputStateTracker";
-import { rotateInputVector45 } from "../../input/analogueControlAdjustments";
+import {
+  lightlySnapXy4,
+  rotateInputVector45,
+} from "../../input/analogueControlAdjustments";
 import {
   hudHighlightAndOutlineFilters,
   hudLowlightAndOutlineFilters,
@@ -35,6 +38,12 @@ type JoystickRenderContext = {
   inputDirectionMode: InputDirectionMode;
   colourise: boolean;
 };
+
+/**
+ * how much to snap by for the sake of biasing to make the cardinal directions
+ * easier to hit
+ */
+const snapCosineThreshold = Math.cos(30 * (Math.PI / 180));
 
 export class OnScreenJoystickRenderer
   implements Renderer<JoystickRenderContext, EmptyObject>
@@ -171,10 +180,14 @@ export class OnScreenJoystickRenderer
       z: 0,
     });
 
-    const snapped = scaleXyz(onScreenDirectionVector, sensitivity);
+    const lightlySnapped = lightlySnapXy4(
+      onScreenDirectionVector,
+      snapCosineThreshold,
+    );
 
-    this.renderContext.inputStateTracker.hudInputState.directionVector =
-      snapped;
+    const scaled = scaleXyz(lightlySnapped, sensitivity);
+
+    this.renderContext.inputStateTracker.hudInputState.directionVector = scaled;
   };
 
   tick() {

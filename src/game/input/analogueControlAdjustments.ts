@@ -11,7 +11,8 @@ import {
   type Xyz,
 } from "../../utils/vectors/vectors";
 
-export const snapAngleRadians = 13 * (Math.PI / 180);
+// by default, snap on 13º
+const defaultSnapThreshold = Math.cos(13 * (Math.PI / 180));
 
 const rad = -Math.PI / 4; // 45 degrees in radians
 export const rotateInputVector45 = (vector: Xyz): Xyz => {
@@ -56,12 +57,17 @@ export const strictSnapXy8 = (input: Xyz) => {
  * if an input vector is close to an axis, snap it to that axis
  * while still allowing a range of arbitrary values
  */
-export const lightlySnapXy4 = (vector: Xyz): Xyz => {
+export const lightlySnapXy4 = (
+  vector: Xyz,
+  /**
+   * the cosine of the angle (in radians) that is the threshold angle from
+   * cardinal directions below which snapping occurs
+   */
+  cosineThreshold: number = defaultSnapThreshold,
+): Xyz => {
   const { x, y } = vector;
   const magnitude = Math.sqrt(x * x + y * y);
   if (magnitude === 0) return originXyz; // Handle zero vector case
-
-  const threshold = Math.cos(snapAngleRadians); // Convert radians to cosine threshold
 
   // Normalize vector
   const normX = x / magnitude;
@@ -73,10 +79,13 @@ export const lightlySnapXy4 = (vector: Xyz): Xyz => {
 
   // Determine closest direction within threshold
   if (dotRight > dotUp) {
-    if (dotRight >= threshold)
+    if (dotRight >= cosineThreshold) {
       return { x: Math.sign(x) * magnitude, y: 0, z: 0 };
+    }
   } else {
-    if (dotUp >= threshold) return { x: 0, y: Math.sign(y) * magnitude, z: 0 };
+    if (dotUp >= cosineThreshold) {
+      return { x: 0, y: Math.sign(y) * magnitude, z: 0 };
+    }
   }
 
   // Return original if no snapping occurs
