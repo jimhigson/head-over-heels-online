@@ -13,8 +13,8 @@ import type { Renderer } from "../Renderer";
 import type { HudRendererTickContext } from "./HudRenderer";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 
-const mainButtonsSpreadXPx = 26;
-const mainButtonsSpreadYPx = 13;
+const mainButtonsSpreadXPx = 30;
+const mainButtonsSpreadYPx = 15;
 
 type OnScreenControlsRenderContext<RoomId extends string> = {
   gameState: GameState<RoomId>;
@@ -149,7 +149,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
   #updateElementPositions(screenSize: Xy) {
-    this.#hudElements.mainButtonNest.x = screenSize.x - 40;
+    this.#hudElements.mainButtonNest.x = screenSize.x - 44;
     this.#hudElements.mainButtonNest.y = screenSize.y - 14;
 
     this.#hudElements.joystick.container.x = 32;
