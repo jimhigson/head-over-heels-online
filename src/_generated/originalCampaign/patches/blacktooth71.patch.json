@@ -1,4 +1,5 @@
 [
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
   { "op": "replace", "path": "/items/door@0,2,4/position/y", "value": 4 },
   { "op": "replace", "path": "/items/door@3,6,0/position/x", "value": 5 },
   {
@@ -33,9 +34,9 @@
     "op": "add",
     "path": "/items/extraTower",
     "value": {
-      "type": "block",
-      "config": { "style": "tower", "times": { "z": 4, "y": 2 } },
-      "position": { "x": 0, "y": 4, "z": 0 }
+      "config": { "style": "tower", "times": { "y": 2, "z": 4 } },
+      "position": { "x": 0, "y": 4, "z": 0 },
+      "type": "block"
     }
   },
   {

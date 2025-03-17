@@ -1,1 +1,40 @@
-[]
+[
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/tiles/6",
+    "value": "plain"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/tiles/5",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/tiles/4",
+    "value": "armour"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/tiles/3",
+    "value": "plain"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/tiles/2",
+    "value": "armour"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/tiles/1",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/deadlyBlock@7,3,1/position/z",
+    "value": 2
+  },
+  { "op": "remove", "path": "/items/deadlyBlock@7,3,1/config/times" },
+  { "op": "remove", "path": "/items/deadlyBlock@6,4,1/config/times" },
+  { "op": "remove", "path": "/items/deadlyBlock@6,2,1/config/times" }
+]

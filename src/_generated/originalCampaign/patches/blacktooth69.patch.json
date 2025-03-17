@@ -1,1 +1,4 @@
-[]
+[
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+]
