@@ -8,6 +8,7 @@ import type {
 
 type FrameCallback = (
   gameState: GameStateWithMockInput,
+  mockInputStateTracker: MockInputStateTracker,
 ) => GameStateWithMockInput | void;
 
 type PlayGameThroughOptions = {
@@ -45,7 +46,9 @@ export const playGameThrough = (
 
     gameState = frameCallbacksArray.reduce((gameStateAc, frameCallback) => {
       try {
-        return frameCallback(gameStateAc) || gameStateAc;
+        return (
+          frameCallback(gameStateAc, gameState.inputStateTracker) || gameStateAc
+        );
       } catch (e) {
         (e as Error).message =
           `while playing through @${gameStateAc.gameTime}ms (frame ${frameNumber}) ${(e as Error).message}`;

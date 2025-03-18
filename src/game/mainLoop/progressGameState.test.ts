@@ -189,12 +189,68 @@ describe("pickups", () => {
   });
 
   test.todo(
-    "pickups do not come back after leaving room and coming back",
-    () => {},
-  );
-  test.todo(
-    "fish do not come back after leaving room and coming back",
-    () => {},
+    "pickups do not reload back after collecting, leaving room, and coming back",
+    () => {
+      const gameState = basicGameState({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            position: { x: 5, y: 2.5, z: 0 },
+            config: {
+              which: "heels",
+            },
+          },
+          pickupOnFloor: {
+            type: "pickup",
+            position: { x: 2.5, y: 2, z: 0 },
+            config: {
+              gives: "extra-life",
+            },
+          },
+          doorToSecondRoom: {
+            type: "door",
+            position: { x: 0, y: 2, z: 0 },
+            config: { direction: "right", toRoom: secondRoomId },
+          },
+        },
+        secondRoomItems: {
+          doorToFirstRoom: {
+            type: "door",
+            position: { x: 8, y: 2, z: 0 },
+            config: { direction: "left", toRoom: firstRoomId },
+          },
+        },
+      });
+
+      let visitedSecond = false;
+
+      // walk left for one second at 60fps:
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "right";
+        },
+        frameCallbacks(gameState, mockInputStateTracker) {
+          if (gameState.characterRooms.heels?.id === "secondRoom") {
+            visitedSecond = true;
+            // walk back to the first room:
+            mockInputStateTracker.mockDirectionPressed = "left";
+          }
+        },
+        until(gameState) {
+          return (
+            visitedSecond && gameState.characterRooms.heels?.id === "firstRoom"
+          );
+        },
+      });
+
+      expect(gameState.pickupsCollected[firstRoomId]?.["pickupOnFloor"]).toBe(
+        true,
+      );
+      expect(gameState.characterRooms.heels?.id).toBe("firstRoom");
+      expect(
+        gameState.characterRooms.heels?.items.pickupOnFloor,
+      ).toBeUndefined();
+    },
   );
 });
 

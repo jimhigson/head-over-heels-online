@@ -530,7 +530,10 @@ export const itemAppearances: {
         which === "headOverHeels" ?
           createStackedSprites({
             top: { textureId: `head.walking.${startDirection}.2`, filter },
-            bottom: { textureId: `heels.walking.${startDirection}.2`, filter },
+            bottom: {
+              textureId: `heels.walking.${startDirection}.2`,
+              filter,
+            },
           })
         : createSprite({
             textureId: `${which}.walking.${startDirection}.2`,
