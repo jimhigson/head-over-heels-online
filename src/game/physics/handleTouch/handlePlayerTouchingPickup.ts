@@ -29,22 +29,30 @@ export const handlePlayerTouchingPickup = <
   const {
     gameState,
     movingItem: player,
-    touchedItem: pickup,
-    room: { id: roomId },
+    touchedItem: { id: pickupId, config: pickupConfig },
+    room: {
+      id: roomId,
+      roomJson: { items: roomJsonItems },
+    },
   } = e;
   const { pickupsCollected } = gameState;
 
-  if (pickupsCollected[roomId]?.[pickup.id] === true) {
+  if (pickupsCollected[roomId]?.[pickupId] === true) {
     // ignore already picked up items
     return;
   }
 
-  if (pickupsCollected[roomId] === undefined) {
-    pickupsCollected[roomId] = {};
+  // mark the item as picked up, but only if it is in the room's original list of items Eg,
+  // if the item is injected at play-time (by cheats or some other mechanic), there's no point
+  // marking it as collected or when it generates again it won't be possible to pick up
+  if (roomJsonItems[pickupId]) {
+    if (pickupsCollected[roomId] === undefined) {
+      pickupsCollected[roomId] = {};
+    }
+    pickupsCollected[roomId][pickupId] = true;
   }
-  pickupsCollected[roomId][pickup.id] = true;
 
-  switch (pickup.config.gives) {
+  switch (pickupConfig.gives) {
     case "hooter": {
       const toModify = selectHeadAbilities(player);
       if (toModify !== undefined) {
@@ -114,7 +122,7 @@ export const handlePlayerTouchingPickup = <
 
     case "scroll":
       // avoid the scroll being closed right away if the player already has jump held:
-      store.dispatch(scrollRead(pickup.config.page));
+      store.dispatch(scrollRead(pickupConfig.page));
       break;
 
     case "reincarnation": {
@@ -127,11 +135,11 @@ export const handlePlayerTouchingPickup = <
     case "crown": {
       // a little experiment- let's go straight to the store, even though
       // we're in the game engine:
-      store.dispatch(crownCollected(pickup.config.planet));
+      store.dispatch(crownCollected(pickupConfig.planet));
       break;
     }
 
     default:
-      pickup.config satisfies never;
+      pickupConfig satisfies never;
   }
 };
