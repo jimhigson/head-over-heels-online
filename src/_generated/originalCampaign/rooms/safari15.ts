@@ -69,7 +69,7 @@ export const room = inferRoomJson({
     },
     "monster@0,6,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",
@@ -80,7 +80,7 @@ export const room = inferRoomJson({
     },
     "monster@1,4,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",
@@ -91,7 +91,7 @@ export const room = inferRoomJson({
     },
     "monster@2,12,1": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
@@ -100,7 +100,7 @@ export const room = inferRoomJson({
     },
     "monster@2,2,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",

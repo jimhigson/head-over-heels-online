@@ -1,41 +1,65 @@
 [
   {
     "op": "add",
-    "path": "/items/switch@6,0,1/config/activates/block@0,7,0",
+    "path": "/items/switch@6,0,1/config/modifies/0",
     "value": {
-      "left": { "disappear": "onStand" },
-      "right": { "disappear": null }
+      "expectType": "block",
+      "key": "disappear",
+      "left": "onStand",
+      "right": null,
+      "target": "block@0,7,0"
     }
   },
   {
     "op": "add",
-    "path": "/items/switch@6,0,1/config/activates/block@3,7,0",
+    "path": "/items/switch@6,0,1/config/modifies/1",
     "value": {
-      "left": { "disappear": "onStand" },
-      "right": { "disappear": null }
+      "expectType": "block",
+      "key": "disappear",
+      "left": "onStand",
+      "right": null,
+      "target": "block@3,7,0"
     }
   },
   {
     "op": "add",
-    "path": "/items/switch@6,0,1/config/activates/extraMonster",
-    "value": { "left": { "activated": true }, "right": { "activated": false } }
+    "path": "/items/switch@6,0,1/config/modifies/2",
+    "value": {
+      "expectType": "monster",
+      "key": "activated",
+      "left": true,
+      "right": false,
+      "target": "monster@3,0,1"
+    }
   },
   {
     "op": "add",
-    "path": "/items/switch@6,0,1/config/activates/extraMonster2",
-    "value": { "left": { "activated": true }, "right": { "activated": false } }
+    "path": "/items/switch@6,0,1/config/modifies/3",
+    "value": {
+      "expectType": "monster",
+      "key": "activated",
+      "left": true,
+      "right": false,
+      "target": "extraMonster"
+    }
   },
   {
     "op": "add",
-    "path": "/items/switch@6,0,1/config/activates/monster@3,0,1",
-    "value": { "left": { "activated": true }, "right": { "activated": false } }
+    "path": "/items/switch@6,0,1/config/modifies/4",
+    "value": {
+      "expectType": "monster",
+      "key": "activated",
+      "left": true,
+      "right": false,
+      "target": "extraMonster2"
+    }
   },
   {
     "op": "add",
     "path": "/items/extraMonster",
     "value": {
       "config": {
-        "activated": true,
+        "activated": "on",
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },
@@ -49,7 +73,7 @@
     "path": "/items/extraMonster2",
     "value": {
       "config": {
-        "activated": true,
+        "activated": "on",
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },

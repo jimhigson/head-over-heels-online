@@ -1,3 +1,4 @@
+import type { ItemConfigMap } from "../../../model/json/ItemConfigMap";
 import { vectorClosestDirectionXy4 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import {
@@ -12,6 +13,10 @@ import {
 import type { ItemAppearance } from "./ItemAppearance";
 import type { ItemRenderProps } from "./ItemRenderProps";
 
+const greyWhileDeactivated: Array<
+  ItemConfigMap<string, string>["monster"]["which"]
+> = ["cyberman", "dalek", "skiHead", "bubbleRobot", "computerBot", "turtle"];
+
 export const monsterAppearance: ItemAppearance<"monster"> = ({
   renderContext: {
     item: { config, state },
@@ -23,7 +28,10 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
 
   const filter =
     busyLickingDoughnutsOffFace ? doughnuttedFilter
-    : !activated ? greyFilter(room!)
+    : !activated ?
+      greyWhileDeactivated.includes(config.which) ?
+        greyFilter(room!)
+      : undefined
     : undefined;
 
   switch (config.which) {

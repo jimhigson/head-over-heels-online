@@ -147,6 +147,7 @@ export default {
       border: "10",
       dialog: "20",
       topSprite: "30",
+      cheats: "40",
     },
     keyframes: {
       // cursor flash - for when selecting the keys for an action

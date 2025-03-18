@@ -22,11 +22,12 @@ type GeneratedTypeUnion =
   | "joystick"
   | "lift"
   | "monster"
-  | "movableBlock"
   | "moveableDeadly"
+  | "movingPlatform"
   | "pickup"
   | "portableBlock"
   | "portal"
+  | "pushableBlock"
   | "sceneryPlayer"
   | "slidingBlock"
   | "slidingDeadly"
@@ -100,11 +101,11 @@ export type ItemTypeUnion<
   | (T extends "monster" ?
       ItemInPlay<"monster", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
-  | (T extends "movableBlock" ?
-      ItemInPlay<"movableBlock", RoomId, RoomItemId, RoomItemId, ScN>
-    : never)
   | (T extends "moveableDeadly" ?
       ItemInPlay<"moveableDeadly", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "movingPlatform" ?
+      ItemInPlay<"movingPlatform", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "pickup" ?
       ItemInPlay<"pickup", RoomId, RoomItemId, RoomItemId, ScN>
@@ -114,6 +115,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "portal" ?
       ItemInPlay<"portal", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "pushableBlock" ?
+      ItemInPlay<"pushableBlock", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "sceneryPlayer" ?
       ItemInPlay<"sceneryPlayer", RoomId, RoomItemId, RoomItemId, ScN>

@@ -12,7 +12,6 @@ import {
   xyEqual,
   originXy,
   subXy,
-  distanceSquaredXy,
   perpendicularAxisXy,
   unitVector,
   scaleXyz,
@@ -24,10 +23,10 @@ import {
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { emptyObject } from "../../../utils/empty";
+import { playablesInRoom, type RoomState } from "../../../model/RoomState";
+import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClosestPlayable";
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
-import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
-import { playablesInRoom, type RoomState } from "../../../model/RoomState";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
@@ -38,7 +37,7 @@ const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
 
 type ItemWithMovement<RoomId extends string, RoomItemId extends string> =
   | ItemInPlay<"monster", RoomId, RoomItemId>
-  | ItemInPlay<"movableBlock", RoomId, RoomItemId>;
+  | ItemInPlay<"movingPlatform", RoomId, RoomItemId>;
 
 const notWalking = Object.freeze({
   movementType: "vel",
@@ -47,7 +46,7 @@ const notWalking = Object.freeze({
   "monster",
   string,
   string
-> satisfies MechanicResult<"movableBlock", string, string>);
+> satisfies MechanicResult<"movingPlatform", string, string>);
 
 const speedForItem = (itemWithMovement: ItemWithMovement<string, string>) => {
   if (isMonster(itemWithMovement)) {
@@ -113,37 +112,6 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
   return {
     movementType: "steady",
   };
-};
-
-const findClosestPlayable = <RoomId extends string, RoomItemId extends string>(
-  position: Xyz,
-  room: RoomState<RoomId, RoomItemId>,
-) => {
-  // find closest player in the room:
-  const { head, heels, headOverHeels } = playablesInRoom(room.items);
-
-  if (headOverHeels !== undefined) {
-    return playerDiedRecently(headOverHeels) ? undefined : headOverHeels;
-  }
-
-  const headDistance =
-    head === undefined ? undefined
-    : playerDiedRecently(head) ? undefined
-    : head.state.action === "death" ? undefined
-    : distanceSquaredXy(head.state.position, position);
-
-  const heelsDistance =
-    heels === undefined ? undefined
-    : playerDiedRecently(heels) ? undefined
-    : heels.state.action === "death" ? undefined
-    : distanceSquaredXy(heels.state.position, position);
-
-  return (
-    headDistance === undefined ? heels
-    : heelsDistance === undefined ? head
-    : headDistance < heelsDistance ? head
-    : heels
-  );
 };
 
 const walkAlongShortestAxisTowardsPlayer = <
@@ -222,7 +190,7 @@ const walkTowardIfInSquare = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   _deltaMS: number,
-  // set to -1 to run away instead of towards player
+  // set to true to run away instead of towards player
   opposite: boolean = false,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
@@ -461,7 +429,7 @@ export const tickMovement = <RoomId extends string, RoomItemId extends string>(
   deltaMS: number,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
   if (
-    !itemWithMovement.state.activated ||
+    !itemWithMovement.state.activated === true ||
     (isMonster(itemWithMovement) &&
       itemWithMovement.state.busyLickingDoughnutsOffFace)
   )
@@ -515,13 +483,11 @@ export const tickMovement = <RoomId extends string, RoomItemId extends string>(
       );
     }
     case "unmoving":
-    case "free":
       return notWalking;
 
-    case "towards-when-in-square-xy8":
+    case "towards-analogue":
       return walkTowardIfInSquare(itemWithMovement, room, gameState, deltaMS);
-
-    case "towards-when-in-square-xy8-unless-planet-crowns":
+    case "towards-analogue-unless-planet-crowns":
       return walkTowardIfInSquare(
         itemWithMovement,
         room,
@@ -563,10 +529,9 @@ export const handleItemWithMovementTouchingItem = <
       handleMonsterTouchingItemByStopping(e);
       break;
     case "towards-on-shortest-axis-xy4":
-    case "towards-when-in-square-xy8":
-    case "towards-when-in-square-xy8-unless-planet-crowns":
+    case "towards-analogue":
+    case "towards-analogue-unless-planet-crowns":
     case "unmoving":
-    case "free":
       // these don't need anything on touching:
       return;
 

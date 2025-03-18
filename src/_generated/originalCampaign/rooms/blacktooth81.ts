@@ -54,22 +54,22 @@ export const room = inferRoomJson({
     },
     "monster@6,7,1": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
       position: { x: 6, y: 7, z: 1 },
       type: "monster",
     },
-    "movableBlock@6,7,0": {
+    "movingPlatform@6,7,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "right",
         style: "stepStool",
       },
       position: { x: 6, y: 7, z: 0 },
-      type: "movableBlock",
+      type: "movingPlatform",
     },
     "wall@0,0,0:2sckOl": {
       config: { direction: "right", tiles: [], times: { y: 8 } },

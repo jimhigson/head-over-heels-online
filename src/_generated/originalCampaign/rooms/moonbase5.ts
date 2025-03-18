@@ -19,7 +19,7 @@ export const room = inferRoomJson({
     },
     "monster@0,4,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },
@@ -28,7 +28,7 @@ export const room = inferRoomJson({
     },
     "monster@3,2,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },
@@ -37,7 +37,7 @@ export const room = inferRoomJson({
     },
     "monster@3,6,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },

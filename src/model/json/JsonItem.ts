@@ -14,10 +14,12 @@ export type JsonItemType =
   | "barrier"
   | "block"
   | "deadlyBlock"
-  // something heels can pick up in her bag
+  /** something heels can pick up in her bag */
   | "portableBlock"
-  // something that can be pushed or moves on a switch
-  | "movableBlock"
+  /** something that can be pushed but not picked up */
+  | "pushableBlock"
+  /** something that moves by itself, possibly activated by a switch */
+  | "movingPlatform"
   | "moveableDeadly"
   | "conveyor"
   | "pickup"
@@ -62,8 +64,6 @@ export type DoorLegsConfig = {
   // equal to the z of the door
   height: number;
 };
-
-export type DeadlyItemStyle = "volcano" | "toaster" | "spikes";
 
 /** config used in both json and in-play items */
 export type JsonItemConfig<

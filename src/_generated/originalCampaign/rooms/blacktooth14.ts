@@ -39,7 +39,7 @@ export const room = inferRoomJson({
     },
     "monster@7,2,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-xy8",
         which: "helicopterBug",
       },

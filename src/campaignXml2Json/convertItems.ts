@@ -13,7 +13,7 @@ import { readRoomToXmlJson, roomNameFromXmlFilename } from "./readToJson";
 import chalk from "chalk";
 import type { Xml2JsonItem, XmlItemMonsterBehaviour } from "./Xml2JsonItem";
 import { itemKey } from "../utils/keyItems";
-import type { JsonItemUnion } from "../model/json/JsonItem";
+import type { JsonItemType, JsonItemUnion } from "../model/json/JsonItem";
 import { convertDoor } from "./convertDoor";
 import {
   addXyz,
@@ -21,11 +21,8 @@ import {
   subXy,
   type DirectionXy4,
 } from "../utils/vectors/vectors";
-import type {
-  AllowedMonsterMovements,
-  ItemConfigMap,
-  JsonMovement,
-} from "../model/json/ItemConfigMap";
+import type { ItemConfigMap } from "../model/json/ItemConfigMap";
+import type { JsonMovement } from "src/model/json/utilityJsonConfigTypes";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 
@@ -37,8 +34,7 @@ const monsterBehaviourConversions = {
   "behavior of random patroling in four secondary directions":
     "patrol-randomly-diagonal",
   "behavior of random patroling in eight directions": "patrol-randomly-xy8",
-  "behavior of waiting hunter in eight directions":
-    "towards-when-in-square-xy8",
+  "behavior of waiting hunter in eight directions": "towards-analogue",
   // seems only to be used for cybermen when they are charging and can wake up:
   "behavior of waiting hunter in four directions":
     "towards-on-shortest-axis-xy4",
@@ -405,42 +401,50 @@ const convertItem = async ({
     case "stool": {
       const conversions: Record<
         typeof xml2JsonItem.kind,
-        ItemConfigMap<string, string>["movableBlock"]["style"]
+        ItemConfigMap<string, string>["pushableBlock"]["style"]
       > = {
         stool: "stepStool",
         sandwich: "sandwich",
       };
 
-      return {
-        type: "movableBlock",
-        config: {
-          style: conversions[xml2JsonItem.kind],
-          ...((
-            xml2JsonItem.behavior ===
-            "behavior of thing able to move by pushing"
-          ) ?
-            { movement: "free" }
-          : {
-              movement:
-                (
-                  xml2JsonItem.behavior ===
-                    "behavior of flying there and back" ||
-                  xml2JsonItem.behavior === "behavior of there and back"
-                ) ?
-                  "back-forth"
-                : "clockwise",
-              startDirection: convertDirection(
-                // blacktooth 78 xml has a back and forth without a direction
-                xml2JsonItem.orientation || "south",
-              ),
-              // I don't know where in the xml this is stored - think it might not be
-              // at all - this needs to be changed in a patch on the room where items are
-              // moving on first entry
-              activated: false,
-            }),
-        },
-        position,
-      };
+      const type = (
+        xml2JsonItem.behavior === "behavior of thing able to move by pushing" ?
+          "pushableBlock"
+        : "movingPlatform") satisfies JsonItemType;
+
+      if (type === "pushableBlock") {
+        return {
+          type,
+          config: {
+            style: conversions[xml2JsonItem.kind],
+          },
+          position,
+        };
+      } else {
+        return {
+          type,
+          config: {
+            style: conversions[xml2JsonItem.kind],
+
+            movement:
+              (
+                xml2JsonItem.behavior === "behavior of flying there and back" ||
+                xml2JsonItem.behavior === "behavior of there and back"
+              ) ?
+                "back-forth"
+              : "clockwise",
+            startDirection: convertDirection(
+              // blacktooth 78 xml has a back and forth without a direction
+              xml2JsonItem.orientation || "south",
+            ),
+            // I don't know where in the xml this is stored - think it might not be
+            // at all - this needs to be changed in a patch to "onStand" or "on"
+            // on a room-by-room basis
+            activated: "off",
+          },
+          position,
+        };
+      }
     }
 
     case "book":
@@ -497,7 +501,8 @@ const convertItem = async ({
         type: "switch",
         config: {
           // this doesn't seem to be in the xml - will need to be added via a patch
-          activates: {},
+          type: "in-room",
+          modifies: [],
         },
         position,
       };
@@ -509,29 +514,41 @@ const convertItem = async ({
         config: {
           which: "cyberman",
           startDirection: "towards",
-          activated: true,
-          movement: monsterBehaviourConversions[
-            xml2JsonItem.behavior
-          ] as AllowedMonsterMovements<"cyberman">,
-        },
-        position,
-      };
-
-    case "imperial-guard-head":
-      return {
-        type: "monster",
-        config: {
-          which: "cyberman",
-          startDirection: convertDirection(xml2JsonItem.orientation),
-          // they are charging:
-          activated: false,
-          wakes:
-            xml2JsonItem.behavior ===
-            "behavior of waiting hunter in four directions",
+          activated: "on",
           movement: "towards-on-shortest-axis-xy4",
         },
         position,
       };
+
+    case "imperial-guard-head": {
+      const wakes =
+        xml2JsonItem.behavior ===
+        "behavior of waiting hunter in four directions";
+
+      return wakes ?
+          {
+            type: "monster",
+            config: {
+              which: "cyberman",
+              startDirection: convertDirection(xml2JsonItem.orientation),
+              // they are charging:
+              activated: "after-player-near",
+              movement: "towards-on-shortest-axis-xy4",
+            },
+            position,
+          }
+        : {
+            type: "monster",
+            config: {
+              which: "cyberman",
+              startDirection: convertDirection(xml2JsonItem.orientation),
+              // they are charging:
+              activated: "off",
+              movement: "towards-on-shortest-axis-xy4",
+            },
+            position,
+          };
+    }
 
     case "monkey":
     case "bighead-robot": {
@@ -539,7 +556,7 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: monsterConversions[xml2JsonItem.kind],
-          activated: true,
+          activated: "on",
           movement: monsterBehaviourConversions[xml2JsonItem.behavior],
         },
         position,
@@ -550,7 +567,7 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "homingBot",
-          activated: true,
+          activated: "on",
           movement: "towards-tripped-on-axis-xy4",
         },
         position,
@@ -561,7 +578,7 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "elephantHead",
-          activated: true,
+          activated: "on",
           movement: "unmoving",
           startDirection: convertDirection(xml2JsonItem.orientation),
         },
@@ -573,7 +590,7 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "dalek",
-          activated: true,
+          activated: "on",
           movement: "patrol-randomly-diagonal",
         },
         position,
@@ -584,7 +601,7 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "elephant",
-          activated: true,
+          activated: "on",
           movement: "patrol-randomly-xy4",
         },
         position,
@@ -595,37 +612,31 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "bubbleRobot",
-          activated: true,
+          activated: "on",
           movement: "patrol-randomly-xy8",
         },
         position,
       };
 
     case "helicopter-bug": {
-      const movement =
-        (
-          xml2JsonItem.behavior ===
-          "behavior of random patroling in eight directions"
-        ) ?
-          "patrol-randomly-xy8"
-        : (
-          xml2JsonItem.behavior ===
-          "behavior of waiting hunter in eight directions"
-        ) ?
-          "towards-when-in-square-xy8"
-        : null;
-
-      if (movement === null) {
-        throw new Error("unknown helicopterBug behaviour");
-      }
+      const waitsThenTowards =
+        xml2JsonItem.behavior ===
+        "behavior of waiting hunter in eight directions";
 
       return {
         type: "monster",
-        config: {
-          which: "helicopterBug",
-          activated: true,
-          movement,
-        },
+        config:
+          waitsThenTowards ?
+            {
+              which: "helicopterBug",
+              activated: "while-player-near",
+              movement: "towards-analogue",
+            }
+          : {
+              which: "helicopterBug",
+              activated: "on",
+              movement: "patrol-randomly-xy8",
+            },
         position,
       };
     }
@@ -635,8 +646,8 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "emperor",
-          activated: true,
-          movement: "towards-when-in-square-xy8",
+          activated: "while-player-near",
+          movement: "towards-analogue",
         },
         position,
       };
@@ -646,8 +657,8 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "emperorsGuardian",
-          activated: true,
-          movement: "towards-when-in-square-xy8-unless-planet-crowns",
+          activated: "while-player-near",
+          movement: "towards-analogue-unless-planet-crowns",
         },
         position,
       };
@@ -659,7 +670,7 @@ const convertItem = async ({
           which: "turtle",
           startDirection: convertDirection(xml2JsonItem.orientation),
           movement: "clockwise",
-          activated: true,
+          activated: "on",
         },
         position,
       };
@@ -670,7 +681,7 @@ const convertItem = async ({
         config: {
           which: monsterConversions[xml2JsonItem.kind],
           startDirection: convertDirection(xml2JsonItem.orientation),
-          activated: true,
+          activated: "on",
           style:
             // rough way to psuedo-randomise which style:
             (

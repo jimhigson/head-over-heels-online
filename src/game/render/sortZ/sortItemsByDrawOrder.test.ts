@@ -334,8 +334,8 @@ describe("cyclic dependencies", () => {
 
   test("found situation 2 - genuine cyclic dependency - not possible to render without splitting sprites up!", () => {
     const items: TestItems = {
-      movableBlock: {
-        id: "movableBlock",
+      pushableBlock: {
+        id: "pushableBlock",
         state: {
           position: {
             x: 32,
@@ -394,11 +394,11 @@ describe("cyclic dependencies", () => {
     // front => behind - this is a cycle!
     expect(relations).toMatchInlineSnapshot(`
       Map {
-        "movableBlock" => Set {
+        "pushableBlock" => Set {
           "monster",
         },
         "pickup" => Set {
-          "movableBlock",
+          "pushableBlock",
         },
         "monster" => Set {
           "pickup",

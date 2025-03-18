@@ -22,15 +22,15 @@ export const room = inferRoomJson({
       position: { x: 6, y: 2, z: 3 },
       type: "door",
     },
-    "movableBlock@3,0,1": {
+    "movingPlatform@3,0,1": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "towards",
         style: "stepStool",
       },
       position: { x: 3, y: 0, z: 1 },
-      type: "movableBlock",
+      type: "movingPlatform",
     },
     "wall@0,0,0:2sckiP": {
       config: { direction: "right", tiles: [], times: { y: 6 } },

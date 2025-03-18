@@ -49,7 +49,7 @@ export const room = inferRoomJson({
     },
     extraMonster: {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
@@ -59,7 +59,7 @@ export const room = inferRoomJson({
     },
     extraMonster2: {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
@@ -69,7 +69,7 @@ export const room = inferRoomJson({
     },
     "monster@3,0,1": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
@@ -93,28 +93,44 @@ export const room = inferRoomJson({
     },
     "switch@6,0,1": {
       config: {
-        activates: {
-          "block@0,7,0": {
-            left: { disappear: "onStand" },
-            right: { disappear: null },
+        modifies: [
+          {
+            expectType: "block",
+            key: "disappear",
+            left: "onStand",
+            right: null,
+            target: "block@0,7,0",
           },
-          "block@3,7,0": {
-            left: { disappear: "onStand" },
-            right: { disappear: null },
+          {
+            expectType: "block",
+            key: "disappear",
+            left: "onStand",
+            right: null,
+            target: "block@3,7,0",
           },
-          extraMonster: {
-            left: { activated: true },
-            right: { activated: false },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "monster@3,0,1",
           },
-          extraMonster2: {
-            left: { activated: true },
-            right: { activated: false },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "extraMonster",
           },
-          "monster@3,0,1": {
-            left: { activated: true },
-            right: { activated: false },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "extraMonster2",
           },
-        },
+        ],
+        type: "in-room",
       },
       position: { x: 6, y: 0, z: 1 },
       type: "switch",

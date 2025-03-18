@@ -13,7 +13,7 @@ import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { OutlineFilter } from "../filters/outlineFilter";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import type { BlockStyle } from "../../../model/json/ItemConfigMap";
+import type { BlockStyle } from "src/model/json/utilityJsonConfigTypes";
 import {
   wallTileSize,
   smallItemTextureSize,
@@ -213,15 +213,15 @@ export const itemAppearances: {
     renderContext: {
       item: {
         state: { setting: stateSetting },
-        config: { store: switchStoreConfig },
+        config: switchConfig,
       },
     },
     currentlyRenderedProps,
   }) {
     // for store switches, ignore the switch's own state and read from the store:
     const setting =
-      switchStoreConfig ?
-        getAtPath(store.getState().gameMenus, switchStoreConfig.path) ? "right"
+      switchConfig.type === "in-store" ?
+        getAtPath(store.getState().gameMenus, switchConfig.path) ? "right"
         : "left"
       : stateSetting;
 
@@ -405,7 +405,16 @@ export const itemAppearances: {
 
   joystick: itemStaticSpriteAppearance("joystick"),
 
-  movableBlock: itemRenderOnce(
+  movingPlatform: itemRenderOnce(
+    ({
+      renderContext: {
+        item: {
+          config: { style },
+        },
+      },
+    }) => createSprite(style),
+  ),
+  pushableBlock: itemRenderOnce(
     ({
       renderContext: {
         item: {

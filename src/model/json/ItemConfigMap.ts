@@ -7,37 +7,15 @@ import type {
   DirectionXy8,
 } from "../../utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
+import type { DoorFrameConfig, DoorLegsConfig } from "./JsonItem";
+import type { MonsterJsonConfig } from "./MonsterJsonConfig";
 import type {
-  DoorFrameConfig,
-  DoorLegsConfig,
-  DeadlyItemStyle,
-} from "./JsonItem";
-import type { ToggleablePaths } from "../../utils/Toggleable";
-import type { GameMenusState } from "../../store/slices/gameMenusSlice";
-
-export type BlockStyle = "organic" | "artificial" | "tower" | "book";
-
-export type JsonMovement =
-  | "free"
-  | "unmoving"
-  | "clockwise"
-  | "back-forth"
-  | "towards-on-shortest-axis-xy4"
-  | "towards-when-in-square-xy8"
-  // special case for emperor's guardian - moves away if you have all the other crowns
-  | "towards-when-in-square-xy8-unless-planet-crowns"
-  | "towards-tripped-on-axis-xy4"
-  | "patrol-randomly-diagonal"
-  | "patrol-randomly-xy4"
-  | "patrol-randomly-xy8";
-// to validate a union as a subset of JsonMovement
-type MovementsSubset<U extends JsonMovement> = U;
-
-/** properties of items that do not change - ie, if it is a barrier in x or y axis */
-
-export type ConsolidatableConfig = {
-  times?: Partial<Xyz>;
-};
+  ConsolidatableConfig,
+  BlockStyle,
+  MovementsSubset,
+  ActivatedWhenSubset,
+} from "./utilityJsonConfigTypes";
+import type { SwitchConfig } from "./SwitchConfig";
 
 export type ItemConfigMap<
   RoomId extends string,
@@ -83,7 +61,7 @@ export type ItemConfigMap<
   };
   deadlyBlock: ConsolidatableConfig & {
     // these don't move, and the differences are purely in their rendering:
-    style: DeadlyItemStyle;
+    style: "volcano" | "toaster" | "spikes";
     times?: Partial<Xyz>;
   };
   moveableDeadly: {
@@ -133,117 +111,43 @@ export type ItemConfigMap<
   };
   // actually not using the special bubbles frames:
   bubbles: { style: /*"fish" | "taupe" | */ "white" };
-  monster: {
-    activated: boolean;
-  } & (
-    | {
-        which: "emperorsGuardian";
-        movement: MovementsSubset<"towards-when-in-square-xy8-unless-planet-crowns">;
-      }
-    | {
-        which: "emperor";
-        movement: MovementsSubset<"towards-when-in-square-xy8">;
-      }
-    | {
-        which: "elephant";
-        movement: MovementsSubset<"patrol-randomly-xy4">;
-      }
-    | {
-        which: "elephantHead";
-        movement: MovementsSubset<"unmoving">;
-        startDirection: DirectionXy4;
-      }
-    | {
-        which: "computerBot" | "monkey";
-        movement: MovementsSubset<
-          "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4"
-        >;
-      }
-    | {
-        which: "bubbleRobot";
-        movement: MovementsSubset<"patrol-randomly-xy8">;
-      }
-    | {
-        which: "dalek";
-        movement: MovementsSubset<"patrol-randomly-diagonal">;
-      }
-    | {
-        which: "homingBot";
-        movement: MovementsSubset<"towards-tripped-on-axis-xy4">;
-      }
-    | {
-        which: "helicopterBug";
-        movement: MovementsSubset<
-          "patrol-randomly-xy8" | "towards-when-in-square-xy8"
-        >;
-      }
-    | {
-        which: "turtle";
-        movement: MovementsSubset<"clockwise">;
-        startDirection: DirectionXy4;
-      }
-    | {
-        which: "cyberman";
-        activated: true;
-        movement: MovementsSubset<"towards-on-shortest-axis-xy4">;
-        startDirection: DirectionXy4;
-      }
-    | {
-        which: "cyberman";
-        activated: false;
-        movement: MovementsSubset<"towards-on-shortest-axis-xy4">;
-        // if true, the cyberman can wake up from charging
-        wakes: boolean;
-        startDirection: DirectionXy4;
-      }
-    | {
-        which: "skiHead";
-        movement: MovementsSubset<"clockwise" | "back-forth">;
-        startDirection: DirectionXy4;
-        style: "greenAndPink" | "starsAndStripes";
-      }
-  );
+  monster: MonsterJsonConfig;
   portableBlock: {
     style: "drum" | "sticks" | "cube";
   };
-  movableBlock: {
+  pushableBlock: {
     style: "stepStool" | "sandwich";
-  } & (
-    | {
-        movement: MovementsSubset<"free">;
-      }
-    | {
-        movement: MovementsSubset<"clockwise" | "back-forth">;
-        /* if this item starts initially activated */
-        activated: boolean | "onStand";
-        startDirection: DirectionXy4;
-      }
-  );
+  };
+  movingPlatform: {
+    style: "stepStool" | "sandwich";
+
+    movement: MovementsSubset<"clockwise" | "back-forth">;
+    /* if this item starts initially activated */
+    activated: ActivatedWhenSubset<
+      // off : needs to be turned on by a switch
+      | "off"
+      // on : already moving when enter room
+      | "on"
+      // turns on when stood on
+      | "on-stand"
+    >;
+    startDirection: DirectionXy4;
+  };
   slidingBlock: {
     // non-deadly sliding puck - eg the arrows in the centre of the moonbase
     // in the middle of the teleporter rooms
     style: "puck" | "book";
   };
   book: {
-    // books are like movableBlocks, but have orientation and are only sometimes movable.
+    // books are like pushableBlocks, but have orientation and are only sometimes movable.
     // almost all are x-aligned
     slider?: boolean;
   };
-  switch: {
-    // list of all items (de)activated by this switch
-    activates?: {
-      [I in RoomItemId]?: {
-        // state deltas for the impacted items
-        left: Record<string, unknown>;
-        right: Record<string, unknown>;
-      };
-    };
-
-    // special case for switches that read from and dispatch to the store:
-    store?: {
-      path: ToggleablePaths<GameMenusState>;
-    };
-  };
+  switch: SwitchConfig<
+    RoomId,
+    /** ids of items in this room */
+    RoomItemId
+  >;
   joystick: {
     // item ids of all the items (probably Charles) that this joystick controls
     controls: RoomItemId[];

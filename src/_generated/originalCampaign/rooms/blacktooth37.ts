@@ -20,7 +20,7 @@ export const room = inferRoomJson({
     },
     "monster@0,5,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "right",
         style: "starsAndStripes",
@@ -31,7 +31,7 @@ export const room = inferRoomJson({
     },
     "monster@2,4,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "right",
         style: "greenAndPink",
@@ -42,7 +42,7 @@ export const room = inferRoomJson({
     },
     "monster@3,3,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "right",
         style: "starsAndStripes",
@@ -53,20 +53,30 @@ export const room = inferRoomJson({
     },
     "switch@0,7,0": {
       config: {
-        activates: {
-          "monster@0,5,0": {
-            left: { activated: true },
-            right: { activated: false },
+        modifies: [
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "monster@0,5,0",
           },
-          "monster@2,4,0": {
-            left: { activated: true },
-            right: { activated: false },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "monster@2,4,0",
           },
-          "monster@3,3,0": {
-            left: { activated: true },
-            right: { activated: false },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "monster@3,3,0",
           },
-        },
+        ],
+        type: "in-room",
       },
       position: { x: 0, y: 7, z: 0 },
       type: "switch",

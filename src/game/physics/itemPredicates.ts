@@ -60,7 +60,10 @@ export const isSolid = (item: AnyItemInPlay, toucher?: AnyItemInPlay) => {
  * the metal stepstools are heavy
  */
 export const isHeavyItem = (item: UnionOfAllItemInPlayTypes): boolean => {
-  return isMovableBlock(item) && item.config.style === "stepStool";
+  return (
+    (item.type === "movingPlatform" || item.type === "pushableBlock") &&
+    item.config.style === "stepStool"
+  );
 };
 
 // a good example of where OOP would make sense, it a polymorphic isPushable method
@@ -143,7 +146,9 @@ export const freeItemTypes = [
   "monster",
   "ball",
   "charles",
-  "movableBlock",
+  "pushableBlock",
+  // moving platforms can fall down - see #safari35
+  "movingPlatform",
   "moveableDeadly",
   "pickup",
   "portableBlock",
@@ -197,9 +202,8 @@ export const isFirer = isItemType("head", "headOverHeels");
 export const isLift = isItemType("lift");
 export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");
-export const isMovableBlock = isItemType("movableBlock");
 export const isPickup = isItemType("pickup");
 export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
 // items that can move clockwise/back-forth or in any other pattern:
-export const isMoving = isItemType("monster", "movableBlock");
+export const isMoving = isItemType("monster", "movingPlatform");

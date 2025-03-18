@@ -1,8 +1,8 @@
 [
   {
     "op": "replace",
-    "path": "/items/movableBlock@7,5,1/config/activated",
-    "value": "onStand"
+    "path": "/items/movingPlatform@7,5,1/config/activated",
+    "value": "on-stand"
   },
   {
     "op": "replace",

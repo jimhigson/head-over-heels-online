@@ -25,12 +25,12 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
   }) satisfies Partial<FreeItemState<RoomItemId>>;
 
 export const initialState = (jsonItem: JsonItemUnion) => {
-  const free = (freeItemTypes as JsonItemType[]).includes(jsonItem.type);
+  const isFree = (freeItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
     ...defaultBaseState(),
     position: positionCentredInBlock(jsonItem as JsonItemUnion),
-    ...(free ?
+    ...(isFree ?
       {
         standingOnItemId: null,
         vels: {
@@ -40,9 +40,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
             { sliding: originXyz }
           : {}),
           ...((
-            (jsonItem.type === "monster" || jsonItem.type === "movableBlock") &&
-            jsonItem.config.movement &&
-            jsonItem.config.movement !== "free"
+            jsonItem.type === "monster" || jsonItem.type === "movingPlatform"
           ) ?
             {
               walking: originXyz,
@@ -54,7 +52,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     : {}),
     ...(jsonItem.type === "monster" ?
       {
-        activated: jsonItem.config.activated,
+        activated: jsonItem.config.activated === "on",
         timeOfLastDirectionChange: Number.NEGATIVE_INFINITY,
         ...((
           jsonItem.config.which === "skiHead" ||
@@ -71,11 +69,9 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     ...(jsonItem.type === "pickup" ?
       { collected: false, disappear: "onTouchByPlayer" }
     : {}),
-    ...((
-      jsonItem.type === "movableBlock" && jsonItem.config.movement !== "free"
-    ) ?
+    ...(jsonItem.type === "movingPlatform" ?
       {
-        activated: jsonItem.config.activated === true,
+        activated: jsonItem.config.activated === "on",
         facing: unitVectors[jsonItem.config.startDirection],
       }
     : {}),

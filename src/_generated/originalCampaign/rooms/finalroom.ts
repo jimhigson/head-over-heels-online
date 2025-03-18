@@ -52,15 +52,15 @@ export const room = inferRoomJson({
       position: { x: 7, y: 3, z: 1 },
       type: "pickup",
     },
-    "movableBlock@0,2,0": {
+    "movingPlatform@0,2,0": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "clockwise",
         startDirection: "right",
         style: "stepStool",
       },
       position: { x: 0, y: 2, z: 0 },
-      type: "movableBlock",
+      type: "movingPlatform",
     },
     "sceneryPlayer@0,3,0": {
       config: { startDirection: "towards", which: "headOverHeels" },

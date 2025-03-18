@@ -74,7 +74,7 @@ export const room = inferRoomJson({
     },
     "monster@2,2,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "clockwise",
         startDirection: "right",
         style: "greenAndPink",
@@ -85,7 +85,7 @@ export const room = inferRoomJson({
     },
     "monster@2,7,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "clockwise",
         startDirection: "right",
         which: "turtle",

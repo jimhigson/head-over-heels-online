@@ -39,7 +39,7 @@ export const room = inferRoomJson({
     },
     "monster@5,1,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "clockwise",
         startDirection: "away",
         which: "turtle",

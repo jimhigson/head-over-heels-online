@@ -42,20 +42,20 @@ export const room = inferRoomJson({
       position: { x: 1, y: 2, z: 0 },
       type: "lift",
     },
-    "movableBlock@3,2,4": {
-      config: { movement: "free", style: "stepStool" },
+    "pushableBlock@3,2,4": {
+      config: { style: "stepStool" },
       position: { x: 3, y: 2, z: 4 },
-      type: "movableBlock",
+      type: "pushableBlock",
     },
-    "movableBlock@4,2,4": {
-      config: { movement: "free", style: "stepStool" },
+    "pushableBlock@4,2,4": {
+      config: { style: "stepStool" },
       position: { x: 4, y: 2, z: 4 },
-      type: "movableBlock",
+      type: "pushableBlock",
     },
-    "movableBlock@5,2,4": {
-      config: { movement: "free", style: "stepStool" },
+    "pushableBlock@5,2,4": {
+      config: { style: "stepStool" },
       position: { x: 5, y: 2, z: 4 },
-      type: "movableBlock",
+      type: "pushableBlock",
     },
     "wall@0,0,0:2scjwz": {
       config: { direction: "right", tiles: [], times: { y: 3 } },

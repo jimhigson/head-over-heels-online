@@ -29,17 +29,17 @@ export const room = inferRoomJson({
     },
     "monster@4,4,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-xy4",
         which: "elephant",
       },
       position: { x: 4, y: 4, z: 0 },
       type: "monster",
     },
-    "movableBlock@1,1,0": {
-      config: { movement: "free", style: "stepStool" },
+    "pushableBlock@1,1,0": {
+      config: { style: "stepStool" },
       position: { x: 1, y: 1, z: 0 },
-      type: "movableBlock",
+      type: "pushableBlock",
     },
     "wall@0,0,0:2scjwz": {
       config: { direction: "right", tiles: [], times: { y: 3 } },

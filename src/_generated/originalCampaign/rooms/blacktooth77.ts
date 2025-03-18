@@ -47,11 +47,6 @@ export const room = inferRoomJson({
       position: { x: 8, y: 1, z: 0 },
       type: "door",
     },
-    "movableBlock@3,1,0": {
-      config: { movement: "free", style: "stepStool" },
-      position: { x: 3, y: 1, z: 0 },
-      type: "movableBlock",
-    },
     "portableBlock@3,3,0": {
       config: { style: "cube" },
       position: { x: 3, y: 3, z: 0 },
@@ -61,6 +56,11 @@ export const room = inferRoomJson({
       config: { style: "cube" },
       position: { x: 4, y: 0, z: 6 },
       type: "portableBlock",
+    },
+    "pushableBlock@3,1,0": {
+      config: { style: "stepStool" },
+      position: { x: 3, y: 1, z: 0 },
+      type: "pushableBlock",
     },
     "wall@0,0,0:Z1Ibm7P": {
       config: { direction: "right", tiles: [] },

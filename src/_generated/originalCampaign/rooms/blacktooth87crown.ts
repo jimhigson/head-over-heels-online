@@ -44,7 +44,7 @@ export const room = inferRoomJson({
     },
     "monster@3,3,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
@@ -53,8 +53,8 @@ export const room = inferRoomJson({
     },
     "monster@6,3,1": {
       config: {
-        activated: true,
-        movement: "towards-when-in-square-xy8",
+        activated: "while-player-near",
+        movement: "towards-analogue",
         which: "emperor",
       },
       position: { x: 6, y: 3, z: 1 },
