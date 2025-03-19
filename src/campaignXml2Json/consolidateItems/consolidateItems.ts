@@ -1,5 +1,6 @@
 import { canonicalize } from "json-canonicalize";
 import type { Xyz } from "../../utils/vectors/vectors";
+import { omit } from "../../utils/pick";
 import type { JsonItemType, JsonItemUnion } from "../../model/json/JsonItem";
 
 export const consolidatableJsonItemTypes = [
@@ -9,6 +10,7 @@ export const consolidatableJsonItemTypes = [
   "conveyor",
   "hushPuppy",
   "wall",
+  "teleporter",
 ] as const satisfies JsonItemType[];
 export type ConsolidatableJsonItemType =
   (typeof consolidatableJsonItemTypes)[number];
@@ -32,9 +34,13 @@ type Grid = Set<ConsolidatableJsonItem>[][][];
 
 // Generate a stable hash key for the visited map
 const hashItem = (o: ConsolidatableJsonItem): string => {
-  return o.type === "wall" ?
-      `wall/${o.config.direction}`
-    : canonicalize({ type: o.type, config: o.config });
+  return (
+    o.type === "wall" ? `wall/${o.config.direction}`
+    : o.type === "teleporter" ?
+      // for teleporters, the toPosition will always be different so it can't be used to decide consolidatability
+      canonicalize({ type: o.type, config: omit(o.config, "toPosition") })
+    : canonicalize({ type: o.type, config: o.config })
+  );
 };
 
 const createGrid = (

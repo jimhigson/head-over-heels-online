@@ -305,6 +305,7 @@ export const itemAppearances: {
     renderContext: {
       item: {
         state: { stoodOnBy },
+        config: { times },
       },
       room,
     },
@@ -324,15 +325,19 @@ export const itemAppearances: {
     const renderFlashing = () =>
       new Container({
         children: [
-          createSprite("teleporter"),
+          createSprite({ textureId: "teleporter", times }),
           createSprite({
             animationId: "teleporter.flashing",
+            times,
           }),
         ],
       });
 
     return {
-      container: flashing ? renderFlashing() : createSprite("teleporter"),
+      container:
+        flashing ? renderFlashing() : (
+          createSprite({ textureId: "teleporter", times })
+        ),
       renderProps: { flashing },
     };
   },

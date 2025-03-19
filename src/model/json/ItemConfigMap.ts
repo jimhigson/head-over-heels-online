@@ -16,6 +16,8 @@ import type {
   ActivatedWhenSubset,
 } from "./utilityJsonConfigTypes";
 import type { SwitchConfig } from "./SwitchConfig";
+import type { ToggleablePaths } from "../../utils/Toggleable";
+import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 
 export type ItemConfigMap<
   RoomId extends string,
@@ -43,11 +45,12 @@ export type ItemConfigMap<
     /** side of the room the wall is on (not the side it is facing) */
     direction: DirectionXy4;
   };
-  teleporter: {
+  teleporter: ConsolidatableConfig & {
     toRoom: RoomId;
     // where in the destination room this teleporter should go - usually
     // to atop another teleporter, but could be anywhere
     toPosition: Xyz;
+    activatedOnStoreValue?: ToggleablePaths<GameMenusState>;
   };
   barrier: ConsolidatableConfig & {
     // the axis the barrier runs along

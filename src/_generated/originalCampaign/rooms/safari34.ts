@@ -38,13 +38,12 @@ export const room = inferRoomJson({
       type: "pickup",
     },
     "teleporter@3,3,0": {
-      config: { toPosition: { x: 2, y: 3, z: 0 }, toRoom: "safari1" },
+      config: {
+        times: { y: 2 },
+        toPosition: { x: 2, y: 3, z: 0 },
+        toRoom: "safari1",
+      },
       position: { x: 3, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@3,4,0": {
-      config: { toPosition: { x: 2, y: 4, z: 0 }, toRoom: "safari1" },
-      position: { x: 3, y: 4, z: 0 },
       type: "teleporter",
     },
     "wall@0,0,0:2scjwz": {

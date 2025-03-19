@@ -29,34 +29,11 @@ export const room = inferRoomJson({
     },
     "teleporter@6,3,0": {
       config: {
+        times: { x: 2, y: 2 },
         toPosition: { x: 6, y: 3, z: 0 },
         toRoom: "moonbase25tobookworld",
       },
       position: { x: 6, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@6,4,0": {
-      config: {
-        toPosition: { x: 6, y: 4, z: 0 },
-        toRoom: "moonbase25tobookworld",
-      },
-      position: { x: 6, y: 4, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@7,3,0": {
-      config: {
-        toPosition: { x: 7, y: 3, z: 0 },
-        toRoom: "moonbase25tobookworld",
-      },
-      position: { x: 7, y: 3, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@7,4,0": {
-      config: {
-        toPosition: { x: 7, y: 4, z: 0 },
-        toRoom: "moonbase25tobookworld",
-      },
-      position: { x: 7, y: 4, z: 0 },
       type: "teleporter",
     },
     "wall@0,0,0:2scjwz": {
