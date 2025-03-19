@@ -51,6 +51,7 @@ export const room = inferRoomJson({
         times: { x: 2, y: 2 },
         toPosition: { x: 0, y: 3, z: 0 },
         toRoom: "penitentiary2",
+        activatedOnStoreValue: "planetsLiberated.penitentiary",
       },
       position: { x: 0, y: 3, z: 0 },
       type: "teleporter",

@@ -1,6 +1,11 @@
 [
   {
     "op": "add",
+    "path": "/items/teleporter@0,3,0/config/activatedOnStoreValue",
+    "value": "planetsLiberated.penitentiary"
+  },
+  {
+    "op": "add",
     "path": "/items/scroll",
     "value": {
       "config": { "gives": "scroll", "page": "teleportBack" },

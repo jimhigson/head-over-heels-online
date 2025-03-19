@@ -14,7 +14,7 @@ export const room = inferRoomJson({
     },
     "door@0,3,0": {
       config: { direction: "right", toRoom: "safari32" },
-      position: { x: 0, y: 3, z: 0 },
+      position: { x: 0, y: 1, z: 0 },
       type: "door",
     },
     "door@3,8,5": {
@@ -38,11 +38,11 @@ export const room = inferRoomJson({
     },
     "pushableBlock@1,1,0": {
       config: { style: "stepStool" },
-      position: { x: 1, y: 1, z: 0 },
+      position: { x: 2, y: 1, z: 0 },
       type: "pushableBlock",
     },
     "wall@0,0,0:2scjwz": {
-      config: { direction: "right", tiles: [], times: { y: 3 } },
+      config: { direction: "right", tiles: [], times: { y: 1 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -52,8 +52,8 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,5,0": {
-      config: { direction: "right", tiles: [], times: { y: 3 } },
-      position: { x: 0, y: 5, z: 0 },
+      config: { direction: "right", tiles: [], times: { y: 5 } },
+      position: { x: 0, y: 3, z: 0 },
       type: "wall",
     },
     "wall@0,8,0": {
@@ -91,6 +91,16 @@ export const room = inferRoomJson({
       },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",
+    },
+    returnTeleport: {
+      type: "teleporter",
+      config: {
+        times: { y: 2, x: 2 },
+        toPosition: { x: 2, y: 3, z: 0 },
+        toRoom: "safari1",
+        activatedOnStoreValue: "planetsLiberated.safari",
+      },
+      position: { x: 1, y: 6, z: 0 },
     },
   },
   planet: "safari",

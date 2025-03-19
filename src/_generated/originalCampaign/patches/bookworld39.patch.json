@@ -1,6 +1,11 @@
 [
   {
     "op": "add",
+    "path": "/items/teleporter@7,3,0/config/activatedOnStoreValue",
+    "value": "planetsLiberated.bookworld"
+  },
+  {
+    "op": "add",
     "path": "/items/scroll",
     "value": {
       "config": { "gives": "scroll", "page": "teleportBack" },
