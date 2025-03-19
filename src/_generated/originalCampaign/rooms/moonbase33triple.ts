@@ -283,174 +283,174 @@ export const room = inferRoomJson({
       type: "monster",
     },
     uhohSwitch: {
-      type: "switch",
-      position: { x: 5, y: 15, z: 0 },
       config: {
-        type: "in-room",
         modifies: [
           {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
             target: "monster@0,10,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@0,11,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@0,12,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@0,13,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@11,1,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@11,14,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@11,2,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@11,3,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@11,4,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@11,5,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@11,9,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@5,10,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@5,11,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@5,12,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@5,13,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@6,10,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@6,11,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@6,12,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@6,13,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@6,2,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@6,3,1",
+          },
+          {
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
-          },
-          {
             target: "monster@6,4,1",
-            expectType: "monster",
-            key: "activated",
-            left: false,
-            right: true,
           },
           {
-            target: "monster@6,5,1",
             expectType: "monster",
             key: "activated",
             left: false,
             right: true,
+            target: "monster@6,5,1",
           },
         ],
+        type: "in-room",
       },
+      position: { x: 5, y: 15, z: 0 },
+      type: "switch",
     },
     "wall@0,0,0:3gbWw": {
       config: { direction: "right", tiles: [], times: { y: 8 } },

@@ -408,7 +408,11 @@ const convertItem = async ({
       };
 
       const type = (
-        xml2JsonItem.behavior === "behavior of thing able to move by pushing" ?
+        (
+          xml2JsonItem.behavior ===
+            "behavior of thing able to move by pushing" ||
+          xml2JsonItem.behavior === undefined
+        ) ?
           "pushableBlock"
         : "movingPlatform") satisfies JsonItemType;
 
