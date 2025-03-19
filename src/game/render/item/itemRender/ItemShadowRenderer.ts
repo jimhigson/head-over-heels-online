@@ -18,7 +18,7 @@ import type {
   Renderer,
 } from "../../Renderer";
 import { blockSizePx } from "../../../../sprites/spritePivots";
-import type { ConsolidatableConfig } from "../../../../model/json/ItemConfigMap";
+import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
 import { iterateRoomItems } from "../../../../model/RoomState";
 
 type Cast = {

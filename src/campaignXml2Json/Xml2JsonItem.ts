@@ -77,7 +77,9 @@ export type Xml2JsonItem = {
         | "behavior of thing able to move by pushing"
         | "behavior of flying there and back"
         | "behavior of there and back"
-        | "behavior of move then turn right and move";
+        | "behavior of move then turn right and move"
+        // undefined in safari37crown and finalRoom
+        | undefined;
     }
   | {
       kind: "bars-ew" | "bars-ns";

@@ -242,14 +242,14 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   return (
     <Collapsible>
       <CollapsibleTrigger
-        className="absolute bottom-0 right-1 flex flex-col z-3 text-midRed hover:text-metallicBlue "
+        className="absolute bottom-0 right-1 flex flex-col z-cheats text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
         <span className="sprite texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div
-          className="absolute [--scale:1] [--block:8px] bottom-[48px] max-h-[calc(100vh-48px)] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll"
+          className="absolute [--scale:1] [--block:8px] bottom-[48px] max-h-[calc(100vh-48px)] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats"
           style={{ "--scale": 2 }}
         >
           <Heading>room select:</Heading>
@@ -380,7 +380,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               onClick={(e) => {
                 summonItem("monster", {
                   which: "dalek",
-                  activated: true,
+                  activated: "on",
                   movement: "patrol-randomly-diagonal",
                 });
                 e.currentTarget.blur();

@@ -11,10 +11,9 @@ test("prefers blocks over conveyors even if the conveyor has more overlap", () =
       loadItemFromJson(
         "movable",
         {
-          type: "movableBlock",
+          type: "pushableBlock",
           config: {
             style: "stepStool",
-            movement: "free",
           },
           position: { x: 2.1, y: 0, z: 1 },
         },
@@ -60,10 +59,9 @@ test("given two blocks, choses one with most overlap", () => {
       loadItemFromJson(
         "movable",
         {
-          type: "movableBlock",
+          type: "pushableBlock",
           config: {
             style: "stepStool",
-            movement: "free",
           },
           position: { x: 2.2, y: 0, z: 1 },
         },

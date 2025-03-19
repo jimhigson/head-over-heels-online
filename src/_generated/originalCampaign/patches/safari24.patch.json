@@ -1,12 +1,75 @@
 [
+  { "op": "replace", "path": "/items/door@0,2,1/position/z", "value": 3 },
   {
     "op": "replace",
-    "path": "/items/movableBlock@0,2,0/config/activated",
-    "value": "onStand"
+    "path": "/items/movingPlatform@0,2,0/position/y",
+    "value": 2.5
   },
   {
     "op": "replace",
-    "path": "/items/movableBlock@0,2,0/config/startDirection",
+    "path": "/items/movingPlatform@0,2,0/config/activated",
+    "value": "on"
+  },
+  {
+    "op": "replace",
+    "path": "/items/movingPlatform@0,2,0/config/startDirection",
     "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/block@7,2,1/config/times",
+    "value": { "y": 2 }
+  },
+  { "op": "replace", "path": "/items/block@1,2,0/position/z", "value": 1 },
+  { "op": "replace", "path": "/items/block@1,2,0/position/x", "value": 0 },
+  {
+    "op": "add",
+    "path": "/items/block@1,2,0/config/times",
+    "value": { "y": 2 }
+  },
+  {
+    "op": "add",
+    "path": "/items/movingPlatform2",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "clockwise",
+        "startDirection": "away",
+        "style": "sandwich"
+      },
+      "position": { "x": 7, "y": 2.5, "z": 0 },
+      "isExtra": true,
+      "type": "movingPlatform"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/movingPlatform3",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "clockwise",
+        "startDirection": "left",
+        "style": "sandwich"
+      },
+      "position": { "x": 3.5, "y": 0, "z": 0 },
+      "isExtra": true,
+      "type": "movingPlatform"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/movingPlatform4",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "clockwise",
+        "startDirection": "right",
+        "style": "sandwich"
+      },
+      "position": { "x": 3.5, "y": 5, "z": 0 },
+      "isExtra": true,
+      "type": "movingPlatform"
+    }
   }
 ]

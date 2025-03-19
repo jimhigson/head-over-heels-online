@@ -8,12 +8,12 @@ export const room = inferRoomJson({
   id: "safari24",
   items: {
     "block@1,2,0": {
-      config: { style: "organic" },
-      position: { x: 1, y: 2, z: 0 },
+      config: { style: "organic", times: { y: 2 } },
+      position: { x: 0, y: 2, z: 1 },
       type: "block",
     },
     "block@7,2,1": {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 2 } },
       position: { x: 7, y: 2, z: 1 },
       type: "block",
     },
@@ -39,7 +39,7 @@ export const room = inferRoomJson({
     },
     "door@0,2,1": {
       config: { direction: "right", toRoom: "safari25" },
-      position: { x: 0, y: 2, z: 1 },
+      position: { x: 0, y: 2, z: 3 },
       type: "door",
     },
     "door@8,2,3": {
@@ -47,15 +47,48 @@ export const room = inferRoomJson({
       position: { x: 8, y: 2, z: 3 },
       type: "door",
     },
-    "movableBlock@0,2,0": {
+    movingPlatform2: {
       config: {
-        activated: "onStand",
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "away",
+        style: "sandwich",
+      },
+      isExtra: true,
+      position: { x: 7, y: 2.5, z: 0 },
+      type: "movingPlatform",
+    },
+    movingPlatform3: {
+      config: {
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "left",
+        style: "sandwich",
+      },
+      isExtra: true,
+      position: { x: 3.5, y: 0, z: 0 },
+      type: "movingPlatform",
+    },
+    movingPlatform4: {
+      config: {
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "right",
+        style: "sandwich",
+      },
+      isExtra: true,
+      position: { x: 3.5, y: 5, z: 0 },
+      type: "movingPlatform",
+    },
+    "movingPlatform@0,2,0": {
+      config: {
+        activated: "on",
         movement: "clockwise",
         startDirection: "towards",
         style: "sandwich",
       },
-      position: { x: 0, y: 2, z: 0 },
-      type: "movableBlock",
+      position: { x: 0, y: 2.5, z: 0 },
+      type: "movingPlatform",
     },
     "wall@0,0,0:2scjgO": {
       config: { direction: "right", tiles: [], times: { y: 2 } },

@@ -37,44 +37,58 @@ export const room = inferRoomJson({
       position: { x: 8, y: 3, z: 2 },
       type: "door",
     },
-    "movableBlock@0,1,0": {
+    "movingPlatform@0,1,0": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "clockwise",
         startDirection: "left",
         style: "sandwich",
       },
       position: { x: 0, y: 1, z: 0 },
-      type: "movableBlock",
+      type: "movingPlatform",
     },
     "switch@0,0,0": {
       config: {
-        activates: {
-          "movableBlock@0,1,0": {
-            left: { activated: false },
-            right: { activated: true },
+        modifies: [
+          {
+            expectType: "movingPlatform",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "movingPlatform@0,1,0",
           },
-          "switch@7,7,0": {
-            left: { setting: "left" },
-            right: { setting: "right" },
+          {
+            expectType: "switch",
+            key: "setting",
+            left: "left",
+            right: "right",
+            target: "switch@7,7,0",
           },
-        },
+        ],
+        type: "in-room",
       },
       position: { x: 0, y: 0, z: 0 },
       type: "switch",
     },
     "switch@7,7,0": {
       config: {
-        activates: {
-          "movableBlock@0,1,0": {
-            left: { activated: false },
-            right: { activated: true },
+        modifies: [
+          {
+            expectType: "movingPlatform",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "movingPlatform@0,1,0",
           },
-          "switch@0,0,0": {
-            left: { setting: "left" },
-            right: { setting: "right" },
+          {
+            expectType: "switch",
+            key: "setting",
+            left: "left",
+            right: "right",
+            target: "switch@0,0,0",
           },
-        },
+        ],
+        type: "in-room",
       },
       position: { x: 7, y: 7, z: 0 },
       type: "switch",

@@ -1099,8 +1099,8 @@ describe("lifts", () => {
           },
         },
         heavyBlock: {
-          type: "movableBlock",
-          config: { style: "stepStool", movement: "free" },
+          type: "pushableBlock",
+          config: { style: "stepStool" },
           position: { x: 5, y: 5, z: 1 },
         },
       },
@@ -1395,9 +1395,9 @@ test("platforms that move on stand", () => {
       },
       // heels falls onto this, activating it:
       moving: {
-        type: "movableBlock",
+        type: "movingPlatform",
         config: {
-          activated: "onStand",
+          activated: "on-stand",
           movement: "back-forth",
           startDirection: "left",
           style: "sandwich",
@@ -1438,7 +1438,7 @@ test("monsters don't fall out of rooms via the doorways", () => {
         config: {
           which: "skiHead",
           startDirection: "towards",
-          activated: true,
+          activated: "on",
           movement: "back-forth",
           style: "greenAndPink",
         },

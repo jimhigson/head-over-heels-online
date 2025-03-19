@@ -26,3 +26,5 @@ spiky floor but more interesting)
 * a room where charles has to move on top of a mojo to get somewhere (or a turtle)
 
 * more use of heavy blocks to stop/start lifts
+
+* room where you have to turn monsters on to activate them to work for you (maybe at the right time)

@@ -260,6 +260,8 @@ export const changeCharacterRoom = <
   if (heelsAbilities !== undefined) {
     heelsAbilities.carrying = null;
   }
+  // latent movement does not apply outside of the room it was given in:
+  playableItem.state.latentMovement = [];
 
   // hush puppies vanish the moment head enters:
   if (playableItem.type === "head" || playableItem.type === "headOverHeels") {

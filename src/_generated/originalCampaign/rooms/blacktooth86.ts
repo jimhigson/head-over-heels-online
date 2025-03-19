@@ -19,8 +19,8 @@ export const room = inferRoomJson({
     },
     "monster@1,3,0": {
       config: {
-        activated: true,
-        movement: "towards-when-in-square-xy8-unless-planet-crowns",
+        activated: "while-player-near",
+        movement: "towards-analogue-unless-planet-crowns",
         which: "emperorsGuardian",
       },
       position: { x: 1, y: 3, z: 0 },

@@ -49,7 +49,7 @@ export const room = inferRoomJson({
     },
     "monster@7,2,1": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "back-forth",
         startDirection: "right",
         style: "starsAndStripes",
@@ -57,21 +57,6 @@ export const room = inferRoomJson({
       },
       position: { x: 7, y: 2, z: 1 },
       type: "monster",
-    },
-    "movableBlock@0,7,6": {
-      config: {
-        activated: false,
-        movement: "clockwise",
-        startDirection: "right",
-        style: "stepStool",
-      },
-      position: { x: 0, y: 7, z: 6 },
-      type: "movableBlock",
-    },
-    "movableBlock@3,5,0": {
-      config: { movement: "free", style: "stepStool" },
-      position: { x: 3, y: 5, z: 0 },
-      type: "movableBlock",
     },
     "pickup@0,7,7": {
       config: { gives: "crown", planet: "safari" },
@@ -82,6 +67,16 @@ export const room = inferRoomJson({
       config: { style: "drum" },
       position: { x: 7, y: 3, z: 1 },
       type: "portableBlock",
+    },
+    "pushableBlock@0,7,6": {
+      config: { style: "stepStool" },
+      position: { x: 0, y: 7, z: 6 },
+      type: "pushableBlock",
+    },
+    "pushableBlock@3,5,0": {
+      config: { style: "stepStool" },
+      position: { x: 3, y: 5, z: 0 },
+      type: "pushableBlock",
     },
     "wall@0,0,0:2sckOl": {
       config: { direction: "right", tiles: [], times: { y: 8 } },

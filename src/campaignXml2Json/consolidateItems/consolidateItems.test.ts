@@ -394,7 +394,7 @@ test("ignores non-consolidatable items", () => {
       type: "monster",
       config: {
         which: "dalek",
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-diagonal",
       },
       position: { x: 0, y: 0, z: 1 },
@@ -433,7 +433,7 @@ test("ignores non-consolidatable items", () => {
       },
       {
         "config": {
-          "activated": true,
+          "activated": "on",
           "movement": "patrol-randomly-diagonal",
           "which": "dalek",
         },

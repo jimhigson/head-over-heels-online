@@ -39,8 +39,7 @@ const colourRooms = () => {
       config: {
         which: "cyberman",
         movement: "towards-on-shortest-axis-xy4",
-        activated: false,
-        wakes: false,
+        activated: "off",
         startDirection: "away",
       },
       position: { x: 6, y: 0, z: 0 },
@@ -162,6 +161,16 @@ const rooms = {
         config: { style: "artificial" },
         position: { x: 0, y: 3, z: 3 },
       },
+      {
+        type: "movingPlatform",
+        config: {
+          style: "sandwich",
+          movement: "clockwise",
+          startDirection: "right",
+          activated: "on-stand",
+        },
+        position: { x: 0, y: 0, z: 0 },
+      },
       // {
       //   type: "block",
       //   config: { style: "book" },
@@ -243,33 +252,33 @@ const rooms = {
 
       // stack of items to test pushing stacks:
       {
-        type: "movableBlock",
-        config: { style: "stepStool", movement: "free" },
+        type: "pushableBlock",
+        config: { style: "stepStool" },
         position: { x: 10, y: 7, z: 0 },
       },
       {
-        type: "movableBlock",
-        config: { style: "stepStool", movement: "free" },
+        type: "pushableBlock",
+        config: { style: "stepStool" },
         position: { x: 10, y: 7, z: 1 },
       },
       {
-        type: "movableBlock",
-        config: { style: "stepStool", movement: "free" },
+        type: "pushableBlock",
+        config: { style: "stepStool" },
         position: { x: 10, y: 7, z: 2 },
       },
       {
-        type: "movableBlock",
-        config: { style: "stepStool", movement: "free" },
+        type: "pushableBlock",
+        config: { style: "stepStool" },
         position: { x: 10, y: 7, z: 3 },
       },
       {
-        type: "movableBlock",
-        config: { style: "stepStool", movement: "free" },
+        type: "pushableBlock",
+        config: { style: "stepStool" },
         position: { x: 10, y: 7, z: 4 },
       },
       {
-        type: "movableBlock",
-        config: { style: "stepStool", movement: "free" },
+        type: "pushableBlock",
+        config: { style: "stepStool" },
         position: { x: 10, y: 7, z: 5 },
       },
       // to test disappearing barriers:
@@ -304,7 +313,7 @@ const rooms = {
         config: {
           which: "skiHead",
           movement: "back-forth",
-          activated: true,
+          activated: "on",
           startDirection: "left",
           style: "starsAndStripes",
         },
@@ -391,7 +400,7 @@ const rooms = {
           movement: "back-forth",
           startDirection: "away",
           style: "greenAndPink",
-          activated: true,
+          activated: "on",
         },
         position: { x: 4, y: 2, z: 0 },
       },
@@ -402,7 +411,7 @@ const rooms = {
           movement: "back-forth",
           startDirection: "away",
           style: "greenAndPink",
-          activated: true,
+          activated: "on",
         },
         position: { x: 4, y: 0, z: 0 },
       },
@@ -442,7 +451,7 @@ const rooms = {
         config: {
           which: "cyberman",
           movement: "towards-on-shortest-axis-xy4",
-          activated: true,
+          activated: "on",
           startDirection: "away",
         },
         position: { x: 4, y: 8, z: 5 },
@@ -521,7 +530,7 @@ const rooms = {
           movement: "back-forth",
           startDirection: "right",
           style: "starsAndStripes",
-          activated: true,
+          activated: "on",
         },
         position: { x: 1, y: 7, z: 0 },
       },
@@ -532,7 +541,7 @@ const rooms = {
           movement: "back-forth",
           startDirection: "right",
           style: "greenAndPink",
-          activated: true,
+          activated: "on",
         },
         position: { x: 2, y: 8, z: 0 },
       },
@@ -543,63 +552,56 @@ const rooms = {
           movement: "back-forth",
           startDirection: "away",
           style: "starsAndStripes",
-          activated: true,
+          activated: "on",
         },
         position: { x: 1, y: 8, z: 0 },
       },
       {
-        type: "movableBlock",
+        type: "pushableBlock",
         config: {
           style: "stepStool",
-          movement: "free",
         },
         position: { x: 2, y: 6, z: 0 },
       },
       {
-        type: "movableBlock",
+        type: "pushableBlock",
         config: {
           style: "stepStool",
-          movement: "free",
         },
         position: { x: 2, y: 9, z: 0 },
       },
       {
-        type: "movableBlock",
+        type: "pushableBlock",
         config: {
           style: "stepStool",
-          movement: "free",
         },
         position: { x: 1, y: 6, z: 0 },
       },
       {
-        type: "movableBlock",
+        type: "pushableBlock",
         config: {
           style: "sandwich",
-          movement: "free",
         },
         position: { x: 1, y: 6, z: 1 },
       },
       {
-        type: "movableBlock",
+        type: "pushableBlock",
         config: {
           style: "sandwich",
-          movement: "free",
         },
         position: { x: 1, y: 6, z: 2 },
       },
       {
-        type: "movableBlock",
+        type: "pushableBlock",
         config: {
           style: "sandwich",
-          movement: "free",
         },
         position: { x: 2, y: 6, z: 1 },
       },
       {
-        type: "movableBlock",
+        type: "pushableBlock",
         config: {
           style: "sandwich",
-          movement: "free",
         },
         position: { x: 2, y: 6, z: 2 },
       },
@@ -772,7 +774,7 @@ const rooms = {
           which: "turtle",
           movement: "clockwise",
           startDirection: "left",
-          activated: true,
+          activated: "on",
         },
         position: { x: 12, y: 12, z: 0 },
       },
@@ -783,7 +785,7 @@ const rooms = {
           which: "turtle",
           movement: "clockwise",
           startDirection: "towards",
-          activated: false,
+          activated: "on",
         },
         position: { x: 16, y: 13, z: 1 },
       },
@@ -791,12 +793,16 @@ const rooms = {
       {
         type: "switch",
         config: {
-          activates: {
-            t1: {
-              left: { activated: false },
-              right: { activated: true },
+          type: "in-room",
+          modifies: [
+            {
+              target: "t1",
+              expectType: "monster",
+              key: "activated",
+              left: false,
+              right: true,
             },
-          },
+          ],
         },
         position: { x: 17, y: 12, z: 0 },
       },
@@ -922,8 +928,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "dalek",
+          activated: "on",
           movement: "patrol-randomly-diagonal",
         },
         position: { x: 1, y: 1, z: 0 },
@@ -931,8 +937,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "bubbleRobot",
+          activated: "on",
           movement: "patrol-randomly-xy8",
         },
         position: { x: 1, y: 10, z: 0 },
@@ -941,8 +947,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "skiHead",
+          activated: "on",
           movement: "back-forth",
           style: "greenAndPink",
           startDirection: "away",
@@ -952,8 +958,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "skiHead",
+          activated: "on",
           movement: "back-forth",
           style: "starsAndStripes",
           startDirection: "right",
@@ -963,8 +969,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "skiHead",
+          activated: "on",
           movement: "back-forth",
           style: "greenAndPink",
           startDirection: "left",
@@ -974,10 +980,9 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "skiHead",
+          activated: "on",
           movement: "back-forth",
-
           style: "starsAndStripes",
           startDirection: "towards",
         },
@@ -986,8 +991,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "cyberman",
+          activated: "on",
           movement: "towards-on-shortest-axis-xy4",
           startDirection: "towards",
         },
@@ -1006,9 +1011,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: false,
-          wakes: false,
           which: "cyberman",
+          activated: "off",
           movement: "towards-on-shortest-axis-xy4",
           startDirection: "towards",
         },
@@ -1017,8 +1021,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "turtle",
+          activated: "on",
           movement: "clockwise",
           startDirection: "away",
         },
@@ -1027,8 +1031,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "turtle",
+          activated: "on",
           movement: "clockwise",
           startDirection: "towards",
         },
@@ -1037,8 +1041,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "turtle",
+          activated: "on",
           movement: "clockwise",
           startDirection: "left",
         },
@@ -1047,8 +1051,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "helicopterBug",
+          activated: "on",
           movement: "patrol-randomly-xy8",
         },
         position: { x: 0, y: 1, z: 0 },
@@ -1056,8 +1060,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "homingBot",
+          activated: "on",
           movement: "towards-tripped-on-axis-xy4",
         },
         position: { x: 10, y: 4, z: 0 },
@@ -1065,8 +1069,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "monkey",
+          activated: "on",
           movement: "patrol-randomly-xy4",
         },
         position: { x: 9, y: 2, z: 0 },
@@ -1074,8 +1078,8 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "elephant",
+          activated: "on",
           movement: "patrol-randomly-xy4",
         },
         position: { x: 9, y: 10, z: 0 },
@@ -1083,26 +1087,26 @@ const rooms = {
       {
         type: "monster",
         config: {
-          activated: true,
           which: "emperorsGuardian",
-          movement: "towards-when-in-square-xy8-unless-planet-crowns",
+          activated: "while-player-near",
+          movement: "towards-analogue-unless-planet-crowns",
         },
         position: { x: 0, y: 10, z: 0 },
       },
       {
         type: "monster",
         config: {
-          activated: true,
           which: "emperor",
-          movement: "towards-when-in-square-xy8",
+          activated: "while-player-near",
+          movement: "towards-analogue",
         },
         position: { x: 0, y: 14, z: 4 },
       },
       {
         type: "monster",
         config: {
-          activated: true,
           which: "computerBot",
+          activated: "on",
           movement: "patrol-randomly-xy4",
         },
         position: { x: 6, y: 0, z: 0 },
@@ -1138,8 +1142,8 @@ const rooms = {
         position: { x: 7, y: 7, z: 0 },
       },
       {
-        type: "movableBlock",
-        config: { style: "stepStool", movement: "free" },
+        type: "pushableBlock",
+        config: { style: "stepStool" },
         position: { x: 9, y: 7, z: 0 },
       },
       {
@@ -1153,8 +1157,8 @@ const rooms = {
         position: { x: 10, y: 4, z: 2 },
       },
       {
-        type: "movableBlock",
-        config: { style: "sandwich", movement: "free" },
+        type: "pushableBlock",
+        config: { style: "sandwich" },
         position: { x: 10, y: 9, z: 0 },
       },
       {

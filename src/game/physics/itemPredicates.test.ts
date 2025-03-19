@@ -23,7 +23,7 @@ const monster = first(
       config: {
         which: "dalek",
         movement: "patrol-randomly-diagonal",
-        activated: true,
+        activated: "on",
       },
       position: originXyz,
     },
@@ -32,14 +32,13 @@ const monster = first(
   ),
 )!;
 
-const movableBlock = first(
+const pushableBlock = first(
   loadItemFromJson(
     "mb",
     {
-      type: "movableBlock",
+      type: "pushableBlock",
       config: {
         style: "sandwich",
-        movement: "free",
       },
       position: originXyz,
     },
@@ -85,7 +84,7 @@ describe("isSolid", () => {
     });
 
     test("horizontal portals are solid for movable blocks", () => {
-      expect(isSolid(horizontalPortal, movableBlock)).toBe(true);
+      expect(isSolid(horizontalPortal, pushableBlock)).toBe(true);
     });
 
     test("vertical portals are not solid for monsters", () => {
@@ -93,8 +92,8 @@ describe("isSolid", () => {
     });
 
     test("vertical portals are not solid for movable blocks", () => {
-      expect(isSolid(portalToBelow, movableBlock)).toBe(false);
-      expect(isSolid(portalToAbove, movableBlock)).toBe(false);
+      expect(isSolid(portalToBelow, pushableBlock)).toBe(false);
+      expect(isSolid(portalToAbove, pushableBlock)).toBe(false);
     });
 
     /*

@@ -55,7 +55,7 @@ export const handleItemsTouchingItems = <
     handleFiredDoughnutTouchingMonster(e);
   }
 
-  if (movingItemIsType(e, "monster") || movingItemIsType(e, "movableBlock")) {
+  if (movingItemIsType(e, "monster") || movingItemIsType(e, "movingPlatform")) {
     handleItemWithMovementTouchingItem(e);
   }
 

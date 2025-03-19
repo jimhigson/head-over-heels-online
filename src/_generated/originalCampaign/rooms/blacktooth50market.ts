@@ -24,7 +24,7 @@ export const room = inferRoomJson({
     },
     "monster@0,0,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-xy8",
         which: "helicopterBug",
       },
@@ -33,7 +33,7 @@ export const room = inferRoomJson({
     },
     "monster@4,7,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "towards",
         which: "cyberman",
@@ -43,7 +43,7 @@ export const room = inferRoomJson({
     },
     "monster@7,0,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-xy8",
         which: "helicopterBug",
       },

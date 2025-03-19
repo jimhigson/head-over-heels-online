@@ -178,7 +178,11 @@ type ItemWithMovementState = {
    */
   timeOfLastDirectionChange: number;
   facing: Xyz; // used for moving platforms
-  activated: boolean; // ie, can be turned on/off by a switch
+  /**
+   * activated for us is a boolean, not the many-states from the json config, ie it is stateful
+   * on if the item is currently activated (so they can render differently)
+   */
+  activated: boolean;
   vels: {
     // for movable blocks that function as movable platforms, these are treated as 'walking':
     walking: Xyz;
@@ -195,7 +199,8 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   spring: PortableItemState<RoomItemId>;
   portableBlock: PortableItemState<RoomItemId>;
   sceneryPlayer: PortableItemState<RoomItemId>;
-  movableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
+  pushableBlock: FreeItemState<RoomItemId>;
+  movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomItemId>;
   slidingDeadly: SlidingItemState<RoomItemId>;
   slidingBlock: SlidingItemState<RoomItemId>;

@@ -34,7 +34,7 @@ export const room = inferRoomJson({
     },
     "monster@2,5,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },
@@ -43,7 +43,7 @@ export const room = inferRoomJson({
     },
     "monster@3,2,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },
@@ -52,7 +52,7 @@ export const room = inferRoomJson({
     },
     "monster@4,4,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
@@ -61,7 +61,7 @@ export const room = inferRoomJson({
     },
     "monster@5,4,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },

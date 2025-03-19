@@ -1,4 +1,9 @@
 [
   { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/items/monster@5,4,1/config/activated",
+    "value": "after-player-near"
+  }
 ]

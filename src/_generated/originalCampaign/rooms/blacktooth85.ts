@@ -39,7 +39,7 @@ export const room = inferRoomJson({
     },
     "monster@0,7,1": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-xy4",
         which: "monkey",
       },

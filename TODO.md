@@ -253,7 +253,8 @@ of existence
 # moonbase33triple
 [x] doesn't scroll in y
     [ ] does but scrolling is poor
-[ ] monsters don't wake up
+[x] monsters don't wake up
+    - see https://www.youtube.com/watch?v=PdRuvdvLbjg&t=3782s
 [x] hidden wall shouldn't render
 [x] render extra floor edge
 

@@ -36,6 +36,7 @@ import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerT
 import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 import type { RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
+import { tickActivation } from "../physics/mechanics/activation";
 
 /**
  * biggest movement (in pixels) allowed in one tick - movement of more than this will be
@@ -108,6 +109,11 @@ function* itemMechanicResultGen<
   }
 
   if (isMoving(item)) {
+    yield tickActivation(item, room, gameState, deltaMS) as MechanicResult<
+      T,
+      RoomId,
+      RoomItemId
+    >;
     yield tickMovement(item, room, gameState, deltaMS) as MechanicResult<
       T,
       RoomId,
@@ -134,13 +140,14 @@ const tickItemStandingOn = <
 
   // walking onto a platform that is activate on stand
   if (isPlayableItem(item)) {
-    if (
+    // TODO: Delete - replaced with tickActivation
+    /*if (
       standingOn.type === "movableBlock" &&
-      standingOn.config.movement !== "free" &&
-      standingOn.config.activated === "onStand"
+      standingOn.config. !== "free" &&
+      standingOn.config.activated === "on-stand"
     ) {
       standingOn.state.activated = true;
-    }
+    }*/
 
     // case of walking onto a pickup from another platform, not colliding with it
     if (standingOn.type === "pickup") {

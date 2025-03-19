@@ -19,7 +19,7 @@ export const room = inferRoomJson({
     },
     "monster@2,0,0": {
       config: {
-        activated: true,
+        activated: "on",
         movement: "patrol-randomly-xy8",
         which: "bubbleRobot",
       },

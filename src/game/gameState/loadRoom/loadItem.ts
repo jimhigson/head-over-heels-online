@@ -28,7 +28,7 @@ export function* loadItemFromJson<
   RoomItemId extends string,
 >(
   itemId: string,
-  jsonItem: JsonItemUnion<RoomId>,
+  jsonItem: JsonItemUnion<RoomId, RoomItemId>,
   roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   /** may be safely omitted if we know that the item is not a scroll */
@@ -130,7 +130,8 @@ const shadowMask = (jsonItem: JsonItemUnion): ShadowMaskOptions | undefined => {
           : "shadowMask.fullBlock",
         relativeTo: "origin",
       };
-    case "movableBlock":
+    case "pushableBlock":
+    case "movingPlatform":
       return {
         spriteOptions:
           jsonItem.config.style === "stepStool" ?
@@ -219,7 +220,8 @@ const shadowCast = (
       return jsonItem.config.style === "tower" ?
           "shadow.smallRound"
         : "shadow.fullBlock";
-    case "movableBlock":
+    case "pushableBlock":
+    case "movingPlatform":
     case "hushPuppy":
     case "deadlyBlock":
       return "shadow.fullBlock";

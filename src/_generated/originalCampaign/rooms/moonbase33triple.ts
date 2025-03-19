@@ -54,10 +54,9 @@ export const room = inferRoomJson({
     },
     "monster@0,10,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 0, y: 10, z: 1 },
@@ -65,10 +64,9 @@ export const room = inferRoomJson({
     },
     "monster@0,11,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 0, y: 11, z: 1 },
@@ -76,10 +74,9 @@ export const room = inferRoomJson({
     },
     "monster@0,12,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 0, y: 12, z: 1 },
@@ -87,10 +84,9 @@ export const room = inferRoomJson({
     },
     "monster@0,13,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 0, y: 13, z: 1 },
@@ -98,10 +94,9 @@ export const room = inferRoomJson({
     },
     "monster@11,1,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 11, y: 1, z: 1 },
@@ -109,10 +104,9 @@ export const room = inferRoomJson({
     },
     "monster@11,14,1": {
       config: {
-        activated: false,
+        activated: "after-player-near",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: true,
         which: "cyberman",
       },
       position: { x: 11, y: 14, z: 1 },
@@ -120,10 +114,9 @@ export const room = inferRoomJson({
     },
     "monster@11,2,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 11, y: 2, z: 1 },
@@ -131,10 +124,9 @@ export const room = inferRoomJson({
     },
     "monster@11,3,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 11, y: 3, z: 1 },
@@ -142,10 +134,9 @@ export const room = inferRoomJson({
     },
     "monster@11,4,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 11, y: 4, z: 1 },
@@ -153,10 +144,9 @@ export const room = inferRoomJson({
     },
     "monster@11,5,1": {
       config: {
-        activated: false,
+        activated: "after-player-near",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: true,
         which: "cyberman",
       },
       position: { x: 11, y: 5, z: 1 },
@@ -164,10 +154,9 @@ export const room = inferRoomJson({
     },
     "monster@11,9,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 11, y: 9, z: 1 },
@@ -175,10 +164,9 @@ export const room = inferRoomJson({
     },
     "monster@5,10,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 5, y: 10, z: 1 },
@@ -186,10 +174,9 @@ export const room = inferRoomJson({
     },
     "monster@5,11,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 5, y: 11, z: 1 },
@@ -197,10 +184,9 @@ export const room = inferRoomJson({
     },
     "monster@5,12,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 5, y: 12, z: 1 },
@@ -208,10 +194,9 @@ export const room = inferRoomJson({
     },
     "monster@5,13,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 5, y: 13, z: 1 },
@@ -219,10 +204,9 @@ export const room = inferRoomJson({
     },
     "monster@6,10,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 10, z: 1 },
@@ -230,10 +214,9 @@ export const room = inferRoomJson({
     },
     "monster@6,11,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 11, z: 1 },
@@ -241,10 +224,9 @@ export const room = inferRoomJson({
     },
     "monster@6,12,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 12, z: 1 },
@@ -252,10 +234,9 @@ export const room = inferRoomJson({
     },
     "monster@6,13,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 13, z: 1 },
@@ -263,10 +244,9 @@ export const room = inferRoomJson({
     },
     "monster@6,2,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 2, z: 1 },
@@ -274,10 +254,9 @@ export const room = inferRoomJson({
     },
     "monster@6,3,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 3, z: 1 },
@@ -285,10 +264,9 @@ export const room = inferRoomJson({
     },
     "monster@6,4,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 4, z: 1 },
@@ -296,14 +274,183 @@ export const room = inferRoomJson({
     },
     "monster@6,5,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 5, z: 1 },
       type: "monster",
+    },
+    uhohSwitch: {
+      config: {
+        modifies: [
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,10,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,11,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,12,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,13,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@11,1,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@11,14,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@11,2,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@11,3,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@11,4,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@11,5,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@11,9,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@5,10,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@5,11,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@5,12,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@5,13,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@6,10,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@6,11,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@6,12,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@6,13,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@6,2,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@6,3,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@6,4,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@6,5,1",
+          },
+        ],
+        type: "in-room",
+      },
+      position: { x: 5, y: 15, z: 0 },
+      type: "switch",
     },
     "wall@0,0,0:3gbWw": {
       config: { direction: "right", tiles: [], times: { y: 8 } },

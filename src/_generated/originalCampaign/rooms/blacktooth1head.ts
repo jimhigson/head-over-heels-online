@@ -28,7 +28,10 @@ export const room = inferRoomJson({
       type: "barrier",
     },
     colouriseSwitch: {
-      config: { store: { path: "userSettings.displaySettings.uncolourised" } },
+      config: {
+        path: "userSettings.displaySettings.uncolourised",
+        type: "in-store",
+      },
       isExtra: true,
       position: { x: 5, y: 3, z: 0 },
       type: "switch",

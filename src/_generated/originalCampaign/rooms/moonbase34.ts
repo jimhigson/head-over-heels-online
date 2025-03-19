@@ -24,10 +24,9 @@ export const room = inferRoomJson({
     },
     "monster@7,0,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 7, y: 0, z: 1 },
@@ -35,10 +34,9 @@ export const room = inferRoomJson({
     },
     "monster@7,1,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 7, y: 1, z: 1 },
@@ -46,10 +44,9 @@ export const room = inferRoomJson({
     },
     "monster@7,2,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 7, y: 2, z: 1 },
@@ -57,10 +54,9 @@ export const room = inferRoomJson({
     },
     "monster@7,3,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 7, y: 3, z: 1 },

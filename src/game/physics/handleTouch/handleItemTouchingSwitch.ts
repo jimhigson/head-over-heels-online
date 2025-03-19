@@ -1,7 +1,6 @@
 import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import { toggleBoolean } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
-import { objectEntriesIter } from "../../../utils/entries";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 export const handleItemTouchingSwitch = <
@@ -13,7 +12,7 @@ export const handleItemTouchingSwitch = <
   room,
 }: ItemTouchEventByItemType<RoomId, RoomItemId, ItemInPlayType, "switch">) => {
   const {
-    config: { activates, store: switchStoreConfig },
+    config: switchConfig,
     state: { setting, touchedOnProgression },
   } = switchItem;
 
@@ -29,24 +28,33 @@ export const handleItemTouchingSwitch = <
     return;
   }
 
-  if (activates) {
-    const newSetting = (switchItem.state.setting =
-      setting === "left" ? "right" : "left");
+  switch (switchConfig.type) {
+    case "in-room": {
+      const newSetting = (switchItem.state.setting =
+        setting === "left" ? "right" : "left");
 
-    for (const [k, v] of objectEntriesIter(activates)) {
-      const affectedItem = room.items[k];
+      for (const modification of switchConfig.modifies) {
+        const targetItem = room.items[modification.target];
 
-      if (affectedItem === undefined) {
-        // item could have been deleted from the room (ie, be a disappearing block
-        // that's already been stood on)
-        continue;
+        if (targetItem === undefined) {
+          // item could have been deleted from the room (ie, be a disappearing block
+          // that's already been stood on)
+          continue;
+        }
+
+        targetItem.state = {
+          ...targetItem.state,
+          [modification.key]: modification[newSetting],
+        };
       }
 
-      affectedItem.state = { ...affectedItem.state, ...v[newSetting] };
+      break;
     }
-  }
-
-  if (switchStoreConfig) {
-    store.dispatch(toggleBoolean(switchStoreConfig.path));
+    case "in-store": {
+      store.dispatch(toggleBoolean(switchConfig.path));
+      break;
+    }
+    default:
+      switchConfig satisfies never;
   }
 };

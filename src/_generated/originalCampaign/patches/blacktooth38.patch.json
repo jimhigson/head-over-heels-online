@@ -24,7 +24,7 @@
     "path": "/items/extraMonster",
     "value": {
       "config": {
-        "activated": true,
+        "activated": "on",
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },

@@ -46,7 +46,7 @@ export function RoomSelect<RoomId extends string>({
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0">
+      <PopoverContent className="p-0 z-cheats">
         <CssVariables scaleFactor={1}>
           <Command className="w-[--radix-popper-anchor-width]">
             <CommandInput placeholder="Room id" />

@@ -44,10 +44,9 @@ export const room = inferRoomJson({
     },
     "monster@0,7,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "towards",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 0, y: 7, z: 1 },
@@ -55,10 +54,9 @@ export const room = inferRoomJson({
     },
     "monster@1,7,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "towards",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 1, y: 7, z: 1 },
@@ -66,10 +64,9 @@ export const room = inferRoomJson({
     },
     "monster@2,7,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "towards",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 2, y: 7, z: 1 },
@@ -77,10 +74,9 @@ export const room = inferRoomJson({
     },
     "monster@5,7,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "towards",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 5, y: 7, z: 1 },
@@ -88,10 +84,9 @@ export const room = inferRoomJson({
     },
     "monster@6,7,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "towards",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 6, y: 7, z: 1 },
@@ -99,10 +94,9 @@ export const room = inferRoomJson({
     },
     "monster@7,7,1": {
       config: {
-        activated: false,
+        activated: "off",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "towards",
-        wakes: false,
         which: "cyberman",
       },
       position: { x: 7, y: 7, z: 1 },

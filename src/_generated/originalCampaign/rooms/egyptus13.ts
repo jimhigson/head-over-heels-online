@@ -27,10 +27,10 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 2 },
       type: "lift",
     },
-    "movableBlock@1,0,0": {
-      config: { movement: "free", style: "stepStool" },
+    "pushableBlock@1,0,0": {
+      config: { style: "stepStool" },
       position: { x: 1, y: 0, z: 0 },
-      type: "movableBlock",
+      type: "pushableBlock",
     },
     "spring@7,0,7": {
       config: {},

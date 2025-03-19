@@ -22,11 +22,6 @@ export const room = inferRoomJson({
       position: { x: 1, y: 8, z: 3 },
       type: "door",
     },
-    "movableBlock@2,3,0": {
-      config: { movement: "free", style: "stepStool" },
-      position: { x: 2, y: 3, z: 0 },
-      type: "movableBlock",
-    },
     "pickup@2,3,1": {
       config: { gives: "reincarnation" },
       position: { x: 2, y: 3, z: 1 },
@@ -36,6 +31,11 @@ export const room = inferRoomJson({
       config: { style: "drum" },
       position: { x: 0, y: 0, z: 0 },
       type: "portableBlock",
+    },
+    "pushableBlock@2,3,0": {
+      config: { style: "stepStool" },
+      position: { x: 2, y: 3, z: 0 },
+      type: "pushableBlock",
     },
     scroll: {
       config: { gives: "scroll", page: "reincarnationFish" },
