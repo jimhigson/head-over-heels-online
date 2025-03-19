@@ -27,11 +27,12 @@ import {
 import { isPlayableItem } from "../../physics/itemPredicates";
 import { createStackedSprites } from "./createStackedSprites";
 import { store } from "../../../store/store";
-import { getAtPath } from "../../../utils/getAtPath";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import { monsterAppearance } from "./monsterAppearance";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { stoodOnByCount } from "../../../model/StoodOnBy";
+import { selectAtPath } from "../../../store/selectors";
+import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 
 const blockTextureId = (
   isDark: boolean,
@@ -221,7 +222,7 @@ export const itemAppearances: {
     // for store switches, ignore the switch's own state and read from the store:
     const setting =
       switchConfig.type === "in-store" ?
-        getAtPath(store.getState().gameMenus, switchConfig.path) ? "right"
+        selectAtPath(store.getState(), switchConfig.path) ? "right"
         : "left"
       : stateSetting;
 
@@ -301,44 +302,44 @@ export const itemAppearances: {
     return rendering;
   }),
 
-  teleporter({
-    renderContext: {
-      item: {
-        state: { stoodOnBy },
-        config: { times },
-      },
-      room,
-    },
-    currentlyRenderedProps,
-  }) {
+  teleporter({ renderContext: { item, room }, currentlyRenderedProps }) {
+    const {
+      state: { stoodOnBy },
+      config: { times },
+    } = item;
+
+    const activated = teleporterIsActive(item);
+
     const flashing =
+      activated &&
       iterateStoodOnByItems(stoodOnBy, room).find(isPlayableItem) !== undefined;
 
     const render =
       currentlyRenderedProps === undefined ||
+      activated !== currentlyRenderedProps.activated ||
       flashing !== currentlyRenderedProps.flashing;
 
     if (!render) {
       return "no-update";
     }
 
-    const renderFlashing = () =>
-      new Container({
-        children: [
-          createSprite({ textureId: "teleporter", times }),
-          createSprite({
-            animationId: "teleporter.flashing",
-            times,
-          }),
-        ],
-      });
-
     return {
       container:
-        flashing ? renderFlashing() : (
-          createSprite({ textureId: "teleporter", times })
-        ),
-      renderProps: { flashing },
+        flashing ?
+          new Container({
+            children: [
+              createSprite({ textureId: "teleporter", times }),
+              createSprite({
+                animationId: "teleporter.flashing",
+                times,
+              }),
+            ],
+          })
+        : createSprite({
+            textureId: activated ? "teleporter" : "block.artificial",
+            times,
+          }),
+      renderProps: { flashing, activated },
     };
   },
 

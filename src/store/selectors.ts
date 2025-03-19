@@ -7,6 +7,7 @@ import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import { size, objectValues } from "iter-tools";
 import type {
+  GameMenusState,
   InputDirectionMode,
   ShowBoundingBoxes,
 } from "./slices/gameMenusSlice";
@@ -14,6 +15,8 @@ import { defaultUserSettings } from "./defaultUserSettings";
 import type { ResolutionName } from "../originalGame";
 import type { InputAssignment } from "../game/input/InputState";
 import type { PickDeep } from "type-fest";
+import type { ToggleablePaths } from "../utils/Toggleable";
+import { getAtPath } from "../utils/getAtPath";
 
 export const selectTotalUpscale = (state: RootState): number => {
   const {
@@ -149,4 +152,11 @@ export const selectOnScreenControls = (state: RootState): boolean =>
 
 export const useIsOnScreenControls = () => {
   return useAppSelector(selectOnScreenControls);
+};
+
+export const selectAtPath = (
+  state: RootState,
+  path: ToggleablePaths<GameMenusState>,
+): boolean => {
+  return !!getAtPath(state.gameMenus, path);
 };

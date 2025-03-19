@@ -41,6 +41,7 @@ type ItemRenderPropsMap = {
   };
   teleporter: {
     flashing: boolean;
+    activated: boolean;
   };
 
   //deadlyBlock: {style: DeadlyItemStyle;} <--not needed since can't change

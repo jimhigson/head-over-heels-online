@@ -18,6 +18,7 @@ import {
   originalGameJumpPxPerFrame,
   playerJumpHeightPx,
 } from "../mechanicsConstants";
+import { teleporterIsActive } from "./teleporting";
 
 const jumpInitialVelocity = (apexZ: number) => {
   // Calculate the time to reach the apex in milliseconds in the original game:
@@ -59,7 +60,7 @@ const isJumpOffable = <RoomItemId extends string>(
   if (item === null) {
     return false;
   }
-  if (isTeleporter(item)) {
+  if (isTeleporter(item) && teleporterIsActive(item)) {
     // can't jump from a teleporter (jump key teleports)
     return false;
   }
