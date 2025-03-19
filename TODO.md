@@ -253,31 +253,10 @@ of existence
 # moonbase33triple
 [x] doesn't scroll in y
     [ ] does but scrolling is poor
-[ ] monsters don't wake up
+[x] monsters don't wake up
     - see https://www.youtube.com/watch?v=PdRuvdvLbjg&t=3782s
 [x] hidden wall shouldn't render
 [x] render extra floor edge
-test: 
-    [x] `#bookworld31` ski heads going round and round (bookworld?)
-    [x] `#blacktooth37` ski heads turned off by heels
-    [ ] `#safari35` portable platform
-        - latent movement works in `#blacktooth2` but not for players on moving platforms - tested also in `#penitentiary6`
-        - works for player in 'lift' test campaign room
-        - latent movement array is filling up, but isn't used
-        - becaus the first entries are getting very high values, an the 
-          applying only looks until the first number > gameTime
-          `safari35` - on entering room from below, already have a lot of LM!
-
-        confirm: 
-            is latent movement cleared when switching rooms?
-            why is latent movement sometimes not sequential?
-
-    [x] emperor, guadian
-    [x] `#blacktooth53market` helecopter bug going towards 
-    [x] `#blacktooth6` head can turn mojo + blocks off near his start room
-    [x] in lab, turtles can throw own switches
-    [x] `#moonbase33triple` itself
-    [ ] every room with a switch
 
 # finalroom
     - in space of lives, should say FREEDOM in hud
