@@ -7,6 +7,7 @@ import type { AnyRoomJson } from "../model/RoomJson";
 import type { Operation } from "fast-json-patch";
 import fastJsonPatch from "fast-json-patch";
 import chalk from "chalk";
+import type { Campaign } from "../model/modelTypes";
 
 const roomTs = (room: AnyRoomJson): string =>
   `
@@ -19,9 +20,8 @@ const targetDir = "src/_generated/originalCampaign/";
 const patchFilename = (roomId: string) =>
   `${targetDir}/patches/${roomId}.patch.json`;
 
-export const writeOut = async (convertedRooms: Record<string, AnyRoomJson>) => {
+export const writeOut = async ({ rooms: convertedRooms }: Campaign<string>) => {
   const targetDir = "src/_generated/originalCampaign/";
-  const jsonConvertedFilename = `${targetDir}/campaign.converted.json`;
   const tsBarrellFilename = `${targetDir}/campaign.ts`;
   const tsRoomFilename = (roomId: string) => `${targetDir}/rooms/${roomId}.ts`;
   const tsRoomIdsFilename = `${targetDir}/OriginalCampaignRoomId.ts`;
@@ -42,11 +42,6 @@ export const writeOut = async (convertedRooms: Record<string, AnyRoomJson>) => {
     ...convertedRooms,
     ...(await readExtraRooms()),
   };
-
-  const writeConvertedJsonPromise = writeFile(
-    jsonConvertedFilename,
-    JSON.stringify({ rooms: convertedRooms }),
-  );
 
   const roomIdsSorted = orderBy(Object.keys(convertedRoomsAndExtraRooms));
 
@@ -82,7 +77,6 @@ export const writeOut = async (convertedRooms: Record<string, AnyRoomJson>) => {
   await Promise.all([
     writeTsBarrell,
     writeOriginalCampaignRoomIdType,
-    writeConvertedJsonPromise,
     ...iterate(objectValues(convertedRoomsAndExtraRooms)).map(async (room) => {
       try {
         if (room.id === undefined) {

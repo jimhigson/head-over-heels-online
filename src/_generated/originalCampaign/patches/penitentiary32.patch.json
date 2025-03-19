@@ -1,4 +1,4 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
-  { "op": "replace", "path": "/roomAbove", "value": "penitentiary35" }
+  { "op": "replace", "path": "/roomAbove", "value": "penitentiary35" },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

@@ -1,12 +1,14 @@
 [
+  { "op": "replace", "path": "/size/y", "value": 12 },
+  { "op": "replace", "path": "/size/x", "value": 12 },
   { "op": "replace", "path": "/items/wall@13,0,0/position/x", "value": 12 },
+  { "op": "replace", "path": "/items/wall@0,13,0/position/y", "value": 12 },
   { "op": "remove", "path": "/items/block@10,4,0/config/times" },
   {
     "op": "add",
     "path": "/items/block@10,4,0/config/disappearing",
     "value": "onStand"
   },
-  { "op": "replace", "path": "/items/wall@0,13,0/position/y", "value": 12 },
   {
     "op": "add",
     "path": "/items/blockMissingInXml",
@@ -15,7 +17,5 @@
       "position": { "x": 10, "y": 5, "z": 0 },
       "type": "block"
     }
-  },
-  { "op": "replace", "path": "/size/y", "value": 12 },
-  { "op": "replace", "path": "/size/x", "value": 12 }
+  }
 ]

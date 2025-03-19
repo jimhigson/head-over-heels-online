@@ -1,7 +1,7 @@
 import type { RootState } from "../../../store/store";
 import { pick } from "../../../utils/pick";
 import type { GameState } from "../GameState";
-import { badJsonClone } from "./badJsonClone";
+import { badJsonClone } from "../../../utils/badJsonClone";
 import {
   savedGameGameMenuSliceFields,
   savedGameGameStateFields,

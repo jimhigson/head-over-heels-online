@@ -1,5 +1,4 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
   { "op": "replace", "path": "/items/lift@0,1,0/position/x", "value": 7 },
   { "op": "replace", "path": "/items/lift@0,1,0/config/top", "value": 11 },
   { "op": "replace", "path": "/items/block@2,4,0/position/x", "value": 0 },
@@ -106,5 +105,6 @@
       "position": { "x": 7, "y": 0.5, "z": 6 },
       "type": "barrier"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

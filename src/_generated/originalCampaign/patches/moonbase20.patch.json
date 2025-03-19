@@ -1,6 +1,4 @@
 [
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" },
   {
     "op": "add",
     "path": "/items/crownsScroll",
@@ -10,5 +8,7 @@
       "position": { "x": 5, "y": 4, "z": 1 },
       "type": "pickup"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" }
 ]

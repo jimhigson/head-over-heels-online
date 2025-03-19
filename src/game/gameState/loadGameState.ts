@@ -10,7 +10,7 @@ import { getRoomItem } from "../../model/RoomState";
 import { emptyObject } from "../../utils/empty";
 import type { SavedGameState } from "./saving/SavedGameState";
 import { transformObject } from "../../utils/entries";
-import { badJsonClone } from "./saving/badJsonClone";
+import { badJsonClone } from "../../utils/badJsonClone";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>

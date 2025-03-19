@@ -6,12 +6,12 @@
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@0,10,-1/position/z",
+    "path": "/items/slidingBlock@0,13,-1/position/z",
     "value": 1
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@0,13,-1/position/z",
+    "path": "/items/slidingBlock@0,10,-1/position/z",
     "value": 1
   }
 ]

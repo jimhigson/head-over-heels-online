@@ -1,4 +1,5 @@
 [
+  { "op": "add", "path": "/size/z", "value": 13 },
   {
     "op": "replace",
     "path": "/items/portableBlock@7,7,1/position/y",
@@ -17,6 +18,5 @@
       "position": { "x": 1, "y": 6, "z": 0 },
       "type": "block"
     }
-  },
-  { "op": "add", "path": "/size/z", "value": 13 }
+  }
 ]

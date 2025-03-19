@@ -1,8 +1,12 @@
 [
   {
     "op": "replace",
+    "path": "/items/deadlyBlock@1,2,0/type",
+    "value": "block"
+  },
+  {
+    "op": "replace",
     "path": "/items/deadlyBlock@1,2,0/config/style",
     "value": "organic"
-  },
-  { "op": "replace", "path": "/items/deadlyBlock@1,2,0/type", "value": "block" }
+  }
 ]
