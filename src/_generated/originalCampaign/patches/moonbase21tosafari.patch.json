@@ -1,5 +1,4 @@
 [
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
   {
     "op": "add",
     "path": "/items/scroll",
@@ -8,5 +7,6 @@
       "position": { "x": 1, "y": 3, "z": 0 },
       "type": "pickup"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" }
 ]

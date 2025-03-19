@@ -1,5 +1,4 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
   {
     "op": "add",
     "path": "/items/extraBarrier1",
@@ -17,5 +16,6 @@
       "position": { "x": 4.5, "y": 0, "z": 1 },
       "type": "barrier"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

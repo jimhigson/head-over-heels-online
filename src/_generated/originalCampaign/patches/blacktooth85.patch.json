@@ -1,9 +1,9 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "green" },
-  { "op": "replace", "path": "/items/door@8,3,0/position/y", "value": 6 },
   { "op": "remove", "path": "/items/wall@8,5,0" },
   { "op": "replace", "path": "/items/wall@8,0,0/config/times/y", "value": 6 },
   { "op": "add", "path": "/items/wall@8,0,0/config/tiles/3", "value": "plain" },
   { "op": "add", "path": "/items/wall@8,0,0/config/tiles/4", "value": "plain" },
-  { "op": "add", "path": "/items/wall@8,0,0/config/tiles/5", "value": "plain" }
+  { "op": "add", "path": "/items/wall@8,0,0/config/tiles/5", "value": "plain" },
+  { "op": "replace", "path": "/items/door@8,3,0/position/y", "value": 6 },
+  { "op": "replace", "path": "/color/hue", "value": "green" }
 ]

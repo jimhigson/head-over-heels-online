@@ -1,8 +1,8 @@
 [
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
   {
     "op": "replace",
     "path": "/items/monster@11,0,0/config/startDirection",
     "value": "away"
-  }
+  },
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" }
 ]

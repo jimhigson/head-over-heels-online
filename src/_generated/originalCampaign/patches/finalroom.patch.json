@@ -1,9 +1,8 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@11,0,0/config/startDirection",
-    "value": "awayRight"
+    "path": "/items/sceneryPlayer@9,7,0/config/startDirection",
+    "value": "towardsRight"
   },
   {
     "op": "replace",
@@ -12,7 +11,12 @@
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@0,6,0/config/startDirection",
+    "path": "/items/sceneryPlayer@11,0,0/config/startDirection",
+    "value": "awayRight"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sceneryPlayer@1,7,1/config/startDirection",
     "value": "towardsLeft"
   },
   {
@@ -27,13 +31,8 @@
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@1,7,1/config/startDirection",
+    "path": "/items/sceneryPlayer@0,6,0/config/startDirection",
     "value": "towardsLeft"
-  },
-  {
-    "op": "replace",
-    "path": "/items/sceneryPlayer@9,7,0/config/startDirection",
-    "value": "towardsRight"
   },
   {
     "op": "add",
@@ -89,5 +88,6 @@
       "type": "sceneryPlayer"
     }
   },
-  { "op": "replace", "path": "/floor", "value": "penitentiary" }
+  { "op": "replace", "path": "/floor", "value": "penitentiary" },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

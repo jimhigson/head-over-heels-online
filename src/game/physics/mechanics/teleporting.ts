@@ -1,6 +1,8 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
+import { selectAtPath } from "../../../store/selectors";
+import { store } from "../../../store/store";
 import type { GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import type { PressStatus } from "../../input/InputStateTracker";
@@ -9,12 +11,20 @@ import { type PlayableItem } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 
-export function teleporting<RoomId extends string, RoomItemId extends string>(
+export const teleporterIsActive = ({
+  config: { activatedOnStoreValue },
+}: ItemInPlay<"teleporter", string, string>) => {
+  return activatedOnStoreValue === undefined ? true : (
+      selectAtPath(store.getState(), activatedOnStoreValue)
+    );
+};
+
+export const teleporting = <RoomId extends string, RoomItemId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<CharacterName, RoomId, RoomItemId> {
+): MechanicResult<CharacterName, RoomId, RoomItemId> => {
   const {
     state: { teleporting, standingOnItemId },
   } = playableItem;
@@ -25,12 +35,15 @@ export function teleporting<RoomId extends string, RoomItemId extends string>(
   const standingOn =
     standingOnItemId === null ? null : room.items[standingOnItemId];
 
-  const standingOnATeleporter =
-    standingOn !== null && isItemType("teleporter")(standingOn);
+  const standingOnActivatedTeleporter =
+    standingOn !== null &&
+    isItemType("teleporter")(standingOn) &&
+    teleporterIsActive(standingOn);
 
   if (teleporting === null) {
     // not already teleporting - see if we should start:
-    const startTeleporting = jumpInput !== "released" && standingOnATeleporter;
+    const startTeleporting =
+      jumpInput !== "released" && standingOnActivatedTeleporter;
     if (startTeleporting) {
       return {
         movementType: "steady",
@@ -50,7 +63,7 @@ export function teleporting<RoomId extends string, RoomItemId extends string>(
 
   switch (teleporting.phase) {
     case "out":
-      if (!standingOnATeleporter) {
+      if (!standingOnActivatedTeleporter) {
         // rare-but-possible case where the player has moved off the teleporter while teleporting,
         // this can sometimes happen due to vagueness in floating point collision detection
         // if they were on the edge of the teleporter enough that the mtv will next move them
@@ -111,4 +124,4 @@ export function teleporting<RoomId extends string, RoomItemId extends string>(
       },
     },
   };
-}
+};

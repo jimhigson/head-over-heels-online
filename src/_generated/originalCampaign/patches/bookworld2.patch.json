@@ -1,6 +1,4 @@
 [
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" },
   {
     "op": "add",
     "path": "/items/canary",
@@ -36,5 +34,7 @@
       "position": { "x": 11, "y": 0, "z": 0 },
       "type": "block"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" }
 ]

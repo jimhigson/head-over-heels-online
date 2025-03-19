@@ -1,4 +1,24 @@
 [
+  {
+    "op": "replace",
+    "path": "/items/teleporter@3,3,0/config/toRoom",
+    "value": "safari33"
+  },
+  {
+    "op": "replace",
+    "path": "/items/teleporter@3,3,0/config/toPosition/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/teleporter@3,3,0/config/toPosition/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/teleporter@3,3,0/config/toPosition/x",
+    "value": 1
+  },
   { "op": "replace", "path": "/items/lift@7,7,0/config/top", "value": 11 },
   {
     "op": "add",

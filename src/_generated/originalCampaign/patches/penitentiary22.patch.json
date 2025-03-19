@@ -1,4 +1,5 @@
 [
+  { "op": "add", "path": "/size/z", "value": 13 },
   {
     "op": "add",
     "path": "/items/extra1",
@@ -52,6 +53,5 @@
       "position": { "x": 0, "y": 4, "z": 6 },
       "type": "block"
     }
-  },
-  { "op": "add", "path": "/size/z", "value": 13 }
+  }
 ]

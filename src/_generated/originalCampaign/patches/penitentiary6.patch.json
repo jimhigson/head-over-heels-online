@@ -1,8 +1,8 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "green" },
   {
     "op": "replace",
     "path": "/items/movingPlatform@3,0,1/config/activated",
     "value": "on"
-  }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "green" }
 ]

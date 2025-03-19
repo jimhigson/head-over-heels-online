@@ -1,7 +1,6 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
-  { "op": "replace", "path": "/items/lift@5,7,0/position/y", "value": 9 },
-  { "op": "replace", "path": "/items/lift@5,7,0/config/top", "value": 11 },
+  { "op": "replace", "path": "/size/y", "value": 10 },
+  { "op": "add", "path": "/size/z", "value": 12 },
   { "op": "replace", "path": "/items/wall@8,0,0/config/times/y", "value": 10 },
   {
     "op": "replace",
@@ -33,15 +32,16 @@
     "path": "/items/wall@8,0,0/config/tiles/9",
     "value": "hieroglyphics"
   },
-  { "op": "replace", "path": "/items/block@4,7,2/position/y", "value": 9 },
-  { "op": "replace", "path": "/items/block@2,7,1/position/y", "value": 9 },
   { "op": "replace", "path": "/items/wall@0,8,0/position/y", "value": 10 },
-  { "op": "replace", "path": "/items/block@0,7,0/position/y", "value": 9 },
   {
     "op": "replace",
     "path": "/items/wall@0,0,0:2sckOl/config/times/y",
     "value": 10
   },
-  { "op": "replace", "path": "/size/y", "value": 10 },
-  { "op": "add", "path": "/size/z", "value": 12 }
+  { "op": "replace", "path": "/items/lift@5,7,0/position/y", "value": 9 },
+  { "op": "replace", "path": "/items/lift@5,7,0/config/top", "value": 11 },
+  { "op": "replace", "path": "/items/block@4,7,2/position/y", "value": 9 },
+  { "op": "replace", "path": "/items/block@2,7,1/position/y", "value": 9 },
+  { "op": "replace", "path": "/items/block@0,7,0/position/y", "value": 9 },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

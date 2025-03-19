@@ -1,5 +1,4 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
   {
     "op": "add",
     "path": "/items/extra0a",
@@ -89,5 +88,6 @@
       "position": { "x": 0, "y": 7, "z": 2 },
       "type": "block"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

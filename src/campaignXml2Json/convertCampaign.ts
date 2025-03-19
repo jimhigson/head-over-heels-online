@@ -2,11 +2,11 @@ import type { Xml2JsonRoom } from "./readToJson";
 import { readMapToJson, roomNameFromXmlFilename } from "./readToJson";
 import { readdir } from "node:fs/promises";
 import { convertRoomId } from "./convertRoomId";
-import { writeOut } from "./writeOut";
 import type { DirectionXy4 } from "../utils/vectors/vectors";
 import { convertRoom } from "./convertRoom";
 import type { ZxSpectrumRoomHue, ZxSpectrumShade } from "../originalGame";
 import type { AnyRoomJson } from "../model/RoomJson";
+import type { Campaign } from "../model/modelTypes";
 
 export const map = await readMapToJson();
 
@@ -92,19 +92,17 @@ export const convertRoomColour = (color: string) => {
   };
 };
 
-const rooms: Record<string, AnyRoomJson> = {};
-for (const roomName of allRoomNames) {
-  try {
-    const room = await convertRoom(roomName);
+export const convertCampaign = async (): Promise<Campaign<string>> => {
+  const rooms: Record<string, AnyRoomJson> = {};
+  for (const roomName of allRoomNames) {
+    try {
+      const room = await convertRoom(roomName);
 
-    rooms[convertRoomId(roomName)] = room;
-  } catch (e) {
-    throw new Error(`error converting room ${roomName} :: ${(e as Error).message}
+      rooms[convertRoomId(roomName)] = room;
+    } catch (e) {
+      throw new Error(`error converting room ${roomName} :: ${(e as Error).message}
             ${(e as Error).stack}`);
+    }
   }
-}
-
-const main = async () => {
-  await writeOut(rooms);
+  return { rooms };
 };
-main();

@@ -1,6 +1,9 @@
 [
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/items/teleporter@3,3,0/config/activatedOnStoreValue",
+    "value": "planetsLiberated.egyptus"
+  },
   {
     "op": "add",
     "path": "/items/scroll",
@@ -9,5 +12,7 @@
       "position": { "x": 5, "y": 6, "z": 6 },
       "type": "pickup"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

@@ -36,6 +36,46 @@ test("can consolidate two blocks in y at the origin", () => {
   `);
 });
 
+test("can consolidate two teleporters in y at the origin", () => {
+  const items: JsonItemUnion[] = [
+    {
+      type: "teleporter",
+      config: { toRoom: "any", toPosition: { x: 0, y: 0, z: 0 } },
+      position: { x: 0, y: 0, z: 0 },
+    },
+    {
+      type: "teleporter",
+      // note: config isn't identical: toPosition is different
+      config: { toRoom: "any", toPosition: { x: 0, y: 1, z: 0 } },
+      position: { x: 0, y: 1, z: 0 },
+    },
+  ];
+
+  expect(consolidateItems(items)).toMatchInlineSnapshot(`
+    [
+      {
+        "config": {
+          "times": {
+            "y": 2,
+          },
+          "toPosition": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          },
+          "toRoom": "any",
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+        },
+        "type": "teleporter",
+      },
+    ]
+  `);
+});
+
 test("does not consolidate disappearing blocks", () => {
   // disappearing blocks need to disappear one by one, not as a multiple-block block,
   //so they can't be consolidated

@@ -1,5 +1,4 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "cyan" },
   {
     "op": "add",
     "path": "/items/tower0",
@@ -17,5 +16,6 @@
       "position": { "x": 7, "y": 3, "z": 1 },
       "type": "block"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" }
 ]

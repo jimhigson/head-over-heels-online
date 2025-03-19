@@ -1,5 +1,4 @@
 [
-  { "op": "replace", "path": "/items/door@3,8,4/position/x", "value": 6 },
   { "op": "remove", "path": "/items/wall@5,8,0" },
   { "op": "replace", "path": "/items/wall@0,8,0/config/times/x", "value": 6 },
   {
@@ -10,6 +9,7 @@
   { "op": "add", "path": "/items/wall@0,8,0/config/tiles/3", "value": "plain" },
   { "op": "add", "path": "/items/wall@0,8,0/config/tiles/4", "value": "plain" },
   { "op": "add", "path": "/items/wall@0,8,0/config/tiles/5", "value": "plain" },
+  { "op": "replace", "path": "/items/door@3,8,4/position/x", "value": 6 },
   {
     "op": "add",
     "path": "/items/towerA",

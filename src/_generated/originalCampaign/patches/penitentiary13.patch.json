@@ -1,20 +1,8 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
   {
     "op": "replace",
     "path": "/items/wall@8,0,0/config/tiles/2",
     "value": "skeleton"
-  },
-  {
-    "op": "add",
-    "path": "/items/block@4,3,2/config/disappearing",
-    "value": "onStand"
-  },
-  { "op": "remove", "path": "/items/block@1,0,1/config/times" },
-  {
-    "op": "add",
-    "path": "/items/block@1,0,1/config/disappearing",
-    "value": "onStand"
   },
   {
     "op": "replace",
@@ -35,6 +23,17 @@
     "op": "replace",
     "path": "/items/wall@0,4,0/config/tiles/0",
     "value": "skeleton"
+  },
+  {
+    "op": "add",
+    "path": "/items/block@4,3,2/config/disappearing",
+    "value": "onStand"
+  },
+  { "op": "remove", "path": "/items/block@1,0,1/config/times" },
+  {
+    "op": "add",
+    "path": "/items/block@1,0,1/config/disappearing",
+    "value": "onStand"
   },
   {
     "op": "add",
@@ -59,5 +58,6 @@
       "position": { "x": 2, "y": 0, "z": 1 },
       "type": "block"
     }
-  }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "op": "replace",
+    "path": "/items/block@3,3,0/config/style",
+    "value": "artificial"
+  }
+]

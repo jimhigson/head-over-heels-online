@@ -83,43 +83,21 @@ export const room = inferRoomJson({
       type: "monster",
     },
     "teleporter@0,6,0": {
-      config: { toPosition: { x: 0, y: 6, z: 0 }, toRoom: "blacktooth60" },
+      config: {
+        times: { x: 2, y: 2 },
+        toPosition: { x: 0, y: 6, z: 0 },
+        toRoom: "blacktooth60",
+      },
       position: { x: 0, y: 6, z: 0 },
       type: "teleporter",
     },
-    "teleporter@0,7,0": {
-      config: { toPosition: { x: 0, y: 7, z: 0 }, toRoom: "blacktooth60" },
-      position: { x: 0, y: 7, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@1,6,0": {
-      config: { toPosition: { x: 1, y: 6, z: 0 }, toRoom: "blacktooth60" },
-      position: { x: 1, y: 6, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@1,7,0": {
-      config: { toPosition: { x: 1, y: 7, z: 0 }, toRoom: "blacktooth60" },
-      position: { x: 1, y: 7, z: 0 },
-      type: "teleporter",
-    },
     "teleporter@6,6,0": {
-      config: { toPosition: { x: 6, y: 6, z: 0 }, toRoom: "blacktooth60" },
+      config: {
+        times: { x: 2, y: 2 },
+        toPosition: { x: 6, y: 6, z: 0 },
+        toRoom: "blacktooth60",
+      },
       position: { x: 6, y: 6, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@6,7,0": {
-      config: { toPosition: { x: 6, y: 7, z: 0 }, toRoom: "blacktooth60" },
-      position: { x: 6, y: 7, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@7,6,0": {
-      config: { toPosition: { x: 7, y: 6, z: 0 }, toRoom: "blacktooth60" },
-      position: { x: 7, y: 6, z: 0 },
-      type: "teleporter",
-    },
-    "teleporter@7,7,0": {
-      config: { toPosition: { x: 7, y: 7, z: 0 }, toRoom: "blacktooth60" },
-      position: { x: 7, y: 7, z: 0 },
       type: "teleporter",
     },
     "wall@0,0,0:2sckOl": {

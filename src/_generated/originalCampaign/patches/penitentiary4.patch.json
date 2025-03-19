@@ -1,5 +1,5 @@
 [
-  { "op": "replace", "path": "/color/hue", "value": "green" },
+  { "op": "add", "path": "/size/z", "value": 12 },
   {
     "op": "add",
     "path": "/items/extra1",
@@ -90,5 +90,5 @@
       "type": "block"
     }
   },
-  { "op": "add", "path": "/size/z", "value": 12 }
+  { "op": "replace", "path": "/color/hue", "value": "green" }
 ]
