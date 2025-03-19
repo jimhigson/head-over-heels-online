@@ -48,14 +48,14 @@ export const room = inferRoomJson({
       type: "pickup",
     },
     tower1: {
-      type: "block",
+      config: { style: "tower", times: { x: 2, z: 3 } },
       position: { x: 1, y: 0, z: 0 },
-      config: { style: "tower", times: { z: 3, x: 2 } },
+      type: "block",
     },
     tower2: {
-      type: "block",
+      config: { style: "tower", times: { x: 2, z: 3 } },
       position: { x: 1, y: 7, z: 0 },
-      config: { style: "tower", times: { z: 3, x: 2 } },
+      type: "block",
     },
     "wall@0,0,0:2sckOl": {
       config: { direction: "right", tiles: [], times: { y: 8 } },
@@ -82,20 +82,12 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@5,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["wall"],
-        times: { x: 1 },
-      },
+      config: { direction: "away", tiles: ["wall"], times: { x: 1 } },
       position: { x: 7, y: 8, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["wall", "wall"],
-        times: { y: 2 },
-      },
+      config: { direction: "left", tiles: ["wall", "wall"], times: { y: 2 } },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },

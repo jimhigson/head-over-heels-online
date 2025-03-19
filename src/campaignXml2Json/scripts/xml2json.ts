@@ -5,3 +5,5 @@ const go = async () => {
   const campaign = await convertCampaign();
   await writeOut(campaign);
 };
+
+go();

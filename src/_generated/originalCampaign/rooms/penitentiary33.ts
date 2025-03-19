@@ -48,10 +48,10 @@ export const room = inferRoomJson({
     },
     "teleporter@0,3,0": {
       config: {
+        activatedOnStoreValue: "planetsLiberated.penitentiary",
         times: { x: 2, y: 2 },
         toPosition: { x: 0, y: 3, z: 0 },
         toRoom: "penitentiary2",
-        activatedOnStoreValue: "planetsLiberated.penitentiary",
       },
       position: { x: 0, y: 3, z: 0 },
       type: "teleporter",
