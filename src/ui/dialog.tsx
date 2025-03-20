@@ -26,8 +26,8 @@ export const Dialog = ({
   return (
     <dialog
       className={twMerge(
-        // pr-0: put scroll bar on menu items up against the edge of the dialog
-        "p-1 pr-0 fixed z-dialog left-[50%] top-[50%] translate-y-[-50%] translate-x-[-50%] " +
+        // px-0: put scroll bar on menu items up against the edge of the dialog
+        "p-1 px-0 fixed left-[50%] z-dialog top-[50%] translate-y-[-50%] translate-x-[-50%] " +
           "m-0 " + //override dialog default in tw3, not needed in tw4
           (tall ? "h-tallDialog portrait-rot:h-wideDialog " : "h-zx ") +
           (wide ?

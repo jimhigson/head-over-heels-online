@@ -129,7 +129,7 @@ export const MenuItems = ({
         "grid grid-cols-menuItems gap-x-1 gap-y-oneScaledPix " +
           // by default on mobile, the gaps between the items are bigger, and they are further apart - otherwise they
           // are too difficult to hit with a finger
-          "mobile:!gap-y-1 mobile:sprites-double-height",
+          "mobile:!gap-y-half mobile:sprites-double-height",
         className,
       )}
     >

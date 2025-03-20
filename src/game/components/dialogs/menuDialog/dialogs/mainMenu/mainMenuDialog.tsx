@@ -17,6 +17,7 @@ import { useCallback } from "react";
 import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
 import { Border } from "../../../../../../ui/Border";
 import { multilineTextClass } from "../../multilineTextClass";
+import { nerdFontDiscordChar } from "../../../../../../sprites/hudSritesheetData";
 
 const PlayGameLabel = () => {
   const isGameRunning = useIsGameRunning();
@@ -78,6 +79,12 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           <MenuItem
             id="readTheManual"
             label="Read the manual"
+            doubleHeightWhenFocussed
+            onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
+          />
+          <MenuItem
+            id="discord"
+            label={`${nerdFontDiscordChar} Join the Discord`}
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
           />
