@@ -73,7 +73,7 @@ export const room = inferRoomJson({
     },
     "door@8,3,5": {
       config: { direction: "left", toRoom: "egyptus8" },
-      position: { x: 8, y: 3, z: 5 },
+      position: { x: 8, y: 3, z: 4 },
       type: "door",
     },
     "extrablock0@0,0,3": {

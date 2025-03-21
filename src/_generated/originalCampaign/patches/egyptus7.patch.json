@@ -1,4 +1,5 @@
 [
+  { "op": "replace", "path": "/items/door@8,3,5/position/z", "value": 4 },
   {
     "op": "add",
     "path": "/items/barrierForAnalogue",
