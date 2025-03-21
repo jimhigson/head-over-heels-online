@@ -6,4 +6,4 @@ become very powerful.
 
 Heels can jump his own height and can also run very fast.
 
-*> Head Over Heels Manual*
+> Head Over Heels Manual

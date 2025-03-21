@@ -1,4 +1,4 @@
-import { useIsOnScreenControls } from "../../../../../../store/selectors";
+import { useIsUserPreferenceOnScreenControls } from "../../../../../../store/selectors";
 import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { Switch } from "../../../../../../ui/Switch";
@@ -9,7 +9,7 @@ export const OnScreenControlsMenuItem = () => {
     <MenuItem
       id="controlOptions"
       label="on-screen controls"
-      valueElement={<Switch value={useIsOnScreenControls()} />}
+      valueElement={<Switch value={useIsUserPreferenceOnScreenControls()} />}
       onSelect={useDispatchActionCallback(
         toggleBoolean,
         "userSettings.onScreenControls",

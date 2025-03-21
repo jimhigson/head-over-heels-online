@@ -4,4 +4,4 @@
 
 The natives live in wooden forts in the jungle, **beware traps!**
 
-*> Head Over Heels Manual*
+> Head Over Heels Manual

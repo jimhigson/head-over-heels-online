@@ -20,4 +20,4 @@ crowns lost when Blacktooth took over.
 mutual advantage, join together as one - Head saddled on Heels, and indeed these
 ARE their names and both are highly trained spies.
 
-*> head over heels manual*
+> Head Over Heels Manual

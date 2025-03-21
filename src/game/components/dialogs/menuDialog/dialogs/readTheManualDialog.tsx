@@ -49,7 +49,10 @@ export const ReadTheManualDialog = () => {
         className="bg-midGrey zx:bg-zxCyan"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-highlightBeige zx:bg-zxCyanDimmed !h-tallDialog resGameboy:!h-full mobile:!h-full max-h-[calc(var(--block)*40)]">
+      <Dialog
+        tall
+        className="bg-highlightBeige zx:bg-zxCyanDimmed max-h-[calc(var(--block)*40)]"
+      >
         <div
           className={
             `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +

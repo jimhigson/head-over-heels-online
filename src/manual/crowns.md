@@ -7,4 +7,4 @@ As each
 crown is collected this screen will be shown again with the appropriate crowns
 in a bright color.
 
-*> head over heels manual*
+> Head Over Heels Manual

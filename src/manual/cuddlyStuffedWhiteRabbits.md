@@ -9,9 +9,18 @@ they will both get the enhanced power.
 
 There are four types:
 
-1. ![](texture-hud.char.2?sprite-tinted&text-metallicBlue)**Two extra lives**
-2. ![](texture-hud.shield?sprite-tinted&text-metallicBlue)**Iron Pills** (to make you invulnerable)
-3. ![](texture-hud.bigJumps?sprite-tinted&text-metallicBlue)**Jump higher bunny** (only works on Heels)
-4. ![](texture-hud.fastSteps?sprite-tinted&text-metallicBlue)**Go faster bunny** (only works on slow-moving Head)
+## ![](texture-hud.char.2?sprite-tinted&text-metallicBlue&sprites-normal-height) Two extra lives
+if you pick them up while head and heels are joined, they get two each
 
-*> Head Over Heels Manual*
+## ![](texture-hud.shield?sprite-tinted&text-metallicBlue&sprites-normal-height) Iron pills
+
+![](texture-animated-shine?text-metallicBlue&float-left)to make you invulnerable
+
+## ![](texture-hud.bigJumps?sprite-tinted&text-metallicBlue&sprites-normal-height)Jump higher bunny
+
+![](texture-heels.walking.right.2?text-metallicBlue&float-left)only works on Heels
+
+## ![](texture-hud.fastSteps?sprite-tinted&text-metallicBlue&sprites-normal-height)Go faster bunny
+![](texture-head.walking.right.2?text-metallicBlue&float-left)only works on slow-moving Head
+
+> Head Over Heels Manual

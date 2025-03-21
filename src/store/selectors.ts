@@ -146,12 +146,23 @@ export const selectScreenRelativeControl = (state: RootState): boolean =>
   state.gameMenus.userSettings.screenRelativeControl ??
   defaultUserSettings.screenRelativeControl;
 
-export const selectOnScreenControls = (state: RootState): boolean =>
+export const selectUserPreferenceOnScreenControls = (
+  state: RootState,
+): boolean =>
   state.gameMenus.userSettings.onScreenControls ??
   defaultUserSettings.onScreenControls;
 
-export const useIsOnScreenControls = () => {
-  return useAppSelector(selectOnScreenControls);
+export const selectShouldRenderOnScreenControls = ({
+  gameMenus,
+}: RootState): boolean =>
+  (gameMenus.userSettings.onScreenControls ??
+    defaultUserSettings.onScreenControls) &&
+  // the on-screen controls currently don't work when the display is rotated,
+  // so hide them in this case:
+  gameMenus.upscale.rotate90 === false;
+
+export const useIsUserPreferenceOnScreenControls = () => {
+  return useAppSelector(selectUserPreferenceOnScreenControls);
 };
 
 export const selectAtPath = (

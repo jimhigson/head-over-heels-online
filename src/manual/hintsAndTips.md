@@ -14,4 +14,4 @@
 12. **12** *:* ![](texture-spring.released?float-right&relative&z-topSprite)![](texture-cube?float-right&clear-right&relative&bottom-bottomStackPullup)To discover if there is a room above, pile objects as high as possible and jump from the top. If there is a spring in the room, put it on the top for extra jumping height.
 13. **13** *:* If you can’t understand a room, try exiting and entering again, watching carefully for any movement in the room as you enter.
 
-*> Head Over Heels Manual*
+> Head Over Heels Manual

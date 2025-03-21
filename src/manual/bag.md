@@ -11,5 +11,5 @@ press the *CARRY* key.
 
 It is not possible to take items through doorways.
 
-*> head over heels manual*
+> Head Over Heels Manual
 

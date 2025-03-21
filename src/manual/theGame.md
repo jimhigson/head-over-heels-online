@@ -21,4 +21,4 @@ that they would have to see all four of the slave planets revolt before the
 Blacktooth crown could cause an uprising. ![](texture-animated-turtle.right)This of course would be the ultimate
 accolade, and unfortunately, almost certain suicide.
 
-*> Head Over Heels Manual*
+> Head Over Heels Manual

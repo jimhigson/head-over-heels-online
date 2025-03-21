@@ -6,4 +6,4 @@ may pick up doughnuts.
 The number of remaining doughnuts will be displayed above
 the doughnut icon at the bottom left of the screen.
 
-*> Head Over Heels Manual*
+> Head Over Heels Manual

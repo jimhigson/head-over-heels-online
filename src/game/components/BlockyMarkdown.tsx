@@ -14,7 +14,7 @@ const markdownComponents: CustomComponentsOption = {
       // <div className="flex flex-row items-start justify-start gap-1">
       <h2
         // multiline: "history of the blacktooth empire" is a title that needs two lines
-        className={`mb-1 sprites-double-height text-metallicBlue zx:text-zxBlue ${multilineTextClass}`}
+        className={`mb-1 sprites-double-height text-metallicBlue zx:text-zxBlue clear-both ${multilineTextClass}`}
       >
         <MultipleBitmapText>{children}</MultipleBitmapText>
       </h2>
@@ -23,9 +23,18 @@ const markdownComponents: CustomComponentsOption = {
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <h3 className="mt-1 mb-1 text-metallicBlue zx:text-zxBlue">
+      <h3 className="mt-1 mb-1 text-metallicBlue zx:text-zxBlue clear-both">
         <MultipleBitmapText>{children}</MultipleBitmapText>
       </h3>
+    );
+  },
+  blockquote: function Blockquote({
+    children,
+  }: PropsWithChildren<EmptyObject>) {
+    return (
+      <blockquote className="mt-1 mb-1 text-moss zx:text-zxBlue clear-both">
+        <MultipleBitmapText>&gt; {children}</MultipleBitmapText>
+      </blockquote>
     );
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
@@ -50,7 +59,7 @@ const markdownComponents: CustomComponentsOption = {
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
     return (
       // clear left allows to go below other lis that have images in them:
-      <div className={`mb-1 clear-left ${multilineTextClass}`}>
+      <div className={`mb-1 clear-both ${multilineTextClass}`}>
         <MultipleBitmapText>* {children}</MultipleBitmapText>
       </div>
     );

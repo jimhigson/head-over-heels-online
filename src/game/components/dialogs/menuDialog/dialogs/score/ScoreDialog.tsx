@@ -15,6 +15,7 @@ import { selectPlanetsLiberatedCount } from "../../../../../../store/selectors";
 import { Suspense, use } from "react";
 import { importOriginalCampaign } from "../../../../../../_generated/originalCampaign/campaign.import";
 import { LoadingBorder } from "../../../../../../ui/LoadingBorder";
+import { multilineTextClass } from "../../multilineTextClass";
 
 const calculateScore = (
   roomsExploredCount: number,
@@ -61,19 +62,21 @@ const ScoreDialogContents = () => {
       >
         {scoreLabel}
       </BitmapText>
-      <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
-        Score {score.toLocaleString()}
-      </BitmapText>
-      <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
-        Explored {roomsExploredCount} / {roomCount} rooms{" "}
-        {`(${((100 * roomsExploredCount) / roomCount).toFixed(1)}%)`}
-      </BitmapText>
-      <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
-        Liberated {planetsLiberatedCount} planets
-      </BitmapText>
-      <MenuItems className="hidden">
-        <BackMenuItem />
-      </MenuItems>
+      <div className={`contents ${multilineTextClass}`}>
+        <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
+          Score {score.toLocaleString()}
+        </BitmapText>
+        <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
+          Explored {roomsExploredCount} / {roomCount} rooms{" "}
+          {`(${((100 * roomsExploredCount) / roomCount).toFixed(1)}%)`}
+        </BitmapText>
+        <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
+          Liberated {planetsLiberatedCount} planets
+        </BitmapText>
+        <MenuItems className="hidden">
+          <BackMenuItem />
+        </MenuItems>
+      </div>
     </>
   );
 };
@@ -85,7 +88,7 @@ export const ScoreDialog = () => {
         fallback={
           <>
             <LoadingBorder />
-            <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block" />
+            <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed h-full block" />
           </>
         }
       >

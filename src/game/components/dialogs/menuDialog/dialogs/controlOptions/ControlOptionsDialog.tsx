@@ -102,7 +102,7 @@ export const ControlOptionsDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite pr-0 !h-tallDialog !w-wideDialog max-w-widestDialog resGameboy:!w-full resGameboy:!h-full">
+      <Dialog tall wide className="bg-white zx:bg-zxWhite pr-0">
         <div
           className={
             "flex flex-col gap-y-1 " +

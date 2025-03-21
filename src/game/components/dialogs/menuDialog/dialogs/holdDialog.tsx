@@ -10,7 +10,8 @@ export const HoldDialog = () => {
   return (
     <DialogPortal>
       <Dialog
-        className="!h-min !w-max text-center text-zxBlue p-0 bg-transparent"
+        // the original game is blue, but blue-on-black is poor contrast so using cyan:
+        className="!h-min !w-max text-center text-zxCyan p-0 bg-transparent"
         // need to be able to click/tap on the hold dialog to exit, or it
         // isn't possible to leave it on devices with no keyboard/gamepad:
         onClick={useDispatchActionCallback(backToParentMenu)}

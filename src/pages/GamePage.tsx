@@ -98,8 +98,10 @@ const resClassName = (str: string) =>
 
 const usePageAsAnApp = () => {
   const resolutionName = useEmulatedResolutionName();
+  const { rotate90 } = useAppSelector((state) => state.gameMenus.upscale);
 
   useEffect(() => {
+    // unchanging classes:
     document.body.classList.add(
       "overscroll-none",
       "overflow-hidden",
@@ -108,11 +110,12 @@ const usePageAsAnApp = () => {
     );
   }, []);
   useEffect(() => {
-    for (const res of Object.keys(resolutions)) {
-      document.body.classList.remove(resClassName(res));
-    }
+    document.body.classList.remove(
+      ...Object.keys(resolutions).map(resClassName),
+    );
     document.body.classList.add(resClassName(resolutionName));
-  }, [resolutionName]);
+    document.body.classList.toggle("portrait-rot", rotate90);
+  }, [resolutionName, rotate90]);
 };
 
 /**
@@ -123,7 +126,7 @@ export const GamePage = () => {
 
   const cheatsOn = useCheatsOn();
   const gameApi = useGame();
-  const { cssUpscale, canvasSize } = useAppSelector(
+  const { cssUpscale, canvasSize, rotate90 } = useAppSelector(
     (state) => state.gameMenus.upscale,
   );
 
@@ -143,12 +146,18 @@ export const GamePage = () => {
     gameApi?.resizeTo(canvasSize);
   }, [canvasSize, gameApi]);
 
+  console.log(cssUpscale, rotate90);
+
   return (
     <>
       <div
         style={{
+          //transformOrigin: "center",
           // using scale3d (not scale) to try to force hardware acceleration of the scaling
-          transform: `scale3d(${cssUpscale}, ${cssUpscale}, 1)`,
+          transform:
+            rotate90 ?
+              `scale(${cssUpscale}) rotate(90deg) translate(0, -${canvasSize.y}px)`
+            : `scale(${cssUpscale})`,
           width: canvasSize.x,
           height: canvasSize.y,
         }}

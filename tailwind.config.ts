@@ -116,9 +116,25 @@ export default {
       ...blockMultiples,
       zx: `calc(var(--scale) * ${resolutions.zxSpectrum.x}px)`,
       wideDialog: "calc(100dvw - 2 * var(--block))",
+      // using h for the w - for transverse views
+      tallDialog: "calc(100dvh - 2 * var(--block))",
       min: "min-content",
       max: "max-content",
       full: "100%",
+      // using h for the w - for transverse views
+      fullScrH: "100dvh",
+    },
+    height: {
+      zx: `calc(var(--scale) * ${resolutions.zxSpectrum.y}px)`,
+      tallDialog: "calc(100dvh - 2 * var(--block))",
+      // using w for the h - for transverse views
+      wideDialog: "calc(100dvw - 2 * var(--block))",
+      ...blockMultiples,
+      min: "min-content",
+      max: "max-content",
+      full: "100%",
+
+      fullScrW: "100dvw",
     },
     top: blockMultiples,
     left: blockMultiples,
@@ -127,14 +143,6 @@ export default {
     maxWidth: {
       // widest dialog is 50% wider than the zx screen:
       widestDialog: `calc(var(--scale) * ${resolutions.zxSpectrum.x * 1.4}px)`,
-    },
-    height: {
-      zx: `calc(var(--scale) * ${resolutions.zxSpectrum.y}px)`,
-      tallDialog: "calc(100dvh - 2 * var(--block))",
-      ...blockMultiples,
-      min: "min-content",
-      max: "max-content",
-      full: "100%",
     },
     maxHeight: {
       min: "min-content",

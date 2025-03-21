@@ -16,7 +16,6 @@ import { BitmapText } from "../../Sprite";
 import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
 import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperorDialog";
 import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
-import { WrongOrientationDialog } from "./dialogs/wrongOrientation/wrongOrientation";
 import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 
@@ -64,8 +63,6 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <InputPresetDialog />;
     case "proclaimEmperor":
       return <ProclaimEmperorDialog />;
-    case "wrongOrientation":
-      return <WrongOrientationDialog />;
     case "offerReincarnation":
       return <OfferReincarnationDialog />;
     case "errorCaught":
