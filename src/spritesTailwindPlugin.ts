@@ -177,5 +177,13 @@ export const spritesTailwindPlugin = plugin(
       // class
       "[data-menuitem_disabled=true] &",
     ]);
+
+    // the device is in portrait mode, so the output to the screen needs to be rotated to appear in landscape
+    addVariant("portrait-rot", [
+      // allow stacking with other variants:
+      ".portrait-rot&",
+      // descendants:
+      ".portrait-rot &",
+    ]);
   },
 );

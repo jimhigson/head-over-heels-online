@@ -11,6 +11,8 @@ export type Upscale = {
 
   /** the size, in emulated pixels, of the screen available inside the game engine */
   gameEngineScreenSize: Xy;
+
+  rotate90: boolean;
 };
 
 /**
@@ -29,25 +31,35 @@ export const calculateUpscale = (
 ): Upscale => {
   const emulatedResolution = resolutions[emulatedResolutionName];
 
-  const devicePixels = scaleXy(renderAreaSize, devicePixelRatio);
+  // if screen is in portrait, transpose the render area size to make it effectively landscape
+  const { renderAreaSize: landscapeRenderAreaSize, rotate90 } =
+    detectDeviceType() !== "desktop" && renderAreaSize.x < renderAreaSize.y ?
+      {
+        renderAreaSize: { x: renderAreaSize.y, y: renderAreaSize.x },
+        rotate90: true,
+      }
+      // everything is fine - do not rotate
+    : { renderAreaSize, rotate90: false };
+
+  const hardwarePixels = scaleXy(landscapeRenderAreaSize, devicePixelRatio);
 
   const scaleFactor = Math.floor(
     Math.min(
-      devicePixels.x / emulatedResolution.x,
-      devicePixels.y / emulatedResolution.y,
+      hardwarePixels.x / emulatedResolution.x,
+      hardwarePixels.y / emulatedResolution.y,
     ),
   );
   const gameEngineScreenSize = {
-    x: Math.floor(devicePixels.x / scaleFactor),
-    y: Math.floor(devicePixels.y / scaleFactor),
+    x: Math.floor(hardwarePixels.x / scaleFactor),
+    y: Math.floor(hardwarePixels.y / scaleFactor),
   };
 
   const gameEngineUpscale = Math.min(maximumCanvasUpscale, scaleFactor);
   const cssUpscale = scaleFactor / gameEngineUpscale / devicePixelRatio;
 
   const canvasSize = {
-    x: Math.ceil(renderAreaSize.x / cssUpscale),
-    y: Math.ceil(renderAreaSize.y / cssUpscale),
+    x: Math.ceil(landscapeRenderAreaSize.x / cssUpscale),
+    y: Math.ceil(landscapeRenderAreaSize.y / cssUpscale),
   };
 
   return {
@@ -55,6 +67,7 @@ export const calculateUpscale = (
     cssUpscale,
     gameEngineScreenSize,
     canvasSize,
+    rotate90,
   };
 };
 

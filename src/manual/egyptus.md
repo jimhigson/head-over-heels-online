@@ -11,4 +11,4 @@ When they
 returned to Blacktooth their emperor liked the sound of it so much that he
 rebuilt the capital city of one of the slave planets to resemble the story.
 
-*> Head Over Heels Manual*
+> Head Over Heels Manual

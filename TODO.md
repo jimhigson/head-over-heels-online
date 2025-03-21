@@ -49,6 +49,7 @@ front of other items
 
 ### mobile
 [ ] hitting hte joystick with a tap sometimes moves <1px
+[ ] install (PWA) instructions
 
 ### menus
 [x] control menus - allow different column width for non-select keys options

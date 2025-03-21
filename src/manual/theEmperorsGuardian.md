@@ -5,4 +5,4 @@ dangerous**, and he *doesn't like doughnuts*.
 
 Only a true hero may pass the guardian.
 
-*> head over heels manual*
+> Head Over Heels Manual

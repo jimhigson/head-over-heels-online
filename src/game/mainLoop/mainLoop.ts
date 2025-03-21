@@ -12,7 +12,7 @@ import { store } from "../../store/store";
 import {
   selectInputDirectionMode,
   selectIsPaused,
-  selectOnScreenControls,
+  selectShouldRenderOnScreenControls,
 } from "../../store/selectors";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import {
@@ -135,19 +135,21 @@ export class MainLoop<RoomId extends string> {
         defaultUserSettings.displaySettings.uncolourised
       );
 
+    const tickOnScreenControls = selectShouldRenderOnScreenControls(tickState);
+    const tickInputDirectionMode = selectInputDirectionMode(tickState);
     if (
       this.#hudRenderer?.renderContext.colourise !== tickColourise ||
       this.#hudRenderer?.renderContext.onScreenControls !==
-        selectOnScreenControls(tickState) ||
+        tickOnScreenControls ||
       this.#hudRenderer?.renderContext.inputDirectionMode !==
-        selectInputDirectionMode(tickState)
+        tickInputDirectionMode
     ) {
       this.#hudRenderer?.destroy();
       this.#hudRenderer = new HudRenderer({
         colourise: tickColourise,
         gameState: this.#gameState,
-        inputDirectionMode: selectInputDirectionMode(tickState),
-        onScreenControls: selectOnScreenControls(tickState),
+        inputDirectionMode: tickInputDirectionMode,
+        onScreenControls: tickOnScreenControls,
       });
       this.#app.stage.addChild(this.#hudRenderer.container);
     }

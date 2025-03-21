@@ -14,4 +14,4 @@ themselves away.
 the instant they see any of Head’s race, they disappear and won’t return until they are sure the coast is
 clear.
 
-*> head over heels manual*
+> Head Over Heels Manual

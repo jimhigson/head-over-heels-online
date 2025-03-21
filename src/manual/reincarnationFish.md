@@ -20,4 +20,4 @@ turns so poisonous that a single lick can kill.**
 
 Even living reincarnation fish taste horrible!
 
-*> head over heels manual*
+> Head Over Heels Manual

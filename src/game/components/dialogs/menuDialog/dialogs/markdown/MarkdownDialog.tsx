@@ -71,7 +71,8 @@ export const MarkdownDialog = ({
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
-        className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack mobile:h-full"
+        tall
+        className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack"
         // although we have a back button, you can actually click/tap anywhere to exit
         onClick={useDispatchActionCallback(backToParentMenu)}
       >

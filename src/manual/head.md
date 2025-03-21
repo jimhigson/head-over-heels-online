@@ -8,4 +8,4 @@ on top of one.
 rudimentary wings that allow Head to jump up to twice his own height and to
 guide himself through the air.
 
-*> Head Over Heels Manual*
+> Head Over Heels Manual

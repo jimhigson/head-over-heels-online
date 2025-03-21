@@ -6,4 +6,4 @@ skill required.
 
 The worst place is The Pit, try not to fall into it!
 
-*> Head Over Heels Manual*
+> Head Over Heels Manual
