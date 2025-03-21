@@ -120,16 +120,20 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> = itemRenderOnce(
   ({
     renderContext: {
       item: {
-        config: { direction, part },
+        config: { direction, part, toRoom },
         aabb,
       },
       room,
+      gameState: { campaign },
     },
   }) => {
     const axis = doorAlongAxis(direction);
+
+    const roomTo = campaign.rooms[toRoom];
+
     return createSprite({
       textureId: doorTexture(room, axis, part),
-      filter: mainPaletteSwapFilter(room),
+      filter: mainPaletteSwapFilter(roomTo),
       ...xyToTranslateToInsideOfRoom(direction, aabb),
     });
   },
