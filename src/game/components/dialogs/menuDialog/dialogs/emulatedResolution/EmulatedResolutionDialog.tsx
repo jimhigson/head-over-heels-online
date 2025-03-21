@@ -51,7 +51,7 @@ export const EmulatedResolutionDialog = () => {
         className="bg-midGrey zx:bg-zxWhiteDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white">
+      <Dialog className="bg-white pl-1">
         <Portal.Provider>
           <BitmapText
             TagName="h1"

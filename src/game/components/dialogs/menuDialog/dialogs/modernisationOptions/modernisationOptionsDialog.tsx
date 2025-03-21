@@ -60,7 +60,7 @@ export const ModernisationOptionsDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite pb-0">
+      <Dialog className="bg-white zx:bg-zxWhite pb-0 pl-1">
         <Portal.Provider>
           <div
             className={
