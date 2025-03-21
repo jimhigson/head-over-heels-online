@@ -93,6 +93,11 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   // it is possible to stand on top of the doorframe
   doorFrame: 15,
 
+  // balls can be more impactful, but by putting them before block,
+  // it is easier to knock balls off of towers in rooms like egyptus8,
+  // which is fun!
+  ball: 18,
+
   block: 20,
   barrier: 20,
   floor: 20,
@@ -107,7 +112,6 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   slidingBlock: 30,
   spring: 30,
 
-  ball: 40,
   joystick: 40,
   charles: 40,
   conveyor: 40,

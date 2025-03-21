@@ -86,46 +86,6 @@ export const room = inferRoomJson({
       position: { x: 8, y: 5, z: 0 },
       type: "wall",
     },
-    test1: {
-      type: "pickup",
-      config: { gives: "shield" },
-      position: { x: 1, y: 1, z: 0 },
-    },
-    test2: {
-      type: "pickup",
-      config: { gives: "shield" },
-      position: { x: 7, y: 1, z: 0 },
-    },
-    test3: {
-      type: "pickup",
-      config: { gives: "jumps" },
-      position: { x: 2, y: 1, z: 0 },
-    },
-    test4: {
-      type: "pickup",
-      config: { gives: "fast" },
-      position: { x: 6, y: 1, z: 0 },
-    },
-    test5: {
-      type: "pickup",
-      config: { gives: "bag" },
-      position: { x: 2, y: 1, z: 5 },
-    },
-    test6: {
-      type: "pickup",
-      config: { gives: "hooter" },
-      position: { x: 6, y: 1, z: 5 },
-    },
-    test7: {
-      type: "pickup",
-      config: { gives: "extra-life" },
-      position: { x: 6, y: 1, z: 6 },
-    },
-    test8: {
-      type: "pickup",
-      config: { gives: "extra-life" },
-      position: { x: 2, y: 1, z: 6 },
-    },
   },
   planet: "jail",
   size: { x: 8, y: 8 },
