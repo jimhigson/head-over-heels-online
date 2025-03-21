@@ -3,27 +3,6 @@ import { detectDeviceType } from "../../utils/detectDeviceType";
 import type { Xy } from "../../utils/vectors/vectors";
 import { scaleXy } from "../../utils/vectors/vectors";
 
-const orientationNow = () =>
-  // desktops are always assumed to have a capable display - so call it landscape no matter what the actual window dimensions
-  detectDeviceType() === "desktop" ? "landscape"
-    // allow orientation check to be skipped for testing
-  : (
-    new URLSearchParams(window.location.search).get("skipOrientation") !== null
-  ) ?
-    "landscape"
-    // the reported orientation is too unreliable - ignore it:
-    //: screen.orientation.type.startsWith("portrait") ? "portrait"
-  : window.innerHeight > window.innerWidth ? "portrait"
-  : (
-    window.matchMedia("(display-mode: fullscreen)").matches &&
-    // screen.width reports the width of the screen in portrait, regardless of orientation.
-    // if the inner height is less than the screen width while in fullscreen, we're in portrait or
-    // a broken half-and-half mode iOS sometimes loads PWAs into.
-    window.innerHeight < screen.width
-  ) ?
-    "portrait"
-  : "landscape";
-
 export type Upscale = {
   cssUpscale: number;
   canvasSize: Xy;
