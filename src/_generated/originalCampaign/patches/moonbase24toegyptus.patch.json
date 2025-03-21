@@ -1,5 +1,10 @@
 [
   {
+    "op": "replace",
+    "path": "/items/monster@2,7,1/config/activated",
+    "value": "after-player-near"
+  },
+  {
     "op": "add",
     "path": "/items/scroll",
     "value": {

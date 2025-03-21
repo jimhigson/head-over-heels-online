@@ -73,6 +73,16 @@ export const room = inferRoomJson({
       position: { x: 0, y: 10, z: 0 },
       type: "deadlyBlock",
     },
+    movingPlatform2: {
+      config: {
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "right",
+        style: "sandwich",
+      },
+      position: { x: 6, y: 9, z: 0 },
+      type: "movingPlatform",
+    },
     "movingPlatform@7,1,0": {
       config: {
         activated: "on",

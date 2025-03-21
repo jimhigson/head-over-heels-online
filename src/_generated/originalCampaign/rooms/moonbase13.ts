@@ -67,6 +67,43 @@ export const room = inferRoomJson({
       position: { x: 0, y: 5, z: 1 },
       type: "monster",
     },
+    swtich: {
+      config: {
+        modifies: [
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,2,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,3,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,4,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,5,1",
+          },
+        ],
+        type: "in-room",
+      },
+      position: { x: 0, y: 1, z: 0 },
+      type: "switch",
+    },
     "wall@0,0,0:2sckOl": {
       config: { direction: "right", tiles: [], times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },

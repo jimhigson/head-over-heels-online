@@ -51,5 +51,19 @@
       "position": { "x": 0, "y": 10, "z": 0 },
       "type": "deadlyBlock"
     }
+  },
+  {
+    "op": "add",
+    "path": "/items/movingPlatform2",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "clockwise",
+        "startDirection": "right",
+        "style": "sandwich"
+      },
+      "position": { "x": 6, "y": 9, "z": 0 },
+      "type": "movingPlatform"
+    }
   }
 ]
