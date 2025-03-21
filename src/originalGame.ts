@@ -17,11 +17,14 @@ export const zxSpectrumFrameRate = 25; // machine did 50.08 or 50.02 :-) interla
 export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
 
 export const resolutions = {
+  // Amiga hires: just too many pixels, game doesn't fill enough of the screen
   //amigaHiResPal: { x: 640, y: 512 },
   amigaLowResPal: { x: 320, y: 256 },
   zxSpectrum: { x: 256, y: 192 },
-  // there was never really a gameboy port, but this is a small 3:4 ratio screen
-  gameboy: { x: 160, y: 120 },
+  // there was never really a handheld port, and this is a bit big for period-correct
+  // handhelds (gameboy was 160x120), but this is the smallest I can go to be playable
+  // on modern phones and not be too small
+  handheld: { x: 256, y: 135 },
 };
 export type ResolutionName = keyof typeof resolutions;
 export const resolutionNames = Object.keys(resolutions) as ResolutionName[];

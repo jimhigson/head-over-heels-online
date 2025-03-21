@@ -5,6 +5,9 @@ import type { Xy } from "../utils/vectors/vectors";
 import type { EscapedForTailwind } from "./escapeCharForTailwind";
 import { escapeCharForTailwind } from "./escapeCharForTailwind";
 
+// https://www.nerdfonts.com/cheat-sheet
+export const nerdFontDiscordChar = "\uf1ff";
+
 const alphaNumeric = [
   "A",
   "B",
@@ -136,6 +139,13 @@ export const hudSpritesheetData = {
     "hud.char.∞": {
       frame: {
         x: 511,
+        y: 2,
+        ...{ w: hudCharTextureSize.w * 2, h: hudCharTextureSize.h },
+      },
+    },
+    [`hud.char.${nerdFontDiscordChar}`]: {
+      frame: {
+        x: 527,
         y: 2,
         ...{ w: hudCharTextureSize.w * 2, h: hudCharTextureSize.h },
       },

@@ -47,14 +47,19 @@ import { neverTime } from "../../../utils/veryClose";
 const fpsUpdatePeriod = 250;
 
 const livesTextFromCentre = (onScreenControls: boolean) =>
-  onScreenControls ? 12 : 24;
+  onScreenControls ? 48 : 24;
 const playableIconFromCentre = (onScreenControls: boolean) =>
-  onScreenControls ? 32 : 56;
+  onScreenControls ? 68 : 56;
 
-const smallIconsFromCentre = (onScreenControls: boolean) =>
-  onScreenControls ? 40 : 80;
+const smallIconsFromCentre = (onScreenControls: boolean, screenSize: Xy) =>
+  onScreenControls ?
+    // need to come in enough to clear a 'notch':
+    screenSize.x / 2 - 24
+  : 80;
 const extraSkillFromBottom = (onScreenControls: boolean) =>
-  onScreenControls ? 18 : 24;
+  onScreenControls ? 72 : 24;
+const shieldFromBottom = (onScreenControls: boolean) =>
+  onScreenControls ? 88 : 0;
 
 // bag/hooter/doughnuts etc - how far to render the icon from the screen centre::
 const playersIconsFromCentre = 112;
@@ -156,8 +161,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const { onScreenControls } = renderContext;
 
     for (const character of individualCharacterNames) {
-      this.#container.addChild(this.#hudElements[character].livesText);
       this.#container.addChild(this.#hudElements[character].sprite);
+      // lives after sprite since it can overlap it with on-screen controls
+      this.#container.addChild(this.#hudElements[character].livesText);
       this.#container.addChild(this.#hudElements[character].shield.container);
       this.#container.addChild(
         this.#hudElements[character].extraSkill.container,
@@ -194,17 +200,19 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       },
     } = this;
     for (const character of individualCharacterNames) {
-      const { sprite } = this.#hudElements[character];
-      sprite.eventMode = "static";
-      sprite.on("pointerdown", () => {
-        hudInputState[`swop.${character}`] = true;
-      });
-      sprite.on("pointerup", () => {
-        hudInputState[`swop.${character}`] = false;
-      });
-      sprite.on("pointerleave", () => {
-        hudInputState[`swop.${character}`] = false;
-      });
+      const { sprite, livesText } = this.#hudElements[character];
+      for (const element of [sprite, livesText]) {
+        element.eventMode = "static";
+        element.on("pointerdown", () => {
+          hudInputState[`swop.${character}`] = true;
+        });
+        element.on("pointerup", () => {
+          hudInputState[`swop.${character}`] = false;
+        });
+        element.on("pointerleave", () => {
+          hudInputState[`swop.${character}`] = false;
+        });
+      }
     }
   }
 
@@ -392,12 +400,13 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     if (shieldVisible) {
       showNumberInContainer(shieldText, shieldNumber);
-      shieldContainer.y = screenSize.y;
+      shieldContainer.y = screenSize.y - shieldFromBottom(onScreenControls);
     }
 
     extraSkillContainer.x = shieldContainer.x =
       (screenSize.x >> 1) +
-      sideMultiplier(characterName) * smallIconsFromCentre(onScreenControls);
+      sideMultiplier(characterName) *
+        smallIconsFromCentre(onScreenControls, screenSize);
 
     const extraSkillNumber =
       abilities === undefined ? 0

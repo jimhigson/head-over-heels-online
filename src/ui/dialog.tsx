@@ -26,8 +26,8 @@ export const Dialog = ({
   return (
     <dialog
       className={twMerge(
-        // pr-0: put scroll bar on menu items up against the edge of the dialog
-        "p-1 pr-0 fixed z-dialog left-[50%] top-[50%] translate-y-[-50%] translate-x-[-50%] " +
+        // px-0: put scroll bar on menu items up against the edge of the dialog
+        "p-1 px-0 fixed left-[50%] z-dialog top-[50%] translate-y-[-50%] translate-x-[-50%] " +
           "m-0 " + //override dialog default in tw3, not needed in tw4
           (tall ? "h-tallDialog portrait-rot:h-wideDialog " : "h-zx ") +
           (wide ?
@@ -36,7 +36,7 @@ export const Dialog = ({
           "portrait-rot:rotate-90 " +
           "leading-none flex flex-col gap-y-1 " +
           // take up full screen width at the lowest res, possibly transverse:
-          "resGameboy:h-full portrait-rot:resGameboy:h-fullScrW resGameboy:w-full portrait-rot:resGameboy:w-fullScrH resGameboy:py-0 " +
+          "resHandheld:h-full portrait-rot:resHandheld:h-fullScrW resHandheld:w-full portrait-rot:resHandheld:w-fullScrH resHandheld:py-0 " +
           // bring away from a 'notch on mobile devices:
           "mobile:pl-2",
         className,

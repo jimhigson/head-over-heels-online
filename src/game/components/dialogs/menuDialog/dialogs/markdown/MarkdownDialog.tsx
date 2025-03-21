@@ -79,7 +79,7 @@ export const MarkdownDialog = ({
         <div
           className={twMerge(
             "overflow-y-scroll h-full " +
-              "scrollbar  scrollbar-w-1 " +
+              "scrollbar  scrollbar-w-1 pl-1 " +
               "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
               "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan",
           )}

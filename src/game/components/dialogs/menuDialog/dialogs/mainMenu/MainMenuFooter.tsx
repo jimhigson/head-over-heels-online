@@ -3,7 +3,7 @@ import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuFooter = () => (
   <>
-    <div className="flex justify-center gap-2 leading-none">
+    <div className="flex justify-center gap-2 resHandheld:gap-0 leading-none">
       <div className="flex flex-col gap-y-oneScaledPix items-center">
         <BitmapText className="text-pastelBlue zx:text-zxBlack">
           1987 original
@@ -20,8 +20,11 @@ export const MainMenuFooter = () => (
         </div>
       </div>
       <div className="flex flex-col gap-y-oneScaledPix items-center">
-        <BitmapText className="text-pink zx:text-zxBlack">
+        <BitmapText className="text-pink zx:text-zxBlack resHandheld:hidden">
           2025 remake
+        </BitmapText>
+        <BitmapText className="text-pink zx:text-zxBlack hidden resHandheld:inline-block">
+          ‘25 remake
         </BitmapText>
         <address className="flex">
           <div className="flex flex-col gap-y-oneScaledPix items-center">

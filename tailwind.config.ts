@@ -24,6 +24,8 @@ export type TailwindPalette = keyof typeof colors;
 
 const blockMultiples = {
   0: "0px",
+  // cheating, but fitting everything on small screens is hard!
+  half: "calc(var(--block) / 2)",
   1: "calc(var(--block) * 1)",
   2: "calc(var(--block) * 2)",
   3: "calc(var(--block) * 3)",
