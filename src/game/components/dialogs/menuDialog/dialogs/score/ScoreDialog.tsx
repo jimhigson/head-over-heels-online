@@ -55,22 +55,22 @@ const ScoreDialogContents = () => {
 
   return (
     <>
-      <MainMenuHeading noSubtitle className="resGameboy:hidden" />
+      <MainMenuHeading noSubtitle className="resHandheld:hidden" />
       <BitmapText
         classnameCycle={mainMenuCycle}
-        className="mt-2 resGameboy:mt-3 block text-center mx-auto sprites-double-height"
+        className="mt-2 resHandheld:mt-3 block text-center mx-auto sprites-double-height"
       >
         {scoreLabel}
       </BitmapText>
       <div className={`contents ${multilineTextClass}`}>
-        <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
+        <BitmapText className="mt-2 resHandheld:mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
           Score {score.toLocaleString()}
         </BitmapText>
-        <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
+        <BitmapText className="mt-2 resHandheld:mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
           Explored {roomsExploredCount} / {roomCount} rooms{" "}
           {`(${((100 * roomsExploredCount) / roomCount).toFixed(1)}%)`}
         </BitmapText>
-        <BitmapText className="mt-2 resGameboy:mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
+        <BitmapText className="mt-2 resHandheld:mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
           Liberated {planetsLiberatedCount} planets
         </BitmapText>
         <MenuItems className="hidden">

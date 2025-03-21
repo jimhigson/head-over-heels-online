@@ -21,12 +21,10 @@ export const resolutions = {
   //amigaHiResPal: { x: 640, y: 512 },
   amigaLowResPal: { x: 320, y: 256 },
   zxSpectrum: { x: 256, y: 192 },
-  // there was never really a gameboy port, but this is a small 3:4 ratio screen
-  // the real resolution here should be 160x120, but the main menu just doesn't fit
-  // on that size of screen, and modern phones are very far from that 4:3 ratio -
-  // having a wider width is a better fit for devices the game is likely to be
-  // used on
-  gameboy: { x: 200, y: 135 },
+  // there was never really a handheld port, and this is a bit big for period-correct
+  // handhelds (gameboy was 160x120), but this is the smallest I can go to be playable
+  // on modern phones and not be too small
+  handheld: { x: 256, y: 135 },
 };
 export type ResolutionName = keyof typeof resolutions;
 export const resolutionNames = Object.keys(resolutions) as ResolutionName[];

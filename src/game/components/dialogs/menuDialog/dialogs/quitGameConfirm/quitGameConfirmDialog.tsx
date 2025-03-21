@@ -21,39 +21,35 @@ export const QuitGameConfirmDialog = () => {
       <Dialog className="bg-white zx:bg-zxRed">
         <Portal.Provider>
           <MainMenuHeading noSubtitle />
-          <BitmapText
-            className="ml-3 sprites-double-height mt-2 resGameboy:mt-0"
-            classnameCycle={[
-              "text-redShadow zx:text-zxWhite",
-              "text-midRed zx:text-zxYellow",
-            ]}
-          >
-            Quit the game?
-          </BitmapText>
-          <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resGameboy:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resGameboy:!gap-y-1">
-            <MenuItem
-              doubleHeightWhenFocussed
-              id="no"
-              label="No"
-              onSelect={useDispatchActionCallback(backToParentMenu)}
-              hint="Go back to the game"
-            />
-            <MenuItem
-              doubleHeightWhenFocussed
-              id="yes"
-              label="Yes"
-              onSelect={useDispatchActionCallback(gameOver, {
-                offerReincarnation: false,
-              })}
-              hint={
-                <BlockyMarkdown
-                  className="zx:[&_.strong]:text-zxYellow"
-                  markdown="**Warning!** This game will end!"
-                />
-              }
-            />
-          </MenuItems>
-          <SelectedItemHint className="text-midGrey zx:text-zxWhite resGameboy:hidden" />
+          <div className="flex flex-col gap-y-2 mt-1 items-center">
+            <BitmapText className="sprites-double-height mt-2 resHandheld:mt-0 text-midRed zx:text-zxWhite">
+              Quit the game?
+            </BitmapText>
+            <MenuItems className="text-lightGrey zx:text-zxWhite resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1">
+              <MenuItem
+                doubleHeightWhenFocussed
+                id="no"
+                label="No"
+                onSelect={useDispatchActionCallback(backToParentMenu)}
+                hint="Go back to the game"
+              />
+              <MenuItem
+                doubleHeightWhenFocussed
+                id="yes"
+                label="Yes"
+                onSelect={useDispatchActionCallback(gameOver, {
+                  offerReincarnation: false,
+                })}
+                hint={
+                  <BlockyMarkdown
+                    className="zx:[&_.strong]:text-zxYellow"
+                    markdown="**Warning!** This game will end!"
+                  />
+                }
+              />
+            </MenuItems>
+            <SelectedItemHint className="text-midGrey zx:text-zxWhite resHandheld:hidden" />
+          </div>
         </Portal.Provider>
       </Dialog>
     </DialogPortal>

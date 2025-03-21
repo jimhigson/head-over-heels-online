@@ -14,7 +14,6 @@ import { useIsGameRunning } from "../../../../../../store/selectors";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { useCallback } from "react";
-import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
 import { Border } from "../../../../../../ui/Border";
 import { multilineTextClass } from "../../multilineTextClass";
 import { nerdFontDiscordChar } from "../../../../../../sprites/hudSritesheetData";
@@ -29,6 +28,7 @@ const PlayGameLabel = () => {
   );
 };
 
+const discordInviteUrl = "https://discord.gg/Se5Jznc2jm";
 export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   const isGameRunning = useIsGameRunning();
 
@@ -43,18 +43,19 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
       <Border className="bg-metallicBlue zx:bg-zxRed" />
-      <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resGameboy:gap-y-1">
+      <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resHandheld:gap-y-1">
         <MainMenuHeading
           noSubtitle={isGameRunning}
-          className={isGameRunning ? "resGameboy:hidden" : ""}
+          className={isGameRunning ? "resHandheld:hidden" : ""}
         />
-        <MenuItems className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white w-max mx-auto">
+        <MenuItems className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white w-max mx-auto resHandheld:mt-half">
           <MenuItem
             id="playGame"
             label={<PlayGameLabel />}
             doubleHeightWhenFocussed
             onSelect={useDispatchActionCallback(gameStarted)}
           />
+          {isGameRunning && <MenuItemSeparator />}
           <MenuItem
             id="viewCrowns"
             label="Progress so far"
@@ -63,10 +64,6 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             hidden={!isGameRunning}
           />
 
-          {/* mobile menus are already quite spaced out so don't give them the separator */}
-          {detectDeviceType() !== "mobile" && isGameRunning && (
-            <MenuItemSeparator />
-          )}
           <MenuItem
             id="modernisationOptions"
             label="Options"
@@ -84,9 +81,15 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           />
           <MenuItem
             id="discord"
-            label={`${nerdFontDiscordChar} Join the Discord`}
+            label={
+              <a href={discordInviteUrl} target="_blank">
+                <BitmapText>{`${nerdFontDiscordChar} Join the Discord`}</BitmapText>
+              </a>
+            }
             doubleHeightWhenFocussed
-            onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
+            onSelect={useCallback(() => {
+              window.open(discordInviteUrl, "_blank");
+            }, [])}
           />
           {isGameRunning && <MenuItemSeparator />}
           <MenuItem

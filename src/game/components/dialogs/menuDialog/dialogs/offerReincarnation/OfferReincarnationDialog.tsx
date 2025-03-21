@@ -20,16 +20,16 @@ export const OfferReincarnationDialog = () => {
     <DialogPortal>
       <Border className="bg-midRed zx:bg-zxYellow" />
       <Dialog className="bg-white zx:bg-zxRed">
-        <BitmapText className="sprites-double-height mt-2 resGameboy:mt-0 text-redShadow zx:text-zxWhite">
+        <BitmapText className="sprites-double-height mt-2 resHandheld:mt-0 text-redShadow zx:text-zxWhite">
           Uh-oh! Game over.
         </BitmapText>
         <span className="sprite texture-animated-fish float-left" />
         <BitmapText
-          className={`resGameboy:mt-0 text-redShadow zx:text-zxWhite ${multilineTextClass}`}
+          className={`resHandheld:mt-0 text-redShadow zx:text-zxWhite ${multilineTextClass}`}
         >
           Ah, But you ate a Reincarnation Fish! Reincarnate?
         </BitmapText>
-        <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resGameboy:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resGameboy:!gap-y-1">
+        <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1">
           <MenuItem
             doubleHeightWhenFocussed
             id="reincarnate"

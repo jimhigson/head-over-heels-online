@@ -36,7 +36,7 @@ export const Dialog = ({
           "portrait-rot:rotate-90 " +
           "leading-none flex flex-col gap-y-1 " +
           // take up full screen width at the lowest res, possibly transverse:
-          "resGameboy:h-full portrait-rot:resGameboy:h-fullScrW resGameboy:w-full portrait-rot:resGameboy:w-fullScrH resGameboy:py-0 " +
+          "resHandheld:h-full portrait-rot:resHandheld:h-fullScrW resHandheld:w-full portrait-rot:resHandheld:w-fullScrH resHandheld:py-0 " +
           // bring away from a 'notch on mobile devices:
           "mobile:pl-2",
         className,

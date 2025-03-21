@@ -30,7 +30,7 @@ export const ErrorCaughtDialog = () => {
       <Border className="loading-border" />
       <Dialog className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack">
         <BlockyMarkdown markdown={markdown} />
-        <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resGameboy:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resGameboy:!gap-y-1">
+        <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1">
           <MenuItem
             doubleHeightWhenFocussed
             id="tryContinue"

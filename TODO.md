@@ -63,6 +63,8 @@ front of other items
 
 ### Details and bugs
 
+[ ] make a dedicated TextRenderer for the hud that doesn't recreate the container and sprites so much
+
 [ ] check: does variable speed walking anim work in symbio?
 
 [ ] remove event bus from gamestate (use store instead)

@@ -30,7 +30,7 @@ import type { Renderer } from "../Renderer";
 import type { EmptyObject } from "type-fest";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 
-const joystickArrowOffset = 13;
+const joystickArrowOffset = 14;
 const sensitivity = 2;
 
 type JoystickRenderContext = {
@@ -45,6 +45,7 @@ type JoystickRenderContext = {
  */
 const snapCosineThreshold = Math.cos(30 * (Math.PI / 180));
 
+const joystickFurthestTouchRadius = 40;
 export class OnScreenJoystickRenderer
   implements Renderer<JoystickRenderContext, EmptyObject>
 {
@@ -124,7 +125,11 @@ export class OnScreenJoystickRenderer
 
     this.container.addChild(this.#joystickSprite);
 
-    this.container.addChild(new Graphics().circle(0, 0, 32).fill("#00000000"));
+    this.container.addChild(
+      new Graphics()
+        .circle(0, 0, joystickFurthestTouchRadius)
+        .fill("#00000000"),
+    );
     for (const arrowSprite of objectValues(this.arrowSprites)) {
       this.container.addChild(arrowSprite);
     }

@@ -23,7 +23,7 @@ import {
  * A non-migration migration - just throws the user's config away and reverts to
  * the original starting state of the store
  */
-const revertToOriginalStateMigration = (
+const revertToInitialStateMigration = (
   state: PersistedState,
 ): PersistedState => {
   const migrateTo = initialGameMenuSliceState.userSettings;
@@ -44,20 +44,21 @@ const revertToOriginalStateMigration = (
 
 const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
   key: "hohol/gameMenus/userSettings",
-  version: 11,
+  version: 12,
   migrate: createMigrate(
     {
-      1: revertToOriginalStateMigration,
-      2: revertToOriginalStateMigration,
-      3: revertToOriginalStateMigration,
-      4: revertToOriginalStateMigration,
-      5: revertToOriginalStateMigration,
-      6: revertToOriginalStateMigration,
-      7: revertToOriginalStateMigration,
-      8: revertToOriginalStateMigration,
-      9: revertToOriginalStateMigration,
-      10: revertToOriginalStateMigration,
-      11: revertToOriginalStateMigration,
+      1: revertToInitialStateMigration,
+      2: revertToInitialStateMigration,
+      3: revertToInitialStateMigration,
+      4: revertToInitialStateMigration,
+      5: revertToInitialStateMigration,
+      6: revertToInitialStateMigration,
+      7: revertToInitialStateMigration,
+      8: revertToInitialStateMigration,
+      9: revertToInitialStateMigration,
+      10: revertToInitialStateMigration,
+      11: revertToInitialStateMigration,
+      12: revertToInitialStateMigration,
     },
     { debug: true },
   ),

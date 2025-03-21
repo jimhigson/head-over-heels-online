@@ -58,7 +58,7 @@ export const ReadTheManualDialog = () => {
             `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +
             "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack " +
             // set up scrolling and the scroll bar:
-            "overflow-y-scroll scrollbar scrollbar-w-1 " +
+            "overflow-y-scroll scrollbar scrollbar-w-1 pl-1 " +
             "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
             "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed "
           }

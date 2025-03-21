@@ -157,7 +157,7 @@ export const spritesTailwindPlugin = plugin(
 
     addVariant("resAmiga", ".resAmigaLowResPal &");
     addVariant("resZx", ".resSpectrum &");
-    addVariant("resGameboy", ".resGameboy &");
+    addVariant("resHandheld", ".resHandheld &");
 
     addVariant("colourised", ".colourised &");
     // for changing the colour of selected menu items:

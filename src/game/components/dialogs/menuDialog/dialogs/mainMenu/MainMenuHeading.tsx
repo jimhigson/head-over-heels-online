@@ -10,33 +10,33 @@ export const MainMenuHeading = ({
 }) => (
   <div className={`flex flex-col items-center ${className}`}>
     <h1 className="flex">
-      <div className="flex flex-col resGameboy:flex-row resGameboy:gap-1 gap-y-oneScaledPix items-center me-1">
-        <BitmapText className="sprites-double-height text-pastelBlue zx:text-zxYellow resGameboy:mt-1">
+      <div className="flex flex-col resHandheld:flex-row resHandheld:gap-1 gap-y-oneScaledPix items-center me-1">
+        <BitmapText className="sprites-double-height text-pastelBlue zx:text-zxYellow resHandheld:mt-1">
           Head
         </BitmapText>
-        <div className="mt-1 resGameboy:mt-0 relative">
+        <div className="mt-1 resHandheld:mt-0 relative">
           <span className="sprite zx:sprite-revert-to-white texture-animated-head.idle.right hover:texture-animated-head.walking.right relative z-topSprite" />
           <span className="sprite zx:hidden texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
         </div>
       </div>
       <BitmapText
         classnameCycle={mainMenuCycle}
-        className="mt-1 me-1 resGameboy:mt-2"
+        className="mt-1 me-1 resHandheld:mt-2"
       >
         over
       </BitmapText>
-      <div className="flex flex-col resGameboy:flex-row-reverse resGameboy:gap-1 items-center me-1">
-        <BitmapText className="sprites-double-height text-pink zx:text-zxYellow resGameboy:mt-1">
+      <div className="flex flex-col resHandheld:flex-row-reverse resHandheld:gap-1 items-center me-1">
+        <BitmapText className="sprites-double-height text-pink zx:text-zxYellow resHandheld:mt-1">
           Heels
         </BitmapText>
-        <div className="mt-1 resGameboy:mt-0 relative">
+        <div className="mt-1 resHandheld:mt-0 relative">
           <span className="sprite zx:sprite-revert-to-white texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards relative z-topSprite" />
           <span className="sprite zx:hidden texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
         </div>
       </div>
     </h1>
     {noSubtitle || (
-      <h2 className="mt-1 w-max resGameboy:hidden">
+      <h2 className="mt-1 w-max resHandheld:hidden">
         <BitmapText className="text-midRed zx:text-zxCyan">block</BitmapText>
         <BitmapText className="text-highlightBeige zx:text-zxYellow">
           stack

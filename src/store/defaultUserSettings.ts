@@ -14,7 +14,7 @@ export const defaultUserSettings: RequiredDeep<UserSettings> = {
     crtFilter: false,
     uncolourised: false,
     emulatedResolution:
-      detectDeviceType() === "mobile" ? "gameboy" : "zxSpectrum",
+      detectDeviceType() === "mobile" ? "handheld" : "zxSpectrum",
   },
 
   showFps: false,
