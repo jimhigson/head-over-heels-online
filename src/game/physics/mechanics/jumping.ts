@@ -110,7 +110,7 @@ export const jumping = <RoomId extends string, RoomItemId extends string>(
   const standingOnSpring = isSpring(standingOn);
   const velZ = getJumpInitialVelocity(playableItem, standingOnSpring);
 
-  // handled this input but don't set jump input flat off - it is
+  // handled this input but don't set jump input off - it is
   // ok to keep jump pressed to keep jumping
 
   return {

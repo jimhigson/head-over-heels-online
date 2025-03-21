@@ -162,14 +162,11 @@ const rooms = {
         position: { x: 0, y: 3, z: 3 },
       },
       {
-        type: "movingPlatform",
+        type: "portableBlock",
         config: {
-          style: "sandwich",
-          movement: "clockwise",
-          startDirection: "right",
-          activated: "on-stand",
+          style: "cube",
         },
-        position: { x: 0, y: 0, z: 0 },
+        position: { x: 1, y: 1, z: 0 },
       },
       // {
       //   type: "block",
@@ -875,6 +872,21 @@ const rooms = {
         type: "deadlyBlock",
         config: { style: "volcano" },
         position: { x: 17, y: 5, z: 3 },
+      },
+      {
+        type: "portableBlock",
+        config: { style: "cube" },
+        position: { x: 5, y: 13, z: 0 },
+      },
+      {
+        type: "portableBlock",
+        config: { style: "cube" },
+        position: { x: 4, y: 13, z: 0 },
+      },
+      {
+        type: "portableBlock",
+        config: { style: "cube" },
+        position: { x: 3, y: 13, z: 0 },
       },
     ]),
   }) satisfies RoomJson<TestCampaignRoomId, string, "egyptus">,

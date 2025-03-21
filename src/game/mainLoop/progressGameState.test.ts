@@ -1122,9 +1122,16 @@ describe("carrying", () => {
       firstRoomItems: {
         heels: {
           type: "player",
-          position: { x: 5, y: 5, z: 1 },
+          position: { x: 5, y: 5, z: 2 },
           config: {
             which: "heels",
+          },
+        },
+        bag: {
+          type: "pickup",
+          position: { x: 5, y: 5, z: 1 },
+          config: {
+            gives: "bag",
           },
         },
         portable: {
@@ -1138,13 +1145,61 @@ describe("carrying", () => {
     });
 
     playGameThrough(gameState, {
-      until(gameState) {
-        return heelsState(gameState).carrying === null;
-      },
+      until: 2_000,
       frameCallbacks(gameState) {
-        if (heelsState(gameState).carrying === null) {
+        const hs = heelsState(gameState);
+
+        if (hs.standingOnItemId === "portable" && hs.carrying === null) {
           gameState.inputStateTracker.mockPressing("carry");
         }
+      },
+    });
+
+    expect(heelsState(gameState).carrying?.type).toBe("portableBlock");
+  });
+
+  test("heels can jump-pick up a cube by holding jump and carry while falling onto it", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 5, y: 5, z: 2 },
+          config: {
+            which: "heels",
+          },
+        },
+        bag: {
+          type: "pickup",
+          position: { x: 5, y: 5, z: 1 },
+          config: {
+            gives: "bag",
+          },
+        },
+        portable: {
+          type: "portableBlock",
+          position: { x: 5, y: 5, z: 0 },
+          config: {
+            style: "cube",
+          },
+        },
+        // can only get on this block with the cube by carry-jumping:
+        higherBlock: {
+          type: "block",
+          position: { x: 4, y: 5, z: 1 },
+          config: {
+            style: "organic",
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      frameRate: 15,
+      until: () => heelsState(gameState).standingOnItemId !== "higherBlock",
+      frameCallbacks(gameState) {
+        gameState.inputStateTracker.mockPressing("right");
+        gameState.inputStateTracker.mockPressing("carry");
+        gameState.inputStateTracker.mockPressing("jump");
       },
     });
   });
