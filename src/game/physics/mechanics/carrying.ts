@@ -44,16 +44,27 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
   const portableRoomItemsIter = iterateRoomItems(room.items).filter(isPortable);
   const itemToPickup =
     carrying === null ? findItemToPickup(carrier, room) : undefined;
+
+  // update marking items as the next to pick up, for the sake of the green outline:
   for (const portableItem of portableRoomItemsIter) {
     portableItem.state.wouldPickUpNext = false;
   }
   if (itemToPickup !== undefined) itemToPickup.state.wouldPickUpNext = true;
 
-  if (inputStateTracker.currentActionPress("carry") === "tap") {
+  const currentCarryPress = inputStateTracker.currentActionPress("carry");
+  const hasCarryInput =
+    // usually we don't want to handle carrying on hold, otherwise heels picks up one frame
+    // and puts down the next.
+    currentCarryPress === "tap" ||
+    // however, while pressing jump and carry is the exception - you can land on a block,
+    // pick it up an jump off all at once:
+    (inputStateTracker.currentActionPress("jump") === "hold" &&
+      currentCarryPress === "hold");
+
+  if (hasCarryInput) {
     if (carrying === null) {
       // trying to pick up
       if (itemToPickup === undefined) {
-        console.warn("nothing to pick up");
         // nothing to pick up
         return;
       }

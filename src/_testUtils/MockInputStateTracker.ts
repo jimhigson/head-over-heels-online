@@ -61,11 +61,7 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
   currentActionPress = vi
     .fn<(action: BooleanAction) => PressStatus>()
     .mockImplementation((action) => {
-      const actionsPressed = Object.keys(
-        this.mockActionsPressed,
-      ) as BooleanAction[];
-
-      if (actionsPressed?.includes(action)) {
+      if (this.mockActionsPressed[action]) {
         if (!this.mockActionsPressedLastFrame[action]) {
           return "tap";
         }

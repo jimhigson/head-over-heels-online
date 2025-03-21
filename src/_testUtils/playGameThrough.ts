@@ -43,7 +43,7 @@ export const playGameThrough = (
     typeof until === "number" ? gameState.gameTime < until : !until(gameState)
   ) {
     progressGameState(gameState, deltaMS);
-
+    gameState.inputStateTracker.mockTick();
     gameState = frameCallbacksArray.reduce((gameStateAc, frameCallback) => {
       try {
         return (
@@ -58,7 +58,7 @@ export const playGameThrough = (
     if (gameState.gameTime > 60_000) {
       throw new Error("test didn't exit after a minute");
     }
-    gameState.inputStateTracker.mockTick();
+
     frameNumber++;
   }
 };

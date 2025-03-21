@@ -14,11 +14,7 @@
         1 start game sound
         2 walking sound w/repeat frequency by number of stepsh
 
-[ ] saving/fish
-    [ ] save on reload page/app close
-        - mostly works but Number.POSITIVE_INFINITY, NEGATIVE_INFINITY etc is breaking it (can't be serialised to JSON)
-            - both are used
-        - does not restore anything to the store on reload ("planetsLiberated", "scrollsRead")
+[x] saving/fish
 
 [x] 8-way sprites
 
@@ -34,11 +30,6 @@
 [3,M] switch to devcontainers
     [ ] might be more complex than needed
 
-[ ] switch to OOP on room state/items etc. 
-    Eg polymorphism: .isPushable() etc methods
-    Eg, .times() hardcoded to return 1,1,1 for most
-
-[ ] custom serviceworker    
 
 ### ui
 [x] game ui colours when colourised from real palette (even if not close to original colours)
@@ -49,7 +40,10 @@ front of other items
 
 ### mobile
 [ ] hitting hte joystick with a tap sometimes moves <1px
+
+### dialogs
 [ ] install (PWA) instructions
+[ ] write an 'about this remake' page
 
 ### menus
 [x] control menus - allow different column width for non-select keys options
@@ -63,35 +57,35 @@ front of other items
 
 ### Details and bugs
 
+[ ] allow jump-by carry-and-jump
+
 [ ] make a dedicated TextRenderer for the hud that doesn't recreate the container and sprites so much
 
 [ ] check: does variable speed walking anim work in symbio?
 
 [ ] remove event bus from gamestate (use store instead)
 
-[ ] adopt a network-first strategy: 
-    https://vite-pwa-org.netlify.app/workbox/inject-manifest#network-first-strategy
+[ ] custom serviceworker    
+    [ ] adopt a network-first strategy: 
+        https://vite-pwa-org.netlify.app/workbox/inject-manifest#network-first-strategy
 
 [ ] restore known-id typings at src/model/RoomState.ts - `origin/experimental-well-known-ids`
 
 [ ] charles robot no longer needs to use latent movement
 
-[ ] version number/date on main menu dialog
+[x] version number/date on main menu dialog
 
 [ ] doughnut white fade can be shown under walls - try firing at left wall in start room for example
     - maybe the doughnut explosion is slightly inside the wall?
 
 [ ] wall over doors not variable height like other walls
 
-[ ] destroy and recreate hud renderer when display settings change (like room renderer is) - this way
-    it can not care about colourisation (or anything else) changing when it ticks
-
-[ ] include version number on main menu screen
+[x] destroy and recreate hud renderer when display settings change
 
 [ ] bug - need to refresh page after changing input preset
     - sometimes?
 
-[ ] put text in for search engines etc
+[x] put text in for search engines etc
 
 [ ] hold a button to lock to axes
 
@@ -113,8 +107,6 @@ input tracker:
 [x] allow stopping on diagonals
     [ ] for keys/buttons
     [ ] for d-pads that report as axes
-
-[ ] write an 'about this remake' page
 
 [ ] special names for some rooms (makes easier to find)
 
@@ -166,10 +158,6 @@ carrying (maybe( bugs:
     scroll is not in the next room
     !THIS NEEDS STORE TO NOT BE A SINGLETON!
 
-[ ] split store into slices:
-    * game
-    * menus
-    * user settings
 
 [x] bug - in the lab collect bunny, stand on volcano, wait for bunny to expire
     - crash because head doesn't have a renderer
