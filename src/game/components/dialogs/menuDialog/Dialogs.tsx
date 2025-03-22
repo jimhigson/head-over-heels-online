@@ -67,6 +67,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <OfferReincarnationDialog />;
     case "errorCaught":
       return <ErrorCaughtDialog />;
+    case "installGuide":
+      return <MarkdownDialog pageName="installGuide" />;
     default:
       dialogId satisfies never;
       return (

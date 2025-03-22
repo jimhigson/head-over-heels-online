@@ -146,8 +146,6 @@ export const GamePage = () => {
     gameApi?.resizeTo(canvasSize);
   }, [canvasSize, gameApi]);
 
-  console.log(cssUpscale, rotate90);
-
   return (
     <>
       <div

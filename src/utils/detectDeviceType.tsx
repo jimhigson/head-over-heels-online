@@ -28,3 +28,7 @@ export const detectDeviceType = (): DeviceType => {
     : "desktop"
   );
 };
+
+export const detectIsPwa = (): boolean =>
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
