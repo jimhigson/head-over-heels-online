@@ -9,12 +9,12 @@ export const room = inferRoomJson({
   items: {
     "barrier@6,3,0": {
       config: { axis: "y", times: { y: 4, z: 3 } },
-      position: { x: 6, y: 3, z: 0 },
+      position: { x: 6.4, y: 2.8, z: 0 },
       type: "barrier",
     },
     "barrier@7,2,0": {
       config: { axis: "x", times: { z: 3 } },
-      position: { x: 7, y: 2, z: 0 },
+      position: { x: 7, y: 2.4, z: 0 },
       type: "barrier",
     },
     "deadlyBlock@3,4,0": {
