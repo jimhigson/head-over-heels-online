@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { BitmapText } from "../../../../Sprite";
 
 export const VersionDebugInfo = () => {
-  const [open, setIsOpen] = useState(false);
+  const [open, toggleOpen] = useReducer((o: boolean) => !o, false);
 
   return (
     <div
-      onClick={() => setIsOpen(true)}
+      onClick={toggleOpen}
       className="flex bg-metallicBlueHalfbrite text-metallicBlue justify-end absolute bottom-0 right-2 z-dialog"
     >
       {!open && <BitmapText>*</BitmapText>}

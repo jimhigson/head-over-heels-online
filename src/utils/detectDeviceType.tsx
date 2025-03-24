@@ -29,6 +29,10 @@ export const detectDeviceType = (): DeviceType => {
   );
 };
 
+interface NonStandardIosNavigator extends Navigator {
+  standalone?: boolean;
+}
+
 export const detectIsPwa = (): boolean =>
   window.matchMedia("(display-mode: standalone)").matches ||
-  window.navigator.standalone === true;
+  (window.navigator as NonStandardIosNavigator).standalone === true;
