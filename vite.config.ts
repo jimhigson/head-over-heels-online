@@ -71,6 +71,7 @@ export default defineConfig({
   },
 
   define: {
-    __buildString__: JSON.stringify(process.env.BUILD_STRING),
+    __gitHash__: JSON.stringify(process.env.GIT_HASH),
+    __buildDate__: JSON.stringify(process.env.BUILD_DATE),
   },
 });

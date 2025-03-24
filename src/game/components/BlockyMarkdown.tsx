@@ -1,6 +1,6 @@
 import type { JSX, ReactElement } from "react";
 import { type PropsWithChildren } from "react";
-import { MultipleBitmapText } from "./Sprite";
+import { BitmapText, MultipleBitmapText } from "./Sprite";
 import type { EmptyObject } from "type-fest";
 import { useTotalUpscale } from "../../store/selectors";
 import { twMerge } from "tailwind-merge";
@@ -60,7 +60,12 @@ const markdownComponents: CustomComponentsOption = {
     return (
       // clear left allows to go below other lis that have images in them:
       <div className={`mb-1 clear-both ${multilineTextClass}`}>
-        <MultipleBitmapText>* {children}</MultipleBitmapText>
+        <MultipleBitmapText>
+          <BitmapText className="text-metallicBlue zx:text-zxYellow">
+            •
+          </BitmapText>
+          {children}
+        </MultipleBitmapText>
       </div>
     );
   },
@@ -98,6 +103,9 @@ const markdownComponents: CustomComponentsOption = {
         />
       </span>
     );
+  },
+  hr: function Hr() {
+    return <hr className="bg-pastelBlue zx:bg-zxWhite h-1 mb-1 border-none" />;
   },
 };
 

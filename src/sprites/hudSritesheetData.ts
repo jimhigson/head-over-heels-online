@@ -5,8 +5,13 @@ import type { Xy } from "../utils/vectors/vectors";
 import type { EscapedForTailwind } from "./escapeCharForTailwind";
 import { escapeCharForTailwind } from "./escapeCharForTailwind";
 
+// this source really needs a nerd font to read it:
 // https://www.nerdfonts.com/cheat-sheet
 export const nerdFontDiscordChar = "\uf1ff";
+export const chromePwaInstall = ""; // \uea78
+export const iosMacShare = ""; // \uf50e;
+export const iosMacAddToDock = "󱂩"; // \uf10a9;
+export const iosMacAddToHomeScreen = ""; // \uf457;
 
 const alphaNumeric = [
   "A",
@@ -90,6 +95,11 @@ const punctuation = [
   "Menu",
   "*",
   "@",
+  chromePwaInstall,
+  iosMacShare,
+  iosMacAddToDock,
+  iosMacAddToHomeScreen,
+  "•",
 ] as const;
 
 export type CharSpriteTextureId<C extends string> =

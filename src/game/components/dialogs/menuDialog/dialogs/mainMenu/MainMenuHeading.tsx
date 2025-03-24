@@ -41,7 +41,7 @@ export const MainMenuHeading = ({
         <BitmapText className="text-highlightBeige zx:text-zxYellow">
           stack
         </BitmapText>
-        <BitmapText className="text-midGrey zx:text-zxBlack">.</BitmapText>
+        <BitmapText className="text-metallicBlue zx:text-zxBlack">.</BitmapText>
         <BitmapText className="text-moss zx:text-zxWhite">ing</BitmapText>
         <BitmapText classnameCycle={mainMenuCycle}> remake</BitmapText>
       </h2>

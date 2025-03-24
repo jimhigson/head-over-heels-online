@@ -1,4 +1,4 @@
-const rawPages = import.meta.glob<string>("./*.md", {
+const rawPages = import.meta.glob<string>("./**/*.md", {
   query: "?raw",
   import: "default",
   eager: true,
@@ -30,6 +30,9 @@ export const manualPages = {
   swopKey: rawPages["./swopKey.md"],
   hintsAndTips: rawPages["./hintsAndTips.md"],
   credits: rawPages["./credits.md"],
+
+  // new pages for the remake:
+  installGuide: rawPages["./remake/installGuide.md"],
 };
 
 export type ManualPageName = keyof typeof manualPages;
