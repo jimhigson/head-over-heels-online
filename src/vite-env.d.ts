@@ -10,4 +10,5 @@ declare module "*.vert" {
   export default content;
 }
 
-declare const __buildString__: string;
+declare const __gitHash__: string;
+declare const __buildDate__: string;

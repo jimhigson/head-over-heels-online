@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "BUILD_STRING=\"$(git branch --show-current) $(git rev-parse --short HEAD) $(date +%Y-%m-%dT%H:%M:%S%z)\" vite",
-    "build": "BUILD_STRING=\"$(git branch --show-current) $(git rev-parse --short HEAD) $(date +%Y-%m-%dT%H:%M:%S%z)\" vite build",
+    "dev": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite",
+    "build": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite build",
     "watch:type": "tsc --noEmit --watch --project ./tsconfig.app.json",
     "check:type": "tsc --noEmit --project ./tsconfig.app.json",
     "check:lint": "eslint .",
