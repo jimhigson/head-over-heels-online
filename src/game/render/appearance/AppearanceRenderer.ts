@@ -17,10 +17,10 @@ export class AppearanceRenderer<
   RP extends RenderProps,
   /** the type of the thing returned by this renderer */
   RenderTarget extends Container = Container,
-> implements Renderer<RenderContext, TickContext>
+> implements Renderer<RenderContext, TickContext, Container>
 {
   #currentlyRenderedProps: RP | undefined = undefined;
-  #container: Container<RenderTarget>;
+  #output: Container<RenderTarget>;
 
   constructor(
     public readonly renderContext: RenderContext,
@@ -31,35 +31,34 @@ export class AppearanceRenderer<
       RenderTarget
     >,
   ) {
-    this.#container = new Container({
+    this.#output = new Container({
       label: `AppearanceRenderer`,
     });
   }
 
   destroy() {
-    this.#container.destroy({ children: true });
+    this.#output.destroy({ children: true });
   }
 
   tick(tickContext: TickContext) {
     const rendering = this.appearance({
       renderContext: this.renderContext,
       currentlyRenderedProps: this.#currentlyRenderedProps,
-      previousRendering: this.#container.children.at(0) ?? null,
+      previousRendering: this.#output.children.at(0) ?? null,
       tickContext,
     });
 
     if (rendering !== "no-update") {
       this.#currentlyRenderedProps = rendering.renderProps;
       // it is ok to return the same container back, in which case we don't need to do anything:
-      if (this.#container.children.at(0) !== rendering.container) {
-        this.#container.removeChildren();
-        if (rendering.container !== null)
-          this.#container.addChild(rendering.container);
+      if (this.#output.children.at(0) !== rendering.output) {
+        this.#output.removeChildren();
+        if (rendering.output !== null) this.#output.addChild(rendering.output);
       }
     }
   }
 
-  get container() {
-    return this.#container;
+  get output() {
+    return this.#output;
   }
 }

@@ -23,6 +23,7 @@ import { load as loadSpritesheet } from "../sprites/spriteSheet";
 import { importTestCampaign } from "../testCampaign.import.ts";
 import { useLoading } from "../game/components/LoadingContext.tsx";
 import { importOnce } from "../utils/importOnce.ts";
+import { loadSounds } from "../sound/soundsLoader.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
@@ -32,6 +33,7 @@ const loadGameAssets = importOnce((cheatsOn: boolean) => {
     importOriginalCampaign(),
     cheatsOn ? importTestCampaign() : undefined,
     loadSpritesheet(),
+    loadSounds(),
   ]);
 });
 

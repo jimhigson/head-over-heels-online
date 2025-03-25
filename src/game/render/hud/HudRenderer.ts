@@ -187,7 +187,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     if (onScreenControls) {
       this.#onScreenControls = new OnScreenControls({ ...renderContext });
-      this.#container.addChild(this.#onScreenControls.container);
+      this.#container.addChild(this.#onScreenControls.output);
     }
   }
 
@@ -558,7 +558,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     this.#onScreenControls?.tick(tickContext);
   }
 
-  get container() {
+  get output() {
     return this.#container;
   }
 

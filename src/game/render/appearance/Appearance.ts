@@ -6,14 +6,14 @@ export type RenderProps = Record<string, unknown>;
 
 export type AppearanceReturn<
   RP extends RenderProps,
-  RenderTarget extends Container = Container,
+  RenderTarget = Container,
 > =
   | {
       /**
        * a new rendering, since one is required - null to explicitly change the item's rendering
        * to nothing
        */
-      container: RenderTarget | null;
+      output: RenderTarget | null;
       /** the render props of the new rendering, to stash and use for checking in the next tick if a new rendering is needed */
       renderProps: RP;
     }
@@ -24,7 +24,7 @@ export type AppearanceOptions<
   RenderContext extends object,
   TickContext extends object,
   RP extends RenderProps,
-  RenderTarget extends Container = Container,
+  RenderTarget = Container,
 > = {
   /**
    * the render props that the item rendering is currently rendered with; so the appearance can check if
@@ -52,7 +52,7 @@ export type Appearance<
   RenderContext extends object,
   TickContext extends object,
   RP extends RenderProps,
-  RenderTarget extends Container = Container,
+  RenderTarget = Container,
 > = (
   options: AppearanceOptions<RenderContext, TickContext, RP, RenderTarget>,
 ) => AppearanceReturn<RP, RenderTarget>;

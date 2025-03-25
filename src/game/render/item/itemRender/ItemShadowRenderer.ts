@@ -12,14 +12,11 @@ import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import { subXy } from "../../../../utils/vectors/vectors";
 import { store } from "../../../../store/store";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-  Renderer,
-} from "../../Renderer";
+import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
 import { blockSizePx } from "../../../../sprites/spritePivots";
 import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
 import { iterateRoomItems } from "../../../../model/RoomState";
+import type { ItemPixiRenderer } from "./ItemRenderer";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -101,11 +98,7 @@ export class ItemShadowRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
-> implements
-    Renderer<
-      ItemRenderContextWithRequiredShadowMask<T, RoomId, RoomItemId>,
-      ItemTickContext<RoomId, RoomItemId>
-    >
+> implements ItemPixiRenderer<T, RoomId, RoomItemId>
 {
   #container: Container = new Container({
     label: "ItemShadowRenderer",
@@ -291,7 +284,7 @@ export class ItemShadowRenderer<
       0;
   }
 
-  get container() {
+  get output() {
     return this.#container;
   }
 }

@@ -30,7 +30,7 @@ import { store } from "../../../store/store";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import { monsterAppearance } from "./monsterAppearance";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import { stoodOnByCount } from "../../../model/StoodOnBy";
+import { isStoodOn } from "../../../model/StoodOnBy";
 import { selectAtPath } from "../../../store/selectors";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 
@@ -197,7 +197,7 @@ export const itemAppearances: {
     }
 
     return {
-      container: createSprite({
+      output: createSprite({
         textureId: blockTextureId(
           room.color.shade === "dimmed",
           style,
@@ -235,7 +235,7 @@ export const itemAppearances: {
     }
 
     return {
-      container: createSprite(`switch.${setting}`),
+      output: createSprite(`switch.${setting}`),
       renderProps: { setting },
     };
   },
@@ -249,7 +249,7 @@ export const itemAppearances: {
     },
     currentlyRenderedProps,
   }) {
-    const moving = stoodOnByCount(stoodOnBy) > 0;
+    const moving = isStoodOn(stoodOnBy);
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -278,7 +278,7 @@ export const itemAppearances: {
     );
 
     return {
-      container: rendering,
+      output: rendering,
       renderProps: { moving },
     };
   },
@@ -324,7 +324,7 @@ export const itemAppearances: {
     }
 
     return {
-      container:
+      output:
         flashing ?
           new Container({
             children: [
@@ -404,7 +404,7 @@ export const itemAppearances: {
       return "no-update";
     }
     return {
-      container: createStackedSprites({ top: `charles.${facingXy4}` }),
+      output: createStackedSprites({ top: `charles.${facingXy4}` }),
       renderProps: { facingXy4 },
     };
   },
@@ -457,7 +457,7 @@ export const itemAppearances: {
       : undefined;
 
     return {
-      container: createSprite({
+      output: createSprite({
         textureId: style,
         filter,
       }),
@@ -473,7 +473,7 @@ export const itemAppearances: {
     },
     currentlyRenderedProps,
   }) {
-    const compressed = stoodOnByCount(stoodOnBy) > 0;
+    const compressed = isStoodOn(stoodOnBy);
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -497,7 +497,7 @@ export const itemAppearances: {
       : undefined;
 
     return {
-      container:
+      output:
         !compressed && currentlyRenderedCompressed ?
           createSprite({
             animationId: "spring.bounce",
@@ -541,7 +541,7 @@ export const itemAppearances: {
       : undefined;
 
     return {
-      container:
+      output:
         which === "headOverHeels" ?
           createStackedSprites({
             top: { textureId: `head.walking.${startDirection}.2`, filter },

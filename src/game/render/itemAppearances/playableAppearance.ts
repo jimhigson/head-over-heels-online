@@ -322,7 +322,7 @@ export const playableAppearance = <
     shining,
   };
 
-  const needNewSprites =
+  const refreshSprites =
     // note: not all props are used here!
     currentlyRenderedProps === undefined ||
     currentlyRenderedProps.action !== action ||
@@ -345,14 +345,14 @@ export const playableAppearance = <
     updateIndividualsRendering(
       "head",
       stackedContainer[stackedTopSymbol],
-      needNewSprites,
+      refreshSprites,
       renderProps,
       currentlyRenderedProps,
     );
     updateIndividualsRendering(
       "heels",
       stackedContainer[stackedBottomSymbol],
-      needNewSprites,
+      refreshSprites,
       renderProps,
       currentlyRenderedProps,
     );
@@ -362,7 +362,7 @@ export const playableAppearance = <
     updateIndividualsRendering(
       type,
       outputContainer as IndividualPlayableRenderingContainer,
-      needNewSprites,
+      refreshSprites,
       renderProps,
       currentlyRenderedProps,
     );
@@ -376,7 +376,7 @@ export const playableAppearance = <
   }
 
   return {
-    container: outputContainer,
+    output: outputContainer,
     renderProps,
   };
 };

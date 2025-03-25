@@ -5,11 +5,11 @@ import { spritesheetData } from "./spriteSheetData";
 
 type AppSpritesheet = Spritesheet<typeof spritesheetData>;
 
-let loadedSpritesheet: AppSpritesheet | undefined = undefined;
+let loaded: AppSpritesheet | undefined = undefined;
 
 export const load = async () => {
-  if (loadedSpritesheet !== undefined) {
-    return loadedSpritesheet;
+  if (loaded !== undefined) {
+    return loaded;
   }
 
   let spritesTexture: Texture;
@@ -29,7 +29,7 @@ export const load = async () => {
 
   await spriteSheet.parse();
   spriteSheet.textureSource.scaleMode = "nearest";
-  loadedSpritesheet = spriteSheet;
+  loaded = spriteSheet;
   return spriteSheet;
 };
 
@@ -39,12 +39,12 @@ export const load = async () => {
  * inside the update/render loop synchronously many times
  */
 export const loadedSpriteSheet = (): AppSpritesheet => {
-  if (loadedSpritesheet === undefined) {
+  if (loaded === undefined) {
     throw new Error(
       `spritesheet not loaded - only call this from inside code 
       (like in a render loop) that is protected and only executed once 
       loading has happened`,
     );
   }
-  return loadedSpritesheet;
+  return loaded;
 };

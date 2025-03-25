@@ -1,31 +1,24 @@
 import { Container } from "pixi.js";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { projectWorldXyzToScreenXy } from "../../projectToScreen";
-import type {
-  Renderer,
-  ItemTickContext,
-  ItemRenderContext,
-} from "../../Renderer";
-import type { ItemRenderer } from "./ItemRenderer";
+import type { ItemTickContext, ItemRenderContext } from "../../Renderer";
+import type { ItemPixiRenderer } from "./ItemRenderer";
 
 export class ItemPositionRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
-> implements ItemRenderer<T, RoomId, RoomItemId>
+> implements ItemPixiRenderer<T, RoomId, RoomItemId>
 {
   #container: Container;
 
   constructor(
     public readonly renderContext: ItemRenderContext<T, RoomId, RoomItemId>,
-    private wrappedRenderer: Renderer<
-      ItemRenderContext<ItemInPlayType, RoomId, RoomItemId>,
-      ItemTickContext<RoomId, RoomItemId>
-    >,
+    private wrappedRenderer: ItemPixiRenderer<T, RoomId, RoomItemId>,
   ) {
     this.#container = new Container({
       label: `ItemPositionRenderer ${renderContext.item.id}`,
-      children: [wrappedRenderer.container],
+      children: [wrappedRenderer.output],
     });
     this.#updatePosition();
   }
@@ -51,7 +44,7 @@ export class ItemPositionRenderer<
     this.#container.destroy({ children: true });
     this.wrappedRenderer?.destroy();
   }
-  get container() {
+  get output() {
     return this.#container;
   }
 }

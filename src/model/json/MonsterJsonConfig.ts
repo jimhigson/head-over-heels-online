@@ -90,3 +90,5 @@ export type MonsterJsonConfig =
       startDirection: DirectionXy4;
       style: "greenAndPink" | "starsAndStripes";
     };
+
+export type MonsterWhich = MonsterJsonConfig["which"];

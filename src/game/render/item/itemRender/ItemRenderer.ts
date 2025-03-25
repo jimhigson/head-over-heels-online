@@ -1,3 +1,4 @@
+import type { Container } from "pixi.js";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type {
   ItemRenderContext,
@@ -5,11 +6,12 @@ import type {
   Renderer,
 } from "../../Renderer";
 
-export type ItemRenderer<
+export type ItemPixiRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
-  RoomItemid extends string,
+  RoomItemId extends string,
 > = Renderer<
-  ItemRenderContext<T, RoomId, RoomItemid>,
-  ItemTickContext<RoomId, RoomItemid>
+  ItemRenderContext<T, RoomId, RoomItemId>,
+  ItemTickContext<RoomId, RoomItemId>,
+  Container
 >;

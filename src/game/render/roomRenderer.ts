@@ -6,12 +6,12 @@ import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selec
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
 import { store } from "../../store/store";
 import type {
-  ItemRenderContext,
   ItemTickContext,
   Renderer,
   RoomRenderContext,
   RoomTickContext,
 } from "./Renderer";
+import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
 import { getColorScheme } from "../hintColours";
 import { noFilters } from "./filters/standardFilters";
@@ -19,12 +19,15 @@ import type { ZxSpectrumRoomColour } from "../../originalGame";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import { iterateRoomItems } from "../../model/RoomState";
 import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemSoundAndGraphicsRenderer } from "./item/itemRender/ItemSoundAndGraphicsRenderer";
+import { audioCtx } from "../../sound/audioCtx";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements
     Renderer<
       RoomRenderContext<RoomId, RoomItemId>,
-      RoomTickContext<RoomId, RoomItemId>
+      RoomTickContext<RoomId, RoomItemId>,
+      SoundAndGraphicsOutput
     >
 {
   /**
@@ -36,6 +39,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #container: Container = new Container({
     children: [this.#itemsContainer, this.#floorEdgeContainer],
   });
+  #sound: AudioNode = audioCtx.createGain();
+  public readonly output: Required<SoundAndGraphicsOutput> = {
+    sound: this.#sound,
+    graphics: this.#container,
+  };
   #everRendered: boolean = false;
   /**
    * store the edges of the behind/front graph between frames so we can incrementally update it
@@ -43,12 +51,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #incrementalZEdges: GraphEdges<string> = new Map();
   #itemRenderers: Map<
     RoomItemId,
-    | Renderer<
-        ItemRenderContext<ItemInPlayType, RoomId, RoomItemId>,
-        ItemTickContext<RoomId, RoomItemId>
-      >
-    // createItemRenderer explicitly declined to create an instance for this item
-    | "not-needed"
+    ItemSoundAndGraphicsRenderer<ItemInPlayType, RoomId, RoomItemId>
   > = new Map();
   #roomScroller: ReturnType<typeof positionRoom>;
 
@@ -103,14 +106,9 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
 
       if (
-        itemRenderer !==
+        itemRenderer ===
         undefined /* equivalent to if( this.#itemRenderers.has(item.id) ) */
       ) {
-        if (itemRenderer === "not-needed") {
-          // we have previously recorded that this item needs no renderer
-          continue;
-        }
-      } else {
         // have never ticked this item before - either first tick in the room or item was introduced to the
         // room since the last tick
         itemRenderer = createItemRenderer({
@@ -118,11 +116,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           item,
         });
 
-        if (itemRenderer === "not-needed") {
-          // createItemRenderer declined to create a render for this item - record that:
-          this.#itemRenderers.set(item.id as RoomItemId, "not-needed");
-          continue;
-        }
         this.#itemRenderers.set(item.id as RoomItemId, itemRenderer);
 
         const addToContainer =
@@ -130,9 +123,19 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
             this.#floorEdgeContainer
           : this.#itemsContainer;
 
-        addToContainer.addChild(itemRenderer.container);
-        if (item.fixedZIndex) {
-          itemRenderer.container.zIndex = item.fixedZIndex;
+        const { graphics, sound } = itemRenderer.output;
+
+        if (graphics) {
+          // item has a visual presence:
+          addToContainer.addChild(graphics);
+          if (item.fixedZIndex) {
+            graphics.zIndex = item.fixedZIndex;
+          }
+        }
+
+        if (sound) {
+          // item has a sound presence:
+          sound.connect(this.#sound);
         }
       }
       itemRenderer.tick(tickContext);
@@ -141,7 +144,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     // remove any renderers for items that no longer exist in the room:
     for (const [itemId, itemRenderer] of this.#itemRenderers.entries()) {
       if (room.items[itemId] === undefined) {
-        if (itemRenderer !== "not-needed") itemRenderer.destroy();
+        itemRenderer.destroy();
         this.#itemRenderers.delete(itemId as RoomItemId);
       }
     }
@@ -159,12 +162,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
     for (let i = 0; i < order.length; i++) {
       const itemRenderer = this.#itemRenderers.get(order[i] as RoomItemId);
-      if (itemRenderer === undefined || itemRenderer === "not-needed") {
+      if (itemRenderer === undefined) {
         throw new Error(
           `Item id=${order[i]} does not have a renderer - cannot assign a z-index`,
         );
       }
-      itemRenderer.container.zIndex = order.length - i;
+      // TODO: verify that this will always have graphics
+      itemRenderer.output.graphics!.zIndex = order.length - i;
     }
   }
 
@@ -195,12 +199,9 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
   destroy() {
     this.#container.destroy({ children: true });
+    this.#sound.disconnect();
     this.#itemRenderers.forEach((itemRenderer) => {
-      if (itemRenderer !== "not-needed") itemRenderer.destroy();
+      itemRenderer.destroy();
     });
-  }
-
-  get container() {
-    return this.#container;
   }
 }

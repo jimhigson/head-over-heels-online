@@ -9,30 +9,21 @@
 [ ] error catch/reporting + option to refresh
 
 ### Big ideas
-[2,L] add sound to the game
-    * start small:
-        1 start game sound
-        2 walking sound w/repeat frequency by number of stepsh
-
-[x] saving/fish
-
-[x] 8-way sprites
 
 [,XL] a map
     [ ] a mini-map
 
 [,XL] level editor
 
-[x] iphone playable    
-
 [,?] own levels
 
 [3,M] switch to devcontainers
     [ ] might be more complex than needed
 
-
-### ui
-[x] game ui colours when colourised from real palette (even if not close to original colours)
+### sounds
+[ ] conveyor sound
+[ ] pushing a block - little sound every n ms
+[ ] detect when phone has sound turned off (?)
 
 ### graphical
 use pixi render groups/layers etc to render outline when switching players in 
@@ -42,20 +33,20 @@ front of other items
 [ ] hitting hte joystick with a tap sometimes moves <1px
 
 ### dialogs
-[ ] install (PWA) instructions
 [ ] write an 'about this remake' page
-
-### menus
-[x] control menus - allow different column width for non-select keys options
-    (multiple <MenuItems /> components)
+    * also use as the README on github (can be same file)
 
 ### Controls
 
 [ ] joystick/pads that declare the d-pad as axes - treat like buttons
-[x] 8-way mode (make default on touch devices)
-
 
 ### Details and bugs
+
+[ ] make FS/OSS (again)
+
+[ ] sliding on all blocks, not just doors
+    (if can't push and overlap is small)
+    probably can be done generically in moveItem ?
 
 [ ] allow jump-by carry-and-jump
 
@@ -73,44 +64,27 @@ front of other items
 
 [ ] charles robot no longer needs to use latent movement
 
-[x] version number/date on main menu dialog
-
 [ ] doughnut white fade can be shown under walls - try firing at left wall in start room for example
     - maybe the doughnut explosion is slightly inside the wall?
 
 [ ] wall over doors not variable height like other walls
 
-[x] destroy and recreate hud renderer when display settings change
-
 [ ] bug - need to refresh page after changing input preset
     - sometimes?
-
-[x] put text in for search engines etc
 
 [ ] hold a button to lock to axes
 
 [ ] add lowres setting (like outline filter) to all filters and use when appropriate - ie anything that
     doesn't need between-pixel rendering
 
-[x] input buffering on start to move
-
-[x] consolidation
-
 input tracker:
-    [ ] analogue/digital input as overloading/polymorphism in input tracker
     [ ] treat d-pad-as-axes input correctly for buffering
 
-
-
-[x] split campaign patch up per-room
-
 [x] allow stopping on diagonals
-    [ ] for keys/buttons
+    [x] for keys/buttons
     [ ] for d-pads that report as axes
 
 [ ] special names for some rooms (makes easier to find)
-
-[x] turn around without moving for small presses (round down to zero, not up to one)
 
 [?] move more state to the store?
     [ ] is easier to render with react
@@ -149,7 +123,7 @@ carrying (maybe( bugs:
         * heels picks up while head in room
         * heels dies
         * item gone forever!
-    [ ] this might be fine
+    [x] this might be fine
 
 
 [ ] write test - 
@@ -158,13 +132,10 @@ carrying (maybe( bugs:
     scroll is not in the next room
     !THIS NEEDS STORE TO NOT BE A SINGLETON!
 
-
-[x] bug - in the lab collect bunny, stand on volcano, wait for bunny to expire
-    - crash because head doesn't have a renderer
-
 [ ] repeat moving on scrolls etc (hold to keep scrolling) + analogue control    
 
-[ ] handle z of overlapping aabbs - may require some thinking!
+
+[ ] rendering bugs: handle z index of overlapping aabbs - may require some thinking!
     [ ] then use small aabb for collision, medium for rendering - for player 
     [ ] ball needs a bigger render aabb
 
@@ -174,8 +145,6 @@ carrying (maybe( bugs:
         - nope, nothing calls the Color constructor on initial load
     look into: https://www.npmjs.com/package/madge https://www.npmjs.com/package/dependency-cruiser
     - we now use the ticker, but could load just @pixi/ticker
-[x] bug - if pushed out of a room while player is dying, their entry state contains death
-    - fix - make players non-solid while state is death      
 [ ] auto-resolution on big rooms    
     - just use whatever scale factor fits the room in?
     - remove blurryness in general - replace css scaling with pixijs resolution setting
@@ -186,11 +155,12 @@ carrying (maybe( bugs:
 [ ] (maybe) option to turn shadows off
 [ ] compare against original for how far player can edge up on a block
 [ ] upgrade to tw 4
-[ ] sonic-like shield effect when got shield    
-    [?] sunglasses?
+
 [ ] shadow masks/cast provided by appearance
     [ ] allow to be dynamic
+
 [ ] option to turn off extra items
+
 [ ] ELERI cheat
 
 translate: https://hoh.helmantika.com/jon-ritman/
@@ -203,11 +173,9 @@ translate: https://hoh.helmantika.com/jon-ritman/
       });
 ```
 
-[ ] re-load and re-render room on HMR: https://vite.dev/guide/api-hmr.html
-[ ] room floor edge with attribute clash, hud in original colours
+[ ] room floor edge with attribute clash (needs a clash pixel shader)
 
 # Rooms
-
 [ ] blacktooth14 - render issues with barriers z-order
 
 # blacktooth20
@@ -235,22 +203,15 @@ of existence
 # egyptus34fish
 [ ] ball clips poorly when pushed all the way away
 
-# egyptus35
-[x] ceiling too low/room too easy (don't need both blocks/players)
-
 # penitentiary2
 [ ] this room shouldn't scroll horizontally
 
 # moonbase33triple
 [x] doesn't scroll in y
     [ ] does but scrolling is poor
-[x] monsters don't wake up
-    - see https://www.youtube.com/watch?v=PdRuvdvLbjg&t=3782s
-[x] hidden wall shouldn't render
-[x] render extra floor edge
 
 # finalroom
-    - in space of lives, should say FREEDOM in hud
+    [ ] in space of lives, should say FREEDOM in hud
 
 
 Audio
@@ -259,18 +220,4 @@ Audio
 musicxml for game music: https://github.com/dougmencken/HeadOverHeels/blob/master/gamedata/music/safari.xml
 musicxml player in browser: https://blog.karimratib.me/demos/musicxml/
 
-
-Level ideas
-===========
-[ ] have to shoot a switch with donuts
-[ ] have to make monster touch joystick
-
-
-
-
-  • Circular Dependencies
-  1) src/game/components/dialogs/menuDialog/menus.tsx -> src/game/components/dialogs/menuDialog/menus/inputPresetMenu.tsx -> src/game/components/dialogs/menuDialog/MenuItems.tsx -> src/store/menuSelectors.ts
-  2) src/store/store.ts -> src/store/storeFlow/addListeners.ts -> src/game/components/dialogs/menuDialog/menus.tsx -> src/game/components/dialogs/menuDialog/menus/inputPresetMenu.tsx -> src/game/components/dialogs/menuDialog/MenuItems.tsx -> src/game/components/dialogs/useActionInput.ts -> src/game/input/InputStateProvider.tsx -> src/game/input/InputStateTracker.ts
-  3) src/store/store.ts -> src/store/storeFlow/addListeners.ts -> src/game/components/dialogs/menuDialog/menus.tsx -> src/game/components/dialogs/menuDialog/menus/inputPresetMenu.tsx -> src/game/components/dialogs/menuDialog/MenuItems.tsx
-  4) src/store/store.ts -> src/store/storeFlow/addListeners.ts -> src/game/components/dialogs/menuDialog/menus.tsx -> src/game/components/dialogs/menuDialog/menus/selectKeysMenu.tsx
-  5) src/game/physics/moveItem.ts -> src/game/physics/handleTouch/handleItemsTouchingItems.ts -> src/game/physics/handleTouch/handlePlayerTouchingJoystick.ts
+g

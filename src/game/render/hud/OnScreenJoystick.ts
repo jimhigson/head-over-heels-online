@@ -47,9 +47,9 @@ const snapCosineThreshold = Math.cos(30 * (Math.PI / 180));
 
 const joystickFurthestTouchRadius = 40;
 export class OnScreenJoystickRenderer
-  implements Renderer<JoystickRenderContext, EmptyObject>
+  implements Renderer<JoystickRenderContext, EmptyObject, Container>
 {
-  container = new Container({ label: "OnScreenJoystick", eventMode: "static" });
+  output = new Container({ label: "OnScreenJoystick", eventMode: "static" });
 
   arrowSprites: Partial<Record<DirectionXy8, Container>>;
 
@@ -123,21 +123,21 @@ export class OnScreenJoystickRenderer
       : {}),
     };
 
-    this.container.addChild(this.#joystickSprite);
+    this.output.addChild(this.#joystickSprite);
 
-    this.container.addChild(
+    this.output.addChild(
       new Graphics()
         .circle(0, 0, joystickFurthestTouchRadius)
         .fill("#00000000"),
     );
     for (const arrowSprite of objectValues(this.arrowSprites)) {
-      this.container.addChild(arrowSprite);
+      this.output.addChild(arrowSprite);
     }
 
-    this.container.on("pointerenter", this.handlePointerEnter);
-    this.container.on("globalpointermove", this.usePointerLocation);
-    this.container.on("pointerup", this.stopCurrentPointer);
-    this.container.on("pointerupoutside", this.stopCurrentPointer);
+    this.output.on("pointerenter", this.handlePointerEnter);
+    this.output.on("globalpointermove", this.usePointerLocation);
+    this.output.on("pointerup", this.stopCurrentPointer);
+    this.output.on("pointerupoutside", this.stopCurrentPointer);
 
     this.#joystickSprite.filters =
       renderContext.colourise ? noFilters : hudLowlightedFilter;
@@ -170,11 +170,11 @@ export class OnScreenJoystickRenderer
 
     const scale = selectTotalUpscale(store.getState());
 
-    const { x: containerX, y: containerY } = this.container;
+    const { x: containerX, y: containerY } = this.output;
     const { x: eventX, y: eventY } = e;
 
     const { width: containerWidth, height: containerHeight } =
-      this.container.getLocalBounds();
+      this.output.getLocalBounds();
 
     const dx = (eventX / scale - containerX) / (containerWidth / 2);
     const dy = (eventY / scale - containerY) / (containerHeight / 2);
@@ -223,10 +223,10 @@ export class OnScreenJoystickRenderer
 
   destroy() {
     this.stopCurrentPointer();
-    this.container.off("pointerenter", this.handlePointerEnter);
-    this.container.off("globalpointermove", this.usePointerLocation);
-    this.container.off("pointerup", this.stopCurrentPointer);
-    this.container.off("pointerupoutside", this.stopCurrentPointer);
-    this.container.destroy();
+    this.output.off("pointerenter", this.handlePointerEnter);
+    this.output.off("globalpointermove", this.usePointerLocation);
+    this.output.off("pointerup", this.stopCurrentPointer);
+    this.output.off("pointerupoutside", this.stopCurrentPointer);
+    this.output.destroy();
   }
 }

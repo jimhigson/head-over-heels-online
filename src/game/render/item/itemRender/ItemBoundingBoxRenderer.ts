@@ -5,7 +5,7 @@ import type { Aabb } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../projectToScreen";
 import type { ItemRenderContext } from "../../Renderer";
-import type { ItemRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemRenderer";
 
 const cuboidBB = (aabb: Aabb, graphics: Graphics) => {
   graphics
@@ -82,7 +82,7 @@ export class ItemBoundingBoxRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
-> implements ItemRenderer<T, RoomId, RoomItemId>
+> implements ItemPixiRenderer<T, RoomId, RoomItemId>
 {
   #container: Container;
 
@@ -168,7 +168,7 @@ export class ItemBoundingBoxRenderer<
   destroy(): void {
     this.#container.destroy({ children: true });
   }
-  get container() {
+  get output() {
     return this.#container;
   }
 }

@@ -20,6 +20,7 @@ import {
   type DisplaySettings,
 } from "../../store/slices/gameMenusSlice";
 import { pick } from "../../utils/pick";
+import { audioCtx } from "../../sound/audioCtx";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -54,9 +55,10 @@ export class MainLoop<RoomId extends string> {
    * players have lost all lives
    */
   #roomRenderer: RoomRenderer<RoomId, string> | undefined;
-  #worldContainer: Container = new Container({
+  #worldGraphics: Container = new Container({
     label: "MainLoop/world",
   });
+  #worldSound: AudioNode = audioCtx.createGain();
   #app: Application;
   #gameState: GameState<RoomId>;
 
@@ -75,8 +77,8 @@ export class MainLoop<RoomId extends string> {
         },
       } = storeState;
 
-      app.stage.addChild(this.#worldContainer);
-
+      this.#worldSound.connect(audioCtx.destination);
+      app.stage.addChild(this.#worldGraphics);
       app.stage.scale = gameEngineUpscale;
 
       const startingRoom = selectCurrentRoomState(gameState);
@@ -151,7 +153,7 @@ export class MainLoop<RoomId extends string> {
         inputDirectionMode: tickInputDirectionMode,
         onScreenControls: tickOnScreenControls,
       });
-      this.#app.stage.addChild(this.#hudRenderer.container);
+      this.#app.stage.addChild(this.#hudRenderer.output);
     }
 
     this.#hudRenderer.tick({
@@ -185,7 +187,8 @@ export class MainLoop<RoomId extends string> {
           colourised: tickColourise,
           upscale: tickUpscale,
         });
-        this.#worldContainer.addChild(this.#roomRenderer.container);
+        this.#worldGraphics.addChild(this.#roomRenderer.output.graphics);
+        this.#roomRenderer.output.sound.connect(this.#worldSound);
         // this isn't the ideal place to emit this from - it gets fired even if just the
         // display settings change. but only the cheats needs this currently
         this.#gameState.events.emit("roomChange", tickRoom.id);
@@ -217,7 +220,8 @@ export class MainLoop<RoomId extends string> {
     return this;
   }
   stop() {
-    this.#app.stage.removeChild(this.#worldContainer);
+    this.#app.stage.removeChild(this.#worldGraphics);
+    this.#worldSound.disconnect();
     this.#roomRenderer?.destroy();
     this.#hudRenderer?.destroy();
     this.#app.ticker.remove(this.tickAndCatch);

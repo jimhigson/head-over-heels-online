@@ -19,6 +19,27 @@ import type { SwitchConfig } from "./SwitchConfig";
 import type { ToggleablePaths } from "../../utils/Toggleable";
 import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 
+type PickupConfig =
+  | {
+      gives:
+        | "extra-life"
+        | "fast"
+        | "jumps"
+        | "shield"
+        | "doughnuts"
+        | "bag"
+        | "hooter"
+        | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
+    }
+  | {
+      gives: "scroll";
+      page: MarkdownPageName;
+    }
+  | {
+      gives: "crown";
+      planet: PlanetName;
+    };
+
 export type ItemConfigMap<
   RoomId extends string,
   /** ids of items in this room */
@@ -80,26 +101,7 @@ export type ItemConfigMap<
     disappearing?: "onStand";
   };
   hushPuppy: ConsolidatableConfig;
-  pickup:
-    | {
-        gives:
-          | "extra-life"
-          | "fast"
-          | "jumps"
-          | "shield"
-          | "doughnuts"
-          | "bag"
-          | "hooter"
-          | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
-      }
-    | {
-        gives: "scroll";
-        page: MarkdownPageName;
-      }
-    | {
-        gives: "crown";
-        planet: PlanetName;
-      };
+  pickup: PickupConfig;
   player: {
     which: CharacterName;
   };
@@ -113,7 +115,17 @@ export type ItemConfigMap<
     bottom: number;
   };
   // actually not using the special bubbles frames:
-  bubbles: { style: /*"fish" | "taupe" | */ "white" };
+  bubbles: {
+    style: /*"fish" | "taupe" | */ "white";
+    /**
+     * it is the bubbles that play the sound when something is fading
+     * out, not the item itself. This property helps us know which sound
+     * to play
+     */
+    was:
+      | { type: "pickup"; gives: PickupConfig["gives"] }
+      | { type: "disappearing" };
+  };
   monster: MonsterJsonConfig;
   portableBlock: {
     style: "drum" | "sticks" | "cube";

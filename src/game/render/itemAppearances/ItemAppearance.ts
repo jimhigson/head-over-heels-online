@@ -16,14 +16,14 @@ import type { ItemRenderContext, ItemTickContext } from "../Renderer";
 
 export type ItemAppearanceReturn<
   T extends ItemInPlayType,
-  RenderTarget extends Container = Container,
+  Output extends Container = Container,
 > =
   | {
       /**
        * a new rendering, since one is required - null to explicitly change the item's rendering
        * to nothing
        */
-      container: RenderTarget | null;
+      output: Output | null;
       /** the render props of the new rendering, to stash and use for checking in the next tick if a new rendering is needed */
       renderProps: ItemRenderProps<T>;
     }
@@ -103,7 +103,7 @@ export const itemRenderOnce =
   ({ renderContext, currentlyRenderedProps, tickContext }) => {
     if (currentlyRenderedProps === undefined) {
       return {
-        container: renderWith({
+        output: renderWith({
           renderContext,
           previousRendering: null,
           tickContext,

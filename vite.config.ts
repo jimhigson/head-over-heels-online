@@ -21,7 +21,7 @@ export default defineConfig({
         enabled: true,
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,png}"],
+        globPatterns: ["**/*.{js,css,html,png,mp3,m4a}"],
       },
       manifest: {
         background_color: "#000000",
