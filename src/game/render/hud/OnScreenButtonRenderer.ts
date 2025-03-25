@@ -144,7 +144,7 @@ const buttonAppearances: {
     }
 
     return {
-      container,
+      output: container,
       renderProps: {
         pressed,
         standingOnTeleporter: isStandingOnTeleporter,
@@ -222,7 +222,7 @@ const buttonAppearances: {
       disabled,
     };
     return {
-      container,
+      output: container,
       renderProps,
     };
   },
@@ -284,7 +284,7 @@ const buttonAppearances: {
     }
 
     return {
-      container,
+      output: container,
       renderProps: { pressed, colourise, doughnuts, hasHooter },
     };
   },
@@ -336,7 +336,7 @@ const buttonAppearances: {
     }
 
     return {
-      container,
+      output: container,
       renderProps: {
         pressed,
         hasBag,
@@ -354,7 +354,7 @@ const buttonAppearances: {
     sprite.filters = hudLowlightAndOutlineFilters;
 
     return {
-      container: sprite,
+      output: sprite,
       renderProps: emptyObject,
     };
   },

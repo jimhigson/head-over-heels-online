@@ -1,4 +1,3 @@
-import type { Container } from "pixi.js";
 import type { MovedItems } from "../mainLoop/progressGameState";
 import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
 import type { RoomState } from "../../model/RoomState";
@@ -47,12 +46,12 @@ export type ItemRenderContext<
 export interface Renderer<
   RenderContext extends object,
   TickContext extends object,
-  /** the pixi thing rendered to by this renderer */
-  RenderObject extends Container = Container,
+  /** the thing rendered to, for example a pixi Container */
+  Output,
 > {
   tick(tickContext: TickContext): void;
   destroy(): void;
-  container: RenderObject;
+  output: Output;
   /** get the unchanging render context for this renderer */
   readonly renderContext: RenderContext;
 }

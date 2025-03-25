@@ -15,3 +15,13 @@ export type StoodOnBy<RoomItemId extends string = string> = {
 export const stoodOnByCount = (stoodOnBy: StoodOnBy) => {
   return size(objectKeys(stoodOnBy));
 };
+
+/**
+ * convenience to get how many items are standing on an item
+ */
+export const isStoodOn = (stoodOnBy: StoodOnBy) => {
+  for (const _ in stoodOnBy) {
+    return true;
+  }
+  return false;
+};

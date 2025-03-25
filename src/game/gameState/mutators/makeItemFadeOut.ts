@@ -1,7 +1,7 @@
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import type { GameState } from "../GameState";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
-import type { AnyItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import {
   originXyz,
   addXyz,
@@ -22,7 +22,7 @@ export const makeItemFadeOut = <
   room,
   gameState,
 }: {
-  touchedItem: AnyItemInPlay<RoomId, RoomItemId>;
+  touchedItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
   room: RoomState<RoomId, RoomItemId>;
   gameState: GameState<RoomId>;
 }) => {
@@ -30,7 +30,13 @@ export const makeItemFadeOut = <
 
   const bubblesItem = addItemFromJsonToRoom({
     itemType: "bubbles",
-    config: { style: "white" },
+    config: {
+      style: "white",
+      was:
+        touchedItem.type === "pickup" ?
+          { type: "pickup", gives: touchedItem.config.gives }
+        : { type: "disappearing" },
+    },
     // give any placeholder position:
     position: originXyz,
     room,

@@ -99,22 +99,22 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
     for (const b of objectValues(buttons)) {
       if (b.renderContext.button.which === "menu") {
-        this.#container.addChild(buttons.menu.container);
+        this.#container.addChild(buttons.menu.output);
       } else {
-        mainButtonNest.addChild(b.container);
+        mainButtonNest.addChild(b.output);
       }
     }
 
-    buttons.jump.container.y = mainButtonsSpreadYPx;
-    buttons.carry.container.x = -mainButtonsSpreadXPx;
-    buttons.carryAndJump.container.y = -mainButtonsSpreadYPx;
-    buttons.fire.container.x = mainButtonsSpreadXPx;
+    buttons.jump.output.y = mainButtonsSpreadYPx;
+    buttons.carry.output.x = -mainButtonsSpreadXPx;
+    buttons.carryAndJump.output.y = -mainButtonsSpreadYPx;
+    buttons.fire.output.x = mainButtonsSpreadXPx;
 
-    buttons.menu.container.x = 24;
-    buttons.menu.container.y = 24;
+    buttons.menu.output.x = 24;
+    buttons.menu.output.y = 24;
 
     this.#container.addChild(mainButtonNest);
-    this.#container.addChild(joystick.container);
+    this.#container.addChild(joystick.output);
     this.#initInteractivity();
   }
 
@@ -132,18 +132,18 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
         },
       } = buttonRenderer;
 
-      buttonRenderer.container.eventMode = "static";
-      buttonRenderer.container.on("pointerdown", () => {
+      buttonRenderer.output.eventMode = "static";
+      buttonRenderer.output.on("pointerdown", () => {
         for (const a of actions) {
           inputStateTracker.hudInputState[a] = true;
         }
       });
-      buttonRenderer.container.on("pointerup", () => {
+      buttonRenderer.output.on("pointerup", () => {
         for (const a of actions) {
           inputStateTracker.hudInputState[a] = false;
         }
       });
-      buttonRenderer.container.on("pointerleave", () => {
+      buttonRenderer.output.on("pointerleave", () => {
         for (const a of actions) {
           inputStateTracker.hudInputState[a] = false;
         }
@@ -156,8 +156,8 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     this.#hudElements.mainButtonNest.x = screenSize.x - mainNextXFromRightEdge;
     this.#hudElements.mainButtonNest.y = screenSize.y - mainNextYFromBottom;
 
-    this.#hudElements.joystick.container.x = joystickX;
-    this.#hudElements.joystick.container.y = screenSize.y - joystickYFromBottom;
+    this.#hudElements.joystick.output.x = joystickX;
+    this.#hudElements.joystick.output.y = screenSize.y - joystickYFromBottom;
   }
 
   tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>): void {
@@ -174,7 +174,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     this.#hudElements.joystick.tick();
   }
 
-  get container() {
+  get output() {
     return this.#container;
   }
 

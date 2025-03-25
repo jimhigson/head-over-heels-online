@@ -65,7 +65,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
         case "skiHead":
           // directional, style, no anim
           return {
-            container: createSprite({
+            output: createSprite({
               textureId: `${config.which}.${config.style}.${facingXy4}`,
               filter,
             }),
@@ -74,7 +74,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
         case "elephantHead":
           // directional, no style, no anim
           return {
-            container: createSprite({
+            output: createSprite({
               textureId: `elephant.${facingXy4}`,
               filter,
             }),
@@ -84,7 +84,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
           // directional, anim:
           const animate = activated && !busyLickingDoughnutsOffFace;
           return {
-            container:
+            output:
               animate ?
                 createSprite({
                   animationId: `${config.which}.${facingXy4}`,
@@ -100,7 +100,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
         case "cyberman":
           // directional, animated, stacked (bubbles):
           return {
-            container:
+            output:
               state.activated || state.busyLickingDoughnutsOffFace ?
                 createStackedSprites({
                   top: {
@@ -121,7 +121,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
         case "monkey":
           // directional, not animated, stacked (base)
           return {
-            container: createStackedSprites({
+            output: createStackedSprites({
               top: `${config.which}.${facingXy4}`,
               filter,
             }),
@@ -163,7 +163,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
           const animate = activated && !busyLickingDoughnutsOffFace;
           // not directional, animated
           return {
-            container: createSprite(
+            output: createSprite(
               animate ?
                 {
                   animationId: config.which,
@@ -178,14 +178,14 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
           // not directional, not animated
           return {
             filter,
-            container: createSprite({ textureId: config.which, filter }),
+            output: createSprite({ textureId: config.which, filter }),
             renderProps,
           };
 
         case "bubbleRobot":
           //not directional, animated, stacked (base):
           return {
-            container: createStackedSprites({
+            output: createStackedSprites({
               top: itemRidingOnBubblesSpritesOptions,
               filter,
             }),
@@ -195,7 +195,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
         case "emperorsGuardian":
           //not directional, stacked (bubbles):
           return {
-            container: createStackedSprites({
+            output: createStackedSprites({
               top: `ball`,
               bottom: itemRidingOnBubblesSpritesOptions,
               filter,
@@ -205,7 +205,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
 
         case "emperor":
           return {
-            container: createSprite({
+            output: createSprite({
               animationId: "bubbles.cold",
               filter,
             }),
