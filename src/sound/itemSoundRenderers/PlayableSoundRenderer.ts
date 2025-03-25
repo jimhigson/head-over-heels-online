@@ -36,7 +36,7 @@ export class PlayableSoundRenderer<
       RoomItemId
     >,
   ) {
-    this.#walkingChannel.gain.value = 0.9;
+    this.#walkingChannel.gain.value = 2;
     this.#walkingChannel.connect(this.output);
     this.#carryingChannel.gain.value = 1.2;
     this.#carryingChannel.connect(this.output);

@@ -5,6 +5,7 @@ import type {
   ItemSoundRendererConstructableClass,
 } from "./ItemSoundRenderer";
 import { BubblesSoundRenderer } from "./itemSoundRenderers/BubblesSoundRenderer";
+import { CharlesSoundRenderer } from "./itemSoundRenderers/CharlesSoundRenderer";
 import { ConveyorSoundRenderer } from "./itemSoundRenderers/ConveyorSoundRenderer";
 import { LiftSoundRenderer } from "./itemSoundRenderers/LiftSoundRenderer";
 import { MonsterSoundRenderer } from "./itemSoundRenderers/MonsterSoundRenderer";
@@ -28,6 +29,7 @@ const rendererClasses: {
   conveyor: ConveyorSoundRenderer,
   spring: SpringSoundRenderer,
   portableBlock: PortableBlockSoundRenderer,
+  charles: CharlesSoundRenderer,
 };
 
 export const createSoundRenderer = <

@@ -1,9 +1,9 @@
-import { loadedSounds } from "../soundsLoader";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { isPlayableItem } from "../../game/physics/itemPredicates";
 import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 
 export class TeleporterSoundRenderer<
   RoomId extends string,
@@ -45,14 +45,11 @@ export class TeleporterSoundRenderer<
     );
 
     if (stoodOnByPlayer && !currentlyStoodOnByPlayer) {
-      const sound = loadedSounds().teleportWarningSiren;
-
-      this.#sirenLoop = audioCtx.createBufferSource();
-      this.#sirenLoop.buffer = sound;
-      this.#sirenLoop.loop = true;
-
-      this.#sirenLoop.connect(this.#sirenChannel);
-      this.#sirenLoop.start();
+      this.#sirenLoop = createAudioNode({
+        soundId: "teleportWarningSiren",
+        loop: true,
+        connectTo: this.#sirenChannel,
+      });
     }
     if (!stoodOnByPlayer && currentlyStoodOnByPlayer) {
       this.#sirenLoop?.stop();

@@ -6,6 +6,7 @@ import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { Xyz } from "../../utils/vectors/vectors";
 import { originXyz, xyzEqual } from "../../utils/vectors/vectors";
 import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 
 const turnaroundSounds: { [M in MonsterWhich]?: SoundId } = {
   cyberman: "jetpackTurnaround",
@@ -79,20 +80,13 @@ export class MonsterSoundRenderer<
 
     if (online !== currentOnline && ambientSounds[which] !== undefined) {
       if (online) {
-        const ambientLoop = loadedSounds()[ambientSounds[which]];
-        this.#ambientLoop = audioCtx.createBufferSource();
-
-        this.#ambientLoop.buffer = ambientLoop;
-        this.#ambientLoop.loop = true;
-
-        this.#ambientLoop.connect(this.#ambientChannel);
-
-        // randomise the start time - otherwise if there are multiple monsters, their sounds
-        // will be in sync and it will sound like one monster
-        this.#ambientLoop.start(ambientLoop.duration * Math.random());
-
-        // also slightly randomise the playback rate:
-        this.#ambientLoop.playbackRate.value = 1 + Math.random() * 0.05;
+        this.#ambientLoop = createAudioNode({
+          soundId: ambientSounds[which],
+          playbackRate: 1,
+          varyPlaybackRate: true,
+          loop: true,
+          connectTo: this.#ambientChannel,
+        });
       } else {
         this.#ambientLoop?.stop();
         this.#ambientLoop = null;

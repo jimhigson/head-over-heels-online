@@ -1,10 +1,10 @@
-import { loadedSounds } from "../soundsLoader";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { SwitchSetting } from "../../model/ItemInPlay";
 import { store } from "../../store/store";
 import { selectAtPath } from "../../store/selectors";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 
 export class SwitchSoundRenderer<
   RoomId extends string,
@@ -48,14 +48,12 @@ export class SwitchSoundRenderer<
     const currentSetting = this.#currentRenderProps?.setting;
 
     if (currentSetting !== undefined && currentSetting !== setting) {
-      const sound = loadedSounds().switchClick;
-
-      const source = audioCtx.createBufferSource();
-      source.buffer = sound;
-      source.playbackRate.value = setting === "right" ? 0.95 : 1.05;
-
-      source.connect(this.#channelNode);
-      source.start();
+      console.log("playing", currentSetting, setting);
+      createAudioNode({
+        soundId: "switchClick",
+        playbackRate: setting === "right" ? 0.95 : 1.05,
+        connectTo: this.#channelNode,
+      });
     }
     this.#currentRenderProps = { setting };
   }

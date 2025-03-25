@@ -2,7 +2,7 @@ import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { isStoodOn } from "../../model/StoodOnBy";
-import { loadedSounds } from "../soundsLoader";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 
 export class SpringSoundRenderer<
   RoomId extends string,
@@ -33,13 +33,10 @@ export class SpringSoundRenderer<
     const stoodOn = isStoodOn(stoodOnBy);
 
     if (currentlyStoodOn && !stoodOn) {
-      const sound = loadedSounds().springBoing;
-
-      const source = audioCtx.createBufferSource();
-      source.buffer = sound;
-
-      source.connect(this.output);
-      source.start();
+      createAudioNode({
+        soundId: "springBoing",
+        connectTo: this.output,
+      });
     }
 
     this.#currentRenderProps = { stoodOn };

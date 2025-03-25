@@ -1,8 +1,8 @@
-import { loadedSounds } from "../soundsLoader";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { isStoodOn } from "../../model/StoodOnBy";
+import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
 const playbackRate = 2;
 
@@ -13,9 +13,12 @@ export class ConveyorSoundRenderer<
 {
   public readonly output: GainNode = audioCtx.createGain();
 
-  // add the walking buffer sources to here to play them
-  #currentSound: AudioBufferSourceNode | null = null;
-  #currentRenderProps: { stoodOn: boolean } | undefined = undefined;
+  #bracketedSound = createBracketedSound({
+    start: { soundId: "conveyorStart", playbackRate },
+    loop: { soundId: "conveyorLoop", playbackRate },
+    stop: { soundId: "conveyorEnd", playbackRate },
+    connectTo: this.output,
+  });
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<
@@ -33,53 +36,13 @@ export class ConveyorSoundRenderer<
         },
       },
     } = this;
-    const currentlyStoodOn = this.#currentRenderProps?.stoodOn ?? false;
     const stoodOn = isStoodOn(stoodOnBy);
 
-    if (stoodOn !== currentlyStoodOn) {
-      if (stoodOn) {
-        const startNode = audioCtx.createBufferSource();
-        startNode.buffer = loadedSounds().conveyorStart;
-        startNode.playbackRate.value = playbackRate;
-
-        startNode.connect(this.output);
-        startNode.start();
-        this.#currentSound = startNode;
-
-        startNode.onended = () => {
-          const loopNode = audioCtx.createBufferSource();
-          loopNode.buffer = loadedSounds().conveyorLoop;
-          loopNode.loop = true;
-          loopNode.playbackRate.value = playbackRate;
-
-          loopNode.connect(this.output);
-          loopNode.start();
-          this.#currentSound = loopNode;
-        };
-      } else {
-        if (this.#currentSound !== null) {
-          this.#currentSound.stop();
-          this.#currentSound.onended = null;
-        }
-
-        const endNode = audioCtx.createBufferSource();
-        endNode.buffer = loadedSounds().conveyorEnd;
-        endNode.playbackRate.value = playbackRate;
-
-        endNode.connect(this.output);
-        endNode.start();
-        this.#currentSound = endNode;
-      }
-    }
-
-    this.#currentRenderProps = { stoodOn };
+    this.#bracketedSound(stoodOn);
   }
 
   destroy(): void {
     // conveyors can be destroyed - ie, #bookworld2
-    if (this.#currentSound !== null) {
-      this.#currentSound.stop();
-      this.#currentSound.onended = null;
-    }
+    this.#bracketedSound(false);
   }
 }
