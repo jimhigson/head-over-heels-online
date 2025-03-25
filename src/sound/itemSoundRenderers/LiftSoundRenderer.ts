@@ -1,7 +1,7 @@
-import { loadedSounds } from "../soundsLoader";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 
 const dopplerSensitivity = 3;
 
@@ -10,7 +10,11 @@ export class LiftSoundRenderer<RoomId extends string, RoomItemId extends string>
 {
   public readonly output: GainNode = audioCtx.createGain();
 
-  #channelSource: AudioBufferSourceNode = audioCtx.createBufferSource();
+  #channelSource: AudioBufferSourceNode = createAudioNode({
+    soundId: "helicopter",
+    loop: true,
+    connectTo: this.output,
+  });
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<
@@ -19,13 +23,6 @@ export class LiftSoundRenderer<RoomId extends string, RoomItemId extends string>
       RoomItemId
     >,
   ) {
-    const sound = loadedSounds().helicopter;
-    this.#channelSource = audioCtx.createBufferSource();
-    this.#channelSource.buffer = sound;
-    this.#channelSource.loop = true;
-
-    this.#channelSource.connect(this.output);
-    this.#channelSource.start();
     // this sound is often in the background for a long time so make it not too loud:
     this.output.gain.value = 0.7;
   }

@@ -1,7 +1,7 @@
-import { loadedSounds } from "../soundsLoader";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 
 export class BubblesSoundRenderer<
   RoomId extends string,
@@ -9,8 +9,6 @@ export class BubblesSoundRenderer<
 > implements ItemSoundRenderer<"bubbles", RoomId, RoomItemId>
 {
   public readonly output: GainNode = audioCtx.createGain();
-
-  #channelSource: AudioBufferSourceNode = audioCtx.createBufferSource();
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<
@@ -29,12 +27,10 @@ export class BubblesSoundRenderer<
       // for fish needs to be: "seaShanty"
 
       if (was.gives !== "scroll") {
-        const sound = loadedSounds().bonus;
-        this.#channelSource = audioCtx.createBufferSource();
-        this.#channelSource.buffer = sound;
-
-        this.#channelSource.connect(this.output);
-        this.#channelSource.start();
+        createAudioNode({
+          soundId: "bonus",
+          connectTo: this.output,
+        });
       }
     }
   }
