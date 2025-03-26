@@ -1,1 +1,11 @@
-[{ "op": "replace", "path": "/color/hue", "value": "cyan" }]
+[
+  { "op": "replace", "path": "/items/wall@4,0,0/position/x", "value": 7 },
+  { "op": "replace", "path": "/items/wall@4,0,0/config/times/x", "value": 5 },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,0,0:Z1XoF0v/config/times/x",
+    "value": 5
+  },
+  { "op": "replace", "path": "/items/door@2,0,1/position/x", "value": 5 },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+]
