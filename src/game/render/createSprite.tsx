@@ -16,7 +16,7 @@ import { originalGameFrameDuration } from "../../originalGame";
 import { type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projectToScreen";
 
-type AnimatedCreateSpriteOptions = {
+export type AnimatedCreateSpriteOptions = {
   // animated
   anchor?: PointData;
   pivot?: PointData;
@@ -38,6 +38,10 @@ type AnimatedCreateSpriteOptions = {
   playOnce?: "and-destroy" | "and-stop";
   times?: Partial<Xyz>;
   label?: string;
+
+  /** if the game is paused, nothing should animate - this will automatically create just
+      a sprite with the first frame of the animation */
+  paused?: boolean;
 };
 
 export type CreateSpriteOptions =
@@ -159,8 +163,10 @@ function createAnimatedSprite({
   animationId,
   reverse,
   playOnce,
+  paused,
 }: AnimatedCreateSpriteOptions) {
-  const frames = loadedSpriteSheet().animations[animationId];
+  const animationFrames = loadedSpriteSheet().animations[animationId];
+  const frames = paused ? [animationFrames[0]] : animationFrames;
 
   const animatedSpriteFrames: AnimatedSpriteFrames = frames.map((frame) => ({
     texture: frame,

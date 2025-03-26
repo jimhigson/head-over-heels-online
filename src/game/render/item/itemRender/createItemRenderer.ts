@@ -112,7 +112,11 @@ export const createItemRenderer = <
     graphics = new ItemPositionRenderer(itemRenderContext, compositeRenderer);
   }
 
-  const soundRenderer = createSoundRenderer(itemRenderContext);
+  const soundRenderer =
+    itemRenderContext.paused ?
+      // no items are allowed to make sound while paused:
+      undefined
+    : createSoundRenderer(itemRenderContext);
   const sound =
     soundRenderer === undefined ? undefined : (
       new SoundPanRenderer(itemRenderContext, soundRenderer)

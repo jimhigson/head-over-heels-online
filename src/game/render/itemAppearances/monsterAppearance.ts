@@ -21,6 +21,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
   renderContext: {
     item: { config, state },
     room,
+    paused,
   },
   currentlyRenderedProps,
 }) => {
@@ -107,7 +108,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
                     textureId: `${config.which}.${facingXy4}`,
                     filter: filter || mainPaletteSwapFilter(room),
                   },
-                  bottom: itemRidingOnBubblesSpritesOptions,
+                  bottom: { ...itemRidingOnBubblesSpritesOptions, paused },
                 })
                 // charging on a toaster
               : createSprite({
@@ -186,7 +187,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
           //not directional, animated, stacked (base):
           return {
             output: createStackedSprites({
-              top: itemRidingOnBubblesSpritesOptions,
+              top: { ...itemRidingOnBubblesSpritesOptions, paused },
               filter,
             }),
             renderProps,
@@ -197,7 +198,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
           return {
             output: createStackedSprites({
               top: `ball`,
-              bottom: itemRidingOnBubblesSpritesOptions,
+              bottom: { ...itemRidingOnBubblesSpritesOptions, paused },
               filter,
             }),
             renderProps,
@@ -208,6 +209,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
             output: createSprite({
               animationId: "bubbles.cold",
               filter,
+              paused,
             }),
             renderProps,
           };
