@@ -26,10 +26,10 @@ import {
   subXyz,
   scaleXyz,
 } from "../../utils/vectors/vectors";
-import type { ItemTouchEvent } from "./handleTouch/ItemTouchEvent";
 import { maxPushRecursionDepth } from "./mechanicsConstants";
 import { roomItemsIterable, type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
+import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 
 const log = 0;
 
@@ -57,7 +57,7 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
 
   recursionDepth?: number;
 
-  onTouch?: (e: ItemTouchEvent<RoomId, RoomItemId>) => void;
+  onTouch?: typeof handleItemsTouchingItems;
 };
 
 /**
@@ -101,8 +101,16 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   // strategy is to move to the target position, then back off as needed
   subjectItem.state.position = addXyz(originalPosition, posDelta);
   if (isFreeItem(subjectItem)) {
+    const { actedOnAt } = subjectItem.state;
     // it isn't clear why subjectItem would ever *not* be a freeItem
-    subjectItem.state.actedOnAt = room.roomTime;
+    if (actedOnAt.roomTime === room.roomTime) {
+      if (pusher) {
+        actedOnAt.by.push(pusher.id);
+      }
+    } else {
+      actedOnAt.by = pusher ? [pusher.id] : [];
+    }
+    actedOnAt.roomTime = room.roomTime;
   }
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(

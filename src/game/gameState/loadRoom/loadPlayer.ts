@@ -38,7 +38,6 @@ export const defaultPlayerState = () =>
       gravity: originXyz,
       movingFloor: originXyz,
     },
-    actedOnAt: neverTime,
   }) satisfies Partial<PlayableState<string>>;
 
 export const loadPlayer = <RoomId extends string, RoomItemId extends string>(

@@ -2,9 +2,32 @@
 
 [see work in progress](https://blockstack.ing/)
 
+Differences from the original
+=============================
+Frame Rate
+----------
+
+The original game ran at 12fps, which doesn't work for modern gamers. The remake's frame rate is unbounded, and it runs at 120fps or more on modern hardware (limited only by the monitor refresh rate). However, high frame rates mean a few compromises:
+
+* The game can render sprite *between* the squares on the pixel grid. To make this not too obvious, when items stop moving they get snapped to the grid.
+
 Shadows
-=======
+-------
 [Amiga extra halfbright](https://amiga.lychesis.net/articles/ExtraHalfBright.html)
+
+As well as looking good, they actually make the rooms easier, since you can see where you are.
+
+Room changes
+------------
+
+Quite a lot of rooms have been changed while keeping the original gameplay intact.
+
+* This is to remove unfair deaths (death possible when entering room for no fault of the player)
+
+Invincibility
+-------------
+
+To avoid infinite death loops (ie, entering a room and dying repeatedly because there's a monster in the doorway), the player gets a few seconds of invincibility after dying. This is shown by a flash in the player sprite.
 
 Credits
 

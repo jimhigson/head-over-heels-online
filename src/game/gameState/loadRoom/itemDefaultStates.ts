@@ -6,6 +6,8 @@ import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { freeItemTypes, slidingItemTypes } from "../../physics/itemPredicates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
+import { emptyArray } from "../../../utils/empty";
+import { neverTime } from "../../../utils/veryClose";
 
 export const defaultBaseState = <RoomItemId extends string>() =>
   ({
@@ -22,6 +24,10 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
       movingFloor: originXyz,
     },
     latentMovement: [],
+    actedOnAt: {
+      roomTime: neverTime,
+      by: emptyArray,
+    },
   }) satisfies Partial<FreeItemState<RoomItemId>>;
 
 export const initialState = (jsonItem: JsonItemUnion) => {
@@ -48,6 +54,10 @@ export const initialState = (jsonItem: JsonItemUnion) => {
           : {}),
         },
         latentMovement: [],
+        actedOnAt: {
+          roomTime: neverTime,
+          by: emptyArray,
+        },
       }
     : {}),
     ...(jsonItem.type === "monster" ?

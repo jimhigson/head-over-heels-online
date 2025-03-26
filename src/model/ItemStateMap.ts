@@ -36,7 +36,10 @@ export type FreeItemState<RoomItemId extends string> = {
   };
 
   /** the roomTime when this item last had a force applied to it - used for snapping to the pixel grid */
-  actedOnAt: number;
+  actedOnAt: {
+    roomTime: number;
+    by: Array<RoomItemId>;
+  };
 };
 
 type SlidingItemState<RoomItemId extends string> = FreeItemState<RoomItemId> & {
@@ -199,7 +202,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   spring: PortableItemState<RoomItemId>;
   portableBlock: PortableItemState<RoomItemId>;
   sceneryPlayer: PortableItemState<RoomItemId>;
-  pushableBlock: FreeItemState<RoomItemId>;
+  pushableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
   movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomItemId>;
   slidingDeadly: SlidingItemState<RoomItemId>;

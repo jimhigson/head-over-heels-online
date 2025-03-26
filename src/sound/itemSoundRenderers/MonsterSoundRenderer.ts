@@ -1,18 +1,22 @@
 import type { SoundId } from "../soundsLoader";
-import { loadedSounds } from "../soundsLoader";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { Xyz } from "../../utils/vectors/vectors";
 import { originXyz, xyzEqual } from "../../utils/vectors/vectors";
 import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
+import type { CreateAudioNodeWithGainOptionsObject } from "../soundUtils/createAudioNode";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 
-const turnaroundSounds: { [M in MonsterWhich]?: SoundId } = {
-  cyberman: "jetpackTurnaround",
+const turnaroundSounds: {
+  [M in MonsterWhich]?:
+    | Omit<CreateAudioNodeWithGainOptionsObject, "connectTo" | "loop">
+    | SoundId;
+} = {
+  cyberman: { soundId: "jetpackTurnaround", gain: 1.2 },
   skiHead: "softBump",
   turtle: "softBump",
-  dalek: "mojoTurn",
+  dalek: { soundId: "mojoTurn", gain: 0.1 },
 };
 const ambientSounds: { [M in MonsterWhich]?: SoundId } = {
   cyberman: "jetpackLoop",
@@ -71,11 +75,7 @@ export class MonsterSoundRenderer<
       !xyzEqual(facing, currentFacing) &&
       turnaroundSounds[which] !== undefined
     ) {
-      const sound = loadedSounds()[turnaroundSounds[which]];
-      const source = audioCtx.createBufferSource();
-      source.buffer = sound;
-      source.connect(this.#bumpChannel);
-      source.start();
+      createAudioNode(turnaroundSounds[which]).connect(this.#bumpChannel);
     }
 
     if (online !== currentOnline && ambientSounds[which] !== undefined) {

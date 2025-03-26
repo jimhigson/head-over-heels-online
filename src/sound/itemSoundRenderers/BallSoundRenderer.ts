@@ -1,24 +1,21 @@
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import { createAudioNode } from "../soundUtils/createAudioNode";
+import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
-const dopplerSensitivity = 3;
-
-export class LiftSoundRenderer<RoomId extends string, RoomItemId extends string>
-  implements ItemSoundRenderer<"lift", RoomId, RoomItemId>
+export class BallSoundRenderer<RoomId extends string, RoomItemId extends string>
+  implements ItemSoundRenderer<"ball", RoomId, RoomItemId>
 {
   public readonly output: GainNode = audioCtx.createGain();
 
-  #channelSource = createAudioNode({
-    soundId: "helicopter",
-    loop: true,
+  #brackets = createBracketedSound({
+    loop: { soundId: "rollingBallLoop", playbackRate: 0.5 },
     connectTo: this.output,
-  } as const);
+  });
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<
-      "lift",
+      "ball",
       RoomId,
       RoomItemId
     >,
@@ -32,18 +29,17 @@ export class LiftSoundRenderer<RoomId extends string, RoomItemId extends string>
       renderContext: {
         item: {
           state: {
-            vels: {
-              lift: { z: liftZVelocity },
-            },
+            vels: { sliding },
+            standingOnItemId,
           },
         },
       },
     } = this;
 
-    this.#channelSource.playbackRate.value = Math.max(
-      0.5,
-      1 + dopplerSensitivity * liftZVelocity,
-    );
+    const rolling =
+      (sliding.x !== 0 || sliding.y !== 0) && standingOnItemId !== null;
+
+    this.#brackets(rolling);
   }
 
   destroy(): void {}

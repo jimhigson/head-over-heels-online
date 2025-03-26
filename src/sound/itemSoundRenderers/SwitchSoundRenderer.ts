@@ -48,7 +48,6 @@ export class SwitchSoundRenderer<
     const currentSetting = this.#currentRenderProps?.setting;
 
     if (currentSetting !== undefined && currentSetting !== setting) {
-      console.log("playing", currentSetting, setting);
       createAudioNode({
         soundId: "switchClick",
         playbackRate: setting === "right" ? 0.95 : 1.05,

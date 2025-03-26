@@ -64,7 +64,7 @@ export const handleItemsTouchingItems = <
   }
 
   if (touchedItemIsType(e, "joystick")) {
-    handleItemTouchingJoystick(e);
+    handleItemTouchingJoystick(e, handleItemsTouchingItems);
   }
 
   if (e.touchedItem.state.disappear) {

@@ -22,6 +22,7 @@ import drumSoundUrl from "../../sounds/sources/wood-bongo-balloon-pop-perc-sound
 import servoStartUrl from "../../sounds/servosStart.mp3?url";
 import servoLoopUrl from "../../sounds/servosLoop.mp3?url";
 import servoStoptUrl from "../../sounds/servosStop.mp3?url";
+import rollingBallLoopSoundUrl from "../../sounds/rollingBallLoop.mp3?url";
 
 //import carrySoundUrl from "../../sounds/short-beep-tone-shorter-and-lower-47916.mp3";
 import { importOnce } from "../utils/importOnce";
@@ -63,6 +64,7 @@ const importSoundsOnce = importOnce(async () => {
     servoStart: await loadAndDecode(servoStartUrl),
     servoLoop: await loadAndDecode(servoLoopUrl),
     servoStop: await loadAndDecode(servoStoptUrl),
+    rollingBallLoop: await loadAndDecode(rollingBallLoopSoundUrl),
   };
 });
 
