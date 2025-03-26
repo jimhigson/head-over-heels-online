@@ -35,10 +35,15 @@ export type FreeItemState<RoomItemId extends string> = {
     movingFloor: Xyz;
   };
 
-  /** the roomTime when this item last had a force applied to it - used for snapping to the pixel grid */
+  /** the roomTime when this item last had a force applied to it, and who did the pushing/acting */
   actedOnAt: {
     roomTime: number;
-    by: Array<RoomItemId>;
+    by: Record<RoomItemId, true>;
+  };
+  /** the roomTime when this item last collided into something, and who was the collider? */
+  collidedWith: {
+    roomTime: number;
+    by: Record<RoomItemId, true>;
   };
 };
 

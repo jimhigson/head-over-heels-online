@@ -131,14 +131,33 @@ export const xyEqual = ({ x: ax, y: ay }: Xy, { x: bx, y: by }: Xy) => {
 };
 
 /**
- * because of floating point error, after processing mtv it is possible to get
- * values that should be integers but are off by a tiny amount. To correct, we consider
- * anything that is within 1/1000 of a pixel to be exactly on that pixel
+ * for floating point error where numbers should be integers but aren't quite
+ *  - for example the number 99.99999999999999 coming out of the mtv/collisions
+ * algorithm when it should be 100
  */
-const isIntegerOrCloseTo = (n: number) => Math.abs(n - Math.round(n)) < 0.001;
-/* is the xyz in integer position (or very close to) */
-export const isIntegerXyzOrCloseTo = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>) =>
-  isIntegerOrCloseTo(x) && isIntegerOrCloseTo(y) && isIntegerOrCloseTo(z);
+export const xyzSnapIfCloseToIntegers = (input: Xyz): Xyz => {
+  const { x } = input;
+  const xNearest = Math.round(x);
+  const xNeedsCorrect = !Number.isInteger(x) && veryClose(x, xNearest);
+
+  const { y } = input;
+  const yNearest = Math.round(y);
+  const yNeedsCorrect = !Number.isInteger(y) && veryClose(y, yNearest);
+
+  const { z } = input;
+  const zNearest = Math.round(z);
+  const zNeedsCorrect = !Number.isInteger(z) && veryClose(input.z, zNearest);
+
+  if (xNeedsCorrect || yNeedsCorrect || zNeedsCorrect) {
+    return {
+      x: xNeedsCorrect ? xNearest : x,
+      y: yNeedsCorrect ? yNearest : y,
+      z: zNeedsCorrect ? zNearest : z,
+    };
+  } else {
+    return input;
+  }
+};
 
 export const isExactIntegerXyz = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>) =>
   Number.isInteger(x) && Number.isInteger(y) && Number.isInteger(z);

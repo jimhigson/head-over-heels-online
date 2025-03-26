@@ -7,5 +7,89 @@
       "position": { "x": 4, "y": 5, "z": 0 },
       "type": "pickup"
     }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraMonster",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "back-forth",
+        "startDirection": "left",
+        "style": "starsAndStripes",
+        "which": "skiHead"
+      },
+      "isExtra": true,
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraMonster2",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "back-forth",
+        "startDirection": "towards",
+        "style": "starsAndStripes",
+        "which": "skiHead"
+      },
+      "isExtra": true,
+      "position": { "x": 5, "y": 5, "z": 0 },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraMonster3",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "back-forth",
+        "startDirection": "right",
+        "style": "greenAndPink",
+        "which": "skiHead"
+      },
+      "isExtra": true,
+      "position": { "x": 5, "y": 0, "z": 0 },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraMonster4",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "back-forth",
+        "startDirection": "away",
+        "style": "greenAndPink",
+        "which": "skiHead"
+      },
+      "isExtra": true,
+      "position": { "x": 5, "y": 1, "z": 0 },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBall",
+    "value": {
+      "config": {},
+      "isExtra": true,
+      "position": { "x": 2, "y": 0, "z": 0 },
+      "type": "ball"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBall2",
+    "value": {
+      "config": {},
+      "isExtra": true,
+      "position": { "x": 5, "y": 2, "z": 0 },
+      "type": "ball"
+    }
   }
 ]

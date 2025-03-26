@@ -1,4 +1,3 @@
-import type { EmptyObject } from "type-fest";
 import {
   blockXyzToFineXyz,
   projectWorldXyzToScreenX,
@@ -7,6 +6,7 @@ import type { ItemInPlayType } from "../model/ItemInPlay";
 import { audioCtx } from "./audioCtx";
 import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "./ItemSoundRenderer";
+import type { ItemTickContext } from "../game/render/Renderer";
 
 export class SoundPanRenderer<
   T extends ItemInPlayType,
@@ -42,7 +42,7 @@ export class SoundPanRenderer<
     );
   }
 
-  tick(tickContext: EmptyObject) {
+  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
     this.childRenderer.tick(tickContext);
 
     const itemPosition = this.renderContext.item.state.position;

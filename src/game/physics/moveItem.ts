@@ -76,6 +76,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   onTouch,
 }: MoveItemOptions<RoomId, RoomItemId>) => {
   if (xyzEqual(posDelta, originXyz)) {
+    // applying zero movement - do nothing
     return;
   }
 
@@ -105,12 +106,15 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     // it isn't clear why subjectItem would ever *not* be a freeItem
     if (actedOnAt.roomTime === room.roomTime) {
       if (pusher) {
-        actedOnAt.by.push(pusher.id);
+        actedOnAt.by[pusher.id] = true;
       }
     } else {
-      actedOnAt.by = pusher ? [pusher.id] : [];
+      actedOnAt.by = (pusher ? { [pusher.id]: true } : {}) as Record<
+        RoomItemId,
+        true
+      >;
+      actedOnAt.roomTime = room.roomTime;
     }
-    actedOnAt.roomTime = room.roomTime;
   }
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(
@@ -135,6 +139,23 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       // it is possible there is no longer a collision due to previous sliding - we have
       // been protected from this collision by previous collisions so it no longer applies
       continue;
+    }
+
+    if (isFreeItem(subjectItem)) {
+      // it isn't clear why a non-free item would be colliding with anything
+      const { collidedWith } = subjectItem.state;
+      // record the collision
+      if (collidedWith.roomTime === room.roomTime) {
+        if (pusher) {
+          collidedWith.by[collidedWithItem.id] = true;
+        }
+      } else {
+        collidedWith.by = { [collidedWithItem.id]: true } as Record<
+          RoomItemId,
+          true
+        >;
+        collidedWith.roomTime = room.roomTime;
+      }
     }
 
     const collisionIsWithJoystick = isJoystick(collidedWithItem);
@@ -209,7 +230,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         backingOffMtv,
       );
 
-    // push falling (pushable) items that we intersect:
+    // push any pushable items that we intersect:
     if (
       isPushable(subjectItem, collidedWithItem, forceful) &&
       collidedWithItem !== pusher
@@ -260,7 +281,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       }
 
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
-      // go more slowly, since the pushee
+      // go more slowly, since the pushee will move a bit less than the subject originally wanted to
       subjectItem.state.position = addXyz(
         subjectItem.state.position,
         mtv(

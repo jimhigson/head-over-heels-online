@@ -1,6 +1,5 @@
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { ItemSoundRenderer } from "../../../../sound/ItemSoundRenderer";
-import { emptyObject } from "../../../../utils/empty";
 import type {
   ItemRenderContext,
   ItemTickContext,
@@ -37,7 +36,7 @@ export class ItemSoundAndGraphicsRenderer<
 
   tick(tickContext: ItemTickContext<RoomId, RoomItemId>): void {
     this.componentRenderers.graphics?.tick(tickContext);
-    this.componentRenderers.sound?.tick(emptyObject);
+    this.componentRenderers.sound?.tick(tickContext);
   }
 
   destroy() {
