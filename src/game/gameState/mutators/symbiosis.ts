@@ -87,7 +87,10 @@ export const combinePlayablesInSymbiosis = <
       teleporting: null,
       autoWalk: false,
       facing: heels.state.facing,
-      actedOnAt: Math.max(heels.state.actedOnAt, heels.state.actedOnAt),
+      actedOnAt:
+        heels.state.actedOnAt.roomTime > head.state.actedOnAt.roomTime ?
+          heels.state.actedOnAt
+        : head.state.actedOnAt,
       head: {
         ...pick(
           head.state,

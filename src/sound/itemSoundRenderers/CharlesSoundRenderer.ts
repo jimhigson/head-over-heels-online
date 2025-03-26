@@ -2,6 +2,7 @@ import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
+import { isJoystick } from "../../game/physics/itemPredicates";
 
 export class CharlesSoundRenderer<
   RoomId extends string,
@@ -35,14 +36,18 @@ export class CharlesSoundRenderer<
     const {
       renderContext: {
         item: {
-          state: { latentMovement },
+          state: {
+            actedOnAt: { roomTime: roomTimeActedOn, by },
+          },
         },
+        room: { roomTime, items },
       },
     } = this;
 
-    const moving = latentMovement.length > 0;
+    const controlledByJoystick =
+      roomTime === roomTimeActedOn && by.some((id) => isJoystick(items[id]));
 
-    this.#servoBracketed(moving);
+    this.#servoBracketed(controlledByJoystick);
   }
 
   destroy(): void {}

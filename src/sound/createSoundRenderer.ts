@@ -4,6 +4,7 @@ import type {
   ItemSoundRenderer,
   ItemSoundRendererConstructableClass,
 } from "./ItemSoundRenderer";
+import { BallSoundRenderer } from "./itemSoundRenderers/BallSoundRenderer";
 import { BubblesSoundRenderer } from "./itemSoundRenderers/BubblesSoundRenderer";
 import { CharlesSoundRenderer } from "./itemSoundRenderers/CharlesSoundRenderer";
 import { ConveyorSoundRenderer } from "./itemSoundRenderers/ConveyorSoundRenderer";
@@ -30,6 +31,7 @@ const rendererClasses: {
   spring: SpringSoundRenderer,
   portableBlock: PortableBlockSoundRenderer,
   charles: CharlesSoundRenderer,
+  ball: BallSoundRenderer,
 };
 
 export const createSoundRenderer = <

@@ -3,22 +3,22 @@ import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
 import { unitVector, scaleXyz } from "../../../utils/vectors/vectors";
-import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
+import { moveItem } from "../moveItem";
+import type { handleItemsTouchingItems } from "./handleItemsTouchingItems";
 
 export const handleItemTouchingJoystick = <
   RoomId extends string,
   RoomItemId extends string,
->({
-  movingItem,
-  room,
-  touchedItem: joystickItem,
-  deltaMS,
-}: ItemTouchEventByItemType<
-  RoomId,
-  RoomItemId,
-  ItemInPlayType,
-  "joystick"
->) => {
+>(
+  {
+    movingItem,
+    room,
+    touchedItem: joystickItem,
+    deltaMS,
+    gameState,
+  }: ItemTouchEventByItemType<RoomId, RoomItemId, ItemInPlayType, "joystick">,
+  onTouch: typeof handleItemsTouchingItems,
+) => {
   const {
     config: { controls },
     state: { position: joystickPosition },
@@ -50,6 +50,14 @@ export const handleItemTouchingJoystick = <
 
     // unlike the original, there is latency in controlling the charles - this
     // also avoids a circular dependency moveItem -> handleJoystick ->
-    assignLatentMovement(sillyOldFace, room, posDelta);
+    moveItem({
+      room,
+      subjectItem: sillyOldFace,
+      gameState,
+      pusher: joystickItem,
+      posDelta,
+      deltaMS,
+      onTouch,
+    });
   }
 };

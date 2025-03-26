@@ -53,7 +53,7 @@ const snapStationaryItemsToPixelGrid = <
   movedItems: Set<AnyItemInPlay>,
 ) => {
   for (const item of iterateRoomItems(room.items)) {
-    if (!isFreeItem(item) || room.roomTime === item.state.actedOnAt) {
+    if (!isFreeItem(item) || room.roomTime === item.state.actedOnAt.roomTime) {
       // was acted on in this tick - do not snap
       continue;
     }
@@ -145,6 +145,11 @@ export const _progressGameState = <
     return emptySet;
   }
 
+  // advance time before applying the mechanics of the game
+  // so item's acted on times will match the current game time in the
+  // renderers (renderers can check if items are acted on in the current frame)
+  advanceTime(gameState, room, deltaMS);
+
   // take a snapshot of item positions before any physics ticks so we
   // can check later what has moved. DOne per physics tick, not render-tick
   // because otherwise latent movement is double-applied
@@ -207,8 +212,6 @@ export const _progressGameState = <
   ) as MovedItems<RoomId, RoomItemId>;
   assignLatentMovementFromStandingOn(movedItems, room, startingPositions);
   snapStationaryItemsToPixelGrid(room, startingPositions, movedItems);
-
-  advanceTime(gameState, room, deltaMS);
 
   return movedItems;
 };

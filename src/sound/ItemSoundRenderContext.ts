@@ -7,6 +7,6 @@ export type ItemSoundRenderContext<
   RoomId extends string,
   RoomItemId extends string,
 > = {
-  item: ItemTypeUnion<T, string, string>;
+  item: ItemTypeUnion<T, RoomId, RoomItemId>;
   room: RoomState<RoomId, RoomItemId>;
 };
