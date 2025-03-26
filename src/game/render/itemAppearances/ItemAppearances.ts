@@ -33,6 +33,7 @@ import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { selectAtPath } from "../../../store/selectors";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
+import { emptyArray } from "../../../utils/empty";
 
 const blockTextureId = (
   isDark: boolean,
@@ -472,6 +473,7 @@ export const itemAppearances: {
       },
     },
     currentlyRenderedProps,
+    previousRendering,
   }) {
     const compressed = isStoodOn(stoodOnBy);
 
@@ -496,8 +498,20 @@ export const itemAppearances: {
         })
       : undefined;
 
-    return {
-      output:
+    const changeFilterOnExistingRendering =
+      previousRendering !== null &&
+      compressed === currentlyRenderedCompressed &&
+      highlighted !== currentlyRenderedProps?.highlighted;
+
+    let output: Container;
+
+    if (changeFilterOnExistingRendering) {
+      // only need to change the highlight - not the whole rendering. This is necessary
+      // to not stop the animation when heels jumps off the spring and it stops highlighting
+      previousRendering.filters = filter ?? emptyArray;
+      output = previousRendering;
+    } else {
+      output =
         !compressed && currentlyRenderedCompressed ?
           createSprite({
             animationId: "spring.bounce",
@@ -507,8 +521,11 @@ export const itemAppearances: {
         : createSprite({
             textureId: compressed ? "spring.compressed" : "spring.released",
             filter,
-          }),
+          });
+    }
 
+    return {
+      output,
       renderProps: { compressed, highlighted },
     };
   },
