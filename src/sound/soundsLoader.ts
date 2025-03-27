@@ -23,8 +23,9 @@ import servoStartUrl from "../../sounds/servosStart.mp3?url";
 import servoLoopUrl from "../../sounds/servosLoop.mp3?url";
 import servoStoptUrl from "../../sounds/servosStop.mp3?url";
 import rollingBallLoopSoundUrl from "../../sounds/rollingBallLoop.mp3?url";
+import stepStoolScrapingSoundUrl from "../../sounds/sources/machmech_mechanical-loop-heavy-scraping-metallic-sound-effect-239482373_nw_prev.m4a";
+import metalHitSoundUrl from "../../sounds/metalClang.mp3";
 
-//import carrySoundUrl from "../../sounds/short-beep-tone-shorter-and-lower-47916.mp3";
 import { importOnce } from "../utils/importOnce";
 import { audioCtx } from "./audioCtx";
 
@@ -65,6 +66,8 @@ const importSoundsOnce = importOnce(async () => {
     servoLoop: await loadAndDecode(servoLoopUrl),
     servoStop: await loadAndDecode(servoStoptUrl),
     rollingBallLoop: await loadAndDecode(rollingBallLoopSoundUrl),
+    stepStoolScraping: await loadAndDecode(stepStoolScrapingSoundUrl),
+    metalHit: await loadAndDecode(metalHitSoundUrl),
   };
 });
 

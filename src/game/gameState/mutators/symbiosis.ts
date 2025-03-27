@@ -36,6 +36,7 @@ export const uncombinePlayablesFromSymbiosis = <
       position: addXyz(headOverHeels.state.position, { z: blockSizePx.h }),
       switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
+      collidedWith: headOverHeels.state.collidedWith,
     },
   };
   const heels: PlayableItem<"heels", RoomId, RoomItemId> = {
@@ -53,6 +54,7 @@ export const uncombinePlayablesFromSymbiosis = <
       position: addXyz(headOverHeels.state.position),
       switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
+      collidedWith: headOverHeels.state.collidedWith,
     },
   };
 
@@ -91,6 +93,10 @@ export const combinePlayablesInSymbiosis = <
         heels.state.actedOnAt.roomTime > head.state.actedOnAt.roomTime ?
           heels.state.actedOnAt
         : head.state.actedOnAt,
+      collidedWith:
+        heels.state.collidedWith.roomTime > head.state.collidedWith.roomTime ?
+          heels.state.collidedWith
+        : head.state.collidedWith,
       head: {
         ...pick(
           head.state,

@@ -6,7 +6,7 @@ import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { freeItemTypes, slidingItemTypes } from "../../physics/itemPredicates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
-import { emptyArray } from "../../../utils/empty";
+import { emptyArray, emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/veryClose";
 
 export const defaultBaseState = <RoomItemId extends string>() =>
@@ -26,7 +26,11 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
     latentMovement: [],
     actedOnAt: {
       roomTime: neverTime,
-      by: emptyArray,
+      by: emptyObject as Record<RoomItemId, true>,
+    },
+    collidedWith: {
+      roomTime: neverTime,
+      by: emptyObject as Record<RoomItemId, true>,
     },
   }) satisfies Partial<FreeItemState<RoomItemId>>;
 
@@ -55,6 +59,10 @@ export const initialState = (jsonItem: JsonItemUnion) => {
         },
         latentMovement: [],
         actedOnAt: {
+          roomTime: neverTime,
+          by: emptyArray,
+        },
+        collidedWith: {
           roomTime: neverTime,
           by: emptyArray,
         },

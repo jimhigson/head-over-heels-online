@@ -5,7 +5,7 @@ export type BracketedSound = ReturnType<typeof createBracketedSound>;
 
 type CreateBracketedSoundOptions = {
   start?: Omit<CreateAudioNodeOptionsObject, "connectTo" | "loop">;
-  loop: Omit<CreateAudioNodeOptionsObject, "connectTo" | "loop">;
+  loop?: Omit<CreateAudioNodeOptionsObject, "connectTo" | "loop">;
   stop?: Omit<CreateAudioNodeOptionsObject, "connectTo" | "loop">;
   connectTo: AudioNode;
 };
@@ -27,10 +27,16 @@ export const createBracketedSound = ({
           currentSound?.stop();
           currentSound = createAudioNode({ ...start, connectTo });
 
-          currentSound.onended = () => {
-            currentSound = createAudioNode({ ...loop, connectTo, loop: true });
-          };
-        } else {
+          if (loop !== undefined) {
+            currentSound.onended = () => {
+              currentSound = createAudioNode({
+                ...loop,
+                connectTo,
+                loop: true,
+              });
+            };
+          }
+        } else if (loop !== undefined) {
           currentSound = createAudioNode({ ...loop, connectTo, loop: true });
         }
       } else {

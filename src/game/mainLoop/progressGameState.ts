@@ -12,11 +12,11 @@ import {
 } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { concat, objectValues } from "iter-tools";
 import { iterate } from "../../utils/iterate";
-import type { Xyz } from "../../utils/vectors/vectors";
 import {
   isExactIntegerXyz,
   roundXyz,
   xyzEqual,
+  xyzSnapIfCloseToIntegers,
 } from "../../utils/vectors/vectors";
 import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
 import type {
@@ -39,17 +39,35 @@ const itemHasExpired = <RoomId extends string, RoomItemId extends string>(
 ) => item.state.expires !== null && item.state.expires < room.roomTime;
 
 /**
- * snap all items that haven't moved to the pixel grid - sub-pixel locations are
- * only allowed while items are moving
+ * fix item positions where numbers should be integers but aren't quite
+ *  - for example the number 99.99999999999999 coming out of the mtv/collisions
+ * algorithm when it should be 100
  */
-
-const snapStationaryItemsToPixelGrid = <
+const correctFloatingPointErrorsInRoom = <
   RoomId extends string,
   RoomItemId extends string,
 >(
   room: RoomState<RoomId, RoomItemId>,
-  startingPositions: Record<string, Xyz>,
-  /** the items which are snapped will be added to this set */
+) => {
+  for (const item of iterateRoomItems(room.items)) {
+    const originalPosition = item.state.position;
+    item.state.position = xyzSnapIfCloseToIntegers(originalPosition);
+  }
+};
+
+/**
+ * snap all items that haven't been acted on the pixel grid - sub-pixel
+ * locations are only allowed while items are moving
+ */
+const snapInactiveItemsToPixelGrid = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  room: RoomState<RoomId, RoomItemId>,
+  /**
+   * the items we already know moved - any that this function snaps
+   * will also be added to the set
+   */
   movedItems: Set<AnyItemInPlay>,
 ) => {
   for (const item of iterateRoomItems(room.items)) {
@@ -196,10 +214,18 @@ export const _progressGameState = <
       // item was removed from the room (eg, was picked up by heels)
       continue;
     }
-    tickItem(item, room, gameState, deltaMS);
+    try {
+      tickItem(item, room, gameState, deltaMS);
+    } catch (e) {
+      console.error(e);
+      throw new Error(`error caught while ticking item ${item.id}: ${e}`);
+    }
   }
 
   updateStandingOn(room);
+
+  // floating point correction must be done before looking for moved items:
+  correctFloatingPointErrorsInRoom(room);
 
   const movedItems = new Set(
     iterate(objectValues(room.items)).filter(
@@ -210,8 +236,13 @@ export const _progressGameState = <
         !xyzEqual(i.state.position, startingPositions[i.id]),
     ),
   ) as MovedItems<RoomId, RoomItemId>;
+
+  // for (const m of movedItems) {
+  //   console.log(m.id, "moved", "to", m.state.position);
+  // }
+
   assignLatentMovementFromStandingOn(movedItems, room, startingPositions);
-  snapStationaryItemsToPixelGrid(room, startingPositions, movedItems);
+  snapInactiveItemsToPixelGrid(room, movedItems);
 
   return movedItems;
 };

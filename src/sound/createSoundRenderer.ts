@@ -12,6 +12,7 @@ import { LiftSoundRenderer } from "./itemSoundRenderers/LiftSoundRenderer";
 import { MonsterSoundRenderer } from "./itemSoundRenderers/MonsterSoundRenderer";
 import { PlayableSoundRenderer } from "./itemSoundRenderers/PlayableSoundRenderer";
 import { PortableBlockSoundRenderer } from "./itemSoundRenderers/PortableBlockSoundRenderer";
+import { PushableBlockSoundRenderer } from "./itemSoundRenderers/PushableBlockSoundRenderer";
 import { SpringSoundRenderer } from "./itemSoundRenderers/SpringSoundRenderer";
 import { SwitchSoundRenderer } from "./itemSoundRenderers/SwitchSoundRenderer";
 import { TeleporterSoundRenderer } from "./itemSoundRenderers/TeleporterSoundRenderer";
@@ -32,6 +33,7 @@ const rendererClasses: {
   portableBlock: PortableBlockSoundRenderer,
   charles: CharlesSoundRenderer,
   ball: BallSoundRenderer,
+  pushableBlock: PushableBlockSoundRenderer,
 };
 
 export const createSoundRenderer = <

@@ -50,7 +50,7 @@ export const createAudioNode = <Opt extends CreateAudioNodeOptions>(
   if (loop) {
     // randomise the start time - otherwise if there are multiple playing at the same time
     // it will sound like one effect
-    node.start(buffer.duration * Math.random());
+    node.start(0, buffer.duration * Math.random());
   } else {
     node.start();
   }

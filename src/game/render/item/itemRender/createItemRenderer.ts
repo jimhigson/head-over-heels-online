@@ -105,7 +105,7 @@ export const createItemRenderer = <
     const compositeRenderer =
       pixiRenderers.length === 1 ?
         pixiRenderers[0]
-      : new CompositeItemRenderer(pixiRenderers, itemRenderContext);
+      : new CompositeItemGraphicsRenderer(pixiRenderers, itemRenderContext);
 
     assignPointerActions(item, compositeRenderer.output, gameState);
 
@@ -128,7 +128,7 @@ export const createItemRenderer = <
   });
 };
 
-class CompositeItemRenderer<
+class CompositeItemGraphicsRenderer<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,

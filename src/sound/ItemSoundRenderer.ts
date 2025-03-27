@@ -1,5 +1,4 @@
-import type { EmptyObject } from "type-fest";
-import type { Renderer } from "../game/render/Renderer";
+import type { ItemTickContext, Renderer } from "../game/render/Renderer";
 import type { ItemInPlayType } from "../model/ItemInPlay";
 import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
 
@@ -9,7 +8,7 @@ export type ItemSoundRenderer<
   RoomItemId extends string,
 > = Renderer<
   ItemSoundRenderContext<T, RoomId, RoomItemId>,
-  EmptyObject,
+  ItemTickContext<RoomId, RoomItemId>,
   AudioNode
 >;
 

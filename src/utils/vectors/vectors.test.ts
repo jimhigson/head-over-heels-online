@@ -3,6 +3,7 @@ import {
   addXyz,
   vectorClosestDirectionXy4,
   vectorClosestDirectionXy8,
+  xyzSnapIfCloseToIntegers,
 } from "./vectors";
 
 describe("addXyz", () => {
@@ -131,5 +132,19 @@ describe("vectorClosestDirectionXy4", () => {
     ]
   >)("given input %o, returns %s", (input, expected) => {
     expect(vectorClosestDirectionXy4(input)).toBe(expected);
+  });
+});
+
+describe("xyzSnapIfCloseToIntegers", () => {
+  test("does not snap if not very close", () => {
+    const input = { x: 0, y: 59.835000000000036, z: 0 };
+    const result = xyzSnapIfCloseToIntegers(input);
+    expect(result).toEqual(input);
+  });
+
+  test("can snap one ordinal and not the others", () => {
+    const input = { x: 0.000001, y: 59.835000000000036, z: 0 };
+    const result = xyzSnapIfCloseToIntegers(input);
+    expect(result).toEqual({ x: 0, y: 59.835000000000036, z: 0 });
   });
 });

@@ -20,8 +20,7 @@ export class BallSoundRenderer<RoomId extends string, RoomItemId extends string>
       RoomItemId
     >,
   ) {
-    // this sound is often in the background for a long time so make it not too loud:
-    this.output.gain.value = 0.7;
+    this.output.gain.value = 4;
   }
 
   tick() {
