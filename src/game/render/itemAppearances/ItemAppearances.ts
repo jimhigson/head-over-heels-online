@@ -246,6 +246,7 @@ export const itemAppearances: {
         config: { direction, times },
         state: { stoodOnBy },
       },
+      paused,
     },
     currentlyRenderedProps,
   }) {
@@ -269,6 +270,7 @@ export const itemAppearances: {
             animationId: `conveyor.${axis}`,
             reverse: direction === "towards" || direction === "right",
             times,
+            paused,
           }
         : {
             textureId: `conveyor.${axis}.6`,
@@ -283,7 +285,7 @@ export const itemAppearances: {
     };
   },
 
-  lift: itemRenderOnce(() => {
+  lift: itemRenderOnce(({ renderContext: { paused } }) => {
     const rendering = new Container();
 
     const pivot = {
@@ -294,6 +296,7 @@ export const itemAppearances: {
       createSprite({
         animationId: "lift",
         pivot,
+        paused,
       }),
     );
 
@@ -302,7 +305,10 @@ export const itemAppearances: {
     return rendering;
   }),
 
-  teleporter({ renderContext: { item, room }, currentlyRenderedProps }) {
+  teleporter({
+    renderContext: { item, room, paused },
+    currentlyRenderedProps,
+  }) {
     const {
       state: { stoodOnBy },
       config: { times },
@@ -332,6 +338,7 @@ export const itemAppearances: {
               createSprite({
                 animationId: "teleporter.flashing",
                 times,
+                paused,
               }),
             ],
           })
@@ -348,6 +355,7 @@ export const itemAppearances: {
       renderContext: {
         item: { config },
         room,
+        paused,
       },
     }) => {
       if (config.gives === "crown") {
@@ -368,6 +376,7 @@ export const itemAppearances: {
           scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
           reincarnation: {
             animationId: "fish",
+            paused,
           },
         };
       const createOptions = pickupIcons[config.gives];
@@ -470,6 +479,7 @@ export const itemAppearances: {
       item: {
         state: { stoodOnBy, wouldPickUpNext: highlighted },
       },
+      paused,
     },
     currentlyRenderedProps,
   }) {
@@ -503,6 +513,7 @@ export const itemAppearances: {
             animationId: "spring.bounce",
             playOnce: "and-stop",
             filter,
+            paused,
           })
         : createSprite({
             textureId: compressed ? "spring.compressed" : "spring.released",
@@ -566,10 +577,12 @@ export const itemAppearances: {
         item: {
           config: { style },
         },
+        paused,
       },
     }) => {
       return createSprite({
         animationId: `bubbles.${style}`,
+        paused,
       });
     },
   ),

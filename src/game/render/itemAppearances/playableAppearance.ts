@@ -47,30 +47,36 @@ const playableCreateSpriteOptions = ({
   action,
   facingXy8,
   teleportingPhase,
+  paused,
 }: ItemRenderProps<CharacterName> & {
   name: IndividualCharacterName;
+  paused: boolean;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
       animationId: `${name}.fadeOut`,
+      paused,
     };
   }
 
   if (teleportingPhase === "out") {
     return {
       animationId: `${name}.fadeOut`,
+      paused,
     };
   }
 
   if (teleportingPhase === "in") {
     return {
       animationId: `${name}.fadeOut`,
+      paused,
     };
   }
 
   if (action === "moving") {
     return {
       animationId: `${name}.walking.${facingXy8}`,
+      paused,
     };
   }
 
@@ -86,6 +92,7 @@ const playableCreateSpriteOptions = ({
     // we have an idle anim for this character/direction
     return {
       animationId: idleAnimationId,
+      paused,
     };
   }
   return { textureId: `${name}.walking.${facingXy8}.2` };
@@ -100,19 +107,21 @@ type IndividualPlayableRenderingContainer = Container & {
 
 const updateIndividualPlayableSprite = (
   container: IndividualPlayableRenderingContainer,
-  renderProps: ItemRenderProps<CharacterName> & {
+  renderPropsWithNameAndPause: ItemRenderProps<CharacterName> & {
     name: IndividualCharacterName;
+    paused: boolean;
   },
 ) => {
   container[playableSpriteContainerSymbol].removeChildren();
   container[playableSpriteContainerSymbol].addChild(
-    createSprite(playableCreateSpriteOptions(renderProps)),
+    createSprite(playableCreateSpriteOptions(renderPropsWithNameAndPause)),
   );
 };
 
 const createOutputContainer = (
   name: IndividualCharacterName,
   inSymbio: boolean,
+  paused: boolean,
 ): IndividualPlayableRenderingContainer => {
   const container = new Container() as IndividualPlayableRenderingContainer;
   const playableSpriteContainer = new Container();
@@ -120,6 +129,7 @@ const createOutputContainer = (
   container.addChild(playableSpriteContainer);
   const shineSprite = createSprite({
     animationId: inSymbio ? `shine.${name}InSymbio` : "shine",
+    paused,
     filter:
       name === "heels" ?
         new PaletteSwapFilter({ pastelBlue: spritesheetPalette.pink })
@@ -250,12 +260,14 @@ const updateIndividualsRendering = (
   individualContainer: IndividualPlayableRenderingContainer,
   refreshSprites: boolean,
   renderProps: ItemRenderProps<CharacterName>,
+  paused: boolean,
   currentlyRenderedProps?: ItemRenderProps<CharacterName>,
 ) => {
   if (refreshSprites) {
     updateIndividualPlayableSprite(individualContainer, {
       name: individualCharacterName,
       ...renderProps,
+      paused,
     });
   }
   applyFilters(
@@ -280,7 +292,7 @@ export const playableAppearance = <
   RoomItemId extends string,
 >({
   currentlyRenderedProps,
-  renderContext: { item: subject, gameState },
+  renderContext: { item: subject, gameState, paused },
   previousRendering,
 }: ItemAppearanceOptions<
   CharacterName,
@@ -335,8 +347,8 @@ export const playableAppearance = <
     outputContainer =
       previousRendering ??
       stackSprites({
-        top: createOutputContainer("head", true),
-        bottom: createOutputContainer("heels", true),
+        top: createOutputContainer("head", true, paused),
+        bottom: createOutputContainer("heels", true, paused),
       });
 
     const stackedContainer =
@@ -347,6 +359,7 @@ export const playableAppearance = <
       stackedContainer[stackedTopSymbol],
       refreshSprites,
       renderProps,
+      paused,
       currentlyRenderedProps,
     );
     updateIndividualsRendering(
@@ -354,16 +367,19 @@ export const playableAppearance = <
       stackedContainer[stackedBottomSymbol],
       refreshSprites,
       renderProps,
+      paused,
       currentlyRenderedProps,
     );
   } else {
-    outputContainer = previousRendering ?? createOutputContainer(type, false);
+    outputContainer =
+      previousRendering ?? createOutputContainer(type, false, paused);
 
     updateIndividualsRendering(
       type,
       outputContainer as IndividualPlayableRenderingContainer,
       refreshSprites,
       renderProps,
+      paused,
       currentlyRenderedProps,
     );
   }

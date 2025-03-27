@@ -128,6 +128,7 @@ const buttonAppearances: {
             y: 5,
           }),
           createSprite({
+            // this should include paused, but it isn't on the renderContext yet
             animationId: "teleporter.flashing",
             y: 5,
           }),
