@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { ValueOf } from "type-fest";
+import type { EmptyObject, ValueOf } from "type-fest";
 import type { DialogId } from "../../game/components/dialogs/menuDialog/menus";
 import type {
   ActionInputAssignment,
@@ -34,17 +34,33 @@ import type {
   SavedGameState,
 } from "../../game/gameState/saving/SavedGameState";
 import { REHYDRATE } from "redux-persist";
+import { emptyObject } from "../../utils/empty";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
-export type OpenMenu = {
-  menuId: DialogId;
-  // will be undefined if the menu items have not been rendered yet, since relies
-  // on rendering to discover the ids
-  focussedItemId?: string;
-  // maintain because selecting by mouse doesn't trigger scrolling in the renderer
-  scrollableSelection: boolean;
-};
+export type OpenMenu =
+  | {
+      menuId: Exclude<DialogId, "crowns">;
+      // will be undefined if the menu items have not been rendered yet, since relies
+      // on rendering to discover the ids
+      focussedItemId?: string;
+      // maintain because selecting by mouse doesn't trigger scrolling in the renderer
+      scrollableSelection: boolean;
+
+      /**
+       * menu-specific parameters - for example, the crowns menu can play music
+       */
+      menuParam: EmptyObject;
+    }
+  | {
+      menuId: "crowns";
+      focussedItemId?: string;
+      scrollableSelection: boolean;
+      /**
+       * menu-specific parameters - for example, the crowns menu can play music
+       */
+      menuParam: { playMusic: boolean };
+    };
 
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
@@ -173,6 +189,7 @@ export const initialGameMenuSliceState: GameMenusState = {
         {
           menuId: "mainMenu",
           scrollableSelection: false,
+          menuParam: emptyObject,
         },
       ],
   assigningInput: undefined,
@@ -226,6 +243,7 @@ export const gameMenusSlice = createSlice({
         {
           menuId: `markdown/${markdownPageName}`,
           scrollableSelection: false,
+          menuParam: emptyObject,
         },
       ];
     },
@@ -311,7 +329,13 @@ export const gameMenusSlice = createSlice({
         const [, ...tail] = state.openMenus;
         state.openMenus = tail;
       } else {
-        state.openMenus = [{ menuId: "mainMenu", scrollableSelection: false }];
+        state.openMenus = [
+          {
+            menuId: "mainMenu",
+            scrollableSelection: false,
+            menuParam: emptyObject,
+          },
+        ];
       }
     },
     goToSubmenu(state, { payload: dialogId }: PayloadAction<DialogId>) {
@@ -319,7 +343,8 @@ export const gameMenusSlice = createSlice({
         {
           menuId: dialogId,
           scrollableSelection: false,
-        },
+          menuParam: {},
+        } as OpenMenu,
         ...state.openMenus,
       ];
     },
@@ -332,6 +357,7 @@ export const gameMenusSlice = createSlice({
           {
             menuId: "crowns",
             scrollableSelection: false,
+            menuParam: { playMusic: false },
           },
         ];
         state.gameRunning = true;
@@ -392,7 +418,13 @@ export const gameMenusSlice = createSlice({
         // no menus shown
         if (payload !== "unhold") {
           // go on hold:
-          state.openMenus = [{ menuId: "hold", scrollableSelection: false }];
+          state.openMenus = [
+            {
+              menuId: "hold",
+              scrollableSelection: false,
+              menuParam: emptyObject,
+            },
+          ];
         }
       }
     },
@@ -418,16 +450,23 @@ export const gameMenusSlice = createSlice({
 
       const allCrowns = Object.values(state.planetsLiberated).every((b) => b);
 
+      const crownsMenu = {
+        menuId: "crowns",
+        scrollableSelection: false,
+        menuParam: { playMusic: true },
+      } as const;
+
       if (allCrowns) {
         state.openMenus = [
           {
             menuId: "proclaimEmperor",
             scrollableSelection: false,
+            menuParam: emptyObject,
           },
-          { menuId: "crowns", scrollableSelection: false },
+          crownsMenu,
         ];
       } else {
-        state.openMenus = [{ menuId: "crowns", scrollableSelection: false }];
+        state.openMenus = [crownsMenu];
       }
     },
     roomExplored(state, { payload: roomId }: PayloadAction<string>) {
@@ -441,8 +480,16 @@ export const gameMenusSlice = createSlice({
     ) {
       if (offerReincarnation && state.reincarnationPoint !== undefined) {
         state.openMenus = [
-          { menuId: "score", scrollableSelection: false },
-          { menuId: "offerReincarnation", scrollableSelection: false },
+          {
+            menuId: "score",
+            scrollableSelection: false,
+            menuParam: emptyObject,
+          },
+          {
+            menuId: "offerReincarnation",
+            scrollableSelection: false,
+            menuParam: emptyObject,
+          },
         ];
       } else {
         state.gameRunning = false;
@@ -455,8 +502,16 @@ export const gameMenusSlice = createSlice({
         state.scrollsRead = {};
         */
         state.openMenus = [
-          { menuId: "score", scrollableSelection: false },
-          { menuId: "mainMenu", scrollableSelection: true },
+          {
+            menuId: "score",
+            scrollableSelection: false,
+            menuParam: emptyObject,
+          },
+          {
+            menuId: "mainMenu",
+            scrollableSelection: true,
+            menuParam: emptyObject,
+          },
         ];
       }
     },
@@ -485,6 +540,7 @@ export const gameMenusSlice = createSlice({
       state.openMenus.push({
         menuId: "errorCaught",
         scrollableSelection: false,
+        menuParam: emptyObject,
       });
     },
     errorDismissed(
@@ -517,7 +573,13 @@ export const gameMenusSlice = createSlice({
         if (action.payload?.currentGame) {
           // we have just loaded and a game is already in progress from a previous session
           state.gameRunning = true;
-          state.openMenus = [{ menuId: "hold", scrollableSelection: false }];
+          state.openMenus = [
+            {
+              menuId: "hold",
+              scrollableSelection: false,
+              menuParam: emptyObject,
+            },
+          ];
         }
       },
     );

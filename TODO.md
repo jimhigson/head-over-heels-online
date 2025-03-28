@@ -21,9 +21,13 @@
     [ ] might be more complex than needed
 
 ### sounds
-[ ] conveyor sound
-[ ] pushing a block - little sound every n ms
+[ ] allow spot effects to continue after leaving a room
+[ ] fanfare on game start
+[ ] head/heels jumping sound
 [ ] detect when phone has sound turned off (?)
+    - can't do!
+[x] music after getting a crown
+[ ] "sea-shanty" music for some items    
 
 ### graphical
 use pixi render groups/layers etc to render outline when switching players in 

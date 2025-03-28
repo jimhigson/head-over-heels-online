@@ -24,23 +24,25 @@ const isMarkdownPage = <D extends DialogId>(
 ): menuId is Extract<D, `markdown/${string}`> => menuId.startsWith("markdown/");
 
 export const Dialogs = (_emptyProps: EmptyObject) => {
-  const dialogId = useAppSelector(
-    (state) => state.gameMenus.openMenus.at(0)?.menuId,
+  const topOpenMenu = useAppSelector((state) =>
+    state.gameMenus.openMenus.at(0),
   );
 
-  if (dialogId === undefined) {
+  if (topOpenMenu === undefined) {
     return null;
   }
 
-  if (isMarkdownPage(dialogId)) {
+  if (isMarkdownPage(topOpenMenu.menuId)) {
     return (
       <MarkdownDialog
-        pageName={dialogId.slice("markdown/".length) as MarkdownPageName}
+        pageName={
+          topOpenMenu.menuId.slice("markdown/".length) as MarkdownPageName
+        }
       />
     );
   }
 
-  switch (dialogId) {
+  switch (topOpenMenu.menuId) {
     case "mainMenu":
       return <MainMenuDialog />;
     case "quitGameConfirm":
@@ -48,7 +50,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "readTheManual":
       return <ReadTheManualDialog />;
     case "crowns":
-      return <CrownsDialog />;
+      return <CrownsDialog playMusic={topOpenMenu.menuParam.playMusic} />;
     case "score":
       return <ScoreDialog />;
     case "hold":
@@ -70,10 +72,10 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "installGuide":
       return <MarkdownDialog pageName="installGuide" />;
     default:
-      dialogId satisfies never;
+      topOpenMenu.menuId satisfies never;
       return (
         <Dialog>
-          <BitmapText>{`unknown dialog ${dialogId}`}</BitmapText>
+          <BitmapText>{`unknown dialog ${topOpenMenu}`}</BitmapText>
         </Dialog>
       );
   }

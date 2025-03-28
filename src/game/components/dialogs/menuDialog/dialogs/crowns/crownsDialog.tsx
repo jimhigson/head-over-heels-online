@@ -8,8 +8,13 @@ import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice"
 import { useIsLoading } from "../../../../LoadingContext";
 import { LoadingBorder } from "../../../../../../ui/LoadingBorder";
 import { Border } from "../../../../../../ui/Border";
+import music from "../../../../../../../sounds/rock.mp3";
 
-export const CrownsDialog = () => {
+export const CrownsDialog = ({
+  playMusic = false,
+}: {
+  playMusic?: boolean;
+}) => {
   const isLoading = useIsLoading();
 
   const closeDialog = useDispatchActionCallback(backToParentMenu);
@@ -23,6 +28,7 @@ export const CrownsDialog = () => {
         className="bg-pureBlack w-zx h-full block p-0"
         onClick={isLoading ? undefined : closeDialog}
       >
+        {playMusic && <audio src={music} autoPlay loop />}
         <FiveCrownsDisplay />
         <MenuItems className="hidden">
           {!isLoading && <BackMenuItem />}
