@@ -10,6 +10,8 @@ import {
   reincarnationAccepted,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useAppSelector } from "../../../../../../store/hooks";
+import { BitmapText } from "../../../../Sprite";
+import { multilineTextClass } from "../../multilineTextClass";
 
 const markdown = `##The game crashed
 Maybe:
@@ -19,7 +21,12 @@ Maybe:
 * rant on the [discord](https://discord.gg/XmV9QNWY)
 * play [this](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;
 
-export const ErrorCaughtDialog = () => {
+export const ErrorCaughtDialog = ({
+  message,
+}: {
+  message: string;
+  stack?: string;
+}) => {
   const hasReincarnationPoint = useAppSelector(
     (state) => state.gameMenus.reincarnationPoint !== undefined,
   );
@@ -29,29 +36,46 @@ export const ErrorCaughtDialog = () => {
     <DialogPortal>
       <Border className="loading-border" />
       <Dialog className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1">
-        <BlockyMarkdown markdown={markdown} />
-        <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1">
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="tryContinue"
-            label="Ignore, hope it goes away"
-            onSelect={useDispatchActionCallback(errorDismissed, "ignore")}
-          />
-          {hasReincarnationPoint && (
+        <div
+          className={
+            "overflow-y-scroll h-full " +
+            "scrollbar scrollbar-w-1 pl-1 " +
+            "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
+            "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan"
+          }
+        >
+          <BlockyMarkdown markdown={markdown} />
+          <BitmapText className={`text-midRed ${multilineTextClass}`}>
+            {message}
+          </BitmapText>
+          <MenuItems
+            className={`text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1 ${multilineTextClass}`}
+          >
             <MenuItem
               doubleHeightWhenFocussed
-              id="reincarnate"
-              label="Try reincarnating"
-              onSelect={reincarnateCallback}
+              id="tryContinue"
+              label="Ignore, hope it goes away"
+              onSelect={useDispatchActionCallback(errorDismissed, "ignore")}
             />
-          )}
-          <MenuItem
-            doubleHeightWhenFocussed
-            id="clearAllData"
-            label="Clear all data, start again"
-            onSelect={useDispatchActionCallback(errorDismissed, "clearAllData")}
-          />
-        </MenuItems>
+            {hasReincarnationPoint && (
+              <MenuItem
+                doubleHeightWhenFocussed
+                id="reincarnate"
+                label="Try reincarnating"
+                onSelect={reincarnateCallback}
+              />
+            )}
+            <MenuItem
+              doubleHeightWhenFocussed
+              id="clearAllData"
+              label="Clear all data, start again"
+              onSelect={useDispatchActionCallback(
+                errorDismissed,
+                "clearAllData",
+              )}
+            />
+          </MenuItems>
+        </div>
       </Dialog>
     </DialogPortal>
   );

@@ -38,29 +38,33 @@ import { emptyObject } from "../../utils/empty";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
+type BaseOpenMenu = {
+  // will be undefined if the menu items have not been rendered yet, since relies
+  // on rendering to discover the ids
+  focussedItemId?: string;
+  // maintain because selecting by mouse doesn't trigger scrolling in the renderer
+  scrollableSelection: boolean;
+};
 export type OpenMenu =
-  | {
-      menuId: Exclude<DialogId, "crowns">;
-      // will be undefined if the menu items have not been rendered yet, since relies
-      // on rendering to discover the ids
-      focussedItemId?: string;
-      // maintain because selecting by mouse doesn't trigger scrolling in the renderer
-      scrollableSelection: boolean;
+  | (BaseOpenMenu & {
+      menuId: Exclude<DialogId, "crowns" | "errorCaught">;
 
       /**
        * menu-specific parameters - for example, the crowns menu can play music
        */
       menuParam: EmptyObject;
-    }
-  | {
+    })
+  | (BaseOpenMenu & {
       menuId: "crowns";
-      focussedItemId?: string;
-      scrollableSelection: boolean;
       /**
        * menu-specific parameters - for example, the crowns menu can play music
        */
       menuParam: { playMusic: boolean };
-    };
+    })
+  | (BaseOpenMenu & {
+      menuId: "errorCaught";
+      menuParam: { message: string; stack?: string };
+    });
 
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
@@ -146,9 +150,6 @@ export type GameMenusState = {
 
   // if cheats are on, some cheat/debugging options are available
   cheatsOn: boolean;
-
-  // an error caught by the game engine or menus
-  caughtError?: { message: string; stack?: string };
 };
 
 type BooleanStatePaths = ToggleablePaths<GameMenusState>;
@@ -197,7 +198,6 @@ export const initialGameMenuSliceState: GameMenusState = {
 
   // optional fields given explicitly as undefined so that on restoring
   // a blank state after a crash, this can be used to overwrite the store
-  caughtError: undefined,
   currentGame: undefined,
   reincarnationPoint: undefined,
 };
@@ -536,11 +536,10 @@ export const gameMenusSlice = createSlice({
       state,
       { payload: error }: PayloadAction<{ message: string; stack?: string }>,
     ) {
-      state.caughtError = error;
       state.openMenus.push({
         menuId: "errorCaught",
         scrollableSelection: false,
-        menuParam: emptyObject,
+        menuParam: error,
       });
     },
     errorDismissed(
@@ -549,7 +548,6 @@ export const gameMenusSlice = createSlice({
     ) {
       switch (strategy) {
         case "ignore":
-          state.caughtError = undefined;
           state.openMenus = [];
           break;
         case "clearAllData":
