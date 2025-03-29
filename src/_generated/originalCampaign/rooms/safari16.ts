@@ -7,24 +7,19 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari16",
   items: {
-    "deadlyBlock@0,4,0": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@1,1,0": {
       config: { style: "volcano", times: { y: 3 } },
-      position: { x: 1, y: 1, z: 0 },
+      position: { x: 0.5, y: 1, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@1,5,0": {
       config: { style: "volcano", times: { y: 2 } },
-      position: { x: 1, y: 5, z: 0 },
+      position: { x: 0.5, y: 5, z: 0 },
       type: "deadlyBlock",
     },
     "deadlyBlock@3,1,0": {
       config: { style: "volcano", times: { y: 6 } },
-      position: { x: 3, y: 1, z: 0 },
+      position: { x: 2.5, y: 1, z: 0 },
       type: "deadlyBlock",
     },
     "door@1,0,0": {
@@ -45,7 +40,7 @@ export const room = inferRoomJson({
         style: "greenAndPink",
         which: "skiHead",
       },
-      position: { x: 2, y: 6, z: 0 },
+      position: { x: 1.5, y: 6, z: 0 },
       type: "monster",
     },
     "wall@0,0,0:2sckOl": {
