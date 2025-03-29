@@ -14,13 +14,13 @@ import type {
 import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
 import { getColorScheme } from "../hintColours";
-import { noFilters } from "./filters/standardFilters";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import { iterateRoomItems } from "../../model/RoomState";
 import type { ItemInPlayType } from "../../model/ItemInPlay";
 import type { ItemSoundAndGraphicsRenderer } from "./item/itemRender/ItemSoundAndGraphicsRenderer";
 import { audioCtx } from "../../sound/audioCtx";
+import { dimLut, noFilters } from "./filters/standardFilters";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements
@@ -94,9 +94,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
    */
   initFilters(colourise: boolean, colour: ZxSpectrumRoomColour) {
     this.#itemsContainer.filters =
-      colourise ? noFilters : (
-        new RevertColouriseFilter(getColorScheme(colour).main.original)
-      );
+      colourise ?
+        colour.shade === "dimmed" ?
+          dimLut
+        : noFilters
+      : new RevertColouriseFilter(getColorScheme(colour).main.original);
   }
 
   #tickItems(tickContext: ItemTickContext<RoomId, RoomItemId>) {
