@@ -87,8 +87,10 @@ export type ItemConfigMap<
     times?: Partial<Xyz>;
   };
   deadlyBlock: ConsolidatableConfig & {
-    // these don't move, and the differences are purely in their rendering:
-    style: "volcano" | "toaster" | "spikes";
+    style: "volcano" | "toaster";
+    times?: Partial<Xyz>;
+  };
+  spikes: ConsolidatableConfig & {
     times?: Partial<Xyz>;
   };
   moveableDeadly: {

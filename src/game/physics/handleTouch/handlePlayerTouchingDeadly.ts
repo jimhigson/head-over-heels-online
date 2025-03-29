@@ -20,7 +20,7 @@ export function handlePlayerTouchingDeadly<
   RoomId,
   RoomItemId,
   PlayableItem<CharacterName, RoomId, RoomItemId>,
-  ItemTypeUnion<DeadlyItemType | "floor", RoomId, RoomItemId>
+  ItemTypeUnion<DeadlyItemType | "floor" | "spikes", RoomId, RoomItemId>
 >) {
   if (playableItem.state.action === "death") {
     // player is already showing death animation - do nothing

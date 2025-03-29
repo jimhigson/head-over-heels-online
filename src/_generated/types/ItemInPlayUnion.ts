@@ -31,6 +31,7 @@ type GeneratedTypeUnion =
   | "sceneryPlayer"
   | "slidingBlock"
   | "slidingDeadly"
+  | "spikes"
   | "spring"
   | "stopAutowalk"
   | "switch"
@@ -127,6 +128,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "slidingDeadly" ?
       ItemInPlay<"slidingDeadly", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "spikes" ?
+      ItemInPlay<"spikes", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "spring" ?
       ItemInPlay<"spring", RoomId, RoomItemId, RoomItemId, ScN>

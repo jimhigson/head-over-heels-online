@@ -7,41 +7,6 @@ export const room = inferRoomJson({
   floor: "safari",
   id: "safari15",
   items: {
-    "deadlyBlock@0,13,0": {
-      config: { style: "spikes" },
-      position: { x: 0, y: 13, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,9,0": {
-      config: { style: "spikes" },
-      position: { x: 0, y: 9, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,11,0": {
-      config: { style: "spikes" },
-      position: { x: 1, y: 11, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,12,0": {
-      config: { style: "spikes" },
-      position: { x: 2, y: 12, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,9,0": {
-      config: { style: "spikes" },
-      position: { x: 2, y: 9, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,10,0": {
-      config: { style: "spikes" },
-      position: { x: 3, y: 10, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,14,0": {
-      config: { style: "spikes" },
-      position: { x: 3, y: 14, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@3,2,0": {
       config: { style: "volcano" },
       position: { x: 3, y: 2, z: 0 },
@@ -113,6 +78,41 @@ export const room = inferRoomJson({
       config: { axis: "x" },
       position: { x: 1, y: 9.5, z: 0 },
       type: "barrier",
+    },
+    "spikes@0,13,0": {
+      config: {},
+      position: { x: 0, y: 13, z: 0 },
+      type: "spikes",
+    },
+    "spikes@0,9,0": {
+      config: {},
+      position: { x: 0, y: 9, z: 0 },
+      type: "spikes",
+    },
+    "spikes@1,11,0": {
+      config: {},
+      position: { x: 1, y: 11, z: 0 },
+      type: "spikes",
+    },
+    "spikes@2,12,0": {
+      config: {},
+      position: { x: 2, y: 12, z: 0 },
+      type: "spikes",
+    },
+    "spikes@2,9,0": {
+      config: {},
+      position: { x: 2, y: 9, z: 0 },
+      type: "spikes",
+    },
+    "spikes@3,10,0": {
+      config: {},
+      position: { x: 3, y: 10, z: 0 },
+      type: "spikes",
+    },
+    "spikes@3,14,0": {
+      config: {},
+      position: { x: 3, y: 14, z: 0 },
+      type: "spikes",
     },
     "wall@0,0,0:3gbWw": {
       config: { direction: "right", tiles: [], times: { y: 16 } },

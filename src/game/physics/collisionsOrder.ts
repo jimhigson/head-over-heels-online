@@ -124,6 +124,9 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   firedDoughnut: 90,
 
+  // slightly preferential to deadly blocks (in original game they are the same)
+  spikes: 98,
+
   slidingDeadly: 100,
   moveableDeadly: 100,
   deadlyBlock: 100,

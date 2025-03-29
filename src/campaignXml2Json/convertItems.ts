@@ -253,16 +253,21 @@ const convertItem = async ({
         position,
       };
     }
+    case "spikes": {
+      return {
+        type: "spikes",
+        config: {},
+        position,
+      };
+    }
 
     case "toaster":
-    case "spikes":
     case "vulcano": {
       const styleConversion: Record<
         typeof xml2JsonItem.kind,
         ItemConfigMap<string, string>["deadlyBlock"]["style"]
       > = {
         vulcano: "volcano",
-        spikes: "spikes",
         toaster: "toaster",
       };
 

@@ -52,16 +52,6 @@ export const room = inferRoomJson({
       position: { x: 6, y: 5, z: 0 },
       type: "conveyor",
     },
-    "deadlyBlock@0,9,0": {
-      config: { style: "spikes", times: { z: 2 } },
-      position: { x: 0, y: 9, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,8,0": {
-      config: { style: "spikes", times: { y: 2 } },
-      position: { x: 4, y: 8, z: 0 },
-      type: "deadlyBlock",
-    },
     "deadlyBlock@7,0,0": {
       config: { style: "volcano", times: { y: 6 } },
       position: { x: 7, y: 0, z: 0 },
@@ -99,6 +89,26 @@ export const room = inferRoomJson({
       config: { gives: "fast" },
       position: { x: 13, y: 5, z: 1 },
       type: "pickup",
+    },
+    "spikes@0,9,0": {
+      config: {},
+      position: { x: 0, y: 9, z: 0 },
+      type: "spikes",
+    },
+    "spikes@0,9,1": {
+      config: {},
+      position: { x: 0, y: 9, z: 1 },
+      type: "spikes",
+    },
+    "spikes@4,8,0": {
+      config: {},
+      position: { x: 4, y: 8, z: 0 },
+      type: "spikes",
+    },
+    "spikes@4,9,0": {
+      config: {},
+      position: { x: 4, y: 9, z: 0 },
+      type: "spikes",
     },
     "wall@0,0,0:3gbr1": {
       config: { direction: "right", tiles: [], times: { y: 14 } },

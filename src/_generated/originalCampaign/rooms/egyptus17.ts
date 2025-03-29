@@ -22,11 +22,6 @@ export const room = inferRoomJson({
       position: { x: 11, y: 2, z: 0 },
       type: "block",
     },
-    "deadlyBlock@4,1,0": {
-      config: { style: "spikes" },
-      position: { x: 4, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
     "door@12,2,2": {
       config: { direction: "left", toRoom: "egyptus18" },
       position: { x: 12, y: 2, z: 2 },
@@ -51,6 +46,11 @@ export const room = inferRoomJson({
       config: { style: "sticks" },
       position: { x: 1, y: 0, z: 1 },
       type: "portableBlock",
+    },
+    "spikes@4,1,0": {
+      config: {},
+      position: { x: 4, y: 1, z: 0 },
+      type: "spikes",
     },
     "wall@0,0,0:2sckiP": {
       config: { direction: "right", tiles: [], times: { y: 6 } },

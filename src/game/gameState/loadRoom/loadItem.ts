@@ -169,12 +169,12 @@ const shadowMask = (jsonItem: JsonItemUnion): ShadowMaskOptions | undefined => {
             spriteOptions: "shadowMask.fullBlock",
             relativeTo: "origin",
           };
-        case "spikes":
-          return { spriteOptions: "shadowMask.spikes", relativeTo: "origin" };
         default:
           jsonItem.config.style satisfies never;
       }
       break;
+    case "spikes":
+      return { spriteOptions: "shadowMask.spikes", relativeTo: "origin" };
     case "switch":
       return { spriteOptions: "shadowMask.switch", relativeTo: "origin" };
     case "pickup":

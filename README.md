@@ -24,6 +24,17 @@ Quite a lot of rooms have been changed while keeping the original gameplay intac
 
 * This is to remove unfair deaths (death possible when entering room for no fault of the player)
 
+![screenshot](before) ![screenshot](after)
+
+Spikes
+------
+
+In the remake, this item is safe to touch from the sides, but not from the top. Consistent with how they look visually, and otherwise there's several items that
+differ in appearance while working exactly the same. Gives a bit more vocabulary to
+item designers.
+
+![spikes](spikes)
+
 Invincibility
 -------------
 

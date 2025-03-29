@@ -14,6 +14,10 @@ export type JsonItemType =
   | "barrier"
   | "block"
   | "deadlyBlock"
+  /** vary from the original game by distinbuishing toasters/volcanos from
+   * spikes - spikes are safe to touch from the side/bottom but not stand on
+   */
+  | "spikes"
   /** something heels can pick up in her bag */
   | "portableBlock"
   /** something that can be pushed but not picked up */

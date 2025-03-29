@@ -6,7 +6,10 @@
         
 ## General
 
-[ ] error catch/reporting + option to refresh
+[x] error catch/reporting + option to refresh
+[x] spikes safe to touch from sides
+[ ] replace deadly 'puck/cap' sprites with a spiky ball
+
 
 ### Big ideas
 
