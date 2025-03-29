@@ -8,11 +8,8 @@ import { convertSceneryName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertRoomId } from "./convertRoomId";
 import { convertWalls } from "./convertWalls";
-import {
-  readRoomToXmlJson,
-  type XmlFloorKind,
-  roomNameFromXmlFilename,
-} from "./readToJson";
+import { readRoomToXmlJson, type XmlFloorKind } from "./readToJson";
+import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 
 export const convertRoom = async (

@@ -1,11 +1,22 @@
 [
   {
     "op": "add",
-    "path": "/items/scroll",
+    "path": "/items/extraBall",
     "value": {
-      "config": { "gives": "scroll", "page": "switches" },
-      "position": { "x": 4, "y": 5, "z": 0 },
-      "type": "pickup"
+      "config": {},
+      "isExtra": true,
+      "position": { "x": 2, "y": 0, "z": 0 },
+      "type": "ball"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBall2",
+    "value": {
+      "config": {},
+      "isExtra": true,
+      "position": { "x": 5, "y": 2, "z": 0 },
+      "type": "ball"
     }
   },
   {
@@ -74,22 +85,11 @@
   },
   {
     "op": "add",
-    "path": "/items/extraBall",
+    "path": "/items/scroll",
     "value": {
-      "config": {},
-      "isExtra": true,
-      "position": { "x": 2, "y": 0, "z": 0 },
-      "type": "ball"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBall2",
-    "value": {
-      "config": {},
-      "isExtra": true,
-      "position": { "x": 5, "y": 2, "z": 0 },
-      "type": "ball"
+      "config": { "gives": "scroll", "page": "switches" },
+      "position": { "x": 4, "y": 5, "z": 0 },
+      "type": "pickup"
     }
   }
 ]

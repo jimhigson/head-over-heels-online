@@ -5,6 +5,7 @@
 import { xml2js } from "xml-js";
 import { readFile } from "node:fs/promises";
 import type { Xml2JsonItem } from "./Xml2JsonItem";
+import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 
 const readXmlToJson = async (fileName: string) => {
   const xmlText = await readFile(`gamedata-map-xml/${fileName}.xml`, {
@@ -98,16 +99,6 @@ export const readRoomToXmlJson = async (
   roomJson.items.forEach((i: { _attributes?: object }) => delete i._attributes);
 
   return roomJson as Xml2JsonRoom;
-};
-
-export const roomNameFromXmlFilename = (xmlFileName: string) => {
-  const match = /(.*)\.xml/.exec(xmlFileName);
-
-  if (match === null) {
-    throw new Error(`unparsable file name: ${xmlFileName}`);
-  }
-
-  return match![1];
 };
 
 export type MapJsonRoom = Partial<
