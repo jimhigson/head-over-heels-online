@@ -1,1 +1,9 @@
-[]
+[
+  { "op": "remove", "path": "/items/wall@0,4,0" },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,0,0:2scjgO/config/times/y",
+    "value": 4
+  },
+  { "op": "replace", "path": "/items/door@0,2,0/position/y", "value": 4 }
+]

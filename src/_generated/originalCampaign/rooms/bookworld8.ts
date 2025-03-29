@@ -29,7 +29,7 @@ export const room = inferRoomJson({
     },
     "door@3,8,0": {
       config: { direction: "away", toRoom: "bookworld7" },
-      position: { x: 3, y: 8, z: 0 },
+      position: { x: 6, y: 8, z: 0 },
       type: "door",
     },
     "portableBlock@3,3,0": {
@@ -60,19 +60,10 @@ export const room = inferRoomJson({
     "wall@0,8,0": {
       config: {
         direction: "away",
-        tiles: ["book", "book", "cowboy"],
-        times: { x: 3 },
+        tiles: ["book", "cowboy", "book", "book", "cowboy", "book"],
+        times: { x: 6 },
       },
       position: { x: 0, y: 8, z: 0 },
-      type: "wall",
-    },
-    "wall@5,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["cowboy", "book", "book"],
-        times: { x: 3 },
-      },
-      position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {

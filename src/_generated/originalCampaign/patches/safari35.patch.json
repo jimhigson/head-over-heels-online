@@ -1,9 +1,13 @@
 [
+  { "op": "replace", "path": "/items/wall@0,5,0/position/y", "value": 2 },
+  { "op": "replace", "path": "/items/wall@0,5,0/config/times/y", "value": 6 },
+  { "op": "remove", "path": "/items/wall@0,0,0:2scjwz" },
   {
     "op": "replace",
     "path": "/items/movingPlatform@7,5,1/config/activated",
     "value": "on-stand"
   },
+  { "op": "replace", "path": "/items/door@0,3,1/position/y", "value": 0 },
   {
     "op": "replace",
     "path": "/items/deadlyBlock@0,5,0/position/x",
@@ -13,5 +17,11 @@
     "op": "replace",
     "path": "/items/deadlyBlock@0,5,0/config/times/x",
     "value": 7
+  },
+  { "op": "replace", "path": "/items/block@0,3,0/position/y", "value": 0 },
+  {
+    "op": "add",
+    "path": "/items/block@0,3,0/config/times",
+    "value": { "y": 4 }
   }
 ]

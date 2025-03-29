@@ -8,8 +8,8 @@ export const room = inferRoomJson({
   id: "safari35",
   items: {
     "block@0,3,0": {
-      config: { style: "organic" },
-      position: { x: 0, y: 3, z: 0 },
+      config: { style: "organic", times: { y: 4 } },
+      position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
     "block@7,7,0": {
@@ -24,7 +24,7 @@ export const room = inferRoomJson({
     },
     "door@0,3,1": {
       config: { direction: "right", toRoom: "safari36" },
-      position: { x: 0, y: 3, z: 1 },
+      position: { x: 0, y: 0, z: 1 },
       type: "door",
     },
     "movingPlatform@7,5,1": {
@@ -37,19 +37,14 @@ export const room = inferRoomJson({
       position: { x: 7, y: 5, z: 1 },
       type: "movingPlatform",
     },
-    "wall@0,0,0:2scjwz": {
-      config: { direction: "right", tiles: [], times: { y: 3 } },
-      position: { x: 0, y: 0, z: 0 },
-      type: "wall",
-    },
     "wall@0,0,0:Z1XoDrY": {
       config: { direction: "towards", tiles: [], times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     "wall@0,5,0": {
-      config: { direction: "right", tiles: [], times: { y: 3 } },
-      position: { x: 0, y: 5, z: 0 },
+      config: { direction: "right", tiles: [], times: { y: 6 } },
+      position: { x: 0, y: 2, z: 0 },
       type: "wall",
     },
     "wall@0,8,0": {
