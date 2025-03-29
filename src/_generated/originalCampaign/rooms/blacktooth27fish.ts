@@ -24,7 +24,7 @@ export const room = inferRoomJson({
     },
     "pickup@2,3,1": {
       config: { gives: "reincarnation" },
-      position: { x: 2, y: 3, z: 1 },
+      position: { x: 2, y: 3.5, z: 1 },
       type: "pickup",
     },
     "portableBlock@0,0,0": {
@@ -34,12 +34,12 @@ export const room = inferRoomJson({
     },
     "pushableBlock@2,3,0": {
       config: { style: "stepStool" },
-      position: { x: 2, y: 3, z: 0 },
+      position: { x: 2, y: 3.5, z: 0 },
       type: "pushableBlock",
     },
     scroll: {
       config: { gives: "scroll", page: "reincarnationFish" },
-      position: { x: 0, y: 7, z: 0 },
+      position: { x: 3, y: 2.5, z: 0 },
       type: "pickup",
     },
     "wall@0,0,0:2scjwz": {

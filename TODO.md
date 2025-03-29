@@ -51,9 +51,10 @@ front of other items
 
 [ ] make FS/OSS (again)
 
-[ ] sliding on all blocks, not just doors
+[ ] helpful sliding on all blocks, not just doors
     (if can't push and overlap is small)
     probably can be done generically in moveItem ?
+    - would get for free with cylindrical BBs
 
 [ ] allow jump-by carry-and-jump
 
@@ -69,7 +70,7 @@ front of other items
 
 [ ] restore known-id typings at src/model/RoomState.ts - `origin/experimental-well-known-ids`
 
-[ ] charles robot no longer needs to use latent movement
+[x] charles robot no longer needs to use latent movement
 
 [ ] doughnut white fade can be shown under walls - try firing at left wall in start room for example
     - maybe the doughnut explosion is slightly inside the wall?
@@ -109,7 +110,6 @@ input tracker:
 
 [ ] several rooms change the default height of 11 - is the defualt just wrong?
 
-[ ] replace vignette with a transparent texture etc
 [ ] re-org into a mono-repo
     - @hohjs/gameEngine = everything while the game is running
     - @hohjs/main = main site
@@ -160,7 +160,6 @@ carrying (maybe( bugs:
     
 [ ] checkerboard shadows when not colourising    
 [ ] (maybe) option to turn shadows off
-[ ] compare against original for how far player can edge up on a block
 [ ] upgrade to tw 4
 
 [ ] shadow masks/cast provided by appearance
