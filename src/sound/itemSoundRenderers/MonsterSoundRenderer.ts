@@ -84,6 +84,7 @@ export class MonsterSoundRenderer<
           soundId: ambientSounds[which],
           playbackRate: 1,
           varyPlaybackRate: true,
+          randomiseStartPoint: true,
           loop: true,
           connectTo: this.#ambientChannel,
         });

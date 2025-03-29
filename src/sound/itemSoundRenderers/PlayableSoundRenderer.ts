@@ -3,8 +3,11 @@ import { loadedSounds } from "../soundsLoader";
 import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type { PlayableActionState } from "../../model/ItemStateMap";
 import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
+import {
+  createBracketedSound,
+  type BracketedSound,
+} from "../soundUtils/createBracketedSound";
 
 export class PlayableSoundRenderer<
   RoomId extends string,
@@ -14,19 +17,31 @@ export class PlayableSoundRenderer<
   public readonly output: GainNode = audioCtx.createGain();
 
   // add the walking buffer sources to here to play them
-  #walkingChannel: GainNode = audioCtx.createGain();
-  #walkingLoop: AudioBufferSourceNode | null = null;
+  #walkChannel: GainNode = audioCtx.createGain();
+  #walkBracketedSound: BracketedSound;
+  #jumpChannel: GainNode = audioCtx.createGain();
+  #jumpBracketedSound: BracketedSound;
+  #fallBracketedSound: BracketedSound;
 
-  #carryingChannel: GainNode = audioCtx.createGain();
+  #carryChannel: GainNode = audioCtx.createGain();
+  #carryBracketedSound = createBracketedSound({
+    start: {
+      soundId: "carry",
+      playbackRate: 0.95,
+    },
+    stop: {
+      soundId: "carry",
+      playbackRate: 1.05,
+    },
+    connectTo: this.#carryChannel,
+  });
 
   #currentRenderProps: {
-    action: PlayableActionState;
-    carrying: boolean;
     teleportingPhase: "in" | "out" | null;
+    positionZ: number;
   } = {
-    action: "idle",
-    carrying: false,
     teleportingPhase: null,
+    positionZ: 0,
   };
 
   constructor(
@@ -36,10 +51,34 @@ export class PlayableSoundRenderer<
       RoomItemId
     >,
   ) {
-    this.#walkingChannel.gain.value = 2;
-    this.#walkingChannel.connect(this.output);
-    this.#carryingChannel.gain.value = 1.2;
-    this.#carryingChannel.connect(this.output);
+    this.#walkChannel.gain.value = 2;
+    this.#walkChannel.connect(this.output);
+    this.#jumpChannel.gain.value = 0.8;
+    this.#jumpChannel.connect(this.output);
+    this.#carryChannel.gain.value = 1.2;
+    this.#carryChannel.connect(this.output);
+
+    const name = renderContext.item.type;
+    this.#walkBracketedSound = createBracketedSound({
+      loop: {
+        soundId: `${name === "headOverHeels" ? "heels" : renderContext.item.type}Walk`,
+      },
+      connectTo: this.#walkChannel,
+    });
+
+    this.#jumpBracketedSound = createBracketedSound({
+      start: {
+        soundId: `${name === "headOverHeels" ? "head" : renderContext.item.type}Jump`,
+      },
+      connectTo: this.#jumpChannel,
+    });
+
+    this.#fallBracketedSound = createBracketedSound({
+      loop: {
+        soundId: `${name === "headOverHeels" ? "head" : renderContext.item.type}Fall`,
+      },
+      connectTo: this.#jumpChannel,
+    });
   }
 
   tick() {
@@ -47,57 +86,47 @@ export class PlayableSoundRenderer<
       renderContext: { item },
     } = this;
     const {
-      type,
-      state: { action, teleporting },
+      state: {
+        action,
+        teleporting,
+        jumpStartZ,
+        jumped,
+        standingOnItemId,
+        position: { z: positionZ },
+        vels: {
+          gravity: { z: velZ },
+        },
+      },
     } = item;
-    const carrying: boolean = !!selectHeelsAbilities(item)?.carrying;
+    const heelsAbilities = selectHeelsAbilities(item);
     const {
-      action: currentAction,
-      carrying: currentCarrying,
       teleportingPhase: currentTeleportingPhase,
+      positionZ: currentPositionZ,
     } = this.#currentRenderProps;
 
     const teleportingPhase = teleporting ? teleporting.phase : null;
 
+    const playJumpSound =
+      jumped &&
+      positionZ > jumpStartZ &&
+      positionZ > currentPositionZ &&
+      velZ > 0;
+
+    const playFallSound =
+      positionZ < currentPositionZ && velZ < 0 && standingOnItemId === null;
+
+    this.#fallBracketedSound(playFallSound);
+
+    this.#jumpBracketedSound(playJumpSound);
+
     // walking
-    if (action === "moving" && currentAction !== "moving") {
-      // start walking sound
-
-      const walkingSound =
-        loadedSounds()[
-          type === "headOverHeels" ? "heelsWalk" : (`${type}Walk` as const)
-        ];
-
-      this.#walkingLoop = audioCtx.createBufferSource();
-      this.#walkingLoop.buffer = walkingSound;
-      this.#walkingLoop.loop = true;
-
-      this.#walkingLoop.connect(this.#walkingChannel);
-      this.#walkingLoop.start();
-    }
-    if (action !== "moving" && currentAction === "moving") {
-      // stop the walking sound:
-      this.#walkingLoop!.stop();
-      this.#walkingLoop = null;
-    }
+    this.#walkBracketedSound(
+      !playJumpSound && !playFallSound && action === "moving",
+    );
 
     // carrying (heels)
-    if (currentCarrying !== carrying) {
-      if (currentCarrying) {
-        const sound = loadedSounds().carry;
-        const source = audioCtx.createBufferSource();
-        source.buffer = sound;
-        source.playbackRate.value = 0.95;
-        source.connect(this.#carryingChannel);
-        source.start();
-      } else {
-        const sound = loadedSounds().carry;
-        const source = audioCtx.createBufferSource();
-        source.buffer = sound;
-        source.playbackRate.value = 1.05;
-        source.connect(this.#carryingChannel);
-        source.start();
-      }
+    if (heelsAbilities !== undefined) {
+      this.#carryBracketedSound(heelsAbilities.carrying !== null);
     }
 
     if (
@@ -119,7 +148,7 @@ export class PlayableSoundRenderer<
       }
     }
 
-    this.#currentRenderProps = { action, carrying, teleportingPhase };
+    this.#currentRenderProps = { teleportingPhase, positionZ };
   }
 
   destroy(): void {}
