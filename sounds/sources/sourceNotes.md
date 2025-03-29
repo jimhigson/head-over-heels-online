@@ -31,5 +31,28 @@ https://www.pond5.com/search?kw=gear-crank-elevator&media=sfx
 drum:
 https://www.pond5.com/sound-effects/item/302012587-wood-bongo-balloon-pop-perc-2-nova-sound
 
+metalicScraping (push step stool):
+machmech_mechanical-loop-heavy-scraping-metallic-sound-effect-239482373_nw_prev-CwmMIz_o.m4a
+    https://www.pond5.com/sound-effects/item/239482373-machmech_mechanical-loop-heavy-scraping-metallic-intense-gri
+    - that sample is almost a minute long, stereo and nearly 1Mb, shortened, mixed to mono, and re-encoded. Down to 8kb.
+
 spring:
     9th from: https://www.pond5.com/sound-effects/item/77608822-boing-sound-cartoon-jump-spring-bounce-hop-effect
+
+metal clang:
+    truncated from:
+    impact-metal-clang-medium-03-sound-effect-152317048_nw_prev.m4a
+
+rock.mp3
+    re-encoded at lower bit-rate from freedom.ogg -> mp3 (1.8mb -> 278k)    
+
+conveyor (start/stop/end)
+    * gear-crank-elevator-2-loop-sound-effect-245865336_nw_prev.m4a
+    * gear-crank-elevator-2-start-sound-effect-245865410_nw_prev.m4a
+    * gear-crank-elevator-2-stop-sound-effect-245865549_nw_prev.m4a
+        - mixed down to mono
+        - stop effect shortened
+
+bongo
+    pond5 wood-bongo-balloon-pop-perc-sound-effect-302012587_nw_prev.m4a
+    tuncated, re-encoded, mono
