@@ -1,4 +1,5 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { spritesheetPaletteDim } from "gfx/spritesheetPaletteDim";
 import type { Color } from "pixi.js";
 import { type Filter } from "pixi.js";
 import type { PaletteSwaps } from "./PaletteSwapFilter";
@@ -70,3 +71,5 @@ export const mainPaletteSwapFilter = (
 export const halfBriteFilter = new HalfBriteFilter();
 
 export const noFilters: Filter[] = emptyArray;
+
+export const dimLut = new PaletteSwapFilter(spritesheetPaletteDim);

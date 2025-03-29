@@ -22,12 +22,40 @@ then
     exit 1
 fi
 
-echo "🤖 converting iff -> png"
-echo "⏱️ at $(date)"
 OUT_DIR="gfx"
-# write everything to a temp dir, then switch, to avoid vite, tsc, etc picking up half-converted files
+# we write everything to a temp dir, then switch, to avoid vite, tsc, etc picking up half-converted files
 TMP_DIR="gfx_temp"
 TMP_DIR_ICONS="icon_temp"
+colorNames=(pureBlack shadow midGrey lightGrey white pastelBlue metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
+
+# call like : write_palette(sourcePng, destinationName)
+write_palette() {
+    echo "🤖 sampling 🎨 palette from $1 -> $2{json, ts}"
+    echo "import { Color } from 'pixi.js';" >> "$TMP_DIR/$2.ts"
+    echo "// this file is generated from the spritesheet by iff2png.sh, do not edit directly" >> "$TMP_DIR/$2.ts"
+    echo "export const $2 = {" >> "$TMP_DIR/$2.ts"
+    echo "{" >> "$TMP_DIR/$2.json"
+
+    for i in $(seq 0 15);
+    do
+        color=$(magick $1 -format "#%[hex:u.p{$i,0}]" info:);
+        echo ${colorNames[$i]} $color
+        echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> "$TMP_DIR/$2.ts"
+        echo "  \"${colorNames[$i]}\": \"$color\"" >> "$TMP_DIR/$2.json"
+
+        if [ $i -ne 15 ]; then
+            echo "," >> "$TMP_DIR/$2.json"
+        fi
+    done
+    echo "} as const;" >> "$TMP_DIR/$2.ts"
+    echo "export type SpritesheetPaletteColourName = keyof typeof $2;" >> "$TMP_DIR/$2.ts"
+    echo "}" >> "$TMP_DIR/$2.json"
+    node_modules/.bin/prettier --write "$TMP_DIR/$2.*" 
+}
+
+echo "🤖 converting iff -> png"
+echo "⏱️ at $(date)"
+
 
 echo "🤖 creating temp dir at $TMP_DIR"
 mkdir $TMP_DIR
@@ -46,31 +74,9 @@ for iffFile in *.iff; do
 done
 cd ..
 
-echo "🤖 sampling palette -> ts"
-colorNames=(pureBlack shadow midGrey lightGrey white pastelBlue metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
-
-echo "import { Color } from 'pixi.js';" >> "$TMP_DIR/spritesheetPalette.ts"
-echo "// this file is generated from the spritesheet by iff2png.sh, do not edit directly" >> "$TMP_DIR/spritesheetPalette.ts"
-echo "export const spritesheetPalette = {" >> "$TMP_DIR/spritesheetPalette.ts"
-echo "{" >> "$TMP_DIR/spritesheetPalette.json"
-
-for i in $(seq 0 15);
-do
-    color=$(magick "$TMP_DIR/sprites.png" -format "#%[hex:u.p{$i,0}]" info:);
-    echo ${colorNames[$i]} $color
-    echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> "$TMP_DIR/spritesheetPalette.ts"
-    echo "  \"${colorNames[$i]}\": \"$color\"" >> "$TMP_DIR/spritesheetPalette.json"
-
-    if [ $i -ne 15 ]; then
-        echo "," >> "$TMP_DIR/spritesheetPalette.json"
-    fi
-done
-echo "} as const;" >> "$TMP_DIR/spritesheetPalette.ts"
-echo "export type SpritesheetPaletteColourName = keyof typeof spritesheetPalette;" >> "$TMP_DIR/spritesheetPalette.ts"
-echo "}" >> "$TMP_DIR/spritesheetPalette.json"
-mv "$TMP_DIR/spritesheetPalette.ts" "$TMP_DIR/spritesheetPalette.ts"
-mv "$TMP_DIR/spritesheetPalette.json" "$TMP_DIR/spritesheetPalette.json"
-node_modules/.bin/prettier --write "$TMP_DIR/spritesheetPalette.*" 
+echo "🤖 sampling palette -> {json, ts}"
+write_palette "$TMP_DIR/sprites.png" spritesheetPalette
+write_palette gfx/palette.dim.png spritesheetPaletteDim
 
 #
 # make sprite mask colour actually transparent in the png (dpaint uses a normal colour)

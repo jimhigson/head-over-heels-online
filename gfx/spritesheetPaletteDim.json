@@ -1,0 +1,18 @@
+{
+  "pureBlack": "#000000",
+  "shadow": "#1B2D3B",
+  "midGrey": "#505A55",
+  "lightGrey": "#929981",
+  "white": "#F8FEF8",
+  "pastelBlue": "#4893FF",
+  "metallicBlue": "#1D4E80",
+  "pink": "#B973AF",
+  "moss": "#6E7B00",
+  "redShadow": "#513D40",
+  "midRed": "#A7574B",
+  "lightBeige": "#BF8E69",
+  "highlightBeige": "#DBB269",
+  "alpha": "#105A69",
+  "replaceLight": "#048662",
+  "replaceDark": "#052229"
+}
