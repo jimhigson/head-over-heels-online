@@ -82,6 +82,18 @@ export const room = inferRoomJson({
       position: { x: 7, y: 0, z: 1 },
       type: "monster",
     },
+    portable1: {
+      config: { style: "cube" },
+      isExtra: true,
+      position: { x: 5, y: 7, z: 0 },
+      type: "portableBlock",
+    },
+    portable2: {
+      config: { style: "cube" },
+      isExtra: true,
+      position: { x: 2, y: 7, z: 0 },
+      type: "portableBlock",
+    },
     "teleporter@0,6,0": {
       config: {
         times: { x: 2, y: 2 },

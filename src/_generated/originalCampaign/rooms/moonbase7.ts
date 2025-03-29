@@ -13,7 +13,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@2,0,3": {
-      config: { style: "organic", times: { x: 2 } },
+      config: { style: "organic", times: { x: 4 } },
       position: { x: 2, y: 0, z: 3 },
       type: "block",
     },
@@ -34,13 +34,19 @@ export const room = inferRoomJson({
     },
     "door@3,0,4": {
       config: { direction: "towards", toRoom: "moonbase6" },
-      position: { x: 3, y: 0, z: 4 },
+      position: { x: 4, y: 0, z: 4 },
       type: "door",
     },
     "door@8,3,0": {
       config: { direction: "left", toRoom: "moonbase15" },
-      position: { x: 8, y: 3, z: 0 },
+      position: { x: 8, y: 5, z: 0 },
       type: "door",
+    },
+    extraSupport: {
+      config: { style: "organic", times: { x: 2, z: 3 } },
+      isExtra: true,
+      position: { x: 4, y: 0, z: 0 },
+      type: "block",
     },
     "monster@0,7,1": {
       config: {
@@ -108,7 +114,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,0,0:Z1XoEJK": {
-      config: { direction: "towards", tiles: [], times: { x: 3 } },
+      config: { direction: "towards", tiles: [], times: { x: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -136,26 +142,22 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@5,0,0": {
-      config: { direction: "towards", tiles: [], times: { x: 3 } },
-      position: { x: 5, y: 0, z: 0 },
+      config: { direction: "towards", tiles: [], times: { x: 2 } },
+      position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
       config: {
         direction: "left",
-        tiles: ["window3", "coil", "window2"],
-        times: { y: 3 },
+        tiles: ["window3", "coil", "window2", "coil", "window1"],
+        times: { y: 5 },
       },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,5,0": {
-      config: {
-        direction: "left",
-        tiles: ["window2", "coil", "window1"],
-        times: { y: 3 },
-      },
-      position: { x: 8, y: 5, z: 0 },
+      config: { direction: "left", tiles: ["window2"], times: { y: 1 } },
+      position: { x: 8, y: 7, z: 0 },
       type: "wall",
     },
   },

@@ -67,7 +67,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 5, z: 1 },
       type: "monster",
     },
-    swtich: {
+    switch: {
       config: {
         modifies: [
           {
@@ -98,10 +98,63 @@ export const room = inferRoomJson({
             right: true,
             target: "monster@0,5,1",
           },
+          {
+            expectType: "switch",
+            key: "setting",
+            left: "left",
+            right: "right",
+            target: "switch2",
+          },
         ],
         type: "in-room",
       },
+      isExtra: true,
       position: { x: 0, y: 1, z: 0 },
+      type: "switch",
+    },
+    switch2: {
+      config: {
+        modifies: [
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,2,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,3,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,4,1",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: false,
+            right: true,
+            target: "monster@0,5,1",
+          },
+          {
+            expectType: "switch",
+            key: "setting",
+            left: "left",
+            right: "right",
+            target: "switch",
+          },
+        ],
+        type: "in-room",
+      },
+      isExtra: true,
+      position: { x: 0, y: 6, z: 0 },
       type: "switch",
     },
     "wall@0,0,0:2sckOl": {

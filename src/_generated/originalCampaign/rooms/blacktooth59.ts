@@ -54,7 +54,7 @@ export const room = inferRoomJson({
     },
     "door@3,0,4": {
       config: { direction: "towards", toRoom: "blacktooth58triple" },
-      position: { x: 3, y: 0, z: 4 },
+      position: { x: 5, y: 0, z: 4 },
       type: "door",
     },
     "door@3,8,0": {
@@ -64,7 +64,7 @@ export const room = inferRoomJson({
     },
     "door@8,3,0": {
       config: { direction: "left", toRoom: "blacktooth63" },
-      position: { x: 8, y: 3, z: 0 },
+      position: { x: 8, y: 5, z: 0 },
       type: "door",
     },
     "wall@0,0,0:2sckOl": {
@@ -73,7 +73,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,0,0:Z1XoEJK": {
-      config: { direction: "towards", tiles: [], times: { x: 3 } },
+      config: { direction: "towards", tiles: [], times: { x: 5 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -87,8 +87,8 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@5,0,0": {
-      config: { direction: "towards", tiles: [], times: { x: 3 } },
-      position: { x: 5, y: 0, z: 0 },
+      config: { direction: "towards", tiles: [], times: { x: 1 } },
+      position: { x: 7, y: 0, z: 0 },
       type: "wall",
     },
     "wall@5,8,0": {
@@ -103,19 +103,15 @@ export const room = inferRoomJson({
     "wall@8,0,0": {
       config: {
         direction: "left",
-        tiles: ["bars", "bars", "bars"],
-        times: { y: 3 },
+        tiles: ["bars", "bars", "bars", "bars", "bars"],
+        times: { y: 5 },
       },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,5,0": {
-      config: {
-        direction: "left",
-        tiles: ["bars", "bars", "bars"],
-        times: { y: 3 },
-      },
-      position: { x: 8, y: 5, z: 0 },
+      config: { direction: "left", tiles: ["bars"], times: { y: 1 } },
+      position: { x: 8, y: 7, z: 0 },
       type: "wall",
     },
   },

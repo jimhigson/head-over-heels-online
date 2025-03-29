@@ -1,1 +1,8 @@
-[{ "op": "replace", "path": "/color/hue", "value": "cyan" }]
+[
+  {
+    "op": "replace",
+    "path": "/items/wall@2,5,0/config/tiles/0",
+    "value": "window3"
+  },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+]
