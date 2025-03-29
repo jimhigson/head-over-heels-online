@@ -49,7 +49,7 @@ export const room = inferRoomJson({
     },
     "door@0,2,0": {
       config: { direction: "right", toRoom: "blacktooth81" },
-      position: { x: 0, y: 2, z: 0 },
+      position: { x: 0, y: 4, z: 0 },
       type: "door",
     },
     "door@8,2,0": {
@@ -80,18 +80,13 @@ export const room = inferRoomJson({
       type: "monster",
     },
     "wall@0,0,0:2scjgO": {
-      config: { direction: "right", tiles: [], times: { y: 2 } },
+      config: { direction: "right", tiles: [], times: { y: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     "wall@0,0,0:Z1XoDrY": {
       config: { direction: "towards", tiles: [], times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
-      type: "wall",
-    },
-    "wall@0,4,0": {
-      config: { direction: "right", tiles: [], times: { y: 2 } },
-      position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
     "wall@0,6,0": {

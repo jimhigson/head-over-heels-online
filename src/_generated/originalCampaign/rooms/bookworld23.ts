@@ -22,6 +22,11 @@ export const room = inferRoomJson({
       position: { x: 6, y: 2, z: 5 },
       type: "door",
     },
+    extraBookStack: {
+      config: { style: "book", times: { y: 2, z: 5 } },
+      position: { x: 5, y: 2, z: 0 },
+      type: "block",
+    },
     "wall@0,0,0:2scjgO": {
       config: { direction: "right", tiles: [], times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },

@@ -7,6 +7,21 @@ export const room = inferRoomJson({
   floor: "moonbase",
   id: "moonbase30",
   items: {
+    "block@3,3,0": {
+      config: { style: "artificial", times: { y: 2 } },
+      position: { x: 3, y: 2, z: 0 },
+      type: "block",
+    },
+    "block@4,3,1": {
+      config: { style: "artificial", times: { y: 2 } },
+      position: { x: 4, y: 2, z: 1 },
+      type: "block",
+    },
+    "block@5,3,2": {
+      config: { style: "artificial", times: { y: 2 } },
+      position: { x: 5, y: 2, z: 2 },
+      type: "block",
+    },
     "door@2,6,0": {
       config: { direction: "away", toRoom: "moonbase27" },
       position: { x: 2, y: 6, z: 0 },
@@ -14,7 +29,7 @@ export const room = inferRoomJson({
     },
     "door@6,2,0": {
       config: { direction: "left", toRoom: "moonbase31" },
-      position: { x: 6, y: 2, z: 0 },
+      position: { x: 6, y: 2, z: 4 },
       type: "door",
     },
     "wall@0,0,0:2sckiP": {
