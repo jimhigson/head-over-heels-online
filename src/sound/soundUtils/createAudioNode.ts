@@ -5,6 +5,7 @@ export type CreateAudioNodeOptionsObject = {
   soundId: SoundId;
   playbackRate?: number;
   varyPlaybackRate?: boolean;
+  randomiseStartPoint?: boolean;
   loop?: boolean;
   connectTo?: AudioNode;
 };
@@ -14,6 +15,7 @@ export type CreateAudioNodeWithGainOptionsObject = {
   soundId: SoundId;
   playbackRate?: number;
   varyPlaybackRate?: boolean;
+  randomiseStartPoint?: boolean;
   loop?: boolean;
   connectTo?: AudioNode;
 };
@@ -36,6 +38,7 @@ export const createAudioNode = <Opt extends CreateAudioNodeOptions>(
     connectTo,
     loop = false,
     varyPlaybackRate = false,
+    randomiseStartPoint = false,
     gain = 1,
   } = resolvedParam as CreateAudioNodeWithGainOptionsObject;
 
@@ -47,7 +50,7 @@ export const createAudioNode = <Opt extends CreateAudioNodeOptions>(
   node.playbackRate.value =
     varyPlaybackRate ? playbackRate - 0.05 + Math.random() * 0.1 : playbackRate;
 
-  if (loop) {
+  if (loop && randomiseStartPoint) {
     // randomise the start time - otherwise if there are multiple playing at the same time
     // it will sound like one effect
     node.start(0, buffer.duration * Math.random());

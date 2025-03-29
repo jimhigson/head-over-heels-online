@@ -29,7 +29,7 @@ export const useSaveGameOnUnload = (): void => {
     };
     const hold = () => {
       if (document.visibilityState === "hidden") {
-        console.log("holding due to visibilityState=hidden");
+        console.log("pausing due to visibilityState=hidden");
         dispatch(holdPressed("hold"));
         // this is also a good time to save since the user might not come back:
         save();

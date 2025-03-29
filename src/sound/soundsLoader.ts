@@ -1,10 +1,13 @@
-import headWalkSoundUrl from "../../sounds/head-walking.mp3";
-import heelsWalkSoundUrl from "../../sounds/heels-walking.mp3";
+import headWalkSoundUrl from "../../sounds/headWalk.mp3";
+import headJumpSoundUrl from "../../sounds/headJump.mp3";
+import headFallSoundUrl from "../../sounds/headFall.mp3";
+import heelsWalkSoundUrl from "../../sounds/heelsWalk.mp3";
+import heelsJumpSoundUrl from "../../sounds/heelsJump.mp3";
+import heelsFallSoundUrl from "../../sounds/heelsFall.mp3";
 import teleportWarningSirenSoundUrl from "../../sounds/teleportWarningSiren.mp3";
 import helicopterSoundUrl from "../../sounds/helicopter.mp3";
 import switchClickSoundUrl from "../../sounds/switch-shorter.mp3";
 import bonusSoundUrl from "../../sounds/bonus.mp3";
-import dropSoundUrl from "../../sounds/drop2.mp3";
 import carrySoundUrl from "../../sounds/sources/wind-swoosh-short-289744.mp3";
 import teleportInSoundUrl from "../../sounds/teleportIn.mp3";
 import teleportOutSoundUrl from "../../sounds/teleportOut.mp3";
@@ -42,12 +45,15 @@ const loadAndDecode = async (url: string) => {
 const importSoundsOnce = importOnce(async () => {
   return {
     headWalk: await loadAndDecode(headWalkSoundUrl),
+    headJump: await loadAndDecode(headJumpSoundUrl),
+    headFall: await loadAndDecode(headFallSoundUrl),
     heelsWalk: await loadAndDecode(heelsWalkSoundUrl),
+    heelsJump: await loadAndDecode(heelsJumpSoundUrl),
+    heelsFall: await loadAndDecode(heelsFallSoundUrl),
     teleportWarningSiren: await loadAndDecode(teleportWarningSirenSoundUrl),
     helicopter: await loadAndDecode(helicopterSoundUrl),
     switchClick: await loadAndDecode(switchClickSoundUrl),
     bonus: await loadAndDecode(bonusSoundUrl),
-    drop: await loadAndDecode(dropSoundUrl),
     carry: await loadAndDecode(carrySoundUrl),
     teleportIn: await loadAndDecode(teleportInSoundUrl),
     teleportOut: await loadAndDecode(teleportOutSoundUrl),

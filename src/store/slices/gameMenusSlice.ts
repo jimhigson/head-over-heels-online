@@ -131,9 +131,11 @@ export type GameMenusState = {
   currentGame?: SavedGameState;
 
   /**
-   * there is only one saved game state from a fish. Why? Because that saved state
-   * itself inherits the reincarnationPoint, so it naturally creates a linked-list
-   * of saves
+   * The reincarnation point to continue from after losing all lives.
+   *
+   * Recursively (optionally) contains another reincarnationPoint, so it naturally
+   * creates a linked-list of saves. This is how multiple saves are handled from
+   * a single property.
    */
   reincarnationPoint?: SavedGameState;
 

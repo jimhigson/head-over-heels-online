@@ -4,6 +4,43 @@
 
 Differences from the original
 =============================
+
+Colourisation
+-------------
+
+I've kept the sprites as true to the original as was practical,
+and kept their original resolution. All the black pixels have been
+kept from the two-colour graphics, and I've just filled in the
+light pixels:
+
+![2tone] ![colourised]
+(several examples)
+
+All colourisation is to a 16 colour pallette. I wanted to restrict myself
+to graphics that were plausibly creatable for hardware available in the 
+game's commercial lifetime.
+
+![pallette]
+
+Unlike the original, the sprites are not mirrored, so that I can
+apply lighting from a consistent direction. The sprites come to about 55k in total, as a single 640x512 (Amiga original chipset "Hires") PNG.
+
+All graphics edited on an emulated Amiga 4000 using FS-UAE. Converted from iff to png using ffmpeg.
+
+With that 16 colour graphics, I apply some palette swap tricks (emulated
+with pixel shaders since indexed graphics aren't a thing any more) to
+hint at the zx spectrum's monocrhome per-room colours.
+
+This room is magenta:
+![original magenta]
+
+The same room, with magenta highlights
+![room with magenta highlights]
+
+8-way control
+-------------
+![8-way sprites]
+
 Frame Rate
 ----------
 
@@ -42,6 +79,19 @@ To avoid infinite death loops (ie, entering a room and dying repeatedly because 
 
 Credits
 
-- Room data forked from [Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels/tree/master/gamedata) (I converted xml -> json)
+
+- Reference Room data forked from [Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels/tree/master/gamedata) (I converted xml -> json)
+- Some audio files also from the above
 - [sprite rips from Spriters Resource](https://www.spriters-resource.com/zx_spectrum/headoverheels/) of original artwork by [the late](https://www.theregister.com/2021/11/17/rip_bernie_drummond/) Bernie Drummand.
 - Palette swap effects (this is what puts it back into the original zx-spectrum colour palette when the game starts) ([source][./src/filters]) based on GLSL pixel shader fragments forked from [here](https://github.com/pixijs/filters/blob/main/src/color-replace/ColorReplaceFilter.ts)
+
+Technology used
+===============
+
+* Pixijs - all in-game rendering
+* React - menus and dialogs
+* Audacity - sound editing, cleanup etc
+
+Credits
+=======
+
