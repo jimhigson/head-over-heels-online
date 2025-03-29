@@ -47,3 +47,15 @@ Sounds and when/where:
 	- solution - make the player play that sound?
 	- actually, is it only scheduled for deletion?
 	- make the dust cloud that comes after play the sound?
+
+
+1 jump-grace,
+2 inactive-teleporter-bugfix	
+3 rock-music
+4 pen-improvements
+5 safer-spikes
+6 safari-improvements
+7 error-catching2 (depends on rock-music)
+8 jump-sounds (depends on jump-grace, rock-music)
+9 colour-grading
+10 bt-mb-room-tweaks

@@ -1,1 +1,23 @@
-[{ "op": "replace", "path": "/color/hue", "value": "yellow" }]
+[
+  {
+    "op": "add",
+    "path": "/items/portable1",
+    "value": {
+      "config": { "style": "cube" },
+      "isExtra": true,
+      "position": { "x": 5, "y": 7, "z": 0 },
+      "type": "portableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/portable2",
+    "value": {
+      "config": { "style": "cube" },
+      "isExtra": true,
+      "position": { "x": 2, "y": 7, "z": 0 },
+      "type": "portableBlock"
+    }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+]

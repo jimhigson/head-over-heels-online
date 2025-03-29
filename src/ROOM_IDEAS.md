@@ -28,3 +28,6 @@ spiky floor but more interesting)
 * more use of heavy blocks to stop/start lifts
 
 * room where you have to turn monsters on to activate them to work for you (maybe at the right time)
+
+* teleporter that goes to elsewhere in the same room. Needs a way to
+teleport into the the other character as a way to lift them up maybe?
