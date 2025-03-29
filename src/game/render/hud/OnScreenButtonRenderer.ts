@@ -29,6 +29,7 @@ import { emptyObject } from "../../../utils/empty";
 import { showNumberInContainer } from "./showNumberInContainer";
 import type { RoomState } from "../../../model/RoomState";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 
 export type ButtonType = "jump" | "carry" | "fire" | "carryAndJump" | "menu";
 
@@ -98,8 +99,10 @@ const buttonAppearances: {
       standingOnId === null ? null
       : room === undefined ? null
       : room.items[standingOnId];
-    const isStandingOnTeleporter =
-      standingOn === null ? false : standingOn.type === "teleporter";
+    const isStandingOnActiveTeleporter =
+      standingOn === null ? false : (
+        standingOn.type === "teleporter" && teleporterIsActive(standingOn)
+      );
 
     const pressed = button.actions.every(
       (a) => inputStateTracker.currentActionPress(a) !== "released",
@@ -118,9 +121,10 @@ const buttonAppearances: {
     }
 
     if (
-      isStandingOnTeleporter !== currentlyRenderedProps?.standingOnTeleporter
+      isStandingOnActiveTeleporter !==
+      currentlyRenderedProps?.standingOnTeleporter
     ) {
-      if (isStandingOnTeleporter) {
+      if (isStandingOnActiveTeleporter) {
         showOnSurface(
           container,
           createSprite({
@@ -148,7 +152,7 @@ const buttonAppearances: {
       output: container,
       renderProps: {
         pressed,
-        standingOnTeleporter: isStandingOnTeleporter,
+        standingOnTeleporter: isStandingOnActiveTeleporter,
         colourise,
       },
     };

@@ -3,7 +3,8 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { isPlayableItem } from "../../game/physics/itemPredicates";
 import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
-import { createAudioNode } from "../soundUtils/createAudioNode";
+import { createBracketedSound } from "../soundUtils/createBracketedSound";
+import { teleporterIsActive } from "../../game/physics/mechanics/teleporting";
 
 export class TeleporterSoundRenderer<
   RoomId extends string,
@@ -13,10 +14,10 @@ export class TeleporterSoundRenderer<
   public readonly output: GainNode = audioCtx.createGain();
 
   // add the walking buffer sources to here to play them
-  #sirenChannel: GainNode = audioCtx.createGain();
-  #sirenLoop: AudioBufferSourceNode | null = null;
-
-  #currentRenderProps: { stoodOnByPlayer: boolean } | undefined = undefined;
+  #sirenBracket = createBracketedSound({
+    loop: { soundId: "teleportWarningSiren" },
+    connectTo: this.output,
+  });
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<
@@ -24,39 +25,17 @@ export class TeleporterSoundRenderer<
       RoomId,
       RoomItemId
     >,
-  ) {
-    this.#sirenChannel.connect(this.output);
-  }
+  ) {}
 
   tick() {
     const {
-      renderContext: {
-        item: {
-          state: { stoodOnBy },
-        },
-        room,
-      },
+      renderContext: { item, room },
     } = this;
-    const currentlyStoodOnByPlayer =
-      this.#currentRenderProps?.stoodOnByPlayer ?? false;
 
-    const stoodOnByPlayer = iterateStoodOnByItems(stoodOnBy, room).some(
-      isPlayableItem,
+    this.#sirenBracket(
+      teleporterIsActive(item) &&
+        iterateStoodOnByItems(item.state.stoodOnBy, room).some(isPlayableItem),
     );
-
-    if (stoodOnByPlayer && !currentlyStoodOnByPlayer) {
-      this.#sirenLoop = createAudioNode({
-        soundId: "teleportWarningSiren",
-        loop: true,
-        connectTo: this.#sirenChannel,
-      });
-    }
-    if (!stoodOnByPlayer && currentlyStoodOnByPlayer) {
-      this.#sirenLoop?.stop();
-      this.#sirenLoop = null;
-    }
-
-    this.#currentRenderProps = { stoodOnByPlayer };
   }
 
   destroy(): void {}
