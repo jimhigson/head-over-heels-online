@@ -52,16 +52,6 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "deadlyBlock",
     },
-    "deadlyBlock@7,2,0": {
-      config: { style: "spikes" },
-      position: { x: 7, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,4,0": {
-      config: { style: "spikes" },
-      position: { x: 7, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
     "door@3,0,0": {
       config: { direction: "towards", toRoom: "egyptus22" },
       position: { x: 3, y: 0, z: 0 },
@@ -76,6 +66,16 @@ export const room = inferRoomJson({
       config: { gives: "extra-life" },
       position: { x: 0, y: 3, z: 6 },
       type: "pickup",
+    },
+    "spikes@7,2,0": {
+      config: {},
+      position: { x: 7, y: 2, z: 0 },
+      type: "spikes",
+    },
+    "spikes@7,4,0": {
+      config: {},
+      position: { x: 7, y: 4, z: 0 },
+      type: "spikes",
     },
     "wall@0,0,0:2sckiP": {
       config: { direction: "right", tiles: [], times: { y: 6 } },

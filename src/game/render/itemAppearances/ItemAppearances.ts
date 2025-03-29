@@ -176,6 +176,8 @@ export const itemAppearances: {
         times,
       }),
   ),
+  spikes: itemStaticSpriteAppearance("spikes"),
+
   slidingDeadly: singleRenderWithStyleAsTexture(),
   slidingBlock: singleRenderWithStyleAsTexture(),
 

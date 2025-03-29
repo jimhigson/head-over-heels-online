@@ -196,7 +196,7 @@ export const tickItem = <
 ) => {
   if (isPlayableItem(item) && item.state.standingOnItemId !== null) {
     const stoodOn = stoodOnItem(item.state.standingOnItemId, room);
-    if (isDeadly(stoodOn)) {
+    if (isDeadly(stoodOn) || stoodOn.type === "spikes") {
       // the player has a shield that has only just expired - if they are standing on a deadly
       // item, it should kill them. This would normally have already killed them, but it is possible
       // they had a shield that has just expired.

@@ -32,21 +32,6 @@ export const room = inferRoomJson({
       position: { x: 7, y: 7, z: 1 },
       type: "charles",
     },
-    "deadlyBlock@0,1,0": {
-      config: { style: "spikes" },
-      position: { x: 0, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,4,1": {
-      config: { style: "spikes", times: { x: 2 } },
-      position: { x: 1, y: 4, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,7,0": {
-      config: { style: "spikes" },
-      position: { x: 7, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
     "door@3,0,1": {
       config: { direction: "towards", toRoom: "moonbase2" },
       position: { x: 3, y: 0, z: 1 },
@@ -86,6 +71,26 @@ export const room = inferRoomJson({
       },
       position: { x: 0, y: 7, z: 0 },
       type: "movingPlatform",
+    },
+    "spikes@0,1,0": {
+      config: {},
+      position: { x: 0, y: 1, z: 0 },
+      type: "spikes",
+    },
+    "spikes@1,4,1": {
+      config: {},
+      position: { x: 1, y: 4, z: 1 },
+      type: "spikes",
+    },
+    "spikes@2,4,1": {
+      config: {},
+      position: { x: 2, y: 4, z: 1 },
+      type: "spikes",
+    },
+    "spikes@7,7,0": {
+      config: {},
+      position: { x: 7, y: 7, z: 0 },
+      type: "spikes",
     },
     "spring@4,7,0": {
       config: {},

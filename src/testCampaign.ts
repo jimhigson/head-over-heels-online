@@ -1016,8 +1016,8 @@ const rooms = {
         position: { x: 4, y: 10, z: 0 },
       },
       {
-        type: "deadlyBlock",
-        config: { style: "spikes" },
+        type: "spikes",
+        config: {},
         position: { x: 2, y: 10, z: 0 },
       },
       {

@@ -37,15 +37,15 @@ export const room = inferRoomJson({
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "deadlyBlock@4,3,1": {
-      config: { style: "spikes" },
-      position: { x: 4, y: 3, z: 1 },
-      type: "deadlyBlock",
-    },
     "door@8,3,2": {
       config: { direction: "left", toRoom: "safari35" },
       position: { x: 8, y: 3, z: 2 },
       type: "door",
+    },
+    "spikes@4,3,1": {
+      config: {},
+      position: { x: 4, y: 3, z: 1 },
+      type: "spikes",
     },
     "wall@0,0,0:2sckOl": {
       config: { direction: "right", tiles: [], times: { y: 8 } },
