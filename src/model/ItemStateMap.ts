@@ -115,6 +115,10 @@ export type PlayableState<RoomItemId extends string> =
      */
     jumped: boolean;
 
+    /** used for the jump grace period */
+    jumpStartTime: number;
+    jumpStartZ: number;
+
     teleporting: PlayableTeleportingState | null;
   };
 
@@ -131,8 +135,13 @@ export const pokeableToNumber = (a: PokeableNumber): number =>
   // it is ok to use POSITIVE_INFINITY anywhere where it doesn't get serialised
   a === "infinite" ? Number.POSITIVE_INFINITY : a;
 
-type CommonAbilities = {
+export type CommonAbilities = {
   lives: PokeableNumber;
+  /** time specific to this character - how must time has the character experienced? Ie,
+   * long have they been in the currently playing room
+   * during this game? - this is used to know the time remaining on a shield, and other timing-based
+   * code that applies to a player and is sticky when they're not selected
+   */
   gameTime: number;
   /**
    * the time a shield was collected at, or null if no shield. The hud should show

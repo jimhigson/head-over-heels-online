@@ -1,7 +1,10 @@
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import type { PlayableState } from "../../../model/ItemStateMap";
+import type {
+  CommonAbilities,
+  PlayableState,
+} from "../../../model/ItemStateMap";
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { CharacterName } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
@@ -24,8 +27,11 @@ export const defaultPlayableRootAttributes = {
   aabb: smallItemAabb,
 } satisfies Partial<PlayableItem<CharacterName, string>>;
 
-export const defaultPlayerState = () =>
-  ({
+export const defaultPlayerState = () => {
+  const infiniteLivesPoke = selectIsInfiniteLivesPoke(store.getState());
+  type ReturnType = Partial<PlayableState<string> & CommonAbilities>;
+
+  return {
     action: "idle",
     jumped: false,
     teleporting: null,
@@ -38,12 +44,20 @@ export const defaultPlayerState = () =>
       gravity: originXyz,
       movingFloor: originXyz,
     },
-  }) satisfies Partial<PlayableState<string>>;
+    switchedToAt: neverTime,
+    lastDiedAt: neverTime,
+    gameTime: 0,
+    jumpStartTime: neverTime,
+    lives:
+      infiniteLivesPoke ? ("infinite" as const) : originalGameStartingLives,
+    // since a jump hasn't started this value doesn't matter:
+    jumpStartZ: 0,
+  } satisfies ReturnType;
+};
 
 export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
   jsonItem: JsonItem<"player", RoomId, RoomItemId>,
 ): PlayableItem<CharacterName, RoomId, RoomItemId> => {
-  const infiniteLivesPoke = selectIsInfiniteLivesPoke(store.getState());
   const infiniteDoughnutsPoke = selectIsInfiniteDoughnutsPoke(store.getState());
 
   if (jsonItem.config.which === "head") {
@@ -60,14 +74,10 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         hasHooter: false,
         gameWalkDistance: 0,
         fastStepsStartedAtDistance: neverTime,
-        lives: infiniteLivesPoke ? "infinite" : originalGameStartingLives,
         shieldCollectedAt: neverTime,
         doughnuts: infiniteDoughnutsPoke ? "infinite" : 0,
         doughnutLastFireTime: neverTime,
-        switchedToAt: neverTime,
         position: positionCentredInBlock(jsonItem),
-        lastDiedAt: neverTime,
-        gameTime: 0,
       },
     };
   } else {
@@ -84,12 +94,8 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         carrying: null,
         hasBag: false,
         bigJumps: 0,
-        lives: infiniteLivesPoke ? "infinite" : originalGameStartingLives,
         shieldCollectedAt: neverTime,
-        switchedToAt: neverTime,
         position: positionCentredInBlock(jsonItem),
-        lastDiedAt: neverTime,
-        gameTime: 0,
       },
     };
   }

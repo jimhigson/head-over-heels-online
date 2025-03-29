@@ -20,6 +20,8 @@ import {
 } from "../mechanicsConstants";
 import { teleporterIsActive } from "./teleporting";
 
+const jumpDelayGrace = 1000 / 12;
+
 const jumpInitialVelocity = (apexZ: number) => {
   // Calculate the time to reach the apex in milliseconds in the original game:
   const framesToApex = apexZ / originalGameJumpPxPerFrame;
@@ -78,6 +80,22 @@ const isJumpOffable = <RoomItemId extends string>(
   return true;
 };
 
+const eligibleForJumpStartGrace = (
+  playableItem: PlayableItem<CharacterName, string, string>,
+) => {
+  return (
+    // we have jumped...
+    playableItem.state.jumped &&
+    // ... but we haven't moved up
+    playableItem.state.position.z === playableItem.state.jumpStartZ &&
+    // and we're still in the jump grace period
+    playableItem.state.jumpStartTime + jumpDelayGrace >
+      (playableItem.type === "headOverHeels" ?
+        playableItem.state.head.gameTime
+      : playableItem.state.gameTime)
+  );
+};
+
 export const jumping = <RoomId extends string, RoomItemId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
@@ -90,6 +108,21 @@ export const jumping = <RoomId extends string, RoomItemId extends string>(
   const { inputStateTracker } = gameState;
 
   const standingOn = stoodOnItem(standingOnItemId, room);
+
+  if (eligibleForJumpStartGrace(playableItem)) {
+    console.info("jump grace");
+    // provide a 'grace' period after jumping where if the player hasn't started to ride due to
+    // collision with an item above them, they still get the whole jump velocity when they are free
+    // - this makes head's laders easier to climb at higher frame rates where it's much harder to press
+    // on the exact frame
+    const velZ = getJumpInitialVelocity(playableItem, false);
+    return {
+      movementType: "vel",
+      // restore the initial vertical velocity:
+      vels: { gravity: { x: 0, y: 0, z: velZ } },
+      stateDelta: {},
+    };
+  }
 
   const startingAJump =
     inputStateTracker.currentActionPress("jump") !== "released" &&
@@ -119,6 +152,11 @@ export const jumping = <RoomId extends string, RoomItemId extends string>(
     stateDelta: {
       action: "moving",
       jumped: true,
+      jumpStartZ: playableItem.state.position.z,
+      jumpStartTime:
+        playableItem.type === "headOverHeels" ?
+          playableItem.state.head.gameTime
+        : playableItem.state.gameTime,
     },
   };
 };
