@@ -1,5 +1,6 @@
 import type { Xml2JsonRoom } from "./readToJson";
-import { readMapToJson, roomNameFromXmlFilename } from "./readToJson";
+import { readMapToJson } from "./readToJson";
+import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 import { readdir } from "node:fs/promises";
 import { convertRoomId } from "./convertRoomId";
 import type { DirectionXy4 } from "../utils/vectors/vectors";

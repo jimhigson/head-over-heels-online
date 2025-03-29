@@ -9,8 +9,8 @@ import {
   type CompassDirectionsNESW,
   type CompassDirections,
   type Xml2JsonRoom,
-  roomNameFromXmlFilename,
 } from "./readToJson";
+import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 
 export const convertDoor = (
   map: MapXml2Json,

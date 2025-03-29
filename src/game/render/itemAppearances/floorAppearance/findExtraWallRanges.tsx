@@ -1,5 +1,5 @@
 import type { JsonItem } from "../../../../model/json/JsonItem";
-import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
+import type { DirectionXy4, Xyz } from "../../../../utils/vectors/vectors";
 
 export type ExtraWallRanges =
   | {
@@ -36,14 +36,14 @@ export const findExtraWallRanges = (
       ranges[direction][0] = Math.min(ranges[direction][0], y);
       ranges[direction][1] = Math.max(
         ranges[direction][1],
-        y + (times?.y ?? 1) - 1,
+        y + ((times as Partial<Xyz>)?.y ?? 1) - 1,
       );
     } else if (direction === "towards" || direction === "away") {
       if (!ranges[direction]) ranges[direction] = [Infinity, -Infinity];
       ranges[direction][0] = Math.min(ranges[direction][0], x);
       ranges[direction][1] = Math.max(
         ranges[direction][1],
-        x + (times?.x ?? 1) - 1,
+        x + ((times as Partial<Xyz>)?.x ?? 1) - 1,
       );
     }
   }

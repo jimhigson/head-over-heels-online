@@ -7,8 +7,28 @@ export const room = inferRoomJson({
   floor: "penitentiary",
   id: "penitentiary18fish",
   items: {
+    block2: {
+      config: { disappearing: "onStand", style: "organic" },
+      position: { x: 7, y: 4, z: 3 },
+      type: "block",
+    },
+    block3: {
+      config: { style: "organic", times: { x: 6 } },
+      position: { x: 8, y: 4, z: 3 },
+      type: "block",
+    },
+    block4: {
+      config: { disappearing: "onStand", style: "organic" },
+      position: { x: 14, y: 4, z: 3 },
+      type: "block",
+    },
+    block5: {
+      config: { style: "organic" },
+      position: { x: 15, y: 4, z: 3 },
+      type: "block",
+    },
     "block@0,4,3": {
-      config: { style: "organic", times: { x: 16 } },
+      config: { style: "organic", times: { x: 7 } },
       position: { x: 0, y: 4, z: 3 },
       type: "block",
     },
@@ -31,6 +51,21 @@ export const room = inferRoomJson({
       config: { style: "sticks" },
       position: { x: 11, y: 1, z: 0 },
       type: "portableBlock",
+    },
+    supportTowers0: {
+      config: { style: "tower", times: { x: 2, z: 3 } },
+      position: { x: 0, y: 4, z: 0 },
+      type: "block",
+    },
+    supportTowers1: {
+      config: { style: "tower", times: { x: 2, z: 3 } },
+      position: { x: 7, y: 4, z: 0 },
+      type: "block",
+    },
+    supportTowers2: {
+      config: { style: "tower", times: { x: 2, z: 3 } },
+      position: { x: 14, y: 4, z: 0 },
+      type: "block",
     },
     "teleporter@0,4,4": {
       config: { toPosition: { x: 0, y: 3, z: 4 }, toRoom: "penitentiary30" },

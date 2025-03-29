@@ -61,7 +61,10 @@ export type ItemConfigMap<
     */
     relativePoint: Xyz;
   };
-  wall: ConsolidatableConfig & {
+  wall: {
+    // walls are slightly different from other consolidatable - they can
+    // only repeat in one direction
+    times?: { x: number } | { y: number };
     tiles: Array<Wall<ScN>>;
     /** side of the room the wall is on (not the side it is facing) */
     direction: DirectionXy4;

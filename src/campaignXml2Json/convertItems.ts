@@ -9,7 +9,8 @@ import {
   parseXmlWallName,
 } from "./convertWallName";
 import type { MapXml2Json, Xml2JsonRoom } from "./readToJson";
-import { readRoomToXmlJson, roomNameFromXmlFilename } from "./readToJson";
+import { readRoomToXmlJson } from "./readToJson";
+import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 import chalk from "chalk";
 import type { Xml2JsonItem, XmlItemMonsterBehaviour } from "./Xml2JsonItem";
 import { itemKey } from "../utils/keyItems";
