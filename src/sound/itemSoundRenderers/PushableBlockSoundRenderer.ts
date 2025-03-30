@@ -24,10 +24,12 @@ export class PushableBlockSoundRenderer<
     >,
   ) {
     if (renderContext.item.config.style === "stepStool") {
-      this.scrapeBracketed = createBracketedSound({
-        loop: { soundId: "stepStoolScraping" },
-        connectTo: this.output,
-      });
+      this.scrapeBracketed = createBracketedSound(
+        {
+          loop: { soundId: "stepStoolScraping" },
+        },
+        this.output,
+      );
       this.output.gain.value = 0.4;
     }
   }

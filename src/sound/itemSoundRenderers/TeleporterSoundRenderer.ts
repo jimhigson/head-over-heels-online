@@ -14,10 +14,12 @@ export class TeleporterSoundRenderer<
   public readonly output: GainNode = audioCtx.createGain();
 
   // add the walking buffer sources to here to play them
-  #sirenBracket = createBracketedSound({
-    loop: { soundId: "teleportWarningSiren" },
-    connectTo: this.output,
-  });
+  #sirenBracket = createBracketedSound(
+    {
+      loop: { soundId: "teleportWarningSiren" },
+    },
+    this.output,
+  );
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<

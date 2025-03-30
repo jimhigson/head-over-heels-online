@@ -18,17 +18,21 @@ export class CharlesSoundRenderer<
   #servoChannel: GainNode = audioCtx.createGain();
   #collisionChannel: GainNode = audioCtx.createGain();
 
-  #servoBracketed = createBracketedSound({
-    start: { soundId: "servoStart", playbackRate: 0.5 },
-    loop: { soundId: "servoLoop", playbackRate: 0.5 },
-    stop: { soundId: "servoStop", playbackRate: 0.5 },
-    connectTo: this.#servoChannel,
-  });
+  #servoBracketed = createBracketedSound(
+    {
+      start: { soundId: "servoStart", playbackRate: 0.5 },
+      loop: { soundId: "servoLoop", playbackRate: 0.5 },
+      stop: { soundId: "servoStop", playbackRate: 0.5 },
+    },
+    this.#servoChannel,
+  );
 
-  #collisionBracketed = createBracketedSound({
-    start: { soundId: "metalHit" },
-    connectTo: this.#collisionChannel,
-  });
+  #collisionBracketed = createBracketedSound(
+    {
+      start: { soundId: "metalHit" },
+    },
+    this.#collisionChannel,
+  );
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<

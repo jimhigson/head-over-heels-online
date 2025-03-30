@@ -24,17 +24,19 @@ export class PlayableSoundRenderer<
   #fallBracketedSound: BracketedSound;
 
   #carryChannel: GainNode = audioCtx.createGain();
-  #carryBracketedSound = createBracketedSound({
-    start: {
-      soundId: "carry",
-      playbackRate: 0.95,
+  #carryBracketedSound = createBracketedSound(
+    {
+      start: {
+        soundId: "carry",
+        playbackRate: 0.95,
+      },
+      stop: {
+        soundId: "carry",
+        playbackRate: 1.05,
+      },
     },
-    stop: {
-      soundId: "carry",
-      playbackRate: 1.05,
-    },
-    connectTo: this.#carryChannel,
-  });
+    this.#carryChannel,
+  );
 
   #currentRenderProps: {
     teleportingPhase: "in" | "out" | null;
@@ -59,26 +61,32 @@ export class PlayableSoundRenderer<
     this.#carryChannel.connect(this.output);
 
     const name = renderContext.item.type;
-    this.#walkBracketedSound = createBracketedSound({
-      loop: {
-        soundId: `${name === "headOverHeels" ? "heels" : renderContext.item.type}Walk`,
+    this.#walkBracketedSound = createBracketedSound(
+      {
+        loop: {
+          soundId: `${name === "headOverHeels" ? "heels" : renderContext.item.type}Walk`,
+        },
       },
-      connectTo: this.#walkChannel,
-    });
+      this.#walkChannel,
+    );
 
-    this.#jumpBracketedSound = createBracketedSound({
-      start: {
-        soundId: `${name === "headOverHeels" ? "head" : renderContext.item.type}Jump`,
+    this.#jumpBracketedSound = createBracketedSound(
+      {
+        start: {
+          soundId: `${name === "headOverHeels" ? "head" : renderContext.item.type}Jump`,
+        },
       },
-      connectTo: this.#jumpChannel,
-    });
+      this.#jumpChannel,
+    );
 
-    this.#fallBracketedSound = createBracketedSound({
-      loop: {
-        soundId: `${name === "headOverHeels" ? "head" : renderContext.item.type}Fall`,
+    this.#fallBracketedSound = createBracketedSound(
+      {
+        loop: {
+          soundId: `${name === "headOverHeels" ? "head" : renderContext.item.type}Fall`,
+        },
       },
-      connectTo: this.#jumpChannel,
-    });
+      this.#jumpChannel,
+    );
   }
 
   tick() {

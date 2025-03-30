@@ -56,3 +56,15 @@ conveyor (start/stop/end)
 bongo
     pond5 wood-bongo-balloon-pop-perc-sound-effect-302012587_nw_prev.m4a
     tuncated, re-encoded, mono
+
+
+homing bot: 
+    detect 
+        metal-detector-metal-detector-security-sound-effect-080617930_nw_prev.m4a
+    move:
+        https://www.pond5.com/sound-effects/item/44788116-rhythmic-glitch-robot-loop    
+        already short, but shortened a lot more!
+
+computer bot:
+    robot-move-loop-3-sound-effect-008166645_nw_prev
+    much shortened
