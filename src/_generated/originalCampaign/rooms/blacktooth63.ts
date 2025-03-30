@@ -9,17 +9,17 @@ export const room = inferRoomJson({
   items: {
     "block@6,0,3": {
       config: { style: "artificial", times: { y: 2 } },
-      position: { x: 6, y: 0, z: 3 },
+      position: { x: 7, y: 0, z: 3 },
       type: "block",
     },
     "block@7,0,3": {
       config: { disappearing: "onStand", style: "artificial" },
-      position: { x: 7, y: 0, z: 3 },
+      position: { x: 6, y: 0, z: 3 },
       type: "block",
     },
     "block@7,1,3": {
       config: { disappearing: "onStand", style: "artificial" },
-      position: { x: 7, y: 1, z: 3 },
+      position: { x: 6, y: 1, z: 3 },
       type: "block",
     },
     "door@0,0,0": {
