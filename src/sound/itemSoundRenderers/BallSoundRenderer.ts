@@ -8,10 +8,12 @@ export class BallSoundRenderer<RoomId extends string, RoomItemId extends string>
 {
   public readonly output: GainNode = audioCtx.createGain();
 
-  #brackets = createBracketedSound({
-    loop: { soundId: "rollingBallLoop", playbackRate: 0.5 },
-    connectTo: this.output,
-  });
+  #brackets = createBracketedSound(
+    {
+      loop: { soundId: "rollingBallLoop", playbackRate: 0.5 },
+    },
+    this.output,
+  );
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<

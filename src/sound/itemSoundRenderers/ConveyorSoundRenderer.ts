@@ -13,12 +13,14 @@ export class ConveyorSoundRenderer<
 {
   public readonly output: GainNode = audioCtx.createGain();
 
-  #bracketedSound = createBracketedSound({
-    start: { soundId: "conveyorStart", playbackRate },
-    loop: { soundId: "conveyorLoop", playbackRate },
-    stop: { soundId: "conveyorEnd", playbackRate },
-    connectTo: this.output,
-  });
+  #bracketedSound = createBracketedSound(
+    {
+      start: { soundId: "conveyorStart", playbackRate },
+      loop: { soundId: "conveyorLoop", playbackRate },
+      stop: { soundId: "conveyorEnd", playbackRate },
+    },
+    this.output,
+  );
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<

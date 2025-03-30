@@ -21,14 +21,12 @@ export type CreateAudioNodeWithGainOptionsObject = {
 };
 
 export type CreateAudioNodeOptions =
-  | CreateAudioNodeWithGainOptionsObject
-  | CreateAudioNodeOptionsObject
-  | SoundId;
+  //| CreateAudioNodeWithGainOptionsObject
+  CreateAudioNodeOptionsObject | SoundId;
 
-export const createAudioNode = <Opt extends CreateAudioNodeOptions>(
-  param: Opt,
-): Opt extends CreateAudioNodeWithGainOptionsObject ? GainNode
-: AudioBufferSourceNode => {
+export const createAudioNode = (
+  param: CreateAudioNodeOptions,
+): AudioBufferSourceNode => {
   const resolvedParam: CreateAudioNodeOptionsObject =
     typeof param === "string" ? { soundId: param as SoundId } : param;
 
@@ -39,8 +37,7 @@ export const createAudioNode = <Opt extends CreateAudioNodeOptions>(
     loop = false,
     varyPlaybackRate = false,
     randomiseStartPoint = false,
-    gain = 1,
-  } = resolvedParam as CreateAudioNodeWithGainOptionsObject;
+  } = resolvedParam;
 
   const node = audioCtx.createBufferSource();
   const buffer = loadedSounds()[soundId];
@@ -58,17 +55,6 @@ export const createAudioNode = <Opt extends CreateAudioNodeOptions>(
     node.start();
   }
 
-  if (gain !== 1) {
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.value = gain;
-    node.connect(gainNode);
-    if (connectTo !== undefined) gainNode.connect(connectTo);
-    return gainNode as Opt extends CreateAudioNodeWithGainOptionsObject ?
-      GainNode
-    : AudioBufferSourceNode;
-  } else {
-    if (connectTo !== undefined) node.connect(connectTo);
-    return node as Opt extends CreateAudioNodeWithGainOptionsObject ? GainNode
-    : AudioBufferSourceNode;
-  }
+  if (connectTo !== undefined) node.connect(connectTo);
+  return node;
 };
