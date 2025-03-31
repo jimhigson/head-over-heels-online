@@ -18,6 +18,7 @@ import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperor
 import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
 import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
+import { MapDialog } from "./dialogs/map/MapDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -43,34 +44,36 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
   }
 
   switch (topOpenMenu.menuId) {
+    case "controlOptions":
+      return <ControlOptionsDialog />;
+    case "crowns":
+      return <CrownsDialog playMusic={topOpenMenu.menuParam.playMusic} />;
+    case "emulatedResolution":
+      return <EmulatedResolutionDialog />;
+    case "errorCaught":
+      return <ErrorCaughtDialog {...topOpenMenu.menuParam} />;
+    case "hold":
+      return <HoldDialog />;
+    case "inputPreset":
+      return <InputPresetDialog />;
+    case "installGuide":
+      return <MarkdownDialog pageName="installGuide" />;
     case "mainMenu":
       return <MainMenuDialog />;
+    case "map":
+      return <MapDialog />;
+    case "modernisationOptions":
+      return <ModernisationOptionsDialog />;
+    case "offerReincarnation":
+      return <OfferReincarnationDialog />;
+    case "proclaimEmperor":
+      return <ProclaimEmperorDialog />;
     case "quitGameConfirm":
       return <QuitGameConfirmDialog />;
     case "readTheManual":
       return <ReadTheManualDialog />;
-    case "crowns":
-      return <CrownsDialog playMusic={topOpenMenu.menuParam.playMusic} />;
     case "score":
       return <ScoreDialog />;
-    case "hold":
-      return <HoldDialog />;
-    case "modernisationOptions":
-      return <ModernisationOptionsDialog />;
-    case "emulatedResolution":
-      return <EmulatedResolutionDialog />;
-    case "controlOptions":
-      return <ControlOptionsDialog />;
-    case "inputPreset":
-      return <InputPresetDialog />;
-    case "proclaimEmperor":
-      return <ProclaimEmperorDialog />;
-    case "offerReincarnation":
-      return <OfferReincarnationDialog />;
-    case "errorCaught":
-      return <ErrorCaughtDialog {...topOpenMenu.menuParam} />;
-    case "installGuide":
-      return <MarkdownDialog pageName="installGuide" />;
     default:
       topOpenMenu.menuId satisfies never;
       return (

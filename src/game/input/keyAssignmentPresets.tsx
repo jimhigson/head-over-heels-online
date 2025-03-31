@@ -95,6 +95,9 @@ const gamepadAssignment: InputAssignmentPreset = {
           standardControllerLayout.select,
         ],
       },
+      map: {
+        gamepadButtons: [standardControllerLayout.lb],
+      },
       toggleColourisation: {
         gamepadButtons: [standardControllerLayout.lt],
       },
@@ -201,6 +204,9 @@ const defaultAssignment: InputAssignmentPreset = {
         },
         hold: {
           keys: ["F8", "H", "Numpad."],
+        },
+        map: {
+          keys: ["M"],
         },
       },
     },

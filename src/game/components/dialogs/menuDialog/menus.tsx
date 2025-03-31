@@ -13,14 +13,15 @@ export const dialogIds = [
   "errorCaught",
   "hold",
   "inputPreset",
+  "installGuide",
   "mainMenu",
+  "map",
   "modernisationOptions",
   "offerReincarnation",
   "proclaimEmperor",
   "quitGameConfirm",
   "readTheManual",
   "score",
-  "installGuide",
   ...markdownDialogIds,
 ] as const;
 

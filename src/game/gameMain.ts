@@ -42,16 +42,18 @@ export const gameMain = async <RoomId extends string>(
     },
   });
 
-  const savedGame = store.getState().gameMenus
+  const savedGameToContinueFrom = store.getState().gameMenus
     .currentGame as SavedGameState<RoomId>;
 
   const gameState = loadGameState({
     campaign,
     inputStateTracker,
-    savedGame,
+    savedGame: savedGameToContinueFrom,
   });
-  if (savedGame !== undefined) {
-    store.dispatch(gameRestoreFromSave(savedGame.store.gameMenus));
+  if (savedGameToContinueFrom !== undefined) {
+    store.dispatch(
+      gameRestoreFromSave(savedGameToContinueFrom.store.gameMenus),
+    );
   } else {
     store.dispatch(roomExplored(gameState.characterRooms.head!.id));
     store.dispatch(roomExplored(gameState.characterRooms.heels!.id));

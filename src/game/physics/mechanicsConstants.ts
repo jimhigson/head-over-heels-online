@@ -121,3 +121,4 @@ export const afterDeathInvulnerabilityFlashPeriod = 200;
  * items pushing items pushing items
  */
 export const maxPushRecursionDepth = 8;
+export const wallRenderHeight = 50;
