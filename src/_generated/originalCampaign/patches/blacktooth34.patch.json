@@ -1,6 +1,11 @@
 [
   {
     "op": "add",
+    "path": "/items/door@3,8,2/config/meta",
+    "value": { "toSubRoom": "left" }
+  },
+  {
+    "op": "add",
     "path": "/items/block@5,7,0/config/disappearing",
     "value": "onStand"
   },

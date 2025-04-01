@@ -50,6 +50,10 @@ export type ItemConfigMap<
     toRoom: RoomId;
     // the direction this door takes the character when they walk through it
     direction: DirectionXy4;
+
+    meta?: {
+      toSubRoom?: string;
+    };
   };
   doorFrame: DoorFrameConfig<RoomId>;
   doorLegs: DoorLegsConfig;

@@ -1,6 +1,11 @@
 [
   {
     "op": "add",
+    "path": "/items/door@0,2,0/config/meta",
+    "value": { "toSubRoom": "right" }
+  },
+  {
+    "op": "add",
     "path": "/items/extraBall",
     "value": {
       "config": {},

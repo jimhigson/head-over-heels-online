@@ -1,9 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const specialRoomNames = {
-  penitentiary19: "penitentiaryThePit",
-  moonbase20: "moonbaseArrow1",
-  moonbase23: "moonbaseArrow2",
-  blacktooth86: "blacktoothGuardian",
+  penitentiary19: "penitentiary19thePit",
+  moonbase20: "moonbase20arrow",
+  moonbase23: "moonbase23arrow",
+  blacktooth86: "blacktooth86guardian",
+  blacktooth35: "blacktooth35double",
+  blacktooth40fish: "blacktooth40doubleFish",
+  blacktooth62fish: "blacktooth62doubleFish",
 };
 
 export const roomNameFromXmlFilename = (xmlFileName: string) => {
