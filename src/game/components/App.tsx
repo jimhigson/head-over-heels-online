@@ -3,7 +3,7 @@ import { Route } from "wouter";
 import { SpritePage } from "../../pages/SpritePage.tsx";
 import { Provider } from "react-redux";
 import { CssVariables } from "./CssVariables.tsx";
-import { GamePage } from "../../pages/GamePage.tsx";
+import { GamePage } from "../../pages/gamePage/GamePage.tsx";
 import { store } from "../../store/store.ts";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { useEffect } from "react";

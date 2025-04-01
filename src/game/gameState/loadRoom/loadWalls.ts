@@ -9,13 +9,14 @@ import {
 } from "../../../utils/vectors/vectors";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
+import {
+  defaultRoomHeightBlocks,
+  wallRenderHeight,
+} from "../../physics/mechanicsConstants";
 import { multiplyBoundingBox } from "../../collision/boundingBoxes";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
-
-const wallRenderHeight = 50;
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal

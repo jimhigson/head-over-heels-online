@@ -18,6 +18,7 @@ export const booleanActions = [
   "menu_openOrExit",
   // only exist the menu - can share gamepad buttons with in-game controls
   "menu_exit",
+  "map",
   ...directionsXy4,
 ] as const;
 export type BooleanAction = (typeof booleanActions)[number];

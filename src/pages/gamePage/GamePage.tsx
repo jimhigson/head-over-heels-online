@@ -1,29 +1,30 @@
 import { useEffect, useState, Suspense, lazy } from "react";
-import { type GameApi } from "../game/GameApi.tsx";
+import { type GameApi } from "../../game/GameApi.tsx";
 
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
-import { GameApiProvider } from "../game/components/GameApiContext.tsx";
-import { useAppSelector } from "../store/hooks.ts";
-import { ConnectInputToStore } from "../store/storeFlow/ConnectInputToStore.tsx";
-import { Dialogs } from "../game/components/dialogs/menuDialog/Dialogs.tsx";
-import { useInputStateTracker } from "../game/input/InputStateProvider.tsx";
+import { GameApiProvider } from "../../game/components/GameApiContext.tsx";
+import { useAppSelector } from "../../store/hooks.ts";
+import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
+import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
+import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import {
   useCheatsOn,
   useEmulatedResolutionName,
   useIsGameRunning,
-} from "../store/selectors.ts";
-import type { OriginalCampaignRoomId } from "../_generated/originalCampaign/OriginalCampaignRoomId.ts";
-import { detectDeviceType } from "../utils/detectDeviceType.tsx";
-import { resolutions } from "../originalGame.ts";
-import type Cheats from "../game/components/cheats/Cheats.tsx";
-import { importOriginalCampaign } from "../_generated/originalCampaign/campaign.import.ts";
-import { importCheats } from "../game/components/cheats/Cheats.import.ts";
-import { importGameMain } from "../game/gameMain.import.ts";
-import { load as loadSpritesheet } from "../sprites/spriteSheet";
-import { importTestCampaign } from "../testCampaign.import.ts";
-import { useLoading } from "../game/components/LoadingContext.tsx";
-import { importOnce } from "../utils/importOnce.ts";
-import { loadSounds } from "../sound/soundsLoader.ts";
+} from "../../store/selectors.ts";
+import type { OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId.ts";
+import { detectDeviceType } from "../../utils/detectDeviceType.tsx";
+import { resolutions } from "../../originalGame.ts";
+import type Cheats from "../../game/components/cheats/Cheats.tsx";
+import { importOriginalCampaign } from "../../_generated/originalCampaign/campaign.import.ts";
+import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
+import { importGameMain } from "../../game/gameMain.import.ts";
+import { load as loadSpritesheet } from "../../sprites/spriteSheet.ts";
+import { importTestCampaign } from "../../testCampaign.import.ts";
+import { useLoading } from "../../game/components/LoadingContext.tsx";
+import { importOnce } from "../../utils/importOnce.ts";
+import { loadSounds } from "../../sound/soundsLoader.ts";
+import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
@@ -128,9 +129,11 @@ export const GamePage = () => {
 
   const cheatsOn = useCheatsOn();
   const gameApi = useGame();
-  const { cssUpscale, canvasSize, rotate90 } = useAppSelector(
-    (state) => state.gameMenus.upscale,
+  const canvasSize = useAppSelector(
+    (state) => state.gameMenus.upscale.canvasSize,
   );
+
+  const canvasInlineStyle = useCanvasInlineStyle();
 
   usePageAsAnApp();
   useEffect(() => {
@@ -150,20 +153,7 @@ export const GamePage = () => {
 
   return (
     <>
-      <div
-        style={{
-          //transformOrigin: "center",
-          // using scale3d (not scale) to try to force hardware acceleration of the scaling
-          transform:
-            rotate90 ?
-              `scale(${cssUpscale}) rotate(90deg) translate(0, -${canvasSize.y}px)`
-            : `scale(${cssUpscale})`,
-          width: canvasSize.x,
-          height: canvasSize.y,
-        }}
-        className="origin-top-left"
-        ref={setGameDiv}
-      />
+      <div style={canvasInlineStyle} ref={setGameDiv} />
       <GameApiProvider gameApi={gameApi}>
         <ConnectInputToStore />
         <Dialogs />

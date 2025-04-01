@@ -1,1 +1,8 @@
-[{ "op": "replace", "path": "/floor", "value": "bookworld" }]
+[
+  {
+    "op": "add",
+    "path": "/items/door@1,8,5/config/meta",
+    "value": { "toSubRoom": "left" }
+  },
+  { "op": "replace", "path": "/floor", "value": "bookworld" }
+]

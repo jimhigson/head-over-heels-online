@@ -430,6 +430,27 @@ export const gameMenusSlice = createSlice({
         }
       }
     },
+    mapPressed(state) {
+      const showingAMenu = state.openMenus.length > 0;
+
+      if (showingAMenu) {
+        const showingMapAlready = state.openMenus[0]?.menuId === "map";
+        if (showingMapAlready) {
+          // exit
+          state.openMenus = [];
+        }
+        // else do nothing if hold pressed while in menus
+      } else {
+        // show the map:
+        state.openMenus = [
+          {
+            menuId: "map",
+            scrollableSelection: false,
+            menuParam: emptyObject,
+          },
+        ];
+      }
+    },
     setShowBoundingBoxes(
       state,
       { payload: showBoundingBoxes }: PayloadAction<ShowBoundingBoxes>,
@@ -608,6 +629,7 @@ export const {
   holdPressed,
   inputAddedDuringAssignment,
   keyAssignmentPresetChosen,
+  mapPressed,
   menuOpenOrExitPressed,
   nextInputDirectionMode,
   reincarnationAccepted,

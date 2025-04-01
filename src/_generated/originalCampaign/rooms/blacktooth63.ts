@@ -28,7 +28,11 @@ export const room = inferRoomJson({
       type: "door",
     },
     "door@8,0,5": {
-      config: { direction: "left", toRoom: "blacktooth62fish" },
+      config: {
+        direction: "left",
+        meta: { toSubRoom: "right" },
+        toRoom: "blacktooth62fish",
+      },
       position: { x: 8, y: 0, z: 5 },
       type: "door",
     },

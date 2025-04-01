@@ -1,5 +1,6 @@
 import {
   holdPressed,
+  mapPressed,
   menuOpenOrExitPressed,
   setEmulatedResolution,
   toggleBoolean,
@@ -38,6 +39,12 @@ export const useUniversalKeys = () => {
   useActionTap({
     action: "hold",
     handler: useDispatchActionCallback(holdPressed, "toggle"),
+    disabled: assigningKeys,
+  });
+
+  useActionTap({
+    action: "map",
+    handler: useDispatchActionCallback(mapPressed),
     disabled: assigningKeys,
   });
 

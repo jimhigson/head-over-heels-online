@@ -6,6 +6,24 @@ import type { JsonItemUnion } from "./json/JsonItem";
 import type { Floor } from "./modelTypes";
 import { iterate } from "../utils/iterate";
 
+export type SubRooms = Record<
+  string,
+  {
+    /**
+     * the grid position (on the map) of this sub-room
+     */
+    gridPosition: Xy;
+    /**
+     * where the sub-room actually starts and ends on the map (so we
+     * can work out which sub-room items are in)
+     */
+    physicalPosition: {
+      from: Xy;
+      to: Xy;
+    };
+  }
+>;
+
 /**
  * serialisation format of a room to be stored in while not in play
  */
@@ -45,6 +63,14 @@ export type RoomJson<
    * position-dependent
    */
   items: Record<RoomItemId, JsonItemUnion<RoomId, NoInfer<RoomItemId>>>;
+
+  meta?: {
+    /**
+     * subRooms are used for the map for rooms which were modelled as multiple rooms
+     * in the original game
+     */
+    subRooms?: SubRooms;
+  };
 };
 export type AnyRoomJson = RoomJson<string, string, SceneryName>;
 
