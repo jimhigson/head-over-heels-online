@@ -4,5 +4,27 @@
     "path": "/items/monster@11,0,0/config/startDirection",
     "value": "away"
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" }
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "subRooms": {
+        "left": {
+          "gridPosition": { "x": 1, "y": 0 },
+          "physicalPosition": {
+            "from": { "x": 8, "y": 0 },
+            "to": { "x": 16, "y": 6 }
+          }
+        },
+        "right": {
+          "gridPosition": { "x": 0, "y": 0 },
+          "physicalPosition": {
+            "from": { "x": 0, "y": 0 },
+            "to": { "x": 8, "y": 6 }
+          }
+        }
+      }
+    }
+  }
 ]

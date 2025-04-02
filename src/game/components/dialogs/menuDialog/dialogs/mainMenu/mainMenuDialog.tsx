@@ -83,6 +83,13 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               onSelect={useDispatchActionCallback(gameStarted)}
             />
             <MenuItem
+              id="map"
+              label="use the Map"
+              onSelect={useDispatchActionCallback(goToSubmenu, "map")}
+              doubleHeightWhenFocussed
+              hidden={!isGameRunning}
+            />
+            <MenuItem
               id="viewCrowns"
               label="Progress so far"
               onSelect={showProgress}

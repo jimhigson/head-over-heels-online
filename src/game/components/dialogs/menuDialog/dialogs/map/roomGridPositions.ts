@@ -62,10 +62,27 @@ const getBoundary = (
   );
 };
 
+export function* roomGridPositions<RoomId extends string>(
+  options: RoomGridPositionsOptions<RoomId>,
+): Generator<RoomGridPositionSpec<RoomId>> {
+  try {
+    yield* _roomGridPositions(options);
+  } catch (e) {
+    const error = e as Error;
+
+    throw new Error(
+      `\n  error in recursion ${options.roomId}/${options.subRoomId ?? "*"} ---found--v \n ${error.message}`,
+      {
+        cause: error,
+      },
+    );
+  }
+}
+
 /**
  * position all rooms on a 3d cartesian grid
  */
-export function* roomGridPositions<RoomId extends string>({
+function* _roomGridPositions<RoomId extends string>({
   roomId,
   subRoomId = "*",
   campaign,
@@ -81,6 +98,7 @@ export function* roomGridPositions<RoomId extends string>({
   if (visited[roomId] === undefined) {
     visited[roomId] = {};
   }
+
   visited[roomId][subRoomId] = true;
 
   const room = campaign.rooms[roomId];
@@ -90,9 +108,6 @@ export function* roomGridPositions<RoomId extends string>({
       .filter((item) => item.type === "door")
       .filter((door) => jsonItemIsInSubRoom(door, subRoomId, room)),
   ];
-  // if (subRoomId !== "*") {
-  //   console.log("subroom", subRoomId, "in room", roomId, "has doors", doors);
-  // }
 
   const gridPosition: Xyz = addXyz(
     previousRoomGridPosition,
@@ -100,6 +115,18 @@ export function* roomGridPositions<RoomId extends string>({
   );
 
   const subRooms = room.meta?.subRooms;
+  if (subRooms) {
+    if (subRoomId === "*") {
+      throw new Error(
+        `subRoomId '*' means 'all' and is not allowed for big rooms. Must be one of the sub-rooms in ${roomId}: ${Object.keys(subRooms)}`,
+      );
+    }
+    if (!subRooms[subRoomId]) {
+      throw new Error(
+        `Sub-room ${subRoomId} not found in room ${roomId}. Available sub-rooms: ${Object.keys(subRooms)}`,
+      );
+    }
+  }
   const currentSubRoomGridPosition = subRooms?.[subRoomId].gridPosition;
 
   const boundaries: Boundaries = {
@@ -153,10 +180,11 @@ export function* roomGridPositions<RoomId extends string>({
 
   // branch above:
   if (room.roomAbove !== undefined) {
-    const { roomAbove } = room;
+    const { roomAbove, subRoomAbove } = room;
 
     yield* roomGridPositions({
       roomId: roomAbove,
+      subRoomId: subRoomAbove,
       campaign,
       visited,
       direction: "up",
@@ -166,9 +194,10 @@ export function* roomGridPositions<RoomId extends string>({
 
   // branch below:
   if (room.roomBelow !== undefined) {
-    const { roomBelow } = room;
+    const { roomBelow, subRoomBelow } = room;
     yield* roomGridPositions({
       roomId: roomBelow,
+      subRoomId: subRoomBelow,
       campaign,
       visited,
       direction: "down",

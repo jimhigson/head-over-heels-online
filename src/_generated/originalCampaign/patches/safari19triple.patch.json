@@ -1,6 +1,11 @@
 [
   {
     "op": "add",
+    "path": "/items/door@3,0,0/config/meta",
+    "value": { "toSubRoom": "right" }
+  },
+  {
+    "op": "add",
     "path": "/items/keepMonsterInPlace0",
     "value": {
       "config": { "axis": "y" },
@@ -33,6 +38,35 @@
       "config": { "axis": "y" },
       "position": { "x": 8, "y": 3, "z": 0 },
       "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "subRooms": {
+        "left": {
+          "gridPosition": { "x": 1, "y": 0 },
+          "physicalPosition": {
+            "from": { "x": 8, "y": 0 },
+            "to": { "x": 16, "y": 4 }
+          }
+        },
+        "middle": {
+          "gridPosition": { "x": 0, "y": 0 },
+          "physicalPosition": {
+            "from": { "x": 0, "y": 0 },
+            "to": { "x": 8, "y": 4 }
+          }
+        },
+        "right": {
+          "gridPosition": { "x": 0, "y": 1 },
+          "physicalPosition": {
+            "from": { "x": 0, "y": 4 },
+            "to": { "x": 8, "y": 10 }
+          }
+        }
+      }
     }
   }
 ]

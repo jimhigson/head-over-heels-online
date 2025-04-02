@@ -539,6 +539,22 @@ export const room = inferRoomJson({
       type: "wall",
     },
   },
+  meta: {
+    subRooms: {
+      left: {
+        gridPosition: { x: 1, y: 0 },
+        physicalPosition: { from: { x: 6, y: 0 }, to: { x: 12, y: 8 } },
+      },
+      middle: {
+        gridPosition: { x: 1, y: 1 },
+        physicalPosition: { from: { x: 6, y: 8 }, to: { x: 12, y: 16 } },
+      },
+      right: {
+        gridPosition: { x: 0, y: 1 },
+        physicalPosition: { from: { x: 0, y: 8 }, to: { x: 6, y: 16 } },
+      },
+    },
+  },
   planet: "moonbase",
   size: { x: 12, y: 16 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "moonbase">;

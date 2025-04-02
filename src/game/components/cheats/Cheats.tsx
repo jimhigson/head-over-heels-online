@@ -4,7 +4,6 @@ import {
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
 
-import { selectCurrentRoomState } from "../../gameState/GameState";
 import {
   selectCurrentPlayableItem,
   selectPlayableItem,
@@ -44,6 +43,7 @@ import {
 } from "../../../store/slices/gameMenusSlice";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { getRoomItem } from "../../../model/RoomState";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;

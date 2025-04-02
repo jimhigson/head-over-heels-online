@@ -42,6 +42,12 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
+    extraShield: {
+      config: { gives: "shield" },
+      isExtra: true,
+      position: { x: 15, y: 5, z: 3 },
+      type: "pickup",
+    },
     "pickup@12,4,4": {
       config: { gives: "reincarnation" },
       position: { x: 12, y: 4, z: 4 },
@@ -130,6 +136,18 @@ export const room = inferRoomJson({
       config: { direction: "towards", tiles: [], times: { x: 11 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
+    },
+  },
+  meta: {
+    subRooms: {
+      left: {
+        gridPosition: { x: 1, y: 0 },
+        physicalPosition: { from: { x: 8, y: 0 }, to: { x: 16, y: 6 } },
+      },
+      right: {
+        gridPosition: { x: 0, y: 0 },
+        physicalPosition: { from: { x: 0, y: 0 }, to: { x: 8, y: 6 } },
+      },
     },
   },
   planet: "penitentiary",

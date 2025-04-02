@@ -1,7 +1,5 @@
-import {
-  selectCurrentRoomState,
-  type GameState,
-} from "../game/gameState/GameState";
+import { type GameState } from "../game/gameState/GameState";
+import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
 import type { ItemState } from "../model/ItemInPlay";
 import type { TestRoomId } from "./basicRoom";
 

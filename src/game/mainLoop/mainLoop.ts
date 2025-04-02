@@ -1,7 +1,6 @@
 import type { Application, Filter, Ticker } from "pixi.js";
 import { Container } from "pixi.js";
 import type { GameState } from "../gameState/GameState";
-import { selectCurrentRoomState } from "../gameState/GameState";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { progressGameState } from "./progressGameState";
 import { RoomRenderer } from "../render/roomRenderer";
@@ -21,6 +20,7 @@ import {
 } from "../../store/slices/gameMenusSlice";
 import { pick } from "../../utils/pick";
 import { audioCtx } from "../../sound/audioCtx";
+import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,

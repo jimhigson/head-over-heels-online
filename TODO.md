@@ -13,9 +13,6 @@
 
 ### Big ideas
 
-[,XL] a map
-    [ ] a mini-map
-
 [,XL] level editor
 
 [,?] own levels

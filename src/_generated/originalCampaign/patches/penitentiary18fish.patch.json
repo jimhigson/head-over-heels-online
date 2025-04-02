@@ -48,6 +48,16 @@
   },
   {
     "op": "add",
+    "path": "/items/extraShield",
+    "value": {
+      "config": { "gives": "shield" },
+      "isExtra": true,
+      "position": { "x": 15, "y": 5, "z": 3 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/supportTowers0",
     "value": {
       "config": { "style": "tower", "times": { "x": 2, "z": 3 } },
@@ -74,5 +84,27 @@
     }
   },
   { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "subRooms": {
+        "left": {
+          "gridPosition": { "x": 1, "y": 0 },
+          "physicalPosition": {
+            "from": { "x": 8, "y": 0 },
+            "to": { "x": 16, "y": 6 }
+          }
+        },
+        "right": {
+          "gridPosition": { "x": 0, "y": 0 },
+          "physicalPosition": {
+            "from": { "x": 0, "y": 0 },
+            "to": { "x": 8, "y": 6 }
+          }
+        }
+      }
+    }
+  }
 ]

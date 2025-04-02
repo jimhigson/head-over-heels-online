@@ -1,6 +1,11 @@
 [
   {
     "op": "add",
+    "path": "/items/door@3,8,2/config/meta",
+    "value": { "toSubRoom": "right" }
+  },
+  {
+    "op": "add",
     "path": "/items/extraBarrier1",
     "value": {
       "config": { "axis": "y", "times": { "y": 8 } },

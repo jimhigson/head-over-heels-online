@@ -1,11 +1,38 @@
 [
   {
     "op": "add",
+    "path": "/items/door@0,16,2/config/meta",
+    "value": { "toSubRoom": "middle" }
+  },
+  {
+    "op": "add",
     "path": "/items/extraSupports",
     "value": {
       "config": { "style": "tower", "times": { "y": 4, "z": 2 } },
       "position": { "x": 0, "y": 0, "z": 0 },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "subRooms": {
+        "left": {
+          "gridPosition": { "x": 0, "y": 0 },
+          "physicalPosition": {
+            "from": { "x": 0, "y": 0 },
+            "to": { "x": 2, "y": 8 }
+          }
+        },
+        "right": {
+          "gridPosition": { "x": 0, "y": 1 },
+          "physicalPosition": {
+            "from": { "x": 0, "y": 8 },
+            "to": { "x": 2, "y": 16 }
+          }
+        }
+      }
     }
   }
 ]

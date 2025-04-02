@@ -3,8 +3,6 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import { selectCurrentRoomState } from "../gameState/GameState";
-
 import type { PlayableItem } from "../physics/itemPredicates";
 import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
@@ -31,6 +29,7 @@ import {
 import type { ItemInPlay } from "../../model/ItemInPlay";
 import { blockSizePx } from "../../sprites/spritePivots";
 import { testFrameRates } from "../../_testUtils/testFrameRates";
+import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {

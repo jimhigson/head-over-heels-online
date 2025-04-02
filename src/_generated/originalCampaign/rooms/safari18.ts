@@ -53,7 +53,11 @@ export const room = inferRoomJson({
       type: "door",
     },
     "door@0,16,2": {
-      config: { direction: "away", toRoom: "safari19triple" },
+      config: {
+        direction: "away",
+        meta: { toSubRoom: "middle" },
+        toRoom: "safari19triple",
+      },
       position: { x: 0, y: 16, z: 2 },
       type: "door",
     },
@@ -92,6 +96,18 @@ export const room = inferRoomJson({
       },
       position: { x: 2, y: 0, z: 0 },
       type: "wall",
+    },
+  },
+  meta: {
+    subRooms: {
+      left: {
+        gridPosition: { x: 0, y: 0 },
+        physicalPosition: { from: { x: 0, y: 0 }, to: { x: 2, y: 8 } },
+      },
+      right: {
+        gridPosition: { x: 0, y: 1 },
+        physicalPosition: { from: { x: 0, y: 8 }, to: { x: 2, y: 16 } },
+      },
     },
   },
   planet: "safari",

@@ -23,7 +23,11 @@ export const room = inferRoomJson({
       type: "block",
     },
     "door@3,0,3": {
-      config: { direction: "towards", toRoom: "safari19triple" },
+      config: {
+        direction: "towards",
+        meta: { toSubRoom: "right" },
+        toRoom: "safari19triple",
+      },
       position: { x: 3, y: 0, z: 3 },
       type: "door",
     },
