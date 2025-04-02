@@ -25,7 +25,7 @@ export const SpriteInRoom = ({
       className={className}
     >
       <div
-        className={`sprite zx:sprite-revert-to-two-tone ml-[calc(50px-var(--scale)*var(--w)/2)] mt-[calc(100px-var(--scale)*var(--h)-8px)] ${
+        className={`sprite zx:sprite-revert-to-two-tone ml-[calc(50px-var(--scale)*var(--w)/2)] mt-[calc(100px-var(--scale)*var(--h))] ${
           className
         }`}
       />
@@ -35,13 +35,15 @@ export const SpriteInRoom = ({
 
 export const NotableItemSvg = <RoomId extends string>({
   notableItem: item,
+  className,
 }: {
   notableItem: NotableItem<RoomId>;
+  className?: string;
 }) => {
   const spriteClassName =
     // the biggest sprites get scaled down so all sprites are about the same size:
-    item.type === "teleporter" ? "texture-teleporter [--scale:1.66]"
-    : item.type === "hushPuppy" ? "texture-hushPuppy [--scale:1.66]"
+    item.type === "teleporter" ? "texture-teleporter"
+    : item.type === "hushPuppy" ? "texture-hushPuppy"
     : (
       item.config.gives === "extra-life" ||
       item.config.gives === "fast" ||
@@ -62,5 +64,5 @@ export const NotableItemSvg = <RoomId extends string>({
       : "texture-crown.dark"
     : "texture-block.organic";
 
-  return <SpriteInRoom className={`${spriteClassName}`} />;
+  return <SpriteInRoom className={`${className ?? ""} ${spriteClassName}`} />;
 };
