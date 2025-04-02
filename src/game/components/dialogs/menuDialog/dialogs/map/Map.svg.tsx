@@ -1,21 +1,28 @@
-import { useMemo } from "react";
-import type { Campaign } from "../../../../../../model/modelTypes";
-import { roomGridPositions } from "./roomGridPositions";
+import type { RoomGridPositionSpec } from "./roomGridPositions";
 import { type Xyz } from "../../../../../../utils/vectors/vectors";
 import { RoomSvg } from "./Room.svg";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
 import { roomGridSizeXY, roomGridSizeZ } from "./mapConstants";
-import { sortRoomGridPositions } from "./sortRoomGridPositions";
-import type { GameState } from "../../../../../gameState/GameState";
-import { inPlayItemIsInSubRoom } from "./itemIsInSubRoom";
 import { useResizeDetector } from "react-resize-detector";
+import type {
+  Campaign,
+  CharacterName,
+} from "../../../../../../model/modelTypes";
+import type { PickupsCollected } from "../../../../../gameState/GameState";
+import { emptyObject } from "../../../../../../utils/empty";
 
 export type MapSvgProps<RoomId extends string> = {
   className?: string;
-  startRoomId: RoomId;
-  startSubRoomId: string;
   campaign: Campaign<RoomId>;
-  gameState?: GameState<RoomId>;
+  pickupsCollected: PickupsCollected<RoomId>;
+  roomGridPositionSpecs: Array<RoomGridPositionSpec<RoomId>>;
+  currentCharacterName?: CharacterName;
+  headRoomId?: RoomId;
+  heelsRoomId?: RoomId;
+  headOverHeelsRoomId?: RoomId;
+  headSubRoomId?: string;
+  heelsSubRoomId?: string;
+  headOverHeelsSubRoomId?: string;
 };
 
 const svgTranslateXyz = (xyz: Xyz) => {
@@ -24,25 +31,19 @@ const svgTranslateXyz = (xyz: Xyz) => {
 };
 
 export const MapSvg = <RoomId extends string>({
-  campaign,
-  startRoomId,
-  startSubRoomId,
   className,
-  gameState,
+  campaign,
+  pickupsCollected,
+  roomGridPositionSpecs,
+  currentCharacterName,
+  headRoomId,
+  headSubRoomId,
+  heelsRoomId,
+  heelsSubRoomId,
+  headOverHeelsRoomId,
+  headOverHeelsSubRoomId,
 }: MapSvgProps<RoomId>) => {
   const { width, height, ref } = useResizeDetector({});
-
-  const gridPositionSpecs = useMemo(() => {
-    return sortRoomGridPositions(
-      roomGridPositions({
-        campaign,
-        roomId: startRoomId,
-        subRoomId: startSubRoomId,
-      }),
-    );
-  }, [campaign, startRoomId, startSubRoomId]);
-
-  const characterRooms = gameState?.characterRooms;
 
   return (
     <svg className={className || ""} ref={ref}>
@@ -53,46 +54,25 @@ export const MapSvg = <RoomId extends string>({
           : ""
         }
       >
-        {gridPositionSpecs.map((gridPositionSpec) => {
+        {roomGridPositionSpecs.map((gridPositionSpec) => {
           const { roomId, subRoomId, gridPosition } = gridPositionSpec;
 
           const hasHead =
-            (characterRooms?.head &&
-              characterRooms.head.roomJson.id === roomId &&
-              inPlayItemIsInSubRoom(
-                characterRooms.head.items.head,
-                subRoomId,
-                characterRooms.head.roomJson,
-              ) &&
-              (gameState?.currentCharacterName === "head" ?
-                "active"
-              : "present")) ??
+            (roomId === headRoomId &&
+              subRoomId === headSubRoomId &&
+              (currentCharacterName === "head" ? "active" : "present")) ??
             false;
 
           const hasHeels =
-            (characterRooms?.heels &&
-              characterRooms.heels.roomJson.id === roomId &&
-              inPlayItemIsInSubRoom(
-                characterRooms.heels.items.heels,
-                subRoomId,
-                characterRooms.heels.roomJson,
-              ) &&
-              (gameState?.currentCharacterName === "heels" ?
-                "active"
-              : "present")) ??
+            (roomId === heelsRoomId &&
+              subRoomId === heelsSubRoomId &&
+              (currentCharacterName === "heels" ? "active" : "present")) ??
             false;
 
           const hasHeadOverHeels =
-            (characterRooms?.headOverHeels &&
-              characterRooms.headOverHeels.roomJson.id === roomId &&
-              inPlayItemIsInSubRoom(
-                characterRooms.headOverHeels.items.headOverHeels,
-                subRoomId,
-                characterRooms.headOverHeels.roomJson,
-              ) &&
-              (gameState?.currentCharacterName === "headOverHeels" ?
-                "active"
-              : "present")) ??
+            (roomId === headOverHeelsRoomId &&
+              subRoomId === headOverHeelsSubRoomId &&
+              "active") ??
             false;
 
           return (
@@ -107,7 +87,8 @@ export const MapSvg = <RoomId extends string>({
             >
               <RoomSvg
                 roomGridPositionSpec={gridPositionSpec}
-                campaign={campaign}
+                roomPickupsCollected={pickupsCollected[roomId] ?? emptyObject}
+                roomJson={campaign.rooms[roomId]}
                 hasHead={hasHead}
                 hasHeels={hasHeels}
                 hasHeadOverHeels={hasHeadOverHeels}

@@ -1,18 +1,24 @@
 import { useMemo } from "react";
 import { lengthXy } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
-import { roomGridSizeXY, roomGridSizeZ } from "./mapConstants";
+import {
+  roomBack,
+  doorwayGap,
+  roomFront,
+  roomGridSizeXY,
+  roomGridSizeZ,
+} from "./mapConstants";
 import { iterate } from "../../../../../../utils/iterate";
-import { objectValues } from "iter-tools";
+import { objectEntries } from "iter-tools";
 import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
-import type { Campaign } from "../../../../../../model/modelTypes";
 import type { ZxSpectrumRoomColour } from "../../../../../../originalGame";
 import { roundForSvg, project } from "./svgHelpers";
 import type { NotableItem } from "./NotableItem";
-import { NotableItemSvg, SpriteInRoom } from "./NotableItem";
+import { SpriteInRoom } from "./NotableItem";
+import { NotableItemsCollection } from "./NotableItemsCollection";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
-
-const doorwayGap = 0.6;
+import type { RoomJson } from "../../../../../../model/RoomJson";
+import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 
 const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
@@ -32,19 +38,17 @@ L ${project({ x: roomGridSizeXY, y: 0 })}
 z`;
 
 const floorColourFillPathD = (boundaries: Boundaries) => {
-  const front = roomGridSizeXY * ((1 - doorwayGap) / 2);
-  const back = roomGridSizeXY - front;
-  const smallSquareSize = front;
+  const smallSquareSize = roomFront;
 
   const awayOpen = boundaries.away !== "wall";
   const towardsOpen = boundaries.towards !== "wall";
   const leftOpen = boundaries.left !== "wall";
   const rightOpen = boundaries.right !== "wall";
 
-  const away = awayOpen ? roomGridSizeXY : back;
-  const towards = towardsOpen ? 0 : front;
-  const left = leftOpen ? roomGridSizeXY : back;
-  const right = rightOpen ? 0 : front;
+  const away = awayOpen ? roomGridSizeXY : roomBack;
+  const towards = towardsOpen ? 0 : roomFront;
+  const left = leftOpen ? roomGridSizeXY : roomBack;
+  const right = rightOpen ? 0 : roomFront;
 
   let shape = `
 M ${project({})}
@@ -72,19 +76,19 @@ ${smallSquareLines}`;
 
   if (rightOpen && awayOpen) {
     shape += `
-M ${project({ y: back })}
+M ${project({ y: roomBack })}
 ${smallSquareLines}`;
   }
 
   if (awayOpen && leftOpen) {
     shape += `
-M ${project({ x: back, y: back })}    
+M ${project({ x: roomBack, y: roomBack })}    
 ${smallSquareLines}`;
   }
 
   if (leftOpen && towardsOpen) {
     shape += `
-M ${project({ x: back })}    
+M ${project({ x: roomBack })}    
 ${smallSquareLines}`;
   }
 
@@ -104,17 +108,14 @@ z
     return wall;
   }
 
-  // cut a doorway into the wall
-  const front = roomGridSizeXY * ((1 - doorwayGap) / 2);
-  const back = roomGridSizeXY - front;
   return (
     wall +
     `
-M ${project({ x: front, y: roomGridSizeXY })}
-L ${project({ x: front, y: roomGridSizeXY, z: roomGridSizeZ })}
-L ${project({ x: back, y: roomGridSizeXY, z: roomGridSizeZ })}
-L ${project({ x: back, y: roomGridSizeXY })}
-L ${project({ x: front, y: roomGridSizeXY })}
+M ${project({ x: roomFront, y: roomGridSizeXY })}
+L ${project({ x: roomFront, y: roomGridSizeXY, z: roomGridSizeZ })}
+L ${project({ x: roomBack, y: roomGridSizeXY, z: roomGridSizeZ })}
+L ${project({ x: roomBack, y: roomGridSizeXY })}
+L ${project({ x: roomFront, y: roomGridSizeXY })}
   `
   );
 };
@@ -132,10 +133,11 @@ L 0, 0
 
 type RoomSvgProps<RoomId extends string> = {
   roomGridPositionSpec: RoomGridPositionSpec<RoomId>;
-  campaign: Campaign<RoomId>;
+  roomJson: RoomJson<RoomId, string>;
   hasHead?: false | "active" | "present";
   hasHeels?: false | "active" | "present";
   hasHeadOverHeels?: false | "active" | "present";
+  roomPickupsCollected: RoomPickupsCollected;
 };
 
 const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
@@ -156,23 +158,44 @@ const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
 };
 
 export const RoomSvg = <RoomId extends string>({
-  roomGridPositionSpec: { boundaries, roomId, subRoomId },
-  campaign,
+  roomGridPositionSpec: { boundaries, subRoomId },
+  roomPickupsCollected,
+  roomJson,
   hasHead,
   hasHeels,
   hasHeadOverHeels,
 }: RoomSvgProps<RoomId>) => {
-  const room = campaign.rooms[roomId];
-  const { id, roomAbove, roomBelow, color } = campaign.rooms[roomId];
+  const { id, roomAbove, roomBelow, color } = roomJson;
 
   // find some notable items:
   const mappableItems = useMemo<Array<NotableItem<RoomId>>>(() => {
-    const inRoomJson = iterate(objectValues(room.items)).filter((item) =>
-      jsonItemIsNotable(item, subRoomId, room),
-    );
+    let foundHushPuppy = false;
+    let foundTeleporter = false;
 
-    return [...inRoomJson];
-  }, [room, subRoomId]);
+    const nonCollectedNotableItemsItr = iterate(objectEntries(roomJson.items))
+      .filter(([itemId]) => !roomPickupsCollected[itemId])
+      .map(([_, item]) => item)
+      .filter((item) => {
+        // only allow one hush puppy/teleporter to be found - the map doesn't
+        // need to show multiple of them in a room
+        if (item.type === "hushPuppy") {
+          if (foundHushPuppy) {
+            return false;
+          }
+          foundHushPuppy = true;
+        }
+        if (item.type === "teleporter") {
+          if (foundTeleporter) {
+            return false;
+          }
+          foundTeleporter = true;
+        }
+        return true;
+      })
+      .filter((item) => jsonItemIsNotable(item, subRoomId, roomJson));
+
+    return [...nonCollectedNotableItemsItr];
+  }, [roomJson, roomPickupsCollected, subRoomId]);
 
   return (
     <g
@@ -237,7 +260,7 @@ export const RoomSvg = <RoomId extends string>({
       </g>
 
       {/* characters */}
-      <g className="[--scale:2.5]">
+      <g transform="translate(0,-9)" className="[--scale:2.5]">
         {hasHead && (
           <SpriteInRoom
             className={
@@ -258,21 +281,16 @@ export const RoomSvg = <RoomId extends string>({
         )}
       </g>
       {hasHeadOverHeels && (
-        <g className="[--scale:1.5]">
+        <g transform="translate(0,-16)" className="[--scale:1.5]">
           <SpriteInRoom className="texture-animated-heels.walking.right" />
           <g transform="translate(0, -20)">
             <SpriteInRoom className="texture-animated-head.walking.right" />
           </g>
         </g>
       )}
-      <g className="[--scale:2]">
-        {!hasHead &&
-          !hasHeels &&
-          !hasHeadOverHeels &&
-          mappableItems.map((item, i) => (
-            <NotableItemSvg key={i} notableItem={item} />
-          ))}
-      </g>
+      {!hasHead && !hasHeels && !hasHeadOverHeels && (
+        <NotableItemsCollection notableItems={mappableItems} />
+      )}
 
       {roomAbove && (
         // vertical lines

@@ -1,6 +1,5 @@
 import type { GameState } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
-import { swopPlayables } from "../gameState/mutators/swopCharacters";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { updateStandingOn } from "../gameState/mutators/updateStandingOn";
@@ -32,6 +31,7 @@ import {
   type RoomStateItems,
 } from "../../model/RoomState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 
 const itemHasExpired = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes,
@@ -143,7 +143,7 @@ export const progressGameState = <RoomId extends string>(
     return movedItems;
   }
 
-  // gamespeed is 1 or <1
+  // gamespeed is 1 (normal) or <1
   return _progressGameState(gameState, deltaMS * gameState.gameSpeed);
 };
 
@@ -154,8 +154,6 @@ export const _progressGameState = <
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MovedItems<RoomId, RoomItemId> => {
-  const { inputStateTracker } = gameState;
-
   const room = selectCurrentRoomState(gameState);
 
   if (room === undefined) {
@@ -178,15 +176,7 @@ export const _progressGameState = <
     ]),
   );
 
-  if (inputStateTracker.currentActionPress("swop") === "tap") {
-    swopPlayables(gameState);
-  }
-  if (inputStateTracker.currentActionPress("swop.head") === "tap") {
-    swopPlayables(gameState, "head");
-  }
-  if (inputStateTracker.currentActionPress("swop.heels") === "tap") {
-    swopPlayables(gameState, "heels");
-  }
+  swopPlayablesIfInput(gameState);
 
   for (const item of objectValues(room.items)) {
     if (itemHasExpired(item, room)) {
