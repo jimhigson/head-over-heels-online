@@ -4,7 +4,6 @@ import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { loadGameState } from "./gameState/loadGameState";
 import type { GameApi } from "./GameApi";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
-import { selectCurrentRoomState } from "./gameState/GameState";
 import { MainLoop } from "./mainLoop/mainLoop";
 import type { Xy } from "../utils/vectors/vectors";
 import { TextureStyle } from "pixi.js";
@@ -17,6 +16,7 @@ import {
   roomExplored,
 } from "../store/slices/gameMenusSlice";
 import type { SavedGameState } from "./gameState/saving/SavedGameState";
+import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 

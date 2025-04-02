@@ -1,5 +1,4 @@
 import type { GameState } from "../gameState/GameState";
-import { selectCurrentRoomState } from "../gameState/GameState";
 import { tickItem } from "./tickItem";
 import { swopPlayables } from "../gameState/mutators/swopCharacters";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
@@ -32,6 +31,7 @@ import {
   type RoomState,
   type RoomStateItems,
 } from "../../model/RoomState";
+import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 
 const itemHasExpired = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes,

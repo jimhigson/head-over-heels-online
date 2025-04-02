@@ -77,6 +77,19 @@ Invincibility
 
 To avoid infinite death loops (ie, entering a room and dying repeatedly because there's a monster in the doorway), the player gets a few seconds of invincibility after dying. This is shown by a flash in the player sprite.
 
+Map
+---
+The original game advised you to make a map. The remake has a map. Press `M` (keyboard) or `L1` (gamepad).
+
+![map](map)
+
+Doorways
+--------
+
+The original had a lot of restrictions around doorways - you couldn't change character or pick up
+or drop an item. These restrictions are gone now, but you should still be careful if one character
+pushes another through a door!
+
 Credits
 
 

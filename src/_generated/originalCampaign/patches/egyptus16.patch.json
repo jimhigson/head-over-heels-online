@@ -1,4 +1,9 @@
 [
+  {
+    "op": "add",
+    "path": "/items/door@2,6,1/config/meta",
+    "value": { "toSubRoom": "right" }
+  },
   { "op": "replace", "path": "/items/block@0,5,0/config/times/x", "value": 2 },
   {
     "op": "add",

@@ -4,6 +4,11 @@
     "path": "/items/monster@5,4,1/config/activated",
     "value": "after-player-near"
   },
+  {
+    "op": "add",
+    "path": "/items/door@2,0,0/config/meta",
+    "value": { "toSubRoom": "right" }
+  },
   { "op": "replace", "path": "/color/shade", "value": "dimmed" },
   { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]

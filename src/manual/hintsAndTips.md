@@ -8,7 +8,7 @@
 6. **6** *:* If Head and Heels are in the same room, extra jumping height may be obtained by one jumping off the other’s back.
 7. **7** *:* Find a safe spot and get used to how far Head and Heels may move over the edge of a brick before they fall. This will enable you to make the longest jumps. Both Head and Heels will jump slightly further if they are running as they jump.
 8. **8** *:* Learn the difference in distance and control between Head’s jumps and Heels’s jumps.
-9. **9** *:* Make a map.
+9. **9** *:* This remake comes with a **map**. Use it!
 10. **10** *:* ![](texture-doughnuts?float-right)Do not waste doughnuts; they are not easy to find.
 11. **11** *:* Do not get confused; only Heels may carry anything, and only Head may fire.
 12. **12** *:* ![](texture-spring.released?float-right&relative&z-topSprite)![](texture-cube?float-right&clear-right&relative&bottom-bottomStackPullup)To discover if there is a room above, pile objects as high as possible and jump from the top. If there is a spring in the room, put it on the top for extra jumping height.

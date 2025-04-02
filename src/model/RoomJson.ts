@@ -47,6 +47,7 @@ export type RoomJson<
   planet: ScN;
   floor: Floor;
   roomAbove?: RoomId;
+  subRoomAbove?: string;
   /**
    * usually, the ceiling portal's relative point is the centre of the room. However, in cases
    * where multi-rooms are stitched together into a single room, this relationship is broken.
@@ -54,6 +55,7 @@ export type RoomJson<
    */
   ceilingRelativePoint?: Xy;
   roomBelow?: RoomId;
+  subRoomBelow?: string;
   // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
   // colours in each room
   color: ZxSpectrumRoomColour;

@@ -35,7 +35,7 @@ const collisionSounds: PerMonsterSounds = {
 };
 const turnaroundSounds: PerMonsterSounds = {
   cyberman: { soundId: "jetpackTurnaround", gain: 1.2 },
-  dalek: { soundId: "mojoTurn", gain: 0.1 },
+  dalek: { soundId: "mojoTurn", gain: 0.3 },
 };
 const ambientSounds: PerMonsterSounds = {
   cyberman: { soundId: "jetpackLoop", gain: 0.7 },

@@ -7,5 +7,27 @@
       "position": { "x": 1, "y": 9, "z": 0 },
       "type": "barrier"
     }
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "subRooms": {
+        "left": {
+          "gridPosition": { "x": 0, "y": 0 },
+          "physicalPosition": {
+            "from": { "x": 0, "y": 0 },
+            "to": { "x": 4, "y": 8 }
+          }
+        },
+        "right": {
+          "gridPosition": { "x": 0, "y": 1 },
+          "physicalPosition": {
+            "from": { "x": 0, "y": 8 },
+            "to": { "x": 4, "y": 16 }
+          }
+        }
+      }
+    }
   }
 ]

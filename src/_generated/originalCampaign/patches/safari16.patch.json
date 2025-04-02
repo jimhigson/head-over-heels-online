@@ -1,6 +1,11 @@
 [
   { "op": "replace", "path": "/items/monster@2,6,0/position/x", "value": 1.5 },
   {
+    "op": "add",
+    "path": "/items/door@1,0,0/config/meta",
+    "value": { "toSubRoom": "right" }
+  },
+  {
     "op": "replace",
     "path": "/items/deadlyBlock@3,1,0/position/x",
     "value": 2.5

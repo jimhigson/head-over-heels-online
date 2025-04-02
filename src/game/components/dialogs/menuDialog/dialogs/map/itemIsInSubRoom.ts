@@ -2,6 +2,8 @@ import type { UnionOfAllItemInPlayTypes } from "../../../../../../model/ItemInPl
 import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
 import type { RoomJson } from "../../../../../../model/RoomJson";
 import { blockSizePx } from "../../../../../../sprites/spritePivots";
+import { keysIter } from "../../../../../../utils/entries";
+import { iterate } from "../../../../../../utils/iterate";
 import type { Xy } from "../../../../../../utils/vectors/vectors";
 
 export const blockXyIsInSubRoom = <RoomId extends string>(
@@ -34,7 +36,7 @@ export const jsonItemIsInSubRoom = <RoomId extends string>(
 };
 
 export const inPlayItemIsInSubRoom = <RoomId extends string>(
-  { state: { position } }: UnionOfAllItemInPlayTypes,
+  { state: { position } }: UnionOfAllItemInPlayTypes<RoomId>,
   subRoomId: string,
   room: RoomJson<RoomId, string>,
 ) => {
@@ -44,4 +46,27 @@ export const inPlayItemIsInSubRoom = <RoomId extends string>(
   };
 
   return blockXyIsInSubRoom(blockPosition, subRoomId, room);
+};
+
+export const findSubRoomForItem = <RoomId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomId>,
+  room: RoomJson<RoomId, string>,
+): string => {
+  const subRooms = room.meta?.subRooms;
+
+  if (subRooms === undefined) {
+    return "*";
+  }
+
+  const found = iterate(keysIter(subRooms)).find((subRoomId) => {
+    return inPlayItemIsInSubRoom(item, subRoomId, room);
+  });
+
+  if (found === undefined) {
+    throw new Error(
+      `${item.id} not found in any subroom of ${room.id} ${JSON.stringify(item.state.position)} ${JSON.stringify(room.meta?.subRooms)}`,
+    );
+  }
+
+  return found;
 };

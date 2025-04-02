@@ -160,6 +160,18 @@ export const room = inferRoomJson({
       type: "wall",
     },
   },
+  meta: {
+    subRooms: {
+      left: {
+        gridPosition: { x: 1, y: 0 },
+        physicalPosition: { from: { x: 6, y: 0 }, to: { x: 12, y: 6 } },
+      },
+      right: {
+        gridPosition: { x: 0, y: 0 },
+        physicalPosition: { from: { x: 0, y: 0 }, to: { x: 6, y: 6 } },
+      },
+    },
+  },
   planet: "bookworld",
   size: { x: 12, y: 6 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "bookworld">;

@@ -1,1 +1,4 @@
-[{ "op": "replace", "path": "/items/lift@3,3,0/config/bottom", "value": -7 }]
+[
+  { "op": "replace", "path": "/items/lift@3,3,0/config/bottom", "value": -7 },
+  { "op": "add", "path": "/subRoomBelow", "value": "left" }
+]

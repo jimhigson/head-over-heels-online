@@ -28,7 +28,11 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "door@3,8,0": {
-      config: { direction: "away", toRoom: "moonbase33triple" },
+      config: {
+        direction: "away",
+        meta: { toSubRoom: "left" },
+        toRoom: "moonbase33triple",
+      },
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },

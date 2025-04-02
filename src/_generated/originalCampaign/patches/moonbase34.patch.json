@@ -1,1 +1,8 @@
-[{ "op": "replace", "path": "/color/hue", "value": "cyan" }]
+[
+  {
+    "op": "add",
+    "path": "/items/door@0,1,0/config/meta",
+    "value": { "toSubRoom": "middle" }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+]

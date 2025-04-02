@@ -16,6 +16,11 @@
   { "op": "replace", "path": "/items/door@2,0,4/position/x", "value": 4 },
   {
     "op": "add",
+    "path": "/items/door@2,0,4/config/meta",
+    "value": { "toSubRoom": "right" }
+  },
+  {
+    "op": "add",
     "path": "/items/hushPuppy4",
     "value": {
       "config": { "times": { "x": 3 } },

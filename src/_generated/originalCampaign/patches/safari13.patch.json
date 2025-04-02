@@ -2,6 +2,11 @@
   { "op": "replace", "path": "/items/wall@0,4,0/position/y", "value": 2 },
   { "op": "replace", "path": "/items/wall@0,4,0/config/times/y", "value": 4 },
   { "op": "remove", "path": "/items/wall@0,0,0:2scjgO" },
+  {
+    "op": "add",
+    "path": "/items/door@3,6,2/config/meta",
+    "value": { "toSubRoom": "left" }
+  },
   { "op": "replace", "path": "/items/door@0,2,2/position/z", "value": 1 },
   { "op": "replace", "path": "/items/door@0,2,2/position/y", "value": 0 },
   { "op": "replace", "path": "/items/block@0,3,0/position/y", "value": 0 },
