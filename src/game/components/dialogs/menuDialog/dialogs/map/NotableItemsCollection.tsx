@@ -29,6 +29,12 @@ const layouts = {
   3: [
     translateXyz(
       addXy(roomCentre, {
+        x: radiusFromCentreWith4,
+        y: radiusFromCentreWith4,
+      }),
+    ),
+    translateXyz(
+      addXy(roomCentre, {
         x: -radiusFromCentreWith4,
         y: radiusFromCentreWith4,
       }),
@@ -36,12 +42,6 @@ const layouts = {
     translateXyz(
       addXy(roomCentre, {
         x: radiusFromCentreWith4,
-        y: -radiusFromCentreWith4,
-      }),
-    ),
-    translateXyz(
-      addXy(roomCentre, {
-        x: -radiusFromCentreWith4,
         y: -radiusFromCentreWith4,
       }),
     ),

@@ -10,6 +10,8 @@ import type {
 } from "../../../../../../model/modelTypes";
 import type { PickupsCollected } from "../../../../../gameState/GameState";
 import { emptyObject } from "../../../../../../utils/empty";
+import { BitmapText } from "../../../../Sprite";
+import { useTotalUpscale } from "../../../../../../store/selectors";
 
 export type MapSvgProps<RoomId extends string> = {
   className?: string;
@@ -23,6 +25,8 @@ export type MapSvgProps<RoomId extends string> = {
   headSubRoomId?: string;
   heelsSubRoomId?: string;
   headOverHeelsSubRoomId?: string;
+  mapTitle: string;
+  textClassName: string;
 };
 
 const svgTranslateXyz = (xyz: Xyz) => {
@@ -42,11 +46,19 @@ export const MapSvg = <RoomId extends string>({
   heelsSubRoomId,
   headOverHeelsRoomId,
   headOverHeelsSubRoomId,
+  mapTitle,
+  textClassName,
 }: MapSvgProps<RoomId>) => {
   const { width, height, ref } = useResizeDetector({});
+  const scale = useTotalUpscale();
 
   return (
     <svg className={className || ""} ref={ref}>
+      <foreignObject width={scale * mapTitle.length * 8} height={scale * 16}>
+        <BitmapText className={`sprites-double-height ${textClassName}`}>
+          {mapTitle}
+        </BitmapText>
+      </foreignObject>
       <g
         transform={
           width !== undefined && height !== undefined ?
