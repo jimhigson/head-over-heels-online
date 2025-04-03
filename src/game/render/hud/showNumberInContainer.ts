@@ -1,9 +1,10 @@
-import type { Container } from "pixi.js";
+import { Container } from "pixi.js";
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { hudCharTextureSize } from "../../../sprites/textureSizes";
 import { iterateToContainer } from "../../iterateToContainer";
 import { createSprite } from "../createSprite";
 import type { PokeableNumber } from "../../../model/ItemStateMap";
+import { hudOutlinedTextFilters, hudTextFilter } from "./hudFilters";
 
 function* characterSprites(n: PokeableNumber | string) {
   const chars =
@@ -37,3 +38,14 @@ export function showTextInContainer(container: Container, n: number | string) {
   iterateToContainer(characterSprites(n), container);
   return container;
 }
+export const makeTextContainer = ({
+  doubleHeight = false,
+  outline = false,
+  label = "text",
+}: { doubleHeight?: boolean; outline?: boolean; label?: string } = {}) => {
+  return new Container({
+    label,
+    filters: outline ? hudOutlinedTextFilters : hudTextFilter,
+    scale: { x: 1, y: doubleHeight ? 2 : 1 },
+  });
+};

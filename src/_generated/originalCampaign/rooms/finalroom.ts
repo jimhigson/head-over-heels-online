@@ -229,6 +229,12 @@ export const room = inferRoomJson({
       type: "sceneryPlayer",
     },
   },
+  meta: {
+    nonContiguousRelationship: {
+      gridOffset: { x: -2, y: 0, z: 0 },
+      with: { room: "blacktooth83tofreedom" },
+    },
+  },
   planet: "jail",
   size: { x: 12, y: 8 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "jail">;

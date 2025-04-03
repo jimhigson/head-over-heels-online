@@ -31,6 +31,12 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
+    extraLanding: {
+      config: { style: "book", times: { z: 4 } },
+      isExtra: true,
+      position: { x: 0, y: 4, z: 0 },
+      type: "block",
+    },
     "teleporter@6,3,0": {
       config: {
         times: { x: 2, y: 2 },

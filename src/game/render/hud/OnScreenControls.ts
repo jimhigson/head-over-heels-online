@@ -83,6 +83,11 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
           colourise,
           inputStateTracker,
         }),
+        map: new OnScreenButtonRenderer({
+          button: { which: "map", actions: ["map"], id: "map" },
+          colourise,
+          inputStateTracker,
+        }),
       } satisfies {
         [BT in ButtonType]: OnScreenButtonRenderer<BT, RoomId, RoomItemId>;
       },
@@ -97,11 +102,16 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
     const { mainButtonNest, joystick } = this.#hudElements;
 
-    for (const b of objectValues(buttons)) {
-      if (b.renderContext.button.which === "menu") {
-        this.#container.addChild(buttons.menu.output);
+    for (const {
+      renderContext: {
+        button: { which },
+      },
+      output,
+    } of objectValues(buttons)) {
+      if (which === "menu" || which === "map") {
+        this.#container.addChild(output);
       } else {
-        mainButtonNest.addChild(b.output);
+        mainButtonNest.addChild(output);
       }
     }
 
@@ -112,6 +122,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
     buttons.menu.output.x = 24;
     buttons.menu.output.y = 24;
+    buttons.map.output.y = 16;
 
     this.#container.addChild(mainButtonNest);
     this.#container.addChild(joystick.output);
@@ -158,6 +169,8 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
     this.#hudElements.joystick.output.x = joystickX;
     this.#hudElements.joystick.output.y = screenSize.y - joystickYFromBottom;
+
+    this.#hudElements.buttons.map.output.x = screenSize.x - 4 * 8;
   }
 
   tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>): void {

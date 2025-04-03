@@ -38,5 +38,15 @@
       "position": { "x": 3, "y": 7, "z": 0 },
       "type": "pickup"
     }
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "nonContiguousRelationship": {
+        "gridOffset": { "x": 1, "y": -2, "z": 0 },
+        "with": { "room": "blacktooth9" }
+      }
+    }
   }
 ]

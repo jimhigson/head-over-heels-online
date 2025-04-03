@@ -37,6 +37,28 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3, z: 0 },
       type: "lift",
     },
+    patroller: {
+      config: {
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "left",
+        which: "turtle",
+      },
+      isExtra: true,
+      position: { x: 0, y: 0, z: 1 },
+      type: "monster",
+    },
+    patroller2: {
+      config: {
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "right",
+        which: "turtle",
+      },
+      isExtra: true,
+      position: { x: 7, y: 7, z: 1 },
+      type: "monster",
+    },
     "wall@0,0,0:2scjwz": {
       config: { direction: "right", tiles: [], times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },

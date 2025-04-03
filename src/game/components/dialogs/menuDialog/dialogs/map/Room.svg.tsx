@@ -11,7 +11,6 @@ import {
 import { iterate } from "../../../../../../utils/iterate";
 import { objectEntries } from "iter-tools";
 import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
-import type { ZxSpectrumRoomColour } from "../../../../../../originalGame";
 import { roundForSvg, project } from "./svgHelpers";
 import type { NotableItem } from "./NotableItem";
 import { NotableItemSvg, SpriteInRoom } from "./NotableItem";
@@ -19,6 +18,7 @@ import { ItemInRoomLayout } from "./NotableItemsCollection";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
 import type { RoomJson } from "../../../../../../model/RoomJson";
 import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
+import { roomAccentColourClass } from "./mapColours";
 
 const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
@@ -37,7 +37,10 @@ L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}
 L ${project({ x: roomGridSizeXY, y: 0 })}
 z`;
 
-const floorColourFillPathD = (boundaries: Boundaries) => {
+const floorEdgeFillPathD = (boundaries: Boundaries, thickness = doorwayGap) => {
+  const roomFront = roomGridSizeXY * ((1 - thickness) / 2);
+  const roomBack = roomGridSizeXY - roomFront;
+
   const smallSquareSize = roomFront;
 
   const awayOpen = boundaries.away !== "wall";
@@ -140,23 +143,6 @@ type RoomSvgProps<RoomId extends string> = {
   roomPickupsCollected: RoomPickupsCollected;
 };
 
-const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
-  switch (color.hue) {
-    case "cyan":
-      return "fill-pastelBlue zx:fill-zxCyan";
-    case "green":
-      return "fill-moss zx:fill-zxGreen";
-    case "magenta":
-      return "fill-pink zx:fill-zxMagenta";
-    case "white":
-      return "fill-lightGrey zx:fill-zxWhite";
-    case "yellow":
-      return "fill-highlightBeige zx:fill-zxYellow";
-    default:
-      color.hue satisfies never;
-  }
-};
-
 export const RoomSvg = <RoomId extends string>({
   roomGridPositionSpec: { boundaries, subRoomId },
   roomPickupsCollected,
@@ -171,6 +157,7 @@ export const RoomSvg = <RoomId extends string>({
   const notableItems = useMemo<Array<NotableItem<RoomId>>>(() => {
     let foundHushPuppy = false;
     let foundTeleporter = false;
+    let foundCrown = false;
 
     const nonCollectedNotableItemsItr = iterate(objectEntries(roomJson.items))
       .filter(([itemId]) => !roomPickupsCollected[itemId])
@@ -190,6 +177,12 @@ export const RoomSvg = <RoomId extends string>({
           }
           foundTeleporter = true;
         }
+        if (item.type === "pickup" && item.config.gives === "crown") {
+          if (foundCrown) {
+            return false;
+          }
+          foundCrown = true;
+        }
         return true;
       })
       .filter((item) => jsonItemIsNotable(item, subRoomId, roomJson));
@@ -205,11 +198,18 @@ export const RoomSvg = <RoomId extends string>({
       className="[--scale:2]"
     >
       {/* floor */}
-      {roomBelow || <path className="fill-white" d={floorFillPathD} />}
+      {roomBelow === undefined ?
+        <path className="fill-white" d={floorFillPathD} />
+      : <path
+          className="fill-white"
+          fillRule="evenodd"
+          d={floorEdgeFillPathD(boundaries, doorwayGap * 0.7)}
+        />
+      }
       <path
-        className={roomAccentColourClass(color)}
+        className={roomAccentColourClass(color)?.floor}
         fillRule="evenodd"
-        d={floorColourFillPathD(boundaries)}
+        d={floorEdgeFillPathD(boundaries)}
       />
 
       {roomAbove && (
@@ -217,13 +217,13 @@ export const RoomSvg = <RoomId extends string>({
         <>
           {/* away wall: */}
           <path
-            className="fill-midGrey"
+            className={roomAccentColourClass(color)?.awayWall}
             fillRule="evenodd"
             d={awayWallFillPathD(boundaries.away === "doorway")}
           />
           {/* left wall is just the away wall flipped: */}
           <path
-            className="fill-lightGrey"
+            className={roomAccentColourClass(color)?.floor}
             fillRule="evenodd"
             transform="scale(-1, 1)"
             d={awayWallFillPathD(boundaries.left === "doorway")}
@@ -260,7 +260,7 @@ export const RoomSvg = <RoomId extends string>({
       </g>
 
       {/* characters */}
-      <ItemInRoomLayout heightAdjust={9}>
+      <ItemInRoomLayout heightAdjust={14}>
         {hasHead && (
           <SpriteInRoom
             className={`${hasHeels ? "[--scale:1.5]" : "[--scale:2.5]"} ${
@@ -268,6 +268,7 @@ export const RoomSvg = <RoomId extends string>({
                 "texture-animated-head.walking.right"
               : "texture-animated-head.idle.right"
             }`}
+            scrollTo={hasHead === "active"}
           />
         )}
         {hasHeels && (
@@ -277,6 +278,7 @@ export const RoomSvg = <RoomId extends string>({
                 "texture-animated-heels.walking.right"
               : "texture-heels.walking.right.2"
             }`}
+            scrollTo={hasHeels === "active"}
           />
         )}
       </ItemInRoomLayout>
@@ -284,7 +286,11 @@ export const RoomSvg = <RoomId extends string>({
         <g transform="translate(0,-16)" className="[--scale:1.5]">
           <SpriteInRoom className="texture-animated-heels.walking.right" />
           <g transform="translate(0, -20)">
-            <SpriteInRoom className="texture-animated-head.walking.right" />
+            <SpriteInRoom
+              // headOverHeels is always active (if they exist)
+              className="texture-animated-head.walking.right"
+              scrollTo
+            />
           </g>
         </g>
       )}
@@ -298,15 +304,7 @@ export const RoomSvg = <RoomId extends string>({
               <NotableItemSvg
                 key={i}
                 notableItem={item}
-                className={
-                  notableItems.length === 1 ?
-                    isBigItem ?
-                      "[--scale:1.66]"
-                    : "[--scale:2]"
-                  : isBigItem ?
-                    "[--scale:1.25]"
-                  : "[--scale:1.5]"
-                }
+                className={isBigItem ? "[--scale:1.25]" : "[--scale:1.5]"}
               />
             );
           })}

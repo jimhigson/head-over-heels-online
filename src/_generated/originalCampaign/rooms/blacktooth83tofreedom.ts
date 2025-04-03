@@ -154,6 +154,12 @@ export const room = inferRoomJson({
       type: "wall",
     },
   },
+  meta: {
+    nonContiguousRelationship: {
+      gridOffset: { x: 2, y: 0, z: 0 },
+      with: { room: "finalroom" },
+    },
+  },
   planet: "blacktooth",
   size: { x: 8, y: 8 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "blacktooth">;

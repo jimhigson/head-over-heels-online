@@ -29,6 +29,12 @@ const layouts = {
   3: [
     translateXyz(
       addXy(roomCentre, {
+        x: radiusFromCentreWith4,
+        y: radiusFromCentreWith4,
+      }),
+    ),
+    translateXyz(
+      addXy(roomCentre, {
         x: -radiusFromCentreWith4,
         y: radiusFromCentreWith4,
       }),
@@ -36,12 +42,6 @@ const layouts = {
     translateXyz(
       addXy(roomCentre, {
         x: radiusFromCentreWith4,
-        y: -radiusFromCentreWith4,
-      }),
-    ),
-    translateXyz(
-      addXy(roomCentre, {
-        x: -radiusFromCentreWith4,
         y: -radiusFromCentreWith4,
       }),
     ),
@@ -81,6 +81,12 @@ export const ItemInRoomLayout = ({
   const elementChildren = children.filter(
     (c) => c !== undefined && c !== false,
   );
+
+  if (elementChildren.length > layouts.length) {
+    throw new Error(
+      `too many items to fit on a square: ${elementChildren.length} (max is ${layouts.length})`,
+    );
+  }
 
   return (
     <g transform={`translate(0, ${heightAdjust})`}>

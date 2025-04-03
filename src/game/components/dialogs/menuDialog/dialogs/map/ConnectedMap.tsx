@@ -7,6 +7,18 @@ import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { MapSvg } from "./Map.svg";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
+import type { SceneryName } from "../../../../../../sprites/planets";
+
+const sceneryToMapTitle: Record<SceneryName, string> = {
+  blacktooth: "blacktooth",
+  bookworld: "bookworld",
+  jail: "blacktooth",
+  egyptus: "egyptus",
+  moonbase: "moonbase",
+  market: "market",
+  penitentiary: "penitentiary",
+  safari: "safari",
+};
 
 export const ConnectedMap = <RoomId extends string>({
   className,
@@ -71,19 +83,26 @@ export const ConnectedMap = <RoomId extends string>({
       characterRooms.headOverHeels.roomJson,
     );
 
+  const mapTitle =
+    (curRoom?.roomJson.planet && sceneryToMapTitle[curRoom.roomJson.planet]) ??
+    "map";
+
   return (
     <MapSvg<RoomId>
-      className={className}
-      campaign={campaign}
-      pickupsCollected={pickupsCollected}
-      roomGridPositionSpecs={roomGridPositionSpecs}
-      currentCharacterName={currentCharacterName}
-      headRoomId={headRoomId}
-      headSubRoomId={headSubRoomId}
-      headOverHeelsRoomId={headOverHeelsRoomId}
-      heelsRoomId={heelsRoomId}
-      heelsSubRoomId={heelsSubRoomId}
-      headOverHeelsSubRoomId={headOverHeelsSubRoomId}
+      className={`${className}`}
+      {...{
+        campaign,
+        pickupsCollected,
+        roomGridPositionSpecs,
+        currentCharacterName,
+        headRoomId,
+        headSubRoomId,
+        headOverHeelsRoomId,
+        heelsRoomId,
+        heelsSubRoomId,
+        headOverHeelsSubRoomId,
+        mapTitle,
+      }}
     />
   );
 };

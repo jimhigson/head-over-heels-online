@@ -100,6 +100,12 @@ export const room = inferRoomJson({
       type: "wall",
     },
   },
+  meta: {
+    nonContiguousRelationship: {
+      gridOffset: { x: 1, y: -2, z: 0 },
+      with: { room: "blacktooth9" },
+    },
+  },
   planet: "jail",
   size: { x: 6, y: 8 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "jail">;

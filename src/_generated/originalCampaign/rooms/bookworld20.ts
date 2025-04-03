@@ -42,8 +42,13 @@ export const room = inferRoomJson({
       type: "hushPuppy",
     },
     "hushPuppy@3,0,2": {
-      config: {},
-      position: { x: 2, y: 0, z: 2 },
+      config: { times: { z: 3 } },
+      position: { x: 2, y: 0, z: 0 },
+      type: "hushPuppy",
+    },
+    hushPuppyPillar1: {
+      config: { times: { x: 2, z: 3 } },
+      position: { x: 4, y: 0, z: 0 },
       type: "hushPuppy",
     },
     "wall@0,0,0:2sckiP": {

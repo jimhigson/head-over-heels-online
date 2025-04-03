@@ -2,14 +2,16 @@ import type { RoomGridPositionSpec } from "./roomGridPositions";
 import { type Xyz } from "../../../../../../utils/vectors/vectors";
 import { RoomSvg } from "./Room.svg";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
-import { roomGridSizeXY, roomGridSizeZ } from "./mapConstants";
-import { useResizeDetector } from "react-resize-detector";
 import type {
   Campaign,
   CharacterName,
 } from "../../../../../../model/modelTypes";
 import type { PickupsCollected } from "../../../../../gameState/GameState";
 import { emptyObject } from "../../../../../../utils/empty";
+import { BitmapText } from "../../../../Sprite";
+import { useTotalUpscale } from "../../../../../../store/selectors";
+import { roomWorldPosition } from "./roomWorldPosition";
+import { findMapBounds } from "./findMapBounds";
 
 export type MapSvgProps<RoomId extends string> = {
   className?: string;
@@ -23,11 +25,19 @@ export type MapSvgProps<RoomId extends string> = {
   headSubRoomId?: string;
   heelsSubRoomId?: string;
   headOverHeelsSubRoomId?: string;
+  mapTitle: string;
 };
 
 const svgTranslateXyz = (xyz: Xyz) => {
   const xy = projectWorldXyzToScreenXy(xyz);
   return `translate(${xy.x}, ${xy.y})`;
+};
+
+export type Bounds = {
+  b: number;
+  t: number;
+  l: number;
+  r: number;
 };
 
 export const MapSvg = <RoomId extends string>({
@@ -42,17 +52,30 @@ export const MapSvg = <RoomId extends string>({
   heelsSubRoomId,
   headOverHeelsRoomId,
   headOverHeelsSubRoomId,
+  mapTitle,
 }: MapSvgProps<RoomId>) => {
-  const { width, height, ref } = useResizeDetector({});
+  const scale = useTotalUpscale();
+
+  const mapBounds = findMapBounds(roomGridPositionSpecs);
+
+  const mapSvgMargin = 8;
 
   return (
-    <svg className={className || ""} ref={ref}>
+    <svg
+      className={className || ""}
+      width={mapBounds.r - mapBounds.l + 2 * mapSvgMargin}
+      height={mapBounds.b - mapBounds.t + 2 * mapSvgMargin}
+    >
+      <foreignObject
+        width={scale * mapTitle.length * 8}
+        height={scale * 16}
+        x={mapSvgMargin}
+        y={mapSvgMargin}
+      >
+        <BitmapText className="sprites-double-height">{mapTitle}</BitmapText>
+      </foreignObject>
       <g
-        transform={
-          width !== undefined && height !== undefined ?
-            `translate(${width / 2},${height / 2})`
-          : ""
-        }
+        transform={`translate(${-mapBounds.l + mapSvgMargin},${-mapBounds.t + +mapSvgMargin})`}
       >
         {roomGridPositionSpecs.map((gridPositionSpec) => {
           const { roomId, subRoomId, gridPosition } = gridPositionSpec;
@@ -75,15 +98,12 @@ export const MapSvg = <RoomId extends string>({
               "active") ??
             false;
 
+          const roomRenderingId = `${roomId}/${subRoomId}`;
           return (
             <g
-              key={`${roomId}/${subRoomId}`}
-              data-id={`${roomId}/${subRoomId}`}
-              transform={svgTranslateXyz({
-                x: gridPosition.x * roomGridSizeXY,
-                y: gridPosition.y * roomGridSizeXY,
-                z: gridPosition.z * roomGridSizeZ,
-              })}
+              key={roomRenderingId}
+              data-id={roomRenderingId}
+              transform={svgTranslateXyz(roomWorldPosition(gridPosition))}
             >
               <RoomSvg
                 roomGridPositionSpec={gridPositionSpec}

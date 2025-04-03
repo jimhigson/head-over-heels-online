@@ -8,6 +8,7 @@ export const buttonColours = {
     carry: spritesheetPalette.moss,
     carryAndJump: spritesheetPalette.midRed,
     menu: spritesheetPalette.lightGrey,
+    map: spritesheetPalette.lightGrey,
   },
   zx: {
     jump: zxSpectrumColors.zxBlue,
@@ -15,5 +16,6 @@ export const buttonColours = {
     carry: zxSpectrumColors.zxGreen,
     carryAndJump: zxSpectrumColors.zxRed,
     menu: zxSpectrumColors.zxWhite,
+    map: zxSpectrumColors.zxWhite,
   },
 };

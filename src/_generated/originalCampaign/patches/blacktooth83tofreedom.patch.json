@@ -1,1 +1,13 @@
-[{ "op": "replace", "path": "/color/shade", "value": "dimmed" }]
+[
+  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "nonContiguousRelationship": {
+        "gridOffset": { "x": 2, "y": 0, "z": 0 },
+        "with": { "room": "finalroom" }
+      }
+    }
+  }
+]

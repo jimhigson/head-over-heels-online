@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "op": "add",
+    "path": "/items/pyramid1",
+    "value": {
+      "config": { "style": "organic", "times": { "x": 5, "y": 5 } },
+      "isExtra": true,
+      "position": { "x": 1, "y": 1, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pyramid2",
+    "value": {
+      "config": { "style": "organic", "times": { "x": 3, "y": 3 } },
+      "isExtra": true,
+      "position": { "x": 2, "y": 2, "z": 1 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pyramid3",
+    "value": {
+      "config": { "style": "organic" },
+      "isExtra": true,
+      "position": { "x": 3, "y": 3, "z": 2 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pyramidBall",
+    "value": {
+      "config": {},
+      "isExtra": true,
+      "position": { "x": 3, "y": 3, "z": 3 },
+      "type": "ball"
+    }
+  }
+]

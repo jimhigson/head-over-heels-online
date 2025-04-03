@@ -19,5 +19,11 @@
   },
   { "op": "add", "path": "/items/wall@0,8,0/config/tiles/5", "value": "book" },
   { "op": "replace", "path": "/items/door@3,8,0/position/x", "value": 6 },
+  { "op": "replace", "path": "/items/block@0,3,3/position/z", "value": 0 },
+  {
+    "op": "add",
+    "path": "/items/block@0,3,3/config/times",
+    "value": { "y": 3, "z": 4 }
+  },
   { "op": "replace", "path": "/color/hue", "value": "cyan" }
 ]

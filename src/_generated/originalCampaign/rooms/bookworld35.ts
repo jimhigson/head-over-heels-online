@@ -77,6 +77,26 @@ export const room = inferRoomJson({
       position: { x: 1, y: 7, z: 4 },
       type: "spring",
     },
+    steps2ndTop: {
+      config: { style: "volcano", times: { z: 3 } },
+      position: { x: 2, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    steps3rdTop: {
+      config: { style: "volcano", times: { z: 2 } },
+      position: { x: 3, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    stepsBottom: {
+      config: { style: "volcano" },
+      position: { x: 4, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    stepsTop: {
+      config: { style: "volcano", times: { z: 4 } },
+      position: { x: 1, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
     "wall@0,0,0:Z1XoDrY": {
       config: { direction: "towards", tiles: [], times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },

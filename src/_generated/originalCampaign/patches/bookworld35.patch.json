@@ -37,5 +37,41 @@
       "type": "block"
     }
   },
+  {
+    "op": "add",
+    "path": "/items/steps2ndTop",
+    "value": {
+      "config": { "style": "volcano", "times": { "z": 3 } },
+      "position": { "x": 2, "y": 0, "z": 0 },
+      "type": "deadlyBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/steps3rdTop",
+    "value": {
+      "config": { "style": "volcano", "times": { "z": 2 } },
+      "position": { "x": 3, "y": 0, "z": 0 },
+      "type": "deadlyBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/stepsBottom",
+    "value": {
+      "config": { "style": "volcano" },
+      "position": { "x": 4, "y": 0, "z": 0 },
+      "type": "deadlyBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/stepsTop",
+    "value": {
+      "config": { "style": "volcano", "times": { "z": 4 } },
+      "position": { "x": 1, "y": 0, "z": 0 },
+      "type": "deadlyBlock"
+    }
+  },
   { "op": "replace", "path": "/color/hue", "value": "cyan" }
 ]
