@@ -267,7 +267,7 @@ export const RoomSvg = <RoomId extends string>({
       </g>
 
       {/* characters */}
-      <ItemInRoomLayout heightAdjust={9}>
+      <ItemInRoomLayout heightAdjust={14}>
         {hasHead && (
           <SpriteInRoom
             className={`${hasHeels ? "[--scale:1.5]" : "[--scale:2.5]"} ${

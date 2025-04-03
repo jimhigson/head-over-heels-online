@@ -1,8 +1,4 @@
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { useCallback, useRef } from "react";
-import { useActionTap } from "../../../useActionTap";
-import { hudCharTextureSize } from "../../../../../../sprites/textureSizes";
-import { useTotalUpscale } from "../../../../../../store/selectors";
 import { twMerge } from "tailwind-merge";
 import {
   markdownPages,
@@ -17,52 +13,15 @@ import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice"
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
-
-const scrollLinesAtOnce = 4;
-const charHeight = hudCharTextureSize.h;
+import { useScrollingFromInput } from "../useScrollingFromInput";
 
 export const MarkdownDialog = ({
   pageName,
 }: {
   pageName: MarkdownPageName;
 }) => {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const scaleFactor = useTotalUpscale();
   const markdown = markdownPages[pageName];
-
-  const scrollMarkdownContent = useCallback(
-    (direction: "down" | "up") => {
-      // this component is slow to render, so don't cause any state changes or it would render again!
-      if (contentRef.current === null) return;
-
-      const { scrollTop } = contentRef.current;
-
-      const newScrollTop =
-        scrollTop +
-        scaleFactor *
-          scrollLinesAtOnce *
-          (direction === "down" ? charHeight : -charHeight);
-
-      contentRef.current.scrollTo({
-        top: newScrollTop,
-        behavior: "instant",
-      });
-    },
-    [scaleFactor],
-  );
-
-  useActionTap({
-    handler: useCallback(() => {
-      scrollMarkdownContent("down");
-    }, [scrollMarkdownContent]),
-    action: "towards",
-  });
-  useActionTap({
-    handler: useCallback(() => {
-      scrollMarkdownContent("up");
-    }, [scrollMarkdownContent]),
-    action: "away",
-  });
+  const contentRef = useScrollingFromInput();
 
   return (
     <DialogPortal>
