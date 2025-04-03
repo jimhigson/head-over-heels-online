@@ -265,18 +265,20 @@ export const RoomSvg = <RoomId extends string>({
           <SpriteInRoom
             className={`${hasHeels ? "[--scale:1.5]" : "[--scale:2.5]"} ${
               hasHead === "active" ?
-                "texture-animated-head.walking.right"
+                "texture-animated-head.walking.right map-scroll-to"
               : "texture-animated-head.idle.right"
             }`}
+            scrollTo={hasHead === "active"}
           />
         )}
         {hasHeels && (
           <SpriteInRoom
             className={`${hasHead ? "[--scale:1.5]" : "[--scale:2.5]"} ${
               hasHeels === "active" ?
-                "texture-animated-heels.walking.right"
+                "texture-animated-heels.walking.right map-scroll-to"
               : "texture-heels.walking.right.2"
             }`}
+            scrollTo={hasHeels === "active"}
           />
         )}
       </ItemInRoomLayout>
@@ -284,7 +286,11 @@ export const RoomSvg = <RoomId extends string>({
         <g transform="translate(0,-16)" className="[--scale:1.5]">
           <SpriteInRoom className="texture-animated-heels.walking.right" />
           <g transform="translate(0, -20)">
-            <SpriteInRoom className="texture-animated-head.walking.right" />
+            <SpriteInRoom
+              // headOverHeels is always active (if they exist)
+              className="texture-animated-head.walking.right map-scroll-to"
+              scrollTo
+            />
           </g>
         </g>
       )}
@@ -298,15 +304,7 @@ export const RoomSvg = <RoomId extends string>({
               <NotableItemSvg
                 key={i}
                 notableItem={item}
-                className={
-                  notableItems.length === 1 ?
-                    isBigItem ?
-                      "[--scale:1.66]"
-                    : "[--scale:2]"
-                  : isBigItem ?
-                    "[--scale:1.25]"
-                  : "[--scale:1.5]"
-                }
+                className={isBigItem ? "[--scale:1.25]" : "[--scale:1.5]"}
               />
             );
           })}

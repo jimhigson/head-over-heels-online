@@ -1,4 +1,5 @@
 import type { JsonItem } from "../../../../../../model/json/JsonItem";
+import { emptyObject } from "../../../../../../utils/empty";
 
 /**
  * items that get rendered on the map if they are found in the room's json
@@ -8,13 +9,25 @@ export type NotableItem<RoomId extends string> =
   | JsonItem<"hushPuppy", RoomId>
   | JsonItem<"teleporter", RoomId>;
 
+const setScrollRefProp = {
+  ref(e: HTMLElement) {
+    if (e === null) {
+      return;
+    }
+
+    e.scrollIntoView({ behavior: "instant", block: "center" });
+  },
+};
+
 export const SpriteInRoom = ({
   className,
+  scrollTo = false,
 }: {
   /**
    * should have a sprite-* utility and some way to set the --scale var - for this to actually show a sprite
    */
   className: string;
+  scrollTo?: boolean;
 }) => {
   return (
     <foreignObject
@@ -28,6 +41,7 @@ export const SpriteInRoom = ({
         className={`sprite zx:sprite-revert-to-two-tone ml-[calc(50px-var(--scale)*var(--w)/2)] mt-[calc(100px-var(--scale)*var(--h))] ${
           className
         }`}
+        {...(scrollTo ? setScrollRefProp : emptyObject)}
       />
     </foreignObject>
   );
