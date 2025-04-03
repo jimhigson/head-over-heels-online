@@ -18,6 +18,906 @@ test("starting room finds only two rooms", () => {
           "away": "wall",
           "left": "wall",
           "right": "doorway",
+          "towards": "open",
+        },
+        "gridPosition": {
+          "x": 12,
+          "y": 12,
+          "z": -2,
+        },
+        "roomId": "blacktooth62fish",
+        "subRoomId": "right",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 13,
+          "z": -2,
+        },
+        "roomId": "blacktooth60",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 11,
+          "y": 12,
+          "z": -2,
+        },
+        "roomId": "blacktooth63",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "open",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 12,
+          "y": 11,
+          "z": -2,
+        },
+        "roomId": "blacktooth62fish",
+        "subRoomId": "left",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 12,
+          "z": -2,
+        },
+        "roomId": "blacktooth59",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 12,
+          "y": 10,
+          "z": -2,
+        },
+        "roomId": "blacktooth61",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 12,
+          "y": 9,
+          "z": -2,
+        },
+        "roomId": "blacktooth55",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "open",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 11,
+          "y": 10,
+          "z": -2,
+        },
+        "roomId": "blacktooth58triple",
+        "subRoomId": "left",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "open",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 11,
+          "z": -2,
+        },
+        "roomId": "blacktooth58triple",
+        "subRoomId": "right",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 11,
+          "y": 9,
+          "z": -2,
+        },
+        "roomId": "blacktooth56",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "open",
+          "left": "open",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 10,
+          "z": -2,
+        },
+        "roomId": "blacktooth58triple",
+        "subRoomId": "middle",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 9,
+          "z": -2,
+        },
+        "roomId": "blacktooth57",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": -5,
+          "z": -2,
+        },
+        "roomId": "blacktooth25",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": -5,
+          "z": -2,
+        },
+        "roomId": "blacktooth24",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 12,
+          "y": 9,
+          "z": -1,
+        },
+        "roomId": "blacktooth54",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 12,
+          "y": 8,
+          "z": -1,
+        },
+        "roomId": "blacktooth53market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 12,
+          "y": 7,
+          "z": -1,
+        },
+        "roomId": "blacktooth52market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 11,
+          "y": 7,
+          "z": -1,
+        },
+        "roomId": "blacktooth50market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 7,
+          "z": -1,
+        },
+        "roomId": "blacktooth49market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 11,
+          "y": 6,
+          "z": -1,
+        },
+        "roomId": "blacktooth51",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 9,
+          "y": 7,
+          "z": -1,
+        },
+        "roomId": "blacktooth48market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 9,
+          "y": 6,
+          "z": -1,
+        },
+        "roomId": "blacktooth47market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 9,
+          "y": 5,
+          "z": -1,
+        },
+        "roomId": "blacktooth46market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 4,
+          "z": -1,
+        },
+        "roomId": "blacktooth44market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 9,
+          "y": 4,
+          "z": -1,
+        },
+        "roomId": "blacktooth45market",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": -3,
+          "z": -1,
+        },
+        "roomId": "blacktooth29",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": -4,
+          "z": -1,
+        },
+        "roomId": "blacktooth27fish",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": -4,
+          "z": -1,
+        },
+        "roomId": "blacktooth28",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": -5,
+          "z": -1,
+        },
+        "roomId": "blacktooth26",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 9,
+          "y": 5,
+          "z": 0,
+        },
+        "roomId": "blacktooth43",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 4,
+          "z": 0,
+        },
+        "roomId": "blacktooth22",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "open",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": 7,
+          "z": 0,
+        },
+        "roomId": "blacktooth40fish",
+        "subRoomId": "right",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 8,
+          "y": 5,
+          "z": 0,
+        },
+        "roomId": "blacktooth42",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 3,
+          "z": 0,
+        },
+        "roomId": "blacktooth21fish",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "open",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": 6,
+          "z": 0,
+        },
+        "roomId": "blacktooth40fish",
+        "subRoomId": "left",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 7,
+          "y": 5,
+          "z": 0,
+        },
+        "roomId": "blacktooth41",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 2,
+          "z": 0,
+        },
+        "roomId": "blacktooth20",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": 5,
+          "z": 0,
+        },
+        "roomId": "blacktooth39",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 9,
+          "y": 2,
+          "z": 0,
+        },
+        "roomId": "blacktooth18",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 10,
+          "y": 1,
+          "z": 0,
+        },
+        "roomId": "blacktooth19",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "open",
+        },
+        "gridPosition": {
+          "x": 8,
+          "y": 2,
+          "z": 0,
+        },
+        "roomId": "blacktooth17triple",
+        "subRoomId": "right",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "open",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 9,
+          "y": 1,
+          "z": 0,
+        },
+        "roomId": "blacktooth17triple",
+        "subRoomId": "left",
+      },
+      {
+        "boundaries": {
+          "away": "open",
+          "left": "open",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 8,
+          "y": 1,
+          "z": 0,
+        },
+        "roomId": "blacktooth17triple",
+        "subRoomId": "middle",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 7,
+          "y": 1,
+          "z": 0,
+        },
+        "roomId": "blacktooth16",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 7,
+          "y": 0,
+          "z": 0,
+        },
+        "roomId": "blacktooth15",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 8,
+          "y": -1,
+          "z": 0,
+        },
+        "roomId": "blacktooth14",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": 1,
+          "z": 0,
+        },
+        "roomId": "blacktooth33",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 7,
+          "y": -1,
+          "z": 0,
+        },
+        "roomId": "blacktooth13",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": 0,
+          "z": 0,
+        },
+        "roomId": "blacktooth32",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": -1,
+          "z": 0,
+        },
+        "roomId": "blacktooth12",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "doorway",
+          "right": "doorway",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": -1,
+          "z": 0,
+        },
+        "roomId": "blacktooth11",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 2,
+          "y": 1,
+          "z": 0,
+        },
+        "roomId": "blacktooth4",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 3,
+          "y": 0,
+          "z": 0,
+        },
+        "roomId": "blacktooth6",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "open",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 4,
+          "y": -1,
+          "z": 0,
+        },
+        "roomId": "blacktooth10",
+        "subRoomId": "left",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "open",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": -2,
+          "z": 0,
+        },
+        "roomId": "blacktooth31",
+        "subRoomId": "right",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": -3,
+          "z": 0,
+        },
+        "roomId": "blacktooth30",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 2,
+          "y": 0,
+          "z": 0,
+        },
+        "roomId": "blacktooth5",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "open",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 3,
+          "y": -1,
+          "z": 0,
+        },
+        "roomId": "blacktooth10",
+        "subRoomId": "right",
+      },
+      {
+        "boundaries": {
+          "away": "open",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": -3,
+          "z": 0,
+        },
+        "roomId": "blacktooth31",
+        "subRoomId": "left",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 2,
+          "y": -1,
+          "z": 0,
+        },
+        "roomId": "blacktooth7",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
           "towards": "wall",
         },
         "gridPosition": {
@@ -26,6 +926,21 @@ test("starting room finds only two rooms", () => {
           "z": 0,
         },
         "roomId": "blacktooth1head",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 2,
+          "y": -2,
+          "z": 0,
+        },
+        "roomId": "blacktooth8fish",
         "subRoomId": "*",
       },
       {
@@ -41,6 +956,141 @@ test("starting room finds only two rooms", () => {
           "z": 0,
         },
         "roomId": "blacktooth23heels",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 1,
+          "y": -2,
+          "z": 0,
+        },
+        "roomId": "blacktooth9",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": 5,
+          "z": 1,
+        },
+        "roomId": "blacktooth38",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": 4,
+          "z": 1,
+        },
+        "roomId": "blacktooth37",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 6,
+          "y": 3,
+          "z": 1,
+        },
+        "roomId": "blacktooth36",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "open",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": 3,
+          "z": 1,
+        },
+        "roomId": "blacktooth35",
+        "subRoomId": "right",
+      },
+      {
+        "boundaries": {
+          "away": "open",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": 2,
+          "z": 1,
+        },
+        "roomId": "blacktooth35",
+        "subRoomId": "left",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 5,
+          "y": 1,
+          "z": 1,
+        },
+        "roomId": "blacktooth34",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "wall",
+          "towards": "doorway",
+        },
+        "gridPosition": {
+          "x": 2,
+          "y": 2,
+          "z": 1,
+        },
+        "roomId": "blacktooth2",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "doorway",
+          "left": "wall",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 2,
+          "y": 1,
+          "z": 1,
+        },
+        "roomId": "blacktooth3",
         "subRoomId": "*",
       },
     ]
@@ -975,6 +2025,21 @@ test("blacktooth2", () => {
       {
         "boundaries": {
           "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": -2,
+          "y": -2,
+          "z": -1,
+        },
+        "roomId": "blacktooth1head",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
           "left": "doorway",
           "right": "wall",
           "towards": "wall",
@@ -985,6 +2050,21 @@ test("blacktooth2", () => {
           "z": -1,
         },
         "roomId": "blacktooth9",
+        "subRoomId": "*",
+      },
+      {
+        "boundaries": {
+          "away": "wall",
+          "left": "doorway",
+          "right": "wall",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": -3,
+          "y": -2,
+          "z": -1,
+        },
+        "roomId": "blacktooth23heels",
         "subRoomId": "*",
       },
       {
