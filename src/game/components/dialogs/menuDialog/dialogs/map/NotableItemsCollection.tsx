@@ -82,6 +82,12 @@ export const ItemInRoomLayout = ({
     (c) => c !== undefined && c !== false,
   );
 
+  if (elementChildren.length > layouts.length) {
+    throw new Error(
+      `too many items to fit on a square: ${elementChildren.length} (max is ${layouts.length})`,
+    );
+  }
+
   return (
     <g transform={`translate(0, ${heightAdjust})`}>
       {elementChildren.map((childElement, i) => {

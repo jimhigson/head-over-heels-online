@@ -4,7 +4,6 @@ import { iterate } from "../../../../../../utils/iterate";
 import { unitVectors } from "../../../../../../utils/vectors/unitVectors";
 import type {
   DirectionXy4,
-  DirectionXyz4,
   Xy,
   Xyz,
 } from "../../../../../../utils/vectors/vectors";
@@ -13,6 +12,7 @@ import {
   originXy,
   originXyz,
   subXy,
+  subXyz,
   xyEqual,
 } from "../../../../../../utils/vectors/vectors";
 import { entries } from "../../../../../../utils/entries";
@@ -25,7 +25,7 @@ type RoomGridPositionsOptions<RoomId extends string> = {
   subRoomId?: string;
   campaign: Campaign<RoomId>;
   visited?: { [roomId in RoomId]?: { [subRoom in string]: true } };
-  direction?: DirectionXyz4;
+  vectorFromPrevious?: Xyz;
   previousRoomGridPosition?: Xyz;
 };
 
@@ -87,7 +87,7 @@ function* _roomGridPositions<RoomId extends string>({
   subRoomId = "*",
   campaign,
   visited = {},
-  direction,
+  vectorFromPrevious,
   previousRoomGridPosition = originXyz,
 }: RoomGridPositionsOptions<RoomId>): Generator<RoomGridPositionSpec<RoomId>> {
   if (visited[roomId]?.[subRoomId]) {
@@ -103,6 +103,10 @@ function* _roomGridPositions<RoomId extends string>({
 
   const room = campaign.rooms[roomId];
 
+  if (room === undefined) {
+    throw new Error(`no room in the campaign with id="${roomId}"`);
+  }
+
   const doors = [
     ...iterate(objectValues(room.items))
       .filter((item) => item.type === "door")
@@ -111,7 +115,7 @@ function* _roomGridPositions<RoomId extends string>({
 
   const gridPosition: Xyz = addXyz(
     previousRoomGridPosition,
-    direction === undefined ? originXy : unitVectors[direction],
+    vectorFromPrevious === undefined ? originXy : vectorFromPrevious,
   );
 
   const subRooms = room.meta?.subRooms;
@@ -169,11 +173,11 @@ function* _roomGridPositions<RoomId extends string>({
         subRoomId: nextSubRoomId,
         campaign,
         visited,
-        direction: undefined,
-        previousRoomGridPosition: addXyz(
-          gridPosition,
-          subXy(nextSubroomGridPosition, currentSubRoomGridPosition),
+        vectorFromPrevious: subXyz(
+          { ...nextSubroomGridPosition, z: 0 },
+          currentSubRoomGridPosition,
         ),
+        previousRoomGridPosition: gridPosition,
       });
     }
   }
@@ -187,7 +191,7 @@ function* _roomGridPositions<RoomId extends string>({
       subRoomId: subRoomAbove,
       campaign,
       visited,
-      direction: "up",
+      vectorFromPrevious: unitVectors.up,
       previousRoomGridPosition: gridPosition,
     });
   }
@@ -200,7 +204,7 @@ function* _roomGridPositions<RoomId extends string>({
       subRoomId: subRoomBelow,
       campaign,
       visited,
-      direction: "down",
+      vectorFromPrevious: unitVectors.down,
       previousRoomGridPosition: gridPosition,
     });
   }
@@ -213,7 +217,26 @@ function* _roomGridPositions<RoomId extends string>({
       campaign,
       visited,
       subRoomId: doorItem.config.meta?.toSubRoom,
-      direction: doorItem.config.direction,
+      vectorFromPrevious: unitVectors[doorItem.config.direction],
+      previousRoomGridPosition: gridPosition,
+    });
+  }
+
+  // branch via non-contiguous relationshps (rooms that aren't joined but are
+  // mapped together):
+  const nonContiguousRelationship = room.meta?.nonContiguousRelationship;
+  if (nonContiguousRelationship !== undefined) {
+    const {
+      with: { room: withRoom },
+      gridOffset,
+    } = nonContiguousRelationship;
+    yield* roomGridPositions({
+      roomId: withRoom,
+      campaign,
+      visited,
+      // big rooms can't have this relationship because meh
+      subRoomId: "*",
+      vectorFromPrevious: gridOffset,
       previousRoomGridPosition: gridPosition,
     });
   }

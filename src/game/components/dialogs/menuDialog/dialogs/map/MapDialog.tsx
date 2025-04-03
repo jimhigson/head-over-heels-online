@@ -19,9 +19,7 @@ export const MapDialog = <RoomId extends string>() => {
           className={
             `${colours.bgClassName} ` +
             "overflow-y-scroll h-full " +
-            "scrollbar scrollbar-w-1 pl-1 " +
-            "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
-            "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan"
+            "scrollbar scrollbar-w-1 pl-1 "
           }
         >
           <ConnectedMap<RoomId> className="mx-auto" />

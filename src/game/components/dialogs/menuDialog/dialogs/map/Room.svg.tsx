@@ -171,6 +171,7 @@ export const RoomSvg = <RoomId extends string>({
   const notableItems = useMemo<Array<NotableItem<RoomId>>>(() => {
     let foundHushPuppy = false;
     let foundTeleporter = false;
+    let foundCrown = false;
 
     const nonCollectedNotableItemsItr = iterate(objectEntries(roomJson.items))
       .filter(([itemId]) => !roomPickupsCollected[itemId])
@@ -189,6 +190,12 @@ export const RoomSvg = <RoomId extends string>({
             return false;
           }
           foundTeleporter = true;
+        }
+        if (item.type === "pickup" && item.config.gives === "crown") {
+          if (foundCrown) {
+            return false;
+          }
+          foundCrown = true;
         }
         return true;
       })
@@ -265,7 +272,7 @@ export const RoomSvg = <RoomId extends string>({
           <SpriteInRoom
             className={`${hasHeels ? "[--scale:1.5]" : "[--scale:2.5]"} ${
               hasHead === "active" ?
-                "texture-animated-head.walking.right map-scroll-to"
+                "texture-animated-head.walking.right"
               : "texture-animated-head.idle.right"
             }`}
             scrollTo={hasHead === "active"}
@@ -275,7 +282,7 @@ export const RoomSvg = <RoomId extends string>({
           <SpriteInRoom
             className={`${hasHead ? "[--scale:1.5]" : "[--scale:2.5]"} ${
               hasHeels === "active" ?
-                "texture-animated-heels.walking.right map-scroll-to"
+                "texture-animated-heels.walking.right"
               : "texture-heels.walking.right.2"
             }`}
             scrollTo={hasHeels === "active"}
@@ -288,7 +295,7 @@ export const RoomSvg = <RoomId extends string>({
           <g transform="translate(0, -20)">
             <SpriteInRoom
               // headOverHeels is always active (if they exist)
-              className="texture-animated-head.walking.right map-scroll-to"
+              className="texture-animated-head.walking.right"
               scrollTo
             />
           </g>

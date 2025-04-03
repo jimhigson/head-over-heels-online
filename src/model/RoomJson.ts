@@ -1,7 +1,7 @@
 import { objectValues } from "iter-tools";
 import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
-import type { Xy } from "../utils/vectors/vectors";
+import type { Xy, Xyz } from "../utils/vectors/vectors";
 import type { JsonItemUnion } from "./json/JsonItem";
 import type { Floor } from "./modelTypes";
 import { iterate } from "../utils/iterate";
@@ -72,6 +72,18 @@ export type RoomJson<
      * in the original game
      */
     subRooms?: SubRooms;
+
+    /**
+     * for rooms that are shown on the same map even though they don't
+     * have any physical connection
+     */
+    nonContiguousRelationship?: {
+      with: { room: RoomId };
+      /**
+       * the other room needs to have the opposite (* -1) of this
+       */
+      gridOffset: Xyz;
+    };
   };
 };
 export type AnyRoomJson = RoomJson<string, string, SceneryName>;
