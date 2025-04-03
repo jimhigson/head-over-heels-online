@@ -23,7 +23,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@3,7,0": {
-      config: { style: "book" },
+      config: { style: "book", times: { x: 2 } },
       position: { x: 3, y: 7, z: 0 },
       type: "block",
     },

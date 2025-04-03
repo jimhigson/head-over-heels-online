@@ -1,1 +1,8 @@
-[{ "op": "replace", "path": "/color/hue", "value": "green" }]
+[
+  {
+    "op": "add",
+    "path": "/items/block@2,0,0/config/times",
+    "value": { "x": 2 }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "green" }
+]

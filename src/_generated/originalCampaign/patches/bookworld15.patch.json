@@ -1,4 +1,9 @@
 [
+  {
+    "op": "add",
+    "path": "/items/block@3,7,0/config/times",
+    "value": { "x": 2 }
+  },
   { "op": "replace", "path": "/color/shade", "value": "dimmed" },
   { "op": "replace", "path": "/color/hue", "value": "yellow" }
 ]
