@@ -14,14 +14,12 @@ export const MapDialog = <RoomId extends string>() => {
     <DialogPortal>
       <Dialog
         fullScreen
-        className="bg-white zx:bg-zxBlack pr-0 p-0 block mobile:pl-0"
+        className={`bg-white zx:bg-zxBlack pr-0 p-0 mobile:pl-0 justify-center ${colours.bgClassName}`}
         onClick={useDispatchActionCallback(backToParentMenu)}
       >
         <div
           className={
-            `${colours.bgClassName} ` +
-            "overflow-y-scroll h-full " +
-            "scrollbar scrollbar-w-1 pl-1 "
+            "overflow-y-scroll h-full " + "scrollbar scrollbar-w-1 pl-1 h-min"
           }
           ref={scrollingContentRef}
         >
