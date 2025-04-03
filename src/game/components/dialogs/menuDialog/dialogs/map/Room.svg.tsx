@@ -11,7 +11,6 @@ import {
 import { iterate } from "../../../../../../utils/iterate";
 import { objectEntries } from "iter-tools";
 import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
-import type { ZxSpectrumRoomColour } from "../../../../../../originalGame";
 import { roundForSvg, project } from "./svgHelpers";
 import type { NotableItem } from "./NotableItem";
 import { NotableItemSvg, SpriteInRoom } from "./NotableItem";
@@ -19,6 +18,7 @@ import { ItemInRoomLayout } from "./NotableItemsCollection";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
 import type { RoomJson } from "../../../../../../model/RoomJson";
 import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
+import { roomAccentColourClass } from "./mapColours";
 
 const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
@@ -37,7 +37,10 @@ L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}
 L ${project({ x: roomGridSizeXY, y: 0 })}
 z`;
 
-const floorColourFillPathD = (boundaries: Boundaries) => {
+const floorEdgeFillPathD = (boundaries: Boundaries, thickness = doorwayGap) => {
+  const roomFront = roomGridSizeXY * ((1 - thickness) / 2);
+  const roomBack = roomGridSizeXY - roomFront;
+
   const smallSquareSize = roomFront;
 
   const awayOpen = boundaries.away !== "wall";
@@ -140,23 +143,6 @@ type RoomSvgProps<RoomId extends string> = {
   roomPickupsCollected: RoomPickupsCollected;
 };
 
-const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
-  switch (color.hue) {
-    case "cyan":
-      return "fill-pastelBlue zx:fill-zxCyan";
-    case "green":
-      return "fill-moss zx:fill-zxGreen";
-    case "magenta":
-      return "fill-pink zx:fill-zxMagenta";
-    case "white":
-      return "fill-lightGrey zx:fill-zxWhite";
-    case "yellow":
-      return "fill-highlightBeige zx:fill-zxYellow";
-    default:
-      color.hue satisfies never;
-  }
-};
-
 export const RoomSvg = <RoomId extends string>({
   roomGridPositionSpec: { boundaries, subRoomId },
   roomPickupsCollected,
@@ -212,11 +198,18 @@ export const RoomSvg = <RoomId extends string>({
       className="[--scale:2]"
     >
       {/* floor */}
-      {roomBelow || <path className="fill-white" d={floorFillPathD} />}
+      {roomBelow === undefined ?
+        <path className="fill-white" d={floorFillPathD} />
+      : <path
+          className="fill-white"
+          fillRule="evenodd"
+          d={floorEdgeFillPathD(boundaries, doorwayGap * 0.7)}
+        />
+      }
       <path
-        className={roomAccentColourClass(color)}
+        className={roomAccentColourClass(color)?.floor}
         fillRule="evenodd"
-        d={floorColourFillPathD(boundaries)}
+        d={floorEdgeFillPathD(boundaries)}
       />
 
       {roomAbove && (
@@ -224,13 +217,13 @@ export const RoomSvg = <RoomId extends string>({
         <>
           {/* away wall: */}
           <path
-            className="fill-midGrey"
+            className={roomAccentColourClass(color)?.awayWall}
             fillRule="evenodd"
             d={awayWallFillPathD(boundaries.away === "doorway")}
           />
           {/* left wall is just the away wall flipped: */}
           <path
-            className="fill-lightGrey"
+            className={roomAccentColourClass(color)?.floor}
             fillRule="evenodd"
             transform="scale(-1, 1)"
             d={awayWallFillPathD(boundaries.left === "doorway")}
