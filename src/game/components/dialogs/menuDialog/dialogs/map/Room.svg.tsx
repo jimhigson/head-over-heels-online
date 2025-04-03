@@ -14,8 +14,8 @@ import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
 import type { ZxSpectrumRoomColour } from "../../../../../../originalGame";
 import { roundForSvg, project } from "./svgHelpers";
 import type { NotableItem } from "./NotableItem";
-import { SpriteInRoom } from "./NotableItem";
-import { NotableItemsCollection } from "./NotableItemsCollection";
+import { NotableItemSvg, SpriteInRoom } from "./NotableItem";
+import { ItemInRoomLayout } from "./NotableItemsCollection";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
 import type { RoomJson } from "../../../../../../model/RoomJson";
 import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
@@ -168,7 +168,7 @@ export const RoomSvg = <RoomId extends string>({
   const { id, roomAbove, roomBelow, color } = roomJson;
 
   // find some notable items:
-  const mappableItems = useMemo<Array<NotableItem<RoomId>>>(() => {
+  const notableItems = useMemo<Array<NotableItem<RoomId>>>(() => {
     let foundHushPuppy = false;
     let foundTeleporter = false;
 
@@ -260,26 +260,26 @@ export const RoomSvg = <RoomId extends string>({
       </g>
 
       {/* characters */}
-      <g transform="translate(0,-9)" className="[--scale:2.5]">
+      <ItemInRoomLayout heightAdjust={9}>
         {hasHead && (
           <SpriteInRoom
-            className={
+            className={`${hasHeels ? "[--scale:1.5]" : "[--scale:2.5]"} ${
               hasHead === "active" ?
                 "texture-animated-head.walking.right"
               : "texture-animated-head.idle.right"
-            }
+            }`}
           />
         )}
         {hasHeels && (
           <SpriteInRoom
-            className={
+            className={`${hasHead ? "[--scale:1.5]" : "[--scale:2.5]"} ${
               hasHeels === "active" ?
                 "texture-animated-heels.walking.right"
               : "texture-heels.walking.right.2"
-            }
+            }`}
           />
         )}
-      </g>
+      </ItemInRoomLayout>
       {hasHeadOverHeels && (
         <g transform="translate(0,-16)" className="[--scale:1.5]">
           <SpriteInRoom className="texture-animated-heels.walking.right" />
@@ -289,7 +289,28 @@ export const RoomSvg = <RoomId extends string>({
         </g>
       )}
       {!hasHead && !hasHeels && !hasHeadOverHeels && (
-        <NotableItemsCollection notableItems={mappableItems} />
+        <ItemInRoomLayout heightAdjust={14}>
+          {notableItems.map((item, i) => {
+            const isBigItem =
+              item.type === "hushPuppy" || item.type === "teleporter";
+
+            return (
+              <NotableItemSvg
+                key={i}
+                notableItem={item}
+                className={
+                  notableItems.length === 1 ?
+                    isBigItem ?
+                      "[--scale:1.66]"
+                    : "[--scale:2]"
+                  : isBigItem ?
+                    "[--scale:1.25]"
+                  : "[--scale:1.5]"
+                }
+              />
+            );
+          })}
+        </ItemInRoomLayout>
       )}
 
       {roomAbove && (
