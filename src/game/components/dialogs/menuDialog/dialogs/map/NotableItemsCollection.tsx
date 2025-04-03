@@ -1,7 +1,6 @@
+import type { ReactElement } from "react";
 import { addXy } from "../../../../../../utils/vectors/vectors";
 import { roomGridSizeXY } from "./mapConstants";
-import type { NotableItem } from "./NotableItem";
-import { NotableItemSvg } from "./NotableItem";
 import { translateXyz } from "./svgHelpers";
 
 const radiusFromCentreWith2 = roomGridSizeXY / 5;
@@ -72,32 +71,23 @@ const layouts = {
   ],
 } as unknown as string[][];
 
-export const NotableItemsCollection = <RoomId extends string>({
-  notableItems,
+export const ItemInRoomLayout = ({
+  children,
+  heightAdjust = 0,
 }: {
-  notableItems: Array<NotableItem<RoomId>>;
+  children: Array<ReactElement | undefined | false>;
+  heightAdjust?: number;
 }) => {
-  return (
-    <g transform="translate(0, 14)">
-      {notableItems.map((item, i) => {
-        const isBigItem =
-          item.type === "hushPuppy" || item.type === "teleporter";
+  const elementChildren = children.filter(
+    (c) => c !== undefined && c !== false,
+  );
 
+  return (
+    <g transform={`translate(0, ${heightAdjust})`}>
+      {elementChildren.map((childElement, i) => {
         return (
-          <g transform={layouts[notableItems.length][i]} key={i}>
-            <NotableItemSvg
-              key={i}
-              notableItem={item}
-              className={
-                notableItems.length === 1 ?
-                  isBigItem ?
-                    "[--scale:1.66]"
-                  : "[--scale:2]"
-                : isBigItem ?
-                  "[--scale:1.25]"
-                : "[--scale:1.5]"
-              }
-            />
+          <g transform={layouts[elementChildren.length][i]} key={i}>
+            {childElement}
           </g>
         );
       })}
