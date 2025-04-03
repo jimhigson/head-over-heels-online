@@ -26,12 +26,22 @@ import {
 } from "../../../model/ItemStateMap";
 import type { EmptyObject } from "type-fest";
 import { emptyObject } from "../../../utils/empty";
-import { showNumberInContainer } from "./showNumberInContainer";
+import {
+  makeTextContainer,
+  showNumberInContainer,
+  showTextInContainer,
+} from "./showNumberInContainer";
 import type { RoomState } from "../../../model/RoomState";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 
-export type ButtonType = "jump" | "carry" | "fire" | "carryAndJump" | "menu";
+export type ButtonType =
+  | "jump"
+  | "carry"
+  | "fire"
+  | "carryAndJump"
+  | "menu"
+  | "map";
 
 export type Button<Which extends ButtonType = ButtonType> = {
   id: string;
@@ -61,6 +71,7 @@ type ButtonRenderProps = {
     hasBag: boolean;
   };
   menu: EmptyObject;
+  map: EmptyObject;
 };
 
 type ButtonRenderContext<BT extends ButtonType> = {
@@ -81,7 +92,7 @@ type ButtonAppearance<
   ButtonRenderContext<BT>,
   ButtonTickContext<RoomId, RoomItemId>,
   ButtonRenderProps[BT],
-  BT extends "menu" ? Container : ButtonRenderingContainer
+  BT extends "menu" | "map" ? Container : ButtonRenderingContainer
 >;
 
 const textYForButtonCentre = -11;
@@ -363,6 +374,19 @@ const buttonAppearances: {
       renderProps: emptyObject,
     };
   },
+  map({ previousRendering }) {
+    if (previousRendering !== null) {
+      return "no-update";
+    }
+
+    const output = makeTextContainer({ label: "mapText", outline: true });
+    showTextInContainer(output, "MAP");
+
+    return {
+      output,
+      renderProps: emptyObject,
+    };
+  },
 };
 
 export class OnScreenButtonRenderer<
@@ -373,7 +397,7 @@ export class OnScreenButtonRenderer<
   ButtonRenderContext<BT>,
   ButtonTickContext<RoomId, RoomItemId>,
   ButtonRenderProps[BT],
-  BT extends "menu" ? Container : ButtonRenderingContainer
+  BT extends "menu" | "map" ? Container : ButtonRenderingContainer
 > {
   constructor(renderContext: ButtonRenderContext<BT>) {
     const appearance = buttonAppearances[

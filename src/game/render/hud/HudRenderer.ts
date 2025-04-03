@@ -33,7 +33,6 @@ import {
   hudIconFilter,
   hudHighligtedFilter,
   hudLivesTextFilter,
-  hudOutlinedTextFilters,
   hudOutlineFilter,
   hudTextFilter,
   hudLowlightedFilter,
@@ -43,6 +42,7 @@ import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import type { Renderer } from "../Renderer";
 import type { RoomState } from "../../../model/RoomState";
 import { neverTime } from "../../../utils/veryClose";
+import { makeTextContainer } from "./showNumberInContainer";
 
 const fpsUpdatePeriod = 250;
 
@@ -99,7 +99,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   #hudElements = {
     head: {
       sprite: this.#characterSprite("head"),
-      livesText: this.#makeText({
+      livesText: makeTextContainer({
         label: "headLives",
         doubleHeight: true,
         outline: true,
@@ -129,7 +129,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     },
     heels: {
       sprite: this.#characterSprite("heels"),
-      livesText: this.#makeText({
+      livesText: makeTextContainer({
         label: "heelsLives",
         doubleHeight: true,
         outline: true,
@@ -154,7 +154,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         container: new Container({ label: "heelsCarrying" }),
       },
     },
-    fps: this.#makeText({ label: "fps", outline: true }),
+    fps: makeTextContainer({ label: "fps", outline: true }),
   };
 
   constructor(public readonly renderContext: HudRenderContext<RoomId>) {
@@ -240,7 +240,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     });
     container.addChild(icon);
 
-    const text = this.#makeText({ outline: outline === "text-only" });
+    const text = makeTextContainer({ outline: outline === "text-only" });
     text.y = textOnTop ? 0 : 16;
 
     text.x = icon.x = hudCharTextureSize.w / 2;
@@ -271,18 +271,6 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     characterSprite.anchor = { x: 0.5, y: 0 };
 
     return characterSprite;
-  }
-
-  #makeText({
-    doubleHeight = false,
-    outline = false,
-    label = "text",
-  }: { doubleHeight?: boolean; outline?: boolean; label?: string } = {}) {
-    return new Container({
-      label,
-      filters: outline ? hudOutlinedTextFilters : hudTextFilter,
-      scale: { x: 1, y: doubleHeight ? 2 : 1 },
-    });
   }
 
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */

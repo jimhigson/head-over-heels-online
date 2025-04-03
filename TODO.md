@@ -20,14 +20,25 @@
 [3,M] switch to devcontainers
     [ ] might be more complex than needed
 
+
+### menu
+[ ] left-right to move selection sideways
+
+### map
+[1] map button in on-screen controls
+[ ] different background colours per world
+[ ] map in a scrollable area + svg optimal size (fit contents exactly)
+[ ] joypad to scroll map
+
 ### sounds
 [ ] allow spot effects to continue after leaving a room
 [ ] fanfare on game start
-[ ] head/heels jumping sound
+[x] head/heels jumping sound
 [ ] detect when phone has sound turned off (?)
     - can't do!
 [x] music after getting a crown
 [ ] "sea-shanty" music for some items    
+    - not already available in doug's remake
 
 ### graphical
 use pixi render groups/layers etc to render outline when switching players in 
