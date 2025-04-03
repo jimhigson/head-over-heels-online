@@ -1,19 +1,16 @@
 [
+  { "op": "replace", "path": "/items/block@7,3,2/position/y", "value": 2 },
+  {
+    "op": "add",
+    "path": "/items/block@7,3,2/config/times",
+    "value": { "y": 2 }
+  },
   {
     "op": "add",
     "path": "/items/tower0",
     "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 7, "y": 3, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/tower1",
-    "value": {
-      "config": { "style": "tower" },
-      "position": { "x": 7, "y": 3, "z": 1 },
+      "config": { "style": "tower", "times": { "y": 2, "z": 2 } },
+      "position": { "x": 7, "y": 2, "z": 0 },
       "type": "block"
     }
   },

@@ -39,15 +39,6 @@
   },
   {
     "op": "add",
-    "path": "/items/stepsTop",
-    "value": {
-      "config": { "style": "volcano", "times": { "z": 4 } },
-      "position": { "x": 1, "y": 0, "z": 0 },
-      "type": "deadlyBlock"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/steps2ndTop",
     "value": {
       "config": { "style": "volcano", "times": { "z": 3 } },
@@ -70,6 +61,15 @@
     "value": {
       "config": { "style": "volcano" },
       "position": { "x": 4, "y": 0, "z": 0 },
+      "type": "deadlyBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/stepsTop",
+    "value": {
+      "config": { "style": "volcano", "times": { "z": 4 } },
+      "position": { "x": 1, "y": 0, "z": 0 },
       "type": "deadlyBlock"
     }
   },
