@@ -8,7 +8,6 @@ import { MapSvg } from "./Map.svg";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
 import type { SceneryName } from "../../../../../../sprites/planets";
-import { mapColours } from "./mapColours";
 
 const sceneryToMapTitle: Record<SceneryName, string> = {
   blacktooth: "blacktooth",
@@ -84,22 +83,13 @@ export const ConnectedMap = <RoomId extends string>({
       characterRooms.headOverHeels.roomJson,
     );
 
-  const bgClassName =
-    (curRoom?.roomJson.planet && mapColours[curRoom.roomJson.planet].bg) ??
-    "text-shadow";
-
-  const textClassName =
-    (curRoom?.roomJson.planet &&
-      mapColours[curRoom.roomJson.planet].textClassName) ??
-    "text-shadow";
-
   const mapTitle =
     (curRoom?.roomJson.planet && sceneryToMapTitle[curRoom.roomJson.planet]) ??
     "map";
 
   return (
     <MapSvg<RoomId>
-      className={`${className} ${bgClassName}`}
+      className={`${className}`}
       {...{
         campaign,
         pickupsCollected,
@@ -112,7 +102,6 @@ export const ConnectedMap = <RoomId extends string>({
         heelsSubRoomId,
         headOverHeelsSubRoomId,
         mapTitle,
-        textClassName,
       }}
     />
   );

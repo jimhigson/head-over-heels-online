@@ -1,39 +1,36 @@
 import type { SceneryName } from "../../../../../../sprites/planets";
 
-export const mapColours: Record<
-  SceneryName,
-  { bg: string; textClassName: string }
-> = {
+export const mapColours: Record<SceneryName, { bgClassName: string }> = {
   blacktooth: {
-    bg: "bg-moss",
-    textClassName: "text-shadow",
+    bgClassName:
+      "bg-moss text-shadow scrollbar-track-moss scrollbar-thumb-shadow",
   },
   bookworld: {
-    bg: "bg-redShadow",
-    textClassName: "text-highlightBeige",
+    bgClassName:
+      "bg-redShadow text-highlightBeige scrollbar-track-redShadow scrollbar-thumb-highlightBeige",
   },
   jail: {
-    bg: "bg-shadow",
-    textClassName: "text-lightGrey",
+    bgClassName:
+      "bg-shadow text-lightGrey scrollbar-track-shadow scrollbar-thumb-lightGrey",
   },
   egyptus: {
-    bg: "bg-midRed",
-    textClassName: "text-highlightBeige",
+    bgClassName:
+      "bg-midRed text-highlightBeige scrollbar-track-midRed scrollbar-thumb-highlightBeige",
   },
   moonbase: {
-    bg: "bg-pastelBlue",
-    textClassName: "text-metallicBlue",
+    bgClassName:
+      "bg-pastelBlue text-metallicBlue scrollbar-track-pastelBlue scrollbar-thumb-metallicBlue",
   },
   market: {
-    bg: "bg-metallicBlue",
-    textClassName: "text-highlightBeige",
+    bgClassName:
+      "bg-metallicBlue text-highlightBeige scrollbar-track-metallicBlue scrollbar-thumb-highlightBeige",
   },
   penitentiary: {
-    bg: "bg-shadow",
-    textClassName: "text-moss",
+    bgClassName:
+      "bg-shadow text-moss scrollbar-track-shadow scrollbar-thumb-moss",
   },
   safari: {
-    bg: "bg-redShadow",
-    textClassName: "text-moss",
+    bgClassName:
+      "bg-redShadow text-moss scrollbar-track-redShadow scrollbar-thumb-moss",
   },
 };

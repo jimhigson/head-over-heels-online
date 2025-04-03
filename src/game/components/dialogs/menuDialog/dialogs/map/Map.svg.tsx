@@ -26,7 +26,6 @@ export type MapSvgProps<RoomId extends string> = {
   heelsSubRoomId?: string;
   headOverHeelsSubRoomId?: string;
   mapTitle: string;
-  textClassName: string;
 };
 
 const svgTranslateXyz = (xyz: Xyz) => {
@@ -54,7 +53,6 @@ export const MapSvg = <RoomId extends string>({
   headOverHeelsRoomId,
   headOverHeelsSubRoomId,
   mapTitle,
-  textClassName,
 }: MapSvgProps<RoomId>) => {
   const scale = useTotalUpscale();
 
@@ -74,9 +72,7 @@ export const MapSvg = <RoomId extends string>({
         x={mapSvgMargin}
         y={mapSvgMargin}
       >
-        <BitmapText className={`sprites-double-height ${textClassName}`}>
-          {mapTitle}
-        </BitmapText>
+        <BitmapText className="sprites-double-height">{mapTitle}</BitmapText>
       </foreignObject>
       <g
         transform={`translate(${-mapBounds.l + mapSvgMargin},${-mapBounds.t + +mapSvgMargin})`}
@@ -102,10 +98,11 @@ export const MapSvg = <RoomId extends string>({
               "active") ??
             false;
 
+          const roomRenderingId = `${roomId}/${subRoomId}`;
           return (
             <g
-              key={`${roomId}/${subRoomId}`}
-              data-id={`${roomId}/${subRoomId}`}
+              key={roomRenderingId}
+              data-id={roomRenderingId}
               transform={svgTranslateXyz(roomWorldPosition(gridPosition))}
             >
               <RoomSvg

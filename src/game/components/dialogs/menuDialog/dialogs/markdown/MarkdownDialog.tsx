@@ -30,7 +30,7 @@ export const MarkdownDialog = ({
   const scaleFactor = useTotalUpscale();
   const markdown = markdownPages[pageName];
 
-  const scrollScroll = useCallback(
+  const scrollMarkdownContent = useCallback(
     (direction: "down" | "up") => {
       // this component is slow to render, so don't cause any state changes or it would render again!
       if (contentRef.current === null) return;
@@ -53,14 +53,14 @@ export const MarkdownDialog = ({
 
   useActionTap({
     handler: useCallback(() => {
-      scrollScroll("down");
-    }, [scrollScroll]),
+      scrollMarkdownContent("down");
+    }, [scrollMarkdownContent]),
     action: "towards",
   });
   useActionTap({
     handler: useCallback(() => {
-      scrollScroll("up");
-    }, [scrollScroll]),
+      scrollMarkdownContent("up");
+    }, [scrollMarkdownContent]),
     action: "away",
   });
 
