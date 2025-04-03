@@ -100,18 +100,20 @@ export const ConnectedMap = <RoomId extends string>({
   return (
     <MapSvg<RoomId>
       className={`${className} ${bgClassName}`}
-      campaign={campaign}
-      pickupsCollected={pickupsCollected}
-      roomGridPositionSpecs={roomGridPositionSpecs}
-      currentCharacterName={currentCharacterName}
-      headRoomId={headRoomId}
-      headSubRoomId={headSubRoomId}
-      headOverHeelsRoomId={headOverHeelsRoomId}
-      heelsRoomId={heelsRoomId}
-      heelsSubRoomId={heelsSubRoomId}
-      headOverHeelsSubRoomId={headOverHeelsSubRoomId}
-      mapTitle={mapTitle}
-      textClassName={textClassName}
+      {...{
+        campaign,
+        pickupsCollected,
+        roomGridPositionSpecs,
+        currentCharacterName,
+        headRoomId,
+        headSubRoomId,
+        headOverHeelsRoomId,
+        heelsRoomId,
+        heelsSubRoomId,
+        headOverHeelsSubRoomId,
+        mapTitle,
+        textClassName,
+      }}
     />
   );
 };

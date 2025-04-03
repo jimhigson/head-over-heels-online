@@ -9,10 +9,10 @@ export const MapDialog = <RoomId extends string>() => {
     <DialogPortal>
       <Dialog
         fullScreen
-        className="bg-midRed zx:bg-zxBlack pr-0 p-0 block mobile:pl-0"
+        className="bg-white zx:bg-zxBlack pr-0 p-0 block mobile:pl-0"
         onClick={useDispatchActionCallback(backToParentMenu)}
       >
-        <ConnectedMap<RoomId> className="w-full h-full" />
+        <ConnectedMap<RoomId> />
       </Dialog>
     </DialogPortal>
   );
