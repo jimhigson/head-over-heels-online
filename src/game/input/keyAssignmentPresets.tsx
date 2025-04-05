@@ -185,10 +185,11 @@ const defaultAssignment: InputAssignmentPreset = {
           keys: ["Q", "Numpad9"],
         },
         jump: {
-          keys: [" ", "`", "\\", "Numpad0", "Numpad-"],
+          // ` or z for jump-carry - these keys are next to shift on most keybaords
+          keys: [" ", "`", "Z", "\\", "Numpad0", "Numpad-"],
         },
         carry: {
-          keys: ["Shift", "`", "\\", "Numpad1", "Numpad-"],
+          keys: ["Shift", "`", "Z", "\\", "Numpad1", "Numpad-"],
         },
         fire: {
           keys: ["D", "NumpadEnter"],
