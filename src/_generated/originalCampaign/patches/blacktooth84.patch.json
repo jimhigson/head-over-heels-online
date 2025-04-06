@@ -1,1 +1,12 @@
-[{ "op": "replace", "path": "/color/hue", "value": "magenta" }]
+[
+  {
+    "op": "add",
+    "path": "/items/extraTower",
+    "value": {
+      "config": { "style": "tower", "times": { "y": 2, "z": 3 } },
+      "position": { "x": 0, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "magenta" }
+]

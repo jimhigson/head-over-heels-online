@@ -53,13 +53,13 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@3,0,3": {
-      config: { style: "organic", times: { x: 2 } },
-      position: { x: 3, y: 0, z: 3 },
+      config: { style: "organic", times: { x: 2, z: 4 } },
+      position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
     "block@7,4,3": {
-      config: { style: "organic" },
-      position: { x: 7, y: 4, z: 3 },
+      config: { style: "organic", times: { y: 2, z: 4 } },
+      position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
     "block@7,7,0": {
@@ -86,6 +86,12 @@ export const room = inferRoomJson({
       config: { direction: "left", toRoom: "blacktooth76" },
       position: { x: 8, y: 3, z: 5 },
       type: "door",
+    },
+    extraBarrier: {
+      config: { axis: "x", times: { x: 3, z: 8 } },
+      isExtra: true,
+      position: { x: 4, y: 0.6, z: 0 },
+      type: "barrier",
     },
     "wall@0,0,0:2sckOl": {
       config: { direction: "right", tiles: [], times: { y: 8 } },

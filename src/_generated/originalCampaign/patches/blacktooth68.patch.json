@@ -1,1 +1,22 @@
-[{ "op": "replace", "path": "/color/hue", "value": "cyan" }]
+[
+  { "op": "replace", "path": "/items/block@7,4,3/position/z", "value": 0 },
+  { "op": "replace", "path": "/items/block@7,4,3/position/y", "value": 3 },
+  {
+    "op": "add",
+    "path": "/items/block@7,4,3/config/times",
+    "value": { "y": 2, "z": 4 }
+  },
+  { "op": "replace", "path": "/items/block@3,0,3/position/z", "value": 0 },
+  { "op": "add", "path": "/items/block@3,0,3/config/times/z", "value": 4 },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier",
+    "value": {
+      "config": { "axis": "x", "times": { "x": 3, "z": 8 } },
+      "isExtra": true,
+      "position": { "x": 4, "y": 0.6, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+]
