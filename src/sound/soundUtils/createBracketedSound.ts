@@ -20,6 +20,10 @@ export type CreateBracketedEventOptions = {
   loop?: BracketedSegmentOptions;
   stop?: BracketedSegmentOptions;
   startAndLoopTogether?: boolean;
+  // eg, standing on - don't want to play the 'bump' sound on first entering
+  // a room and discovering that we are standing on something, only when the
+  // state transitions
+  noStartOnFirstFrame?: boolean;
 };
 
 /**
@@ -47,9 +51,11 @@ export const createBracketedSound = <Value = boolean>(
     loop,
     stop,
     startAndLoopTogether = false,
+    noStartOnFirstFrame = true,
   }: CreateBracketedEventOptions,
   connectTo: AudioNode,
 ) => {
+  let isFirstFrame = true;
   let currentSound: AudioBufferSourceNode | undefined;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- var left in for later use
   let currentGain: GainNode | undefined;
@@ -60,7 +66,7 @@ export const createBracketedSound = <Value = boolean>(
     if (startedOrStopped) {
       if (value) {
         // starting
-        if (start !== undefined) {
+        if (start !== undefined && !(isFirstFrame && noStartOnFirstFrame)) {
           // stop in case was playing the end sound and is starting up again
           // TODO: this is good for charles, but bad for (eg, the ski heads in the gym trying
           // to play the start sound too often)
@@ -120,6 +126,7 @@ export const createBracketedSound = <Value = boolean>(
         }
       }
     }
+    isFirstFrame = false;
     currentValue = value;
 
     /*if (

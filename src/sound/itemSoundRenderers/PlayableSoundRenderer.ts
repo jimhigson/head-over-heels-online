@@ -22,6 +22,15 @@ export class PlayableSoundRenderer<
   #jumpChannel: GainNode = audioCtx.createGain();
   #jumpBracketedSound: BracketedSound;
   #fallBracketedSound: BracketedSound;
+  // todo: this could be a generic freeitem sound renderer
+  #standingOnChannel: GainNode = audioCtx.createGain();
+  #standingOnBracketedSound: BracketedSound = createBracketedSound(
+    {
+      start: { soundId: "softBump" },
+      noStartOnFirstFrame: true,
+    },
+    this.#standingOnChannel,
+  );
 
   #carryChannel: GainNode = audioCtx.createGain();
   #carryBracketedSound = createBracketedSound(
@@ -59,6 +68,7 @@ export class PlayableSoundRenderer<
     this.#jumpChannel.connect(this.output);
     this.#carryChannel.gain.value = 1.2;
     this.#carryChannel.connect(this.output);
+    this.#standingOnChannel.connect(this.output);
 
     const name = renderContext.item.type;
     this.#walkBracketedSound = createBracketedSound(
@@ -136,6 +146,8 @@ export class PlayableSoundRenderer<
     if (heelsAbilities !== undefined) {
       this.#carryBracketedSound(heelsAbilities.carrying !== null);
     }
+
+    this.#standingOnBracketedSound(standingOnItemId !== null);
 
     if (
       teleportingPhase !== null &&

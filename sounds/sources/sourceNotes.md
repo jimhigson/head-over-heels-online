@@ -20,6 +20,8 @@ helecopter lifts:
 
 Misc sounds:
     https://www.pond5.com/sound-effects/item/198870444-impact-soft-03
+
+softBump:    
     https://www.pond5.com/sound-effects/item/196531765-soft-slot-stop-03
 
 jetpack turnaround: clip from:
