@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelectors/selectCurrentRoomState";
-import { selectCurrentPlayableItem } from "../../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { startingRoomIds } from "../../../../../gameState/loadGameState";
 import { useGameApi } from "../../../../GameApiContext";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
@@ -8,6 +7,10 @@ import { MapSvg } from "./Map.svg";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
 import type { SceneryName } from "../../../../../../sprites/planets";
+import {
+  useAllowCharacterSwopping,
+  useCurrentCharacterName,
+} from "./useCurrentCharacterName";
 
 const sceneryToMapTitle: Record<SceneryName, string> = {
   blacktooth: "blacktooth",
@@ -28,38 +31,52 @@ export const ConnectedMap = <RoomId extends string>({
   const gameApi = useGameApi<RoomId>();
 
   const { campaign } = gameApi;
-  const curRoom = gameApi && selectCurrentRoomState<RoomId>(gameApi?.gameState);
 
-  const centreRoomId = curRoom?.roomJson.id ?? startingRoomIds(campaign).head!;
+  useAllowCharacterSwopping();
+  // ⬇️ hook causes re-render if character swops since last frame
+  const currentCharacterName = useCurrentCharacterName();
 
-  const curSubRoom = useMemo(() => {
+  const { roomGridPositionSpecs, mapTitle } = useMemo(() => {
+    const curRoom =
+      gameApi && selectCurrentRoomState<RoomId>(gameApi?.gameState);
+    const centreRoomId =
+      curRoom?.roomJson.id ?? startingRoomIds(campaign).head!;
+
+    let curSubRoom: string;
+
     const gameState = gameApi?.gameState;
 
-    if (!gameState) return "*";
+    if (!gameState) curSubRoom = "*";
+    else {
+      const subRooms = curRoom?.roomJson.meta?.subRooms;
 
-    const subRooms = curRoom?.roomJson.meta?.subRooms;
+      if (!subRooms) curSubRoom = "*";
+      else {
+        const curCharacterItem = curRoom?.items[currentCharacterName];
 
-    if (!subRooms) return "*";
+        if (!curCharacterItem) curSubRoom = "*";
+        else {
+          curSubRoom = findSubRoomForItem(curCharacterItem, curRoom.roomJson);
+        }
+      }
+    }
 
-    const curCharacterItem = selectCurrentPlayableItem<RoomId>(gameState);
+    return {
+      roomGridPositionSpecs: sortRoomGridPositions(
+        roomGridPositions({
+          campaign,
+          roomId: centreRoomId,
+          subRoomId: curSubRoom,
+        }),
+      ),
+      mapTitle:
+        (curRoom?.roomJson.planet &&
+          sceneryToMapTitle[curRoom.roomJson.planet]) ??
+        "map",
+    };
+  }, [campaign, currentCharacterName, gameApi]);
 
-    if (!curCharacterItem) return "*";
-
-    return findSubRoomForItem(curCharacterItem, curRoom.roomJson);
-  }, [curRoom?.roomJson, gameApi?.gameState]);
-
-  const roomGridPositionSpecs = useMemo(() => {
-    return sortRoomGridPositions(
-      roomGridPositions({
-        campaign,
-        roomId: centreRoomId,
-        subRoomId: curSubRoom,
-      }),
-    );
-  }, [campaign, centreRoomId, curSubRoom]);
-
-  const { characterRooms, currentCharacterName, pickupsCollected } =
-    gameApi.gameState;
+  const { characterRooms, pickupsCollected } = gameApi.gameState;
 
   const headRoomId = characterRooms.head?.roomJson.id;
   const heelsRoomId = characterRooms.heels?.roomJson.id;
@@ -82,10 +99,6 @@ export const ConnectedMap = <RoomId extends string>({
       characterRooms.headOverHeels.items.headOverHeels,
       characterRooms.headOverHeels.roomJson,
     );
-
-  const mapTitle =
-    (curRoom?.roomJson.planet && sceneryToMapTitle[curRoom.roomJson.planet]) ??
-    "map";
 
   return (
     <MapSvg<RoomId>
