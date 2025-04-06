@@ -22,7 +22,7 @@ import rollingBallLoopSoundUrl from "../../sounds/rollingBallLoop.mp3";
 import servoLoopUrl from "../../sounds/servosLoop.mp3";
 import servoStartUrl from "../../sounds/servosStart.mp3";
 import servoStoptUrl from "../../sounds/servosStop.mp3";
-import softBumpSoundUrl from "../../sounds/sources/soft-slot-stop-03.m4a";
+import softBumpSoundUrl from "../../sounds/softBump.mp3";
 import springBoingSoundUrl from "../../sounds/spring.mp3";
 import stepStoolScrapingSoundUrl from "../../sounds/metalicScraping.mp3";
 import switchClickSoundUrl from "../../sounds/switch-shorter.mp3";
