@@ -43,7 +43,7 @@ export const room = inferRoomJson({
     },
     "portableBlock@0,2,0": {
       config: { style: "cube" },
-      position: { x: 0, y: 2, z: 0 },
+      position: { x: 0, y: 1, z: 0 },
       type: "portableBlock",
     },
     "portableBlock@4,5,0": {
@@ -55,6 +55,16 @@ export const room = inferRoomJson({
       config: { style: "cube" },
       position: { x: 5, y: 0, z: 0 },
       type: "portableBlock",
+    },
+    tower: {
+      config: { style: "tower", times: { z: 4 } },
+      position: { x: 5, y: 3, z: 0 },
+      type: "block",
+    },
+    tower2: {
+      config: { style: "tower", times: { y: 2, z: 4 } },
+      position: { x: 0, y: 2, z: 0 },
+      type: "block",
     },
     "wall@0,0,0:2scjgO": {
       config: { direction: "right", tiles: [], times: { y: 2 } },
