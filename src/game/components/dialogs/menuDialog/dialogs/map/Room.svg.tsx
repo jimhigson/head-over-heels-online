@@ -295,7 +295,7 @@ export const RoomSvg = <RoomId extends string>({
         </g>
       )}
       {!hasHead && !hasHeels && !hasHeadOverHeels && (
-        <ItemInRoomLayout heightAdjust={14}>
+        <ItemInRoomLayout heightAdjust={11}>
           {notableItems.map((item, i) => {
             const isBigItem =
               item.type === "hushPuppy" || item.type === "teleporter";
