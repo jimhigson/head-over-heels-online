@@ -25,6 +25,7 @@ export const wallThickness = blockSizePx.w / 2;
 
 export type Campaign<RoomId extends string> = {
   rooms: Record<RoomId, RoomJson<RoomId, string, SceneryName>>;
+  name: string;
 };
 
 export type UnknownCampaign = Campaign<string>;

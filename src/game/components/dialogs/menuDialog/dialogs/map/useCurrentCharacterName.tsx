@@ -18,7 +18,6 @@ export const useCurrentCharacterName = () => {
     useState<CharacterName>(gameApi.gameState.currentCharacterName);
   useEffect(() => {
     const syncCharacterNameToState = () => {
-      swopPlayablesIfInput(gameApi.gameState);
       setCurrentCharacterName(gameApi.gameState.currentCharacterName);
     };
     Ticker.shared.add(syncCharacterNameToState);

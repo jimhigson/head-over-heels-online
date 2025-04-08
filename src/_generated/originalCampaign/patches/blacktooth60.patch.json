@@ -1,5 +1,15 @@
 [
   { "op": "replace", "path": "/items/barrier@3,4,0/position/x", "value": 2.6 },
   { "op": "replace", "path": "/items/barrier@0,3,0/position/y", "value": 3.4 },
-  { "op": "replace", "path": "/floor", "value": "bookworld" }
+  { "op": "replace", "path": "/floor", "value": "bookworld" },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "nonContiguousRelationship": {
+        "gridOffset": { "x": 6, "y": 6, "z": 0 },
+        "with": { "room": "moonbase8" }
+      }
+    }
+  }
 ]

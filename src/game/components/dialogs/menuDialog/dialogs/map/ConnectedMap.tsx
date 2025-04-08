@@ -6,27 +6,17 @@ import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { MapSvg } from "./Map.svg";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
-import type { SceneryName } from "../../../../../../sprites/planets";
 import {
   useAllowCharacterSwopping,
   useCurrentCharacterName,
 } from "./useCurrentCharacterName";
-
-const sceneryToMapTitle: Record<SceneryName, string> = {
-  blacktooth: "blacktooth",
-  bookworld: "bookworld",
-  jail: "blacktooth",
-  egyptus: "egyptus",
-  moonbase: "moonbase",
-  market: "market",
-  penitentiary: "penitentiary",
-  safari: "safari",
-};
+import { findMapBounds } from "./findMapBounds";
+import { MapBackground } from "./MapBackground";
 
 export const ConnectedMap = <RoomId extends string>({
-  className,
+  containerWidth,
 }: {
-  className?: string;
+  containerWidth: number;
 }) => {
   const gameApi = useGameApi<RoomId>();
 
@@ -36,7 +26,7 @@ export const ConnectedMap = <RoomId extends string>({
   // ⬇️ hook causes re-render if character swops since last frame
   const currentCharacterName = useCurrentCharacterName();
 
-  const { roomGridPositionSpecs, mapTitle } = useMemo(() => {
+  const { gridPositions, curRoomId, mapBounds } = useMemo(() => {
     const curRoom =
       gameApi && selectCurrentRoomState<RoomId>(gameApi?.gameState);
     const centreRoomId =
@@ -61,18 +51,18 @@ export const ConnectedMap = <RoomId extends string>({
       }
     }
 
+    const positions = [
+      ...roomGridPositions({
+        campaign,
+        roomId: centreRoomId,
+        subRoomId: curSubRoom,
+      }),
+    ];
+    const sortedObjectOfPositions = sortRoomGridPositions(positions);
     return {
-      roomGridPositionSpecs: sortRoomGridPositions(
-        roomGridPositions({
-          campaign,
-          roomId: centreRoomId,
-          subRoomId: curSubRoom,
-        }),
-      ),
-      mapTitle:
-        (curRoom?.roomJson.planet &&
-          sceneryToMapTitle[curRoom.roomJson.planet]) ??
-        "map",
+      mapBounds: findMapBounds(positions),
+      curRoomId: curRoom?.roomJson.id,
+      gridPositions: sortedObjectOfPositions,
     };
   }, [campaign, currentCharacterName, gameApi]);
 
@@ -102,11 +92,24 @@ export const ConnectedMap = <RoomId extends string>({
 
   return (
     <MapSvg<RoomId>
-      className={`${className}`}
+      background={
+        curRoomId === undefined ? null : (
+          <MapBackground<RoomId>
+            {...{
+              curRoomId,
+              campaign,
+              gridPositions,
+              mapBounds,
+              containerWidth,
+            }}
+          />
+        )
+      }
       {...{
         campaign,
+        mapBounds,
         pickupsCollected,
-        roomGridPositionSpecs,
+        gridPositions,
         currentCharacterName,
         headRoomId,
         headSubRoomId,
@@ -114,7 +117,7 @@ export const ConnectedMap = <RoomId extends string>({
         heelsRoomId,
         heelsSubRoomId,
         headOverHeelsSubRoomId,
-        mapTitle,
+        containerWidth,
       }}
     />
   );

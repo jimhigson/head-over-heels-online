@@ -39,6 +39,7 @@ export const roomProperties = {
   size: { x: 6, y: 6 },
 } as const satisfies Partial<RoomState<"blacktooth", TestCampaignRoomId>>;
 export const testCampaign = {
+  name: "testCampaign",
   rooms: {
     headStartingRoom: {
       ...roomProperties,

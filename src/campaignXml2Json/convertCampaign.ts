@@ -105,5 +105,5 @@ export const convertCampaign = async (): Promise<Campaign<string>> => {
             ${(e as Error).stack}`);
     }
   }
-  return { rooms };
+  return { rooms, name: "original" };
 };

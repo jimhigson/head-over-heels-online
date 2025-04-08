@@ -1,4 +1,4 @@
-import type { Xyz } from "../../../../../../utils/vectors/vectors";
+import type { Xy, Xyz } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
 
 export const roundForSvg = (n: number) => {
@@ -10,5 +10,9 @@ export const translateXyz = (xyz: Partial<Xyz>) => {
 };
 export const project = (xyz: Partial<Xyz>) => {
   const xy = projectWorldXyzToScreenXy(xyz);
+  return pathXy(xy);
+};
+
+export const pathXy = (xy: Xy) => {
   return `${roundForSvg(xy.x)},${roundForSvg(xy.y)}`;
 };

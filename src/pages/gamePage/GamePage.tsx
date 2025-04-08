@@ -73,6 +73,7 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
         const campaign =
           cheatsOn ?
             {
+              ...originalCampaignImport.campaign,
               rooms: {
                 ...originalCampaignImport.campaign.rooms,
                 ...testCampaignImport?.testCampaign.rooms,

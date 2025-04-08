@@ -19,5 +19,15 @@
       "type": "portableBlock"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "nonContiguousRelationship": {
+        "gridOffset": { "x": -6, "y": -6, "z": 0 },
+        "with": { "room": "blacktooth60" }
+      }
+    }
+  }
 ]

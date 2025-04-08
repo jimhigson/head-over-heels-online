@@ -20,7 +20,10 @@ const targetDir = "src/_generated/originalCampaign/";
 const patchFilename = (roomId: string) =>
   `${targetDir}/patches/${roomId}.patch.json`;
 
-export const writeOut = async ({ rooms: convertedRooms }: Campaign<string>) => {
+export const writeOut = async ({
+  rooms: convertedRooms,
+  name: campaignName,
+}: Campaign<string>) => {
   const targetDir = "src/_generated/originalCampaign/";
   const tsBarrellFilename = `${targetDir}/campaign.ts`;
   const tsRoomFilename = (roomId: string) => `${targetDir}/rooms/${roomId}.ts`;
@@ -68,9 +71,10 @@ export const writeOut = async ({ rooms: convertedRooms }: Campaign<string>) => {
       .join("\n")};\n
         
     export const campaign = { 
+      "name": "${campaignName}",
       "rooms": { 
         ${roomIdsSorted.join(",\n")}
-       }
+       },
     } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;`,
   );
 
