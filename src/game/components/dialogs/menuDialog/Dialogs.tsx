@@ -19,12 +19,13 @@ import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedR
 import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 import { MapDialog } from "./dialogs/map/MapDialog";
+import { withErrorBoundary } from "../../../../utils/react/ErrorBoundary";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
 ): menuId is Extract<D, `markdown/${string}`> => menuId.startsWith("markdown/");
 
-export const Dialogs = (_emptyProps: EmptyObject) => {
+export const Dialogs = withErrorBoundary((_emptyProps: EmptyObject) => {
   const topOpenMenu = useAppSelector((state) =>
     state.gameMenus.openMenus.at(0),
   );
@@ -82,4 +83,4 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
         </Dialog>
       );
   }
-};
+});

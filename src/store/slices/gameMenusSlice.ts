@@ -559,11 +559,14 @@ export const gameMenusSlice = createSlice({
       state,
       { payload: error }: PayloadAction<{ message: string; stack?: string }>,
     ) {
-      state.openMenus.push({
-        menuId: "errorCaught",
-        scrollableSelection: false,
-        menuParam: error,
-      });
+      // blat out all open menus - the menu may have caused the error!
+      state.openMenus = [
+        {
+          menuId: "errorCaught",
+          scrollableSelection: false,
+          menuParam: error,
+        },
+      ];
     },
     errorDismissed(
       state,
