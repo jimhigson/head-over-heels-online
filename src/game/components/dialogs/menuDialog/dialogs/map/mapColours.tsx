@@ -89,5 +89,6 @@ export const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
       };
     default:
       color.hue satisfies never;
+      throw new Error("unknown hue");
   }
 };

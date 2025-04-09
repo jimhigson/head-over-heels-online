@@ -27,6 +27,7 @@ export type MapSvgProps<RoomId extends string> = {
   background: ReactElement | null;
   mapBounds: Bounds;
   containerWidth: number;
+  roomsExplored: Record<RoomId, true>;
 };
 
 const svgTranslateXyz = (xyz: Xyz) => {
@@ -55,6 +56,7 @@ export const MapSvg = <RoomId extends string>({
   background,
   mapBounds,
   containerWidth,
+  roomsExplored,
 }: MapSvgProps<RoomId>) => {
   const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMargin;
   const contentH = mapBounds.b - mapBounds.t + 2 * mapSvgMargin;
@@ -110,6 +112,7 @@ export const MapSvg = <RoomId extends string>({
                 hasHead={hasHead}
                 hasHeels={hasHeels}
                 hasHeadOverHeels={hasHeadOverHeels}
+                roomVisited={roomsExplored[roomId] ?? false}
               />
             </g>
           );

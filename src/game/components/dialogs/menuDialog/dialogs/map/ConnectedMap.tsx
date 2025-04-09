@@ -12,6 +12,7 @@ import {
 } from "./useCurrentCharacterName";
 import { findMapBounds } from "./findMapBounds";
 import { MapBackground } from "./MapBackground";
+import { useRoomsExplored } from "../../../../../../store/selectors";
 
 export const ConnectedMap = <RoomId extends string>({
   containerWidth,
@@ -19,6 +20,7 @@ export const ConnectedMap = <RoomId extends string>({
   containerWidth: number;
 }) => {
   const gameApi = useGameApi<RoomId>();
+  const roomsExplored = useRoomsExplored<RoomId>();
 
   const { campaign } = gameApi;
 
@@ -118,6 +120,7 @@ export const ConnectedMap = <RoomId extends string>({
         heelsSubRoomId,
         headOverHeelsSubRoomId,
         containerWidth,
+        roomsExplored,
       }}
     />
   );
