@@ -1,5 +1,6 @@
 import { useTotalUpscale } from "../../../../../../store/selectors";
 import { BitmapText } from "../../../../Sprite";
+import { multilineTextClass } from "../../multilineTextClass";
 import { mapSvgMargin } from "./mapConstants";
 
 export const MapBackgroundSection = ({
@@ -18,13 +19,15 @@ export const MapBackgroundSection = ({
     <g className={className}>
       {textOnly || <rect y={y} width={10_000} height={10_000} />}
       <foreignObject
-        width={scale * (mapTitle.length + 2) * 8}
-        height={scale * 16}
+        width={scale * (mapTitle.length - 1) * 8}
+        height={scale * 16 * 3}
         x={mapSvgMargin}
         y={y + mapSvgMargin}
       >
         {/* ml-2 keeps content off the camera notch on phones like iphone x ... 17 ... ? */}
-        <BitmapText className="ml-2 sprites-double-height">
+        <BitmapText
+          className={`left-2 relative sprites-double-height ${multilineTextClass}`}
+        >
           {mapTitle}
         </BitmapText>
       </foreignObject>

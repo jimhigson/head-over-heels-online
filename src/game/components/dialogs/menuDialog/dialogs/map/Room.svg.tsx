@@ -206,12 +206,7 @@ export const RoomSvg = <RoomId extends string>({
   );
 
   return (
-    <g
-      data-room-id={id}
-      strokeWidth={3}
-      strokeLinecap="round"
-      className="[--scale:2]"
-    >
+    <g data-room-id={id} strokeWidth={3} className="[--scale:2]">
       {/* floor */}
       {roomBelow === undefined ?
         <path className="fill-white" d={floorFillPathD} />
