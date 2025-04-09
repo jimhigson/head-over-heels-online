@@ -26,7 +26,7 @@ export class PlayableSoundRenderer<
   #standingOnChannel: GainNode = audioCtx.createGain();
   #standingOnBracketedSound: BracketedSound = createBracketedSound(
     {
-      start: { soundId: "softBump" },
+      start: { soundId: "landing" },
       noStartOnFirstFrame: true,
     },
     this.#standingOnChannel,

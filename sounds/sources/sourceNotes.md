@@ -70,3 +70,12 @@ homing bot:
 computer bot:
     robot-move-loop-3-sound-effect-008166645_nw_prev
     much shortened
+
+disappear:
+    https://www.pond5.com/sound-effects/item/72992301-stone-building-destroy-6    
+
+hooter:
+    https://www.pond5.com/sound-effects/item/283934565-dj-air-horn2
+
+landing:
+    https://www.pond5.com/sound-effects/item/305600898-landing-boots-after-jumping
