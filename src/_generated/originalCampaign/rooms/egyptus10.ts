@@ -7,6 +7,21 @@ export const room = inferRoomJson({
   floor: "egyptus",
   id: "egyptus10",
   items: {
+    barrier: {
+      config: { axis: "y", times: { y: 3, z: 4 } },
+      position: { x: 6.5, y: 2, z: 3 },
+      type: "barrier",
+    },
+    barrier2: {
+      config: { axis: "y", times: { z: 3 } },
+      position: { x: 6.5, y: 2, z: 0 },
+      type: "barrier",
+    },
+    barrier3: {
+      config: { axis: "x", times: { z: 4 } },
+      position: { x: 7, y: 4.5, z: 3 },
+      type: "barrier",
+    },
     "block@7,2,0": {
       config: { style: "organic", times: { z: 2 } },
       position: { x: 7, y: 2, z: 0 },
@@ -29,7 +44,7 @@ export const room = inferRoomJson({
     },
     "door@8,3,5": {
       config: { direction: "left", toRoom: "egyptus11" },
-      position: { x: 8, y: 3, z: 5 },
+      position: { x: 8, y: 3, z: 4 },
       type: "door",
     },
     "hushPuppy@1,7,0": {

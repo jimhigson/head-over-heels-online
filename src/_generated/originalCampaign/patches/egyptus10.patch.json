@@ -1,4 +1,32 @@
 [
+  { "op": "replace", "path": "/items/door@8,3,5/position/z", "value": 4 },
+  {
+    "op": "add",
+    "path": "/items/barrier",
+    "value": {
+      "config": { "axis": "y", "times": { "y": 3, "z": 4 } },
+      "position": { "x": 6.5, "y": 2, "z": 3 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/barrier2",
+    "value": {
+      "config": { "axis": "y", "times": { "z": 3 } },
+      "position": { "x": 6.5, "y": 2, "z": 0 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/barrier3",
+    "value": {
+      "config": { "axis": "x", "times": { "z": 4 } },
+      "position": { "x": 7, "y": 4.5, "z": 3 },
+      "type": "barrier"
+    }
+  },
   {
     "op": "add",
     "path": "/items/pyramid1",
