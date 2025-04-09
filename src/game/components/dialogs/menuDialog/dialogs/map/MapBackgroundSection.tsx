@@ -19,7 +19,7 @@ export const MapBackgroundSection = ({
     <g className={className}>
       {textOnly || <rect y={y} width={10_000} height={10_000} />}
       <foreignObject
-        width={scale * (mapTitle.length - 1) * 8}
+        width={scale * (mapTitle.length + 3) * 8}
         height={scale * 16 * 3}
         x={mapSvgMargin}
         y={y + mapSvgMargin}
