@@ -10,5 +10,15 @@
     "value": { "toSubRoom": "right" }
   },
   { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "nonContiguousRelationship": {
+        "gridOffset": { "x": 5, "y": 3, "z": 0 },
+        "with": { "room": "blacktooth69" }
+      }
+    }
+  }
 ]

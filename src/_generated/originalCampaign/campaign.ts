@@ -281,6 +281,7 @@ import { room as safari36 } from "./rooms/safari36.ts";
 import { room as safari37crown } from "./rooms/safari37crown.ts";
 
 export const campaign = {
+  name: "original",
   rooms: {
     blacktooth1head,
     blacktooth2,

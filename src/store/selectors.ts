@@ -171,3 +171,9 @@ export const selectAtPath = (
 ): boolean => {
   return !!getAtPath(state.gameMenus, path);
 };
+
+export const useRoomsExplored = <RoomId extends string>() => {
+  return useAppSelector(
+    (state) => state.gameMenus.roomsExplored as Record<RoomId, true>,
+  );
+};

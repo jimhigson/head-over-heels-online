@@ -19,6 +19,7 @@ import { jsonItemIsNotable } from "./jsonItemIsNotable";
 import type { RoomJson } from "../../../../../../model/RoomJson";
 import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { roomAccentColourClass } from "./mapColours";
+import { VisitedFootprint } from "./VisitedFootprint";
 
 const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
@@ -134,27 +135,12 @@ M ${project({ x: 0, y: 0, z: roomGridSizeZ })}
 L 0, 0            
 `;
 
-type RoomSvgProps<RoomId extends string> = {
-  roomGridPositionSpec: RoomGridPositionSpec<RoomId>;
-  roomJson: RoomJson<RoomId, string>;
-  hasHead?: false | "active" | "present";
-  hasHeels?: false | "active" | "present";
-  hasHeadOverHeels?: false | "active" | "present";
-  roomPickupsCollected: RoomPickupsCollected;
-};
-
-export const RoomSvg = <RoomId extends string>({
-  roomGridPositionSpec: { boundaries, subRoomId },
-  roomPickupsCollected,
-  roomJson,
-  hasHead,
-  hasHeels,
-  hasHeadOverHeels,
-}: RoomSvgProps<RoomId>) => {
-  const { id, roomAbove, roomBelow, color } = roomJson;
-
-  // find some notable items:
-  const notableItems = useMemo<Array<NotableItem<RoomId>>>(() => {
+const useNotableItems = <RoomId extends string>(
+  roomJson: RoomJson<RoomId, string>,
+  roomPickupsCollected: RoomPickupsCollected,
+  subRoomId: string,
+) => {
+  return useMemo<Array<NotableItem<RoomId>>>(() => {
     let foundHushPuppy = false;
     let foundTeleporter = false;
     let foundCrown = false;
@@ -189,6 +175,35 @@ export const RoomSvg = <RoomId extends string>({
 
     return [...nonCollectedNotableItemsItr];
   }, [roomJson, roomPickupsCollected, subRoomId]);
+};
+
+type RoomSvgProps<RoomId extends string> = {
+  roomGridPositionSpec: RoomGridPositionSpec<RoomId>;
+  roomJson: RoomJson<RoomId, string>;
+  roomVisited: boolean;
+  hasHead?: false | "active" | "present";
+  hasHeels?: false | "active" | "present";
+  hasHeadOverHeels?: false | "active" | "present";
+  roomPickupsCollected: RoomPickupsCollected;
+};
+
+export const RoomSvg = <RoomId extends string>({
+  roomGridPositionSpec: { boundaries, subRoomId },
+  roomPickupsCollected,
+  roomJson,
+  roomVisited,
+  hasHead,
+  hasHeels,
+  hasHeadOverHeels,
+}: RoomSvgProps<RoomId>) => {
+  const { id, roomAbove, roomBelow, color } = roomJson;
+
+  // find some notable items:
+  const notableItems = useNotableItems(
+    roomJson,
+    roomPickupsCollected,
+    subRoomId,
+  );
 
   return (
     <g
@@ -206,8 +221,9 @@ export const RoomSvg = <RoomId extends string>({
           d={floorEdgeFillPathD(boundaries, doorwayGap * 0.7)}
         />
       }
+      {/* colourful floor edge  */}
       <path
-        className={roomAccentColourClass(color)?.floor}
+        className={roomAccentColourClass(color).floor}
         fillRule="evenodd"
         d={floorEdgeFillPathD(boundaries)}
       />
@@ -217,13 +233,13 @@ export const RoomSvg = <RoomId extends string>({
         <>
           {/* away wall: */}
           <path
-            className={roomAccentColourClass(color)?.awayWall}
+            className={roomAccentColourClass(color).awayWall}
             fillRule="evenodd"
             d={awayWallFillPathD(boundaries.away === "doorway")}
           />
           {/* left wall is just the away wall flipped: */}
           <path
-            className={roomAccentColourClass(color)?.floor}
+            className={roomAccentColourClass(color).floor}
             fillRule="evenodd"
             transform="scale(-1, 1)"
             d={awayWallFillPathD(boundaries.left === "doorway")}
@@ -258,6 +274,10 @@ export const RoomSvg = <RoomId extends string>({
           strokeDasharray={boundaryDashArrays[boundaries.away]}
         />
       </g>
+
+      {roomVisited && (
+        <VisitedFootprint className={`${roomAccentColourClass(color).floor}`} />
+      )}
 
       {/* characters */}
       <ItemInRoomLayout heightAdjust={14}>

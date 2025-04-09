@@ -60,6 +60,7 @@ export const basicGameState = ({
   //inputState,
 }: BasicGameStateOptions): GameStateWithMockInput => {
   const campaign = {
+    name: "basicGameStateTestCampaign",
     rooms: {
       [firstRoomId]: addPerimeterWallsToRoom({
         ...basicEmptyRoomWithItems(firstRoomId, firstRoomItems),

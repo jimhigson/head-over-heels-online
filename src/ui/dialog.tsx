@@ -1,6 +1,6 @@
 "use client";
 
-import type { MouseEvent, ReactNode } from "react";
+import type { MouseEvent, ReactNode, Ref } from "react";
 import { twMerge } from "tailwind-merge";
 
 export type DialogProps = {
@@ -16,6 +16,7 @@ export type DialogProps = {
   fullScreen?: boolean;
   /** click (or tap) handler for anywhere on the div; usually for closing the dialog */
   onClick?: (e: MouseEvent) => void;
+  ref?: Ref<HTMLDialogElement>;
 };
 
 export const Dialog = ({
@@ -25,9 +26,11 @@ export const Dialog = ({
   tall = false,
   wide = false,
   fullScreen = false,
+  ref,
 }: DialogProps) => {
   return (
     <dialog
+      ref={ref}
       className={twMerge(
         "fixed " +
           // px-0: put scroll bar on menu items up against the edge of the dialog

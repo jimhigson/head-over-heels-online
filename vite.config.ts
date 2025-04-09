@@ -17,9 +17,6 @@ export default defineConfig({
     }) as PluginOption,
     VitePWA({
       registerType: "autoUpdate",
-      // devOptions: {
-      //   enabled: true,
-      // },
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,mp3,m4a}"],
       },
