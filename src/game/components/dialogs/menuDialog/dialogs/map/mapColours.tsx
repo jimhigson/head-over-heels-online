@@ -39,9 +39,9 @@ export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
   },
   market: {
     bgClassName:
-      "fill-metallicBlueHalfbrite zx:fill-zxBlue text-highlightBeige zx:text-zxWhite",
+      "fill-metallicBlueHalfbrite zx:fill-zxCyan text-highlightBeige zx:text-zxBlack",
     containerClassName:
-      "bg-metallicBlueHalfbrite zx:bg-zxBlue scrollbar-track-metallicBlueHalfbrite zx:scrollbar-track-zxBlue scrollbar-thumb-highlightBeige zx:scrollbar-thumb-zxWhite",
+      "bg-metallicBlueHalfbrite zx:bg-zxCyan scrollbar-track-metallicBlueHalfbrite zx:scrollbar-track-zxBlue scrollbar-thumb-highlightBeige zx:scrollbar-thumb-zxBlack",
   },
   penitentiary: {
     bgClassName: "fill-shadow zx:fill-zxBlue text-moss zx:text-zxWhite",
@@ -55,9 +55,9 @@ export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
   },
   freedom: {
     bgClassName:
-      "fill-highlightBeige zx:fill-zxGreen text-white zx:text-zxWhite",
+      "fill-highlightBeige zx:fill-zxGreen text-white zx:text-zxBlack",
     containerClassName:
-      "bg-highlightBeige zx:bg-zxGreen scrollbar-track-highlightBeige zx:scrollbar-track-zxGreen scrollbar-thumb-moss zx:scrollbar-thumb-zxWhite",
+      "bg-highlightBeige zx:bg-zxGreen scrollbar-track-highlightBeige zx:scrollbar-track-zxGreen scrollbar-thumb-moss zx:scrollbar-thumb-zxBlack",
   },
 };
 export const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {

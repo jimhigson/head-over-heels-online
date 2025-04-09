@@ -1,21 +1,14 @@
 import type { OriginalCampaignRoomId } from "../../../../../../_generated/originalCampaign/OriginalCampaignRoomId";
 import type { Campaign } from "../../../../../../model/modelTypes";
 import type { SceneryName } from "../../../../../../sprites/planets";
-import { useTotalUpscale } from "../../../../../../store/selectors";
-import type { Xyz } from "../../../../../../utils/vectors/vectors";
-import {
-  addXy,
-  addXyz,
-  originXyz,
-} from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
 import { type Bounds } from "./Map.svg";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
 import { mapSvgMargin } from "./mapConstants";
+import { MarketSpecialBackground } from "./MarketSpecialBackground";
 import { roomWorldPosition } from "./roomWorldPosition";
 import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
-import { pathXy } from "./svgHelpers";
 import { useMapColours } from "./useMapColours";
 
 const sceneryToMapTitle: Record<SceneryName, string> = {
@@ -27,98 +20,6 @@ const sceneryToMapTitle: Record<SceneryName, string> = {
   market: "market",
   penitentiary: "penitentiary",
   safari: "safari",
-};
-
-/**
- * only for the original campaign -
- * a semi-hardcoded non-rectangular surround for the market to allow it to be labelled inside
- * of blacktooth escape
- */
-export const MarketSpecialBackground = ({
-  originalCampaignPositions,
-  mapBounds,
-  containerWidth,
-}: {
-  originalCampaignPositions: SortedObjectOfRoomGridPositionSpecs<OriginalCampaignRoomId>;
-  mapBounds: Bounds;
-  containerWidth: number;
-}) => {
-  const scale = useTotalUpscale();
-  const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMargin;
-
-  type RoomAndSubRoomId = keyof typeof originalCampaignPositions;
-
-  const offset = {
-    x: -mapBounds.l + mapSvgMargin + (containerWidth - contentW) / 2,
-    y: -mapBounds.t + mapSvgMargin,
-  };
-
-  const shapePointXy = (
-    roomAndSubRoomId: RoomAndSubRoomId,
-    gridPositionAdjust: Partial<Xyz> = originXyz,
-  ) => {
-    return addXy(
-      offset,
-      projectWorldXyzToScreenXy(
-        roomWorldPosition(
-          addXyz(
-            originalCampaignPositions[roomAndSubRoomId].gridPosition,
-            gridPositionAdjust,
-          ),
-        ),
-      ),
-    );
-  };
-
-  // describe the points of a diamond shape:
-  const leftTopXy = shapePointXy("blacktooth44market/*", {
-    x: 1,
-    z: 1.5,
-  });
-  const leftXy = shapePointXy("blacktooth44market/*", {
-    x: 1,
-  });
-  const bottomXy = shapePointXy("blacktooth45market/*");
-
-  const rightXy = shapePointXy("blacktooth48market/*", {
-    y: 1,
-  });
-  const topXy = shapePointXy("blacktooth52market/*", {
-    x: 1,
-    y: 1,
-    z: 0,
-  });
-  const topLeftXy = shapePointXy("blacktooth52market/*", {
-    x: 1,
-    y: 0.5,
-    z: 0,
-  });
-
-  const leftBound = scale * 8 * 2;
-  return (
-    <>
-      <path
-        className="fill-metallicBlueHalfbrite stroke-metallicBlueHalfbrite"
-        strokeWidth={12}
-        d={`
-M ${pathXy({ ...leftTopXy, x: leftBound })}
-L ${pathXy(leftTopXy)}
-L ${pathXy(leftXy)}
-L ${pathXy(bottomXy)}
-L ${pathXy(rightXy)}
-L ${pathXy(topXy)}
-L ${pathXy(topLeftXy)}
-L ${pathXy({ ...topLeftXy, x: leftBound })}
-z`}
-      />
-      <MapBackgroundSection
-        y={topLeftXy.y}
-        mapTitle={"Market"}
-        className={mapClasses.market.bgClassName}
-        textOnly
-      />
-    </>
-  );
 };
 
 export const MapBackground = <RoomId extends string>({
