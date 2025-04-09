@@ -23,12 +23,21 @@ export class BubblesSoundRenderer<
       },
     } = renderContext;
 
-    if (was.type === "pickup") {
-      // for fish needs to be: "seaShanty"
+    switch (was.type) {
+      case "pickup": {
+        // for fish needs to be: "seaShanty"
 
-      if (was.gives !== "scroll") {
+        if (was.gives !== "scroll") {
+          createAudioNode({
+            soundId: "bonus",
+            connectTo: this.output,
+          });
+        }
+        break;
+      }
+      case "disappearing": {
         createAudioNode({
-          soundId: "bonus",
+          soundId: "destroy",
           connectTo: this.output,
         });
       }
