@@ -72,6 +72,8 @@ export const MapSvg = <RoomId extends string>({
         minWidth: `${contentW}px`,
         height: `${contentH}px`,
       }}
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       {background}
       <g

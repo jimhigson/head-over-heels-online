@@ -71,8 +71,12 @@ export const MarketSpecialBackground = ({
   };
 
   // describe the points of a diamond shape:
+  const leftTopXy = shapePointXy("blacktooth44market/*", {
+    x: 1,
+    z: 1.5,
+  });
   const leftXy = shapePointXy("blacktooth44market/*", {
-    x: 2,
+    x: 1,
   });
   const bottomXy = shapePointXy("blacktooth45market/*");
 
@@ -84,6 +88,11 @@ export const MarketSpecialBackground = ({
     y: 1,
     z: 0,
   });
+  const topLeftXy = shapePointXy("blacktooth52market/*", {
+    x: 1,
+    y: 0.5,
+    z: 0,
+  });
 
   const leftBound = scale * 8 * 2;
   return (
@@ -92,16 +101,18 @@ export const MarketSpecialBackground = ({
         className="fill-metallicBlueHalfbrite stroke-metallicBlueHalfbrite"
         strokeWidth={12}
         d={`
-M ${pathXy({ ...leftXy, x: leftBound })}
+M ${pathXy({ ...leftTopXy, x: leftBound })}
+L ${pathXy(leftTopXy)}
 L ${pathXy(leftXy)}
 L ${pathXy(bottomXy)}
 L ${pathXy(rightXy)}
 L ${pathXy(topXy)}
-L ${pathXy({ ...topXy, x: leftBound })}
+L ${pathXy(topLeftXy)}
+L ${pathXy({ ...topLeftXy, x: leftBound })}
 z`}
       />
       <MapBackgroundSection
-        y={topXy.y}
+        y={topLeftXy.y}
         mapTitle={"Market"}
         className={mapClasses.market.bgClassName}
         textOnly
