@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { multilineTextClass } from "../../multilineTextClass";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignment";

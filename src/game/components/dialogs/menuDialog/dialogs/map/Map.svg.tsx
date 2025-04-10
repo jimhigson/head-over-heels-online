@@ -12,18 +12,14 @@ import type { ReactElement } from "react";
 import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 import type { ValueOf } from "type-fest";
 import { mapSvgMargin } from "./mapConstants";
+import type { PlayerLocations } from "./useMapData";
 
 export type MapSvgProps<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   pickupsCollected: PickupsCollected<RoomId>;
   gridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
   currentCharacterName?: CharacterName;
-  headRoomId?: RoomId;
-  heelsRoomId?: RoomId;
-  headOverHeelsRoomId?: RoomId;
-  headSubRoomId?: string;
-  heelsSubRoomId?: string;
-  headOverHeelsSubRoomId?: string;
+  playerLocations: PlayerLocations<RoomId>;
   background: ReactElement | null;
   mapBounds: Bounds;
   containerWidth: number;
@@ -47,12 +43,7 @@ export const MapSvg = <RoomId extends string>({
   pickupsCollected,
   gridPositions,
   currentCharacterName,
-  headRoomId,
-  headSubRoomId,
-  heelsRoomId,
-  heelsSubRoomId,
-  headOverHeelsRoomId,
-  headOverHeelsSubRoomId,
+  playerLocations,
   background,
   mapBounds,
   containerWidth,
@@ -83,22 +74,37 @@ export const MapSvg = <RoomId extends string>({
           const { roomId, subRoomId, gridPosition } = gridPositionSpec;
 
           const hasHead =
-            (roomId === headRoomId &&
-              subRoomId === headSubRoomId &&
-              (currentCharacterName === "head" ? "active" : "present")) ??
-            false;
+            (
+              playerLocations.head &&
+              roomId === playerLocations.head.roomId &&
+              subRoomId === playerLocations.head.subRoomId
+            ) ?
+              {
+                current: currentCharacterName === "head",
+                facingXy8: playerLocations.head.facingXy8,
+              }
+            : undefined;
 
           const hasHeels =
-            (roomId === heelsRoomId &&
-              subRoomId === heelsSubRoomId &&
-              (currentCharacterName === "heels" ? "active" : "present")) ??
-            false;
+            (
+              playerLocations.heels &&
+              roomId === playerLocations.heels.roomId &&
+              subRoomId === playerLocations.heels.subRoomId
+            ) ?
+              {
+                current: currentCharacterName === "heels",
+                facingXy8: playerLocations.heels.facingXy8,
+              }
+            : undefined;
 
           const hasHeadOverHeels =
-            (roomId === headOverHeelsRoomId &&
-              subRoomId === headOverHeelsSubRoomId &&
-              "active") ??
-            false;
+            (
+              playerLocations.headOverHeels &&
+              roomId === playerLocations.headOverHeels.roomId &&
+              subRoomId === playerLocations.headOverHeels.subRoomId
+            ) ?
+              { facingXy8: playerLocations.headOverHeels.facingXy8 }
+            : undefined;
 
           const roomRenderingId = `${roomId}/${subRoomId}`;
           return (

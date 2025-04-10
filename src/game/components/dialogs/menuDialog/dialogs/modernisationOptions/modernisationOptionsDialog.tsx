@@ -3,7 +3,7 @@ import {
   goToSubmenu,
   toggleBoolean,
 } from "../../../../../../store/slices/gameMenusSlice";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
 import { Dialog } from "../../../../../../ui/dialog";

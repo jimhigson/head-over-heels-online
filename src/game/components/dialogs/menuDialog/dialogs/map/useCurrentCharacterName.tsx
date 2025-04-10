@@ -12,10 +12,12 @@ import { swopPlayablesIfInput } from "../../../../../mainLoop/swopPlayablesIfInp
  * not being in the store, or this would be unnecessary. Still, the engine
  * is for the game first and the menus (like the map) secondarily.
  */
-export const useCurrentCharacterName = () => {
-  const gameApi = useGameApi<string>();
+export const useTickingCurrentCharacterName = <RoomId extends string>() => {
+  const gameApi = useGameApi<RoomId>();
+
   const [currentCharacterName, setCurrentCharacterName] =
     useState<CharacterName>(gameApi.gameState.currentCharacterName);
+
   useEffect(() => {
     const syncCharacterNameToState = () => {
       setCurrentCharacterName(gameApi.gameState.currentCharacterName);
@@ -25,6 +27,7 @@ export const useCurrentCharacterName = () => {
       Ticker.shared.remove(syncCharacterNameToState);
     };
   }, [gameApi.gameState]);
+
   return currentCharacterName;
 };
 

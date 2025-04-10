@@ -12,7 +12,7 @@ import { HoldDialog } from "./dialogs/holdDialog";
 import { ModernisationOptionsDialog } from "./dialogs/modernisationOptions/modernisationOptionsDialog";
 import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
 import { Dialog } from "../../../../ui/dialog";
-import { BitmapText } from "../../Sprite";
+import { BitmapText } from "../../tailwindSprites/Sprite";
 import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
 import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperorDialog";
 import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import type { DirectionXy8 } from "../../../../../../utils/vectors/vectors";
 import { lengthXy } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
 import {
@@ -20,6 +21,7 @@ import type { RoomJson } from "../../../../../../model/RoomJson";
 import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { roomAccentColourClass } from "./mapColours";
 import { VisitedFootprint } from "./VisitedFootprint";
+import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 
 const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
@@ -181,9 +183,9 @@ type RoomSvgProps<RoomId extends string> = {
   roomGridPositionSpec: RoomGridPositionSpec<RoomId>;
   roomJson: RoomJson<RoomId, string>;
   roomVisited: boolean;
-  hasHead?: false | "active" | "present";
-  hasHeels?: false | "active" | "present";
-  hasHeadOverHeels?: false | "active" | "present";
+  hasHead?: { current: boolean; facingXy8: DirectionXy8 };
+  hasHeels?: { current: boolean; facingXy8: DirectionXy8 };
+  hasHeadOverHeels?: { facingXy8: DirectionXy8 };
   roomPickupsCollected: RoomPickupsCollected;
 };
 
@@ -278,32 +280,44 @@ export const RoomSvg = <RoomId extends string>({
       <ItemInRoomLayout heightAdjust={14}>
         {hasHead && (
           <SpriteInRoom
-            className={`${hasHeels ? "[--scale:1.5]" : "[--scale:2.5]"} ${
-              hasHead === "active" ?
-                "texture-animated-head.walking.right"
-              : "texture-animated-head.idle.right"
-            }`}
-            scrollTo={hasHead === "active"}
+            className={`${hasHeels ? "[--scale:1.5]" : "[--scale:2.5]"}
+              ${playableTailwindSpriteClassname({
+                character: "head",
+                action: hasHead.current ? "walking" : "idle",
+                facingXy8: hasHead.facingXy8,
+              })}`}
+            scrollTo={hasHead.current}
           />
         )}
         {hasHeels && (
           <SpriteInRoom
-            className={`${hasHead ? "[--scale:1.5]" : "[--scale:2.5]"} ${
-              hasHeels === "active" ?
-                "texture-animated-heels.walking.right"
-              : "texture-heels.walking.right.2"
-            }`}
-            scrollTo={hasHeels === "active"}
+            className={`${hasHead ? "[--scale:1.5]" : "[--scale:2.5]"}
+            ${playableTailwindSpriteClassname({
+              character: "heels",
+              action: hasHeels.current ? "walking" : "idle",
+              facingXy8: hasHeels.facingXy8,
+            })}`}
+            scrollTo={hasHeels.current}
           />
         )}
       </ItemInRoomLayout>
       {hasHeadOverHeels && (
         <g transform="translate(0,-16)" className="[--scale:1.5]">
-          <SpriteInRoom className="texture-animated-heels.walking.right" />
+          <SpriteInRoom
+            className={playableTailwindSpriteClassname({
+              character: "heels",
+              action: "walking",
+              facingXy8: hasHeadOverHeels.facingXy8,
+            })}
+          />
           <g transform="translate(0, -20)">
             <SpriteInRoom
               // headOverHeels is always active (if they exist)
-              className="texture-animated-head.walking.right"
+              className={playableTailwindSpriteClassname({
+                character: "head",
+                action: "walking",
+                facingXy8: hasHeadOverHeels.facingXy8,
+              })}
               scrollTo
             />
           </g>

@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { keys } from "../../../../../../utils/entries";
 import { keyAssignmentPresets } from "../../../../../input/keyAssignmentPresets";
 import { MenuItems } from "../../MenuItems";

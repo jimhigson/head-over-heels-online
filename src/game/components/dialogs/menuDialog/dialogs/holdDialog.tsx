@@ -1,5 +1,5 @@
 import { PressToContinueBanner } from "../../PressToContinueBanner";
-import { BitmapText } from "../../../Sprite";
+import { BitmapText } from "../../../tailwindSprites/Sprite";
 import { multilineTextClass } from "../multilineTextClass";
 import { Dialog } from "../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../ui/DialogPortal";

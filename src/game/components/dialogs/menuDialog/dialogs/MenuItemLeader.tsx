@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../Sprite";
+import { BitmapText } from "../../../tailwindSprites/Sprite";
 
 export const MenuItemLeader = ({
   flip = false,

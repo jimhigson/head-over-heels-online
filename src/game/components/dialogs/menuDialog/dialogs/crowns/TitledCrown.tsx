@@ -3,7 +3,7 @@ import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureId } from "../../../../../../sprites/spriteSheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsColourised } from "../../../../../../store/selectors";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 const colourCycle: Record<PlanetName, `text-${TailwindPalette}`[]> = {
   egyptus: ["text-lightBeige", "text-midRed", "text-highlightBeige"],

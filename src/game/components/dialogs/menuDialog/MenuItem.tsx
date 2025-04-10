@@ -1,4 +1,4 @@
-import { BitmapText } from "../../Sprite";
+import { BitmapText } from "../../tailwindSprites/Sprite";
 import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../store/hooks";
 import { useRef, type ReactElement } from "react";

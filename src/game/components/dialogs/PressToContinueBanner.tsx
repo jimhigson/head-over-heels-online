@@ -1,6 +1,6 @@
 import { detectDeviceType } from "../../../utils/detectDeviceType";
 import type { BooleanAction } from "../../input/actions";
-import { BitmapText } from "../Sprite";
+import { BitmapText } from "../tailwindSprites/Sprite";
 import { CurrentKeyAssignments } from "./menuDialog/CurrentKeyAssignment";
 import { twMerge } from "tailwind-merge";
 
