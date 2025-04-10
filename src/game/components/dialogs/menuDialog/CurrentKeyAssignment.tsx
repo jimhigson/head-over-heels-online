@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../store/hooks";
 import { standardControllerButtonNames } from "../../../input/controllers";
 import type { Key } from "../../../input/keys";
-import { MultipleBitmapText } from "../../Sprite";
+import { MultipleBitmapText } from "../../tailwindSprites/Sprite";
 import { emptyArray } from "../../../../utils/empty";
 import type { BooleanAction } from "../../../input/actions";
 import { actionToAxis } from "../../../input/actionToAxis";

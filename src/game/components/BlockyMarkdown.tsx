@@ -1,6 +1,6 @@
 import type { JSX, ReactElement } from "react";
 import { type PropsWithChildren } from "react";
-import { BitmapText, MultipleBitmapText } from "./Sprite";
+import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
 import type { EmptyObject } from "type-fest";
 import { useTotalUpscale } from "../../store/selectors";
 import { twMerge } from "tailwind-merge";

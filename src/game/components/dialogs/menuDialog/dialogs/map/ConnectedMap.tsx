@@ -1,18 +1,9 @@
-import { useMemo } from "react";
-import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelectors/selectCurrentRoomState";
-import { startingRoomIds } from "../../../../../gameState/loadGameState";
 import { useGameApi } from "../../../../GameApiContext";
-import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { MapSvg } from "./Map.svg";
-import { roomGridPositions } from "./roomGridPositions";
-import { sortRoomGridPositions } from "./sortRoomGridPositions";
-import {
-  useAllowCharacterSwopping,
-  useCurrentCharacterName,
-} from "./useCurrentCharacterName";
-import { findMapBounds } from "./findMapBounds";
+import { useAllowCharacterSwopping } from "./useCurrentCharacterName";
 import { MapBackground } from "./MapBackground";
 import { useRoomsExplored } from "../../../../../../store/selectors";
+import { useMapData } from "./useMapData";
 
 export const ConnectedMap = <RoomId extends string>({
   containerWidth,
@@ -24,73 +15,18 @@ export const ConnectedMap = <RoomId extends string>({
 
   const { campaign } = gameApi;
 
+  // the user can switch characters while looking at the map:
   useAllowCharacterSwopping();
-  // ⬇️ hook causes re-render if character swops since last frame
-  const currentCharacterName = useCurrentCharacterName();
 
-  const { gridPositions, curRoomId, mapBounds } = useMemo(() => {
-    const curRoom =
-      gameApi && selectCurrentRoomState<RoomId>(gameApi?.gameState);
-    const centreRoomId =
-      curRoom?.roomJson.id ?? startingRoomIds(campaign).head!;
+  const {
+    gridPositions,
+    curRoomId,
+    mapBounds,
+    playerLocations,
+    currentCharacterName,
+  } = useMapData<RoomId>();
 
-    let curSubRoom: string;
-
-    const gameState = gameApi?.gameState;
-
-    if (!gameState) curSubRoom = "*";
-    else {
-      const subRooms = curRoom?.roomJson.meta?.subRooms;
-
-      if (!subRooms) curSubRoom = "*";
-      else {
-        const curCharacterItem = curRoom?.items[currentCharacterName];
-
-        if (!curCharacterItem) curSubRoom = "*";
-        else {
-          curSubRoom = findSubRoomForItem(curCharacterItem, curRoom.roomJson);
-        }
-      }
-    }
-
-    const positions = [
-      ...roomGridPositions({
-        campaign,
-        roomId: centreRoomId,
-        subRoomId: curSubRoom,
-      }),
-    ];
-    const sortedObjectOfPositions = sortRoomGridPositions(positions);
-    return {
-      mapBounds: findMapBounds(positions),
-      curRoomId: curRoom?.roomJson.id,
-      gridPositions: sortedObjectOfPositions,
-    };
-  }, [campaign, currentCharacterName, gameApi]);
-
-  const { characterRooms, pickupsCollected } = gameApi.gameState;
-
-  const headRoomId = characterRooms.head?.roomJson.id;
-  const heelsRoomId = characterRooms.heels?.roomJson.id;
-  const headOverHeelsRoomId = characterRooms.headOverHeels?.roomJson.id;
-  const headSubRoomId =
-    characterRooms.head &&
-    findSubRoomForItem(
-      characterRooms.head.items.head,
-      characterRooms.head.roomJson,
-    );
-  const heelsSubRoomId =
-    characterRooms.heels &&
-    findSubRoomForItem(
-      characterRooms.heels.items.heels,
-      characterRooms.heels.roomJson,
-    );
-  const headOverHeelsSubRoomId =
-    characterRooms.headOverHeels &&
-    findSubRoomForItem(
-      characterRooms.headOverHeels.items.headOverHeels,
-      characterRooms.headOverHeels.roomJson,
-    );
+  const { pickupsCollected } = gameApi.gameState;
 
   return (
     <MapSvg<RoomId>
@@ -113,12 +49,8 @@ export const ConnectedMap = <RoomId extends string>({
         pickupsCollected,
         gridPositions,
         currentCharacterName,
-        headRoomId,
-        headSubRoomId,
-        headOverHeelsRoomId,
-        heelsRoomId,
-        heelsSubRoomId,
-        headOverHeelsSubRoomId,
+        curRoomId,
+        playerLocations,
         containerWidth,
         roomsExplored,
       }}

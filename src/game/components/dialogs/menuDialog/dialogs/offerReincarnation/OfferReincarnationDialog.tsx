@@ -6,7 +6,7 @@ import {
   reincarnationAccepted,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { multilineTextClass } from "../../multilineTextClass";

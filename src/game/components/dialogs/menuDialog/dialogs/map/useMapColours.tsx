@@ -1,12 +1,12 @@
 import { useGameApi } from "../../../../GameApiContext";
 import type { MapClasses } from "./mapColours";
 import { mapClasses } from "./mapColours";
-import { useCurrentCharacterName } from "./useCurrentCharacterName";
+import { useTickingCurrentCharacterName } from "./useCurrentCharacterName";
 
 export const useMapColours = <RoomId extends string>(): MapClasses => {
   const gameApi = useGameApi<RoomId>();
   // ⬇️ hook causes re-render if character swops since last frame
-  const currentCharacterName = useCurrentCharacterName();
+  const currentCharacterName = useTickingCurrentCharacterName();
   const curRoom = gameApi.gameState.characterRooms[currentCharacterName];
 
   return (

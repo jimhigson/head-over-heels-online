@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItems } from "../../MenuItems";
 import { multilineTextClass } from "../../multilineTextClass";
 import {

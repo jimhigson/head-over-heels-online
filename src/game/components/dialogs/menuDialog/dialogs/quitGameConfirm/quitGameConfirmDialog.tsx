@@ -7,7 +7,7 @@ import {
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";

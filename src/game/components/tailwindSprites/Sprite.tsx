@@ -7,10 +7,10 @@ import {
 } from "react";
 import "react";
 import { twMerge } from "tailwind-merge";
-import { isTextureId } from "../../sprites/assertIsTextureId";
-import { escapeCharForTailwind } from "../../sprites/escapeCharForTailwind";
-import { loadedSpriteSheet } from "../../sprites/spriteSheet";
-import { ClassnameWrap } from "../../utils/react/ClassnameWrap";
+import { isTextureId } from "../../../sprites/assertIsTextureId";
+import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
+import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import { ClassnameWrap } from "../../../utils/react/ClassnameWrap";
 
 export interface CssSpriteProps {
   className?: string;

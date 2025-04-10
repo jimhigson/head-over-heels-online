@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 export const VersionDebugInfo = () => {
   const [open, toggleOpen] = useReducer((o: boolean) => !o, false);

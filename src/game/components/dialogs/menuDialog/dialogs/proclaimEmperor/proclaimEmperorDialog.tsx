@@ -5,7 +5,7 @@ import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 export const ProclaimEmperorDialog = () => {
   return (

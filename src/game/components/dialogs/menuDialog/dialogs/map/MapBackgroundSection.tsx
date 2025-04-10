@@ -1,5 +1,5 @@
 import { useTotalUpscale } from "../../../../../../store/selectors";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { multilineTextClass } from "../../multilineTextClass";
 import { mapSvgMargin } from "./mapConstants";
 

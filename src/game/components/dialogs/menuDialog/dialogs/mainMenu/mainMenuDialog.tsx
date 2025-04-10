@@ -8,7 +8,7 @@ import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { Dialog } from "../../../../../../ui/dialog";
 import { useIsGameRunning } from "../../../../../../store/selectors";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";

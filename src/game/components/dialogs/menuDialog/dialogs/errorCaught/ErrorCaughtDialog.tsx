@@ -10,7 +10,7 @@ import {
   reincarnationAccepted,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { multilineTextClass } from "../../multilineTextClass";
 
 const markdown = `##The game crashed

@@ -2,7 +2,7 @@ import { nextInputDirectionMode } from "../../../../../../store/slices/gameMenus
 import { useInputDirectionMode } from "../../../../../../store/selectors";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { controlMenuValueClass } from "./controlMenuValueClass";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";

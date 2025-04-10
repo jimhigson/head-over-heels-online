@@ -4,7 +4,7 @@ import { useIsScreenRelativeControl } from "../../../../../../store/selectors";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { MenuItem } from "../../MenuItem";
-import { BitmapText } from "../../../../Sprite";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const screenRelativeControlOffHintMarkdown =
