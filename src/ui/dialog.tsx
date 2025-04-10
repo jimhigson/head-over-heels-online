@@ -35,16 +35,19 @@ export const Dialog = ({
         "fixed " +
           // px-0: put scroll bar on menu items up against the edge of the dialog
           "p-1 px-0 " +
-          "m-0 " + //override dialog default in tw3, not needed in tw4
+          "m-0 " + //override dialog (no reset for dialogs in tw3, not needed in tw4)
+          "z-dialog " +
           (fullScreen ?
-            "h-full portrait-rot:h-fullScrW w-full portrait-rot:w-fullScrH left-0 top-0 "
-          : " left-[50%] z-dialog top-[50%] translate-y-[-50%] translate-x-[-50%] " +
-            // even without fullscreen, take up full screen width at the lowest res, possibly transverse:
-            "resHandheld:h-full portrait-rot:resHandheld:h-fullScrW resHandheld:w-full portrait-rot:resHandheld:w-fullScrH resHandheld:py-0 " +
-            (tall ? "h-tallDialog portrait-rot:h-wideDialog " : "h-zx ") +
+            "h-full portrait-rot:h-fullScrW w-full portrait-rot:w-fullScrH "
+            // h-zx shouldn't apply when not fullscreen
+          : (tall ? "h-tallDialog portrait-rot:h-wideDialog " : "h-zx ") +
             (wide ?
               "w-wideDialog portrait-rot:w-tallDialog max-w-widestDialog "
             : "w-zx ")) +
+          // centre the dialog:
+          "left-[50%] top-[50%] translate-y-[-50%] translate-x-[-50%] " +
+          // even without fullscreen, take up full screen width at the lowest res, possibly transverse:
+          "resHandheld:h-full portrait-rot:resHandheld:h-fullScrW resHandheld:w-full portrait-rot:resHandheld:w-fullScrH resHandheld:py-0 " +
           "portrait-rot:rotate-90 " +
           "leading-none flex flex-col gap-y-1 " +
           // bring away from a 'notch on mobile devices:
