@@ -107,7 +107,7 @@ export const MapBackground = <RoomId extends string>({
             yBetweenRooms("finalroom/*", "blacktooth83tofreedom/*") -
             mapBounds.t
           }
-          mapTitle={"Blacktooth castle"}
+          mapTitle={"Castle Blacktooth"}
           className={mapClasses.blacktooth.bgClassName}
         />
         <MapBackgroundSection
