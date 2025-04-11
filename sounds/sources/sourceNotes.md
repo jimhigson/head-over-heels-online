@@ -79,3 +79,6 @@ hooter:
 
 landing:
     https://www.pond5.com/sound-effects/item/305600898-landing-boots-after-jumping
+
+hushPuppyVanish:
+    https://www.pond5.com/sound-effects/item/155201828-swoosh-click-vanish    

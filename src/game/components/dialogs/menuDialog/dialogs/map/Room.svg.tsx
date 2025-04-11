@@ -22,6 +22,7 @@ import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { roomAccentColourClass } from "./mapColours";
 import { VisitedFootprint } from "./VisitedFootprint";
 import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 
 const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
@@ -187,6 +188,7 @@ type RoomSvgProps<RoomId extends string> = {
   hasHeels?: { current: boolean; facingXy8: DirectionXy8 };
   hasHeadOverHeels?: { facingXy8: DirectionXy8 };
   roomPickupsCollected: RoomPickupsCollected;
+  onPlayableClick?: (name: IndividualCharacterName) => void;
 };
 
 export const RoomSvg = <RoomId extends string>({
@@ -197,6 +199,7 @@ export const RoomSvg = <RoomId extends string>({
   hasHead,
   hasHeels,
   hasHeadOverHeels,
+  onPlayableClick,
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, roomBelow, color } = roomJson;
 
@@ -287,6 +290,11 @@ export const RoomSvg = <RoomId extends string>({
                 facingXy8: hasHead.facingXy8,
               })}`}
             scrollTo={hasHead.current}
+            onClick={(e) => {
+              onPlayableClick?.("head");
+              e.preventDefault();
+              e.stopPropagation();
+            }}
           />
         )}
         {hasHeels && (
@@ -298,6 +306,11 @@ export const RoomSvg = <RoomId extends string>({
               facingXy8: hasHeels.facingXy8,
             })}`}
             scrollTo={hasHeels.current}
+            onClick={(e) => {
+              onPlayableClick?.("heels");
+              e.preventDefault();
+              e.stopPropagation();
+            }}
           />
         )}
       </ItemInRoomLayout>

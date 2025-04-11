@@ -4,6 +4,7 @@ import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen
 import type {
   Campaign,
   CharacterName,
+  IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
 import type { PickupsCollected } from "../../../../../gameState/GameState";
 import { emptyObject } from "../../../../../../utils/empty";
@@ -24,6 +25,7 @@ export type MapSvgProps<RoomId extends string> = {
   mapBounds: Bounds;
   containerWidth: number;
   roomsExplored: Record<RoomId, true>;
+  onPlayableClick?: (name: IndividualCharacterName) => void;
 };
 
 const svgTranslateXyz = (xyz: Xyz) => {
@@ -48,6 +50,7 @@ export const MapSvg = <RoomId extends string>({
   mapBounds,
   containerWidth,
   roomsExplored,
+  onPlayableClick,
 }: MapSvgProps<RoomId>) => {
   const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMargin;
   const contentH = mapBounds.b - mapBounds.t + 2 * mapSvgMargin;
@@ -121,6 +124,7 @@ export const MapSvg = <RoomId extends string>({
                 hasHeels={hasHeels}
                 hasHeadOverHeels={hasHeadOverHeels}
                 roomVisited={roomsExplored[roomId] ?? false}
+                onPlayableClick={onPlayableClick}
               />
             </g>
           );
