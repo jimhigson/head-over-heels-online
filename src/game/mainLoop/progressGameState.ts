@@ -4,150 +4,36 @@ import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { updateStandingOn } from "../gameState/mutators/updateStandingOn";
 import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";
-import {
-  selectCurrentPlayableItem,
-  selectPlayableItem,
-} from "../gameState/gameStateSelectors/selectPlayableItem";
-import { concat, objectValues } from "iter-tools";
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
+import { objectValues } from "iter-tools";
 import { iterate } from "../../utils/iterate";
-import {
-  isExactIntegerXyz,
-  roundXyz,
-  xyzEqual,
-  xyzSnapIfCloseToIntegers,
-} from "../../utils/vectors/vectors";
-import { isFreeItem, isPlayableItem } from "../physics/itemPredicates";
-import type {
-  UnionOfAllItemInPlayTypes,
-  AnyItemInPlay,
-  ItemInPlayType,
-} from "../../model/ItemInPlay";
-import { otherIndividualCharacterName } from "../../model/modelTypes";
-import { emptyObject, emptySet } from "../../utils/empty";
-import {
-  iterateRoomItemEntries,
-  iterateRoomItems,
-  type RoomState,
-  type RoomStateItems,
-} from "../../model/RoomState";
+import { xyzEqual } from "../../utils/vectors/vectors";
+import { isPlayableItem } from "../physics/itemPredicates";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { emptySet } from "../../utils/empty";
+import { iterateRoomItemEntries } from "../../model/RoomState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
-
-const itemHasExpired = <RoomId extends string, RoomItemId extends string>(
-  item: UnionOfAllItemInPlayTypes,
-  room: RoomState<RoomId, RoomItemId>,
-) => item.state.expires !== null && item.state.expires < room.roomTime;
-
-/**
- * fix item positions where numbers should be integers but aren't quite
- *  - for example the number 99.99999999999999 coming out of the mtv/collisions
- * algorithm when it should be 100
- */
-const correctFloatingPointErrorsInRoom = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
-  room: RoomState<RoomId, RoomItemId>,
-) => {
-  for (const item of iterateRoomItems(room.items)) {
-    const originalPosition = item.state.position;
-    item.state.position = xyzSnapIfCloseToIntegers(originalPosition);
-  }
-};
-
-/**
- * snap all items that haven't been acted on the pixel grid - sub-pixel
- * locations are only allowed while items are moving
- */
-const snapInactiveItemsToPixelGrid = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
-  room: RoomState<RoomId, RoomItemId>,
-  /**
-   * the items we already know moved - any that this function snaps
-   * will also be added to the set
-   */
-  movedItems: Set<AnyItemInPlay>,
-) => {
-  for (const item of iterateRoomItems(room.items)) {
-    if (!isFreeItem(item) || room.roomTime === item.state.actedOnAt.roomTime) {
-      // was acted on in this tick - do not snap
-      continue;
-    }
-
-    if (!isExactIntegerXyz(item.state.position)) {
-      console.log(
-        `snapping item ${item.id} to pixel grid (not acted on in tick)`,
-      );
-      item.state.position = roundXyz(item.state.position);
-      movedItems.add(item);
-    }
-  }
-};
-
-/**
- * it matters what order items are processed in - for example, lifts move but nothing can move a lift, so
- * lifts should be processed first so they can push everything else before they can also move and fail
- * to push the lift
- */
-const itemTickOrderComparator = (
-  a: UnionOfAllItemInPlayTypes,
-  b: UnionOfAllItemInPlayTypes,
-) => {
-  const scores: Partial<Record<ItemInPlayType, number>> = {
-    lift: -4, // <- highest priority
-    head: -3,
-    heels: -3,
-    monster: -2,
-    // everything else goes here
-    block: 1, // <- lowest priority
-    deadlyBlock: 1, // <- lowest priority
-  };
-
-  const aScore = scores[a.type] ?? 0;
-  const bScore = scores[b.type] ?? 0;
-
-  return aScore - bScore;
-};
+import { snapInactiveItemsToPixelGrid } from "./snapInactiveItemsToPixelGrid";
+import { itemHasExpired } from "./itemHasExpired";
+import { correctFloatingPointErrorsInRoom } from "./correctFloatingPointErrorsInRoom";
+import { itemTickOrderComparator } from "./itemTickOrderComparator";
+import { advanceTime } from "./advanceTime";
 
 /* the items that moved while progressing the game state */
 export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<
   UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
 >;
 
-const noItems = emptyObject as RoomStateItems<string, string>;
-
-export const progressGameState = <RoomId extends string>(
+export type ProgressGameState<
+  RoomId extends string,
+  RoomItemId extends string,
+> = (
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MovedItems<RoomId, string> => {
-  // DEBUG CODE:
-  // force extra sub-ticks when gameSpeed > 1, to emulate the game being
-  // progressed that many times
-  if (gameState.gameSpeed > 1) {
-    let movedItems = new Set() as MovedItems<RoomId, string>;
-    for (let i = 0; i < gameState.gameSpeed; i++) {
-      const subtickMoves = _progressGameState(gameState, deltaMS);
-      const itemsAtEndOfSubtick =
-        selectCurrentRoomState(gameState)?.items ?? noItems;
-      movedItems = new Set(
-        iterate(
-          // add the new moved items onto the old one:
-          concat(movedItems, subtickMoves),
-        )
-          // remove from movedItems any items that no longer exist in the room:
-          .filter(({ id }) => itemsAtEndOfSubtick[id] !== undefined),
-      );
-    }
-    return movedItems;
-  }
+) => MovedItems<RoomId, RoomItemId>;
 
-  // gamespeed is 1 (normal) or <1
-  return _progressGameState(gameState, deltaMS * gameState.gameSpeed);
-};
-
-export const _progressGameState = <
+export const progressGameState = <
   RoomId extends string,
   RoomItemId extends string,
 >(
@@ -227,48 +113,8 @@ export const _progressGameState = <
     ),
   ) as MovedItems<RoomId, RoomItemId>;
 
-  // for (const m of movedItems) {
-  //   console.log(m.id, "moved", "to", m.state.position);
-  // }
-
   assignLatentMovementFromStandingOn(movedItems, room, startingPositions);
   snapInactiveItemsToPixelGrid(room, movedItems);
 
   return movedItems;
-};
-
-const advanceTime = <RoomId extends string, RoomItemId extends string>(
-  gameState: GameState<RoomId>,
-  room: RoomState<RoomId, RoomItemId>,
-  deltaMS: number,
-) => {
-  gameState.progression++;
-  gameState.gameTime += deltaMS;
-  room.roomTime += deltaMS;
-  const playable = selectCurrentPlayableItem(gameState);
-
-  if (playable === undefined) {
-    return;
-  }
-
-  if (playable.type === "headOverHeels") {
-    playable.state.head.gameTime += deltaMS;
-    playable.state.heels.gameTime += deltaMS;
-  } else {
-    playable.state.gameTime += deltaMS;
-
-    const charactersInSameRoom =
-      gameState.characterRooms.head === gameState.characterRooms.heels;
-
-    if (charactersInSameRoom) {
-      // advance the other character's time too since they're both in play:
-      const other = selectPlayableItem(
-        gameState,
-        otherIndividualCharacterName(playable.type),
-      );
-      if (other !== undefined) {
-        other.state.gameTime += deltaMS;
-      }
-    }
-  }
 };

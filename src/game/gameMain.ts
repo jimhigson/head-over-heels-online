@@ -17,6 +17,7 @@ import {
 } from "../store/slices/gameMenusSlice";
 import type { SavedGameState } from "./gameState/saving/SavedGameState";
 import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
+import { maxFps } from "./physics/mechanicsConstants";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -41,6 +42,8 @@ export const gameMain = async <RoomId extends string>(
       wheel: false,
     },
   });
+
+  app.ticker.maxFPS = maxFps;
 
   const savedGameToContinueFrom = store.getState().gameMenus
     .currentGame as SavedGameState<RoomId>;

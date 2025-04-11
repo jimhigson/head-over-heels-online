@@ -15,6 +15,7 @@ import {
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import {
   fallG,
+  jumpFudge,
   originalGameJumpPxPerFrame,
   playerJumpHeightPx,
 } from "../mechanicsConstants";
@@ -23,12 +24,13 @@ import { teleporterIsActive } from "./teleporting";
 const jumpDelayGrace = 1000 / 12;
 
 const jumpInitialVelocity = (apexZ: number) => {
+  const fudgedApexZ = apexZ - jumpFudge;
   // Calculate the time to reach the apex in milliseconds in the original game:
-  const framesToApex = apexZ / originalGameJumpPxPerFrame;
+  const framesToApex = fudgedApexZ / originalGameJumpPxPerFrame;
   const tApex = framesToApex * originalGameFrameDuration;
 
   // Calculate the initial velZ needed to reach the apex
-  const velZ = (apexZ + 0.5 * fallG * tApex ** 2) / tApex;
+  const velZ = (fudgedApexZ + 0.5 * fallG * tApex ** 2) / tApex;
 
   return velZ;
 };
@@ -141,6 +143,9 @@ export const jumping = <RoomId extends string, RoomItemId extends string>(
   }
 
   const standingOnSpring = isSpring(standingOn);
+
+  console.log("🌸🌸🌸 starting a jump - from spring?", standingOnSpring);
+
   const velZ = getJumpInitialVelocity(playableItem, standingOnSpring);
 
   // handled this input but don't set jump input off - it is

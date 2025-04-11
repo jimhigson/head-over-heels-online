@@ -13,7 +13,7 @@ export const room = inferRoomJson({
       type: "barrier",
     },
     "block@0,9,0": {
-      config: { style: "tower", times: { z: 6 } },
+      config: { style: "tower", times: { z: 5 } },
       position: { x: 0, y: 9, z: 0 },
       type: "block",
     },
@@ -94,6 +94,11 @@ export const room = inferRoomJson({
       config: {},
       position: { x: 6, y: 7, z: 1 },
       type: "spring",
+    },
+    towerTop: {
+      config: { style: "organic" },
+      position: { x: 0, y: 9, z: 5 },
+      type: "block",
     },
     "wall@0,0,0:3gap0": {
       config: { direction: "right", tiles: [], times: { y: 10 } },

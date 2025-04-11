@@ -4,7 +4,10 @@ vi.mock("../../sprites/samplePalette", () => ({
 }));
 
 import type { PlayableItem } from "../physics/itemPredicates";
-import { defaultRoomHeightBlocks } from "../physics/mechanicsConstants";
+import {
+  defaultRoomHeightBlocks,
+  playerJumpHeightPx,
+} from "../physics/mechanicsConstants";
 import { smallItemAabb } from "../collision/boundingBoxes";
 
 import type {
@@ -17,6 +20,7 @@ import {
   secondRoomId,
 } from "../../_testUtils/basicRoom";
 import {
+  currentPlayableState,
   headState,
   heelsState,
   itemState,
@@ -30,6 +34,7 @@ import type { ItemInPlay } from "../../model/ItemInPlay";
 import { blockSizePx } from "../../sprites/spritePivots";
 import { testFrameRates } from "../../_testUtils/testFrameRates";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { individualCharacterNames } from "../../model/modelTypes";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -307,7 +312,7 @@ describe("jumping", () => {
   );
 
   test.each(testFrameRates)(
-    "doesn't snag on the boundary between bounding boxes on the way up a jump (%iHz)",
+    "doesn't snag on the boundary between bounding boxes on the way up a jump (%fHz)",
     (frameRate) => {
       const gameState = basicGameState({
         firstRoomItems: {
@@ -347,7 +352,7 @@ describe("jumping", () => {
   );
 
   test.each(testFrameRates)(
-    "doesn't snag on the boundary between bounding boxes while falling (%iHz)",
+    "doesn't snag on the boundary between bounding boxes while falling (%fHz)",
     (frameRate) => {
       const gameState = basicGameState({
         firstRoomItems: {
@@ -400,6 +405,149 @@ describe("jumping", () => {
       });
       expect(headState(gameState).position.z).toBe(0);
       expect(headState(gameState).standingOnItemId).toEqual("floor");
+    },
+  );
+
+  describe.each(testFrameRates)("max jump heights (%fHz)", (frameRate) => {
+    describe.each(individualCharacterNames)(
+      `%s (without a spring) jump height`,
+      (name) => {
+        const expectedJumpHeight = playerJumpHeightPx[name];
+        test(`expect a height of ${expectedJumpHeight}px`, () => {
+          const gameState = basicGameState({
+            firstRoomItems: {
+              [name]: {
+                type: "player",
+                position: { x: 1, y: 0, z: 1 },
+                config: {
+                  which: name,
+                },
+              },
+            },
+          });
+
+          let maxFoundHeight = Number.NEGATIVE_INFINITY;
+          playGameThrough(gameState, {
+            frameRate,
+            until: 3_000,
+            setupInitialInput(mockInputStateTracker) {
+              mockInputStateTracker.mockDirectionPressed = "right";
+              mockInputStateTracker.mockPressing("jump");
+            },
+            frameCallbacks(gameState, mockInputStateTracker) {
+              const state = currentPlayableState(gameState);
+              maxFoundHeight = Math.max(maxFoundHeight, state.position.z);
+
+              if (state.jumped) {
+                // stop pressing jump once we are jumping:
+                mockInputStateTracker.mockNotPressing("jump");
+              }
+            },
+          });
+
+          /* 
+            variable frame rate simulations aren't that accurate :-/
+            to get better than this, we'd need to account for deceleration
+            that happens between the velocity being reduced once per frame,
+            or have a lower maximum tick delta ms
+           */
+          const allowableError = 0.95;
+
+          expect(maxFoundHeight).toBeGreaterThan(
+            expectedJumpHeight - allowableError,
+          );
+          expect(maxFoundHeight).toBeLessThan(
+            expectedJumpHeight + allowableError,
+          );
+        });
+      },
+    );
+  });
+
+  test.each(testFrameRates)(
+    "head can get onto a 4-high tower by jumping from a spring (%fHz)",
+    (frameRate) => {
+      // similar to safari9triple (except that needs more blocks under the spring)
+      const gameState = basicGameState({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 1, y: 0, z: 1 },
+            config: {
+              which: "head",
+            },
+          },
+          spring: {
+            type: "spring",
+            position: { x: 1, y: 0, z: 0 },
+            config: {},
+          },
+          tower: {
+            type: "block",
+            position: { x: 0, y: 0, z: 0 },
+            config: { style: "tower", times: { z: 4 } },
+          },
+        },
+      });
+
+      playGameThrough(gameState, {
+        frameRate,
+        until: 3_000,
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "right";
+          mockInputStateTracker.mockPressing("jump");
+        },
+        frameCallbacks(gameState, mockInputStateTracker) {
+          if (headState(gameState).jumped) {
+            // stop pressing jump once we are jumping:
+            mockInputStateTracker.mockNotPressing("jump");
+          }
+        },
+      });
+      expect(headState(gameState).standingOnItemId).toEqual("tower");
+    },
+  );
+  test.each(testFrameRates)(
+    "head can't get onto a 5-high tower by jumping from a spring (%fHz)",
+    (frameRate) => {
+      // similar to safari9triple (except that needs more blocks under the spring)
+      const gameState = basicGameState({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 1, y: 0, z: 1 },
+            config: {
+              which: "head",
+            },
+          },
+          spring: {
+            type: "spring",
+            position: { x: 1, y: 0, z: 0 },
+            config: {},
+          },
+          tower: {
+            type: "block",
+            position: { x: 0, y: 0, z: 0 },
+            config: { style: "tower", times: { z: 5 } },
+          },
+        },
+      });
+
+      playGameThrough(gameState, {
+        frameRate,
+        until: 3_000,
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "right";
+          mockInputStateTracker.mockPressing("jump");
+        },
+        frameCallbacks(gameState, mockInputStateTracker) {
+          if (headState(gameState).jumped) {
+            // stop pressing jump once we are jumping:
+            mockInputStateTracker.mockNotPressing("jump");
+          }
+        },
+      });
+      expect(headState(gameState).standingOnItemId).not.toEqual("tower");
     },
   );
 });
@@ -846,7 +994,7 @@ describe("snapping stationary items to pixel grid", () => {
     expect(headState(gameState).position).toMatchInlineSnapshot(`
       {
         "x": 51,
-        "y": 59,
+        "y": 60,
         "z": 0,
       }
     `);

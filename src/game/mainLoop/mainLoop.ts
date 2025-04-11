@@ -21,6 +21,8 @@ import {
 import { pick } from "../../utils/pick";
 import { audioCtx } from "../../sound/audioCtx";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { progressWithSubSteps } from "./progressWithSubSteps";
+import { maxStepDeltaMs } from "../physics/mechanicsConstants";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -61,6 +63,7 @@ export class MainLoop<RoomId extends string> {
   #worldSound: AudioNode = audioCtx.createGain();
   #app: Application;
   #gameState: GameState<RoomId>;
+  #physicsTicker = progressWithSubSteps(progressGameState, maxStepDeltaMs);
 
   constructor(
     private app: Application,
@@ -164,7 +167,7 @@ export class MainLoop<RoomId extends string> {
     // note that progressing the game state can change/reload the room,
     // so we need to do this before considering recreating the room renderer
     const movedItems =
-      isPaused ? emptySet : progressGameState(this.#gameState, deltaMS);
+      isPaused ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
 
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene

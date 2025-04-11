@@ -13,6 +13,25 @@ export const playerWalkAcceldPixPerMsSq = {
   heels: 0.000_15,
 };
 
+/**
+ * The simulation can't run slower than this rate (80fps) even if the graphics are running
+ * slower than this. By keeping the physics on the faster side, issues are avoided such as
+ * being able to jump slightly higher at lower frame rates (otherwise some jumps onto platforms
+ * are doable at lower frame rates but not at higher ones)
+ *
+ * The issue is that jumping at lower frame rates, even though the vertical veolcity is reduced
+ * by acceleration * deltaMs, (semi-implicit Euler integration) because velocity is applied
+ * before the velocity is reduced, lower frame rates still have more time at the greater velocity.
+ *
+ * 110 Hz ensures 3 sub-ticks per frame at 60fps
+ */
+export const maxStepDeltaMs = 1000 / 110;
+
+/** generally, jumps get (slightly) lower as frame rates increase, and this gets
+ * impactful at very high frame rates - limit to 240Hz since this is already at
+ * the edge of screen tech (2025) and very fast */
+export const maxFps = 240;
+
 /** 
   acceleration due to gravity while jumping, in m/s²
   setting to zero gives the old, linear jump behaviour. Higher figures mean
@@ -94,10 +113,21 @@ export const conveyorSpeedPixPerMs = pxPerFrameSpeed();
 // original game jumps were 2px per 1/25s frame. Kept things nice and simple and integer-y!
 export const originalGameJumpPxPerFrame = 2;
 
+/**
+ * as a variable frame rate simulations, we suffer from being able to jump
+ * slightly higher than intended, especially at the lowest supported physics
+ * tick rate (80Hz).
+ *
+ * The jumping mechanics takes this number off the target jump height when
+ * calculating the initial jump velocity. Since the game was originally created
+ * and play-tested without that deduction, we add it back on here to restore
+ * to the original playability
+ */
+export const jumpFudge = 1.1;
 export const playerJumpHeightPx = {
   // head can jump almost 3 blocks high
-  head: blockSizePx.h * 2.6,
-  heels: blockSizePx.h,
+  head: blockSizePx.h * 2.6 + jumpFudge,
+  heels: blockSizePx.h + jumpFudge,
 };
 
 // original game lift speed was 1px per frame
