@@ -1,5 +1,7 @@
 import type { GameState } from "../game/gameState/GameState";
 import { progressGameState } from "../game/mainLoop/progressGameState";
+import { progressWithSubSteps } from "../game/mainLoop/progressWithSubSteps";
+import { maxStepDeltaMs } from "../game/physics/mechanicsConstants";
 import type { TestRoomId } from "./basicRoom";
 import type {
   GameStateWithMockInput,
@@ -32,6 +34,8 @@ export const playGameThrough = (
     setupInitialInput = () => {},
   }: PlayGameThroughOptions = { frameRate: 60, until: 1000 },
 ) => {
+  const ticker = progressWithSubSteps(progressGameState, maxStepDeltaMs);
+
   const deltaMS = 1000 / frameRate;
   const frameCallbacksArray =
     Array.isArray(frameCallbacks) ? frameCallbacks : [frameCallbacks];
@@ -42,7 +46,7 @@ export const playGameThrough = (
   while (
     typeof until === "number" ? gameState.gameTime < until : !until(gameState)
   ) {
-    progressGameState(gameState, deltaMS);
+    ticker(gameState, deltaMS);
     gameState.inputStateTracker.mockTick();
     gameState = frameCallbacksArray.reduce((gameStateAc, frameCallback) => {
       try {
