@@ -131,7 +131,6 @@ export class MainLoop<RoomId extends string> {
         upscale: tickUpscale,
       },
     } = store.getState();
-    const tickRoom = selectCurrentRoomState(this.#gameState);
 
     const tickColourise =
       !isPaused &&
@@ -159,9 +158,10 @@ export class MainLoop<RoomId extends string> {
       this.#app.stage.addChild(this.#hudRenderer.output);
     }
 
+    const tickStartRoom = selectCurrentRoomState(this.#gameState);
     this.#hudRenderer.tick({
       screenSize: tickUpscale.gameEngineScreenSize,
-      room: tickRoom,
+      room: tickStartRoom,
     });
 
     // note that progressing the game state can change/reload the room,
@@ -169,10 +169,13 @@ export class MainLoop<RoomId extends string> {
     const movedItems =
       isPaused ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
 
+    // the tick could end on a different room than it started on:
+    const tickEndRoom = selectCurrentRoomState(this.#gameState);
+
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene
       // graph if it changes - we simply destroy and recreate it entirely:
-      this.#roomRenderer?.renderContext.room !== tickRoom ||
+      this.#roomRenderer?.renderContext.room !== tickEndRoom ||
       this.#roomRenderer?.renderContext.upscale !== tickUpscale ||
       this.#roomRenderer?.renderContext.displaySettings !==
         tickDisplaySettings ||
@@ -180,10 +183,10 @@ export class MainLoop<RoomId extends string> {
     ) {
       this.#roomRenderer?.destroy();
 
-      if (tickRoom) {
+      if (tickEndRoom) {
         this.#roomRenderer = new RoomRenderer({
           gameState: this.#gameState,
-          room: tickRoom,
+          room: tickEndRoom,
           paused: isPaused,
           pixiRenderer: this.#app.renderer,
           displaySettings: tickDisplaySettings,
@@ -194,7 +197,7 @@ export class MainLoop<RoomId extends string> {
         this.#roomRenderer.output.sound.connect(this.#worldSound);
         // this isn't the ideal place to emit this from - it gets fired even if just the
         // display settings change. but only the cheats needs this currently
-        this.#gameState.events.emit("roomChange", tickRoom.id);
+        this.#gameState.events.emit("roomChange", tickEndRoom.id);
       } else {
         this.#roomRenderer = undefined;
       }
