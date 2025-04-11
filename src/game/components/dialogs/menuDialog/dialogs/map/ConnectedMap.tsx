@@ -4,6 +4,7 @@ import { useAllowCharacterSwopping } from "./useCurrentCharacterName";
 import { MapBackground } from "./MapBackground";
 import { useRoomsExplored } from "../../../../../../store/selectors";
 import { useMapData } from "./useMapData";
+import { swopPlayables } from "../../../../../gameState/mutators/swopCharacters";
 
 export const ConnectedMap = <RoomId extends string>({
   containerWidth,
@@ -30,6 +31,7 @@ export const ConnectedMap = <RoomId extends string>({
 
   return (
     <MapSvg<RoomId>
+      onPlayableClick={(name) => swopPlayables(gameApi.gameState, name)}
       background={
         curRoomId === undefined ? null : (
           <MapBackground<RoomId>
