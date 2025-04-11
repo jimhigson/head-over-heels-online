@@ -15,6 +15,7 @@ import heelsJumpSoundUrl from "../../sounds/heelsJump.mp3";
 import heelsWalkSoundUrl from "../../sounds/heelsWalk.mp3";
 import helicopterSoundUrl from "../../sounds/helicopter.mp3";
 import hooterSoundUrl from "../../sounds/hooter.mp3";
+import hushPuppyVanishSoundUrl from "../../sounds/hushPuppyVanish.mp3";
 import jetpackLoopSoundUrl from "../../sounds/sources/jetpack-loop-1.m4a";
 import jetpackTurnaroundSoundUrl from "../../sounds/jetpack_turnaround.mp3";
 import landingSoundUrl from "../../sounds/landing.mp3";
@@ -67,6 +68,7 @@ const importSoundsOnce = importOnce(async () => {
     heelsWalk: await loadAndDecode(heelsWalkSoundUrl),
     helicopter: await loadAndDecode(helicopterSoundUrl),
     hooter: await loadAndDecode(hooterSoundUrl),
+    hushPuppyVanish: await loadAndDecode(hushPuppyVanishSoundUrl),
     jetpackLoop: await loadAndDecode(jetpackLoopSoundUrl),
     jetpackTurnaround: await loadAndDecode(jetpackTurnaroundSoundUrl),
     landing: await loadAndDecode(landingSoundUrl),

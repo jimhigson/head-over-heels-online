@@ -40,7 +40,18 @@ export class BubblesSoundRenderer<
           soundId: "destroy",
           connectTo: this.output,
         });
+        break;
       }
+      case "hushPuppy": {
+        this.output.gain.value = 0.5;
+        createAudioNode({
+          soundId: "hushPuppyVanish",
+          connectTo: this.output,
+        });
+        break;
+      }
+      default:
+        was satisfies never;
     }
   }
 
