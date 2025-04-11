@@ -133,6 +133,7 @@ export type ItemConfigMap<
      */
     was:
       | { type: "pickup"; gives: PickupConfig["gives"] }
+      | { type: "hushPuppy" }
       | { type: "disappearing" };
   };
   monster: MonsterJsonConfig;

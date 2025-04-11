@@ -10,16 +10,6 @@ export type CreateAudioNodeOptionsObject = {
   connectTo?: AudioNode;
 };
 
-export type CreateAudioNodeWithGainOptionsObject = {
-  gain: number;
-  soundId: SoundId;
-  playbackRate?: number;
-  varyPlaybackRate?: boolean;
-  randomiseStartPoint?: boolean;
-  loop?: boolean;
-  connectTo?: AudioNode;
-};
-
 export type CreateAudioNodeOptions =
   //| CreateAudioNodeWithGainOptionsObject
   CreateAudioNodeOptionsObject | SoundId;

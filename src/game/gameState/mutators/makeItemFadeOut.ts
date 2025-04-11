@@ -35,6 +35,7 @@ export const makeItemFadeOut = <
       was:
         touchedItem.type === "pickup" ?
           { type: "pickup", gives: touchedItem.config.gives }
+        : touchedItem.type === "hushPuppy" ? { type: "hushPuppy" }
         : { type: "disappearing" },
     },
     // give any placeholder position:
