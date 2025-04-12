@@ -3,6 +3,7 @@ import { zComparator } from "./zComparator";
 import type { GraphEdges } from "./toposort/toposort";
 import { CyclicDependencyError, toposort } from "./toposort/toposort";
 import { objectValues } from "iter-tools";
+import { emptyArray } from "../../../utils/empty";
 
 const addEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
   if (!edges.has(from)) {
@@ -98,7 +99,8 @@ export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
 
 export type SortByZPairsReturn<ItemId extends string> = {
   order: ItemId[];
-  impossible: boolean;
+  /** links that had to be broken due to cyclic dependencies */
+  brokenLinks: [ItemId, ItemId][];
 };
 
 /** sorts sprites in z by the z-pairs given in zPairs function - returns an order as a sorted list of item ids
@@ -108,30 +110,33 @@ export type SortByZPairsReturn<ItemId extends string> = {
 export const sortByZPairs = <ItemId extends string>(
   edges: GraphEdges<ItemId>,
   items: Record<ItemId, DrawOrderComparable>,
-  retries: number = 3,
 ): SortByZPairsReturn<ItemId> => {
   try {
-    return { order: toposort(edges), impossible: false };
+    return { order: toposort(edges), brokenLinks: emptyArray };
   } catch (e) {
     if (e instanceof CyclicDependencyError) {
       const cyclicItemIds = e.cyclicDependency as Array<ItemId>;
 
-      // it is inevitable that cyclist dependencies will happen in very rare cases (the test room contains one on purpose) - in
-      // this case there is no way to render the nodes correctly using z-order and painters algorithm. All I can do is break the
-      // loop by removing one link and try again.
-      edges.get(cyclicItemIds[0])?.delete(cyclicItemIds[1]);
+      // it is inevitable that cyclist dependencies will happen in quite rare cases (the test room 'laboratory' contains one on purpose) - in
+      // this case there is no way to render the nodes correctly using z-order and painters algorithm. Break the normal link
+      // for the sake of sorting and record a broken link:
+      const brokenLink: [ItemId, ItemId] = [cyclicItemIds[0], cyclicItemIds[1]];
+      edges.get(brokenLink[0])?.delete(brokenLink[1]);
 
       console.warn(
-        "cyclc dependency detected: ",
-        cyclicItemIds.join(" --front-of--> "),
-        `breaking link ${cyclicItemIds[0]} --front-of--> ${cyclicItemIds[1]}`,
+        "circular dependency detected: ",
+        cyclicItemIds.map((id) => `🧊${id}`).join(" --front-of--> "),
+        `\nbreaking link 🧊${brokenLink[0]} --> 🧊${brokenLink[1]}`,
       );
 
+      const recursiveCall = sortByZPairs(edges, items);
+
       return {
-        order: sortByZPairs(edges, items, retries - 1).order,
-        impossible: true,
+        order: recursiveCall.order,
+        brokenLinks: [brokenLink, ...recursiveCall.brokenLinks],
       };
     } else {
+      // any other error - not expected so just rethrow
       throw e;
     }
   }

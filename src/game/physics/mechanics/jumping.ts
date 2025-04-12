@@ -112,7 +112,7 @@ export const jumping = <RoomId extends string, RoomItemId extends string>(
   const standingOn = stoodOnItem(standingOnItemId, room);
 
   if (eligibleForJumpStartGrace(playableItem)) {
-    console.info("jump grace");
+    console.info("jump grace on this frame");
     // provide a 'grace' period after jumping where if the player hasn't started to ride due to
     // collision with an item above them, they still get the whole jump velocity when they are free
     // - this makes head's laders easier to climb at higher frame rates where it's much harder to press
@@ -143,8 +143,6 @@ export const jumping = <RoomId extends string, RoomItemId extends string>(
   }
 
   const standingOnSpring = isSpring(standingOn);
-
-  console.log("🌸🌸🌸 starting a jump - from spring?", standingOnSpring);
 
   const velZ = getJumpInitialVelocity(playableItem, standingOnSpring);
 

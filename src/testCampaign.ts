@@ -13,7 +13,7 @@ type ColorRoomIds = `${SceneryName}-${ZxSpectrumRoomHue}-${ZxSpectrumShade}`;
 export type TestCampaignRoomId =
   | "laboratory"
   | "renderEverything"
-  | "lift"
+  | "small"
   | ColorRoomIds;
 
 // create matrix of rooms - one in each world/colour combination
@@ -133,13 +133,13 @@ const colourRooms = () => {
 };
 
 const rooms = {
-  lift: addPerimeterWallsToRoom({
+  small: addPerimeterWallsToRoom({
     size: { x: 4, y: 4 },
     planet: "safari",
     color: { hue: "yellow", shade: "dimmed" },
     floor: "safari",
 
-    id: "lift",
+    id: "small",
     items: keyItems([
       // {
       //   type: "lift",
@@ -183,6 +183,22 @@ const rooms = {
         config: { toRoom: "laboratory", direction: "towards" },
         position: { x: 0, y: 0, z: 1 },
       },
+      // these three blocks have a cyclic/circular rendering dependency - there is no way to arrange them using painter's algorithm alone
+      {
+        type: "block",
+        config: { style: "artificial" },
+        position: { x: 2.5, y: 2, z: 3 },
+      },
+      {
+        type: "block",
+        config: { style: "artificial" },
+        position: { x: 2, y: 3, z: 3.5 },
+      },
+      {
+        type: "block",
+        config: { style: "artificial" },
+        position: { x: 3, y: 2.5, z: 4 },
+      },
     ]),
   }) satisfies RoomJson<TestCampaignRoomId, string, "safari">,
 
@@ -217,7 +233,7 @@ const rooms = {
       },
       {
         type: "door",
-        config: { toRoom: "lift", direction: "away" },
+        config: { toRoom: "small", direction: "away" },
         position: { x: 5, y: 14, z: 2 },
       },
       {
@@ -804,8 +820,7 @@ const rooms = {
         position: { x: 17, y: 12, z: 0 },
       },
 
-      // these three blocks have a cyclic rendering dependency - there is no way to arrange them using painter's algorithm:
-      // what's more, they all have substantial overlap that looks bad if not rendered correctly!
+      // these three blocks have a cyclic/circular rendering dependency - there is no way to arrange them using painter's algorithm alone
       {
         type: "block",
         config: { style: "artificial" },

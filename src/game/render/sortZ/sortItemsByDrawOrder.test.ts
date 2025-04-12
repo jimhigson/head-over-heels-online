@@ -145,7 +145,7 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
   `);
   // no cyclic dependencies
   expect(() => sortByZPairs(relations, items)).not.toThrow();
-  expect(sortByZPairs(relations, items).impossible).toBe(false);
+  expect(sortByZPairs(relations, items).brokenLinks).toEqual([]);
 });
 
 test("detects as in front if on top and set back while overlapping", () => {
@@ -175,7 +175,7 @@ test("detects as in front if on top and set back while overlapping", () => {
   `);
   // no cyclic dependencies
   expect(() => sortByZPairs(relations, items)).not.toThrow();
-  expect(sortByZPairs(relations, items).impossible).toBe(false);
+  expect(sortByZPairs(relations, items).brokenLinks).toEqual([]);
 });
 
 test("detects a tall item is front of two smaller items", () => {
@@ -218,7 +218,7 @@ test("detects a tall item is front of two smaller items", () => {
   `);
   // no cyclic dependencies
   expect(() => sortByZPairs(relations, items)).not.toThrow();
-  expect(sortByZPairs(relations, items).impossible).toBe(false);
+  expect(sortByZPairs(relations, items).brokenLinks).toEqual([]);
 });
 
 test.todo("uses renderaabb if there is one", () => {
@@ -329,10 +329,10 @@ describe("cyclic dependencies", () => {
 
     const relations = zEdges(items);
     expect(() => sortByZPairs(relations, items)).not.toThrow();
-    expect(sortByZPairs(relations, items).impossible).toBe(false);
+    expect(sortByZPairs(relations, items).brokenLinks).toEqual([]);
   });
 
-  test("found situation 2 - genuine cyclic dependency - not possible to render without splitting sprites up!", () => {
+  test("found situation 2 - genuine cyclic dependency - not possible to render using painters algo", () => {
     const items: TestItems = {
       pushableBlock: {
         id: "pushableBlock",
@@ -408,6 +408,6 @@ describe("cyclic dependencies", () => {
 
     let result: SortByZPairsReturn<keyof TestItems> | undefined;
     expect(() => (result = sortByZPairs(relations, items))).not.toThrow();
-    expect(result?.impossible).toBe(true);
+    expect(result?.brokenLinks).toHaveLength(1);
   });
 });

@@ -23,7 +23,7 @@ export class ItemSoundAndGraphicsRenderer<
 
   constructor(
     public readonly renderContext: ItemRenderContext<T, RoomId, RoomItemId>,
-    private componentRenderers: {
+    public readonly componentRenderers: {
       graphics?: ItemPixiRenderer<T, RoomId, RoomItemId>;
       sound?: ItemSoundRenderer<T, RoomId, RoomItemId>;
     },
