@@ -13,7 +13,6 @@ import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { emptySet } from "../../utils/empty";
 import { iterateRoomItemEntries } from "../../model/RoomState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 import { snapInactiveItemsToPixelGrid } from "./snapInactiveItemsToPixelGrid";
 import { itemHasExpired } from "./itemHasExpired";
 import { correctFloatingPointErrorsInRoom } from "./correctFloatingPointErrorsInRoom";
@@ -61,8 +60,6 @@ export const progressGameState = <
       item.state.position,
     ]),
   );
-
-  swopPlayablesIfInput(gameState);
 
   for (const item of objectValues(room.items)) {
     if (itemHasExpired(item, room)) {
