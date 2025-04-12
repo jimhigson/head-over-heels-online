@@ -7,15 +7,6 @@
   { "op": "replace", "path": "/items/block@0,9,0/config/times/z", "value": 5 },
   {
     "op": "add",
-    "path": "/items/towerTop",
-    "value": {
-      "config": { "style": "organic" },
-      "position": { "x": 0, "y": 9, "z": 5 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/keepMonsterInPlace0",
     "value": {
       "config": { "axis": "y" },
@@ -48,6 +39,15 @@
       "config": { "axis": "y" },
       "position": { "x": 8, "y": 3, "z": 0 },
       "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/towerTop",
+    "value": {
+      "config": { "style": "organic" },
+      "position": { "x": 0, "y": 9, "z": 5 },
+      "type": "block"
     }
   },
   {

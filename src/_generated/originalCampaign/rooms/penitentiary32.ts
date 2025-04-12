@@ -36,6 +36,21 @@ export const room = inferRoomJson({
       position: { x: 2, y: 1, z: 5 },
       type: "slidingDeadly",
     },
+    stair1: { config: {}, position: { x: 5, y: 0, z: 0 }, type: "hushPuppy" },
+    stair2: { config: {}, position: { x: 6, y: 0, z: 1 }, type: "hushPuppy" },
+    teleBackToCrownForHeelsIfSheFallsOffInTheCrownRoom: {
+      config: {
+        toPosition: { x: 7, y: 5, z: 4 },
+        toRoom: "penitentiary34crown",
+      },
+      position: { x: 7, y: 0, z: 2 },
+      type: "teleporter",
+    },
+    teleTower: {
+      config: { style: "tower", times: { z: 2 } },
+      position: { x: 7, y: 0, z: 0 },
+      type: "block",
+    },
     "wall@0,0,0:2scjgO": {
       config: { direction: "right", tiles: [], times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
