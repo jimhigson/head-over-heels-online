@@ -144,8 +144,6 @@ export const jumping = <RoomId extends string, RoomItemId extends string>(
 
   const standingOnSpring = isSpring(standingOn);
 
-  console.log("🌸🌸🌸 starting a jump - from spring?", standingOnSpring);
-
   const velZ = getJumpInitialVelocity(playableItem, standingOnSpring);
 
   // handled this input but don't set jump input off - it is
