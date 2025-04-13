@@ -92,13 +92,6 @@ The original had a lot of restrictions around doorways - you couldn't change cha
 or drop an item. These restrictions are gone now, but you should still be careful if one character
 pushes another through a door!
 
-Credits
-
-
-- Reference Room data forked from [Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels/tree/master/gamedata) (I converted xml -> json)
-- Some audio files also from the above
-- [sprite rips from Spriters Resource](https://www.spriters-resource.com/zx_spectrum/headoverheels/) of original artwork by [the late](https://www.theregister.com/2021/11/17/rip_bernie_drummond/) Bernie Drummand.
-- Palette swap effects (this is what puts it back into the original zx-spectrum colour palette when the game starts) ([source][./src/filters]) based on GLSL pixel shader fragments forked from [here](https://github.com/pixijs/filters/blob/main/src/color-replace/ColorReplaceFilter.ts)
 
 Technology used
 ===============
@@ -110,3 +103,8 @@ Technology used
 Credits
 =======
 
+- Reference Room data forked from [Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels/tree/master/gamedata) (I converted xml -> json)
+- Some audio files also from the above
+- [sprite rips from Spriters Resource](https://www.spriters-resource.com/zx_spectrum/headoverheels/) of original artwork by [the late](https://www.theregister.com/2021/11/17/rip_bernie_drummond/) Bernie Drummand.
+- Palette swap effects (this is what puts it back into the original zx-spectrum colour palette when the game starts) ([source][./src/filters]) based on GLSL pixel shader fragments forked from [here](https://github.com/pixijs/filters/blob/main/src/color-replace/ColorReplaceFilter.ts)
+- snarkdown
