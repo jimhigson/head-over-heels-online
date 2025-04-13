@@ -1,3 +1,5 @@
+[![check-all CI](https://github.com/jimhigson/head-over-heels-online/actions/workflows/check.yml/badge.svg)](https://github.com/jimhigson/head-over-heels-online/actions/workflows/check.yml)
+
 # Head over heels remake in js
 
 [see work in progress](https://blockstack.ing/)
