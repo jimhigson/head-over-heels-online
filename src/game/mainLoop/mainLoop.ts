@@ -21,8 +21,8 @@ import {
 import { pick } from "../../utils/pick";
 import { audioCtx } from "../../sound/audioCtx";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { progressWithSubSteps } from "./progressWithSubSteps";
-import { maxStepDeltaMs } from "../physics/mechanicsConstants";
+import { progressWithSubTicks } from "./progressWithSubTicks";
+import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -63,7 +63,7 @@ export class MainLoop<RoomId extends string> {
   #worldSound: AudioNode = audioCtx.createGain();
   #app: Application;
   #gameState: GameState<RoomId>;
-  #physicsTicker = progressWithSubSteps(progressGameState, maxStepDeltaMs);
+  #physicsTicker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
 
   constructor(
     private app: Application,
