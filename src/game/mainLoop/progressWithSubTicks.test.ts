@@ -1,5 +1,5 @@
 import { expect, vi, test } from "vitest";
-import { progressWithSubSteps } from "./progressWithSubSteps";
+import { progressWithSubTicks } from "./progressWithSubTicks";
 import type { TestRoomId } from "../../_testUtils/basicRoom";
 import { basicGameState } from "../../_testUtils/basicRoom";
 import type { MovedItems, ProgressGameState } from "./progressGameState";
@@ -65,7 +65,7 @@ test("calls progress only once if below maxStepDeltaMs", () => {
     .mockReturnValue(mockMovedItemsSet(["a"]));
   const gameState = createGameState({ gameSpeed: 1, itemIds: ["a"] });
 
-  const progressAt50fps = progressWithSubSteps(mockProgress, 1_000 / 50);
+  const progressAt50fps = progressWithSubTicks(mockProgress, 1_000 / 50);
   const moved = progressAt50fps(gameState, 1_000 / 100);
 
   expect(mockProgress).toHaveBeenCalledTimes(1);
@@ -81,7 +81,7 @@ test("splits into multiple steps and combines moved items", () => {
 
   const gameState = createGameState({ gameSpeed: 1, itemIds: ["a", "b"] });
 
-  const progressAt60fps = progressWithSubSteps(mockProgress, 1_000 / 60);
+  const progressAt60fps = progressWithSubTicks(mockProgress, 1_000 / 60);
   const moved = progressAt60fps(gameState, 1_000 / 30);
 
   expect(mockProgress).toHaveBeenCalledTimes(2);
@@ -99,7 +99,7 @@ test("filters out items that are removed by the end of substeps", () => {
   const gameState = createGameState({ gameSpeed: 1, itemIds: ["a"] });
   gameState.characterRooms.head!.items = mockItemsInRoom(["a"]);
 
-  const progressAt60fps = progressWithSubSteps(mockProgress, 1_000 / 60);
+  const progressAt60fps = progressWithSubTicks(mockProgress, 1_000 / 60);
   const moved = progressAt60fps(gameState, 1_000 / 30);
 
   expect([...moved].map(({ id }) => id)).toEqual(["a"]);
@@ -111,7 +111,7 @@ test("handles fractional steps correctly", () => {
     .mockReturnValue(mockMovedItemsSet(["a"]));
   const gameState = createGameState({ gameSpeed: 1, itemIds: ["a"] });
 
-  const progressAt160fps = progressWithSubSteps(mockProgress, 1_000 / 160);
+  const progressAt160fps = progressWithSubTicks(mockProgress, 1_000 / 160);
   const moved = progressAt160fps(gameState, 1_000 / 50);
 
   expect(mockProgress).toHaveBeenCalledTimes(4);
@@ -127,7 +127,7 @@ test("applies gameSpeed scaling to determine total step time", () => {
 
   const gameState = createGameState({ gameSpeed: 2, itemIds: ["a", "b"] });
 
-  const progressAt80fps = progressWithSubSteps(mockProgress, 1_000 / 80);
+  const progressAt80fps = progressWithSubTicks(mockProgress, 1_000 / 80);
   const moved = progressAt80fps(gameState, 1_000 / 60); // 50fps * 2x speed = 40ms
 
   // 16ms per frame, x 2 = 32 ms. Against a max of 12.5ms, give
@@ -145,7 +145,7 @@ test("works efficiently for very high game speeds", () => {
 
   const gameState = createGameState({ gameSpeed: 100, itemIds: ["a", "b"] });
 
-  const progressAt80fps = progressWithSubSteps(mockProgress, 1_000 / 80);
+  const progressAt80fps = progressWithSubTicks(mockProgress, 1_000 / 80);
   const moved = progressAt80fps(gameState, 1_000 / 60);
 
   // note - didn't do 200 (2 sub-ticks per sped-up frame)

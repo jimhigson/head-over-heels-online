@@ -25,7 +25,7 @@ export const playerWalkAcceldPixPerMsSq = {
  *
  * 110 Hz ensures 3 sub-ticks per frame at 60fps
  */
-export const maxStepDeltaMs = 1000 / 110;
+export const maxSubTickDeltaMs = 1000 / 110;
 
 /** generally, jumps get (slightly) lower as frame rates increase, and this gets
  * impactful at very high frame rates - limit to 240Hz since this is already at

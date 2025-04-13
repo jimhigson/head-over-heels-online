@@ -11,7 +11,7 @@ import type { CharacterName } from "../../model/modelTypes";
 
 const noItems = emptyObject as RoomStateItems<string, string>;
 
-export const progressWithSubSteps =
+export const progressWithSubTicks =
   <RoomId extends string, RoomItemId extends string>(
     progress: ProgressGameState<RoomId, RoomItemId>,
     maxStepDeltaMs: number,

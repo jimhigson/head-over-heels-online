@@ -1,7 +1,7 @@
 import type { GameState } from "../game/gameState/GameState";
 import { progressGameState } from "../game/mainLoop/progressGameState";
-import { progressWithSubSteps } from "../game/mainLoop/progressWithSubSteps";
-import { maxStepDeltaMs } from "../game/physics/mechanicsConstants";
+import { progressWithSubTicks } from "../game/mainLoop/progressWithSubTicks";
+import { maxSubTickDeltaMs } from "../game/physics/mechanicsConstants";
 import type { TestRoomId } from "./basicRoom";
 import type {
   GameStateWithMockInput,
@@ -34,7 +34,7 @@ export const playGameThrough = (
     setupInitialInput = () => {},
   }: PlayGameThroughOptions = { frameRate: 60, until: 1000 },
 ) => {
-  const ticker = progressWithSubSteps(progressGameState, maxStepDeltaMs);
+  const ticker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
 
   const deltaMS = 1000 / frameRate;
   const frameCallbacksArray =

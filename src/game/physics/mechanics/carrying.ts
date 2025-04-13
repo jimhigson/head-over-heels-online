@@ -70,6 +70,10 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
       }
 
       pickUpItem(room, heelsAbilities, itemToPickup);
+
+      // won't carry again until key is released and re-pressed - prevents
+      // multiple pickup/putdown in one tick with multiple sub-ticks
+      inputStateTracker.actionsHandled.add("carry");
     } else {
       // trying to put down
       if (carrier.state.standingOnItemId === null) {
@@ -115,6 +119,8 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
 
       // put down
       heelsAbilities.carrying = null;
+
+      inputStateTracker.actionsHandled.add("carry");
     }
   }
 };
