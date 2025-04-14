@@ -26,30 +26,24 @@ import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
 import { firing } from "../physics/mechanics/firing";
 import type {
   ItemInPlayType,
-  ItemInPlay,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import { iterate } from "../../utils/iterate";
-import { addXyz, scaleXyz, lengthXyz } from "../../utils/vectors/vectors";
+import { addXyz, scaleXyz } from "../../utils/vectors/vectors";
 import { applyMechanicsResults } from "./applyMechanicsResults";
 import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerTouchingPickup";
 import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 import type { RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import { tickActivation } from "../physics/mechanics/activation";
-
-/**
- * biggest movement (in pixels) allowed in one tick - movement of more than this will be
- * split into multiple sub-ticks
- */
-const maxMovementPerTick = 2;
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 
 function* itemMechanicResultGen<
   T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, RoomId, RoomItemId>,
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -85,7 +79,7 @@ function* itemMechanicResultGen<
         RoomId,
         RoomItemId
       >;
-      yield jumping(item, room, gameState /*, deltaMS*/) as MechanicResult<
+      yield jumping(item, room, gameState, deltaMS) as MechanicResult<
         T,
         RoomId,
         RoomItemId
@@ -101,7 +95,7 @@ function* itemMechanicResultGen<
   }
 
   if (isLift(item)) {
-    yield moveLift(item /*, room, gameState, deltaMS*/) as MechanicResult<
+    yield moveLift(item, room, gameState, deltaMS) as MechanicResult<
       T,
       RoomId,
       RoomItemId
@@ -127,7 +121,7 @@ const tickItemStandingOn = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, RoomId, RoomItemId>,
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -140,15 +134,6 @@ const tickItemStandingOn = <
 
   // walking onto a platform that is activate on stand
   if (isPlayableItem(item)) {
-    // TODO: Delete - replaced with tickActivation
-    /*if (
-      standingOn.type === "movableBlock" &&
-      standingOn.config. !== "free" &&
-      standingOn.config.activated === "on-stand"
-    ) {
-      standingOn.state.activated = true;
-    }*/
-
     // case of walking onto a pickup from another platform, not colliding with it
     if (standingOn.type === "pickup") {
       handlePlayerTouchingPickup({
@@ -189,7 +174,7 @@ export const tickItem = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, RoomId, RoomItemId>,
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -243,19 +228,12 @@ export const tickItem = <
     );
   }
 
-  const subTickCount = Math.ceil(
-    lengthXyz(accumulatedPosDelta) / maxMovementPerTick,
-  );
-  const movementPerSubTick = scaleXyz(accumulatedPosDelta, 1 / subTickCount);
-
-  for (let i = 0; i < subTickCount; i++) {
-    moveItem({
-      subjectItem: item as UnionOfAllItemInPlayTypes<RoomId>,
-      posDelta: movementPerSubTick,
-      gameState,
-      room,
-      deltaMS,
-      onTouch: handleItemsTouchingItems,
-    });
-  }
+  moveItem({
+    subjectItem: item as UnionOfAllItemInPlayTypes<RoomId>,
+    posDelta: accumulatedPosDelta,
+    gameState,
+    room,
+    deltaMS,
+    onTouch: handleItemsTouchingItems,
+  });
 };

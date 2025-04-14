@@ -1,4 +1,5 @@
-import type { ItemInPlayType, ItemInPlay } from "../../model/ItemInPlay";
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
 import { objectEntriesIter } from "../../utils/entries";
 import { originXyz, addXyz, type Xyz } from "../../utils/vectors/vectors";
 import { isFreeItem, isItemType } from "../physics/itemPredicates";
@@ -9,7 +10,7 @@ export const applyMechanicsResults = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<T, RoomId, RoomItemId>,
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
   mechanicsResults: Array<MechanicResult<T, RoomId, RoomItemId>>,
 ) => {
   let accumulatedPosDelta = originXyz;

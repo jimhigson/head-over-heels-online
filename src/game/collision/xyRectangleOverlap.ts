@@ -1,4 +1,4 @@
-import type { AnyItemInPlay } from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { Xy } from "../../utils/vectors/vectors";
 
 export const xyRectangleOverlapArea = (
@@ -20,8 +20,8 @@ export const xyRectangleOverlapArea = (
 
 /** 1 for completely overlapping, 0.1 for hardly overlapping, 0 for not at all as a proportion of the first item */
 export const itemXyOverlapArea = (
-  { state: { position: pos1 }, aabb: bb1 }: AnyItemInPlay,
-  { state: { position: pos2 }, aabb: bb2 }: AnyItemInPlay,
+  { state: { position: pos1 }, aabb: bb1 }: UnionOfAllItemInPlayTypes,
+  { state: { position: pos2 }, aabb: bb2 }: UnionOfAllItemInPlayTypes,
 ): number => {
   return xyRectangleOverlapArea(pos1, bb1, pos2, bb2);
 };

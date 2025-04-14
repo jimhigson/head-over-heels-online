@@ -5,6 +5,7 @@ import {
   playerWalkAcceldPixPerMsSq,
 } from "../mechanicsConstants";
 import { isItemType, type PlayableItem } from "../itemPredicates";
+import type { Mechanic } from "../MechanicResult";
 import { type MechanicResult } from "../MechanicResult";
 import type { CharacterName } from "../../../model/modelTypes";
 import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
@@ -30,7 +31,10 @@ const stopWalking = {
   vels: { walking: originXyz },
 } as const satisfies MechanicResult<CharacterName, string, string>;
 
-export const walking = <RoomId extends string, RoomItemId extends string>(
+export const walking: Mechanic<CharacterName> = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,

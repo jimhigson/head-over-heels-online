@@ -2,12 +2,12 @@ import { describe, test, expect } from "vitest";
 import { isSolid } from "./itemPredicates";
 import { loadPlayer } from "../gameState/loadRoom/loadPlayer";
 import { first } from "iter-tools";
-import type { AnyItemInPlay } from "../../model/ItemInPlay";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItem";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 
 const player = loadPlayer({
   type: "player",
@@ -47,29 +47,41 @@ const pushableBlock = first(
   ),
 )!;
 
-const horizontalPortal: AnyItemInPlay = {
+const horizontalPortal: UnionOfAllItemInPlayTypes = {
+  type: "portal",
   id: "portal",
   aabb: originXyz,
   renders: true,
-  type: "portal",
-  config: { direction: unitVectors.towards },
+  config: {
+    direction: unitVectors.towards,
+    toRoom: "anyRoom",
+    relativePoint: originXyz,
+  },
   state: { position: originXyz, ...defaultBaseState() },
 };
 
-const portalToBelow: AnyItemInPlay = {
+const portalToBelow: UnionOfAllItemInPlayTypes = {
+  type: "portal",
   id: "portal",
   aabb: originXyz,
   renders: true,
-  type: "portal",
-  config: { direction: unitVectors.down },
+  config: {
+    direction: unitVectors.down,
+    toRoom: "anyRoom",
+    relativePoint: originXyz,
+  },
   state: { position: originXyz, ...defaultBaseState() },
 };
-const portalToAbove: AnyItemInPlay = {
+const portalToAbove: UnionOfAllItemInPlayTypes = {
+  type: "portal",
   id: "portal",
   aabb: originXyz,
   renders: true,
-  type: "portal",
-  config: { direction: unitVectors.up },
+  config: {
+    direction: unitVectors.up,
+    toRoom: "anyRoom",
+    relativePoint: originXyz,
+  },
   state: { position: originXyz, ...defaultBaseState() },
 };
 
@@ -98,26 +110,26 @@ describe("isSolid", () => {
 
     /*
     test("floors of type 'none' are not solid", () => {
-      const item: AnyItemInPlay = { type: "floor", config: { type: "none" } };
+      const item: UnionOfAllItemInPlayTypes = { type: "floor", config: { type: "none" } };
       expect(isSolid(item)).toBe(false);
     });
 
     test("floors of type 'solid' are solid", () => {
-      const item: AnyItemInPlay = { type: "floor", config: { type: "solid" } };
+      const item: UnionOfAllItemInPlayTypes = { type: "floor", config: { type: "solid" } };
       expect(isSolid(item)).toBe(true);
     });
     test("bubbles are never solid", () => {
-      const item: AnyItemInPlay = { type: "bubbles" };
+      const item: UnionOfAllItemInPlayTypes = { type: "bubbles" };
       expect(isSolid(item)).toBe(false);
     });
 
     test("stopAutowalk items are never solid", () => {
-      const item: AnyItemInPlay = { type: "stopAutowalk" };
+      const item: UnionOfAllItemInPlayTypes = { type: "stopAutowalk" };
       expect(isSolid(item)).toBe(false);
     });
 
     test("firedDoughnut items are never solid", () => {
-      const item: AnyItemInPlay = { type: "firedDoughnut" };
+      const item: UnionOfAllItemInPlayTypes = { type: "firedDoughnut" };
       expect(isSolid(item)).toBe(false);
     });*/
   });

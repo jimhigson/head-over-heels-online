@@ -1,5 +1,18 @@
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlayType, ItemState } from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/RoomState";
 import type { Xyz } from "../../utils/vectors/vectors";
+import type { GameState } from "../gameState/GameState";
+
+export type Mechanic<T extends ItemInPlayType> = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
+  gameState: GameState<RoomId>,
+  deltaMS: number,
+) => MechanicResult<T, RoomId, RoomItemId>;
 
 export type MechanicsNames = "gravity" | "walking" | "jumping";
 

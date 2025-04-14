@@ -12,6 +12,7 @@ import {
   isTeleporter,
   type PlayableItem,
 } from "../itemPredicates";
+import type { Mechanic } from "../MechanicResult";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import {
   fallG,
@@ -98,7 +99,10 @@ const eligibleForJumpStartGrace = (
   );
 };
 
-export const jumping = <RoomId extends string, RoomItemId extends string>(
+export const jumping: Mechanic<CharacterName> = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,

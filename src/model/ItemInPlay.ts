@@ -146,15 +146,6 @@ export type ItemInPlay<
 };
 
 /**
- * Non-union version of any item type
- * @deprecated - use UnionOfAllItemInPlayTypes instead wherever possible
- */
-export type AnyItemInPlay<
-  RoomId extends string = string,
-  RoomItemId extends string = string,
-> = ItemInPlay<ItemInPlayType, RoomId, RoomItemId, RoomItemId, SceneryName>;
-
-/**
  * All Item types as a union
  */
 export type UnionOfAllItemInPlayTypes<

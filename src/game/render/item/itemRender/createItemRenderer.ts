@@ -1,8 +1,8 @@
 import type { GameState } from "../../../gameState/GameState";
 import { Container } from "pixi.js";
 import type {
-  AnyItemInPlay,
   ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import { store } from "../../../../store/store";
 import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
@@ -24,7 +24,7 @@ import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
-  item: AnyItemInPlay<RoomId>,
+  item: UnionOfAllItemInPlayTypes<RoomId>,
   container: Container,
   gameState: GameState<RoomId>,
 ) => {

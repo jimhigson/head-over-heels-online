@@ -1,3 +1,4 @@
+import type { Mechanic } from "../MechanicResult";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv } from "../slidingCollision";
@@ -422,12 +423,15 @@ const handleMonsterTouchingItemByStopping = <
 /**
  * moves an item with the 'movement' config set, by one tick
  */
-export const tickMovement = <RoomId extends string, RoomItemId extends string>(
+export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<"monster", RoomId, RoomItemId> => {
+): MechanicResult<"monster" | "movingPlatform", RoomId, RoomItemId> => {
   if (
     !itemWithMovement.state.activated === true ||
     (isMonster(itemWithMovement) &&

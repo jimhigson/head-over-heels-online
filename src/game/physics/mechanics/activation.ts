@@ -1,3 +1,4 @@
+import type { Mechanic } from "../MechanicResult";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import type {
   ItemInPlay,
@@ -108,7 +109,7 @@ const activateBasedOnBeingStoodOn = <
 /**
  * moves an item with the 'movement' config set, by one tick
  */
-export const tickActivation = <
+export const tickActivation: Mechanic<"monster" | "movingPlatform"> = <
   RoomId extends string,
   RoomItemId extends string,
 >(
@@ -116,7 +117,7 @@ export const tickActivation = <
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MechanicResult<"monster", RoomId, RoomItemId> => {
+): MechanicResult<"monster" | "movingPlatform", RoomId, RoomItemId> => {
   switch (itemWithActivation.config.activated) {
     case "after-player-near": {
       return activateBasedOnProximityToPlayer(
