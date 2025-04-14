@@ -25,18 +25,14 @@
 [ ] left-right to move selection sideways
 
 ### map
-[1] map button in on-screen controls
-[ ] different background colours per world
-[ ] map in a scrollable area + svg optimal size (fit contents exactly)
-[ ] joypad to scroll map
+[ ] svg optimal size (fit contents exactly)
 
 ### sounds
 [ ] allow spot effects to continue after leaving a room
 [ ] fanfare on game start
-[x] head/heels jumping sound
-[ ] detect when phone has sound turned off (?)
+[ ] room enter short music
+[NO] detect when phone has sound turned off (?)
     - can't do!
-[x] music after getting a crown
 [ ] "sea-shanty" music for some items    
     - not already available in doug's remake
 
@@ -84,9 +80,6 @@ front of other items
     - maybe the doughnut explosion is slightly inside the wall?
 
 [ ] wall over doors not variable height like other walls
-
-[ ] bug - need to refresh page after changing input preset
-    - sometimes?
 
 [ ] hold a button to lock to axes
 
