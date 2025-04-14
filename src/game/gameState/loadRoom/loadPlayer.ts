@@ -76,7 +76,6 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         fastStepsStartedAtDistance: neverTime,
         shieldCollectedAt: neverTime,
         doughnuts: infiniteDoughnutsPoke ? "infinite" : 0,
-        doughnutLastFireTime: neverTime,
         position: positionCentredInBlock(jsonItem),
       },
     };

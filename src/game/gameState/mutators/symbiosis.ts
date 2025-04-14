@@ -102,7 +102,6 @@ export const combinePlayablesInSymbiosis = <
           head.state,
           "hasHooter",
           "doughnuts",
-          "doughnutLastFireTime",
           "fastStepsStartedAtDistance",
           "gameWalkDistance",
           "lives",
