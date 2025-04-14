@@ -72,7 +72,7 @@ const doorFrames = <SN extends SceneryName>(
       {
         frame: {
           ...maybeMirror({
-            x: -57,
+            x: -24,
             y: -1,
             w: 15,
             h: 36,
