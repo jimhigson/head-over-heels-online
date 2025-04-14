@@ -162,8 +162,7 @@ export type CommonAbilities = {
 export type HeadAbilities = CommonAbilities & {
   hasHooter: boolean;
   doughnuts: PokeableNumber;
-  /** time in ms doughnut was last fired, used to limit rate of fire */
-  doughnutLastFireTime: number;
+
   /**
    * how far have we walked ever, total in this game?
    * Head tracks this so we know when the fast steps power-up runs out

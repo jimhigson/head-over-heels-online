@@ -13,7 +13,7 @@ import {
 import type { GameState } from "../../gameState/GameState";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
-import { maxDoughnutFireRate, moveSpeedPixPerMs } from "../mechanicsConstants";
+import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import {
   addPokeableNumbers,
   pokeableToNumber,
@@ -35,8 +35,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
 
   const headAbilities = firer.type === "head" ? firer.state : firer.state.head;
 
-  const { doughnuts, hasHooter, doughnutLastFireTime, gameTime } =
-    headAbilities;
+  const { doughnuts, hasHooter } = headAbilities;
   const {
     state: { position, facing },
   } = firer;
@@ -46,8 +45,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
   if (
     inputStateTracker.currentActionPress("fire") === "tap" &&
     hasHooter &&
-    pokeableToNumber(doughnuts) > 0 &&
-    doughnutLastFireTime + maxDoughnutFireRate < gameTime
+    pokeableToNumber(doughnuts) > 0
   ) {
     const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
       type: "firedDoughnut",
@@ -76,6 +74,6 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
     });
 
     headAbilities.doughnuts = addPokeableNumbers(headAbilities.doughnuts, -1);
-    headAbilities.doughnutLastFireTime = headAbilities.gameTime;
+    inputStateTracker.actionsHandled.add("fire");
   }
 };

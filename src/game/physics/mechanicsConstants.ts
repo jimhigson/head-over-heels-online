@@ -152,5 +152,3 @@ export const afterDeathInvulnerabilityFlashPeriod = 200;
  */
 export const maxPushRecursionDepth = 8;
 export const wallRenderHeight = 50;
-
-export const maxDoughnutFireRate = 300;
