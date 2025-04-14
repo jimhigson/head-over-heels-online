@@ -1,6 +1,6 @@
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import type { MechanicResult } from "../MechanicResult";
+import type { Mechanic, MechanicResult } from "../MechanicResult";
 import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
 const blockHeight = blockSizePx.h;
@@ -56,17 +56,20 @@ const calculateVelocity = ({
 /**
  * walking, but also gliding and changing direction mid-air
  */
-export function moveLift<RoomId extends string, RoomItemId extends string>(
-  {
-    config: { bottom, top },
-    state: {
-      direction,
-      position: { z },
-    },
-  }: ItemInPlay<"lift", RoomId, RoomItemId>,
-  // _gameState: GameState<RoomId>,
-  // _deltaMS: number,
-): MechanicResult<"lift", RoomId, RoomItemId> {
+export const moveLift: Mechanic<"lift"> = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
+  config: { bottom, top },
+  state: {
+    direction,
+    position: { z },
+  },
+}: ItemInPlay<"lift", RoomId, RoomItemId>): MechanicResult<
+  "lift",
+  RoomId,
+  RoomItemId
+> => {
   const lowestZ = bottom * blockHeight;
   const highestZ = top * blockHeight;
   const velocity = calculateVelocity({
@@ -89,4 +92,4 @@ export function moveLift<RoomId extends string, RoomItemId extends string>(
       direction: mewDirection,
     },
   };
-}
+};

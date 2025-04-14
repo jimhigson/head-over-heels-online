@@ -1,10 +1,10 @@
-import type { AnyItemInPlay } from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
 
 export type DrawOrderComparable = Pick<
-  AnyItemInPlay,
+  UnionOfAllItemInPlayTypes,
   "id" | "aabb" | "renders" | "renderAabb" | "fixedZIndex"
 > & {
   state: { position: { x: number; y: number; z: number } };

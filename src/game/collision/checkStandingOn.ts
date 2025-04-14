@@ -2,10 +2,7 @@ import type { FreeItem } from "../physics/itemPredicates";
 import { isSolid } from "../physics/itemPredicates";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
-import type {
-  AnyItemInPlay,
-  UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { iterate } from "../../utils/iterate";
 import { addXyz } from "../../utils/vectors/vectors";
 import { epsilon } from "../../utils/veryClose";
@@ -16,7 +13,7 @@ export const spatiallyCheckStandingOn = <
   RoomItemId extends string,
 >(
   itemMaybeStanding: FreeItem<RoomId, RoomItemId>,
-  itemMaybeBeingStoodOn: AnyItemInPlay<RoomId, RoomItemId>,
+  itemMaybeBeingStoodOn: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   /**
     How much overlap is ok? if not given, an epsilon value is used,
     which means to return true the bottom of @param item should equal

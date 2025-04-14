@@ -9,7 +9,8 @@ import type { PressStatus } from "../../input/InputStateTracker";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { type PlayableItem } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
+import type { Mechanic, MechanicResult } from "../MechanicResult";
+import { unitMechanicalResult } from "../MechanicResult";
 
 export const teleporterIsActive = ({
   config: { activatedOnStoreValue },
@@ -19,7 +20,10 @@ export const teleporterIsActive = ({
     );
 };
 
-export const teleporting = <RoomId extends string, RoomItemId extends string>(
+export const teleporting: Mechanic<CharacterName> = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,

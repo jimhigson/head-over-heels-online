@@ -1,7 +1,7 @@
-import type { AnyItemInPlay } from "../../model/ItemInPlay";
 import { type RoomState, iterateRoomItems } from "../../model/RoomState";
 import { isExactIntegerXyz, roundXyz } from "../../utils/vectors/vectors";
 import { isFreeItem } from "../physics/itemPredicates";
+import type { MovedItems } from "./progressGameState";
 
 /**
  * snap all items that haven't been acted on the pixel grid - sub-pixel
@@ -16,7 +16,7 @@ export const snapInactiveItemsToPixelGrid = <
    * the items we already know moved - any that this function snaps
    * will also be added to the set
    */
-  movedItems: Set<AnyItemInPlay>,
+  movedItems: MovedItems<RoomId, RoomItemId>,
 ) => {
   for (const item of iterateRoomItems(room.items)) {
     if (!isFreeItem(item) || room.roomTime === item.state.actedOnAt.roomTime) {

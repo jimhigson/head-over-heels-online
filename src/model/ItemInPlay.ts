@@ -1,3 +1,4 @@
+import type { EmptyObject } from "type-fest";
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
@@ -41,11 +42,6 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config
   block: Omit<JsonItemConfig<"block", RoomId, RoomItemId>, "disappearing">;
-};
-
-// type-fest's EmptyObject was creating issues
-export type EmptyObject = {
-  [n in never]: unknown;
 };
 
 export type ItemInPlayConfig<
@@ -144,15 +140,6 @@ export type ItemInPlay<
    */
   fixedZIndex?: number;
 };
-
-/**
- * Non-union version of any item type
- * @deprecated - use UnionOfAllItemInPlayTypes instead wherever possible
- */
-export type AnyItemInPlay<
-  RoomId extends string = string,
-  RoomItemId extends string = string,
-> = ItemInPlay<ItemInPlayType, RoomId, RoomItemId, RoomItemId, SceneryName>;
 
 /**
  * All Item types as a union

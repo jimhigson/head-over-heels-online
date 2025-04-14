@@ -1,6 +1,7 @@
+import type { EmptyObject } from "type-fest";
 import type { PortableItemType } from "../game/physics/itemPredicates";
 import type { Xyz, Xy } from "../utils/vectors/vectors";
-import type { EmptyObject, SwitchSetting } from "./ItemInPlay";
+import type { SwitchSetting } from "./ItemInPlay";
 import type { JsonItemConfig } from "./json/JsonItem";
 
 export type PlayableActionState =

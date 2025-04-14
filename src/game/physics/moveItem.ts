@@ -14,10 +14,7 @@ import {
   removeStandingOn,
   setStandingOn,
 } from "../gameState/mutators/modifyStandingOn";
-import {
-  type UnionOfAllItemInPlayTypes,
-  type AnyItemInPlay,
-} from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
   xyzEqual,
@@ -41,7 +38,7 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
    * against infinite loops where two items get stuck pushing each other
    */;
   room: RoomState<RoomId, RoomItemId>;
-  pusher?: AnyItemInPlay<RoomId, RoomItemId>;
+  pusher?: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
   deltaMS: number;
   /**
    * if true, anything this movement tries to push will get moved the total amount.
