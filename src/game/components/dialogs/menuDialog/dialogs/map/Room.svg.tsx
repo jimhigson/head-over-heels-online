@@ -24,6 +24,8 @@ import { VisitedFootprint } from "./VisitedFootprint";
 import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 
+const strokeWidth = 3;
+
 const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
 );
@@ -31,83 +33,58 @@ const boundaryLineLength = lengthXy(
 const boundaryDashArrays = {
   wall: undefined,
   open: "0,999",
-  doorway: `${roundForSvg(boundaryLineLength * ((1 - doorwayGap) / 2))}, ${roundForSvg(boundaryLineLength * doorwayGap)}, 999`,
+  doorway: `${roundForSvg(boundaryLineLength * ((1 - doorwayGap) / 2) - strokeWidth / 2)}, ${roundForSvg(boundaryLineLength * doorwayGap + strokeWidth)}, 999`,
 };
 
 const floorFillPathD = `
-M ${project({ x: 0, y: 0 })}
-L ${project({ x: 0, y: roomGridSizeXY })}
+M ${project({})}
+L ${project({ y: roomGridSizeXY })}
 L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}
-L ${project({ x: roomGridSizeXY, y: 0 })}
+L ${project({ x: roomGridSizeXY })}
 z`;
 
-const floorEdgeFillPathD = (boundaries: Boundaries, thickness = doorwayGap) => {
-  const roomFront = roomGridSizeXY * ((1 - thickness) / 2);
+const floorPathFillPathD = (
+  boundaries: Boundaries,
+  pathThickness = doorwayGap,
+) => {
+  const roomFront = roomGridSizeXY * ((1 - pathThickness) / 2);
   const roomBack = roomGridSizeXY - roomFront;
-
-  const smallSquareSize = roomFront;
 
   const awayOpen = boundaries.away !== "wall";
   const towardsOpen = boundaries.towards !== "wall";
   const leftOpen = boundaries.left !== "wall";
   const rightOpen = boundaries.right !== "wall";
 
-  const away = awayOpen ? roomGridSizeXY : roomBack;
-  const towards = towardsOpen ? 0 : roomFront;
-  const left = leftOpen ? roomGridSizeXY : roomBack;
-  const right = rightOpen ? 0 : roomFront;
+  let shape = `M${project({ x: roomFront, y: roomFront })}`;
 
-  let shape = `
-M ${project({})}
-L ${project({ y: roomGridSizeXY })}
-L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}
-L ${project({ x: roomGridSizeXY })}
-M ${project({ x: right, y: towards })}
-L ${project({ x: right, y: away })}
-L ${project({ x: left, y: away })}
-L ${project({ x: left, y: towards })}
-L ${project({ x: right, y: towards })}
-z`;
+  if (rightOpen)
+    shape += `L${project({ x: 0, y: roomFront })} L${project({ x: 0, y: roomBack })}`;
 
-  const smallSquareLines = `
-l ${project({ x: smallSquareSize })}
-l ${project({ y: smallSquareSize })}
-l ${project({ x: -smallSquareSize })}
-z`;
+  shape += `L${project({ x: roomFront, y: roomBack })}`;
 
-  if (towardsOpen && rightOpen) {
-    shape += `
-M 0, 0    
-${smallSquareLines}`;
-  }
+  if (awayOpen)
+    shape += `L${project({ x: roomFront, y: roomGridSizeXY })} L${project({ x: roomBack, y: roomGridSizeXY })}`;
 
-  if (rightOpen && awayOpen) {
-    shape += `
-M ${project({ y: roomBack })}
-${smallSquareLines}`;
-  }
+  shape += `L${project({ x: roomBack, y: roomBack })}`;
 
-  if (awayOpen && leftOpen) {
-    shape += `
-M ${project({ x: roomBack, y: roomBack })}    
-${smallSquareLines}`;
-  }
+  if (leftOpen)
+    shape += `L${project({ x: roomGridSizeXY, y: roomBack })} L${project({ x: roomGridSizeXY, y: roomFront })}`;
 
-  if (leftOpen && towardsOpen) {
-    shape += `
-M ${project({ x: roomBack })}    
-${smallSquareLines}`;
-  }
+  shape += `L${project({ x: roomBack, y: roomFront })}`;
+  if (towardsOpen)
+    shape += `L${project({ x: roomBack, y: 0 })} L${project({ x: roomFront, y: 0 })}`;
+
+  shape += "z";
 
   return shape;
 };
 
 const awayWallFillPathD = (withDoorWay: boolean) => {
   const wall = `
-M ${project({ x: 0, y: roomGridSizeXY })}
-L ${project({ x: 0, y: roomGridSizeXY, z: roomGridSizeZ })}
-L ${project({ x: roomGridSizeXY, y: roomGridSizeXY, z: roomGridSizeZ })}
-L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}
+M${project({ x: 0, y: roomGridSizeXY })}
+L${project({ x: 0, y: roomGridSizeXY, z: roomGridSizeZ })}
+L${project({ x: roomGridSizeXY, y: roomGridSizeXY, z: roomGridSizeZ })}
+L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}
 z
 `;
 
@@ -118,24 +95,23 @@ z
   return (
     wall +
     `
-M ${project({ x: roomFront, y: roomGridSizeXY })}
-L ${project({ x: roomFront, y: roomGridSizeXY, z: roomGridSizeZ })}
-L ${project({ x: roomBack, y: roomGridSizeXY, z: roomGridSizeZ })}
-L ${project({ x: roomBack, y: roomGridSizeXY })}
-L ${project({ x: roomFront, y: roomGridSizeXY })}
-  `
+M${project({ x: roomFront, y: roomGridSizeXY })}
+L${project({ x: roomFront, y: roomGridSizeXY, z: roomGridSizeZ })}
+L${project({ x: roomBack, y: roomGridSizeXY, z: roomGridSizeZ })}
+L${project({ x: roomBack, y: roomGridSizeXY })}
+L${project({ x: roomFront, y: roomGridSizeXY })}`
   );
 };
 
 const highRoomVerticalLinesPathD = `            
-M ${project({ x: roomGridSizeXY, y: roomGridSizeXY, z: roomGridSizeZ })}            
-L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}            
-M ${project({ x: roomGridSizeXY, y: 0, z: roomGridSizeZ })}            
-L ${project({ x: roomGridSizeXY, y: 0 })}            
-M ${project({ x: 0, y: roomGridSizeXY, z: roomGridSizeZ })}            
-L ${project({ x: 0, y: roomGridSizeXY })}            
-M ${project({ x: 0, y: 0, z: roomGridSizeZ })}            
-L 0, 0            
+M${project({ x: roomGridSizeXY, y: roomGridSizeXY, z: roomGridSizeZ })}            
+L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}            
+M${project({ x: roomGridSizeXY, y: 0, z: roomGridSizeZ })}            
+L${project({ x: roomGridSizeXY, y: 0 })}            
+M${project({ x: 0, y: roomGridSizeXY, z: roomGridSizeZ })}            
+L${project({ x: 0, y: roomGridSizeXY })}            
+M${project({ x: 0, y: 0, z: roomGridSizeZ })}            
+L0, 0            
 `;
 
 const useNotableItems = <RoomId extends string>(
@@ -211,22 +187,45 @@ export const RoomSvg = <RoomId extends string>({
   );
 
   return (
-    <g data-room-id={id} strokeWidth={3} className="[--scale:2]">
-      {/* floor */}
-      {roomBelow === undefined ?
-        <path className="fill-white" d={floorFillPathD} />
-      : <path
-          className="fill-white"
-          fillRule="evenodd"
-          d={floorEdgeFillPathD(boundaries, doorwayGap * 0.7)}
-        />
+    <g data-room-id={id} strokeWidth={strokeWidth} className="[--scale:2]">
+      {
+        roomBelow === undefined ?
+          <>
+            // whole floor in colour
+            <path
+              className={roomAccentColourClass(color).floor}
+              d={floorFillPathD}
+            />
+            <path className="fill-white" d={floorPathFillPathD(boundaries)} />
+          </>
+          //or outline of room with a hole:
+        : <>
+            <path
+              className={roomAccentColourClass(color).floor}
+              fillRule="evenodd"
+              // whole tile, then use evenodd to cut out the middle:
+              d={`${floorFillPathD} ${floorPathFillPathD(boundaries)}`}
+            />
+            <path
+              className="fill-white"
+              fillRule="evenodd"
+              // whole tile, then use evenodd to cut out the middle:
+              d={`${floorPathFillPathD(boundaries)} ${floorPathFillPathD(boundaries, doorwayGap * 0.7)}`}
+            />
+          </>
+
       }
-      {/* colourful floor edge  */}
-      <path
-        className={roomAccentColourClass(color).floor}
-        fillRule="evenodd"
-        d={floorEdgeFillPathD(boundaries)}
-      />
+
+      {roomJson.id === "blacktooth11" && (
+        // everyone loves this room, so a set piece to keep the map interesting:
+        <path
+          className={roomAccentColourClass(color).floor}
+          d={`
+M${project({ x: roomFront, y: roomFront })} L${project({ x: roomFront, y: roomBack })} L${project({ x: roomFront - strokeWidth, y: roomBack })} L${project({ x: roomFront - strokeWidth, y: roomFront })} z
+M${project({ x: roomBack, y: roomFront })} L${project({ x: roomBack, y: roomBack })} L${project({ x: roomBack + strokeWidth, y: roomBack })} L${project({ x: roomBack + strokeWidth, y: roomFront })} z
+`}
+        />
+      )}
 
       {roomAbove && (
         // walls
@@ -250,25 +249,25 @@ export const RoomSvg = <RoomId extends string>({
       {/* boundary lines */}
       <g className="fill-transparent stroke-midGreyHalfbrite">
         <path // right
-          d={`M ${project({ x: 0, y: roomGridSizeXY })} L 0, 0`}
+          d={`M${project({ x: 0, y: roomGridSizeXY })} L0, 0`}
           data-direction="right"
           data-boundary={boundaries.right}
           strokeDasharray={boundaryDashArrays[boundaries.right]}
         />
         <path // left
-          d={`M ${project({ x: roomGridSizeXY, y: 0 })} L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}`}
+          d={`M${project({ x: roomGridSizeXY, y: 0 })} L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}`}
           data-direction="left"
           data-boundary={boundaries.left}
           strokeDasharray={boundaryDashArrays[boundaries.left]}
         />
         <path // towards
-          d={`M ${project({ x: roomGridSizeXY, y: 0 })} L 0, 0`}
+          d={`M${project({ x: roomGridSizeXY, y: 0 })} L0, 0`}
           data-direction="towards"
           data-boundary={boundaries.towards}
           strokeDasharray={boundaryDashArrays[boundaries.towards]}
         />
         <path // away
-          d={`M ${project({ x: 0, y: roomGridSizeXY })} L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}`}
+          d={`M${project({ x: 0, y: roomGridSizeXY })} L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}`}
           data-direction="away"
           data-boundary={boundaries.away}
           strokeDasharray={boundaryDashArrays[boundaries.away]}
