@@ -14,7 +14,7 @@ export const removeHushPuppiesFromRoom = <
     isItemType("hushPuppy"),
   );
   // hush puppies don't like head:
-  for (const hushPuppyBye of hushPuppyInRoomIter) {
-    makeItemFadeOut({ touchedItem: hushPuppyBye, gameState, room });
+  for (const hushPuppy of hushPuppyInRoomIter) {
+    makeItemFadeOut({ touchedItem: hushPuppy, gameState, room });
   }
 };

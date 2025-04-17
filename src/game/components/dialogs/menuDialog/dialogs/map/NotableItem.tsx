@@ -1,4 +1,8 @@
 import type { JsonItem } from "../../../../../../model/json/JsonItem";
+import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
+import type { Xyz } from "../../../../../../utils/vectors/vectors";
+import { vectorClosestDirectionXy8 } from "../../../../../../utils/vectors/vectors";
+import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 import { ScrollIntoView } from "./ScrollIntoView";
 import type { MouseEvent } from "react";
 
@@ -8,12 +12,14 @@ import type { MouseEvent } from "react";
 export type NotableItem<RoomId extends string> =
   | JsonItem<"pickup", RoomId>
   | JsonItem<"hushPuppy", RoomId>
+  | JsonItem<"lift", RoomId>
   | JsonItem<"teleporter", RoomId>;
 
 export const SpriteInRoom = ({
   className,
   scrollTo = false,
   onClick,
+  yAdjust = 0,
 }: {
   /**
    * should have a sprite-* utility and some way to set the --scale var - for this to actually show a sprite
@@ -21,11 +27,12 @@ export const SpriteInRoom = ({
   className: string;
   scrollTo?: boolean;
   onClick?: (e: MouseEvent) => void;
+  yAdjust?: number;
 }) => {
   return (
     <foreignObject
       x={-50}
-      y={-100}
+      y={-100 + yAdjust}
       width={100}
       height={100}
       className={className}
@@ -41,13 +48,53 @@ export const SpriteInRoom = ({
   );
 };
 
-export const NotableItemSvg = <RoomId extends string>({
-  notableItem: item,
-  className,
+export const PlayableItemInRoom = ({
+  characterName,
+  facing,
+  isCurrent = false,
+  onlyPlayableInRoom = false,
+  yAdjust = 0,
+  onClick,
 }: {
-  notableItem: NotableItem<RoomId>;
-  className?: string;
+  characterName: IndividualCharacterName;
+  facing: Xyz;
+  isCurrent?: boolean;
+  onlyPlayableInRoom: boolean;
+  yAdjust?: number;
+  onClick?: (name: "head" | "heels") => void;
 }) => {
+  return (
+    <SpriteInRoom
+      className={`${onlyPlayableInRoom ? "[--scale:2.5]" : "[--scale:1.5]"}
+                ${playableTailwindSpriteClassname({
+                  character: characterName,
+                  action: isCurrent ? "walking" : "idle",
+                  facingXy8: vectorClosestDirectionXy8(facing) ?? "towards",
+                })}`}
+      scrollTo={isCurrent}
+      yAdjust={yAdjust}
+      onClick={(e) => {
+        onClick?.(characterName);
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    />
+  );
+};
+
+export const NotableItemSvg = ({ item }: { item: NotableItem<string> }) => {
+  const isBigItem = item.type === "hushPuppy" || item.type === "teleporter";
+  const scaleClass = isBigItem ? "[--scale:1.25]" : "[--scale:1.5]";
+
+  if (item.type === "lift") {
+    return (
+      <>
+        <SpriteInRoom className={`${scaleClass} texture-lift.static`} />
+        <SpriteInRoom className={`${scaleClass} texture-lift.2`} />
+      </>
+    );
+  }
+
   const spriteClassName =
     // the biggest sprites get scaled down so all sprites are about the same size:
     item.type === "teleporter" ? "texture-teleporter"
@@ -72,5 +119,5 @@ export const NotableItemSvg = <RoomId extends string>({
       : "texture-crown.dark"
     : "texture-block.organic";
 
-  return <SpriteInRoom className={`${className ?? ""} ${spriteClassName}`} />;
+  return <SpriteInRoom className={`${scaleClass} ${spriteClassName}`} />;
 };

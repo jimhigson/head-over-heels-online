@@ -2,14 +2,10 @@ import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import type { GameState } from "../GameState";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import {
-  originXyz,
-  addXyz,
-  scaleXyz,
-  subXyz,
-} from "../../../utils/vectors/vectors";
+import { originXyz, scaleXyz, subXyz } from "../../../utils/vectors/vectors";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import type { RoomState } from "../../../model/RoomState";
+import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
 
 /**
  * remove an item (with bubbles)
@@ -45,10 +41,7 @@ export const makeItemFadeOut = <
   });
 
   // reposition the bubbles to be centered on the deleted item:
-  const deletedItemCentre = addXyz(
-    touchedItem.state.position,
-    scaleXyz(touchedItem.aabb, 0.5),
-  );
+  const deletedItemCentre = itemInPlayCentre(touchedItem);
   bubblesItem.state.position = subXyz(
     deletedItemCentre,
     scaleXyz(bubblesItem.aabb, 0.5),

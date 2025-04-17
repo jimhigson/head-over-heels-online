@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-import type { DirectionXy8 } from "../../../../../../utils/vectors/vectors";
 import { lengthXy } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
 import {
@@ -9,20 +7,23 @@ import {
   roomGridSizeXY,
   roomGridSizeZ,
 } from "./mapConstants";
-import { iterate } from "../../../../../../utils/iterate";
-import { objectEntries } from "iter-tools";
 import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
 import { roundForSvg, project } from "./svgHelpers";
-import type { NotableItem } from "./NotableItem";
-import { NotableItemSvg, SpriteInRoom } from "./NotableItem";
-import { ItemInRoomLayout } from "./NotableItemsCollection";
-import { jsonItemIsNotable } from "./jsonItemIsNotable";
+import { PlayableItemInRoom } from "./NotableItem";
+import {
+  InPlayItemsInRoomLayout,
+  NotableJsonItemsInRoomLayout,
+} from "./ItemsInRoomLayout";
 import type { RoomJson } from "../../../../../../model/RoomJson";
 import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { roomAccentColourClass } from "./mapColours";
 import { VisitedFootprint } from "./VisitedFootprint";
-import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
-import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
+import type {
+  CharacterName,
+  IndividualCharacterName,
+} from "../../../../../../model/modelTypes";
+import type { PlayableItem } from "../../../../../physics/itemPredicates";
+import { useNotableItems } from "./useNotableItems";
 
 const strokeWidth = 3;
 
@@ -114,57 +115,16 @@ M${project({ x: 0, y: 0, z: roomGridSizeZ })}
 L0, 0            
 `;
 
-const useNotableItems = <RoomId extends string>(
-  roomJson: RoomJson<RoomId, string>,
-  roomPickupsCollected: RoomPickupsCollected,
-  subRoomId: string,
-) => {
-  return useMemo<Array<NotableItem<RoomId>>>(() => {
-    let foundHushPuppy = false;
-    let foundTeleporter = false;
-    let foundCrown = false;
-
-    const nonCollectedNotableItemsItr = iterate(objectEntries(roomJson.items))
-      .filter(([itemId]) => !roomPickupsCollected[itemId])
-      .map(([_, item]) => item)
-      .filter((item) => {
-        // only allow one hush puppy/teleporter to be found - the map doesn't
-        // need to show multiple of them in a room
-        if (item.type === "hushPuppy") {
-          if (foundHushPuppy) {
-            return false;
-          }
-          foundHushPuppy = true;
-        }
-        if (item.type === "teleporter") {
-          if (foundTeleporter) {
-            return false;
-          }
-          foundTeleporter = true;
-        }
-        if (item.type === "pickup" && item.config.gives === "crown") {
-          if (foundCrown) {
-            return false;
-          }
-          foundCrown = true;
-        }
-        return true;
-      })
-      .filter((item) => jsonItemIsNotable(item, subRoomId, roomJson));
-
-    return [...nonCollectedNotableItemsItr];
-  }, [roomJson, roomPickupsCollected, subRoomId]);
-};
-
 type RoomSvgProps<RoomId extends string> = {
   roomGridPositionSpec: RoomGridPositionSpec<RoomId>;
   roomJson: RoomJson<RoomId, string>;
   roomVisited: boolean;
-  hasHead?: { current: boolean; facingXy8: DirectionXy8 };
-  hasHeels?: { current: boolean; facingXy8: DirectionXy8 };
-  hasHeadOverHeels?: { facingXy8: DirectionXy8 };
+  headItemInRoom?: PlayableItem<"head", RoomId>;
+  heelsItemInRoom?: PlayableItem<"heels", RoomId>;
+  headOverHeelsItemInRoom?: PlayableItem<"headOverHeels", RoomId>;
   roomPickupsCollected: RoomPickupsCollected;
   onPlayableClick?: (name: IndividualCharacterName) => void;
+  currentCharacterName: CharacterName;
 };
 
 export const RoomSvg = <RoomId extends string>({
@@ -172,9 +132,10 @@ export const RoomSvg = <RoomId extends string>({
   roomPickupsCollected,
   roomJson,
   roomVisited,
-  hasHead,
-  hasHeels,
-  hasHeadOverHeels,
+  headItemInRoom,
+  heelsItemInRoom,
+  headOverHeelsItemInRoom,
+  currentCharacterName,
   onPlayableClick,
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, roomBelow, color } = roomJson;
@@ -187,21 +148,22 @@ export const RoomSvg = <RoomId extends string>({
   );
 
   return (
-    <g data-room-id={id} strokeWidth={strokeWidth} className="[--scale:2]">
+    <g
+      data-room-id={id}
+      strokeWidth={strokeWidth}
+      className={roomAccentColourClass(color)}
+    >
       {
         roomBelow === undefined ?
           <>
             // whole floor in colour
-            <path
-              className={roomAccentColourClass(color).floor}
-              d={floorFillPathD}
-            />
+            <path className="fill-[var(--roomHintColor)]" d={floorFillPathD} />
             <path className="fill-white" d={floorPathFillPathD(boundaries)} />
           </>
           //or outline of room with a hole:
         : <>
             <path
-              className={roomAccentColourClass(color).floor}
+              className="fill-[var(--roomHintColor)]"
               fillRule="evenodd"
               // whole tile, then use evenodd to cut out the middle:
               d={`${floorFillPathD} ${floorPathFillPathD(boundaries)}`}
@@ -216,36 +178,57 @@ export const RoomSvg = <RoomId extends string>({
 
       }
 
-      {roomJson.id === "blacktooth11" && (
+      {roomJson.id === "blacktooth11" ?
         // everyone loves this room, so a set piece to keep the map interesting:
         <path
-          className={roomAccentColourClass(color).floor}
+          className="fill-[var(--roomHintColor)]"
           d={`
-M${project({ x: roomFront, y: roomFront })} L${project({ x: roomFront, y: roomBack })} L${project({ x: roomFront - strokeWidth, y: roomBack })} L${project({ x: roomFront - strokeWidth, y: roomFront })} z
-M${project({ x: roomBack, y: roomFront })} L${project({ x: roomBack, y: roomBack })} L${project({ x: roomBack + strokeWidth, y: roomBack })} L${project({ x: roomBack + strokeWidth, y: roomFront })} z
+M${project({ x: roomFront, y: roomFront })}
+L${project({ x: roomBack, y: roomFront })}
+L${project({ x: roomBack, y: roomFront - strokeWidth * 2 })}
+L${project({ x: roomFront, y: roomFront - strokeWidth * 2 })}
+z
+M${project({ x: roomFront, y: roomBack })}
+L${project({ x: roomBack, y: roomBack })}
+L${project({ x: roomBack, y: roomBack + strokeWidth * 2 })}
+L${project({ x: roomFront, y: roomBack + strokeWidth * 2 })}
+z
 `}
         />
-      )}
+      : roomJson.id === "moonbase20" || roomJson.id === "moonbase23" ?
+        <path
+          className={"stroke-[var(--roomHintColor)]"}
+          strokeWidth={strokeWidth * 2}
+          d={`
+M${project({ x: roomFront, y: roomGridSizeXY / 2 })}
+L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
 
+M${project({ x: roomGridSizeXY / 2, y: roomFront })}
+L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
+
+M${project({ x: roomGridSizeXY / 2, y: roomBack })}
+L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
+`}
+        />
+      : null}
       {roomAbove && (
         // walls
         <>
           {/* away wall: */}
           <path
-            className={roomAccentColourClass(color).awayWall}
+            className="fill-[var(--roomHintColorDarker)]"
             fillRule="evenodd"
             d={awayWallFillPathD(boundaries.away === "doorway")}
           />
           {/* left wall is just the away wall flipped: */}
           <path
-            className={roomAccentColourClass(color).floor}
+            className="fill-[var(--roomHintColor)]"
             fillRule="evenodd"
             transform="scale(-1, 1)"
             d={awayWallFillPathD(boundaries.left === "doorway")}
           />
         </>
       )}
-
       {/* boundary lines */}
       <g className="fill-transparent stroke-midGreyHalfbrite">
         <path // right
@@ -273,85 +256,61 @@ M${project({ x: roomBack, y: roomFront })} L${project({ x: roomBack, y: roomBack
           strokeDasharray={boundaryDashArrays[boundaries.away]}
         />
       </g>
-
       {roomVisited && (
-        <VisitedFootprint className={`${roomAccentColourClass(color).floor}`} />
+        <VisitedFootprint className="fill-[var(--roomHintColor)]" />
       )}
-
       {/* characters */}
-      <ItemInRoomLayout heightAdjust={14}>
-        {hasHead && (
-          <SpriteInRoom
-            className={`${hasHeels ? "[--scale:1.5]" : "[--scale:2.5]"}
-              ${playableTailwindSpriteClassname({
-                character: "head",
-                action: hasHead.current ? "walking" : "idle",
-                facingXy8: hasHead.facingXy8,
-              })}`}
-            scrollTo={hasHead.current}
-            onClick={(e) => {
-              onPlayableClick?.("head");
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          />
-        )}
-        {hasHeels && (
-          <SpriteInRoom
-            className={`${hasHead ? "[--scale:1.5]" : "[--scale:2.5]"}
-            ${playableTailwindSpriteClassname({
-              character: "heels",
-              action: hasHeels.current ? "walking" : "idle",
-              facingXy8: hasHeels.facingXy8,
-            })}`}
-            scrollTo={hasHeels.current}
-            onClick={(e) => {
-              onPlayableClick?.("heels");
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          />
-        )}
-      </ItemInRoomLayout>
-      {hasHeadOverHeels && (
-        <g transform="translate(0,-16)" className="[--scale:1.5]">
-          <SpriteInRoom
-            className={playableTailwindSpriteClassname({
-              character: "heels",
-              action: "walking",
-              facingXy8: hasHeadOverHeels.facingXy8,
-            })}
-          />
-          <g transform="translate(0, -20)">
-            <SpriteInRoom
-              // headOverHeels is always active (if they exist)
-              className={playableTailwindSpriteClassname({
-                character: "head",
-                action: "walking",
-                facingXy8: hasHeadOverHeels.facingXy8,
-              })}
-              scrollTo
-            />
-          </g>
-        </g>
-      )}
-      {!hasHead && !hasHeels && !hasHeadOverHeels && (
-        <ItemInRoomLayout heightAdjust={11}>
-          {notableItems.map((item, i) => {
-            const isBigItem =
-              item.type === "hushPuppy" || item.type === "teleporter";
+      {headItemInRoom && heelsItemInRoom ?
+        // both in room but not in symbiosis:
 
-            return (
-              <NotableItemSvg
-                key={i}
-                notableItem={item}
-                className={isBigItem ? "[--scale:1.25]" : "[--scale:1.5]"}
-              />
-            );
-          })}
-        </ItemInRoomLayout>
-      )}
-
+        <InPlayItemsInRoomLayout
+          roomJson={roomJson}
+          currentCharacterName={currentCharacterName as IndividualCharacterName}
+          headItemInRoom={headItemInRoom}
+          heelsItemInRoom={heelsItemInRoom}
+          onClick={onPlayableClick}
+        />
+      : headItemInRoom ?
+        <PlayableItemInRoom
+          characterName="head"
+          isCurrent={currentCharacterName === "head"}
+          onlyPlayableInRoom
+          facing={headItemInRoom.state.facing}
+          yAdjust={-8}
+          onClick={onPlayableClick}
+        />
+      : heelsItemInRoom ?
+        <PlayableItemInRoom
+          characterName="heels"
+          isCurrent={currentCharacterName === "heels"}
+          onlyPlayableInRoom
+          facing={heelsItemInRoom.state.facing}
+          yAdjust={-8}
+          onClick={onPlayableClick}
+        />
+      : headOverHeelsItemInRoom ?
+        <>
+          <PlayableItemInRoom
+            characterName="heels"
+            onlyPlayableInRoom={false}
+            facing={headOverHeelsItemInRoom.state.facing}
+            yAdjust={-16}
+            isCurrent
+          />
+          <PlayableItemInRoom
+            characterName="head"
+            onlyPlayableInRoom={false}
+            facing={headOverHeelsItemInRoom.state.facing}
+            isCurrent
+            yAdjust={-36}
+          />
+        </>
+      : <NotableJsonItemsInRoomLayout
+          roomJson={roomJson}
+          subRoomId={subRoomId}
+          items={notableItems}
+        />
+      }
       {roomAbove && (
         // vertical lines
         <path

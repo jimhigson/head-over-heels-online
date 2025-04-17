@@ -6,21 +6,26 @@ import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
-import type { PickupsCollected } from "../../../../../gameState/GameState";
+import type {
+  CharacterRooms,
+  PickupsCollected,
+} from "../../../../../gameState/GameState";
 import { emptyObject } from "../../../../../../utils/empty";
 import { roomWorldPosition } from "./roomWorldPosition";
 import type { ReactElement } from "react";
 import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 import type { ValueOf } from "type-fest";
 import { mapSvgMargin } from "./mapConstants";
-import type { PlayerLocations } from "./useMapData";
+import { findSubRoomForItem } from "./itemIsInSubRoom";
+import { getRoomItem } from "../../../../../../model/RoomState";
+import type { PlayableItem } from "../../../../../physics/itemPredicates";
 
 export type MapSvgProps<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   pickupsCollected: PickupsCollected<RoomId>;
   gridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
-  currentCharacterName?: CharacterName;
-  playerLocations: PlayerLocations<RoomId>;
+  currentCharacterName: CharacterName;
+  characterRooms: CharacterRooms<RoomId>;
   background: ReactElement | null;
   mapBounds: Bounds;
   containerWidth: number;
@@ -40,12 +45,39 @@ export type Bounds = {
   r: number;
 };
 
+const selectPlayableItemInRoomAndSubroom = <
+  C extends CharacterName,
+  RoomId extends string,
+>(
+  characterRooms: CharacterRooms<RoomId>,
+  characterName: C,
+  roomId: RoomId,
+  subRoomId: string,
+): PlayableItem<C, RoomId> | undefined => {
+  const playableItemInPlay = getRoomItem(
+    characterName,
+    characterRooms[characterName]?.items,
+  ) as PlayableItem<C, RoomId> | undefined;
+
+  return (
+      playableItemInPlay &&
+        roomId === characterRooms[characterName]!.roomJson.id &&
+        subRoomId ===
+          findSubRoomForItem(
+            playableItemInPlay,
+            characterRooms[characterName]!.roomJson,
+          )
+    ) ?
+      playableItemInPlay
+    : undefined;
+};
+
 export const MapSvg = <RoomId extends string>({
   campaign,
   pickupsCollected,
   gridPositions,
   currentCharacterName,
-  playerLocations,
+  characterRooms,
   background,
   mapBounds,
   containerWidth,
@@ -75,41 +107,8 @@ export const MapSvg = <RoomId extends string>({
       >
         {orderedPositions.map((gridPositionSpec) => {
           const { roomId, subRoomId, gridPosition } = gridPositionSpec;
-
-          const hasHead =
-            (
-              playerLocations.head &&
-              roomId === playerLocations.head.roomId &&
-              subRoomId === playerLocations.head.subRoomId
-            ) ?
-              {
-                current: currentCharacterName === "head",
-                facingXy8: playerLocations.head.facingXy8,
-              }
-            : undefined;
-
-          const hasHeels =
-            (
-              playerLocations.heels &&
-              roomId === playerLocations.heels.roomId &&
-              subRoomId === playerLocations.heels.subRoomId
-            ) ?
-              {
-                current: currentCharacterName === "heels",
-                facingXy8: playerLocations.heels.facingXy8,
-              }
-            : undefined;
-
-          const hasHeadOverHeels =
-            (
-              playerLocations.headOverHeels &&
-              roomId === playerLocations.headOverHeels.roomId &&
-              subRoomId === playerLocations.headOverHeels.subRoomId
-            ) ?
-              { facingXy8: playerLocations.headOverHeels.facingXy8 }
-            : undefined;
-
           const roomRenderingId = `${roomId}/${subRoomId}`;
+
           return (
             <g
               key={roomRenderingId}
@@ -120,9 +119,25 @@ export const MapSvg = <RoomId extends string>({
                 roomGridPositionSpec={gridPositionSpec}
                 roomPickupsCollected={pickupsCollected[roomId] ?? emptyObject}
                 roomJson={campaign.rooms[roomId]}
-                hasHead={hasHead}
-                hasHeels={hasHeels}
-                hasHeadOverHeels={hasHeadOverHeels}
+                headItemInRoom={selectPlayableItemInRoomAndSubroom(
+                  characterRooms,
+                  "head",
+                  roomId,
+                  subRoomId,
+                )}
+                heelsItemInRoom={selectPlayableItemInRoomAndSubroom(
+                  characterRooms,
+                  "heels",
+                  roomId,
+                  subRoomId,
+                )}
+                headOverHeelsItemInRoom={selectPlayableItemInRoomAndSubroom(
+                  characterRooms,
+                  "headOverHeels",
+                  roomId,
+                  subRoomId,
+                )}
+                currentCharacterName={currentCharacterName}
                 roomVisited={roomsExplored[roomId] ?? false}
                 onPlayableClick={onPlayableClick}
               />
