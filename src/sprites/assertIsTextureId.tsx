@@ -5,7 +5,14 @@ export function assertIsTextureId(
   textureId: string,
 ): asserts textureId is TextureId {
   if (!isTextureId(textureId)) {
-    throw new Error(`Invalid textureId: "${textureId}"`);
+    throw new Error(
+      `Invalid textureId: "${textureId}"; textureId ∋ {${Object.keys(
+        spritesheetData.frames,
+      )
+        .sort()
+        .map((tid) => `"${tid}"`)
+        .join(",\n")}}`,
+    );
   }
 }
 

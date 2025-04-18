@@ -34,6 +34,7 @@ import { isStoodOn } from "../../../model/StoodOnBy";
 import { selectAtPath } from "../../../store/selectors";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { emptyArray } from "../../../utils/empty";
+import { floatingTextAppearance } from "./floatingTextAppearance";
 
 const blockTextureId = (
   isDark: boolean,
@@ -83,6 +84,7 @@ export const itemAppearances: {
   doorFrame: doorFrameAppearance,
   doorLegs: doorLegsAppearance,
   monster: monsterAppearance,
+  floatingText: floatingTextAppearance,
 
   stopAutowalk() {
     throw new Error("these should always be non-rendering");

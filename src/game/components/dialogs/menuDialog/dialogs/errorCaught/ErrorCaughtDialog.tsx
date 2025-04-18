@@ -10,8 +10,8 @@ import {
   reincarnationAccepted,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { multilineTextClass } from "../../multilineTextClass";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 const markdown = `##The game crashed
 Maybe:
@@ -45,9 +45,7 @@ export const ErrorCaughtDialog = ({
           }
         >
           <BlockyMarkdown markdown={markdown} />
-          <BitmapText className={`text-midRed ${multilineTextClass}`}>
-            {message}
-          </BitmapText>
+
           <MenuItems
             className={`text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1 ${multilineTextClass}`}
           >
@@ -75,6 +73,10 @@ export const ErrorCaughtDialog = ({
               )}
             />
           </MenuItems>
+          <BitmapText className="block sprites-double-height my-1 text-midRed">
+            Error message:
+          </BitmapText>
+          <pre className={`text-midRed leading-[1em]`}>{message}</pre>
         </div>
       </Dialog>
     </DialogPortal>

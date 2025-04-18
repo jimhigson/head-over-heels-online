@@ -75,7 +75,9 @@ const bbColors: Partial<Record<ItemInPlayType, string>> = {
   head: "rgba(255,184,0)",
   wall: "rgba(128,200,0)",
   portal: "rgba(255,0,255)",
+  pickup: "rgba(0,196,255)",
   stopAutowalk: "rgba(255,128,128)",
+  floatingText: "rgba(128,0,255)",
 };
 
 export class ItemBoundingBoxRenderer<

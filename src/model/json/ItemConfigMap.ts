@@ -123,9 +123,10 @@ export type ItemConfigMap<
     top: number;
     bottom: number;
   };
-  // actually not using the special bubbles frames:
   bubbles: {
-    style: /*"fish" | "taupe" | */ "white";
+    // actually not using any other styles, the game looks better with just white,
+    // could remove this:
+    style: "white";
     /**
      * it is the bubbles that play the sound when something is fading
      * out, not the item itself. This property helps us know which sound

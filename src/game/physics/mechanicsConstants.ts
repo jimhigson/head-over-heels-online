@@ -95,6 +95,7 @@ export const moveSpeedPixPerMs = {
   ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
   firedDoughnut: 2 * onePxPerFrameInOriginalGamePxPerMs,
   movingPlatform: onePxPerFrameInOriginalGamePxPerMs,
+  floatingText: onePxPerFrameInOriginalGamePxPerMs,
 } satisfies Partial<
   Record<
     | CharacterName
