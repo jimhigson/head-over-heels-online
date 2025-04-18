@@ -46,6 +46,11 @@ const blockMultiples = {
   18: "calc(var(--block) * 18)",
   19: "calc(var(--block) * 19)",
   20: "calc(var(--block) * 20)",
+  21: "calc(var(--block) * 21)",
+  22: "calc(var(--block) * 22)",
+  23: "calc(var(--block) * 23)",
+  24: "calc(var(--block) * 24)",
+  25: "calc(var(--block) * 25)",
   // negative numbers
   m1: "calc(var(--block) * -1)",
   m2: "calc(var(--block) * -2)",
@@ -67,6 +72,9 @@ const blockMultiples = {
   m18: "calc(var(--block) * -18)",
   m19: "calc(var(--block) * -19)",
   m20: "calc(var(--block) * -20)",
+  m21: "calc(var(--block) * -21)",
+  m22: "calc(var(--block) * -22)",
+  m23: "calc(var(--block) * -23)",
 };
 
 export default {

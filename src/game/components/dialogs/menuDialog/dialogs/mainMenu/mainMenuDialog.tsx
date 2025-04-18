@@ -45,7 +45,7 @@ const QuitGameMenuItem = () => {
   return (
     <MenuItem
       id="quitGame"
-      label="Quit"
+      label="End this game"
       className="text-midRed zx:text-zxYellow"
       onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
       doubleHeightWhenFocussed
@@ -75,7 +75,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           className={isGameRunning ? "resHandheld:hidden" : ""}
         />
         <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1">
-          <MenuItems className="w-max mx-auto">
+          <MenuItems className="w-24 mx-auto">
             <MenuItem
               id="playGame"
               label={<PlayGameLabel />}
@@ -96,9 +96,8 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               doubleHeightWhenFocussed
               hidden={!isGameRunning}
             />
-            <QuitGameMenuItem />
           </MenuItems>
-          <div className="flex flex-row justify-center gap-2">
+          <div className="flex flex-row justify-between gap-2 w-24 mx-auto">
             <MenuItems>
               <MenuItem
                 id="modernisationOptions"
@@ -137,7 +136,9 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               />
             </MenuItems>
           </div>
-          <MenuItems></MenuItems>
+          <MenuItems className="w-24 mx-auto">
+            <QuitGameMenuItem />
+          </MenuItems>
         </div>
         {!isGameRunning && <MainMenuFooter />}
       </Dialog>
