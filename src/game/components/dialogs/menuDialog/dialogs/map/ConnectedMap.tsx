@@ -19,15 +19,10 @@ export const ConnectedMap = <RoomId extends string>({
   // the user can switch characters while looking at the map:
   useAllowCharacterSwopping();
 
-  const {
-    gridPositions,
-    curRoomId,
-    mapBounds,
-    playerLocations,
-    currentCharacterName,
-  } = useMapData<RoomId>();
+  const { gridPositions, curRoomId, mapBounds, currentCharacterName } =
+    useMapData<RoomId>();
 
-  const { pickupsCollected } = gameApi.gameState;
+  const { pickupsCollected, characterRooms } = gameApi.gameState;
 
   return (
     <MapSvg<RoomId>
@@ -45,6 +40,7 @@ export const ConnectedMap = <RoomId extends string>({
           />
         )
       }
+      characterRooms={characterRooms}
       {...{
         campaign,
         mapBounds,
@@ -52,7 +48,6 @@ export const ConnectedMap = <RoomId extends string>({
         gridPositions,
         currentCharacterName,
         curRoomId,
-        playerLocations,
         containerWidth,
         roomsExplored,
       }}

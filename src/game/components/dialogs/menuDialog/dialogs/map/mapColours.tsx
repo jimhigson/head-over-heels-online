@@ -63,30 +63,40 @@ export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
 export const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
   switch (color.hue) {
     case "cyan":
-      return {
-        floor: "fill-pastelBlue zx:fill-zxCyan",
-        awayWall: "fill-pastelBlueHalfbrite zx:fill-zxCyanDimmed",
-      };
+      return (
+        "[--roomHintColor:theme(colors.pastelBlue)] " +
+        "[--roomHintColorDarker:theme(colors.pastelBlueHalfbrite)] " +
+        "zx:[--roomHintColor:theme(colors.zxCyan)] " +
+        "zx:[--roomHintColorDarker:theme(colors.zxCyanDimmed)]"
+      );
     case "green":
-      return {
-        floor: "fill-moss zx:fill-zxGreen",
-        awayWall: "fill-mossHalfbrite zx:fill-zxGreenDimmed",
-      };
+      return (
+        "[--roomHintColor:theme(colors.moss)] " +
+        "[--roomHintColorDarker:theme(colors.mossHalfbrite)] " +
+        "zx:[--roomHintColor:theme(colors.zxGreen)] " +
+        "zx:[--roomHintColorDarker:theme(colors.zxGreenDimmed)]"
+      );
     case "magenta":
-      return {
-        floor: "fill-pink zx:fill-zxMagenta",
-        awayWall: "fill-pinkHalfbrite zx:fill-zxMagentaDimmed",
-      };
+      return (
+        "[--roomHintColor:theme(colors.pink)] " +
+        "[--roomHintColorDarker:theme(colors.pinkHalfbrite)] " +
+        "zx:[--roomHintColor:theme(colors.zxMagenta)] " +
+        "zx:[--roomHintColorDarker:theme(colors.zxMagentaDimmed)]"
+      );
     case "white":
-      return {
-        floor: "fill-lightGrey zx:fill-zxWhiteDimmed",
-        awayWall: "fill-lightGreyHalfbrite zx:fill-zxBlack",
-      };
+      return (
+        "[--roomHintColor:theme(colors.lightGrey)] " +
+        "[--roomHintColorDarker:theme(colors.lightGreyHalfbrite)] " +
+        "zx:[--roomHintColor:theme(colors.zxWhiteDimmed)] " +
+        "zx:[--roomHintColorDarker:theme(colors.zxBlack)]"
+      );
     case "yellow":
-      return {
-        floor: "fill-highlightBeige zx:fill-zxYellow",
-        awayWall: "fill-highlightBeigeHalfbrite zx:fill-zxYellowDimmed",
-      };
+      return (
+        "[--roomHintColor:theme(colors.highlightBeige)] " +
+        "[--roomHintColorDarker:theme(colors.highlightBeigeHalfbrite)] " +
+        "zx:[--roomHintColor:theme(colors.zxYellow)] " +
+        "zx:[--roomHintColorDarker:theme(colors.zxYellowDimmed)]"
+      );
     default:
       color.hue satisfies never;
       throw new Error("unknown hue");

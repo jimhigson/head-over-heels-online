@@ -13,4 +13,5 @@ export const jsonItemIsNotable = <RoomId extends string>(
   jsonItemIsInSubRoom(item, subRoomId, room) &&
   (item.type === "teleporter" ||
     item.type === "hushPuppy" ||
+    item.type === "lift" ||
     (item.type === "pickup" && item.config.gives !== "scroll"));

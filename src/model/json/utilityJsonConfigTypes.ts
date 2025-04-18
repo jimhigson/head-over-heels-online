@@ -33,3 +33,9 @@ export type ActivatedWhenSubset<U extends MovementActivated> = U;
 export type ConsolidatableConfig = {
   times?: Partial<Xyz>;
 };
+
+/**
+ * stand-in property for when times is undefined:
+ * multiplied by 1 in every dimension - ie, no multiplication
+ */
+export const timesNotMultiplied = { x: 1, y: 1, z: 1 };

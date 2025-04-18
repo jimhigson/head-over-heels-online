@@ -34,7 +34,7 @@ export const room = inferRoomJson({
     },
     "monster@0,2,1": {
       config: {
-        activated: "off",
+        activated: "after-player-near",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
         which: "cyberman",
@@ -94,7 +94,7 @@ export const room = inferRoomJson({
     },
     "monster@5,4,1": {
       config: {
-        activated: "off",
+        activated: "after-player-near",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "right",
         which: "cyberman",

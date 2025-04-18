@@ -127,7 +127,6 @@ export const spritesTailwindPlugin = plugin(
       utilities[`.texture-animated-${e(animationName)}`] = {
         "--w": `${spritesheetData.frames[frames[0]].frame.w}px`,
         "--h": `${spritesheetData.frames[frames[0]].frame.h}px`,
-        // 1s timing should be configurable based on values from stylesheet
         animation: `sprite-animation-${animationName.replaceAll(".", "_")} ${animationDuration}s steps(${frames.length}, end) infinite`,
       };
 
