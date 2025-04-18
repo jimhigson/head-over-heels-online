@@ -84,7 +84,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
         className={mapClasses.moonbase.bgClassName}
       />
       <MapBackgroundSection
-        y={yBetweenRooms("moonbase9/*", "blacktooth62fish/right") - mapBounds.t}
+        y={yBetweenRooms("moonbase4/*", "blacktooth62fish/right") - mapBounds.t}
         mapTitle={"Blacktooth escape"}
         className={mapClasses.blacktooth.bgClassName}
       />
