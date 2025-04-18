@@ -71,8 +71,11 @@ export const roomItemPositions = <Item, ItemId extends string>({
   if (itemCount === 0) {
     return emptyObject as Record<ItemId, Xy>;
   }
-  if (itemCount > 3)
-    throw new Error("roomItemPositions supports up to 3 items.");
+  if (itemCount > 3) {
+    throw new Error(
+      `roomItemPositions supports up to 3 items, but got ${itemCount}: ${Object.keys(items).join(", ")}`,
+    );
+  }
 
   const idAndPositions = idEntries.map(([id, item]) => ({
     id,
