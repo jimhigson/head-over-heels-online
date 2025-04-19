@@ -19,8 +19,7 @@ export type ItemInPlayType =
   | "floorEdge"
   // when another item is fading out, the bubbles are a separate item
   | "bubbles"
-  | "floatingText"
-  | "firedDoughnut";
+  | "floatingText";
 
 export type SwitchSetting = "left" | "right";
 

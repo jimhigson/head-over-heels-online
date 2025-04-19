@@ -1,6 +1,7 @@
 import {
   isCarrier,
   isDeadly,
+  isEmitter,
   isFirer,
   isItemType,
   isLift,
@@ -37,6 +38,7 @@ import type { RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import { tickActivation } from "../physics/mechanics/activation";
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import { emitting } from "../physics/mechanics/emitting";
 
 function* itemMechanicResultGen<
   T extends ItemInPlayType,
@@ -92,17 +94,13 @@ function* itemMechanicResultGen<
         firing(item, room, gameState, deltaMS);
       }
     }
-  }
-
-  if (isLift(item)) {
+  } else if (isLift(item)) {
     yield moveLift(item, room, gameState, deltaMS) as MechanicResult<
       T,
       RoomId,
       RoomItemId
     >;
-  }
-
-  if (isMoving(item)) {
+  } else if (isMoving(item)) {
     yield tickActivation(item, room, gameState, deltaMS) as MechanicResult<
       T,
       RoomId,
@@ -113,6 +111,8 @@ function* itemMechanicResultGen<
       RoomId,
       RoomItemId
     >;
+  } else if (isEmitter(item)) {
+    emitting(item, room, gameState, deltaMS);
   }
 }
 

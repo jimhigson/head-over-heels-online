@@ -211,6 +211,22 @@ const rooms = {
         },
       },
       {
+        type: "emitter",
+        config: {
+          emits: {
+            type: "monster",
+            config: {
+              which: "dalek",
+              activated: "on",
+              movement: "patrol-randomly-diagonal",
+            },
+          },
+          period: 1_000,
+          maximum: 5,
+        },
+        position: { x: 17, y: 0, z: 7 },
+      },
+      {
         type: "door",
         config: { toRoom: "renderEverything", direction: "towards" },
         position: { x: 5, y: 0, z: 2 },

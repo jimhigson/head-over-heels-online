@@ -109,6 +109,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   movingPlatform: 30,
   pushableBlock: 30,
   portableBlock: 30,
+  sceneryCrown: 30,
   slidingBlock: 30,
   spring: 30,
 
@@ -124,7 +125,9 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   firedDoughnut: 90,
 
-  // slightly preferential to deadly blocks (in original game they are the same)
+  // slightly preferential to deadly blocks
+  // since they are safe to touch from the sides
+  // (in original game they are the same - deadly from any direction)
   spikes: 98,
 
   slidingDeadly: 100,
@@ -134,6 +137,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   // things that are not actually possible to touch
   floatingText: 200,
+  emitter: 200,
 };
 
 export const collisionsPriorityComparator = <I extends SortableObstacle>(

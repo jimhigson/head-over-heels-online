@@ -76,6 +76,7 @@ const bbColors: Partial<Record<ItemInPlayType, string>> = {
   wall: "rgba(128,200,0)",
   portal: "rgba(255,0,255)",
   pickup: "rgba(0,196,255)",
+  emitter: "rgba(0,255,255)",
   stopAutowalk: "rgba(255,128,128)",
   floatingText: "rgba(128,0,255)",
 };

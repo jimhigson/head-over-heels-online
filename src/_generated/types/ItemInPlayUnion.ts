@@ -12,6 +12,7 @@ type GeneratedTypeUnion =
   | "deadlyBlock"
   | "doorFrame"
   | "doorLegs"
+  | "emitter"
   | "firedDoughnut"
   | "floatingText"
   | "floor"
@@ -29,6 +30,7 @@ type GeneratedTypeUnion =
   | "portableBlock"
   | "portal"
   | "pushableBlock"
+  | "sceneryCrown"
   | "sceneryPlayer"
   | "slidingBlock"
   | "slidingDeadly"
@@ -74,6 +76,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "doorLegs" ?
       ItemInPlay<"doorLegs", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "emitter" ?
+      ItemInPlay<"emitter", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "firedDoughnut" ?
       ItemInPlay<"firedDoughnut", RoomId, RoomItemId, RoomItemId, ScN>
@@ -123,6 +128,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "pushableBlock" ?
       ItemInPlay<"pushableBlock", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "sceneryCrown" ?
+      ItemInPlay<"sceneryCrown", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "sceneryPlayer" ?
       ItemInPlay<"sceneryPlayer", RoomId, RoomItemId, RoomItemId, ScN>

@@ -1,5 +1,10 @@
 import type { Xyz } from "../../utils/vectors/vectors";
-import { productXyz, subXyz, type Aabb } from "../../utils/vectors/vectors";
+import {
+  originXyz,
+  productXyz,
+  subXyz,
+  type Aabb,
+} from "../../utils/vectors/vectors";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../model/json/JsonItem";
 import { blockSizePx, blockSizeXyzPx } from "../../sprites/spritePivots";
@@ -108,6 +113,10 @@ export const boundingBoxForItem = (
       return item.config.which === "headOverHeels" ?
           { aabb: doubleHeightCharacter }
         : { aabb: smallItemAabb };
+
+    case "emitter":
+      // zero-size:
+      return { aabb: originXyz };
 
     default:
       //console.warn("giving default aabb for item", item);

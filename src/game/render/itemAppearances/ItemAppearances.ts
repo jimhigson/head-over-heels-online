@@ -89,6 +89,9 @@ export const itemAppearances: {
   stopAutowalk() {
     throw new Error("these should always be non-rendering");
   },
+  emitter() {
+    throw new Error("these should always be non-rendering");
+  },
   portal() {
     throw new Error("these should always be non-rendering");
   },
@@ -354,6 +357,20 @@ export const itemAppearances: {
       renderProps: { flashing, activated },
     };
   },
+
+  sceneryCrown: itemRenderOnce(
+    ({
+      renderContext: {
+        item: {
+          config: { planet },
+        },
+      },
+    }) => {
+      return createSprite({
+        textureId: `crown.${planet}`,
+      });
+    },
+  ),
 
   pickup: itemRenderOnce(
     ({
