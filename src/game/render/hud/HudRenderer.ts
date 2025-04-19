@@ -106,12 +106,12 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       }),
       shield: this.#iconWithNumber({
         label: "headShield",
-        textureId: "hud.shield",
+        textureId: "hud.char.🛡️",
         outline: true,
       }),
       extraSkill: this.#iconWithNumber({
         label: "headFastSteps",
-        textureId: "hud.fastSteps",
+        textureId: "hud.char.⚡️",
         outline: true,
       }),
       doughnuts: this.#iconWithNumber({
@@ -136,12 +136,12 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       }),
       shield: this.#iconWithNumber({
         label: "heelsShield",
-        textureId: "hud.shield",
+        textureId: "hud.char.🛡️",
         outline: true,
       }),
       extraSkill: this.#iconWithNumber({
         label: "heelsBigJumps",
-        textureId: "hud.bigJumps",
+        textureId: "hud.char.♨",
         outline: true,
       }),
       bag: this.#iconWithNumber({

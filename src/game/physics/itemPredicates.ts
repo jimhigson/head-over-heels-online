@@ -24,6 +24,7 @@ const isNeverSolidItemType = isItemType(
   "stopAutowalk",
   "floorEdge", // not even really a thing in the room
   "firedDoughnut",
+  "floatingText",
 );
 const isUnsolid = (
   item: UnionOfAllItemInPlayTypes,

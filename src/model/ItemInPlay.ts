@@ -19,6 +19,7 @@ export type ItemInPlayType =
   | "floorEdge"
   // when another item is fading out, the bubbles are a separate item
   | "bubbles"
+  | "floatingText"
   | "firedDoughnut";
 
 export type SwitchSetting = "left" | "right";
@@ -38,6 +39,10 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
      * the direction this portal has to be hit (with a dot product in) to be walked through
      */
     direction: Xyz;
+  };
+  floatingText: {
+    textLines: string[];
+    appearanceRoomTime: number;
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config
@@ -63,8 +68,10 @@ export type BaseItemState<RoomItemId extends string = string> = {
   position: Readonly<Xyz>;
 
   /**
-   * The item will be removed from the room after this gameTime. To guarantee removal on the next frame (effectively immediately)
-   * set to -1. Otherwise, can set to the duration of an animation that needs to play
+   * The item will be removed from the room after the room it is in has more than this roomTime.
+   * To guarantee removal on the next frame (effectively immediately)
+   * set to -1. Otherwise, can set to the current roomTime + duration of an animation
+   * that needs to play
    *
    * If null, the item is not scheduled for removal (the normal case)
    */

@@ -131,6 +131,9 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   moveableDeadly: 100,
   deadlyBlock: 100,
   monster: 100, // most impactful to touch
+
+  // things that are not actually possible to touch
+  floatingText: 200,
 };
 
 export const collisionsPriorityComparator = <I extends SortableObstacle>(

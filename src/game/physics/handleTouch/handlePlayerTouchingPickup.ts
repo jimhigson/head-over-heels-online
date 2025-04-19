@@ -1,19 +1,32 @@
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   crownCollected,
   reincarnationFishEaten,
   scrollRead,
 } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
+import { addXyz, originXyz } from "../../../utils/vectors/vectors";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
+import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { createSavedGame } from "../../gameState/saving/createSavedGame";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
+
+/**
+ * how long to keep the floating text item in the room?
+ * this just has to be long enough that the last line of text
+ * is gone
+ */
+const floatingTextLife = 3_000;
 
 export const handlePlayerTouchingPickup = <
   RoomId extends string,
@@ -26,15 +39,13 @@ export const handlePlayerTouchingPickup = <
     ItemInPlay<"pickup", RoomId, RoomItemId>
   >,
 ) => {
+  const { gameState, movingItem: player, touchedItem, room } = e;
+  const { id: pickupId, config: pickupConfig } = touchedItem;
   const {
-    gameState,
-    movingItem: player,
-    touchedItem: { id: pickupId, config: pickupConfig },
-    room: {
-      id: roomId,
-      roomJson: { items: roomJsonItems },
-    },
-  } = e;
+    id: roomId,
+    roomJson: { items: roomJsonItems },
+    roomTime,
+  } = room;
   const { pickupsCollected } = gameState;
 
   if (pickupsCollected[roomId]?.[pickupId] === true) {
@@ -52,13 +63,34 @@ export const handlePlayerTouchingPickup = <
     pickupsCollected[roomId][pickupId] = true;
   }
 
+  const addFloatingText = (textLines: string[]) => {
+    const pickupCentre = itemInPlayCentre(touchedItem);
+    const floatingTextItem: ItemInPlay<"floatingText"> = {
+      type: "floatingText",
+      id: `floatingText-${pickupId}` as RoomItemId,
+      ...defaultItemProperties,
+      fixedZIndex: 999, // high number ensures is always in front
+      aabb: originXyz, // zero-size per aabb
+      state: {
+        ...defaultBaseState(),
+        position: addXyz(pickupCentre, { z: blockSizePx.h / 2 }),
+        expires: roomTime + floatingTextLife,
+      },
+      config: {
+        textLines,
+        appearanceRoomTime: roomTime,
+      },
+    };
+    addItemToRoom({ room, item: floatingTextItem });
+  };
+
   switch (pickupConfig.gives) {
     case "hooter": {
       const toModify = selectHeadAbilities(player);
       if (toModify !== undefined) {
         toModify.hasHooter = true;
-        break;
       }
+      addFloatingText(["hooter", "collected"]);
       break;
     }
 
@@ -67,6 +99,7 @@ export const handlePlayerTouchingPickup = <
       if (toModify !== undefined) {
         toModify.doughnuts = addPokeableNumbers(toModify.doughnuts, 6);
       }
+      addFloatingText(["+6", "doughnuts"]);
       break;
     }
 
@@ -74,8 +107,8 @@ export const handlePlayerTouchingPickup = <
       const toModify = selectHeelsAbilities(player);
       if (toModify !== undefined) {
         toModify.hasBag = true;
-        break;
       }
+      addFloatingText(["bag", "collected"]);
       break;
     }
 
@@ -86,6 +119,9 @@ export const handlePlayerTouchingPickup = <
       } else {
         player.state.shieldCollectedAt = player.state.gameTime;
       }
+      // TODO: this needs characterSprites to support multi-codepoint chars
+      //addFloatingText(["🛡️ 99", "shield"]);
+      addFloatingText(["99", "shield"]);
       break;
     }
 
@@ -94,6 +130,9 @@ export const handlePlayerTouchingPickup = <
       if (toModify !== undefined) {
         toModify.fastStepsStartedAtDistance = toModify.gameWalkDistance;
       }
+      // TODO: this needs characterSprites to support multi-codepoint chars
+      //addFloatingText(["⚡️ 99", "fast steps"]);
+      addFloatingText(["99", "fast steps"]);
       break;
     }
 
@@ -102,6 +141,9 @@ export const handlePlayerTouchingPickup = <
       if (toModify !== undefined) {
         toModify.bigJumps += 10;
       }
+      // TODO: this needs characterSprites to support multi-codepoint chars
+      //addFloatingText(["♨ 10", "big jumps"]);
+      addFloatingText(["10", "big jumps"]);
       break;
     }
 
@@ -115,8 +157,10 @@ export const handlePlayerTouchingPickup = <
           player.state.heels.lives,
           2,
         );
+        addFloatingText(["+2", "lives", "each"]);
       } else {
         player.state.lives = addPokeableNumbers(player.state.lives, 2);
+        addFloatingText(["+2", "lives"]);
       }
       break;
 
@@ -129,6 +173,7 @@ export const handlePlayerTouchingPickup = <
       store.dispatch(
         reincarnationFishEaten(createSavedGame(gameState, store.getState())),
       );
+      addFloatingText(["reincarnation", "point", "saved"]);
       break;
     }
 
@@ -136,6 +181,7 @@ export const handlePlayerTouchingPickup = <
       // a little experiment- let's go straight to the store, even though
       // we're in the game engine:
       store.dispatch(crownCollected(pickupConfig.planet));
+      addFloatingText([pickupConfig.planet, "liberated!"]);
       break;
     }
 

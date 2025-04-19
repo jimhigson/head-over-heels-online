@@ -134,13 +134,14 @@ export const hudSpritesheetData = {
   frames: {
     ...charFrames(alphaNumeric, { x: 151, y: 2 }),
     ...charFrames(punctuation, { x: 151, y: 11 }),
-    "hud.fastSteps": {
+    "hud.char.⚡️": {
       frame: { x: 475, y: 2, ...hudCharTextureSize },
     },
-    "hud.shield": {
+    "hud.char.🛡️": {
       frame: { x: 484, y: 2, ...hudCharTextureSize },
     },
-    "hud.bigJumps": {
+    // unicode char is actually "hot spring" - this means big jumps
+    "hud.char.♨": {
       frame: { x: 493, y: 2, ...hudCharTextureSize },
     },
     "hud.char.🕹": {
