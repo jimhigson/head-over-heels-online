@@ -24,6 +24,8 @@ import type {
 } from "../../../../../../model/modelTypes";
 import type { PlayableItem } from "../../../../../physics/itemPredicates";
 import { useNotableItems } from "./useNotableItems";
+import { range } from "iter-tools";
+import { iterate } from "../../../../../../utils/iterate";
 
 const strokeWidth = 3;
 
@@ -80,6 +82,16 @@ const floorPathFillPathD = (
   return shape;
 };
 
+const spikyN = 4;
+const deadlyFloorPathD: string = iterate(range(spikyN))
+  .map(
+    (i) => `
+M${project({ x: roomGridSizeXY * ((i + 0.5) / spikyN), y: 0 })}
+L${project({ x: roomGridSizeXY * ((i + 0.5) / spikyN), y: roomGridSizeXY })}`,
+  )
+  .toArray()
+  .join("");
+
 const awayWallFillPathD = (withDoorWay: boolean) => {
   const wall = `
 M${project({ x: 0, y: roomGridSizeXY })}
@@ -104,13 +116,15 @@ L${project({ x: roomFront, y: roomGridSizeXY })}`
   );
 };
 
-const highRoomVerticalLinesPathD = `            
+const highRoomBackVerticalLinesPathD = `            
 M${project({ x: roomGridSizeXY, y: roomGridSizeXY, z: roomGridSizeZ })}            
 L${project({ x: roomGridSizeXY, y: roomGridSizeXY })}            
 M${project({ x: roomGridSizeXY, y: 0, z: roomGridSizeZ })}            
 L${project({ x: roomGridSizeXY, y: 0 })}            
 M${project({ x: 0, y: roomGridSizeXY, z: roomGridSizeZ })}            
 L${project({ x: 0, y: roomGridSizeXY })}            
+`;
+const highRoomFrontVerticalLinesPathD = `            
 M${project({ x: 0, y: 0, z: roomGridSizeZ })}            
 L0, 0            
 `;
@@ -138,7 +152,7 @@ export const RoomSvg = <RoomId extends string>({
   currentCharacterName,
   onPlayableClick,
 }: RoomSvgProps<RoomId>) => {
-  const { id, roomAbove, roomBelow, color } = roomJson;
+  const { id, roomAbove, floor, color } = roomJson;
 
   // find some notable items:
   const notableItems = useNotableItems(
@@ -153,29 +167,34 @@ export const RoomSvg = <RoomId extends string>({
       strokeWidth={strokeWidth}
       className={roomAccentColourClass(color)}
     >
-      {
-        roomBelow === undefined ?
-          <>
-            // whole floor in colour
-            <path className="fill-[var(--roomHintColor)]" d={floorFillPathD} />
-            <path className="fill-white" d={floorPathFillPathD(boundaries)} />
-          </>
-          //or outline of room with a hole:
-        : <>
+      {floor === "none" ?
+        <>
+          //show a floor outlining the room with a hole:
+          <path
+            className="fill-[var(--roomHintColor)]"
+            fillRule="evenodd"
+            // whole tile, then use evenodd to cut out the middle:
+            d={`${floorFillPathD} ${floorPathFillPathD(boundaries)}`}
+          />
+          <path
+            className="fill-white"
+            fillRule="evenodd"
+            // whole tile, then use evenodd to cut out the middle:
+            d={`${floorPathFillPathD(boundaries)} ${floorPathFillPathD(boundaries, doorwayGap * 0.7)}`}
+          />
+        </>
+      : <>
+          // whole floor in colour
+          <path className="fill-[var(--roomHintColor)]" d={floorFillPathD} />
+          <path className="fill-white" d={floorPathFillPathD(boundaries)} />
+          {floor === "deadly" && (
             <path
-              className="fill-[var(--roomHintColor)]"
-              fillRule="evenodd"
-              // whole tile, then use evenodd to cut out the middle:
-              d={`${floorFillPathD} ${floorPathFillPathD(boundaries)}`}
+              className="stroke-[var(--roomHintColor)]"
+              strokeDasharray="1, 12.4"
+              d={deadlyFloorPathD}
             />
-            <path
-              className="fill-white"
-              fillRule="evenodd"
-              // whole tile, then use evenodd to cut out the middle:
-              d={`${floorPathFillPathD(boundaries)} ${floorPathFillPathD(boundaries, doorwayGap * 0.7)}`}
-            />
-          </>
-
+          )}
+        </>
       }
 
       {roomJson.id === "blacktooth11" ?
@@ -208,6 +227,15 @@ L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
 
 M${project({ x: roomGridSizeXY / 2, y: roomBack })}
 L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
+`}
+        />
+      : roomJson.id === "blacktooth77" || roomJson.id === "safari26" ?
+        <path
+          className={"stroke-[var(--roomHintColor)]"}
+          strokeWidth={strokeWidth * 2}
+          d={`
+M${project({ x: roomGridSizeXY / 2, y: 0 })}
+L${project({ x: roomGridSizeXY / 2, y: roomGridSizeXY })}
 `}
         />
       : null}
@@ -259,6 +287,15 @@ L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
       {roomVisited && (
         <VisitedFootprint className="fill-[var(--roomHintColor)]" />
       )}
+
+      {roomAbove && (
+        // vertical lines
+        <path
+          className="fill-transparent stroke-midGreyHalfbrite"
+          d={highRoomBackVerticalLinesPathD}
+        />
+      )}
+
       {/* characters */}
       {headItemInRoom && heelsItemInRoom ?
         // both in room but not in symbiosis:
@@ -315,7 +352,7 @@ L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
         // vertical lines
         <path
           className="fill-transparent stroke-midGreyHalfbrite"
-          d={highRoomVerticalLinesPathD}
+          d={highRoomFrontVerticalLinesPathD}
         />
       )}
     </g>
