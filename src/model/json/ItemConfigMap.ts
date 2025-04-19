@@ -7,7 +7,11 @@ import type {
   DirectionXy8,
 } from "../../utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
-import type { DoorFrameConfig, DoorLegsConfig } from "./JsonItem";
+import type {
+  DoorFrameConfig,
+  DoorLegsConfig,
+  JsonItemUnion,
+} from "./JsonItem";
 import type { MonsterJsonConfig } from "./MonsterJsonConfig";
 import type {
   ConsolidatableConfig,
@@ -18,6 +22,7 @@ import type {
 import type { SwitchConfig } from "./SwitchConfig";
 import type { ToggleablePaths } from "../../utils/Toggleable";
 import type { GameMenusState } from "../../store/slices/gameMenusSlice";
+import type { FreeItemTypes } from "../../game/physics/itemPredicates";
 
 type PickupConfig =
   | {
@@ -39,6 +44,15 @@ type PickupConfig =
       gives: "crown";
       planet: PlanetName;
     };
+
+export type EmittableItemJson = Extract<
+  JsonItemUnion,
+  {
+    type: FreeItemTypes | "firedDoughnut";
+  }
+>;
+
+export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 
 export type ItemConfigMap<
   RoomId extends string,
@@ -121,6 +135,25 @@ export type ItemConfigMap<
   };
   sceneryCrown: {
     planet: PlanetName;
+  };
+  emitter: {
+    /**
+     * what does this emitter emit? Could be (potentially) any free item
+     */
+    emits: EmittableItemRecipe;
+    /**
+     * how long between emissions?
+     */
+    period: number;
+    /**
+     * how many should this emitter emit? Null for no limit
+     */
+    maximum: number | null;
+  };
+  firedDoughnut: {
+    // if the doughnut is given via json, can be used to give its direction
+    // of travel.
+    direction?: DirectionXy8;
   };
   lift: {
     top: number;

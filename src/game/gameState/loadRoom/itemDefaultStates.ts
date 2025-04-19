@@ -3,11 +3,12 @@ import type { StoodOnBy } from "src/model/StoodOnBy";
 import type { FreeItemState } from "../../../model/ItemStateMap";
 import type { JsonItemUnion, JsonItemType } from "../../../model/json/JsonItem";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { originXyz } from "../../../utils/vectors/vectors";
+import { originXyz, scaleXyz } from "../../../utils/vectors/vectors";
 import { freeItemTypes, slidingItemTypes } from "../../physics/itemPredicates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { emptyArray, emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/veryClose";
+import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
 
 export const defaultBaseState = <RoomItemId extends string>() =>
   ({
@@ -109,5 +110,22 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       { direction: "up", vels: { lift: originXyz } }
     : {}),
     ...(jsonItem.type === "charles" ? { facing: unitVectors.towards } : {}),
+    ...(jsonItem.type === "emitter" ?
+      { lastEmittedAtRoomTime: neverTime, quantityEmitted: 0 }
+    : {}),
+    ...(jsonItem.type === "firedDoughnut" ?
+      {
+        disappear: "onTouch",
+        vels: {
+          fired:
+            jsonItem.config.direction ?
+              scaleXyz(
+                unitVectors[jsonItem.config.direction],
+                moveSpeedPixPerMs.firedDoughnut,
+              )
+            : originXyz,
+        },
+      }
+    : {}),
   };
 };

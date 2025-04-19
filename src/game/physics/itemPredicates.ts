@@ -25,6 +25,7 @@ const isNeverSolidItemType = isItemType(
   "floorEdge", // not even really a thing in the room
   "firedDoughnut",
   "floatingText",
+  "emitter",
 );
 const isUnsolid = (
   item: UnionOfAllItemInPlayTypes,
@@ -207,6 +208,7 @@ export const isHead = isItemType("head");
 export const isCarrier = isItemType("heels", "headOverHeels");
 export const isFirer = isItemType("head", "headOverHeels");
 export const isLift = isItemType("lift");
+export const isEmitter = isItemType("emitter");
 export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");
 export const isPickup = isItemType("pickup");

@@ -32,7 +32,9 @@ export type JsonItemType =
   // the crowns in the final room - these are for decoration and can't be picked up:
   | "sceneryCrown"
   // a special item for creating other items - eg, the gun salute in the final room
-  //| "emitter"
+  | "emitter"
+  // only needed as a json type so the emitter in the final room can fire them:
+  | "firedDoughnut"
   | "slidingDeadly"
   | "slidingBlock"
   | "player"
@@ -44,8 +46,6 @@ export type JsonItemType =
   | "hushPuppy"
   | "ball"
   | "wall";
-
-export type RenderItemType = JsonItemType | "door-front" | "door-back";
 
 /**
  * test for if a door is embedded in an undrawn wall - ie, is on the right or towards

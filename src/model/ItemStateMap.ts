@@ -216,6 +216,10 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   spring: PortableItemState<RoomItemId>;
   portableBlock: PortableItemState<RoomItemId>;
   sceneryPlayer: PortableItemState<RoomItemId>;
+  emitter: {
+    lastEmittedAtRoomTime: number;
+    quantityEmitted: number;
+  };
   pushableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
   movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomItemId>;

@@ -52,6 +52,15 @@ export const room = inferRoomJson({
       position: { x: 7, y: 3, z: 1 },
       type: "sceneryCrown",
     },
+    emitter: {
+      config: {
+        emits: { config: { direction: "left" }, type: "firedDoughnut" },
+        maximum: 10,
+        period: 2000,
+      },
+      position: { x: 2, y: 2, z: 1.5 },
+      type: "emitter",
+    },
     "pushableBlock@0,2,0": {
       config: { style: "stepStool" },
       position: { x: 0, y: 2, z: 0 },

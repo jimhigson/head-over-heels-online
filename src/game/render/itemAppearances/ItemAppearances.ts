@@ -89,6 +89,9 @@ export const itemAppearances: {
   stopAutowalk() {
     throw new Error("these should always be non-rendering");
   },
+  emitter() {
+    throw new Error("these should always be non-rendering");
+  },
   portal() {
     throw new Error("these should always be non-rendering");
   },

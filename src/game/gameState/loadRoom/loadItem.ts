@@ -19,6 +19,7 @@ import { loadWall } from "./loadWalls";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
+import { emptyObject } from "../../../utils/empty";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;
@@ -31,7 +32,7 @@ export function* loadItemFromJson<
   itemId: string,
   jsonItem: JsonItemUnion<RoomId, RoomItemId>,
   roomJson: RoomJson<RoomId, RoomItemId>,
-  roomPickupsCollected: RoomPickupsCollected,
+  roomPickupsCollected: RoomPickupsCollected = emptyObject,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
@@ -95,6 +96,7 @@ export function* loadItemFromJson<
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxesMultiplied,
+        renders: jsonItem.type !== "emitter",
         shadowMask: shadowMask(jsonItem),
         shadowCastTexture: shadowCast(jsonItem),
         id: itemId,
@@ -226,6 +228,7 @@ const shadowCast = (
         flipX: jsonItem.config.axis === "x",
       };
     case "spring":
+    case "firedDoughnut":
       return "shadow.smallRound";
     case "block":
       return jsonItem.config.style === "tower" ?

@@ -47,6 +47,9 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
     hasHooter &&
     pokeableToNumber(doughnuts) > 0
   ) {
+    // TODO: this would be less duplicative if it loaded from json - when firing
+    // was originally added to the game, loading fired doughnuts from json
+    // wasn't supported
     const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
       type: "firedDoughnut",
       ...defaultItemProperties,

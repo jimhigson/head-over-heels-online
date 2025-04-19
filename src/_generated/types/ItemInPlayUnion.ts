@@ -12,6 +12,7 @@ type GeneratedTypeUnion =
   | "deadlyBlock"
   | "doorFrame"
   | "doorLegs"
+  | "emitter"
   | "firedDoughnut"
   | "floatingText"
   | "floor"
@@ -75,6 +76,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "doorLegs" ?
       ItemInPlay<"doorLegs", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "emitter" ?
+      ItemInPlay<"emitter", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "firedDoughnut" ?
       ItemInPlay<"firedDoughnut", RoomId, RoomItemId, RoomItemId, ScN>
