@@ -7,5 +7,17 @@
       "position": { "x": 6, "y": 6, "z": 0 },
       "type": "pickup"
     }
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "label": {
+        "align": "right",
+        "className": "text-metallicBlue",
+        "gridOffset": { "x": 0, "y": -0.75 },
+        "text": "Bookworld"
+      }
+    }
   }
 ]

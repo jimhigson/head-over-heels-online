@@ -8,5 +8,17 @@
       "type": "pickup"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "label": {
+        "align": "right",
+        "className": "text-metallicBlue",
+        "gridOffset": { "x": 0, "y": -0.75 },
+        "text": "Penitentiary"
+      }
+    }
+  }
 ]

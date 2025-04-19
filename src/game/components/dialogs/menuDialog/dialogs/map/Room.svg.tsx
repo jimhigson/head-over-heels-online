@@ -1,4 +1,4 @@
-import { lengthXy } from "../../../../../../utils/vectors/vectors";
+import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
 import {
   roomBack,
@@ -8,7 +8,7 @@ import {
   roomGridSizeZ,
 } from "./mapConstants";
 import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
-import { roundForSvg, project } from "./svgHelpers";
+import { roundForSvg, project, translateXyz } from "./svgHelpers";
 import { PlayableItemInRoom } from "./NotableItem";
 import {
   InPlayItemsInRoomLayout,
@@ -26,6 +26,8 @@ import type { PlayableItem } from "../../../../../physics/itemPredicates";
 import { useNotableItems } from "./useNotableItems";
 import { range } from "iter-tools";
 import { iterate } from "../../../../../../utils/iterate";
+import { roomWorldPosition } from "./roomWorldPosition";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 const strokeWidth = 3;
 
@@ -153,6 +155,7 @@ export const RoomSvg = <RoomId extends string>({
   onPlayableClick,
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, floor, color } = roomJson;
+  const label = roomJson.meta?.label;
 
   // find some notable items:
   const notableItems = useNotableItems(
@@ -354,6 +357,23 @@ L${project({ x: roomGridSizeXY / 2, y: roomGridSizeXY })}
           className="fill-transparent stroke-midGreyHalfbrite"
           d={highRoomFrontVerticalLinesPathD}
         />
+      )}
+      {label && (
+        <g
+          transform={translateXyz(
+            // + 0.5, 0.5 to make relative to the centre of the current room
+            roomWorldPosition(addXy(label.gridOffset, { x: 0.5, y: 0.5 })),
+          )}
+        >
+          <foreignObject
+            width={label.text.length * 16}
+            height={16}
+            y={-8}
+            x={label.align === "left" ? 0 : label.text.length * -16}
+          >
+            <BitmapText className={label.className}>{label.text}</BitmapText>
+          </foreignObject>
+        </g>
       )}
     </g>
   );
