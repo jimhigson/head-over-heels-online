@@ -7,10 +7,35 @@ export const room = inferRoomJson({
   floor: "blacktooth",
   id: "blacktooth4",
   items: {
+    block: {
+      config: { style: "organic", times: { x: 2 } },
+      position: { x: 3, y: 3, z: 0 },
+      type: "block",
+    },
+    block2: {
+      config: { style: "organic", times: { x: 2 } },
+      position: { x: 3, y: 1, z: 0 },
+      type: "block",
+    },
+    blockDis1: {
+      config: { disappearing: "onStand", style: "organic" },
+      position: { x: 3, y: 2, z: 0 },
+      type: "block",
+    },
+    blockDis2: {
+      config: { disappearing: "onStand", style: "organic" },
+      position: { x: 4, y: 2, z: 0 },
+      type: "block",
+    },
     "door@3,0,0": {
       config: { direction: "towards", toRoom: "blacktooth5" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
+    },
+    lift2: {
+      config: { bottom: 0, top: 11 },
+      position: { x: 4, y: 5, z: 11 },
+      type: "lift",
     },
     "lift@3,5,0": {
       config: { bottom: 0, top: 11 },
