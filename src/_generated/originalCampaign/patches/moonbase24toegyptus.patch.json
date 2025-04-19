@@ -13,5 +13,17 @@
       "type": "pickup"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+  { "op": "replace", "path": "/color/hue", "value": "cyan" },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "label": {
+        "align": "left",
+        "className": "text-metallicBlue",
+        "gridOffset": { "x": 0, "y": 0.75 },
+        "text": "Egyptus"
+      }
+    }
+  }
 ]

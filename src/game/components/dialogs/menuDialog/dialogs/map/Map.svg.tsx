@@ -1,6 +1,4 @@
-import { type Xyz } from "../../../../../../utils/vectors/vectors";
 import { RoomSvg } from "./Room.svg";
-import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
 import type {
   Campaign,
   CharacterName,
@@ -19,6 +17,7 @@ import { mapSvgMargin } from "./mapConstants";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { getRoomItem } from "../../../../../../model/RoomState";
 import type { PlayableItem } from "../../../../../physics/itemPredicates";
+import { translateXyz } from "./svgHelpers";
 
 export type MapSvgProps<RoomId extends string> = {
   campaign: Campaign<RoomId>;
@@ -31,11 +30,6 @@ export type MapSvgProps<RoomId extends string> = {
   containerWidth: number;
   roomsExplored: Record<RoomId, true>;
   onPlayableClick?: (name: IndividualCharacterName) => void;
-};
-
-const svgTranslateXyz = (xyz: Xyz) => {
-  const xy = projectWorldXyzToScreenXy(xyz);
-  return `translate(${xy.x}, ${xy.y})`;
 };
 
 export type Bounds = {
@@ -113,7 +107,7 @@ export const MapSvg = <RoomId extends string>({
             <g
               key={roomRenderingId}
               data-id={roomRenderingId}
-              transform={svgTranslateXyz(roomWorldPosition(gridPosition))}
+              transform={translateXyz(roomWorldPosition(gridPosition))}
             >
               <RoomSvg
                 roomGridPositionSpec={gridPositionSpec}

@@ -84,6 +84,13 @@ export type RoomJson<
        */
       gridOffset: Xyz;
     };
+
+    label?: {
+      gridOffset: Xy;
+      text: string;
+      className: string;
+      align: "left" | "right";
+    };
   };
 };
 export type AnyRoomJson = RoomJson<string, string, SceneryName>;
