@@ -219,6 +219,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   pushableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
   movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomItemId>;
+  sceneryCrown: FreeItemState<RoomItemId>;
   slidingDeadly: SlidingItemState<RoomItemId>;
   slidingBlock: SlidingItemState<RoomItemId>;
   ball: SlidingItemState<RoomItemId>;

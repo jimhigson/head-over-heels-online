@@ -28,29 +28,29 @@ export const room = inferRoomJson({
       type: "block",
     },
     crownBlacktooth: {
-      config: { gives: "crown", planet: "blacktooth" },
-      position: { x: 7, y: 2, z: 6 },
-      type: "pickup",
+      config: { planet: "blacktooth" },
+      position: { x: 7, y: 2, z: 8 },
+      type: "sceneryCrown",
     },
     crownBookworld: {
-      config: { gives: "crown", planet: "bookworld" },
+      config: { planet: "bookworld" },
       position: { x: 7, y: 1, z: 1 },
-      type: "pickup",
+      type: "sceneryCrown",
     },
     crownEgyptus: {
-      config: { gives: "crown", planet: "egyptus" },
+      config: { planet: "egyptus" },
       position: { x: 7, y: 4, z: 0 },
-      type: "pickup",
+      type: "sceneryCrown",
     },
     crownPenitentiary: {
-      config: { gives: "crown", planet: "penitentiary" },
+      config: { planet: "penitentiary" },
       position: { x: 7, y: 0, z: 0 },
-      type: "pickup",
+      type: "sceneryCrown",
     },
     crownSafari: {
-      config: { gives: "crown", planet: "safari" },
+      config: { planet: "safari" },
       position: { x: 7, y: 3, z: 1 },
-      type: "pickup",
+      type: "sceneryCrown",
     },
     "pushableBlock@0,2,0": {
       config: { style: "stepStool" },
@@ -222,11 +222,6 @@ export const room = inferRoomJson({
       },
       position: { x: 12, y: 0, z: 0 },
       type: "wall",
-    },
-    winner: {
-      config: { startDirection: "right", which: "headOverHeels" },
-      position: { x: 7, y: 2, z: 2 },
-      type: "sceneryPlayer",
     },
   },
   meta: {

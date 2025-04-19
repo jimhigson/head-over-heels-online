@@ -1,4 +1,14 @@
 [
+  {
+    "op": "replace",
+    "path": "/items/teleporter@7,2,1/config/toPosition/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/teleporter@7,2,1/config/toPosition/x",
+    "value": 7
+  },
   { "op": "replace", "path": "/color/shade", "value": "dimmed" },
   {
     "op": "add",

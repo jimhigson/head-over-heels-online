@@ -109,6 +109,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   movingPlatform: 30,
   pushableBlock: 30,
   portableBlock: 30,
+  sceneryCrown: 30,
   slidingBlock: 30,
   spring: 30,
 

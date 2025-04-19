@@ -29,6 +29,10 @@ export type JsonItemType =
   | "pickup"
   | "spring"
   | "sceneryPlayer"
+  // the crowns in the final room - these are for decoration and can't be picked up:
+  | "sceneryCrown"
+  // a special item for creating other items - eg, the gun salute in the final room
+  //| "emitter"
   | "slidingDeadly"
   | "slidingBlock"
   | "player"

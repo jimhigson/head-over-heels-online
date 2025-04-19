@@ -18,6 +18,7 @@ import { initialState } from "./itemDefaultStates";
 import { loadWall } from "./loadWalls";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
+import { store } from "../../../store/store";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;
@@ -61,7 +62,17 @@ export function* loadItemFromJson<
       return;
     }
 
+    case "sceneryCrown": {
+      if (
+        !store.getState().gameMenus.planetsLiberated[jsonItem.config.planet]
+      ) {
+        // yield nothing - scenery crowns only show if we have collected that crown
+        return;
+      }
+    }
+
     // catch-all for all items that don't need special handling:
+    // eslint-disable-next-line no-fallthrough -- allow sceneryCrown to fall-through
     default: {
       const boundingBoxes = boundingBoxForItem(jsonItem);
 

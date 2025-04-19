@@ -162,6 +162,7 @@ export const freeItemTypes = [
   "slidingDeadly",
   "spring",
   "sceneryPlayer", // just for fun
+  "sceneryCrown",
 ] as const satisfies ItemInPlayType[];
 
 export type FreeItemTypes = (typeof freeItemTypes)[number];

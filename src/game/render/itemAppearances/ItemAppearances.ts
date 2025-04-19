@@ -355,6 +355,20 @@ export const itemAppearances: {
     };
   },
 
+  sceneryCrown: itemRenderOnce(
+    ({
+      renderContext: {
+        item: {
+          config: { planet },
+        },
+      },
+    }) => {
+      return createSprite({
+        textureId: `crown.${planet}`,
+      });
+    },
+  ),
+
   pickup: itemRenderOnce(
     ({
       renderContext: {

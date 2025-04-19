@@ -119,6 +119,9 @@ export type ItemConfigMap<
     which: CharacterName;
     startDirection: DirectionXy8;
   };
+  sceneryCrown: {
+    planet: PlanetName;
+  };
   lift: {
     top: number;
     bottom: number;

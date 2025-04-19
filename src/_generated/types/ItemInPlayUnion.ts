@@ -29,6 +29,7 @@ type GeneratedTypeUnion =
   | "portableBlock"
   | "portal"
   | "pushableBlock"
+  | "sceneryCrown"
   | "sceneryPlayer"
   | "slidingBlock"
   | "slidingDeadly"
@@ -123,6 +124,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "pushableBlock" ?
       ItemInPlay<"pushableBlock", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "sceneryCrown" ?
+      ItemInPlay<"sceneryCrown", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "sceneryPlayer" ?
       ItemInPlay<"sceneryPlayer", RoomId, RoomItemId, RoomItemId, ScN>
