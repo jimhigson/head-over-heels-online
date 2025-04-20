@@ -88,7 +88,6 @@ export type RoomJson<
     label?: {
       gridOffset: Xy;
       text: string;
-      className: string;
       align: "left" | "right";
     };
   };

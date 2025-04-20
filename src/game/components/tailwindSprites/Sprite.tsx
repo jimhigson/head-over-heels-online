@@ -27,6 +27,7 @@ export interface BitmapTextProps {
   className?: string;
   noSlitWords?: boolean;
   onClick?: MouseEventHandler<HTMLSpanElement>;
+  noTint?: boolean;
   TagName?: "span" | "h1";
 }
 
@@ -36,6 +37,12 @@ export const BitmapText = ({
   noSlitWords,
   classnameCycle,
   onClick,
+  /**
+   * if on, the sprite-tint utility class is not turned on. This means the
+   * text will be white, but also allows it (due to a Safari bug) to show text
+   * inside translated foreign objects
+   */
+  noTint = false,
   TagName = "span",
 }: BitmapTextProps) => {
   const textString =
@@ -88,7 +95,7 @@ export const BitmapText = ({
                       `texture-${textureId}`
                     : "texture-hud.char.?"
                   }
-                  sprite-tinted
+                  ${noTint ? "" : "sprite-tinted"}
                   ${
                     classnameCycle === undefined ? "" : (
                       classnameCycle[charIndex % classnameCycle.length]

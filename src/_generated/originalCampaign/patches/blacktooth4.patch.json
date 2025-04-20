@@ -2,19 +2,19 @@
   { "op": "replace", "path": "/items/lift@3,5,0/config/top", "value": 11 },
   {
     "op": "add",
-    "path": "/items/lift2",
-    "value": {
-      "config": { "bottom": 0, "top": 11 },
-      "position": { "x": 4, "y": 5, "z": 11 },
-      "type": "lift"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/block",
     "value": {
       "config": { "style": "organic", "times": { "x": 2 } },
       "position": { "x": 3, "y": 3, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block2",
+    "value": {
+      "config": { "style": "organic", "times": { "x": 2 } },
+      "position": { "x": 3, "y": 1, "z": 0 },
       "type": "block"
     }
   },
@@ -38,11 +38,11 @@
   },
   {
     "op": "add",
-    "path": "/items/block2",
+    "path": "/items/lift2",
     "value": {
-      "config": { "style": "organic", "times": { "x": 2 } },
-      "position": { "x": 3, "y": 1, "z": 0 },
-      "type": "block"
+      "config": { "bottom": 0, "top": 11 },
+      "position": { "x": 4, "y": 5, "z": 11 },
+      "type": "lift"
     }
   }
 ]

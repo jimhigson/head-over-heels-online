@@ -22,7 +22,7 @@ export const SpriteInRoom = ({
   yAdjust = 0,
 }: {
   /**
-   * should have a sprite-* utility and some way to set the --scale var - for this to actually show a sprite
+   * should have a sprite-* utility class and some way to set the --scale var - for this to actually show a sprite
    */
   className: string;
   scrollTo?: boolean;
