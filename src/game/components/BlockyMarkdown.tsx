@@ -47,7 +47,7 @@ const markdownComponents: CustomComponentsOption = {
   a: function A({ children, href }: PropsWithChildren<{ href: string }>) {
     return (
       <a
-        className="text-white zx:text-zxWhite bg-metallicBlue hover:bg-white hover:text-metallicBlue zx:bg-zxBlue inline-block pl-oneScaledPix pt-oneScaledPix"
+        className="text-white zx:text-zxWhite bg-metallicBlue hover:bg-white hover:text-metallicBlue zx:bg-zxBlue zx:hover:bg-zxWhite zx:hover:text-zxBlue inline-block pl-oneScaledPix pt-oneScaledPix"
         href={href}
         target="_blank"
         rel="noopener noreferrer"

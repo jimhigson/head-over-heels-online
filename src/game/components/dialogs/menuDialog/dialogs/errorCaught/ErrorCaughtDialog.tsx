@@ -73,10 +73,12 @@ export const ErrorCaughtDialog = ({
               )}
             />
           </MenuItems>
-          <BitmapText className="block sprites-double-height my-1 text-midRed">
+          <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite`">
             Error message:
           </BitmapText>
-          <pre className={`text-midRed leading-[1em]`}>{message}</pre>
+          <pre className={`text-midRed zx:text-zxWhite leading-[1em]`}>
+            {message}
+          </pre>
         </div>
       </Dialog>
     </DialogPortal>

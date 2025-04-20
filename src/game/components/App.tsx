@@ -7,16 +7,16 @@ import { GamePage } from "../../pages/gamePage/GamePage.tsx";
 import { store } from "../../store/store.ts";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { useEffect } from "react";
-import { useIsColourised } from "../../store/selectors.ts";
+import { useIsUncolourised } from "../../store/selectors.ts";
 import { LoadingProvider } from "./LoadingContext.tsx";
 
 const AppInner = () => {
-  const colourised = useIsColourised();
+  const uncolourised = useIsUncolourised();
   useEffect(() => {
     // note that this isn't done before the first load, since we don't have the store then!
-    document.body.classList.toggle("zx", !colourised);
-    document.body.classList.toggle("colourised", colourised);
-  }, [colourised]);
+    document.body.classList.toggle("zx", uncolourised);
+    document.body.classList.toggle("colourised", !uncolourised);
+  }, [uncolourised]);
 
   return (
     // css variables needs the store so has to be in AppInner, not App

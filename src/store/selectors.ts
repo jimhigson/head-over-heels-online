@@ -10,13 +10,18 @@ import type {
   GameMenusState,
   InputDirectionMode,
   ShowBoundingBoxes,
+  UserSettings,
 } from "./slices/gameMenusSlice";
 import { defaultUserSettings } from "./defaultUserSettings";
-import type { ResolutionName } from "../originalGame";
-import type { InputAssignment } from "../game/input/InputState";
-import type { PickDeep } from "type-fest";
+import type { Get, Paths } from "type-fest";
 import type { ToggleablePaths } from "../utils/Toggleable";
 import { getAtPath } from "../utils/getAtPath";
+
+const selectUserSetting =
+  <Path extends Paths<UserSettings>>(path: Path) =>
+  (state: RootState): NonNullable<Get<UserSettings, Path>> =>
+    getAtPath(state.gameMenus.userSettings, path) ??
+    getAtPath(defaultUserSettings, path);
 
 export const selectTotalUpscale = (state: RootState): number => {
   const {
@@ -28,9 +33,7 @@ export const selectTotalUpscale = (state: RootState): number => {
 };
 export const useTotalUpscale = () => useAppSelector(selectTotalUpscale);
 
-export const selectInputAssignment = (state: RootState): InputAssignment =>
-  state.gameMenus.userSettings.inputAssignment ??
-  defaultUserSettings.inputAssignment;
+export const selectInputAssignment = selectUserSetting("inputAssignment");
 
 export const useInputAssignment = () => useAppSelector(selectInputAssignment);
 
@@ -65,42 +68,25 @@ export const selectCurrentInputPreset = (
   return undefined;
 };
 
-export const selectShowFps = (state: RootState): boolean =>
-  state.gameMenus.userSettings.showFps ?? defaultUserSettings.showFps;
-
-export const selectEmulatedResolutionName = (
-  state: PickDeep<RootState, "gameMenus.userSettings">,
-): ResolutionName => {
-  return (
-    state.gameMenus.userSettings.displaySettings.emulatedResolution ??
-    defaultUserSettings.displaySettings.emulatedResolution
-  );
-};
-export const useEmulatedResolutionName = () =>
-  useAppSelector(selectEmulatedResolutionName);
-
 export const useIsGameRunning = () =>
   useAppSelector((state: RootState): boolean => state.gameMenus.gameRunning);
 
-export const selectIsColourised = (state: RootState): boolean =>
-  !(
-    state.gameMenus.userSettings.displaySettings.uncolourised ??
-    defaultUserSettings.displaySettings.uncolourised
-  );
+export const selectShowFps = selectUserSetting("showFps");
+export const selectEmulatedResolutionName = selectUserSetting(
+  "displaySettings.emulatedResolution",
+);
+export const useEmulatedResolutionName = () =>
+  useAppSelector(selectEmulatedResolutionName);
 
-export const useIsColourised = () => useAppSelector(selectIsColourised);
-
-export const selectIsCrtFilter = (state: RootState): boolean =>
-  state.gameMenus.userSettings.displaySettings.crtFilter ??
-  defaultUserSettings.displaySettings.crtFilter;
-
-export const selectIsInfiniteLivesPoke = (state: RootState): boolean =>
-  state.gameMenus.userSettings.infiniteLivesPoke ??
-  defaultUserSettings.infiniteLivesPoke;
-
-export const selectIsInfiniteDoughnutsPoke = (state: RootState): boolean =>
-  state.gameMenus.userSettings.infiniteDoughnutsPoke ??
-  defaultUserSettings.infiniteDoughnutsPoke;
+export const selectIsUncolourised = selectUserSetting(
+  "displaySettings.uncolourised",
+);
+export const useIsUncolourised = () => useAppSelector(selectIsUncolourised);
+export const selectIsCrtFilter = selectUserSetting("displaySettings.crtFilter");
+export const selectIsInfiniteLivesPoke = selectUserSetting("infiniteLivesPoke");
+export const selectIsInfiniteDoughnutsPoke = selectUserSetting(
+  "infiniteDoughnutsPoke",
+);
 
 export const selectHasAllPlanetCrowns = (state: RootState) => {
   return (
@@ -114,11 +100,7 @@ export const selectHasAllPlanetCrowns = (state: RootState) => {
 export const useIsScreenRelativeControl = () =>
   useAppSelector((state) => state.gameMenus.userSettings.screenRelativeControl);
 
-export const selectInputDirectionMode = (
-  state: PickDeep<RootState, "gameMenus.userSettings">,
-): InputDirectionMode =>
-  state.gameMenus.userSettings.inputDirectionMode ??
-  defaultUserSettings.inputDirectionMode;
+export const selectInputDirectionMode = selectUserSetting("inputDirectionMode");
 
 export const useInputDirectionMode = (): InputDirectionMode =>
   useAppSelector(selectInputDirectionMode);
@@ -126,31 +108,32 @@ export const useInputDirectionMode = (): InputDirectionMode =>
 export const selectPlanetsLiberatedCount = (state: RootState) =>
   size(iterate(objectValues(state.gameMenus.planetsLiberated)).filter(Boolean));
 
-export const selectShowBoundingBoxes = (state: RootState): ShowBoundingBoxes =>
-  state.gameMenus.userSettings.displaySettings.showBoundingBoxes ??
-  defaultUserSettings.displaySettings.showBoundingBoxes;
+export const selectShowBoundingBoxes = selectUserSetting(
+  "displaySettings.showBoundingBoxes",
+);
 
 export const useShowBoundingBoxes = (): ShowBoundingBoxes => {
   return useAppSelector(selectShowBoundingBoxes);
 };
 
+export const selectShowShadowMasks = selectUserSetting(
+  "displaySettings.showShadowMasks",
+);
 export const useShowShadowMasks = (): boolean => {
-  return useAppSelector(
-    (state: RootState) =>
-      state.gameMenus.userSettings.displaySettings.showShadowMasks ??
-      defaultUserSettings.displaySettings.showShadowMasks,
-  );
+  return useAppSelector(selectShowShadowMasks);
 };
 
-export const selectScreenRelativeControl = (state: RootState): boolean =>
-  state.gameMenus.userSettings.screenRelativeControl ??
-  defaultUserSettings.screenRelativeControl;
+export const selectScreenRelativeControl = selectUserSetting(
+  "screenRelativeControl",
+);
 
-export const selectUserPreferenceOnScreenControls = (
-  state: RootState,
-): boolean =>
-  state.gameMenus.userSettings.onScreenControls ??
-  defaultUserSettings.onScreenControls;
+export const selectUserPreferenceOnScreenControls =
+  selectUserSetting("onScreenControls");
+
+export const selectIsSoundMuted = selectUserSetting("soundSettings.mute");
+export const selectIsNoFootstepSounds = selectUserSetting(
+  "soundSettings.noFootsteps",
+);
 
 export const selectShouldRenderOnScreenControls = ({
   gameMenus,

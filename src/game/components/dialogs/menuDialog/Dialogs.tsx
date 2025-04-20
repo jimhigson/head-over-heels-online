@@ -1,7 +1,7 @@
 import type { EmptyObject } from "type-fest";
 import { useAppSelector } from "../../../../store/hooks";
 import { ReadTheManualDialog } from "./dialogs/readTheManualDialog";
-import type { DialogId } from "./menus";
+import type { DialogId } from "./DialogId";
 import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
 import type { MarkdownPageName } from "../../../../manual/pages";
 import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
@@ -9,7 +9,7 @@ import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
 import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirm/quitGameConfirmDialog";
 import { ScoreDialog } from "./dialogs/score/ScoreDialog";
 import { HoldDialog } from "./dialogs/holdDialog";
-import { ModernisationOptionsDialog } from "./dialogs/modernisationOptions/modernisationOptionsDialog";
+import { OptionsDialog } from "./dialogs/options/OptionsDialog";
 import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
 import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../tailwindSprites/Sprite";
@@ -20,6 +20,7 @@ import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferRein
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 import { MapDialog } from "./dialogs/map/MapDialog";
 import { withErrorBoundary } from "../../../../utils/react/ErrorBoundary";
+import { SoundDialog } from "./dialogs/sound/SoundDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -64,7 +65,7 @@ export const Dialogs = withErrorBoundary((_emptyProps: EmptyObject) => {
     case "map":
       return <MapDialog />;
     case "modernisationOptions":
-      return <ModernisationOptionsDialog />;
+      return <OptionsDialog />;
     case "offerReincarnation":
       return <OfferReincarnationDialog />;
     case "proclaimEmperor":
@@ -75,6 +76,8 @@ export const Dialogs = withErrorBoundary((_emptyProps: EmptyObject) => {
       return <ReadTheManualDialog />;
     case "score":
       return <ScoreDialog />;
+    case "sound":
+      return <SoundDialog />;
     default:
       topOpenMenu.menuId satisfies never;
       return (

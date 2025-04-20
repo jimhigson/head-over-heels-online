@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { EmptyObject, ValueOf } from "type-fest";
-import type { DialogId } from "../../game/components/dialogs/menuDialog/menus";
+import type { DialogId } from "../../game/components/dialogs/menuDialog/DialogId";
 import type {
   ActionInputAssignment,
   InputAssignment,
@@ -35,6 +35,7 @@ import type {
 } from "../../game/gameState/saving/SavedGameState";
 import { REHYDRATE } from "redux-persist";
 import { emptyObject } from "../../utils/empty";
+import type { RootState } from "../store";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -78,16 +79,23 @@ export type DisplaySettings = {
 export const inputDirectionModes = ["4-way", "8-way", "analogue"] as const;
 export type InputDirectionMode = (typeof inputDirectionModes)[number];
 
+export type SoundSettings = {
+  mute?: boolean;
+  noFootsteps?: boolean;
+};
+
 export type UserSettings = {
   inputAssignment?: InputAssignment;
   displaySettings: DisplaySettings;
   infiniteLivesPoke?: boolean;
   infiniteDoughnutsPoke?: boolean;
-  // optional because was introduced without a version bump in persist. Select with !!
   showFps?: boolean;
   inputDirectionMode?: InputDirectionMode;
   screenRelativeControl?: boolean;
   onScreenControls?: boolean;
+
+  // sound options
+  soundSettings: SoundSettings;
 };
 
 const inBrowser = detectDeviceType() !== "server";
@@ -167,6 +175,7 @@ const noPlanetsLiberated = {
 export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
     displaySettings: {},
+    soundSettings: {},
   },
   upscale: calculateUpscale(
     inBrowser ?
@@ -223,7 +232,7 @@ export const gameMenusSlice = createSlice({
       if (payload === undefined) {
         emulatedResolution = nextInCycle(
           resolutionNames,
-          selectEmulatedResolutionName({ gameMenus: state }),
+          selectEmulatedResolutionName({ gameMenus: state } as RootState),
         );
       } else {
         emulatedResolution = payload;
@@ -252,7 +261,7 @@ export const gameMenusSlice = createSlice({
     nextInputDirectionMode(state) {
       state.userSettings.inputDirectionMode = nextInCycle(
         inputDirectionModes,
-        selectInputDirectionMode({ gameMenus: state }),
+        selectInputDirectionMode({ gameMenus: state } as RootState),
       );
     },
     /** adds another input to the currently being assigned action */

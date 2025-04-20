@@ -15,7 +15,7 @@ import { BackMenuItem } from "../BackMenuItem";
 import { MenuItemSeparator } from "../MenuItemSeparator";
 import { MenuItems } from "../MenuItems";
 import { multilineTextClass } from "../multilineTextClass";
-import type { DialogId } from "../menus";
+import type { DialogId } from "../DialogId";
 import { DialogPortal } from "../../../../../ui/DialogPortal";
 import { MobileStyleBackButton } from "./MobileStyleBackButton";
 import {

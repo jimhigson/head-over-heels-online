@@ -1,5 +1,8 @@
 import type { MovedItems } from "../mainLoop/progressGameState";
-import type { DisplaySettings } from "../../store/slices/gameMenusSlice";
+import type {
+  DisplaySettings,
+  SoundSettings,
+} from "../../store/slices/gameMenusSlice";
 import type { RoomState } from "../../model/RoomState";
 import type { GameState } from "../gameState/GameState";
 
@@ -13,6 +16,7 @@ export type RoomRenderContext<
   RoomItemId extends string,
 > = {
   displaySettings: DisplaySettings;
+  soundSettings: SoundSettings;
   gameState: GameState<RoomId>;
   room: RoomState<RoomId, RoomItemId>;
   paused: boolean;
