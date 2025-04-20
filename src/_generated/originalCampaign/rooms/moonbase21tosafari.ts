@@ -135,12 +135,7 @@ export const room = inferRoomJson({
     },
   },
   meta: {
-    label: {
-      align: "left",
-      className: "text-metallicBlue",
-      gridOffset: { x: 0, y: 0.75 },
-      text: "Safari",
-    },
+    label: { align: "left", gridOffset: { x: 0, y: 0.75 }, text: "Safari" },
   },
   planet: "moonbase",
   size: { x: 6, y: 8 },

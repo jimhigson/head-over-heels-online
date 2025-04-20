@@ -36,19 +36,6 @@
   },
   {
     "op": "add",
-    "path": "/items/emitter",
-    "value": {
-      "config": {
-        "emits": { "config": { "direction": "left" }, "type": "firedDoughnut" },
-        "maximum": 10,
-        "period": 2000
-      },
-      "position": { "x": 2, "y": 2, "z": 1.5 },
-      "type": "emitter"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/crownBlacktooth",
     "value": {
       "config": { "planet": "blacktooth" },
@@ -90,6 +77,19 @@
       "config": { "planet": "safari" },
       "position": { "x": 7, "y": 3, "z": 1 },
       "type": "sceneryCrown"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/emitter",
+    "value": {
+      "config": {
+        "emits": { "config": { "direction": "left" }, "type": "firedDoughnut" },
+        "maximum": 10,
+        "period": 2000
+      },
+      "position": { "x": 2, "y": 2, "z": 1.5 },
+      "type": "emitter"
     }
   },
   { "op": "replace", "path": "/floor", "value": "penitentiary" },

@@ -371,7 +371,11 @@ L${project({ x: roomGridSizeXY / 2, y: roomGridSizeXY })}
             y={-8}
             x={label.align === "left" ? 0 : label.text.length * -16}
           >
-            <BitmapText className={label.className}>{label.text}</BitmapText>
+            {/* css variables because Safari doesn't propagate correctly into
+                foreign objects */}
+            <BitmapText noTint className="[--scale:2] [--block:16px]">
+              {label.text}
+            </BitmapText>
           </foreignObject>
         </g>
       )}

@@ -216,9 +216,8 @@ export const room = inferRoomJson({
   meta: {
     label: {
       align: "right",
-      className: "text-metallicBlue",
       gridOffset: { x: 0, y: -0.75 },
-      text: "Bookworld",
+      text: "Book world",
     },
   },
   planet: "moonbase",
