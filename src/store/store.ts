@@ -18,6 +18,7 @@ import {
   persistStore,
   createMigrate,
 } from "redux-persist";
+import type { OmitDeep } from "type-fest";
 
 /**
  * A non-migration migration - just throws the user's config away and reverts to
@@ -31,7 +32,7 @@ const revertToInitialStateMigration = (
   console.log(
     "migrating state: persisted is:",
     state,
-    "am reverting to initial/default state:",
+    "I am not migrating - reverting to initial/default state:",
     migrateTo,
   );
 
@@ -44,7 +45,7 @@ const revertToInitialStateMigration = (
 
 const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
   key: "hohol/gameMenus/userSettings",
-  version: 12,
+  version: 13,
   migrate: createMigrate(
     {
       1: revertToInitialStateMigration,
@@ -59,6 +60,28 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
       10: revertToInitialStateMigration,
       11: revertToInitialStateMigration,
       12: revertToInitialStateMigration,
+      13(persistedState: PersistedState) {
+        // here we introduced sound settings - simply add them:
+        const v12State = persistedState as OmitDeep<
+          RootState,
+          "gameMenus.userSettings.soundSettings"
+        > &
+          PersistedState;
+
+        const v13State = structuredClone(persistedState) as RootState &
+          PersistedState;
+
+        v13State.gameMenus.userSettings.soundSettings = {};
+
+        console.log(
+          "redux-persist migration: migrating state 12->13 by adding `{}` at `gameMenus.userSettings.soundSettings`",
+          v12State,
+          "->",
+          v13State,
+        );
+
+        return v13State;
+      },
     },
     { debug: true },
   ),

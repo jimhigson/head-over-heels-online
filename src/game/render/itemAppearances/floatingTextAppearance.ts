@@ -6,11 +6,9 @@ import { showTextInContainer } from "../hud/showNumberInContainer";
 import { OutlineFilter } from "../filters/outlineFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { store } from "../../../store/store";
-import { zxSpectrumColors } from "../../../originalGame";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { selectIsColourised } from "../../../store/selectors";
-import { halfbrite } from "../../../utils/colour/halfBrite";
+import { noFilters } from "../filters/standardFilters";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;
@@ -18,34 +16,36 @@ const lineHeightPx = 12;
 /** above this height, lines are hidden */
 const maxLineHeight = blockSizePx.h * 3;
 
-const fadeOrderColourised = [
-  /*spritesheetPalette.white,
-  spritesheetPalette.highlightBeige,
-  spritesheetPalette.lightGrey,
-  spritesheetPalette.pastelBlue,
-  spritesheetPalette.lightBeige,
-  spritesheetPalette.pink,
-  spritesheetPalette.moss,
-  spritesheetPalette.midRed,
-  spritesheetPalette.metallicBlue,
-  spritesheetPalette.redShadow,
+const lightening = [
+  spritesheetPalette.shadow,
   spritesheetPalette.midGrey,
-  spritesheetPalette.shadow,*/
-  spritesheetPalette.white,
-  spritesheetPalette.pastelBlue,
+  spritesheetPalette.redShadow,
   spritesheetPalette.metallicBlue,
-  halfbrite(spritesheetPalette.pastelBlue),
-  halfbrite(spritesheetPalette.metallicBlue),
+  spritesheetPalette.midRed,
+  spritesheetPalette.moss,
+  spritesheetPalette.pink,
+  spritesheetPalette.lightBeige,
+  spritesheetPalette.pastelBlue,
+  spritesheetPalette.lightGrey,
+  spritesheetPalette.highlightBeige,
 ];
-const fadeOrderZx = [
-  zxSpectrumColors.zxWhite,
-  zxSpectrumColors.zxYellow,
-  zxSpectrumColors.zxCyan,
-  zxSpectrumColors.zxGreen,
-  zxSpectrumColors.zxRed,
-  zxSpectrumColors.zxMagenta,
-  zxSpectrumColors.zxBlue,
+
+const fadeOrderColourised = [
+  ...lightening,
+  ...new Array(20).fill(spritesheetPalette.white),
+  ...lightening.toReversed(),
 ];
+
+// in zx it isn't colourised anyway so this doesn't matter
+// const fadeOrderZx = [
+//   zxSpectrumColors.zxWhite,
+//   zxSpectrumColors.zxYellow,
+//   zxSpectrumColors.zxCyan,
+//   zxSpectrumColors.zxGreen,
+//   zxSpectrumColors.zxRed,
+//   zxSpectrumColors.zxMagenta,
+//   zxSpectrumColors.zxBlue,
+// ];
 
 export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
   renderContext: {
@@ -53,6 +53,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
       config: { textLines, appearanceRoomTime },
     },
     room: { roomTime },
+    displaySettings: { uncolourised },
   },
   previousRendering,
 }) => {
@@ -79,7 +80,10 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
         new Container({
           label: textLine,
           y: i * lineHeightPx,
-          filters: new RevertColouriseFilter(spritesheetPalette.pink),
+          filters:
+            uncolourised ? noFilters : (
+              new RevertColouriseFilter(spritesheetPalette.pink)
+            ),
         }),
         textLine.toUpperCase(),
       );
@@ -90,11 +94,11 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
   }
 
   // set line colours/visibility (every frame):
-  const isColourised = selectIsColourised(store.getState());
-  const colourFadeOrder = isColourised ? fadeOrderColourised : fadeOrderZx;
   for (let i = 0; i < textLines.length; i++) {
     const lineContainer = mainContainer.children[i];
-    const [lineFilter] = lineContainer.filters as [RevertColouriseFilter];
+    const [lineColourFilter] = lineContainer.filters as
+      | [RevertColouriseFilter]
+      | [];
 
     const lineHeight = itemRenderHeight + i * -lineHeightPx;
 
@@ -102,11 +106,11 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
 
     lineContainer.visible = visible;
 
-    if (visible) {
+    if (visible && lineColourFilter) {
       const colourIndex = Math.floor(
-        (lineHeight / maxLineHeight) * colourFadeOrder.length,
+        (lineHeight / maxLineHeight) * fadeOrderColourised.length,
       );
-      lineFilter.targetColor = colourFadeOrder[colourIndex];
+      lineColourFilter.targetColor = fadeOrderColourised[colourIndex];
     }
   }
 

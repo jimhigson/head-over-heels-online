@@ -22,6 +22,7 @@ export const dialogIds = [
   "quitGameConfirm",
   "readTheManual",
   "score",
+  "sound",
   ...markdownDialogIds,
 ] as const;
 

@@ -2,7 +2,7 @@ import type { TailwindPalette } from "../../../../../../../tailwind.config";
 import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureId } from "../../../../../../sprites/spriteSheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { useIsColourised } from "../../../../../../store/selectors";
+import { useIsUncolourised } from "../../../../../../store/selectors";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 const colourCycle: Record<PlanetName, `text-${TailwindPalette}`[]> = {
@@ -36,7 +36,7 @@ export const TitledCrown = ({
   const collected = useAppSelector(
     (state) => state.gameMenus.planetsLiberated[planet],
   );
-  const colourised = useIsColourised();
+  const colourised = !useIsUncolourised();
 
   return (
     <div className={`flex flex-col ${className}`}>

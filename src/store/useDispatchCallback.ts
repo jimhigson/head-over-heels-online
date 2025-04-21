@@ -8,7 +8,7 @@ import { useCallback } from "react";
 
 export function useDispatchActionCallback<Payload>(
   actionCreator: ActionCreatorWithPayload<Payload>,
-  payload: Payload,
+  payload: NoInfer<Payload>,
 ): () => void;
 export function useDispatchActionCallback(
   actionCreator: ActionCreatorWithoutPayload,
@@ -18,7 +18,7 @@ export function useDispatchActionCallback<Payload>(
   actionCreator:
     | ActionCreatorWithPayload<Payload>
     | ActionCreatorWithoutPayload,
-  payload: Payload,
+  payload: NoInfer<Payload>,
 ) {
   const dispatch = useAppDispatch();
   return useCallback(() => {

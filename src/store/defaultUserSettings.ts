@@ -22,4 +22,9 @@ export const defaultUserSettings: RequiredDeep<UserSettings> = {
     detectDeviceType() === "mobile" || detectDeviceType() === "tablet",
   inputDirectionMode: "8-way",
   screenRelativeControl: false,
+
+  soundSettings: {
+    mute: false,
+    noFootsteps: false,
+  },
 };

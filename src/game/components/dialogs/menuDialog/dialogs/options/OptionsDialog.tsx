@@ -21,7 +21,7 @@ import {
   selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
   selectShowFps,
-  useIsColourised,
+  useIsUncolourised,
   useIsGameRunning,
 } from "../../../../../../store/selectors";
 import { Switch } from "../../../../../../ui/Switch";
@@ -53,7 +53,7 @@ const extraItemsMarkdown = `**off**: *faithful* to the original rooms
 none of these fundamentally change how the rooms play.`;
 */
 
-export const ModernisationOptionsDialog = () => {
+export const OptionsDialog = () => {
   return (
     <DialogPortal>
       <Border
@@ -96,10 +96,16 @@ export const ModernisationOptionsDialog = () => {
                 }
               />
               <MenuItem
+                id="sound"
+                label="Sound options"
+                doubleHeightWhenFocussed
+                onSelect={useDispatchActionCallback(goToSubmenu, "sound")}
+              />
+              <MenuItem
                 doubleHeightWhenFocussed
                 id="colourise"
                 label="Colourise"
-                valueElement={<Switch value={useIsColourised()} />}
+                valueElement={<Switch value={!useIsUncolourised()} />}
                 onSelect={useDispatchActionCallback(
                   toggleBoolean,
                   "userSettings.displaySettings.uncolourised",

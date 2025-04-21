@@ -4,7 +4,6 @@ import { createItemRenderer } from "./item/itemRender/createItemRenderer";
 import type { GraphEdges } from "./sortZ/toposort/toposort";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
-import { store } from "../../store/store";
 import type {
   ItemTickContext,
   Renderer,
@@ -21,6 +20,7 @@ import type { ItemInPlayType } from "../../model/ItemInPlay";
 import type { ItemSoundAndGraphicsRenderer } from "./item/itemRender/ItemSoundAndGraphicsRenderer";
 import { audioCtx } from "../../sound/audioCtx";
 import { dimLut, noFilters } from "./filters/standardFilters";
+import type { SetRequired } from "type-fest";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements
@@ -36,14 +36,8 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
    */
   #itemsContainer: Container = new Container({ label: "items" });
   #floorEdgeContainer: Container = new Container({ label: "floorEdge" });
-  #container: Container = new Container({
-    children: [this.#itemsContainer, this.#floorEdgeContainer],
-  });
-  #sound: AudioNode = audioCtx.createGain();
-  public readonly output: Required<SoundAndGraphicsOutput> = {
-    sound: this.#sound,
-    graphics: this.#container,
-  };
+
+  public readonly output: SetRequired<SoundAndGraphicsOutput, "graphics">;
   #everRendered: boolean = false;
   /**
    * store the edges of the behind/front graph between frames so we can incrementally update it
@@ -58,16 +52,24 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   constructor(
     public readonly renderContext: RoomRenderContext<RoomId, RoomItemId>,
   ) {
-    const {
-      gameMenus: {
-        userSettings: { displaySettings },
-        upscale,
-      },
-    } = store.getState();
-
-    this.#container.label = `RoomRenderer(${renderContext.room.id})`;
+    const { displaySettings, upscale } = renderContext;
 
     this.initFilters(renderContext.colourised, renderContext.room.color);
+
+    const mute =
+      renderContext.soundSettings.mute ??
+      defaultUserSettings.soundSettings.mute;
+
+    const soundOutput: AudioNode | undefined =
+      mute ? undefined : audioCtx.createGain();
+
+    this.output = {
+      sound: soundOutput,
+      graphics: new Container({
+        children: [this.#itemsContainer, this.#floorEdgeContainer],
+        label: `RoomRenderer(${renderContext.room.id})`,
+      }),
+    };
 
     const showBoundingBoxes =
       displaySettings?.showBoundingBoxes ??
@@ -76,14 +78,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     if (showBoundingBoxes !== "none") {
       // these aren't really bounding boxes, but it is useful to be abl to turn them on and I don't want to add
       // any more switches:
-      this.#container.addChild(
+      this.output.graphics.addChild(
         showRoomScrollBounds(renderContext.room.roomJson),
       );
     }
 
     this.#roomScroller = positionRoom(
       renderContext.room,
-      this.#container,
+      this.output.graphics,
       upscale.gameEngineScreenSize,
     );
   }
@@ -136,8 +138,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         }
 
         if (sound) {
+          if (!this.output.sound) {
+            throw new Error(
+              "item renderer has sound, but room renderer does not - this probably means that they disagree on if the user has sound muted",
+            );
+          }
           // item has a sound presence:
-          sound.connect(this.#sound);
+          sound.connect(this.output.sound);
         }
       }
       itemRenderer.tick(tickContext);
@@ -200,8 +207,8 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   destroy() {
-    this.#container.destroy({ children: true });
-    this.#sound.disconnect();
+    this.output.graphics.destroy({ children: true });
+    this.output.sound?.disconnect();
     this.#itemRenderers.forEach((itemRenderer) => {
       itemRenderer.destroy();
     });

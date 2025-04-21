@@ -8,6 +8,7 @@ import {
   createBracketedSound,
   type BracketedSound,
 } from "../soundUtils/createBracketedSound";
+import { defaultUserSettings } from "../../store/defaultUserSettings";
 
 export class PlayableSoundRenderer<
   RoomId extends string,
@@ -17,8 +18,8 @@ export class PlayableSoundRenderer<
   public readonly output: GainNode = audioCtx.createGain();
 
   // add the walking buffer sources to here to play them
-  #walkChannel: GainNode = audioCtx.createGain();
-  #walkBracketedSound: BracketedSound;
+  #walkChannel?: GainNode;
+  #walkBracketedSound?: BracketedSound;
   #jumpChannel: GainNode = audioCtx.createGain();
   #jumpBracketedSound: BracketedSound;
   #fallBracketedSound: BracketedSound;
@@ -62,28 +63,40 @@ export class PlayableSoundRenderer<
       RoomItemId
     >,
   ) {
-    this.#walkChannel.gain.value = 2;
-    this.#walkChannel.connect(this.output);
+    const {
+      soundSettings,
+      item: { type: name },
+    } = renderContext;
+
+    const { noFootsteps } = {
+      ...defaultUserSettings.soundSettings,
+      ...soundSettings,
+    };
+
+    if (!noFootsteps) {
+      this.#walkChannel = audioCtx.createGain();
+      this.#walkChannel.gain.value = 2;
+      this.#walkChannel.connect(this.output);
+      this.#walkBracketedSound = createBracketedSound(
+        {
+          loop: {
+            soundId: `${name === "headOverHeels" ? "heels" : name}Walk`,
+          },
+        },
+        this.#walkChannel,
+      );
+    }
+
     this.#jumpChannel.gain.value = 0.8;
     this.#jumpChannel.connect(this.output);
     this.#carryChannel.gain.value = 1.2;
     this.#carryChannel.connect(this.output);
     this.#standingOnChannel.connect(this.output);
 
-    const name = renderContext.item.type;
-    this.#walkBracketedSound = createBracketedSound(
-      {
-        loop: {
-          soundId: `${name === "headOverHeels" ? "heels" : renderContext.item.type}Walk`,
-        },
-      },
-      this.#walkChannel,
-    );
-
     this.#jumpBracketedSound = createBracketedSound(
       {
         start: {
-          soundId: `${name === "headOverHeels" ? "head" : renderContext.item.type}Jump`,
+          soundId: `${name === "headOverHeels" ? "head" : name}Jump`,
         },
       },
       this.#jumpChannel,
@@ -92,7 +105,7 @@ export class PlayableSoundRenderer<
     this.#fallBracketedSound = createBracketedSound(
       {
         loop: {
-          soundId: `${name === "headOverHeels" ? "head" : renderContext.item.type}Fall`,
+          soundId: `${name === "headOverHeels" ? "head" : name}Fall`,
         },
       },
       this.#jumpChannel,
@@ -138,9 +151,11 @@ export class PlayableSoundRenderer<
     this.#jumpBracketedSound(playJumpSound);
 
     // walking
-    this.#walkBracketedSound(
-      !playJumpSound && !playFallSound && action === "moving",
-    );
+    if (this.#walkBracketedSound !== undefined) {
+      this.#walkBracketedSound(
+        !playJumpSound && !playFallSound && action === "moving",
+      );
+    }
 
     // carrying (heels)
     if (heelsAbilities !== undefined) {

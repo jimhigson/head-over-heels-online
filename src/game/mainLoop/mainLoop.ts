@@ -127,7 +127,10 @@ export class MainLoop<RoomId extends string> {
     const isPaused = selectIsPaused(tickState);
     const {
       gameMenus: {
-        userSettings: { displaySettings: tickDisplaySettings },
+        userSettings: {
+          displaySettings: tickDisplaySettings,
+          soundSettings: tickSoundSettings,
+        },
         upscale: tickUpscale,
       },
     } = store.getState();
@@ -179,6 +182,7 @@ export class MainLoop<RoomId extends string> {
       this.#roomRenderer?.renderContext.upscale !== tickUpscale ||
       this.#roomRenderer?.renderContext.displaySettings !==
         tickDisplaySettings ||
+      this.#roomRenderer?.renderContext.soundSettings !== tickSoundSettings ||
       this.#roomRenderer?.renderContext.paused !== isPaused
     ) {
       this.#roomRenderer?.destroy();
@@ -190,11 +194,12 @@ export class MainLoop<RoomId extends string> {
           paused: isPaused,
           pixiRenderer: this.#app.renderer,
           displaySettings: tickDisplaySettings,
+          soundSettings: tickSoundSettings,
           colourised: tickColourise,
           upscale: tickUpscale,
         });
         this.#worldGraphics.addChild(this.#roomRenderer.output.graphics);
-        this.#roomRenderer.output.sound.connect(this.#worldSound);
+        this.#roomRenderer.output.sound?.connect(this.#worldSound);
         // this isn't the ideal place to emit this from - it gets fired even if just the
         // display settings change. but only the cheats needs this currently
         this.#gameState.events.emit("roomChange", tickEndRoom.id);

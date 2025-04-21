@@ -12,7 +12,7 @@ import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import type { ItemRenderContextWithRequiredShadowMask } from "./ItemShadowRenderer";
 import { ItemShadowRenderer } from "./ItemShadowRenderer";
 import {
-  selectIsColourised,
+  selectIsUncolourised,
   selectShowBoundingBoxes,
 } from "../../../../store/selectors";
 import { itemAppearances } from "../../itemAppearances/ItemAppearances";
@@ -21,6 +21,7 @@ import type { ItemPixiRenderer } from "./ItemRenderer";
 import { ItemSoundAndGraphicsRenderer } from "./ItemSoundAndGraphicsRenderer";
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
+import { defaultUserSettings } from "../../../../store/defaultUserSettings";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
@@ -58,7 +59,7 @@ export const createItemRenderer = <
 ): ItemSoundAndGraphicsRenderer<T, RoomId, RoomItemId> => {
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
-  const colourise = selectIsColourised(state);
+  const colourise = !selectIsUncolourised(state);
 
   const { item, gameState } = itemRenderContext;
 
@@ -112,8 +113,12 @@ export const createItemRenderer = <
     graphics = new ItemPositionRenderer(itemRenderContext, compositeRenderer);
   }
 
+  const mute =
+    itemRenderContext.soundSettings.mute ??
+    defaultUserSettings.soundSettings.mute;
+
   const soundRenderer =
-    itemRenderContext.paused ?
+    itemRenderContext.paused || mute ?
       // no items are allowed to make sound while paused:
       undefined
     : createSoundRenderer(itemRenderContext);
