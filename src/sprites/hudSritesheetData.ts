@@ -50,6 +50,11 @@ const alphaNumeric = [
   "7",
   "8",
   "9",
+  "⚡",
+  "🛡",
+  // unicode char is actually "hot spring" because there is no "spring" - this means big jumps
+  "♨",
+  "🕹",
 ] as const;
 
 const punctuation = [
@@ -134,19 +139,6 @@ export const hudSpritesheetData = {
   frames: {
     ...charFrames(alphaNumeric, { x: 151, y: 2 }),
     ...charFrames(punctuation, { x: 151, y: 11 }),
-    "hud.char.⚡️": {
-      frame: { x: 475, y: 2, ...hudCharTextureSize },
-    },
-    "hud.char.🛡️": {
-      frame: { x: 484, y: 2, ...hudCharTextureSize },
-    },
-    // unicode char is actually "hot spring" - this means big jumps
-    "hud.char.♨": {
-      frame: { x: 493, y: 2, ...hudCharTextureSize },
-    },
-    "hud.char.🕹": {
-      frame: { x: 502, y: 2, ...hudCharTextureSize },
-    },
     "hud.char.∞": {
       frame: {
         x: 511,

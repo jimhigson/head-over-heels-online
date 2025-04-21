@@ -28,7 +28,6 @@ import type { EmptyObject } from "type-fest";
 import { emptyObject } from "../../../utils/empty";
 import {
   makeTextContainer,
-  showNumberInContainer,
   showTextInContainer,
 } from "./showNumberInContainer";
 import type { RoomState } from "../../../model/RoomState";
@@ -287,7 +286,7 @@ const buttonAppearances: {
           }) as Container;
         }
 
-        const doughnutsCountNumber = showNumberInContainer(
+        const doughnutsCountNumber = showTextInContainer(
           new Container(),
           doughnuts,
         );
