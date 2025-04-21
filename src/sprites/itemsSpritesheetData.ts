@@ -235,28 +235,33 @@ const frames = {
       pivot: { x: 17, y: 24 },
     },
   },
-
-  puck: {
+  "spikyBall.1": {
     frame: {
       ...smallItemGridLocation({ x: 11, y: 4 }),
       ...smallItemTextureSize,
     },
   },
-  "puck.deadly": {
+  "spikyBall.2": {
     frame: {
       ...smallItemGridLocation({ x: 12, y: 4 }),
       ...smallItemTextureSize,
     },
   },
-  "shadow.smallRound": {
+  puck: {
     frame: {
       ...smallItemGridLocation({ x: 13, y: 4 }),
       ...smallItemTextureSize,
     },
   },
-  "shadowMask.smallRound": {
+  "shadow.smallRound": {
     frame: {
       ...smallItemGridLocation({ x: 14, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.smallRound": {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 4 }),
       ...smallItemTextureSize,
     },
   },

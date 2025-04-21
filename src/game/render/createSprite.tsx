@@ -72,10 +72,10 @@ const isAnimatedOptions = (
   );
 
 /** utility for creating a sprite while setting several properties on it */
-export const createSprite = (options: CreateSpriteOptions): Container => {
+const _createSprite = (options: CreateSpriteOptions): Container => {
   if (typeof options === "string") {
     // shortcutted convenience for creating with the texture name and no other options
-    return createSprite({ textureId: options });
+    return _createSprite({ textureId: options });
   } else {
     const { anchor, flipX, pivot, x, y, filter, times, label } = options;
 
@@ -94,7 +94,7 @@ export const createSprite = (options: CreateSpriteOptions): Container => {
       for (let { x } = completeTimes; x >= 1; x--) {
         for (let { y } = completeTimes; y >= 1; y--) {
           for (let z = 1; z <= completeTimes.z; z++) {
-            const component = createSprite({
+            const component = _createSprite({
               ...options,
               times: undefined,
               label: `(${x},${y},${z})`,
@@ -159,6 +159,11 @@ export const createSprite = (options: CreateSpriteOptions): Container => {
     return sprite;
   }
 };
+
+export const createSprite = _createSprite as <O extends CreateSpriteOptions>(
+  options: O,
+) => O extends TextureId ? Sprite : Container;
+
 function createAnimatedSprite({
   animationId,
   reverse,

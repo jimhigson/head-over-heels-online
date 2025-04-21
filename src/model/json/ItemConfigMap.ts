@@ -117,7 +117,9 @@ export type ItemConfigMap<
   };
   slidingDeadly: {
     // these can move (fall, be pushed etc) and are deadly
-    style: "puck";
+    style: "spikyBall";
+    // should this sprite (initially at rest) be on frame 1 or 2? allows some variation
+    startingPhase: 1 | 2;
   };
   conveyor: ConsolidatableConfig & {
     direction: DirectionXy4;

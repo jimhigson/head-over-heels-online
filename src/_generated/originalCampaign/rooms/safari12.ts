@@ -47,7 +47,7 @@ export const room = inferRoomJson({
       type: "portableBlock",
     },
     "slidingDeadly@4,0,0": {
-      config: { style: "puck" },
+      config: { startingPhase: 2, style: "spikyBall" },
       position: { x: 4, y: 0, z: 0 },
       type: "slidingDeadly",
     },

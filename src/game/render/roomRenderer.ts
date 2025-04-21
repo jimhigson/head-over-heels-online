@@ -147,7 +147,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           sound.connect(this.output.sound);
         }
       }
-      itemRenderer.tick(tickContext);
+      try {
+        itemRenderer.tick(tickContext);
+      } catch (e) {
+        throw new Error(
+          `room had an error while ticking item ${item.id}: ${(e as Error).message}`,
+          { cause: e },
+        );
+      }
     }
 
     // remove any renderers for items that no longer exist in the room:

@@ -56,6 +56,9 @@ type ItemRenderPropsMap = {
   head: PlayableRenderProps;
   heels: PlayableRenderProps;
   headOverHeels: PlayableRenderProps;
+  slidingDeadly: {
+    distanceTravelled: number;
+  };
 };
 
 export type ItemRenderProps<T extends ItemInPlayType> =
