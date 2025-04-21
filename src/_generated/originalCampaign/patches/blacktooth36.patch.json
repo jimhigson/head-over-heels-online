@@ -96,5 +96,25 @@
       "position": { "x": 4, "y": 5, "z": 0 },
       "type": "pickup"
     }
+  },
+  {
+    "op": "add",
+    "path": "/items/raisedPlatform",
+    "value": {
+      "config": { "style": "artificial", "times": { "x": 2, "y": 2, "z": 2 } },
+      "isExtra": true,
+      "position": { "x": 2, "y": 2, "z": 0 },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBunny",
+    "value": {
+      "config": { "gives": "shield" },
+      "isExtra": true,
+      "position": { "x": 2, "y": 3, "z": 2 },
+      "type": "pickup"
+    }
   }
 ]

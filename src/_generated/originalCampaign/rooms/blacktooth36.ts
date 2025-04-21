@@ -33,6 +33,12 @@ export const room = inferRoomJson({
       position: { x: 5, y: 2, z: 0 },
       type: "ball",
     },
+    extraBunny: {
+      config: { gives: "shield" },
+      isExtra: true,
+      position: { x: 2, y: 3, z: 2 },
+      type: "pickup",
+    },
     extraMonster: {
       config: {
         activated: "on",
@@ -80,6 +86,12 @@ export const room = inferRoomJson({
       isExtra: true,
       position: { x: 5, y: 1, z: 0 },
       type: "monster",
+    },
+    raisedPlatform: {
+      config: { style: "artificial", times: { x: 2, y: 2, z: 2 } },
+      isExtra: true,
+      position: { x: 2, y: 2, z: 0 },
+      type: "block",
     },
     scroll: {
       config: { gives: "scroll", page: "switches" },
