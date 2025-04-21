@@ -26,6 +26,16 @@
   },
   {
     "op": "add",
+    "path": "/items/extraBunny",
+    "value": {
+      "config": { "gives": "shield" },
+      "isExtra": true,
+      "position": { "x": 2, "y": 3, "z": 2 },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/extraMonster",
     "value": {
       "config": {
@@ -90,15 +100,6 @@
   },
   {
     "op": "add",
-    "path": "/items/scroll",
-    "value": {
-      "config": { "gives": "scroll", "page": "switches" },
-      "position": { "x": 4, "y": 5, "z": 0 },
-      "type": "pickup"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/raisedPlatform",
     "value": {
       "config": { "style": "artificial", "times": { "x": 2, "y": 2, "z": 2 } },
@@ -109,11 +110,10 @@
   },
   {
     "op": "add",
-    "path": "/items/extraBunny",
+    "path": "/items/scroll",
     "value": {
-      "config": { "gives": "shield" },
-      "isExtra": true,
-      "position": { "x": 2, "y": 3, "z": 2 },
+      "config": { "gives": "scroll", "page": "switches" },
+      "position": { "x": 0, "y": 5, "z": 0 },
       "type": "pickup"
     }
   }
