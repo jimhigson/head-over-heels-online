@@ -339,7 +339,13 @@ const convertItem = async ({
       return {
         type: "slidingDeadly",
         config: {
-          style: "puck",
+          style: "spikyBall",
+          // rough way to pseudo-randomise which style:
+          startingPhase: (((parseInt(xml2JsonItem.x) * 2 +
+            parseInt(xml2JsonItem.y) +
+            parseInt(xml2JsonItem.z)) %
+            2) +
+            1) as 1 | 2,
         },
         position,
       };

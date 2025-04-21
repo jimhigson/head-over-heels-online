@@ -18,22 +18,22 @@ export const room = inferRoomJson({
       type: "portableBlock",
     },
     "slidingDeadly@5,0,1": {
-      config: { style: "puck" },
+      config: { startingPhase: 2, style: "spikyBall" },
       position: { x: 5, y: 0, z: 1 },
       type: "slidingDeadly",
     },
     "slidingDeadly@5,0,2": {
-      config: { style: "puck" },
+      config: { startingPhase: 1, style: "spikyBall" },
       position: { x: 5, y: 0, z: 2 },
       type: "slidingDeadly",
     },
     "slidingDeadly@5,1,1": {
-      config: { style: "puck" },
+      config: { startingPhase: 1, style: "spikyBall" },
       position: { x: 5, y: 1, z: 1 },
       type: "slidingDeadly",
     },
     "slidingDeadly@5,1,2": {
-      config: { style: "puck" },
+      config: { startingPhase: 2, style: "spikyBall" },
       position: { x: 5, y: 1, z: 2 },
       type: "slidingDeadly",
     },

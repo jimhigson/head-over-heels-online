@@ -1,3 +1,4 @@
+import type { Sprite } from "pixi.js";
 import { Container } from "pixi.js";
 import type { TextureId } from "../../../sprites/spriteSheetData";
 import type { CreateSpriteOptions } from "../createSprite";
@@ -21,6 +22,7 @@ import {
 import type { Xy } from "../../../utils/vectors/vectors";
 import {
   directionAxis,
+  lengthXy,
   perpendicularAxisXy,
   vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
@@ -35,6 +37,7 @@ import { selectAtPath } from "../../../store/selectors";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { emptyArray } from "../../../utils/empty";
 import { floatingTextAppearance } from "./floatingTextAppearance";
+import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 
 const blockTextureId = (
   isDark: boolean,
@@ -59,11 +62,7 @@ const singleRenderWithStyleAsTexture = <
   RoomId extends string,
   RoomItemId extends string,
 >() =>
-  itemRenderOnce<
-    "deadlyBlock" | "slidingDeadly" | "slidingBlock",
-    RoomId,
-    RoomItemId
-  >(
+  itemRenderOnce<"deadlyBlock" | "slidingBlock", RoomId, RoomItemId>(
     ({
       renderContext: {
         item: {
@@ -183,7 +182,38 @@ export const itemAppearances: {
   ),
   spikes: itemStaticSpriteAppearance("spikes"),
 
-  slidingDeadly: singleRenderWithStyleAsTexture(),
+  slidingDeadly({
+    renderContext: {
+      item: {
+        state: {
+          vels: { sliding },
+        },
+        config: { startingPhase },
+      },
+      paused,
+    },
+    currentlyRenderedProps,
+    tickContext: { deltaMS },
+    previousRendering,
+  }) {
+    const distanceTravelled =
+      (currentlyRenderedProps?.distanceTravelled ?? 0) +
+      lengthXy(sliding) * (paused ? 0 : deltaMS);
+
+    const rendering: Sprite =
+      previousRendering ?
+        (previousRendering as Sprite)
+      : createSprite("spikyBall.1");
+
+    const stepsTravelled = Math.floor((distanceTravelled * 2) / wallTileSize.w);
+    const phase = (((stepsTravelled + startingPhase) % 2) + 1) as 1 | 2;
+    rendering.texture = loadedSpriteSheet().textures[`spikyBall.${phase}`];
+
+    return {
+      output: rendering,
+      renderProps: { distanceTravelled },
+    };
+  },
   slidingBlock: singleRenderWithStyleAsTexture(),
 
   block({
@@ -407,15 +437,8 @@ export const itemAppearances: {
     },
   ),
 
-  moveableDeadly: itemRenderOnce(
-    ({
-      renderContext: {
-        item: {
-          config: { style },
-        },
-      },
-    }) => createSprite(style === "deadFish" ? "fish.1" : "puck.deadly"),
-  ),
+  // these are always dead fish:
+  moveableDeadly: itemStaticSpriteAppearance("fish.1"),
 
   charles({
     renderContext: {

@@ -90,6 +90,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
                 createSprite({
                   animationId: `${config.which}.${facingXy4}`,
                   filter,
+                  paused,
                 })
               : createSprite({
                   textureId: `${config.which}.${facingXy4}.1`,
@@ -169,6 +170,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
                 {
                   animationId: config.which,
                   filter,
+                  paused,
                 }
               : { textureId: `${config.which}.1`, filter },
             ),

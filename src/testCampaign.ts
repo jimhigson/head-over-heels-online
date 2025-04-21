@@ -1191,12 +1191,12 @@ const rooms = {
       },
       {
         type: "slidingDeadly",
-        config: { style: "puck" },
+        config: { style: "spikyBall", startingPhase: 1 },
         position: { x: 1, y: 0, z: 0 },
       },
       {
         type: "slidingDeadly",
-        config: { style: "puck" },
+        config: { style: "spikyBall", startingPhase: 2 },
         position: { x: 7, y: 0, z: 0 },
       },
       {

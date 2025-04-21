@@ -27,12 +27,12 @@ export const room = inferRoomJson({
       type: "monster",
     },
     "slidingDeadly@2,0,5": {
-      config: { style: "puck" },
+      config: { startingPhase: 1, style: "spikyBall" },
       position: { x: 2, y: 0, z: 5 },
       type: "slidingDeadly",
     },
     "slidingDeadly@2,1,5": {
-      config: { style: "puck" },
+      config: { startingPhase: 2, style: "spikyBall" },
       position: { x: 2, y: 1, z: 5 },
       type: "slidingDeadly",
     },
