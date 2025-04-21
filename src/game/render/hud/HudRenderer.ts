@@ -27,7 +27,6 @@ import { halfBriteFilter, noFilters } from "../filters/standardFilters";
 import { store } from "../../../store/store";
 import { selectShowFps } from "../../../store/selectors";
 import { OnScreenControls } from "./OnScreenControls";
-import { showNumberInContainer } from "./showNumberInContainer";
 import {
   hudFpsColourFilter,
   hudIconFilter,
@@ -42,7 +41,10 @@ import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import type { Renderer } from "../Renderer";
 import type { RoomState } from "../../../model/RoomState";
 import { neverTime } from "../../../utils/veryClose";
-import { makeTextContainer } from "./showNumberInContainer";
+import {
+  makeTextContainer,
+  showTextInContainer,
+} from "./showNumberInContainer";
 
 const fpsUpdatePeriod = 250;
 
@@ -106,12 +108,12 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       }),
       shield: this.#iconWithNumber({
         label: "headShield",
-        textureId: "hud.char.🛡️",
+        textureId: "hud.char.🛡",
         outline: true,
       }),
       extraSkill: this.#iconWithNumber({
         label: "headFastSteps",
-        textureId: "hud.char.⚡️",
+        textureId: "hud.char.⚡",
         outline: true,
       }),
       doughnuts: this.#iconWithNumber({
@@ -136,7 +138,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       }),
       shield: this.#iconWithNumber({
         label: "heelsShield",
-        textureId: "hud.char.🛡️",
+        textureId: "hud.char.🛡",
         outline: true,
       }),
       extraSkill: this.#iconWithNumber({
@@ -365,7 +367,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       doughnutCount !== 0,
       colourise,
     );
-    showNumberInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
+    showTextInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
   }
 
   #updateAbilitiesIcons(
@@ -387,7 +389,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     shieldContainer.visible = shieldVisible;
 
     if (shieldVisible) {
-      showNumberInContainer(shieldText, shieldNumber);
+      showTextInContainer(shieldText, shieldNumber);
       shieldContainer.y = screenSize.y - shieldFromBottom(onScreenControls);
     }
 
@@ -406,7 +408,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     extraSkillContainer.visible = extraSkillVisible;
 
     if (extraSkillVisible) {
-      showNumberInContainer(skillText, extraSkillNumber);
+      showTextInContainer(skillText, extraSkillNumber);
       extraSkillContainer.y =
         screenSize.y - extraSkillFromBottom(onScreenControls);
     }
@@ -468,7 +470,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       sideMultiplier(characterName) * livesTextFromCentre(onScreenControls);
     livesTextContainer.y = screenSize.y;
 
-    showNumberInContainer(livesTextContainer, lives ?? 0);
+    showTextInContainer(livesTextContainer, lives ?? 0);
   }
 
   #updateColours(tickContext: HudRendererTickContext<RoomId, RoomItemId>) {
@@ -510,7 +512,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     if (selectShowFps(store.getState())) {
       if (performance.now() > this.#fpsLastUpdated + fpsUpdatePeriod) {
         const fpsValue = Ticker.shared.FPS;
-        showNumberInContainer(this.#hudElements.fps, Math.round(fpsValue));
+        showTextInContainer(this.#hudElements.fps, Math.round(fpsValue));
 
         hudFpsColourFilter.targetColor =
           fpsValue > 100 ? spritesheetPalette.white

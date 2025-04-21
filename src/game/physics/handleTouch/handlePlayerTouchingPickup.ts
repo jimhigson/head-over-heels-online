@@ -119,9 +119,7 @@ export const handlePlayerTouchingPickup = <
       } else {
         player.state.shieldCollectedAt = player.state.gameTime;
       }
-      // TODO: this needs characterSprites to support multi-codepoint chars
-      //addFloatingText(["🛡️ 99", "shield"]);
-      addFloatingText(["99", "shield"]);
+      addFloatingText(["🛡", "shield"]);
       break;
     }
 
@@ -130,9 +128,7 @@ export const handlePlayerTouchingPickup = <
       if (toModify !== undefined) {
         toModify.fastStepsStartedAtDistance = toModify.gameWalkDistance;
       }
-      // TODO: this needs characterSprites to support multi-codepoint chars
-      //addFloatingText(["⚡️ 99", "fast steps"]);
-      addFloatingText(["99", "fast steps"]);
+      addFloatingText(["⚡", "fast steps"]);
       break;
     }
 
@@ -141,9 +137,7 @@ export const handlePlayerTouchingPickup = <
       if (toModify !== undefined) {
         toModify.bigJumps += 10;
       }
-      // TODO: this needs characterSprites to support multi-codepoint chars
-      //addFloatingText(["♨ 10", "big jumps"]);
-      addFloatingText(["10", "big jumps"]);
+      addFloatingText(["♨", "10", "big jumps"]);
       break;
     }
 

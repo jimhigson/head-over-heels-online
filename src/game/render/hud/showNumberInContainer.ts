@@ -5,25 +5,31 @@ import { iterateToContainer } from "../../iterateToContainer";
 import { createSprite } from "../createSprite";
 import type { PokeableNumber } from "../../../model/ItemStateMap";
 import { hudOutlinedTextFilters, hudTextFilter } from "./hudFilters";
+import { size } from "iter-tools";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 
-function* characterSprites(n: PokeableNumber | string) {
-  const chars =
-    typeof n === "string" ?
-      n === "infinite" ?
+function* characterSprites(input: PokeableNumber | string) {
+  const str =
+    typeof input === "string" ?
+      (
+        input === "infinite" // huh? why special case this string?
+      ) ?
         ""
-      : n.split("")
-    : n.toString().split("");
+      : input
+    : input.toString();
 
-  const l = chars.length;
-  for (let i = 0; i < l; i++) {
-    const textureId = `hud.char.${escapeCharForTailwind(chars[i])}`;
+  // safer than chars.length for length in terms of real characters (i.e. Unicode code points), not UTF-16 code units:
+  const l = size(str);
+
+  let i = 0;
+  for (const c of str) {
+    const textureId = `hud.char.${escapeCharForTailwind(c)}`;
 
     try {
       assertIsTextureId(textureId);
     } catch (e) {
       throw new Error(
-        `invalid texture id at index ${i} - char code is ${chars[i].charCodeAt(0)} : ${(e as Error).message}`,
+        `no texture id for char "${c}": ${(e as Error).message}`,
         {
           cause: e,
         },
@@ -34,18 +40,14 @@ function* characterSprites(n: PokeableNumber | string) {
       textureId,
       x: (i + 0.5 - l / 2) * hudCharTextureSize.w,
     });
+    i++;
   }
 }
-export function showNumberInContainer(
+
+export const showTextInContainer = (
   container: Container,
   n: number | string,
-) {
-  container.removeChildren();
-  iterateToContainer(characterSprites(n), container);
-  return container;
-}
-
-export function showTextInContainer(container: Container, n: number | string) {
+) => {
   container.removeChildren();
   try {
     iterateToContainer(characterSprites(n), container);
@@ -60,7 +62,7 @@ export function showTextInContainer(container: Container, n: number | string) {
     );
   }
   return container;
-}
+};
 export const makeTextContainer = ({
   doubleHeight = false,
   outline = false,
