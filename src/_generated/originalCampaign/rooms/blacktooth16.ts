@@ -50,12 +50,12 @@ export const room = inferRoomJson({
     },
     "slidingDeadly@3,3,0": {
       config: { startingPhase: 1, style: "spikyBall" },
-      position: { x: 3, y: 3, z: 0 },
+      position: { x: 2, y: 3, z: 0 },
       type: "slidingDeadly",
     },
     "slidingDeadly@4,4,0": {
       config: { startingPhase: 2, style: "spikyBall" },
-      position: { x: 4, y: 4, z: 0 },
+      position: { x: 5, y: 4, z: 0 },
       type: "slidingDeadly",
     },
     "wall@0,0,0:2sckOl": {
