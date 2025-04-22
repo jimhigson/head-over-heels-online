@@ -13,7 +13,7 @@ import { roomWorldPosition } from "./roomWorldPosition";
 import type { ReactElement } from "react";
 import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 import type { ValueOf } from "type-fest";
-import { mapSvgMargin } from "./mapConstants";
+import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { getRoomItem } from "../../../../../../model/RoomState";
 import type { PlayableItem } from "../../../../../physics/itemPredicates";
@@ -78,8 +78,8 @@ export const MapSvg = <RoomId extends string>({
   roomsExplored,
   onPlayableClick,
 }: MapSvgProps<RoomId>) => {
-  const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMargin;
-  const contentH = mapBounds.b - mapBounds.t + 2 * mapSvgMargin;
+  const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMarginX;
+  const contentH = mapBounds.b - mapBounds.t + 2 * mapSvgMarginY;
 
   const orderedPositions = Object.values(gridPositions) as ValueOf<
     typeof gridPositions
@@ -97,7 +97,7 @@ export const MapSvg = <RoomId extends string>({
     >
       {background}
       <g
-        transform={`translate(${-mapBounds.l + mapSvgMargin + (containerWidth - contentW) / 2},${-mapBounds.t + +mapSvgMargin})`}
+        transform={`translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + +mapSvgMarginY})`}
       >
         {orderedPositions.map((gridPositionSpec) => {
           const { roomId, subRoomId, gridPosition } = gridPositionSpec;

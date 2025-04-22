@@ -8,7 +8,8 @@ export type MapClasses = {
 
 export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
   blacktooth: {
-    bgClassName: "fill-moss zx:fill-zxGreenDimmed text-shadow zx:text-zxWhite",
+    bgClassName:
+      "fill-redShadow zx:fill-zxGreenDimmed text-lightGrey zx:text-zxWhite",
     containerClassName:
       // bg- here ensures the dialog outside of the svg (including bounce-back scrolling)
       // matches the colour of the svg's background rect
@@ -21,7 +22,7 @@ export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
       "bg-redShadow zx:bg-zxBlue scrollbar-track-redShadow zx:scrollbar-track-zxBlue scrollbar-thumb-highlightBeige zx:scrollbar-thumb-zxWhite",
   },
   jail: {
-    bgClassName: "fill-shadow zx:fill-zxBlue text-lightGrey zx:text-zxWhite",
+    bgClassName: "fill-shadow zx:fill-zxBlue text-black zx:text-zxWhite",
     containerClassName:
       "bg-shadow zx:bg-zxBlue scrollbar-track-shadow zx:scrollbar-track-zxBlue scrollbar-thumb-lightGrey zx:scrollbar-thumb-zxWhite",
   },
@@ -39,7 +40,7 @@ export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
   },
   market: {
     bgClassName:
-      "fill-metallicBlueHalfbrite zx:fill-zxCyan text-highlightBeige zx:text-zxBlack",
+      "fill-midRed zx:fill-zxCyan text-highlightBeige zx:text-zxBlack",
     containerClassName:
       "bg-metallicBlueHalfbrite zx:bg-zxCyan scrollbar-track-metallicBlueHalfbrite zx:scrollbar-track-zxBlue scrollbar-thumb-highlightBeige zx:scrollbar-thumb-zxBlack",
   },

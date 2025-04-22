@@ -234,11 +234,14 @@ L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
         />
       : roomJson.id === "blacktooth77" || roomJson.id === "safari26" ?
         <path
-          className={"stroke-[var(--roomHintColor)]"}
-          strokeWidth={strokeWidth * 2}
+          className={"fill-[var(--roomHintColor)]"}
+          strokeWidth={1}
           d={`
-M${project({ x: roomGridSizeXY / 2, y: 0 })}
-L${project({ x: roomGridSizeXY / 2, y: roomGridSizeXY })}
+M${project({ x: roomGridSizeXY / 2 - strokeWidth, y: 0 })}
+L${project({ x: roomGridSizeXY / 2 + strokeWidth, y: 0 })}
+L${project({ x: roomGridSizeXY / 2 + strokeWidth, y: roomGridSizeXY })}
+L${project({ x: roomGridSizeXY / 2 - strokeWidth, y: roomGridSizeXY })}
+z
 `}
         />
       : null}
