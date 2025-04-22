@@ -1,5 +1,4 @@
 [
-  { "op": "replace", "path": "/roomAbove", "value": "penitentiary35" },
   {
     "op": "add",
     "path": "/items/stair1",

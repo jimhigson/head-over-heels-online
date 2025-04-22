@@ -237,7 +237,6 @@ export type OriginalCampaignRoomId =
   | "penitentiary32"
   | "penitentiary33"
   | "penitentiary34crown"
-  | "penitentiary35"
   | "safari1"
   | "safari2"
   | "safari3"

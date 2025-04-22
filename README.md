@@ -43,6 +43,11 @@ The same room, with magenta highlights
 -------------
 ![8-way sprites]
 
+New sprites
+-----------
+
+! Show spiky ball vs jam-jar looking thing (texts w/ Jon 22nd Apr 2025)
+
 Frame Rate
 ----------
 
