@@ -6,19 +6,19 @@
         
 ## General
 
-[x] error catch/reporting + option to refresh
-[x] spikes safe to touch from sides
 [ ] replace deadly 'puck/cap' sprites with a spiky ball
 
 
 ### Big ideas
+
+[ ] global high scores
 
 [,XL] level editor
 
 [,?] own levels
 
 [3,M] switch to devcontainers
-    [ ] might be more complex than needed
+    [ ] might be more complex than needed. ie, need a container with more modern node than ms/bookworm provides
 
 
 ### menu
