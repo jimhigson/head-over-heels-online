@@ -31,5 +31,14 @@
       "right": false,
       "target": "monster@3,3,0"
     }
+  },
+  {
+    "op": "add",
+    "path": "/items/scroll",
+    "value": {
+      "config": { "gives": "scroll", "page": "switches" },
+      "position": { "x": 2, "y": 2, "z": 0 },
+      "type": "pickup"
+    }
   }
 ]

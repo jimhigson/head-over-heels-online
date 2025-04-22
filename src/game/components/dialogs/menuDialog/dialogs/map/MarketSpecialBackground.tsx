@@ -10,7 +10,7 @@ import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen
 import type { Bounds } from "./Map.svg";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
-import { mapSvgMargin } from "./mapConstants";
+import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
 import { roomWorldPosition } from "./roomWorldPosition";
 import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 import { pathXy } from "./svgHelpers";
@@ -31,13 +31,13 @@ export const MarketSpecialBackground = ({
   containerWidth: number;
 }) => {
   const scale = useTotalUpscale();
-  const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMargin;
+  const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMarginX;
 
   type RoomAndSubRoomId = keyof typeof originalCampaignPositions;
 
   const offset = {
-    x: -mapBounds.l + mapSvgMargin + (containerWidth - contentW) / 2,
-    y: -mapBounds.t + mapSvgMargin,
+    x: -mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2,
+    y: -mapBounds.t + mapSvgMarginY,
   };
 
   const shapePointXy = (
@@ -92,13 +92,18 @@ export const MarketSpecialBackground = ({
   });
 
   const leftBound = scale * 8 * 2;
+  const title = "Market";
+  const titleRightBound = (title.length + 3) * scale * 8;
+  const titleHeight = scale * 8 * 2 + 32;
   return (
     <>
       <path
-        className={`${mapClasses.market.bgClassName} stroke-metallicBlueHalfbrite zx:stroke-zxCyan`}
+        className={`${mapClasses.market.bgClassName} stroke-midRed zx:stroke-zxCyan`}
         strokeWidth={12}
         d={`
-M ${pathXy({ ...xy1, x: leftBound })}
+M ${pathXy({ x: leftBound, y: xy8.y + titleHeight })}
+L ${pathXy({ x: titleRightBound, y: xy8.y + titleHeight })}
+L ${pathXy({ x: titleRightBound, y: xy1.y })}
 L ${pathXy(xy1)}
 L ${pathXy(xy2)}
 L ${pathXy(xy3)}
@@ -112,7 +117,7 @@ z`}
       />
       <MapBackgroundSection
         y={xy8.y}
-        mapTitle={"Market"}
+        mapTitle={title}
         className={mapClasses.market.bgClassName}
         textOnly
       />

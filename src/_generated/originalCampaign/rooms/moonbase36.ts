@@ -151,7 +151,7 @@ export const room = inferRoomJson({
   },
   meta: {
     nonContiguousRelationship: {
-      gridOffset: { x: 5, y: 3, z: 0 },
+      gridOffset: { x: 8, y: 6, z: 0 },
       with: { room: "blacktooth69" },
     },
   },

@@ -44,7 +44,7 @@
     "path": "/meta",
     "value": {
       "nonContiguousRelationship": {
-        "gridOffset": { "x": 2, "y": 5, "z": 0 },
+        "gridOffset": { "x": 4, "y": 7, "z": 0 },
         "with": { "room": "blacktooth9" }
       }
     }

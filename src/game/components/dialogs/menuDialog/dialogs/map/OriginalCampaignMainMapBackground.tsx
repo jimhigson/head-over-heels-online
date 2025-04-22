@@ -3,7 +3,7 @@ import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen
 import type { MapBackgroundProps } from "./MapBackground";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
-import { mapSvgMargin } from "./mapConstants";
+import { mapSvgMarginY } from "./mapConstants";
 import { MarketSpecialBackground } from "./MarketSpecialBackground";
 import { roomWorldPosition } from "./roomWorldPosition";
 import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
@@ -24,19 +24,9 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
   const topOfRoomFloor = projectWorldXyzToScreenXy(
     roomWorldPosition({ x: 1, y: 1, z: 0 }),
   ).y;
-  // projected y ordinal of the top-back corner of the room
-  const topOfRoomWall = projectWorldXyzToScreenXy(
-    roomWorldPosition({ x: 1, y: 1, z: 1 }),
-  ).y;
 
   type RoomAndSubRoomId = keyof typeof originalCampaignPositions;
 
-  const yAboveRoom = (roomAboveId: RoomAndSubRoomId) => {
-    const y1 = projectWorldXyzToScreenXy(
-      roomWorldPosition(originalCampaignPositions[roomAboveId].gridPosition),
-    ).y;
-    return y1 + topOfRoomWall;
-  };
   const yBetweenRooms = (
     roomAboveId: RoomAndSubRoomId,
     roomBelowId: RoomAndSubRoomId,
@@ -54,9 +44,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
     const y2 =
       projectWorldXyzToScreenXy(
         roomWorldPosition(originalCampaignPositions[roomBelowId].gridPosition),
-      ).y +
-      topOfRoomFloor +
-      mapSvgMargin;
+      ).y + topOfRoomFloor;
     return (y1 + y2) / 2;
   };
 
@@ -67,24 +55,34 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
                 contents do not render correctly when translated
               */}
       <MapBackgroundSection
-        y={yAboveRoom("finalroom/*") - mapBounds.t}
+        y={0}
         mapTitle={"Freedom"}
         className={mapClasses.freedom.bgClassName}
       />
       <MapBackgroundSection
         y={
-          yBetweenRooms("finalroom/*", "blacktooth83tofreedom/*") - mapBounds.t
+          yBetweenRooms("finalroom/*", "blacktooth83tofreedom/*") -
+          mapBounds.t +
+          mapSvgMarginY
         }
         mapTitle={"Castle Blacktooth"}
         className={mapClasses.blacktooth.bgClassName}
       />
       <MapBackgroundSection
-        y={yBetweenRooms("blacktooth87crown/*", "moonbase35/*") - mapBounds.t}
+        y={
+          yBetweenRooms("blacktooth87crown/*", "moonbase35/*") -
+          mapBounds.t +
+          mapSvgMarginY
+        }
         mapTitle={"moonbase"}
         className={mapClasses.moonbase.bgClassName}
       />
       <MapBackgroundSection
-        y={yBetweenRooms("moonbase4/*", "blacktooth62fish/right") - mapBounds.t}
+        y={
+          yBetweenRooms("moonbase4/*", "blacktooth62fish/right") -
+          mapBounds.t +
+          mapSvgMarginY
+        }
         mapTitle={"Blacktooth escape"}
         className={mapClasses.blacktooth.bgClassName}
       />
@@ -94,7 +92,11 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
         containerWidth={containerWidth}
       />
       <MapBackgroundSection
-        y={yBetweenRooms("blacktooth24/*", "blacktooth1head/*") - mapBounds.t}
+        y={
+          yBetweenRooms("blacktooth24/*", "blacktooth1head/*") -
+          mapBounds.t +
+          mapSvgMarginY
+        }
         mapTitle={"Jail"}
         className={mapClasses.jail.bgClassName}
       />

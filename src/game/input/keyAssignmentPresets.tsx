@@ -28,7 +28,7 @@ const standardAssignment = {
     },
     menu_openOrExit: {
       // escape alone isn't good because it can leave fullscreen in browser sometimes - use the others!
-      keys: ["Escape", "Tab", "§"],
+      keys: ["Escape", "§"],
     },
     menu_exit: { gamepadButtons: [standardControllerLayout.b] },
     // menu_up: { keys: ["ArrowUp"] },
@@ -207,7 +207,7 @@ const defaultAssignment: InputAssignmentPreset = {
           keys: ["F8", "H", "Numpad."],
         },
         map: {
-          keys: ["M"],
+          keys: ["M", "Tab"],
         },
       },
     },
@@ -279,7 +279,7 @@ const mameToHoh = (mamePlayer: MamePlayer): PartialInputAssignment => ({
     fire: { keys: [mamePlayer.buttons[2]] },
     swop: { keys: [mamePlayer.start] },
     hold: { keys: [mamePlayer.coin] },
-    menu_openOrExit: { keys: [mamePlayer.buttons[2]] },
+    menu_openOrExit: { keys: [mamePlayer.buttons[4]] },
   },
 });
 
