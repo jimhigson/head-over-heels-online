@@ -16,41 +16,45 @@ export const useMapData = <RoomId extends string>() => {
   const { gameState } = useGameApi<RoomId>();
 
   return useMemo(() => {
-    const curRoom = selectCurrentRoomState<RoomId>(gameState);
-    const centreRoomId =
-      curRoom?.roomJson.id ?? startingRoomIds(gameState.campaign).head!;
+    try {
+      const curRoom = selectCurrentRoomState<RoomId>(gameState);
+      const centreRoomId =
+        curRoom?.roomJson.id ?? startingRoomIds(gameState.campaign).head!;
 
-    let curSubRoom: string;
+      let curSubRoom: string;
 
-    if (!gameState) curSubRoom = "*";
-    else {
-      const subRooms = curRoom?.roomJson.meta?.subRooms;
-
-      if (!subRooms) curSubRoom = "*";
+      if (!gameState) curSubRoom = "*";
       else {
-        const curCharacterItem = curRoom?.items[currentCharacterName];
+        const subRooms = curRoom?.roomJson.meta?.subRooms;
 
-        if (!curCharacterItem) curSubRoom = "*";
+        if (!subRooms) curSubRoom = "*";
         else {
-          curSubRoom = findSubRoomForItem(curCharacterItem, curRoom.roomJson);
+          const curCharacterItem = curRoom?.items[currentCharacterName];
+
+          if (!curCharacterItem) curSubRoom = "*";
+          else {
+            curSubRoom = findSubRoomForItem(curCharacterItem, curRoom.roomJson);
+          }
         }
       }
+
+      const positions = [
+        ...roomGridPositions({
+          campaign: gameState.campaign,
+          roomId: centreRoomId,
+          subRoomId: curSubRoom,
+        }),
+      ];
+      const sortedObjectOfPositions = sortRoomGridPositions(positions);
+
+      return {
+        mapBounds: findMapBounds(positions),
+        curRoomId: curRoom?.roomJson.id,
+        gridPositions: sortedObjectOfPositions,
+        currentCharacterName,
+      };
+    } catch (e) {
+      throw new Error("error getting map data", { cause: e });
     }
-
-    const positions = [
-      ...roomGridPositions({
-        campaign: gameState.campaign,
-        roomId: centreRoomId,
-        subRoomId: curSubRoom,
-      }),
-    ];
-    const sortedObjectOfPositions = sortRoomGridPositions(positions);
-
-    return {
-      mapBounds: findMapBounds(positions),
-      curRoomId: curRoom?.roomJson.id,
-      gridPositions: sortedObjectOfPositions,
-      currentCharacterName,
-    };
   }, [currentCharacterName, gameState]);
 };

@@ -53,7 +53,7 @@ export const Dialogs = withErrorBoundary((_emptyProps: EmptyObject) => {
     case "emulatedResolution":
       return <EmulatedResolutionDialog />;
     case "errorCaught":
-      return <ErrorCaughtDialog {...topOpenMenu.menuParam} />;
+      return <ErrorCaughtDialog errors={topOpenMenu.menuParam} />;
     case "hold":
       return <HoldDialog />;
     case "inputPreset":

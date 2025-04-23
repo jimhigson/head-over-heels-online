@@ -5,6 +5,7 @@ import { MenuItems } from "../../MenuItems";
 import { MenuItem } from "../../MenuItem";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import type { SerialisableError } from "src/utils/redux/createSerialisableErrors";
 import {
   errorDismissed,
   reincarnationAccepted,
@@ -12,6 +13,7 @@ import {
 import { useAppSelector } from "../../../../../../store/hooks";
 import { multilineTextClass } from "../../multilineTextClass";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { useState } from "react";
 
 const markdown = `##The game crashed
 Maybe:
@@ -22,15 +24,24 @@ Maybe:
 * play [this](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;
 
 export const ErrorCaughtDialog = ({
-  message,
+  errors,
 }: {
-  message: string;
-  stack?: string;
+  errors: Array<SerialisableError>;
 }) => {
   const hasReincarnationPoint = useAppSelector(
     (state) => state.gameMenus.reincarnationPoint !== undefined,
   );
+  const [copied, setCopied] = useState<boolean>(false);
   const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
+
+  const errorsReportText = errors.map(
+    ({ message, stack }) => `
+${message}  
+${stack}
+  `,
+  ).join(`
+caused by:
+`);
 
   return (
     <DialogPortal>
@@ -45,7 +56,6 @@ export const ErrorCaughtDialog = ({
           }
         >
           <BlockyMarkdown markdown={markdown} />
-
           <MenuItems
             className={`text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1 ${multilineTextClass}`}
           >
@@ -72,12 +82,28 @@ export const ErrorCaughtDialog = ({
                 "clearAllData",
               )}
             />
+            {copied ?
+              <BitmapText className="text-metallicBlue col-span-2 sprites-double-height ml-3">
+                Error report copied
+              </BitmapText>
+            : <MenuItem
+                doubleHeightWhenFocussed
+                id="copyClipboard"
+                label="Copy error to clipboard"
+                onSelect={() =>
+                  navigator.clipboard
+                    .writeText(errorsReportText)
+                    .then(() => setCopied(true))
+                }
+              />
+            }
           </MenuItems>
+          <hr className="bg-pastelBlue zx:bg-zxWhite h-1 my-1 border-none" />
           <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite`">
-            Error message:
+            Error message for nerds:
           </BitmapText>
           <pre className={`text-midRed zx:text-zxWhite leading-[1em]`}>
-            {message}
+            {errorsReportText}
           </pre>
         </div>
       </Dialog>

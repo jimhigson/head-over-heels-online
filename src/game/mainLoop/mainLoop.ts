@@ -18,11 +18,11 @@ import {
   errorCaught,
   type DisplaySettings,
 } from "../../store/slices/gameMenusSlice";
-import { pick } from "../../utils/pick";
 import { audioCtx } from "../../sound/audioCtx";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
+import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -91,14 +91,13 @@ export class MainLoop<RoomId extends string> {
 
       this.#initFilters();
     } catch (e) {
-      this.#handleError(e as Error);
+      this.#handleError(e);
       return;
     }
   }
 
-  #handleError(e: Error) {
-    console.error(e);
-    store.dispatch(errorCaught(pick(e as Error, "message", "stack")));
+  #handleError(thrown: unknown) {
+    store.dispatch(errorCaught(createSerialisableErrors(thrown)));
   }
 
   #initFilters() {
@@ -117,8 +116,8 @@ export class MainLoop<RoomId extends string> {
   ): void => {
     try {
       this.tick(options);
-    } catch (e: unknown) {
-      this.#handleError(e as Error);
+    } catch (thrown) {
+      this.#handleError(thrown);
     }
   };
 

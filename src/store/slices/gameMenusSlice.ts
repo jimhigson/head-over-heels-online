@@ -36,6 +36,7 @@ import type {
 import { REHYDRATE } from "redux-persist";
 import { emptyObject } from "../../utils/empty";
 import type { RootState } from "../store";
+import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -64,7 +65,7 @@ export type OpenMenu =
     })
   | (BaseOpenMenu & {
       menuId: "errorCaught";
-      menuParam: { message: string; stack?: string };
+      menuParam: Array<SerialisableError>;
     });
 
 export type DisplaySettings = {
@@ -566,7 +567,7 @@ export const gameMenusSlice = createSlice({
     },
     errorCaught(
       state,
-      { payload: error }: PayloadAction<{ message: string; stack?: string }>,
+      { payload: error }: PayloadAction<Array<SerialisableError>>,
     ) {
       // blat out all open menus - the menu may have caused the error!
       state.openMenus = [
