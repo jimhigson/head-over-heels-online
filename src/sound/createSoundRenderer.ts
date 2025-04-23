@@ -17,6 +17,7 @@ import { SpringSoundRenderer } from "./itemSoundRenderers/SpringSoundRenderer";
 import { SwitchSoundRenderer } from "./itemSoundRenderers/SwitchSoundRenderer";
 import { TeleporterSoundRenderer } from "./itemSoundRenderers/TeleporterSoundRenderer";
 import { FiredDoughnutSoundRenderer } from "./itemSoundRenderers/FiredDoughnutSoundRenderer";
+import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
 
 const rendererClasses: {
   [T in ItemInPlayType]?: ItemSoundRendererConstructableClass<T>;
@@ -36,6 +37,7 @@ const rendererClasses: {
   ball: BallSoundRenderer,
   pushableBlock: PushableBlockSoundRenderer,
   firedDoughnut: FiredDoughnutSoundRenderer,
+  slidingBlock: SlidingBlockSoundRenderer,
 };
 
 export const createSoundRenderer = <

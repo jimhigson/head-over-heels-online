@@ -45,6 +45,8 @@ export const handleItemTouchingSwitch = <
         targetItem.state = {
           ...targetItem.state,
           [modification.key]: modification[newSetting],
+          switchedAtRoomTime: room.roomTime,
+          switchedSetting: newSetting,
         };
       }
 

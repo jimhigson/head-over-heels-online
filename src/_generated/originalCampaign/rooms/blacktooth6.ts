@@ -47,35 +47,6 @@ export const room = inferRoomJson({
       position: { x: 0, y: 3, z: 1 },
       type: "door",
     },
-    extraMonster: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      isExtra: true,
-      position: { x: 0, y: 0, z: 1 },
-      type: "monster",
-    },
-    extraMonster2: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      isExtra: true,
-      position: { x: 7, y: 7, z: 3 },
-      type: "monster",
-    },
-    "monster@3,0,1": {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 3, y: 0, z: 1 },
-      type: "monster",
-    },
     "pickup@7,7,1": {
       config: { gives: "doughnuts" },
       position: { x: 7, y: 7, z: 1 },
@@ -93,6 +64,7 @@ export const room = inferRoomJson({
     },
     "switch@6,0,1": {
       config: {
+        initialSetting: "left",
         modifies: [
           {
             expectType: "block",
@@ -107,27 +79,6 @@ export const room = inferRoomJson({
             left: "onStand",
             right: null,
             target: "block@3,7,0",
-          },
-          {
-            expectType: "monster",
-            key: "activated",
-            left: true,
-            right: false,
-            target: "monster@3,0,1",
-          },
-          {
-            expectType: "monster",
-            key: "activated",
-            left: true,
-            right: false,
-            target: "extraMonster",
-          },
-          {
-            expectType: "monster",
-            key: "activated",
-            left: true,
-            right: false,
-            target: "extraMonster2",
           },
         ],
         type: "in-room",

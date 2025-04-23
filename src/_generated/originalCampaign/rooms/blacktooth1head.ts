@@ -29,6 +29,7 @@ export const room = inferRoomJson({
     },
     colouriseSwitch: {
       config: {
+        initialSetting: "left",
         path: "userSettings.displaySettings.uncolourised",
         type: "in-store",
       },

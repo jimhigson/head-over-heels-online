@@ -284,6 +284,7 @@ export const room = inferRoomJson({
     },
     uhohSwitch: {
       config: {
+        initialSetting: "left",
         modifies: [
           {
             expectType: "monster",

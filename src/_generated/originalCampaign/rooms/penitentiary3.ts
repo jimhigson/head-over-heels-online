@@ -49,12 +49,13 @@ export const room = inferRoomJson({
     },
     "switch@0,0,0": {
       config: {
+        initialSetting: "right",
         modifies: [
           {
             expectType: "movingPlatform",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "movingPlatform@0,1,0",
           },
           {
@@ -72,12 +73,13 @@ export const room = inferRoomJson({
     },
     "switch@7,7,0": {
       config: {
+        initialSetting: "right",
         modifies: [
           {
             expectType: "movingPlatform",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "movingPlatform@0,1,0",
           },
           {

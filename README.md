@@ -70,6 +70,17 @@ Quite a lot of rooms have been changed while keeping the original gameplay intac
 
 ![screenshot](before) ![screenshot](after)
 
+Switches
+--------
+
+It wasn't always obvious in the original game what a switch does. There's now flashes to make this clearer.
+
+[anim of touching a switch]
+
+switches can also start off (left):
+
+[anim of head solving penitentiary3]
+
 Spikes
 ------
 

@@ -519,6 +519,7 @@ const convertItem = async ({
           // this doesn't seem to be in the xml - will need to be added via a patch
           type: "in-room",
           modifies: [],
+          initialSetting: "left",
         },
         position,
       };

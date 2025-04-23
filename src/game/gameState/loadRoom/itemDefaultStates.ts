@@ -15,6 +15,7 @@ export const defaultBaseState = <RoomItemId extends string>() =>
     expires: null,
     stoodOnBy: {} as StoodOnBy<RoomItemId>,
     disappear: null,
+    switchedAtRoomTime: neverTime,
   }) satisfies Partial<BaseItemState>;
 
 export const defaultFreeItemState = <RoomItemId extends string>() =>
@@ -95,7 +96,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       }
     : {}),
     ...(jsonItem.type === "switch" ?
-      { setting: "left", touchedOnProgression: -1 }
+      { setting: jsonItem.config.initialSetting, touchedOnProgression: -1 }
     : {}),
     ...(jsonItem.type === "block" ?
       { disappear: jsonItem.config.disappearing ?? null }

@@ -7,6 +7,7 @@ import conveyorStartSoundUrl from "../../sounds/conveyorStart.mp3";
 import destroySoundUrl from "../../sounds/destroy.mp3";
 import detectSoundUrl from "../../sounds/detect.mp3";
 import drumSoundUrl from "../../sounds/bongo.mp3";
+import glassClinkSoundUrl from "../../sounds/glassClink.mp3";
 import headFallSoundUrl from "../../sounds/headFall.mp3";
 import headJumpSoundUrl from "../../sounds/headJump.mp3";
 import headWalkSoundUrl from "../../sounds/headWalk.mp3";
@@ -45,7 +46,7 @@ export type SoundId = keyof AppSounds;
 
 let loaded: AppSounds | undefined = undefined;
 
-const loadAndDecode = async (url: string) => {
+const loadAndDecode = async (url: string): Promise<AudioBuffer> => {
   return await audioCtx.decodeAudioData(await (await fetch(url)).arrayBuffer());
 };
 
@@ -60,6 +61,7 @@ const importSoundsOnce = importOnce(async () => {
     destroy: await loadAndDecode(destroySoundUrl),
     detect: await loadAndDecode(detectSoundUrl),
     drum: await loadAndDecode(drumSoundUrl),
+    glassClink: await loadAndDecode(glassClinkSoundUrl),
     headFall: await loadAndDecode(headFallSoundUrl),
     headJump: await loadAndDecode(headJumpSoundUrl),
     headWalk: await loadAndDecode(headWalkSoundUrl),

@@ -9,6 +9,7 @@
     "path": "/items/switch",
     "value": {
       "config": {
+        "initialSetting": "left",
         "modifies": [
           {
             "expectType": "monster",
@@ -58,6 +59,7 @@
     "path": "/items/switch2",
     "value": {
       "config": {
+        "initialSetting": "left",
         "modifies": [
           {
             "expectType": "monster",

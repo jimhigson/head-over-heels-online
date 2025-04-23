@@ -4,6 +4,7 @@
     "path": "/items/colouriseSwitch",
     "value": {
       "config": {
+        "initialSetting": "left",
         "path": "userSettings.displaySettings.uncolourised",
         "type": "in-store"
       },
