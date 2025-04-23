@@ -34,7 +34,7 @@ export const QuitGameConfirmDialog = () => {
               <MenuItem
                 doubleHeightWhenFocussed
                 id="no"
-                label="Don’t quit"
+                label="Back"
                 leader={
                   <span className="sprite texture-head.walking.awayLeft.2 selectedMenuItem:texture-animated-head.walking.towardsRight sprites-normal-height zx:sprite-revert-to-white" />
                 }
@@ -56,7 +56,7 @@ export const QuitGameConfirmDialog = () => {
               <MenuItem
                 doubleHeightWhenFocussed
                 id="yes"
-                label="Yes: quit"
+                label="Quit"
                 onSelect={useDispatchActionCallback(gameOver, {
                   offerReincarnation: false,
                 })}

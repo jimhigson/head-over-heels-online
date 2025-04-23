@@ -448,7 +448,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               }}
             >
               <span className="sprite texture-whiteRabbit" />
-              <span className="sprite texture-hud.char.2" />
+              <span className="sprite texture-hud.char.2 left-m2 relative" />
             </Button>
             <Button
               className="flex-1"
@@ -458,7 +458,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               }}
             >
               <span className="sprite texture-whiteRabbit" />
-              <span className="sprite texture-hud.char.🛡" />
+              <span className="sprite texture-hud.char.🛡 left-m2 relative" />
             </Button>
             <Button
               className="flex-1"
@@ -468,7 +468,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               }}
             >
               <span className="sprite texture-whiteRabbit" />
-              <span className="sprite texture-hud.char.⚡" />
+              <span className="sprite texture-hud.char.⚡ left-m2 relative" />
             </Button>
             <Button
               className="flex-1"
@@ -478,7 +478,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               }}
             >
               <span className="sprite texture-whiteRabbit" />
-              <span className="sprite texture-hud.char.♨" />
+              <span className="sprite texture-hud.char.♨ left-m2 relative" />
             </Button>
           </div>
 
