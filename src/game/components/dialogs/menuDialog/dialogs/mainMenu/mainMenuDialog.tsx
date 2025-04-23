@@ -17,6 +17,7 @@ import { Border } from "../../../../../../ui/Border";
 import { nerdFontDiscordChar } from "../../../../../../sprites/hudSritesheetData";
 import { detectIsPwa } from "../../../../../../utils/detectDeviceType";
 import { VersionDebugInfo } from "./VersionDebugInfo";
+import { useAppSelector } from "../../../../../../store/hooks";
 
 const PlayGameLabel = () => {
   const isGameRunning = useIsGameRunning();
@@ -41,11 +42,14 @@ const InstallMenuItem = () => {
 
 const QuitGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
+  const hasReincarnationPoint = useAppSelector(
+    (state) => state.gameMenus.reincarnationPoint !== undefined,
+  );
 
   return (
     <MenuItem
       id="quitGame"
-      label="End this game"
+      label={hasReincarnationPoint ? "quit / reincarnate" : "quit the game"}
       className="text-midRed zx:text-zxYellow"
       onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
       doubleHeightWhenFocussed

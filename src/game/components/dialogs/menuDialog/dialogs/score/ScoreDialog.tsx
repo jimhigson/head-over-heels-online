@@ -45,7 +45,8 @@ const ScoreDialogContents = () => {
   const maxScore = calculateScore(roomCount, 5);
 
   const scoreLabel =
-    score < 8_000 ? "dummy"
+    // dummy in the original but I thought that's a bit rude!
+    score < 8_000 ? "beginner"
     : score < 20_000 ? "novice"
     : score < 30_000 ? "spy"
     : score < 55_000 ? "master-spy"
