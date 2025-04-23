@@ -3,6 +3,7 @@ import { Component } from "react";
 import type { EmptyObject } from "type-fest";
 import { errorCaught } from "../../store/slices/gameMenusSlice";
 import { store } from "../../store/store";
+import { createSerialisableErrors } from "../redux/createSerialisableErrors";
 
 type ErrorBoundaryProps = PropsWithChildren<EmptyObject>;
 
@@ -21,7 +22,7 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, _info: ErrorInfo) {
-    store.dispatch(errorCaught({ message: error.message, stack: error.stack }));
+    store.dispatch(errorCaught(createSerialisableErrors(error)));
   }
 
   render() {

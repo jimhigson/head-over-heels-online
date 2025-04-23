@@ -27,6 +27,7 @@ import { loadSounds } from "../../sound/soundsLoader.ts";
 import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
 import { store } from "../../store/store.ts";
 import { errorCaught } from "../../store/slices/gameMenusSlice.ts";
+import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
@@ -87,11 +88,8 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
           thisEffectGameApi = await gameMain.default(campaign, inputState);
           setGameApi(thisEffectGameApi);
         }
-      } catch (e) {
-        const error = e as Error;
-        store.dispatch(
-          errorCaught({ message: error.message, stack: error.stack }),
-        );
+      } catch (thrown) {
+        store.dispatch(errorCaught(createSerialisableErrors(thrown)));
       }
     };
 
