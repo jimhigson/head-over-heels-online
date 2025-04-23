@@ -131,6 +131,8 @@ export const jumping: Mechanic<CharacterName> = <
   }
 
   const startingAJump =
+    // player cannot jump during death animation:
+    playableItem.state.action !== "death" &&
     inputStateTracker.currentActionPress("jump") !== "released" &&
     isJumpOffable(standingOn);
 
@@ -139,6 +141,7 @@ export const jumping: Mechanic<CharacterName> = <
       return {
         movementType: "steady",
         stateDelta: {
+          // clear our jumped flag:
           jumped: false,
         },
       };
