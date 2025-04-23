@@ -83,6 +83,17 @@ export type BaseItemState<RoomItemId extends string = string> = {
   stoodOnBy: StoodOnBy<RoomItemId>;
 
   disappear: Disappear;
+
+  /**
+   * the time when this item was last changed by a switch in the room -
+   * this exists so we can flash the item on being switched
+   */
+  switchedAtRoomTime: number;
+  /**
+   * if has ever been changed by a switch, the setting the switch last
+   * moved into to change this item
+   */
+  switchedSetting?: SwitchSetting;
 };
 
 export type ItemState<

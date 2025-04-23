@@ -16,6 +16,8 @@ import {
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { emptyObject } from "../../../utils/empty";
+import { defaultBaseState } from "./itemDefaultStates";
+import { neverTime } from "../../../utils/veryClose";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
@@ -90,6 +92,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
+        switchedAtRoomTime: neverTime,
       },
       aabb: addXyz(
         {
@@ -119,6 +122,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
+        switchedAtRoomTime: neverTime,
       },
       /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
          the bb very well */
@@ -156,6 +160,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
+        switchedAtRoomTime: neverTime,
       },
       aabb: addXyz(
         {
@@ -191,6 +196,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
+        switchedAtRoomTime: neverTime,
       },
       aabb: blockXyzToFineXyz({
         [axis]: 2,
@@ -233,6 +239,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         disappear: null,
+        switchedAtRoomTime: neverTime,
       },
       aabb: {
         [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
@@ -272,15 +279,13 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           relativeTo: "top",
         },
         state: {
+          ...defaultBaseState(),
           position: {
             ...blockXyzToFineXyz(
               addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
             ),
             z: 0,
           },
-          expires: null,
-          stoodOnBy: {} as StoodOnBy<RoomItemId>,
-          disappear: null,
         },
         aabb: addXyz(
           blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
@@ -301,6 +306,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       expires: null,
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       disappear: null,
+      switchedAtRoomTime: neverTime,
     },
   };
 }

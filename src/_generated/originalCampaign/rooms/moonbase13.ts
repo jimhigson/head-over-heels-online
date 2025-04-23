@@ -73,6 +73,7 @@ export const room = inferRoomJson({
     },
     switch: {
       config: {
+        initialSetting: "left",
         modifies: [
           {
             expectType: "monster",
@@ -118,6 +119,7 @@ export const room = inferRoomJson({
     },
     switch2: {
       config: {
+        initialSetting: "left",
         modifies: [
           {
             expectType: "monster",

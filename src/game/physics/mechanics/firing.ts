@@ -1,6 +1,5 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { StoodOnBy } from "src/model/StoodOnBy";
 import type { RoomState } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
@@ -18,6 +17,7 @@ import {
   addPokeableNumbers,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
+import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 
 /**
  * how far ahead of head the doughnuts start. This has to be enough to clear his bounding box,
@@ -57,6 +57,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
       id: `firedDoughnut/${gameState.progression}` as RoomItemId,
       shadowCastTexture: "shadow.smallRound",
       state: {
+        ...defaultBaseState(),
         position: addXyz(
           position,
           scaleXyz(direction, aheadStart),
@@ -66,8 +67,6 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
           fired: scaleXyz(direction, moveSpeedPixPerMs.firedDoughnut),
         },
         disappear: "onTouch",
-        expires: null,
-        stoodOnBy: {} as StoodOnBy<RoomItemId>,
       },
     };
 

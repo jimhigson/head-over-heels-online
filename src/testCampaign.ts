@@ -807,6 +807,7 @@ const rooms = {
         type: "switch",
         config: {
           type: "in-room",
+          initialSetting: "left",
           modifies: [
             {
               target: "t1",

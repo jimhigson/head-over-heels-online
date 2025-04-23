@@ -1,6 +1,5 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { StoodOnBy } from "src/model/StoodOnBy";
 import type { RoomJson } from "../../../model/RoomJson";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -76,10 +75,8 @@ export function* loadFloorAndCeiling<
         // no shadows on a none floor:
         shadowMask: undefined,
         state: {
+          ...defaultBaseState(),
           position: roomExtendedPosition,
-          expires: null,
-          stoodOnBy: {} as StoodOnBy<RoomItemId>,
-          disappear: null,
         },
         renders: true,
         fixedZIndex: -1,
@@ -107,10 +104,8 @@ export function* loadFloorAndCeiling<
 
         aabb: roomNaturalFootprintAabb,
         state: {
+          ...defaultBaseState(),
           position: floorPosition,
-          expires: null,
-          stoodOnBy: {} as StoodOnBy<RoomItemId>,
-          disappear: null,
         },
         renders: false,
       },
@@ -128,10 +123,8 @@ export function* loadFloorAndCeiling<
         aabb: roomExtendedFootprintAabb,
         shadowMask: { relativeTo: "origin" },
         state: {
+          ...defaultBaseState(),
           position: roomExtendedPosition,
-          expires: null,
-          stoodOnBy: {} as StoodOnBy<RoomItemId>,
-          disappear: null,
         },
         renders: true,
         fixedZIndex: -1,
@@ -165,10 +158,8 @@ export function* loadFloorAndCeiling<
 
         aabb: roomNaturalFootprintAabb,
         state: {
+          ...defaultBaseState(),
           position: ceilingPosition,
-          expires: null,
-          stoodOnBy: {} as StoodOnBy<RoomItemId>,
-          disappear: null,
         },
         renders: false,
       },

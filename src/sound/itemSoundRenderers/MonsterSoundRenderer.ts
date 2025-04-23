@@ -16,8 +16,7 @@ import {
   createBracketedSound,
   type BracketedSegmentOptions,
 } from "../soundUtils/createBracketedSound";
-import { keysIter } from "../../utils/entries";
-import { isEmpty } from "iter-tools";
+import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
 
 type PerMonsterSounds = {
   [M in MonsterWhich]?: BracketedSegmentOptions;
@@ -72,7 +71,9 @@ export class MonsterSoundRenderer<
 
   #turnaroundBracketed: BracketedSound<DirectionXy8 | undefined> | undefined;
   #ambientBracketed: BracketedSound<boolean> | undefined;
-  #collisionBracketed: BracketedSound<boolean> | undefined;
+  #collisionSoundRenderer?:
+    | CollisionSoundRenderer<RoomId, RoomItemId>
+    | undefined;
   #movingBracketed: BracketedSound<boolean> | undefined;
 
   constructor(
@@ -93,12 +94,11 @@ export class MonsterSoundRenderer<
     } = renderContext;
 
     if (collisionSounds[which] !== undefined) {
-      this.#collisionBracketed = createBracketedSound(
-        {
-          start: collisionSounds[which],
-        },
-        this.#spotChannel,
+      this.#collisionSoundRenderer = new CollisionSoundRenderer(
+        renderContext,
+        collisionSounds[which],
       );
+      this.#collisionSoundRenderer.output.connect(this.output);
     }
     if (turnaroundSounds[which] !== undefined) {
       this.#turnaroundBracketed = createBracketedSound(
@@ -126,17 +126,13 @@ export class MonsterSoundRenderer<
 
   tick() {
     const {
-      renderContext: {
-        item,
-        room: { roomTime },
-      },
+      renderContext: { item },
     } = this;
     const {
       state: {
         facing,
         activated,
         busyLickingDoughnutsOffFace,
-        collidedWith: { roomTime: roomTimeCollidedWith, by: collidedWith },
         vels: { walking },
       },
     } = item;
@@ -146,10 +142,8 @@ export class MonsterSoundRenderer<
       this.#turnaroundBracketed(facingXy8);
     }
 
-    if (this.#collisionBracketed) {
-      const hitSomething =
-        roomTime === roomTimeCollidedWith && !isEmpty(keysIter(collidedWith));
-      this.#collisionBracketed(hitSomething);
+    if (this.#collisionSoundRenderer) {
+      this.#collisionSoundRenderer.tick();
     }
 
     if (this.#ambientBracketed) {

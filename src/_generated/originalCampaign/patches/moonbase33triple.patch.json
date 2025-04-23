@@ -28,6 +28,7 @@
     "path": "/items/uhohSwitch",
     "value": {
       "config": {
+        "initialSetting": "left",
         "modifies": [
           {
             "expectType": "monster",

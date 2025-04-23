@@ -17,6 +17,7 @@ import { multiplyBoundingBox } from "../../collision/boundingBoxes";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
+import { neverTime } from "../../../utils/veryClose";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal
@@ -92,6 +93,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       expires: null,
       disappear: null,
+      switchedAtRoomTime: neverTime,
     },
     shadowCastTexture:
       axis === "y" ? "shadow.wall.y" : (

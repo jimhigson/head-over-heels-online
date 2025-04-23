@@ -22,6 +22,7 @@ import { ItemSoundAndGraphicsRenderer } from "./ItemSoundAndGraphicsRenderer";
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
 import { defaultUserSettings } from "../../../../store/defaultUserSettings";
+import { ItemFlashOnSwitchedRenderer } from "./ItemFlashOnSwitchedRenderer";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
@@ -68,7 +69,7 @@ export const createItemRenderer = <
     (showBoundingBoxes === "non-wall" &&
       itemRenderContext.item.type !== "wall");
 
-  const pixiRenderers: ItemPixiRenderer<T, RoomId, RoomItemId>[] = [];
+  const siblingPixiRenderers: ItemPixiRenderer<T, RoomId, RoomItemId>[] = [];
 
   if (itemRenderContext.item.renders) {
     const appearance = itemAppearances[
@@ -79,12 +80,14 @@ export const createItemRenderer = <
       RoomItemId
     >;
 
-    const itemAppearanceRenderer = new ItemAppearanceRenderer<
-      T,
-      RoomId,
-      RoomItemId
-    >(itemRenderContext, appearance);
-    pixiRenderers.push(itemAppearanceRenderer);
+    const itemAppearanceRenderer = new ItemFlashOnSwitchedRenderer(
+      itemRenderContext,
+      new ItemAppearanceRenderer<T, RoomId, RoomItemId>(
+        itemRenderContext,
+        appearance,
+      ),
+    );
+    siblingPixiRenderers.push(itemAppearanceRenderer);
     if (renderBoundingBoxes) {
       itemAppearanceRenderer.output.alpha = 0.66;
     }
@@ -92,21 +95,24 @@ export const createItemRenderer = <
     // non-colourised rendering doesn't have shadows (yet) since it prevents
     // the colour revert shader from properly identifying black/non-black pixels
     if (colourise && hasShadowMask(itemRenderContext)) {
-      pixiRenderers.push(new ItemShadowRenderer(itemRenderContext));
+      siblingPixiRenderers.push(new ItemShadowRenderer(itemRenderContext));
     }
   }
   if (renderBoundingBoxes) {
-    pixiRenderers.push(new ItemBoundingBoxRenderer(itemRenderContext));
+    siblingPixiRenderers.push(new ItemBoundingBoxRenderer(itemRenderContext));
   }
 
   let graphics: ItemPixiRenderer<T, RoomId, RoomItemId> | undefined;
-  if (pixiRenderers.length === 0) {
+  if (siblingPixiRenderers.length === 0) {
     graphics = undefined;
   } else {
     const compositeRenderer =
-      pixiRenderers.length === 1 ?
-        pixiRenderers[0]
-      : new CompositeItemGraphicsRenderer(pixiRenderers, itemRenderContext);
+      siblingPixiRenderers.length === 1 ?
+        siblingPixiRenderers[0]
+      : new CompositeItemGraphicsRenderer(
+          siblingPixiRenderers,
+          itemRenderContext,
+        );
 
     assignPointerActions(item, compositeRenderer.output, gameState);
 

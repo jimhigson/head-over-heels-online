@@ -1,6 +1,6 @@
 import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 import type { ToggleablePaths } from "../../utils/Toggleable";
-import type { ItemInPlayType, ItemState } from "../ItemInPlay";
+import type { ItemInPlayType, ItemState, SwitchSetting } from "../ItemInPlay";
 
 type SwitchItemModification<
   RoomId extends string,
@@ -63,7 +63,7 @@ export type SwitchConfig<
   RoomId extends string,
   /** ids of items in this room */
   RoomItemId extends string,
-> =
+> = { initialSetting: SwitchSetting } & (
   | {
       /** this switch targets items in the room */
       type: "in-room";
@@ -75,4 +75,5 @@ export type SwitchConfig<
       type: "in-store";
       // special case for switches that read from and dispatch to the store:
       path: ToggleablePaths<GameMenusState>;
-    };
+    }
+);

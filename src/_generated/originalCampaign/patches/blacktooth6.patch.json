@@ -21,67 +21,7 @@
       "target": "block@3,7,0"
     }
   },
-  {
-    "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/2",
-    "value": {
-      "expectType": "monster",
-      "key": "activated",
-      "left": true,
-      "right": false,
-      "target": "monster@3,0,1"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/3",
-    "value": {
-      "expectType": "monster",
-      "key": "activated",
-      "left": true,
-      "right": false,
-      "target": "extraMonster"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/4",
-    "value": {
-      "expectType": "monster",
-      "key": "activated",
-      "left": true,
-      "right": false,
-      "target": "extraMonster2"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraMonster",
-    "value": {
-      "config": {
-        "activated": "on",
-        "movement": "patrol-randomly-diagonal",
-        "which": "dalek"
-      },
-      "isExtra": true,
-      "position": { "x": 0, "y": 0, "z": 1 },
-      "type": "monster"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraMonster2",
-    "value": {
-      "config": {
-        "activated": "on",
-        "movement": "patrol-randomly-diagonal",
-        "which": "dalek"
-      },
-      "isExtra": true,
-      "position": { "x": 7, "y": 7, "z": 3 },
-      "type": "monster"
-    }
-  },
+  { "op": "remove", "path": "/items/monster@3,0,1" },
   {
     "op": "add",
     "path": "/items/scroll",

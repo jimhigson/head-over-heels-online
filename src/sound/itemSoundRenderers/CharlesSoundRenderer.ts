@@ -1,11 +1,14 @@
 import { audioCtx } from "../audioCtx";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
+import type {
+  ItemSoundRenderer,
+  ItemSoundRendererConstructableClass,
+} from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
 import { isJoystick } from "../../game/physics/itemPredicates";
 import { iterate } from "../../utils/iterate";
 import { keysIter } from "../../utils/entries";
-import { isEmpty } from "iter-tools";
+import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
 
 export class CharlesSoundRenderer<
   RoomId extends string,
@@ -16,7 +19,6 @@ export class CharlesSoundRenderer<
 
   // add the walking buffer sources to here to play them
   #servoChannel: GainNode = audioCtx.createGain();
-  #collisionChannel: GainNode = audioCtx.createGain();
 
   #servoBracketed = createBracketedSound(
     {
@@ -27,12 +29,7 @@ export class CharlesSoundRenderer<
     this.#servoChannel,
   );
 
-  #collisionBracketed = createBracketedSound(
-    {
-      start: { soundId: "metalHit" },
-    },
-    this.#collisionChannel,
-  );
+  #collisionsSoundRenderer: CollisionSoundRenderer<RoomId, RoomItemId>;
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<
@@ -43,8 +40,12 @@ export class CharlesSoundRenderer<
   ) {
     this.#servoChannel.connect(this.output);
     this.#servoChannel.gain.value = 0.5;
-    this.#collisionChannel.connect(this.output);
-    this.#collisionChannel.gain.value = 0.3;
+    this.#collisionsSoundRenderer = new CollisionSoundRenderer(
+      renderContext,
+      { soundId: "metalHit" },
+      0.3,
+    );
+    this.#collisionsSoundRenderer.output.connect(this.output);
   }
 
   tick() {
@@ -57,7 +58,6 @@ export class CharlesSoundRenderer<
     const {
       state: {
         actedOnAt: { roomTime: roomTimeActedOn, by },
-        collidedWith: { roomTime: roomTimeCollidedWith, by: collidedWith },
       },
     } = item;
 
@@ -67,11 +67,10 @@ export class CharlesSoundRenderer<
 
     this.#servoBracketed(controlledByJoystick);
 
-    const hitSomething =
-      roomTime === roomTimeCollidedWith && !isEmpty(keysIter(collidedWith));
-
-    this.#collisionBracketed(hitSomething);
+    this.#collisionsSoundRenderer.tick();
   }
 
   destroy(): void {}
 }
+
+CharlesSoundRenderer satisfies ItemSoundRendererConstructableClass<"charles">;

@@ -31,6 +31,7 @@ import { noFilters } from "../filters/standardFilters";
 import { OneColourFilter } from "../filters/oneColourFilter";
 import {
   afterDeathInvulnerabilityFlashPeriod,
+  afterDeathInvulnerabilityFlashPhaseDuration,
   switchCharacterHighlightTime,
 } from "../../physics/mechanicsConstants";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
@@ -175,7 +176,8 @@ export const isFlashing = (playableItem: PlayableItem): boolean => {
 
   return (
     timeSinceLastDied % afterDeathInvulnerabilityFlashPeriod <
-    afterDeathInvulnerabilityFlashPeriod * 0.15
+    afterDeathInvulnerabilityFlashPeriod *
+      afterDeathInvulnerabilityFlashPhaseDuration
   );
 };
 

@@ -144,8 +144,12 @@ export const veryHighZ = 9999;
 export const originalGameStartingLives = 8;
 
 export const switchCharacterHighlightTime = 750;
+/** how long to be invincible for after dying and starting the next life? */
 export const afterDeathInvulnerabilityTime = 2_500;
+/** how quickly to flash after dying? */
 export const afterDeathInvulnerabilityFlashPeriod = 200;
+/** how long to flash for, as a fraction of the flash period */
+export const afterDeathInvulnerabilityFlashPhaseDuration = 0.15;
 
 /**
  * the deepest recursion in the game can go - ie, the longest chain of

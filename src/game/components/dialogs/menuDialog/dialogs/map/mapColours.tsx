@@ -40,7 +40,7 @@ export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
   },
   market: {
     bgClassName:
-      "fill-midRed zx:fill-zxCyan text-highlightBeige zx:text-zxBlack",
+      "fill-metallicBlueHalfbrite zx:fill-zxCyan text-highlightBeige zx:text-zxBlack",
     containerClassName:
       "bg-metallicBlueHalfbrite zx:bg-zxCyan scrollbar-track-metallicBlueHalfbrite zx:scrollbar-track-zxBlue scrollbar-thumb-highlightBeige zx:scrollbar-thumb-zxBlack",
   },
@@ -55,10 +55,9 @@ export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
       "bg-redShadow zx:bg-zxBlue scrollbar-track-redShadow zx:scrollbar-track-zxBlue scrollbar-thumb-moss zx:scrollbar-thumb-zxWhite",
   },
   freedom: {
-    bgClassName:
-      "fill-highlightBeige zx:fill-zxGreen text-white zx:text-zxBlack",
+    bgClassName: "fill-moss zx:fill-zxGreen text-metallicBlue zx:text-zxBlack",
     containerClassName:
-      "bg-highlightBeige zx:bg-zxGreen scrollbar-track-highlightBeige zx:scrollbar-track-zxGreen scrollbar-thumb-moss zx:scrollbar-thumb-zxBlack",
+      "bg-moss zx:bg-zxGreen scrollbar-track-moss zx:scrollbar-track-zxGreen scrollbar-thumb-moss zx:scrollbar-thumb-zxBlack",
   },
 };
 export const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
@@ -93,7 +92,7 @@ export const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
       );
     case "yellow":
       return (
-        "[--roomHintColor:theme(colors.highlightBeige)] " +
+        "[--roomHintColor:theme(colors.lightBeige)] " +
         "[--roomHintColorDarker:theme(colors.highlightBeigeHalfbrite)] " +
         "zx:[--roomHintColor:theme(colors.zxYellow)] " +
         "zx:[--roomHintColorDarker:theme(colors.zxYellowDimmed)]"

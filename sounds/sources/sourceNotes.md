@@ -82,3 +82,8 @@ landing:
 
 hushPuppyVanish:
     https://www.pond5.com/sound-effects/item/155201828-swoosh-click-vanish    
+
+clinking:
+    - lowered tone
+    - sped up
+    https://www.pond5.com/sound-effects/item/266172877-hitting-glass-bottle-single-clink
