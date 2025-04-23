@@ -12,6 +12,13 @@ import { MenuItems } from "../../MenuItems";
 import { multilineTextClass } from "../../multilineTextClass";
 import { useGameApi } from "../../../../GameApiContext";
 import { store } from "../../../../../../store/store";
+import type { GameApi } from "../../../../../GameApi";
+
+export const reincarnateSelected = (gameApi: GameApi<string>) => {
+  gameApi.reincarnateFrom(store.getState().gameMenus.reincarnationPoint!);
+  // dispatch something to close the menu and remove the reincarnation point
+  store.dispatch(reincarnationAccepted());
+};
 
 export const OfferReincarnationDialog = () => {
   const gameApi = useGameApi();
@@ -35,11 +42,7 @@ export const OfferReincarnationDialog = () => {
             id="reincarnate"
             label="Reincarnate"
             onSelect={() => {
-              gameApi.reincarnateFrom(
-                store.getState().gameMenus.reincarnationPoint!,
-              );
-              // dispatch something to close the menu and remove the reincarnation point
-              store.dispatch(reincarnationAccepted());
+              reincarnateSelected(gameApi);
             }}
           />
           <MenuItem
