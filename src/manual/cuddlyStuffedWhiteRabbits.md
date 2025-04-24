@@ -9,18 +9,18 @@ they will both get the enhanced power.
 
 There are four types:
 
-## ![](texture-hud.char.2?sprite-tinted&text-metallicBlue&sprites-normal-height) Two extra lives
-if you pick them up while head and heels are joined, they get two each
+## Two extra lives
+if you pick them up while head and heels are joined, they get *two each*
 
-## ![](texture-hud.shield?sprite-tinted&text-metallicBlue&sprites-normal-height) Iron pills
+## Iron pills ![](texture-hud.shield?sprite-tinted&text-metallicBlue&sprites-normal-height)
 
 ![](texture-animated-shine?text-metallicBlue&float-left)to make you invulnerable
 
-## ![](texture-hud.bigJumps?sprite-tinted&text-metallicBlue&sprites-normal-height)Jump higher bunny
+## ![](texture-hud.bigJumps?sprite-tinted&text-metallicBlue&sprites-normal-height)♨ Jump higher bunny ♨
 
-![](texture-heels.walking.right.2?text-metallicBlue&float-left)only works on Heels
+![](texture-animated-heels.idle.right?text-metallicBlue&float-left)only works on Heels
 
-## ![](texture-hud.fastSteps?sprite-tinted&text-metallicBlue&sprites-normal-height)Go faster bunny
-![](texture-head.walking.right.2?text-metallicBlue&float-left)only works on slow-moving Head
+## ![](texture-hud.fastSteps?sprite-tinted&text-metallicBlue&sprites-normal-height)⚡ Go faster bunny ⚡
+![](texture-animated-head.idle.right?text-metallicBlue&float-left)only works on slow-moving Head
 
 > Head Over Heels Manual
