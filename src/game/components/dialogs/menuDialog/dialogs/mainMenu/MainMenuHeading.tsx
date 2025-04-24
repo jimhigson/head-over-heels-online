@@ -30,7 +30,7 @@ export const MainMenuHeading = ({
           Heels
         </BitmapText>
         <div className="mt-1 resHandheld:mt-0 relative">
-          <span className="sprite zx:sprite-revert-to-white texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards relative z-topSprite" />
+          <span className="sprite zx:sprite-revert-to-white texture-animated-heels.idle.towards hover:texture-animated-heels.walking.towards relative z-topSprite" />
           <span className="sprite zx:hidden texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
         </div>
       </div>

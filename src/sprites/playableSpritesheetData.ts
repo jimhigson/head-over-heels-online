@@ -18,22 +18,33 @@ import { withSpeed } from "./withSpeed";
 
 export const playableWalkAnimationSpeed = 0.5;
 
-export const headBlinking = (
-  direction: DirectionXy8,
-  neutralWalkFrame: number,
-) => {
-  // head blinks every 5s in the original game
-  const headBlinkPeriod = 5_000;
-  const nonBlinkingFrames =
-    Math.round(headBlinkPeriod / (zxSpectrumFrameRate * 4)) - 3;
+// head blinks every 5s in the original game
+const headBlinkPeriod = 5_000;
+const heelsBlinkPeriod = headBlinkPeriod * 2;
+
+const headBlinking = (direction: DirectionXy8, neutralWalkFrame: number) => {
+  const totalFrames = Math.round(headBlinkPeriod / (zxSpectrumFrameRate * 4));
+
+  const neutralTextureId = `head.walking.${direction}.${neutralWalkFrame}`;
+  const blinkingTextureId = `head.blinking.${direction}`;
+  const blinkingFrames: Array<keyof typeof frames> = [
+    ...new Array(totalFrames - 3).fill(neutralTextureId),
+    blinkingTextureId,
+    neutralTextureId,
+    blinkingTextureId,
+  ];
+  return withSpeed(blinkingFrames, 0.5);
+};
+
+const heelsBlinking = (direction: DirectionXy8, neutralWalkFrame: number) => {
+  const totalFrames = Math.round(heelsBlinkPeriod / (zxSpectrumFrameRate * 4));
+
+  const neutralTextureId = `heels.walking.${direction}.${neutralWalkFrame}`;
+  const blinkingTextureId = `heels.blinking.${direction}`;
 
   const blinkingFrames: Array<keyof typeof frames> = [
-    ...new Array(nonBlinkingFrames).fill(
-      `head.walking.${direction}.${neutralWalkFrame}`,
-    ),
-    `head.blinking.${direction}`,
-    `head.walking.${direction}.${neutralWalkFrame}`,
-    `head.blinking.${direction}`,
+    ...new Array(Math.floor(totalFrames * 0.8)).fill(neutralTextureId),
+    ...new Array(Math.ceil(totalFrames * 0.2)).fill(blinkingTextureId),
   ];
   return withSpeed(blinkingFrames, 0.5);
 };
@@ -206,57 +217,124 @@ const frames = {
   ...seriesOfNumberedTextures(
     "bubbles.heels",
     6,
-    smallItemGridLocation({ x: 6, y: 6 }),
+    smallItemGridLocation({ x: 7, y: 6 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.towards",
     3,
-    smallItemGridLocation({ x: 8, y: 11 }),
+    smallItemGridLocation({ x: 9, y: 11 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.right",
     3,
-    smallItemGridLocation({ x: 11, y: 11 }),
+    smallItemGridLocation({ x: 12, y: 11 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.left",
     3,
-    smallItemGridLocation({ x: 8, y: 9 }),
+    smallItemGridLocation({ x: 9, y: 9 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.away",
     3,
-    smallItemGridLocation({ x: 11, y: 9 }),
+    smallItemGridLocation({ x: 12, y: 9 }),
     smallItemTextureSize,
   ),
+  "heels.falling.left": {
+    frame: {
+      ...smallItemGridLocation({ x: 9, y: 8 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.falling.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 13 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.falling.towards": {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 11 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.falling.away": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 8 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.falling.awayLeft": {
+    frame: {
+      ...smallItemGridLocation({ x: 10, y: 8 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.falling.awayRight": {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.falling.towardsRight": {
+    frame: {
+      ...smallItemGridLocation({ x: 10, y: 12 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.falling.towardsLeft": {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 10 }),
+      ...smallItemTextureSize,
+    },
+  },
   ...seriesOfNumberedTextures(
     "heels.walking.towardsRight",
     3,
-    smallItemGridLocation({ x: 10, y: 12 }),
+    smallItemGridLocation({ x: 11, y: 12 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.towardsLeft",
     3,
-    smallItemGridLocation({ x: 8, y: 10 }),
+    smallItemGridLocation({ x: 9, y: 10 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.awayRight",
     3,
-    smallItemGridLocation({ x: 11, y: 10 }),
+    smallItemGridLocation({ x: 12, y: 10 }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "heels.walking.awayLeft",
     3,
-    smallItemGridLocation({ x: 10, y: 8 }),
+    smallItemGridLocation({ x: 11, y: 8 }),
     smallItemTextureSize,
   ),
+  "heels.blinking.towards": {
+    frame: {
+      ...smallItemGridLocation({ x: 8, y: 12 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.blinking.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 12 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "heels.blinking.towardsRight": {
+    frame: {
+      ...smallItemGridLocation({ x: 12, y: 13 }),
+      ...smallItemTextureSize,
+    },
+  },
+
   ...seriesOfNumberedTextures(
     "shine",
     6,
@@ -300,6 +378,9 @@ export const playableSpritesheetData = {
     "head.idle.towardsRight": headBlinking("towardsRight", 2),
     "head.idle.towardsLeft": headBlinking("towardsLeft", 2),
     "head.idle.awayRight": headBlinking("awayRight", 2),
+    "heels.idle.right": heelsBlinking("right", 2),
+    "heels.idle.towards": heelsBlinking("towards", 2),
+    "heels.idle.towardsRight": heelsBlinking("towardsRight", 2),
     // teleport or death animations
     // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
     // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5

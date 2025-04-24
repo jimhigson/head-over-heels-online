@@ -145,8 +145,9 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
   // handle 'walking' while ascending/falling:
   if (type === "heels") {
     if (standingOnItemId === null) {
-      // heels has mandatory forward motion while jumping, but decelerates:
+      // heels is not standing on anything
       if (playableItem.state.jumped) {
+        // heels jumped - mandatory forward motion while jumping, but decelerates:
         return {
           movementType: "vel",
           vels: {
@@ -155,10 +156,24 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
               scaleXyz(previousWalkingVel, heelsJumpForwardDecel * deltaMS),
             ),
           },
+          stateDelta: {
+            action:
+              isFalling ? "falling"
+                // heels 'moves' while ascending in a jump (walk animation):
+              : "moving",
+          },
         };
       } else {
-        // when heels walks off something, should always fall vertically (zero motion here)
-        return stopWalking;
+        // heels walked off something, should always fall vertically (zero motion here)
+        return {
+          movementType: "vel",
+          vels: {
+            walking: originXyz,
+          },
+          stateDelta: {
+            action: "falling",
+          },
+        };
       }
     } else {
       if (jumpInput !== "released") {
@@ -224,13 +239,13 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
   }
 
   if (walkDistance > 0 && walkDistance < 1) {
+    // stopped walking, having moved some distance but less than a pixel
     const targetDistance =
       xyzEqual(walkStartFacing, facing) ?
-        // stopped walking, having moved some distance but less than a pixel - one pixel
-        // is the minimum move distance so add on the remaining to round up to a pixel:
+        // one pixel is the minimum move distance so add on the remaining to round up to a pixel:
         1
-        // turning around without walking forward - we will put the player back slightly
-        // to their starting position.
+        // turning around without walking forward - we will put the player back to their
+        // starting position.
       : 0;
 
     return {

@@ -1,6 +1,6 @@
 ## THE GAME
 
-![](texture-heels.walking.right.2)![](texture-animated-head.idle.towards?float-right)Head and Heels have been captured, separated and imprisoned in the castle
+![](texture-animated-heels.idle.right)![](texture-animated-head.idle.towards?float-right)Head and Heels have been captured, separated and imprisoned in the castle
 headquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including
 a wall ladder that Head really must learn to climb.
 
