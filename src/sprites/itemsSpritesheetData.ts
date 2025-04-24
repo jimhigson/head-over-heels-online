@@ -594,6 +594,15 @@ export const itemsSpritesheetData = {
       ["bubbles.white.1", "bubbles.white.2", "bubbles.white.3"] as const,
       0.5,
     ),
+    "bubbles.bounce.white": withSpeed(
+      [
+        "bubbles.white.1",
+        "bubbles.white.2",
+        "bubbles.white.3",
+        "bubbles.white.2",
+      ] as const,
+      0.5,
+    ),
     "bubbles.doughnut": withSpeed(
       ["bubbles.taupe.1", "bubbles.taupe.2"] as const,
       0.5,

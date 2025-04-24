@@ -137,11 +137,11 @@ export const MenuItem = ({
     </li>
   );
 
-  if (hintInline && hint && focussed) {
+  if (hintInline && hint) {
     return (
       <>
         {menuItem}
-        <div className="col-span-2 col-start-2">{hint}</div>
+        <div className="col-span-2 col-start-2 mb-2">{hint}</div>
       </>
     );
   } else {

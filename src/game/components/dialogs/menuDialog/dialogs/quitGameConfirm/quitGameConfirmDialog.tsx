@@ -15,6 +15,7 @@ import Portal from "@mutabazia/react-portal";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { reincarnateSelected } from "../offerReincarnation/OfferReincarnationDialog";
 import { useGameApi } from "../../../../GameApiContext";
+import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 
 export const QuitGameConfirmDialog = () => {
   const hasReincarnationPoint = useAppSelector(
@@ -36,7 +37,9 @@ export const QuitGameConfirmDialog = () => {
                 id="no"
                 label="Back"
                 leader={
-                  <span className="sprite texture-head.walking.awayLeft.2 selectedMenuItem:texture-animated-head.walking.towardsRight sprites-normal-height zx:sprite-revert-to-white" />
+                  <span
+                    className={`${spriteLeaderClasses} sprite texture-head.walking.awayLeft.2 selectedMenuItem:texture-animated-head.walking.towardsRight sprites-normal-height zx:sprite-revert-to-white`}
+                  />
                 }
                 onSelect={useDispatchActionCallback(backToParentMenu)}
                 hint="Back to the game"
@@ -47,7 +50,9 @@ export const QuitGameConfirmDialog = () => {
                   id="reincarnate"
                   label="Reincarnate"
                   leader={
-                    <span className="sprite texture-fish.1 selectedMenuItem:texture-animated-fish sprites-normal-height zx:sprite-revert-to-white" />
+                    <span
+                      className={`${spriteLeaderClasses} sprite texture-fish.1 selectedMenuItem:texture-animated-fish sprites-normal-height zx:sprite-revert-to-white`}
+                    />
                   }
                   onSelect={() => reincarnateSelected(gameApi)}
                   hint="Go back and continue from the last reincarnation fish you ate"
@@ -61,7 +66,9 @@ export const QuitGameConfirmDialog = () => {
                   offerReincarnation: false,
                 })}
                 leader={
-                  <span className="sprite texture-bubbles.white.1 selectedMenuItem:texture-animated-bubbles.white sprites-normal-height zx:sprite-revert-to-white" />
+                  <span
+                    className={`${spriteLeaderClasses} sprite texture-bubbles.white.1 selectedMenuItem:texture-animated-bubbles.bounce.white sprites-normal-height zx:sprite-revert-to-white`}
+                  />
                 }
                 hint={
                   <BlockyMarkdown
