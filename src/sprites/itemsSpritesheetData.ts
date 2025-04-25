@@ -340,7 +340,7 @@ const frames = {
   // deliberately blank sprite to use as a noop
   blank: {
     frame: {
-      ...smallItemGridLocation({ x: 14, y: 6 }),
+      ...smallItemGridLocation({ x: 0, y: 2 }),
       ...smallItemTextureSize,
     },
   },
@@ -348,33 +348,37 @@ const frames = {
   ...seriesOfNumberedTextures(
     "lift",
     4,
-    smallItemGridLocation({ x: 7, y: 7 }),
+    smallItemGridLocation({ x: 10, y: 8 }),
     smallItemTextureSize,
   ),
   "lift.static": {
     frame: {
-      ...smallItemGridLocation({ x: 11, y: 7 }),
+      ...smallItemGridLocation({ x: 10, y: 7 }),
       ...smallItemTextureSize,
     },
   },
 
   "shadow.smallBlock": {
     frame: {
-      ...smallItemGridLocation({ x: 12, y: 7 }),
+      ...smallItemGridLocation({ x: 11, y: 7 }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.smallBlock": {
     frame: {
-      ...smallItemGridLocation({ x: 13, y: 7 }),
+      ...smallItemGridLocation({ x: 12, y: 7 }),
       ...smallItemTextureSize,
     },
   },
 
-  ...fourDirections("skiHead.greenAndPink", { x: 1, y: 327 }, { w: 24, h: 32 }),
+  ...fourDirections(
+    "skiHead.greenAndPink",
+    { x: 251, y: 227 },
+    { w: 24, h: 32 },
+  ),
   ...fourDirections(
     "skiHead.starsAndStripes",
-    { x: 51, y: 327 },
+    { x: 301, y: 227 },
     { w: 24, h: 32 },
   ),
 
