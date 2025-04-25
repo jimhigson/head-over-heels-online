@@ -2,6 +2,6 @@
 
 import { spritesheetData } from "../src/sprites/spriteSheetData";
 
-const { frame } = spritesheetData.frames["head.falling.right"];
+const { frame } = spritesheetData.frames["heels.walking.towardsRight.3"];
 // conveniently write to imagemagick's preferred crop format:
 console.log(`${frame.w}x${frame.h}+${frame.x}+${frame.y}`);

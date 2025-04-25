@@ -64,6 +64,7 @@ export const seriesOfNumberedTextures = <
   n: N,
   { x: startX, y: startY }: Xy,
   textureSize: SpriteSize,
+  rowSize: number = n,
 ): Record<NumberedTextureName<TName, N>, SpritesheetFrameData> => {
   type Name = NumberedTextureName<TName, N>;
 
@@ -73,8 +74,8 @@ export const seriesOfNumberedTextures = <
         `${name}.${i + 1}` as Name,
         {
           frame: {
-            x: startX + i * (textureSize.w + 1),
-            y: startY,
+            x: startX + (i % rowSize) * (textureSize.w + 1),
+            y: startY + Math.floor(i / rowSize) * (textureSize.h + 1),
             ...textureSize,
           },
         },
