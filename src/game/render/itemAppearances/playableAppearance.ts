@@ -43,11 +43,20 @@ import {
 import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 
+/*
+  if the ascent speed while jumping is less than this,
+  show the walking sprite with feet together instead of
+  jumping sprite - this creates a transition at the top of
+  the jump towards the falling sprite
+*/
+const jumpSpriteGravityZThreshold = 0.02;
+
 const playableCreateSpriteOptions = ({
   name,
   action,
   facingXy8,
   teleportingPhase,
+  gravityZ,
   paused,
 }: ItemRenderProps<CharacterName> & {
   name: IndividualCharacterName;
@@ -77,6 +86,16 @@ const playableCreateSpriteOptions = ({
   if (action === "moving") {
     return {
       animationId: `${name}.walking.${facingXy8}`,
+      paused,
+    };
+  }
+
+  if (action === "jumping") {
+    return {
+      textureId:
+        gravityZ < jumpSpriteGravityZThreshold ?
+          `${name}.walking.${facingXy8}.2`
+        : `${name}.walking.${facingXy8}.1`,
       paused,
     };
   }
@@ -304,7 +323,14 @@ export const playableAppearance = <
 >): ItemAppearanceReturn<CharacterName, PlayableRenderTarget> => {
   const {
     type,
-    state: { action, facing, teleporting },
+    state: {
+      action,
+      facing,
+      teleporting,
+      vels: {
+        gravity: { z: gravityZ },
+      },
+    },
   } = subject;
 
   const facingXy8 = vectorClosestDirectionXy8(facing) ?? "towards";
@@ -334,6 +360,7 @@ export const playableAppearance = <
     flashing,
     highlighted,
     shining,
+    gravityZ,
   };
 
   const refreshSprites =
@@ -341,7 +368,9 @@ export const playableAppearance = <
     currentlyRenderedProps === undefined ||
     currentlyRenderedProps.action !== action ||
     currentlyRenderedProps.facingXy8 !== facingXy8 ||
-    currentlyRenderedProps.teleportingPhase !== teleportingPhase;
+    currentlyRenderedProps.teleportingPhase !== teleportingPhase ||
+    currentlyRenderedProps?.gravityZ > jumpSpriteGravityZThreshold !==
+      gravityZ > jumpSpriteGravityZThreshold;
 
   let outputContainer: PlayableRenderTarget;
 

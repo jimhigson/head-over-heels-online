@@ -7,6 +7,7 @@ import type { JsonItemConfig } from "./json/JsonItem";
 export type PlayableActionState =
   | "moving"
   | "idle"
+  | "jumping"
   | "falling"
   /** death animation is playing - character will have had expired set  */
   | "death";
