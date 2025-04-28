@@ -32,7 +32,9 @@ const markdownComponents: CustomComponentsOption = {
     children,
   }: PropsWithChildren<EmptyObject>) {
     return (
-      <blockquote className="mt-1 mb-1 text-moss zx:text-zxBlue clear-both">
+      <blockquote
+        className={`${multilineTextClass} mt-1 mb-1 text-moss zx:text-zxBlue clear-both`}
+      >
         <MultipleBitmapText>&gt; {children}</MultipleBitmapText>
       </blockquote>
     );
@@ -105,7 +107,9 @@ const markdownComponents: CustomComponentsOption = {
     );
   },
   hr: function Hr() {
-    return <hr className="bg-pastelBlue zx:bg-zxWhite h-1 mb-1 border-none" />;
+    return (
+      <hr className="bg-metallicBlue zx:bg-zxWhite h-half mb-half border-none" />
+    );
   },
 };
 

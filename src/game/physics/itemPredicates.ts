@@ -174,19 +174,28 @@ export type FreeItem<
   ScN extends SceneryName = SceneryName,
 > = ItemTypeUnion<FreeItemTypes, RoomId, RoomItemId, ScN>;
 
-export const deadlyItemTypes = [
-  "monster",
+const deadlyItemTypes = [
+  "monster", // unless deactivated
   "deadlyBlock",
   "moveableDeadly",
   "slidingDeadly",
 ] as const satisfies ItemInPlayType[];
 export type DeadlyItemType = (typeof deadlyItemTypes)[number];
 
+export const isDeadlyType = isItemType(...deadlyItemTypes);
+
 export const isDeadly = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId, RoomItemId> =>
-  isItemType(...deadlyItemTypes)(item) ||
-  (item.type === "floor" && item.config.type === "deadly");
+): item is ItemTypeUnion<"floor" | DeadlyItemType, RoomId, RoomItemId> => {
+  if (isMonster(item) && !item.state.activated) {
+    return false;
+  }
+
+  return (
+    isDeadlyType(item) ||
+    (item.type === "floor" && item.config.type === "deadly")
+  );
+};
 
 export const isMultipliedItem = <
   RoomId extends string,
