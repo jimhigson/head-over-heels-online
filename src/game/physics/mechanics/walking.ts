@@ -160,7 +160,7 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
             action:
               isFalling ? "falling"
                 // heels 'moves' while ascending in a jump (walk animation):
-              : "moving",
+              : "jumping",
           },
         };
       } else {

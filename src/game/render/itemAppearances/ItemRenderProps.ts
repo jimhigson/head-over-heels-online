@@ -18,6 +18,7 @@ type PlayableRenderProps = {
   facingXy8: DirectionXy8;
   action: PlayableActionState;
   teleportingPhase: "in" | "out" | null;
+  gravityZ: number;
 
   highlighted: boolean;
   flashing: boolean;

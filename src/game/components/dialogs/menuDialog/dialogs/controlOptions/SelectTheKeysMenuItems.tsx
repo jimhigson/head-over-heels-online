@@ -136,7 +136,7 @@ export const SelectTheKeysMenuItems = () => {
         hint={
           <BlockyMarkdown
             className="text-midGrey zx:text-zxBlack"
-            markdown={`**heels only**. requires the bag`}
+            markdown={`**carrying is heels only**. requires the bag`}
           />
         }
         hintInline
@@ -152,7 +152,7 @@ export const SelectTheKeysMenuItems = () => {
         hint={
           <BlockyMarkdown
             className="text-midGrey zx:text-zxBlack"
-            markdown={`**head only**. requires the hooter`}
+            markdown={`**firing doughnuts is head only**. requires the hooter`}
           />
         }
         hintInline
@@ -232,6 +232,13 @@ export const SelectTheKeysMenuItems = () => {
             className={`${spriteLeaderClasses} texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.walking.towardsRight`}
           />
         }
+      />
+      <MenuItem
+        id="map"
+        label="Map"
+        valueElement={<SelectKeysMenuAssignmentValue action="map" />}
+        onSelect={useDispatchActionCallback(assignInputStart, "map")}
+        leader={<span className={`${spriteLeaderClasses} texture-scroll`} />}
       />
       <MenuItem
         id="hold"
