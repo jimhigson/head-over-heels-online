@@ -23,6 +23,16 @@ export type PlayableTeleportingState =
       timeRemaining: number;
     };
 
+type TimedRelationWithOtherItem<RoomItemId extends string> = {
+  /** by recording the time of the event,
+   * we allow rendering to take into account events that happened in sub-ticks since the room's
+   * last render
+   */
+  roomTime: number;
+  /** the ids of the item is related to */
+  by: Record<RoomItemId, true>;
+};
+
 export type FreeItemState<RoomItemId extends string> = {
   /* id of the single item we are considered to be standing on, or null if not standing on anything */
   standingOnItemId: RoomItemId | null;
@@ -38,15 +48,9 @@ export type FreeItemState<RoomItemId extends string> = {
   };
 
   /** the roomTime when this item last had a force applied to it, and who did the pushing/acting */
-  actedOnAt: {
-    roomTime: number;
-    by: Record<RoomItemId, true>;
-  };
-  /** the roomTime when this item last collided into something, and who was the collider? */
-  collidedWith: {
-    roomTime: number;
-    by: Record<RoomItemId, true>;
-  };
+  actedOnAt: TimedRelationWithOtherItem<RoomItemId>;
+  /** when this item last collided into something, and who did we collide into */
+  collidedWith: TimedRelationWithOtherItem<RoomItemId>;
 };
 
 type SlidingItemState<RoomItemId extends string> = FreeItemState<RoomItemId> & {

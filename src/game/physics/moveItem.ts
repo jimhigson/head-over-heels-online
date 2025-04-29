@@ -8,7 +8,7 @@ import { isFreeItem } from "./itemPredicates";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
 import { isSolid } from "./itemPredicates";
-import { mtv } from "./slidingCollision";
+import { mtv } from "./mtv";
 import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
 import {
   removeStandingOn,
@@ -22,11 +22,13 @@ import {
   addXyz,
   subXyz,
   scaleXyz,
+  lengthXyz,
 } from "../../utils/vectors/vectors";
 import { maxPushRecursionDepth } from "./mechanicsConstants";
 import { roomItemsIterable, type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
+import { veryClose } from "../../utils/veryClose";
 
 const log = 0;
 
@@ -82,8 +84,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   } = subjectItem;
 
   if (log)
-    console.log(
-      `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+    console.group(
+      `[${pusher ? `push by ${pusher.id}` : "first cause"} in ${room.id}]`,
       `💨 moving ${subjectItem.id} @`,
       subjectItem.state.position,
       `bb:`,
@@ -119,16 +121,24 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     collision1toMany(subjectItem, roomItemsIterable(room.items)),
   );
 
-  if (log)
-    console.log(
-      `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
-      subjectItem.id,
-      "💥 collided with:",
-      `[${sortedCollisions.map((c) => c.id).join(", ")}]`,
-      sortedCollisions,
-      "from room items:",
-      room.items,
-    );
+  if (log) {
+    if (sortedCollisions.length === 0) {
+      console.log(
+        `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+        subjectItem.id,
+        "💥👎 'did not collide with anything",
+      );
+    } else
+      console.log(
+        `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+        subjectItem.id,
+        "💥 collided with item(s):",
+        `[${sortedCollisions.map((c) => c.id).join(", ")}]`,
+        sortedCollisions,
+        "from room items:",
+        room.items,
+      );
+  }
 
   let touchedJoystick = false;
   for (const collidedWithItem of sortedCollisions) {
@@ -136,23 +146,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       // it is possible there is no longer a collision due to previous sliding - we have
       // been protected from this collision by previous collisions so it no longer applies
       continue;
-    }
-
-    if (isFreeItem(subjectItem)) {
-      // it isn't clear why a non-free item would be colliding with anything
-      const { collidedWith } = subjectItem.state;
-      // record the collision
-      if (collidedWith.roomTime === room.roomTime) {
-        if (pusher) {
-          collidedWith.by[collidedWithItem.id] = true;
-        }
-      } else {
-        collidedWith.by = { [collidedWithItem.id]: true } as Record<
-          RoomItemId,
-          true
-        >;
-        collidedWith.roomTime = room.roomTime;
-      }
     }
 
     const collisionIsWithJoystick = isJoystick(collidedWithItem);
@@ -189,6 +182,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         console.log(
           `mover ${subjectItem.id} is not in the room, so will halt processing their movement`,
         );
+        console.groupEnd();
       }
       return;
     }
@@ -218,6 +212,26 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       subjectItem.aabb,
       collidedWithItem.state.position,
       collidedWithItem.aabb,
+    );
+
+    /**
+     * already touching distinguishes between hitting something and scraping on it, or landing on the ground
+     * and the collision detection finding that you were already standing on it. Used to set the collidedWith
+     * state - for example, for sound rendering
+     */
+    const wasAlreadyTouchingCollidedWithItem = veryClose(
+      lengthXyz(
+        mtv(
+          // look back to check with the original position, not the current, updated position
+          // after the movement delta was applied:
+          originalPosition,
+          subjectItem.aabb,
+          collidedWithItem.state.position,
+          collidedWithItem.aabb,
+        ),
+      ),
+      // a zero mtv means we are already touching the item, but not intersecting it
+      0,
     );
 
     if (log)
@@ -328,5 +342,45 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         setStandingOn({ above: subjectItem, below: collidedWithItem });
       }
     }
+
+    if (
+      // it isn't clear why a non-free item would be colliding with anything(?)
+      isFreeItem(subjectItem) &&
+      // checking not already touching prevents 'scraping' from rendering/sounding like a collision
+      // however - maybe if we want scraping sounds this could be useful
+      !wasAlreadyTouchingCollidedWithItem
+    ) {
+      if (log)
+        console.log(
+          `📝 recording to state: collision of ${subjectItem.id} with ${collidedWithItem.id}`,
+          "originalPosition:",
+          originalPosition,
+          "->",
+          "newPosition:",
+          subjectItem.state.position,
+          "delta",
+          subXyz(subjectItem.state.position, originalPosition),
+        );
+
+      // record the collision in the subject(colliding items)'s state
+      const { collidedWith } = subjectItem.state;
+
+      if (collidedWith.roomTime === room.roomTime) {
+        // add to the collidedWith since it is recording the same time
+        if (pusher) {
+          collidedWith.by[collidedWithItem.id] = true;
+        }
+      } else {
+        // throw away collided with since it is for an older time which can now be
+        // overwritten
+        collidedWith.by = { [collidedWithItem.id]: true } as Record<
+          RoomItemId,
+          true
+        >;
+        collidedWith.roomTime = room.roomTime;
+      }
+    }
   }
+
+  if (log) console.groupEnd();
 };

@@ -38,7 +38,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #floorEdgeContainer: Container = new Container({ label: "floorEdge" });
 
   public readonly output: SetRequired<SoundAndGraphicsOutput, "graphics">;
-  #everRendered: boolean = false;
+  /**
+   * the roomtime when the renderer was last rendered - this can be useful when things
+   * happen in sub-ticks, to know if they are relevant to the current render (ie if
+   * they happened since the last render) */
+  #lastRenderRoomTime: number | undefined = undefined;
   /**
    * store the edges of the behind/front graph between frames so we can incrementally update it
    */
@@ -103,8 +107,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       : new RevertColouriseFilter(getColorScheme(colour).main.original);
   }
 
-  #tickItems(tickContext: ItemTickContext<RoomId, RoomItemId>) {
+  #tickItems(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
     const { room } = this.renderContext;
+
+    const itemTickContext: ItemTickContext<RoomId, RoomItemId> = {
+      ...roomTickContext,
+      lastRenderRoomTime: this.#lastRenderRoomTime,
+    };
 
     for (const item of iterateRoomItems(room.items)) {
       let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
@@ -148,7 +157,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         }
       }
       try {
-        itemRenderer.tick(tickContext);
+        itemRenderer.tick(itemTickContext);
       } catch (e) {
         throw new Error(
           `room had an error while ticking item ${item.id}: ${(e as Error).message}`,
@@ -166,11 +175,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
-  #tickItemsZIndex(tickContext: RoomTickContext<RoomId, RoomItemId>) {
+  #tickItemsZIndex(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
     const { order } = sortByZPairs(
       zEdges(
         this.renderContext.room.items,
-        tickContext.movedItems,
+        roomTickContext.movedItems,
         this.#incrementalZEdges,
       ),
       this.renderContext.room.items,
@@ -188,7 +197,15 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
+  get #everRendered() {
+    return this.#lastRenderRoomTime !== undefined;
+  }
+
   tick(givenTickContext: RoomTickContext<RoomId, RoomItemId>) {
+    /*
+     * the given tick context, except override to consider everything to
+     * have moved if this is the first rendering
+     */
     const tickContext =
       this.#everRendered ? givenTickContext : (
         {
@@ -200,7 +217,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
     this.#roomScroller(
       selectCurrentPlayableItem(this.renderContext.gameState),
-      tickContext.deltaMS,
+      givenTickContext.deltaMS,
       !this.#everRendered,
     );
 
@@ -210,7 +227,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       this.#tickItemsZIndex(tickContext);
     }
 
-    this.#everRendered = true;
+    this.#lastRenderRoomTime = this.renderContext.room.roomTime;
   }
 
   destroy() {

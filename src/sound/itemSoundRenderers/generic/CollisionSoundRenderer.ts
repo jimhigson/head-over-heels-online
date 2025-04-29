@@ -9,6 +9,8 @@ import { createBracketedSound } from "../../soundUtils/createBracketedSound";
 import type { FreeItemTypes } from "../../../game/physics/itemPredicates";
 import { keysIter } from "../../../utils/entries";
 import { isEmpty } from "iter-tools";
+import type { ItemTickContext } from "../../../game/render/Renderer";
+import { neverTime } from "../../../utils/veryClose";
 
 export class CollisionSoundRenderer<
   RoomId extends string,
@@ -38,12 +40,9 @@ export class CollisionSoundRenderer<
     this.output.gain.value = gain;
   }
 
-  tick() {
+  tick({ lastRenderRoomTime }: ItemTickContext<RoomId, RoomItemId>) {
     const {
-      renderContext: {
-        item,
-        room: { roomTime },
-      },
+      renderContext: { item },
     } = this;
     const {
       state: {
@@ -51,10 +50,11 @@ export class CollisionSoundRenderer<
       },
     } = item;
 
-    const hitSomething =
-      roomTime === roomTimeCollidedWith && !isEmpty(keysIter(collidedWith));
+    const collidedWithSomething =
+      roomTimeCollidedWith > (lastRenderRoomTime ?? neverTime) &&
+      !isEmpty(keysIter(collidedWith));
 
-    this.#collisionBracketed(hitSomething);
+    this.#collisionBracketed(collidedWithSomething);
   }
 
   destroy(): void {}
