@@ -6,6 +6,19 @@ import { importAppOnce } from "./game/components/App.import";
 import { importOnceForReactSuspense } from "./utils/importOnce";
 import { LoadingBorder } from "./ui/LoadingBorder";
 
+import type { RegisterSWOptions } from "vite-plugin-pwa/types";
+import { registerSW } from "virtual:pwa-register";
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    // I don't ask the user, I just do it whenever the service worker
+    // is updated, since the game should be able to handle reloading at
+    // any time.
+    // This could be changed to show a dialog instead
+    updateSW(true);
+  },
+} satisfies RegisterSWOptions);
+
 const loadApp = importOnceForReactSuspense(async () => {
   const polyfillNeeded =
     !globalThis.Iterator ||
