@@ -73,34 +73,34 @@ export const room = inferRoomJson({
     },
     switch: {
       config: {
-        initialSetting: "left",
+        initialSetting: "right",
         modifies: [
           {
             expectType: "monster",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "monster@0,2,1",
           },
           {
             expectType: "monster",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "monster@0,3,1",
           },
           {
             expectType: "monster",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "monster@0,4,1",
           },
           {
             expectType: "monster",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "monster@0,5,1",
           },
           {
@@ -119,34 +119,34 @@ export const room = inferRoomJson({
     },
     switch2: {
       config: {
-        initialSetting: "left",
+        initialSetting: "right",
         modifies: [
           {
             expectType: "monster",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "monster@0,2,1",
           },
           {
             expectType: "monster",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "monster@0,3,1",
           },
           {
             expectType: "monster",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "monster@0,4,1",
           },
           {
             expectType: "monster",
             key: "activated",
-            left: false,
-            right: true,
+            left: true,
+            right: false,
             target: "monster@0,5,1",
           },
           {

@@ -9,34 +9,34 @@
     "path": "/items/switch",
     "value": {
       "config": {
-        "initialSetting": "left",
+        "initialSetting": "right",
         "modifies": [
           {
             "expectType": "monster",
             "key": "activated",
-            "left": false,
-            "right": true,
+            "left": true,
+            "right": false,
             "target": "monster@0,2,1"
           },
           {
             "expectType": "monster",
             "key": "activated",
-            "left": false,
-            "right": true,
+            "left": true,
+            "right": false,
             "target": "monster@0,3,1"
           },
           {
             "expectType": "monster",
             "key": "activated",
-            "left": false,
-            "right": true,
+            "left": true,
+            "right": false,
             "target": "monster@0,4,1"
           },
           {
             "expectType": "monster",
             "key": "activated",
-            "left": false,
-            "right": true,
+            "left": true,
+            "right": false,
             "target": "monster@0,5,1"
           },
           {
@@ -59,34 +59,34 @@
     "path": "/items/switch2",
     "value": {
       "config": {
-        "initialSetting": "left",
+        "initialSetting": "right",
         "modifies": [
           {
             "expectType": "monster",
             "key": "activated",
-            "left": false,
-            "right": true,
+            "left": true,
+            "right": false,
             "target": "monster@0,2,1"
           },
           {
             "expectType": "monster",
             "key": "activated",
-            "left": false,
-            "right": true,
+            "left": true,
+            "right": false,
             "target": "monster@0,3,1"
           },
           {
             "expectType": "monster",
             "key": "activated",
-            "left": false,
-            "right": true,
+            "left": true,
+            "right": false,
             "target": "monster@0,4,1"
           },
           {
             "expectType": "monster",
             "key": "activated",
-            "left": false,
-            "right": true,
+            "left": true,
+            "right": false,
             "target": "monster@0,5,1"
           },
           {
