@@ -34,7 +34,9 @@ import type { ItemInPlay } from "../../model/ItemInPlay";
 import { blockSizePx } from "../../sprites/spritePivots";
 import { testFrameRates } from "../../_testUtils/testFrameRates";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import type { CharacterName } from "../../model/modelTypes";
 import { individualCharacterNames } from "../../model/modelTypes";
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -1013,6 +1015,48 @@ describe("deadly blocks", () => {
     });
     expect(sawDeathAction).toBe(true);
   });
+});
+
+describe("monsters", () => {
+  // doesn't test that it rushes towards headOverHeels - loading the campaign doesn't support
+  // starting in symbiosis
+  test.each(["head", "heels"] as const)(
+    "homing bot rushes towards %s",
+    (playableName: CharacterName) => {
+      const gameState = basicGameState({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 0, y: 0, z: 0 },
+            config: {
+              which: playableName,
+            },
+          },
+          monster: {
+            type: "monster",
+            position: { x: 0, y: 3, z: 0 },
+            config: {
+              which: "homingBot",
+              activated: "on",
+              movement: "towards-tripped-on-axis-xy4",
+            },
+          },
+        },
+      });
+
+      playGameThrough(gameState, {
+        // this needs a long time now that the player gets invulnerability after dying for a few seconds
+        until(gameState) {
+          const currentPlayableItem = selectCurrentPlayableItem(gameState);
+          if (currentPlayableItem!.type === "headOverHeels") {
+            return currentPlayableItem?.state.head.lives === 7;
+          } else {
+            return currentPlayableItem?.state.lives === 7;
+          }
+        },
+      });
+    },
+  );
 });
 
 describe("snapping stationary items to pixel grid", () => {
