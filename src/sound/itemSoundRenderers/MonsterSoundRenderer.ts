@@ -17,6 +17,7 @@ import {
   type BracketedSegmentOptions,
 } from "../soundUtils/createBracketedSound";
 import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
+import type { ItemTickContext } from "../../game/render/Renderer";
 
 type PerMonsterSounds = {
   [M in MonsterWhich]?: BracketedSegmentOptions;
@@ -124,7 +125,7 @@ export class MonsterSoundRenderer<
     }
   }
 
-  tick() {
+  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
     const {
       renderContext: { item },
     } = this;
@@ -143,7 +144,7 @@ export class MonsterSoundRenderer<
     }
 
     if (this.#collisionSoundRenderer) {
-      this.#collisionSoundRenderer.tick();
+      this.#collisionSoundRenderer.tick(tickContext);
     }
 
     if (this.#ambientBracketed) {

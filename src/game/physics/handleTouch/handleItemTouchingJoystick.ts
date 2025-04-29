@@ -1,4 +1,4 @@
-import { mtv } from "../slidingCollision";
+import { mtv } from "../mtv";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";

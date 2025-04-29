@@ -37,7 +37,10 @@ export type RoomTickContext<
 export type ItemTickContext<
   RoomId extends string,
   RoomItemId extends string,
-> = RoomTickContext<RoomId, RoomItemId>;
+> = RoomTickContext<RoomId, RoomItemId> & {
+  /** @see RoomRenderer.#lastRenderRoomTime */
+  lastRenderRoomTime: number | undefined;
+};
 
 export type ItemRenderContext<
   T extends ItemInPlayType,

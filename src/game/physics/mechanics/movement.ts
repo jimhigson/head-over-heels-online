@@ -1,7 +1,7 @@
 import type { Mechanic } from "../MechanicResult";
 import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
-import { mtv } from "../slidingCollision";
+import { mtv } from "../mtv";
 import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
 import { isMonster, isSolid } from "../itemPredicates";
 import type { ItemInPlay } from "../../../model/ItemInPlay";

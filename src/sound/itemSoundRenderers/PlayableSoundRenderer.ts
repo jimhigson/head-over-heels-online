@@ -9,6 +9,8 @@ import {
   type BracketedSound,
 } from "../soundUtils/createBracketedSound";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
+import type { ItemTickContext } from "../../game/render/Renderer";
+import { neverTime } from "../../utils/veryClose";
 
 export class PlayableSoundRenderer<
   RoomId extends string,
@@ -112,7 +114,7 @@ export class PlayableSoundRenderer<
     );
   }
 
-  tick() {
+  tick({ lastRenderRoomTime }: ItemTickContext<RoomId, RoomItemId>) {
     const {
       renderContext: { item },
     } = this;
@@ -126,6 +128,10 @@ export class PlayableSoundRenderer<
         position: { z: positionZ },
         vels: {
           gravity: { z: velZ },
+        },
+        collidedWith: {
+          roomTime: roomTimeOfLastCollision,
+          by: collidedWithItemIds,
         },
       },
     } = item;
@@ -162,7 +168,14 @@ export class PlayableSoundRenderer<
       this.#carryBracketedSound(heelsAbilities.carrying !== null);
     }
 
-    this.#standingOnBracketedSound(standingOnItemId !== null);
+    const landed =
+      // staning on something:
+      standingOnItemId !== null &&
+      // the thing we are standing on - we collided with since the room last rendered:
+      roomTimeOfLastCollision > (lastRenderRoomTime ?? neverTime) &&
+      collidedWithItemIds[standingOnItemId];
+
+    this.#standingOnBracketedSound(landed);
 
     if (
       teleportingPhase !== null &&

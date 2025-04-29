@@ -9,6 +9,7 @@ import { isJoystick } from "../../game/physics/itemPredicates";
 import { iterate } from "../../utils/iterate";
 import { keysIter } from "../../utils/entries";
 import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
+import type { ItemTickContext } from "../../game/render/Renderer";
 
 export class CharlesSoundRenderer<
   RoomId extends string,
@@ -48,7 +49,7 @@ export class CharlesSoundRenderer<
     this.#collisionsSoundRenderer.output.connect(this.output);
   }
 
-  tick() {
+  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
     const {
       renderContext: {
         item,
@@ -67,7 +68,7 @@ export class CharlesSoundRenderer<
 
     this.#servoBracketed(controlledByJoystick);
 
-    this.#collisionsSoundRenderer.tick();
+    this.#collisionsSoundRenderer.tick(tickContext);
   }
 
   destroy(): void {}
