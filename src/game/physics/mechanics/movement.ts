@@ -28,6 +28,7 @@ import { playablesInRoom, type RoomState } from "../../../model/RoomState";
 import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClosestPlayable";
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
+import { objectValues } from "iter-tools";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
@@ -77,9 +78,7 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
     };
   }
 
-  const { head, heels } = playablesInRoom(room.items);
-
-  for (const player of [head, heels]) {
+  for (const player of objectValues(playablesInRoom(room.items))) {
     if (player === undefined) continue;
 
     const vectorXyToPlayer = subXy(player.state.position, position);
