@@ -1,10 +1,10 @@
-import { PressToContinueBanner } from "../../PressToContinueBanner";
-import { BitmapText } from "../../../tailwindSprites/Sprite";
-import { multilineTextClass } from "../multilineTextClass";
-import { Dialog } from "../../../../../ui/dialog";
-import { DialogPortal } from "../../../../../ui/DialogPortal";
-import { backToParentMenu } from "../../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
+import { PressToContinueBanner } from "../../../PressToContinueBanner";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { multilineTextClass } from "../../multilineTextClass";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 
 export const HoldDialog = () => {
   return (
