@@ -11,10 +11,10 @@ import { registerSW } from "virtual:pwa-register";
 
 const updateSW = registerSW({
   onNeedRefresh() {
-    // I don't ask the user, I just do it whenever the service worker
-    // is updated, since the game should be able to handle reloading at
-    // any time.
-    // This could be changed to show a dialog instead
+    // I don't ask the user, I just jump to the new one whenever the service worker
+    // is updated, since the game should be able to handle reloading at any time.
+    // This could (and maybe should) be changed to show a dialog instead - it could be
+    // jarring for the page to suddenly reload without warning
     updateSW(true);
   },
 } satisfies RegisterSWOptions);
