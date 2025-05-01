@@ -1,11 +1,11 @@
 import type { Container } from "pixi.js";
+import { Sprite } from "pixi.js";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import type {
-  ItemInPlayTypesWithoutRenderProps,
-  ItemRenderProps,
-} from "./ItemRenderProps";
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
+  ItemInPlayConfig,
+  ItemInPlayType,
+} from "../../../model/ItemInPlay";
 import { emptyObject } from "../../../utils/empty";
 import { isMultipliedItem } from "../../physics/itemPredicates";
 import type {
@@ -13,61 +13,42 @@ import type {
   AppearanceReturn,
 } from "../appearance/Appearance";
 import type { ItemRenderContext, ItemTickContext } from "../Renderer";
-
-export type ItemAppearanceReturn<
-  T extends ItemInPlayType,
-  Output extends Container = Container,
-> =
-  | {
-      /**
-       * a new rendering, since one is required - null to explicitly change the item's rendering
-       * to nothing
-       */
-      output: Output | null;
-      /** the render props of the new rendering, to stash and use for checking in the next tick if a new rendering is needed */
-      renderProps: ItemRenderProps<T>;
-    }
-  /** returns undefined if no new rendering is required */
-  | "no-update";
+import type { EmptyObject } from "type-fest";
+import {
+  renderContainerToSprite,
+  renderMultipliedXy,
+} from "../../../utils/pixi/renderMultpliedXy";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import type { Xyz } from "../../../utils/vectors/vectors";
 
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-  RenderTarget extends Container = Container,
+  RenderProps extends object = EmptyObject,
+  Output extends Container = Container,
 > = AppearanceOptions<
-  ItemRenderContext<T, RoomId, RoomItemId>,
-  ItemTickContext<RoomId, RoomItemId>,
-  ItemRenderProps<T>,
-  RenderTarget
+  ItemRenderContext<T>,
+  ItemTickContext,
+  RenderProps,
+  Output
 >;
 
 export type ItemAppearance<
   T extends ItemInPlayType,
-  RenderTarget extends Container = Container,
-> = <RoomId extends string, RoomItemId extends string>(
-  options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
-) => AppearanceReturn<ItemRenderProps<T>, RenderTarget>;
-
-/**
- * Like ItemAppearance but sometimes it is useful to be able to cast
- * ItemAppearance to a version that knows the room id before the callsite
- */
-export type ItemAppearanceWithKnownRoomId<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-  RenderTarget extends Container = Container,
+  /**
+   * render props for the appearance are stashed between renders and can be used to
+   * determine if a new rendering is required. They can also be different, for example
+   * between item renderer and item shadow mask renderer
+   */
+  RenderProps extends object = EmptyObject,
+  Output extends Container = Container,
 > = (
-  options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
-) => AppearanceReturn<ItemRenderProps<T>, RenderTarget>;
+  options: ItemAppearanceOptions<T, RenderProps, Output>,
+) => AppearanceReturn<RenderProps, Output>;
 
-export const itemStaticSpriteAppearance = <
-  T extends ItemInPlayTypesWithoutRenderProps,
->(
+export const itemStaticAppearance = <T extends ItemInPlayType>(
   createSpriteOptions: CreateSpriteOptions,
 ): ItemAppearance<T> =>
-  itemRenderOnce(({ renderContext: { item: subject } }) => {
+  itemAppearanceRenderOnce(({ renderContext: { item: subject } }) => {
     if (isMultipliedItem(subject)) {
       return createSprite({
         ...(typeof createSpriteOptions === "string" ?
@@ -81,35 +62,113 @@ export const itemStaticSpriteAppearance = <
   });
 
 /**
+ * A static appearance, but renders only to Sprite, via rendertextures
+ * if needed. This is mostly for shadow masks, since they need to be sprites
+ */
+export const itemStaticSpriteAppearance = <T extends ItemInPlayType>(
+  createSpriteOptions: CreateSpriteOptions,
+): ItemAppearance<T, EmptyObject, Sprite> =>
+  itemAppearanceRenderOnce(
+    ({ renderContext: { item: subject, pixiRenderer } }) => {
+      if (isMultipliedItem(subject)) {
+        return renderMultipliedXy(
+          pixiRenderer,
+          createSpriteOptions,
+          subject.config.times,
+        );
+      } else {
+        const container = createSprite(createSpriteOptions);
+        if (container instanceof Sprite) {
+          return container;
+        } else {
+          return renderContainerToSprite(pixiRenderer, container);
+        }
+      }
+    },
+  );
+
+/**
  * plenty of items never need to be re-rendered and have no render props - convenience for that case
  * that handles not rendering again after the first render
  */
-export const itemRenderOnce =
+export const itemAppearanceRenderOnce =
   <
-    T extends ItemInPlayTypesWithoutRenderProps,
-    RoomId extends string,
-    RoomItemId extends string,
+    T extends ItemInPlayType,
+    /**
+     * what we expect to be rendering to. Ie, a Container or maybe constrained down to Sprite for
+     * shadow masks
+     */
+    Output extends Container = Container,
   >(
     renderWith: (
       appearance: Omit<
-        ItemAppearanceOptions<T, RoomId, RoomItemId>,
+        ItemAppearanceOptions<T, EmptyObject, Output>,
         "currentlyRenderedProps"
       >,
-    ) => Container,
+    ) => Output,
   ): ((
-    options: ItemAppearanceOptions<T, RoomId, RoomItemId>,
-  ) => ItemAppearanceReturn<T>) =>
+    options: ItemAppearanceOptions<T, EmptyObject, Output>,
+  ) => AppearanceReturn<EmptyObject, Output>) =>
   // inner function - calls renderWith
-  ({ renderContext, currentlyRenderedProps, tickContext }) => {
-    if (currentlyRenderedProps === undefined) {
+  ({ renderContext, currentRendering, tickContext }) => {
+    if (currentRendering === undefined) {
       return {
         output: renderWith({
           renderContext,
-          previousRendering: null,
+          // this only renders once, so we know it has never been rendered before:
+          currentRendering: undefined,
           tickContext,
         }),
-        renderProps: emptyObject as ItemRenderProps<T>,
+        renderProps: emptyObject,
       };
+    } else {
+      return "no-update";
+    }
+  };
+
+/**
+ * convenience for creating appearances for shadow masks. Works for
+ * any item that needs a mask based off its config, and does not
+ * late change the shadow mask based on its state or any other
+ * factors.
+ *
+ * Also handles the case where the item is multiplied in x and y, but
+ * not z (not needed for shadow masks). However, does move the sprite up
+ * in z for items multiplied in z
+ */
+export const itemAppearanceShadowMaskFromConfig =
+  <T extends ItemInPlayType>(
+    spriteOptionsFromConfig: (
+      config: ItemInPlayConfig<T, string, string>,
+    ) => CreateSpriteOptions,
+  ): ((
+    options: ItemAppearanceOptions<T, EmptyObject, Sprite>,
+  ) => AppearanceReturn<EmptyObject, Sprite>) =>
+  // inner function - calls renderWith
+  ({ renderContext: { pixiRenderer, item }, currentRendering }) => {
+    if (currentRendering === undefined) {
+      const times =
+        isMultipliedItem(item) ?
+          (item.config.times as Partial<Xyz>)
+        : undefined;
+
+      const appearanceReturn = {
+        output: renderMultipliedXy(
+          pixiRenderer,
+          spriteOptionsFromConfig(
+            item.config as ItemInPlayConfig<T, string, string>,
+          ),
+          times,
+        ),
+        renderProps: emptyObject,
+      };
+
+      if (times) {
+        // move the shadow mast up if the item is multiplied in z:
+        appearanceReturn.output.y -= ((times.z ?? 1) - 1) * blockSizePx.h;
+      }
+
+      return appearanceReturn;
     } else {
       return "no-update";
     }

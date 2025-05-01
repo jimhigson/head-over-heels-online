@@ -18,6 +18,7 @@ import {
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { createSavedGame } from "../../gameState/saving/createSavedGame";
+import { floatingTextFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
@@ -69,7 +70,7 @@ export const handlePlayerTouchingPickup = <
       type: "floatingText",
       id: `floatingText-${pickupId}` as RoomItemId,
       ...defaultItemProperties,
-      fixedZIndex: 999, // high number ensures is always in front
+      fixedZIndex: floatingTextFixedZIndex, // high number ensures is always in front
       aabb: originXyz, // zero-size per aabb
       state: {
         ...defaultBaseState(),

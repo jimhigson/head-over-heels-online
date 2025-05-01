@@ -55,15 +55,16 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     room: { roomTime },
     displaySettings: { uncolourised },
   },
-  previousRendering,
+  currentRendering,
 }) => {
+  const previousRendering = currentRendering?.output;
   let mainContainer: Container<Container>;
 
   const age = roomTime - appearanceRoomTime;
 
   const itemRenderHeight = age * floatingTextRiseSpeedPxPerMs;
 
-  if (previousRendering === null) {
+  if (previousRendering === undefined) {
     mainContainer = new Container({
       filters: new OutlineFilter({
         outlineColor: spritesheetPalette.pureBlack,

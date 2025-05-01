@@ -1,27 +1,27 @@
 import { Container } from "pixi.js";
-import { createSprite } from "../createSprite";
+import { createSprite } from "../../createSprite";
 import { doorTexture } from "./doorTexture";
 import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
-} from "../projectToScreen";
-import { blockSizePx } from "../../../sprites/spritePivots";
+} from "../../projectToScreen";
+import { blockSizePx } from "../../../../sprites/spritePivots";
 import {
   edgePaletteSwapFilters,
   mainPaletteSwapFilter,
-} from "../filters/standardFilters";
-import type { DirectionXy4, Xy, Xyz } from "../../../utils/vectors/vectors";
+} from "../../filters/standardFilters";
+import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import {
   doorAlongAxis,
   originXy,
   addXy,
   perpendicularAxisXy,
-} from "../../../utils/vectors/vectors";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { iterateToContainer } from "../../iterateToContainer";
-import type { ItemAppearance } from "./ItemAppearance";
-import { itemRenderOnce } from "./ItemAppearance";
-import type { RoomState } from "../../../model/RoomState";
+} from "../../../../utils/vectors/vectors";
+import type { ItemInPlay } from "../../../../model/ItemInPlay";
+import { iterateToContainer } from "../../../iterateToContainer";
+import type { ItemAppearance } from "../ItemAppearance";
+import { itemAppearanceRenderOnce } from "../ItemAppearance";
+import type { RoomState } from "../../../../model/RoomState";
 
 function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   {
@@ -104,8 +104,8 @@ const xyToTranslateToInsideOfRoom = (
     : originXy;
 };
 
-export const doorLegsAppearance: ItemAppearance<"doorLegs"> = itemRenderOnce(
-  ({ renderContext: { item, room } }) => {
+export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
+  itemAppearanceRenderOnce(({ renderContext: { item, room } }) => {
     return iterateToContainer(
       doorLegsGenerator(item, room),
       new Container({
@@ -113,28 +113,28 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> = itemRenderOnce(
         ...xyToTranslateToInsideOfRoom(item.config.direction, item.aabb),
       }),
     );
-  },
-);
+  });
 
-export const doorFrameAppearance: ItemAppearance<"doorFrame"> = itemRenderOnce(
-  ({
-    renderContext: {
-      item: {
-        config: { direction, part, toRoom },
-        aabb,
+export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
+  itemAppearanceRenderOnce(
+    ({
+      renderContext: {
+        item: {
+          config: { direction, part, toRoom },
+          aabb,
+        },
+        room,
+        gameState: { campaign },
       },
-      room,
-      gameState: { campaign },
+    }) => {
+      const axis = doorAlongAxis(direction);
+
+      const roomTo = campaign.rooms[toRoom];
+
+      return createSprite({
+        textureId: doorTexture(room, axis, part),
+        filter: mainPaletteSwapFilter(roomTo),
+        ...xyToTranslateToInsideOfRoom(direction, aabb),
+      });
     },
-  }) => {
-    const axis = doorAlongAxis(direction);
-
-    const roomTo = campaign.rooms[toRoom];
-
-    return createSprite({
-      textureId: doorTexture(room, axis, part),
-      filter: mainPaletteSwapFilter(roomTo),
-      ...xyToTranslateToInsideOfRoom(direction, aabb),
-    });
-  },
-);
+  );

@@ -59,11 +59,7 @@ const movingSounds: PerMonsterBracketedSoundOptions = {
   },
 };
 
-export class MonsterSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<"monster", RoomId, RoomItemId>
-{
+export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   // add the walking buffer sources to here to play them
@@ -72,17 +68,11 @@ export class MonsterSoundRenderer<
 
   #turnaroundBracketed: BracketedSound<DirectionXy8 | undefined> | undefined;
   #ambientBracketed: BracketedSound<boolean> | undefined;
-  #collisionSoundRenderer?:
-    | CollisionSoundRenderer<RoomId, RoomItemId>
-    | undefined;
+  #collisionSoundRenderer?: CollisionSoundRenderer | undefined;
   #movingBracketed: BracketedSound<boolean> | undefined;
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "monster",
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<"monster">,
   ) {
     this.#spotChannel.connect(this.output);
     this.#ambientChannel.connect(this.output);
@@ -125,7 +115,7 @@ export class MonsterSoundRenderer<
     }
   }
 
-  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
+  tick(tickContext: ItemTickContext) {
     const {
       renderContext: { item },
     } = this;

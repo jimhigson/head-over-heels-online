@@ -8,10 +8,5 @@ import type {
 
 export type ItemPixiRenderer<
   T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-> = Renderer<
-  ItemRenderContext<T, RoomId, RoomItemId>,
-  ItemTickContext<RoomId, RoomItemId>,
-  Container
->;
+  Output extends Container = Container,
+> = Renderer<ItemRenderContext<T>, ItemTickContext, Output>;

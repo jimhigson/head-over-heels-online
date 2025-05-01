@@ -4,17 +4,14 @@ import { projectWorldXyzToScreenXy } from "../../projectToScreen";
 import type { ItemTickContext, ItemRenderContext } from "../../Renderer";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
-export class ItemPositionRenderer<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemPixiRenderer<T, RoomId, RoomItemId>
+export class ItemPositionRenderer<T extends ItemInPlayType>
+  implements ItemPixiRenderer<T>
 {
   #container: Container;
 
   constructor(
-    public readonly renderContext: ItemRenderContext<T, RoomId, RoomItemId>,
-    private wrappedRenderer: ItemPixiRenderer<T, RoomId, RoomItemId>,
+    public readonly renderContext: ItemRenderContext<T>,
+    private wrappedRenderer: ItemPixiRenderer<T>,
   ) {
     this.#container = new Container({
       label: `ItemPositionRenderer ${renderContext.item.id}`,
@@ -32,7 +29,7 @@ export class ItemPositionRenderer<
     this.#container.y = projectionXy.y;
   }
 
-  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
+  tick(tickContext: ItemTickContext) {
     this.wrappedRenderer?.tick(tickContext);
 
     if (tickContext.movedItems.has(this.renderContext.item)) {

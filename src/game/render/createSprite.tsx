@@ -169,7 +169,7 @@ function createAnimatedSprite({
   reverse,
   playOnce,
   paused,
-}: AnimatedCreateSpriteOptions) {
+}: AnimatedCreateSpriteOptions): AnimatedSprite {
   const animationFrames = loadedSpriteSheet().animations[animationId];
   const frames = paused ? [animationFrames[0]] : animationFrames;
 

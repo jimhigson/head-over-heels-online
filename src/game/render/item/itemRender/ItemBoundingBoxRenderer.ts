@@ -81,17 +81,12 @@ const bbColors: Partial<Record<ItemInPlayType, string>> = {
   floatingText: "rgba(128,0,255)",
 };
 
-export class ItemBoundingBoxRenderer<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemPixiRenderer<T, RoomId, RoomItemId>
+export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
+  implements ItemPixiRenderer<T>
 {
   #container: Container;
 
-  constructor(
-    public readonly renderContext: ItemRenderContext<T, RoomId, RoomItemId>,
-  ) {
+  constructor(public readonly renderContext: ItemRenderContext<T>) {
     const { item } = renderContext;
 
     const color = bbColors[item.type] ?? "rgba(255,255,255)";

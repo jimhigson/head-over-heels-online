@@ -12,21 +12,15 @@ import { isEmpty } from "iter-tools";
 import type { ItemTickContext } from "../../../game/render/Renderer";
 import { neverTime } from "../../../utils/veryClose";
 
-export class CollisionSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<FreeItemTypes, RoomId, RoomItemId>
+export class CollisionSoundRenderer
+  implements ItemSoundRenderer<FreeItemTypes>
 {
   public readonly output: GainNode = audioCtx.createGain();
 
   #collisionBracketed: BracketedSound;
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      FreeItemTypes,
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<FreeItemTypes>,
     collisionStartSoundOptions: BracketedSegmentOptions,
     gain: number = 1,
   ) {
@@ -40,7 +34,7 @@ export class CollisionSoundRenderer<
     this.output.gain.value = gain;
   }
 
-  tick({ lastRenderRoomTime }: ItemTickContext<RoomId, RoomItemId>) {
+  tick({ lastRenderRoomTime }: ItemTickContext) {
     const {
       renderContext: { item },
     } = this;

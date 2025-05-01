@@ -7,6 +7,8 @@ import type { Xy } from "../utils/vectors/vectors";
 import type { RoomState } from "../model/RoomState";
 import type { SavedGameState } from "./gameState/saving/SavedGameState";
 
+// TODO: delete GameEvents and the emitter - it isn't used for much and ruins the model of separating
+// POJ(S)O as state from functions etc
 export type GameEvents<RoomId extends string> = {
   roomChange: RoomId;
   gameOver: undefined;

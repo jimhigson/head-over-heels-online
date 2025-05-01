@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import type { DrawOrderComparable } from "./zComparator";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import type { SortByZPairsReturn } from "./sortItemsByDrawOrder";
 import { sortByZPairs, zEdges } from "./sortItemsByDrawOrder";
 import { collision1toMany } from "../../collision/aabbCollision";
@@ -11,25 +11,25 @@ test("detects behind in x", () => {
     1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 10, y: 0, z: 0 } },
     },
     3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 20, y: 0, z: 0 } },
     },
     4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 30, y: 0, z: 0 } },
     },
   };
@@ -58,25 +58,25 @@ test("detects behind in y", () => {
     1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 10, z: 0 } },
     },
     3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 20, z: 0 } },
     },
     4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 30, z: 0 } },
     },
   };
@@ -105,25 +105,25 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
     1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 10 } },
     },
     3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 20 } },
     },
     4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 30 } },
     },
   };
@@ -153,13 +153,13 @@ test("detects as in front if on top and set back while overlapping", () => {
     bottom: {
       id: "bottom",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     top: {
       id: "top",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 9, y: 9, z: 10 } },
     },
   };
@@ -183,26 +183,26 @@ test("detects a tall item is front of two smaller items", () => {
     tallThinFront: {
       id: "tallThinFront",
       aabb: { x: 1, y: 0, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     smallerTop: {
       id: "smallerTop",
       aabb: { x: 1, y: 1, z: 1 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 9 } },
     },
     smallerBottom: {
       id: "smallerBottom",
       aabb: { x: 1, y: 1, z: 1 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     // should be ignored for the results:
     unrelatedFarAway: {
       id: "unrelatedFarAway",
       aabb: { x: 1, y: 1, z: 1 },
-      renders: true,
+
       state: { position: { x: 20, y: 0, z: 0 } },
     },
   };
@@ -230,25 +230,25 @@ test("incrementally updates", () => {
     1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 10, y: 0, z: 0 } },
     },
     3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 20, y: 0, z: 0 } },
     },
     4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
-      renders: true,
+
       state: { position: { x: 30, y: 0, z: 0 } },
     },
   };
@@ -311,19 +311,16 @@ describe("cyclic dependencies", () => {
         id: "heels",
         state: { position: { x: 5, y: 8, z: 10 } },
         aabb: { x: 10, y: 10, z: 10 },
-        renders: true,
       },
       cube: {
         id: "cube",
         state: { position: { x: 0, y: 10, z: 0 } },
         aabb: { x: 5, y: 5, z: 10 },
-        renders: true,
       },
       conveyor: {
         id: "conveyor",
         state: { position: { x: 0, y: 0, z: 0 } },
         aabb: { x: 10, y: 10, z: 10 },
-        renders: true,
       },
     };
 
@@ -348,7 +345,6 @@ describe("cyclic dependencies", () => {
           y: 16,
           z: 12,
         },
-        renders: true,
       },
       monster: {
         id: "monster",
@@ -364,7 +360,6 @@ describe("cyclic dependencies", () => {
           y: 12,
           z: 24,
         },
-        renders: true,
       },
       pickup: {
         id: "pickup",
@@ -380,7 +375,6 @@ describe("cyclic dependencies", () => {
           y: 12,
           z: 12,
         },
-        renders: true,
       },
     } as const;
 

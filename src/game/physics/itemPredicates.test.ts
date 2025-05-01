@@ -51,7 +51,6 @@ const horizontalPortal: UnionOfAllItemInPlayTypes = {
   type: "portal",
   id: "portal",
   aabb: originXyz,
-  renders: true,
   config: {
     direction: unitVectors.towards,
     toRoom: "anyRoom",
@@ -64,7 +63,6 @@ const portalToBelow: UnionOfAllItemInPlayTypes = {
   type: "portal",
   id: "portal",
   aabb: originXyz,
-  renders: true,
   config: {
     direction: unitVectors.down,
     toRoom: "anyRoom",
@@ -76,7 +74,6 @@ const portalToAbove: UnionOfAllItemInPlayTypes = {
   type: "portal",
   id: "portal",
   aabb: originXyz,
-  renders: true,
   config: {
     direction: unitVectors.up,
     toRoom: "anyRoom",

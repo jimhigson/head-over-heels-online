@@ -35,23 +35,16 @@ const numberInRangeToMinus1To1Range = (
   return rangeBetweenMinusOneAndOne;
 };
 
-export class SoundPanRenderer<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<T, RoomId, RoomItemId>
+export class SoundPanRenderer<T extends ItemInPlayType>
+  implements ItemSoundRenderer<T>
 {
   public readonly output = audioCtx.createPanner();
   private positionMinX;
   private positionMaxX;
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      T,
-      RoomId,
-      RoomItemId
-    >,
-    private readonly childRenderer: ItemSoundRenderer<T, RoomId, RoomItemId>,
+    public readonly renderContext: ItemSoundRenderContext<T>,
+    private readonly childRenderer: ItemSoundRenderer<T>,
   ) {
     childRenderer.output.connect(this.output);
     this.output.rolloffFactor = 2;
@@ -72,7 +65,7 @@ export class SoundPanRenderer<
     );
   }
 
-  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
+  tick(tickContext: ItemTickContext) {
     this.childRenderer.tick(tickContext);
 
     const { item } = this.renderContext;

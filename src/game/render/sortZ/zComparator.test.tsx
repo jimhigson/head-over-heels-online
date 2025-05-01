@@ -1,5 +1,6 @@
-import { expect, test } from "vitest";
-import { zComparator, type DrawOrderComparable } from "./zComparator";
+import { describe, expect, test } from "vitest";
+import { zComparator } from "./zComparator";
+import { type DrawOrderComparable } from "./DrawOrderComparable";
 const unitCube = { x: 1, y: 1, z: 1 };
 
 test("zComparator detects behind in x", () => {
@@ -7,13 +8,11 @@ test("zComparator detects behind in x", () => {
     id: "b",
     state: { position: { x: 1, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
   const inFront: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(behind, inFront)).toBeLessThan(0);
@@ -25,13 +24,11 @@ test("zComparator detects behind in y", () => {
     id: "b",
     state: { position: { x: 0, y: 1, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
   const inFront: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(behind, inFront)).toBeLessThan(0);
@@ -43,17 +40,50 @@ test("zComparator detects on top in z", () => {
     id: "b",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
   const top: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 1 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(bottom, top)).toBeLessThan(0);
   expect(zComparator(top, bottom)).toBeGreaterThan(0);
+});
+
+describe("items with fixedZIndex have no preference in ordering", () => {
+  test("high fixed z index on first item", () => {
+    const bottom: DrawOrderComparable = {
+      id: "b",
+      state: { position: { x: 0, y: 0, z: 0 } },
+      aabb: unitCube,
+      fixedZIndex: 100,
+    };
+    const top: DrawOrderComparable = {
+      id: "f",
+      state: { position: { x: 0, y: 0, z: 1 } },
+      aabb: unitCube,
+    };
+
+    expect(zComparator(bottom, top)).toBe(0);
+    expect(zComparator(top, bottom)).toBe(0);
+  });
+  test("negative fixed z index on second item", () => {
+    const bottom: DrawOrderComparable = {
+      id: "b",
+      state: { position: { x: 0, y: 0, z: 0 } },
+      aabb: unitCube,
+    };
+    const top: DrawOrderComparable = {
+      id: "f",
+      state: { position: { x: 0, y: 0, z: 1 } },
+      aabb: unitCube,
+      fixedZIndex: -1,
+    };
+
+    expect(zComparator(bottom, top)).toBe(0);
+    expect(zComparator(top, bottom)).toBe(0);
+  });
 });
 
 test("zComparator gives no order preference for non-overlapping diagonally left/right in x,y", () => {
@@ -61,13 +91,11 @@ test("zComparator gives no order preference for non-overlapping diagonally left/
     id: "b",
     state: { position: { x: 0, y: 1, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
   const left: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 1, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(right, left)).toEqual(0);
@@ -79,13 +107,11 @@ test("zComparator order preference for slightly-overlapping diagonally left/righ
     id: "b",
     state: { position: { x: 0, y: 1, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
   const left: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0.9, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(right, left)).toBeLessThan(0);
@@ -97,13 +123,11 @@ test("zComparator order preference for slightly-overlapping diagonally left/righ
     id: "b",
     state: { position: { x: 0, y: 0.9, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
   const left: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 1, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(right, left)).toBeGreaterThan(0);
@@ -117,13 +141,11 @@ test("zComparator gives no order preference for non-overlapping diagonally adjac
     id: "b",
     state: { position: { x: 1, y: 0, z: 1 } },
     aabb: unitCube,
-    renders: true,
   };
   const frontLow: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(backTop, frontLow)).toEqual(0);
@@ -137,13 +159,11 @@ test("zComparator gives order preference for slightly-overlapping diagonally adj
     id: "b",
     state: { position: { x: 0.9, y: 0, z: 1 } },
     aabb: unitCube,
-    renders: true,
   };
   const frontLow: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(backTop, frontLow)).toBeGreaterThan(0);
@@ -157,13 +177,11 @@ test("zComparator gives order preference for slightly-overlapping diagonally adj
     id: "b",
     state: { position: { x: 1, y: 0, z: 0.9 } },
     aabb: unitCube,
-    renders: true,
   };
   const frontLow: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(backTop, frontLow)).toBeLessThan(0);
@@ -177,13 +195,11 @@ test("zComparator gives no order preference for non-overlapping diagonally adjac
     id: "b",
     state: { position: { x: 0, y: 1, z: 1 } },
     aabb: unitCube,
-    renders: true,
   };
   const rightLow: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(leftTop, rightLow)).toEqual(0);
@@ -197,13 +213,11 @@ test("zComparator gives no order preference for slightly-overlapping diagonally 
     id: "b",
     state: { position: { x: 0, y: 0.9, z: 1 } },
     aabb: unitCube,
-    renders: true,
   };
   const rightLow: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(leftTop, rightLow)).toBeGreaterThan(0);
@@ -217,13 +231,11 @@ test("zComparator gives no order preference for slightly-overlapping diagonally 
     id: "b",
     state: { position: { x: 0, y: 1, z: 0.9 } },
     aabb: unitCube,
-    renders: true,
   };
   const rightLow: DrawOrderComparable = {
     id: "f",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
-    renders: true,
   };
 
   expect(zComparator(leftTop, rightLow)).toBeLessThan(0);
@@ -259,13 +271,11 @@ test("edge case with equal y due to floating point error", () => {
     id: "cube",
     state: { position: { x: 0, y: 96, z: 0 } },
     aabb: { x: 12, y: 12, z: 12 },
-    renders: true,
   };
   const heels: DrawOrderComparable = {
     id: "heels",
     state: { position: { x: 12, y: 92.431, z: 12 } },
     aabb: { x: 12, y: 12, z: 12 },
-    renders: true,
   };
 
   expect(zComparator(heels, cube)).toBe(0);

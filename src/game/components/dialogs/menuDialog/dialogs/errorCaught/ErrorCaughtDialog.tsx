@@ -14,6 +14,7 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import { multilineTextClass } from "../../multilineTextClass";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { useState } from "react";
+import { StackTracesWithLinks } from "./StackTraceWithLinks";
 
 const markdown = `##The game crashed
 Maybe:
@@ -102,8 +103,10 @@ caused by:
           <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite`">
             Error message for nerds:
           </BitmapText>
-          <pre className={`text-midRed zx:text-zxWhite leading-[1em]`}>
-            {errorsReportText}
+          <pre
+            className={`text-midRed zx:text-zxWhite leading-[1em] [&_a]:text-metallicBlue`}
+          >
+            <StackTracesWithLinks>{errorsReportText}</StackTracesWithLinks>
           </pre>
         </div>
       </Dialog>

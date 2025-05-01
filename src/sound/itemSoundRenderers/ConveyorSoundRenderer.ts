@@ -6,11 +6,7 @@ import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
 const playbackRate = 2;
 
-export class ConveyorSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<"conveyor", RoomId, RoomItemId>
-{
+export class ConveyorSoundRenderer implements ItemSoundRenderer<"conveyor"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #bracketedSound = createBracketedSound(
@@ -23,11 +19,7 @@ export class ConveyorSoundRenderer<
   );
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "conveyor",
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<"conveyor">,
   ) {}
 
   tick() {

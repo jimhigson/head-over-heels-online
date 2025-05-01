@@ -8,7 +8,11 @@ import { VitePWA } from "vite-plugin-pwa";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      // during development, use the same build target as builds - ie,
+      // assume a capable browser and avoid unnecessary transpilation
+      devTarget: "esnext",
+    }),
     visualizer({
       gzipSize: true,
       brotliSize: true,

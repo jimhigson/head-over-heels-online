@@ -40,22 +40,14 @@ const rendererClasses: {
   slidingBlock: SlidingBlockSoundRenderer,
 };
 
-export const createSoundRenderer = <
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
->(
-  context: ItemSoundRenderContext<T, RoomId, RoomItemId>,
-): ItemSoundRenderer<T, RoomId, RoomItemId> | undefined => {
+export const createSoundRenderer = <T extends ItemInPlayType>(
+  context: ItemSoundRenderContext<T>,
+): ItemSoundRenderer<T> | undefined => {
   const ThisItemRendererClass = rendererClasses[context.item.type] as
     | ItemSoundRendererConstructableClass<T>
     | undefined;
 
   if (ThisItemRendererClass) {
-    return new ThisItemRendererClass(context) as ItemSoundRenderer<
-      T,
-      RoomId,
-      RoomItemId
-    >;
+    return new ThisItemRendererClass(context) as ItemSoundRenderer<T>;
   }
 };

@@ -1,14 +1,7 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projectToScreen";
-
-export type DrawOrderComparable = Pick<
-  UnionOfAllItemInPlayTypes,
-  "id" | "aabb" | "renders" | "renderAabb" | "fixedZIndex"
-> & {
-  state: { position: { x: number; y: number; z: number } };
-};
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 
 /**
  * of the six visible corners of the projected cuboid, we need to find three to be able to compare
@@ -115,7 +108,8 @@ const visuallyOverlaps = (
   return horizontalOverlap && xAxisSlopeOverlap && yAxisSlopeOverlap;
 };
 
-/** comparator suitable for ordering by z (with a topographic sort, not a normal sort)
+/**
+ * comparator suitable for ordering by z (with a topographic sort, not a normal sort)
  *
  *  returns:
  *    >0 if a is in front of b
@@ -124,18 +118,18 @@ const visuallyOverlaps = (
  */
 export const zComparator = (a: DrawOrderComparable, b: DrawOrderComparable) => {
   if (
-    a.renders === false ||
-    b.renders === false ||
+    // zero-volume (render) bb items don't participate in z-ordering - this is THE one way
+    // to take an item out of z-sorting for efficiency.
     a.fixedZIndex !== undefined ||
     b.fixedZIndex !== undefined
   ) {
     return 0;
   }
 
-  const aPos = a.state.position;
   const aBb = a.renderAabb || a.aabb;
-  const bPos = b.state.position;
   const bBb = b.renderAabb || b.aabb;
+  const aPos = a.state.position;
+  const bPos = b.state.position;
 
   if (!visuallyOverlaps(aPos, aBb, bPos, bBb)) {
     return 0;

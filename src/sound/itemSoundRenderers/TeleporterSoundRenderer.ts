@@ -6,10 +6,8 @@ import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
 import { teleporterIsActive } from "../../game/physics/mechanics/teleporting";
 
-export class TeleporterSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<"teleporter", RoomId, RoomItemId>
+export class TeleporterSoundRenderer
+  implements ItemSoundRenderer<"teleporter">
 {
   public readonly output: GainNode = audioCtx.createGain();
 
@@ -22,11 +20,7 @@ export class TeleporterSoundRenderer<
   );
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "teleporter",
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<"teleporter">,
   ) {}
 
   tick() {

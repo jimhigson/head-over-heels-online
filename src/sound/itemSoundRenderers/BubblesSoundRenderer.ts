@@ -3,19 +3,11 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 
-export class BubblesSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<"bubbles", RoomId, RoomItemId>
-{
+export class BubblesSoundRenderer implements ItemSoundRenderer<"bubbles"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "bubbles",
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<"bubbles">,
   ) {
     const {
       item: {
