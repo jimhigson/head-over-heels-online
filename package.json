@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite",
     "build": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite build",
+    "//check:build": "I don't know any way to check the build will pass other than running it:",
+    "check:build": "pnpm build",
     "watch:type": "tsc --noEmit --watch --project ./tsconfig.app.json",
     "check:type": "tsc --noEmit --project ./tsconfig.app.json",
     "check:lint": "eslint .",
@@ -91,15 +93,13 @@
     "vite": "^6.2.2",
     "vite-plugin-pwa": "^0.21.1",
     "vitest": "^3.0.8",
+    "workbox-window": "^7.3.0",
     "xml-js": "^1.6.11"
   },
-  "volta": {
-    "node": "22.9.0"
+  "engines": {
+    "node": ">=23.11.0"
   },
-  "prettier": {
-    "experimentalTernaries": true
-  },
-  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b",
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
   "pnpm": {
     "onlyBuiltDependencies": [
       "@swc/core",
