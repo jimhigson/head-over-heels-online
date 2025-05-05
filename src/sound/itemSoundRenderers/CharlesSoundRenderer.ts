@@ -11,11 +11,7 @@ import { keysIter } from "../../utils/entries";
 import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
 import type { ItemTickContext } from "../../game/render/Renderer";
 
-export class CharlesSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<"charles", RoomId, RoomItemId>
-{
+export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   // add the walking buffer sources to here to play them
@@ -30,14 +26,10 @@ export class CharlesSoundRenderer<
     this.#servoChannel,
   );
 
-  #collisionsSoundRenderer: CollisionSoundRenderer<RoomId, RoomItemId>;
+  #collisionsSoundRenderer: CollisionSoundRenderer;
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "charles",
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<"charles">,
   ) {
     this.#servoChannel.connect(this.output);
     this.#servoChannel.gain.value = 0.5;
@@ -49,7 +41,7 @@ export class CharlesSoundRenderer<
     this.#collisionsSoundRenderer.output.connect(this.output);
   }
 
-  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
+  tick(tickContext: ItemTickContext) {
     const {
       renderContext: {
         item,

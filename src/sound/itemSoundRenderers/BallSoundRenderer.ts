@@ -3,9 +3,7 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
-export class BallSoundRenderer<RoomId extends string, RoomItemId extends string>
-  implements ItemSoundRenderer<"ball", RoomId, RoomItemId>
-{
+export class BallSoundRenderer implements ItemSoundRenderer<"ball"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #brackets = createBracketedSound(
@@ -15,13 +13,7 @@ export class BallSoundRenderer<RoomId extends string, RoomItemId extends string>
     this.output,
   );
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "ball",
-      RoomId,
-      RoomItemId
-    >,
-  ) {
+  constructor(public readonly renderContext: ItemSoundRenderContext<"ball">) {
     this.output.gain.value = 4;
   }
 

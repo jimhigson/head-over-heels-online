@@ -89,7 +89,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
           inputStateTracker,
         }),
       } satisfies {
-        [BT in ButtonType]: OnScreenButtonRenderer<BT, RoomId, RoomItemId>;
+        [BT in ButtonType]: OnScreenButtonRenderer<BT>;
       },
       joystick: new OnScreenJoystickRenderer({
         inputStateTracker,

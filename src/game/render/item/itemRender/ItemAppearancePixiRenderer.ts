@@ -1,21 +1,19 @@
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { ItemRenderProps } from "../../itemAppearances/ItemRenderProps";
 import { AppearanceRenderer } from "../../appearance/AppearanceRenderer";
 import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 import type { Container } from "pixi.js";
 
 /** specialise appearance renderer (in types only) to handle (specifically) Items more conveniently */
-export class ItemAppearanceRenderer<
+export class ItemAppearancePixiRenderer<
     T extends ItemInPlayType,
-    RoomId extends string,
-    RoomItemId extends string,
-    RenderTarget extends Container = Container,
+    RenderProps extends object,
+    Output extends Container = Container,
   >
   extends AppearanceRenderer<
-    ItemRenderContext<T, RoomId, RoomItemId>,
-    ItemTickContext<RoomId, RoomItemId>,
-    ItemRenderProps<T>,
-    RenderTarget
+    ItemRenderContext<T>,
+    ItemTickContext,
+    RenderProps,
+    Output
   >
-  implements ItemPixiRenderer<T, RoomId, RoomItemId> {}
+  implements ItemPixiRenderer<T> {}

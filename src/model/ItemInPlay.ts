@@ -105,17 +105,6 @@ export type ItemState<
     BaseItemState<RoomItemId> & ItemStateMap<RoomId, RoomItemId>[T]
   : BaseItemState<RoomItemId>;
 
-export type ShadowMaskOptions = {
-  /** of not defined, the whole item being rendered on can show shadows */
-  spriteOptions?: CreateSpriteOptions;
-  /**
-   * usually the shadow mask will be relative to the origin of the item,
-   * but for variable-height items it is useful for it to be relative to the
-   * top
-   */
-  relativeTo: "top" | "origin";
-};
-
 export type ItemInPlay<
   T extends ItemInPlayType,
   RoomId extends string = string,
@@ -141,13 +130,6 @@ export type ItemInPlay<
   /** an optional second bb which is used only for determining render order - not for collisions */
   readonly renderAabb?: Aabb;
 
-  renders: boolean;
-
-  /**
-   * the area of this item that shadows can be cast on, or 'all' for no mask (ie, a floor)
-   * or undefined for no shadows
-   */
-  readonly shadowMask?: ShadowMaskOptions;
   /* the shadow this item casts on other items */
   shadowCastTexture?: CreateSpriteOptions;
 

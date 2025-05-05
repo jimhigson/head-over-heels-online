@@ -34,20 +34,16 @@ export type RoomTickContext<
   deltaMS: number;
 };
 
-export type ItemTickContext<
-  RoomId extends string,
-  RoomItemId extends string,
-> = RoomTickContext<RoomId, RoomItemId> & {
+export type ItemTickContext = RoomTickContext<string, string> & {
   /** @see RoomRenderer.#lastRenderRoomTime */
   lastRenderRoomTime: number | undefined;
 };
 
-export type ItemRenderContext<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-> = RoomRenderContext<RoomId, RoomItemId> & {
-  item: ItemTypeUnion<T, RoomId, RoomItemId>;
+export type ItemRenderContext<T extends ItemInPlayType> = RoomRenderContext<
+  string,
+  string
+> & {
+  item: ItemTypeUnion<T, string, string>;
 };
 
 export interface Renderer<

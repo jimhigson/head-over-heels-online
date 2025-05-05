@@ -3,12 +3,8 @@ import type { ItemInPlayType } from "../model/ItemInPlay";
 import type { RoomState } from "../model/RoomState";
 import type { SoundSettings } from "../store/slices/gameMenusSlice";
 
-export type ItemSoundRenderContext<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-> = {
-  item: ItemTypeUnion<T, RoomId, RoomItemId>;
+export type ItemSoundRenderContext<T extends ItemInPlayType> = {
+  item: ItemTypeUnion<T, string, string>;
   soundSettings: SoundSettings;
-  room: RoomState<RoomId, RoomItemId>;
+  room: RoomState<string, string>;
 };

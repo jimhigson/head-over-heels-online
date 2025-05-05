@@ -18,6 +18,7 @@ import type { RoomJson } from "../../../model/RoomJson";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/veryClose";
+import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal
@@ -80,7 +81,6 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
       axis === "y" ? yAxisWallAabb(roomSizeZ) : xAxisWallAabb(roomSizeZ),
       times,
     ),
-    renders: !isHidden,
     renderAabb:
       isHidden ? undefined : (
         multiplyBoundingBox(
@@ -88,6 +88,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
           times,
         )
       ),
+    fixedZIndex: isHidden ? nonRenderingItemFixedZIndex : undefined,
     state: {
       position: blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,

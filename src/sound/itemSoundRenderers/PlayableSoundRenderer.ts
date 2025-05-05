@@ -12,11 +12,7 @@ import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type { ItemTickContext } from "../../game/render/Renderer";
 import { neverTime } from "../../utils/veryClose";
 
-export class PlayableSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<CharacterName, RoomId, RoomItemId>
-{
+export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   public readonly output: GainNode = audioCtx.createGain();
 
   // add the walking buffer sources to here to play them
@@ -59,11 +55,7 @@ export class PlayableSoundRenderer<
   };
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      CharacterName,
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<CharacterName>,
   ) {
     const {
       soundSettings,
@@ -114,7 +106,7 @@ export class PlayableSoundRenderer<
     );
   }
 
-  tick({ lastRenderRoomTime }: ItemTickContext<RoomId, RoomItemId>) {
+  tick({ lastRenderRoomTime }: ItemTickContext) {
     const {
       renderContext: { item },
     } = this;

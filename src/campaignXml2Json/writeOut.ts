@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { canonicalize } from "json-canonicalize";
 import { objectValues } from "iter-tools";
 import { iterate } from "../utils/iterate";
@@ -29,21 +29,8 @@ export const writeOut = async ({
   const tsRoomFilename = (roomId: string) => `${targetDir}/rooms/${roomId}.ts`;
   const tsRoomIdsFilename = `${targetDir}/OriginalCampaignRoomId.ts`;
 
-  const readExtraRooms = async (): Promise<Record<string, AnyRoomJson>> => {
-    const extraRoomNames = await readdir(`${targetDir}/extraRooms`);
-    console.log("we have extra rooms", extraRoomNames);
-    const extraRoomPromises = extraRoomNames.map(async (extraRoomFilename) => [
-      extraRoomFilename.replace(/\.ts$/, ""),
-      (await import(`../../${targetDir}/extraRooms/${extraRoomFilename}`))
-        .room as AnyRoomJson,
-    ]);
-
-    const extraRooms = await Promise.all(extraRoomPromises);
-    return Object.fromEntries(extraRooms);
-  };
   const convertedRoomsAndExtraRooms = {
     ...convertedRooms,
-    ...(await readExtraRooms()),
   };
 
   const roomIdsSorted = orderBy(Object.keys(convertedRoomsAndExtraRooms));

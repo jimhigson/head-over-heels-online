@@ -3,11 +3,16 @@
 ## xml-> json
 
 [ ] parseInt from xml earlier and remove many parseInt 
+
+# refactor
+
+[ ] remove event bus from gamestate
         
 ## General
 
 [ ] replace deadly 'puck/cap' sprites with a spiky ball
 
+[ ] split integration tests up
 
 ### Big ideas
 

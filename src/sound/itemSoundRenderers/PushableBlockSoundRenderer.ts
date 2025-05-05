@@ -7,21 +7,15 @@ import {
 } from "../soundUtils/createBracketedSound";
 import type { ItemTickContext } from "../../game/render/Renderer";
 
-export class PushableBlockSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<"pushableBlock", RoomId, RoomItemId>
+export class PushableBlockSoundRenderer
+  implements ItemSoundRenderer<"pushableBlock">
 {
   public readonly output: GainNode = audioCtx.createGain();
 
   scrapeBracketed: BracketedSound | undefined;
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "pushableBlock",
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<"pushableBlock">,
   ) {
     if (renderContext.item.config.style === "stepStool") {
       this.scrapeBracketed = createBracketedSound(
@@ -34,7 +28,7 @@ export class PushableBlockSoundRenderer<
     }
   }
 
-  tick({ movedItems }: ItemTickContext<RoomId, RoomItemId>) {
+  tick({ movedItems }: ItemTickContext) {
     if (this.scrapeBracketed !== undefined) {
       const {
         renderContext: {

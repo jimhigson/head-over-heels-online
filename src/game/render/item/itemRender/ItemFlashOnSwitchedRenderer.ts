@@ -15,22 +15,21 @@ const recentlySwitchedFiltersLeft: Array<Filter> = [
 ];
 
 const flashDurationMs = 75;
-export class ItemFlashOnSwitchedRenderer<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemPixiRenderer<T, RoomId, RoomItemId>
+export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
+  implements ItemPixiRenderer<T>
 {
-  public readonly output: Container = new Container();
+  public readonly output: Container = new Container({
+    label: "ItemFlashOnSwitchedRenderer",
+  });
 
   constructor(
-    readonly renderContext: ItemRenderContext<T, RoomId, RoomItemId>,
-    private readonly childRenderer: ItemPixiRenderer<T, RoomId, RoomItemId>,
+    readonly renderContext: ItemRenderContext<T>,
+    private readonly childRenderer: ItemPixiRenderer<T>,
   ) {
     this.output.addChild(childRenderer.output);
   }
 
-  tick(tickContext: ItemTickContext<RoomId, RoomItemId>) {
+  tick(tickContext: ItemTickContext) {
     const {
       renderContext: {
         item: {

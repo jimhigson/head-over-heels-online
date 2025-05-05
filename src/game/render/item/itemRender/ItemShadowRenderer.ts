@@ -1,22 +1,21 @@
-import type { Renderer as PixiRenderer } from "pixi.js";
-import { AlphaFilter, Container, RenderTexture, Sprite } from "pixi.js";
+import { AlphaFilter, Container, Sprite } from "pixi.js";
 import { projectWorldXyzToScreenXy } from "../../projectToScreen";
-import type { CreateSpriteOptions } from "../../createSprite";
-import { createSprite } from "../../createSprite";
 import type { Collideable } from "../../../collision/aabbCollision";
 import { collision1to1 } from "../../../collision/aabbCollision";
 import { concat, objectEntries } from "iter-tools";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import { subXy } from "../../../../utils/vectors/vectors";
-import { store } from "../../../../store/store";
 import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
-import { blockSizePx } from "../../../../sprites/spritePivots";
 import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
 import { iterateRoomItems } from "../../../../model/RoomState";
 import type { ItemPixiRenderer } from "./ItemRenderer";
+import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
+import { store } from "../../../../store/store";
+import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
+import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
+import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -25,80 +24,13 @@ type Cast = {
   renderedOnProgression: number;
 };
 
-const renderContainerToSprite = (
-  pixiRenderer: PixiRenderer,
-  container: Container,
-): Sprite => {
-  // the shadowmask is a container - this is the case for 'times'
-  const localBounds = container.getLocalBounds();
-
-  // general containers with multiple sprites can't be used as shadow masks,
-  // so we need to render the shadow mask to a sprite:
-  const renderTexture = RenderTexture.create({
-    width: localBounds.maxX - localBounds.minX,
-    height: localBounds.maxY - localBounds.minY,
-    // TODO: resolution (reduce size of texture)
-  });
-
-  // displace container contents to the origin of the sprite:
-  container.x -= localBounds.minX;
-  container.y -= localBounds.minY;
-  pixiRenderer.render({ container, target: renderTexture });
-
-  return new Sprite({
-    texture: renderTexture,
-    label: "shadowMaskSprite (of renderTexture)",
-    // un-displace to the origin of the sprite so it works the same as the container
-    // we're rendering from:
-    pivot: { x: -localBounds.minX, y: -localBounds.minY },
-  });
-};
-
-const renderMultipliedXy = (
-  pixiRenderer: PixiRenderer,
-  createSpriteOptions: CreateSpriteOptions,
-  timesXyz: Partial<Xyz> | undefined,
-): Sprite => {
-  const timesXy: Xy | undefined = timesXyz && {
-    x: timesXyz.x ?? 1,
-    y: timesXyz.y ?? 1,
-  };
-
-  const renderingContainer = createSprite({
-    ...(typeof createSpriteOptions === "string" ?
-      { textureId: createSpriteOptions }
-    : createSpriteOptions),
-    times: timesXy,
-  });
-
-  if (renderingContainer instanceof Sprite) {
-    // simple case where we got a sprite:
-    return renderingContainer;
-  } else {
-    // times case where createSprite gave us a container of sprites:
-    return renderContainerToSprite(pixiRenderer, renderingContainer);
-  }
-};
-
-export type ItemRenderContextWithRequiredShadowMask<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-  BaseContext extends ItemRenderContext<
-    T,
-    RoomId,
-    RoomItemId
-  > = ItemRenderContext<T, RoomId, RoomItemId>,
-  // type-fest's SetRequiredDeep slows ts down too much here:
-> = BaseContext & {
-  item: SetRequired<BaseContext["item"], "shadowMask">;
-};
-
-export class ItemShadowRenderer<
-  T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemPixiRenderer<T, RoomId, RoomItemId>
+/**
+ * make the black shadow at half opacity, crating an effect similar to Amiga OCS's EHB
+ * - in practice, 0.5 is to feint, so 0.66 make it easier to see the shadow
+ */
+const halfOpacity = new AlphaFilter({ alpha: 0.66 });
+class ItemShadowRenderer<T extends ItemInPlayType>
+  implements ItemPixiRenderer<T>
 {
   #container: Container = new Container({
     label: "ItemShadowRenderer",
@@ -106,6 +38,7 @@ export class ItemShadowRenderer<
   #shadowsContainer: Container = new Container({
     label: "shadows",
   });
+  #shadowMaskRenderer: ItemPixiRenderer<T, Container<Sprite>> | undefined;
 
   /**
    * record all the shadows currently being cast, to maintain some state between frames so we ca
@@ -114,68 +47,84 @@ export class ItemShadowRenderer<
   #casts = {} as Record<string, Cast>;
 
   constructor(
-    public readonly renderContext: ItemRenderContextWithRequiredShadowMask<
-      T,
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemRenderContext<T>,
+    appearance: ItemShadowAppearanceOutsideView<T> | "no-mask",
   ) {
-    const {
-      gameMenus: {
-        userSettings: {
-          // TODO: showShadowMasks could be in the renderContext
-          displaySettings: { showShadowMasks },
-        },
-      },
-    } = store.getState();
-
     // due to this issue:
     // https://github.com/pixijs/pixijs/issues/4334
     // using alpha fitler (not .alpha) to set alpha here:
     // https://pixijs.download/dev/docs/filters.AlphaFilter.html
-    if (!showShadowMasks) {
-      this.#container.filters = new AlphaFilter({ alpha: 0.5 });
+    if (!this.#showShadowMasks) {
+      this.#container.filters = halfOpacity;
     }
 
-    const { item, pixiRenderer } = renderContext;
-    const {
-      shadowMask: { spriteOptions },
-    } = item;
-
-    if (spriteOptions) {
-      const { times } = item.config as ConsolidatableConfig;
-
-      const shadowMaskSprite = renderMultipliedXy(
-        pixiRenderer,
-        spriteOptions,
-        times,
+    // null appearance means no shadow mask is needed
+    if (appearance !== "no-mask") {
+      this.#shadowMaskRenderer = new ItemAppearancePixiRenderer(
+        renderContext,
+        appearance,
       );
 
-      if (item.shadowMask.relativeTo === "top") {
-        shadowMaskSprite.y -= item.aabb.z;
-      }
-      if (times) {
-        // move the shadow mast up if the item is multiplied in z:
-        shadowMaskSprite.y -= ((times.z ?? 1) - 1) * blockSizePx.h;
-      }
-
-      this.#container.addChild(shadowMaskSprite);
-      if (!showShadowMasks) {
-        this.#container.mask = shadowMaskSprite;
-      }
+      this.#container.addChild(this.#shadowMaskRenderer.output);
     }
 
     this.#container.addChild(this.#shadowsContainer);
-    //this.#container.addChild(new Graphics().circle(0, 0, 2).fill(0xff0000));
+  }
+
+  /** convenience for getting the shadow mask setting from the store */
+  get #showShadowMasks() {
+    return store.getState().gameMenus.userSettings.displaySettings
+      .showShadowMasks;
+  }
+
+  /**
+   * update the shadow mask for this item
+   */
+  #tickShadowMask(itemTickContext: ItemTickContext) {
+    if (this.#shadowMaskRenderer === undefined) {
+      return;
+    }
+
+    // -1 here (assuming hte last child is the shadow mask) is not very safe!
+    // might need something better.
+    const previousSprite = this.#shadowMaskRenderer.output.children.at(0);
+    this.#shadowMaskRenderer.tick(itemTickContext);
+    const newSprite = this.#shadowMaskRenderer.output.children.at(0);
+
+    if (newSprite === undefined || !(newSprite instanceof Sprite)) {
+      const { item } = this.renderContext;
+      throw new Error(
+        `ItemShadowRenderer: this.#shadowMaskRenderer didn't create a sprite for item "${item.id}" of type "${item.type}". Have got ${newSprite}`,
+      );
+    }
+
+    if (previousSprite !== newSprite) {
+      //if (previousSprite) {
+      //  this.#container.removeChild(previousSprite);
+      //}
+      // this is removing the sprite from its parent!
+      //this.#container.addChild(newSprite);
+      if (!this.#showShadowMasks) {
+        this.#container.mask = newSprite;
+      }
+    }
   }
 
   destroy() {
     this.#container.destroy(true);
+    this.#shadowMaskRenderer?.destroy();
   }
   /**
    * @returns true iff the item needs z-order resorting for the room
    */
-  tick({ movedItems, progression }: ItemTickContext<RoomId, RoomItemId>) {
+  tick(itemTickContext: ItemTickContext) {
+    // TODO: remove this check when all good - just for debugging
+    if (this.#shadowsContainer.parent === null) {
+      throw new Error("shadow container not in scene graph");
+    }
+
+    const { movedItems, progression } = itemTickContext;
+
     const { item, pixiRenderer, room } = this.renderContext;
 
     const surfaceMoved = movedItems.has(item);
@@ -277,14 +226,30 @@ export class ItemShadowRenderer<
     }
 
     // for efficiency, hide all shadow rendering if nothing is casting on this item:
-    this.#container.visible =
+    const visible =
       (bins.keepUnchanged?.length ?? 0) +
         (bins.update?.length ?? 0) +
         (bins.create?.length ?? 0) >
       0;
+    this.#container.visible = visible;
+
+    // for efficiency, only tick the shadow mask if this renderer is showing something
+    if (visible) {
+      this.#tickShadowMask(itemTickContext);
+    }
   }
 
   get output() {
     return this.#container;
   }
 }
+
+export const maybeCreateItemShadowRenderer = <T extends ItemInPlayType>(
+  renderContext: ItemRenderContext<T>,
+): ItemShadowRenderer<T> | undefined => {
+  const appearance = itemShadowMaskAppearanceForItem(renderContext.item);
+
+  return appearance === undefined ? undefined : (
+      new ItemShadowRenderer(renderContext, appearance)
+    );
+};

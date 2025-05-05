@@ -1,4 +1,4 @@
-import type { DrawOrderComparable } from "./zComparator";
+import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
 import type { GraphEdges } from "./toposort/toposort";
 import { CyclicDependencyError, toposort } from "./toposort/toposort";
@@ -53,8 +53,9 @@ export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
   }
 
   // ⚠⚠ WARNING QUADRATIC LOOPING! ⚠⚠
+  // ⚠⚠ compares every item pair, where one of the pair has moved ⚠⚠
   for (const itemI of moved) {
-    if (!itemI.renders) {
+    if (itemI.fixedZIndex !== undefined) {
       continue;
     }
 
@@ -63,7 +64,7 @@ export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
     // are known not to have changed
     for (const itemJ of objectValues(items) as Iterable<TItem>) {
       if (
-        !itemJ.renders ||
+        itemJ.fixedZIndex !== undefined ||
         // already compared the other way:
         comparisonsDone.get(itemJ)?.has(itemI) ||
         // no point comparing to self:

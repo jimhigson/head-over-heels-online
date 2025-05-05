@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import type { Renderer } from "../Renderer";
-import type { Appearance, RenderProps } from "./Appearance";
+import type { Appearance, AppearanceRendering } from "./Appearance";
 
 /**
  * track changes of a subject over time, updating the rendering as necessary using a pluggable
@@ -14,51 +14,65 @@ export class AppearanceRenderer<
    */
   RenderContext extends object,
   TickContext extends object,
-  RP extends RenderProps,
+  RenderProps extends object,
   /** the type of the thing returned by this renderer */
-  RenderTarget extends Container = Container,
+  Output extends Container = Container,
 > implements Renderer<RenderContext, TickContext, Container>
 {
-  #currentlyRenderedProps: RP | undefined = undefined;
-  #output: Container<RenderTarget>;
+  /* what is currently rendered by the appearance,
+     and what render props did it use?
+   */
+  #currentRendering?: AppearanceRendering<RenderProps, Output>;
+
+  //#currentlyRenderedProps: RenderProps | undefined = undefined;
+  public readonly output: Container<Output>;
 
   constructor(
     public readonly renderContext: RenderContext,
     private appearance: Appearance<
       RenderContext,
       TickContext,
-      RP,
-      RenderTarget
+      RenderProps,
+      Output
     >,
+    /*outputContainer: Container<Output> = new Container({
+      label: `AppearanceRenderer`,
+    }),*/
   ) {
-    this.#output = new Container({
+    this.output = new Container({
       label: `AppearanceRenderer`,
     });
   }
 
   destroy() {
-    this.#output.destroy({ children: true });
+    this.output.destroy({ children: true });
   }
 
   tick(tickContext: TickContext) {
     const rendering = this.appearance({
       renderContext: this.renderContext,
-      currentlyRenderedProps: this.#currentlyRenderedProps,
-      previousRendering: this.#output.children.at(0) ?? null,
+      currentRendering: this.#currentRendering,
       tickContext,
     });
 
     if (rendering !== "no-update") {
-      this.#currentlyRenderedProps = rendering.renderProps;
       // it is ok to return the same container back, in which case we don't need to do anything:
-      if (this.#output.children.at(0) !== rendering.output) {
-        this.#output.removeChildren();
-        if (rendering.output !== null) this.#output.addChild(rendering.output);
-      }
-    }
-  }
+      if (this.output.children.at(0) !== rendering.output) {
+        if (this.#currentRendering?.output) {
+          console.log(
+            "removing",
+            this.#currentRendering.output,
+            "from",
+            this.output,
+          );
+          this.output.removeChild(this.#currentRendering.output);
+        }
 
-  get output() {
-    return this.#output;
+        if (rendering.output !== undefined)
+          this.output.addChild(rendering.output);
+      }
+
+      this.#currentRendering = rendering;
+    }
   }
 }

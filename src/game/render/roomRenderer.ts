@@ -49,7 +49,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #incrementalZEdges: GraphEdges<string> = new Map();
   #itemRenderers: Map<
     RoomItemId,
-    ItemSoundAndGraphicsRenderer<ItemInPlayType, RoomId, RoomItemId>
+    ItemSoundAndGraphicsRenderer<ItemInPlayType>
   > = new Map();
   #roomScroller: ReturnType<typeof positionRoom>;
 
@@ -110,7 +110,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #tickItems(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
     const { room } = this.renderContext;
 
-    const itemTickContext: ItemTickContext<RoomId, RoomItemId> = {
+    const itemTickContext: ItemTickContext = {
       ...roomTickContext,
       lastRenderRoomTime: this.#lastRenderRoomTime,
     };
@@ -125,7 +125,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         // have never ticked this item before - either first tick in the room or item was introduced to the
         // room since the last tick
         itemRenderer = createItemRenderer({
-          ...this.renderContext,
+          // hmmm... the event emitters are stopping from casting this normally! That can probably go
+          // TODO: delete GameEvents
+          // TODO: when .events and GameEvents are deleted, this 'unknown' and maybe the whole cast can go
+          ...(this.renderContext as unknown as RoomRenderContext<
+            string,
+            string
+          >),
           item,
         });
 
@@ -160,7 +166,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         itemRenderer.tick(itemTickContext);
       } catch (e) {
         throw new Error(
-          `room had an error while ticking item ${item.id}: ${(e as Error).message}`,
+          `RoomRenderer caught error while ticking item ${item.id}: ${(e as Error).message}`,
           { cause: e },
         );
       }
@@ -192,8 +198,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           `Item id=${order[i]} does not have a renderer - cannot assign a z-index`,
         );
       }
-      // TODO: verify that this will always have graphics
-      itemRenderer.output.graphics!.zIndex = order.length - i;
+
+      const graphicsOutput = itemRenderer.output.graphics;
+      if (graphicsOutput) graphicsOutput!.zIndex = order.length - i;
+      else
+        throw new Error(
+          `order ${order[i]} was given a z-order by sorting, but item has no graphics`,
+        );
     }
   }
 

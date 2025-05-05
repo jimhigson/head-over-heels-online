@@ -117,7 +117,11 @@ export class MainLoop<RoomId extends string> {
     try {
       this.tick(options);
     } catch (thrown) {
-      this.#handleError(thrown);
+      const wrappedError = new Error("Error caught in main loop", {
+        cause: thrown,
+      });
+      console.error(wrappedError);
+      this.#handleError(wrappedError);
     }
   };
 

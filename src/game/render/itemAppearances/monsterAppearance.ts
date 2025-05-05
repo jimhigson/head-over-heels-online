@@ -1,4 +1,5 @@
 import type { ItemConfigMap } from "../../../model/json/ItemConfigMap";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import { vectorClosestDirectionXy4 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import {
@@ -11,20 +12,30 @@ import {
   itemRidingOnBubblesSpritesOptions,
 } from "./createStackedSprites";
 import type { ItemAppearance } from "./ItemAppearance";
-import type { ItemRenderProps } from "./ItemRenderProps";
 
 const greyWhileDeactivated: Array<
   ItemConfigMap<string, string>["monster"]["which"]
 > = ["cyberman", "dalek", "skiHead", "bubbleRobot", "computerBot", "turtle"];
 
-export const monsterAppearance: ItemAppearance<"monster"> = ({
+type MonsterRenderProps = {
+  facingXy4?: DirectionXy4;
+  activated: boolean;
+  busyLickingDoughnutsOffFace: boolean;
+};
+
+export const monsterAppearance: ItemAppearance<
+  "monster",
+  MonsterRenderProps
+> = ({
   renderContext: {
     item: { config, state },
     room,
     paused,
   },
-  currentlyRenderedProps,
+  currentRendering,
 }) => {
+  const currentlyRenderedProps = currentRendering?.renderProps;
+
   const { activated, busyLickingDoughnutsOffFace } = state;
 
   const filter =
@@ -55,7 +66,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
       if (!render) {
         return "no-update";
       }
-      const renderProps: ItemRenderProps<"monster"> = {
+      const renderProps: MonsterRenderProps = {
         facingXy4,
         activated,
         busyLickingDoughnutsOffFace,
@@ -153,7 +164,7 @@ export const monsterAppearance: ItemAppearance<"monster"> = ({
         return "no-update";
       }
 
-      const renderProps: ItemRenderProps<"monster"> = {
+      const renderProps: MonsterRenderProps = {
         activated,
         busyLickingDoughnutsOffFace,
       };

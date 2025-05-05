@@ -56,9 +56,21 @@ const frames = {
 
   ...fourDirections(
     "charles",
-    smallItemGridLocation({ x: 4, y: 1 }),
+    smallItemGridLocation({ x: 3, y: 1 }),
     smallItemTextureSize,
   ),
+  "shadowMask.charles.away": {
+    frame: {
+      ...smallItemGridLocation({ x: 5, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.charles.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 5, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
 
   ...fourDirections(
     "elephant",
@@ -156,112 +168,124 @@ const frames = {
     smallItemGridLocation({ x: 0, y: 3 }),
     smallItemTextureSize,
   ),
+  "shadowMask.turtle.away": {
+    frame: {
+      ...smallItemGridLocation({ x: 4, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.turtle.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 4, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
 
   ...fourDirections(
     "monkey",
-    smallItemGridLocation({ x: 4, y: 3 }),
+    smallItemGridLocation({ x: 5, y: 3 }),
     smallItemTextureSize,
   ),
 
   ...fourDirections(
     "computerBot",
-    smallItemGridLocation({ x: 6, y: 3 }),
+    smallItemGridLocation({ x: 7, y: 3 }),
     smallItemTextureSize,
   ),
 
   "spring.compressed": {
     frame: {
-      ...smallItemGridLocation({ x: 8, y: 3 }),
+      ...smallItemGridLocation({ x: 9, y: 3 }),
       ...smallItemTextureSize,
     },
   },
   "spring.released": {
     frame: {
-      ...smallItemGridLocation({ x: 9, y: 3 }),
+      ...smallItemGridLocation({ x: 10, y: 3 }),
       ...smallItemTextureSize,
     },
   },
 
   "switch.left": {
     frame: {
-      ...smallItemGridLocation({ x: 10, y: 3 }),
+      ...smallItemGridLocation({ x: 11, y: 3 }),
       ...smallItemTextureSize,
     },
   },
   "switch.right": {
     frame: {
-      ...smallItemGridLocation({ x: 11, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.switch": {
-    frame: {
       ...smallItemGridLocation({ x: 12, y: 3 }),
       ...smallItemTextureSize,
     },
   },
-
-  tower: {
+  "shadowMask.switch": {
     frame: {
       ...smallItemGridLocation({ x: 13, y: 3 }),
       ...smallItemTextureSize,
     },
   },
 
-  "shadowMask.tower": {
+  tower: {
     frame: {
       ...smallItemGridLocation({ x: 14, y: 3 }),
       ...smallItemTextureSize,
     },
   },
-  scroll: {
+
+  "shadowMask.tower": {
     frame: {
-      ...smallItemGridLocation({ x: 8, y: 4 }),
+      ...smallItemGridLocation({ x: 15, y: 3 }),
       ...smallItemTextureSize,
-      pivot: { x: 17, y: 24 },
     },
   },
-  "shadow.scroll": {
+  scroll: {
     frame: {
       ...smallItemGridLocation({ x: 9, y: 4 }),
       ...smallItemTextureSize,
       pivot: { x: 17, y: 24 },
     },
   },
-  "shadowMask.scroll": {
+  "shadow.scroll": {
     frame: {
       ...smallItemGridLocation({ x: 10, y: 4 }),
       ...smallItemTextureSize,
       pivot: { x: 17, y: 24 },
     },
   },
-  "spikyBall.1": {
+  "shadowMask.scroll": {
     frame: {
       ...smallItemGridLocation({ x: 11, y: 4 }),
       ...smallItemTextureSize,
+      pivot: { x: 17, y: 24 },
     },
   },
-  "spikyBall.2": {
+  "spikyBall.1": {
     frame: {
       ...smallItemGridLocation({ x: 12, y: 4 }),
       ...smallItemTextureSize,
     },
   },
-  puck: {
+  "spikyBall.2": {
     frame: {
       ...smallItemGridLocation({ x: 13, y: 4 }),
       ...smallItemTextureSize,
     },
   },
-  "shadow.smallRound": {
+  puck: {
     frame: {
       ...smallItemGridLocation({ x: 14, y: 4 }),
       ...smallItemTextureSize,
     },
   },
-  "shadowMask.smallRound": {
+  "shadow.smallRound": {
     frame: {
       ...smallItemGridLocation({ x: 15, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.smallRound": {
+    frame: {
+      ...smallItemGridLocation({ x: 16, y: 4 }),
       ...smallItemTextureSize,
     },
   },
@@ -302,23 +326,22 @@ const frames = {
     },
   },
 
-  doughnuts: {
-    frame: {
-      ...smallItemGridLocation({ x: 8, y: 5 }),
-      ...smallItemTextureSize,
-    },
-  },
-
   ...seriesOfNumberedTextures(
     "bubbles.taupe",
     3,
-    smallItemGridLocation({ x: 9, y: 5 }),
+    smallItemGridLocation({ x: 8, y: 5 }),
     smallItemTextureSize,
   ),
 
   whiteRabbit: {
     frame: {
-      ...smallItemGridLocation({ x: 12, y: 5 }),
+      ...smallItemGridLocation({ x: 11, y: 5 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.whiteRabbit": {
+    frame: {
+      ...smallItemGridLocation({ x: 11, y: 5 }),
       ...smallItemTextureSize,
     },
   },
@@ -337,10 +360,16 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  // deliberately blank sprite to use as a noop
-  blank: {
+  doughnuts: {
     frame: {
-      ...smallItemGridLocation({ x: 0, y: 2 }),
+      ...smallItemGridLocation({ x: 14, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
+  // deliberately blank sprite to use as a noop
+  "shadowMask.doughnuts": {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 6 }),
       ...smallItemTextureSize,
     },
   },
@@ -381,6 +410,22 @@ const frames = {
     { x: 301, y: 227 },
     { w: 24, h: 32 },
   ),
+  "shadowMask.skiHead.away": {
+    frame: {
+      x: 351,
+      y: 227,
+      w: 24,
+      h: 32,
+    },
+  },
+  "shadowMask.skiHead.right": {
+    frame: {
+      x: 351,
+      y: 260,
+      w: 24,
+      h: 32,
+    },
+  },
 
   "block.organic": {
     frame: {
@@ -556,6 +601,12 @@ const frames = {
   "shadowMask.teleporter": {
     frame: {
       ...largeItemGridLocation({ x: 10, y: 3 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.teleporter.flashing": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y: 3 }),
       ...largeItemTextureSize,
     },
   },

@@ -6,10 +6,7 @@ import { loadDoor } from "./loadDoor";
 import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import type {
-  UnionOfAllItemInPlayTypes,
-  ShadowMaskOptions,
-} from "../../../model/ItemInPlay";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { directionAxis } from "../../../utils/vectors/vectors";
@@ -20,6 +17,7 @@ import type { RoomJson } from "../../../model/RoomJson";
 import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
+import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;
@@ -96,8 +94,8 @@ export function* loadItemFromJson<
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxesMultiplied,
-        renders: jsonItem.type !== "emitter",
-        shadowMask: shadowMask(jsonItem),
+        fixedZIndex:
+          jsonItem.type === "emitter" ? nonRenderingItemFixedZIndex : undefined,
         shadowCastTexture: shadowCast(jsonItem),
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -108,108 +106,6 @@ export function* loadItemFromJson<
     }
   }
 }
-
-const shadowMask = (jsonItem: JsonItemUnion): ShadowMaskOptions | undefined => {
-  // charles doesn't work because can't (yet) have direction-specific (changing) maps
-  switch (jsonItem.type) {
-    case "lift":
-      return {
-        spriteOptions: "shadowMask.smallBlock",
-        relativeTo: "origin",
-      };
-    case "conveyor":
-      return {
-        spriteOptions: {
-          textureId: "shadowMask.conveyor",
-          flipX: directionAxis(jsonItem.config.direction) === "x",
-        },
-        relativeTo: "origin",
-      };
-    case "barrier":
-      return {
-        spriteOptions: {
-          textureId: "shadowMask.barrier.y",
-          flipX: jsonItem.config.axis === "x",
-        },
-        relativeTo: "origin",
-      };
-    case "spring":
-      return { spriteOptions: "shadowMask.smallRound", relativeTo: "origin" };
-    case "block":
-      return {
-        spriteOptions:
-          jsonItem.config.style === "tower" ?
-            "shadowMask.tower"
-          : "shadowMask.fullBlock",
-        relativeTo: "origin",
-      };
-    case "pushableBlock":
-    case "movingPlatform":
-      return {
-        spriteOptions:
-          jsonItem.config.style === "stepStool" ?
-            "shadowMask.stepStool"
-          : "shadowMask.fullBlock",
-        relativeTo: "origin",
-      };
-    case "teleporter":
-      return { spriteOptions: "shadowMask.teleporter", relativeTo: "origin" };
-    case "hushPuppy":
-      // just happens to be the right shape:
-      return { spriteOptions: "shadowMask.hushPuppy", relativeTo: "origin" };
-    case "portableBlock":
-      return {
-        spriteOptions:
-          jsonItem.config.style === "drum" ?
-            "shadowMask.smallRound"
-          : "shadowMask.smallBlock",
-        relativeTo: "origin",
-      };
-    case "slidingBlock":
-      return {
-        spriteOptions:
-          jsonItem.config.style === "book" ?
-            "shadowMask.fullBlock"
-          : "shadowMask.smallRound",
-        relativeTo: "origin",
-      };
-    case "deadlyBlock":
-      switch (jsonItem.config.style) {
-        case "volcano":
-          return { spriteOptions: "shadowMask.volcano", relativeTo: "origin" };
-        case "toaster":
-          return {
-            spriteOptions: "shadowMask.fullBlock",
-            relativeTo: "origin",
-          };
-        default:
-          jsonItem.config.style satisfies never;
-      }
-      break;
-    case "spikes":
-      return { spriteOptions: "shadowMask.spikes", relativeTo: "origin" };
-    case "switch":
-      return { spriteOptions: "shadowMask.switch", relativeTo: "origin" };
-    case "pickup":
-      return jsonItem.config.gives === "scroll" ?
-          {
-            spriteOptions: "shadowMask.scroll",
-            relativeTo: "origin",
-          }
-        : undefined;
-    case "slidingDeadly":
-      return { spriteOptions: "shadowMask.smallRound", relativeTo: "origin" };
-    case "monster":
-      switch (jsonItem.config.which) {
-        case "dalek":
-          return { spriteOptions: "shadowMask.dalek", relativeTo: "origin" };
-        default:
-          return undefined;
-      }
-    case "joystick":
-      return { spriteOptions: "shadowMask.joystick", relativeTo: "origin" };
-  }
-};
 
 const shadowCast = (
   jsonItem: JsonItemUnion,

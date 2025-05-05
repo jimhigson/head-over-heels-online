@@ -1,16 +1,9 @@
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
 
-export class SlidingBlockSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> extends CollisionSoundRenderer<RoomId, RoomItemId> {
+export class SlidingBlockSoundRenderer extends CollisionSoundRenderer {
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "slidingBlock",
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<"slidingBlock">,
   ) {
     super(
       renderContext,

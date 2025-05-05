@@ -6,11 +6,7 @@ import { store } from "../../store/store";
 import { selectAtPath } from "../../store/selectors";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 
-export class SwitchSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<"switch", RoomId, RoomItemId>
-{
+export class SwitchSoundRenderer implements ItemSoundRenderer<"switch"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   // add the walking buffer sources to here to play them
@@ -18,13 +14,7 @@ export class SwitchSoundRenderer<
 
   #currentRenderProps: { setting: SwitchSetting } | undefined = undefined;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "switch",
-      RoomId,
-      RoomItemId
-    >,
-  ) {
+  constructor(public readonly renderContext: ItemSoundRenderContext<"switch">) {
     this.#channelNode.connect(this.output);
   }
 

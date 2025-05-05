@@ -1,9 +1,6 @@
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
-import type {
-  ItemAppearanceOptions,
-  ItemAppearanceReturn,
-} from "./ItemAppearance";
+import type { ItemAppearance } from "./ItemAppearance";
 import type { StackedSpritesContainer } from "./createStackedSprites";
 import {
   stackedBottomSymbol,
@@ -15,6 +12,7 @@ import {
   type IndividualCharacterName,
   type CharacterName,
 } from "../../../model/modelTypes";
+import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import {
   lengthXyz,
   vectorClosestDirectionXy8,
@@ -26,7 +24,6 @@ import { Container } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
 import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
-import type { ItemRenderProps } from "./ItemRenderProps";
 import { noFilters } from "../filters/standardFilters";
 import { OneColourFilter } from "../filters/oneColourFilter";
 import {
@@ -42,6 +39,19 @@ import {
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import type { PlayableActionState } from "../../../model/ItemStateMap";
+import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+
+type PlayableRenderProps = {
+  facingXy8: DirectionXy8;
+  action: PlayableActionState;
+  teleportingPhase: "in" | "out" | null;
+  gravityZ: number;
+
+  highlighted: boolean;
+  flashing: boolean;
+  shining: boolean;
+};
 
 /*
   if the ascent speed while jumping is less than this,
@@ -58,7 +68,7 @@ const playableCreateSpriteOptions = ({
   teleportingPhase,
   gravityZ,
   paused,
-}: ItemRenderProps<CharacterName> & {
+}: PlayableRenderProps & {
   name: IndividualCharacterName;
   paused: boolean;
 }): CreateSpriteOptions => {
@@ -127,7 +137,7 @@ type IndividualPlayableRenderingContainer = Container & {
 
 const updateIndividualPlayableSprite = (
   container: IndividualPlayableRenderingContainer,
-  renderPropsWithNameAndPause: ItemRenderProps<CharacterName> & {
+  renderPropsWithNameAndPause: PlayableRenderProps & {
     name: IndividualCharacterName;
     paused: boolean;
   },
@@ -237,8 +247,8 @@ const removeFilterFromContainer = (
 
 const applyFilters = (
   name: IndividualCharacterName,
-  { highlighted, flashing }: ItemRenderProps<CharacterName>,
-  currentlyRenderedProps: ItemRenderProps<CharacterName> | undefined,
+  { highlighted, flashing }: PlayableRenderProps,
+  currentlyRenderedProps: PlayableRenderProps | undefined,
   container: Container,
 ) => {
   const currentlyHighlighted = currentlyRenderedProps?.highlighted ?? false;
@@ -280,9 +290,9 @@ const updateIndividualsRendering = (
   individualCharacterName: IndividualCharacterName,
   individualContainer: IndividualPlayableRenderingContainer,
   refreshSprites: boolean,
-  renderProps: ItemRenderProps<CharacterName>,
+  renderProps: PlayableRenderProps,
   paused: boolean,
-  currentlyRenderedProps?: ItemRenderProps<CharacterName>,
+  currentlyRenderedProps?: PlayableRenderProps,
 ) => {
   if (refreshSprites) {
     updateIndividualPlayableSprite(individualContainer, {
@@ -304,23 +314,18 @@ const updateIndividualsRendering = (
   );
 };
 
-type PlayableRenderTarget =
+type PlayableRenderOutput =
   | IndividualPlayableRenderingContainer
   | StackedSpritesContainer<IndividualPlayableRenderingContainer>;
 
-export const playableAppearance = <
-  RoomId extends string,
-  RoomItemId extends string,
->({
-  currentlyRenderedProps,
-  renderContext: { item: subject, gameState, paused },
-  previousRendering,
-}: ItemAppearanceOptions<
+const playableAppearanceImpl: ItemAppearance<
   CharacterName,
-  RoomId,
-  RoomItemId,
-  PlayableRenderTarget
->): ItemAppearanceReturn<CharacterName, PlayableRenderTarget> => {
+  PlayableRenderProps,
+  PlayableRenderOutput
+> = ({
+  renderContext: { item: subject, gameState, paused },
+  currentRendering,
+}) => {
   const {
     type,
     state: {
@@ -332,6 +337,8 @@ export const playableAppearance = <
       },
     },
   } = subject;
+  const currentlyRenderedProps = currentRendering?.renderProps;
+  const previousRendering = currentRendering?.output;
 
   const facingXy8 = vectorClosestDirectionXy8(facing) ?? "towards";
 
@@ -353,7 +360,7 @@ export const playableAppearance = <
 
   const teleportingPhase = teleporting?.phase ?? null;
 
-  const renderProps: ItemRenderProps<CharacterName> = {
+  const renderProps: PlayableRenderProps = {
     action,
     facingXy8,
     teleportingPhase,
@@ -372,7 +379,7 @@ export const playableAppearance = <
     currentlyRenderedProps?.gravityZ > jumpSpriteGravityZThreshold !==
       gravityZ > jumpSpriteGravityZThreshold;
 
-  let outputContainer: PlayableRenderTarget;
+  let outputContainer: PlayableRenderOutput;
 
   if (type === "headOverHeels") {
     outputContainer =
@@ -427,3 +434,7 @@ export const playableAppearance = <
     renderProps,
   };
 };
+
+export const playableAppearance = itemAppearanceOutsideView(
+  playableAppearanceImpl,
+);

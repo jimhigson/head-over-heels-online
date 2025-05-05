@@ -2,11 +2,14 @@ import { Container, Graphics } from "pixi.js";
 import { edgePaletteSwapFilters } from "../../filters/standardFilters";
 import { projectBlockXyzToScreenXy } from "../../projectToScreen";
 import { floorRenderExtent } from "../../renderExtent";
-import { type ItemAppearance, itemRenderOnce } from "../ItemAppearance";
+import {
+  type ItemAppearance,
+  itemAppearanceRenderOnce,
+} from "../ItemAppearance";
 import { renderEdge } from "./renderEdge";
 
-export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = itemRenderOnce(
-  ({ renderContext: { colourised, room } }) => {
+export const floorEdgeAppearance: ItemAppearance<"floorEdge"> =
+  itemAppearanceRenderOnce(({ renderContext: { colourised, room } }) => {
     const {
       blockXMin,
       blockYMin,
@@ -87,5 +90,4 @@ export const floorEdgeAppearance: ItemAppearance<"floorEdge"> = itemRenderOnce(
     container.cacheAsTexture(true);
 
     return container;
-  },
-);
+  });

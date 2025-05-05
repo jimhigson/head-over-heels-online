@@ -7,6 +7,10 @@ import { originXy, originXyz, addXyz } from "../../../utils/vectors/vectors";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { floorBlockMinMax } from "../../render/renderExtent";
+import {
+  floorEdgeFixedZIndex,
+  nonRenderingItemFixedZIndex,
+} from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
 export function* loadFloorAndCeiling<
@@ -57,7 +61,7 @@ export function* loadFloorAndCeiling<
     aabb: originXyz,
     config: {},
     // this is always rendered in front of everything
-    fixedZIndex: 9999,
+    fixedZIndex: floorEdgeFixedZIndex,
   };
 
   if (roomJson.floor === "none" && roomJson.roomBelow !== undefined) {
@@ -88,6 +92,7 @@ export function* loadFloorAndCeiling<
       ...{
         type: "portal",
         id: "floor/portal" as RoomItemId,
+        fixedZIndex: nonRenderingItemFixedZIndex,
         config: {
           toRoom: roomJson.roomBelow,
           // floor and ceiling relative points are the middle of the portal, this fixes
@@ -140,6 +145,7 @@ export function* loadFloorAndCeiling<
       ...{
         type: "portal",
         id: "ceiling" as RoomItemId,
+        fixedZIndex: nonRenderingItemFixedZIndex,
         config: {
           toRoom: roomJson.roomAbove,
           // floor and ceiling relative points are the middle of the portal, this fixes

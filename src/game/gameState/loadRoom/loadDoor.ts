@@ -18,6 +18,7 @@ import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { emptyObject } from "../../../utils/empty";
 import { defaultBaseState } from "./itemDefaultStates";
 import { neverTime } from "../../../utils/veryClose";
+import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
@@ -222,7 +223,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         }),
         direction: unitVectors[direction],
       },
-      renders: false,
+      fixedZIndex: nonRenderingItemFixedZIndex,
       state: {
         position: addXyz(
           blockXyzToFineXyz(
@@ -296,9 +297,9 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   yield {
     type: "stopAutowalk",
     id: `${id}/stopAutowalk` as RoomItemId,
-    renders: false,
     aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0, z: 2 } as Xyz),
     config: {},
+    fixedZIndex: nonRenderingItemFixedZIndex,
     state: {
       position: blockXyzToFineXyz(
         subXyz(position, scaleXyz(unitVectors[direction], 0.75)),

@@ -5,9 +5,7 @@ import { createAudioNode } from "../soundUtils/createAudioNode";
 
 const dopplerSensitivity = 3;
 
-export class LiftSoundRenderer<RoomId extends string, RoomItemId extends string>
-  implements ItemSoundRenderer<"lift", RoomId, RoomItemId>
-{
+export class LiftSoundRenderer implements ItemSoundRenderer<"lift"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #channelSource = createAudioNode({
@@ -16,13 +14,7 @@ export class LiftSoundRenderer<RoomId extends string, RoomItemId extends string>
     connectTo: this.output,
   } as const);
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "lift",
-      RoomId,
-      RoomItemId
-    >,
-  ) {
+  constructor(public readonly renderContext: ItemSoundRenderContext<"lift">) {
     // this sound is often in the background for a long time so make it not too loud:
     this.output.gain.value = 0.7;
   }

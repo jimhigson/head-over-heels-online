@@ -3,19 +3,13 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 
-export class FiredDoughnutSoundRenderer<
-  RoomId extends string,
-  RoomItemId extends string,
-> implements ItemSoundRenderer<"firedDoughnut", RoomId, RoomItemId>
+export class FiredDoughnutSoundRenderer
+  implements ItemSoundRenderer<"firedDoughnut">
 {
   public readonly output: GainNode = audioCtx.createGain();
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<
-      "firedDoughnut",
-      RoomId,
-      RoomItemId
-    >,
+    public readonly renderContext: ItemSoundRenderContext<"firedDoughnut">,
   ) {
     createAudioNode({
       soundId: "hooter",

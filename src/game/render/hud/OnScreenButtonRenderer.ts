@@ -78,32 +78,30 @@ type ButtonRenderContext<BT extends ButtonType> = {
   button: Button<BT>;
   inputStateTracker: InputStateTrackerInterface;
 };
-type ButtonTickContext<RoomId extends string, RoomItemId extends string> = {
-  room: RoomState<RoomId, RoomItemId> | undefined;
+type ButtonTickContext = {
+  room: RoomState<string, string> | undefined;
   currentPlayable: PlayableItem | undefined;
 };
 
-type ButtonAppearance<
-  BT extends ButtonType,
-  RoomId extends string,
-  RoomItemId extends string,
-> = Appearance<
+type ButtonAppearance<BT extends ButtonType> = Appearance<
   ButtonRenderContext<BT>,
-  ButtonTickContext<RoomId, RoomItemId>,
+  ButtonTickContext,
   ButtonRenderProps[BT],
   BT extends "menu" | "map" ? Container : ButtonRenderingContainer
 >;
 
 const textYForButtonCentre = -11;
 const buttonAppearances: {
-  [BT in ButtonType]: ButtonAppearance<BT, string, string>;
+  [BT in ButtonType]: ButtonAppearance<BT>;
 } = {
   jump({
     renderContext: { button, inputStateTracker, colourise },
-    currentlyRenderedProps,
-    previousRendering,
     tickContext: { room, currentPlayable },
+    currentRendering,
   }) {
+    const currentlyRenderedProps = currentRendering?.renderProps;
+    const previousRendering = currentRendering?.output;
+
     const standingOnId = currentPlayable?.state.standingOnItemId ?? null;
     const standingOn =
       standingOnId === null ? null
@@ -119,7 +117,7 @@ const buttonAppearances: {
     );
 
     const container =
-      previousRendering === null ?
+      previousRendering === undefined ?
         arcadeStyleButtonRendering({
           colourise,
           button,
@@ -169,10 +167,12 @@ const buttonAppearances: {
   },
   carry({
     renderContext: { button, inputStateTracker, colourise },
-    currentlyRenderedProps,
-    previousRendering,
+    currentRendering,
     tickContext: { currentPlayable, room },
   }) {
+    const currentlyRenderedProps = currentRendering?.renderProps;
+    const previousRendering = currentRendering?.output;
+
     const heelsAbilities =
       currentPlayable && selectHeelsAbilities(currentPlayable);
     const hasBag = heelsAbilities?.hasBag ?? false;
@@ -192,7 +192,7 @@ const buttonAppearances: {
     const disabled = hasBag && !willPickUp && carrying === null;
 
     const container =
-      previousRendering === null ?
+      previousRendering === undefined ?
         arcadeStyleButtonRendering({
           colourise,
           button,
@@ -243,10 +243,12 @@ const buttonAppearances: {
   },
   fire({
     renderContext: { button, inputStateTracker, colourise },
-    currentlyRenderedProps,
-    previousRendering,
+    currentRendering,
     tickContext: { currentPlayable },
   }) {
+    const currentlyRenderedProps = currentRendering?.renderProps;
+    const previousRendering = currentRendering?.output;
+
     const headAbilities =
       currentPlayable && selectHeadAbilities(currentPlayable);
     const hasHooter = headAbilities?.hasHooter ?? false;
@@ -257,7 +259,7 @@ const buttonAppearances: {
     );
 
     const container =
-      previousRendering === null ?
+      previousRendering === undefined ?
         arcadeStyleButtonRendering({
           colourise,
           button,
@@ -305,10 +307,12 @@ const buttonAppearances: {
   },
   carryAndJump({
     renderContext: { button, inputStateTracker, colourise },
-    currentlyRenderedProps,
-    previousRendering,
+    currentRendering,
     tickContext: { currentPlayable },
   }) {
+    const currentlyRenderedProps = currentRendering?.renderProps;
+    const previousRendering = currentRendering?.output;
+
     const heelsAbilities =
       currentPlayable && selectHeelsAbilities(currentPlayable);
     const hasBag = heelsAbilities?.hasBag ?? false;
@@ -329,7 +333,7 @@ const buttonAppearances: {
 
     let container: ButtonRenderingContainer;
 
-    if (previousRendering === null) {
+    if (previousRendering === undefined) {
       container = arcadeStyleButtonRendering({
         colourise,
         button,
@@ -359,8 +363,8 @@ const buttonAppearances: {
       },
     };
   },
-  menu({ previousRendering }) {
-    if (previousRendering !== null) {
+  menu({ currentRendering }) {
+    if (currentRendering !== null) {
       return "no-update";
     }
 
@@ -373,8 +377,8 @@ const buttonAppearances: {
       renderProps: emptyObject,
     };
   },
-  map({ previousRendering }) {
-    if (previousRendering !== null) {
+  map({ currentRendering }) {
+    if (currentRendering !== null) {
       return "no-update";
     }
 
@@ -390,18 +394,16 @@ const buttonAppearances: {
 
 export class OnScreenButtonRenderer<
   BT extends ButtonType,
-  RoomId extends string,
-  RoomItemId extends string,
 > extends AppearanceRenderer<
   ButtonRenderContext<BT>,
-  ButtonTickContext<RoomId, RoomItemId>,
+  ButtonTickContext,
   ButtonRenderProps[BT],
   BT extends "menu" | "map" ? Container : ButtonRenderingContainer
 > {
   constructor(renderContext: ButtonRenderContext<BT>) {
     const appearance = buttonAppearances[
       renderContext.button.which
-    ] as ButtonAppearance<BT, RoomId, RoomItemId>;
+    ] as ButtonAppearance<BT>;
     super(renderContext, appearance);
   }
 }
