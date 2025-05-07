@@ -66,6 +66,7 @@ export default tseslint.config(
             "Top-level await is poorly supported by safari with dynamic imports.",
         },
       ],
+      "no-prototype-builtins": "off",
     },
   },
 );

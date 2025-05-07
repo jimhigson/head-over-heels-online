@@ -87,18 +87,23 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
       sprite = new Sprite(loadedSpriteSheet().textures[options.textureId]);
     }
 
-    if (times !== undefined) {
+    // even times: undefined should cause the sprite to be wrapped in a container
+    // for consistency when it is passed in optionally, so the types don't change
+    // between two otherwise identical calls
+    //if (options.times) { <- not this!
+    if (options.hasOwnProperty("times")) {
       const completeTimes = { x: 1, y: 1, z: 1, ...times };
 
       const container = new Container({ label: label ?? "timesXyz" });
       for (let { x } = completeTimes; x >= 1; x--) {
         for (let { y } = completeTimes; y >= 1; y--) {
           for (let z = 1; z <= completeTimes.z; z++) {
-            const component = _createSprite({
+            const subSpriteOptions = {
               ...options,
-              times: undefined,
               label: `(${x},${y},${z})`,
-            });
+            };
+            delete subSpriteOptions.times;
+            const component = _createSprite(subSpriteOptions);
             const displaceXy = projectBlockXyzToScreenXy({
               x: x - 1,
               y: y - 1,
@@ -162,7 +167,13 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
 
 export const createSprite = _createSprite as <O extends CreateSpriteOptions>(
   options: O,
-) => O extends TextureId ? Sprite : Container;
+) => O extends TextureId ? Sprite
+: O extends AnimatedCreateSpriteOptions ?
+  O extends { times?: Partial<Xyz> } ?
+    Container<AnimatedSprite>
+  : AnimatedSprite
+: O extends { times?: Partial<Xyz> } ? Container<Sprite>
+: Sprite;
 
 function createAnimatedSprite({
   animationId,
