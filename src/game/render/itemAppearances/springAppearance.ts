@@ -1,81 +1,86 @@
-import type { Container } from "pixi.js";
+import type { AnimatedSprite } from "pixi.js";
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { store } from "../../../store/store";
-import { emptyArray } from "../../../utils/empty";
 import { createSprite } from "../createSprite";
-import { OutlineFilter } from "../filters/outlineFilter";
 import type { ItemAppearance } from "./ItemAppearance";
-import { carryableOutlineColour } from "./itemAppearanceColours";
 import type { PortableItemRenderProps } from "./PortableItemRenderProps";
+import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+import { noFilters } from "../filters/standardFilters";
+import { carryableOutlineColour } from "./itemAppearanceColours";
+import { OutlineFilter } from "../filters/outlineFilter";
+import { store } from "../../../store/store";
 
 type SpringRenderProps = PortableItemRenderProps & {
   compressed: boolean;
 };
 
-export const springAppearance: ItemAppearance<"spring", SpringRenderProps> = ({
+/**
+ * cases:
+ *    was            now                                               render
+ *    ===            ===                                               ===
+ *
+ *    stood on       !stood on     // (indicated with stoodOnUntil)    play bounce anim once. stop on last frame (released)
+ *    stood on       stood on                                          'no-update'
+ *    !stood on      stood on                                          'no-update'
+ *    !stood on      stood on                                          go to 2nd frame of anim (compressed)
+ */
+
+const springAppearanceImpl: ItemAppearance<
+  "spring",
+  SpringRenderProps,
+  AnimatedSprite
+> = ({
   renderContext: {
     item: {
-      state: { stoodOnBy, wouldPickUpNext: highlighted },
+      state: { stoodOnBy, wouldPickUpNext: highlighted, stoodOnUntilRoomTime },
     },
     paused,
   },
+  tickContext: { lastRenderRoomTime },
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
   const compressed = isStoodOn(stoodOnBy);
 
-  const render =
-    currentlyRenderedProps === undefined ||
-    highlighted !== currentlyRenderedProps.highlighted ||
-    compressed !== currentlyRenderedProps.compressed;
-
-  if (!render) {
-    return "no-update";
+  let rendering: AnimatedSprite;
+  if (currentRendering?.output) {
+    rendering = currentRendering?.output;
+  } else {
+    rendering = createSprite({
+      animationId: "spring.bounce",
+    });
+    rendering.loop = false;
+    rendering.gotoAndStop(0);
   }
 
-  const currentlyRenderedCompressed =
-    currentlyRenderedProps?.compressed ?? false;
+  const boing =
+    lastRenderRoomTime !== undefined &&
+    stoodOnUntilRoomTime > lastRenderRoomTime;
 
-  const filter =
-    highlighted ?
-      new OutlineFilter({
+  if (boing && !paused) {
+    rendering.gotoAndPlay(0);
+  } else {
+    if (compressed && !(currentlyRenderedProps?.compressed ?? false)) {
+      rendering.gotoAndStop(1);
+    }
+    // no need to handle the released case - this will be handled by the animation staying on the lsat frame,
+    // which is the released spring
+  }
+  if (highlighted !== (currentlyRenderedProps?.highlighted ?? false)) {
+    if (highlighted) {
+      rendering.filters = new OutlineFilter({
         outlineColor: carryableOutlineColour,
         lowRes: false,
         upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
-      })
-    : undefined;
-
-  const previousRendering = currentRendering?.output;
-
-  const changeFilterOnExistingRendering =
-    previousRendering !== undefined &&
-    compressed === currentlyRenderedCompressed &&
-    highlighted !== currentlyRenderedProps?.highlighted;
-
-  let output: Container;
-
-  if (changeFilterOnExistingRendering) {
-    // only need to change the highlight - not the whole rendering. This is necessary
-    // to not stop the animation when heels jumps off the spring and it stops highlighting
-    previousRendering.filters = filter ?? emptyArray;
-    output = previousRendering;
-  } else {
-    output =
-      !compressed && currentlyRenderedCompressed ?
-        createSprite({
-          animationId: "spring.bounce",
-          playOnce: "and-stop",
-          filter,
-          paused,
-        })
-      : createSprite({
-          textureId: compressed ? "spring.compressed" : "spring.released",
-          filter,
-        });
+      });
+    } else {
+      rendering.filters = noFilters;
+    }
   }
 
   return {
-    output,
+    output: rendering,
     renderProps: { compressed, highlighted },
   };
 };
+
+export const springAppearance = itemAppearanceOutsideView(springAppearanceImpl);

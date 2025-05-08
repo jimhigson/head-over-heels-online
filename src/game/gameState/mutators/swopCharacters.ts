@@ -3,7 +3,7 @@ import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 
-import { setStandingOn } from "./modifyStandingOn";
+import { setStandingOn } from "./setStandingOn";
 import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import {
   uncombinePlayablesFromSymbiosis,

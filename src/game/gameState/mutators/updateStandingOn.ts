@@ -1,4 +1,5 @@
-import { removeStandingOn, setStandingOn } from "./modifyStandingOn";
+import { setStandingOn } from "./setStandingOn";
+import { removeStandingOn } from "./removeStandingOn";
 import {
   spatiallyCheckStandingOn,
   findStandingOnWithHighestPriorityAndMostOverlap,
@@ -29,14 +30,6 @@ export const updateStandingOn = <
     // check what is standing on us - this implies that we're also checking what everything is stood on,
     // but gives us a chance to apply latent movement:
     for (const stander of iterateStoodOnByItems(item.state.stoodOnBy, room)) {
-      /*console.log(
-          stander.id,
-          "still stood on",
-          item.id,
-          "?",
-          spatiallyCheckStandingOn(stander, item),
-        );*/
-
       if (!room.items[stander.id]) {
         // stander is no longer in the room:
         removeStandingOn(stander, room);

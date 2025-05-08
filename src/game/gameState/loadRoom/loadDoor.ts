@@ -17,7 +17,6 @@ import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { emptyObject } from "../../../utils/empty";
 import { defaultBaseState } from "./itemDefaultStates";
-import { neverTime } from "../../../utils/veryClose";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 /**
  * this looks low when the bounding boxes are rendered, but visually
@@ -82,6 +81,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         part: "far",
       },
       state: {
+        ...defaultBaseState(),
         position: blockXyzToFineXyz(
           addXyz(
             position,
@@ -90,10 +90,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             tunnelSetbackBlocks,
           ),
         ),
-        expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-        disappear: null,
-        switchedAtRoomTime: neverTime,
       },
       aabb: addXyz(
         {
@@ -117,13 +114,11 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         part: "near",
       },
       state: {
+        ...defaultBaseState(),
         position: blockXyzToFineXyz(
           addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
         ),
-        expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-        disappear: null,
-        switchedAtRoomTime: neverTime,
       },
       /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
          the bb very well */
@@ -149,6 +144,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         part: "top",
       },
       state: {
+        ...defaultBaseState(),
         position: addXyz(
           blockXyzToFineXyz(
             addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
@@ -158,10 +154,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             z: doorPortalHeight,
           },
         ),
-        expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-        disappear: null,
-        switchedAtRoomTime: neverTime,
       },
       aabb: addXyz(
         {
@@ -188,16 +181,14 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       },
       renders: false,
       state: {
+        ...defaultBaseState(),
         position: addXyz(
           blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
           {
             z: doorPostHeight,
           },
         ),
-        expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-        disappear: null,
-        switchedAtRoomTime: neverTime,
       },
       aabb: blockXyzToFineXyz({
         [axis]: 2,
@@ -225,6 +216,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       },
       fixedZIndex: nonRenderingItemFixedZIndex,
       state: {
+        ...defaultBaseState(),
         position: addXyz(
           blockXyzToFineXyz(
             addXyz(
@@ -237,10 +229,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           ),
           { [axis]: nearPostWidthInAxis },
         ),
-        expires: null,
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-        disappear: null,
-        switchedAtRoomTime: neverTime,
       },
       aabb: {
         [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
@@ -301,13 +290,11 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     config: {},
     fixedZIndex: nonRenderingItemFixedZIndex,
     state: {
+      ...defaultBaseState(),
       position: blockXyzToFineXyz(
         subXyz(position, scaleXyz(unitVectors[direction], 0.75)),
       ),
-      expires: null,
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-      disappear: null,
-      switchedAtRoomTime: neverTime,
     },
   };
 }

@@ -94,6 +94,14 @@ export type BaseItemState<RoomItemId extends string = string> = {
    * moved into to change this item
    */
   switchedSetting?: SwitchSetting;
+
+  /**
+   * when this item last stopped being stood on. This is used to render items
+   * (the spring) that renders differently when it has been stepped off
+   *
+   * TODO: could this only be for springs, since that is all that uses it?
+   */
+  stoodOnUntilRoomTime: number;
 };
 
 export type ItemState<
