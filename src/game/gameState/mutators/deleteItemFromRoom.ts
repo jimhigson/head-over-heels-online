@@ -2,7 +2,7 @@ import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { isFreeItem } from "../../physics/itemPredicates";
-import { removeStandingOn } from "./modifyStandingOn";
+import { removeStandingOn } from "./removeStandingOn";
 
 export const deleteItemFromRoom = <
   RoomId extends string,

@@ -77,6 +77,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         shieldCollectedAt: neverTime,
         doughnuts: infiniteDoughnutsPoke ? "infinite" : 0,
         position: positionCentredInBlock(jsonItem),
+        stoodOnUntilRoomTime: neverTime,
       },
     };
   } else {
@@ -95,6 +96,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         bigJumps: 0,
         shieldCollectedAt: neverTime,
         position: positionCentredInBlock(jsonItem),
+        stoodOnUntilRoomTime: neverTime,
       },
     };
   }

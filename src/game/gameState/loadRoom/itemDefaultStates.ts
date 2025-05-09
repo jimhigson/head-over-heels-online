@@ -16,6 +16,7 @@ export const defaultBaseState = <RoomItemId extends string>() =>
     stoodOnBy: {} as StoodOnBy<RoomItemId>,
     disappear: null,
     switchedAtRoomTime: neverTime,
+    stoodOnUntilRoomTime: neverTime,
   }) satisfies Partial<BaseItemState>;
 
 export const defaultFreeItemState = <RoomItemId extends string>() =>

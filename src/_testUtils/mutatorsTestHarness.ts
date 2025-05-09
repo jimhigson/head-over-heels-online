@@ -12,7 +12,7 @@ import {
 } from "../game/gameState/loadGameState";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
 import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
-import { setStandingOn } from "../game/gameState/mutators/modifyStandingOn";
+import { setStandingOn } from "../game/gameState/mutators/setStandingOn";
 import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
 import type { ItemInPlay } from "../model/ItemInPlay";
 import type { PlayableActionState } from "../model/ItemStateMap";

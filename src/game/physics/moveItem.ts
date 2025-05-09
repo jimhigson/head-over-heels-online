@@ -10,10 +10,8 @@ import type { GameState } from "../gameState/GameState";
 import { isSolid } from "./itemPredicates";
 import { mtv } from "./mtv";
 import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
-import {
-  removeStandingOn,
-  setStandingOn,
-} from "../gameState/mutators/modifyStandingOn";
+import { setStandingOn } from "../gameState/mutators/setStandingOn";
+import { removeStandingOn } from "../gameState/mutators/removeStandingOn";
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
