@@ -124,7 +124,9 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           aabb,
         },
         room,
-        gameState: { campaign },
+        general: {
+          gameState: { campaign },
+        },
       },
     }) => {
       const axis = doorAlongAxis(direction);

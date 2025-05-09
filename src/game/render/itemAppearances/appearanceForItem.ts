@@ -19,7 +19,6 @@ import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 import { conveyorAppearance } from "./conveyorAppearance";
 import { teleporterAppearance } from "./teleporterAppearance";
 import { charlesAppearance } from "./charlesAppearance";
-import { portableBlockAppearance } from "./portableBlockAppearance";
 import { springAppearance } from "./springAppearance";
 import { sceneryPlayerAppearance } from "./sceneryPlayer";
 import { spikyBallAppearance } from "./spikyBallAppearance";
@@ -96,25 +95,31 @@ const itemAppearancesMap: {
 
   conveyor: conveyorAppearance,
 
-  lift: itemAppearanceRenderOnce(({ renderContext: { paused } }) => {
-    const rendering = new Container();
+  lift: itemAppearanceRenderOnce(
+    ({
+      renderContext: {
+        general: { paused },
+      },
+    }) => {
+      const rendering = new Container();
 
-    const pivot = {
-      x: smallItemTextureSize.w / 2,
-      y: smallItemTextureSize.h,
-    };
-    rendering.addChild(
-      createSprite({
-        animationId: "lift",
-        pivot,
-        paused,
-      }),
-    );
+      const pivot = {
+        x: smallItemTextureSize.w / 2,
+        y: smallItemTextureSize.h,
+      };
+      rendering.addChild(
+        createSprite({
+          animationId: "lift",
+          pivot,
+          paused,
+        }),
+      );
 
-    rendering.addChild(createSprite({ textureId: "lift.static", pivot }));
+      rendering.addChild(createSprite({ textureId: "lift.static", pivot }));
 
-    return rendering;
-  }),
+      return rendering;
+    },
+  ),
 
   teleporter: teleporterAppearance,
 
@@ -137,7 +142,7 @@ const itemAppearancesMap: {
       renderContext: {
         item: { config },
         room,
-        paused,
+        general: { paused },
       },
     }) => {
       if (config.gives === "crown") {
@@ -193,7 +198,15 @@ const itemAppearancesMap: {
     }) => createSprite(style),
   ),
 
-  portableBlock: portableBlockAppearance,
+  portableBlock: itemAppearanceRenderOnce(
+    ({
+      renderContext: {
+        item: {
+          config: { style },
+        },
+      },
+    }) => createSprite(style),
+  ),
 
   spring: springAppearance,
 
@@ -207,7 +220,7 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        paused,
+        general: { paused },
       },
     }) => {
       return createSprite({

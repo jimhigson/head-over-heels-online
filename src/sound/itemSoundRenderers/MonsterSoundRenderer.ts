@@ -17,7 +17,7 @@ import {
   type BracketedSegmentOptions,
 } from "../soundUtils/createBracketedSound";
 import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
-import type { ItemTickContext } from "../../game/render/Renderer";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 
 type PerMonsterSounds = {
   [M in MonsterWhich]?: BracketedSegmentOptions;

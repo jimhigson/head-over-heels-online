@@ -1,7 +1,10 @@
 import { Container } from "pixi.js";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { projectWorldXyzToScreenXy } from "../../projectToScreen";
-import type { ItemTickContext, ItemRenderContext } from "../../Renderer";
+import type {
+  ItemTickContext,
+  ItemRenderContext,
+} from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
 export class ItemPositionRenderer<T extends ItemInPlayType>

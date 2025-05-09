@@ -1,10 +1,10 @@
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { ItemSoundRenderer } from "../../../../sound/ItemSoundRenderer";
+import type { Renderer } from "../../Renderer";
 import type {
   ItemRenderContext,
   ItemTickContext,
-  Renderer,
-} from "../../Renderer";
+} from "../../ItemRenderContexts";
 import type { SoundAndGraphicsOutput } from "../../SoundAndGraphicsOutput";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 

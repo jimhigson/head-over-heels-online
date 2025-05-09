@@ -6,7 +6,7 @@ import type { ItemInPlayType } from "../model/ItemInPlay";
 import { audioCtx } from "./audioCtx";
 import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "./ItemSoundRenderer";
-import type { ItemTickContext } from "../game/render/Renderer";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 import { blockSizePx } from "../sprites/spritePivots";
 import { defaultRoomHeightBlocks } from "../game/physics/mechanicsConstants";
 import { addXyz, scaleXyz } from "../utils/vectors/vectors";
@@ -81,12 +81,28 @@ export class SoundPanRenderer<T extends ItemInPlayType>
       this.positionMinX,
     );
 
-    // y (height on screen, z in-game)
+    // y in screen-coords, z (altitude) in game-coords
     const positionY = numberInRangeToMinus1To1Range(
       itemCentrePosition.z,
       yPositionMin,
       yPositionMax,
     );
+
+    if (!Number.isFinite(positionY)) {
+      // leaving a descriptive error here to help find a bug that's tricky to track down
+      throw new Error(
+        `y position for sound rendering is not finite;
+        positionY = numberInRangeToMinus1To1Range(
+          itemCentrePosition = ${itemCentrePosition.z},
+          ${yPositionMin},
+          ${yPositionMax},
+        );
+        itemCentrePosition = addXyz(
+          itemState.position = ${JSON.stringify(itemState.position)},
+          scaleXyz(${JSON.stringify(item.aabb)}, 0.5),
+        )`,
+      );
+    }
 
     // z (depth on screen, x+y in-game)
     const positionZ = numberInRangeToMinus1To1Range(

@@ -9,7 +9,7 @@ import { createBracketedSound } from "../../soundUtils/createBracketedSound";
 import type { FreeItemTypes } from "../../../game/physics/itemPredicates";
 import { keysIter } from "../../../utils/entries";
 import { isEmpty } from "iter-tools";
-import type { ItemTickContext } from "../../../game/render/Renderer";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 import { neverTime } from "../../../utils/veryClose";
 
 export class CollisionSoundRenderer

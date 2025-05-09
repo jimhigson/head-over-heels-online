@@ -53,7 +53,9 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
       config: { textLines, appearanceRoomTime },
     },
     room: { roomTime },
-    displaySettings: { uncolourised },
+    general: {
+      displaySettings: { uncolourised },
+    },
   },
   currentRendering,
 }) => {

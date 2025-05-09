@@ -2,7 +2,10 @@ import type { Filter } from "pixi.js";
 import { Container } from "pixi.js";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { ItemPixiRenderer } from "./ItemRenderer";
-import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
+} from "../../ItemRenderContexts";
 import { OneColourFilter } from "../../filters/oneColourFilter";
 import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
 import { noFilters } from "../../filters/standardFilters";

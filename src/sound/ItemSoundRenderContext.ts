@@ -5,6 +5,8 @@ import type { SoundSettings } from "../store/slices/gameMenusSlice";
 
 export type ItemSoundRenderContext<T extends ItemInPlayType> = {
   item: ItemTypeUnion<T, string, string>;
-  soundSettings: SoundSettings;
+  general: {
+    soundSettings: SoundSettings;
+  };
   room: RoomState<string, string>;
 };

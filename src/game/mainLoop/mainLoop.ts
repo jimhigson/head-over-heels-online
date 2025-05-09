@@ -61,17 +61,12 @@ export class MainLoop<RoomId extends string> {
     label: "MainLoop/world",
   });
   #worldSound: AudioNode = audioCtx.createGain();
-  #app: Application;
-  #gameState: GameState<RoomId>;
   #physicsTicker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
 
   constructor(
     private app: Application,
-    gameState: GameState<RoomId>,
+    private gameState: GameState<RoomId>,
   ) {
-    this.#app = app;
-    this.#gameState = gameState;
-
     try {
       const storeState = store.getState();
       const {
@@ -117,7 +112,7 @@ export class MainLoop<RoomId extends string> {
     try {
       this.tick(options);
     } catch (thrown) {
-      const wrappedError = new Error("Error caught in main loop", {
+      const wrappedError = new Error("Error caught in main loop tick", {
         cause: thrown,
       });
       console.error(wrappedError);
@@ -148,7 +143,7 @@ export class MainLoop<RoomId extends string> {
     const tickOnScreenControls = selectShouldRenderOnScreenControls(tickState);
     const tickInputDirectionMode = selectInputDirectionMode(tickState);
     if (
-      this.#hudRenderer?.renderContext.colourise !== tickColourise ||
+      this.#hudRenderer?.renderContext.general.colourised !== tickColourise ||
       this.#hudRenderer?.renderContext.onScreenControls !==
         tickOnScreenControls ||
       this.#hudRenderer?.renderContext.inputDirectionMode !==
@@ -156,15 +151,22 @@ export class MainLoop<RoomId extends string> {
     ) {
       this.#hudRenderer?.destroy();
       this.#hudRenderer = new HudRenderer({
-        colourise: tickColourise,
-        gameState: this.#gameState,
+        general: {
+          gameState: this.gameState,
+          paused: isPaused,
+          pixiRenderer: this.app.renderer,
+          displaySettings: tickDisplaySettings,
+          soundSettings: tickSoundSettings,
+          colourised: tickColourise,
+          upscale: tickUpscale,
+        },
         inputDirectionMode: tickInputDirectionMode,
         onScreenControls: tickOnScreenControls,
       });
-      this.#app.stage.addChild(this.#hudRenderer.output);
+      this.app.stage.addChild(this.#hudRenderer.output);
     }
 
-    const tickStartRoom = selectCurrentRoomState(this.#gameState);
+    const tickStartRoom = selectCurrentRoomState(this.gameState);
     this.#hudRenderer.tick({
       screenSize: tickUpscale.gameEngineScreenSize,
       room: tickStartRoom,
@@ -173,71 +175,74 @@ export class MainLoop<RoomId extends string> {
     // note that progressing the game state can change/reload the room,
     // so we need to do this before considering recreating the room renderer
     const movedItems =
-      isPaused ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
+      isPaused ? emptySet : this.#physicsTicker(this.gameState, deltaMS);
 
     // the tick could end on a different room than it started on:
-    const tickEndRoom = selectCurrentRoomState(this.#gameState);
+    const tickEndRoom = selectCurrentRoomState(this.gameState);
 
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene
       // graph if it changes - we simply destroy and recreate it entirely:
       this.#roomRenderer?.renderContext.room !== tickEndRoom ||
-      this.#roomRenderer?.renderContext.upscale !== tickUpscale ||
-      this.#roomRenderer?.renderContext.displaySettings !==
+      this.#roomRenderer?.renderContext.general.upscale !== tickUpscale ||
+      this.#roomRenderer?.renderContext.general.displaySettings !==
         tickDisplaySettings ||
-      this.#roomRenderer?.renderContext.soundSettings !== tickSoundSettings ||
-      this.#roomRenderer?.renderContext.paused !== isPaused
+      this.#roomRenderer?.renderContext.general.soundSettings !==
+        tickSoundSettings ||
+      this.#roomRenderer?.renderContext.general.paused !== isPaused
     ) {
       this.#roomRenderer?.destroy();
 
       if (tickEndRoom) {
         this.#roomRenderer = new RoomRenderer({
-          gameState: this.#gameState,
+          general: {
+            gameState: this.gameState,
+            paused: isPaused,
+            pixiRenderer: this.app.renderer,
+            displaySettings: tickDisplaySettings,
+            soundSettings: tickSoundSettings,
+            colourised: tickColourise,
+            upscale: tickUpscale,
+          },
           room: tickEndRoom,
-          paused: isPaused,
-          pixiRenderer: this.#app.renderer,
-          displaySettings: tickDisplaySettings,
-          soundSettings: tickSoundSettings,
-          colourised: tickColourise,
-          upscale: tickUpscale,
         });
         this.#worldGraphics.addChild(this.#roomRenderer.output.graphics);
         this.#roomRenderer.output.sound?.connect(this.#worldSound);
         // this isn't the ideal place to emit this from - it gets fired even if just the
         // display settings change. but only the cheats needs this currently
-        this.#gameState.events.emit("roomChange", tickEndRoom.id);
+        this.gameState.events.emit("roomChange", tickEndRoom.id);
       } else {
         this.#roomRenderer = undefined;
       }
 
-      this.#app.stage.scale = tickUpscale.gameEngineUpscale;
+      this.app.stage.scale = tickUpscale.gameEngineUpscale;
       this.#initFilters();
     }
 
     // the room renderer runs even while paused - it is its responsibility to
     // exit quickly when nothing has changed
     this.#roomRenderer?.tick({
-      progression: this.#gameState.progression,
+      progression: this.gameState.progression,
       movedItems,
       deltaMS,
     });
 
     if (!isPaused) {
-      this.#app.stage.filters = this.#filtersWhenUnpaused;
+      this.app.stage.filters = this.#filtersWhenUnpaused;
     } else {
-      this.#app.stage.filters = this.#filtersWhenPaused;
+      this.app.stage.filters = this.#filtersWhenPaused;
     }
   };
 
   start() {
-    this.#app.ticker.add(this.tickAndCatch);
+    this.app.ticker.add(this.tickAndCatch);
     return this;
   }
   stop() {
-    this.#app.stage.removeChild(this.#worldGraphics);
+    this.app.stage.removeChild(this.#worldGraphics);
     this.#worldSound.disconnect();
     this.#roomRenderer?.destroy();
     this.#hudRenderer?.destroy();
-    this.#app.ticker.remove(this.tickAndCatch);
+    this.app.ticker.remove(this.tickAndCatch);
   }
 }

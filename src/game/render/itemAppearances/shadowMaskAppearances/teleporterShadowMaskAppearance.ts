@@ -14,7 +14,14 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   "teleporter",
   RenderProps,
   Sprite
-> = ({ renderContext: { pixiRenderer, item, room }, currentRendering }) => {
+> = ({
+  renderContext: {
+    general: { pixiRenderer },
+    item,
+    room,
+  },
+  currentRendering,
+}) => {
   const {
     state: { stoodOnBy },
     config: { times },

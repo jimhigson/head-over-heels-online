@@ -98,5 +98,5 @@ export const selectAbilities = _selectAbilities as <
   individualCharacterName: I,
 ) =>
   | (I extends "head" ? HeadAbilities : never)
-  | (I extends "heels" ? HeelsAbilities<string> : never)
+  | (I extends "heels" ? HeelsAbilities<RoomId> : never)
   | undefined;

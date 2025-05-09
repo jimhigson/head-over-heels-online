@@ -30,7 +30,7 @@ export const monsterAppearance: ItemAppearance<
   renderContext: {
     item: { config, state },
     room,
-    paused,
+    general: { paused },
   },
   currentRendering,
 }) => {

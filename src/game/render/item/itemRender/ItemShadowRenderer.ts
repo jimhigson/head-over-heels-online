@@ -7,7 +7,10 @@ import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { subXy } from "../../../../utils/vectors/vectors";
-import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
+} from "../../ItemRenderContexts";
 import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
 import { iterateRoomItems } from "../../../../model/RoomState";
 import type { ItemPixiRenderer } from "./ItemRenderer";
@@ -125,7 +128,11 @@ class ItemShadowRenderer<T extends ItemInPlayType>
 
     const { movedItems, progression } = itemTickContext;
 
-    const { item, pixiRenderer, room } = this.renderContext;
+    const {
+      item,
+      general: { pixiRenderer },
+      room,
+    } = this.renderContext;
 
     const surfaceMoved = movedItems.has(item);
     const itemTop = item.state.position.z + item.aabb.z;

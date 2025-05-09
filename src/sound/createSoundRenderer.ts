@@ -41,13 +41,13 @@ const rendererClasses: {
 };
 
 export const createSoundRenderer = <T extends ItemInPlayType>(
-  context: ItemSoundRenderContext<T>,
+  renderContext: ItemSoundRenderContext<T>,
 ): ItemSoundRenderer<T> | undefined => {
-  const ThisItemRendererClass = rendererClasses[context.item.type] as
+  const ThisItemRendererClass = rendererClasses[renderContext.item.type] as
     | ItemSoundRendererConstructableClass<T>
     | undefined;
 
   if (ThisItemRendererClass) {
-    return new ThisItemRendererClass(context) as ItemSoundRenderer<T>;
+    return new ThisItemRendererClass(renderContext) as ItemSoundRenderer<T>;
   }
 };

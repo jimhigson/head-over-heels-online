@@ -5,6 +5,7 @@ import type {
   ItemInPlay,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
+import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import type { CharacterName } from "../../model/modelTypes";
 import { characterNames } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
@@ -112,10 +113,28 @@ export const portableItemTypes = [
   "spring",
   // just for fun/an easter egg - let pick up the characters in the final room :-)
   "sceneryPlayer",
+  "sceneryCrown",
+  "monster",
 ] as const satisfies ItemInPlayType[];
+const portableMonsters: MonsterWhich[] = [
+  "dalek",
+  "turtle",
+  "elephantHead",
+  "homingBot",
+  "helicopterBug",
+];
 export type PortableItemType = (typeof portableItemTypes)[number];
+export type PortableItem<
+  RoomId extends string,
+  RoomItemId extends string,
+> = ItemTypeUnion<PortableItemType, RoomId, RoomItemId>;
 
-export const isPortable = isItemType(...portableItemTypes);
+export const isPortable = <RoomId extends string, RoomItemId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+): item is ItemTypeUnion<PortableItemType, RoomId, RoomItemId> =>
+  item.type === "monster" ?
+    portableMonsters.includes(item.config.which)
+  : (portableItemTypes as Array<ItemInPlayType>).includes(item.type);
 
 export const isPlayableItem = <
   RoomId extends string,

@@ -323,7 +323,10 @@ const playableAppearanceImpl: ItemAppearance<
   PlayableRenderProps,
   PlayableRenderOutput
 > = ({
-  renderContext: { item: subject, gameState, paused },
+  renderContext: {
+    item: subject,
+    general: { gameState, paused },
+  },
   currentRendering,
 }) => {
   const {
