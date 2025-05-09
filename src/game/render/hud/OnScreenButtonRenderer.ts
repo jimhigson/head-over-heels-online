@@ -364,7 +364,7 @@ const buttonAppearances: {
     };
   },
   menu({ currentRendering }) {
-    if (currentRendering !== null) {
+    if (currentRendering !== undefined) {
       return "no-update";
     }
 
@@ -378,7 +378,7 @@ const buttonAppearances: {
     };
   },
   map({ currentRendering }) {
-    if (currentRendering !== null) {
+    if (currentRendering !== undefined) {
       return "no-update";
     }
 
