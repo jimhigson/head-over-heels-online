@@ -2,7 +2,8 @@ import { audioCtx } from "../audioCtx";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { createAudioNode } from "../soundUtils/createAudioNode";
-import type { ItemTickContext } from "../../game/render/Renderer";
+import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
+import { isStoodOn } from "../../model/StoodOnBy";
 
 export class SpringSoundRenderer implements ItemSoundRenderer<"spring"> {
   public readonly output: GainNode = audioCtx.createGain();
@@ -15,14 +16,17 @@ export class SpringSoundRenderer implements ItemSoundRenderer<"spring"> {
     const {
       renderContext: {
         item: {
-          state: { stoodOnUntilRoomTime },
+          state: { stoodOnBy, stoodOnUntilRoomTime },
         },
       },
     } = this;
+    const compressed = isStoodOn(stoodOnBy);
 
     const boing =
       lastRenderRoomTime !== undefined &&
-      stoodOnUntilRoomTime > lastRenderRoomTime;
+      stoodOnUntilRoomTime > lastRenderRoomTime &&
+      // it could have stopped being stood on, but immediately been stood on again:
+      !compressed;
 
     if (boing) {
       createAudioNode({

@@ -1,6 +1,9 @@
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { AppearanceRenderer } from "../../appearance/AppearanceRenderer";
-import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
+} from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 import type { Container } from "pixi.js";
 

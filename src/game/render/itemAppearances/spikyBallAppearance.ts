@@ -22,7 +22,7 @@ const spikyBallAppearanceImpl: ItemAppearance<
       },
       config: { startingPhase },
     },
-    paused,
+    general: { paused },
   },
   tickContext: { deltaMS },
   currentRendering,

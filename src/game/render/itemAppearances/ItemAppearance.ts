@@ -12,7 +12,7 @@ import type {
   AppearanceOptions,
   AppearanceReturn,
 } from "../appearance/Appearance";
-import type { ItemRenderContext, ItemTickContext } from "../Renderer";
+import type { ItemRenderContext, ItemTickContext } from "../ItemRenderContexts";
 import type { EmptyObject } from "type-fest";
 import {
   renderContainerToSprite,
@@ -69,7 +69,12 @@ export const itemStaticSpriteAppearance = <T extends ItemInPlayType>(
   createSpriteOptions: CreateSpriteOptions,
 ): ItemAppearance<T, EmptyObject, Sprite> =>
   itemAppearanceRenderOnce(
-    ({ renderContext: { item: subject, pixiRenderer } }) => {
+    ({
+      renderContext: {
+        item: subject,
+        general: { pixiRenderer },
+      },
+    }) => {
       if (isMultipliedItem(subject)) {
         return renderMultipliedXy(
           pixiRenderer,
@@ -145,7 +150,13 @@ export const itemAppearanceShadowMaskFromConfig =
     options: ItemAppearanceOptions<T, EmptyObject, Sprite>,
   ) => AppearanceReturn<EmptyObject, Sprite>) =>
   // inner function - calls renderWith
-  ({ renderContext: { pixiRenderer, item }, currentRendering }) => {
+  ({
+    renderContext: {
+      general: { pixiRenderer },
+      item,
+    },
+    currentRendering,
+  }) => {
     if (currentRendering === undefined) {
       const times =
         isMultipliedItem(item) ?

@@ -5,7 +5,10 @@ import type {
   UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import { store } from "../../../../store/store";
-import type { ItemRenderContext, ItemTickContext } from "../../Renderer";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
+} from "../../ItemRenderContexts";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
@@ -22,6 +25,7 @@ import { defaultUserSettings } from "../../../../store/defaultUserSettings";
 import { ItemFlashOnSwitchedRenderer } from "./ItemFlashOnSwitchedRenderer";
 import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
+import { maybeWrapInPortableItemPickUpNextHighlightRenderer } from "./PortableItemPickUpNextHighlightRenderer";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
@@ -45,7 +49,10 @@ export const createItemRenderer = <T extends ItemInPlayType>(
   const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = !selectIsUncolourised(state);
 
-  const { item, gameState } = itemRenderContext;
+  const {
+    item,
+    general: { gameState },
+  } = itemRenderContext;
 
   const renderBoundingBoxes =
     showBoundingBoxes === "all" ||
@@ -65,7 +72,13 @@ export const createItemRenderer = <T extends ItemInPlayType>(
       itemRenderContext,
       itemAppearanceRenderer,
     );
-    siblingPixiRenderers.push(rendererWithFlashing);
+    siblingPixiRenderers.push(
+      maybeWrapInPortableItemPickUpNextHighlightRenderer(
+        item,
+        itemRenderContext,
+        rendererWithFlashing,
+      ),
+    );
     if (renderBoundingBoxes) {
       rendererWithFlashing.output.alpha = 0.66;
     }
@@ -103,11 +116,11 @@ export const createItemRenderer = <T extends ItemInPlayType>(
   }
 
   const mute =
-    itemRenderContext.soundSettings.mute ??
+    itemRenderContext.general.soundSettings.mute ??
     defaultUserSettings.soundSettings.mute;
 
   const soundRenderer =
-    itemRenderContext.paused || mute ?
+    itemRenderContext.general.paused || mute ?
       // no items are allowed to make sound while paused:
       undefined
     : createSoundRenderer(itemRenderContext);

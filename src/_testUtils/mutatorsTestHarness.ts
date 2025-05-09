@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { first, objectValues } from "iter-tools";
 import { vi, expect } from "vitest";
 import {
   selectPlayableItem,
@@ -27,6 +27,9 @@ import { addXyz } from "../utils/vectors/vectors";
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
 import { MockInputStateTracker } from "./MockInputStateTracker";
 import type { RoomState } from "../model/RoomState";
+import { loadItemFromJson } from "../game/gameState/loadRoom/loadItem";
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import type { PortableItemType } from "../game/physics/itemPredicates";
 
 export type TestCampaignRoomId =
   | "heelsStartingRoom"
@@ -326,10 +329,18 @@ export const mutatorsTestHarness = () => {
         if (heelsAbilities === undefined) {
           expect.fail(`Could not find heels abilities`);
         }
-        heelsAbilities.carrying = {
-          type: "portableBlock",
-          config: { style: "cube" },
-        };
+        const room = this.selectRoomOfPlayable(playableName);
+        heelsAbilities.carrying = first(
+          loadItemFromJson(
+            "carriedBlock",
+            {
+              type: "portableBlock",
+              config: { style: "cube" },
+              position: { x: 0, y: 0, z: 0 },
+            },
+            room!.roomJson,
+          ),
+        ) as ItemTypeUnion<PortableItemType, TestCampaignRoomId, string>;
       }
     },
     expectPlayableToBeStoodAtPortal<R extends TestCampaignRoomId>(

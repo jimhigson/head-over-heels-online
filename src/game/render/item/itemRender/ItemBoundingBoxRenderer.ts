@@ -4,7 +4,7 @@ import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { Aabb } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../projectToScreen";
-import type { ItemRenderContext } from "../../Renderer";
+import type { ItemRenderContext } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
 const cuboidBB = (aabb: Aabb, graphics: Graphics) => {

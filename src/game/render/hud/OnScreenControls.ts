@@ -1,17 +1,17 @@
 import { Container } from "pixi.js";
 
 import type { Xy } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
 
 import { objectValues } from "iter-tools";
 import { OnScreenJoystickRenderer } from "./OnScreenJoystick";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
-import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import type { Renderer } from "../Renderer";
-import type { HudRendererTickContext } from "./HudRenderer";
+import type { HudRendererTickContext } from "./hudRendererContexts";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 
 const mainButtonsSpreadXPx = 30;
 const mainButtonsSpreadYPx = 15;
@@ -21,9 +21,8 @@ const mainNextXFromRightEdge = 44;
 const mainNextYFromBottom = 20;
 
 type OnScreenControlsRenderContext<RoomId extends string> = {
-  gameState: GameState<RoomId>;
+  general: GeneralRenderContext<RoomId>;
   inputDirectionMode: InputDirectionMode;
-  colourise: boolean;
 };
 
 export class OnScreenControls<RoomId extends string, RoomItemId extends string>
@@ -42,9 +41,11 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     public readonly renderContext: OnScreenControlsRenderContext<RoomId>,
   ) {
     const {
-      gameState: { inputStateTracker },
+      general: {
+        gameState: { inputStateTracker },
+      },
       inputDirectionMode,
-      colourise,
+      general,
     } = renderContext;
 
     this.#hudElements = {
@@ -56,17 +57,17 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
             actions: ["jump"],
             id: "jump",
           },
-          colourise,
+          general,
           inputStateTracker,
         }),
         fire: new OnScreenButtonRenderer({
           button: { which: "fire", actions: ["fire"], id: "fire" },
-          colourise,
+          general,
           inputStateTracker,
         }),
         carry: new OnScreenButtonRenderer({
           button: { which: "carry", actions: ["carry"], id: "carry" },
-          colourise,
+          general,
           inputStateTracker,
         }),
         carryAndJump: new OnScreenButtonRenderer({
@@ -75,26 +76,27 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
             actions: ["carry", "jump"],
             id: "carryAndJump",
           },
-          colourise,
+          general,
           inputStateTracker,
         }),
         menu: new OnScreenButtonRenderer({
           button: { which: "menu", actions: ["menu_openOrExit"], id: "menu" },
-          colourise,
+          general,
           inputStateTracker,
         }),
         map: new OnScreenButtonRenderer({
           button: { which: "map", actions: ["map"], id: "map" },
-          colourise,
+          general,
           inputStateTracker,
         }),
       } satisfies {
-        [BT in ButtonType]: OnScreenButtonRenderer<BT>;
+        [BT in ButtonType]: OnScreenButtonRenderer<BT, RoomId>;
       },
       joystick: new OnScreenJoystickRenderer({
         inputStateTracker,
         inputDirectionMode,
-        colourise,
+        // TODO: event bus making bad casts
+        general: general as unknown as GeneralRenderContext<string>,
       }),
     };
 
@@ -132,7 +134,9 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
   #initInteractivity() {
     const {
       renderContext: {
-        gameState: { inputStateTracker },
+        general: {
+          gameState: { inputStateTracker },
+        },
       },
     } = this;
 
@@ -175,7 +179,9 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
   tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>): void {
     const { screenSize } = tickContext;
-    const { gameState } = this.renderContext;
+    const {
+      general: { gameState },
+    } = this.renderContext;
 
     this.#updateElementPositions(screenSize);
     for (const b of objectValues(this.#hudElements.buttons)) {

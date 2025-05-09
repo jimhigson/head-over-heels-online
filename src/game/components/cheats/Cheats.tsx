@@ -329,7 +329,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             />
           </div>
           <Heading>summon item:</Heading>
-          <div className="flex flex-row items-center">
+          <div className="flex flex-row items-center flex-wrap">
             <Button
               className="flex-1"
               onClick={(e) => {
@@ -387,6 +387,36 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               }}
             >
               <span className="sprite texture-dalek.1 hover:texture-animated-dalek" />
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("monster", {
+                  which: "turtle",
+                  activated: "on",
+                  movement: "clockwise",
+                  startDirection: "towards",
+                });
+                e.currentTarget.blur();
+              }}
+            >
+              <span className="sprite texture-turtle.towards.1 hover:texture-animated-turtle.towards" />
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={(e) => {
+                summonItem("monster", {
+                  which: "skiHead",
+                  activated: "on",
+                  movement: "clockwise",
+                  startDirection: "towards",
+                  style:
+                    Math.random() > 0.5 ? "greenAndPink" : "starsAndStripes",
+                });
+                e.currentTarget.blur();
+              }}
+            >
+              <span className="sprite texture-skiHead.greenAndPink.towards" />
             </Button>
           </div>
           <div className="flex flex-row items-center">

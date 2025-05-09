@@ -5,7 +5,7 @@ import {
   createBracketedSound,
   type BracketedSound,
 } from "../soundUtils/createBracketedSound";
-import type { ItemTickContext } from "../../game/render/Renderer";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 
 export class PushableBlockSoundRenderer
   implements ItemSoundRenderer<"pushableBlock">

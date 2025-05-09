@@ -59,12 +59,6 @@ export class AppearanceRenderer<
       // it is ok to return the same container back, in which case we don't need to do anything:
       if (this.output.children.at(0) !== rendering.output) {
         if (this.#currentRendering?.output) {
-          console.log(
-            "removing",
-            this.#currentRendering.output,
-            "from",
-            this.output,
-          );
           this.output.removeChild(this.#currentRendering.output);
         }
 

@@ -2,14 +2,9 @@ import type { AnimatedSprite } from "pixi.js";
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { createSprite } from "../createSprite";
 import type { ItemAppearance } from "./ItemAppearance";
-import type { PortableItemRenderProps } from "./PortableItemRenderProps";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
-import { noFilters } from "../filters/standardFilters";
-import { carryableOutlineColour } from "./itemAppearanceColours";
-import { OutlineFilter } from "../filters/outlineFilter";
-import { store } from "../../../store/store";
 
-type SpringRenderProps = PortableItemRenderProps & {
+type SpringRenderProps = {
   compressed: boolean;
 };
 
@@ -31,9 +26,9 @@ const springAppearanceImpl: ItemAppearance<
 > = ({
   renderContext: {
     item: {
-      state: { stoodOnBy, wouldPickUpNext: highlighted, stoodOnUntilRoomTime },
+      state: { stoodOnBy, stoodOnUntilRoomTime },
     },
-    paused,
+    general: { paused },
   },
   tickContext: { lastRenderRoomTime },
   currentRendering,
@@ -54,7 +49,9 @@ const springAppearanceImpl: ItemAppearance<
 
   const boing =
     lastRenderRoomTime !== undefined &&
-    stoodOnUntilRoomTime > lastRenderRoomTime;
+    stoodOnUntilRoomTime > lastRenderRoomTime &&
+    // it could have stopped being stood on, but immediately been stood on again:
+    !compressed;
 
   if (boing && !paused) {
     rendering.gotoAndPlay(0);
@@ -65,21 +62,10 @@ const springAppearanceImpl: ItemAppearance<
     // no need to handle the released case - this will be handled by the animation staying on the lsat frame,
     // which is the released spring
   }
-  if (highlighted !== (currentlyRenderedProps?.highlighted ?? false)) {
-    if (highlighted) {
-      rendering.filters = new OutlineFilter({
-        outlineColor: carryableOutlineColour,
-        lowRes: false,
-        upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
-      });
-    } else {
-      rendering.filters = noFilters;
-    }
-  }
 
   return {
     output: rendering,
-    renderProps: { compressed, highlighted },
+    renderProps: { compressed },
   };
 };
 

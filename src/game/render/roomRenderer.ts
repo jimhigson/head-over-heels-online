@@ -4,12 +4,9 @@ import { createItemRenderer } from "./item/itemRender/createItemRenderer";
 import type { GraphEdges } from "./sortZ/toposort/toposort";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { positionRoom, showRoomScrollBounds } from "./positionRoom";
-import type {
-  ItemTickContext,
-  Renderer,
-  RoomRenderContext,
-  RoomTickContext,
-} from "./Renderer";
+import type { Renderer } from "./Renderer";
+import type { ItemTickContext } from "./ItemRenderContexts";
+import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
 import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
 import { getColorScheme } from "../hintColours";
@@ -56,13 +53,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   constructor(
     public readonly renderContext: RoomRenderContext<RoomId, RoomItemId>,
   ) {
-    const { displaySettings, upscale } = renderContext;
+    const {
+      general: { displaySettings, upscale, colourised, soundSettings },
+    } = renderContext;
 
-    this.initFilters(renderContext.colourised, renderContext.room.color);
+    this.initFilters(colourised, renderContext.room.color);
 
-    const mute =
-      renderContext.soundSettings.mute ??
-      defaultUserSettings.soundSettings.mute;
+    const mute = soundSettings.mute ?? defaultUserSettings.soundSettings.mute;
 
     const soundOutput: AudioNode | undefined =
       mute ? undefined : audioCtx.createGain();
@@ -166,7 +163,8 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         itemRenderer.tick(itemTickContext);
       } catch (e) {
         throw new Error(
-          `RoomRenderer caught error while ticking item ${item.id}: ${(e as Error).message}`,
+          `RoomRenderer caught error while ticking item "${item.id}" - item JSON is:
+           ${JSON.stringify(item, null, 2)}`,
           { cause: e },
         );
       }
@@ -227,7 +225,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       );
 
     this.#roomScroller(
-      selectCurrentPlayableItem(this.renderContext.gameState),
+      selectCurrentPlayableItem(this.renderContext.general.gameState),
       givenTickContext.deltaMS,
       !this.#everRendered,
     );

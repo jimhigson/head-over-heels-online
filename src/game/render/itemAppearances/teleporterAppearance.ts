@@ -13,7 +13,14 @@ type TeleporterRenderProps = {
 export const teleporterAppearance: ItemAppearance<
   "teleporter",
   TeleporterRenderProps
-> = ({ renderContext: { item, room, paused }, currentRendering }) => {
+> = ({
+  renderContext: {
+    item,
+    room,
+    general: { paused },
+  },
+  currentRendering,
+}) => {
   const {
     state: { stoodOnBy },
     config: { times },

@@ -9,7 +9,7 @@ import {
   type BracketedSound,
 } from "../soundUtils/createBracketedSound";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
-import type { ItemTickContext } from "../../game/render/Renderer";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 import { neverTime } from "../../utils/veryClose";
 
 export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
@@ -58,7 +58,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     public readonly renderContext: ItemSoundRenderContext<CharacterName>,
   ) {
     const {
-      soundSettings,
+      general: { soundSettings },
       item: { type: name },
     } = renderContext;
 

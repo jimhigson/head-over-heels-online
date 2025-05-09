@@ -35,13 +35,18 @@ export const ErrorCaughtDialog = ({
   const [copied, setCopied] = useState<boolean>(false);
   const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
 
-  const errorsReportText = errors.map(
-    ({ message, stack }) => `
-${message}  
+  const errorsReportText = errors.toReversed().map(
+    ({ stack }) =>
+      // don't include error.message, because (in Chrome at least) it is included in error.stack
+      `
 ${stack}
   `,
   ).join(`
-caused by:
+    
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+⬆⬆ CAUSED BY ⬆⬆
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
 `);
 
   return (

@@ -33,10 +33,10 @@ export type ButtonRenderingContainer = Container & {
  * into if required
  */
 export const arcadeStyleButtonRendering = ({
-  colourise,
+  colourised,
   button: { which },
 }: {
-  colourise: boolean;
+  colourised: boolean;
   button: Button;
 }): ButtonRenderingContainer => {
   // a container so that the whole button can move down together
@@ -50,7 +50,7 @@ export const arcadeStyleButtonRendering = ({
 
   const buttonSprite = createSprite("button") as Sprite;
 
-  if (colourise) {
+  if (colourised) {
     buttonSprite.filters = replaceWithHalfbriteFilter(
       buttonColours.colourised[which],
     );

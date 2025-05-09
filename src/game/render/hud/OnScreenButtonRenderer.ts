@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { type BooleanAction } from "../../input/actions";
 import { createSprite } from "../createSprite";
 import type { Appearance } from "../appearance/Appearance";
-import type { PlayableItem } from "../../physics/itemPredicates";
+import type { PlayableItem, PortableItem } from "../../physics/itemPredicates";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
@@ -17,13 +17,10 @@ import {
 } from "./arcadeStyleButtonRendering";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
-import { createCarriedSprite } from "./createCarriedSprite";
+import { renderCarriedOnce } from "./renderCarried";
 import { findItemToPickup } from "../../physics/mechanics/carrying";
 import type { PokeableNumber } from "../../../model/ItemStateMap";
-import {
-  pokeableToNumber,
-  type CarriedItem,
-} from "../../../model/ItemStateMap";
+import { pokeableToNumber } from "../../../model/ItemStateMap";
 import type { EmptyObject } from "type-fest";
 import { emptyObject } from "../../../utils/empty";
 import {
@@ -33,6 +30,8 @@ import {
 import type { RoomState } from "../../../model/RoomState";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { GeneralRenderContext } from "../RoomRenderContexts";
 
 export type ButtonType =
   | "jump"
@@ -50,7 +49,7 @@ export type Button<Which extends ButtonType = ButtonType> = {
 
 type CommonButtonRenderProps = {
   pressed: boolean;
-  colourise: boolean;
+  colourised: boolean;
 };
 
 type ButtonRenderProps = {
@@ -59,7 +58,7 @@ type ButtonRenderProps = {
   };
   carry: CommonButtonRenderProps & {
     hasBag: boolean;
-    carrying: CarriedItem<string> | null;
+    carrying: PortableItem<string, string> | null;
     disabled: boolean;
   };
   fire: CommonButtonRenderProps & {
@@ -73,18 +72,22 @@ type ButtonRenderProps = {
   map: EmptyObject;
 };
 
-type ButtonRenderContext<BT extends ButtonType> = {
-  colourise: boolean;
+type ButtonRenderContext<BT extends ButtonType, RoomId extends string> = {
   button: Button<BT>;
   inputStateTracker: InputStateTrackerInterface;
+  general: GeneralRenderContext<RoomId>;
 };
 type ButtonTickContext = {
   room: RoomState<string, string> | undefined;
   currentPlayable: PlayableItem | undefined;
+  screenSize: Xy;
 };
 
-type ButtonAppearance<BT extends ButtonType> = Appearance<
-  ButtonRenderContext<BT>,
+type ButtonAppearance<
+  BT extends ButtonType,
+  RoomId extends string,
+> = Appearance<
+  ButtonRenderContext<BT, RoomId>,
   ButtonTickContext,
   ButtonRenderProps[BT],
   BT extends "menu" | "map" ? Container : ButtonRenderingContainer
@@ -92,10 +95,14 @@ type ButtonAppearance<BT extends ButtonType> = Appearance<
 
 const textYForButtonCentre = -11;
 const buttonAppearances: {
-  [BT in ButtonType]: ButtonAppearance<BT>;
+  [BT in ButtonType]: ButtonAppearance<BT, string>;
 } = {
   jump({
-    renderContext: { button, inputStateTracker, colourise },
+    renderContext: {
+      button,
+      inputStateTracker,
+      general: { colourised },
+    },
     tickContext: { room, currentPlayable },
     currentRendering,
   }) {
@@ -119,7 +126,7 @@ const buttonAppearances: {
     const container =
       previousRendering === undefined ?
         arcadeStyleButtonRendering({
-          colourise,
+          colourised,
           button,
         })
       : previousRendering;
@@ -148,7 +155,7 @@ const buttonAppearances: {
       } else {
         const jumpTextContainer = createTextForButtonSurface(
           button,
-          colourise,
+          colourised,
           "JUMP",
         );
         jumpTextContainer.y = textYForButtonCentre;
@@ -161,15 +168,17 @@ const buttonAppearances: {
       renderProps: {
         pressed,
         standingOnTeleporter: isStandingOnActiveTeleporter,
-        colourise,
+        colourised,
       },
     };
   },
-  carry({
-    renderContext: { button, inputStateTracker, colourise },
-    currentRendering,
-    tickContext: { currentPlayable, room },
-  }) {
+  carry({ renderContext, currentRendering, tickContext }) {
+    const {
+      button,
+      inputStateTracker,
+      general: { colourised },
+    } = renderContext;
+    const { currentPlayable, room } = tickContext;
     const currentlyRenderedProps = currentRendering?.renderProps;
     const previousRendering = currentRendering?.output;
 
@@ -194,7 +203,7 @@ const buttonAppearances: {
     const container =
       previousRendering === undefined ?
         arcadeStyleButtonRendering({
-          colourise,
+          colourised,
           button,
         })
       : previousRendering;
@@ -203,7 +212,7 @@ const buttonAppearances: {
 
     if (hasBag) {
       if (disabled !== currentlyRenderedProps?.disabled) {
-        setDisabled(container, disabled, colourise);
+        setDisabled(container, disabled, colourised);
       }
 
       container.visible = true;
@@ -217,7 +226,7 @@ const buttonAppearances: {
       ) {
         let bgSprite: Container | undefined;
         if (carrying !== null) {
-          bgSprite = createCarriedSprite(carrying);
+          bgSprite = renderCarriedOnce(carrying, renderContext, tickContext);
         } else if (hasBag) {
           bgSprite = createSprite({
             textureId: "bag",
@@ -232,7 +241,7 @@ const buttonAppearances: {
     const renderProps: ButtonRenderProps["carry"] = {
       pressed,
       hasBag,
-      colourise,
+      colourised,
       carrying,
       disabled,
     };
@@ -242,7 +251,11 @@ const buttonAppearances: {
     };
   },
   fire({
-    renderContext: { button, inputStateTracker, colourise },
+    renderContext: {
+      button,
+      inputStateTracker,
+      general: { colourised },
+    },
     currentRendering,
     tickContext: { currentPlayable },
   }) {
@@ -261,7 +274,7 @@ const buttonAppearances: {
     const container =
       previousRendering === undefined ?
         arcadeStyleButtonRendering({
-          colourise,
+          colourised,
           button,
         })
       : previousRendering;
@@ -296,17 +309,21 @@ const buttonAppearances: {
         doughnutsCountNumber.filters = hudOutlineFilter;
         showOnSurface(container, bgSprite, doughnutsCountNumber);
 
-        setDisabled(container, doughnuts === 0, colourise);
+        setDisabled(container, doughnuts === 0, colourised);
       }
     }
 
     return {
       output: container,
-      renderProps: { pressed, colourise, doughnuts, hasHooter },
+      renderProps: { pressed, colourised, doughnuts, hasHooter },
     };
   },
   carryAndJump({
-    renderContext: { button, inputStateTracker, colourise },
+    renderContext: {
+      button,
+      inputStateTracker,
+      general: { colourised },
+    },
     currentRendering,
     tickContext: { currentPlayable },
   }) {
@@ -324,7 +341,7 @@ const buttonAppearances: {
     const needsRender =
       currentlyRenderedProps === undefined ||
       pressed !== currentlyRenderedProps.pressed ||
-      colourise !== currentlyRenderedProps.colourise ||
+      colourised !== currentlyRenderedProps.colourised ||
       hasBag !== currentlyRenderedProps.hasBag;
 
     if (!needsRender) {
@@ -335,10 +352,10 @@ const buttonAppearances: {
 
     if (previousRendering === undefined) {
       container = arcadeStyleButtonRendering({
-        colourise,
+        colourised,
         button,
       });
-      const carryText = createTextForButtonSurface(button, colourise, "C+J");
+      const carryText = createTextForButtonSurface(button, colourised, "C+J");
       carryText.y = textYForButtonCentre;
       showOnSurface(container, carryText);
     } else {
@@ -359,7 +376,7 @@ const buttonAppearances: {
       renderProps: {
         pressed,
         hasBag,
-        colourise,
+        colourised,
       },
     };
   },
@@ -394,16 +411,18 @@ const buttonAppearances: {
 
 export class OnScreenButtonRenderer<
   BT extends ButtonType,
+  RoomId extends string,
 > extends AppearanceRenderer<
-  ButtonRenderContext<BT>,
+  ButtonRenderContext<BT, RoomId>,
   ButtonTickContext,
   ButtonRenderProps[BT],
   BT extends "menu" | "map" ? Container : ButtonRenderingContainer
 > {
-  constructor(renderContext: ButtonRenderContext<BT>) {
+  constructor(renderContext: ButtonRenderContext<BT, RoomId>) {
     const appearance = buttonAppearances[
       renderContext.button.which
-    ] as ButtonAppearance<BT>;
+      // TODO: events on the gameState is causing this terrible cast - they need to go!
+    ] as unknown as ButtonAppearance<BT, RoomId>;
     super(renderContext, appearance);
   }
 }

@@ -29,6 +29,7 @@ import { noFilters } from "../filters/standardFilters";
 import type { Renderer } from "../Renderer";
 import type { EmptyObject } from "type-fest";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
+import type { GeneralRenderContext } from "../RoomRenderContexts";
 
 const joystickArrowOffset = 14;
 const sensitivity = 2;
@@ -36,7 +37,7 @@ const sensitivity = 2;
 type JoystickRenderContext = {
   inputStateTracker: InputStateTrackerInterface;
   inputDirectionMode: InputDirectionMode;
-  colourise: boolean;
+  general: GeneralRenderContext<string>;
 };
 
 /**
@@ -62,7 +63,10 @@ export class OnScreenJoystickRenderer
   #curPointerId: number | undefined;
 
   constructor(public readonly renderContext: JoystickRenderContext) {
-    const { inputDirectionMode } = renderContext;
+    const {
+      inputDirectionMode,
+      general: { colourised },
+    } = renderContext;
 
     this.arrowSprites = {
       away: createSprite({
@@ -139,8 +143,7 @@ export class OnScreenJoystickRenderer
     this.output.on("pointerup", this.stopCurrentPointer);
     this.output.on("pointerupoutside", this.stopCurrentPointer);
 
-    this.#joystickSprite.filters =
-      renderContext.colourise ? noFilters : hudLowlightedFilter;
+    this.#joystickSprite.filters = colourised ? noFilters : hudLowlightedFilter;
   }
 
   handlePointerEnter = (e: FederatedPointerEvent) => {

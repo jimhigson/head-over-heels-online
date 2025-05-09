@@ -1,8 +1,7 @@
 import type { EmptyObject } from "type-fest";
-import type { PortableItemType } from "../game/physics/itemPredicates";
+import type { PortableItem } from "../game/physics/itemPredicates";
 import type { Xyz, Xy } from "../utils/vectors/vectors";
 import type { SwitchSetting } from "./ItemInPlay";
-import type { JsonItemConfig } from "./json/JsonItem";
 
 export type PlayableActionState =
   | "moving"
@@ -59,11 +58,10 @@ type SlidingItemState<RoomItemId extends string> = FreeItemState<RoomItemId> & {
   };
 };
 
-type PortableItemState<RoomItemId extends string> =
-  FreeItemState<RoomItemId> & {
-    /** if true, this item is the item heels would pick up next - and should be drawn highlighted in the room */
-    wouldPickUpNext: boolean;
-  };
+type PortableItemState = {
+  /** if true, this item is the item heels would pick up next - and should be drawn highlighted in the room */
+  wouldPickUpNext: boolean;
+};
 
 type SingleTouch = {
   /**
@@ -72,16 +70,6 @@ type SingleTouch = {
    */
   touchedOnProgression: number;
 };
-
-export type CarriedItem<
-  RoomId extends string,
-  Types extends PortableItemType = PortableItemType,
-> = {
-  [T in Types]: {
-    type: T;
-    config: JsonItemConfig<T, RoomId>;
-  };
-}[Types];
 
 export type PlayableState<RoomItemId extends string> =
   FreeItemState<RoomItemId> & {
@@ -182,7 +170,7 @@ export type HeelsAbilities<RoomId extends string> = CommonAbilities & {
   hasBag: boolean;
   /** how many big jumps we can do (from picking up a bunny) */
   bigJumps: number;
-  carrying: CarriedItem<RoomId> | null;
+  carrying: PortableItem<RoomId, string> | null;
 };
 
 type ItemWithMovementState = {
@@ -218,9 +206,9 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     head: HeadAbilities;
     heels: HeelsAbilities<RoomId>;
   };
-  spring: PortableItemState<RoomItemId>;
-  portableBlock: PortableItemState<RoomItemId>;
-  sceneryPlayer: PortableItemState<RoomItemId>;
+  spring: FreeItemState<RoomItemId> & PortableItemState;
+  portableBlock: FreeItemState<RoomItemId> & PortableItemState;
+  sceneryPlayer: FreeItemState<RoomItemId> & PortableItemState;
   emitter: {
     lastEmittedAtRoomTime: number;
     quantityEmitted: number;
@@ -228,12 +216,13 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   pushableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
   movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomItemId>;
-  sceneryCrown: FreeItemState<RoomItemId>;
+  sceneryCrown: FreeItemState<RoomItemId> & PortableItemState;
   slidingDeadly: SlidingItemState<RoomItemId>;
   slidingBlock: SlidingItemState<RoomItemId>;
   ball: SlidingItemState<RoomItemId>;
 
   monster: FreeItemState<RoomItemId> &
+    PortableItemState &
     ItemWithMovementState & {
       busyLickingDoughnutsOffFace: boolean;
     };

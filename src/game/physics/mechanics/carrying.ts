@@ -1,15 +1,15 @@
-import type { PlayableItem, PortableItemType } from "../itemPredicates";
+import type { PlayableItem, PortableItem } from "../itemPredicates";
 import { isPortable, isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
 import { moveItem } from "../moveItem";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { HeelsAbilities, CarriedItem } from "../../../model/ItemStateMap";
+import type { HeelsAbilities } from "../../../model/ItemStateMap";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { collision1toMany } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import type { GameState } from "../../gameState/GameState";
-import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
+import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 import {
@@ -17,7 +17,6 @@ import {
   roomItemsIterable,
   type RoomState,
 } from "../../../model/RoomState";
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -91,12 +90,10 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
         return;
       }
 
-      const carryingItem = addItemFromJsonToRoom({
-        gameState,
+      carrying.state.position = carrierPosition;
+      addItemToRoom({
         room,
-        itemType: carrying.type,
-        config: carrying.config,
-        position: carrierPosition,
+        item: carrying,
       });
 
       // move the player up on top of the item they just put down:
@@ -107,7 +104,7 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
         posDelta: {
           x: 0,
           y: 0,
-          z: carryingItem.aabb.z,
+          z: carrying.aabb.z,
         },
         pusher: carrier,
         forceful: true,
@@ -126,22 +123,15 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
   }
 };
 
-const pickUpItem = <
-  T extends PortableItemType,
-  RoomId extends string,
-  RoomItemId extends string,
->(
+const pickUpItem = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
   heelsAbilities: HeelsAbilities<RoomId>,
-  itemToPickup: ItemTypeUnion<T, RoomId, RoomItemId>,
+  itemToCarry: PortableItem<RoomId, RoomItemId>,
 ) => {
-  const carrying = {
-    type: itemToPickup.type,
-    config: itemToPickup.config,
-  } as CarriedItem<RoomId>;
-  heelsAbilities.carrying = carrying;
+  heelsAbilities.carrying = itemToCarry;
 
-  deleteItemFromRoom({ room, item: itemToPickup });
+  itemToCarry.state.wouldPickUpNext = false;
+  deleteItemFromRoom({ room, item: itemToCarry });
 };
 
 export const findItemToPickup = <

@@ -9,7 +9,7 @@ import { isJoystick } from "../../game/physics/itemPredicates";
 import { iterate } from "../../utils/iterate";
 import { keysIter } from "../../utils/entries";
 import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
-import type { ItemTickContext } from "../../game/render/Renderer";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 
 export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
   public readonly output: GainNode = audioCtx.createGain();
