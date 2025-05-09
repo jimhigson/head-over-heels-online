@@ -91,7 +91,9 @@ export const progressGameState = <
       tickItem(item, room, gameState, deltaMS);
     } catch (e) {
       console.error(e);
-      throw new Error(`error caught while ticking item ${item.id}: ${e}`);
+      throw new Error(`error caught while ticking item "${item.id}"`, {
+        cause: e,
+      });
     }
   }
 

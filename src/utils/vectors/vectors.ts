@@ -89,7 +89,13 @@ export const productXyz = (a: Xyz, b: Xyz): Xyz => ({
 export const lengthXyz = ({ x, y, z }: Xyz) => Math.sqrt(x * x + y * y + z * z);
 export const lengthXy = ({ x, y }: Xy) => Math.sqrt(x * x + y * y);
 
-export const unitVector = (xyz: Xyz): Xyz => scaleXyz(xyz, 1 / lengthXyz(xyz));
+export const unitVector = (xyz: Xyz): Xyz => {
+  const l = lengthXyz(xyz);
+  if (l === 0) {
+    throw new Error("unitVector called with zero length vector");
+  }
+  return scaleXyz(xyz, 1 / l);
+};
 
 /**
  * clockwise rotation of the xy component
