@@ -330,11 +330,7 @@ export const keepWalkingInSameDirection = <
 
 type TurnStrategy = "opposite" | "perpendicular" | "clockwise";
 
-const turnedWalkVector = (
-  walkVector: Xyz,
-  mtv: Xyz,
-  strategy: TurnStrategy,
-) => {
+const turnedVector = (walkVector: Xyz, mtv: Xyz, strategy: TurnStrategy) => {
   switch (strategy) {
     case "opposite":
       return {
@@ -378,6 +374,7 @@ const handleMonsterTouchingItemByTurning = <
       position,
       vels: { walking },
       activated,
+      facing,
     },
     aabb,
   } = itemWithMovement;
@@ -393,10 +390,10 @@ const handleMonsterTouchingItemByTurning = <
   // purely vertical touches don't change direction:
   if (m.x === 0 && m.y === 0) return;
 
-  const newWalking = turnedWalkVector(walking, m, turnStrategy);
-
-  itemWithMovement.state.vels.walking = newWalking;
-  itemWithMovement.state.facing = unitVector(newWalking);
+  itemWithMovement.state.vels.walking = turnedVector(walking, m, turnStrategy);
+  // calc facing vector separately from walk, since walk can be (0,0,0) - usually if the item
+  // is falling:
+  itemWithMovement.state.facing = turnedVector(facing, m, turnStrategy);
   itemWithMovement.state.durationOfTouch = 0;
 };
 
