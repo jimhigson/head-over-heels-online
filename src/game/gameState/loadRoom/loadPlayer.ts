@@ -94,6 +94,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         carrying: null,
         hasBag: false,
         bigJumps: 0,
+        isBigJump: false,
         shieldCollectedAt: neverTime,
         position: positionCentredInBlock(jsonItem),
         stoodOnUntilRoomTime: neverTime,

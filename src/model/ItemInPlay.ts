@@ -5,7 +5,7 @@ import type { SceneryName } from "../sprites/planets";
 import type { Aabb, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
-import type { CharacterName } from "./modelTypes";
+import type { CharacterName, IndividualCharacterName } from "./modelTypes";
 import type { StoodOnBy } from "./StoodOnBy";
 
 /** types of items in-game (as opposed to in the json) - there are a few extra types */
@@ -19,6 +19,8 @@ export type ItemInPlayType =
   | "floorEdge"
   // when another item is fading out, the bubbles are a separate item
   | "bubbles"
+  // jumping or running fast, with a power-up
+  | "particle"
   | "floatingText";
 
 export type SwitchSetting = "left" | "right";
@@ -42,6 +44,9 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   floatingText: {
     textLines: string[];
     appearanceRoomTime: number;
+  };
+  particle: {
+    forCharacter: IndividualCharacterName;
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config

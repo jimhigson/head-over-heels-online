@@ -201,7 +201,14 @@ type ItemWithMovementState = {
 
 export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   head: PlayableState<RoomItemId> & HeadAbilities;
-  heels: PlayableState<RoomItemId> & HeelsAbilities<RoomId>;
+  heels: PlayableState<RoomItemId> &
+    HeelsAbilities<RoomId> & {
+      /**
+       * true if heels is jumping, and the jump was a big jump using a power-up. THis can be used to
+       * decide to show the particle effect or not
+       */
+      isBigJump: boolean;
+    };
   headOverHeels: PlayableState<RoomItemId> & {
     head: HeadAbilities;
     heels: HeelsAbilities<RoomId>;

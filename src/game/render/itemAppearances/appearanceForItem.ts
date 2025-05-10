@@ -2,14 +2,14 @@ import { Container } from "pixi.js";
 import type { CreateSpriteOptions } from "../createSprite";
 import { createSprite } from "../createSprite";
 import { doorFrameAppearance, doorLegsAppearance } from "./door/doorAppearance";
-import { playableAppearance } from "./playableAppearance";
+import { playableAppearance, shineFilterForHeels } from "./playableAppearance";
 import {
   itemAppearanceRenderOnce,
   itemStaticAppearance,
 } from "./ItemAppearance";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
 import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
-import { mainPaletteSwapFilter } from "../filters/standardFilters";
+import { mainPaletteSwapFilter, noFilters } from "../filters/standardFilters";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/textureSizes";
 
@@ -237,6 +237,22 @@ const itemAppearancesMap: {
 
   floor: floorAppearance,
   floorEdge: floorEdgeAppearance,
+
+  particle: itemAppearanceRenderOnce(
+    ({
+      renderContext: {
+        item: {
+          config: { forCharacter },
+        },
+      },
+    }) => {
+      return createSprite({
+        animationId: "particle.fade",
+        anchor: { x: 0.5, y: 0.5 },
+        filter: forCharacter === "heels" ? shineFilterForHeels : noFilters,
+      });
+    },
+  ),
 };
 
 /**

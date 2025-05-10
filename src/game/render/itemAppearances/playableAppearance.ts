@@ -148,6 +148,11 @@ const updateIndividualPlayableSprite = (
   );
 };
 
+/** the shine on the spritesheet has a blue glow - convert to pink for heels */
+export const shineFilterForHeels = new PaletteSwapFilter({
+  pastelBlue: spritesheetPalette.pink,
+});
+
 const createOutputContainer = (
   name: IndividualCharacterName,
   inSymbio: boolean,
@@ -160,10 +165,7 @@ const createOutputContainer = (
   const shineSprite = createSprite({
     animationId: inSymbio ? `shine.${name}InSymbio` : "shine",
     paused,
-    filter:
-      name === "heels" ?
-        new PaletteSwapFilter({ pastelBlue: spritesheetPalette.pink })
-      : noFilters,
+    filter: name === "heels" ? shineFilterForHeels : noFilters,
     flipX: name === "heels",
   }) as AnimatedSprite;
   container[shineSpriteSymbol] = shineSprite;

@@ -35,7 +35,7 @@ export const SpritePage = () => {
               {frame.w}&nbsp;x&nbsp;{frame.h}
             </div>
             <div className="text-midGrey">
-              ({frame.x},{frame.y})
+              @({frame.x},&nbsp;{frame.y})
             </div>
           </div>
         );

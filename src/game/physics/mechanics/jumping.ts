@@ -48,11 +48,12 @@ const jumpInitialVelocities = {
 const getJumpInitialVelocity = (
   playableItem: PlayableItem,
   onSpring: boolean,
+  /** only relevant for heels */
+  hasBigJumps: boolean,
 ) => {
   const effectiveCharacterName =
     playableItem.type === "headOverHeels" ? "head"
-    : playableItem.type === "heels" && playableItem.state.bigJumps > 0 ?
-      (playableItem.state.bigJumps--, "head")
+    : playableItem.type === "heels" && hasBigJumps ? "head"
     : playableItem.type;
   return jumpInitialVelocities[
     `${effectiveCharacterName}${onSpring ? "OnSpring" : ""}`
@@ -121,7 +122,12 @@ export const jumping: Mechanic<CharacterName> = <
     // collision with an item above them, they still get the whole jump velocity when they are free
     // - this makes head's laders easier to climb at higher frame rates where it's much harder to press
     // on the exact frame
-    const velZ = getJumpInitialVelocity(playableItem, false);
+    // BUG: the jump grace for heels looks like it subtracts bigJumps count here
+    const velZ = getJumpInitialVelocity(
+      playableItem,
+      false,
+      playableItem.type === "heels" && playableItem.state.isBigJump,
+    );
     return {
       movementType: "vel",
       // restore the initial vertical velocity:
@@ -141,17 +147,25 @@ export const jumping: Mechanic<CharacterName> = <
       return {
         movementType: "steady",
         stateDelta: {
-          // clear our jumped flag:
+          // clear our jumped flag(s):
           jumped: false,
+          ...(playableItem.type === "heels" ? { isBigJump: false } : {}),
         },
       };
     }
     return unitMechanicalResult;
   }
 
+  const isBigJump =
+    playableItem.type === "heels" && playableItem.state.bigJumps > 0;
+
   const standingOnSpring = isSpring(standingOn);
 
-  const velZ = getJumpInitialVelocity(playableItem, standingOnSpring);
+  const velZ = getJumpInitialVelocity(
+    playableItem,
+    standingOnSpring,
+    isBigJump,
+  );
 
   // handled this input but don't set jump input off - it is
   // ok to keep jump pressed to keep jumping
@@ -162,6 +176,13 @@ export const jumping: Mechanic<CharacterName> = <
     stateDelta: {
       action: "moving",
       jumped: true,
+      ...(playableItem.type === "heels" ?
+        isBigJump ?
+          { bigJumps: playableItem.state.bigJumps - 1, isBigJump: true }
+          // clear the big jump flag - this is also cleared on landing, but could be starting
+          // a normal jump right off of a big jump, so we should also clear it here
+        : { isBigJump: false }
+      : {}),
       jumpStartZ: playableItem.state.position.z,
       jumpStartTime:
         playableItem.type === "headOverHeels" ?

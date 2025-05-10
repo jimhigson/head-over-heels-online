@@ -137,6 +137,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   // things that are not actually possible to touch
   floatingText: 200,
+  particle: 200,
   emitter: 200,
 };
 
