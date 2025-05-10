@@ -610,6 +610,12 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
+  ...seriesOfNumberedTextures(
+    "particle",
+    4,
+    { x: 331, y: 396 },
+    { w: 9, h: 11 },
+  ),
 } as const;
 
 export const itemsSpritesheetData = {
@@ -682,5 +688,9 @@ export const itemsSpritesheetData = {
     ),
     // never actually used in the game(!) - for the manual only
     switch: withSpeed(["switch.left", "switch.right"] as const, 0.02),
+    "particle.fade": withSpeed(
+      seriesOfAnimationFrameTextureIds("particle", 4),
+      0.5,
+    ),
   },
 } as const satisfies Pick<SpritesheetData, "frames" | "animations">;

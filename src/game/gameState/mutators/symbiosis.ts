@@ -57,6 +57,7 @@ export const uncombinePlayablesFromSymbiosis = <
       actedOnAt: headOverHeels.state.actedOnAt,
       collidedWith: headOverHeels.state.collidedWith,
       stoodOnUntilRoomTime: headOverHeels.state.stoodOnUntilRoomTime,
+      isBigJump: false,
     },
   };
 

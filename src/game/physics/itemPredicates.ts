@@ -27,6 +27,7 @@ const isNeverSolidItemType = isItemType(
   "firedDoughnut",
   "floatingText",
   "emitter",
+  "particle",
 );
 const isUnsolid = (
   item: UnionOfAllItemInPlayTypes,
