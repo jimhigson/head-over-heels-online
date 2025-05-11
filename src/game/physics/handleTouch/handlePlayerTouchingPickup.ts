@@ -3,6 +3,7 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   crownCollected,
@@ -11,6 +12,8 @@ import {
 } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
@@ -40,13 +43,18 @@ export const handlePlayerTouchingPickup = <
     ItemInPlay<"pickup", RoomId, RoomItemId>
   >,
 ) => {
-  const { gameState, movingItem: player, touchedItem, room } = e;
+  const {
+    gameState,
+    movingItem: player,
+    touchedItem,
+    room: roomWithPickup,
+  } = e;
   const { id: pickupId, config: pickupConfig } = touchedItem;
   const {
     id: roomId,
     roomJson: { items: roomJsonItems },
     roomTime,
-  } = room;
+  } = roomWithPickup;
   const { pickupsCollected } = gameState;
 
   if (pickupsCollected[roomId]?.[pickupId] === true) {
@@ -64,7 +72,10 @@ export const handlePlayerTouchingPickup = <
     pickupsCollected[roomId][pickupId] = true;
   }
 
-  const addFloatingText = (textLines: string[]) => {
+  const addFloatingText = (
+    textLines: string[],
+    addToRoom: Pick<RoomState<RoomId, RoomItemId>, "items"> = roomWithPickup,
+  ) => {
     const pickupCentre = itemInPlayCentre(touchedItem);
     const floatingTextItem: ItemInPlay<"floatingText"> = {
       type: "floatingText",
@@ -82,7 +93,7 @@ export const handlePlayerTouchingPickup = <
         appearanceRoomTime: roomTime,
       },
     };
-    addItemToRoom({ room, item: floatingTextItem });
+    addItemToRoom({ room: addToRoom, item: floatingTextItem });
   };
 
   switch (pickupConfig.gives) {
@@ -165,9 +176,25 @@ export const handlePlayerTouchingPickup = <
       break;
 
     case "reincarnation": {
-      store.dispatch(
-        reincarnationFishEaten(createSavedGame(gameState, store.getState())),
+      const savedGame = createSavedGame(gameState, store.getState(), pickupId);
+
+      const currentRoomInSavedGame = selectCurrentRoomState<RoomId, RoomItemId>(
+        savedGame.gameState as GameState<RoomId>,
       );
+      if (!currentRoomInSavedGame) {
+        throw new Error(
+          "how are we saving from a pickup if there is no current room?",
+        );
+      }
+      // add text into the saved version of the room for when it is restored:
+      addFloatingText(
+        ["reincarnation", "point", "restored"],
+        currentRoomInSavedGame,
+      );
+
+      store.dispatch(reincarnationFishEaten(savedGame));
+      // adding the floating text after saving the reincarnation point means the text won't be
+      // in the reloaded room
       addFloatingText(["reincarnation", "point", "saved"]);
       break;
     }

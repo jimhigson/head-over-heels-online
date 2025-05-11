@@ -35,7 +35,7 @@ export const ReincarnatedRestartDialog = () => {
         <BitmapText
           className={`${multilineTextClass} block text-zxCyan w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
         >
-          Everything is put back to when you ate the fish
+          Everything is back to how it was when you ate the fish
         </BitmapText>
         <span className="sprite mx-auto  bg-zxBlack texture-animated-fish sprite-revert-to-white" />
         <MenuItems className="hidden">

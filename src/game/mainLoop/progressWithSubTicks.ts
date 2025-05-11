@@ -34,8 +34,9 @@ export const progressWithSubTicks =
        to be new, and were introduced outside of the sub-tick, so the sub-tick
        won't include them in its moved items set */
     if (swapped) {
-      const roomItemsAfterSwop =
-        selectCurrentRoomState<RoomId>(gameState)?.items;
+      const roomItemsAfterSwop = selectCurrentRoomState<RoomId, RoomItemId>(
+        gameState,
+      )?.items;
       if (roomItemsAfterSwop !== undefined) {
         const playablesIter = iterate(
           objectValues(playablesInRoom(roomItemsAfterSwop)),

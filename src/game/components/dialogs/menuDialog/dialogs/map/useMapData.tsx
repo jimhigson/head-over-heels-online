@@ -17,7 +17,7 @@ export const useMapData = <RoomId extends string>() => {
 
   return useMemo(() => {
     try {
-      const curRoom = selectCurrentRoomState<RoomId>(gameState);
+      const curRoom = selectCurrentRoomState<RoomId, string>(gameState);
       const centreRoomId =
         curRoom?.roomJson.id ?? startingRoomIds(gameState.campaign).head!;
 

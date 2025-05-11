@@ -68,7 +68,7 @@ export const addItemToRoom = <
   room,
   item,
 }: {
-  room: RoomState<RoomId, RoomItemId>;
+  room: Pick<RoomState<RoomId, RoomItemId>, "items">;
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 }) => {
   room.items[item.id] = item;
