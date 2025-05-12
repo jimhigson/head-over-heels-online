@@ -116,13 +116,21 @@ export const floorAppearance: ItemAppearance<"floor"> =
     const extraWallRanges = findExtraWallRanges(nonPerimeterWalls);
 
     if (extraWallRanges !== undefined) {
-      const floorOverdrawForExtraWalls = createFloorOverdrawForExtraWalls({
-        extraWallRanges,
-        blockXMin,
-        blockYMin,
-      });
-
-      container.addChild(floorOverdrawForExtraWalls);
+      try {
+        const floorOverdrawForExtraWalls = createFloorOverdrawForExtraWalls({
+          extraWallRanges,
+          blockXMin,
+          blockYMin,
+        });
+        container.addChild(floorOverdrawForExtraWalls);
+      } catch (e) {
+        throw new Error(
+          `could not create floor overdraw for extra walls ${JSON.stringify(extraWallRanges, null, 2)}`,
+          {
+            cause: e,
+          },
+        );
+      }
     }
 
     container.mask = floorMaskCutOffLeftAndRight;

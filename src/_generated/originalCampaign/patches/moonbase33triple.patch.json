@@ -25,15 +25,6 @@
   },
   {
     "op": "add",
-    "path": "/items/uhohSwitchBlock",
-    "value": {
-      "config": { "style": "artificial", "times": { "z": 2 } },
-      "position": { "x": 5, "y": 15, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/uhohSwitch",
     "value": {
       "config": {
@@ -205,6 +196,15 @@
       },
       "position": { "x": 5, "y": 15, "z": 2 },
       "type": "switch"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/uhohSwitchBlock",
+    "value": {
+      "config": { "style": "artificial", "times": { "z": 2 } },
+      "position": { "x": 5, "y": 15, "z": 0 },
+      "type": "block"
     }
   },
   {
