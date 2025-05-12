@@ -17,9 +17,15 @@ export const iterateStoodOnByItems = <
   stoodOnBy: StoodOnBy<RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
 ) => {
-  return iterate(keysIter(stoodOnBy)).map(
-    (stoodOnByItemId) => room.items[stoodOnByItemId],
-  ) as IteratorObject<FreeItem<RoomId, RoomItemId>>; // cast: we know that only free items can stand on something:
+  return iterate(keysIter(stoodOnBy)).map((stoodOnByItemId) => {
+    const standingItem = room.items[stoodOnByItemId];
+    if (standingItem === undefined) {
+      throw new Error(
+        `item in stoodOnBy "${stoodOnByItemId}" is not in the room`,
+      );
+    }
+    return standingItem;
+  }) as IteratorObject<FreeItem<RoomId, RoomItemId>>; // cast: we know that only free items can stand on something:
 };
 /** utility to get the item object of standing on */
 

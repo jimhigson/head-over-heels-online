@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, beforeEach } from "vitest";
 vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
@@ -37,6 +37,11 @@ import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCu
 import type { CharacterName } from "../../model/modelTypes";
 import { individualCharacterNames } from "../../model/modelTypes";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
+import { store } from "../../store/store";
+
+beforeEach(() => {
+  store.dispatch({ type: "@@_RESET_FOR_TESTS" });
+});
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
@@ -1757,4 +1762,49 @@ test("monsters don't fall out of rooms via the doorways", () => {
 
 describe("touching", () => {
   test("standing overlapping the edge of a block, a monster on the floor doesn't kill the player", () => {});
+});
+
+describe("reincarnation", () => {
+  test("saves the game without the fish in it", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 4, y: 4, z: 2 },
+          config: {
+            which: "heels",
+          },
+        },
+        fish: {
+          type: "pickup",
+          // line up on half square to walk through the doorway:
+          position: { x: 4, y: 4, z: 0 },
+          config: {
+            gives: "reincarnation",
+          },
+        },
+      },
+    });
+    // check there isn't already a reincarnation point before we start (the store is initialised)
+    expect(store.getState().gameMenus.reincarnationPoint).toBe(undefined);
+
+    playGameThrough(gameState, {
+      until: () => store.getState().gameMenus.reincarnationPoint !== undefined,
+    });
+
+    const reincarnationPointHeelsRoomItems =
+      store.getState().gameMenus.reincarnationPoint?.gameState.characterRooms
+        .heels?.items;
+
+    if (!reincarnationPointHeelsRoomItems) {
+      expect.fail(
+        "expected the room to exist in the reincarnation point, but it does not",
+      );
+    }
+
+    expect(reincarnationPointHeelsRoomItems.fish).toBe(undefined);
+    expect(reincarnationPointHeelsRoomItems.floor.state.stoodOnBy["fish"]).toBe(
+      undefined,
+    );
+  });
 });

@@ -8,7 +8,7 @@ import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
 import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
 import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirm/quitGameConfirmDialog";
 import { ScoreDialog } from "./dialogs/score/ScoreDialog";
-import { HoldDialog } from "./dialogs/holdDialog";
+import { HoldDialog } from "./dialogs/hold/holdDialog";
 import { OptionsDialog } from "./dialogs/options/OptionsDialog";
 import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
 import { Dialog } from "../../../../ui/dialog";
@@ -21,6 +21,7 @@ import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 import { MapDialog } from "./dialogs/map/MapDialog";
 import { withErrorBoundary } from "../../../../utils/react/ErrorBoundary";
 import { SoundDialog } from "./dialogs/sound/SoundDialog";
+import { ReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -74,6 +75,8 @@ export const Dialogs = withErrorBoundary((_emptyProps: EmptyObject) => {
       return <QuitGameConfirmDialog />;
     case "readTheManual":
       return <ReadTheManualDialog />;
+    case "reincarnatedRestart":
+      return <ReincarnatedRestartDialog />;
     case "score":
       return <ScoreDialog />;
     case "sound":

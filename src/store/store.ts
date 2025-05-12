@@ -1,4 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
+import type { UnknownAction } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import type { GameMenusState } from "./slices/gameMenusSlice";
 import { gameMenusSlice } from "./slices/gameMenusSlice";
@@ -42,10 +43,23 @@ const gameMenusPersistedReducer = persistReducer(
   gameMenusSlice.reducer,
 );
 
+const appReducer = combineReducers({
+  [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
+});
+
+const rootReducer = (
+  state: ReturnType<typeof appReducer> | undefined,
+  action: UnknownAction,
+) => {
+  // a special reducer that puts the store back to its initial state
+  if (action.type === "@@_RESET_FOR_TESTS") {
+    return appReducer(undefined, action); // reset state
+  }
+  return appReducer(state, action);
+};
+
 export const store = configureStore({
-  reducer: {
-    [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
-  },
+  reducer: rootReducer,
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

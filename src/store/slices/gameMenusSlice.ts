@@ -554,7 +554,13 @@ export const gameMenusSlice = createSlice({
     reincarnationAccepted(state) {
       delete state.reincarnationPoint;
       // close the menu offering reincarnation
-      state.openMenus = [];
+      state.openMenus = [
+        {
+          menuId: "reincarnatedRestart",
+          scrollableSelection: false,
+          menuParam: emptyObject,
+        },
+      ];
     },
     saveCurrentGame(state, { payload }: PayloadAction<SavedGameState>) {
       state.currentGame = payload;

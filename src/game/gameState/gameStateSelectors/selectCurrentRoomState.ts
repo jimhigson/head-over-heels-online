@@ -6,12 +6,17 @@
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../GameState";
 
-export const selectCurrentRoomState = <RoomId extends string>(
-  gameState: GameState<RoomId>,
-): RoomState<RoomId, string> | undefined =>
-  gameState.characterRooms[gameState.currentCharacterName];
+export const selectCurrentRoomState = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  gameState: Pick<GameState<RoomId>, "characterRooms" | "currentCharacterName">,
+) =>
+  gameState.characterRooms[gameState.currentCharacterName] as
+    | RoomState<RoomId, RoomItemId>
+    | undefined;
 
 export const selectCurrentRoomId = <RoomId extends string>(
-  gameState: GameState<RoomId>,
+  gameState: Pick<GameState<RoomId>, "characterRooms" | "currentCharacterName">,
 ): RoomId | undefined =>
   gameState.characterRooms[gameState.currentCharacterName]?.roomJson.id;

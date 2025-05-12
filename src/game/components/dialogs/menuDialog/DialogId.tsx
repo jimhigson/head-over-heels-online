@@ -20,6 +20,7 @@ export const dialogIds = [
   "offerReincarnation",
   "proclaimEmperor",
   "quitGameConfirm",
+  "reincarnatedRestart",
   "readTheManual",
   "score",
   "sound",
