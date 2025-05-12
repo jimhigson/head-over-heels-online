@@ -23,7 +23,7 @@ import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCu
 import { progressWithSubTicks } from "./progressWithSubTicks";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
-import type { RoomRenderContext } from "../render/RoomRenderContexts";
+import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
 import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
 import type { RoomRendererType } from "../render/RoomRendererType";
 
@@ -197,7 +197,7 @@ export class MainLoop<RoomId extends string> {
       this.#roomRenderer?.destroy();
 
       if (tickEndRoom) {
-        const roomRenderContext: RoomRenderContext<RoomId, string> = {
+        const roomRenderContext: RoomRenderContextInGame<RoomId, string> = {
           general: {
             gameState: this.gameState,
             paused: isPaused,

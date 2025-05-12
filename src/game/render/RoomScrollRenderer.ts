@@ -8,10 +8,16 @@ import type { Xy } from "../../utils/vectors/vectors";
 import { addXyz, subXy, lengthXy } from "../../utils/vectors/vectors";
 import { detectDeviceType } from "../../utils/detectDeviceType";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
-import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
+import type {
+  RoomRenderContextInGame,
+  RoomTickContext,
+} from "./RoomRenderContexts";
 import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
-import type { RoomRendererType } from "./RoomRendererType";
+import type {
+  RoomRendererType,
+  RoomRendererTypeInGameOnly,
+} from "./RoomRendererType";
 import type { SetRequired } from "type-fest";
 
 const scrollLimit = 0.33;
@@ -31,7 +37,7 @@ const scrollSpeedPxPerMs = moveSpeedPixPerMs.heels;
 export class RoomScrollRenderer<
   RoomId extends string,
   RoomItemId extends string,
-> implements RoomRendererType<RoomId, RoomItemId>
+> implements RoomRendererTypeInGameOnly<RoomId, RoomItemId>
 {
   #everRendered: boolean = false;
   #scrollableLeft: boolean;
@@ -45,7 +51,7 @@ export class RoomScrollRenderer<
   public output: SetRequired<SoundAndGraphicsOutput, "graphics">;
 
   constructor(
-    public readonly renderContext: RoomRenderContext<RoomId, RoomItemId>,
+    public readonly renderContext: RoomRenderContextInGame<RoomId, RoomItemId>,
     private readonly childRenderer: RoomRendererType<RoomId, RoomItemId>,
   ) {
     const {

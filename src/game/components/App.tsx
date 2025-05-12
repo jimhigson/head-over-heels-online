@@ -9,6 +9,7 @@ import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { useEffect } from "react";
 import { useIsUncolourised } from "../../store/selectors.ts";
 import { LoadingProvider } from "./LoadingContext.tsx";
+import { LevelEditorLoader } from "../../editor/LevelEditorLoader.tsx";
 import { NotFound404PageLazy } from "./NotFound404Page.lazy.tsx";
 
 const AppInner = () => {
@@ -21,23 +22,32 @@ const AppInner = () => {
 
   return (
     // css variables needs the store so has to be in AppInner, not App
-    <CssVariables>
-      <Switch>
-        <Route path="/">
+    <Switch>
+      <Route path="/">
+        <CssVariables>
           <InputStateProvider>
             <LoadingProvider>
               <GamePage />
             </LoadingProvider>
           </InputStateProvider>
-        </Route>
-        <Route path="/sprites">
+        </CssVariables>
+      </Route>
+      <Route path="/sprites">
+        <CssVariables scaleFactor={2}>
           <SpritePage />
-        </Route>
-        <Route>
+        </CssVariables>
+      </Route>
+      <Route path="/editor">
+        <CssVariables scaleFactor={2}>
+          <LevelEditorLoader />
+        </CssVariables>
+      </Route>
+      <Route>
+        <CssVariables>
           <NotFound404PageLazy />
-        </Route>
-      </Switch>
-    </CssVariables>
+        </CssVariables>
+      </Route>
+    </Switch>
   );
 };
 

@@ -3,10 +3,10 @@ import { createSprite } from "./createSprite";
 import { AnimatedSprite } from "pixi.js";
 import { Container } from "pixi.js";
 import { Sprite } from "pixi.js";
-import { load } from "../../sprites/spriteSheet";
+import { loadSpritesheet } from "../../sprites/spriteSheet";
 
 beforeAll(async () => {
-  await load();
+  await loadSpritesheet();
   globalThis.requestAnimationFrame = (
     _callback: (time: DOMHighResTimeStamp) => void,
   ): number => {

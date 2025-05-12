@@ -24,6 +24,11 @@ export type SubRooms = Record<
   }
 >;
 
+export type RoomJsonItems<
+  RoomItemId extends string,
+  RoomId extends string,
+> = Record<RoomItemId, JsonItemUnion<RoomId, NoInfer<RoomItemId>>>;
+
 /**
  * serialisation format of a room to be stored in while not in play
  */
@@ -64,7 +69,7 @@ export type RoomJson<
    * by keying each item with an id, it makes the diffing easier since the array is no longer
    * position-dependent
    */
-  items: Record<RoomItemId, JsonItemUnion<RoomId, NoInfer<RoomItemId>>>;
+  items: RoomJsonItems<RoomItemId, RoomId>;
 
   meta?: {
     /**

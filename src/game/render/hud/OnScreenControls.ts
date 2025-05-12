@@ -12,6 +12,7 @@ import type { HudRendererTickContext } from "./hudRendererContexts";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
+import type { SetRequired } from "type-fest";
 
 const mainButtonsSpreadXPx = 30;
 const mainButtonsSpreadYPx = 15;
@@ -21,7 +22,10 @@ const mainNextXFromRightEdge = 44;
 const mainNextYFromBottom = 20;
 
 type OnScreenControlsRenderContext<RoomId extends string> = {
-  general: GeneralRenderContext<RoomId>;
+  /**
+   * for HUDs, there really must be a game playing, so set the (usually optional) gameState to required
+   */
+  general: SetRequired<GeneralRenderContext<RoomId>, "gameState">;
   inputDirectionMode: InputDirectionMode;
 };
 

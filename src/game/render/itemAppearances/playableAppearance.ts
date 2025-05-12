@@ -346,8 +346,14 @@ const playableAppearanceImpl: ItemAppearance<
 
   const facingXy8 = vectorClosestDirectionXy8(facing) ?? "towards";
 
+  /**
+   * show the outline highlight from when the player has just switched to the character?
+   */
   const highlighted =
-    subject.type === "headOverHeels" ?
+    // if no game state, there isn't any game (probably rendering for the level editor) so
+    // do not highlight
+    gameState !== undefined &&
+    (subject.type === "headOverHeels" ?
       // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
       // characters - they were switched to at the same time so it doesn't matter:
       isHighlighted(subject.state.head, "headOverHeels", "headOverHeels")
@@ -355,7 +361,7 @@ const playableAppearanceImpl: ItemAppearance<
         subject.state,
         subject.type,
         gameState.currentCharacterName,
-      );
+      ));
 
   const flashing = isFlashing(subject);
   const shining = playableHasShield(subject);

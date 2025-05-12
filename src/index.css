@@ -61,7 +61,9 @@
 
 @layer base {
   body {
-    @apply loading-border text-white;
+    /* TODO: revert and use only while loading */
+    background-color: black;
+    /* @apply loading-border text-white; */
     /* Prevent touch actions like scroll and pinch-to-zoom: */
     touch-action: none;
   }
