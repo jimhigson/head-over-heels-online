@@ -25,9 +25,15 @@ spiky floor but more interesting)
 
 * a room where charles has to move on top of a mojo to get somewhere (or a turtle)
 
+* room with mandatory jumping on deactivated enemies somehow, maybe stacking them
+  up like blocks using the bag
+
 * more use of heavy blocks to stop/start lifts
 
 * room where you have to turn monsters on to activate them to work for you (maybe at the right time)
 
 * teleporter that goes to elsewhere in the same room. Needs a way to
 teleport into the the other character as a way to lift them up maybe?
+
+* "the drop" = make heels able to drop items while in the air. A room where hoh has to drop an item on a switch while jumping across a gap. Switch surrounded by
+spikes etc

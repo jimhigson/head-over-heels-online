@@ -282,11 +282,6 @@ export const room = inferRoomJson({
       position: { x: 6, y: 5, z: 1 },
       type: "monster",
     },
-    uhohSwitchBlock: {
-      type: "block",
-      config: { style: "artificial", times: { z: 2 } },
-      position: { x: 5, y: 15, z: 0 },
-    },
     uhohSwitch: {
       config: {
         initialSetting: "right",
@@ -457,6 +452,11 @@ export const room = inferRoomJson({
       },
       position: { x: 5, y: 15, z: 2 },
       type: "switch",
+    },
+    uhohSwitchBlock: {
+      config: { style: "artificial", times: { z: 2 } },
+      position: { x: 5, y: 15, z: 0 },
+      type: "block",
     },
     "wall@0,0,0:3gbWw": {
       config: { direction: "right", tiles: [], times: { y: 8 } },

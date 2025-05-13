@@ -18,26 +18,20 @@ export const room = inferRoomJson({
     },
     "door@2,6,0": {
       config: { direction: "away", toRoom: "blacktooth37" },
-      position: { x: 2, y: 6, z: 0 },
+      position: { x: 4, y: 6, z: 2 },
       type: "door",
     },
     extraBall: {
       config: {},
       isExtra: true,
-      position: { x: 2, y: 0, z: 0 },
+      position: { x: 4, y: 0, z: 0 },
       type: "ball",
     },
     extraBall2: {
       config: {},
       isExtra: true,
-      position: { x: 5, y: 2, z: 0 },
+      position: { x: 7, y: 2, z: 0 },
       type: "ball",
-    },
-    extraBunny: {
-      config: { gives: "shield" },
-      isExtra: true,
-      position: { x: 2, y: 3, z: 2 },
-      type: "pickup",
     },
     extraMonster: {
       config: {
@@ -48,7 +42,7 @@ export const room = inferRoomJson({
         which: "skiHead",
       },
       isExtra: true,
-      position: { x: 0, y: 0, z: 0 },
+      position: { x: 2, y: 0, z: 0 },
       type: "monster",
     },
     extraMonster2: {
@@ -60,7 +54,7 @@ export const room = inferRoomJson({
         which: "skiHead",
       },
       isExtra: true,
-      position: { x: 5, y: 5, z: 0 },
+      position: { x: 7, y: 5, z: 0 },
       type: "monster",
     },
     extraMonster3: {
@@ -72,7 +66,7 @@ export const room = inferRoomJson({
         which: "skiHead",
       },
       isExtra: true,
-      position: { x: 5, y: 0, z: 0 },
+      position: { x: 7, y: 0, z: 0 },
       type: "monster",
     },
     extraMonster4: {
@@ -84,13 +78,63 @@ export const room = inferRoomJson({
         which: "skiHead",
       },
       isExtra: true,
-      position: { x: 5, y: 1, z: 0 },
+      position: { x: 7, y: 1, z: 0 },
       type: "monster",
     },
+    mosnterSwitch: {
+      config: {
+        initialSetting: "left",
+        modifies: [
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "extraMonster",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "extraMonster2",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "extraMonster3",
+          },
+          {
+            expectType: "monster",
+            key: "activated",
+            left: true,
+            right: false,
+            target: "extraMonster4",
+          },
+        ],
+        type: "in-room",
+      },
+      position: { x: 4, y: 3, z: 2 },
+      type: "switch",
+    },
     raisedPlatform: {
-      config: { style: "artificial", times: { x: 2, y: 2, z: 2 } },
+      config: { style: "artificial", times: { x: 2, y: 4 } },
       isExtra: true,
-      position: { x: 2, y: 2, z: 0 },
+      position: { x: 4, y: 2, z: 1 },
+      type: "block",
+    },
+    raisedPlatformSupport: {
+      config: { style: "tower", times: { x: 2 } },
+      isExtra: true,
+      position: { x: 4, y: 2, z: 0 },
+      type: "block",
+    },
+    raisedPlatformSupport2: {
+      config: { style: "tower", times: { x: 2 } },
+      isExtra: true,
+      position: { x: 4, y: 5, z: 0 },
       type: "block",
     },
     "wall@0,0,0:2scjgO": {
@@ -99,7 +143,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,0,0:Z1XoDXu": {
-      config: { direction: "towards", tiles: [], times: { x: 6 } },
+      config: { direction: "towards", tiles: [], times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -111,31 +155,27 @@ export const room = inferRoomJson({
     "wall@0,6,0": {
       config: {
         direction: "away",
-        tiles: ["plain", "shield"],
-        times: { x: 2 },
+        tiles: ["plain", "shield", "shield", "plain"],
+        times: { x: 4 },
       },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
     "wall@4,6,0": {
-      config: {
-        direction: "away",
-        tiles: ["shield", "plain"],
-        times: { x: 2 },
-      },
-      position: { x: 4, y: 6, z: 0 },
+      config: { direction: "away", tiles: ["plain", "plain"], times: { x: 4 } },
+      position: { x: 6, y: 6, z: 0 },
       type: "wall",
     },
     "wall@6,0,0": {
       config: {
         direction: "left",
-        tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],
+        tiles: ["plain", "plain", "shield", "shield", "plain", "plain"],
         times: { y: 6 },
       },
-      position: { x: 6, y: 0, z: 0 },
+      position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
   },
   planet: "blacktooth",
-  size: { x: 6, y: 6 },
+  size: { x: 8, y: 6 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "blacktooth">;
