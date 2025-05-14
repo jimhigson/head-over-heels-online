@@ -1,6 +1,4 @@
 import { loadRoom } from "./loadRoom/loadRoom";
-import mitt from "mitt";
-import type { GameEvents } from "../GameApi";
 import { entryState } from "./PlayableEntryState";
 import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
@@ -104,7 +102,6 @@ export const loadGameState = <RoomId extends string>({
 
   // create a gameApi
   return Object.assign(writeInto, {
-    events: mitt<GameEvents<RoomId>>(),
     inputStateTracker,
     campaign,
     gameSpeed: 1,

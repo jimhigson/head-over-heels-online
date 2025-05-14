@@ -16,10 +16,9 @@ const readXmlToJson = async (fileName: string) => {
     ignoreComment: true,
     ignoreDeclaration: true,
     textFn(value, parentElement) {
-      const parentObject = parentElement as unknown as Record<
-        string,
-        string | object
-      > & { _parent: Record<string, object | string> };
+      const parentObject = parentElement as Record<string, string | object> & {
+        _parent: Record<string, object | string>;
+      };
 
       const keyNo = Object.keys(parentObject._parent).length;
       const keyName = Object.keys(parentObject._parent)[keyNo - 1];

@@ -1,16 +1,19 @@
 import { isFreeItem, isItemType } from "../../physics/itemPredicates";
 import { useGameApi } from "../GameApiContext";
-import { useEvent } from "../../../utils/react/useEvent";
-import { useCallback } from "react";
+import { useEffect } from "react";
+import { startAppListening } from "../../../store/listenerMiddleware";
+import { debugItemClicked } from "../../../store/slices/gameMenusSlice";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 
 export const useDebugClickOnItem = <RoomId extends string>() => {
   const gameApi = useGameApi<RoomId>();
 
-  useEvent(
-    gameApi.events,
-    "itemClicked",
-    useCallback(
-      ({ item, container }) => {
+  useEffect(() => {
+    const unsub = startAppListening({
+      actionCreator: debugItemClicked,
+      effect(action) {
+        const item = action.payload.item as UnionOfAllItemInPlayTypes<RoomId>;
+
         if (isItemType("teleporter", "doorFrame")(item)) {
           const { toRoom } = item.config;
           gameApi.changeRoom(toRoom);
@@ -39,16 +42,12 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
           isFreeItem(item) ?
             item.state.standingOnItemId
           : "n/a (not free to move)",
-          "\ncontainer:",
-          container,
         );
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).container = container;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).item = item;
       },
-      [gameApi],
-    ),
-  );
+    });
+    return unsub;
+  });
 };

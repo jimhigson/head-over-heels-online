@@ -208,9 +208,6 @@ export class MainLoop<RoomId extends string> {
         });
         this.#worldGraphics.addChild(this.#roomRenderer.output.graphics);
         this.#roomRenderer.output.sound?.connect(this.#worldSound);
-        // this isn't the ideal place to emit this from - it gets fired even if just the
-        // display settings change. but only the cheats needs this currently
-        this.gameState.events.emit("roomChange", tickEndRoom.id);
       } else {
         this.#roomRenderer = undefined;
       }

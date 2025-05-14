@@ -19,7 +19,7 @@ describe("v13 -> 14 migration", () => {
     const migrated = (await gameMenusSliceMigrate(
       structuredClone(v13Json),
       migrationTargetVersion,
-    )) as unknown as GameMenusSlicePersisted & PersistedState;
+    )) as GameMenusSlicePersisted & PersistedState;
 
     expect(
       migrated.currentGame?.gameState.characterRooms.head?.items[
@@ -32,7 +32,7 @@ describe("v13 -> 14 migration", () => {
     const migrated = (await gameMenusSliceMigrate(
       structuredClone(v13Json),
       migrationTargetVersion,
-    )) as unknown as GameMenusSlicePersisted & PersistedState;
+    )) as GameMenusSlicePersisted & PersistedState;
 
     expect(
       migrated.currentGame?.store.gameMenus.reincarnationPoint?.gameState

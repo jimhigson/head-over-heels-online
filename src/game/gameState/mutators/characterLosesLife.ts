@@ -26,7 +26,7 @@ import {
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
 
-export const combinedPlayableLosesLife = <RoomId extends string>(
+const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
   headOverHeels: PlayableItem<"headOverHeels", RoomId>,
 ) => {
@@ -49,8 +49,7 @@ export const combinedPlayableLosesLife = <RoomId extends string>(
     headOverHeels.state.heels.lives,
   );
   if (totalLivesRemaining === 0) {
-    gameState.events.emit("gameOver");
-    return; // terminal outcome - game over
+    return; // terminal outcome - game over should now be dispatched from the caller
   }
 
   const headHasLives = pokeableToNumber(headOverHeels.state.head.lives) > 0;
@@ -188,7 +187,7 @@ const resetPlayableToEntryState = <RoomId extends string>(
   };
 };
 
-export const individualPlayableLosesLife = <
+const individualPlayableLosesLife = <
   RoomId extends string,
   RoomItemId extends string,
 >(
@@ -222,11 +221,10 @@ export const individualPlayableLosesLife = <
 
     if (otherCharacterHasLives) {
       gameState.currentCharacterName = otherCharacter.type;
-      return; // non-terminal outcome - continue playing
-    } else {
-      gameState.events.emit("gameOver");
-      return; // terminal outcome - game over
-    }
+      // non-terminal outcome - game will continue playing
+    } // else is terminal outcome - game over. gameOver actions should now be dispatched from the caller
+
+    return;
   } else {
     // character losing the life still has lives left
     const roomWithCharacterLosingLife =

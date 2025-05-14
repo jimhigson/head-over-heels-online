@@ -65,6 +65,6 @@ export const maybeWrapInPortableItemPickUpNextHighlightRenderer = <
       (new PortableItemPickUpNextHighlightRenderer(
         itemRenderContext as ItemRenderContext<PortableItemType>,
         childRenderer,
-      ) as unknown as ItemPixiRenderer<T>)
+      ) as ItemPixiRenderer<T>)
     : childRenderer;
 };

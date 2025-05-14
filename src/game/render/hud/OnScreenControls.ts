@@ -96,7 +96,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
         inputStateTracker,
         inputDirectionMode,
         // TODO: event bus making bad casts
-        general: general as unknown as GeneralRenderContext<string>,
+        general,
       }),
     };
 

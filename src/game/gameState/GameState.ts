@@ -1,7 +1,5 @@
 import type { IndividualCharacterName } from "../../model/modelTypes";
 import { type CharacterName, type Campaign } from "../../model/modelTypes";
-import type { Emitter } from "mitt";
-import type { GameEvents } from "../GameApi";
 import type { PlayableEntryState } from "./PlayableEntryState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import type { RoomState } from "../../model/RoomState";
@@ -49,8 +47,6 @@ export type GameState<RoomId extends string> = {
     [C in CharacterName]: PlayableEntryState;
   }>;
 
-  /** TODO: is this really state? - this could be replaced with dispatching actions on the store */
-  events: Emitter<GameEvents<RoomId>>;
   // pickups don't respawn, so we keep track of which ones have been picked up
   // outside of the room's state
   pickupsCollected: PickupsCollected<RoomId>;

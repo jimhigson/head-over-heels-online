@@ -16,5 +16,5 @@ export type ItemAppearanceOutsideView<T extends ItemInPlayType> =
 export const itemAppearanceOutsideView = <T extends ItemInPlayType>(
   itemAppearance: ItemAppearance<T, any, any>,
 ): ItemAppearance<T, any, Container> => {
-  return itemAppearance as unknown as ItemAppearance<T, any, Container>;
+  return itemAppearance as ItemAppearance<T, any, Container>;
 };
