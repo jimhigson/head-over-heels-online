@@ -37,6 +37,8 @@ import { REHYDRATE } from "redux-persist";
 import { emptyObject } from "../../utils/empty";
 import type { RootState } from "../store";
 import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import type { CharacterName } from "../../model/modelTypes";
 
 export type ShowBoundingBoxes = "none" | "all" | "non-wall";
 
@@ -600,6 +602,21 @@ export const gameMenusSlice = createSlice({
           strategy satisfies never;
       }
     },
+    /** for when the cheats are on, a no-op reducer (exists for the listener api)
+     * that is dispatched after clicking on items
+     */
+    debugItemClicked(
+      _state,
+      _action: PayloadAction<{
+        item: UnionOfAllItemInPlayTypes<string, string>;
+      }>,
+    ) {},
+    characterRoomChange(
+      _state,
+      _action: PayloadAction<{ characterName: CharacterName; roomId: string }>,
+    ) {
+      // currently a noop, although could be used to update the player rooms if this gets into the store
+    },
   },
   extraReducers(builder) {
     type RehydrateAction = PayloadAction<
@@ -637,7 +654,9 @@ export type GameMenusSliceActionCreator = ValueOf<
 export const {
   assignInputStart,
   backToParentMenu,
+  characterRoomChange,
   crownCollected,
+  debugItemClicked,
   doneAssigningInput,
   errorCaught,
   errorDismissed,

@@ -1,4 +1,3 @@
-import type { GameState } from "../../../gameState/GameState";
 import { Container } from "pixi.js";
 import type {
   ItemInPlayType,
@@ -26,17 +25,17 @@ import { ItemFlashOnSwitchedRenderer } from "./ItemFlashOnSwitchedRenderer";
 import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { maybeWrapInPortableItemPickUpNextHighlightRenderer } from "./PortableItemPickUpNextHighlightRenderer";
+import { debugItemClicked } from "../../../../store/slices/gameMenusSlice";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
   item: UnionOfAllItemInPlayTypes<RoomId>,
   container: Container,
-  gameState: GameState<RoomId>,
 ) => {
   if (container !== undefined) {
     container.eventMode = "static";
     container.on("pointertap", () => {
-      gameState.events.emit("itemClicked", { item, container });
+      store.dispatch(debugItemClicked({ item }));
     });
   }
 };
@@ -49,10 +48,7 @@ export const createItemRenderer = <T extends ItemInPlayType>(
   const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = !selectIsUncolourised(state);
 
-  const {
-    item,
-    general: { gameState },
-  } = itemRenderContext;
+  const { item } = itemRenderContext;
 
   const renderBoundingBoxes =
     showBoundingBoxes === "all" ||
@@ -110,7 +106,7 @@ export const createItemRenderer = <T extends ItemInPlayType>(
           itemRenderContext,
         );
 
-    assignPointerActions(item, compositeRenderer.output, gameState);
+    assignPointerActions(item, compositeRenderer.output);
 
     graphics = new ItemPositionRenderer(itemRenderContext, compositeRenderer);
   }

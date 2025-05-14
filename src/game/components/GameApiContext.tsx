@@ -12,6 +12,7 @@ export const GameApiProvider = <RoomId extends string>({
   children,
 }: GameApiBoundaryProps<RoomId>) => {
   return (
+    // TODO: callbacks in GameApi are making this terrible cast necessary
     <GameApiContext value={gameApi as unknown as GameApi<string>}>
       {children}
     </GameApiContext>
@@ -26,6 +27,7 @@ export const useGameApi = <RoomId extends string = string>() => {
   if (gameApi === undefined) {
     throw new Error("useGameApi must be called once we have a GameApi");
   }
+  // TODO: callbacks in GameApi are making this terrible cast necessary
   return gameApi as unknown as GameApi<RoomId>;
 };
 
@@ -39,5 +41,6 @@ export const useMaybeGameApi = <RoomId extends string = string>():
   if (gameApi === null) {
     throw new Error("useGameApi must be used within a GameApiProvider");
   }
+  // TODO: callbacks in GameApi are making this terrible cast necessary
   return gameApi as unknown as GameApi<RoomId> | undefined;
 };

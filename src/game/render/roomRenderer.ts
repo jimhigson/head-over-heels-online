@@ -122,13 +122,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         // have never ticked this item before - either first tick in the room or item was introduced to the
         // room since the last tick
         itemRenderer = createItemRenderer({
-          // hmmm... the event emitters are stopping from casting this normally! That can probably go
-          // TODO: delete GameEvents
-          // TODO: when .events and GameEvents are deleted, this 'unknown' and maybe the whole cast can go
-          ...(this.renderContext as unknown as RoomRenderContext<
-            string,
-            string
-          >),
+          ...this.renderContext,
           item,
         });
 

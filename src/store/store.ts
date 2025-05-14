@@ -16,6 +16,7 @@ import {
   persistStore,
 } from "redux-persist";
 import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
+import { listenerMiddleware } from "./listenerMiddleware";
 
 export const storeLatestVersion = 14;
 
@@ -66,7 +67,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).prepend(listenerMiddleware.middleware),
 });
 
 export const persistor = persistStore(store);

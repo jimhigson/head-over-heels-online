@@ -30,6 +30,8 @@ import type { RoomState } from "../model/RoomState";
 import { loadItemFromJson } from "../game/gameState/loadRoom/loadItem";
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { PortableItemType } from "../game/physics/itemPredicates";
+import { startAppListening } from "../store/listenerMiddleware";
+import { gameOver } from "../store/slices/gameMenusSlice";
 
 export type TestCampaignRoomId =
   | "heelsStartingRoom"
@@ -117,9 +119,15 @@ export const mutatorsTestHarness = () => {
   });
 
   const gameOverFn = vi.fn();
-  gameState.events.on("gameOver", gameOverFn);
+  const stopListeningForGameOver = startAppListening({
+    actionCreator: gameOver,
+    effect: gameOverFn,
+  });
 
   return {
+    teardown() {
+      stopListeningForGameOver();
+    },
     get currentPlayable() {
       return selectCurrentPlayableItem(gameState);
     },

@@ -18,7 +18,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
   containerWidth,
 }: MapBackgroundProps<RoomId>) => {
   const originalCampaignPositions =
-    gridPositions as unknown as SortedObjectOfRoomGridPositionSpecs<OriginalCampaignRoomId>;
+    gridPositions as SortedObjectOfRoomGridPositionSpecs<OriginalCampaignRoomId>;
 
   // projected y ordinal of the top-back corner of the room
   const topOfRoomFloor = projectWorldXyzToScreenXy(

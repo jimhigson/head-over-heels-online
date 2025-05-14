@@ -421,8 +421,7 @@ export class OnScreenButtonRenderer<
   constructor(renderContext: ButtonRenderContext<BT, RoomId>) {
     const appearance = buttonAppearances[
       renderContext.button.which
-      // TODO: events on the gameState is causing this terrible cast - they need to go!
-    ] as unknown as ButtonAppearance<BT, RoomId>;
+    ] as ButtonAppearance<BT, RoomId>;
     super(renderContext, appearance);
   }
 }

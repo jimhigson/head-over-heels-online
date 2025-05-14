@@ -27,8 +27,7 @@ export const renderCarriedOnce = <
 
   const appearanceReturn = appearance({
     renderContext: {
-      // TODO: the event bus is making this cast necessary - remove it!
-      general: renderContext.general as unknown as GeneralRenderContext<string>,
+      general: renderContext.general,
       item: carrying,
       room: tickContext.room,
     },

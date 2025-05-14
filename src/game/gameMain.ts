@@ -66,7 +66,6 @@ export const gameMain = async <RoomId extends string>(
 
   return {
     campaign,
-    events: gameState.events,
     renderIn(containerElement) {
       containerElement.appendChild(app.canvas);
     },

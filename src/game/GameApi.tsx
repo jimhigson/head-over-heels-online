@@ -1,26 +1,11 @@
-import type { Emitter } from "mitt";
 import type { GameState } from "./gameState/GameState";
-import type { Container } from "pixi.js";
-import type { UnionOfAllItemInPlayTypes } from "../model/ItemInPlay";
 import type { Campaign } from "../model/modelTypes";
 import type { Xy } from "../utils/vectors/vectors";
 import type { RoomState } from "../model/RoomState";
 import type { SavedGameState } from "./gameState/saving/SavedGameState";
 
-// TODO: delete GameEvents and the emitter - it isn't used for much and ruins the model of separating
-// POJ(S)O as state from functions etc
-export type GameEvents<RoomId extends string> = {
-  roomChange: RoomId;
-  gameOver: undefined;
-  itemClicked: {
-    container: Container;
-    item: UnionOfAllItemInPlayTypes<RoomId>;
-  };
-};
-
 export type GameApi<RoomId extends string> = {
   campaign: Campaign<RoomId>;
-  events: Emitter<GameEvents<RoomId>>;
   /** Instantly move to a different room. Mostly for testing, debugging etc */
   changeRoom: (newRoom: RoomId) => void;
   resizeTo: (newSize: Xy) => void;

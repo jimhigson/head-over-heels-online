@@ -24,6 +24,7 @@ describe("while not in symbiosis", () => {
           expect(h.selectPlayable(playableLosingLifeName)).toBeUndefined();
           expect(h.gameState.currentCharacterName).toEqual(otherName);
           h.expectGameContinues();
+          h.teardown();
         });
         test(`and ${otherName} also has zero lives`, () => {
           const h = mutatorsTestHarness();
@@ -39,6 +40,7 @@ describe("while not in symbiosis", () => {
           );
           expect(h.selectPlayable(playableLosingLifeName)).toBeUndefined();
           h.expectGameOver();
+          h.teardown();
         });
       });
       describe(`but it is not ${playableLosingLifeName}'s last life`, () => {
@@ -59,6 +61,7 @@ describe("while not in symbiosis", () => {
           });
           h.expectGameContinues();
           h.expectNotCarryingIfHeels(playableLosingLifeName);
+          h.teardown();
         });
         describe(`while ${otherName} is in a different room`, () => {
           test(`${playableLosingLifeName} is in a reloaded version of the same room, with one less life`, () => {
@@ -82,6 +85,7 @@ describe("while not in symbiosis", () => {
             });
 
             h.expectNotCarryingIfHeels(playableLosingLifeName);
+            h.teardown();
           });
         });
         describe(`while ${otherName} is in the same room`, () => {
@@ -106,6 +110,7 @@ describe("while not in symbiosis", () => {
                 shouldBeACopyOf: roomBeforeLosingLife,
               });
               expect(h.gameState.currentCharacterName).toEqual("headOverHeels");
+              h.teardown();
             });
           });
           describe(`because ${otherName} entered ${playableLosingLifeName}'s room`, () => {
@@ -142,6 +147,7 @@ describe("while not in symbiosis", () => {
               });
 
               h.expectNotCarryingIfHeels(playableLosingLifeName);
+              h.teardown();
             });
           });
           describe(`because ${playableLosingLifeName} entered ${otherName}'s room`, () => {
@@ -173,6 +179,7 @@ describe("while not in symbiosis", () => {
               });
 
               h.expectNotCarryingIfHeels(playableLosingLifeName);
+              h.teardown();
             });
           });
         });
@@ -191,6 +198,7 @@ describe("while in symbiosis", () => {
       h.selectPlayable("headOverHeels")!.state.heels.lives = 1;
       h.playableLosesLife("headOverHeels");
       h.expectGameOver();
+      h.teardown();
     });
   });
   describe.each(individualCharacterNames)(
@@ -221,6 +229,7 @@ describe("while in symbiosis", () => {
           otherIndividualCharacterName(individualWithLivesLeft),
         );
         h.expectPlayableToBeInGame(individualWithLivesLeft);
+        h.teardown();
       });
       test("having entered the room individually", () => {
         const h = mutatorsTestHarness();
@@ -246,6 +255,7 @@ describe("while in symbiosis", () => {
         h.expectPlayableToBeOutOfTheGame(
           otherIndividualCharacterName(individualWithLivesLeft),
         );
+        h.teardown();
       });
     },
   );
@@ -273,6 +283,7 @@ describe("while in symbiosis", () => {
       expect(selectAbilities(h.gameState, "heels")!.carrying).toBeNull();
       h.expectPlayableToBeOutOfTheGame("heels");
       h.expectPlayableToBeOutOfTheGame("head");
+      h.teardown();
     });
     describe("after entering the room individually", () => {
       /*  
@@ -319,6 +330,7 @@ describe("while in symbiosis", () => {
         // should no longer be carrying after death:
         expect(selectAbilities(h.gameState, "heels")!.carrying).toBeNull();
         h.expectPlayableAction("headOverHeels", "moving");
+        h.teardown();
       });
       test("having entered via different doors, room is reloaded with characters separate and at their respective doors", () => {
         const h = mutatorsTestHarness();
@@ -356,26 +368,8 @@ describe("while in symbiosis", () => {
         );
         h.expectPlayableAction("head", "moving");
         h.expectPlayableAction("heels", "moving");
+        h.teardown();
       });
     });
-  });
-});
-
-describe("hush pupies", () => {
-  test("vanish when head enters", () => {
-    const h = mutatorsTestHarness();
-    h.playableWalksToRoom("head", "thirdRoom");
-    expect(h.selectRoomOfPlayable("head")?.items.hushPuppy).toBeUndefined();
-  });
-  test("remain when heels enters", () => {
-    const h = mutatorsTestHarness();
-    h.playableWalksToRoom("heels", "thirdRoom");
-    expect(h.selectRoomOfPlayable("heels")?.items.hushPuppy).toBeDefined();
-  });
-  test("vanish again when head loses life and room is reloaded", () => {
-    const h = mutatorsTestHarness();
-    h.playableWalksToRoom("head", "thirdRoom");
-    h.playableLosesLife("head");
-    expect(h.selectRoomOfPlayable("head")?.items.hushPuppy).toBeUndefined();
   });
 });

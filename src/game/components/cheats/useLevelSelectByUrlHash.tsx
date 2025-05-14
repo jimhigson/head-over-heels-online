@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import type { GameApi } from "../../GameApi";
+import { startAppListening } from "../../../store/listenerMiddleware";
+import { characterRoomChange } from "../../../store/slices/gameMenusSlice";
 
 export const useLevelSelectByUrlHash = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
@@ -42,11 +44,16 @@ export const useLevelSelectByUrlHash = <RoomId extends string>(
     };
 
     window.addEventListener("hashchange", onHashChange);
-    gameApi.events.on("roomChange", onRoomChange);
+    const stopListeningToCharacterRoomChange = startAppListening({
+      actionCreator: characterRoomChange,
+      effect(action) {
+        onRoomChange(action.payload.roomId as RoomId);
+      },
+    });
 
     return () => {
       window.removeEventListener("hashchange", onHashChange);
-      gameApi.events.off("roomChange", onRoomChange);
+      stopListeningToCharacterRoomChange();
     };
   }, [gameApi]);
 };

@@ -746,7 +746,7 @@ const convertItem = async ({
 
     default:
       console.warn(
-        `not converting ${chalk.yellow((xml2JsonItem as unknown as Xml2JsonItem).kind)} in room ${chalk.green(roomName)}`,
+        `not converting ${chalk.yellow((xml2JsonItem as Xml2JsonItem).kind)} in room ${chalk.green(roomName)}`,
       );
       //item.kind satisfies never;
       return undefined;

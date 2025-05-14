@@ -24,7 +24,10 @@ import { isPortal } from "../../physics/itemPredicates";
 import { blockXyzToFineXyz } from "../../render/projectToScreen";
 import { store } from "../../../store/store";
 import { moveItem } from "../../physics/moveItem";
-import { roomExplored } from "../../../store/slices/gameMenusSlice";
+import {
+  characterRoomChange,
+  roomExplored,
+} from "../../../store/slices/gameMenusSlice";
 import {
   iterateRoomItems,
   roomItemsIterable,
@@ -416,4 +419,7 @@ export const changeCharacterRoom = <
   }
 
   store.dispatch(roomExplored(toRoomId));
+  store.dispatch(
+    characterRoomChange({ characterName: playableItem.type, roomId: toRoomId }),
+  );
 };

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useGameApi } from "../GameApiContext";
+import { startAppListening } from "../../../store/listenerMiddleware";
+import { characterRoomChange } from "../../../store/slices/gameMenusSlice";
 
 export const useCurrentlyViewedRoom = <RoomId extends string>():
   | RoomId
@@ -13,14 +15,14 @@ export const useCurrentlyViewedRoom = <RoomId extends string>():
   useEffect(() => {
     setCurrentRoom(gameApi.currentRoom?.id);
 
-    const roomChangeHandler = (roomId: RoomId) => {
-      setCurrentRoom(roomId);
-    };
+    const stopListening = startAppListening({
+      actionCreator: characterRoomChange,
+      effect(action) {
+        setCurrentRoom(action.payload.roomId as RoomId);
+      },
+    });
 
-    gameApi.events.on("roomChange", roomChangeHandler);
-    return () => {
-      gameApi.events.off("roomChange", roomChangeHandler);
-    };
+    return stopListening;
   }, [gameApi]);
 
   return currentRoom;
