@@ -20,7 +20,7 @@
     "watch:test": "vitest watch",
     "json": "tsx src/campaignXml2Json/scripts/xml2json.ts && prettier src/_generated/originalCampaign/rooms --write",
     "jsonpatch": "tsx src/campaignXml2Json/scripts/makeCampaignDiff.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
-    "predeploy": "pnpm run check && pnpm run build && echo blockstack.ing > dist/CNAME && cp dist/index.html dist/sprites.html",
+    "predeploy": "pnpm run check && pnpm run build && echo blockstack.ing > dist/CNAME && cp dist/index.html dist/404.html",
     "deploy": "gh-pages -d dist",
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\"",

@@ -9,6 +9,7 @@ import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { useEffect } from "react";
 import { useIsUncolourised } from "../../store/selectors.ts";
 import { LoadingProvider } from "./LoadingContext.tsx";
+import { NotFound404PageLazy } from "./NotFound404Page.lazy.tsx";
 
 const AppInner = () => {
   const uncolourised = useIsUncolourised();
@@ -30,6 +31,9 @@ const AppInner = () => {
       </Route>
       <Route path="/sprites">
         <SpritePage />
+      </Route>
+      <Route>
+        <NotFound404PageLazy />
       </Route>
     </CssVariables>
   );
