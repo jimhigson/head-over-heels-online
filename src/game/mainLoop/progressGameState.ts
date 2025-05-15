@@ -43,7 +43,7 @@ export const progressGameState = <
   const room = selectCurrentRoomState(gameState);
 
   if (room === undefined) {
-    // no playables in rooms - game over
+    // no current room - probably this is because game over
     return emptySet;
   }
 

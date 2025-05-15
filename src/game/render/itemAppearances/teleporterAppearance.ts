@@ -31,8 +31,7 @@ export const teleporterAppearance: ItemAppearance<
   const activated = teleporterIsActive(item);
 
   const flashing =
-    activated &&
-    iterateStoodOnByItems(stoodOnBy, room).find(isPlayableItem) !== undefined;
+    activated && iterateStoodOnByItems(stoodOnBy, room).some(isPlayableItem);
 
   const render =
     currentlyRenderedProps === undefined ||

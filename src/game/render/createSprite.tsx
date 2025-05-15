@@ -21,7 +21,10 @@ export type AnimatedCreateSpriteOptions = {
   anchor?: PointData;
   pivot?: PointData;
   flipX?: boolean;
+  textureId?: undefined;
+  textureIdCallback?: undefined;
   animationId: AnimationId;
+  randomiseStartFrame?: boolean;
   /*
    * if true, animation will run backwards
    */
@@ -46,18 +49,29 @@ export type AnimatedCreateSpriteOptions = {
 
 export type CreateSpriteOptions =
   | TextureId
-  | {
+  | ({
       // not animated
       anchor?: PointData;
       pivot?: PointData;
       flipX?: boolean;
-      textureId: TextureId;
       x?: number;
       y?: number;
       filter?: Filter | Filter[];
       times?: Partial<Xyz>;
       label?: string;
-    }
+    } & (
+      | {
+          times?: Partial<Xyz>;
+          textureId: TextureId;
+          textureIdCallback?: undefined;
+        }
+      | {
+          times?: Partial<Xyz>;
+          textureId?: undefined;
+          /** the texture id callback allows an item with repetition to have different textures at different locations */
+          textureIdCallback: (x: number, y: number, z: number) => TextureId;
+        }
+    ))
   | AnimatedCreateSpriteOptions;
 
 const bottomMiddleDefaultAnchor = { x: 0.5, y: 1 };
@@ -84,7 +98,7 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
     if (isAnimatedOptions(options)) {
       sprite = createAnimatedSprite(options);
     } else {
-      sprite = new Sprite(loadedSpriteSheet().textures[options.textureId]);
+      sprite = new Sprite(loadedSpriteSheet().textures[options.textureId!]);
     }
 
     // even times: undefined should cause the sprite to be wrapped in a container
@@ -100,10 +114,15 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
           for (let z = 1; z <= completeTimes.z; z++) {
             const subSpriteOptions = {
               ...options,
+              textureId:
+                options.textureId ??
+                options.textureIdCallback?.(x - 1, y - 1, z - 1),
               label: `(${x},${y},${z})`,
             };
             delete subSpriteOptions.times;
-            const component = _createSprite(subSpriteOptions);
+            const component = _createSprite(
+              subSpriteOptions as CreateSpriteOptions,
+            );
             const displaceXy = projectBlockXyzToScreenXy({
               x: x - 1,
               y: y - 1,
@@ -123,7 +142,7 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
       if (!isAnimatedOptions(options)) {
         // I allow a non-standard pivot property on my sprites:
         const spriteDataFrame = loadedSpriteSheet().data.frames[
-          options.textureId
+          options.textureId!
         ].frame as SpritesheetFrameData["frame"] & { pivot: Xy };
         // what the spritesheet calls a anchor, I actually use as
         // a pivot - not sure if pixi means it to be used that way
@@ -180,6 +199,7 @@ function createAnimatedSprite({
   reverse,
   playOnce,
   paused,
+  randomiseStartFrame,
 }: AnimatedCreateSpriteOptions): AnimatedSprite {
   const animationFrames = loadedSpriteSheet().animations[animationId];
   const frames = paused ? [animationFrames[0]] : animationFrames;
@@ -197,7 +217,13 @@ function createAnimatedSprite({
 
   animatedSprite.animationSpeed =
     spritesheetData.animations[animationId].animationSpeed;
-  animatedSprite.play();
+
+  animatedSprite.gotoAndPlay(
+    randomiseStartFrame ?
+      Math.floor(Math.random() * animatedSpriteFrames.length)
+    : 0,
+  );
+
   if (playOnce !== undefined) {
     animatedSprite.loop = false;
     animatedSprite.onComplete = () => {

@@ -130,31 +130,16 @@
         "modifies": [
           {
             "expectType": "monster",
-            "key": "activated",
-            "left": true,
-            "right": false,
-            "target": "extraMonster"
-          },
-          {
-            "expectType": "monster",
-            "key": "activated",
-            "left": true,
-            "right": false,
-            "target": "extraMonster2"
-          },
-          {
-            "expectType": "monster",
-            "key": "activated",
-            "left": true,
-            "right": false,
-            "target": "extraMonster3"
-          },
-          {
-            "expectType": "monster",
-            "key": "activated",
-            "left": true,
-            "right": false,
-            "target": "extraMonster4"
+            "newState": {
+              "activated": { "left": true, "right": false },
+              "everActivated": { "left": true }
+            },
+            "targets": [
+              "extraMonster",
+              "extraMonster2",
+              "extraMonster3",
+              "extraMonster4"
+            ]
           }
         ],
         "type": "in-room"

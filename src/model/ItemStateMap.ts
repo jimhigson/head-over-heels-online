@@ -193,11 +193,22 @@ type ItemWithMovementState = {
    * on if the item is currently activated (so they can render differently)
    */
   activated: boolean;
+  /** if this item has ever been activated, in the lifetime of the room. Charging cybermen will
+   * have this flag as false so long as they are charging
+   */
+  everActivated: boolean;
   vels: {
     // for movable blocks that function as movable platforms, these are treated as 'walking':
     walking: Xyz;
   };
 };
+
+export type MonsterState<RoomItemId extends string> =
+  FreeItemState<RoomItemId> &
+    PortableItemState &
+    ItemWithMovementState & {
+      busyLickingDoughnutsOffFace: boolean;
+    };
 
 export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   head: PlayableState<RoomItemId> & HeadAbilities;
@@ -228,11 +239,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   slidingBlock: SlidingItemState<RoomItemId>;
   ball: SlidingItemState<RoomItemId>;
 
-  monster: FreeItemState<RoomItemId> &
-    PortableItemState &
-    ItemWithMovementState & {
-      busyLickingDoughnutsOffFace: boolean;
-    };
+  monster: MonsterState<RoomItemId>;
   pickup: FreeItemState<RoomItemId>;
   aliveFish: FreeItemState<RoomItemId>;
   lift: {

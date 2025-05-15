@@ -51,7 +51,10 @@ export const progressWithSubTicks =
     }
 
     const timeProgressionDelta = deltaMS * gameState.gameSpeed;
-    const numberOfSubTicks = Math.ceil(timeProgressionDelta / maxStepDeltaMs);
+    const numberOfSubTicks = Math.max(
+      1,
+      Math.ceil(timeProgressionDelta / maxStepDeltaMs),
+    );
 
     // don't worry about this special case - it is ok (and simpler) to have a loop of one
     // iteration

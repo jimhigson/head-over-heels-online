@@ -6,7 +6,7 @@ import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
 import { entries } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
-import { isSolid } from "../../physics/itemPredicates";
+import { isFreeItem, isSolid } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
 import {
   type RoomStateItems,
@@ -14,6 +14,8 @@ import {
   iterateRoomItems,
   roomItemsIterable,
 } from "../../../model/RoomState";
+import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
+import { setStandingOn } from "../mutators/setStandingOn";
 
 function* loadItems<RoomId extends string, RoomItemId extends string>(
   roomJson: RoomJson<RoomId, RoomItemId>,
@@ -69,7 +71,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   /** if true, this is a new game - ie, load head and heels if they are in the room */
   isNewGame?: boolean;
 }): RoomState<RoomId, RoomItemId> => {
-  const loadedItems: RoomStateItems<RoomId, RoomItemId> = {
+  const items: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(
       loadItems(roomJson, roomPickupsCollected, isNewGame),
@@ -78,8 +80,8 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
 
   // the physics will go nuts if things are overlapping, so check and reject
   // if they are:
-  for (const i of iterateRoomItems(loadedItems)) {
-    const collisions = collision1toMany(i, roomItemsIterable(loadedItems));
+  for (const i of iterateRoomItems(items)) {
+    const collisions = collision1toMany(i, roomItemsIterable(items));
     const solidCol = collisions.find(
       (col) =>
         isSolid(i) &&
@@ -96,13 +98,21 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     }
   }
 
+  // check for items that are standing on other items:
+  for (const i of iterateRoomItems(items).filter(isFreeItem)) {
+    const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
+      i,
+      iterateRoomItems(items).filter((j) => j.id !== i.id),
+    );
+    if (newStandingOn !== undefined) {
+      setStandingOn({ above: i, below: newStandingOn });
+    }
+  }
+
   const roomState: RoomState<RoomId, RoomItemId> = {
     ...roomJson,
     roomJson,
-    items: {
-      ...loadedItems,
-      //...extraItems,
-    },
+    items,
     roomTime: 0,
   };
 

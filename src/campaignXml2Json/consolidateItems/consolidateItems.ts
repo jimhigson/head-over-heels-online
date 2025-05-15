@@ -25,7 +25,9 @@ const isConsolidatable = (
   return (
     (consolidatableJsonItemTypes as JsonItemType[]).includes(jsonItem.type) &&
     !(jsonItem.type === "block" && jsonItem.config.disappearing) &&
-    !(jsonItem.type === "barrier" && jsonItem.config.disappearing)
+    !(jsonItem.type === "barrier" && jsonItem.config.disappearing) //&&
+    // toasters could share AABBs, but need to render individually
+    //!(jsonItem.type === "deadlyBlock" && jsonItem.config.style === "toaster")
   );
 };
 

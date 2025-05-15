@@ -6,15 +6,20 @@ type SwitchItemModification<
   RoomId extends string,
   RoomItemId extends string,
   T extends ItemInPlayType,
-  K extends keyof ItemState<T, RoomId, RoomItemId>,
-  Left extends ItemState<T, RoomId, RoomItemId>[K],
-  Right extends ItemState<T, RoomId, RoomItemId>[K],
+  KS extends keyof ItemState<T, RoomId, RoomItemId>,
+  Left extends ItemState<T, RoomId, RoomItemId>[KS],
+  Right extends ItemState<T, RoomId, RoomItemId>[KS],
 > = {
   expectType: T;
-  target: RoomItemId;
-  key: K;
-  left: Left;
-  right: Right;
+  targets: Array<NoInfer<RoomItemId>>;
+  newState: {
+    [K in KS]: {
+      /** if not given, nothing is set on this switch throw to the left */
+      left?: Left;
+      /** if not given, nothing is set on this switch throw to the right */
+      right?: Right;
+    };
+  };
 };
 // switches are 'on rails' with a fairly restricted range of things they can change for the sake of avoiding
 // errors in the json but this could be added to as needed. Technically, the engine can change any property
@@ -27,7 +32,7 @@ type SwitchItemModificationUnion<
       RoomId,
       RoomItemId,
       "monster" | "movingPlatform",
-      "activated",
+      "activated" | "everActivated",
       // deactivated by default:
       false,
       true
@@ -36,7 +41,7 @@ type SwitchItemModificationUnion<
       RoomId,
       RoomItemId,
       "monster" | "movingPlatform",
-      "activated",
+      "activated" | "everActivated",
       // activated by default:
       true,
       false
@@ -59,17 +64,28 @@ type SwitchItemModificationUnion<
       "left",
       "right"
     >;
+
+export type SwitchInRoomConfig<
+  RoomId extends string,
+  /** ids of items in this room */
+  RoomItemId extends string,
+> = {
+  /** this switch targets items in the room */
+  type: "in-room";
+  // list of all items (de)activated by this switch
+  modifies: Array<NoInfer<SwitchItemModificationUnion<RoomId, RoomItemId>>>;
+};
+
 export type SwitchConfig<
   RoomId extends string,
   /** ids of items in this room */
   RoomItemId extends string,
 > = { initialSetting: SwitchSetting } & (
-  | {
-      /** this switch targets items in the room */
-      type: "in-room";
-      // list of all items (de)activated by this switch
-      modifies: Array<NoInfer<SwitchItemModificationUnion<RoomId, RoomItemId>>>;
-    }
+  | SwitchInRoomConfig<
+      RoomId,
+      /** ids of items in this room */
+      RoomItemId
+    >
   | {
       /** this switch targets the redux store */
       type: "in-store";

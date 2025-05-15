@@ -1,4 +1,6 @@
+import type { Container, Sprite } from "pixi.js";
 import type { ItemConfigMap } from "../../../model/json/ItemConfigMap";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import { vectorClosestDirectionXy4 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -7,11 +9,15 @@ import {
   greyFilter,
   mainPaletteSwapFilter,
 } from "../filters/standardFilters";
+import type { StackedSpritesContainer } from "./createStackedSprites";
 import {
   createStackedSprites,
   itemRidingOnBubblesSpritesOptions,
+  stackedTopSymbol,
 } from "./createStackedSprites";
 import type { ItemAppearance } from "./ItemAppearance";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { RoomState } from "../../../model/RoomState";
 
 const greyWhileDeactivated: Array<
   ItemConfigMap<string, string>["monster"]["which"]
@@ -23,17 +29,50 @@ type MonsterRenderProps = {
   busyLickingDoughnutsOffFace: boolean;
 };
 
+const bobTimeOffset = (str: string): number => {
+  let h = 0x811c9dc5; // seed
+  const len = str.length;
+  for (let i = Math.max(0, len - 9); i < len; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 0x5bd1e995);
+    h ^= h >>> 15;
+  }
+  return (h >>> 0) / 0xffffffff;
+};
+
+const bobPeriod = 200;
+const bobAmplitude = 1;
+const floatingVerticalBob = (roomTime: number, itemId: string) => {
+  const itemsNameHash = bobTimeOffset(itemId);
+  return (
+    Math.sin((roomTime + itemsNameHash * 20_000) / bobPeriod) * bobAmplitude
+  );
+};
+
+const maybeAddBob = (
+  { id, config: { which }, state }: ItemInPlay<"monster">,
+  room: RoomState<string, string>,
+  currentOutput: Container,
+) => {
+  if ((which === "cyberman" || which === "bubbleRobot") && state.activated) {
+    const outputTyped = currentOutput as StackedSpritesContainer<Sprite>;
+    outputTyped[stackedTopSymbol].y =
+      -blockSizePx.h + floatingVerticalBob(room.roomTime, id);
+  }
+};
+
 export const monsterAppearance: ItemAppearance<
   "monster",
   MonsterRenderProps
 > = ({
   renderContext: {
-    item: { config, state },
+    item,
     room,
     general: { paused },
   },
   currentRendering,
 }) => {
+  const { config, state } = item;
   const currentlyRenderedProps = currentRendering?.renderProps;
 
   const { activated, busyLickingDoughnutsOffFace } = state;
@@ -54,6 +93,8 @@ export const monsterAppearance: ItemAppearance<
     case "elephant":
     case "elephantHead":
     case "monkey": {
+      // rendering is directional (xy4)
+
       const facingXy4 = vectorClosestDirectionXy4(state.facing) ?? "towards";
 
       const render =
@@ -64,6 +105,8 @@ export const monsterAppearance: ItemAppearance<
         facingXy4 !== currentlyRenderedProps.facingXy4;
 
       if (!render) {
+        maybeAddBob(item, room, currentRendering!.output!);
+
         return "no-update";
       }
       const renderProps: MonsterRenderProps = {
@@ -72,7 +115,6 @@ export const monsterAppearance: ItemAppearance<
         busyLickingDoughnutsOffFace,
       };
 
-      // rendering is directional (xy4)
       switch (config.which) {
         case "skiHead":
           // directional, style, no anim
@@ -161,6 +203,8 @@ export const monsterAppearance: ItemAppearance<
         activated !== currentlyRenderedProps.activated;
 
       if (!render) {
+        maybeAddBob(item, room, currentRendering!.output!);
+
         return "no-update";
       }
 
@@ -192,7 +236,10 @@ export const monsterAppearance: ItemAppearance<
           // not directional, not animated
           return {
             filter,
-            output: createSprite({ textureId: config.which, filter }),
+            output: createSprite({
+              animationId: "headlessBase.scan",
+              filter,
+            }),
             renderProps,
           };
 

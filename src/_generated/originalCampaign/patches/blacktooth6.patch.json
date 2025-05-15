@@ -4,65 +4,25 @@
     "path": "/items/switch@6,0,1/config/modifies/0",
     "value": {
       "expectType": "block",
-      "key": "disappear",
-      "left": "onStand",
-      "right": null,
-      "target": "block@0,7,0"
+      "newState": { "disappear": { "left": "onStand", "right": null } },
+      "targets": ["block@0,7,0", "block@3,7,0"]
     }
   },
   {
     "op": "add",
     "path": "/items/switch@6,0,1/config/modifies/1",
     "value": {
-      "expectType": "block",
-      "key": "disappear",
-      "left": "onStand",
-      "right": null,
-      "target": "block@3,7,0"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/2",
-    "value": {
       "expectType": "monster",
-      "key": "activated",
-      "left": true,
-      "right": false,
-      "target": "monster@3,0,1"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/3",
-    "value": {
-      "expectType": "monster",
-      "key": "activated",
-      "left": true,
-      "right": false,
-      "target": "extraMonster"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/4",
-    "value": {
-      "expectType": "monster",
-      "key": "activated",
-      "left": true,
-      "right": false,
-      "target": "extraMonster2"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/5",
-    "value": {
-      "expectType": "monster",
-      "key": "activated",
-      "left": true,
-      "right": false,
-      "target": "extraMonster3"
+      "newState": {
+        "activated": { "left": true, "right": false },
+        "everActivated": { "left": true }
+      },
+      "targets": [
+        "monster@3,0,1",
+        "extraMonster",
+        "extraMonster2",
+        "extraMonster3"
+      ]
     }
   },
   {

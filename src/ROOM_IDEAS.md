@@ -37,3 +37,5 @@ teleport into the the other character as a way to lift them up maybe?
 
 * "the drop" = make heels able to drop items while in the air. A room where hoh has to drop an item on a switch while jumping across a gap. Switch surrounded by
 spikes etc
+
+* have to wake up the cybermen to move them out of the way, to use their toasters as a platform somehow (maybe putting a block on it or rolling a ball over it)
