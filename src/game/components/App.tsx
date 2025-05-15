@@ -1,4 +1,4 @@
-import { Route } from "wouter";
+import { Route, Switch } from "wouter";
 
 import { SpritePage } from "../../pages/SpritePage.tsx";
 import { Provider } from "react-redux";
@@ -22,19 +22,21 @@ const AppInner = () => {
   return (
     // css variables needs the store so has to be in AppInner, not App
     <CssVariables>
-      <Route path="/">
-        <InputStateProvider>
-          <LoadingProvider>
-            <GamePage />
-          </LoadingProvider>
-        </InputStateProvider>
-      </Route>
-      <Route path="/sprites">
-        <SpritePage />
-      </Route>
-      <Route>
-        <NotFound404PageLazy />
-      </Route>
+      <Switch>
+        <Route path="/">
+          <InputStateProvider>
+            <LoadingProvider>
+              <GamePage />
+            </LoadingProvider>
+          </InputStateProvider>
+        </Route>
+        <Route path="/sprites">
+          <SpritePage />
+        </Route>
+        <Route>
+          <NotFound404PageLazy />
+        </Route>
+      </Switch>
     </CssVariables>
   );
 };
