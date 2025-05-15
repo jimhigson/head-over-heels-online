@@ -2,9 +2,6 @@ import { Container } from "pixi.js";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { createItemRenderer } from "./item/itemRender/createItemRenderer";
 import type { GraphEdges } from "./sortZ/toposort/toposort";
-import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
-import { positionRoom, showRoomScrollBounds } from "./positionRoom";
-import type { Renderer } from "./Renderer";
 import type { ItemTickContext } from "./ItemRenderContexts";
 import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
 import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
@@ -18,14 +15,10 @@ import type { ItemSoundAndGraphicsRenderer } from "./item/itemRender/ItemSoundAn
 import { audioCtx } from "../../sound/audioCtx";
 import { dimLut, noFilters } from "./filters/standardFilters";
 import type { SetRequired } from "type-fest";
+import type { RoomRendererType } from "./RoomRendererType";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
-  implements
-    Renderer<
-      RoomRenderContext<RoomId, RoomItemId>,
-      RoomTickContext<RoomId, RoomItemId>,
-      SoundAndGraphicsOutput
-    >
+  implements RoomRendererType<RoomId, RoomItemId>
 {
   /**
    * renders all items *except* the floor edge, since the floor edge is the only
@@ -48,13 +41,12 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     RoomItemId,
     ItemSoundAndGraphicsRenderer<ItemInPlayType>
   > = new Map();
-  #roomScroller: ReturnType<typeof positionRoom>;
 
   constructor(
     public readonly renderContext: RoomRenderContext<RoomId, RoomItemId>,
   ) {
     const {
-      general: { displaySettings, upscale, colourised, soundSettings },
+      general: { colourised, soundSettings },
     } = renderContext;
 
     this.initFilters(colourised, renderContext.room.color);
@@ -71,24 +63,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         label: `RoomRenderer(${renderContext.room.id})`,
       }),
     };
-
-    const showBoundingBoxes =
-      displaySettings?.showBoundingBoxes ??
-      defaultUserSettings.displaySettings.showBoundingBoxes;
-
-    if (showBoundingBoxes !== "none") {
-      // these aren't really bounding boxes, but it is useful to be abl to turn them on and I don't want to add
-      // any more switches:
-      this.output.graphics.addChild(
-        showRoomScrollBounds(renderContext.room.roomJson),
-      );
-    }
-
-    this.#roomScroller = positionRoom(
-      renderContext.room,
-      this.output.graphics,
-      upscale.gameEngineScreenSize,
-    );
   }
 
   /**
@@ -217,12 +191,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           movedItems: new Set(iterateRoomItems(this.renderContext.room.items)),
         }
       );
-
-    this.#roomScroller(
-      selectCurrentPlayableItem(this.renderContext.general.gameState),
-      givenTickContext.deltaMS,
-      !this.#everRendered,
-    );
 
     this.#tickItems(tickContext);
 

@@ -23,6 +23,9 @@ import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCu
 import { progressWithSubTicks } from "./progressWithSubTicks";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import type { RoomRenderContext } from "../render/RoomRenderContexts";
+import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
+import type { RoomRendererType } from "../render/RoomRendererType";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -56,7 +59,7 @@ export class MainLoop<RoomId extends string> {
    * room renderer can only be undefined if there is no current room - both
    * players have lost all lives
    */
-  #roomRenderer: RoomRenderer<RoomId, string> | undefined;
+  #roomRenderer: RoomRendererType<RoomId, string> | undefined;
   #worldGraphics: Container = new Container({
     label: "MainLoop/world",
   });
@@ -194,7 +197,7 @@ export class MainLoop<RoomId extends string> {
       this.#roomRenderer?.destroy();
 
       if (tickEndRoom) {
-        this.#roomRenderer = new RoomRenderer({
+        const roomRenderContext: RoomRenderContext<RoomId, string> = {
           general: {
             gameState: this.gameState,
             paused: isPaused,
@@ -205,7 +208,11 @@ export class MainLoop<RoomId extends string> {
             upscale: tickUpscale,
           },
           room: tickEndRoom,
-        });
+        };
+        this.#roomRenderer = new RoomScrollRenderer(
+          roomRenderContext,
+          new RoomRenderer(roomRenderContext),
+        );
         this.#worldGraphics.addChild(this.#roomRenderer.output.graphics);
         this.#roomRenderer.output.sound?.connect(this.#worldSound);
       } else {
