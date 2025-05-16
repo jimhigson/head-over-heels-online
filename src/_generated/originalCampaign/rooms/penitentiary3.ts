@@ -53,17 +53,16 @@ export const room = inferRoomJson({
         modifies: [
           {
             expectType: "movingPlatform",
-            key: "activated",
-            left: true,
-            right: false,
-            target: "movingPlatform@0,1,0",
+            newState: {
+              activated: { left: true, right: false },
+              everActivated: { left: true },
+            },
+            targets: ["movingPlatform@0,1,0"],
           },
           {
             expectType: "switch",
-            key: "setting",
-            left: "left",
-            right: "right",
-            target: "switch@7,7,0",
+            newState: { setting: { left: "left", right: "right" } },
+            targets: ["switch@7,7,0"],
           },
         ],
         type: "in-room",
@@ -77,17 +76,16 @@ export const room = inferRoomJson({
         modifies: [
           {
             expectType: "movingPlatform",
-            key: "activated",
-            left: true,
-            right: false,
-            target: "movingPlatform@0,1,0",
+            newState: {
+              activated: { left: true, right: false },
+              everActivated: { left: true },
+            },
+            targets: ["movingPlatform@0,1,0"],
           },
           {
             expectType: "switch",
-            key: "setting",
-            left: "left",
-            right: "right",
-            target: "switch@0,0,0",
+            newState: { setting: { left: "left", right: "right" } },
+            targets: ["switch@0,0,0"],
           },
         ],
         type: "in-room",

@@ -95,7 +95,13 @@ export const isPushable = <
     // can't push a player while they're autowalking - lets players walk into a room while invincible if
     // an enemy is near the door.
     !(!forceful && isPlayableItem(pushedItem) && pushedItem.state.autoWalk) &&
-    !(isLift(pusher) && isHeavyItem(pushedItem))
+    !(isLift(pusher) && isHeavyItem(pushedItem)) &&
+    // can't push cybermen while they're charging:
+    !(
+      isMonster(pushedItem) &&
+      pushedItem.config.which === "cyberman" &&
+      pushedItem.state.everActivated === false
+    )
   );
 };
 

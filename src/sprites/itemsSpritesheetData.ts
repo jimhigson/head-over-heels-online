@@ -34,13 +34,6 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  homingBot: {
-    frame: {
-      ...smallItemGridLocation({ x: 5, y: 0 }),
-      ...smallItemTextureSize,
-    },
-  },
-
   ball: {
     frame: {
       ...smallItemGridLocation({ x: 0, y: 1 }),
@@ -374,12 +367,6 @@ const frames = {
     },
   },
 
-  ...seriesOfNumberedTextures(
-    "lift",
-    4,
-    smallItemGridLocation({ x: 10, y: 8 }),
-    smallItemTextureSize,
-  ),
   "lift.static": {
     frame: {
       ...smallItemGridLocation({ x: 10, y: 7 }),
@@ -399,21 +386,46 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  ...seriesOfNumberedTextures(
+    "lift",
+    4,
+    smallItemGridLocation({ x: 10, y: 8 }),
+    smallItemTextureSize,
+  ),
+  headlessBase: {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 8 }),
+      ...smallItemTextureSize,
+    },
+  },
+  ...seriesOfNumberedTextures(
+    "headlessBase",
+    4,
+    smallItemGridLocation({ x: 10, y: 9 }),
+    smallItemTextureSize,
+  ),
+
+  "headlessBase.all": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
 
   ...fourDirections(
     "skiHead.greenAndPink",
-    { x: 251, y: 227 },
+    { x: 251, y: 252 },
     { w: 24, h: 32 },
   ),
   ...fourDirections(
     "skiHead.starsAndStripes",
-    { x: 301, y: 227 },
+    { x: 301, y: 252 },
     { w: 24, h: 32 },
   ),
   "shadowMask.skiHead.away": {
     frame: {
       x: 351,
-      y: 227,
+      y: 252,
       w: 24,
       h: 32,
     },
@@ -421,7 +433,7 @@ const frames = {
   "shadowMask.skiHead.right": {
     frame: {
       x: 351,
-      y: 260,
+      y: 285,
       w: 24,
       h: 32,
     },
@@ -501,52 +513,64 @@ const frames = {
     },
   },
 
-  volcano: {
+  "volcano.1": {
     frame: {
       ...largeItemGridLocation({ x: 2, y: 1 }),
       ...largeItemTextureSize,
     },
   },
-  "shadowMask.volcano": {
+  "volcano.2": {
     frame: {
       ...largeItemGridLocation({ x: 3, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.volcano": {
+    frame: {
+      ...largeItemGridLocation({ x: 4, y: 1 }),
       ...largeItemTextureSize,
     },
   },
 
   hushPuppy: {
     frame: {
-      ...largeItemGridLocation({ x: 4, y: 1 }),
+      ...largeItemGridLocation({ x: 5, y: 1 }),
       ...largeItemTextureSize,
     },
   },
   "shadowMask.hushPuppy": {
     frame: {
-      ...largeItemGridLocation({ x: 5, y: 1 }),
-      ...largeItemTextureSize,
-    },
-  },
-  toaster: {
-    frame: {
       ...largeItemGridLocation({ x: 6, y: 1 }),
       ...largeItemTextureSize,
     },
   },
-  sandwich: {
+  "toaster.on": {
     frame: {
       ...largeItemGridLocation({ x: 7, y: 1 }),
       ...largeItemTextureSize,
     },
   },
-  spikes: {
+  "toaster.off": {
     frame: {
       ...largeItemGridLocation({ x: 8, y: 1 }),
       ...largeItemTextureSize,
     },
   },
-  "shadowMask.spikes": {
+  sandwich: {
     frame: {
       ...largeItemGridLocation({ x: 9, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  spikes: {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.spikes": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y: 1 }),
       ...largeItemTextureSize,
     },
   },
@@ -676,6 +700,7 @@ export const itemsSpritesheetData = {
       seriesOfAnimationFrameTextureIds("conveyor.y", 7),
       0.5,
     ),
+    volcano: withSpeed(seriesOfAnimationFrameTextureIds("volcano", 2), 3 / 16),
     "spring.bounce": withSpeed(
       [
         "spring.released",
@@ -684,6 +709,31 @@ export const itemsSpritesheetData = {
         "spring.compressed",
         "spring.released",
       ] as const,
+      0.5,
+    ),
+    "headlessBase.scan": withSpeed(
+      [
+        "headlessBase.1",
+        "headlessBase",
+        "headlessBase.2",
+        "headlessBase",
+        "headlessBase.3",
+        "headlessBase",
+        "headlessBase.4",
+        "headlessBase",
+        "headlessBase",
+        "headlessBase",
+        "headlessBase",
+        "headlessBase",
+        "headlessBase",
+        "headlessBase",
+        "headlessBase",
+        "headlessBase",
+      ] as const,
+      0.25,
+    ),
+    "headlessBase.flash": withSpeed(
+      ["headlessBase.all", "headlessBase"] as const,
       0.5,
     ),
     // never actually used in the game(!) - for the manual only

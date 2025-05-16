@@ -74,6 +74,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     ...(jsonItem.type === "monster" ?
       {
         activated: jsonItem.config.activated === "on",
+        everActivated: jsonItem.config.activated === "on",
         timeOfLastDirectionChange: Number.NEGATIVE_INFINITY,
         ...((
           jsonItem.config.which === "skiHead" ||
@@ -93,6 +94,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     ...(jsonItem.type === "movingPlatform" ?
       {
         activated: jsonItem.config.activated === "on",
+        everActivated: jsonItem.config.activated === "on",
         facing: unitVectors[jsonItem.config.startDirection],
       }
     : {}),

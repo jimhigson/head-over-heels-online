@@ -1522,6 +1522,67 @@ describe("pushing", () => {
         (blockSizePx.w - smallItemAabb.x),
     );
   });
+
+  test("can not push a charging cyberman", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        toaster: {
+          type: "deadlyBlock",
+          position: { x: 2, y: 0, z: 0 },
+          config: {
+            style: "toaster",
+          },
+        },
+        cyberman: {
+          type: "monster",
+          position: { x: 2, y: 0, z: 0 },
+          config: {
+            which: "cyberman",
+            activated: "off",
+            movement: "towards-on-shortest-axis-xy4",
+            startDirection: "right",
+          },
+        },
+        block: {
+          type: "block",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            style: "artificial",
+            times: { x: 2 },
+          },
+        },
+        // a shield so it can be pushed against without losing a life:
+        shield: {
+          type: "pickup",
+          position: { x: 1, y: 0, z: 1 },
+          config: {
+            gives: "shield",
+          },
+        },
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 1 },
+          config: {
+            which: "heels",
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "left";
+      },
+      until: 2_000,
+    });
+
+    expect(itemState(gameState, "cyberman")?.position.x).toBe(
+      // the edge of the block we are pushing into:
+      blockSizePx.w * 2 +
+        // a bit extra because the portable block does not fill up a full tile:
+        (blockSizePx.w - smallItemAabb.x) / 2,
+    );
+  });
 });
 
 describe("jumping", () => {

@@ -106,7 +106,6 @@ const playableCreateSpriteOptions = ({
         gravityZ < jumpSpriteGravityZThreshold ?
           `${name}.walking.${facingXy8}.2`
         : `${name}.walking.${facingXy8}.1`,
-      paused,
     };
   }
 

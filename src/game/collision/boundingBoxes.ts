@@ -83,9 +83,15 @@ export const boundingBoxForItem = (
           return { aabb: doubleHeightCharacter };
         case "helicopterBug":
         case "dalek":
+        case "emperor":
+        case "homingBot":
+        case "elephantHead":
           return { aabb: smallItemAabb };
-        default:
+        case "turtle":
           return { aabb: largeItemAabb };
+        default:
+          item.config satisfies never;
+          throw new Error(`unknown monster type`);
       }
 
     case "deadlyBlock":

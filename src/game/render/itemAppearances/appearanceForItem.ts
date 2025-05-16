@@ -26,17 +26,7 @@ import { wallAppearance } from "./wallAppearance";
 import { switchAppearance } from "./switchAppearance";
 import { blockAppearance } from "./blockAppearance";
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-
-const singleRenderWithStyleAsTexture = () =>
-  itemAppearanceRenderOnce<"deadlyBlock" | "slidingBlock">(
-    ({
-      renderContext: {
-        item: {
-          config: { style },
-        },
-      },
-    }) => createSprite(style === "book" ? "book.y" : style),
-  );
+import { toasterAppearance } from "./toasterAppearance";
 
 const itemAppearancesMap: {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;
@@ -71,23 +61,39 @@ const itemAppearancesMap: {
   deadlyBlock: itemAppearanceRenderOnce(
     ({
       renderContext: {
-        item: {
-          config: { style, times },
-        },
+        item: { config },
         room,
       },
-    }) =>
-      createSprite({
-        textureId: style,
-        filter: style === "volcano" ? mainPaletteSwapFilter(room) : undefined,
-        times,
-      }),
+    }) => {
+      switch (config.style) {
+        case "volcano":
+          return createSprite({
+            animationId: "volcano",
+            filter: mainPaletteSwapFilter(room),
+            times: config.times,
+            randomiseStartFrame: true,
+          });
+        case "toaster":
+          throw new Error("use the special toaster appearance instead");
+        default:
+          config.style satisfies never;
+          throw new Error("unknown deadly block style");
+      }
+    },
   ),
   spikes: itemStaticAppearance("spikes"),
 
   slidingDeadly: spikyBallAppearance,
 
-  slidingBlock: singleRenderWithStyleAsTexture(),
+  slidingBlock: itemAppearanceRenderOnce(
+    ({
+      renderContext: {
+        item: {
+          config: { style },
+        },
+      },
+    }) => createSprite(style === "book" ? "book.y" : style),
+  ),
 
   block: blockAppearance,
 
@@ -269,6 +275,10 @@ export const appearanceForItem = <T extends ItemInPlayType>(
     if (direction === "right" || direction === "towards") {
       return undefined;
     }
+  }
+
+  if (item.type === "deadlyBlock" && item.config.style === "toaster") {
+    return toasterAppearance as ItemAppearanceOutsideView<T>;
   }
 
   return itemAppearancesMap[item.type as T];

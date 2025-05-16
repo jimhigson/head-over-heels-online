@@ -41,7 +41,7 @@ export const renderMultipliedXy = (
   createSpriteOptions: CreateSpriteOptions,
   timesXyz: Partial<Xyz> | undefined,
 ): Sprite => {
-  const timesXy: Xy | undefined = timesXyz && {
+  const timesXy: Partial<Xy> | undefined = timesXyz && {
     x: timesXyz.x ?? 1,
     y: timesXyz.y ?? 1,
   };

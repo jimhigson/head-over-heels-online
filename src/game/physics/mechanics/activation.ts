@@ -17,7 +17,7 @@ type ItemWithActivation<RoomId extends string, RoomItemId extends string> =
 
 const activateResult = Object.freeze({
   movementType: "steady",
-  stateDelta: { activated: true },
+  stateDelta: { activated: true, everActivated: true },
 } as const satisfies MechanicResult<
   "monster",
   string,
