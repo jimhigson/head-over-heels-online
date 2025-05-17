@@ -26,6 +26,7 @@ export const spritesheetData = {
   animations: {
     ...playableSpritesheetData.animations,
     ...itemsSpritesheetData.animations,
+    ...scenerySpritesheetData.animations,
   },
   meta: { scale: 1 },
 } as const satisfies SpritesheetData satisfies AnimationsOfFrames<

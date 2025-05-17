@@ -6,10 +6,11 @@ import {
   directionAxis,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { projectBlockXyzToScreenXy } from "../projectToScreen";
 import { wallTextureId } from "../wallTextureId";
 import { itemAppearanceRenderOnce } from "./ItemAppearance";
+import { isAnimationId } from "../../../sprites/assertIsTextureId";
+import { mainPaletteSwapFilter } from "../filters/standardFilters";
 
 export const wallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
@@ -32,7 +33,7 @@ export const wallAppearance = itemAppearanceRenderOnce<"wall">(
 
     const container = new Container({ label: "wallTiles" });
     for (let i = 0; i < tiles.length; i++) {
-      const tileSprite = createSprite({
+      let tileSprite: Container = createSprite({
         textureId: wallTextureId(
           room.planet,
           tiles[i],
@@ -52,17 +53,37 @@ export const wallAppearance = itemAppearanceRenderOnce<"wall">(
               y: wallTileSize.h + 1,
             }
           : { x: 0, y: wallTileSize.h + 1 },
-        filter: mainPaletteSwapFilter(room),
       });
 
       const tileRenderPosition: Xy = projectBlockXyzToScreenXy({
         [alongAxis]: i,
       });
 
+      if (room.planet === "moonbase") {
+        const animationId = `moonbase.wall.screen.${tiles[i]}.away`;
+        console.log(animationId, isAnimationId(animationId));
+        // only moonbase has animated walls
+        if (isAnimationId(animationId)) {
+          tileSprite = new Container({
+            children: [tileSprite],
+          });
+          tileSprite.addChild(
+            createSprite({
+              animationId,
+              randomiseStartFrame: true,
+              flipX: direction === "left",
+              x: direction === "away" ? -8 : 8,
+              y: -23,
+            }),
+          );
+        }
+      }
+
       tileSprite.x += tileRenderPosition.x;
       tileSprite.y += tileRenderPosition.y;
 
       container.addChild(tileSprite);
+      container.filters = mainPaletteSwapFilter(room);
     }
 
     return container;

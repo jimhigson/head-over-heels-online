@@ -3,6 +3,8 @@ import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import type { SceneryName, Wall } from "./planets";
 import { scenery } from "./planets";
 import { wallTileSize, floorTileSize } from "./textureSizes";
+import { seriesOfNumberedTextures } from "./spriteGenerators";
+import { withSpeed } from "./withSpeed";
 
 export type WallTextureId<
   PS extends SceneryName,
@@ -190,11 +192,48 @@ const frames = {
       pivot: { x: 8, y: 20 },
     },
   },
+  ...seriesOfNumberedTextures(
+    "moonbase.wall.screen.window2.away",
+    2,
+    {
+      x: 550,
+      y: 188,
+    },
+    { w: 10, h: 7 },
+  ),
+  ...seriesOfNumberedTextures(
+    "moonbase.wall.screen.window3.away",
+    4,
+    {
+      x: 534,
+      y: 180,
+    },
+    { w: 10, h: 7 },
+  ),
 } as const;
 
 export const scenerySpritesheetData = {
   frames,
-  animations: {},
+  animations: {
+    "moonbase.wall.screen.window2.away": withSpeed(
+      [
+        "moonbase.wall.screen.window2.away.1",
+        "moonbase.wall.screen.window2.away.1",
+        "moonbase.wall.screen.window2.away.2",
+      ] as const,
+      1 / 16,
+    ),
+    "moonbase.wall.screen.window3.away": withSpeed(
+      [
+        "moonbase.wall.screen.window3.away.1",
+        "moonbase.wall.screen.window3.away.2",
+        "moonbase.wall.screen.window3.away.3",
+        "moonbase.wall.screen.window3.away.4",
+        "moonbase.wall.screen.window3.away.4",
+      ] as const,
+      1 / 16,
+    ),
+  },
 } as const satisfies Pick<
   SpritesheetData,
   "frames" | "animations"
