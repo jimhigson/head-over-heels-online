@@ -11,29 +11,6 @@ import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion
 import { directionalShadowMaskAppearance } from "./directionalShadowMaskAppearance";
 import type { MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
 
-/*
-  THIS CODE TO RENDER MULTIPED ITEMS's SHADOWS TO A SPRITE
-
-    const { pixiRenderer } = this.renderContext;
-    // this times should be in the item's appearance renderer:
-    const { times } = this.renderContext.item.config as ConsolidatableConfig;
-
-    const shadowMaskSprite: Sprite = renderMultipliedXy(
-      pixiRenderer,
-      spriteOptions,
-      times,
-    );
-
-    // TODO: this now needs to come from the shadow mask appearance
-    // if (item.shadowMask.relativeTo === "top") {
-    //   shadowMaskSprite.y -= item.aabb.z;
-    // }
-    if (times) {
-      // move the shadow mast up if the item is multiplied in z:
-      shadowMaskSprite.y -= ((times.z ?? 1) - 1) * blockSizePx.h;
-    }
-*/
-
 export type ItemShadowAppearanceOutsideView<T extends ItemInPlayType> =
   ItemAppearance<
     T,
@@ -88,7 +65,7 @@ const itemShadowMaskAppearances: {
     style === "book" ? "shadowMask.fullBlock" : "shadowMask.smallRound",
   ),
   deadlyBlock: itemAppearanceShadowMaskFromConfig(({ style }) =>
-    style === "volcano" ? "shadowMask.volcano" : "shadowMask.fullBlock",
+    style === "volcano" ? "shadowMask.volcano" : "shadowMask.toaster",
   ),
   spikes: itemStaticSpriteAppearance("shadowMask.spikes"),
   switch: itemStaticSpriteAppearance("shadowMask.switch"),

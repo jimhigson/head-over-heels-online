@@ -53,13 +53,13 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     public readonly renderContext: ItemRenderContext<T>,
     appearance: ItemShadowAppearanceOutsideView<T> | "no-mask",
   ) {
+    //if (!this.#showShadowMasks) {
     // due to this issue:
     // https://github.com/pixijs/pixijs/issues/4334
     // using alpha fitler (not .alpha) to set alpha here:
     // https://pixijs.download/dev/docs/filters.AlphaFilter.html
-    if (!this.#showShadowMasks) {
-      this.#container.filters = halfOpacity;
-    }
+    this.#container.filters = halfOpacity;
+    //}
 
     // null appearance means no shadow mask is needed
     if (appearance !== "no-mask") {
@@ -102,11 +102,6 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     }
 
     if (previousSprite !== newSprite) {
-      //if (previousSprite) {
-      //  this.#container.removeChild(previousSprite);
-      //}
-      // this is removing the sprite from its parent!
-      //this.#container.addChild(newSprite);
       if (!this.#showShadowMasks) {
         this.#container.mask = newSprite;
       }

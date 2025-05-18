@@ -334,7 +334,7 @@ const frames = {
   },
   "shadowMask.whiteRabbit": {
     frame: {
-      ...smallItemGridLocation({ x: 11, y: 5 }),
+      ...smallItemGridLocation({ x: 12, y: 5 }),
       ...smallItemTextureSize,
     },
   },
@@ -556,21 +556,27 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
-  sandwich: {
+  "shadowMask.toaster": {
     frame: {
       ...largeItemGridLocation({ x: 9, y: 1 }),
       ...largeItemTextureSize,
     },
   },
-  spikes: {
+  sandwich: {
     frame: {
       ...largeItemGridLocation({ x: 10, y: 1 }),
       ...largeItemTextureSize,
     },
   },
-  "shadowMask.spikes": {
+  spikes: {
     frame: {
       ...largeItemGridLocation({ x: 11, y: 1 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.spikes": {
+    frame: {
+      ...largeItemGridLocation({ x: 12, y: 1 }),
       ...largeItemTextureSize,
     },
   },

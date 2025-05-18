@@ -52,7 +52,10 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
         style,
         disappear !== null,
       ),
-      filter: style === "organic" ? mainPaletteSwapFilter(room) : undefined,
+      filter:
+        style === "organic" || style === "book" ?
+          mainPaletteSwapFilter(room)
+        : undefined,
       times,
     }),
     renderProps: { disappear },

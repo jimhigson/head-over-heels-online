@@ -104,6 +104,18 @@ export const room = inferRoomJson({
       position: { x: 2.5, y: 14, z: 3 },
       type: "barrier",
     },
+    extraBarrier7: {
+      config: { axis: "x", times: { x: 3 } },
+      isExtra: true,
+      position: { x: 0, y: 7.5, z: 1 },
+      type: "barrier",
+    },
+    extraBarrier8: {
+      config: { axis: "x", times: { x: 3 } },
+      isExtra: true,
+      position: { x: 5, y: 7.5, z: 1 },
+      type: "barrier",
+    },
     extraStep: {
       config: { style: "organic", times: { x: 2, z: 2 } },
       isExtra: true,
@@ -130,18 +142,6 @@ export const room = inferRoomJson({
       config: { bottom: 0, top: 16 },
       position: { x: 3, y: 3, z: 3 },
       type: "lift",
-    },
-    test: {
-      config: { style: "artificial", times: { x: 2, y: 2 } },
-      isExtra: true,
-      position: { x: 0, y: 14, z: 0 },
-      type: "block",
-    },
-    test2: {
-      config: { style: "artificial", times: { x: 2, y: 2 } },
-      isExtra: true,
-      position: { x: 6, y: 14, z: 0 },
-      type: "block",
     },
     "wall@0,0,0:3gbWw": {
       config: { direction: "right", tiles: [], times: { y: 16 } },

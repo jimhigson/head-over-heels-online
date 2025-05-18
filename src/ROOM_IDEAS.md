@@ -39,3 +39,6 @@ teleport into the the other character as a way to lift them up maybe?
 spikes etc
 
 * have to wake up the cybermen to move them out of the way, to use their toasters as a platform somehow (maybe putting a block on it or rolling a ball over it)
+
+* enemy that copies your movement, or is a mirror-image of them
+ - need both characters to control them at different times
