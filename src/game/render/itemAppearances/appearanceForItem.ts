@@ -91,8 +91,14 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
+        room,
       },
-    }) => createSprite(style === "book" ? "book.y" : style),
+    }) =>
+      createSprite(
+        style === "book" ?
+          { textureId: "book.y", filter: mainPaletteSwapFilter(room) }
+        : style,
+      ),
   ),
 
   block: blockAppearance,

@@ -1,10 +1,48 @@
 [
+  { "op": "replace", "path": "/items/wall@12,4,0/position/y", "value": 2 },
+  { "op": "replace", "path": "/items/wall@12,4,0/config/times/y", "value": 4 },
+  { "op": "add", "path": "/items/wall@12,4,0/config/tiles/2", "value": "book" },
+  { "op": "add", "path": "/items/wall@12,4,0/config/tiles/3", "value": "book" },
+  { "op": "remove", "path": "/items/wall@12,0,0" },
+  { "op": "replace", "path": "/items/door@12,2,3/position/z", "value": 5 },
+  { "op": "replace", "path": "/items/door@12,2,3/position/y", "value": 0 },
+  {
+    "op": "replace",
+    "path": "/items/deadlyBlock@5,5,2/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/deadlyBlock@5,5,2/config/times/x",
+    "value": 4
+  },
+  {
+    "op": "add",
+    "path": "/items/deadlyBlock@4,0,2/config/times",
+    "value": { "y": 2 }
+  },
+  {
+    "op": "add",
+    "path": "/items/deadlyBlock@0,0,2/config/times",
+    "value": { "y": 2 }
+  },
+  { "op": "replace", "path": "/items/conveyor@11,2,0/position/y", "value": 3 },
+  {
+    "op": "replace",
+    "path": "/items/conveyor@11,2,0/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/conveyor@0,0,0/config/times/y",
+    "value": 4
+  },
   {
     "op": "add",
     "path": "/items/canary",
     "value": {
       "config": { "style": "cube" },
-      "position": { "x": 11, "y": 1, "z": 1 },
+      "position": { "x": 11, "y": 2, "z": 1 },
       "type": "portableBlock"
     }
   },
@@ -13,7 +51,7 @@
     "path": "/items/canary2",
     "value": {
       "config": { "style": "cube" },
-      "position": { "x": 11, "y": 1, "z": 2 },
+      "position": { "x": 11, "y": 2, "z": 2 },
       "type": "portableBlock"
     }
   },
@@ -21,16 +59,7 @@
     "op": "add",
     "path": "/items/extraBlock",
     "value": {
-      "config": { "style": "organic" },
-      "position": { "x": 11, "y": 1, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBlock2",
-    "value": {
-      "config": { "style": "organic" },
+      "config": { "style": "organic", "times": { "y": 3 } },
       "position": { "x": 11, "y": 0, "z": 0 },
       "type": "block"
     }

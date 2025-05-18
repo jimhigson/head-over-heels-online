@@ -85,6 +85,26 @@
   },
   {
     "op": "add",
+    "path": "/items/extraBarrier7",
+    "value": {
+      "config": { "axis": "x", "times": { "x": 3 } },
+      "isExtra": true,
+      "position": { "x": 0, "y": 7.5, "z": 1 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier8",
+    "value": {
+      "config": { "axis": "x", "times": { "x": 3 } },
+      "isExtra": true,
+      "position": { "x": 5, "y": 7.5, "z": 1 },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/extraStep",
     "value": {
       "config": { "style": "organic", "times": { "x": 2, "z": 2 } },
@@ -118,26 +138,6 @@
     "value": {
       "config": { "style": "artificial" },
       "position": { "x": 3, "y": 0, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/test",
-    "value": {
-      "config": { "style": "artificial", "times": { "x": 2, "y": 2 } },
-      "isExtra": true,
-      "position": { "x": 0, "y": 14, "z": 0 },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/test2",
-    "value": {
-      "config": { "style": "artificial", "times": { "x": 2, "y": 2 } },
-      "isExtra": true,
-      "position": { "x": 6, "y": 14, "z": 0 },
       "type": "block"
     }
   },

@@ -9,16 +9,16 @@ export const room = inferRoomJson({
   items: {
     canary: {
       config: { style: "cube" },
-      position: { x: 11, y: 1, z: 1 },
+      position: { x: 11, y: 2, z: 1 },
       type: "portableBlock",
     },
     canary2: {
       config: { style: "cube" },
-      position: { x: 11, y: 1, z: 2 },
+      position: { x: 11, y: 2, z: 2 },
       type: "portableBlock",
     },
     "conveyor@0,0,0": {
-      config: { direction: "away", times: { y: 3 } },
+      config: { direction: "away", times: { y: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "conveyor",
     },
@@ -33,8 +33,8 @@ export const room = inferRoomJson({
       type: "conveyor",
     },
     "conveyor@11,2,0": {
-      config: { direction: "away", times: { y: 3 } },
-      position: { x: 11, y: 2, z: 0 },
+      config: { direction: "away", times: { y: 2 } },
+      position: { x: 11, y: 3, z: 0 },
       type: "conveyor",
     },
     "conveyor@2,0,0": {
@@ -73,7 +73,7 @@ export const room = inferRoomJson({
       type: "conveyor",
     },
     "deadlyBlock@0,0,2": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 2 } },
       position: { x: 0, y: 0, z: 2 },
       type: "deadlyBlock",
     },
@@ -83,13 +83,13 @@ export const room = inferRoomJson({
       type: "deadlyBlock",
     },
     "deadlyBlock@4,0,2": {
-      config: { style: "toaster" },
+      config: { style: "toaster", times: { y: 2 } },
       position: { x: 4, y: 0, z: 2 },
       type: "deadlyBlock",
     },
     "deadlyBlock@5,5,2": {
-      config: { style: "toaster", times: { x: 3 } },
-      position: { x: 5, y: 5, z: 2 },
+      config: { style: "toaster", times: { x: 4 } },
+      position: { x: 4, y: 5, z: 2 },
       type: "deadlyBlock",
     },
     "door@0,2,3": {
@@ -99,16 +99,11 @@ export const room = inferRoomJson({
     },
     "door@12,2,3": {
       config: { direction: "left", toRoom: "bookworld1" },
-      position: { x: 12, y: 2, z: 3 },
+      position: { x: 12, y: 0, z: 5 },
       type: "door",
     },
     extraBlock: {
-      config: { style: "organic" },
-      position: { x: 11, y: 1, z: 0 },
-      type: "block",
-    },
-    extraBlock2: {
-      config: { style: "organic" },
+      config: { style: "organic", times: { y: 3 } },
       position: { x: 11, y: 0, z: 0 },
       type: "block",
     },
@@ -149,14 +144,13 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@12,0,0": {
-      config: { direction: "left", tiles: ["book", "book"], times: { y: 2 } },
-      position: { x: 12, y: 0, z: 0 },
-      type: "wall",
-    },
     "wall@12,4,0": {
-      config: { direction: "left", tiles: ["book", "book"], times: { y: 2 } },
-      position: { x: 12, y: 4, z: 0 },
+      config: {
+        direction: "left",
+        tiles: ["book", "book", "book", "book"],
+        times: { y: 4 },
+      },
+      position: { x: 12, y: 2, z: 0 },
       type: "wall",
     },
   },
