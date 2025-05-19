@@ -58,7 +58,6 @@ export const convertWalls = (
       type: "wall",
       config: {
         direction: "towards",
-        tiles: [],
       },
       position: { x, y: 0, z: 0 },
     });
@@ -79,7 +78,6 @@ export const convertWalls = (
       type: "wall",
       config: {
         direction: "right",
-        tiles: [],
       },
       position: { x: 0, y, z: 0 },
     });

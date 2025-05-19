@@ -1,24 +1,72 @@
 [
-  { "op": "replace", "path": "/items/wall@8,5,0/position/y", "value": 7 },
-  { "op": "replace", "path": "/items/wall@8,5,0/config/times/y", "value": 1 },
-  { "op": "remove", "path": "/items/wall@8,5,0/config/tiles/2" },
-  { "op": "remove", "path": "/items/wall@8,5,0/config/tiles/1" },
-  { "op": "replace", "path": "/items/wall@8,0,0/config/times/y", "value": 5 },
-  { "op": "add", "path": "/items/wall@8,0,0/config/tiles/3", "value": "bars" },
-  { "op": "add", "path": "/items/wall@8,0,0/config/tiles/4", "value": "bars" },
-  { "op": "replace", "path": "/items/wall@5,0,0/position/x", "value": 7 },
-  { "op": "replace", "path": "/items/wall@5,0,0/config/times/x", "value": 1 },
   {
     "op": "replace",
-    "path": "/items/wall@0,0,0:Z1XoEJK/config/times/x",
+    "path": "/items/wall@8,5,0/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,5,0/config/times/y",
+    "value": 1
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@8,5,0/config/tiles/2"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@8,5,0/config/tiles/1"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/times/y",
     "value": 5
   },
-  { "op": "replace", "path": "/items/door@8,3,0/position/y", "value": 5 },
-  { "op": "replace", "path": "/items/door@3,0,4/position/x", "value": 5 },
+  {
+    "op": "add",
+    "path": "/items/wall@8,0,0/config/tiles/3",
+    "value": "bars"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,0,0/config/tiles/4",
+    "value": "bars"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,0,0/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,0,0/config/times/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall(towards)@0,0,0/config/times/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@8,3,0/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@3,0,4/position/x",
+    "value": 5
+  },
   {
     "op": "add",
     "path": "/items/door@3,0,4/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   },
-  { "op": "replace", "path": "/floor", "value": "bookworld" }
+  {
+    "op": "replace",
+    "path": "/floor",
+    "value": "bookworld"
+  }
 ]

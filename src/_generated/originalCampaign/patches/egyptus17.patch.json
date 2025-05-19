@@ -1,30 +1,64 @@
 [
-  { "op": "replace", "path": "/items/wall@4,0,0/position/x", "value": 7 },
-  { "op": "replace", "path": "/items/wall@4,0,0/config/times/x", "value": 5 },
   {
     "op": "replace",
-    "path": "/items/wall@0,0,0:Z1XoF0v/config/times/x",
+    "path": "/items/wall@4,0,0/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@4,0,0/config/times/x",
     "value": 5
   },
-  { "op": "replace", "path": "/items/door@2,0,1/position/x", "value": 5 },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/items/wall(towards)@0,0,0/config/times/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@2,0,1/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "cyan"
+  },
   {
     "op": "add",
     "path": "/meta",
     "value": {
       "subRooms": {
         "left": {
-          "gridPosition": { "x": 1, "y": 0 },
+          "gridPosition": {
+            "x": 1,
+            "y": 0
+          },
           "physicalPosition": {
-            "from": { "x": 8, "y": 0 },
-            "to": { "x": 12, "y": 6 }
+            "from": {
+              "x": 8,
+              "y": 0
+            },
+            "to": {
+              "x": 12,
+              "y": 6
+            }
           }
         },
         "right": {
-          "gridPosition": { "x": 0, "y": 0 },
+          "gridPosition": {
+            "x": 0,
+            "y": 0
+          },
           "physicalPosition": {
-            "from": { "x": 0, "y": 0 },
-            "to": { "x": 8, "y": 6 }
+            "from": {
+              "x": 0,
+              "y": 0
+            },
+            "to": {
+              "x": 8,
+              "y": 6
+            }
           }
         }
       }

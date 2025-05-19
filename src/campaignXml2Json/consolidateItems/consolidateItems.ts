@@ -2,6 +2,8 @@ import { canonicalize } from "json-canonicalize";
 import type { Xyz } from "../../utils/vectors/vectors";
 import { omit } from "../../utils/pick";
 import type { JsonItemType, JsonItemUnion } from "../../model/json/JsonItem";
+import type { SceneryName } from "../../sprites/planets";
+import type { WallJsonConfigWithTiles } from "../../model/json/WallJsonConfig";
 
 export const consolidatableJsonItemTypes = [
   "block",
@@ -198,7 +200,21 @@ export const consolidateItems = (
       if (joiner.type !== "wall") {
         throw new Error("only walls can join walls");
       }
-      target.config.tiles.push(...joiner.config.tiles);
+      if (target.config.direction !== joiner.config.direction) {
+        throw new Error("walls must have the same direction to join");
+      }
+      if (
+        target.config.direction === "right" ||
+        target.config.direction === "towards"
+      ) {
+        // these directions do not have the tiles attribute
+        return;
+      }
+      target.config.tiles = [
+        // needs cast here because we know these are right/towards, but ts doesn't
+        ...(target.config as WallJsonConfigWithTiles<SceneryName>).tiles,
+        ...(joiner.config as WallJsonConfigWithTiles<SceneryName>).tiles,
+      ];
     }
   };
 

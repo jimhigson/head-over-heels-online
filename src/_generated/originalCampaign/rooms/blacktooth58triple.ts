@@ -110,13 +110,31 @@ export const room = inferRoomJson({
       position: { x: 4, y: 9, z: 0 },
       type: "spikes",
     },
-    "wall@0,0,0:3gbr1": {
-      config: { direction: "right", tiles: [], times: { y: 14 } },
+    "wall(away)@6,6,0": {
+      config: {
+        direction: "away",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+        times: { x: 8 },
+      },
+      position: { x: 6, y: 6, z: 0 },
+      type: "wall",
+    },
+    "wall(left)@6,6,0": {
+      config: {
+        direction: "left",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+        times: { y: 8 },
+      },
+      position: { x: 6, y: 6, z: 0 },
+      type: "wall",
+    },
+    "wall(right)@0,0,0": {
+      config: { direction: "right", times: { y: 14 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,0,0:Z1XoF0v": {
-      config: { direction: "towards", tiles: [], times: { x: 2 } },
+    "wall(towards)@0,0,0": {
+      config: { direction: "towards", times: { x: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -135,31 +153,13 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@4,0,0": {
-      config: { direction: "towards", tiles: [], times: { x: 10 } },
+      config: { direction: "towards", times: { x: 10 } },
       position: { x: 4, y: 0, z: 0 },
       type: "wall",
     },
     "wall@4,14,0": {
       config: { direction: "away", tiles: ["bars", "bars"], times: { x: 2 } },
       position: { x: 4, y: 14, z: 0 },
-      type: "wall",
-    },
-    "wall@6,6,0:13XOm9": {
-      config: {
-        direction: "away",
-        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-        times: { x: 8 },
-      },
-      position: { x: 6, y: 6, z: 0 },
-      type: "wall",
-    },
-    "wall@6,6,0:2e3jis": {
-      config: {
-        direction: "left",
-        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-        times: { y: 8 },
-      },
-      position: { x: 6, y: 6, z: 0 },
       type: "wall",
     },
   },

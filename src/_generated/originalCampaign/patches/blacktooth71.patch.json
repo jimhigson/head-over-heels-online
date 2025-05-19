@@ -1,19 +1,43 @@
 [
-  { "op": "replace", "path": "/items/wall@5,6,0/position/x", "value": 7 },
-  { "op": "remove", "path": "/items/wall@5,6,0/config/times" },
-  { "op": "remove", "path": "/items/wall@5,6,0/config/tiles/2" },
-  { "op": "remove", "path": "/items/wall@5,6,0/config/tiles/1" },
-  { "op": "replace", "path": "/items/wall@0,6,0/config/times/x", "value": 5 },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,6,0/position/x",
+    "value": 7
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@5,6,0/config/times"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@5,6,0/config/tiles/2"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@5,6,0/config/tiles/1"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,6,0/config/times/x",
+    "value": 5
+  },
   {
     "op": "add",
     "path": "/items/wall@0,6,0/config/tiles/3",
     "value": "shield"
   },
-  { "op": "add", "path": "/items/wall@0,6,0/config/tiles/4", "value": "plain" },
-  { "op": "remove", "path": "/items/wall@0,4,0" },
+  {
+    "op": "add",
+    "path": "/items/wall@0,6,0/config/tiles/4",
+    "value": "plain"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@0,4,0"
+  },
   {
     "op": "replace",
-    "path": "/items/wall@0,0,0:2scjgO/config/times/y",
+    "path": "/items/wall(right)@0,0,0/config/times/y",
     "value": 4
   },
   {
@@ -21,20 +45,42 @@
     "path": "/items/portableBlock@0,5,0/position/y",
     "value": 0
   },
-  { "op": "replace", "path": "/items/door@3,6,0/position/x", "value": 5 },
-  { "op": "replace", "path": "/items/door@0,2,4/position/y", "value": 4 },
+  {
+    "op": "replace",
+    "path": "/items/door@3,6,0/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@0,2,4/position/y",
+    "value": 4
+  },
   {
     "op": "replace",
     "path": "/items/deadlyBlock@2,4,0/position/x",
     "value": 4
   },
-  { "op": "replace", "path": "/items/block@0,2,3/position/y", "value": 4 },
+  {
+    "op": "replace",
+    "path": "/items/block@0,2,3/position/y",
+    "value": 4
+  },
   {
     "op": "add",
     "path": "/items/extraTower",
     "value": {
-      "config": { "style": "tower", "times": { "y": 2, "z": 4 } },
-      "position": { "x": 0, "y": 4, "z": 0 },
+      "config": {
+        "style": "tower",
+        "times": {
+          "y": 2,
+          "z": 4
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 4,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -42,10 +88,21 @@
     "op": "add",
     "path": "/items/scroll",
     "value": {
-      "config": { "gives": "scroll", "page": "theEmperorsGuardian" },
-      "position": { "x": 7, "y": 4, "z": 0 },
+      "config": {
+        "gives": "scroll",
+        "page": "theEmperorsGuardian"
+      },
+      "position": {
+        "x": 7,
+        "y": 4,
+        "z": 0
+      },
       "type": "pickup"
     }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  }
 ]

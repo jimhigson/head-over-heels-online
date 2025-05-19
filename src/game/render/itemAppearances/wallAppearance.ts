@@ -15,24 +15,20 @@ import { mainPaletteSwapFilter } from "../filters/standardFilters";
 export const wallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
-      item: {
-        id,
-        config: { direction, tiles },
-      },
+      item: { id, config },
       room,
     },
   }) => {
-    // TODO: since we no longer have the .renders property on items, we need to return a nothing output if this is invisible
-    // - maybe expand output type to be Container | null to allow explicit non-rendering
-
-    if (direction === "right" || direction === "towards") {
+    if (config.direction === "right" || config.direction === "towards") {
       throw new Error(`this wall should be non-rendering ${id}`);
     }
+
+    const { direction, tiles } = config;
 
     const alongAxis = perpendicularAxisXy(directionAxis(direction));
 
     const container = new Container({ label: "wallTiles" });
-    for (let i = 0; i < tiles.length; i++) {
+    for (let i = 0; i < config.tiles.length; i++) {
       let tileSprite: Container = createSprite({
         textureId: wallTextureId(
           room.planet,

@@ -165,9 +165,6 @@ importers:
       seedrandom:
         specifier: ^3.0.5
         version: 3.0.5
-      shorthash2:
-        specifier: ^1.0.5
-        version: 1.0.5
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.17(ts-node@10.9.2(@swc/core@1.11.9)(@types/node@22.13.10)(typescript@5.8.2))
@@ -3292,9 +3289,6 @@ packages:
   shebang-regex@3.0.0:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
-
-  shorthash2@1.0.5:
-    resolution: {integrity: sha512-OgKQtF1rIj79taV/coJyp0E6zfo6MmGNAsIepwjoWV2IYlpvWzhU2kFe9o8wSzJRysEhvmLlDHVOXe8/pWqK1Q==}
 
   side-channel-list@1.0.0:
     resolution: {integrity: sha512-FCLHtRD/gnpCiCHEiJLOwdmFP+wzCmDEkc9y7NsYxeF4u7Btsn1ZuwgwJGxImImHicJArLP4R0yX4c2KCrMrTA==}
@@ -7137,8 +7131,6 @@ snapshots:
       shebang-regex: 3.0.0
 
   shebang-regex@3.0.0: {}
-
-  shorthash2@1.0.5: {}
 
   side-channel-list@1.0.0:
     dependencies:

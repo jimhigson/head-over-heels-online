@@ -27,18 +27,18 @@ export const room = inferRoomJson({
       position: { x: 3, y: 2, z: 0 },
       type: "slidingBlock",
     },
-    "wall@0,0,0:Z1Ibm7P": {
-      config: { direction: "right", tiles: [] },
+    "wall(right)@0,0,0": {
+      config: { direction: "right" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,0,0:Z1XoEJK": {
-      config: { direction: "towards", tiles: [], times: { x: 3 } },
+    "wall(towards)@0,0,0": {
+      config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     "wall@0,3,0": {
-      config: { direction: "right", tiles: [] },
+      config: { direction: "right" },
       position: { x: 0, y: 3, z: 0 },
       type: "wall",
     },
@@ -61,7 +61,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@5,0,0": {
-      config: { direction: "towards", tiles: [], times: { x: 3 } },
+      config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
