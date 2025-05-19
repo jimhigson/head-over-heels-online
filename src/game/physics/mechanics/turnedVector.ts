@@ -1,12 +1,11 @@
 import type { Xyz } from "../../../utils/vectors/vectors";
-import type { TurnStrategy } from "./movement";
 import { randomFromArray } from "./movement";
 
 export const turnedVector = (
   walkVector: Xyz,
   mtv: Xyz,
   strategy: TurnStrategy,
-) => {
+): Xyz => {
   switch (strategy) {
     case "opposite":
       return {
@@ -20,6 +19,7 @@ export const turnedVector = (
         y: walkVector.x,
         z: 0,
       };
+    case "perpendicular-or-reverse":
     case "perpendicular": {
       const randomSign = randomFromArray([-1, 1]);
       return {
@@ -30,3 +30,8 @@ export const turnedVector = (
     }
   }
 };
+export type TurnStrategy =
+  | "opposite"
+  | "perpendicular"
+  | "clockwise"
+  | "perpendicular-or-reverse";

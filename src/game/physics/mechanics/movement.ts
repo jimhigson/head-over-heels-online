@@ -29,6 +29,7 @@ import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClos
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
 import { objectValues } from "iter-tools";
+import type { TurnStrategy } from "./turnedVector";
 import { turnedVector } from "./turnedVector";
 
 // either how long it takes after touching an item to turn around, or how long has to
@@ -327,8 +328,6 @@ export const keepWalkingInSameDirection = <
     : unitMechanicalResult;
 };
 
-export type TurnStrategy = "opposite" | "perpendicular" | "clockwise";
-
 const handleMonsterTouchingItemByTurning = <
   RoomId extends string,
   RoomItemId extends string,
@@ -340,7 +339,6 @@ const handleMonsterTouchingItemByTurning = <
       aabb: touchedItemAabb,
     },
     deltaMS,
-    room: { roomTime },
   }: ItemTouchEvent<RoomId, RoomItemId, ItemWithMovement<RoomId, RoomItemId>>,
   turnStrategy: TurnStrategy,
 ) => {
@@ -368,12 +366,23 @@ const handleMonsterTouchingItemByTurning = <
   const newWalking = turnedVector(walking, m, turnStrategy);
   itemWithMovement.state.vels.walking = newWalking;
 
-  itemWithMovement.state.facing =
+  const facingMaybeReverse =
+    (
+      turnStrategy === "perpendicular-or-reverse" &&
+      // face backwards about a third of the time:
+      Math.random() > 0.66
+    ) ?
+      -1
+    : 1;
+
+  itemWithMovement.state.facing = scaleXyz(
     xyEqual(newWalking, originXy) ?
       // calc facing vector separately from walk, since walk can be (0,0,0) - usually if the item
       // is falling:
       turnedVector(facing, m, turnStrategy)
-    : unitVector(newWalking);
+    : unitVector(newWalking),
+    facingMaybeReverse,
+  );
 
   itemWithMovement.state.durationOfTouch = 0;
 };
@@ -435,7 +444,8 @@ export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
         directionsXy8,
       );
     }
-    case "patrol-randomly-xy4": {
+    case "patrol-randomly-xy4":
+    case "patrol-randomly-xy4-and-reverse": {
       return randomlyChangeDirection(
         itemWithMovement,
         room,
@@ -497,6 +507,9 @@ export const handleItemWithMovementTouchingItem = <
   switch (itemWithMovement.config.movement) {
     case "patrol-randomly-xy4":
       handleMonsterTouchingItemByTurning(e, "perpendicular");
+      break;
+    case "patrol-randomly-xy4-and-reverse":
+      handleMonsterTouchingItemByTurning(e, "perpendicular-or-reverse");
       break;
     case "back-forth":
     case "patrol-randomly-diagonal":

@@ -13,6 +13,9 @@ export type JsonMovement =
   | "towards-tripped-on-axis-xy4"
   | "patrol-randomly-diagonal"
   | "patrol-randomly-xy4"
+  // same as patrol-randomly-xy4 but sometimes walks backwards - kind of because
+  // it is funny really to see the big head computer robots doing this
+  | "patrol-randomly-xy4-and-reverse"
   | "patrol-randomly-xy8";
 
 export type MovementActivated =
