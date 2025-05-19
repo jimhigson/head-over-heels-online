@@ -1,13 +1,28 @@
 [
-  { "op": "replace", "path": "/items/wall@5,8,0/position/x", "value": 6 },
-  { "op": "replace", "path": "/items/wall@5,8,0/config/times/x", "value": 2 },
-  { "op": "remove", "path": "/items/wall@5,8,0/config/tiles/2" },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,8,0/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,8,0/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@5,8,0/config/tiles/2"
+  },
   {
     "op": "replace",
     "path": "/items/wall@5,8,0/config/tiles/1",
     "value": "window1"
   },
-  { "op": "replace", "path": "/items/wall@0,8,0/config/times/x", "value": 4 },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,8,0/config/times/x",
+    "value": 4
+  },
   {
     "op": "replace",
     "path": "/items/wall@0,8,0/config/tiles/2",
@@ -18,32 +33,91 @@
     "path": "/items/wall@0,8,0/config/tiles/1",
     "value": "window2"
   },
-  { "op": "add", "path": "/items/wall@0,8,0/config/tiles/3", "value": "coil" },
-  { "op": "replace", "path": "/items/wall@0,5,0/position/y", "value": 2 },
-  { "op": "replace", "path": "/items/wall@0,5,0/config/times/y", "value": 6 },
-  { "op": "remove", "path": "/items/wall@0,0,0:2scjwz" },
-  { "op": "replace", "path": "/items/door@3,8,5/position/z", "value": 4 },
-  { "op": "replace", "path": "/items/door@3,8,5/position/x", "value": 4 },
-  { "op": "replace", "path": "/items/door@0,3,5/position/z", "value": 4 },
-  { "op": "replace", "path": "/items/door@0,3,5/position/y", "value": 0 },
-  { "op": "replace", "path": "/items/block@4,7,3/position/z", "value": 0 },
+  {
+    "op": "add",
+    "path": "/items/wall@0,8,0/config/tiles/3",
+    "value": "coil"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,5,0/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,5,0/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall(right)@0,0,0"
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@3,8,5/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@3,8,5/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@0,3,5/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@0,3,5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@4,7,3/position/z",
+    "value": 0
+  },
   {
     "op": "add",
     "path": "/items/block@4,7,3/config/times",
-    "value": { "x": 2, "z": 4 }
+    "value": {
+      "x": 2,
+      "z": 4
+    }
   },
-  { "op": "replace", "path": "/items/block@0,7,3/position/z", "value": 0 },
+  {
+    "op": "replace",
+    "path": "/items/block@0,7,3/position/z",
+    "value": 0
+  },
   {
     "op": "add",
     "path": "/items/block@0,7,3/config/times",
-    "value": { "z": 4 }
+    "value": {
+      "z": 4
+    }
   },
-  { "op": "replace", "path": "/items/block@0,3,3/position/z", "value": 0 },
-  { "op": "replace", "path": "/items/block@0,3,3/position/y", "value": 0 },
+  {
+    "op": "replace",
+    "path": "/items/block@0,3,3/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@0,3,3/position/y",
+    "value": 0
+  },
   {
     "op": "add",
     "path": "/items/block@0,3,3/config/times",
-    "value": { "y": 4, "z": 4 }
+    "value": {
+      "y": 4,
+      "z": 4
+    }
   },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  }
 ]

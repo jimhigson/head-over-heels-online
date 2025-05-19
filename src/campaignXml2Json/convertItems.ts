@@ -121,16 +121,15 @@ const convertItem = async ({
     // and stops us from discriminating unions properly
     return {
       type: "wall",
-      config: {
-        direction:
-          parsedWallName.axis === "x" ?
-            parsedWallName.isInvisible ?
-              "towards"
-            : "away"
-          : parsedWallName.isInvisible ? "right"
-          : "left",
-        tiles: [convertWallName(planetName, xml2JsonItem.kind)],
-      },
+      config:
+        parsedWallName.isInvisible ?
+          {
+            direction: parsedWallName.axis === "x" ? "towards" : "right",
+          }
+        : {
+            direction: parsedWallName.axis === "x" ? "away" : "left",
+            tiles: [convertWallName(planetName, xml2JsonItem.kind)],
+          },
       position,
     };
   }

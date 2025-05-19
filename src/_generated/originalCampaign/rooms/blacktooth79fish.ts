@@ -27,13 +27,13 @@ export const room = inferRoomJson({
       position: { x: 7, y: 0, z: 1 },
       type: "pickup",
     },
-    "wall@0,0,0:2sckOl": {
-      config: { direction: "right", tiles: [], times: { y: 8 } },
+    "wall(right)@0,0,0": {
+      config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,0,0:Z1XoDrY": {
-      config: { direction: "towards", tiles: [], times: { x: 8 } },
+    "wall(towards)@0,0,0": {
+      config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },

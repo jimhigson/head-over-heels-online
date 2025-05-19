@@ -1,5 +1,5 @@
 import type { MarkdownPageName } from "../../manual/pages";
-import type { SceneryName, Wall, PlanetName } from "../../sprites/planets";
+import type { SceneryName, PlanetName } from "../../sprites/planets";
 import type {
   DirectionXy4,
   Xyz,
@@ -23,6 +23,7 @@ import type { SwitchConfig } from "./SwitchConfig";
 import type { ToggleablePaths } from "../../utils/Toggleable";
 import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 import type { FreeItemTypes } from "../../game/physics/itemPredicates";
+import type { WallJsonConfig } from "./WallJsonConfig";
 
 type PickupConfig =
   | {
@@ -79,14 +80,7 @@ export type ItemConfigMap<
     */
     relativePoint: Xyz;
   };
-  wall: {
-    // walls are slightly different from other consolidatable - they can
-    // only repeat in one direction
-    times?: { x: number } | { y: number };
-    tiles: Array<Wall<ScN>>;
-    /** side of the room the wall is on (not the side it is facing) */
-    direction: DirectionXy4;
-  };
+  wall: WallJsonConfig<ScN>;
   teleporter: ConsolidatableConfig & {
     toRoom: RoomId;
     // where in the destination room this teleporter should go - usually

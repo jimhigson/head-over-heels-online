@@ -1,6 +1,14 @@
 [
-  { "op": "replace", "path": "/size/x", "value": 8 },
-  { "op": "replace", "path": "/items/wall@6,0,0/position/x", "value": 8 },
+  {
+    "op": "replace",
+    "path": "/size/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@6,0,0/position/x",
+    "value": 8
+  },
   {
     "op": "replace",
     "path": "/items/wall@6,0,0/config/tiles/4",
@@ -11,31 +19,57 @@
     "path": "/items/wall@6,0,0/config/tiles/1",
     "value": "plain"
   },
-  { "op": "replace", "path": "/items/wall@4,6,0/position/x", "value": 6 },
-  { "op": "replace", "path": "/items/wall@4,6,0/config/times/x", "value": 4 },
+  {
+    "op": "replace",
+    "path": "/items/wall@4,6,0/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@4,6,0/config/times/x",
+    "value": 4
+  },
   {
     "op": "replace",
     "path": "/items/wall@4,6,0/config/tiles/0",
     "value": "plain"
   },
-  { "op": "replace", "path": "/items/wall@0,6,0/config/times/x", "value": 4 },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,6,0/config/times/x",
+    "value": 4
+  },
   {
     "op": "add",
     "path": "/items/wall@0,6,0/config/tiles/2",
     "value": "shield"
   },
-  { "op": "add", "path": "/items/wall@0,6,0/config/tiles/3", "value": "plain" },
+  {
+    "op": "add",
+    "path": "/items/wall@0,6,0/config/tiles/3",
+    "value": "plain"
+  },
   {
     "op": "replace",
-    "path": "/items/wall@0,0,0:Z1XoDXu/config/times/x",
+    "path": "/items/wall(towards)@0,0,0/config/times/x",
     "value": 8
   },
-  { "op": "replace", "path": "/items/door@2,6,0/position/z", "value": 2 },
-  { "op": "replace", "path": "/items/door@2,6,0/position/x", "value": 4 },
+  {
+    "op": "replace",
+    "path": "/items/door@2,6,0/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@2,6,0/position/x",
+    "value": 4
+  },
   {
     "op": "add",
     "path": "/items/door@0,2,0/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   },
   {
     "op": "add",
@@ -43,7 +77,11 @@
     "value": {
       "config": {},
       "isExtra": true,
-      "position": { "x": 4, "y": 0, "z": 0 },
+      "position": {
+        "x": 4,
+        "y": 0,
+        "z": 0
+      },
       "type": "ball"
     }
   },
@@ -53,7 +91,11 @@
     "value": {
       "config": {},
       "isExtra": true,
-      "position": { "x": 7, "y": 2, "z": 0 },
+      "position": {
+        "x": 7,
+        "y": 2,
+        "z": 0
+      },
       "type": "ball"
     }
   },
@@ -69,7 +111,11 @@
         "which": "skiHead"
       },
       "isExtra": true,
-      "position": { "x": 2, "y": 0, "z": 0 },
+      "position": {
+        "x": 2,
+        "y": 0,
+        "z": 0
+      },
       "type": "monster"
     }
   },
@@ -85,7 +131,11 @@
         "which": "skiHead"
       },
       "isExtra": true,
-      "position": { "x": 7, "y": 5, "z": 0 },
+      "position": {
+        "x": 7,
+        "y": 5,
+        "z": 0
+      },
       "type": "monster"
     }
   },
@@ -101,7 +151,11 @@
         "which": "skiHead"
       },
       "isExtra": true,
-      "position": { "x": 7, "y": 0, "z": 0 },
+      "position": {
+        "x": 7,
+        "y": 0,
+        "z": 0
+      },
       "type": "monster"
     }
   },
@@ -117,7 +171,11 @@
         "which": "skiHead"
       },
       "isExtra": true,
-      "position": { "x": 7, "y": 1, "z": 0 },
+      "position": {
+        "x": 7,
+        "y": 1,
+        "z": 0
+      },
       "type": "monster"
     }
   },
@@ -131,8 +189,13 @@
           {
             "expectType": "monster",
             "newState": {
-              "activated": { "left": true, "right": false },
-              "everActivated": { "left": true }
+              "activated": {
+                "left": true,
+                "right": false
+              },
+              "everActivated": {
+                "left": true
+              }
             },
             "targets": [
               "extraMonster",
@@ -144,7 +207,11 @@
         ],
         "type": "in-room"
       },
-      "position": { "x": 4, "y": 3, "z": 2 },
+      "position": {
+        "x": 4,
+        "y": 3,
+        "z": 2
+      },
       "type": "switch"
     }
   },
@@ -152,9 +219,19 @@
     "op": "add",
     "path": "/items/raisedPlatform",
     "value": {
-      "config": { "style": "artificial", "times": { "x": 2, "y": 4 } },
+      "config": {
+        "style": "artificial",
+        "times": {
+          "x": 2,
+          "y": 4
+        }
+      },
       "isExtra": true,
-      "position": { "x": 4, "y": 2, "z": 1 },
+      "position": {
+        "x": 4,
+        "y": 2,
+        "z": 1
+      },
       "type": "block"
     }
   },
@@ -162,9 +239,18 @@
     "op": "add",
     "path": "/items/raisedPlatformSupport",
     "value": {
-      "config": { "style": "tower", "times": { "x": 2 } },
+      "config": {
+        "style": "tower",
+        "times": {
+          "x": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 4, "y": 2, "z": 0 },
+      "position": {
+        "x": 4,
+        "y": 2,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -172,9 +258,18 @@
     "op": "add",
     "path": "/items/raisedPlatformSupport2",
     "value": {
-      "config": { "style": "tower", "times": { "x": 2 } },
+      "config": {
+        "style": "tower",
+        "times": {
+          "x": 2
+        }
+      },
       "isExtra": true,
-      "position": { "x": 4, "y": 5, "z": 0 },
+      "position": {
+        "x": 4,
+        "y": 5,
+        "z": 0
+      },
       "type": "block"
     }
   }

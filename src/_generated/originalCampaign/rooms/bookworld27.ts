@@ -32,7 +32,7 @@ export const room = inferRoomJson({
       type: "door",
     },
     "wall@0,0,0": {
-      config: { direction: "right", tiles: [], times: { y: 8 } },
+      config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },

@@ -1,36 +1,90 @@
 [
-  { "op": "remove", "path": "/items/wall@6,4,0" },
-  { "op": "replace", "path": "/items/wall@6,0,0/config/times/y", "value": 4 },
-  { "op": "add", "path": "/items/wall@6,0,0/config/tiles/2", "value": "book" },
-  { "op": "add", "path": "/items/wall@6,0,0/config/tiles/3", "value": "book" },
-  { "op": "remove", "path": "/items/wall@4,0,0" },
+  {
+    "op": "remove",
+    "path": "/items/wall@6,4,0"
+  },
   {
     "op": "replace",
-    "path": "/items/wall@0,0,0:Z1XoF0v/config/times/x",
+    "path": "/items/wall@6,0,0/config/times/y",
     "value": 4
   },
-  { "op": "replace", "path": "/items/hushPuppy@3,0,2/position/z", "value": 0 },
-  { "op": "replace", "path": "/items/hushPuppy@3,0,2/position/x", "value": 2 },
+  {
+    "op": "add",
+    "path": "/items/wall@6,0,0/config/tiles/2",
+    "value": "book"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@6,0,0/config/tiles/3",
+    "value": "book"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@4,0,0"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall(towards)@0,0,0/config/times/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@3,0,2/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@3,0,2/position/x",
+    "value": 2
+  },
   {
     "op": "add",
     "path": "/items/hushPuppy@3,0,2/config/times",
-    "value": { "z": 3 }
+    "value": {
+      "z": 3
+    }
   },
-  { "op": "replace", "path": "/items/hushPuppy@2,0,1/position/x", "value": 1 },
-  { "op": "replace", "path": "/items/hushPuppy@1,0,0/position/x", "value": 0 },
-  { "op": "replace", "path": "/items/door@6,2,0/position/y", "value": 4 },
-  { "op": "replace", "path": "/items/door@2,0,4/position/x", "value": 4 },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@2,0,1/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@1,0,0/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@6,2,0/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@2,0,4/position/x",
+    "value": 4
+  },
   {
     "op": "add",
     "path": "/items/door@2,0,4/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   },
   {
     "op": "add",
     "path": "/items/hushPuppy4",
     "value": {
-      "config": { "times": { "x": 3 } },
-      "position": { "x": 3, "y": 0, "z": 3 },
+      "config": {
+        "times": {
+          "x": 3
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 3
+      },
       "type": "hushPuppy"
     }
   },
@@ -38,10 +92,23 @@
     "op": "add",
     "path": "/items/hushPuppyPillar1",
     "value": {
-      "config": { "times": { "x": 2, "z": 3 } },
-      "position": { "x": 4, "y": 0, "z": 0 },
+      "config": {
+        "times": {
+          "x": 2,
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 4,
+        "y": 0,
+        "z": 0
+      },
       "type": "hushPuppy"
     }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  }
 ]
