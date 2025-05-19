@@ -7,7 +7,7 @@ import { isMonster, isSolid } from "../itemPredicates";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import type { Xyz, DirectionXy8 } from "../../../utils/vectors/vectors";
+import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import {
   originXyz,
   xyEqual,
@@ -29,12 +29,13 @@ import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClos
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
 import { objectValues } from "iter-tools";
+import { turnedVector } from "./turnedVector";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
 const turnAroundTime = 150;
 
-const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
+export const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
   array[Math.floor(Math.random() * array.length)];
 
 type ItemWithMovement<RoomId extends string, RoomItemId extends string> =
@@ -280,14 +281,12 @@ const randomlyChangeDirection = <
   }
 
   const newDirectionName = randomFromArray(directionNames);
+  const newDirectionUnitVector = unitVectors[newDirectionName];
 
   return {
     movementType: "vel",
     vels: {
-      walking: scaleXyz(
-        unitVectors[newDirectionName],
-        speedForItem(itemWithMovement),
-      ),
+      walking: scaleXyz(newDirectionUnitVector, speedForItem(itemWithMovement)),
     },
     stateDelta: {
       facing: unitVectors[newDirectionName],
@@ -328,32 +327,7 @@ export const keepWalkingInSameDirection = <
     : unitMechanicalResult;
 };
 
-type TurnStrategy = "opposite" | "perpendicular" | "clockwise";
-
-const turnedVector = (walkVector: Xyz, mtv: Xyz, strategy: TurnStrategy) => {
-  switch (strategy) {
-    case "opposite":
-      return {
-        x: mtv.x === 0 ? walkVector.x : -walkVector.x,
-        y: mtv.y === 0 ? walkVector.y : -walkVector.y,
-        z: 0,
-      };
-    case "clockwise":
-      return {
-        x: -walkVector.y,
-        y: walkVector.x,
-        z: 0,
-      };
-    case "perpendicular": {
-      const randomSign = randomFromArray([-1, 1]);
-      return {
-        x: mtv.x === 0 ? randomSign * walkVector.y : 0,
-        y: mtv.y === 0 ? randomSign * walkVector.x : 0,
-        z: 0,
-      };
-    }
-  }
-};
+export type TurnStrategy = "opposite" | "perpendicular" | "clockwise";
 
 const handleMonsterTouchingItemByTurning = <
   RoomId extends string,
@@ -366,6 +340,7 @@ const handleMonsterTouchingItemByTurning = <
       aabb: touchedItemAabb,
     },
     deltaMS,
+    room: { roomTime },
   }: ItemTouchEvent<RoomId, RoomItemId, ItemWithMovement<RoomId, RoomItemId>>,
   turnStrategy: TurnStrategy,
 ) => {
@@ -390,10 +365,16 @@ const handleMonsterTouchingItemByTurning = <
   // purely vertical touches don't change direction:
   if (m.x === 0 && m.y === 0) return;
 
-  itemWithMovement.state.vels.walking = turnedVector(walking, m, turnStrategy);
-  // calc facing vector separately from walk, since walk can be (0,0,0) - usually if the item
-  // is falling:
-  itemWithMovement.state.facing = turnedVector(facing, m, turnStrategy);
+  const newWalking = turnedVector(walking, m, turnStrategy);
+  itemWithMovement.state.vels.walking = newWalking;
+
+  itemWithMovement.state.facing =
+    xyEqual(newWalking, originXy) ?
+      // calc facing vector separately from walk, since walk can be (0,0,0) - usually if the item
+      // is falling:
+      turnedVector(facing, m, turnStrategy)
+    : unitVector(newWalking);
+
   itemWithMovement.state.durationOfTouch = 0;
 };
 

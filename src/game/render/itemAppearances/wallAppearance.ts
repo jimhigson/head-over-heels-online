@@ -57,7 +57,6 @@ export const wallAppearance = itemAppearanceRenderOnce<"wall">(
 
       if (room.planet === "moonbase") {
         const animationId = `moonbase.wall.screen.${tiles[i]}.away`;
-        console.log(animationId, isAnimationId(animationId));
         // only moonbase has animated walls
         if (isAnimationId(animationId)) {
           tileSprite = new Container({
