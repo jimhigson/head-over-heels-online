@@ -18,7 +18,7 @@ export const selectPlayableItem = <
   C extends CharacterName = CharacterName,
   RoomId extends string = string,
 >(
-  gameState: GameState<RoomId>,
+  gameState: Pick<GameState<RoomId>, "characterRooms">,
   character: C,
 ): PlayableItem<C, RoomId> | undefined => {
   return gameState.characterRooms[character]?.items[character] as
@@ -30,7 +30,7 @@ export const selectPlayableItem = <
  * @returns undefined only if both players have lost all lives
  */
 export const selectCurrentPlayableItem = <RoomId extends string>(
-  gameState: GameState<RoomId>,
+  gameState: Pick<GameState<RoomId>, "currentCharacterName" | "characterRooms">,
 ): PlayableItem<CharacterName, RoomId> | undefined =>
   // assuming both players haven't lost all their lives, or this is not reliable!
   selectPlayableItem(gameState, gameState.currentCharacterName)!;
@@ -56,7 +56,7 @@ export const selectHeelsAbilities = (
   }
 };
 export const _selectAbilities = <RoomId extends string>(
-  gameState: GameState<RoomId>,
+  gameState: Pick<GameState<RoomId>, "currentCharacterName" | "characterRooms">,
   individualCharacterName: IndividualCharacterName,
 ):
   | HeadAbilities
@@ -94,7 +94,7 @@ export const selectAbilities = _selectAbilities as <
   RoomId extends string,
   I extends IndividualCharacterName,
 >(
-  gameState: GameState<RoomId>,
+  gameState: Pick<GameState<RoomId>, "currentCharacterName" | "characterRooms">,
   individualCharacterName: I,
 ) =>
   | (I extends "head" ? HeadAbilities : never)

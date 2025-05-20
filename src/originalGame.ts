@@ -17,8 +17,9 @@ export const zxSpectrumFrameRate = 25; // machine did 50.08 or 50.02 :-) interla
 export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
 
 export const resolutions = {
-  // Amiga hires: just too many pixels, game doesn't fill enough of the screen
-  //amigaHiResPal: { x: 640, y: 512 },
+  // Amiga hires: in game, too many pixels, game doesn't fill enough of the screen
+  // but, in the level editor is quite useful
+  amigaHiResPal: { x: 640, y: 512 },
   amigaLowResPal: { x: 320, y: 256 },
   zxSpectrum: { x: 256, y: 192 },
   // there was never really a handheld port, and this is a bit big for period-correct

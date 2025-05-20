@@ -17,6 +17,7 @@ import {
 } from "redux-persist";
 import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
 import { listenerMiddleware } from "./listenerMiddleware";
+import { levelEditorSlice } from "./slices/levelEditor/levelEditorSlice";
 
 export const storeLatestVersion = 14;
 
@@ -46,6 +47,8 @@ const gameMenusPersistedReducer = persistReducer(
 
 const appReducer = combineReducers({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
+  // TODO: this slice could be lazy-loaded and added dynamically with the level editor
+  [levelEditorSlice.reducerPath]: levelEditorSlice.reducer,
 });
 
 const rootReducer = (

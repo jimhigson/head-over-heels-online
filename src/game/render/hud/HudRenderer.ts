@@ -414,7 +414,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   #characterIsActive(
-    gameState: GameState<RoomId>,
+    gameState: Pick<GameState<RoomId>, "currentCharacterName">,
     characterName: IndividualCharacterName,
   ) {
     const { currentCharacterName } = gameState;

@@ -124,18 +124,23 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           aabb,
         },
         room,
-        general: {
-          gameState: { campaign },
-        },
+        general: { gameState },
       },
     }) => {
       const axis = doorAlongAxis(direction);
 
-      const roomTo = campaign.rooms[toRoom];
+      const useColoursFromRoom =
+        gameState === undefined ?
+          // for now, show the doors in the colours of the room they are in, on the level editor
+          // TODO: put the campaign on the top level of the render context, separate from the game state
+          // since the level editor also has a campaign, but not a running game
+          room
+          // in the game, show them properly in the colours of the room they lead to
+        : gameState.campaign.rooms[toRoom];
 
       return createSprite({
         textureId: doorTexture(room, axis, part),
-        filter: mainPaletteSwapFilter(roomTo),
+        filter: mainPaletteSwapFilter(useColoursFromRoom),
         ...xyToTranslateToInsideOfRoom(direction, aabb),
       });
     },

@@ -19,7 +19,7 @@ import type Cheats from "../../game/components/cheats/Cheats.tsx";
 import { importOriginalCampaign } from "../../_generated/originalCampaign/campaign.import.ts";
 import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
 import { importGameMain } from "../../game/gameMain.import.ts";
-import { load as loadSpritesheet } from "../../sprites/spriteSheet.ts";
+import { loadSpritesheet } from "../../sprites/spriteSheet.ts";
 import { importTestCampaign } from "../../testCampaign.import.ts";
 import { useLoading } from "../../game/components/LoadingContext.tsx";
 import { importOnce } from "../../utils/importOnce.ts";

@@ -7,7 +7,7 @@ type AppSpritesheet = Spritesheet<typeof spritesheetData>;
 
 let loaded: AppSpritesheet | undefined = undefined;
 
-export const load = async () => {
+export const loadSpritesheet = async () => {
   if (loaded !== undefined) {
     return loaded;
   }
