@@ -90,7 +90,7 @@ export const room = inferRoomJson({
     "monster@2,5,0": {
       config: {
         activated: "on",
-        movement: "patrol-randomly-xy4",
+        movement: "patrol-randomly-xy4-and-reverse",
         which: "computerBot",
       },
       position: { x: 2, y: 5, z: 0 },
@@ -99,7 +99,7 @@ export const room = inferRoomJson({
     "monster@5,2,0": {
       config: {
         activated: "on",
-        movement: "patrol-randomly-xy4",
+        movement: "patrol-randomly-xy4-and-reverse",
         which: "computerBot",
       },
       position: { x: 5, y: 2, z: 0 },

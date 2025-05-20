@@ -566,14 +566,31 @@ const convertItem = async ({
           };
     }
 
-    case "monkey":
-    case "bighead-robot": {
+    case "monkey": {
       return {
         type: "monster",
         config: {
           which: monsterConversions[xml2JsonItem.kind],
           activated: "on",
           movement: monsterBehaviourConversions[xml2JsonItem.behavior],
+        },
+        position,
+      };
+    }
+    case "bighead-robot": {
+      const movement = monsterBehaviourConversions[xml2JsonItem.behavior];
+      const movementAdjusted =
+        movement === "patrol-randomly-xy4" ?
+          // the big head robot can go backwards - it's just funny really
+          "patrol-randomly-xy4-and-reverse"
+        : movement;
+
+      return {
+        type: "monster",
+        config: {
+          which: monsterConversions[xml2JsonItem.kind],
+          activated: "on",
+          movement: movementAdjusted,
         },
         position,
       };

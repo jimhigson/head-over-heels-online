@@ -178,6 +178,12 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createStackedSprites({
               top: `${config.which}.${facingXy4}`,
+              bottom: {
+                animationId: `headlessBase.flash`,
+                // by playing once, the enemy's base flashes only when it has
+                // just changed direction etc
+                playOnce: "and-stop",
+              },
               filter,
             }),
             renderProps,

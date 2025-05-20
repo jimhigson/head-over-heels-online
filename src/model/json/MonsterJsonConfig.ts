@@ -28,10 +28,18 @@ export type MonsterJsonConfig =
       activated: ActivatedWhenSubset<"on">;
     }
   | {
-      which: "computerBot" | "monkey";
+      which: "monkey";
       movement: MovementsSubset<
         // moonbase16
         "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4"
+      >;
+      activated: ActivatedWhenSubset<"on">;
+    }
+  | {
+      which: "computerBot";
+      movement: MovementsSubset<
+        // moonbase16
+        "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4-and-reverse"
       >;
       activated: ActivatedWhenSubset<"on">;
     }

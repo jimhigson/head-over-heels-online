@@ -1137,7 +1137,7 @@ const rooms = {
         config: {
           which: "computerBot",
           activated: "on",
-          movement: "patrol-randomly-xy4",
+          movement: "patrol-randomly-xy4-and-reverse",
         },
         position: { x: 6, y: 0, z: 0 },
       },
