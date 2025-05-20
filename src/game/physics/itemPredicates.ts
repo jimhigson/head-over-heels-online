@@ -247,6 +247,13 @@ export const isEmitter = isItemType("emitter");
 export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");
 export const isPickup = isItemType("pickup");
+
+export const isCrown = <RoomId extends string, RoomItemId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+): item is ItemInPlay<"pickup", RoomId, RoomItemId> & {
+  config: { gives: "crown" };
+} => isPickup(item) && item.config.gives === "crown";
+
 export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
 // items that can move clockwise/back-forth or in any other pattern:
