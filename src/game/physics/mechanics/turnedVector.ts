@@ -1,5 +1,5 @@
 import type { Xyz } from "../../../utils/vectors/vectors";
-import { randomFromArray } from "./movement";
+import { randomFromArray } from "../../../utils/random/randomFromArray";
 
 export const turnedVector = (
   walkVector: Xyz,

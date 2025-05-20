@@ -1,5 +1,6 @@
 import {
   isCarrier,
+  isCrown,
   isDeadly,
   isEmitter,
   isFirer,
@@ -39,6 +40,7 @@ import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import { tickActivation } from "../physics/mechanics/activation";
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { emitting } from "../physics/mechanics/emitting";
+import { addParticlesAroundCrown } from "./addParticlesToRoom";
 
 function* itemMechanicResultGen<
   T extends ItemInPlayType,
@@ -226,6 +228,10 @@ export const tickItem = <
         scaleXyz(val, deltaMS),
       ),
     );
+  }
+
+  if (isCrown(item)) {
+    addParticlesAroundCrown(room, item, deltaMS);
   }
 
   moveItem({

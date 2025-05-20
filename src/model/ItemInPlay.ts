@@ -46,7 +46,7 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
     appearanceRoomTime: number;
   };
   particle: {
-    forCharacter: IndividualCharacterName;
+    forCharacter: IndividualCharacterName | "crown";
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config

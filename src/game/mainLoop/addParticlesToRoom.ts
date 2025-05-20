@@ -1,15 +1,23 @@
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlay, ItemInPlayConfig } from "../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
 import { originalGameFrameDuration } from "../../originalGame";
 import { blockSizePx } from "../../sprites/spritePivots";
 import { spritesheetData } from "../../sprites/spriteSheetData";
-import { addXyz, lengthXyz, originXyz } from "../../utils/vectors/vectors";
+import type { Xyz } from "../../utils/vectors/vectors";
+import {
+  addXyz,
+  axesXyz,
+  lengthXyz,
+  originXyz,
+} from "../../utils/vectors/vectors";
 import { epsilon } from "../../utils/veryClose";
 import { fastStepsRemaining } from "../gameState/gameStateSelectors/selectPickupAbilities";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
 import type { PlayableItem } from "../physics/itemPredicates";
+import { randomFromArray } from "../../utils/random/randomFromArray";
 
 const particleLifetimeMs =
   originalGameFrameDuration *
@@ -18,11 +26,34 @@ const particleLifetimeMs =
 
 const headParticlesFrequencyPerS = 20;
 const heelsParticlesFrequencyPerS = 38;
+const crownParticlesFrequencyPerS = 0.5;
 const particlesSpread = blockSizePx.w / 2;
 
 let particlesAdded = 0;
 
-const addParticleAroundItem = <
+const particleByChance = (particlesFrequencyPerS: number, deltaMS: number) =>
+  Math.random() < particlesFrequencyPerS * (deltaMS / 1000);
+
+const createParticleItemInPlay = (
+  forItemId: string,
+  forCharacter: ItemInPlayConfig<"particle">["forCharacter"],
+  position: Xyz,
+  roomTime: number,
+): ItemInPlay<"particle"> => ({
+  id: `particle.${forItemId}.${particlesAdded++}`,
+  type: "particle",
+  aabb: originXyz,
+  config: {
+    forCharacter,
+  },
+  state: {
+    ...defaultBaseState(),
+    expires: roomTime + particleLifetimeMs + Math.random() * particleLifetimeMs,
+    position,
+  },
+});
+
+const addParticlesUnderPlayableItem = <
   RoomId extends string,
   RoomItemId extends string,
 >(
@@ -31,10 +62,7 @@ const addParticleAroundItem = <
   particlesFrequencyPerS: number,
   deltaMS: number,
 ) => {
-  const addParticleByChance =
-    Math.random() < particlesFrequencyPerS * (deltaMS / 1000);
-
-  if (!addParticleByChance) {
+  if (!particleByChance(particlesFrequencyPerS, deltaMS)) {
     return;
   }
 
@@ -49,22 +77,12 @@ const addParticleAroundItem = <
   // we are moving, and we have fast steps - add particles
   addItemToRoom({
     room,
-    item: {
-      id: `particle.${item.id}.${particlesAdded++}`,
-      type: "particle",
-      aabb: originXyz,
-      config: {
-        forCharacter: item.type,
-      },
-      state: {
-        ...defaultBaseState(),
-        expires:
-          room.roomTime +
-          particleLifetimeMs +
-          Math.random() * particleLifetimeMs,
-        position: particlePosition,
-      },
-    },
+    item: createParticleItemInPlay(
+      item.id,
+      item.type,
+      particlePosition,
+      room.roomTime,
+    ),
   });
 };
 
@@ -89,7 +107,12 @@ const addParticlesForHead = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
-  addParticleAroundItem(head, room, headParticlesFrequencyPerS, deltaMS);
+  addParticlesUnderPlayableItem(
+    head,
+    room,
+    headParticlesFrequencyPerS,
+    deltaMS,
+  );
 };
 
 const addParticlesForHeels = <RoomId extends string, RoomItemId extends string>(
@@ -111,10 +134,15 @@ const addParticlesForHeels = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
-  addParticleAroundItem(heels, room, heelsParticlesFrequencyPerS, deltaMS);
+  addParticlesUnderPlayableItem(
+    heels,
+    room,
+    heelsParticlesFrequencyPerS,
+    deltaMS,
+  );
 };
 
-export const addParticlesToRoom = <
+export const addParticlesForPlayablesInRoom = <
   RoomId extends string,
   RoomItemId extends string,
 >(
@@ -129,4 +157,36 @@ export const addParticlesToRoom = <
   if (heels !== undefined) {
     addParticlesForHeels(heels, room, deltaMS);
   }
+};
+
+export const addParticlesAroundCrown = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  room: RoomState<RoomId, RoomItemId>,
+  crown: ItemInPlay<"pickup", RoomId, RoomItemId> & {
+    config: { gives: "crown" };
+  },
+  deltaMS: number,
+) => {
+  if (!particleByChance(crownParticlesFrequencyPerS, deltaMS)) {
+    return;
+  }
+
+  const face = randomFromArray(axesXyz);
+  const particlePosition = addXyz(crown.state.position, {
+    x: face === "x" ? 0 : Math.random() * blockSizePx.w,
+    y: face === "y" ? 0 : Math.random() * blockSizePx.d,
+    z: face === "z" ? blockSizePx.h : Math.random() * blockSizePx.h,
+  });
+
+  addItemToRoom({
+    room,
+    item: createParticleItemInPlay(
+      crown.id,
+      "crown",
+      particlePosition,
+      room.roomTime,
+    ),
+  });
 };

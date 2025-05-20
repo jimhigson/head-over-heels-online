@@ -31,13 +31,11 @@ import { store } from "../../../store/store";
 import { objectValues } from "iter-tools";
 import type { TurnStrategy } from "./turnedVector";
 import { turnedVector } from "./turnedVector";
+import { randomFromArray } from "../../../utils/random/randomFromArray";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
 const turnAroundTime = 150;
-
-export const randomFromArray = <T>(array: Readonly<T[]> | T[]): T =>
-  array[Math.floor(Math.random() * array.length)];
 
 type ItemWithMovement<RoomId extends string, RoomItemId extends string> =
   | ItemInPlay<"monster", RoomId, RoomItemId>

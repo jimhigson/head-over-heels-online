@@ -18,7 +18,7 @@ import { itemHasExpired } from "./itemHasExpired";
 import { correctFloatingPointErrorsInRoom } from "./correctFloatingPointErrorsInRoom";
 import { itemTickOrderComparator } from "./itemTickOrderComparator";
 import { advanceTime } from "./advanceTime";
-import { addParticlesToRoom } from "./addParticlesToRoom";
+import { addParticlesForPlayablesInRoom } from "./addParticlesToRoom";
 
 /* the items that moved while progressing the game state */
 export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<
@@ -98,7 +98,7 @@ export const progressGameState = <
     }
   }
 
-  addParticlesToRoom(room, deltaMS);
+  addParticlesForPlayablesInRoom(room, deltaMS);
 
   updateStandingOn(room);
 
