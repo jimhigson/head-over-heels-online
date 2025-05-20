@@ -2,7 +2,11 @@ import type { Container, Sprite } from "pixi.js";
 import type { ItemConfigMap } from "../../../model/json/ItemConfigMap";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import { vectorClosestDirectionXy4 } from "../../../utils/vectors/vectors";
+import {
+  originXy,
+  vectorClosestDirectionXy4,
+  xyEqual,
+} from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import {
   doughnuttedFilter,
@@ -24,6 +28,7 @@ const greyWhileDeactivated: Array<
 > = ["cyberman", "dalek", "skiHead", "bubbleRobot", "computerBot", "turtle"];
 
 type MonsterRenderProps = {
+  walking?: boolean;
   facingXy4?: DirectionXy4;
   activated: boolean;
   busyLickingDoughnutsOffFace: boolean;
@@ -195,10 +200,38 @@ export const monsterAppearance: ItemAppearance<
       break;
     }
 
+    case "homingBot": {
+      // not directional, not animated, but different if 'walking' towards the player
+      const walking = !xyEqual(state.vels.walking, originXy);
+
+      const render =
+        currentlyRenderedProps === undefined ||
+        busyLickingDoughnutsOffFace !==
+          currentlyRenderedProps.busyLickingDoughnutsOffFace ||
+        activated !== currentlyRenderedProps.activated ||
+        walking !== currentlyRenderedProps.walking;
+
+      if (!render) {
+        return "no-update";
+      }
+
+      return {
+        filter,
+        output: createSprite({
+          animationId: walking ? "headlessBase.flash" : "headlessBase.scan",
+          filter,
+        }),
+        renderProps: {
+          activated,
+          busyLickingDoughnutsOffFace,
+          walking,
+        },
+      };
+    }
+
     case "helicopterBug":
     case "emperor":
     case "dalek":
-    case "homingBot":
     case "bubbleRobot":
     case "emperorsGuardian": {
       // not directional
@@ -238,16 +271,6 @@ export const monsterAppearance: ItemAppearance<
             renderProps,
           };
         }
-        case "homingBot":
-          // not directional, not animated
-          return {
-            filter,
-            output: createSprite({
-              animationId: "headlessBase.scan",
-              filter,
-            }),
-            renderProps,
-          };
 
         case "bubbleRobot":
           //not directional, animated, stacked (base):
