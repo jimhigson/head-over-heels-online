@@ -267,4 +267,8 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   };
 
   scroll: FreeItemState<RoomItemId>;
+
+  cursor: {
+    pointingToItemId: RoomItemId;
+  };
 };

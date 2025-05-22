@@ -14,12 +14,13 @@ import { carryableOutlineColour } from "../../itemAppearances/itemAppearanceColo
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { noFilters } from "../../filters/standardFilters";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import { selectGameEngineUpscale } from "../../../../store/slices/upscale/upscaleSlice";
 
 const makeOutlineFilter = () =>
   new OutlineFilter({
     outlineColor: carryableOutlineColour,
     lowRes: false,
-    upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
+    upscale: selectGameEngineUpscale(store.getState()),
   });
 
 class PortableItemPickUpNextHighlightRenderer

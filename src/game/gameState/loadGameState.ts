@@ -4,6 +4,7 @@ import type { CharacterName, Campaign } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
 import type { CharacterRooms, GameState, PickupsCollected } from "./GameState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
+import type { RoomState } from "../../model/RoomState";
 import { getRoomItem } from "../../model/RoomState";
 import { emptyObject } from "../../utils/empty";
 import type { SavedGameState } from "./saving/SavedGameState";
@@ -65,17 +66,25 @@ export const loadGameState = <RoomId extends string>({
 
   const pickupsCollected = {} as PickupsCollected<RoomId>;
 
-  const headRoom =
+  /** head's current room state, if head is in this game */
+  const headRoom: RoomState<RoomId, string> | undefined =
     savedGame ?
       savedGame.gameState.characterRooms.head &&
       badJsonClone(savedGame.gameState.characterRooms.head)
     : roomIds.head &&
       loadRoom({
         roomJson: campaign.rooms[roomIds.head],
-        roomPickupsCollected: pickupsCollected[roomIds.head] ?? emptyObject,
-        isNewGame: savedGame === undefined,
+        // we are not loading so nothing has been collected/read:
+        roomPickupsCollected: emptyObject,
+        scrollsRead: emptyObject,
+        isNewGame: true,
       });
-  const heelsRoom =
+
+  /**
+   * heels's current room state, if heels is in this game - could be
+   * the same room as head.
+   */
+  const heelsRoom: RoomState<RoomId, string> | undefined =
     // first check if in the same room:
     roomIds.heels === roomIds.head ? headRoom
     : savedGame ?
@@ -84,11 +93,19 @@ export const loadGameState = <RoomId extends string>({
     : roomIds.heels &&
       loadRoom({
         roomJson: campaign.rooms[roomIds.heels],
-        roomPickupsCollected: pickupsCollected[roomIds.heels] ?? emptyObject,
-        isNewGame: savedGame === undefined,
+        // we are not loading so nothing has been collected/read:
+        roomPickupsCollected: emptyObject,
+        scrollsRead: emptyObject,
+        isNewGame: true,
       });
-  //the game can't start in symbiosis (why?) but can be loaded into it
-  const headOverHeelsRoom =
+
+  /**
+   * head over heels's current room state, if loading a saved game with
+   * hoh in it:
+   */
+  // the game can't start in symbiosis (in original engine anyway) but can
+  // be loaded into it
+  const headOverHeelsRoom: RoomState<RoomId, string> | undefined =
     savedGame?.gameState.characterRooms.headOverHeels &&
     badJsonClone(savedGame.gameState.characterRooms.headOverHeels);
 

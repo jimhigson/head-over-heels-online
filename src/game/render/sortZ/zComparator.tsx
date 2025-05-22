@@ -1,22 +1,7 @@
 import type { Xyz } from "../../../utils/vectors/vectors";
-import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
-import { projectWorldXyzToScreenXy } from "../projectToScreen";
+import { axesXyz } from "../../../utils/vectors/vectors";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
-
-/**
- * of the six visible corners of the projected cuboid, we need to find three to be able to compare
- * two projection-hexagons
- */
-const projectionCorners = (position: Xyz, aabb: Xyz) => {
-  const bottomCentre = projectWorldXyzToScreenXy(position);
-  const topLeft = projectWorldXyzToScreenXy(
-    addXyz(position, { x: aabb.x, z: aabb.z }),
-  );
-  const topRight = projectWorldXyzToScreenXy(
-    addXyz(position, { y: aabb.y, z: aabb.z }),
-  );
-  return { bottomCentre, topLeft, topRight };
-};
+import { projectAabbToHexagonCorners } from "./projectAabbToHexagonCorners";
 
 const rangeOverlap = (
   aMin: number,
@@ -29,14 +14,18 @@ const rangeOverlap = (
   return bMax - tolerance > aMin && bMin < aMax - tolerance;
 };
 
+/**
+ * return true iff the projected hexagons of the two aabbs overlaps in
+ * screen-space
+ */
 const visuallyOverlaps = (
   aPos: Xyz,
   aBb: Xyz,
   bPos: Xyz,
   bBb: Xyz,
 ): boolean => {
-  const cornersA = projectionCorners(aPos, aBb);
-  const cornersB = projectionCorners(bPos, bBb);
+  const cornersA = projectAabbToHexagonCorners(aPos, aBb);
+  const cornersB = projectAabbToHexagonCorners(bPos, bBb);
 
   //console.log("corners:", { cornersA, cornersB });
 
@@ -108,6 +97,46 @@ const visuallyOverlaps = (
   return horizontalOverlap && xAxisSlopeOverlap && yAxisSlopeOverlap;
 };
 
+export const zComparatorOfVisuallyOverlapping = (
+  aPosition: Xyz,
+  aBb: Xyz,
+  bPosition: Xyz,
+  bBb: Xyz,
+) => {
+  for (const axis of axesXyz) {
+    const axisMinA = aPosition[axis];
+    const axisMaxA = axisMinA + aBb[axis];
+
+    const axisMinB = bPosition[axis];
+    const axisMaxB = axisMinB + bBb[axis];
+
+    // console.log(`check for <= in ${axis} :`, { axisMaxA, axisMinB });
+
+    if (axisMaxA <= axisMinB) {
+      // a is entirely less than b in this axis (no overlap)
+      // flip for z axis, because higher z is in front, whereas for x and y, lower is in front
+      return 1 * (axis === "z" ? -1 : 1);
+    }
+
+    // console.log(`check for >= in ${axis} :`, { axisMinA, axisMaxB });
+
+    if (axisMinA >= axisMaxB) {
+      // a is entirely less than b in this axis (no overlap)
+      // flip for z axis, because higher z is in front, whereas for x and y, lower is in front
+      return -1 * (axis === "z" ? -1 : 1);
+    }
+
+    // a and b overlap in this axis, so we need to check the next axis
+  }
+
+  // if we get here, two items are intersecting - this is very unusual, but can happen
+  // for non-solid items - eg, the cloud left over after a pickup is collected can be
+  // walked through. Return the difference of the isometric z-buffer depth for the two items.
+  // since these intersecting items should be the same size, and this isn't critical, the bounding boxes
+  // are not used to decide the order
+  return zScore(bPosition) - zScore(aPosition);
+};
+
 /**
  * comparator suitable for ordering by z (with a topographic sort, not a normal sort)
  *
@@ -135,39 +164,8 @@ export const zComparator = (a: DrawOrderComparable, b: DrawOrderComparable) => {
     return 0;
   }
 
-  for (const axis of axesXyz) {
-    const axisMinA = a.state.position[axis];
-    const axisMaxA = axisMinA + aBb[axis];
-
-    const axisMinB = b.state.position[axis];
-    const axisMaxB = axisMinB + bBb[axis];
-
-    // console.log(`check for <= in ${axis} :`, { axisMaxA, axisMinB });
-
-    if (axisMaxA <= axisMinB) {
-      // a is entirely less than b in this axis (no overlap)
-      // flip for z axis, because higher z is in front, whereas for x and y, lower is in front
-      return 1 * (axis === "z" ? -1 : 1);
-    }
-
-    // console.log(`check for >= in ${axis} :`, { axisMinA, axisMaxB });
-
-    if (axisMinA >= axisMaxB) {
-      // a is entirely less than b in this axis (no overlap)
-      // flip for z axis, because higher z is in front, whereas for x and y, lower is in front
-      return -1 * (axis === "z" ? -1 : 1);
-    }
-
-    // a and b overlap in this axis, so we need to check the next axis
-  }
-
-  // if we get here, two items are intersecting - this is very unusual, but can happen
-  // for non-solid items - eg, the cloud left over after a pickup is collected can be
-  // walked through. Return the difference of the isometric z-buffer depth for the two items.
-  // since these intersecting items should be the same size, and this isn't critical, the bounding boxes
-  // are not used to decide the order
-  return zScore(b) - zScore(a);
+  return zComparatorOfVisuallyOverlapping(aPos, aBb, bPos, bBb);
 };
 
-const zScore = (item: DrawOrderComparable) =>
-  item.state.position.x + item.state.position.y - item.state.position.z;
+const zScore = (itemPosition: Xyz) =>
+  itemPosition.x + itemPosition.y - itemPosition.z;

@@ -3,7 +3,7 @@ import { Graphics, Container, Text } from "pixi.js";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { Aabb } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
-import { projectWorldXyzToScreenXy } from "../../projectToScreen";
+import { projectWorldXyzToScreenXy } from "../../projections";
 import type { ItemRenderContext } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 

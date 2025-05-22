@@ -2,9 +2,9 @@ import { Container, Graphics } from "pixi.js";
 import { type TextureId } from "../../../../sprites/spriteSheetData";
 import { mainPaletteSwapFilter } from "../../filters/standardFilters";
 import { createSprite } from "../../createSprite";
-import { moveContainerToBlockXyz } from "../../projectToScreen";
+import { moveContainerToBlockXyz } from "../../projections";
 import { floorRenderExtent } from "../../renderExtent";
-import { projectBlockXyzToScreenXy } from "../../projectToScreen";
+import { projectBlockXyzToScreenXy } from "../../projections";
 
 import type { ItemAppearance } from "../ItemAppearance";
 import { itemAppearanceRenderOnce } from "../ItemAppearance";

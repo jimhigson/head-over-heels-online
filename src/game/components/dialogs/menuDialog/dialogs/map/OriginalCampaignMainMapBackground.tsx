@@ -1,5 +1,5 @@
 import type { OriginalCampaignRoomId } from "../../../../../../_generated/originalCampaign/OriginalCampaignRoomId";
-import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
+import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import type { MapBackgroundProps } from "./MapBackground";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";

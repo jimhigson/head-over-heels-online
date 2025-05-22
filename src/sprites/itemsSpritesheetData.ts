@@ -439,6 +439,12 @@ const frames = {
     },
   },
 
+  "editor.cursor.floor": {
+    frame: {
+      ...largeItemGridLocation({ x: 7, y: -1 }),
+      ...largeItemTextureSize,
+    },
+  },
   "block.organic": {
     frame: {
       ...largeItemGridLocation({ x: 0, y: 0 }),

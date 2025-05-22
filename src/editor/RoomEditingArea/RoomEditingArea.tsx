@@ -1,37 +1,26 @@
-import { useEffect, useState } from "react";
-import { emptySet } from "../../utils/empty";
-import { useCurrentEditingLevelJson } from "../../store/slices/levelEditor/levelEditorSelectors";
-import { epsilon } from "../../utils/veryClose";
+import { useState } from "react";
 import { useRoomRenderer } from "./useRoomRenderer";
-import { usePixiApplication } from "./usePixiApplication";
+import { useRoomEditorInteractivity } from "./useRoomEditorInteractivity";
+import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlineStyle";
+import { TextureStyle } from "pixi.js";
+import { useTickRoomRenderer } from "./useTickRoomRenderer";
+import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
+import { usePutUpscaleOnAppStage } from "./usePutUpscaleOnAppStage";
+import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplicationToMatchCanvasSize";
+import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
+TextureStyle.defaultOptions.scaleMode = "nearest";
 
 export const RoomEditingArea = () => {
-  const roomJson = useCurrentEditingLevelJson();
-  const application = usePixiApplication();
-  const roomRenderer = useRoomRenderer(roomJson, application.renderer);
+  const roomRenderer = useRoomRenderer();
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    application.stage.addChild(roomRenderer.output.graphics);
-    console.log("room renderer added to stage");
+  useResizePixiApplicationToMatchCanvasSize();
+  useAddRoomRendererOutputToApplicationStage(roomRenderer);
+  useTickRoomRenderer(roomRenderer);
+  useRoomEditorInteractivity(renderArea);
+  useAddApplicationCanvasToDom(renderArea);
+  usePutUpscaleOnAppStage();
+  const canvasInlineStyle = useCanvasInlineStyle();
 
-    roomRenderer.tick({
-      deltaMS: epsilon,
-      movedItems: emptySet,
-      progression: 0,
-    });
-
-    return () => {
-      application.stage.removeChild(roomRenderer.output.graphics);
-      roomRenderer.output.graphics.x = 400;
-      roomRenderer.output.graphics.y = 500;
-      console.log("room renderer removed from stage");
-    };
-  }, [roomRenderer, application]);
-
-  useEffect(() => {
-    if (renderArea) renderArea.appendChild(application.canvas);
-  }, [renderArea, application]);
-
-  return <div ref={(div) => setRenderArea(div)} />;
+  return <div style={canvasInlineStyle} ref={setRenderArea} />;
 };

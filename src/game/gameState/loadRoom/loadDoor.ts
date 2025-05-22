@@ -14,7 +14,7 @@ import {
   scaleXyz,
 } from "../../../utils/vectors/vectors";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
-import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { blockXyzToFineXyz } from "../../render/projections";
 import { emptyObject } from "../../../utils/empty";
 import { defaultBaseState } from "./itemDefaultStates";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";

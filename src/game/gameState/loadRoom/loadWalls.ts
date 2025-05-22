@@ -1,4 +1,4 @@
-import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { blockXyzToFineXyz } from "../../render/projections";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import {

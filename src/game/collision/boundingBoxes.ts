@@ -11,7 +11,7 @@ import { blockSizePx, blockSizeXyzPx } from "../../sprites/spritePivots";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 export const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
-const largeItemAabb: Aabb = { x: 16, y: 16, z: blockSizePx.h };
+export const largeItemAabb: Aabb = { x: 16, y: 16, z: blockSizePx.h };
 export const doubleHeightCharacter: Aabb = {
   ...smallItemAabb,
   z: blockSizePx.h * 2,

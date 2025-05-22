@@ -193,6 +193,15 @@ const frames = {
     },
   },
   ...seriesOfNumberedTextures(
+    "moonbase.wall.screen.window1.away",
+    3,
+    {
+      x: 566,
+      y: 196,
+    },
+    { w: 10, h: 7 },
+  ),
+  ...seriesOfNumberedTextures(
     "moonbase.wall.screen.window2.away",
     2,
     {
@@ -215,6 +224,14 @@ const frames = {
 export const scenerySpritesheetData = {
   frames,
   animations: {
+    "moonbase.wall.screen.window1.away": withSpeed(
+      [
+        "moonbase.wall.screen.window1.away.1",
+        "moonbase.wall.screen.window1.away.2",
+        "moonbase.wall.screen.window1.away.3",
+      ] as const,
+      1 / 16,
+    ),
     "moonbase.wall.screen.window2.away": withSpeed(
       [
         "moonbase.wall.screen.window2.away.1",

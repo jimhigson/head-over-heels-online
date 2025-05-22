@@ -1,15 +1,16 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
-import { useState, useEffect } from "react";
-import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
+import { useEffect, useState } from "react";
 import type { GeneralRenderContext } from "../../game/render/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/roomRenderer";
 import { store } from "../../store/store";
-import { emptyObject } from "../../utils/empty";
 import type {
   EditorRoomId,
-  EditorRoomJson,
   EditorRoomRenderer,
-} from "../EditorRoomId.1";
+  EditorRoomState,
+} from "../EditorRoomId";
+import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
+import { useEditorRoomState } from "../EditorRoomStateProvider";
+import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 const editorGeneralRenderContext = (
   pixiRenderer: PixiRenderer,
@@ -23,43 +24,41 @@ const editorGeneralRenderContext = (
   gameState: undefined,
   paused: false,
   colourised: true,
-  upscale: store.getState().gameMenus.upscale,
+  upscale: selectUpscale(store.getState()),
 });
 const createRoomRenderer = (
-  roomJson: EditorRoomJson,
+  roomState: EditorRoomState,
   pixiRenderer: PixiRenderer,
 ) => {
-  const roomState = loadRoom({
-    roomJson,
-    roomPickupsCollected: emptyObject,
-    // display heads and heels in their starting rooms:
-    isNewGame: true,
-  });
   return new RoomRenderer({
     room: roomState,
     general: editorGeneralRenderContext(pixiRenderer),
   });
 };
 
-export const useRoomRenderer = (
-  roomJson: EditorRoomJson,
-  pixiRenderer: PixiRenderer,
-) => {
+export const useRoomRenderer = () => {
+  const { renderer: pixiRenderer } = useProvidedPixiApplication();
+
+  if (!pixiRenderer) {
+    throw new Error("this should never be falsey (typescript violation)");
+  }
+
+  const currentEditingRoomState = useEditorRoomState();
   const [roomRenderer, setRoomRenderer] = useState<EditorRoomRenderer>(() =>
-    createRoomRenderer(roomJson, pixiRenderer),
+    createRoomRenderer(currentEditingRoomState, pixiRenderer),
   );
 
   useEffect(() => {
-    if (roomRenderer.renderContext.room.roomJson !== roomJson) {
-      roomRenderer.destroy();
-      setRoomRenderer(createRoomRenderer(roomJson, pixiRenderer));
-    }
-  }, [roomJson, roomRenderer, pixiRenderer]);
+    const createdThisEffectRoomRenderer = createRoomRenderer(
+      currentEditingRoomState,
+      pixiRenderer,
+    );
+    setRoomRenderer(createdThisEffectRoomRenderer);
 
-  useEffect(() => {
-    //console.log("destroying room renderer");
-    //return roomRenderer.destroy();
-  });
+    return () => {
+      createdThisEffectRoomRenderer.destroy();
+    };
+  }, [currentEditingRoomState, pixiRenderer]);
 
   return roomRenderer;
 };

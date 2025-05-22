@@ -4,7 +4,7 @@ import type { AnyRoomJson } from "../../../../model/RoomJson";
 import { iterate } from "../../../../utils/iterate";
 import { objectEntries } from "iter-tools";
 import { createSprite } from "../../createSprite";
-import { projectBlockXyzToScreenXy } from "../../projectToScreen";
+import { projectBlockXyzToScreenXy } from "../../projections";
 import {
   addXyz,
   directionAxis,

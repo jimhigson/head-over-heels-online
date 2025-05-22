@@ -38,7 +38,7 @@ const AppInner = () => {
         </CssVariables>
       </Route>
       <Route path="/editor">
-        <CssVariables scaleFactor={2}>
+        <CssVariables>
           <LevelEditorLoader />
         </CssVariables>
       </Route>

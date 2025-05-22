@@ -20,6 +20,8 @@ import type { RoomRendererType } from "./RoomRendererType";
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>
 {
+  #destroyed = false;
+
   /**
    * renders all items *except* the floor edge, since the floor edge is the only
    * item that is colourised differently when colourisation is turned off
@@ -29,7 +31,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
   public readonly output: SetRequired<SoundAndGraphicsOutput, "graphics">;
   /**
-   * the roomtime when the renderer was last rendered - this can be useful when things
+   * the roomTime when the renderer was last rendered - this can be useful when things
    * happen in sub-ticks, to know if they are relevant to the current render (ie if
    * they happened since the last render) */
   #lastRenderRoomTime: number | undefined = undefined;
@@ -86,7 +88,10 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       lastRenderRoomTime: this.#lastRenderRoomTime,
     };
 
+    //console.log("ticking items", Object.keys(room.items));
+
     for (const item of iterateRoomItems(room.items)) {
+      //console.log("ticking item ", item.id);
       let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
 
       if (
@@ -131,7 +136,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         itemRenderer.tick(itemTickContext);
       } catch (e) {
         throw new Error(
-          `RoomRenderer caught error while ticking Renderer for item "${item.id}" - item JSON is:
+          `RoomRenderer caught error while ticking Renderer for item "${item.id}" - item in play object is:
            ${JSON.stringify(item, null, 2)}`,
           { cause: e },
         );
@@ -202,10 +207,17 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   destroy() {
+    console.log("RoomRenderer:: destroy");
+    this.output.graphics.label = this.output.graphics.label + "DESTROYED";
     this.output.graphics.destroy({ children: true });
     this.output.sound?.disconnect();
     this.#itemRenderers.forEach((itemRenderer) => {
       itemRenderer.destroy();
     });
+    this.#destroyed = true;
+  }
+
+  get destroyed() {
+    return this.#destroyed;
   }
 }

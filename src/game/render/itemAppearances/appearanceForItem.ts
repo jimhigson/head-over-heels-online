@@ -265,6 +265,9 @@ const itemAppearancesMap: {
       });
     },
   ),
+
+  // level editor appearances:
+  cursor: itemStaticAppearance("editor.cursor.floor"),
 };
 
 /**
