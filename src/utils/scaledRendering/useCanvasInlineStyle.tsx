@@ -1,10 +1,9 @@
 import type { CSSProperties } from "react";
 import { useAppSelector } from "../../store/hooks";
+import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 
 export const useCanvasInlineStyle = (): CSSProperties => {
-  const { cssUpscale, canvasSize, rotate90 } = useAppSelector(
-    (state) => state.gameMenus.upscale,
-  );
+  const { cssUpscale, canvasSize, rotate90 } = useAppSelector(selectUpscale);
 
   return {
     // using scale3d (not scale) to try to force hardware acceleration of the scaling

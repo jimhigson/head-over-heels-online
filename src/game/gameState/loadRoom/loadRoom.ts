@@ -7,7 +7,6 @@ import type { RoomJson } from "../../../model/RoomJson";
 import { entries } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
 import { isFreeItem, isSolid } from "../../physics/itemPredicates";
-import { store } from "../../../store/store";
 import {
   type RoomStateItems,
   type RoomState,
@@ -16,16 +15,14 @@ import {
 } from "../../../model/RoomState";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { setStandingOn } from "../mutators/setStandingOn";
+import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
 
 function* loadItems<RoomId extends string, RoomItemId extends string>(
   roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
+  scrollsRead: ScrollsRead,
   isNewGame: boolean,
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
-  const {
-    gameMenus: { scrollsRead },
-  } = store.getState();
-
   const ent = entries(roomJson.items);
   for (const [id, item] of ent) {
     if (item.type === "player" && !isNewGame) {
@@ -64,17 +61,19 @@ const itemsInItemObjectMap = <RoomId extends string, RoomItemId extends string>(
 export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   roomJson,
   roomPickupsCollected,
+  scrollsRead,
   isNewGame = false,
 }: {
   roomJson: RoomJson<RoomId, RoomItemId>;
   roomPickupsCollected: RoomPickupsCollected;
+  scrollsRead: ScrollsRead;
   /** if true, this is a new game - ie, load head and heels if they are in the room */
   isNewGame?: boolean;
 }): RoomState<RoomId, RoomItemId> => {
   const items: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
     ...itemsInItemObjectMap(
-      loadItems(roomJson, roomPickupsCollected, isNewGame),
+      loadItems(roomJson, roomPickupsCollected, scrollsRead, isNewGame),
     ),
   };
 

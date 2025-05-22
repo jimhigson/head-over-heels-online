@@ -1,4 +1,4 @@
-import type { ComponentType, ErrorInfo, PropsWithChildren } from "react";
+import type { ErrorInfo, PropsWithChildren } from "react";
 import { Component } from "react";
 import type { EmptyObject } from "type-fest";
 import { errorCaught } from "../../store/slices/gameMenusSlice";
@@ -34,13 +34,3 @@ export class ErrorBoundary extends Component<
     //}
   }
 }
-
-export const withErrorBoundary = <P extends object>(
-  Component: ComponentType<P>,
-) => {
-  return (props: P) => (
-    <ErrorBoundary>
-      <Component {...props} />
-    </ErrorBoundary>
-  );
-};

@@ -72,8 +72,10 @@ export const loadGameState = <RoomId extends string>({
     : roomIds.head &&
       loadRoom({
         roomJson: campaign.rooms[roomIds.head],
-        roomPickupsCollected: pickupsCollected[roomIds.head] ?? emptyObject,
-        isNewGame: savedGame === undefined,
+        // we are not loading so nothing has been collected/read:
+        roomPickupsCollected: emptyObject,
+        scrollsRead: emptyObject,
+        isNewGame: true,
       });
   const heelsRoom =
     // first check if in the same room:
@@ -84,8 +86,9 @@ export const loadGameState = <RoomId extends string>({
     : roomIds.heels &&
       loadRoom({
         roomJson: campaign.rooms[roomIds.heels],
-        roomPickupsCollected: pickupsCollected[roomIds.heels] ?? emptyObject,
-        isNewGame: savedGame === undefined,
+        roomPickupsCollected: emptyObject,
+        scrollsRead: emptyObject,
+        isNewGame: true,
       });
   //the game can't start in symbiosis (why?) but can be loaded into it
   const headOverHeelsRoom =

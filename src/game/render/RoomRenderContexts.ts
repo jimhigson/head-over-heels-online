@@ -6,8 +6,9 @@ import type {
 } from "../../store/slices/gameMenusSlice";
 import type { GameState } from "../gameState/GameState";
 import type { MovedItems } from "../mainLoop/progressGameState";
-import type { Upscale } from "./calculateUpscale";
 import type { SetRequired } from "type-fest";
+import type { Upscale } from "../../store/slices/upscale/upscaleSlice";
+import type { Tool } from "../../editor/Tool";
 
 /** some context that most renderers need, to be composed into their contexts */
 export type GeneralRenderContext<RoomId extends string> = {
@@ -53,4 +54,7 @@ export type RoomTickContext<
   movedItems: MovedItems<RoomId, RoomItemId>;
   progression: number;
   deltaMS: number;
+  editor?: {
+    tool?: Tool;
+  };
 };

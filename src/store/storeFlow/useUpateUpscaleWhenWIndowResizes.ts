@@ -1,21 +1,30 @@
 import { useLayoutEffect } from "react";
-import { setUpscale } from "../slices/gameMenusSlice";
 import { store } from "../store";
 import { useAppDispatch } from "../hooks";
-import { calculateUpscaleForCurrentDevice } from "../../game/render/calculateUpscale";
+import { upscaleOptionsForCurrentDevice } from "../slices/upscale/upscaleOptionsForCurrentDevice";
 import { selectEmulatedResolutionName } from "../selectors";
+import type { ResolutionName } from "../../originalGame";
+import { upscaleToWindow } from "../slices/upscale/upscaleSlice";
 
-export const updateUpscaleNow = () => {
+const updateUpscaleNow = (fixedResolution?: ResolutionName) => {
   store.dispatch(
-    setUpscale(
-      calculateUpscaleForCurrentDevice(
-        selectEmulatedResolutionName(store.getState()),
+    upscaleToWindow(
+      upscaleOptionsForCurrentDevice(
+        fixedResolution ?? selectEmulatedResolutionName(store.getState()),
       ),
     ),
   );
 };
 
-export const useUpdateUpscaleWhenWindowResizes = (): void => {
+export const useUpdateUpscaleWhenWindowResizes = (
+  /**
+   * if given, this emulated resolution will always be used - for the level editor
+   *
+   * Otherwise (the norm, for in-game) the resolution from the user settings or the default
+   * will be used
+   */
+  fixedResolution?: ResolutionName,
+): void => {
   const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
@@ -24,8 +33,9 @@ export const useUpdateUpscaleWhenWindowResizes = (): void => {
   }, []);
 
   useLayoutEffect(() => {
+    const handler = () => updateUpscaleNow(fixedResolution);
     // on every resize, update the store with the correct size:
-    window.addEventListener("resize", updateUpscaleNow);
-    return () => window.removeEventListener("resize", updateUpscaleNow);
-  }, [dispatch]);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, [dispatch, fixedResolution]);
 };

@@ -2,7 +2,6 @@ import type { FederatedPointerEvent } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
 import { createSprite } from "../createSprite";
 import { store } from "../../../store/store";
-import { selectTotalUpscale } from "../../../store/selectors";
 import { objectValues } from "iter-tools";
 import {
   lengthXyz,
@@ -30,6 +29,7 @@ import type { Renderer } from "../Renderer";
 import type { EmptyObject } from "type-fest";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
+import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
 
 const joystickArrowOffset = 14;
 const sensitivity = 2;

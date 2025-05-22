@@ -6,7 +6,7 @@ import {
   addXy,
   addXyz,
 } from "../../../../../../utils/vectors/vectors";
-import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
+import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import type { Bounds } from "./Map.svg";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";

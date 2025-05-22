@@ -4,7 +4,7 @@ import { doorTexture } from "./doorTexture";
 import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
-} from "../../projectToScreen";
+} from "../../projections";
 import { blockSizePx } from "../../../../sprites/spritePivots";
 import {
   edgePaletteSwapFilters,

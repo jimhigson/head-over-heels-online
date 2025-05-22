@@ -1,4 +1,5 @@
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
 import { halfbrite } from "../../../utils/colour/halfBrite";
 import { accentColours } from "../../hintColours";
@@ -9,7 +10,7 @@ export type OutlineAndColouriseFilter = [OutlineFilter, RevertColouriseFilter];
 
 export const hudOutlineFilter = new OutlineFilter({
   outlineColor: spritesheetPalette.pureBlack,
-  upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
+  upscale: selectGameEngineUpscale(store.getState()),
   // it is ok to snap to pixel grid
   lowRes: true,
 });

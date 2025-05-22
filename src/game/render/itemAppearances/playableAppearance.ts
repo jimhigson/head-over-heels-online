@@ -41,6 +41,7 @@ import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 
 type PlayableRenderProps = {
   facingXy8: DirectionXy8;
@@ -258,7 +259,7 @@ const applyFilters = (
       container,
       new OutlineFilter({
         outlineColor: accentColours[name],
-        upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
+        upscale: selectGameEngineUpscale(store.getState()),
         // player can move between pixels:
         lowRes: false,
       }),

@@ -9,13 +9,9 @@ import type {
 } from "../../game/input/InputState";
 import type { KeyAssignmentPresetName } from "../../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../../game/input/keyAssignmentPresets";
-import type { Upscale } from "../../game/render/calculateUpscale";
-import {
-  calculateUpscale,
-  calculateUpscaleForCurrentDevice,
-} from "../../game/render/calculateUpscale";
+
 import type { ResolutionName } from "../../originalGame";
-import { resolutionNames, resolutions } from "../../originalGame";
+import { resolutionNames } from "../../originalGame";
 import { directionsXy4 } from "../../utils/vectors/vectors";
 import type { MarkdownPageName } from "../../manual/pages";
 import type { PlanetName } from "../../sprites/planets";
@@ -26,7 +22,6 @@ import {
   selectEmulatedResolutionName,
   selectInputDirectionMode,
 } from "../selectors";
-import { defaultUserSettings } from "../defaultUserSettings";
 import type { BooleanAction } from "../../game/input/actions";
 import { nextInCycle } from "../../utils/nextInCycle";
 import type {
@@ -133,7 +128,6 @@ export type GameMenusState = {
   /* all user settings are optional - if not stated in the store, the selector's
     job is to use a default instead */
   userSettings: UserSettings;
-  upscale: Upscale;
 
   planetsLiberated: Record<PlanetName, boolean>;
   roomsExplored: Record<string, true>; // RoomId ?
@@ -180,15 +174,6 @@ export const initialGameMenuSliceState: GameMenusState = {
     displaySettings: {},
     soundSettings: {},
   },
-  upscale: calculateUpscale(
-    inBrowser ?
-      { x: globalThis.window.innerWidth, y: globalThis.window.innerHeight }
-      // use zx spectrum resolution as a default for node (running tests under vitest)
-    : resolutions.zxSpectrum,
-    // use the default for initial upscale:
-    defaultUserSettings.displaySettings.emulatedResolution,
-    1,
-  ),
 
   planetsLiberated: noPlanetsLiberated,
   roomsExplored: {},
@@ -224,9 +209,6 @@ export const gameMenusSlice = createSlice({
   name: "gameMenus",
   initialState: initialGameMenuSliceState,
   reducers: {
-    setUpscale(state, { payload: upscale }: PayloadAction<Upscale>) {
-      state.upscale = upscale;
-    },
     setEmulatedResolution(
       state,
       { payload }: PayloadAction<ResolutionName | undefined>,
@@ -243,10 +225,6 @@ export const gameMenusSlice = createSlice({
 
       state.userSettings.displaySettings.emulatedResolution =
         emulatedResolution;
-
-      if (detectDeviceType() !== "server") {
-        state.upscale = calculateUpscaleForCurrentDevice(emulatedResolution);
-      }
     },
     scrollRead(
       state,
@@ -679,7 +657,6 @@ export const {
   setFocussedMenuItemId,
   setShowBoundingBoxes,
   setShowShadowMasks,
-  setUpscale,
   toggleBoolean,
 } = gameMenusSlice.actions;
 

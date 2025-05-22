@@ -3,7 +3,7 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
-import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { blockXyzToFineXyz } from "../../render/projections";
 
 export const positionCentredInBlock = (item: JsonItemUnion): Xyz => {
   // this is wrong when we have times set to on!

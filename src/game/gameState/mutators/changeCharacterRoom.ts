@@ -21,7 +21,7 @@ import {
 import { collision1toMany } from "../../collision/aabbCollision";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { isPortal } from "../../physics/itemPredicates";
-import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { blockXyzToFineXyz } from "../../render/projections";
 import { store } from "../../../store/store";
 import { moveItem } from "../../physics/moveItem";
 import {
@@ -253,6 +253,7 @@ export const changeCharacterRoom = <
         roomJson: toRoomJson,
         roomPickupsCollected:
           gameState.pickupsCollected[toRoomId] ?? emptyObject,
+        scrollsRead: store.getState().gameMenus.scrollsRead,
       }) as RoomState<RoomId, RoomItemId>);
 
   // take the character out of the previous room:

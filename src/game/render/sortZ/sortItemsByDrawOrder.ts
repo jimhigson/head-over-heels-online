@@ -30,9 +30,14 @@ const deleteEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
  */
 export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
   items: Record<Tid, TItem>,
-  // the nodes that have moved - nodes that did not move are not considered
+  /**
+   * the nodes that have moved - nodes that did not move are not considered
+   *  - if not given, wil consider all
+   */
   moved: Set<TItem> = new Set(objectValues(items)),
-  // if given, will create an incremental update starting from the previous edges
+  /**
+   * if given, will create an incremental update starting from the previous edges
+   */
   inFrontOf: GraphEdges<Tid> = new Map(),
 ): GraphEdges<Tid> => {
   // track items that have already been compared to cut out duplicate comparisons:

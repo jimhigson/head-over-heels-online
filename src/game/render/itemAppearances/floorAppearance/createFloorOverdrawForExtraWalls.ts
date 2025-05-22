@@ -1,6 +1,6 @@
 import { Graphics } from "pixi.js";
 import type { ExtraWallRanges } from "./findExtraWallRanges";
-import { projectBlockXyzToScreenXy } from "../../projectToScreen";
+import { projectBlockXyzToScreenXy } from "../../projections";
 
 export const createFloorOverdrawForExtraWalls = ({
   extraWallRanges,

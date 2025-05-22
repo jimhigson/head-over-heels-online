@@ -75,6 +75,9 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0(react@19.0.0)
     devDependencies:
+      '@dyljhd/use-effect-debugger':
+        specifier: ^1.2.1
+        version: 1.2.1(react@19.0.0)
       '@eslint/js':
         specifier: ^9.22.0
         version: 9.22.0
@@ -703,6 +706,11 @@ packages:
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
+
+  '@dyljhd/use-effect-debugger@1.2.1':
+    resolution: {integrity: sha512-jx4MGl5f5z4Moton68Sc7WUfLxZpkIcU0RM/QGRCNfwkw/nayDDd/TrU69eGCRhUDAshtm+Js70/TW9rQbV1UA==}
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18
 
   '@esbuild/aix-ppc64@0.25.1':
     resolution: {integrity: sha512-kfYGy8IdzTGy+z0vFGvExZtxkFlA4zAxgKEahG9KE1ScBjpQnFsNOX8KTU5ojNru5ed5CVoJYXFtoxaq5nFbjQ==}
@@ -4555,6 +4563,10 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
     optional: true
+
+  '@dyljhd/use-effect-debugger@1.2.1(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
 
   '@esbuild/aix-ppc64@0.25.1':
     optional: true

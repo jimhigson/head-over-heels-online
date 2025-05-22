@@ -16,6 +16,7 @@ import { defaultUserSettings } from "./defaultUserSettings";
 import type { Get, Paths } from "type-fest";
 import type { ToggleablePaths } from "../utils/Toggleable";
 import { getAtPath } from "../utils/getAtPath";
+import { selectTotalUpscale } from "./slices/upscale/upscaleSlice";
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>
@@ -23,14 +24,6 @@ const selectUserSetting =
     getAtPath(state.gameMenus.userSettings, path) ??
     getAtPath(defaultUserSettings, path);
 
-export const selectTotalUpscale = (state: RootState): number => {
-  const {
-    gameMenus: {
-      upscale: { cssUpscale, gameEngineUpscale },
-    },
-  } = state;
-  return cssUpscale * gameEngineUpscale;
-};
 export const useTotalUpscale = () => useAppSelector(selectTotalUpscale);
 
 export const selectInputAssignment = selectUserSetting("inputAssignment");
@@ -137,12 +130,13 @@ export const selectIsNoFootstepSounds = selectUserSetting(
 
 export const selectShouldRenderOnScreenControls = ({
   gameMenus,
+  upscale,
 }: RootState): boolean =>
   (gameMenus.userSettings.onScreenControls ??
     defaultUserSettings.onScreenControls) &&
   // the on-screen controls currently don't work when the display is rotated,
   // so hide them in this case:
-  gameMenus.upscale.rotate90 === false;
+  upscale.upscale.rotate90 === false;
 
 export const useIsUserPreferenceOnScreenControls = () => {
   return useAppSelector(selectUserPreferenceOnScreenControls);

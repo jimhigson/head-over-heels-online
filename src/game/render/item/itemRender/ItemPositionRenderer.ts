@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { projectWorldXyzToScreenXy } from "../../projectToScreen";
+import { projectWorldXyzToScreenXy } from "../../projections";
 import type {
   ItemTickContext,
   ItemRenderContext,

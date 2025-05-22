@@ -4,6 +4,7 @@ import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
 import { objectEntries, objectValues } from "iter-tools";
 import { iterate } from "../utils/iterate";
+import type { EditorCursorRoomItemId } from "../editor/EditorRoomId";
 
 /*type RoomItemIdWithKnownIds = (
   | "head"
@@ -23,26 +24,7 @@ export type RoomStateItems<
   ScN extends SceneryName = SceneryName,
 > = {
   [RID in RoomItemId]: UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>;
-}; /* & {
-  // TODO: remove comment if this sticks
-  //  nope, results in unions that are too complex to represent - need to find a simpler
-  //  expression of how this can be iterated
-  // commented out code pre-completes the types for some known ids - this is useful
-  // and should be tried to be re-introduced when there is a lul in refactors
-  // the solution here is probably RoomItemId extends KnownRoomItemIds (everywhere!)
-
-  head?: ItemInPlay<"head", RoomId, RoomItemId, RoomItemId, ScN>;
-  heels?: ItemInPlay<"heels", RoomId, RoomItemId, RoomItemId, ScN>;
-  headOverHeels?: ItemInPlay<
-    "headOverHeels",
-    RoomId,
-    RoomItemId,
-    RoomItemId,
-    ScN
-  >;
-  // every room has a floor edge:
-  floorEdge: ItemInPlay<"floorEdge", RoomId, RoomItemId, RoomItemId, ScN>;
-}*/
+};
 
 /**
  * getter for room items, with some well-known ids built-in and auto-providing
@@ -71,6 +53,9 @@ export const getRoomItem = <
           "headOverHeels",
           ScN
         >
+      : // for the room editor, the cursor has a well-known id:
+      Id extends EditorCursorRoomItemId ?
+        ItemInPlay<"cursor", RoomId, RoomItemId | "cursor", "cursor", ScN>
       : UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>)
     | undefined;
 };
@@ -142,7 +127,7 @@ export type RoomState<
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
 > = Simplify<
-  Omit<RoomJson<RoomId, RoomItemId, ScN>, "items"> & {
+  Omit<RoomJson<RoomId, RoomItemId, ScN>, "items" | "meta"> & {
     items: RoomStateItems<RoomId, RoomItemId, ScN>;
     /** the json this room was loaded from */
     roomJson: RoomJson<RoomId, RoomItemId, ScN>;
