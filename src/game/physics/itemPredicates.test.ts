@@ -4,7 +4,7 @@ import { loadPlayer } from "../gameState/loadRoom/loadPlayer";
 import { first } from "iter-tools";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
-import { loadItemFromJson } from "../gameState/loadRoom/loadItem";
+import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";

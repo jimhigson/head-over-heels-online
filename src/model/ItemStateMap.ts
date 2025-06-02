@@ -2,6 +2,7 @@ import type { EmptyObject } from "type-fest";
 import type { PortableItem } from "../game/physics/itemPredicates";
 import type { Xyz, Xy } from "../utils/vectors/vectors";
 import type { SwitchSetting } from "./ItemInPlay";
+import type { Tool } from "../editor/Tool";
 
 export type PlayableActionState =
   | "moving"
@@ -270,5 +271,10 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
 
   cursor: {
     pointingToItemId: RoomItemId;
+    /**
+     * the item to be rendered as a representation of that the cursor will create when
+     * activated
+     */
+    tool?: Tool;
   };
 };

@@ -27,7 +27,7 @@ import { addXyz } from "../utils/vectors/vectors";
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
 import { MockInputStateTracker } from "./MockInputStateTracker";
 import type { RoomState } from "../model/RoomState";
-import { loadItemFromJson } from "../game/gameState/loadRoom/loadItem";
+import { loadItemFromJson } from "../game/gameState/loadRoom/loadItemFromJson";
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { PortableItemType } from "../game/physics/itemPredicates";
 import { startAppListening } from "../store/listenerMiddleware";

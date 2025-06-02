@@ -25,6 +25,10 @@ import { useEditorRoomState } from "../EditorRoomStateProvider";
 import { defaultBaseState } from "../../game/gameState/loadRoom/itemDefaultStates";
 import { largeItemAabb } from "../../game/collision/boundingBoxes";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
+import type { Tool } from "../Tool";
+import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import { selectTool } from "../slice/levelEditorSlice";
+import { store } from "../../store/store";
 
 // allow items to be positioned on half-blocks for x and y (unlike original hoh)
 const incrementXy = blockSizePx.w / 2;
@@ -208,6 +212,7 @@ const mutateRoomWithCursorPosition = (
     position: Xyz;
     pointingToItemId: EditorRoomItemId;
   },
+  tool: Tool | undefined,
 ) => {
   console.log("moving cursor to", cursorPayload);
 
@@ -217,6 +222,7 @@ const mutateRoomWithCursorPosition = (
   if (existingCursor) {
     existingCursor.state.position = position;
     existingCursor.state.pointingToItemId = pointingToItemId;
+    existingCursor.state.tool = tool;
   } else {
     room.items[cursorId] = {
       type: "cursor",
@@ -225,6 +231,7 @@ const mutateRoomWithCursorPosition = (
         ...defaultBaseState(),
         position,
         pointingToItemId,
+        tool,
       },
       config: {},
       aabb: largeItemAabb,
@@ -275,10 +282,14 @@ export const useRoomEditorInteractivity = (
             gameEngineXy,
           );
 
-          mutateRoomWithCursorPosition(currentEditingRoomState, {
-            position: cursorWorldBlockPositionRounded,
-            pointingToItemId: itemPointingTo.id,
-          });
+          mutateRoomWithCursorPosition(
+            currentEditingRoomState,
+            {
+              position: cursorWorldBlockPositionRounded,
+              pointingToItemId: itemPointingTo.id,
+            },
+            selectTool(store.getState() as RootStateWithLevelEditorSlice),
+          );
         } else {
           mutateRoomRemoveCursor(currentEditingRoomState);
         }

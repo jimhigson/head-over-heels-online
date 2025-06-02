@@ -90,6 +90,17 @@ export function* loadItemFromJson<
           }
         : boundingBoxes;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
+      let state: any;
+      try {
+        state = initialState(jsonItem);
+      } catch (e: unknown) {
+        throw new Error(
+          `loadItemFromJson: error creating initial state for jsonItem ${JSON.stringify(jsonItem, null, 2)}`,
+          { cause: e },
+        );
+      }
+
       yield {
         ...jsonItem,
         ...defaultItemProperties,
@@ -100,8 +111,7 @@ export function* loadItemFromJson<
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: jsonItem.config as any,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
-        state: initialState(jsonItem) as any,
+        state,
       };
     }
   }
