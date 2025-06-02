@@ -7,14 +7,8 @@ import { useAppSelector } from "../../store/hooks.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
 import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
-import {
-  useCheatsOn,
-  useEmulatedResolutionName,
-  useIsGameRunning,
-} from "../../store/selectors.ts";
+import { useCheatsOn, useIsGameRunning } from "../../store/selectors.ts";
 import type { OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId.ts";
-import { detectDeviceType } from "../../utils/detectDeviceType.tsx";
-import { resolutions } from "../../originalGame.ts";
 import type Cheats from "../../game/components/cheats/Cheats.tsx";
 import { importOriginalCampaign } from "../../_generated/originalCampaign/campaign.import.ts";
 import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
@@ -28,6 +22,9 @@ import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlin
 import { store } from "../../store/store.ts";
 import { errorCaught } from "../../store/slices/gameMenusSlice.ts";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
+import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
+import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
+import { ErrorBoundary } from "../../utils/react/ErrorBoundary.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
@@ -104,56 +101,29 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
   return gameApi;
 };
 
-const resClassName = (str: string) =>
-  `res${str[0].toUpperCase()}${str.slice(1)}`;
-
-const usePageAsAnApp = () => {
-  const resolutionName = useEmulatedResolutionName();
-  const { rotate90 } = useAppSelector((state) => state.gameMenus.upscale);
-
-  useEffect(() => {
-    // unchanging classes:
-    document.body.classList.add(
-      "overscroll-none",
-      "overflow-hidden",
-      "select-none",
-      detectDeviceType(),
-    );
-  }, []);
-  useEffect(() => {
-    document.body.classList.remove(
-      ...Object.keys(resolutions).map(resClassName),
-    );
-    document.body.classList.add(resClassName(resolutionName));
-    document.body.classList.toggle("portrait-rot", rotate90);
-  }, [resolutionName, rotate90]);
-};
-
 /**
  * React wrapper to give a space to pixi.js and start the rest of the game engine
  */
 export const GamePage = () => {
-  const [gameDiv, setGameDiv] = useState<HTMLDivElement | null>(null);
+  const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
 
   const cheatsOn = useCheatsOn();
   const gameApi = useGame();
-  const canvasSize = useAppSelector(
-    (state) => state.gameMenus.upscale.canvasSize,
-  );
+  const canvasSize = useAppSelector(selectCanvasSize);
 
   const canvasInlineStyle = useCanvasInlineStyle();
 
   usePageAsAnApp();
   useEffect(() => {
-    if (gameDiv === null || gameApi === undefined) return;
+    if (renderArea === null || gameApi === undefined) return;
 
-    gameApi.renderIn(gameDiv);
+    gameApi.renderIn(renderArea);
 
     // disable the ios magnifier/text select thing on double-tap (withing the game only)
-    gameDiv.addEventListener("touchstart", (e) => e.preventDefault(), {
+    renderArea.addEventListener("touchstart", (e) => e.preventDefault(), {
       passive: false,
     });
-  }, [gameApi, gameDiv]);
+  }, [gameApi, renderArea]);
 
   useEffect(() => {
     gameApi?.resizeTo(canvasSize);
@@ -161,10 +131,12 @@ export const GamePage = () => {
 
   return (
     <>
-      <div style={canvasInlineStyle} ref={setGameDiv} />
+      <div style={canvasInlineStyle} ref={setRenderArea} />
       <GameApiProvider gameApi={gameApi}>
-        <ConnectInputToStore />
-        <Dialogs />
+        <ErrorBoundary>
+          <ConnectInputToStore />
+          <Dialogs />
+        </ErrorBoundary>
         {gameApi && cheatsOn && (
           <Suspense fallback={null}>
             <LazyCheats />

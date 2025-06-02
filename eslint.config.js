@@ -48,7 +48,14 @@ export default tseslint.config(
       "unused-imports/no-unused-imports": "error",
 
       "prefer-destructuring": "error",
-      "react-hooks/exhaustive-deps": "error",
+      "react-hooks/exhaustive-deps": [
+        "error",
+        {
+          // @see @dyljhd/use-effect-debugger
+          // https://www.npmjs.com/package/@dyljhd/use-effect-debugger
+          additionalHooks: "useEffectDebugger",
+        },
+      ],
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

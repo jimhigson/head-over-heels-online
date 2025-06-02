@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { projectWorldXyzToScreenXy } from "./projectToScreen";
+import { projectWorldXyzToScreenXy } from "./projections";
 import { floorRenderExtent } from "./renderExtent";
 import { moveSpeedPixPerMs } from "../physics/mechanicsConstants";
 import type { AnyRoomJson } from "../../model/RoomJson";

@@ -5,10 +5,11 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXy, originXyz, addXyz } from "../../../utils/vectors/vectors";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
-import { blockXyzToFineXyz } from "../../render/projectToScreen";
+import { blockXyzToFineXyz } from "../../render/projections";
 import { floorBlockMinMax } from "../../render/renderExtent";
 import {
   floorEdgeFixedZIndex,
+  floorItemFixedZIndex,
   nonRenderingItemFixedZIndex,
 } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
@@ -83,7 +84,7 @@ export function* loadFloorAndCeiling<
           position: roomExtendedPosition,
         },
         renders: true,
-        fixedZIndex: -1,
+        fixedZIndex: floorItemFixedZIndex,
       },
     } satisfies ItemInPlay<"floor", RoomId, RoomItemId>;
     // yield a portal for going to the room below:
@@ -131,8 +132,7 @@ export function* loadFloorAndCeiling<
           ...defaultBaseState(),
           position: roomExtendedPosition,
         },
-        renders: true,
-        fixedZIndex: -1,
+        fixedZIndex: floorItemFixedZIndex,
       },
     } satisfies ItemInPlay<"floor", RoomId, RoomItemId>;
 
@@ -167,7 +167,6 @@ export function* loadFloorAndCeiling<
           ...defaultBaseState(),
           position: ceilingPosition,
         },
-        renders: false,
       },
     } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
   }

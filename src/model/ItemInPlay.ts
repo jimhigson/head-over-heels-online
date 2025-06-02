@@ -17,11 +17,19 @@ export type ItemInPlayType =
   | "portal"
   | "floor"
   | "floorEdge"
-  // when another item is fading out, the bubbles are a separate item
+  /**
+   * when another item is fading out, the bubbles are a separate item
+   */
   | "bubbles"
-  // jumping or running fast, with a power-up
+  /**
+   * jumping or running fast, with a power-up
+   */
   | "particle"
-  | "floatingText";
+  | "floatingText"
+  /**
+   * for the room editor only!
+   */
+  | "cursor";
 
 export type SwitchSetting = "left" | "right";
 

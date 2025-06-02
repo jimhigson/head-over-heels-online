@@ -14,7 +14,7 @@ import {
 import { loadedSpriteSheet } from "../../sprites/spriteSheet";
 import { originalGameFrameDuration } from "../../originalGame";
 import { type Xy, type Xyz } from "../../utils/vectors/vectors";
-import { projectBlockXyzToScreenXy } from "./projectToScreen";
+import { projectBlockXyzToScreenXy } from "./projections";
 
 export type AnimatedCreateSpriteOptions = {
   // animated

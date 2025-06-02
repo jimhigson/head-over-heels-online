@@ -1,5 +1,5 @@
 import { AlphaFilter, Container, Sprite } from "pixi.js";
-import { projectWorldXyzToScreenXy } from "../../projectToScreen";
+import { projectWorldXyzToScreenXy } from "../../projections";
 import type { Collideable } from "../../../collision/aabbCollision";
 import { collision1to1 } from "../../../collision/aabbCollision";
 import { concat, objectEntries } from "iter-tools";
@@ -109,6 +109,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
   }
 
   destroy() {
+    console.log(
+      "destroying ItemShadowRenderer for",
+      this.renderContext.item.id,
+    );
     this.#container.destroy(true);
     this.#shadowMaskRenderer?.destroy();
   }

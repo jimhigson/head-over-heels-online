@@ -26,6 +26,7 @@ import { createSerialisableErrors } from "../../utils/redux/createSerialisableEr
 import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
 import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
 import type { RoomRendererType } from "../render/RoomRendererType";
+import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,
@@ -72,11 +73,8 @@ export class MainLoop<RoomId extends string> {
   ) {
     try {
       const storeState = store.getState();
-      const {
-        gameMenus: {
-          upscale: { gameEngineUpscale },
-        },
-      } = storeState;
+
+      const gameEngineUpscale = selectGameEngineUpscale(storeState);
 
       this.#worldSound.connect(audioCtx.destination);
       app.stage.addChild(this.#worldGraphics);
@@ -132,8 +130,8 @@ export class MainLoop<RoomId extends string> {
           displaySettings: tickDisplaySettings,
           soundSettings: tickSoundSettings,
         },
-        upscale: tickUpscale,
       },
+      upscale: { upscale: tickUpscale },
     } = store.getState();
 
     const tickColourise =

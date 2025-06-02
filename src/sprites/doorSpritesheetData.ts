@@ -6,7 +6,7 @@ import { addXy, type Xy } from "../utils/vectors/vectors";
 type SceneryName = "generic" | "moonbase" | "moonbase.dark";
 
 export type DoorFrameTextureName<Name extends SceneryName = SceneryName> =
-  `door.frame.${Name}.${AxisXy}.${"near" | "far" | "top"}`;
+  `door.frame.${Name}.${AxisXy}.${"near" | "far" | "top" | "whole"}`;
 
 type Frame = {
   x: number;
@@ -39,6 +39,20 @@ const doorFrames = <SN extends SceneryName>(
   function* charFramesGenerator(): Generator<
     [DoorFrameTextureName<SN>, SpritesheetFrameData]
   > {
+    yield [
+      `door.frame.${name}.${orientation}.whole`,
+      {
+        frame: {
+          ...maybeMirror({
+            x: -41,
+            y: 0,
+            w: 40,
+            h: 64,
+            pivot: { x: 9, y: 52 },
+          }),
+        },
+      },
+    ];
     yield [
       `door.frame.${name}.${orientation}.far`,
       {

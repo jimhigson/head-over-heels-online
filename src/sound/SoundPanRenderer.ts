@@ -1,7 +1,7 @@
 import {
   blockXyzToFineXyz,
   projectWorldXyzToScreenX,
-} from "../game/render/projectToScreen";
+} from "../game/render/projections";
 import type { ItemInPlayType } from "../model/ItemInPlay";
 import { audioCtx } from "./audioCtx";
 import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";

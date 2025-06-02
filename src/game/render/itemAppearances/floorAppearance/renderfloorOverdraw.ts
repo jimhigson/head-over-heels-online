@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { createSprite } from "../../createSprite";
-import { projectBlockXyzToScreenXy } from "../../projectToScreen";
+import { projectBlockXyzToScreenXy } from "../../projections";
 
 import { objectEntries } from "iter-tools";
 import { iterate } from "../../../../utils/iterate";

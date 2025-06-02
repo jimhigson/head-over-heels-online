@@ -1,4 +1,4 @@
-import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
+import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { roomWorldPosition } from "./roomWorldPosition";
 
 const dotSize = 0.15;

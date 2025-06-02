@@ -1,5 +1,5 @@
 import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
-import { projectWorldXyzToScreenXy } from "../../../../../render/projectToScreen";
+import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import {
   roomBack,
   doorwayGap,

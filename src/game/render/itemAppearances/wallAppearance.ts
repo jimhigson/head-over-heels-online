@@ -6,7 +6,7 @@ import {
   directionAxis,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import { projectBlockXyzToScreenXy } from "../projectToScreen";
+import { projectBlockXyzToScreenXy } from "../projections";
 import { wallTextureId } from "../wallTextureId";
 import { itemAppearanceRenderOnce } from "./ItemAppearance";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";

@@ -9,6 +9,7 @@ import { store } from "../../../store/store";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { noFilters } from "../filters/standardFilters";
+import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;
@@ -70,7 +71,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     mainContainer = new Container({
       filters: new OutlineFilter({
         outlineColor: spritesheetPalette.pureBlack,
-        upscale: store.getState().gameMenus.upscale.gameEngineUpscale,
+        upscale: selectGameEngineUpscale(store.getState()),
         // it is not ok to snap to pixel grid - this needs to render between pixels while scrolling up
         lowRes: false,
       }),

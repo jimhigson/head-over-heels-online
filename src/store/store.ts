@@ -1,5 +1,5 @@
-import type { UnknownAction } from "@reduxjs/toolkit";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import type { UnknownAction, WithSlice } from "@reduxjs/toolkit";
+import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
 import type { GameMenusState } from "./slices/gameMenusSlice";
 import { gameMenusSlice } from "./slices/gameMenusSlice";
@@ -17,7 +17,9 @@ import {
 } from "redux-persist";
 import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
 import { listenerMiddleware } from "./listenerMiddleware";
-import { levelEditorSlice } from "./slices/levelEditor/levelEditorSlice";
+import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
+import { upscaleSlice } from "./slices/upscale/upscaleSlice";
+import { listenForUpscaleSlice } from "./slices/upscale/listenForUpscaleSlice";
 
 export const storeLatestVersion = 14;
 
@@ -45,11 +47,16 @@ const gameMenusPersistedReducer = persistReducer(
   gameMenusSlice.reducer,
 );
 
-const appReducer = combineReducers({
+const appReducer = combineSlices({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
-  // TODO: this slice could be lazy-loaded and added dynamically with the level editor
-  [levelEditorSlice.reducerPath]: levelEditorSlice.reducer,
-});
+  [upscaleSlice.reducerPath]: upscaleSlice.reducer,
+}).withLazyLoadedSlices<
+  // pre-empting the lazy-loaded slices for the types only (no run-time importing)
+  // because it is easier. This could also be done via module augmentation in typescript
+  WithSlice<LevelEditorSlice>
+>();
+
+export const injectSlice = appReducer.inject;
 
 const rootReducer = (
   state: ReturnType<typeof appReducer> | undefined,
@@ -72,6 +79,8 @@ export const store = configureStore({
       },
     }).prepend(listenerMiddleware.middleware),
 });
+
+listenForUpscaleSlice();
 
 export const persistor = persistStore(store);
 

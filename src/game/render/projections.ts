@@ -21,28 +21,52 @@ export const projectWorldXyzToScreenX = ({
 }: Partial<Xyz>): number => y - x;
 
 export const projectWorldXyzToScreenXy = ({
-  x = 0,
-  y = 0,
-  z = 0,
+  x: xw = 0,
+  y: yw = 0,
+  z: zw = 0,
 }: Partial<Xyz>): Xy => {
   return {
-    x: y - x,
-    y:
-      // >> 1 is /2 but rounded down. I'm not rounding, so /2
-      -(x + y) / 2 - z,
+    x: yw - xw,
+    y: -(xw + yw) / 2 - zw,
+  };
+};
+
+/**
+ * since x,y screen co-ord is ambiguous, assume that the z is constant
+ * at zero - ie, the projection is onto a horizontal plane starting at
+ * the origin
+ */
+export const projectScreenXyToWorldXyz = ({ x: xs, y: ys }: Xy): Xyz => {
+  return {
+    y: xs / 2 - ys,
+    x: -(xs / 2 + ys),
+    z: 0,
   };
 };
 
 /** get the in-game x,y,z for any given block x,y,z */
 export const blockXyzToFineXyz = ({
-  x = 0,
-  y = 0,
-  z = 0,
+  x: xb = 0,
+  y: yb = 0,
+  z: zb = 0,
 }: Partial<Xyz>): Xyz => {
   return {
-    x: x * blockSizePx.w,
-    y: y * blockSizePx.d,
-    z: z * blockSizePx.h,
+    x: xb * blockSizePx.w,
+    y: yb * blockSizePx.d,
+    z: zb * blockSizePx.h,
+  };
+};
+
+/** get the in-game x,y,z for any given block x,y,z */
+export const fineXyzToBlockXyz = ({
+  x: xf = 0,
+  y: yf = 0,
+  z: zf = 0,
+}: Partial<Xyz>): Xyz => {
+  return {
+    x: xf / blockSizePx.w,
+    y: yf / blockSizePx.d,
+    z: zf / blockSizePx.h,
   };
 };
 

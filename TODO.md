@@ -56,6 +56,8 @@ front of other items
 
 ### Details and bugs
 
+[ ] css upscale can be 0.5 (less than 1) - this seems wrong. Write tests for all the cases we want to cover!
+
 [ ] make FS/OSS (again)
 
 [ ] helpful sliding on all blocks, not just doors

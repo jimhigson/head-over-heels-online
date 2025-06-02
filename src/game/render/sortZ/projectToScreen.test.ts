@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { projectWorldXyzToScreenXy } from "../projectToScreen";
+import { projectWorldXyzToScreenXy } from "../projections";
 
 describe("projectWorldXyzToScreenXy", () => {
   test("projects floats to floats", () => {

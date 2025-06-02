@@ -17,9 +17,12 @@ export const SpritePage = () => {
       {textureIds.map((textureId) => {
         const { frame } = spritesheetData.frames[textureId];
         return (
-          <div key={textureId} className="bg-shadow m-[8px] p-[16px]">
+          <div
+            key={textureId}
+            className="bg-shadow m-[8px] p-[16px] text-center"
+          >
             <div
-              className={`sprite bg-shadow hover:bg-pink hover:border-white border-shadow border border-4 mb-1 box-content`}
+              className={`sprite bg-shadow hover:bg-pink hover:border-white border-shadow border-2 mb-1 box-content mx-auto w-min`}
               // most of these textures won't have classes loaded by tailwind due to ,
               // so inline the relevant info - including how tailwind would inflate
               // the css in prod
