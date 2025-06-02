@@ -87,3 +87,6 @@ clinking:
     - lowered tone
     - sped up
     https://www.pond5.com/sound-effects/item/266172877-hitting-glass-bottle-single-clink
+
+toasters:
+    https://www.pond5.com/sound-effects/item/23574403-toaster-action

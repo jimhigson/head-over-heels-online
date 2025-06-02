@@ -33,6 +33,7 @@ import softBumpSoundUrl from "../../sounds/softBump.mp3";
 import springBoingSoundUrl from "../../sounds/spring.mp3";
 import stepStoolScrapingSoundUrl from "../../sounds/metalicScraping.mp3";
 import switchClickSoundUrl from "../../sounds/switch-shorter.mp3";
+import toasterPopUpSoundUrl from "../../sounds/toasterPopUp.mp3";
 import teleportInSoundUrl from "../../sounds/teleportIn.mp3";
 import teleportOutSoundUrl from "../../sounds/teleportOut.mp3";
 import teleportWarningSirenSoundUrl from "../../sounds/teleportWarningSiren.mp3";
@@ -87,6 +88,7 @@ const importSoundsOnce = importOnce(async () => {
     springBoing: await loadAndDecode(springBoingSoundUrl),
     stepStoolScraping: await loadAndDecode(stepStoolScrapingSoundUrl),
     switchClick: await loadAndDecode(switchClickSoundUrl),
+    toasterPopUpSoundUrl: await loadAndDecode(toasterPopUpSoundUrl),
     teleportIn: await loadAndDecode(teleportInSoundUrl),
     teleportOut: await loadAndDecode(teleportOutSoundUrl),
     teleportWarningSiren: await loadAndDecode(teleportWarningSirenSoundUrl),

@@ -1,6 +1,5 @@
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import type { FreeItem } from "../../physics/itemPredicates";
-import { isMonster } from "../../physics/itemPredicates";
+import { isChargingCyberman } from "../../physics/itemPredicates";
 import { createSprite } from "../createSprite";
 import type { ItemAppearance } from "./ItemAppearance";
 import type { Xy } from "../../../utils/vectors/vectors";
@@ -10,17 +9,16 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 
+/**
+ * a 2d array of the ids of all the cybermen sat on this toaster,
+ * indexed by x and y blocks
+ */
 type ChargingCybermanGridPositions = Array<Array<string | undefined>>;
 
 type ToasterRenderProps = {
   chargePositions: ChargingCybermanGridPositions;
   cybermanActivationBitmask: number;
 };
-
-const isChargingCyberman = (i: FreeItem<string, string>): boolean =>
-  isMonster(i) &&
-  i.config.which === "cyberman" &&
-  i.state.everActivated === false;
 
 const findChargingPositions = (
   {

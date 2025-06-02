@@ -18,6 +18,7 @@ import { SwitchSoundRenderer } from "./itemSoundRenderers/SwitchSoundRenderer";
 import { TeleporterSoundRenderer } from "./itemSoundRenderers/TeleporterSoundRenderer";
 import { FiredDoughnutSoundRenderer } from "./itemSoundRenderers/FiredDoughnutSoundRenderer";
 import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
+import { ToasterSoundRenderer } from "./itemSoundRenderers/ToasterSoundRenderer";
 
 const rendererClasses: {
   [T in ItemInPlayType]?: ItemSoundRendererConstructableClass<T>;
@@ -43,6 +44,15 @@ const rendererClasses: {
 export const createSoundRenderer = <T extends ItemInPlayType>(
   renderContext: ItemSoundRenderContext<T>,
 ): ItemSoundRenderer<T> | undefined => {
+  if (
+    renderContext.item.type === "deadlyBlock" &&
+    renderContext.item.config.style === "toaster"
+  ) {
+    return new ToasterSoundRenderer(
+      renderContext as ItemSoundRenderContext<"deadlyBlock">,
+    ) as ItemSoundRenderer<T>;
+  }
+
   const ThisItemRendererClass = rendererClasses[renderContext.item.type] as
     | ItemSoundRendererConstructableClass<T>
     | undefined;
