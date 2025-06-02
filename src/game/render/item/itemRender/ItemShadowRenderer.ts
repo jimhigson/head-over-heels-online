@@ -109,10 +109,6 @@ class ItemShadowRenderer<T extends ItemInPlayType>
   }
 
   destroy() {
-    console.log(
-      "destroying ItemShadowRenderer for",
-      this.renderContext.item.id,
-    );
     this.#container.destroy(true);
     this.#shadowMaskRenderer?.destroy();
   }
@@ -177,7 +173,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           return "create";
         }
       }
-      // now know caster has no shadow:
+      // no collision with the space above the surface, so no shadow:
       return "noShadow";
     });
 

@@ -159,6 +159,16 @@ export type ItemInPlay<
    * topological sort of the items in the room
    */
   fixedZIndex?: number;
+
+  /**
+   * Any item can be a cursor preview. Ie, a cursor can be the preview of an
+   * item before it is put down. These are added to the room in-play by the editor.
+   *
+   * Not set on items with type="preview"
+   *
+   * This property should never be set for the game in-play.
+   */
+  isCursorPreview?: boolean;
 };
 
 /**

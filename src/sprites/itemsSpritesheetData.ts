@@ -34,13 +34,6 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  ball: {
-    frame: {
-      ...smallItemGridLocation({ x: 0, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-
   ...fourDirections(
     "cyberman",
     smallItemGridLocation({ x: 1, y: 1 }),
@@ -101,9 +94,15 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
-  "crown.dark": {
+  ball: {
     frame: {
       ...smallItemGridLocation({ x: 13, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.ball": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 1 }),
       ...smallItemTextureSize,
     },
   },
@@ -439,6 +438,12 @@ const frames = {
     },
   },
 
+  "editor.cursor.xz": {
+    frame: {
+      ...largeItemGridLocation({ x: 7, y: -2 }),
+      ...largeItemTextureSize,
+    },
+  },
   "editor.cursor.floor": {
     frame: {
       ...largeItemGridLocation({ x: 7, y: -1 }),

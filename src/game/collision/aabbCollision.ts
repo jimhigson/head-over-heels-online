@@ -47,3 +47,23 @@ export const collision1toMany = <C extends Collideable>(
     ),
   ];
 };
+
+/**
+ * Check for collisions between a single item and multiple others.
+ *
+ * Like collision1toMany but an iterator
+ */
+export function* collision1toManyIter<C extends Collideable>(
+  subject: Collideable,
+  items: Iterable<C>,
+): Generator<C> {
+  for (const candidateItem of items) {
+    if (
+      // prevent self- collision
+      subject.id !== candidateItem.id &&
+      collision1to1(subject, candidateItem)
+    ) {
+      yield candidateItem;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { LevelEditorToolbar } from "./LevelEditorToolbar";
+import { LevelEditorToolbar } from "./tools/LevelEditorToolbar";
 import { RoomEditingArea } from "./RoomEditingArea/RoomEditingArea";
 import { PixiApplicationProvider } from "./RoomEditingArea/PixiApplicationProvider";
 import { usePageAsAnApp } from "../pages/gamePage/usePageAsAnApp";

@@ -6,4 +6,4 @@ export type ItemTool<T extends JsonItemType = JsonItemType> = {
   config: JsonItemConfig<T, EditorRoomId, EditorRoomItemId>;
 };
 
-export type Tool = { type: "item"; item: ItemTool };
+export type Tool = { type: "item"; item: ItemTool } | { type: "pointer" };

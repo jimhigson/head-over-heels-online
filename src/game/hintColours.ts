@@ -8,8 +8,6 @@ import {
 import { spritesheetPalette } from "../../gfx/spritesheetPalette";
 import { halfbrite } from "../utils/colour/halfBrite";
 
-// not a very accurate representation, granted: https://lospec.com/palette-list/zx-spectrum
-// use to convert: https://convertacolor.com/
 export type Shades = { basic: Color; dimmed: Color; original: Color };
 export const whiteShades = {
   original: new Color(zxSpectrumColors.zxWhite),

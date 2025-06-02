@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { loadItemFromJson } from "../gameState/loadRoom/loadItem";
+import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "./checkStandingOn";
 import { first } from "iter-tools";
 import type { FreeItem } from "../physics/itemPredicates";

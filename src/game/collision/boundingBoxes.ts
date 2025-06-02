@@ -88,7 +88,7 @@ export const boundingBoxForItem = (
         case "elephantHead":
           return { aabb: smallItemAabb };
         case "turtle":
-          return { aabb: largeItemAabb };
+          return { aabb: smallItemAabb };
         default:
           item.config satisfies never;
           throw new Error(`unknown monster type`);

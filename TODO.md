@@ -23,6 +23,16 @@
 [3,M] switch to devcontainers
     [ ] might be more complex than needed. ie, need a container with more modern node than ms/bookworm provides
 
+### level editor
+[ ] add a door
+    [ ] trim the walls
+[ ] scenery changer    
+[ ] 'selector' tool    
+[ ] change wall tiles
+[ ] floor type toggle
+[ ] change facing direction on enemies
+[ ] sub-select buttons
+[ ] change room size
 
 ### menu
 [ ] left-right to move selection sideways

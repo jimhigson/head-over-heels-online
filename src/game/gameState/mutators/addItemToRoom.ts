@@ -9,7 +9,7 @@ import type {
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../GameState";
-import { loadItemFromJson } from "../loadRoom/loadItem";
+import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 import type { RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 

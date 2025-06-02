@@ -1,6 +1,11 @@
 import type { Container } from "pixi.js";
 import { blockSizePx } from "../../sprites/spritePivots";
-import type { XyMaybeZ, Xyz, Xy } from "../../utils/vectors/vectors";
+import type {
+  XyMaybeZ,
+  Xyz,
+  Xy,
+  OrthoPlane,
+} from "../../utils/vectors/vectors";
 
 export const moveContainerToBlockXyz = (
   blockXyz: XyMaybeZ,
@@ -32,16 +37,54 @@ export const projectWorldXyzToScreenXy = ({
 };
 
 /**
- * since x,y screen co-ord is ambiguous, assume that the z is constant
- * at zero - ie, the projection is onto a horizontal plane starting at
- * the origin
+ * for the editor, mostly - convert screen (mouse) to world, on
+ * the visible surface of an object
  */
-export const projectScreenXyToWorldXyz = ({ x: xs, y: ys }: Xy): Xyz => {
-  return {
-    y: xs / 2 - ys,
-    x: -(xs / 2 + ys),
-    z: 0,
-  };
+export const unprojectScreenXyToWorldXyzOnFace = (
+  { x: xs, y: ys }: Xy,
+  itemPosition: Xyz,
+  itemAabb: Xyz,
+  plane: OrthoPlane,
+): Xyz => {
+  const itemOriginScreen = projectWorldXyzToScreenXy(itemPosition);
+
+  // adjust xs, xy to be relative to the projected-on-screen origin of the item:
+  const xsAdj = xs - itemOriginScreen.x;
+  const ysAdj = ys - itemOriginScreen.y;
+
+  switch (plane) {
+    case "xy": {
+      // 'top' face - at heightened z:
+
+      // since this is the top face, further adjust y to be the top of the item,
+      // not the origin:
+      const ysAdj2 = ysAdj + itemAabb.z;
+      return {
+        x: -(xsAdj / 2 + ysAdj2) + itemPosition.x,
+        y: xsAdj / 2 - ysAdj2 + itemPosition.y,
+        z: itemPosition.z + itemAabb.z,
+      };
+    }
+    case "xz": {
+      // 'towards' face
+      return {
+        x: -xsAdj + itemPosition.x,
+        y: itemPosition.y,
+        z: xsAdj / 2 - ysAdj + itemPosition.z,
+      };
+    }
+    case "yz": {
+      // 'right' face
+      return {
+        x: itemPosition.x,
+        y: xsAdj + itemPosition.y,
+        z: -xsAdj / 2 - ysAdj + itemPosition.z,
+      };
+    }
+    default:
+      plane satisfies never;
+      throw new Error(`unknown plane ${plane}`);
+  }
 };
 
 /** get the in-game x,y,z for any given block x,y,z */

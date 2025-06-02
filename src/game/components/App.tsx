@@ -33,7 +33,7 @@ const AppInner = () => {
         </CssVariables>
       </Route>
       <Route path="/sprites">
-        <CssVariables scaleFactor={2}>
+        <CssVariables scaleFactor={4}>
           <SpritePage />
         </CssVariables>
       </Route>
