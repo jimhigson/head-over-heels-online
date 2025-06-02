@@ -258,3 +258,12 @@ export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("monster", "movingPlatform");
+
+/**
+ * sufficient to tell if a cyberman (given they are already on a toaster)
+ * is charging
+ */
+export const isChargingCyberman = (i: FreeItem<string, string>): boolean =>
+  isMonster(i) &&
+  i.config.which === "cyberman" &&
+  i.state.everActivated === false;
