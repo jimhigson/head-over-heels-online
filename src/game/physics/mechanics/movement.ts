@@ -21,6 +21,7 @@ import {
   directionsXyDiagonal,
   directionsXy8,
   directionsXy4,
+  vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { emptyObject } from "../../../utils/empty";
@@ -112,6 +113,47 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
   return {
     movementType: "steady",
   };
+};
+
+/**
+ * turn towards the player, while staying still - creepy, and doesn't impact gameplay in any way
+ */
+const turnTowardsPlayer = <RoomId extends string, RoomItemId extends string>(
+  itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
+  _gameState: GameState<RoomId>,
+  _deltaMS: number,
+): MechanicResult<"monster", RoomId, RoomItemId> => {
+  const {
+    state: { position, facing },
+  } = itemWithMovement;
+
+  const closestPlayable = findClosestPlayable(position, room);
+
+  if (closestPlayable === undefined) {
+    // no players in this room; stay still - not expecting this in normal play
+    return unitMechanicalResult;
+  }
+
+  const vectorXyToClosestPlayer = subXy(
+    closestPlayable?.state.position,
+    position,
+  );
+
+  const newFacing =
+    unitVectors[vectorClosestDirectionXy4(vectorXyToClosestPlayer)!];
+
+  const changedDirection = !xyEqual(newFacing, facing);
+
+  if (changedDirection) {
+    return {
+      movementType: "steady",
+      stateDelta: {
+        facing: newFacing,
+      },
+    };
+  }
+  return unitMechanicalResult;
 };
 
 const walkAlongShortestAxisTowardsPlayer = <
@@ -471,8 +513,8 @@ export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
         deltaMS,
       );
     }
-    case "unmoving":
-      return notWalking;
+    case "turn-to-player":
+      return turnTowardsPlayer(itemWithMovement, room, gameState, deltaMS);
 
     case "towards-analogue":
       return walkTowardIfInSquare(itemWithMovement, room, gameState, deltaMS);
@@ -523,7 +565,7 @@ export const handleItemWithMovementTouchingItem = <
     case "towards-on-shortest-axis-xy4":
     case "towards-analogue":
     case "towards-analogue-unless-planet-crowns":
-    case "unmoving":
+    case "turn-to-player":
       // these don't need anything on touching:
       return;
 

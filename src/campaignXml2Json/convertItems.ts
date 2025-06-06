@@ -612,7 +612,7 @@ const convertItem = async ({
         config: {
           which: "elephantHead",
           activated: "on",
-          movement: "unmoving",
+          movement: "turn-to-player",
           startDirection: convertDirection(xml2JsonItem.orientation),
         },
         position,

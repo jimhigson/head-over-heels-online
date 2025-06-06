@@ -22,7 +22,7 @@ export type MonsterJsonConfig =
     }
   | {
       which: "elephantHead";
-      movement: MovementsSubset<"unmoving">;
+      movement: MovementsSubset<"turn-to-player">;
       startDirection: DirectionXy4;
       // is always unmoving:
       activated: ActivatedWhenSubset<"on">;

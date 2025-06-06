@@ -29,7 +29,7 @@ export const room = inferRoomJson({
     "monster@2,3,0": {
       config: {
         activated: "on",
-        movement: "unmoving",
+        movement: "turn-to-player",
         startDirection: "right",
         which: "elephantHead",
       },
@@ -39,7 +39,7 @@ export const room = inferRoomJson({
     "monster@3,1,0": {
       config: {
         activated: "on",
-        movement: "unmoving",
+        movement: "turn-to-player",
         startDirection: "right",
         which: "elephantHead",
       },
@@ -49,7 +49,7 @@ export const room = inferRoomJson({
     "monster@3,5,0": {
       config: {
         activated: "on",
-        movement: "unmoving",
+        movement: "turn-to-player",
         startDirection: "right",
         which: "elephantHead",
       },
