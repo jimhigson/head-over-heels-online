@@ -8,9 +8,11 @@ import { PointerToolButton } from "./PointerToolButton";
 import { RoomColourSelect } from "./RoomColourSelect";
 import { RoomScenerySelect } from "./RoomScenerySelect";
 
+const buttonSpriteClasses = "relative [button:active_&]:top-oneScaledPix";
+
 export const LevelEditorToolbar = () => {
   return (
-    <div className="fixed flex top-1 right-1 bg-metallicBlueHalfbrite p-half gap-half w-24 flex-wrap justify-start">
+    <div className="fixed flex top-1 right-1 text-white bg-metallicBlueHalfbrite p-half gap-half w-24 flex-wrap justify-start">
       <RoomScenerySelect />
       <RoomColourSelect />
       <PointerToolButton />
@@ -23,7 +25,11 @@ export const LevelEditorToolbar = () => {
             activated: "on",
           },
         }}
-      />
+      >
+        <span
+          className={`sprite texture-dalek.1 [button:hover_&]:texture-animated-dalek" ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "monster",
@@ -34,7 +40,11 @@ export const LevelEditorToolbar = () => {
             startDirection: "towards",
           },
         }}
-      />
+      >
+        <span
+          className={`sprite texture-turtle.towards.1 [button:hover_&]:texture-animated-turtle.right ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "monster",
@@ -45,7 +55,11 @@ export const LevelEditorToolbar = () => {
             startDirection: "towards",
           },
         }}
-      />
+      >
+        <span
+          className={`sprite texture-elephant.towards [button:hover_&]:texture-elephant.right ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "monster",
@@ -57,7 +71,11 @@ export const LevelEditorToolbar = () => {
             startDirection: "towards",
           },
         }}
-      />
+      >
+        <span
+          className={`sprite texture-skiHead.greenAndPink.towards [button:hover_&]:texture-skiHead.greenAndPink.right ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "monster",
@@ -68,24 +86,50 @@ export const LevelEditorToolbar = () => {
             startDirection: "towards",
           },
         }}
-      />
+      >
+        <span
+          className={`sprite texture-cyberman.towards [button:hover_&]:texture-cyberman.right ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{ type: "block", config: { style: "artificial" } }}
-      />
+      >
+        <span
+          className={`sprite texture-block.artificial ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{ type: "lift", config: { top: 11, bottom: 0 } }}
-      />
-      <ItemToolButton itemTool={{ type: "barrier", config: { axis: "x" } }} />
+      >
+        <span
+          className={`sprite texture-lift.static [button:hover_&]:texture-animated-lift ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
+      <ItemToolButton itemTool={{ type: "barrier", config: { axis: "x" } }}>
+        <span className={`sprite texture-barrier.x ${buttonSpriteClasses}`} />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{ type: "block", config: { style: "organic" } }}
-      />
-      <ItemToolButton itemTool={{ type: "block", config: { style: "book" } }} />
+      >
+        <span
+          className={`sprite texture-block.organic ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
+      <ItemToolButton itemTool={{ type: "block", config: { style: "book" } }}>
+        <span className={`sprite texture-book.x ${buttonSpriteClasses}`} />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{ type: "pickup", config: { gives: "extra-life" } }}
-      />
+      >
+        <span className={`sprite texture-whiteRabbit ${buttonSpriteClasses}`} />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{ type: "conveyor", config: { direction: "away" } }}
-      />
+      >
+        <span
+          className={`sprite texture-conveyor.y.1 [button:hover_&]:texture-animated-conveyor.x ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "teleporter",
@@ -94,14 +138,22 @@ export const LevelEditorToolbar = () => {
             toPosition: originXyz,
           },
         }}
-      />
-      <ItemToolButton itemTool={{ type: "charles", config: emptyObject }} />
+      >
+        <span className={`sprite texture-teleporter ${buttonSpriteClasses}`} />
+      </ItemToolButton>
+      <ItemToolButton itemTool={{ type: "charles", config: emptyObject }}>
+        <span
+          className={`sprite texture-charles.towards [button:hover_&]:texture-charles.right ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "joystick",
           config: { controls: ["(placeholder)"] as EditorRoomItemId[] },
         }}
-      />
+      >
+        <span className={`sprite texture-joystick ${buttonSpriteClasses}`} />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "switch",
@@ -111,14 +163,24 @@ export const LevelEditorToolbar = () => {
             modifies: emptyArray,
           },
         }}
-      />
-      <ItemToolButton itemTool={{ type: "ball", config: emptyObject }} />
+      >
+        <span
+          className={`sprite texture-switch.left [button:hover_&]:texture-switch.right ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
+      <ItemToolButton itemTool={{ type: "ball", config: emptyObject }}>
+        <span className={`sprite texture-ball ${buttonSpriteClasses}`} />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{ type: "portableBlock", config: { style: "cube" } }}
-      />
+      >
+        <span className={`sprite texture-cube ${buttonSpriteClasses}`} />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{ type: "pushableBlock", config: { style: "stepStool" } }}
-      />
+      >
+        <span className={`sprite texture-stepStool ${buttonSpriteClasses}`} />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "movingPlatform",
@@ -129,17 +191,29 @@ export const LevelEditorToolbar = () => {
             startDirection: "towards",
           },
         }}
-      />
-      <ItemToolButton itemTool={{ type: "spikes", config: emptyObject }} />
+      >
+        <span className={`sprite texture-sandwich ${buttonSpriteClasses}`} />
+      </ItemToolButton>
+      <ItemToolButton itemTool={{ type: "spikes", config: emptyObject }}>
+        <span className={`sprite texture-spikes ${buttonSpriteClasses}`} />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{ type: "deadlyBlock", config: { style: "volcano" } }}
-      />
+      >
+        <span
+          className={`sprite texture-volcano.1 [button:hover_&]:texture-animated-volcano ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       <ItemToolButton
         itemTool={{
           type: "slidingDeadly",
           config: { style: "spikyBall", startingPhase: 1 },
         }}
-      />
+      >
+        <span
+          className={`sprite texture-spikyBall.1 [button:hover_&]:texture-spikyBall.2 ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
       {/* need a better way to do non-config here - none of this really makes sense */}
       <ItemToolButton
         itemTool={{
@@ -149,8 +223,14 @@ export const LevelEditorToolbar = () => {
             toRoom: "(placeholder)" as EditorRoomId, // arbitrary, to be corrected on placement
           } satisfies JsonItemConfig<"door", EditorRoomId, EditorRoomItemId>,
         }}
-      />
-      <ShowBoundingBoxSwitches />
+      >
+        <span
+          className={`sprite texture-door.frame.generic.x.whole ${buttonSpriteClasses}`}
+        />
+      </ItemToolButton>
+      <div className="flex flex-row gap-1">
+        <ShowBoundingBoxSwitches />
+      </div>
     </div>
   );
 };
