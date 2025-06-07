@@ -33,7 +33,7 @@ export const LevelEditorToolbar = () => {
           config: {
             which: "elephantHead",
             activated: "on",
-            movement: "unmoving",
+            movement: "turn-to-player",
             startDirection: "towards",
           },
         }}

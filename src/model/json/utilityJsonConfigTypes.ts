@@ -16,7 +16,9 @@ export type JsonMovement =
   // same as patrol-randomly-xy4 but sometimes walks backwards - kind of because
   // it is funny really to see the big head computer robots doing this
   | "patrol-randomly-xy4-and-reverse"
-  | "patrol-randomly-xy8";
+  | "patrol-randomly-xy8"
+  // turns towards the player while staying still (elephant heads in the remake)
+  | "turn-to-player";
 
 export type MovementActivated =
   // on and off potentially overridable switchable in item state in-game using switches
