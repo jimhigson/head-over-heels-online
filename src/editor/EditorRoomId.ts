@@ -3,7 +3,10 @@ import type { RoomRenderer } from "../game/render/roomRenderer";
 import type { JsonItemUnion } from "../model/json/JsonItem";
 import type { RoomJsonItems, RoomJson } from "../model/RoomJson";
 import type { RoomState } from "../model/RoomState";
-import type { UnionOfAllItemInPlayTypes } from "../model/ItemInPlay";
+import type {
+  ItemInPlay,
+  UnionOfAllItemInPlayTypes,
+} from "../model/ItemInPlay";
 
 export type EditorRoomId = Tagged<string, "EditorRoomId">;
 export type EditorRoomItemId<ItemId extends string = string> = Tagged<
@@ -19,6 +22,11 @@ export type EditorRoomJsonItems = RoomJsonItems<EditorRoomItemId, EditorRoomId>;
 export type EditorRoomItem = JsonItemUnion<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomRenderer = RoomRenderer<EditorRoomId, EditorRoomItemId>;
 export type EditorUnionOfAllItemInPlayTypes = UnionOfAllItemInPlayTypes<
+  EditorRoomId,
+  EditorRoomItemId
+>;
+export type LevelEditorCursorItem = ItemInPlay<
+  "cursor",
   EditorRoomId,
   EditorRoomItemId
 >;

@@ -33,17 +33,12 @@ import type { GameApi } from "../../GameApi";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
 import { Switch } from "../../../ui/Switch";
-import {
-  useShowBoundingBoxes,
-  useShowShadowMasks,
-} from "../../../store/selectors";
-import {
-  setShowBoundingBoxes,
-  setShowShadowMasks,
-} from "../../../store/slices/gameMenusSlice";
+import { useShowShadowMasks } from "../../../store/selectors";
+import { setShowShadowMasks } from "../../../store/slices/gameMenusSlice";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { getRoomItem } from "../../../model/RoomState";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
+import { ShowBoundingBoxSwitches } from "./ShowBoundingBoxSwitches";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -205,7 +200,6 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
 
   useDebugClickOnItem();
 
-  const showBoundingBoxes = useShowBoundingBoxes();
   const showShadowMasks = useShowShadowMasks();
   const dispatch = useAppDispatch();
 
@@ -293,22 +287,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
           </div>
           <Heading>render:</Heading>
           <div className="flex flex-row items-center gap-x-2 justify-center pb-1 pt-1 bg-shadow text-white">
-            <Switch
-              value={showBoundingBoxes !== "none"}
-              onClick={(e, newValue) => {
-                dispatch(setShowBoundingBoxes(newValue ? "non-wall" : "none"));
-                e.currentTarget.blur();
-              }}
-            />
-            <label htmlFor="showbbs">BBs</label>
-            <Switch
-              value={showBoundingBoxes === "all"}
-              onClick={(e, newValue) => {
-                dispatch(setShowBoundingBoxes(newValue ? "all" : "non-wall"));
-                e.currentTarget.blur();
-              }}
-            />
-            <label htmlFor="showAllBbs">wall BBs</label>
+            <ShowBoundingBoxSwitches />
             <Switch
               value={showShadowMasks}
               onClick={(e, newValue) => {

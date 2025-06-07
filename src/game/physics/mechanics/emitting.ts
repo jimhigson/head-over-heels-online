@@ -2,7 +2,7 @@ import { first } from "iter-tools";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
-import { loadItemFromJson } from "../../gameState/loadRoom/loadItem";
+import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
 import { originXyz, scaleXyz, subXyz } from "../../../utils/vectors/vectors";

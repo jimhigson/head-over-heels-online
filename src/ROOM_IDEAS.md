@@ -42,3 +42,14 @@ spikes etc
 
 * enemy that copies your movement, or is a mirror-image of them
  - need both characters to control them at different times
+
+* a room with floor(s) made of mixed teleporters and blocks, where have to be careful where jump from, or teleport
+back to the start of the room
+
+* a room with a whole line of charles bots (from one side of the room to another, like 8 in a line)
+
+* a room with one charles on top of another and two joysticks to control both of them
+
+* DNA-like double helix made out of metal balls stacked in a spiral
+
+* tower of joysticks - have to press them as falling all the way down the fall motion to move a charles far enough

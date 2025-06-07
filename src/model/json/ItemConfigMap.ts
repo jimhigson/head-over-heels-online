@@ -55,6 +55,11 @@ export type EmittableItemJson = Extract<
 
 export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 
+export type PortableBlockStyle = "drum" | "sticks" | "cube";
+export type DeadlyBlockStyle = "toaster" | "volcano";
+
+type PushableOrMovingBlockStyle = "stepStool" | "sandwich";
+
 export type ItemConfigMap<
   RoomId extends string,
   /** ids of items in this room */
@@ -99,7 +104,7 @@ export type ItemConfigMap<
     times?: Partial<Xyz>;
   };
   deadlyBlock: ConsolidatableConfig & {
-    style: "volcano" | "toaster";
+    style: DeadlyBlockStyle;
     times?: Partial<Xyz>;
   };
   spikes: ConsolidatableConfig & {
@@ -171,13 +176,13 @@ export type ItemConfigMap<
   };
   monster: MonsterJsonConfig;
   portableBlock: {
-    style: "drum" | "sticks" | "cube";
+    style: PortableBlockStyle;
   };
   pushableBlock: {
-    style: "stepStool" | "sandwich";
+    style: PushableOrMovingBlockStyle;
   };
   movingPlatform: {
-    style: "stepStool" | "sandwich";
+    style: PushableOrMovingBlockStyle;
 
     movement: MovementsSubset<"clockwise" | "back-forth">;
     /* if this item starts initially activated */

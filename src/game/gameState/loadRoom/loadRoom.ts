@@ -1,4 +1,4 @@
-import { loadItemFromJson } from "./loadItem";
+import { loadItemFromJson } from "./loadItemFromJson";
 import { collision1toMany } from "../../collision/aabbCollision";
 import type { RoomPickupsCollected } from "../GameState";
 import { loadFloorAndCeiling } from "./loadFloorAndCeiling";

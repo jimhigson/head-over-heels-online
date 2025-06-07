@@ -2,15 +2,25 @@ import clsx from "clsx";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 import type { MouseEvent } from "react";
 
+export type SwitchProps = {
+  value: boolean;
+  className?: string;
+  onClick?: (e: MouseEvent<HTMLElement>, newValue: boolean) => void;
+  trueLabel?: string;
+  falseLabel?: string;
+};
+
 export const Switch = ({
   className,
   value,
   onClick,
-}: {
-  value: boolean;
-  className?: string;
-  onClick?: (e: MouseEvent<HTMLElement>, newValue: boolean) => void;
-}) => {
+  trueLabel = "ON",
+  falseLabel = "OFF",
+}: SwitchProps) => {
+  const labelLength = Math.max(trueLabel.length, falseLabel.length) + 1;
+  const trueLabelPadded = trueLabel.padStart(labelLength, " ");
+  const falseLabelPadded = falseLabel.padEnd(labelLength, " ");
+
   return (
     <BitmapText
       onClick={(e) => onClick?.(e, !value)}
@@ -23,7 +33,7 @@ export const Switch = ({
       )}
       noSlitWords
     >
-      {value ? "  ON" : "OFF "}
+      {value ? trueLabelPadded : falseLabelPadded}
     </BitmapText>
   );
 };

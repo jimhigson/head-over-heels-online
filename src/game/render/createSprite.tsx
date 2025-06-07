@@ -140,10 +140,19 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
 
     if (anchor === undefined && pivot === undefined) {
       if (!isAnimatedOptions(options)) {
-        // I allow a non-standard pivot property on my sprites:
-        const spriteDataFrame = loadedSpriteSheet().data.frames[
-          options.textureId!
-        ].frame as SpritesheetFrameData["frame"] & { pivot: Xy };
+        const spritesheetFrameData: SpritesheetFrameData | undefined =
+          loadedSpriteSheet().data.frames[options.textureId!];
+
+        if (spritesheetFrameData === undefined) {
+          throw new Error(
+            `no spritesheet entry for textureId "${options.textureId}"`,
+          );
+        }
+        // There is a non-standard (unknown to Pixi.js) pivot property on the sprites:
+        const spriteDataFrame =
+          spritesheetFrameData.frame as SpritesheetFrameData["frame"] & {
+            pivot: Xy;
+          };
         // what the spritesheet calls a anchor, I actually use as
         // a pivot - not sure if pixi means it to be used that way
         if (spriteDataFrame.pivot !== undefined) {

@@ -90,6 +90,17 @@ export function* loadItemFromJson<
           }
         : boundingBoxes;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
+      let state: any;
+      try {
+        state = initialState(jsonItem);
+      } catch (e: unknown) {
+        throw new Error(
+          `loadItemFromJson: error creating initial state for jsonItem ${JSON.stringify(jsonItem, null, 2)}`,
+          { cause: e },
+        );
+      }
+
       yield {
         ...jsonItem,
         ...defaultItemProperties,
@@ -100,8 +111,7 @@ export function* loadItemFromJson<
         id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: jsonItem.config as any,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
-        state: initialState(jsonItem) as any,
+        state,
       };
     }
   }
@@ -125,6 +135,7 @@ const shadowCast = (
       };
     case "spring":
     case "firedDoughnut":
+    case "slidingDeadly":
       return "shadow.smallRound";
     case "block":
       return jsonItem.config.style === "tower" ?
@@ -134,6 +145,8 @@ const shadowCast = (
     case "movingPlatform":
     case "hushPuppy":
     case "deadlyBlock":
+    case "teleporter":
+    case "spikes":
       return "shadow.fullBlock";
     case "portableBlock":
       return jsonItem.config.style === "drum" ?
@@ -143,7 +156,13 @@ const shadowCast = (
       return jsonItem.config.gives === "scroll" ?
           "shadow.scroll"
         : "shadow.smallRound";
+    case "ball":
+    case "charles":
     case "monster":
       return "shadow.smallRound";
+    case "slidingBlock":
+      return jsonItem.config.style === "book" ?
+          "shadow.fullBlock"
+        : "shadow.smallRound";
   }
 };

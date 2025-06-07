@@ -1,4 +1,3 @@
-/** I don't distinguish (yet) reduced/bright colours in the original game: */
 export const zxSpectrumRoomHue = [
   "yellow",
   "cyan",

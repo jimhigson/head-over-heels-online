@@ -79,6 +79,7 @@
     "immer": "^10.1.1",
     "iter-tools": "^7.5.3",
     "json-canonicalize": "^1.0.6",
+    "normalize-wheel-es": "^1.2.0",
     "pixi-filters": "^6.1.0",
     "postcss": "^8.5.3",
     "prettier": "3.4.2",

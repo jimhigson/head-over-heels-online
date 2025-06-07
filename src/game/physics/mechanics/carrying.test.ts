@@ -3,7 +3,7 @@ import { checkSpaceAvailableToPutDown } from "./carrying";
 import { first } from "iter-tools";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { loadItemFromJson } from "../../gameState/loadRoom/loadItem";
+import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
 
 const makeHeels = (position: Xyz) =>

@@ -1,10 +1,48 @@
 import type { JsonItem } from "../../model/json/JsonItem";
 import type { RoomJson } from "../../model/RoomJson";
+import { type SceneryName, type Wall } from "../../sprites/planets";
 import type {
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJsonItems,
 } from "../EditorRoomId";
+
+/**
+ * some standard wall patterns that can be repeated for creating the wall tiles
+ * in all of the sceneries, using all the tiles and being symmetrical in an 8x8 room
+ */
+const wallStarterPatterns: { [ScN in SceneryName]: Array<Wall<ScN>> } = {
+  jail: ["bars"],
+  blacktooth: ["plain", "plain", "armour", "shield", "shield", "armour"],
+  bookworld: ["book", "book", "cowboy"],
+  egyptus: [
+    "hieroglyphics",
+    "hieroglyphics",
+    "hieroglyphics",
+    "sarcophagus",
+    "sarcophagus",
+  ],
+  market: ["passage", "more-fruits", "more-fruits", "more-fruits", "fruits"],
+  moonbase: ["coil", "window1", "window2", "window3"],
+  penitentiary: ["loop", "loop", "skeleton"],
+  safari: ["wall", "shield", "wall", "window", "window", "wall", "shield"],
+};
+
+const rotatingSceneryTile = <S extends SceneryName>(
+  sceneryName: S,
+  n: number,
+): Wall<S> => {
+  const pattern = wallStarterPatterns[sceneryName];
+  return pattern[n % pattern.length];
+};
+export const rotatingSceneryTiles = <S extends SceneryName>(
+  sceneryName: S,
+  size: number,
+): Wall<S>[] => {
+  return new Array(8)
+    .fill(size)
+    .map((_n, i) => rotatingSceneryTile(sceneryName, i));
+};
 
 const starterRoomWallItems: EditorRoomJsonItems = {
   ["awayWall" as EditorRoomItemId]: {
@@ -12,16 +50,7 @@ const starterRoomWallItems: EditorRoomJsonItems = {
     config: {
       direction: "away",
       times: { x: 8 },
-      tiles: [
-        "plain",
-        "shield",
-        "plain",
-        "plain",
-        "armour",
-        "shield",
-        "armour",
-        "plain",
-      ],
+      tiles: rotatingSceneryTiles("blacktooth", 8),
     },
     position: { x: 0, y: 8, z: 0 },
   } satisfies JsonItem<"wall", EditorRoomId, EditorRoomItemId, "blacktooth">,
@@ -30,16 +59,7 @@ const starterRoomWallItems: EditorRoomJsonItems = {
     config: {
       direction: "left",
       times: { y: 8 },
-      tiles: [
-        "plain",
-        "armour",
-        "shield",
-        "armour",
-        "plain",
-        "plain",
-        "shield",
-        "plain",
-      ],
+      tiles: rotatingSceneryTiles("blacktooth", 8),
     },
     position: { x: 8, y: 0, z: 0 },
   },
@@ -73,16 +93,6 @@ export const starterRoom: Omit<
   floor: "blacktooth",
   items: {
     ...starterRoomWallItems,
-    ["testBlockRemoveMe" as EditorRoomItemId]: {
-      type: "block",
-      config: { style: "organic" },
-      position: { x: 2, y: 2, z: 0 },
-    },
-    ["testBlockRemoveMe2" as EditorRoomItemId]: {
-      type: "block",
-      config: { style: "organic" },
-      position: { x: 1, y: 2, z: 0 },
-    },
   },
   size: { x: 8, y: 8 },
 };

@@ -18,7 +18,10 @@ const editorGeneralRenderContext = (
   displaySettings: {
     emulatedResolution: "amigaLowResPal",
   },
-  soundSettings: {},
+  soundSettings: {
+    // don't load/play sounds during room editing
+    mute: true,
+  },
   pixiRenderer,
   // what does the room renderer need to do with the game state? Could it take a Pick< from it instead?
   gameState: undefined,
@@ -26,6 +29,7 @@ const editorGeneralRenderContext = (
   colourised: true,
   upscale: selectUpscale(store.getState()),
 });
+
 const createRoomRenderer = (
   roomState: EditorRoomState,
   pixiRenderer: PixiRenderer,

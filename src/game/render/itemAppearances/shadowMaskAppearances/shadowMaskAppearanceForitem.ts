@@ -86,6 +86,7 @@ const itemShadowMaskAppearances: {
     }
   }),
   slidingDeadly: itemStaticSpriteAppearance("shadowMask.smallRound"),
+  ball: itemStaticSpriteAppearance("shadowMask.ball"),
 
   "monster.dalek": itemStaticSpriteAppearance("shadowMask.dalek"),
   "monster.turtle": directionalShadowMaskAppearance("turtle"),

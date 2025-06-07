@@ -2,7 +2,6 @@ import { objectValues } from "iter-tools";
 import { Ticker } from "pixi.js";
 import { useEffect } from "react";
 import type { MovedItems } from "../../game/mainLoop/progressGameState";
-import { epsilon } from "../../utils/veryClose";
 import type {
   EditorRoomRenderer,
   EditorRoomId,
@@ -16,7 +15,8 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
 
   useEffect(
     () => {
-      const tick = () => {
+      let progression = 0;
+      const tick = ({ deltaMS }: Ticker) => {
         if (roomRenderer.destroyed) {
           return;
         }
@@ -35,12 +35,15 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
         );
 
         roomRenderer.tick({
-          deltaMS: epsilon,
+          deltaMS,
           // TODO: probably needs this to be the real set of moved items, like a 'proper' main loop,
           // or this might be fast enough given the level editor doesn't need to run as smoothly
           // as the actual game
           movedItems: considerAllItemsHaveMoved,
-          progression: 0,
+          // if the progression isn't incremented, the shadow renderer doesn't remove
+          // old shadows (since they are marked with the progression when they were last updated
+          // and only removed when the progression they are marked with is old)
+          progression: progression++,
         });
       };
 

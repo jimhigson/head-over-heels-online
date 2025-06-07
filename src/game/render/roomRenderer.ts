@@ -207,7 +207,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   destroy() {
-    console.log("RoomRenderer:: destroy");
     this.output.graphics.label = this.output.graphics.label + "DESTROYED";
     this.output.graphics.destroy({ children: true });
     this.output.sound?.disconnect();
