@@ -12,7 +12,7 @@ const buttonSpriteClasses = "relative [button:active_&]:top-oneScaledPix";
 
 export const LevelEditorToolbar = () => {
   return (
-    <div className="fixed flex top-1 right-1 text-white bg-metallicBlueHalfbrite p-half gap-half w-24 flex-wrap justify-start">
+    <div className="fixed flex top-1 right-1 text-white bg-metallicBlueHalfbrite p-half gap-oneScaledPix w-24 flex-wrap justify-start">
       <RoomScenerySelect />
       <RoomColourSelect />
       <PointerToolButton />

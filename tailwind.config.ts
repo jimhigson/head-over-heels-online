@@ -27,6 +27,7 @@ const blockMultiples = {
   // cheating, but fitting everything on small screens is hard!
   quarter: "calc(var(--block) / 4)",
   half: "calc(var(--block) / 2)",
+  oneScaledPix: "calc(var(--scale) * 1px)",
   1: "calc(var(--block) * 1)",
   2: "calc(var(--block) * 2)",
   3: "calc(var(--block) * 3)",
@@ -117,7 +118,6 @@ export default {
       centreSmallBlockOnLarge: `calc(var(--scale) * 4px)`,
       ...blockMultiples,
       selectKeysIndent: "calc(var(--block) * 11)",
-      oneScaledPix: "calc(var(--scale) * 1px)",
     },
     lineHeight: {
       none: "0",

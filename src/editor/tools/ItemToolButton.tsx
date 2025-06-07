@@ -27,7 +27,7 @@ export const ItemToolButton = <T extends JsonItemType>({
   );
   return (
     <Button
-      className={`flex-1 h-min p-quarter grow-0 ${isCurrentTool ? "bg-pastelBlue" : ""}`}
+      className={`h-3 w-3 overflow-hidden ${isCurrentTool ? "bg-pastelBlue" : ""}`}
       onClick={() => store.dispatch(setTool({ type: "item", item: itemTool }))}
     >
       {children}
