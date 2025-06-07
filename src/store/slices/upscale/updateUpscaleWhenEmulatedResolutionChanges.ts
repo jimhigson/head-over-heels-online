@@ -4,7 +4,7 @@ import { startAppListening } from "../../listenerMiddleware";
 import { setEmulatedResolution } from "../gameMenusSlice";
 import { upscaleToWindow } from "./upscaleSlice";
 
-export const listenForUpscaleSlice = () => {
+export const updateUpscaleWhenEmulatedResolutionChanges = () => {
   if (detectDeviceType() !== "server") {
     // when the emulated resolution setting changes in user settings, update the upscale
     // in our slice. This is cross-slice chaining via listener api.

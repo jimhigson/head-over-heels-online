@@ -13,7 +13,7 @@ export const PointerToolButton = () => {
 
   return (
     <Button
-      className={`flex-1 w-2 h-2 p-quarter ${isCurrentTool ? "bg-pastelBlue" : ""}`}
+      className={`flex w-3 h-3 ${isCurrentTool ? "bg-pastelBlue" : ""}`}
       onClick={() => store.dispatch(setTool({ type: "pointer" }))}
     >
       <span

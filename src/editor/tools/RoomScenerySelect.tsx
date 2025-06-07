@@ -1,4 +1,3 @@
-import { CommandItem } from "../../ui/command";
 import {
   changeRoomScenery,
   selectCurrentEditingRoomScenery,
@@ -25,11 +24,6 @@ export function RoomScenerySelect() {
       }}
       values={sceneryNames}
       disableCommandInput
-      OptionCommandItem={({ value, onSelect }) => (
-        <CommandItem value={value} onSelect={onSelect}>
-          <BitmapText>{value}</BitmapText>
-        </CommandItem>
-      )}
       triggerButtonClassName="w-18 text-white"
       triggerButtonLabel={<BitmapText>{currentRoomScenery}</BitmapText>}
     />

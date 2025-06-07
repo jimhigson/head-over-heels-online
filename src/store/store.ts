@@ -19,7 +19,7 @@ import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
 import { listenerMiddleware } from "./listenerMiddleware";
 import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
-import { listenForUpscaleSlice } from "./slices/upscale/listenForUpscaleSlice";
+import { updateUpscaleWhenEmulatedResolutionChanges } from "./slices/upscale/updateUpscaleWhenEmulatedResolutionChanges";
 
 export const storeLatestVersion = 14;
 
@@ -80,7 +80,7 @@ export const store = configureStore({
     }).prepend(listenerMiddleware.middleware),
 });
 
-listenForUpscaleSlice();
+updateUpscaleWhenEmulatedResolutionChanges();
 
 export const persistor = persistStore(store);
 

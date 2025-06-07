@@ -38,7 +38,9 @@ import { setShowShadowMasks } from "../../../store/slices/gameMenusSlice";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import { getRoomItem } from "../../../model/RoomState";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
-import { ShowBoundingBoxSwitches } from "./ShowBoundingBoxSwitches";
+import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
+import { BitmapText } from "../tailwindSprites/Sprite";
+import { CssVariables } from "../CssVariables";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -70,13 +72,15 @@ type SummonPlayableButtonProps<RoomId extends string> = {
   playableName: CharacterName;
 };
 
+const cheatsButtonClasses = "flex-1 h-3";
+
 const SummonPlayableButton = <RoomId extends string>({
   gameApi,
   playableName,
 }: SummonPlayableButtonProps<RoomId>) => {
   return (
     <Button
-      className="flex-1"
+      className={cheatsButtonClasses}
       onClick={(e) => {
         if (gameApi.gameState.currentCharacterName === playableName) {
           return;
@@ -180,7 +184,7 @@ export const GoToRoomButton = <RoomId extends string>({
 }: PropsWithChildren<GoToRoomButtonProps<RoomId>>) => {
   return (
     <Button
-      className="flex-1"
+      className={cheatsButtonClasses}
       onClick={(e) => {
         gameApi.changeRoom(roomId);
         e.currentTarget.blur();
@@ -242,354 +246,395 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         <span className="sprite texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div
-          className="absolute [--scale:1] [--block:8px] bottom-[48px] max-h-[calc(100vh-48px)] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats"
-          style={{ "--scale": 2 }}
-        >
-          <Heading>room select:</Heading>
-          <RoomSelect gameApi={gameApi} className="w-full" />
-          <div className="flex flex-row items-center">
-            <GoToRoomButton
-              gameApi={gameApi}
-              roomId={"blacktooth1head" as RoomId}
-            >
-              Starting room
-            </GoToRoomButton>
-            <GoToRoomButton gameApi={gameApi} roomId={"laboratory" as RoomId}>
-              To the lab!
-            </GoToRoomButton>
-          </div>
-          <div className="flex flex-row items-center">
-            <GoToRoomButton
-              gameApi={gameApi}
-              roomId={"blacktooth45market" as RoomId}
-            >
-              Market
-            </GoToRoomButton>
-            <GoToRoomButton gameApi={gameApi} roomId={"moonbase1" as RoomId}>
-              Moonbase
-            </GoToRoomButton>
-            <GoToRoomButton gameApi={gameApi} roomId={"egyptus1" as RoomId}>
-              Egyptus
-            </GoToRoomButton>
-            <GoToRoomButton gameApi={gameApi} roomId={"safari1" as RoomId}>
-              Safari
-            </GoToRoomButton>
-            <GoToRoomButton gameApi={gameApi} roomId={"bookworld1" as RoomId}>
-              Bookworld
-            </GoToRoomButton>
-            <GoToRoomButton
-              gameApi={gameApi}
-              roomId={"penitentiary1" as RoomId}
-            >
-              Penitentiary
-            </GoToRoomButton>
-          </div>
-          <Heading>render:</Heading>
-          <div className="flex flex-row items-center gap-x-2 justify-center pb-1 pt-1 bg-shadow text-white">
-            <ShowBoundingBoxSwitches />
-            <Switch
-              value={showShadowMasks}
-              onClick={(e, newValue) => {
-                dispatch(setShowShadowMasks(newValue));
-                e.currentTarget.blur();
-              }}
-            />
-            <label htmlFor="showshadows">shadow masks</label>
-          </div>
+        <CssVariables scaleFactor={2}>
+          <div className="absolute bottom-[48px] max-h-[calc(100vh-48px)] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats text-white">
+            <Heading>room select:</Heading>
+            <RoomSelect gameApi={gameApi} className="w-full" />
+            <div className="flex flex-row items-center">
+              <GoToRoomButton
+                gameApi={gameApi}
+                roomId={"blacktooth1head" as RoomId}
+              >
+                Starting room
+              </GoToRoomButton>
+              <GoToRoomButton gameApi={gameApi} roomId={"laboratory" as RoomId}>
+                To the lab!
+              </GoToRoomButton>
+            </div>
+            <div className="flex flex-row items-center">
+              <GoToRoomButton
+                gameApi={gameApi}
+                roomId={"blacktooth45market" as RoomId}
+              >
+                Market
+              </GoToRoomButton>
+              <GoToRoomButton gameApi={gameApi} roomId={"moonbase1" as RoomId}>
+                Moonbase
+              </GoToRoomButton>
+              <GoToRoomButton gameApi={gameApi} roomId={"egyptus1" as RoomId}>
+                Egyptus
+              </GoToRoomButton>
+              <GoToRoomButton gameApi={gameApi} roomId={"safari1" as RoomId}>
+                Safari
+              </GoToRoomButton>
+              <GoToRoomButton gameApi={gameApi} roomId={"bookworld1" as RoomId}>
+                Bookworld
+              </GoToRoomButton>
+              <GoToRoomButton
+                gameApi={gameApi}
+                roomId={"penitentiary1" as RoomId}
+              >
+                Penitentiary
+              </GoToRoomButton>
+            </div>
+            <Heading>debug rendering:</Heading>
+            <div className="flex flex-row items-center gap-x-1 justify-center pb-1 pt-1 bg-shadow text-white">
+              <BitmapText>BBs:</BitmapText>
+              <ShowBoundingBoxSelect />
+              <BitmapText>shadow:</BitmapText>
+              <Switch
+                value={showShadowMasks}
+                onClick={(e, newValue) => {
+                  dispatch(setShowShadowMasks(newValue));
+                  e.currentTarget.blur();
+                }}
+              />
+            </div>
 
-          <Heading>summon character:</Heading>
-          <div className="flex flex-row items-center">
-            <SummonPlayableButton gameApi={gameApi} playableName="head" />
-            <SummonPlayableButton gameApi={gameApi} playableName="heels" />
-            <SummonPlayableButton
-              gameApi={gameApi}
-              playableName="headOverHeels"
-            />
-          </div>
-          <Heading>summon item:</Heading>
-          <div className="flex flex-row items-center flex-wrap">
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "bag" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-bag" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "hooter" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-hooter" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "doughnuts" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-doughnuts" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("portableBlock", { style: "cube" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-cube" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("spring", {});
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-spring.released" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("monster", {
-                  which: "dalek",
-                  activated: "on",
-                  movement: "patrol-randomly-diagonal",
-                });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-dalek.1 hover:texture-animated-dalek" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("monster", {
-                  which: "turtle",
-                  activated: "on",
-                  movement: "clockwise",
-                  startDirection: "towards",
-                });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-turtle.towards.1 hover:texture-animated-turtle.towards" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("monster", {
-                  which: "skiHead",
-                  activated: "on",
-                  movement: "clockwise",
-                  startDirection: "towards",
-                  style:
-                    Math.random() > 0.5 ? "greenAndPink" : "starsAndStripes",
-                });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-skiHead.greenAndPink.towards" />
-            </Button>
-          </div>
-          <div className="flex flex-row items-center">
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "crown", planet: "bookworld" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-crown.bookworld" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "crown", planet: "egyptus" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-crown.egyptus" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "crown", planet: "safari" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-crown.safari" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", {
-                  gives: "crown",
-                  planet: "penitentiary",
-                });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-crown.penitentiary" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "crown", planet: "blacktooth" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-crown.blacktooth" />
-            </Button>
-          </div>
-          <div className="flex flex-row items-center">
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "extra-life" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-whiteRabbit" />
-              <span className="sprite texture-hud.char.2 left-m2 relative" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "shield" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-whiteRabbit" />
-              <span className="sprite texture-hud.char.🛡 left-m2 relative" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "fast" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-whiteRabbit" />
-              <span className="sprite texture-hud.char.⚡ left-m2 relative" />
-            </Button>
-            <Button
-              className="flex-1"
-              onClick={(e) => {
-                summonItem("pickup", { gives: "jumps" });
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-whiteRabbit" />
-              <span className="sprite texture-hud.char.♨ left-m2 relative" />
-            </Button>
-          </div>
+            <Heading>summon character:</Heading>
+            <div className="flex flex-row items-center">
+              <SummonPlayableButton gameApi={gameApi} playableName="head" />
+              <SummonPlayableButton gameApi={gameApi} playableName="heels" />
+              <SummonPlayableButton
+                gameApi={gameApi}
+                playableName="headOverHeels"
+              />
+            </div>
+            <Heading>summon item:</Heading>
+            <div className="flex flex-row items-center flex-wrap">
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "bag" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-bag" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "hooter" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-hooter" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "doughnuts" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-doughnuts" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("portableBlock", { style: "cube" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-cube" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("spring", {});
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-spring.released" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("monster", {
+                    which: "dalek",
+                    activated: "on",
+                    movement: "patrol-randomly-diagonal",
+                  });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-dalek.1 hover:texture-animated-dalek" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("monster", {
+                    which: "turtle",
+                    activated: "on",
+                    movement: "clockwise",
+                    startDirection: "towards",
+                  });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-turtle.towards.1 hover:texture-animated-turtle.towards" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("monster", {
+                    which: "skiHead",
+                    activated: "on",
+                    movement: "clockwise",
+                    startDirection: "towards",
+                    style:
+                      Math.random() > 0.5 ? "greenAndPink" : "starsAndStripes",
+                  });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-skiHead.greenAndPink.towards" />
+              </Button>
+            </div>
+            <div className="flex flex-row items-center">
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "crown", planet: "bookworld" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-crown.bookworld" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "crown", planet: "egyptus" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-crown.egyptus" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "crown", planet: "safari" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-crown.safari" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", {
+                    gives: "crown",
+                    planet: "penitentiary",
+                  });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-crown.penitentiary" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", {
+                    gives: "crown",
+                    planet: "blacktooth",
+                  });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-crown.blacktooth" />
+              </Button>
+            </div>
+            <div className="flex flex-row items-center">
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "extra-life" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-whiteRabbit" />
+                <span className="sprite texture-hud.char.2 left-m2 relative" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "shield" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-whiteRabbit" />
+                <span className="sprite texture-hud.char.🛡 left-m2 relative" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "fast" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-whiteRabbit" />
+                <span className="sprite texture-hud.char.⚡ left-m2 relative" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "jumps" });
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-whiteRabbit" />
+                <span className="sprite texture-hud.char.♨ left-m2 relative" />
+              </Button>
+            </div>
 
-          <Heading>game speed x:</Heading>
-          <div className="flex flex-row items-center">
-            <SpeedButton className="flex-1" speed={0.05} gameApi={gameApi} />
-            <SpeedButton className="flex-1" speed={0.2} gameApi={gameApi} />
-            <SpeedButton className="flex-1" speed={0.5} gameApi={gameApi} />
-            <SpeedButton className="flex-1" speed={1} gameApi={gameApi} />
-            <SpeedButton className="flex-1" speed={2} gameApi={gameApi} />
-            <SpeedButton className="flex-1" speed={5} gameApi={gameApi} />
-            <SpeedButton className="flex-1" speed={10} gameApi={gameApi} />
-            <SpeedButton className="flex-1" speed={25} gameApi={gameApi} />
-            <SpeedButton className="flex-1" speed={100} gameApi={gameApi} />
-          </div>
+            <Heading>game speed x:</Heading>
+            <div className="flex flex-row items-center">
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={0.05}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={0.2}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={0.5}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={1}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={2}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={5}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={10}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={25}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={100}
+                gameApi={gameApi}
+              />
+            </div>
 
-          <Heading>write to console:</Heading>
-          <div className="flex flex-row items-center flex-wrap">
-            <Button
-              className="flex-grow"
-              onClick={(e) => {
-                if (gameApi) {
-                  console.log(gameApi.gameState);
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (window as any).gs = gameApi.gameState;
-                  console.log("gameState on window.gs");
-                }
-                e.currentTarget.blur();
-              }}
-            >
-              gameState
-            </Button>
-            <Button
-              className="flex-grow"
-              onClick={(e) => {
-                if (gameApi) {
-                  const roomJson = selectCurrentRoomState(
-                    gameApi.gameState,
-                  )?.roomJson;
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (window as any).roomJson = roomJson;
-                  console.log("roomJson:", roomJson);
-                  console.log("roomJson on window.roomJson");
-                }
-                e.currentTarget.blur();
-              }}
-            >
-              Room JSON
-            </Button>
-            <Button
-              className="flex-grow"
-              onClick={(e) => {
-                if (gameApi) {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (window as any).room = gameApi.currentRoom;
-                  console.log(gameApi.currentRoom);
-                  console.log("currentRoom on window.room");
-                }
-                e.currentTarget.blur();
-              }}
-            >
-              Room state
-            </Button>
-            <Button
-              className="flex-grow"
-              onClick={(e) => {
-                if (gameApi) {
-                  const playable = selectCurrentPlayableItem(gameApi.gameState);
-                  if (playable === undefined) {
-                    console.log("no playable item");
-                    return;
+            <Heading>write to console:</Heading>
+            <div className="flex flex-row items-center flex-wrap">
+              <Button
+                className="flex-grow h-3"
+                onClick={(e) => {
+                  if (gameApi) {
+                    console.log(gameApi.gameState);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (window as any).gs = gameApi.gameState;
+                    console.log("gameState on window.gs");
+                  }
+                  e.currentTarget.blur();
+                }}
+              >
+                gameState
+              </Button>
+              <Button
+                className="flex-grow h-3"
+                onClick={(e) => {
+                  if (gameApi) {
+                    const roomJson = selectCurrentRoomState(
+                      gameApi.gameState,
+                    )?.roomJson;
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (window as any).roomJson = roomJson;
+                    console.log("roomJson:", roomJson);
+                    console.log("roomJson on window.roomJson");
+                  }
+                  e.currentTarget.blur();
+                }}
+              >
+                Room JSON
+              </Button>
+              <Button
+                className="flex-grow h-3"
+                onClick={(e) => {
+                  if (gameApi) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (window as any).room = gameApi.currentRoom;
+                    console.log(gameApi.currentRoom);
+                    console.log("currentRoom on window.room");
+                  }
+                  e.currentTarget.blur();
+                }}
+              >
+                Room state
+              </Button>
+              <Button
+                className="flex-grow"
+                onClick={(e) => {
+                  if (gameApi) {
+                    const playable = selectCurrentPlayableItem(
+                      gameApi.gameState,
+                    );
+                    if (playable === undefined) {
+                      console.log("no playable item");
+                      return;
+                    }
+
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (window as any).playable = playable;
+                    console.log("currentCharacterName:", playable);
+                    console.log("playable on window.playable");
+
+                    if (playable.id !== "headOverHeels") {
+                      /** TODO: @knownRoomIds - remove casts */
+                      const otherName = otherIndividualCharacterName(
+                        playable.id as IndividualCharacterName,
+                      );
+                      const otherPlayableRoom =
+                        gameApi.gameState.characterRooms[otherName];
+                      console.log(
+                        otherName,
+                        "in room",
+                        otherPlayableRoom?.id,
+                        otherPlayableRoom?.items[otherName],
+                      );
+                    }
                   }
 
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (window as any).playable = playable;
-                  console.log("currentCharacterName:", playable);
-                  console.log("playable on window.playable");
-
-                  if (playable.id !== "headOverHeels") {
-                    /** TODO: @knownRoomIds - remove casts */
-                    const otherName = otherIndividualCharacterName(
-                      playable.id as IndividualCharacterName,
-                    );
-                    const otherPlayableRoom =
-                      gameApi.gameState.characterRooms[otherName];
-                    console.log(
-                      otherName,
-                      "in room",
-                      otherPlayableRoom?.id,
-                      otherPlayableRoom?.items[otherName],
-                    );
-                  }
-                }
-
-                e.currentTarget.blur();
-              }}
-            >
-              <span className="sprite texture-head.walking.right.2" />
-              <span className="sprite texture-heels.walking.right.2" />
-            </Button>
+                  e.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-head.walking.right.2" />
+                <span className="sprite texture-heels.walking.right.2" />
+              </Button>
+            </div>
           </div>
-        </div>
+        </CssVariables>
       </CollapsibleContent>
     </Collapsible>
   );

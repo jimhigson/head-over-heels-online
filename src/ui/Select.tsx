@@ -7,6 +7,7 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
+  CommandItem,
   CommandList,
 } from "./command";
 import { Button } from "./button";
@@ -22,7 +23,7 @@ type OptionCommandItemComponent<Value extends string> = FC<{
 export type SelectProps<Value extends string> = {
   value: Value;
   values: Readonly<Value[]>;
-  OptionCommandItem: OptionCommandItemComponent<Value>;
+  OptionCommandItem?: OptionCommandItemComponent<Value>;
   triggerButtonClassName?: string;
   triggerButtonStyle?: CSSProperties;
   triggerButtonLabel?: ReactNode;
@@ -37,6 +38,15 @@ export type SelectProps<Value extends string> = {
     }
 );
 
+const DefaultOptionCommandItem: OptionCommandItemComponent<string> = ({
+  value,
+  onSelect,
+}) => (
+  <CommandItem value={value} onSelect={onSelect}>
+    <BitmapText>{value}</BitmapText>
+  </CommandItem>
+);
+
 export const Select = <Value extends string>(props: SelectProps<Value>) => {
   const {
     value,
@@ -45,7 +55,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
     triggerButtonClassName = "",
     triggerButtonStyle = emptyObject,
     triggerButtonLabel = "",
-    OptionCommandItem,
+    OptionCommandItem = DefaultOptionCommandItem as OptionCommandItemComponent<Value>,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -55,12 +65,12 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className={`h-2 px-1 justify-between  ${triggerButtonClassName}`}
+          className={`h-2 px-1 justify-between ${triggerButtonClassName} gap-1`}
           style={triggerButtonStyle}
           onWheel={(e: WheelEvent<HTMLButtonElement>) => {
             const norm = normalizeWheel(e.nativeEvent);
 
-            wheelY.current += norm.spinY;
+            wheelY.current -= norm.spinY;
 
             if (wheelY.current >= 1 || wheelY.current <= -1) {
               // find currently selected item's index:
@@ -80,7 +90,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
           </BitmapText>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 z-dialog">
+      <PopoverContent className="p-0 z-popups">
         <CssVariables scaleFactor={1}>
           <Command className="w-[--radix-popper-anchor-width]">
             {props.disableCommandInput === true ? null : (
