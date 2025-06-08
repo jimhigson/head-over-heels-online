@@ -13,11 +13,13 @@ import type { PropsWithChildren } from "react";
 
 type ItemToolButtonProps<T extends JsonItemType> = {
   itemTool: ItemTool<T>;
+  className?: string;
 };
 
 export const ItemToolButton = <T extends JsonItemType>({
   itemTool,
   children,
+  className,
 }: PropsWithChildren<ItemToolButtonProps<T>>) => {
   const currentTool = useAppSelectorWithLevelEditorSlice(selectTool);
 
@@ -27,7 +29,8 @@ export const ItemToolButton = <T extends JsonItemType>({
   );
   return (
     <Button
-      className={`h-3 w-3 overflow-hidden ${isCurrentTool ? "bg-pastelBlue" : ""}`}
+      data-isCurrentTool={isCurrentTool}
+      className={`active:pt-oneScaledPix h-3 w-3 gap-0 inline-flex overflow-hidden ${isCurrentTool ? "bg-pastelBlue" : ""} ${className ?? ""}`}
       onClick={() => store.dispatch(setTool({ type: "item", item: itemTool }))}
     >
       {children}

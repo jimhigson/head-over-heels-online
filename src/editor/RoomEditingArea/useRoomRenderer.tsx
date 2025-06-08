@@ -11,12 +11,16 @@ import type {
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
+import type { ShowBoundingBoxes } from "../../store/slices/gameMenusSlice";
+import { useShowBoundingBoxes } from "../../store/selectors";
 
 const editorGeneralRenderContext = (
   pixiRenderer: PixiRenderer,
+  showBoundingBoxes: ShowBoundingBoxes,
 ): GeneralRenderContext<EditorRoomId> => ({
   displaySettings: {
     emulatedResolution: "amigaLowResPal",
+    showBoundingBoxes,
   },
   soundSettings: {
     // don't load/play sounds during room editing
@@ -33,15 +37,17 @@ const editorGeneralRenderContext = (
 const createRoomRenderer = (
   roomState: EditorRoomState,
   pixiRenderer: PixiRenderer,
+  showBoundingBoxes: ShowBoundingBoxes,
 ) => {
   return new RoomRenderer({
     room: roomState,
-    general: editorGeneralRenderContext(pixiRenderer),
+    general: editorGeneralRenderContext(pixiRenderer, showBoundingBoxes),
   });
 };
 
 export const useRoomRenderer = () => {
   const { renderer: pixiRenderer } = useProvidedPixiApplication();
+  const showBoundingBoxes = useShowBoundingBoxes();
 
   if (!pixiRenderer) {
     throw new Error("this should never be falsey (typescript violation)");
@@ -49,20 +55,25 @@ export const useRoomRenderer = () => {
 
   const currentEditingRoomState = useEditorRoomState();
   const [roomRenderer, setRoomRenderer] = useState<EditorRoomRenderer>(() =>
-    createRoomRenderer(currentEditingRoomState, pixiRenderer),
+    createRoomRenderer(
+      currentEditingRoomState,
+      pixiRenderer,
+      showBoundingBoxes,
+    ),
   );
 
   useEffect(() => {
     const createdThisEffectRoomRenderer = createRoomRenderer(
       currentEditingRoomState,
       pixiRenderer,
+      showBoundingBoxes,
     );
     setRoomRenderer(createdThisEffectRoomRenderer);
 
     return () => {
       createdThisEffectRoomRenderer.destroy();
     };
-  }, [currentEditingRoomState, pixiRenderer]);
+  }, [currentEditingRoomState, pixiRenderer, showBoundingBoxes]);
 
   return roomRenderer;
 };

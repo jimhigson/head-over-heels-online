@@ -35,7 +35,8 @@ import type { SerialisableError } from "../../utils/redux/createSerialisableErro
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { CharacterName } from "../../model/modelTypes";
 
-export type ShowBoundingBoxes = "none" | "all" | "non-wall";
+export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
+export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
 
 type BaseOpenMenu = {
   // will be undefined if the menu items have not been rendered yet, since relies

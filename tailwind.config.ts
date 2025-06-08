@@ -168,6 +168,8 @@ export default {
       dialog: "20",
       topSprite: "30",
       cheats: "40",
+      // eg, the body opening from selects
+      popups: "50",
     },
     keyframes: {
       // cursor flash - for when selecting the keys for an action
