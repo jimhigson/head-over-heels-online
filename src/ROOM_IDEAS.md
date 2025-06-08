@@ -53,3 +53,5 @@ back to the start of the room
 * DNA-like double helix made out of metal balls stacked in a spiral
 
 * tower of joysticks - have to press them as falling all the way down the fall motion to move a charles far enough
+
+* homing bots on shelves who have to be tricked into coming down to press a switch, which makes a bridge stable

@@ -43,7 +43,6 @@ export const projectWorldXyzToScreenXy = ({
 export const unprojectScreenXyToWorldXyzOnFace = (
   { x: xs, y: ys }: Xy,
   itemPosition: Xyz,
-  itemAabb: Xyz,
   plane: OrthoPlane,
 ): Xyz => {
   const itemOriginScreen = projectWorldXyzToScreenXy(itemPosition);
@@ -54,19 +53,15 @@ export const unprojectScreenXyToWorldXyzOnFace = (
 
   switch (plane) {
     case "xy": {
-      // 'top' face - at heightened z:
-
-      // since this is the top face, further adjust y to be the top of the item,
-      // not the origin:
-      const ysAdj2 = ysAdj + itemAabb.z;
+      // top/bottom face
       return {
-        x: -(xsAdj / 2 + ysAdj2) + itemPosition.x,
-        y: xsAdj / 2 - ysAdj2 + itemPosition.y,
-        z: itemPosition.z + itemAabb.z,
+        x: -(xsAdj / 2 + ysAdj) + itemPosition.x,
+        y: xsAdj / 2 - ysAdj + itemPosition.y,
+        z: itemPosition.z,
       };
     }
     case "xz": {
-      // 'towards' face
+      // away/towards face
       return {
         x: -xsAdj + itemPosition.x,
         y: itemPosition.y,
@@ -74,7 +69,7 @@ export const unprojectScreenXyToWorldXyzOnFace = (
       };
     }
     case "yz": {
-      // 'right' face
+      // left/right face
       return {
         x: itemPosition.x,
         y: xsAdj + itemPosition.y,
