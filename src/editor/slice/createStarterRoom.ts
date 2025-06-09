@@ -28,7 +28,7 @@ const wallStarterPatterns: { [ScN in SceneryName]: Array<Wall<ScN>> } = {
   safari: ["wall", "shield", "wall", "window", "window", "wall", "shield"],
 };
 
-const rotatingSceneryTile = <S extends SceneryName>(
+export const rotatingSceneryTile = <S extends SceneryName>(
   sceneryName: S,
   n: number,
 ): Wall<S> => {
@@ -39,8 +39,8 @@ export const rotatingSceneryTiles = <S extends SceneryName>(
   sceneryName: S,
   size: number,
 ): Wall<S>[] => {
-  return new Array(8)
-    .fill(size)
+  return new Array(size)
+    .fill(0)
     .map((_n, i) => rotatingSceneryTile(sceneryName, i));
 };
 

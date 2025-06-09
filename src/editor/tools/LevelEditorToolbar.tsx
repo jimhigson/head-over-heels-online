@@ -1,3 +1,4 @@
+import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
 import type { JsonItemConfig } from "../../model/json/JsonItem";
 import { emptyArray, emptyObject } from "../../utils/empty";
@@ -16,13 +17,18 @@ const buttonGroupClassname = twClass("flex flex-wrap gap-oneScaledPix w-full");
 
 export const LevelEditorToolbar = () => {
   return (
-    <div className="flex fixed top-0 right-0 w-14 text-white bg-metallicBlueHalfbrite p-half gap-oneScaledPix flex-wrap justify-start">
-      <RoomScenerySelect />
-      <RoomColourSelect />
+    <div className="flex fixed top-0 bottom-0 right-0 w-12 box-content text-white bg-metallicBlueHalfbrite p-half gap-1 flex-wrap justify-start overflow-auto">
       <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">Room</BitmapText>
+        <RoomScenerySelect />
+        <RoomColourSelect />
+      </div>
+      <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">Edit</BitmapText>
         <PointerToolButton />
       </div>
       <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">Monsters</BitmapText>
         <ItemToolButton
           itemTool={{
             type: "monster",
@@ -206,6 +212,7 @@ export const LevelEditorToolbar = () => {
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">Blocks</BitmapText>
         <ItemToolButton
           itemTool={{ type: "block", config: { style: "artificial" } }}
         >
@@ -225,6 +232,7 @@ export const LevelEditorToolbar = () => {
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">Pickups</BitmapText>
         <ItemToolButton
           itemTool={{ type: "pickup", config: { gives: "extra-life" } }}
         >
@@ -260,8 +268,17 @@ export const LevelEditorToolbar = () => {
             className={`sprite texture-crown.blacktooth ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "pickup",
+            config: { gives: "scroll", page: "blacktooth" },
+          }}
+        >
+          <span className={`sprite texture-scroll ${buttonSpriteClasses}`} />
+        </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">misc.</BitmapText>
         <ItemToolButton
           itemTool={{ type: "lift", config: { top: 11, bottom: 0 } }}
           className="inline relative"
@@ -369,7 +386,9 @@ export const LevelEditorToolbar = () => {
             className={`sprite texture-spikyBall.1 [button:hover_&]:texture-spikyBall.2 ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
-        {/* need a better way to do non-config here - none of this really makes sense */}
+      </div>
+      <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">Structure</BitmapText>
         <ItemToolButton
           itemTool={{
             type: "door",
@@ -384,7 +403,8 @@ export const LevelEditorToolbar = () => {
           />
         </ItemToolButton>
       </div>
-      <div className="flex flex-row gap-1">
+      <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">debug</BitmapText>
         <ShowBoundingBoxSelect />
       </div>
     </div>
