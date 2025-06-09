@@ -16,6 +16,10 @@ type ItemToolButtonProps<T extends JsonItemType> = {
   className?: string;
 };
 
+// want to fit into the block grid with an outline, so 3blocks minus one (scales) pixel
+const buttonSizeClassNames =
+  "h-[calc(3*var(--block)-1px*var(--scale))] w-[calc(3*var(--block)-1px*var(--scale))]";
+
 export const ItemToolButton = <T extends JsonItemType>({
   itemTool,
   children,
@@ -30,7 +34,7 @@ export const ItemToolButton = <T extends JsonItemType>({
   return (
     <Button
       data-iscurrenttool={isCurrentTool}
-      className={`active:pt-oneScaledPix h-3 w-3 gap-0 inline-flex overflow-hidden ${isCurrentTool ? "bg-pastelBlue" : ""} ${className ?? ""}`}
+      className={`active:pt-oneScaledPix ${buttonSizeClassNames} gap-0 inline-flex overflow-hidden ${isCurrentTool ? "bg-pastelBlue" : ""} ${className ?? ""}`}
       onClick={() => store.dispatch(setTool({ type: "item", item: itemTool }))}
     >
       {children}

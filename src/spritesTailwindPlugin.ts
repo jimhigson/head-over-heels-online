@@ -40,11 +40,11 @@ export const spritesTailwindPlugin = plugin(
       // eg, on the original title screen, the sprites were white, and had none of their black pixels
       // shown due to colour-clash
       ".sprite-revert-to-white": {
-        filter: "brightness(1.8) grayscale(100%) contrast(999)",
+        filter: "brightness(3) grayscale(100%) contrast(999)",
         mixBlendMode: "lighten",
       },
       ".sprite-revert-to-two-tone": {
-        filter: "brightness(1.8) grayscale(100%) contrast(999)",
+        filter: "brightness(3) grayscale(100%) contrast(999)",
         mixBlendMode: "luminosity",
       },
       ".sprite-revert-zxYellow": {
