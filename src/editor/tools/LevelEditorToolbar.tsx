@@ -37,35 +37,19 @@ export const LevelEditorToolbar = () => {
             className={`sprite texture-dalek.1 [button:hover_&]:texture-animated-dalek" ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
-
         <ItemToolButton
           itemTool={{
             type: "monster",
             config: {
-              which: "turtle",
+              which: "cyberman",
               activated: "on",
-              movement: "clockwise",
+              movement: "towards-on-shortest-axis-xy4",
               startDirection: "towards",
             },
           }}
         >
           <span
-            className={`sprite texture-turtle.towards.1 [button:hover_&]:texture-animated-turtle.right ${buttonSpriteClasses}`}
-          />
-        </ItemToolButton>
-        <ItemToolButton
-          itemTool={{
-            type: "monster",
-            config: {
-              which: "elephantHead",
-              activated: "on",
-              movement: "turn-to-player",
-              startDirection: "towards",
-            },
-          }}
-        >
-          <span
-            className={`sprite texture-elephant.towards [button:hover_&]:texture-elephant.right ${buttonSpriteClasses}`}
+            className={`sprite texture-cyberman.towards [button:hover_&]:texture-cyberman.right ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -88,21 +72,6 @@ export const LevelEditorToolbar = () => {
           itemTool={{
             type: "monster",
             config: {
-              which: "cyberman",
-              activated: "on",
-              movement: "towards-on-shortest-axis-xy4",
-              startDirection: "towards",
-            },
-          }}
-        >
-          <span
-            className={`sprite texture-cyberman.towards [button:hover_&]:texture-cyberman.right ${buttonSpriteClasses}`}
-          />
-        </ItemToolButton>
-        <ItemToolButton
-          itemTool={{
-            type: "monster",
-            config: {
               which: "helicopterBug",
               activated: "on",
               movement: "patrol-randomly-xy8",
@@ -111,6 +80,21 @@ export const LevelEditorToolbar = () => {
         >
           <span
             className={`sprite texture-helicopterBug.1 [button:hover_&]:texture-animated-helicopterBug ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "turtle",
+              activated: "on",
+              movement: "clockwise",
+              startDirection: "towards",
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-turtle.towards.1 [button:hover_&]:texture-animated-turtle.right ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -141,6 +125,85 @@ export const LevelEditorToolbar = () => {
             className={`sprite texture-computerBot.towards [button:hover_&]:texture-computerBot.right ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "monkey",
+              activated: "on",
+              movement: "patrol-randomly-xy4",
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-monkey.towards [button:hover_&]:texture-monkey.right ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "elephant",
+              activated: "on",
+              movement: "patrol-randomly-xy4",
+            },
+          }}
+          className="inline relative"
+        >
+          <span
+            className={`sprite inline-block absolute left-0 texture-headlessBase ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
+          />
+          <span
+            className={`sprite inline-block absolute top-0 left-0 texture-elephant.towards [button:hover_&]:texture-elephant.right ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "elephantHead",
+              activated: "on",
+              movement: "turn-to-player",
+              startDirection: "towards",
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-elephant.towards [button:hover_&]:texture-elephant.right ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "emperorsGuardian",
+              activated: "while-player-near",
+              movement: "towards-analogue-unless-planet-crowns",
+            },
+          }}
+          className="inline relative"
+        >
+          <span
+            className={`sprite inline-block absolute left-0 texture-bubbles.cold.2 [button:hover_&]:texture-animated-bubbles.cold ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
+          />
+          <span
+            className={`sprite inline-block absolute top-0 left-0 texture-ball [button:hover_&]:texture-ball ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "emperor",
+              activated: "while-player-near",
+              movement: "towards-analogue",
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-bubbles.cold.2 [button:hover_&]:texture-animated-bubbles.cold ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
         <ItemToolButton
@@ -163,6 +226,43 @@ export const LevelEditorToolbar = () => {
       </div>
       <div className={buttonGroupClassname}>
         <ItemToolButton
+          itemTool={{ type: "pickup", config: { gives: "extra-life" } }}
+        >
+          <span
+            className={`sprite texture-whiteRabbit ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton itemTool={{ type: "pickup", config: { gives: "bag" } }}>
+          <span className={`sprite texture-bag ${buttonSpriteClasses}`} />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "pickup",
+            config: { gives: "hooter" },
+          }}
+        >
+          <span className={`sprite texture-hooter ${buttonSpriteClasses}`} />
+        </ItemToolButton>
+
+        <ItemToolButton
+          itemTool={{ type: "pickup", config: { gives: "doughnuts" } }}
+        >
+          <span className={`sprite texture-doughnuts ${buttonSpriteClasses}`} />
+        </ItemToolButton>
+
+        <ItemToolButton
+          itemTool={{
+            type: "pickup",
+            config: { gives: "crown", planet: "blacktooth" },
+          }}
+        >
+          <span
+            className={`sprite texture-crown.blacktooth ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+      </div>
+      <div className={buttonGroupClassname}>
+        <ItemToolButton
           itemTool={{ type: "lift", config: { top: 11, bottom: 0 } }}
           className="inline relative"
         >
@@ -175,13 +275,6 @@ export const LevelEditorToolbar = () => {
         </ItemToolButton>
         <ItemToolButton itemTool={{ type: "barrier", config: { axis: "x" } }}>
           <span className={`sprite texture-barrier.x ${buttonSpriteClasses}`} />
-        </ItemToolButton>
-        <ItemToolButton
-          itemTool={{ type: "pickup", config: { gives: "extra-life" } }}
-        >
-          <span
-            className={`sprite texture-whiteRabbit ${buttonSpriteClasses}`}
-          />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{ type: "conveyor", config: { direction: "away" } }}
