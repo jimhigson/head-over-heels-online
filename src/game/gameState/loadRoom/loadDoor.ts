@@ -136,6 +136,9 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       ),
     },
   };
+  /**
+   * the bit between the two door posts
+   */
   yield {
     ...jsonDoor,
     ...defaultItemProperties,
@@ -171,7 +174,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     },
   };
 
-  // wall above the door
+  // wall above the door, up to the ceiling:
   yield {
     ...jsonDoor,
     ...defaultItemProperties,
@@ -199,6 +202,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         [crossAxis]: 0.5,
         z: defaultRoomHeightBlocks - doorPostHeightBlocks - position.z,
       }),
+      fixedZIndex: nonRenderingItemFixedZIndex,
     },
   };
 

@@ -55,3 +55,5 @@ back to the start of the room
 * tower of joysticks - have to press them as falling all the way down the fall motion to move a charles far enough
 
 * homing bots on shelves who have to be tricked into coming down to press a switch, which makes a bridge stable
+
+* room with several doors on one side at different heights. Most lead to a blockage in the next room - head has to use the door's platforms as a ladder to jump to the next door until eventually gets to the top one, and can progress to the unblocked version of the next room

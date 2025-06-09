@@ -3,18 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { SetRequired, ValueOf } from "type-fest";
 import type { Campaign } from "../../model/modelTypes";
 import { rotatingSceneryTiles, starterRoom } from "./createStarterRoom";
-import {
-  type EditorRoomId,
-  type EditorRoomItemId,
-  type EditorRoomJson,
-} from "../EditorRoomId";
+import { type EditorRoomId, type EditorRoomItemId } from "../EditorRoomId";
 import type { Tool } from "../Tool";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
-import type { JsonItemUnion } from "../../model/json/JsonItem";
 import { sceneryNames, type SceneryName } from "../../sprites/planets";
-import type { Xyz } from "../../utils/vectors/vectors";
+import { applyToolReducers } from "./reducers/applyToolToRoomJson";
+import { selectCurrentRoomFromLevelEditorState } from "./levelEditorSliceSelectors";
 
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
@@ -103,36 +99,7 @@ export const levelEditorSlice = createSlice({
       }
     },
 
-    applyToolAtPosition(
-      _state,
-      { payload: { blockPosition } }: PayloadAction<{ blockPosition: Xyz }>,
-    ) {
-      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
-      // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
-      // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
-      const state = _state as LevelEditorState;
-
-      const { tool } = state;
-
-      switch (tool?.type) {
-        case "item": {
-          const toolItemJson = tool.item;
-
-          const room =
-            state.campaignInProgress.rooms[state.currentlyEditingRoomId];
-
-          const id = `item${toolItemJson.type}#${state.nextItemId}`;
-
-          state.nextItemId++;
-
-          // add to the room json - the loaded state of the room will flow from there
-          room.items[id] = {
-            ...toolItemJson,
-            position: blockPosition,
-          } as JsonItemUnion<EditorRoomId, EditorRoomItemId>;
-        }
-      }
-    },
+    ...applyToolReducers,
 
     /**
      * noop reducer to force the store to give this slice its initial value in the store, since this slice is lazy-loaded.
@@ -141,14 +108,11 @@ export const levelEditorSlice = createSlice({
     injected() {},
   },
   selectors: {
-    selectCurrentEditingRoomJson: (state) =>
-      state.campaignInProgress.rooms[
-        state.currentlyEditingRoomId
-      ] as EditorRoomJson,
+    selectCurrentEditingRoomJson: selectCurrentRoomFromLevelEditorState,
     selectCurrentEditingRoomColour: (state) =>
-      state.campaignInProgress.rooms[state.currentlyEditingRoomId].color,
+      selectCurrentRoomFromLevelEditorState(state).color,
     selectCurrentEditingRoomScenery: (state) =>
-      state.campaignInProgress.rooms[state.currentlyEditingRoomId].planet,
+      selectCurrentRoomFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
   },
 });
@@ -164,7 +128,7 @@ export type LevelEditorSliceActionCreator = ValueOf<
 >;
 
 export const {
-  applyToolAtPosition,
+  applyToolToRoomJson,
   changeRoomColour,
   changeRoomScenery,
   injected,

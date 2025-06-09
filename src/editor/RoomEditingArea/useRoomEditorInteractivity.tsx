@@ -31,7 +31,7 @@ import { useEditorRoomState } from "../EditorRoomStateProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import type { PointingAt } from "./cursor/PointingAt";
-import { applyToolAtPosition, selectTool } from "../slice/levelEditorSlice";
+import { applyToolToRoomJson, selectTool } from "../slice/levelEditorSlice";
 import { store } from "../../store/store";
 import {
   mutateRoomRemoveCursorPreviews,
@@ -45,14 +45,6 @@ import { emptyArray } from "../../utils/empty";
 import { isSolid } from "../../game/physics/itemPredicates";
 import nanoEqual from "nano-equal";
 import type { Tool } from "../Tool";
-
-// allow items to be positioned on half-blocks for x and y (unlike original hoh)
-const incrementXy = blockSizePx.w / 2;
-const incrementZ = blockSizePx.h;
-// bias centres the position towards the bottom of the square while the pointer points to
-// the middle of it
-const biasXy = incrementXy / 2;
-const biasZ = incrementZ / 2;
 
 const pointIntersectsItemAABB =
   ({ x, y }: Xy) =>
@@ -210,6 +202,7 @@ const worldPositionOnFaceForScreenPosition = (
   { state: { position }, aabb }: EditorUnionOfAllItemInPlayTypes,
   face: DirectionXyz4,
   gameEngineXy: Xy,
+  tool: Tool,
 ): Xyz => {
   let offset: Partial<Xyz> = originXyz;
   let plane: OrthoPlane;
@@ -246,6 +239,18 @@ const worldPositionOnFaceForScreenPosition = (
     addXyz(position, offset),
     plane,
   );
+
+  // the tool placement granularity can change depending on the tool:
+  const noHalfSteps = tool.type === "item" && tool.item.type === "door";
+
+  // potentially allow items to be positioned on half-blocks for x and y
+  // (unlike original hoh)
+  const incrementXy = noHalfSteps ? blockSizePx.w : blockSizePx.w / 2;
+  const incrementZ = blockSizePx.h;
+  // bias centres the position towards the bottom of the square while the pointer points to
+  // the middle of it
+  const biasXy = incrementXy / 2;
+  const biasZ = incrementZ / 2;
 
   // apply rounding, but not in the direction of a normal to the face we
   // just unprojected onto. Ie, don't let the rounding take the xyz point
@@ -311,6 +316,7 @@ const getPointerPointingAt = (
         itemPointingTo,
         face,
         pointerXy,
+        tool,
       ),
     };
   } else {
@@ -419,12 +425,13 @@ export const useRoomEditorInteractivity = (
             return;
           }
           dispatch(
-            applyToolAtPosition({
+            applyToolToRoomJson({
               blockPosition: itemToolPutDownLocation(
                 currentPointingAt,
                 roomState,
                 tool.item,
               )!,
+              pointedAtItem: roomState.items[currentPointingAt.itemId],
             }),
           );
           break;

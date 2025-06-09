@@ -19,7 +19,7 @@ export const cursorId = "cursor" as EditorCursorRoomItemId;
 export type EditorRoomState = RoomState<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomJson = RoomJson<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomJsonItems = RoomJsonItems<EditorRoomItemId, EditorRoomId>;
-export type EditorRoomItem = JsonItemUnion<EditorRoomId, EditorRoomItemId>;
+export type EditorRoomJsonItem = JsonItemUnion<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomRenderer = RoomRenderer<EditorRoomId, EditorRoomItemId>;
 export type EditorUnionOfAllItemInPlayTypes = UnionOfAllItemInPlayTypes<
   EditorRoomId,
