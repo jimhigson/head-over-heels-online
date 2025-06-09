@@ -5,8 +5,17 @@ import {
   type EditorRoomItemId,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../EditorRoomId";
-import type { Xyz } from "../../utils/vectors/vectors";
-import { type Xy } from "../../utils/vectors/vectors";
+import type {
+  DirectionXyz4,
+  OrthoPlane,
+  Xyz,
+} from "../../utils/vectors/vectors";
+import {
+  addXyz,
+  oppositeDirection,
+  originXyz,
+  type Xy,
+} from "../../utils/vectors/vectors";
 import {
   sortByZPairs,
   zEdges,
@@ -96,29 +105,35 @@ const pointIntersectsItemAABB =
     return true;
   };
 
-type IntersectionFace = "top" | "towards" | "right";
-
 /**
  * if we already know that the pointer intersects an item, get the face the pointer is over
  */
 const pointerIntersectionFace = (
   item: EditorUnionOfAllItemInPlayTypes,
   { x, y }: Xy,
-): IntersectionFace => {
-  const { bottomCentre, topLeft, topRight } = projectAabbToHexagonCorners(
-    item.state.position,
-    // using aabb, not renderAabb, so doors can be placed on walls above where they render
-    item.aabb,
-  );
+  tool: Tool,
+): DirectionXyz4 => {
+  if (
+    tool.type === "item" &&
+    tool.item.type === "door" &&
+    item.type === "wall"
+  ) {
+    // for placing doors on walls, only consider the face of the wall
+    // that is towards the room:
+    return oppositeDirection(item.config.direction);
+  }
 
   /*
+   * normal case - consider the three visible plans of the aabb:
+   * up, towards and right
+   *
    * find <face> by finding the side on each of 3 lines based on 3 [corners]:
    *            .
    *           / \
    *          /   \
    *         /     \
    *        /       \
-   *  [tl] /  <Top>  \ [tr]
+   *  [tl] /  <up>   \ [tr]
    *      |\         /|
    *      | \       / |
    *      |  \x   y/  |
@@ -132,12 +147,19 @@ const pointerIntersectionFace = (
    *            V
    *           [bc]
    */
+
+  const { bottomCentre, topLeft, topRight } = projectAabbToHexagonCorners(
+    item.state.position,
+    // using aabb, not renderAabb, so doors can be placed on walls above where they render
+    item.aabb,
+  );
+
   const aboveXLine = y < topLeft.y - (topLeft.x - x) / 2;
 
   if (aboveXLine) {
     const aboveYLine = y < topRight.y - (x - topRight.x) / 2;
 
-    return aboveYLine ? "top" : "right";
+    return aboveYLine ? "up" : "right";
   } else {
     const leftOfZLine = x < bottomCentre.x;
 
@@ -186,18 +208,42 @@ const frontItem = (
 
 const worldPositionOnFaceForScreenPosition = (
   { state: { position }, aabb }: EditorUnionOfAllItemInPlayTypes,
-  face: IntersectionFace,
+  face: DirectionXyz4,
   gameEngineXy: Xy,
 ): Xyz => {
-  const plane =
-    face === "top" ? "xy"
-    : face === "towards" ? "xz"
-    : "yz";
+  let offset: Partial<Xyz> = originXyz;
+  let plane: OrthoPlane;
+
+  switch (face) {
+    case "up":
+      offset = { z: aabb.z };
+      plane = "xy";
+      break;
+    case "down":
+      plane = "xy";
+      break;
+    case "towards":
+      plane = "xz";
+      break;
+    case "away":
+      offset = { y: aabb.y };
+      plane = "xz";
+      break;
+    case "left":
+      offset = { x: aabb.x };
+      plane = "yz";
+      break;
+    case "right":
+      plane = "yz";
+      break;
+    default:
+      face satisfies never;
+      throw new Error('unexpected face "' + face + '"');
+  }
 
   const cursorWorldPosition = unprojectScreenXyToWorldXyzOnFace(
     gameEngineXy,
-    position,
-    aabb,
+    addXyz(position, offset),
     plane,
   );
 
@@ -256,7 +302,7 @@ const getPointerPointingAt = (
   );
 
   if (itemPointingTo) {
-    const face = pointerIntersectionFace(itemPointingTo, pointerXy);
+    const face = pointerIntersectionFace(itemPointingTo, pointerXy, tool);
 
     return {
       itemId: itemPointingTo.id,
@@ -376,6 +422,7 @@ export const useRoomEditorInteractivity = (
             applyToolAtPosition({
               blockPosition: itemToolPutDownLocation(
                 currentPointingAt,
+                roomState,
                 tool.item,
               )!,
             }),

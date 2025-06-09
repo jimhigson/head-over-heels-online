@@ -10,16 +10,19 @@ import { RoomColourSelect } from "./RoomColourSelect";
 import { RoomScenerySelect } from "./RoomScenerySelect";
 
 const buttonSpriteClasses = twClass(
-  "[button:not([data-isCurrentTool=true]):not(:hover)_&]:sprite-revert-to-two-tone",
+  "[button:not([data-iscurrenttool=true]):not(:hover)_&]:sprite-revert-to-two-tone",
 );
+const buttonGroupClassname = twClass("flex flex-wrap gap-oneScaledPix w-full");
 
 export const LevelEditorToolbar = () => {
   return (
     <div className="flex fixed top-0 right-0 w-14 text-white bg-metallicBlueHalfbrite p-half gap-oneScaledPix flex-wrap justify-start">
       <RoomScenerySelect />
       <RoomColourSelect />
-      <div className="flex flex-wrap gap-oneScaledPix">
+      <div className={buttonGroupClassname}>
         <PointerToolButton />
+      </div>
+      <div className={buttonGroupClassname}>
         <ItemToolButton
           itemTool={{
             type: "monster",
@@ -34,6 +37,7 @@ export const LevelEditorToolbar = () => {
             className={`sprite texture-dalek.1 [button:hover_&]:texture-animated-dalek" ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
+
         <ItemToolButton
           itemTool={{
             type: "monster",
@@ -96,12 +100,68 @@ export const LevelEditorToolbar = () => {
           />
         </ItemToolButton>
         <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "helicopterBug",
+              activated: "on",
+              movement: "patrol-randomly-xy8",
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-helicopterBug.1 [button:hover_&]:texture-animated-helicopterBug ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "homingBot",
+              activated: "on",
+              movement: "towards-tripped-on-axis-xy4",
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-headlessBase [button:hover_&]:texture-headlessBase.all ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "monster",
+            config: {
+              which: "computerBot",
+              activated: "on",
+              movement: "patrol-randomly-xy4-and-reverse",
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-computerBot.towards [button:hover_&]:texture-computerBot.right ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+      </div>
+      <div className={buttonGroupClassname}>
+        <ItemToolButton
           itemTool={{ type: "block", config: { style: "artificial" } }}
         >
           <span
             className={`sprite texture-block.artificial ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
+        <ItemToolButton
+          itemTool={{ type: "block", config: { style: "organic" } }}
+        >
+          <span
+            className={`sprite texture-block.organic ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton itemTool={{ type: "block", config: { style: "book" } }}>
+          <span className={`sprite texture-book.x ${buttonSpriteClasses}`} />
+        </ItemToolButton>
+      </div>
+      <div className={buttonGroupClassname}>
         <ItemToolButton
           itemTool={{ type: "lift", config: { top: 11, bottom: 0 } }}
           className="inline relative"
@@ -115,16 +175,6 @@ export const LevelEditorToolbar = () => {
         </ItemToolButton>
         <ItemToolButton itemTool={{ type: "barrier", config: { axis: "x" } }}>
           <span className={`sprite texture-barrier.x ${buttonSpriteClasses}`} />
-        </ItemToolButton>
-        <ItemToolButton
-          itemTool={{ type: "block", config: { style: "organic" } }}
-        >
-          <span
-            className={`sprite texture-block.organic ${buttonSpriteClasses}`}
-          />
-        </ItemToolButton>
-        <ItemToolButton itemTool={{ type: "block", config: { style: "book" } }}>
-          <span className={`sprite texture-book.x ${buttonSpriteClasses}`} />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{ type: "pickup", config: { gives: "extra-life" } }}

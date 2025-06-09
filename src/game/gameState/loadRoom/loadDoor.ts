@@ -25,7 +25,11 @@ import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
  */
 export const doorPortalHeight = blockSizePx.h * 2;
 export const doorPostHeightBlocks = 4;
-export const doorPostHeight = blockSizePx.h * 4;
+export const doorPostHeightPx = blockSizePx.h * doorPostHeightBlocks;
+
+/** how many blocks wide is the door, including frame and doorway? */
+export const doorOverallWidthBlocks = 2;
+export const doorOverallWidthPx = 2 * blockSizePx.w;
 
 export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
@@ -96,7 +100,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         {
           [axis]: farPostWidthInAxis,
           [crossAxis]: postWidthInCrossAxis,
-          z: doorPostHeight,
+          z: doorPostHeightPx,
         } as Xyz,
         doorTunnelAabbPx,
       ),
@@ -126,7 +130,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         {
           [axis]: nearPostWidthInAxis,
           [crossAxis]: postWidthInCrossAxis,
-          z: doorPostHeight,
+          z: doorPostHeightPx,
         } as Xyz,
         doorTunnelAabbPx,
       ),
@@ -160,7 +164,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         {
           [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
           [crossAxis]: postWidthInCrossAxis,
-          z: doorPostHeight - doorPortalHeight,
+          z: doorPostHeightPx - doorPortalHeight,
         } as Xyz,
         doorTunnelAabbPx,
       ),
@@ -185,7 +189,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         position: addXyz(
           blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
           {
-            z: doorPostHeight,
+            z: doorPostHeightPx,
           },
         ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
@@ -232,7 +236,10 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
       aabb: {
-        [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
+        [axis]:
+          doorOverallWidthBlocks * blockSizePx.w -
+          nearPostWidthInAxis -
+          farPostWidthInAxis,
         [crossAxis]: 0,
         z: doorPortalHeight,
       } as Xyz,

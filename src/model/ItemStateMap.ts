@@ -1,8 +1,7 @@
 import type { EmptyObject } from "type-fest";
 import type { PortableItem } from "../game/physics/itemPredicates";
-import type { Xyz, Xy } from "../utils/vectors/vectors";
+import type { Xyz, Xy, DirectionXyz4 } from "../utils/vectors/vectors";
 import type { SwitchSetting } from "./ItemInPlay";
-import type { IntersectionFace } from "../editor/RoomEditingArea/cursor/PointingAt";
 
 export type PlayableActionState =
   | "moving"
@@ -270,7 +269,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   scroll: FreeItemState<RoomItemId>;
 
   cursor: {
-    face: IntersectionFace;
+    face: DirectionXyz4;
     /**
      * is this cursor valid in this location and for the tool
      */

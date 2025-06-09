@@ -29,7 +29,7 @@ export const ItemToolButton = <T extends JsonItemType>({
   );
   return (
     <Button
-      data-isCurrentTool={isCurrentTool}
+      data-iscurrenttool={isCurrentTool}
       className={`active:pt-oneScaledPix h-3 w-3 gap-0 inline-flex overflow-hidden ${isCurrentTool ? "bg-pastelBlue" : ""} ${className ?? ""}`}
       onClick={() => store.dispatch(setTool({ type: "item", item: itemTool }))}
     >

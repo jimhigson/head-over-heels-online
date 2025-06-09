@@ -3,11 +3,11 @@ import type { ItemAppearance } from "./ItemAppearance";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { noFilters } from "../filters/standardFilters";
-import type { IntersectionFace } from "../../../editor/RoomEditingArea/cursor/PointingAt";
+import type { DirectionXyz4 } from "../../../utils/vectors/vectors";
 
 type CursorRenderProps = {
   valid?: boolean;
-  face: IntersectionFace;
+  face: DirectionXyz4;
 };
 
 const invalidFilter = new RevertColouriseFilter(spritesheetPalette.midRed);
@@ -34,7 +34,7 @@ export const cursorAppearance: ItemAppearance<"cursor", CursorRenderProps> = ({
     // newly went back to a simple sprite:
     return {
       output: createSprite({
-        textureId: face === "top" ? "editor.cursor.floor" : "editor.cursor.xz",
+        textureId: face === "up" ? "editor.cursor.floor" : "editor.cursor.xz",
         flipX: face === "right",
         filter: valid ? noFilters : invalidFilter,
       }),

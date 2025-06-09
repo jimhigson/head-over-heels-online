@@ -19,20 +19,64 @@ import type {
 } from "../../../model/json/JsonItem";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
+import {
+  doorOverallWidthPx,
+  doorPostHeightPx,
+} from "../../../game/gameState/loadRoom/loadDoor";
 
 let cursorItemCount = 0;
 
 export const itemToolPutDownLocation = (
   pointingAt: PointingAt,
+  roomState: EditorRoomState,
   itemTool: ItemTool,
 ): Xyz | undefined => {
-  if (
-    // doors are put down actually inside walls, not adjacent to the wall space like other items
-    itemTool.type === "door" ||
+  if (pointingAt.face === "up") {
     // on top is the simple case - putdown will be at the location
-    pointingAt.face === "top"
-  ) {
     return fineXyzToBlockXyz(pointingAt.position);
+  }
+
+  if (
+    // for doors in walls, we consider a single case, since doors
+    // are placed inside the wall, not projected in front of it like
+    // other items would be:
+    itemTool.type === "door"
+  ) {
+    const pointingAtItem = roomState.items[pointingAt.itemId];
+    if (pointingAtItem.type !== "wall") {
+      return undefined;
+    }
+    const clampedPosition: Xyz = {
+      x: Math.max(
+        Math.min(
+          pointingAt.position.x,
+          pointingAtItem.state.position.x +
+            pointingAtItem.aabb.x -
+            doorOverallWidthPx,
+        ),
+        pointingAtItem.state.position.x,
+      ),
+      y: Math.max(
+        Math.min(
+          pointingAt.position.y,
+          pointingAtItem.state.position.y +
+            pointingAtItem.aabb.y -
+            doorOverallWidthPx,
+        ),
+        pointingAtItem.state.position.y,
+      ),
+      // door can't go over the top of the wall:
+      z: Math.max(
+        Math.min(
+          pointingAt.position.z,
+          pointingAtItem.state.position.z +
+            pointingAtItem.aabb.z -
+            doorPostHeightPx,
+        ),
+        pointingAtItem.state.position.z,
+      ),
+    };
+    return fineXyzToBlockXyz(clampedPosition);
   }
 
   const normalToSurface = unitVectors[pointingAt.face];
@@ -63,7 +107,11 @@ export const previewItemsForCursor = <T extends JsonItemType>(
     type: T2,
     config: JsonItemConfig<T2, EditorRoomId, EditorRoomItemId>,
   ) => {
-    const jsonBlockPosition = itemToolPutDownLocation(pointingAt, itemTool);
+    const jsonBlockPosition = itemToolPutDownLocation(
+      pointingAt,
+      roomState,
+      itemTool,
+    );
     const loadedItems = loadItemFromJson(
       `cursor/${cursorItemCount++}`,
       {
