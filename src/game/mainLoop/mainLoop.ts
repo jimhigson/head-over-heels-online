@@ -160,6 +160,7 @@ export class MainLoop<RoomId extends string> {
           soundSettings: tickSoundSettings,
           colourised: tickColourise,
           upscale: tickUpscale,
+          editor: false,
         },
         inputDirectionMode: tickInputDirectionMode,
         onScreenControls: tickOnScreenControls,
@@ -204,6 +205,7 @@ export class MainLoop<RoomId extends string> {
             soundSettings: tickSoundSettings,
             colourised: tickColourise,
             upscale: tickUpscale,
+            editor: false,
           },
           room: tickEndRoom,
         };

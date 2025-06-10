@@ -56,4 +56,6 @@ back to the start of the room
 
 * homing bots on shelves who have to be tricked into coming down to press a switch, which makes a bridge stable
 
+* as above, but the homing bots are on lifts and need to wait until at the right height
+
 * room with several doors on one side at different heights. Most lead to a blockage in the next room - head has to use the door's platforms as a ladder to jump to the next door until eventually gets to the top one, and can progress to the unblocked version of the next room

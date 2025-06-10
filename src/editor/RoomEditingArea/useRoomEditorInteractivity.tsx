@@ -1,37 +1,20 @@
-import { iterateRoomItems } from "../../model/RoomState";
-import { projectAabbToHexagonCorners } from "../../game/render/sortZ/projectAabbToHexagonCorners";
-import type { EditorRoomState } from "../EditorRoomId";
-import {
-  type EditorRoomItemId,
-  type EditorUnionOfAllItemInPlayTypes,
-} from "../EditorRoomId";
-import type {
-  DirectionXyz4,
-  OrthoPlane,
-  Xyz,
-} from "../../utils/vectors/vectors";
-import {
-  addXyz,
-  oppositeDirection,
-  originXyz,
-  type Xy,
-} from "../../utils/vectors/vectors";
-import {
-  sortByZPairs,
-  zEdges,
-} from "../../game/render/sortZ/sortItemsByDrawOrder";
+import { type Xy } from "../../utils/vectors/vectors";
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import type { Upscale } from "../../store/slices/upscale/upscaleSlice";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
-import type { SetRequired } from "type-fest";
-import { unprojectScreenXyToWorldXyzOnFace } from "../../game/render/projections";
-import { blockSizePx } from "../../sprites/spritePivots";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import type { PointingAt } from "./cursor/PointingAt";
-import { applyToolToRoomJson, selectTool } from "../slice/levelEditorSlice";
+import {
+  applyToolToRoomJson,
+  setSelectedItemInRoom,
+  selectTool,
+  deleteSelected,
+  undo,
+  redo,
+} from "../slice/levelEditorSlice";
 import { store } from "../../store/store";
 import {
   mutateRoomRemoveCursorPreviews,
@@ -42,287 +25,10 @@ import {
   itemToolPutDownLocation,
 } from "./cursor/itemToolPutDownLocation";
 import { emptyArray } from "../../utils/empty";
-import { isSolid } from "../../game/physics/itemPredicates";
 import nanoEqual from "nano-equal";
-import type { Tool } from "../Tool";
-
-const pointIntersectsItemAABB =
-  ({ x, y }: Xy) =>
-  (item: EditorUnionOfAllItemInPlayTypes) => {
-    const { bottomCentre, topLeft, topRight } = projectAabbToHexagonCorners(
-      item.state.position,
-      // using aabb, not renderAabb, so doors can be placed on walls above where they render
-      item.aabb,
-    );
-
-    /*
-     * check against each of 6 lines based on 3 [corners]:
-     *
-     *       /\
-     *   y1 /  \ x2
-     *[tl] /    \ [tr]
-     *    |      |
-     * z1 |      | z2
-     *    |      |
-     *     \    /
-     *   x1 \  / y2
-     *       \/
-     *      [bc]
-     */
-
-    if (x < topLeft.x) {
-      // z1
-      return false;
-    }
-    if (x > topRight.x) {
-      // z2
-      return false;
-    }
-    if (y < topRight.y - (topRight.x - x) / 2) {
-      // x2
-      return false;
-    }
-    if (y < topLeft.y - (x - topLeft.x) / 2) {
-      // y1
-      return false;
-    }
-    if (y > bottomCentre.y - (x - bottomCentre.x) / 2) {
-      // y2
-      return false;
-    }
-    if (y > bottomCentre.y - (bottomCentre.x - x) / 2) {
-      // x1
-      return false;
-    }
-    return true;
-  };
-
-/**
- * if we already know that the pointer intersects an item, get the face the pointer is over
- */
-const pointerIntersectionFace = (
-  item: EditorUnionOfAllItemInPlayTypes,
-  { x, y }: Xy,
-  tool: Tool,
-): DirectionXyz4 => {
-  if (
-    tool.type === "item" &&
-    tool.item.type === "door" &&
-    item.type === "wall"
-  ) {
-    // for placing doors on walls, only consider the face of the wall
-    // that is towards the room:
-    return oppositeDirection(item.config.direction);
-  }
-
-  /*
-   * normal case - consider the three visible plans of the aabb:
-   * up, towards and right
-   *
-   * find <face> by finding the side on each of 3 lines based on 3 [corners]:
-   *            .
-   *           / \
-   *          /   \
-   *         /     \
-   *        /       \
-   *  [tl] /  <up>   \ [tr]
-   *      |\         /|
-   *      | \       / |
-   *      |  \x   y/  |
-   *      |   \   /   |
-   *      |<Tw>\ /<Rt>|
-   *       \    V    /
-   *        \   |z  /
-   *         \  |  /
-   *          \ | /
-   *           \|/
-   *            V
-   *           [bc]
-   */
-
-  const { bottomCentre, topLeft, topRight } = projectAabbToHexagonCorners(
-    item.state.position,
-    // using aabb, not renderAabb, so doors can be placed on walls above where they render
-    item.aabb,
-  );
-
-  const aboveXLine = y < topLeft.y - (topLeft.x - x) / 2;
-
-  if (aboveXLine) {
-    const aboveYLine = y < topRight.y - (x - topRight.x) / 2;
-
-    return aboveYLine ? "up" : "right";
-  } else {
-    const leftOfZLine = x < bottomCentre.x;
-
-    return leftOfZLine ? "towards" : "right";
-  }
-};
-
-const isFixedZIndexItem = (
-  i: EditorUnionOfAllItemInPlayTypes,
-): i is SetRequired<EditorUnionOfAllItemInPlayTypes, "fixedZIndex"> =>
-  i.fixedZIndex !== undefined;
-
-const frontItem = (
-  items: Array<EditorUnionOfAllItemInPlayTypes>,
-): EditorUnionOfAllItemInPlayTypes | undefined => {
-  if (items.every(isFixedZIndexItem)) {
-    // all items have fixed z-index (don't work in topographic sort) - return
-    // the highest from them:
-    return items.toSorted((ia, ib) => ib.fixedZIndex - ia.fixedZIndex).at(0);
-  }
-
-  const topographicallySortableItems = items.filter(
-    (i) => !isFixedZIndexItem(i),
-  );
-
-  if (topographicallySortableItems.length === 0) {
-    return undefined;
-  }
-
-  if (topographicallySortableItems.length === 1) {
-    return topographicallySortableItems[0];
-  }
-
-  const topographicallySortableItemsMap = Object.fromEntries(
-    topographicallySortableItems.map((i) => [i.id, i]),
-  ) as Record<EditorRoomItemId, EditorUnionOfAllItemInPlayTypes>;
-
-  /**
-   * note: zEdges will not include ids of items with fixed z order
-   */
-  const ze = zEdges(topographicallySortableItemsMap);
-  const { order } = sortByZPairs(ze, topographicallySortableItemsMap);
-
-  return topographicallySortableItemsMap[order[0]];
-};
-
-const worldPositionOnFaceForScreenPosition = (
-  { state: { position }, aabb }: EditorUnionOfAllItemInPlayTypes,
-  face: DirectionXyz4,
-  gameEngineXy: Xy,
-  tool: Tool,
-): Xyz => {
-  let offset: Partial<Xyz> = originXyz;
-  let plane: OrthoPlane;
-
-  switch (face) {
-    case "up":
-      offset = { z: aabb.z };
-      plane = "xy";
-      break;
-    case "down":
-      plane = "xy";
-      break;
-    case "towards":
-      plane = "xz";
-      break;
-    case "away":
-      offset = { y: aabb.y };
-      plane = "xz";
-      break;
-    case "left":
-      offset = { x: aabb.x };
-      plane = "yz";
-      break;
-    case "right":
-      plane = "yz";
-      break;
-    default:
-      face satisfies never;
-      throw new Error('unexpected face "' + face + '"');
-  }
-
-  const cursorWorldPosition = unprojectScreenXyToWorldXyzOnFace(
-    gameEngineXy,
-    addXyz(position, offset),
-    plane,
-  );
-
-  // the tool placement granularity can change depending on the tool:
-  const noHalfSteps = tool.type === "item" && tool.item.type === "door";
-
-  // potentially allow items to be positioned on half-blocks for x and y
-  // (unlike original hoh)
-  const incrementXy = noHalfSteps ? blockSizePx.w : blockSizePx.w / 2;
-  const incrementZ = blockSizePx.h;
-  // bias centres the position towards the bottom of the square while the pointer points to
-  // the middle of it
-  const biasXy = incrementXy / 2;
-  const biasZ = incrementZ / 2;
-
-  // apply rounding, but not in the direction of a normal to the face we
-  // just unprojected onto. Ie, don't let the rounding take the xyz point
-  // off the face, only allow it to snap to a new position on that face.
-  return {
-    x:
-      plane === "yz" ?
-        // normal to plane: snap to the nearest increment since could be placing based off an item that is
-        // smaller than a full block (face pointer is on is not on a (half) grid boundary)
-        Math.round(cursorWorldPosition.x / incrementXy) * incrementXy
-        // tangent to plane: apply rounding to place on the surface in half-block increments:
-      : Math.floor((cursorWorldPosition.x - biasXy) / incrementXy) *
-        incrementXy,
-    y:
-      plane === "xz" ?
-        Math.round(cursorWorldPosition.y / incrementXy) * incrementXy
-      : Math.floor((cursorWorldPosition.y - biasXy) / incrementXy) *
-        incrementXy,
-    z:
-      plane === "xy" ?
-        Math.round(cursorWorldPosition.z / incrementZ) * incrementZ
-      : Math.floor((cursorWorldPosition.z + biasZ) / incrementZ) * incrementZ,
-  };
-};
-
-/** get what is considered a pointable item for the given tool. Ie, what
- * can be pointed at and interacted with by the tool */
-const isPointableItemForTool =
-  (tool: Tool) => (item: EditorUnionOfAllItemInPlayTypes) => {
-    const basicPointability =
-      isSolid(item) && item.type !== "cursor" && !item.isCursorPreview;
-
-    if (tool.type === "item" && tool.item.type === "door") {
-      // when placing a door, we can only place it on (so only point at) walls
-      return basicPointability && item.type === "wall";
-    }
-
-    // for everything else, no special rules
-    return basicPointability;
-  };
-
-const getPointerPointingAt = (
-  pointerXy: Xy,
-  room: EditorRoomState,
-  tool: Tool,
-): PointingAt | undefined => {
-  // find the item(s) that the mouse is over:
-  const itemPointingTo = frontItem(
-    Array.from(
-      iterateRoomItems(room.items)
-        .filter(isPointableItemForTool(tool))
-        .filter(pointIntersectsItemAABB(pointerXy)),
-    ),
-  );
-
-  if (itemPointingTo) {
-    const face = pointerIntersectionFace(itemPointingTo, pointerXy, tool);
-
-    return {
-      itemId: itemPointingTo.id,
-      face,
-      position: worldPositionOnFaceForScreenPosition(
-        itemPointingTo,
-        face,
-        pointerXy,
-        tool,
-      ),
-    };
-  } else {
-    return undefined;
-  }
-};
+import type { ApplyToolToRoomJsonPayload } from "../slice/reducers/applyToolToRoomJson";
+import { findPointerPointingAt } from "./findPointerPointingAt";
+import type { Key } from "../../game/input/keys";
 
 const upscaledMousePosition = (upscale: Upscale, event: MouseEvent): Xy => {
   const totalUpscale = upscale.cssUpscale * upscale.gameEngineUpscale;
@@ -357,7 +63,11 @@ export const useRoomEditorInteractivity = (
         store.getState() as RootStateWithLevelEditorSlice,
       );
 
-      const pointingAt = getPointerPointingAt(upscaledMouseXy, roomState, tool);
+      const pointingAt = findPointerPointingAt(
+        upscaledMouseXy,
+        roomState,
+        tool,
+      );
 
       if (nanoEqual(pointingAt, pointingAtRef.current)) {
         // no change - stop here
@@ -394,6 +104,12 @@ export const useRoomEditorInteractivity = (
               includeCursor: true,
               previewItems: emptyArray,
             });
+            const hoveredJsonItemId =
+              roomState.items[pointingAt.itemId]?.jsonItemId;
+            roomState.editor = {
+              ...roomState.editor,
+              hoveredJsonItemId,
+            };
             break;
           }
           default:
@@ -404,7 +120,7 @@ export const useRoomEditorInteractivity = (
       }
     };
 
-    const handleMouseClick = (_event: MouseEvent) => {
+    const handleMouseClick = (mouseEvent: MouseEvent) => {
       // no point in re-running this effect when it changes so select it 'live':
       const tool = selectTool(
         store.getState() as RootStateWithLevelEditorSlice,
@@ -424,6 +140,7 @@ export const useRoomEditorInteractivity = (
           if (putDownItems === undefined) {
             return;
           }
+          const pointedAtItem = roomState.items[currentPointingAt.itemId];
           dispatch(
             applyToolToRoomJson({
               blockPosition: itemToolPutDownLocation(
@@ -431,13 +148,28 @@ export const useRoomEditorInteractivity = (
                 roomState,
                 tool.item,
               )!,
-              pointedAtItem: roomState.items[currentPointingAt.itemId],
+              pointedAtItem: {
+                type: pointedAtItem.type,
+                config: pointedAtItem.config,
+                jsonItemId: pointedAtItem.jsonItemId,
+              } as ApplyToolToRoomJsonPayload["pointedAtItem"],
             }),
           );
           break;
         }
         case "pointer": {
-          // TODO: implement item selection
+          const currentPointingAt = pointingAtRef.current;
+          if (!currentPointingAt) {
+            return;
+          }
+          const { jsonItemId } = roomState.items[currentPointingAt.itemId];
+
+          dispatch(
+            setSelectedItemInRoom({
+              jsonItemId,
+              additive: mouseEvent.ctrlKey || mouseEvent.metaKey,
+            }),
+          );
           break;
         }
         default:
@@ -445,12 +177,30 @@ export const useRoomEditorInteractivity = (
       }
     };
 
+    const handleKeyUp = (event: KeyboardEvent) => {
+      const key = event.key as Key;
+      if (key === "Backspace" || key === "Delete") {
+        dispatch(deleteSelected());
+      }
+
+      if (
+        ((key as string) === "z" || key === "Z") &&
+        (event.ctrlKey || event.metaKey)
+      ) {
+        // Ctrl+Z or Cmd+Z for undo - this may not work if the browser is taking
+        // this keystroke over and not passing it down to Javascript
+        store.dispatch(event.shiftKey ? redo() : undo());
+      }
+    };
+
     renderArea.addEventListener("mousemove", handleMouseMove);
     renderArea.addEventListener("click", handleMouseClick);
+    window.addEventListener("keyup", handleKeyUp);
 
     return () => {
       renderArea.removeEventListener("mousemove", handleMouseMove);
       renderArea.removeEventListener("click", handleMouseClick);
+      window.removeEventListener("keyup", handleKeyUp);
     };
   }, [application.stage, upscale, renderArea, dispatch, roomState]);
 };

@@ -78,6 +78,7 @@ const keys = [
   "~",
   "Tab",
   "Backspace",
+  "Delete",
   "ArrowUp",
   "ArrowDown",
   "ArrowLeft",

@@ -8,6 +8,7 @@ import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
 import { usePutUpscaleOnAppStage } from "./usePutUpscaleOnAppStage";
 import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplicationToMatchCanvasSize";
 import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
+import { useSyncSelectFromStoreToRoomState } from "./useSyncSelectFromStoreToRoomState";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 export const RoomEditingArea = () => {
@@ -20,6 +21,7 @@ export const RoomEditingArea = () => {
   useRoomEditorInteractivity(renderArea);
   useAddApplicationCanvasToDom(renderArea);
   usePutUpscaleOnAppStage();
+  useSyncSelectFromStoreToRoomState();
   const canvasInlineStyle = useCanvasInlineStyle();
 
   return <div style={canvasInlineStyle} ref={setRenderArea} />;

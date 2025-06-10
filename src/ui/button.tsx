@@ -8,7 +8,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          `inline-flex items-center justify-center whitespace-nowrap bg-metallicBlue zx:bg-zxBlue border-solid border-shadow hover:bg-moss gap-2`,
+          `inline-flex items-center justify-center whitespace-nowrap bg-metallicBlue zx:bg-zxBlue border-solid border-shadow [&:not(:disabled):hover]:bg-moss gap-2`,
           className,
         )}
         ref={ref}

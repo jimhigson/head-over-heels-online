@@ -27,14 +27,14 @@ export function* loadItemFromJson<
   RoomId extends string,
   RoomItemId extends string,
 >(
-  itemId: string,
+  jsonItemId: RoomItemId,
   jsonItem: JsonItemUnion<RoomId, RoomItemId>,
   roomJson: RoomJson<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected = emptyObject,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
-  if (roomPickupsCollected[itemId]) {
+  if (roomPickupsCollected[jsonItemId]) {
     // skip pickups that have already been collected
     return;
   }
@@ -49,15 +49,15 @@ export function* loadItemFromJson<
 
   switch (jsonItem.type) {
     case "door": {
-      return yield* loadDoor<RoomId, RoomItemId>(jsonItem, itemId);
+      return yield* loadDoor<RoomId, RoomItemId>(jsonItem, jsonItemId);
     }
     case "player": {
-      yield loadPlayer(jsonItem);
+      yield loadPlayer(jsonItem, jsonItemId);
       return;
     }
 
     case "wall": {
-      yield loadWall(itemId, jsonItem, roomJson);
+      yield loadWall(jsonItemId, jsonItem, roomJson);
       return;
     }
 
@@ -105,10 +105,11 @@ export function* loadItemFromJson<
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxesMultiplied,
+        id: jsonItemId,
+        jsonItemId,
         fixedZIndex:
           jsonItem.type === "emitter" ? nonRenderingItemFixedZIndex : undefined,
         shadowCastTexture: shadowCast(jsonItem),
-        id: itemId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: jsonItem.config as any,
         state,

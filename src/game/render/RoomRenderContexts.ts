@@ -24,6 +24,11 @@ export type GeneralRenderContext<RoomId extends string> = {
   paused: boolean;
   colourised: boolean;
   upscale: Upscale;
+  /**
+   * if true, we are rendering for the room editor. Otherwise, we are
+   * in-game
+   */
+  editor: boolean;
 };
 
 export type RoomRenderContext<

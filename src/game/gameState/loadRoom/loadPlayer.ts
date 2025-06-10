@@ -57,13 +57,14 @@ export const defaultPlayerState = () => {
 
 export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
   jsonItem: JsonItem<"player", RoomId, RoomItemId>,
+  jsonItemId?: RoomItemId,
 ): PlayableItem<CharacterName, RoomId, RoomItemId> => {
   const infiniteDoughnutsPoke = selectIsInfiniteDoughnutsPoke(store.getState());
 
   if (jsonItem.config.which === "head") {
     return {
-      /** TODO: @knownRoomIds - remove casts */
       id: "head" as RoomItemId,
+      jsonItemId,
       type: "head",
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
@@ -82,8 +83,8 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
     };
   } else {
     return {
-      /** TODO: @knownRoomIds - remove casts */
       id: "heels" as RoomItemId,
+      jsonItemId,
       type: "heels",
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,

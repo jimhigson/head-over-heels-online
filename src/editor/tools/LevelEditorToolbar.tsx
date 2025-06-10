@@ -1,6 +1,7 @@
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
 import type { JsonItemConfig } from "../../model/json/JsonItem";
+import type { Wall } from "../../sprites/planets";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { originXyz } from "../../utils/vectors/vectors";
 import type { EditorRoomId, EditorRoomItemId } from "../EditorRoomId";
@@ -9,6 +10,7 @@ import { ItemToolButton } from "./ItemToolButton";
 import { PointerToolButton } from "./PointerToolButton";
 import { RoomColourSelect } from "./RoomColourSelect";
 import { RoomScenerySelect } from "./RoomScenerySelect";
+import { UndoRedoButtons } from "./UndoRedoButtons";
 
 const buttonSpriteClasses = twClass(
   "[button:not([data-iscurrenttool=true]):not(:hover)_&]:sprite-revert-to-two-tone",
@@ -26,6 +28,7 @@ export const LevelEditorToolbar = () => {
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Edit</BitmapText>
         <PointerToolButton />
+        <UndoRedoButtons />
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Monsters</BitmapText>
@@ -227,6 +230,11 @@ export const LevelEditorToolbar = () => {
             className={`sprite texture-block.organic ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
+        <ItemToolButton
+          itemTool={{ type: "block", config: { style: "tower" } }}
+        >
+          <span className={`sprite texture-tower ${buttonSpriteClasses}`} />
+        </ItemToolButton>
         <ItemToolButton itemTool={{ type: "block", config: { style: "book" } }}>
           <span className={`sprite texture-book.x ${buttonSpriteClasses}`} />
         </ItemToolButton>
@@ -378,6 +386,14 @@ export const LevelEditorToolbar = () => {
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
+            type: "slidingBlock",
+            config: { style: "puck" },
+          }}
+        >
+          <span className={`sprite texture-puck ${buttonSpriteClasses}`} />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
             type: "slidingDeadly",
             config: { style: "spikyBall", startingPhase: 1 },
           }}
@@ -400,6 +416,19 @@ export const LevelEditorToolbar = () => {
         >
           <span
             className={`sprite texture-door.frame.generic.x.whole ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "wall",
+            config: {
+              direction: "away", // arbitrary, to be corrected on placement
+              tiles: ["plain"] as Wall<"blacktooth">[],
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-blacktooth.wall.plain.away ${buttonSpriteClasses}`}
           />
         </ItemToolButton>
       </div>

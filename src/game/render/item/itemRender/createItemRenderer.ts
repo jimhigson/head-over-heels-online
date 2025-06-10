@@ -26,6 +26,7 @@ import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppear
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { maybeWrapInPortableItemPickUpNextHighlightRenderer } from "./PortableItemPickUpNextHighlightRenderer";
 import { debugItemClicked } from "../../../../store/slices/gameMenusSlice";
+import { maybeWrapInEditorSelectedRenderer } from "./EditorSelectedRenderer";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
@@ -64,19 +65,23 @@ export const createItemRenderer = <T extends ItemInPlayType>(
       itemRenderContext,
       appearance,
     );
-    const rendererWithFlashing = new ItemFlashOnSwitchedRenderer(
+    const rendererWithSwitchFlashing = new ItemFlashOnSwitchedRenderer(
       itemRenderContext,
       itemAppearanceRenderer,
     );
     siblingPixiRenderers.push(
-      maybeWrapInPortableItemPickUpNextHighlightRenderer(
+      maybeWrapInEditorSelectedRenderer(
         item,
         itemRenderContext,
-        rendererWithFlashing,
+        maybeWrapInPortableItemPickUpNextHighlightRenderer(
+          item,
+          itemRenderContext,
+          rendererWithSwitchFlashing,
+        ),
       ),
     );
     if (renderBoundingBoxes) {
-      rendererWithFlashing.output.alpha = 0.66;
+      rendererWithSwitchFlashing.output.alpha = 0.66;
     }
   }
 

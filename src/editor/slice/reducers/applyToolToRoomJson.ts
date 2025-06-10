@@ -1,4 +1,4 @@
-import type { PayloadAction, SliceCaseReducers } from "@reduxjs/toolkit";
+import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { LevelEditorState } from "../levelEditorSlice";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import type {
@@ -14,6 +14,8 @@ import type {
 import type { ItemTool } from "../../Tool";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 import { cutHoleInWallsForDoors } from "./cutHoleInWallsForDoor";
+import type { DistributedPick } from "type-fest";
+import { pushUndoInPlace } from "./undoReducers";
 
 const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   state: LevelEditorState,
@@ -21,7 +23,7 @@ const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   config: JsonItemConfig<T, EditorRoomId, EditorRoomItemId>,
   blockPosition: Xyz,
 ) => {
-  const id = `item${type}#${state.nextItemId}` as EditorRoomItemId;
+  const id = `item(${type})#${state.nextItemId}` as EditorRoomItemId;
 
   const room = selectCurrentRoomFromLevelEditorState(state);
   state.nextItemId++;
@@ -38,13 +40,16 @@ const isDoorTool = (itemTool: ItemTool): itemTool is ItemTool<"door"> => {
   return itemTool.type === "door";
 };
 
-type ApplyToolToRoomJsonPayload = {
+export type ApplyToolToRoomJsonPayload = {
   blockPosition: Xyz;
   /**
    * the item (in play, not in json) in the room-in-play preview that the
    * user clicked on to use this tool
    */
-  pointedAtItem: EditorUnionOfAllItemInPlayTypes;
+  pointedAtItem: DistributedPick<
+    EditorUnionOfAllItemInPlayTypes,
+    "type" | "config" | "jsonItemId"
+  >;
 };
 
 export const applyToolReducers = {
@@ -65,8 +70,9 @@ export const applyToolReducers = {
       case "item": {
         const itemTool = tool.item;
         if (isDoorTool(itemTool) && pointedAtItem.type === "wall") {
-          const doorDirection = pointedAtItem.config.direction;
+          pushUndoInPlace(state);
 
+          const doorDirection = pointedAtItem.config.direction;
           // for doors, trim walls around where the door was placed:
           cutHoleInWallsForDoors(state, doorDirection, blockPosition);
 
@@ -80,6 +86,8 @@ export const applyToolReducers = {
             blockPosition,
           );
         } else {
+          pushUndoInPlace(state);
+          // add any other item:
           addItemInPlace(
             state,
             tool.item.type,
@@ -87,6 +95,12 @@ export const applyToolReducers = {
             blockPosition,
           );
         }
+        state.selectedJsonItemIds = [];
+        break;
+      }
+      case "pointer": {
+        // do nothing for this one
+        break;
       }
     }
   },
