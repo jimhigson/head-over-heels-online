@@ -192,6 +192,9 @@ export default {
     aspectRatio: {
       pal: "4 / 3",
     },
+    dropShadow: {
+      oneBlock: "var(--block) var(--block) 0 rgba(0, 0, 0, 0.66)",
+    },
   },
   plugins: [
     spritesTailwindPlugin,

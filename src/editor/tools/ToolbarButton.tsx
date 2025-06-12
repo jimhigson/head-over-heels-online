@@ -1,6 +1,7 @@
 import { Button } from "../../ui/button";
 
 import type { PropsWithChildren } from "react";
+import { buttonSizeClassNames } from "./buttonSizeClassNames";
 
 type ToolbarButtonProps = {
   onClick: () => void;
@@ -8,10 +9,6 @@ type ToolbarButtonProps = {
   isCurrentTool?: boolean;
   disabled?: boolean;
 };
-
-// want to fit into the block grid with an outline, so 3blocks minus one (scales) pixel
-const buttonSizeClassNames =
-  "h-[calc(3*var(--block)-1px*var(--scale))] w-[calc(3*var(--block)-1px*var(--scale))]";
 
 export const ToolbarButton = ({
   className,
