@@ -59,3 +59,6 @@ back to the start of the room
 * as above, but the homing bots are on lifts and need to wait until at the right height
 
 * room with several doors on one side at different heights. Most lead to a blockage in the next room - head has to use the door's platforms as a ladder to jump to the next door until eventually gets to the top one, and can progress to the unblocked version of the next room
+
+* make head unable to pick up the bag, and have to push it down off a ledge to
+heels (more co-operation)

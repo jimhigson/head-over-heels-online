@@ -10,9 +10,8 @@ import {
 import { useAppDispatch } from "../../store/hooks";
 import { colorScheme } from "../../game/hintColours";
 import { Select } from "../../ui/Select";
-import { twClass } from "../twClass";
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { Switch } from "../../ui/Switch";
+import { cn } from "../../ui/cn";
 
 const itemColourCss = (hue: ZxSpectrumRoomHue): CSSProperties => {
   const { main: mainColoursForHue } = colorScheme[hue].basic;
@@ -45,13 +44,14 @@ export function RoomColourSelect() {
         OptionCommandItem={({ value, onSelect }) => (
           <CommandItem
             value={value}
-            className="border-1 h-4 w-2"
+            className="border-l-3 h-2 w-full p-0"
             style={itemColourCss(value)}
             onSelect={onSelect}
           />
         )}
-        triggerButtonLabel={<BitmapText>colour</BitmapText>}
-        triggerButtonClassName={twClass(
+        triggerButtonLabel="colour"
+        triggerButtonClassName={cn(
+          "w-full",
           `${currentRoomColour.hue === "white" ? "text-pureBlack" : "text-white"}`,
         )}
         triggerButtonStyle={itemColourCss(currentRoomColour.hue)}

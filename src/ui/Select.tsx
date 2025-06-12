@@ -14,6 +14,7 @@ import { Button } from "./button";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 import { emptyObject } from "../utils/empty";
 import normalizeWheel from "normalize-wheel-es";
+import { cn } from "./cn";
 
 type OptionCommandItemComponent<Value extends string> = FC<{
   value: Value;
@@ -42,7 +43,7 @@ const DefaultOptionCommandItem: OptionCommandItemComponent<string> = ({
   value,
   onSelect,
 }) => (
-  <CommandItem value={value} onSelect={onSelect}>
+  <CommandItem value={value} onSelect={onSelect} className="px-1">
     <BitmapText>{value}</BitmapText>
   </CommandItem>
 );
@@ -65,7 +66,10 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className={`h-2 px-1 justify-between ${triggerButtonClassName} gap-1`}
+          className={cn(
+            `h-2 px-1 flex flex-row gap-1 justify-start`,
+            triggerButtonClassName,
+          )}
           style={triggerButtonStyle}
           onWheel={(e: WheelEvent<HTMLButtonElement>) => {
             const norm = normalizeWheel(e.nativeEvent);
@@ -84,10 +88,12 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
             }
           }}
         >
-          {triggerButtonLabel}
-          <BitmapText className="ml-half shrink-0">
-            {open ? "X" : "⬇"}
-          </BitmapText>
+          {typeof triggerButtonLabel === "string" ?
+            <BitmapText className="grow overflow-hidden text-left">
+              {triggerButtonLabel}
+            </BitmapText>
+          : triggerButtonLabel}
+          <BitmapText className="grow-0">{open ? "X" : "⬇"}</BitmapText>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">
