@@ -66,7 +66,6 @@ export const room = inferRoomJson({
         activated: "on",
         movement: "back-forth",
         startDirection: "right",
-        style: "stepStool",
       },
       position: { x: 6, y: 7, z: 0 },
       type: "movingPlatform",

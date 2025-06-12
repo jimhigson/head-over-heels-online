@@ -58,8 +58,6 @@ export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 export type PortableBlockStyle = "drum" | "sticks" | "cube";
 export type DeadlyBlockStyle = "toaster" | "volcano";
 
-type PushableOrMovingBlockStyle = "stepStool" | "sandwich";
-
 export type ItemConfigMap<
   RoomId extends string,
   /** ids of items in this room */
@@ -178,12 +176,7 @@ export type ItemConfigMap<
   portableBlock: {
     style: PortableBlockStyle;
   };
-  pushableBlock: {
-    style: PushableOrMovingBlockStyle;
-  };
   movingPlatform: {
-    style: PushableOrMovingBlockStyle;
-
     movement: MovementsSubset<"clockwise" | "back-forth">;
     /* if this item starts initially activated */
     activated: ActivatedWhenSubset<

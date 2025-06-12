@@ -3,9 +3,13 @@
     "op": "add",
     "path": "/items/extra",
     "value": {
-      "config": { "style": "stepStool" },
+      "config": {},
       "isExtra": true,
-      "position": { "x": 1, "y": 1, "z": 0 },
+      "position": {
+        "x": 1,
+        "y": 1,
+        "z": 0
+      },
       "type": "pushableBlock"
     }
   },
@@ -13,9 +17,13 @@
     "op": "add",
     "path": "/items/extra2",
     "value": {
-      "config": { "style": "stepStool" },
+      "config": {},
       "isExtra": true,
-      "position": { "x": 1, "y": 4, "z": 0 },
+      "position": {
+        "x": 1,
+        "y": 4,
+        "z": 0
+      },
       "type": "pushableBlock"
     }
   },
@@ -23,9 +31,13 @@
     "op": "add",
     "path": "/items/extra3",
     "value": {
-      "config": { "style": "stepStool" },
+      "config": {},
       "isExtra": true,
-      "position": { "x": 1, "y": 3.5, "z": 1 },
+      "position": {
+        "x": 1,
+        "y": 3.5,
+        "z": 1
+      },
       "type": "pushableBlock"
     }
   },
@@ -33,9 +45,13 @@
     "op": "add",
     "path": "/items/extra4",
     "value": {
-      "config": { "style": "stepStool" },
+      "config": {},
       "isExtra": true,
-      "position": { "x": 1, "y": 1.5, "z": 1 },
+      "position": {
+        "x": 1,
+        "y": 1.5,
+        "z": 1
+      },
       "type": "pushableBlock"
     }
   },
@@ -43,9 +59,13 @@
     "op": "add",
     "path": "/items/extra5",
     "value": {
-      "config": { "style": "stepStool" },
+      "config": {},
       "isExtra": true,
-      "position": { "x": 1, "y": 2, "z": 2 },
+      "position": {
+        "x": 1,
+        "y": 2,
+        "z": 2
+      },
       "type": "pushableBlock"
     }
   },
@@ -53,9 +73,13 @@
     "op": "add",
     "path": "/items/extra6",
     "value": {
-      "config": { "style": "stepStool" },
+      "config": {},
       "isExtra": true,
-      "position": { "x": 1, "y": 3, "z": 2 },
+      "position": {
+        "x": 1,
+        "y": 3,
+        "z": 2
+      },
       "type": "pushableBlock"
     }
   },
@@ -63,9 +87,13 @@
     "op": "add",
     "path": "/items/extra7",
     "value": {
-      "config": { "style": "stepStool" },
+      "config": {},
       "isExtra": true,
-      "position": { "x": 1, "y": 2.5, "z": 3 },
+      "position": {
+        "x": 1,
+        "y": 2.5,
+        "z": 3
+      },
       "type": "pushableBlock"
     }
   },
@@ -73,9 +101,16 @@
     "op": "add",
     "path": "/items/scroll",
     "value": {
-      "config": { "gives": "scroll", "page": "historyOfTheBlacktoothEmpire" },
+      "config": {
+        "gives": "scroll",
+        "page": "historyOfTheBlacktoothEmpire"
+      },
       "isExtra": true,
-      "position": { "x": 1, "y": 2.5, "z": 4 },
+      "position": {
+        "x": 1,
+        "y": 2.5,
+        "z": 4
+      },
       "type": "pickup"
     }
   }

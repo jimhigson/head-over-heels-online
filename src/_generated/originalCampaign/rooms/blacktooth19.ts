@@ -47,17 +47,17 @@ export const room = inferRoomJson({
       type: "lift",
     },
     "pushableBlock@3,2,4": {
-      config: { style: "stepStool" },
+      config: {},
       position: { x: 3, y: 2, z: 4 },
       type: "pushableBlock",
     },
     "pushableBlock@4,2,4": {
-      config: { style: "stepStool" },
+      config: {},
       position: { x: 4, y: 2, z: 4 },
       type: "pushableBlock",
     },
     "pushableBlock@5,2,4": {
-      config: { style: "stepStool" },
+      config: {},
       position: { x: 5, y: 2, z: 4 },
       type: "pushableBlock",
     },

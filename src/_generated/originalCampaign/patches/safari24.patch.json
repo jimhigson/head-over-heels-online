@@ -14,18 +14,34 @@
     "path": "/items/movingPlatform@0,2,0/config/activated",
     "value": "on"
   },
-  { "op": "replace", "path": "/items/door@0,2,1/position/z", "value": 3 },
+  {
+    "op": "replace",
+    "path": "/items/door@0,2,1/position/z",
+    "value": 3
+  },
   {
     "op": "add",
     "path": "/items/block@7,2,1/config/times",
-    "value": { "y": 2 }
+    "value": {
+      "y": 2
+    }
   },
-  { "op": "replace", "path": "/items/block@1,2,0/position/z", "value": 1 },
-  { "op": "replace", "path": "/items/block@1,2,0/position/x", "value": 0 },
+  {
+    "op": "replace",
+    "path": "/items/block@1,2,0/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@1,2,0/position/x",
+    "value": 0
+  },
   {
     "op": "add",
     "path": "/items/block@1,2,0/config/times",
-    "value": { "y": 2 }
+    "value": {
+      "y": 2
+    }
   },
   {
     "op": "add",
@@ -34,11 +50,14 @@
       "config": {
         "activated": "on",
         "movement": "clockwise",
-        "startDirection": "away",
-        "style": "sandwich"
+        "startDirection": "away"
       },
       "isExtra": true,
-      "position": { "x": 7, "y": 2.5, "z": 0 },
+      "position": {
+        "x": 7,
+        "y": 2.5,
+        "z": 0
+      },
       "type": "movingPlatform"
     }
   },
@@ -49,11 +68,14 @@
       "config": {
         "activated": "on",
         "movement": "clockwise",
-        "startDirection": "left",
-        "style": "sandwich"
+        "startDirection": "left"
       },
       "isExtra": true,
-      "position": { "x": 3.5, "y": 0, "z": 0 },
+      "position": {
+        "x": 3.5,
+        "y": 0,
+        "z": 0
+      },
       "type": "movingPlatform"
     }
   },
@@ -64,11 +86,14 @@
       "config": {
         "activated": "on",
         "movement": "clockwise",
-        "startDirection": "right",
-        "style": "sandwich"
+        "startDirection": "right"
       },
       "isExtra": true,
-      "position": { "x": 3.5, "y": 5, "z": 0 },
+      "position": {
+        "x": 3.5,
+        "y": 5,
+        "z": 0
+      },
       "type": "movingPlatform"
     }
   }

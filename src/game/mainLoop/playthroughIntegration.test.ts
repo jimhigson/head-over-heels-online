@@ -1343,7 +1343,7 @@ describe("lifts", () => {
         },
         heavyBlock: {
           type: "pushableBlock",
-          config: { style: "stepStool" },
+          config: {},
           position: { x: 5, y: 5, z: 1 },
         },
       },
@@ -1759,7 +1759,6 @@ test("platforms that move on stand", () => {
           activated: "on-stand",
           movement: "back-forth",
           startDirection: "left",
-          style: "sandwich",
         },
         position: { x: 0, y: 0, z: 0 },
       },

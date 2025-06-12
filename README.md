@@ -108,6 +108,16 @@ The original had a lot of restrictions around doorways - you couldn't change cha
 or drop an item. These restrictions are gone now, but you should still be careful if one character
 pushes another through a door!
 
+Sandwiches and Stools
+---------------------
+
+In the original game the sandwich and stepstool sprites were used interchangeably as moving platforms
+or pushable, non-carryable blocks. This made the rooms confusing to edit, so now the metal stools are
+always pushable, and the sandwiches are always moving platforms.
+
+![sandwich](sandwich)
+![stepStool](stepStool)
+
 
 Technology used
 ===============

@@ -410,14 +410,12 @@ const convertItem = async ({
 
     case "sandwich":
     case "stool": {
-      const conversions: Record<
-        typeof xml2JsonItem.kind,
-        ItemConfigMap<string, string>["pushableBlock"]["style"]
-      > = {
-        stool: "stepStool",
-        sandwich: "sandwich",
-      };
-
+      // break from the original game - in the original, sandwiches
+      // and stepStools were used interchangeably for moving platforms
+      // or pushable blocks. In my remake, this is made consistent -
+      // stepStools are always pushable blocks, and sandwiches are always
+      // moving platforms. Hence, the existence as a sandwich or stool in the
+      // xml is ignored
       const type = (
         (
           xml2JsonItem.behavior ===
@@ -430,17 +428,13 @@ const convertItem = async ({
       if (type === "pushableBlock") {
         return {
           type,
-          config: {
-            style: conversions[xml2JsonItem.kind],
-          },
+          config: {},
           position,
         };
       } else {
         return {
           type,
           config: {
-            style: conversions[xml2JsonItem.kind],
-
             movement:
               (
                 xml2JsonItem.behavior === "behavior of flying there and back" ||

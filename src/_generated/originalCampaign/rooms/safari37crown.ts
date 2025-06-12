@@ -74,12 +74,12 @@ export const room = inferRoomJson({
       type: "portableBlock",
     },
     "pushableBlock@0,7,6": {
-      config: { style: "stepStool" },
+      config: {},
       position: { x: 0, y: 7, z: 6 },
       type: "pushableBlock",
     },
     "pushableBlock@3,5,0": {
-      config: { style: "stepStool" },
+      config: {},
       position: { x: 3, y: 5, z: 0 },
       type: "pushableBlock",
     },

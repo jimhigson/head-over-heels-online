@@ -12,45 +12,41 @@ export class PushableBlockSoundRenderer
 {
   public readonly output: GainNode = audioCtx.createGain();
 
-  scrapeBracketed: BracketedSound | undefined;
+  scrapeBracketed: BracketedSound;
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<"pushableBlock">,
   ) {
-    if (renderContext.item.config.style === "stepStool") {
-      this.scrapeBracketed = createBracketedSound(
-        {
-          loop: { soundId: "stepStoolScraping" },
-        },
-        this.output,
-      );
-      this.output.gain.value = 0.4;
-    }
+    this.scrapeBracketed = createBracketedSound(
+      {
+        loop: { soundId: "stepStoolScraping" },
+      },
+      this.output,
+    );
+    this.output.gain.value = 0.4;
   }
 
   tick({ movedItems }: ItemTickContext) {
-    if (this.scrapeBracketed !== undefined) {
-      const {
-        renderContext: {
-          item,
-          room: { roomTime },
-        },
-      } = this;
+    const {
+      renderContext: {
+        item,
+        room: { roomTime },
+      },
+    } = this;
 
-      const {
-        state: {
-          actedOnAt: { roomTime: roomTimeActedOn },
-          standingOnItemId,
-        },
-      } = item;
+    const {
+      state: {
+        actedOnAt: { roomTime: roomTimeActedOn },
+        standingOnItemId,
+      },
+    } = item;
 
-      const beingPushed =
-        roomTime === roomTimeActedOn &&
-        standingOnItemId !== null &&
-        movedItems.has(item);
+    const beingPushed =
+      roomTime === roomTimeActedOn &&
+      standingOnItemId !== null &&
+      movedItems.has(item);
 
-      this.scrapeBracketed(beingPushed);
-    }
+    this.scrapeBracketed(beingPushed);
   }
 
   destroy(): void {}

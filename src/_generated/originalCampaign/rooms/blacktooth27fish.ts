@@ -33,7 +33,7 @@ export const room = inferRoomJson({
       type: "portableBlock",
     },
     "pushableBlock@2,3,0": {
-      config: { style: "stepStool" },
+      config: {},
       position: { x: 2, y: 3.5, z: 0 },
       type: "pushableBlock",
     },

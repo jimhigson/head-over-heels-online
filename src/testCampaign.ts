@@ -266,32 +266,32 @@ const rooms = {
       // stack of items to test pushing stacks:
       {
         type: "pushableBlock",
-        config: { style: "stepStool" },
+        config: {},
         position: { x: 10, y: 7, z: 0 },
       },
       {
         type: "pushableBlock",
-        config: { style: "stepStool" },
+        config: {},
         position: { x: 10, y: 7, z: 1 },
       },
       {
         type: "pushableBlock",
-        config: { style: "stepStool" },
+        config: {},
         position: { x: 10, y: 7, z: 2 },
       },
       {
         type: "pushableBlock",
-        config: { style: "stepStool" },
+        config: {},
         position: { x: 10, y: 7, z: 3 },
       },
       {
         type: "pushableBlock",
-        config: { style: "stepStool" },
+        config: {},
         position: { x: 10, y: 7, z: 4 },
       },
       {
         type: "pushableBlock",
-        config: { style: "stepStool" },
+        config: {},
         position: { x: 10, y: 7, z: 5 },
       },
       // to test disappearing barriers:
@@ -571,51 +571,37 @@ const rooms = {
       },
       {
         type: "pushableBlock",
-        config: {
-          style: "stepStool",
-        },
+        config: {},
         position: { x: 2, y: 6, z: 0 },
       },
       {
         type: "pushableBlock",
-        config: {
-          style: "stepStool",
-        },
+        config: {},
         position: { x: 2, y: 9, z: 0 },
       },
       {
         type: "pushableBlock",
-        config: {
-          style: "stepStool",
-        },
+        config: {},
         position: { x: 1, y: 6, z: 0 },
       },
       {
         type: "pushableBlock",
-        config: {
-          style: "sandwich",
-        },
+        config: {},
         position: { x: 1, y: 6, z: 1 },
       },
       {
         type: "pushableBlock",
-        config: {
-          style: "sandwich",
-        },
+        config: {},
         position: { x: 1, y: 6, z: 2 },
       },
       {
         type: "pushableBlock",
-        config: {
-          style: "sandwich",
-        },
+        config: {},
         position: { x: 2, y: 6, z: 1 },
       },
       {
         type: "pushableBlock",
-        config: {
-          style: "sandwich",
-        },
+        config: {},
         position: { x: 2, y: 6, z: 2 },
       },
 
@@ -1173,7 +1159,7 @@ const rooms = {
       },
       {
         type: "pushableBlock",
-        config: { style: "stepStool" },
+        config: {},
         position: { x: 9, y: 7, z: 0 },
       },
       {
@@ -1188,7 +1174,7 @@ const rooms = {
       },
       {
         type: "pushableBlock",
-        config: { style: "sandwich" },
+        config: {},
         position: { x: 10, y: 9, z: 0 },
       },
       {

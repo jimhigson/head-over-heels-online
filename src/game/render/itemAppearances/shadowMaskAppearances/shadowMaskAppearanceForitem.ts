@@ -50,12 +50,8 @@ const itemShadowMaskAppearances: {
   block: itemAppearanceShadowMaskFromConfig(({ style }) =>
     style === "tower" ? "shadowMask.tower" : "shadowMask.fullBlock",
   ),
-  pushableBlock: itemAppearanceShadowMaskFromConfig(({ style }) =>
-    style === "stepStool" ? "shadowMask.stepStool" : "shadowMask.fullBlock",
-  ),
-  movingPlatform: itemAppearanceShadowMaskFromConfig(({ style }) =>
-    style === "stepStool" ? "shadowMask.stepStool" : "shadowMask.fullBlock",
-  ),
+  pushableBlock: itemStaticSpriteAppearance("shadowMask.stepStool"),
+  movingPlatform: itemStaticSpriteAppearance("shadowMask.fullBlock"),
   hushPuppy: itemStaticSpriteAppearance("shadowMask.hushPuppy"),
 
   portableBlock: itemAppearanceShadowMaskFromConfig(({ style }) =>

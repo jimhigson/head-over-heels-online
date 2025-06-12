@@ -101,8 +101,7 @@
       "config": {
         "activated": "on",
         "movement": "clockwise",
-        "startDirection": "right",
-        "style": "sandwich"
+        "startDirection": "right"
       },
       "position": {
         "x": 6,

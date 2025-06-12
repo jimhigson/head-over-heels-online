@@ -83,7 +83,7 @@ export const room = inferRoomJson({
       type: "lift",
     },
     "pushableBlock@6,4,4": {
-      config: { style: "sandwich" },
+      config: {},
       position: { x: 6, y: 4, z: 4 },
       type: "pushableBlock",
     },
