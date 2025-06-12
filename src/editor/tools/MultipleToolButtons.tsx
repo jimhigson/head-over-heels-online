@@ -5,6 +5,7 @@ import { Button } from "../../ui/button";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { buttonSizeClassNames } from "./buttonSizeClassNames";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { cn } from "../../ui/utils";
 
 export interface MultipleToolButtonsProps {
   children: ReactElement<PropsWithChildren>[];
@@ -17,7 +18,11 @@ export const MultipleToolButtons = ({ children }: MultipleToolButtonsProps) => {
   const selectedChild = children[buttonIndex];
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <div className={`${buttonSizeClassNames} relative`}>
+      <div
+        className={cn(buttonSizeClassNames, "relative", {
+          "drop-shadow-oneBlock z-popups": open,
+        })}
+      >
         {selectedChild}
         <PopoverTrigger asChild>
           <Button className="absolute bottom-0 right-0 bg-metallicBlueHalfbrite">
