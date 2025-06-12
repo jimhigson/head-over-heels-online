@@ -141,6 +141,25 @@ export const spritesTailwindPlugin = plugin(
           },
         ]),
       );
+
+      const reversedFrames = frames.toReversed();
+      utilities[`.texture-animated-reversed-${e(animationName)}`] = {
+        "--w": `${spritesheetData.frames[reversedFrames[0]].frame.w}px`,
+        "--h": `${spritesheetData.frames[reversedFrames[0]].frame.h}px`,
+        animation: `sprite-animation-reversed-${animationName.replaceAll(".", "_")} ${animationDuration}s steps(${frames.length}, end) infinite`,
+      };
+
+      animations[
+        `@keyframes sprite-animation-reversed-${animationName.replaceAll(".", "_")}`
+      ] = Object.fromEntries(
+        reversedFrames.map((frame, i) => [
+          `${(i * 100) / (frames.length - 1)}%`,
+          {
+            "--x": `${spritesheetData.frames[frame].frame.x}px`,
+            "--y": `${spritesheetData.frames[frame].frame.y}px`,
+          },
+        ]),
+      );
     }
 
     addUtilities(utilities);
