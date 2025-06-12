@@ -28,6 +28,10 @@ import { blockAppearance } from "./blockAppearance";
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { toasterAppearance } from "./toasterAppearance";
 import { cursorAppearance } from "./cursorAppearance";
+import {
+  makeTextContainer,
+  showTextInContainer,
+} from "../hud/showNumberInContainer";
 
 const itemAppearancesMap: {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;
@@ -155,7 +159,7 @@ const itemAppearancesMap: {
       renderContext: {
         item: { config },
         room,
-        general: { paused },
+        general: { paused, editor },
       },
     }) => {
       if (config.gives === "crown") {
@@ -164,24 +168,50 @@ const itemAppearancesMap: {
         });
       }
 
-      const pickupIcons: Record<(typeof config)["gives"], CreateSpriteOptions> =
-        {
-          shield: "whiteRabbit",
-          jumps: "whiteRabbit",
-          fast: "whiteRabbit",
-          "extra-life": "whiteRabbit",
-          bag: "bag",
-          doughnuts: "doughnuts",
-          hooter: "hooter",
-          scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
-          reincarnation: {
-            animationId: "fish",
-            paused,
-          },
-        };
-      const createOptions = pickupIcons[config.gives];
+      const pickupSpriteOptions: Record<
+        (typeof config)["gives"],
+        CreateSpriteOptions
+      > = {
+        shield: "whiteRabbit",
+        jumps: "whiteRabbit",
+        fast: "whiteRabbit",
+        "extra-life": "whiteRabbit",
+        bag: "bag",
+        doughnuts: "doughnuts",
+        hooter: "hooter",
+        scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
+        reincarnation: {
+          animationId: "fish",
+          paused,
+        },
+      };
+      const createSpriteOptions = pickupSpriteOptions[config.gives];
 
-      return createSprite(createOptions);
+      const sprite = createSprite(createSpriteOptions);
+
+      if (editor && createSpriteOptions === "whiteRabbit") {
+        // in-game, the 'gives' of the white rabbit is not shown, but in-editor
+        // let the editor know this
+        const explainingText = {
+          shield: "🛡",
+          jumps: "♨",
+          fast: "⚡",
+          "extra-life": "+2",
+        };
+
+        const explainingIcon = showTextInContainer(
+          makeTextContainer({
+            outline: true,
+          }),
+          explainingText[config.gives as keyof typeof explainingText],
+        );
+        explainingIcon.y = -16;
+        return new Container({
+          children: [sprite, explainingIcon],
+        });
+      } else {
+        return sprite;
+      }
     },
   ),
 

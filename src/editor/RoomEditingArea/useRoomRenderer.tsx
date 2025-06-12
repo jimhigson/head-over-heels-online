@@ -32,6 +32,7 @@ const editorGeneralRenderContext = (
   paused: false,
   colourised: true,
   upscale: selectUpscale(store.getState()),
+  editor: true,
 });
 
 const createRoomRenderer = (

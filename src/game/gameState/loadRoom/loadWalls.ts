@@ -51,7 +51,7 @@ export const yAxisWallRenderAabb = {
 };
 
 export const loadWall = <RoomId extends string, RoomItemId extends string>(
-  itemId: RoomItemId,
+  jsonItemId: RoomItemId,
   jsonWall: JsonItem<"wall", RoomId, RoomItemId>,
   roomJson: RoomJson<RoomId, RoomItemId>,
 ): ItemInPlay<"wall", RoomId, RoomItemId> => {
@@ -75,7 +75,8 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
 
   return {
     type: "wall",
-    id: itemId,
+    id: jsonItemId,
+    jsonItemId,
     config: jsonWall.config,
     aabb: multiplyBoundingBox(
       axis === "y" ? yAxisWallAabb(roomSizeZ) : xAxisWallAabb(roomSizeZ),

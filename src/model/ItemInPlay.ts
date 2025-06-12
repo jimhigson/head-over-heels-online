@@ -137,6 +137,16 @@ export type ItemInPlay<
 > = {
   type: T;
 
+  /**
+   * if we are coming from room json in a campaign, the id of the room json item
+   * that this item was created based off. Multiple items can exist in-play for
+   * a single json item, and an in-play item doesn't have to come from a json item
+   *
+   * TODO: this type isn't quite correct since the json and in-play item ids are
+   * confused
+   */
+  jsonItemId?: RoomItemId;
+
   // borrow the config from the json typings:
   config: ItemInPlayConfig<T, RoomId, RoomItemId, ScN>;
 
