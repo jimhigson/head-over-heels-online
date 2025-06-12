@@ -378,16 +378,13 @@ export const LevelEditorToolbar = () => {
             <span className={`sprite texture-sticks ${buttonSpriteClasses}`} />
           </ItemToolButton>
         </MultipleToolButtons>
-        <ItemToolButton
-          itemTool={{ type: "pushableBlock", config: { style: "stepStool" } }}
-        >
+        <ItemToolButton itemTool={{ type: "pushableBlock", config: {} }}>
           <span className={`sprite texture-stepStool ${buttonSpriteClasses}`} />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
             type: "movingPlatform",
             config: {
-              style: "sandwich",
               movement: "clockwise",
               activated: "on",
               startDirection: "towards",

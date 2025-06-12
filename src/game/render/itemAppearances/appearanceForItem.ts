@@ -222,24 +222,8 @@ const itemAppearancesMap: {
 
   joystick: itemStaticAppearance("joystick"),
 
-  movingPlatform: itemAppearanceRenderOnce(
-    ({
-      renderContext: {
-        item: {
-          config: { style },
-        },
-      },
-    }) => createSprite(style),
-  ),
-  pushableBlock: itemAppearanceRenderOnce(
-    ({
-      renderContext: {
-        item: {
-          config: { style },
-        },
-      },
-    }) => createSprite(style),
-  ),
+  movingPlatform: itemStaticAppearance("sandwich"),
+  pushableBlock: itemStaticAppearance("stepStool"),
 
   portableBlock: itemAppearanceRenderOnce(
     ({

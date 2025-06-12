@@ -66,13 +66,10 @@ export const isSolid = (
 
 /**
  * 'heavy' items stop lifts from rising (see blacktooth 78) - only
- * the metal stepstools are heavy
+ * the metal stepStools and moving platform sandwiches are heavy
  */
 export const isHeavyItem = (item: UnionOfAllItemInPlayTypes): boolean => {
-  return (
-    (item.type === "movingPlatform" || item.type === "pushableBlock") &&
-    item.config.style === "stepStool"
-  );
+  return item.type === "movingPlatform" || item.type === "pushableBlock";
 };
 
 // a good example of where OOP would make sense, it a polymorphic isPushable method

@@ -37,9 +37,7 @@ const pushableBlock = first(
     "mb",
     {
       type: "pushableBlock",
-      config: {
-        style: "sandwich",
-      },
+      config: {},
       position: originXyz,
     },
     basicEmptyRoom("firstRoom"),

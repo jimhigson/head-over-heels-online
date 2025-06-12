@@ -12,9 +12,7 @@ test("prefers blocks over conveyors even if the conveyor has more overlap", () =
         "movable",
         {
           type: "pushableBlock",
-          config: {
-            style: "stepStool",
-          },
+          config: {},
           position: { x: 2.1, y: 0, z: 1 },
         },
         basicEmptyRoom("firstRoom"),
@@ -60,9 +58,7 @@ test("given two blocks, choses one with most overlap", () => {
         "movable",
         {
           type: "pushableBlock",
-          config: {
-            style: "stepStool",
-          },
+          config: {},
           position: { x: 2.2, y: 0, z: 1 },
         },
         basicEmptyRoom("firstRoom"),

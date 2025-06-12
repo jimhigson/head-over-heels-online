@@ -23,17 +23,17 @@ export const room = inferRoomJson({
       type: "door",
     },
     "pushableBlock@2,2,0": {
-      config: { style: "sandwich" },
+      config: {},
       position: { x: 2, y: 2, z: 0 },
       type: "pushableBlock",
     },
     "pushableBlock@2,2,1": {
-      config: { style: "sandwich" },
+      config: {},
       position: { x: 2, y: 2, z: 1 },
       type: "pushableBlock",
     },
     "pushableBlock@4,3,3": {
-      config: { style: "sandwich" },
+      config: {},
       position: { x: 4, y: 3, z: 3 },
       type: "pushableBlock",
     },
