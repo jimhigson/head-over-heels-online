@@ -5,7 +5,7 @@ import { Button } from "../../ui/button";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { buttonSizeClassNames } from "./buttonSizeClassNames";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
-import { cn } from "../../ui/utils";
+import { cn } from "../../ui/cn";
 
 export interface MultipleToolButtonsProps {
   children: ReactElement<PropsWithChildren>[];

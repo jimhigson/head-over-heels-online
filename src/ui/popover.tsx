@@ -5,7 +5,7 @@ import {
   Trigger as RadixTrigger,
   Popover as RadixPopover,
 } from "@radix-ui/react-popover";
-import { cn } from "./utils";
+import { cn } from "./cn";
 
 export const Popover = RadixPopover;
 

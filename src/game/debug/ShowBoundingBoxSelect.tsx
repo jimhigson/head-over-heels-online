@@ -6,7 +6,6 @@ import {
   showBoundingBoxOptions,
 } from "../../store/slices/gameMenusSlice";
 import { Select } from "../../ui/Select";
-import { BitmapText } from "../components/tailwindSprites/Sprite";
 
 export const ShowBoundingBoxSelect = () => {
   const dispatch = useAppDispatch();
@@ -21,9 +20,7 @@ export const ShowBoundingBoxSelect = () => {
           dispatch(setShowBoundingBoxes(newValue));
         }}
         disableCommandInput
-        triggerButtonLabel={
-          <BitmapText className="">{showBoundingBoxes}</BitmapText>
-        }
+        triggerButtonLabel={showBoundingBoxes}
         triggerButtonClassName="w-13"
       />
     </>

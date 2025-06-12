@@ -5,7 +5,6 @@ import {
 } from "../slice/levelEditorSlice";
 import { useAppDispatch } from "../../store/hooks";
 import { Select } from "../../ui/Select";
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import type { SceneryName } from "../../sprites/planets";
 import { sceneryNames } from "../../sprites/planets";
 
@@ -24,8 +23,8 @@ export function RoomScenerySelect() {
       }}
       values={sceneryNames}
       disableCommandInput
-      triggerButtonClassName="w-18 text-white"
-      triggerButtonLabel={<BitmapText>{currentRoomScenery}</BitmapText>}
+      triggerButtonClassName="w-full"
+      triggerButtonLabel={currentRoomScenery}
     />
   );
 }
