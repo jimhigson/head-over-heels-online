@@ -1,32 +1,31 @@
 import * as React from "react";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
+import type { Content as RadixContent } from "@radix-ui/react-popover";
+import {
+  PopoverContent as RadixPopoverContent,
+  Trigger as RadixTrigger,
+  Popover as RadixPopover,
+} from "@radix-ui/react-popover";
 import { cn } from "./utils";
 
-const Popover = PopoverPrimitive.Root;
+export const Popover = RadixPopover;
 
-const PopoverTrigger = PopoverPrimitive.Trigger;
+export const PopoverTrigger = RadixTrigger;
 
-const PopoverContent = React.forwardRef<
-  React.ElementRef<typeof PopoverPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
->(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
-  <PopoverPrimitive.Portal>
-    <PopoverPrimitive.Content
-      ref={ref}
-      align={align}
-      sideOffset={sideOffset}
-      className={cn(
-        "z-50 w-72 rounded-md  border-shadow border-2 bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-        className,
-      )}
-      {...props}
-      onKeyDown={(e) => {
-        // don't want keys bubbling up and being detected on the window by the game engine:
-        e.stopPropagation();
-      }}
-    />
-  </PopoverPrimitive.Portal>
+export const PopoverContent = React.forwardRef<
+  React.ElementRef<typeof RadixContent>,
+  React.ComponentPropsWithoutRef<typeof RadixContent>
+>(({ className, align = "end", ...props }, ref) => (
+  <RadixPopoverContent
+    ref={ref}
+    align={align}
+    className={cn(
+      "z-popups drop-shadow-oneBlock p-0 border-shadow outline-none",
+      className,
+    )}
+    {...props}
+    onKeyDown={(e) => {
+      // don't want keys bubbling up and being detected on the window by the game engine:
+      e.stopPropagation();
+    }}
+  />
 ));
-PopoverContent.displayName = PopoverPrimitive.Content.displayName;
-
-export { Popover, PopoverTrigger, PopoverContent };

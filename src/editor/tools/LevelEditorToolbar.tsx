@@ -7,6 +7,7 @@ import { originXyz } from "../../utils/vectors/vectors";
 import type { EditorRoomId, EditorRoomItemId } from "../EditorRoomId";
 import { twClass } from "../twClass";
 import { ItemToolButton } from "./ItemToolButton";
+import { MultipleToolButtons } from "./MultipleToolButtons";
 import { PointerToolButton } from "./PointerToolButton";
 import { RoomColourSelect } from "./RoomColourSelect";
 import { RoomScenerySelect } from "./RoomScenerySelect";
@@ -298,9 +299,18 @@ export const LevelEditorToolbar = () => {
             className={`sprite inline-block absolute top-0 left-0 texture-lift.1 [button:hover_&]:texture-animated-lift ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
           />
         </ItemToolButton>
-        <ItemToolButton itemTool={{ type: "barrier", config: { axis: "x" } }}>
-          <span className={`sprite texture-barrier.x ${buttonSpriteClasses}`} />
-        </ItemToolButton>
+        <MultipleToolButtons>
+          <ItemToolButton itemTool={{ type: "barrier", config: { axis: "x" } }}>
+            <span
+              className={`sprite texture-barrier.x ${buttonSpriteClasses}`}
+            />
+          </ItemToolButton>
+          <ItemToolButton itemTool={{ type: "barrier", config: { axis: "y" } }}>
+            <span
+              className={`sprite texture-barrier.y ${buttonSpriteClasses}`}
+            />
+          </ItemToolButton>
+        </MultipleToolButtons>
         <ItemToolButton
           itemTool={{ type: "conveyor", config: { direction: "away" } }}
         >
@@ -351,11 +361,23 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton itemTool={{ type: "ball", config: emptyObject }}>
           <span className={`sprite texture-ball ${buttonSpriteClasses}`} />
         </ItemToolButton>
-        <ItemToolButton
-          itemTool={{ type: "portableBlock", config: { style: "cube" } }}
-        >
-          <span className={`sprite texture-cube ${buttonSpriteClasses}`} />
-        </ItemToolButton>
+        <MultipleToolButtons>
+          <ItemToolButton
+            itemTool={{ type: "portableBlock", config: { style: "cube" } }}
+          >
+            <span className={`sprite texture-cube ${buttonSpriteClasses}`} />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "portableBlock", config: { style: "drum" } }}
+          >
+            <span className={`sprite texture-drum ${buttonSpriteClasses}`} />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "portableBlock", config: { style: "sticks" } }}
+          >
+            <span className={`sprite texture-sticks ${buttonSpriteClasses}`} />
+          </ItemToolButton>
+        </MultipleToolButtons>
         <ItemToolButton
           itemTool={{ type: "pushableBlock", config: { style: "stepStool" } }}
         >
@@ -377,13 +399,22 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton itemTool={{ type: "spikes", config: emptyObject }}>
           <span className={`sprite texture-spikes ${buttonSpriteClasses}`} />
         </ItemToolButton>
-        <ItemToolButton
-          itemTool={{ type: "deadlyBlock", config: { style: "volcano" } }}
-        >
-          <span
-            className={`sprite texture-volcano.1 [button:hover_&]:texture-animated-volcano ${buttonSpriteClasses}`}
-          />
-        </ItemToolButton>
+        <MultipleToolButtons>
+          <ItemToolButton
+            itemTool={{ type: "deadlyBlock", config: { style: "volcano" } }}
+          >
+            <span
+              className={`sprite texture-volcano.1 [button:hover_&]:texture-animated-volcano ${buttonSpriteClasses}`}
+            />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "deadlyBlock", config: { style: "toaster" } }}
+          >
+            <span
+              className={`sprite texture-toaster.off ${buttonSpriteClasses}`}
+            />
+          </ItemToolButton>
+        </MultipleToolButtons>
         <ItemToolButton
           itemTool={{
             type: "slidingBlock",

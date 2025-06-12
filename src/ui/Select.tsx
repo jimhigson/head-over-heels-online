@@ -90,8 +90,8 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
           </BitmapText>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 z-popups">
-        <CssVariables scaleFactor={1}>
+      <PopoverContent className="p-0">
+        <CssVariables scaleFactor={2}>
           <Command className="w-[--radix-popper-anchor-width]">
             {props.disableCommandInput === true ? null : (
               <CommandInput placeholder={props.placeholder} />

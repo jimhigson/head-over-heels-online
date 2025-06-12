@@ -34,6 +34,10 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
           ) as Iterable<EditorUnionOfAllItemInPlayTypes>,
         );
 
+        // some animations (ie, cyberman bob) depend on the roomTime
+        // incrementing between frames
+        currentEditingRoomState.roomTime += deltaMS;
+
         roomRenderer.tick({
           deltaMS,
           // TODO: probably needs this to be the real set of moved items, like a 'proper' main loop,
