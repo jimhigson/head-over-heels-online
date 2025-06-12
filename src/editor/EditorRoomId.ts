@@ -1,6 +1,10 @@
 import type { Tagged } from "type-fest";
 import type { RoomRenderer } from "../game/render/roomRenderer";
-import type { JsonItemUnion } from "../model/json/JsonItem";
+import type {
+  JsonItem,
+  JsonItemType,
+  JsonItemUnion,
+} from "../model/json/JsonItem";
 import type { RoomJsonItems, RoomJson } from "../model/RoomJson";
 import type { RoomState } from "../model/RoomState";
 import type {
@@ -19,7 +23,15 @@ export const cursorId = "cursor" as EditorCursorRoomItemId;
 export type EditorRoomState = RoomState<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomJson = RoomJson<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomJsonItems = RoomJsonItems<EditorRoomItemId, EditorRoomId>;
-export type EditorRoomJsonItem = JsonItemUnion<EditorRoomId, EditorRoomItemId>;
+export type EditorRoomJsonItemUnion = JsonItemUnion<
+  EditorRoomId,
+  EditorRoomItemId
+>;
+export type EditorRoomJsonItem<T extends JsonItemType> = JsonItem<
+  T,
+  EditorRoomId,
+  EditorRoomItemId
+>;
 export type EditorRoomRenderer = RoomRenderer<EditorRoomId, EditorRoomItemId>;
 export type EditorUnionOfAllItemInPlayTypes = UnionOfAllItemInPlayTypes<
   EditorRoomId,

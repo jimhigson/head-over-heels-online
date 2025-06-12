@@ -1,8 +1,6 @@
-import type { GameApi } from "../../GameApi";
-import { useCurrentlyViewedRoom } from "./useCurrentRoom";
 import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
-import { Button } from "../../../ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Button } from "./button";
 import {
   Command,
   CommandEmpty,
@@ -10,27 +8,30 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../../../ui/command";
-import { CssVariables } from "../CssVariables";
+} from "./command";
+import { CssVariables } from "../game/components/CssVariables";
+import type { Campaign } from "../model/modelTypes";
 
 export type RoomSelectProps<RoomId extends string> = {
-  gameApi?: GameApi<RoomId>;
+  campaign: Campaign<RoomId>;
+  headRoomId?: RoomId;
+  heelsRoomId?: RoomId;
+  viewingRoomId?: RoomId;
   className?: string;
+  onRoomSelect?: (roomId: RoomId) => void;
 };
 
 export function RoomSelect<RoomId extends string>({
-  gameApi,
+  campaign,
+  onRoomSelect,
+  headRoomId,
+  heelsRoomId,
+  viewingRoomId,
   className,
 }: RoomSelectProps<RoomId>) {
   const [open, setOpen] = useState(false);
 
-  const viewingRoomId = useCurrentlyViewedRoom();
-
-  if (gameApi === undefined) {
-    return null;
-  }
-
-  const roomIds = Object.keys(gameApi.campaign.rooms) as RoomId[];
+  const roomIds = Object.keys(campaign.rooms) as RoomId[];
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -59,14 +60,14 @@ export function RoomSelect<RoomId extends string>({
                     value={r}
                     className={viewingRoomId === r ? "bg-moss" : ""}
                     onSelect={(currentValue) => {
-                      gameApi.changeRoom(currentValue as RoomId);
+                      onRoomSelect?.(currentValue as RoomId);
                       setOpen(false);
                     }}
                   >
-                    {gameApi.gameState.characterRooms.head?.id === r && (
+                    {headRoomId === r && (
                       <span className="sprite m-1 texture-head.walking.towards.2" />
                     )}
-                    {gameApi.gameState.characterRooms.heels?.id === r && (
+                    {heelsRoomId === r && (
                       <span className="sprite m-1 texture-heels.walking.towards.2" />
                     )}
                     {r}

@@ -1,6 +1,6 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { LevelEditorState } from "../levelEditorSlice";
-import { type Xyz } from "../../../utils/vectors/vectors";
+import { oppositeDirection, type Xyz } from "../../../utils/vectors/vectors";
 import type {
   JsonItemConfig,
   JsonItemType,
@@ -9,6 +9,7 @@ import type {
 import type {
   EditorRoomId,
   EditorRoomItemId,
+  EditorRoomJsonItem,
   EditorUnionOfAllItemInPlayTypes,
 } from "../../EditorRoomId";
 import type { ItemTool } from "../../Tool";
@@ -16,6 +17,15 @@ import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelect
 import { cutHoleInWallsForDoors } from "./cutHoleInWallsForDoor";
 import type { DistributedPick } from "type-fest";
 import { pushUndoInPlace } from "./undoReducers";
+import { starterRoom } from "../createStarterRoom";
+import { changeRoomSceneryInPlace } from "../changeRoomSceneryInPlace";
+
+const nextItemId = (
+  state: LevelEditorState,
+  type: JsonItemType,
+): EditorRoomItemId => {
+  return `${type}#${state.nextItemId++}` as EditorRoomItemId;
+};
 
 const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   state: LevelEditorState,
@@ -23,8 +33,7 @@ const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   config: JsonItemConfig<T, EditorRoomId, EditorRoomItemId>,
   blockPosition: Xyz,
 ) => {
-  const id = `item(${type})#${state.nextItemId}` as EditorRoomItemId;
-
+  const id = nextItemId(state, type);
   const room = selectCurrentRoomFromLevelEditorState(state);
   state.nextItemId++;
 
@@ -72,18 +81,69 @@ export const applyToolReducers = {
         if (isDoorTool(itemTool) && pointedAtItem.type === "wall") {
           pushUndoInPlace(state);
 
+          const fromRoomJson = selectCurrentRoomFromLevelEditorState(state);
+
           const doorDirection = pointedAtItem.config.direction;
           // for doors, trim walls around where the door was placed:
-          cutHoleInWallsForDoors(state, doorDirection, blockPosition);
+          cutHoleInWallsForDoors(fromRoomJson, doorDirection, blockPosition);
+
+          // TODO: do this conditionally, only if there isn't already a room
+          // in this grid position
+          const toRoomId = `room#${state.nextRoomId++}` as EditorRoomId;
+          console.log(toRoomId, "toRoomId");
 
           addItemInPlace(
             state,
-            tool.item.type,
+            itemTool.type,
             {
               ...tool.item.config,
+              toRoom: toRoomId,
               direction: doorDirection,
             },
             blockPosition,
+          );
+
+          const toRoomJson = {
+            id: toRoomId,
+            ...structuredClone(starterRoom),
+            // give the same scenery and colour as the current room:
+            color: fromRoomJson.color,
+          };
+          changeRoomSceneryInPlace(toRoomJson, fromRoomJson.planet);
+
+          // create a new room so the door we put down has somewhere to go:
+          state.campaignInProgress.rooms[toRoomId] = toRoomJson;
+          const returnDoorId = nextItemId(state, "door");
+
+          const returnDoorPosition: Xyz = {
+            x:
+              doorDirection === "left" ? 0
+              : doorDirection === "right" ? toRoomJson.size.x
+              : Math.floor(toRoomJson.size.x / 2),
+            y:
+              doorDirection === "away" ? 0
+              : doorDirection === "towards" ? toRoomJson.size.x
+              : Math.floor(toRoomJson.size.x / 2),
+            z: blockPosition.z,
+          };
+
+          const returnDoorDirection = oppositeDirection(doorDirection);
+
+          const returnDoorItemJson: EditorRoomJsonItem<"door"> = {
+            type: "door",
+            config: {
+              toRoom: fromRoomJson.id,
+              direction: returnDoorDirection,
+            },
+            position: returnDoorPosition,
+          };
+
+          toRoomJson.items[returnDoorId] = returnDoorItemJson;
+
+          cutHoleInWallsForDoors(
+            toRoomJson,
+            returnDoorDirection,
+            returnDoorPosition,
           );
         } else {
           pushUndoInPlace(state);

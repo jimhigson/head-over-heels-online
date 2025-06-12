@@ -9,7 +9,6 @@ import {
   selectPlayableItem,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
-import { RoomSelect } from "./RoomSelect";
 
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
@@ -41,6 +40,7 @@ import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selec
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
 import { BitmapText } from "../tailwindSprites/Sprite";
 import { CssVariables } from "../CssVariables";
+import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -249,7 +249,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         <CssVariables scaleFactor={2}>
           <div className="absolute bottom-[48px] max-h-[calc(100vh-48px)] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats text-white">
             <Heading>room select:</Heading>
-            <RoomSelect gameApi={gameApi} className="w-full" />
+            <GameApiConnectedRoomSelect />
             <div className="flex flex-row items-center">
               <GoToRoomButton
                 gameApi={gameApi}
