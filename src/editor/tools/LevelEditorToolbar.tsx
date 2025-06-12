@@ -464,6 +464,52 @@ export const LevelEditorToolbar = () => {
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">Player</BitmapText>
+        <ItemToolButton
+          itemTool={{
+            type: "player",
+            config: { which: "head" },
+          }}
+        >
+          <span
+            className={`sprite texture-head.walking.towards.2 [button:hover_&]:texture-animated-head.walking.right ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "player",
+            config: { which: "heels" },
+          }}
+        >
+          <span
+            className={`sprite texture-heels.walking.towards.2 [button:hover_&]:texture-animated-heels.walking.right ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+      </div>
+      <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">NPC’s</BitmapText>
+        <ItemToolButton
+          itemTool={{
+            type: "sceneryPlayer",
+            config: { which: "head", startDirection: "towards" },
+          }}
+        >
+          <span
+            className={`sprite texture-head.walking.towards.2 [button:hover_&]:texture-animated-head.walking.right ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "sceneryPlayer",
+            config: { which: "heels", startDirection: "towards" },
+          }}
+        >
+          <span
+            className={`sprite texture-heels.walking.towards.2 [button:hover_&]:texture-animated-heels.walking.right ${buttonSpriteClasses}`}
+          />
+        </ItemToolButton>
+      </div>
+      <div className={buttonGroupClassname}>
         <BitmapText className="w-full">debug</BitmapText>
         <ShowBoundingBoxSelect />
       </div>
