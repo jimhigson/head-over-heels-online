@@ -19,10 +19,29 @@ import { RoomColourSelect } from "./RoomColourSelect";
 import { RoomScenerySelect } from "./RoomScenerySelect";
 import { UndoRedoButtons } from "./UndoRedoButtons";
 
-const buttonSpriteClasses = twClass(
+const buttonSpriteRevertColourClasses = twClass(
   "[button:not([data-iscurrenttool=true]):not(:hover)_&]:sprite-revert-to-two-tone",
 );
 const buttonGroupClassname = twClass("flex flex-wrap gap-oneScaledPix w-full");
+
+const StackedToolbarIcons = ({
+  topClasses,
+  bottomClasses = "texture-headlessBase",
+}: {
+  topClasses: string;
+  bottomClasses?: string;
+}) => {
+  return (
+    <div className="relative w-full h-full">
+      <span
+        className={`sprite absolute top-[calc(9px*var(--scale))] left-0 ${bottomClasses} ${buttonSpriteRevertColourClasses}`}
+      />
+      <span
+        className={`sprite absolute top-[calc(-3px*var(--scale))] left-0 ${topClasses} ${buttonSpriteRevertColourClasses}`}
+      />
+    </div>
+  );
+};
 
 export const LevelEditorToolbar = () => {
   const campaign = useAppSelectorWithLevelEditorSlice(
@@ -64,7 +83,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-dalek.1 [button:hover_&]:texture-animated-dalek" ${buttonSpriteClasses}`}
+            className={`sprite texture-dalek.1 [button:hover_&]:texture-animated-dalek" ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -78,8 +97,9 @@ export const LevelEditorToolbar = () => {
             },
           }}
         >
-          <span
-            className={`sprite texture-cyberman.towards [button:hover_&]:texture-cyberman.right ${buttonSpriteClasses}`}
+          <StackedToolbarIcons
+            topClasses="texture-cyberman.towards [button:hover_&]:texture-cyberman.right"
+            bottomClasses="texture-bubbles.cold.2 [button:hover_&]:texture-animated-bubbles.cold"
           />
         </ItemToolButton>
         <ItemToolButton
@@ -95,7 +115,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-skiHead.greenAndPink.towards [button:hover_&]:texture-skiHead.greenAndPink.right ${buttonSpriteClasses}`}
+            className={`sprite texture-skiHead.greenAndPink.towards [button:hover_&]:texture-skiHead.greenAndPink.right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -109,7 +129,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-helicopterBug.1 [button:hover_&]:texture-animated-helicopterBug ${buttonSpriteClasses}`}
+            className={`sprite texture-helicopterBug.1 [button:hover_&]:texture-animated-helicopterBug ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -124,7 +144,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-turtle.towards.1 [button:hover_&]:texture-animated-turtle.right ${buttonSpriteClasses}`}
+            className={`sprite texture-turtle.towards.1 [button:hover_&]:texture-animated-turtle.right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -138,7 +158,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-headlessBase [button:hover_&]:texture-headlessBase.all ${buttonSpriteClasses}`}
+            className={`sprite texture-headlessBase [button:hover_&]:texture-headlessBase.all ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -151,9 +171,7 @@ export const LevelEditorToolbar = () => {
             },
           }}
         >
-          <span
-            className={`sprite texture-computerBot.towards [button:hover_&]:texture-computerBot.right ${buttonSpriteClasses}`}
-          />
+          <StackedToolbarIcons topClasses="texture-computerBot.towards [button:hover_&]:texture-computerBot.right" />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
@@ -165,9 +183,7 @@ export const LevelEditorToolbar = () => {
             },
           }}
         >
-          <span
-            className={`sprite texture-monkey.towards [button:hover_&]:texture-monkey.right ${buttonSpriteClasses}`}
-          />
+          <StackedToolbarIcons topClasses="texture-monkey.towards [button:hover_&]:texture-monkey.right" />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
@@ -178,14 +194,8 @@ export const LevelEditorToolbar = () => {
               movement: "patrol-randomly-xy4",
             },
           }}
-          className="inline relative"
         >
-          <span
-            className={`sprite inline-block absolute left-0 texture-headlessBase ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
-          />
-          <span
-            className={`sprite inline-block absolute top-0 left-0 texture-elephant.towards [button:hover_&]:texture-elephant.right ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
-          />
+          <StackedToolbarIcons topClasses="texture-elephant.towards [button:hover_&]:texture-elephant.right" />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
@@ -199,7 +209,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-elephant.towards [button:hover_&]:texture-elephant.right ${buttonSpriteClasses}`}
+            className={`sprite texture-elephant.towards [button:hover_&]:texture-elephant.right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -213,11 +223,9 @@ export const LevelEditorToolbar = () => {
           }}
           className="inline relative"
         >
-          <span
-            className={`sprite inline-block absolute left-0 texture-bubbles.cold.2 [button:hover_&]:texture-animated-bubbles.cold ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
-          />
-          <span
-            className={`sprite inline-block absolute top-0 left-0 texture-ball [button:hover_&]:texture-ball ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
+          <StackedToolbarIcons
+            topClasses="texture-ball"
+            bottomClasses="texture-bubbles.cold.2 [button:hover_&]:texture-animated-bubbles.cold"
           />
         </ItemToolButton>
         <ItemToolButton
@@ -231,7 +239,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-bubbles.cold.2 [button:hover_&]:texture-animated-bubbles.cold ${buttonSpriteClasses}`}
+            className={`sprite texture-bubbles.cold.2 [button:hover_&]:texture-animated-bubbles.cold ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
       </div>
@@ -241,23 +249,27 @@ export const LevelEditorToolbar = () => {
           itemTool={{ type: "block", config: { style: "artificial" } }}
         >
           <span
-            className={`sprite texture-block.artificial ${buttonSpriteClasses}`}
+            className={`sprite texture-block.artificial ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{ type: "block", config: { style: "organic" } }}
         >
           <span
-            className={`sprite texture-block.organic ${buttonSpriteClasses}`}
+            className={`sprite texture-block.organic ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{ type: "block", config: { style: "tower" } }}
         >
-          <span className={`sprite texture-tower ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-tower ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
         <ItemToolButton itemTool={{ type: "block", config: { style: "book" } }}>
-          <span className={`sprite texture-book.x ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-book.x ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
@@ -266,11 +278,13 @@ export const LevelEditorToolbar = () => {
           itemTool={{ type: "pickup", config: { gives: "extra-life" } }}
         >
           <span
-            className={`sprite texture-whiteRabbit ${buttonSpriteClasses}`}
+            className={`sprite texture-whiteRabbit ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton itemTool={{ type: "pickup", config: { gives: "bag" } }}>
-          <span className={`sprite texture-bag ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-bag ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
@@ -278,13 +292,17 @@ export const LevelEditorToolbar = () => {
             config: { gives: "hooter" },
           }}
         >
-          <span className={`sprite texture-hooter ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-hooter ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
 
         <ItemToolButton
           itemTool={{ type: "pickup", config: { gives: "doughnuts" } }}
         >
-          <span className={`sprite texture-doughnuts ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-doughnuts ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
 
         <ItemToolButton
@@ -294,7 +312,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-crown.blacktooth ${buttonSpriteClasses}`}
+            className={`sprite texture-crown.blacktooth ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -303,7 +321,9 @@ export const LevelEditorToolbar = () => {
             config: { gives: "scroll", page: "blacktooth" },
           }}
         >
-          <span className={`sprite texture-scroll ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-scroll ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
@@ -313,21 +333,21 @@ export const LevelEditorToolbar = () => {
           className="inline relative"
         >
           <span
-            className={`sprite inline-block absolute top-0 left-0 texture-lift.static ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
+            className={`sprite inline-block absolute top-0 left-0 texture-lift.static ${buttonSpriteRevertColourClasses} [button:active_&]:top-oneScaledPix`}
           />
           <span
-            className={`sprite inline-block absolute top-0 left-0 texture-lift.1 [button:hover_&]:texture-animated-lift ${buttonSpriteClasses} [button:active_&]:top-oneScaledPix`}
+            className={`sprite inline-block absolute top-0 left-0 texture-lift.1 [button:hover_&]:texture-animated-lift ${buttonSpriteRevertColourClasses} [button:active_&]:top-oneScaledPix`}
           />
         </ItemToolButton>
         <MultipleToolButtons>
           <ItemToolButton itemTool={{ type: "barrier", config: { axis: "x" } }}>
             <span
-              className={`sprite texture-barrier.x ${buttonSpriteClasses}`}
+              className={`sprite texture-barrier.x ${buttonSpriteRevertColourClasses}`}
             />
           </ItemToolButton>
           <ItemToolButton itemTool={{ type: "barrier", config: { axis: "y" } }}>
             <span
-              className={`sprite texture-barrier.y ${buttonSpriteClasses}`}
+              className={`sprite texture-barrier.y ${buttonSpriteRevertColourClasses}`}
             />
           </ItemToolButton>
         </MultipleToolButtons>
@@ -335,7 +355,7 @@ export const LevelEditorToolbar = () => {
           itemTool={{ type: "conveyor", config: { direction: "away" } }}
         >
           <span
-            className={`sprite texture-conveyor.y.1 [button:hover_&]:texture-animated-conveyor.x ${buttonSpriteClasses}`}
+            className={`sprite texture-conveyor.y.1 [button:hover_&]:texture-animated-conveyor.x ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -348,13 +368,11 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-teleporter ${buttonSpriteClasses}`}
+            className={`sprite texture-teleporter ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton itemTool={{ type: "charles", config: emptyObject }}>
-          <span
-            className={`sprite texture-charles.towards [button:hover_&]:texture-charles.right ${buttonSpriteClasses}`}
-          />
+          <StackedToolbarIcons topClasses="texture-charles.towards [button:hover_&]:texture-charles.right" />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
@@ -362,7 +380,9 @@ export const LevelEditorToolbar = () => {
             config: { controls: ["(placeholder)"] as EditorRoomItemId[] },
           }}
         >
-          <span className={`sprite texture-joystick ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-joystick ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
@@ -375,31 +395,41 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-switch.left [button:hover_&]:texture-switch.right ${buttonSpriteClasses}`}
+            className={`sprite texture-switch.left [button:hover_&]:texture-switch.right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton itemTool={{ type: "ball", config: emptyObject }}>
-          <span className={`sprite texture-ball ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-ball ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
         <MultipleToolButtons>
           <ItemToolButton
             itemTool={{ type: "portableBlock", config: { style: "cube" } }}
           >
-            <span className={`sprite texture-cube ${buttonSpriteClasses}`} />
+            <span
+              className={`sprite texture-cube ${buttonSpriteRevertColourClasses}`}
+            />
           </ItemToolButton>
           <ItemToolButton
             itemTool={{ type: "portableBlock", config: { style: "drum" } }}
           >
-            <span className={`sprite texture-drum ${buttonSpriteClasses}`} />
+            <span
+              className={`sprite texture-drum ${buttonSpriteRevertColourClasses}`}
+            />
           </ItemToolButton>
           <ItemToolButton
             itemTool={{ type: "portableBlock", config: { style: "sticks" } }}
           >
-            <span className={`sprite texture-sticks ${buttonSpriteClasses}`} />
+            <span
+              className={`sprite texture-sticks ${buttonSpriteRevertColourClasses}`}
+            />
           </ItemToolButton>
         </MultipleToolButtons>
         <ItemToolButton itemTool={{ type: "pushableBlock", config: {} }}>
-          <span className={`sprite texture-stepStool ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-stepStool ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
@@ -411,24 +441,28 @@ export const LevelEditorToolbar = () => {
             },
           }}
         >
-          <span className={`sprite texture-sandwich ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-sandwich ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
         <ItemToolButton itemTool={{ type: "spikes", config: emptyObject }}>
-          <span className={`sprite texture-spikes ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-spikes ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
         <MultipleToolButtons>
           <ItemToolButton
             itemTool={{ type: "deadlyBlock", config: { style: "volcano" } }}
           >
             <span
-              className={`sprite texture-volcano.1 [button:hover_&]:texture-animated-volcano ${buttonSpriteClasses}`}
+              className={`sprite texture-volcano.1 [button:hover_&]:texture-animated-volcano ${buttonSpriteRevertColourClasses}`}
             />
           </ItemToolButton>
           <ItemToolButton
             itemTool={{ type: "deadlyBlock", config: { style: "toaster" } }}
           >
             <span
-              className={`sprite texture-toaster.off ${buttonSpriteClasses}`}
+              className={`sprite texture-toaster.off ${buttonSpriteRevertColourClasses}`}
             />
           </ItemToolButton>
         </MultipleToolButtons>
@@ -438,7 +472,9 @@ export const LevelEditorToolbar = () => {
             config: { style: "puck" },
           }}
         >
-          <span className={`sprite texture-puck ${buttonSpriteClasses}`} />
+          <span
+            className={`sprite texture-puck ${buttonSpriteRevertColourClasses}`}
+          />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{
@@ -447,7 +483,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-spikyBall.1 [button:hover_&]:texture-spikyBall.2 ${buttonSpriteClasses}`}
+            className={`sprite texture-spikyBall.1 [button:hover_&]:texture-spikyBall.2 ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
       </div>
@@ -463,7 +499,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-door.frame.generic.x.whole ${buttonSpriteClasses}`}
+            className={`sprite texture-door.frame.generic.x.whole ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -476,7 +512,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-blacktooth.wall.plain.away ${buttonSpriteClasses}`}
+            className={`sprite texture-blacktooth.wall.plain.away ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
       </div>
@@ -489,7 +525,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-head.walking.towards.2 [button:hover_&]:texture-animated-head.walking.right ${buttonSpriteClasses}`}
+            className={`sprite texture-head.walking.towards.2 [button:hover_&]:texture-animated-head.walking.right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -499,7 +535,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-heels.walking.towards.2 [button:hover_&]:texture-animated-heels.walking.right ${buttonSpriteClasses}`}
+            className={`sprite texture-heels.walking.towards.2 [button:hover_&]:texture-animated-heels.walking.right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
       </div>
@@ -512,7 +548,7 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-head.walking.towards.2 [button:hover_&]:texture-animated-head.walking.right ${buttonSpriteClasses}`}
+            className={`sprite texture-head.walking.towards.2 [button:hover_&]:texture-animated-head.walking.right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -522,7 +558,18 @@ export const LevelEditorToolbar = () => {
           }}
         >
           <span
-            className={`sprite texture-heels.walking.towards.2 [button:hover_&]:texture-animated-heels.walking.right ${buttonSpriteClasses}`}
+            className={`sprite texture-heels.walking.towards.2 [button:hover_&]:texture-animated-heels.walking.right ${buttonSpriteRevertColourClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "sceneryPlayer",
+            config: { which: "headOverHeels", startDirection: "towards" },
+          }}
+        >
+          <StackedToolbarIcons
+            topClasses="texture-head.walking.towards.2 [button:hover_&]:texture-animated-head.walking.right"
+            bottomClasses="texture-heels.walking.towards.2 [button:hover_&]:texture-animated-heels.walking.right"
           />
         </ItemToolButton>
       </div>
