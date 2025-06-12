@@ -2,14 +2,14 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { SetRequired, ValueOf } from "type-fest";
 import type { Campaign } from "../../model/modelTypes";
-import { rotatingSceneryTiles, starterRoom } from "./createStarterRoom";
+import { starterRoom } from "./createStarterRoom";
 import type { EditorRoomJson } from "../EditorRoomId";
 import { type EditorRoomId, type EditorRoomItemId } from "../EditorRoomId";
 import type { Tool } from "../Tool";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
-import { sceneryNames, type SceneryName } from "../../sprites/planets";
+import { type SceneryName } from "../../sprites/planets";
 import { applyToolReducers } from "./reducers/applyToolToRoomJson";
 import { selectCurrentRoomFromLevelEditorState } from "./levelEditorSliceSelectors";
 import {
@@ -17,11 +17,13 @@ import {
   undoReducers,
   undoSelectors,
 } from "./reducers/undoReducers";
+import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";
 
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
   campaignInProgress: Campaign<EditorRoomId>;
   currentlyEditingRoomId: EditorRoomId;
+  nextRoomId: number;
   nextItemId: number;
   tool: Tool;
   selectedJsonItemIds: Array<EditorRoomItemId>;
@@ -32,8 +34,8 @@ export type LevelEditorState = {
   };
 };
 
-const initialRoomId = "untitledRoom" as EditorRoomId;
-const initialRoom = { ...starterRoom, id: initialRoomId };
+const initialRoomId = "room#0" as EditorRoomId;
+const initialRoom = { ...structuredClone(starterRoom), id: initialRoomId };
 export const initialLevelEditorSliceState: LevelEditorState = {
   campaignInProgress: {
     name: "new campaign",
@@ -41,6 +43,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
       [initialRoomId]: initialRoom,
     },
   },
+  nextRoomId: 1,
   nextItemId: 0,
   currentlyEditingRoomId: initialRoomId,
   tool: { type: "pointer" },
@@ -95,25 +98,19 @@ export const levelEditorSlice = createSlice({
       // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
       const state = _state as LevelEditorState;
 
-      const roomJson =
-        state.campaignInProgress.rooms[state.currentlyEditingRoomId];
-      roomJson.planet = sceneryName;
+      const roomJson = selectCurrentRoomFromLevelEditorState(state);
 
-      if ((sceneryNames as string[]).includes(roomJson.floor)) {
-        roomJson.floor = sceneryName;
-      }
+      changeRoomSceneryInPlace(roomJson, sceneryName);
+    },
+    changeToRoom(_state, { payload: roomId }: PayloadAction<EditorRoomId>) {
+      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+      // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
+      // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
+      const state = _state as LevelEditorState;
+      state.currentlyEditingRoomId = roomId;
 
-      // reset the walls to tiles that are allowed in this scenery:
-      for (const i of Object.values(roomJson.items)) {
-        if (i.type === "wall") {
-          if (i.config.direction === "away" || i.config.direction === "left") {
-            i.config.tiles = rotatingSceneryTiles(
-              sceneryName,
-              i.config.tiles.length,
-            );
-          }
-        }
-      }
+      // clear undo/redo history when changing room:
+      state.history = initialLevelEditorSliceState.history;
     },
 
     /** set (or unset) the selection */
@@ -201,12 +198,13 @@ export const {
   applyToolToRoomJson,
   changeRoomColour,
   changeRoomScenery,
+  changeToRoom,
   deleteSelected,
   injected,
+  redo,
   setSelectedItemInRoom,
   setTool,
   undo,
-  redo,
 } = levelEditorSlice.actions;
 export const {
   selectCurrentEditingRoomJson,

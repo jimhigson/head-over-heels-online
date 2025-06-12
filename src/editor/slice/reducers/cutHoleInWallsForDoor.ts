@@ -1,4 +1,4 @@
-import { produce, current } from "immer";
+import { produce } from "immer";
 import type { AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
 import { entries, fromAllEntries } from "../../../utils/entries";
 import type { Xyz, Xy, DirectionXy4 } from "../../../utils/vectors/vectors";
@@ -11,16 +11,15 @@ import {
 import type {
   EditorRoomJsonItems,
   EditorRoomItemId,
-  EditorRoomJsonItem,
+  EditorRoomJsonItemUnion,
+  EditorRoomJson,
 } from "../../EditorRoomId";
-import type { LevelEditorState } from "../levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 
 function* iterateRoomItemsToCutWallsForDoors(
   items: EditorRoomJsonItems,
   doorDirection: DirectionXy4,
   doorPosition: Xyz,
-): Generator<[EditorRoomItemId, EditorRoomJsonItem]> {
+): Generator<[EditorRoomItemId, EditorRoomJsonItemUnion]> {
   for (const entry of entries(items)) {
     const [id, item] = entry;
     if (item.type !== "wall") {
@@ -151,15 +150,13 @@ function* iterateRoomItemsToCutWallsForDoors(
 }
 
 export const cutHoleInWallsForDoors = (
-  state: LevelEditorState,
+  room: EditorRoomJson,
   doorDirection: DirectionXy4,
   blockPosition: Xyz,
 ) => {
-  const room = selectCurrentRoomFromLevelEditorState(state);
-
   room.items = fromAllEntries(
     iterateRoomItemsToCutWallsForDoors(
-      current(room.items),
+      room.items,
       doorDirection,
       blockPosition,
     ),

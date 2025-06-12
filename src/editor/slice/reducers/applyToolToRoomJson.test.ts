@@ -98,7 +98,7 @@ describe("applying tools", () => {
       expect(
         next.campaignInProgress.rooms[testRoomId].items,
       ).toMatchObject<EditorRoomJsonItems>({
-        ["item(pickup)#0" as EditorRoomItemId]: {
+        ["pickup#0" as EditorRoomItemId]: {
           config: {
             gives: "bag",
           },
@@ -133,10 +133,10 @@ describe("applying tools", () => {
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toMatchObject<EditorRoomJsonItems>({
-          ["item(door)#0" as EditorRoomItemId]: {
+          ["door#0" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "(placeholder)" as EditorRoomId,
+              toRoom: "room#1" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -193,10 +193,10 @@ describe("applying tools", () => {
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toMatchObject<EditorRoomJsonItems>({
-          ["item(door)#0" as EditorRoomItemId]: {
+          ["door#0" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "(placeholder)" as EditorRoomId,
+              toRoom: "room#1" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -238,10 +238,10 @@ describe("applying tools", () => {
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toMatchObject<EditorRoomJsonItems>({
-          ["item(door)#0" as EditorRoomItemId]: {
+          ["door#0" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "(placeholder)" as EditorRoomId,
+              toRoom: "room#1" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -260,6 +260,55 @@ describe("applying tools", () => {
               z: 0,
             },
             type: "wall",
+          },
+        });
+      });
+
+      test("creates a new room with a door for the reverse direction", () => {
+        const doorPosition = { x: 3, y: 5, z: 0 };
+        const actionPayload: ApplyToolToRoomJsonPayload = {
+          blockPosition: doorPosition,
+          pointedAtItem: {
+            type: "wall",
+            config: editorStateWithOneRoomWithOneWall.campaignInProgress.rooms[
+              testRoomId
+            ].items[wallItemId].config as WallJsonConfig<"blacktooth">,
+          },
+        };
+
+        const next = applyToolToRoomJsonNext(
+          { ...editorStateWithOneRoomWithOneWall, tool: doorItemTool },
+          actionPayload,
+        );
+
+        expect(
+          next.campaignInProgress.rooms["room#1" as EditorRoomId],
+        ).toMatchObject({
+          color: {
+            hue: "cyan",
+            shade: "basic",
+          },
+          floor: "blacktooth",
+          id: "room#1",
+          items: {
+            // here's the return door:
+            "door#2": {
+              config: {
+                direction: "towards",
+                toRoom: "testRoomId",
+              },
+              position: {
+                x: 4,
+                y: 0,
+                z: 0,
+              },
+              type: "door",
+            },
+          },
+          planet: "blacktooth",
+          size: {
+            x: 8,
+            y: 8,
           },
         });
       });

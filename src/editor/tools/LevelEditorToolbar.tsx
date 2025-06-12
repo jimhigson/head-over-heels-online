@@ -2,9 +2,15 @@ import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
 import type { JsonItemConfig } from "../../model/json/JsonItem";
 import type { Wall } from "../../sprites/planets";
+import { useAppDispatch } from "../../store/hooks";
+import { RoomSelect } from "../../ui/RoomSelect";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { originXyz } from "../../utils/vectors/vectors";
 import type { EditorRoomId, EditorRoomItemId } from "../EditorRoomId";
+import {
+  changeToRoom,
+  useAppSelectorWithLevelEditorSlice,
+} from "../slice/levelEditorSlice";
 import { twClass } from "../twClass";
 import { ItemToolButton } from "./ItemToolButton";
 import { MultipleToolButtons } from "./MultipleToolButtons";
@@ -19,8 +25,22 @@ const buttonSpriteClasses = twClass(
 const buttonGroupClassname = twClass("flex flex-wrap gap-oneScaledPix w-full");
 
 export const LevelEditorToolbar = () => {
+  const campaign = useAppSelectorWithLevelEditorSlice(
+    (state) => state.levelEditor.campaignInProgress,
+  );
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex fixed top-0 bottom-0 right-0 w-12 box-content text-white bg-metallicBlueHalfbrite p-half gap-1 flex-wrap justify-start overflow-auto">
+      <div className={buttonGroupClassname}>
+        <BitmapText className="w-full">Campaign</BitmapText>
+        <RoomSelect
+          campaign={campaign}
+          onRoomSelect={(roomId) => {
+            dispatch(changeToRoom(roomId));
+          }}
+        />
+      </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Room</BitmapText>
         <RoomScenerySelect />
