@@ -26,7 +26,9 @@ export const MultipleToolButtons = ({ children }: MultipleToolButtonsProps) => {
         {selectedChild}
         <PopoverTrigger asChild>
           <Button className="absolute bottom-0 right-0 bg-metallicBlueHalfbrite">
-            <BitmapText className="pl-oneScaledPix">⬇</BitmapText>
+            <BitmapText className="pl-oneScaledPix">
+              {open ? "X" : "⬇"}
+            </BitmapText>
           </Button>
         </PopoverTrigger>
       </div>

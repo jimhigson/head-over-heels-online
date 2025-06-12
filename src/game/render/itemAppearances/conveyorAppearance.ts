@@ -49,11 +49,13 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy },
     },
     room: { roomTime },
+    general: { editor },
   },
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
-  const moving = isStoodOn(stoodOnBy);
+  // always animate inside the level editor (or maybe an arrow overlay would be better?)
+  const moving = isStoodOn(stoodOnBy) || editor;
 
   const roomTimeStoppedMoving =
     (!moving && currentlyRenderedProps?.moving ?
@@ -64,6 +66,7 @@ const conveyorAppearanceImpl: ItemAppearance<
   const rendering =
     currentRendering?.output ??
     staggerAnimation(
+      // createSprite given times, so will actually generate a container of AnimatedSprites
       createSprite({
         animationId: `conveyor.${axis}`,
         reverse: direction === "towards" || direction === "right",

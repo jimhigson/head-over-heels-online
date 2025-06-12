@@ -42,6 +42,24 @@ const StackedToolbarIcons = ({
     </div>
   );
 };
+const LabelledToolbarIcon = ({
+  iconClasses,
+  text,
+}: {
+  iconClasses: string;
+  text: string;
+}) => {
+  return (
+    <div className="relative w-full h-full">
+      <span
+        className={`sprite absolute top-0 left-0 ${iconClasses} ${buttonSpriteRevertColourClasses}`}
+      />
+      <BitmapText className="bg-metallicBlueHalfbrite absolute top-0 right-0 pl-oneScaledPix block">
+        {text}
+      </BitmapText>
+    </div>
+  );
+};
 
 export const LevelEditorToolbar = () => {
   const campaign = useAppSelectorWithLevelEditorSlice(
@@ -274,13 +292,28 @@ export const LevelEditorToolbar = () => {
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Pickups</BitmapText>
-        <ItemToolButton
-          itemTool={{ type: "pickup", config: { gives: "extra-life" } }}
-        >
-          <span
-            className={`sprite texture-whiteRabbit ${buttonSpriteRevertColourClasses}`}
-          />
-        </ItemToolButton>
+        <MultipleToolButtons>
+          <ItemToolButton
+            itemTool={{ type: "pickup", config: { gives: "extra-life" } }}
+          >
+            <LabelledToolbarIcon iconClasses="texture-whiteRabbit" text="2" />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "pickup", config: { gives: "shield" } }}
+          >
+            <LabelledToolbarIcon iconClasses="texture-whiteRabbit" text="🛡" />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "pickup", config: { gives: "jumps" } }}
+          >
+            <LabelledToolbarIcon iconClasses="texture-whiteRabbit" text="♨" />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "pickup", config: { gives: "fast" } }}
+          >
+            <LabelledToolbarIcon iconClasses="texture-whiteRabbit" text="⚡" />
+          </ItemToolButton>
+        </MultipleToolButtons>
         <ItemToolButton itemTool={{ type: "pickup", config: { gives: "bag" } }}>
           <span
             className={`sprite texture-bag ${buttonSpriteRevertColourClasses}`}
@@ -351,13 +384,40 @@ export const LevelEditorToolbar = () => {
             />
           </ItemToolButton>
         </MultipleToolButtons>
-        <ItemToolButton
-          itemTool={{ type: "conveyor", config: { direction: "away" } }}
-        >
-          <span
-            className={`sprite texture-conveyor.y.1 [button:hover_&]:texture-animated-conveyor.x ${buttonSpriteRevertColourClasses}`}
-          />
-        </ItemToolButton>
+        <MultipleToolButtons>
+          <ItemToolButton
+            itemTool={{ type: "conveyor", config: { direction: "away" } }}
+          >
+            <LabelledToolbarIcon
+              iconClasses="texture-conveyor.y.1 [button:hover_&]:texture-animated-conveyor.y"
+              text="↗"
+            />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "conveyor", config: { direction: "towards" } }}
+          >
+            <LabelledToolbarIcon
+              iconClasses="texture-conveyor.y.1 [button:hover_&]:texture-animated-reversed-conveyor.y"
+              text="↙"
+            />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "conveyor", config: { direction: "left" } }}
+          >
+            <LabelledToolbarIcon
+              iconClasses="texture-conveyor.x.1 [button:hover_&]:texture-animated-conveyor.x"
+              text="↖"
+            />
+          </ItemToolButton>
+          <ItemToolButton
+            itemTool={{ type: "conveyor", config: { direction: "right" } }}
+          >
+            <LabelledToolbarIcon
+              iconClasses="texture-conveyor.x.1 [button:hover_&]:texture-animated-reversed-conveyor.x"
+              text="↘"
+            />
+          </ItemToolButton>
+        </MultipleToolButtons>
         <ItemToolButton
           itemTool={{
             type: "teleporter",
