@@ -4,7 +4,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
-  floor: "penitentiary",
   id: "penitentiary13",
   items: {
     "block@0,3,5": {
@@ -67,6 +66,15 @@ export const room = inferRoomJson({
       isExtra: true,
       position: { x: 5, y: 3, z: 0 },
       type: "block",
+    },
+    "floor@0,0,0": {
+      config: {
+        floorType: "standable",
+        scenery: "penitentiary",
+        times: { x: 8, y: 4 },
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
     },
     secondOverToaster: {
       config: { disappearing: { on: "stand" }, style: "artificial" },

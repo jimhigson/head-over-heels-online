@@ -1,5 +1,10 @@
 [
   {
+    "op": "replace",
+    "path": "/items/floor@0,0,0/config/scenery",
+    "value": "market"
+  },
+  {
     "op": "add",
     "path": "/items/door@3,0,0/config/meta",
     "value": {
@@ -12,10 +17,5 @@
     "value": {
       "toSubRoom": "left"
     }
-  },
-  {
-    "op": "replace",
-    "path": "/floor",
-    "value": "market"
   }
 ]

@@ -18,6 +18,7 @@ import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { loadFloor } from "./loadFloor";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;
@@ -58,6 +59,11 @@ export function* loadItemFromJson<
 
     case "wall": {
       yield loadWall(jsonItemId, jsonItem, roomJson);
+      return;
+    }
+
+    case "floor": {
+      yield loadFloor(jsonItemId, jsonItem, roomJson);
       return;
     }
 

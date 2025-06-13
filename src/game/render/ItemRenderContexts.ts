@@ -3,11 +3,20 @@ import type { ItemInPlayType } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/RoomState";
 import type { MovedItems } from "../mainLoop/progressGameState";
 import type { GeneralRenderContext } from "./RoomRenderContexts";
+import type { IRenderLayer } from "pixi.js";
 
 export type ItemRenderContext<T extends ItemInPlayType> = {
   item: ItemTypeUnion<T, string, string>;
   room: RoomState<string, string>;
   general: GeneralRenderContext<string>;
+  /**
+   * non colourised rendering (anything that doesn't get colourise-reverted when
+   * colourisation is turned off) should be attached here, as well as being
+   * rendered normally
+   *
+   * https://pixijs.com/8.x/guides/concepts/render-layers
+   */
+  uncolourisedLayer: IRenderLayer;
 };
 
 export type ItemTickContext = {

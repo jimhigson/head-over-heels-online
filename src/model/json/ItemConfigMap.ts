@@ -5,6 +5,7 @@ import type {
   Xyz,
   AxisXy,
   DirectionXy8,
+  Xy,
 } from "../../utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
 import type {
@@ -85,6 +86,25 @@ export type ItemConfigMap<
     */
     relativePoint: Xyz;
   };
+  floor: {
+    skipRightEdge?: boolean;
+    skipTowardsEdge?: boolean;
+  } & (
+    | {
+        floorType: "deadly";
+        times: Xy;
+      }
+    | {
+        /** the room has no floor, but it is included to draw the floor edge */
+        floorType: "none";
+        times: Xy;
+      }
+    | {
+        floorType: "standable";
+        scenery: SceneryName;
+        times: Xy;
+      }
+  );
   wall: WallJsonConfig<ScN>;
   teleporter: ConsolidatableConfig & {
     toRoom: RoomId;

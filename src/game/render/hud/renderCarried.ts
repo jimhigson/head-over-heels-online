@@ -1,4 +1,4 @@
-import type { Container } from "pixi.js";
+import type { Container, IRenderLayer } from "pixi.js";
 import { emptySet } from "../../../utils/empty";
 import { neverTime } from "../../../utils/veryClose";
 import type { PortableItem } from "../../physics/itemPredicates";
@@ -30,6 +30,8 @@ export const renderCarriedOnce = <
       general: renderContext.general,
       item: carrying,
       room: tickContext.room,
+      // nothing that can be carried ever renders to the uncolourised layer so cheat the types to provide this:
+      uncolourisedLayer: undefined as unknown as IRenderLayer,
     },
     tickContext: {
       lastRenderRoomTime: neverTime,

@@ -1,14 +1,14 @@
-import type { Floor } from "../model/modelTypes";
 import type { AnyRoomJson } from "../model/RoomJson";
 import { keyItems } from "../utils/keyItems";
 import { consolidateItems } from "./consolidateItems/consolidateItems";
 import { map, convertRoomColour } from "./convertCampaign";
+import { convertFloor } from "./convertFloor";
 import { convertItemsArray } from "./convertItems";
 import { convertSceneryName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertRoomId } from "./convertRoomId";
 import { convertWalls } from "./convertWalls";
-import { readRoomToXmlJson, type XmlFloorKind } from "./readToJson";
+import { readRoomToXmlJson } from "./readToJson";
 import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 
@@ -16,7 +16,7 @@ export const convertRoom = async (
   xmlRoomName: string,
 ): Promise<AnyRoomJson> => {
   const roomXmlJson = await readRoomToXmlJson(xmlRoomName);
-  const { floorKind: jsonFloorKind, scenery: jsonScenery, color } = roomXmlJson;
+  const { floorKind: xmlFloorKind, scenery: xmlScenery, color } = roomXmlJson;
 
   const roomSidesWithDoors = xmlRoomSidesWithDoors(roomXmlJson);
 
@@ -29,13 +29,7 @@ export const convertRoom = async (
   const roomDimensions = convertRoomDimensions(roomXmlJson, roomSidesWithDoors);
 
   // the xml calls bookworld "byblos" 🤷‍♂️
-  const planet = convertSceneryName(jsonScenery);
-
-  const floorMap: Record<XmlFloorKind, Floor> = {
-    plain: planet,
-    absent: "none",
-    mortal: "deadly",
-  };
+  const planet = convertSceneryName(xmlScenery);
 
   const convertedItems = await convertItemsArray(
     map,
@@ -44,6 +38,9 @@ export const convertRoom = async (
     roomSidesWithDoors,
   );
   const items = keyItems([
+    // rooms in the original all had a single floor - for big rooms, this can
+    // be corrected in patches
+    ...convertFloor(roomDimensions, xmlFloorKind, xmlScenery),
     ...consolidateItems([
       ...convertedItems,
       ...convertWalls(
@@ -58,7 +55,6 @@ export const convertRoom = async (
 
   return {
     id: roomId,
-    floor: floorMap[jsonFloorKind],
     planet,
     roomBelow:
       roomOnMap["below"] &&

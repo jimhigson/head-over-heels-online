@@ -32,10 +32,14 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
     roomBelowId: RoomAndSubRoomId,
   ) => {
     if (originalCampaignPositions[roomAboveId] === undefined) {
-      throw new Error(roomAboveId);
+      throw new Error(
+        `OriginalCampaignMainMapBackground: this campaign does not have any room called "${roomAboveId}" to use to calculate yBetweenRooms`,
+      );
     }
     if (originalCampaignPositions[roomBelowId] === undefined) {
-      throw new Error(roomBelowId);
+      throw new Error(
+        `OriginalCampaignMainMapBackground: this campaign does not have any room called "${roomBelowId}" to use to calculate yBetweenRooms`,
+      );
     }
 
     const y1 = projectWorldXyzToScreenXy(

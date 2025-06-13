@@ -45,7 +45,16 @@ export type JsonItemType =
   | "switch"
   | "hushPuppy"
   | "ball"
-  | "wall";
+  /**
+   * in the remake, all walls are first-class items - there's no special way to
+   * give the walls around the room, they are just normal items
+   */
+  | "wall"
+  /**
+   * in the remake, floors first-class items - there's no special property for the floor
+   * on the room, they are just normal items
+   */
+  | "floor";
 
 /**
  * test for if a door is embedded in an undrawn wall - ie, is on the right or towards

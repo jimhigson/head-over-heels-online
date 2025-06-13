@@ -1,7 +1,1 @@
-[
-  {
-    "op": "replace",
-    "path": "/items/lift@4,3,0/config/top",
-    "value": 11
-  }
-]
+[]

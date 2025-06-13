@@ -4,7 +4,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
-  floor: "moonbase",
   id: "moonbase33triple",
   items: {
     "deadlyBlock@0,10,0": {
@@ -52,6 +51,35 @@ export const room = inferRoomJson({
       position: { x: 8, y: 0, z: 0 },
       type: "door",
     },
+    floorL: {
+      config: {
+        floorType: "standable",
+        scenery: "moonbase",
+        times: { x: 6, y: 8 },
+      },
+      position: { x: 6, y: 0, z: 0 },
+      type: "floor",
+    },
+    floorM: {
+      config: {
+        floorType: "standable",
+        scenery: "moonbase",
+        skipRightEdge: true,
+        skipTowardsEdge: true,
+        times: { x: 6, y: 8 },
+      },
+      position: { x: 6, y: 8, z: 0 },
+      type: "floor",
+    },
+    floorR: {
+      config: {
+        floorType: "standable",
+        scenery: "moonbase",
+        times: { x: 6, y: 8 },
+      },
+      position: { x: 0, y: 8, z: 0 },
+      type: "floor",
+    },
     "monster@0,10,1": {
       config: {
         activated: "off",
@@ -64,7 +92,7 @@ export const room = inferRoomJson({
     },
     "monster@0,11,1": {
       config: {
-        activated: "off",
+        activated: "after-player-near",
         movement: "towards-on-shortest-axis-xy4",
         startDirection: "left",
         which: "cyberman",

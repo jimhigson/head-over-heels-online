@@ -68,15 +68,32 @@ export const mainPaletteSwapFilter = (
   room: Pick<UnknownRoomState, "color">,
 ): Filter => new PaletteSwapFilter(replaceMapForRoom(room));
 
+export const floorPaletteSwapFilter = (
+  room: Pick<UnknownRoomState, "color">,
+): Filter => {
+  switch (room.color.hue) {
+    case "white":
+      // avoid white floors standing out too much, since floors need to not
+      // be too distracting so that items stand out:
+      return new PaletteSwapFilter({
+        replaceLight: spritesheetPalette.lightGrey,
+        replaceDark: spritesheetPalette.midGrey,
+      });
+    default:
+      return mainPaletteSwapFilter(room);
+  }
+};
+
 export const bookPaletteSwapFilter = (
   room: Pick<UnknownRoomState, "color">,
 ): Filter => {
   switch (room.color.hue) {
     case "white":
+      // the white books look a bit much, use a lighter version of the red filter instead
       return new PaletteSwapFilter({
-        replaceLight: spritesheetPalette.white,
-        replaceDark: spritesheetPalette.lightGrey,
-        shadow: spritesheetPalette.midGrey,
+        replaceLight: spritesheetPalette.lightBeige,
+        replaceDark: spritesheetPalette.midRed,
+        shadow: spritesheetPalette.redShadow,
       });
     default:
       return mainPaletteSwapFilter(room);

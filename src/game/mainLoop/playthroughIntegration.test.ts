@@ -1262,7 +1262,7 @@ describe("lifts", () => {
       },
       secondRoomProps: {
         roomBelow: "firstRoom",
-        floor: "none",
+        // 2nd room should have no floor?
       },
     });
 
@@ -1686,9 +1686,7 @@ describe("dissapearing items", () => {
           },
         },
       },
-      firstRoomProps: {
-        floor: "deadly",
-      },
+      firstRoomDeadlyFloor: true,
     });
 
   test("can jump along a line of disappearing blocks", () => {
@@ -1760,9 +1758,7 @@ describe("dissapearing items", () => {
           },
         },
       },
-      firstRoomProps: {
-        floor: "deadly",
-      },
+      firstRoomDeadlyFloor: true,
     });
 
     playGameThrough(gameState, {

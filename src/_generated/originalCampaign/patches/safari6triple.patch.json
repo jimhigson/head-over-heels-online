@@ -20,6 +20,16 @@
     "value": 12
   },
   {
+    "op": "replace",
+    "path": "/items/floor@0,0,0/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/floor@0,0,0/config/times/x",
+    "value": 12
+  },
+  {
     "op": "remove",
     "path": "/items/block@10,4,0/config/times"
   },
@@ -43,6 +53,26 @@
         "z": 0
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/floorR",
+    "value": {
+      "config": {
+        "floorType": "deadly",
+        "skipTowardsEdge": true,
+        "times": {
+          "x": 6,
+          "y": 6
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 6,
+        "z": 0
+      },
+      "type": "floor"
     }
   },
   {

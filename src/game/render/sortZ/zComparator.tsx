@@ -1,5 +1,5 @@
 import type { Xyz } from "../../../utils/vectors/vectors";
-import { axesXyz } from "../../../utils/vectors/vectors";
+import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { projectAabbToHexagonCorners } from "./projectAabbToHexagonCorners";
 
@@ -157,8 +157,14 @@ export const zComparator = (a: DrawOrderComparable, b: DrawOrderComparable) => {
 
   const aBb = a.renderAabb || a.aabb;
   const bBb = b.renderAabb || b.aabb;
-  const aPos = a.state.position;
-  const bPos = b.state.position;
+  const aPos =
+    a.renderAabbOffset ?
+      addXyz(a.state.position, a.renderAabbOffset)
+    : a.state.position;
+  const bPos =
+    b.renderAabbOffset ?
+      addXyz(b.state.position, b.renderAabbOffset)
+    : b.state.position;
 
   if (!visuallyOverlaps(aPos, aBb, bPos, bBb)) {
     return 0;

@@ -4,7 +4,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
-  floor: "bookworld",
   id: "bookworld20",
   items: {
     "door@2,0,4": {
@@ -26,6 +25,15 @@ export const room = inferRoomJson({
       position: { x: 6, y: 4, z: 0 },
       type: "door",
     },
+    "floor@0,0,0": {
+      config: {
+        floorType: "standable",
+        scenery: "bookworld",
+        times: { x: 6, y: 6 },
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
     hushPuppy4: {
       config: { times: { x: 3 } },
       position: { x: 3, y: 0, z: 3 },
@@ -42,13 +50,8 @@ export const room = inferRoomJson({
       type: "hushPuppy",
     },
     "hushPuppy@3,0,2": {
-      config: { times: { z: 3 } },
-      position: { x: 2, y: 0, z: 0 },
-      type: "hushPuppy",
-    },
-    hushPuppyPillar1: {
-      config: { times: { x: 2, z: 3 } },
-      position: { x: 4, y: 0, z: 0 },
+      config: {},
+      position: { x: 2, y: 0, z: 2 },
       type: "hushPuppy",
     },
     "wall(right)@0,0,0": {

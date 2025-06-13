@@ -35,7 +35,6 @@ const editorStateWithOneRoomWithNoItems: Omit<LevelEditorState, "tool"> = {
         id: testRoomId,
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
-        floor: "blacktooth",
         items: {},
         size: { x: 5, y: 5 },
       },
@@ -71,11 +70,20 @@ describe("applying tools", () => {
   describe("applying items", () => {
     test("can put an item into a room", () => {
       const itemPosition = { x: 3, y: 3, z: 0 };
+
       const actionPayload: ApplyToolToRoomJsonPayload = {
         blockPosition: itemPosition,
         pointedAtItem: {
           type: "floor",
-          config: { type: "standable" },
+          config: {
+            floorType: "standable",
+            scenery: "blacktooth",
+            times: { x: 8, y: 8 },
+            naturalFootprint: {
+              position: { x: 8, y: 8, z: -8 },
+              aabb: { x: 8, y: 8, z: 8 },
+            },
+          },
         },
       };
 
@@ -288,7 +296,6 @@ describe("applying tools", () => {
             hue: "cyan",
             shade: "basic",
           },
-          floor: "blacktooth",
           id: "room#1",
           items: {
             // here's the return door:

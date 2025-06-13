@@ -1,7 +1,7 @@
 import { loadItemFromJson } from "./loadItemFromJson";
 import { collision1toMany } from "../../collision/aabbCollision";
 import type { RoomPickupsCollected } from "../GameState";
-import { loadFloorAndCeiling } from "./loadFloorAndCeiling";
+import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
 import { entries } from "../../../utils/entries";
@@ -71,7 +71,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   isNewGame?: boolean;
 }): RoomState<RoomId, RoomItemId> => {
   const items: RoomStateItems<RoomId, RoomItemId> = {
-    ...itemsInItemObjectMap(loadFloorAndCeiling(roomJson)),
+    ...itemsInItemObjectMap(loadPortalsAboveAndBelow(roomJson)),
     ...itemsInItemObjectMap(
       loadItems(roomJson, roomPickupsCollected, scrollsRead, isNewGame),
     ),

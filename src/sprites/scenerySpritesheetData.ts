@@ -113,10 +113,7 @@ const frames = {
     frame: { x: 401, y: 466, ...floorEdgeHalfSize, pivot: { x: 7, y: 0 } },
   },
   "floorOverdraw.cornerNearWall": {
-    frame: { x: 435, y: 452, w: wallTileSize.w, h: floorTileSize.h * 2 },
-  },
-  "floorOverdraw.behindDoor": {
-    frame: { x: 452, y: 452, w: wallTileSize.w, h: floorTileSize.h * 2 },
+    frame: { x: 623, y: 452, w: wallTileSize.w, h: 8 },
   },
   "shadow.wall.y": {
     frame: { x: 432, y: 435, w: 36, h: 16 },

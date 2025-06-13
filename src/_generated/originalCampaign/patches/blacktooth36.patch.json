@@ -56,6 +56,11 @@
   },
   {
     "op": "replace",
+    "path": "/items/floor@0,0,0/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
     "path": "/items/door@2,6,0/position/z",
     "value": 2
   },

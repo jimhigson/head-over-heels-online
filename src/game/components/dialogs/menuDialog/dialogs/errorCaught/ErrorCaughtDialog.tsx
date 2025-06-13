@@ -52,7 +52,10 @@ ${stack}
   return (
     <DialogPortal>
       <Border className="loading-border" />
-      <Dialog className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1">
+      <Dialog
+        className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1"
+        tall
+      >
         <div
           className={
             "overflow-y-scroll h-full " +

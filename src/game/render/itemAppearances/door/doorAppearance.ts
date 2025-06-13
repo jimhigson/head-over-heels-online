@@ -87,7 +87,8 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
 }
 
 /**
- * since door aabbs are like tunnels that extend out of the room, render on the other side of the aabb (the side in the room)
+ * since door aabbs are like tunnels that extend out of the room, render
+ * on the other side of the aabb (the side in the room)
  */
 const xyToTranslateToInsideOfRoom = (
   direction: DirectionXy4,
@@ -138,10 +139,12 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           // in the game, show them properly in the colours of the room they lead to
         : gameState.campaign.rooms[toRoom];
 
-      return createSprite({
+      const doorFrameSprite = createSprite({
         textureId: doorTexture(room, axis, part),
         filter: mainPaletteSwapFilter(useColoursFromRoom),
         ...xyToTranslateToInsideOfRoom(direction, aabb),
       });
+
+      return doorFrameSprite;
     },
   );

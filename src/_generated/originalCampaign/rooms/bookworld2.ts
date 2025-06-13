@@ -4,7 +4,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
-  floor: "deadly",
   id: "bookworld2",
   items: {
     canary: {
@@ -106,6 +105,11 @@ export const room = inferRoomJson({
       config: { style: "organic", times: { y: 3 } },
       position: { x: 11, y: 0, z: 0 },
       type: "block",
+    },
+    "floor@0,0,0": {
+      config: { floorType: "deadly", times: { x: 12, y: 6 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
     },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 2 } },
