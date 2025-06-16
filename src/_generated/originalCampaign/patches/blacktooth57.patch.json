@@ -2,7 +2,13 @@
   {
     "op": "add",
     "path": "/items/door@3,8,0/config/meta",
-    "value": { "toSubRoom": "middle" }
+    "value": {
+      "toSubRoom": "middle"
+    }
   },
-  { "op": "replace", "path": "/floor", "value": "bookworld" }
+  {
+    "op": "replace",
+    "path": "/floor",
+    "value": "bookworld"
+  }
 ]

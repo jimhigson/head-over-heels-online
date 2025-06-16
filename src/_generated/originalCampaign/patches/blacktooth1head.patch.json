@@ -9,7 +9,11 @@
         "type": "in-store"
       },
       "isExtra": true,
-      "position": { "x": 5, "y": 3, "z": 0 },
+      "position": {
+        "x": 5,
+        "y": 3,
+        "z": 0
+      },
       "type": "switch"
     }
   },
@@ -17,8 +21,14 @@
     "op": "add",
     "path": "/items/head",
     "value": {
-      "config": { "which": "head" },
-      "position": { "x": 2.5, "y": 2.5, "z": 0 },
+      "config": {
+        "which": "head"
+      },
+      "position": {
+        "x": 2.5,
+        "y": 2.5,
+        "z": 0
+      },
       "type": "player"
     }
   },
@@ -26,8 +36,15 @@
     "op": "add",
     "path": "/items/scrollRabbit",
     "value": {
-      "config": { "gives": "scroll", "page": "cuddlyStuffedWhiteRabbits" },
-      "position": { "x": 3, "y": 0, "z": 0 },
+      "config": {
+        "gives": "scroll",
+        "page": "cuddlyStuffedWhiteRabbits"
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
       "type": "pickup"
     }
   },
@@ -35,8 +52,15 @@
     "op": "add",
     "path": "/items/scrollTheGame",
     "value": {
-      "config": { "gives": "scroll", "page": "theGame" },
-      "position": { "x": 3, "y": 7, "z": 0 },
+      "config": {
+        "gives": "scroll",
+        "page": "theGame"
+      },
+      "position": {
+        "x": 3,
+        "y": 7,
+        "z": 0
+      },
       "type": "pickup"
     }
   },
@@ -45,8 +69,14 @@
     "path": "/meta",
     "value": {
       "nonContiguousRelationship": {
-        "gridOffset": { "x": 4, "y": 7, "z": 0 },
-        "with": { "room": "blacktooth9" }
+        "gridOffset": {
+          "x": 4,
+          "y": 7,
+          "z": 0
+        },
+        "with": {
+          "room": "blacktooth9"
+        }
       }
     }
   }

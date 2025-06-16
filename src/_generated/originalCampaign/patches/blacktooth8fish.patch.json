@@ -1,12 +1,27 @@
 [
-  { "op": "replace", "path": "/items/pickup@3,0,3/position/z", "value": 4 },
-  { "op": "replace", "path": "/items/block@3,0,0/config/times/z", "value": 4 },
+  {
+    "op": "replace",
+    "path": "/items/pickup@3,0,3/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@3,0,0/config/times/z",
+    "value": 4
+  },
   {
     "op": "add",
     "path": "/items/scroll",
     "value": {
-      "config": { "gives": "scroll", "page": "reincarnationFish" },
-      "position": { "x": 3, "y": 7, "z": 0 },
+      "config": {
+        "gives": "scroll",
+        "page": "reincarnationFish"
+      },
+      "position": {
+        "x": 3,
+        "y": 7,
+        "z": 0
+      },
       "type": "pickup"
     }
   }

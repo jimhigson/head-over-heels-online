@@ -3,9 +3,16 @@
     "op": "add",
     "path": "/items/liftExtra",
     "value": {
-      "config": { "bottom": 0, "top": 8 },
+      "config": {
+        "bottom": 0,
+        "top": 8
+      },
       "isExtra": true,
-      "position": { "x": 2, "y": 4, "z": 0 },
+      "position": {
+        "x": 2,
+        "y": 4,
+        "z": 0
+      },
       "type": "lift"
     }
   }

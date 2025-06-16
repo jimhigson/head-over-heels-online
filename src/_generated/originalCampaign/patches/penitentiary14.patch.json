@@ -1,18 +1,38 @@
 [
-  { "op": "replace", "path": "/items/lift@0,1,0/position/x", "value": 7 },
-  { "op": "replace", "path": "/items/lift@0,1,0/config/top", "value": 11 },
-  { "op": "replace", "path": "/items/block@2,4,0/position/x", "value": 0 },
+  {
+    "op": "replace",
+    "path": "/items/lift@0,1,0/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/lift@0,1,0/config/top",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@2,4,0/position/x",
+    "value": 0
+  },
   {
     "op": "add",
     "path": "/items/block@2,4,0/config/times",
-    "value": { "x": 5 }
+    "value": {
+      "x": 5
+    }
   },
   {
     "op": "add",
     "path": "/items/liftshaftAway0",
     "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 1.5, "z": 0 },
+      "config": {
+        "axis": "x"
+      },
+      "position": {
+        "x": 7,
+        "y": 1.5,
+        "z": 0
+      },
       "type": "barrier"
     }
   },
@@ -20,8 +40,14 @@
     "op": "add",
     "path": "/items/liftshaftAway2",
     "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 1.5, "z": 2 },
+      "config": {
+        "axis": "x"
+      },
+      "position": {
+        "x": 7,
+        "y": 1.5,
+        "z": 2
+      },
       "type": "barrier"
     }
   },
@@ -29,8 +55,14 @@
     "op": "add",
     "path": "/items/liftshaftAway4",
     "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 1.5, "z": 4 },
+      "config": {
+        "axis": "x"
+      },
+      "position": {
+        "x": 7,
+        "y": 1.5,
+        "z": 4
+      },
       "type": "barrier"
     }
   },
@@ -38,8 +70,14 @@
     "op": "add",
     "path": "/items/liftshaftAway6",
     "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 1.5, "z": 6 },
+      "config": {
+        "axis": "x"
+      },
+      "position": {
+        "x": 7,
+        "y": 1.5,
+        "z": 6
+      },
       "type": "barrier"
     }
   },
@@ -47,8 +85,14 @@
     "op": "add",
     "path": "/items/liftshaftRight1",
     "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6.5, "y": 1, "z": 1 },
+      "config": {
+        "axis": "y"
+      },
+      "position": {
+        "x": 6.5,
+        "y": 1,
+        "z": 1
+      },
       "type": "barrier"
     }
   },
@@ -56,8 +100,14 @@
     "op": "add",
     "path": "/items/liftshaftRight3",
     "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6.5, "y": 1, "z": 3 },
+      "config": {
+        "axis": "y"
+      },
+      "position": {
+        "x": 6.5,
+        "y": 1,
+        "z": 3
+      },
       "type": "barrier"
     }
   },
@@ -65,8 +115,14 @@
     "op": "add",
     "path": "/items/liftshaftRight5",
     "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6.5, "y": 1, "z": 5 },
+      "config": {
+        "axis": "y"
+      },
+      "position": {
+        "x": 6.5,
+        "y": 1,
+        "z": 5
+      },
       "type": "barrier"
     }
   },
@@ -74,8 +130,14 @@
     "op": "add",
     "path": "/items/liftshaftRight7",
     "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 6.5, "y": 1, "z": 7 },
+      "config": {
+        "axis": "y"
+      },
+      "position": {
+        "x": 6.5,
+        "y": 1,
+        "z": 7
+      },
       "type": "barrier"
     }
   },
@@ -83,8 +145,14 @@
     "op": "add",
     "path": "/items/liftshaftToward2",
     "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 0.5, "z": 2 },
+      "config": {
+        "axis": "x"
+      },
+      "position": {
+        "x": 7,
+        "y": 0.5,
+        "z": 2
+      },
       "type": "barrier"
     }
   },
@@ -92,8 +160,14 @@
     "op": "add",
     "path": "/items/liftshaftToward4",
     "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 0.5, "z": 4 },
+      "config": {
+        "axis": "x"
+      },
+      "position": {
+        "x": 7,
+        "y": 0.5,
+        "z": 4
+      },
       "type": "barrier"
     }
   },
@@ -101,10 +175,20 @@
     "op": "add",
     "path": "/items/liftshaftToward6",
     "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 7, "y": 0.5, "z": 6 },
+      "config": {
+        "axis": "x"
+      },
+      "position": {
+        "x": 7,
+        "y": 0.5,
+        "z": 6
+      },
       "type": "barrier"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  }
 ]

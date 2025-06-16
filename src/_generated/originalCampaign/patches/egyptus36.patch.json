@@ -1,4 +1,12 @@
 [
-  { "op": "replace", "path": "/items/lift@0,0,0/config/top", "value": 11 },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  {
+    "op": "replace",
+    "path": "/items/lift@0,0,0/config/top",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  }
 ]

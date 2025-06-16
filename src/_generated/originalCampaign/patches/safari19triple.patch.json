@@ -2,15 +2,27 @@
   {
     "op": "add",
     "path": "/items/door@3,0,0/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   },
-  { "op": "replace", "path": "/items/block@0,9,0/config/times/z", "value": 5 },
+  {
+    "op": "replace",
+    "path": "/items/block@0,9,0/config/times/z",
+    "value": 5
+  },
   {
     "op": "add",
     "path": "/items/keepMonsterInPlace0",
     "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 8, "y": 0, "z": 0 },
+      "config": {
+        "axis": "y"
+      },
+      "position": {
+        "x": 8,
+        "y": 0,
+        "z": 0
+      },
       "type": "barrier"
     }
   },
@@ -18,8 +30,14 @@
     "op": "add",
     "path": "/items/keepMonsterInPlace1",
     "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 8, "y": 1, "z": 0 },
+      "config": {
+        "axis": "y"
+      },
+      "position": {
+        "x": 8,
+        "y": 1,
+        "z": 0
+      },
       "type": "barrier"
     }
   },
@@ -27,8 +45,14 @@
     "op": "add",
     "path": "/items/keepMonsterInPlace2",
     "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 8, "y": 2, "z": 0 },
+      "config": {
+        "axis": "y"
+      },
+      "position": {
+        "x": 8,
+        "y": 2,
+        "z": 0
+      },
       "type": "barrier"
     }
   },
@@ -36,8 +60,14 @@
     "op": "add",
     "path": "/items/keepMonsterInPlace3",
     "value": {
-      "config": { "axis": "y" },
-      "position": { "x": 8, "y": 3, "z": 0 },
+      "config": {
+        "axis": "y"
+      },
+      "position": {
+        "x": 8,
+        "y": 3,
+        "z": 0
+      },
       "type": "barrier"
     }
   },
@@ -45,8 +75,14 @@
     "op": "add",
     "path": "/items/towerTop",
     "value": {
-      "config": { "style": "organic" },
-      "position": { "x": 0, "y": 9, "z": 5 },
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 0,
+        "y": 9,
+        "z": 5
+      },
       "type": "block"
     }
   },
@@ -56,24 +92,51 @@
     "value": {
       "subRooms": {
         "left": {
-          "gridPosition": { "x": 1, "y": 0 },
+          "gridPosition": {
+            "x": 1,
+            "y": 0
+          },
           "physicalPosition": {
-            "from": { "x": 8, "y": 0 },
-            "to": { "x": 16, "y": 4 }
+            "from": {
+              "x": 8,
+              "y": 0
+            },
+            "to": {
+              "x": 16,
+              "y": 4
+            }
           }
         },
         "middle": {
-          "gridPosition": { "x": 0, "y": 0 },
+          "gridPosition": {
+            "x": 0,
+            "y": 0
+          },
           "physicalPosition": {
-            "from": { "x": 0, "y": 0 },
-            "to": { "x": 8, "y": 4 }
+            "from": {
+              "x": 0,
+              "y": 0
+            },
+            "to": {
+              "x": 8,
+              "y": 4
+            }
           }
         },
         "right": {
-          "gridPosition": { "x": 0, "y": 1 },
+          "gridPosition": {
+            "x": 0,
+            "y": 1
+          },
           "physicalPosition": {
-            "from": { "x": 0, "y": 4 },
-            "to": { "x": 8, "y": 10 }
+            "from": {
+              "x": 0,
+              "y": 4
+            },
+            "to": {
+              "x": 8,
+              "y": 10
+            }
           }
         }
       }

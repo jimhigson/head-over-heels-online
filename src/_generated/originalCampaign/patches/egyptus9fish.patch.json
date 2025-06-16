@@ -3,8 +3,17 @@
     "op": "add",
     "path": "/items/extrapillar",
     "value": {
-      "config": { "style": "tower", "times": { "z": 4 } },
-      "position": { "x": 3, "y": 0, "z": 0 },
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 4
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -12,8 +21,17 @@
     "op": "add",
     "path": "/items/extrapillar2",
     "value": {
-      "config": { "style": "tower", "times": { "z": 4 } },
-      "position": { "x": 3, "y": 7, "z": 0 },
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 4
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 7,
+        "z": 0
+      },
       "type": "block"
     }
   }

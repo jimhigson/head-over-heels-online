@@ -2,15 +2,23 @@
   {
     "op": "add",
     "path": "/items/door@2,6,0/config/meta",
-    "value": { "toSubRoom": "left" }
+    "value": {
+      "toSubRoom": "left"
+    }
   },
   {
     "op": "add",
     "path": "/meta",
     "value": {
       "nonContiguousRelationship": {
-        "gridOffset": { "x": 2, "y": 4, "z": 0 },
-        "with": { "room": "moonbase18" }
+        "gridOffset": {
+          "x": 2,
+          "y": 4,
+          "z": 0
+        },
+        "with": {
+          "room": "moonbase18"
+        }
       }
     }
   }

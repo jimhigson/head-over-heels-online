@@ -1,5 +1,9 @@
 [
-  { "op": "replace", "path": "/items/lift@3,3,0/config/bottom", "value": -7 },
+  {
+    "op": "replace",
+    "path": "/items/lift@3,3,0/config/bottom",
+    "value": -7
+  },
   {
     "op": "add",
     "path": "/items/patroller",
@@ -11,7 +15,11 @@
         "which": "turtle"
       },
       "isExtra": true,
-      "position": { "x": 0, "y": 0, "z": 1 },
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
       "type": "monster"
     }
   },
@@ -26,9 +34,17 @@
         "which": "turtle"
       },
       "isExtra": true,
-      "position": { "x": 7, "y": 7, "z": 1 },
+      "position": {
+        "x": 7,
+        "y": 7,
+        "z": 1
+      },
       "type": "monster"
     }
   },
-  { "op": "add", "path": "/subRoomBelow", "value": "left" }
+  {
+    "op": "add",
+    "path": "/subRoomBelow",
+    "value": "left"
+  }
 ]

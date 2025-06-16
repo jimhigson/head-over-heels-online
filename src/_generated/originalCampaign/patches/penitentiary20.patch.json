@@ -1,11 +1,24 @@
 [
-  { "op": "add", "path": "/size/z", "value": 14 },
+  {
+    "op": "add",
+    "path": "/size/z",
+    "value": 14
+  },
   {
     "op": "add",
     "path": "/items/hintAboveA",
     "value": {
-      "config": { "style": "organic", "times": { "x": 6 } },
-      "position": { "x": 0, "y": 6, "z": 14 },
+      "config": {
+        "style": "organic",
+        "times": {
+          "x": 6
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 6,
+        "z": 14
+      },
       "type": "block"
     }
   },
@@ -13,8 +26,17 @@
     "op": "add",
     "path": "/items/hintAboveL",
     "value": {
-      "config": { "style": "organic", "times": { "y": 8 } },
-      "position": { "x": 6, "y": -1, "z": 14 },
+      "config": {
+        "style": "organic",
+        "times": {
+          "y": 8
+        }
+      },
+      "position": {
+        "x": 6,
+        "y": -1,
+        "z": 14
+      },
       "type": "block"
     }
   },
@@ -22,8 +44,17 @@
     "op": "add",
     "path": "/items/hintAboveR",
     "value": {
-      "config": { "style": "organic", "times": { "y": 8 } },
-      "position": { "x": -1, "y": -1, "z": 14 },
+      "config": {
+        "style": "organic",
+        "times": {
+          "y": 8
+        }
+      },
+      "position": {
+        "x": -1,
+        "y": -1,
+        "z": 14
+      },
       "type": "block"
     }
   },
@@ -31,8 +62,15 @@
     "op": "add",
     "path": "/items/hintAboveSingle",
     "value": {
-      "config": { "disappearing": "onStand", "style": "organic" },
-      "position": { "x": 0, "y": 0, "z": 14 },
+      "config": {
+        "disappearing": "onStand",
+        "style": "organic"
+      },
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 14
+      },
       "type": "block"
     }
   },
@@ -40,10 +78,23 @@
     "op": "add",
     "path": "/items/hintAboveT",
     "value": {
-      "config": { "style": "organic", "times": { "x": 6 } },
-      "position": { "x": 0, "y": -1, "z": 14 },
+      "config": {
+        "style": "organic",
+        "times": {
+          "x": 6
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": -1,
+        "z": 14
+      },
       "type": "block"
     }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  }
 ]

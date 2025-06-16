@@ -1,16 +1,45 @@
 [
-  { "op": "replace", "path": "/items/monster@2,4,0/position/z", "value": 6 },
-  { "op": "replace", "path": "/items/monster@2,4,0/position/x", "value": 3 },
-  { "op": "replace", "path": "/items/monster@1,3,0/position/z", "value": 6 },
-  { "op": "replace", "path": "/items/monster@1,3,0/position/x", "value": 3 },
+  {
+    "op": "replace",
+    "path": "/items/monster@2,4,0/position/z",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/monster@2,4,0/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/monster@1,3,0/position/z",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/monster@1,3,0/position/x",
+    "value": 3
+  },
   {
     "op": "add",
     "path": "/items/walkway",
     "value": {
-      "config": { "style": "artificial", "times": { "y": 8 } },
-      "position": { "x": 3, "y": 0, "z": 5 },
+      "config": {
+        "style": "artificial",
+        "times": {
+          "y": 8
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 5
+      },
       "type": "block"
     }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  }
 ]

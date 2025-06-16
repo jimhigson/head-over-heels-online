@@ -3,11 +3,29 @@
     "op": "add",
     "path": "/items/extraBookStack",
     "value": {
-      "config": { "style": "book", "times": { "y": 2, "z": 5 } },
-      "position": { "x": 5, "y": 2, "z": 0 },
+      "config": {
+        "style": "book",
+        "times": {
+          "y": 2,
+          "z": 5
+        }
+      },
+      "position": {
+        "x": 5,
+        "y": 2,
+        "z": 0
+      },
       "type": "block"
     }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "cyan"
+  }
 ]

@@ -1,12 +1,23 @@
 [
-  { "op": "add", "path": "/size/z", "value": 12 },
+  {
+    "op": "add",
+    "path": "/size/z",
+    "value": 12
+  },
   {
     "op": "add",
     "path": "/items/extra1",
     "value": {
-      "config": { "disappearing": "onStand", "style": "artificial" },
+      "config": {
+        "disappearing": "onStand",
+        "style": "artificial"
+      },
       "isExtra": true,
-      "position": { "x": 2, "y": 5, "z": 4 },
+      "position": {
+        "x": 2,
+        "y": 5,
+        "z": 4
+      },
       "type": "block"
     }
   },
@@ -14,9 +25,16 @@
     "op": "add",
     "path": "/items/extra2",
     "value": {
-      "config": { "disappearing": "onStand", "style": "artificial" },
+      "config": {
+        "disappearing": "onStand",
+        "style": "artificial"
+      },
       "isExtra": true,
-      "position": { "x": 2, "y": 5, "z": 3 },
+      "position": {
+        "x": 2,
+        "y": 5,
+        "z": 3
+      },
       "type": "block"
     }
   },
@@ -24,9 +42,16 @@
     "op": "add",
     "path": "/items/extra3",
     "value": {
-      "config": { "disappearing": "onStand", "style": "artificial" },
+      "config": {
+        "disappearing": "onStand",
+        "style": "artificial"
+      },
       "isExtra": true,
-      "position": { "x": 2, "y": 5, "z": 2 },
+      "position": {
+        "x": 2,
+        "y": 5,
+        "z": 2
+      },
       "type": "block"
     }
   },
@@ -34,9 +59,16 @@
     "op": "add",
     "path": "/items/extra4",
     "value": {
-      "config": { "disappearing": "onStand", "style": "artificial" },
+      "config": {
+        "disappearing": "onStand",
+        "style": "artificial"
+      },
       "isExtra": true,
-      "position": { "x": 2, "y": 5, "z": 1 },
+      "position": {
+        "x": 2,
+        "y": 5,
+        "z": 1
+      },
       "type": "block"
     }
   },
@@ -44,9 +76,16 @@
     "op": "add",
     "path": "/items/extra5",
     "value": {
-      "config": { "disappearing": "onStand", "style": "artificial" },
+      "config": {
+        "disappearing": "onStand",
+        "style": "artificial"
+      },
       "isExtra": true,
-      "position": { "x": 2, "y": 5, "z": 0 },
+      "position": {
+        "x": 2,
+        "y": 5,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -54,9 +93,15 @@
     "op": "add",
     "path": "/items/extra6",
     "value": {
-      "config": { "style": "artificial" },
+      "config": {
+        "style": "artificial"
+      },
       "isExtra": true,
-      "position": { "x": 5, "y": 5, "z": 1 },
+      "position": {
+        "x": 5,
+        "y": 5,
+        "z": 1
+      },
       "type": "block"
     }
   },
@@ -64,11 +109,21 @@
     "op": "add",
     "path": "/items/extra7",
     "value": {
-      "config": { "style": "artificial" },
+      "config": {
+        "style": "artificial"
+      },
       "isExtra": true,
-      "position": { "x": 5, "y": 5, "z": 0 },
+      "position": {
+        "x": 5,
+        "y": 5,
+        "z": 0
+      },
       "type": "block"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "green" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "green"
+  }
 ]

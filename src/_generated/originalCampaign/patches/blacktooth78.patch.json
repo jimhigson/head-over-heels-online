@@ -4,14 +4,24 @@
     "path": "/items/movingPlatform@1,1,1/config/activated",
     "value": "on"
   },
-  { "op": "replace", "path": "/items/lift@1,1,0/config/top", "value": 11 },
+  {
+    "op": "replace",
+    "path": "/items/lift@1,1,0/config/top",
+    "value": 11
+  },
   {
     "op": "add",
     "path": "/items/block@3,7,0",
     "value": {
-      "config": { "style": "tower" },
+      "config": {
+        "style": "tower"
+      },
       "isExtra": true,
-      "position": { "x": 3, "y": 7, "z": 0 },
+      "position": {
+        "x": 3,
+        "y": 7,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -19,9 +29,15 @@
     "op": "add",
     "path": "/items/block@3,7,1",
     "value": {
-      "config": { "style": "tower" },
+      "config": {
+        "style": "tower"
+      },
       "isExtra": true,
-      "position": { "x": 3, "y": 7, "z": 1 },
+      "position": {
+        "x": 3,
+        "y": 7,
+        "z": 1
+      },
       "type": "block"
     }
   },
@@ -29,9 +45,15 @@
     "op": "add",
     "path": "/items/block@3,7,2",
     "value": {
-      "config": { "style": "tower" },
+      "config": {
+        "style": "tower"
+      },
       "isExtra": true,
-      "position": { "x": 3, "y": 7, "z": 2 },
+      "position": {
+        "x": 3,
+        "y": 7,
+        "z": 2
+      },
       "type": "block"
     }
   },
@@ -39,9 +61,15 @@
     "op": "add",
     "path": "/items/block@4,7,0",
     "value": {
-      "config": { "style": "tower" },
+      "config": {
+        "style": "tower"
+      },
       "isExtra": true,
-      "position": { "x": 4, "y": 7, "z": 0 },
+      "position": {
+        "x": 4,
+        "y": 7,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -49,9 +77,15 @@
     "op": "add",
     "path": "/items/block@4,7,1",
     "value": {
-      "config": { "style": "tower" },
+      "config": {
+        "style": "tower"
+      },
       "isExtra": true,
-      "position": { "x": 4, "y": 7, "z": 1 },
+      "position": {
+        "x": 4,
+        "y": 7,
+        "z": 1
+      },
       "type": "block"
     }
   },
@@ -59,9 +93,15 @@
     "op": "add",
     "path": "/items/block@4,7,2",
     "value": {
-      "config": { "style": "tower" },
+      "config": {
+        "style": "tower"
+      },
       "isExtra": true,
-      "position": { "x": 4, "y": 7, "z": 2 },
+      "position": {
+        "x": 4,
+        "y": 7,
+        "z": 2
+      },
       "type": "block"
     }
   },
@@ -69,9 +109,15 @@
     "op": "add",
     "path": "/items/block@7,3,0",
     "value": {
-      "config": { "style": "tower" },
+      "config": {
+        "style": "tower"
+      },
       "isExtra": true,
-      "position": { "x": 7, "y": 3, "z": 0 },
+      "position": {
+        "x": 7,
+        "y": 3,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -79,9 +125,15 @@
     "op": "add",
     "path": "/items/block@7,3,1",
     "value": {
-      "config": { "style": "tower" },
+      "config": {
+        "style": "tower"
+      },
       "isExtra": true,
-      "position": { "x": 7, "y": 3, "z": 1 },
+      "position": {
+        "x": 7,
+        "y": 3,
+        "z": 1
+      },
       "type": "block"
     }
   }

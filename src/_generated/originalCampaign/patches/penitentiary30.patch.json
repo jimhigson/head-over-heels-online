@@ -9,5 +9,9 @@
     "path": "/items/teleporter@0,3,4/config/toPosition/x",
     "value": 0
   },
-  { "op": "replace", "path": "/color/hue", "value": "green" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "green"
+  }
 ]

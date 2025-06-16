@@ -4,6 +4,14 @@
     "path": "/items/monster@2,4,0/config/startDirection",
     "value": "right"
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  }
 ]

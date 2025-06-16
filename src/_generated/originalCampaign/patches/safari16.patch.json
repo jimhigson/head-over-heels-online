@@ -1,9 +1,15 @@
 [
-  { "op": "replace", "path": "/items/monster@2,6,0/position/x", "value": 1.5 },
+  {
+    "op": "replace",
+    "path": "/items/monster@2,6,0/position/x",
+    "value": 1.5
+  },
   {
     "op": "add",
     "path": "/items/door@1,0,0/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   },
   {
     "op": "replace",
@@ -20,5 +26,8 @@
     "path": "/items/deadlyBlock@1,1,0/position/x",
     "value": 0.5
   },
-  { "op": "remove", "path": "/items/deadlyBlock@0,4,0" }
+  {
+    "op": "remove",
+    "path": "/items/deadlyBlock@0,4,0"
+  }
 ]

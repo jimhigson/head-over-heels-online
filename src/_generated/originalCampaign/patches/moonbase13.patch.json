@@ -2,7 +2,9 @@
   {
     "op": "add",
     "path": "/items/door@4,3,0/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   },
   {
     "op": "add",
@@ -14,8 +16,13 @@
           {
             "expectType": "monster",
             "newState": {
-              "activated": { "left": true, "right": false },
-              "everActivated": { "left": true }
+              "activated": {
+                "left": true,
+                "right": false
+              },
+              "everActivated": {
+                "left": true
+              }
             },
             "targets": [
               "monster@0,2,1",
@@ -26,14 +33,23 @@
           },
           {
             "expectType": "switch",
-            "newState": { "setting": { "left": "left", "right": "right" } },
+            "newState": {
+              "setting": {
+                "left": "left",
+                "right": "right"
+              }
+            },
             "targets": ["switch2"]
           }
         ],
         "type": "in-room"
       },
       "isExtra": true,
-      "position": { "x": 0, "y": 1, "z": 0 },
+      "position": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
       "type": "switch"
     }
   },
@@ -47,8 +63,13 @@
           {
             "expectType": "monster",
             "newState": {
-              "activated": { "left": true, "right": false },
-              "everActivated": { "left": true }
+              "activated": {
+                "left": true,
+                "right": false
+              },
+              "everActivated": {
+                "left": true
+              }
             },
             "targets": [
               "monster@0,2,1",
@@ -59,17 +80,34 @@
           },
           {
             "expectType": "switch",
-            "newState": { "setting": { "left": "left", "right": "right" } },
+            "newState": {
+              "setting": {
+                "left": "left",
+                "right": "right"
+              }
+            },
             "targets": ["switch"]
           }
         ],
         "type": "in-room"
       },
       "isExtra": true,
-      "position": { "x": 0, "y": 6, "z": 0 },
+      "position": {
+        "x": 0,
+        "y": 6,
+        "z": 0
+      },
       "type": "switch"
     }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "cyan"
+  }
 ]

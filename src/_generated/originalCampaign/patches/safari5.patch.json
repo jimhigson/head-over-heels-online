@@ -2,6 +2,8 @@
   {
     "op": "add",
     "path": "/items/door@8,1,4/config/meta",
-    "value": { "toSubRoom": "middle" }
+    "value": {
+      "toSubRoom": "middle"
+    }
   }
 ]

@@ -9,5 +9,9 @@
     "path": "/items/monster@0,2,1/config/activated",
     "value": "after-player-near"
   },
-  { "op": "replace", "path": "/color/hue", "value": "green" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "green"
+  }
 ]
