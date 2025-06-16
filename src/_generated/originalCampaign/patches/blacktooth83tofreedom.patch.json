@@ -9,14 +9,24 @@
     "path": "/items/teleporter@7,2,1/config/toPosition/x",
     "value": 7
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  },
   {
     "op": "add",
     "path": "/meta",
     "value": {
       "nonContiguousRelationship": {
-        "gridOffset": { "x": 7, "y": 5, "z": 0 },
-        "with": { "room": "finalroom" }
+        "gridOffset": {
+          "x": 7,
+          "y": 5,
+          "z": 0
+        },
+        "with": {
+          "room": "finalroom"
+        }
       }
     }
   }

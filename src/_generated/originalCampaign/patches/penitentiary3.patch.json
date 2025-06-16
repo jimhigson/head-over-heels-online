@@ -5,8 +5,13 @@
     "value": {
       "expectType": "movingPlatform",
       "newState": {
-        "activated": { "left": true, "right": false },
-        "everActivated": { "left": true }
+        "activated": {
+          "left": true,
+          "right": false
+        },
+        "everActivated": {
+          "left": true
+        }
       },
       "targets": ["movingPlatform@0,1,0"]
     }
@@ -16,7 +21,12 @@
     "path": "/items/switch@7,7,0/config/modifies/1",
     "value": {
       "expectType": "switch",
-      "newState": { "setting": { "left": "left", "right": "right" } },
+      "newState": {
+        "setting": {
+          "left": "left",
+          "right": "right"
+        }
+      },
       "targets": ["switch@0,0,0"]
     }
   },
@@ -31,8 +41,13 @@
     "value": {
       "expectType": "movingPlatform",
       "newState": {
-        "activated": { "left": true, "right": false },
-        "everActivated": { "left": true }
+        "activated": {
+          "left": true,
+          "right": false
+        },
+        "everActivated": {
+          "left": true
+        }
       },
       "targets": ["movingPlatform@0,1,0"]
     }
@@ -42,7 +57,12 @@
     "path": "/items/switch@0,0,0/config/modifies/1",
     "value": {
       "expectType": "switch",
-      "newState": { "setting": { "left": "left", "right": "right" } },
+      "newState": {
+        "setting": {
+          "left": "left",
+          "right": "right"
+        }
+      },
       "targets": ["switch@7,7,0"]
     }
   },
@@ -56,5 +76,9 @@
     "path": "/items/movingPlatform@0,1,0/config/startDirection",
     "value": "left"
   },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "cyan"
+  }
 ]

@@ -34,7 +34,16 @@
     "path": "/items/deadlyBlock@7,3,1/position/z",
     "value": 2
   },
-  { "op": "remove", "path": "/items/deadlyBlock@7,3,1/config/times" },
-  { "op": "remove", "path": "/items/deadlyBlock@6,4,1/config/times" },
-  { "op": "remove", "path": "/items/deadlyBlock@6,2,1/config/times" }
+  {
+    "op": "remove",
+    "path": "/items/deadlyBlock@7,3,1/config/times"
+  },
+  {
+    "op": "remove",
+    "path": "/items/deadlyBlock@6,4,1/config/times"
+  },
+  {
+    "op": "remove",
+    "path": "/items/deadlyBlock@6,2,1/config/times"
+  }
 ]

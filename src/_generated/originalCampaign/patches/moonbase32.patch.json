@@ -2,16 +2,28 @@
   {
     "op": "add",
     "path": "/items/door@3,8,0/config/meta",
-    "value": { "toSubRoom": "left" }
+    "value": {
+      "toSubRoom": "left"
+    }
   },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  },
   {
     "op": "add",
     "path": "/meta",
     "value": {
       "nonContiguousRelationship": {
-        "gridOffset": { "x": 0, "y": -2, "z": 0 },
-        "with": { "room": "moonbase29" }
+        "gridOffset": {
+          "x": 0,
+          "y": -2,
+          "z": 0
+        },
+        "with": {
+          "room": "moonbase29"
+        }
       }
     }
   }

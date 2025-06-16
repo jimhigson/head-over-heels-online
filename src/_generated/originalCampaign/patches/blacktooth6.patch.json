@@ -4,7 +4,12 @@
     "path": "/items/switch@6,0,1/config/modifies/0",
     "value": {
       "expectType": "block",
-      "newState": { "disappear": { "left": "onStand", "right": null } },
+      "newState": {
+        "disappear": {
+          "left": "onStand",
+          "right": null
+        }
+      },
       "targets": ["block@0,7,0", "block@3,7,0"]
     }
   },
@@ -14,8 +19,13 @@
     "value": {
       "expectType": "monster",
       "newState": {
-        "activated": { "left": true, "right": false },
-        "everActivated": { "left": true }
+        "activated": {
+          "left": true,
+          "right": false
+        },
+        "everActivated": {
+          "left": true
+        }
       },
       "targets": [
         "monster@3,0,1",
@@ -35,7 +45,11 @@
         "which": "dalek"
       },
       "isExtra": true,
-      "position": { "x": 0, "y": 0, "z": 1 },
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
       "type": "monster"
     }
   },
@@ -49,7 +63,11 @@
         "which": "dalek"
       },
       "isExtra": true,
-      "position": { "x": 7, "y": 7, "z": 3 },
+      "position": {
+        "x": 7,
+        "y": 7,
+        "z": 3
+      },
       "type": "monster"
     }
   },
@@ -63,7 +81,11 @@
         "which": "dalek"
       },
       "isExtra": true,
-      "position": { "x": 6, "y": 7, "z": 2 },
+      "position": {
+        "x": 6,
+        "y": 7,
+        "z": 2
+      },
       "type": "monster"
     }
   },
@@ -71,8 +93,15 @@
     "op": "add",
     "path": "/items/scroll",
     "value": {
-      "config": { "gives": "scroll", "page": "doughnuts" },
-      "position": { "x": 2, "y": 3, "z": 1 },
+      "config": {
+        "gives": "scroll",
+        "page": "doughnuts"
+      },
+      "position": {
+        "x": 2,
+        "y": 3,
+        "z": 1
+      },
       "type": "pickup"
     }
   },
@@ -80,8 +109,14 @@
     "op": "add",
     "path": "/items/scrollBlock",
     "value": {
-      "config": { "style": "organic" },
-      "position": { "x": 2, "y": 3, "z": 0 },
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 2,
+        "y": 3,
+        "z": 0
+      },
       "type": "block"
     }
   }

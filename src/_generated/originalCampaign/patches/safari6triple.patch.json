@@ -1,9 +1,28 @@
 [
-  { "op": "replace", "path": "/size/y", "value": 12 },
-  { "op": "replace", "path": "/size/x", "value": 12 },
-  { "op": "replace", "path": "/items/wall@13,0,0/position/x", "value": 12 },
-  { "op": "replace", "path": "/items/wall@0,13,0/position/y", "value": 12 },
-  { "op": "remove", "path": "/items/block@10,4,0/config/times" },
+  {
+    "op": "replace",
+    "path": "/size/y",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/size/x",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@13,0,0/position/x",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,13,0/position/y",
+    "value": 12
+  },
+  {
+    "op": "remove",
+    "path": "/items/block@10,4,0/config/times"
+  },
   {
     "op": "add",
     "path": "/items/block@10,4,0/config/disappearing",
@@ -13,8 +32,14 @@
     "op": "add",
     "path": "/items/blockMissingInXml",
     "value": {
-      "config": { "style": "organic" },
-      "position": { "x": 10, "y": 5, "z": 0 },
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 10,
+        "y": 5,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -24,24 +49,51 @@
     "value": {
       "subRooms": {
         "left": {
-          "gridPosition": { "x": 1, "y": 0 },
+          "gridPosition": {
+            "x": 1,
+            "y": 0
+          },
           "physicalPosition": {
-            "from": { "x": 6, "y": 0 },
-            "to": { "x": 12, "y": 6 }
+            "from": {
+              "x": 6,
+              "y": 0
+            },
+            "to": {
+              "x": 12,
+              "y": 6
+            }
           }
         },
         "middle": {
-          "gridPosition": { "x": 0, "y": 0 },
+          "gridPosition": {
+            "x": 0,
+            "y": 0
+          },
           "physicalPosition": {
-            "from": { "x": 0, "y": 0 },
-            "to": { "x": 6, "y": 6 }
+            "from": {
+              "x": 0,
+              "y": 0
+            },
+            "to": {
+              "x": 6,
+              "y": 6
+            }
           }
         },
         "right": {
-          "gridPosition": { "x": 0, "y": 1 },
+          "gridPosition": {
+            "x": 0,
+            "y": 1
+          },
           "physicalPosition": {
-            "from": { "x": 0, "y": 6 },
-            "to": { "x": 6, "y": 12 }
+            "from": {
+              "x": 0,
+              "y": 6
+            },
+            "to": {
+              "x": 6,
+              "y": 12
+            }
           }
         }
       }

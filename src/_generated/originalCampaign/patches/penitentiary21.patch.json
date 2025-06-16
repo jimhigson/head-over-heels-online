@@ -1,5 +1,9 @@
 [
-  { "op": "add", "path": "/size/z", "value": 13 },
+  {
+    "op": "add",
+    "path": "/size/z",
+    "value": 13
+  },
   {
     "op": "replace",
     "path": "/items/portableBlock@7,7,1/position/y",
@@ -14,8 +18,14 @@
     "op": "add",
     "path": "/items/extraBlock",
     "value": {
-      "config": { "style": "organic" },
-      "position": { "x": 1, "y": 6, "z": 0 },
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 1,
+        "y": 6,
+        "z": 0
+      },
       "type": "block"
     }
   }

@@ -8,9 +8,15 @@
     "op": "add",
     "path": "/items/portable1",
     "value": {
-      "config": { "style": "cube" },
+      "config": {
+        "style": "cube"
+      },
       "isExtra": true,
-      "position": { "x": 5, "y": 7, "z": 0 },
+      "position": {
+        "x": 5,
+        "y": 7,
+        "z": 0
+      },
       "type": "portableBlock"
     }
   },
@@ -18,20 +24,36 @@
     "op": "add",
     "path": "/items/portable2",
     "value": {
-      "config": { "style": "cube" },
+      "config": {
+        "style": "cube"
+      },
       "isExtra": true,
-      "position": { "x": 2, "y": 7, "z": 0 },
+      "position": {
+        "x": 2,
+        "y": 7,
+        "z": 0
+      },
       "type": "portableBlock"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  },
   {
     "op": "add",
     "path": "/meta",
     "value": {
       "nonContiguousRelationship": {
-        "gridOffset": { "x": -7, "y": -7, "z": 0 },
-        "with": { "room": "blacktooth60" }
+        "gridOffset": {
+          "x": -7,
+          "y": -7,
+          "z": 0
+        },
+        "with": {
+          "room": "blacktooth60"
+        }
       }
     }
   }

@@ -7,12 +7,20 @@
   {
     "op": "add",
     "path": "/items/block@7,0,0/config/times",
-    "value": { "y": 2 }
+    "value": {
+      "y": 2
+    }
   },
   {
     "op": "add",
     "path": "/items/block@0,0,0/config/times",
-    "value": { "y": 2 }
+    "value": {
+      "y": 2
+    }
   },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  }
 ]

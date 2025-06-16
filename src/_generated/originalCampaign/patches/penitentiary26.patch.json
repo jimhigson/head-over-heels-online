@@ -4,17 +4,33 @@
     "path": "/items/movingPlatform@4,1,0/config/activated",
     "value": "on-stand"
   },
-  { "op": "replace", "path": "/items/block@4,0,0/position/x", "value": 3 },
+  {
+    "op": "replace",
+    "path": "/items/block@4,0,0/position/x",
+    "value": 3
+  },
   {
     "op": "add",
     "path": "/items/block@4,0,0/config/times",
-    "value": { "x": 2 }
+    "value": {
+      "x": 2
+    }
   },
-  { "op": "replace", "path": "/items/block@0,4,0/position/y", "value": 3 },
+  {
+    "op": "replace",
+    "path": "/items/block@0,4,0/position/y",
+    "value": 3
+  },
   {
     "op": "add",
     "path": "/items/block@0,4,0/config/times",
-    "value": { "y": 2 }
+    "value": {
+      "y": 2
+    }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  }
 ]

@@ -2,11 +2,15 @@
   {
     "op": "add",
     "path": "/items/door@2,0,1/config/meta",
-    "value": { "toSubRoom": "left" }
+    "value": {
+      "toSubRoom": "left"
+    }
   },
   {
     "op": "add",
     "path": "/items/door@0,2,1/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   }
 ]

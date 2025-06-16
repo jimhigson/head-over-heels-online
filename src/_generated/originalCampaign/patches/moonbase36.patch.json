@@ -7,17 +7,33 @@
   {
     "op": "add",
     "path": "/items/door@2,0,0/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" },
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  },
   {
     "op": "add",
     "path": "/meta",
     "value": {
       "nonContiguousRelationship": {
-        "gridOffset": { "x": 8, "y": 6, "z": 0 },
-        "with": { "room": "blacktooth69" }
+        "gridOffset": {
+          "x": 8,
+          "y": 6,
+          "z": 0
+        },
+        "with": {
+          "room": "blacktooth69"
+        }
       }
     }
   }

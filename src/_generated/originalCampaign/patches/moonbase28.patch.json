@@ -1,22 +1,48 @@
 [
-  { "op": "replace", "path": "/items/hushPuppy@5,3,2/position/y", "value": 2 },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@5,3,2/position/y",
+    "value": 2
+  },
   {
     "op": "add",
     "path": "/items/hushPuppy@5,3,2/config/times",
-    "value": { "y": 2 }
+    "value": {
+      "y": 2
+    }
   },
-  { "op": "replace", "path": "/items/hushPuppy@4,3,1/position/y", "value": 2 },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@4,3,1/position/y",
+    "value": 2
+  },
   {
     "op": "add",
     "path": "/items/hushPuppy@4,3,1/config/times",
-    "value": { "y": 2 }
+    "value": {
+      "y": 2
+    }
   },
-  { "op": "replace", "path": "/items/hushPuppy@3,3,0/position/y", "value": 2 },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@3,3,0/position/y",
+    "value": 2
+  },
   {
     "op": "add",
     "path": "/items/hushPuppy@3,3,0/config/times",
-    "value": { "y": 2 }
+    "value": {
+      "y": 2
+    }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  }
 ]

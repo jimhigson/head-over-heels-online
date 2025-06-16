@@ -4,7 +4,11 @@
     "path": "/items/stair1",
     "value": {
       "config": {},
-      "position": { "x": 5, "y": 0, "z": 0 },
+      "position": {
+        "x": 5,
+        "y": 0,
+        "z": 0
+      },
       "type": "hushPuppy"
     }
   },
@@ -13,7 +17,11 @@
     "path": "/items/stair2",
     "value": {
       "config": {},
-      "position": { "x": 6, "y": 0, "z": 1 },
+      "position": {
+        "x": 6,
+        "y": 0,
+        "z": 1
+      },
       "type": "hushPuppy"
     }
   },
@@ -22,10 +30,18 @@
     "path": "/items/teleBackToCrownForHeelsIfSheFallsOffInTheCrownRoom",
     "value": {
       "config": {
-        "toPosition": { "x": 7, "y": 5, "z": 4 },
+        "toPosition": {
+          "x": 7,
+          "y": 5,
+          "z": 4
+        },
         "toRoom": "penitentiary34crown"
       },
-      "position": { "x": 7, "y": 0, "z": 2 },
+      "position": {
+        "x": 7,
+        "y": 0,
+        "z": 2
+      },
       "type": "teleporter"
     }
   },
@@ -33,10 +49,23 @@
     "op": "add",
     "path": "/items/teleTower",
     "value": {
-      "config": { "style": "tower", "times": { "z": 2 } },
-      "position": { "x": 7, "y": 0, "z": 0 },
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 2
+        }
+      },
+      "position": {
+        "x": 7,
+        "y": 0,
+        "z": 0
+      },
       "type": "block"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  }
 ]

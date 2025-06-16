@@ -4,5 +4,9 @@
     "path": "/items/movingPlatform@7,2,0/config/activated",
     "value": "on-stand"
   },
-  { "op": "replace", "path": "/color/hue", "value": "magenta" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "magenta"
+  }
 ]

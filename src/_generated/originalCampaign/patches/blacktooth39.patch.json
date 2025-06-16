@@ -1,11 +1,29 @@
 [
-  { "op": "replace", "path": "/items/monster@3,3,0/position/z", "value": 11 },
-  { "op": "replace", "path": "/items/monster@3,3,0/position/y", "value": 5 },
-  { "op": "replace", "path": "/items/monster@3,3,0/position/x", "value": 5 },
-  { "op": "replace", "path": "/items/lift@2,0,0/config/top", "value": 11 },
+  {
+    "op": "replace",
+    "path": "/items/monster@3,3,0/position/z",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/monster@3,3,0/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/monster@3,3,0/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/lift@2,0,0/config/top",
+    "value": 11
+  },
   {
     "op": "add",
     "path": "/items/door@2,6,5/config/meta",
-    "value": { "toSubRoom": "left" }
+    "value": {
+      "toSubRoom": "left"
+    }
   }
 ]

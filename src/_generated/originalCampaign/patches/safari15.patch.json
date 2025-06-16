@@ -3,8 +3,14 @@
     "op": "add",
     "path": "/items/monsterpen",
     "value": {
-      "config": { "axis": "x" },
-      "position": { "x": 1, "y": 9, "z": 0 },
+      "config": {
+        "axis": "x"
+      },
+      "position": {
+        "x": 1,
+        "y": 9,
+        "z": 0
+      },
       "type": "barrier"
     }
   },
@@ -14,17 +20,35 @@
     "value": {
       "subRooms": {
         "left": {
-          "gridPosition": { "x": 0, "y": 0 },
+          "gridPosition": {
+            "x": 0,
+            "y": 0
+          },
           "physicalPosition": {
-            "from": { "x": 0, "y": 0 },
-            "to": { "x": 4, "y": 8 }
+            "from": {
+              "x": 0,
+              "y": 0
+            },
+            "to": {
+              "x": 4,
+              "y": 8
+            }
           }
         },
         "right": {
-          "gridPosition": { "x": 0, "y": 1 },
+          "gridPosition": {
+            "x": 0,
+            "y": 1
+          },
           "physicalPosition": {
-            "from": { "x": 0, "y": 8 },
-            "to": { "x": 4, "y": 16 }
+            "from": {
+              "x": 0,
+              "y": 8
+            },
+            "to": {
+              "x": 4,
+              "y": 16
+            }
           }
         }
       }

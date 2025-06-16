@@ -8,8 +8,17 @@
     "op": "add",
     "path": "/items/tower",
     "value": {
-      "config": { "style": "tower", "times": { "z": 4 } },
-      "position": { "x": 5, "y": 3, "z": 0 },
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 4
+        }
+      },
+      "position": {
+        "x": 5,
+        "y": 3,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -17,10 +26,24 @@
     "op": "add",
     "path": "/items/tower2",
     "value": {
-      "config": { "style": "tower", "times": { "y": 2, "z": 4 } },
-      "position": { "x": 0, "y": 2, "z": 0 },
+      "config": {
+        "style": "tower",
+        "times": {
+          "y": 2,
+          "z": 4
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
       "type": "block"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" }
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "cyan"
+  }
 ]

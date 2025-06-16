@@ -1,13 +1,28 @@
 [
-  { "op": "replace", "path": "/items/lift@3,0,0/config/top", "value": 11 },
+  {
+    "op": "replace",
+    "path": "/items/lift@3,0,0/config/top",
+    "value": 11
+  },
   {
     "op": "add",
     "path": "/items/scroll",
     "value": {
-      "config": { "gives": "scroll", "page": "hushPuppies" },
-      "position": { "x": 5, "y": 5, "z": 0 },
+      "config": {
+        "gives": "scroll",
+        "page": "hushPuppies"
+      },
+      "position": {
+        "x": 5,
+        "y": 5,
+        "z": 0
+      },
       "type": "pickup"
     }
   },
-  { "op": "replace", "path": "/floor", "value": "market" }
+  {
+    "op": "replace",
+    "path": "/floor",
+    "value": "market"
+  }
 ]

@@ -8,19 +8,33 @@
     "op": "add",
     "path": "/items/scroll",
     "value": {
-      "config": { "gives": "scroll", "page": "egyptus" },
-      "position": { "x": 2, "y": 3, "z": 0 },
+      "config": {
+        "gives": "scroll",
+        "page": "egyptus"
+      },
+      "position": {
+        "x": 2,
+        "y": 3,
+        "z": 0
+      },
       "type": "pickup"
     }
   },
-  { "op": "replace", "path": "/color/hue", "value": "cyan" },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "cyan"
+  },
   {
     "op": "add",
     "path": "/meta",
     "value": {
       "label": {
         "align": "left",
-        "gridOffset": { "x": 0, "y": 0.75 },
+        "gridOffset": {
+          "x": 0,
+          "y": 0.75
+        },
         "text": "Egyptus"
       }
     }

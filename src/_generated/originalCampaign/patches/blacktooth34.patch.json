@@ -2,7 +2,9 @@
   {
     "op": "add",
     "path": "/items/door@3,8,2/config/meta",
-    "value": { "toSubRoom": "left" }
+    "value": {
+      "toSubRoom": "left"
+    }
   },
   {
     "op": "add",
@@ -13,8 +15,15 @@
     "op": "add",
     "path": "/items/scroll",
     "value": {
-      "config": { "gives": "scroll", "page": "springs" },
-      "position": { "x": 2, "y": 7, "z": 1 },
+      "config": {
+        "gives": "scroll",
+        "page": "springs"
+      },
+      "position": {
+        "x": 2,
+        "y": 7,
+        "z": 1
+      },
       "type": "pickup"
     }
   },
@@ -22,8 +31,14 @@
     "op": "add",
     "path": "/items/scrollBlock",
     "value": {
-      "config": { "style": "organic" },
-      "position": { "x": 2, "y": 7, "z": 0 },
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 2,
+        "y": 7,
+        "z": 0
+      },
       "type": "block"
     }
   }

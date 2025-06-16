@@ -31,7 +31,14 @@ const go = async () => {
 
     console.log(patch.length, "operations");
 
-    await writeFile(patchFilename(roomId), canonicalize(patch));
+    await writeFile(
+      patchFilename(roomId),
+      // stringify and parse after canonicalizing is to work around prettier being inconsistent
+      // for if json objects get put on a single line when they fit. This ensures that every {
+      // is followed by a newline, so prettier will always use the non-compact format when formatting
+      // the patches. The parse/stringify doesn't change the order of keys.
+      JSON.stringify(JSON.parse(canonicalize(patch)), null, 2),
+    );
   }
 };
 

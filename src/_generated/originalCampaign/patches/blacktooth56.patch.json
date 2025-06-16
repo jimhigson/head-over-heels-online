@@ -1,1 +1,7 @@
-[{ "op": "replace", "path": "/floor", "value": "market" }]
+[
+  {
+    "op": "replace",
+    "path": "/floor",
+    "value": "market"
+  }
+]

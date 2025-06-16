@@ -1,11 +1,24 @@
 [
-  { "op": "replace", "path": "/items/lift@3,5,0/config/top", "value": 11 },
+  {
+    "op": "replace",
+    "path": "/items/lift@3,5,0/config/top",
+    "value": 11
+  },
   {
     "op": "add",
     "path": "/items/block",
     "value": {
-      "config": { "style": "organic", "times": { "x": 2 } },
-      "position": { "x": 3, "y": 3, "z": 0 },
+      "config": {
+        "style": "organic",
+        "times": {
+          "x": 2
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 3,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -13,8 +26,17 @@
     "op": "add",
     "path": "/items/block2",
     "value": {
-      "config": { "style": "organic", "times": { "x": 2 } },
-      "position": { "x": 3, "y": 1, "z": 0 },
+      "config": {
+        "style": "organic",
+        "times": {
+          "x": 2
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 1,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -22,8 +44,15 @@
     "op": "add",
     "path": "/items/blockDis1",
     "value": {
-      "config": { "disappearing": "onStand", "style": "organic" },
-      "position": { "x": 3, "y": 2, "z": 0 },
+      "config": {
+        "disappearing": "onStand",
+        "style": "organic"
+      },
+      "position": {
+        "x": 3,
+        "y": 2,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -31,8 +60,15 @@
     "op": "add",
     "path": "/items/blockDis2",
     "value": {
-      "config": { "disappearing": "onStand", "style": "organic" },
-      "position": { "x": 4, "y": 2, "z": 0 },
+      "config": {
+        "disappearing": "onStand",
+        "style": "organic"
+      },
+      "position": {
+        "x": 4,
+        "y": 2,
+        "z": 0
+      },
       "type": "block"
     }
   },
@@ -40,8 +76,15 @@
     "op": "add",
     "path": "/items/lift2",
     "value": {
-      "config": { "bottom": 0, "top": 11 },
-      "position": { "x": 4, "y": 5, "z": 11 },
+      "config": {
+        "bottom": 0,
+        "top": 11
+      },
+      "position": {
+        "x": 4,
+        "y": 5,
+        "z": 11
+      },
       "type": "lift"
     }
   }

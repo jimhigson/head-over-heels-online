@@ -2,12 +2,20 @@
   {
     "op": "add",
     "path": "/items/door@3,0,0/config/meta",
-    "value": { "toSubRoom": "right" }
+    "value": {
+      "toSubRoom": "right"
+    }
   },
   {
     "op": "add",
     "path": "/items/door@0,3,0/config/meta",
-    "value": { "toSubRoom": "left" }
+    "value": {
+      "toSubRoom": "left"
+    }
   },
-  { "op": "replace", "path": "/floor", "value": "market" }
+  {
+    "op": "replace",
+    "path": "/floor",
+    "value": "market"
+  }
 ]

@@ -8,11 +8,26 @@
     "op": "add",
     "path": "/items/scroll",
     "value": {
-      "config": { "gives": "scroll", "page": "teleportBack" },
-      "position": { "x": 5, "y": 6, "z": 6 },
+      "config": {
+        "gives": "scroll",
+        "page": "teleportBack"
+      },
+      "position": {
+        "x": 5,
+        "y": 6,
+        "z": 6
+      },
       "type": "pickup"
     }
   },
-  { "op": "replace", "path": "/color/shade", "value": "dimmed" },
-  { "op": "replace", "path": "/color/hue", "value": "yellow" }
+  {
+    "op": "replace",
+    "path": "/color/shade",
+    "value": "dimmed"
+  },
+  {
+    "op": "replace",
+    "path": "/color/hue",
+    "value": "yellow"
+  }
 ]
