@@ -1,8 +1,200 @@
 [
   {
     "op": "replace",
-    "path": "/items/door@8,3,5/position/z",
+    "path": "/size/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/size/x",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,5,0/position/y",
     "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,5,0/position/x",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,5,0/config/times/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,5,0/config/tiles/2",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,5,0/config/tiles/1",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/3",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/4",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/position/x",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@8,0,0/config/tiles/2"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@8,0,0/config/tiles/1",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,8,0/position/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,8,0/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,8,0/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@5,8,0/config/tiles/2"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,8,0/config/tiles/1",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,0,0/config/times/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,8,0/position/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@0,8,0/config/times/x",
+    "value": 5
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@0,8,0/config/tiles/3",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@0,8,0/config/tiles/4",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall(right)@0,0,0/config/times/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@4,7,3/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@3,7,2/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@2,7,1/position/y",
+    "value": 8
+  },
+  {
+    "op": "remove",
+    "path": "/items/hushPuppy@1,7,0"
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@8,3,5/position/z",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@8,3,5/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@8,3,5/position/x",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@3,8,5/position/z",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@3,8,5/position/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@3,8,5/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,2,3/position/z",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,2,3/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,2,3/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,2,0/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,2,0/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,2,0/config/times/z",
+    "value": 5
   },
   {
     "op": "add",
@@ -16,9 +208,9 @@
         }
       },
       "position": {
-        "x": 6.5,
-        "y": 2,
-        "z": 3
+        "x": 7.5,
+        "y": 1,
+        "z": 7
       },
       "type": "barrier"
     }
@@ -30,12 +222,12 @@
       "config": {
         "axis": "y",
         "times": {
-          "z": 3
+          "z": 6
         }
       },
       "position": {
-        "x": 6.5,
-        "y": 2,
+        "x": 7.5,
+        "y": 1,
         "z": 0
       },
       "type": "barrier"
@@ -52,11 +244,26 @@
         }
       },
       "position": {
-        "x": 7,
-        "y": 4.5,
-        "z": 3
+        "x": 8,
+        "y": 3.5,
+        "z": 7
       },
       "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/portable",
+    "value": {
+      "config": {
+        "style": "cube"
+      },
+      "position": {
+        "x": 4,
+        "y": 8,
+        "z": 4
+      },
+      "type": "portableBlock"
     }
   },
   {
