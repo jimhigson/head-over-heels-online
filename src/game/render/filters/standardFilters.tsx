@@ -68,6 +68,21 @@ export const mainPaletteSwapFilter = (
   room: Pick<UnknownRoomState, "color">,
 ): Filter => new PaletteSwapFilter(replaceMapForRoom(room));
 
+export const bookPaletteSwapFilter = (
+  room: Pick<UnknownRoomState, "color">,
+): Filter => {
+  switch (room.color.hue) {
+    case "white":
+      return new PaletteSwapFilter({
+        replaceLight: spritesheetPalette.white,
+        replaceDark: spritesheetPalette.lightGrey,
+        shadow: spritesheetPalette.midGrey,
+      });
+    default:
+      return mainPaletteSwapFilter(room);
+  }
+};
+
 export const halfBriteFilter = new HalfBriteFilter();
 
 export const noFilters: Filter[] = emptyArray;

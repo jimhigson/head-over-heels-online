@@ -9,7 +9,11 @@ import {
 } from "./ItemAppearance";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
 import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
-import { mainPaletteSwapFilter, noFilters } from "../filters/standardFilters";
+import {
+  bookPaletteSwapFilter,
+  mainPaletteSwapFilter,
+  noFilters,
+} from "../filters/standardFilters";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/textureSizes";
 
@@ -101,7 +105,7 @@ const itemAppearancesMap: {
     }) =>
       createSprite(
         style === "book" ?
-          { textureId: "book.y", filter: mainPaletteSwapFilter(room) }
+          { textureId: "book.y", filter: bookPaletteSwapFilter(room) }
         : style,
       ),
   ),
