@@ -14,6 +14,7 @@ import { renderFloorOverdraws } from "./renderfloorOverdraw";
 import { findNonPerimeterWalls } from "./findNonPerimeterWalls";
 import { findExtraWallRanges } from "./findExtraWallRanges";
 import { createFloorOverdrawForExtraWalls } from "./createFloorOverdrawForExtraWalls";
+import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
@@ -44,6 +45,17 @@ export const floorAppearance: ItemAppearance<"floor"> =
         floorType === "deadly" ?
           `generic${shade === "dimmed" ? ".dark" : ""}.floor.deadly`
         : `${floorType}${shade === "dimmed" ? ".dark" : ""}.floor`;
+
+      try {
+        assertIsTextureId(floorTileTexture);
+      } catch (e) {
+        throw new Error(
+          `no floor textureId for floorType: ${floorType}, shade: ${shade}`,
+          {
+            cause: e,
+          },
+        );
+      }
 
       const tilesContainer = new Container();
 
