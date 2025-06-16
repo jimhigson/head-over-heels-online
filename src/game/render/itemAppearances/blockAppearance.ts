@@ -2,7 +2,10 @@ import type { Disappear } from "../../../model/ItemInPlay";
 import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import type { TextureId } from "../../../sprites/spriteSheetData";
 import { createSprite } from "../createSprite";
-import { mainPaletteSwapFilter } from "../filters/standardFilters";
+import {
+  bookPaletteSwapFilter,
+  mainPaletteSwapFilter,
+} from "../filters/standardFilters";
 import type { ItemAppearance } from "./ItemAppearance";
 
 type BlockRenderProps = {
@@ -53,8 +56,8 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
         disappear !== null,
       ),
       filter:
-        style === "organic" || style === "book" ?
-          mainPaletteSwapFilter(room)
+        style === "organic" ? mainPaletteSwapFilter(room)
+        : style === "book" ? bookPaletteSwapFilter(room)
         : undefined,
       times,
     }),
