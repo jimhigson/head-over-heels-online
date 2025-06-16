@@ -72,6 +72,9 @@ export const spritesTailwindPlugin = plugin(
       ".sprites-normal-height": {
         "--doubleHeight": "1",
       },
+      ".pixelated": {
+        imageRendering: "pixelated",
+      },
     };
 
     utilities[".loading-border"] = {

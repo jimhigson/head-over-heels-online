@@ -14,7 +14,10 @@ export const SpritePage = () => {
   const textureIds = Object.keys(spritesheetData.frames).sort() as TextureId[];
   return (
     <>
-      <img src={spritesheetUrl} className="w-full bg-replaceLight" />
+      <img
+        src={spritesheetUrl}
+        className="w-full [background:repeating-conic-gradient(#999_0_25%,_#888_0_50%)_50%_/_20px_20px] pixelated"
+      />
       <title>Sprites</title>
       <div className="flex flex-wrap p-[8px] bg-pureBlack">
         {textureIds.map((textureId) => {
