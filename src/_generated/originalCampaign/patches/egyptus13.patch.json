@@ -61,6 +61,11 @@
   },
   {
     "op": "replace",
+    "path": "/items/teleporter@4,0,5/config/toPosition/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
     "path": "/items/lift@0,0,2/config/top",
     "value": 5
   },

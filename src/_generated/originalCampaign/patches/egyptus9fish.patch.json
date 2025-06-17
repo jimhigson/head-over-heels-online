@@ -1,5 +1,28 @@
 [
   {
+    "op": "replace",
+    "path": "/items/teleporter@2,0,5/position/x",
+    "value": 3
+  },
+  {
+    "op": "remove",
+    "path": "/items/portableBlock@0,7,0"
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@3,1,4/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@3,1,4/config/times/y",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/block@2,0,4"
+  },
+  {
     "op": "add",
     "path": "/items/extrapillar",
     "value": {
@@ -29,7 +52,7 @@
       },
       "position": {
         "x": 3,
-        "y": 7,
+        "y": 3,
         "z": 0
       },
       "type": "block"

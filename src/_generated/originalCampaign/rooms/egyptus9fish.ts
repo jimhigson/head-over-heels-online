@@ -7,14 +7,9 @@ export const room = inferRoomJson({
   floor: "egyptus",
   id: "egyptus9fish",
   items: {
-    "block@2,0,4": {
-      config: { style: "organic", times: { x: 2 } },
-      position: { x: 2, y: 0, z: 4 },
-      type: "block",
-    },
     "block@3,1,4": {
-      config: { style: "organic", times: { y: 7 } },
-      position: { x: 3, y: 1, z: 4 },
+      config: { style: "organic", times: { y: 4 } },
+      position: { x: 3, y: 0, z: 4 },
       type: "block",
     },
     "door@1,0,0": {
@@ -34,7 +29,7 @@ export const room = inferRoomJson({
     },
     extrapillar2: {
       config: { style: "tower", times: { z: 4 } },
-      position: { x: 3, y: 7, z: 0 },
+      position: { x: 3, y: 3, z: 0 },
       type: "block",
     },
     "pickup@3,3,5": {
@@ -42,14 +37,9 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3, z: 5 },
       type: "pickup",
     },
-    "portableBlock@0,7,0": {
-      config: { style: "sticks" },
-      position: { x: 0, y: 7, z: 0 },
-      type: "portableBlock",
-    },
     "teleporter@2,0,5": {
       config: { toPosition: { x: 4, y: 0, z: 5 }, toRoom: "egyptus13" },
-      position: { x: 2, y: 0, z: 5 },
+      position: { x: 3, y: 0, z: 5 },
       type: "teleporter",
     },
     "wall(right)@0,0,0": {
