@@ -62,3 +62,8 @@ back to the start of the room
 
 * make head unable to pick up the bag, and have to push it down off a ledge to
 heels (more co-operation)
+  * or, heels has to stand on doughnuts to get somewhere (like head can't stand on hush puppies, only heels can stand on doughnuts)
+
+* have to move a portable block around, and push a ball into it so it stops in the right place, then move the block and push it again
+
+* race against time to jump along some dissapearing barriers before mojos crash into them and make them vanish

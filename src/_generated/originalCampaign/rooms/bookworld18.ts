@@ -8,32 +8,32 @@ export const room = inferRoomJson({
   id: "bookworld18",
   items: {
     "block@0,5,0": {
-      config: { disappearing: "onStand", style: "book" },
+      config: { disappearing: { on: "stand" }, style: "book" },
       position: { x: 0, y: 5, z: 0 },
       type: "block",
     },
     "block@0,5,1": {
-      config: { disappearing: "onStand", style: "book" },
+      config: { disappearing: { on: "stand" }, style: "book" },
       position: { x: 0, y: 5, z: 1 },
       type: "block",
     },
     "block@0,5,2": {
-      config: { disappearing: "onStand", style: "book" },
+      config: { disappearing: { on: "stand" }, style: "book" },
       position: { x: 0, y: 5, z: 2 },
       type: "block",
     },
     "block@0,5,3": {
-      config: { disappearing: "onStand", style: "book" },
+      config: { disappearing: { on: "stand" }, style: "book" },
       position: { x: 0, y: 5, z: 3 },
       type: "block",
     },
     "block@0,7,0": {
-      config: { disappearing: "onStand", style: "book" },
+      config: { disappearing: { on: "stand" }, style: "book" },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
     "block@0,7,1": {
-      config: { disappearing: "onStand", style: "book" },
+      config: { disappearing: { on: "stand" }, style: "book" },
       position: { x: 0, y: 7, z: 1 },
       type: "block",
     },

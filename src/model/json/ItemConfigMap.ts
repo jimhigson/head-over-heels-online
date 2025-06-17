@@ -24,6 +24,8 @@ import type { ToggleablePaths } from "../../utils/Toggleable";
 import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 import type { FreeItemTypes } from "../../game/physics/itemPredicates";
 import type { WallJsonConfig } from "./WallJsonConfig";
+import type { Disappear } from "../Disappear";
+import type { Subset } from "../../utils/subset";
 
 type PickupConfig =
   | {
@@ -94,11 +96,13 @@ export type ItemConfigMap<
   barrier: ConsolidatableConfig & {
     // the axis the barrier runs along
     axis: AxisXy;
-    disappearing?: "onTouch";
+    // barriers can only disappear on touch:
+    disappearing?: Subset<Disappear, { on: "touch" }>;
   };
   block: ConsolidatableConfig & {
     style: BlockStyle;
-    disappearing?: "onStand";
+    // barriers can only disappear on stand (never touch):
+    disappearing?: Subset<Disappear, { on: "stand" }>;
     times?: Partial<Xyz>;
   };
   deadlyBlock: ConsolidatableConfig & {
@@ -120,7 +124,8 @@ export type ItemConfigMap<
   };
   conveyor: ConsolidatableConfig & {
     direction: DirectionXy4;
-    disappearing?: "onStand";
+    // conveyors can only disappear on stand (never touch):
+    disappearing?: Subset<Disappear, { on: "stand" }>;
   };
   hushPuppy: ConsolidatableConfig;
   pickup: PickupConfig;

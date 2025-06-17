@@ -217,7 +217,7 @@ const convertItem = async ({
           axis: xml2JsonItem.kind === "bars-ns" ? "y" : "x",
           disappearing:
             xml2JsonItem.behavior === "behavior of disappearance on touch" ?
-              "onTouch"
+              { on: "touch" }
             : undefined,
         },
         position,
@@ -246,7 +246,7 @@ const convertItem = async ({
           style: styleConversion[xml2JsonItem.kind],
           disappearing:
             xml2JsonItem.behavior === "behavior of disappearance on jump into" ?
-              "onStand"
+              { on: "stand" }
             : undefined,
         },
         position,
@@ -286,7 +286,7 @@ const convertItem = async ({
           direction: convertDirection(xml2JsonItem.orientation),
           disappearing:
             xml2JsonItem.behavior === "behavior of disappearance on jump into" ?
-              "onStand"
+              { on: "stand" }
             : undefined,
         },
         position,
@@ -472,7 +472,7 @@ const convertItem = async ({
                   xml2JsonItem.behavior ===
                   "behavior of disappearance on jump into"
                 ) ?
-                  "onStand"
+                  { on: "stand" }
                 : undefined,
             },
             position,

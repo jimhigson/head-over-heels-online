@@ -9,7 +9,9 @@
     "path": "/items/extra1",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "artificial"
       },
       "isExtra": true,
@@ -26,7 +28,9 @@
     "path": "/items/extra2",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "artificial"
       },
       "isExtra": true,
@@ -43,7 +47,9 @@
     "path": "/items/extra3",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "artificial"
       },
       "isExtra": true,
@@ -60,7 +66,9 @@
     "path": "/items/extra4",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "artificial"
       },
       "isExtra": true,
@@ -77,7 +85,9 @@
     "path": "/items/extra5",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "artificial"
       },
       "isExtra": true,

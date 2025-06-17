@@ -51,8 +51,12 @@ type SwitchItemModificationUnion<
       RoomId,
       RoomItemId,
       "block",
-      "disappear",
-      "onStand",
+      "disappearing",
+      {
+        // currently, we only have the ability to totally turn on/off disappearing when touched by anything,
+        // (in the ts types) for #blacktooth6. Not ability to change what triggers the disappearing etc
+        on: "stand";
+      },
       null
     >
   // gangs of switches (#penitentiary3)

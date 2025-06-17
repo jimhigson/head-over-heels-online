@@ -1,4 +1,3 @@
-import type { Disappear } from "../../../model/ItemInPlay";
 import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import type { TextureId } from "../../../sprites/spriteSheetData";
 import { createSprite } from "../createSprite";
@@ -9,13 +8,15 @@ import {
 import type { ItemAppearance } from "./ItemAppearance";
 
 type BlockRenderProps = {
-  disappear: Disappear;
+  // flatten disappear down to a single value, since all we care about is if it is on or not
+  // for the sake of rendering
+  isDissapearing: boolean;
 };
 
 const blockTextureId = (
   isDark: boolean,
   style: BlockStyle,
-  disappear: boolean,
+  isDissapearing: boolean,
 ): TextureId => {
   if (style === "tower") {
     return "tower";
@@ -24,25 +25,26 @@ const blockTextureId = (
     return `book.x`;
   }
   if (style === "organic" && isDark) {
-    return `block.organic.dark${disappear ? ".disappearing" : ""}`;
+    return `block.organic.dark${isDissapearing ? ".disappearing" : ""}`;
   }
-  return `block.${style}${disappear ? ".disappearing" : ""}`;
+  return `block.${style}${isDissapearing ? ".disappearing" : ""}`;
 };
 
 export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
     item: {
       config: { style, times },
-      state: { disappear },
+      state: { disappearing: disappear },
     },
     room,
   },
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
+  const isDissapearing = disappear !== null;
   const render =
     currentlyRenderedProps === undefined ||
-    currentlyRenderedProps.disappear !== disappear;
+    currentlyRenderedProps.isDissapearing !== isDissapearing;
 
   if (!render) {
     return "no-update";
@@ -53,7 +55,7 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
       textureId: blockTextureId(
         room.color.shade === "dimmed",
         style,
-        disappear !== null,
+        isDissapearing,
       ),
       filter:
         style === "organic" ? mainPaletteSwapFilter(room)
@@ -61,6 +63,6 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
         : undefined,
       times,
     }),
-    renderProps: { disappear },
+    renderProps: { isDissapearing },
   };
 };

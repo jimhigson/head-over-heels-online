@@ -49,7 +49,9 @@
     "path": "/items/disappearingBlock",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "organic"
       },
       "position": {

@@ -8,12 +8,12 @@ export const room = inferRoomJson({
   id: "penitentiary13",
   items: {
     "block@0,3,5": {
-      config: { disappearing: "onStand", style: "artificial" },
+      config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 0, y: 3, z: 5 },
       type: "block",
     },
     "block@1,0,1": {
-      config: { disappearing: "onStand", style: "artificial" },
+      config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 1, y: 0, z: 1 },
       type: "block",
     },
@@ -33,7 +33,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@4,3,2": {
-      config: { disappearing: "onStand", style: "artificial" },
+      config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 4, y: 3, z: 2 },
       type: "block",
     },
@@ -69,7 +69,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     secondOverToaster: {
-      config: { disappearing: "onStand", style: "artificial" },
+      config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 2, y: 0, z: 1 },
       type: "block",
     },

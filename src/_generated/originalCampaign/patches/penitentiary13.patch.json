@@ -27,7 +27,9 @@
   {
     "op": "add",
     "path": "/items/block@4,3,2/config/disappearing",
-    "value": "onStand"
+    "value": {
+      "on": "stand"
+    }
   },
   {
     "op": "remove",
@@ -36,12 +38,16 @@
   {
     "op": "add",
     "path": "/items/block@1,0,1/config/disappearing",
-    "value": "onStand"
+    "value": {
+      "on": "stand"
+    }
   },
   {
     "op": "add",
     "path": "/items/block@0,3,5/config/disappearing",
-    "value": "onStand"
+    "value": {
+      "on": "stand"
+    }
   },
   {
     "op": "add",
@@ -64,7 +70,9 @@
     "path": "/items/secondOverToaster",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "artificial"
       },
       "position": {

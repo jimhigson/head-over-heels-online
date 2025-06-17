@@ -66,7 +66,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
         vels: {
           fired: scaleXyz(direction, moveSpeedPixPerMs.firedDoughnut),
         },
-        disappear: "onTouch",
+        disappearing: { on: "touch" },
       },
     };
 

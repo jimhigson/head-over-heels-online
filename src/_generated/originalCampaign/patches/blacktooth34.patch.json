@@ -9,7 +9,9 @@
   {
     "op": "add",
     "path": "/items/block@5,7,0/config/disappearing",
-    "value": "onStand"
+    "value": {
+      "on": "stand"
+    }
   },
   {
     "op": "add",

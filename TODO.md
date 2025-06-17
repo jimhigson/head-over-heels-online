@@ -8,6 +8,19 @@
 
 [ ] split integration tests up
 
+### head push bag, heels pushes doughnuts
+[x] check #blacktooth6
+    - mojos crashing into blocks should not remove them (even after switching off and back)
+[x] check #bookworld2 (conveyors vanish on stand)
+[x] check walking onto a disappearing block from a non-dis one (not landing on it)
+    [x] #blacktooth4
+[x] check (barriers vanish onTouch):
+    [x] #blacktooth14 
+        [x] also check head can pick up powerups, but heels just pushes them
+    [x] #blacktooth77 
+[x] integration test
+[x] moonbase33 - check multi-item switches still work as before
+
 # scrolling 
 [ ] draggable scroll on mobile
 [ ] better scrolling in general

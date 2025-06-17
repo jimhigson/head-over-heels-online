@@ -18,7 +18,7 @@ export const room = inferRoomJson({
       type: "barrier",
     },
     "barrier@4,1,1": {
-      config: { axis: "y", disappearing: "onTouch" },
+      config: { axis: "y", disappearing: { on: "touch" } },
       position: { x: 4, y: 1, z: 1 },
       type: "barrier",
     },

@@ -38,7 +38,7 @@ export const room = inferRoomJson({
       type: "conveyor",
     },
     "conveyor@2,0,0": {
-      config: { direction: "right", disappearing: "onStand" },
+      config: { direction: "right", disappearing: { on: "stand" } },
       position: { x: 2, y: 0, z: 0 },
       type: "conveyor",
     },
@@ -53,7 +53,7 @@ export const room = inferRoomJson({
       type: "conveyor",
     },
     "conveyor@4,3,0": {
-      config: { direction: "towards", disappearing: "onStand" },
+      config: { direction: "towards", disappearing: { on: "stand" } },
       position: { x: 4, y: 3, z: 0 },
       type: "conveyor",
     },
@@ -68,7 +68,7 @@ export const room = inferRoomJson({
       type: "conveyor",
     },
     "conveyor@9,5,0": {
-      config: { direction: "right", disappearing: "onStand" },
+      config: { direction: "right", disappearing: { on: "stand" } },
       position: { x: 9, y: 5, z: 0 },
       type: "conveyor",
     },
