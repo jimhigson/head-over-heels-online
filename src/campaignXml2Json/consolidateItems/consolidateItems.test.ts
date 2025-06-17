@@ -83,12 +83,12 @@ test("does not consolidate disappearing blocks", () => {
   const items: JsonItemUnion[] = [
     {
       type: "block",
-      config: { style: "organic", disappearing: "onStand" },
+      config: { style: "organic", disappearing: { on: "stand" } },
       position: { x: 0, y: 0, z: 0 },
     },
     {
       type: "block",
-      config: { style: "organic", disappearing: "onStand" },
+      config: { style: "organic", disappearing: { on: "stand" } },
       position: { x: 0, y: 1, z: 0 },
     },
   ];
@@ -97,7 +97,9 @@ test("does not consolidate disappearing blocks", () => {
     [
       {
         "config": {
-          "disappearing": "onStand",
+          "disappearing": {
+            "on": "stand",
+          },
           "style": "organic",
         },
         "position": {
@@ -109,7 +111,9 @@ test("does not consolidate disappearing blocks", () => {
       },
       {
         "config": {
-          "disappearing": "onStand",
+          "disappearing": {
+            "on": "stand",
+          },
           "style": "organic",
         },
         "position": {
@@ -166,12 +170,12 @@ test("does not consolidate disappearing barriers", () => {
   const items: JsonItemUnion[] = [
     {
       type: "barrier",
-      config: { axis: "y", disappearing: "onTouch" },
+      config: { axis: "y", disappearing: { on: "touch" } },
       position: { x: 0, y: 0, z: 0 },
     },
     {
       type: "barrier",
-      config: { axis: "y" },
+      config: { axis: "y", disappearing: { on: "touch" } },
       position: { x: 0, y: 1, z: 0 },
     },
   ];
@@ -181,10 +185,13 @@ test("does not consolidate disappearing barriers", () => {
       {
         "config": {
           "axis": "y",
+          "disappearing": {
+            "on": "touch",
+          },
         },
         "position": {
           "x": 0,
-          "y": 1,
+          "y": 0,
           "z": 0,
         },
         "type": "barrier",
@@ -192,11 +199,13 @@ test("does not consolidate disappearing barriers", () => {
       {
         "config": {
           "axis": "y",
-          "disappearing": "onTouch",
+          "disappearing": {
+            "on": "touch",
+          },
         },
         "position": {
           "x": 0,
-          "y": 0,
+          "y": 1,
           "z": 0,
         },
         "type": "barrier",

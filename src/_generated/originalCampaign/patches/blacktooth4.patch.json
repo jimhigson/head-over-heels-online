@@ -45,7 +45,9 @@
     "path": "/items/blockDis1",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "organic"
       },
       "position": {
@@ -61,7 +63,9 @@
     "path": "/items/blockDis2",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "organic"
       },
       "position": {

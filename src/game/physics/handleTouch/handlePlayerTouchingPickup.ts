@@ -65,12 +65,14 @@ export const handlePlayerTouchingPickup = <
   // mark the item as picked up, but only if it is in the room's original list of items Eg,
   // if the item is injected at play-time (by cheats or some other mechanic), there's no point
   // marking it as collected or when it generates again it won't be possible to pick up
-  if (roomJsonItems[pickupId]) {
-    if (pickupsCollected[roomId] === undefined) {
-      pickupsCollected[roomId] = {};
+  const markAsCollected = () => {
+    if (roomJsonItems[pickupId]) {
+      if (pickupsCollected[roomId] === undefined) {
+        pickupsCollected[roomId] = {};
+      }
+      pickupsCollected[roomId][pickupId] = true;
     }
-    pickupsCollected[roomId][pickupId] = true;
-  }
+  };
 
   const addFloatingText = (
     textLines: string[],
@@ -99,28 +101,34 @@ export const handlePlayerTouchingPickup = <
   switch (pickupConfig.gives) {
     case "hooter": {
       const toModify = selectHeadAbilities(player);
-      if (toModify !== undefined) {
-        toModify.hasHooter = true;
+      if (toModify === undefined) {
+        return;
       }
+      toModify.hasHooter = true;
       addFloatingText(["hooter", "collected"]);
+      markAsCollected();
       break;
     }
 
     case "doughnuts": {
       const toModify = selectHeadAbilities(player);
-      if (toModify !== undefined) {
-        toModify.doughnuts = addPokeableNumbers(toModify.doughnuts, 6);
+      if (toModify === undefined) {
+        return;
       }
+      toModify.doughnuts = addPokeableNumbers(toModify.doughnuts, 6);
       addFloatingText(["+6", "doughnuts"]);
+      markAsCollected();
       break;
     }
 
     case "bag": {
       const toModify = selectHeelsAbilities(player);
-      if (toModify !== undefined) {
-        toModify.hasBag = true;
+      if (toModify === undefined) {
+        return;
       }
+      toModify.hasBag = true;
       addFloatingText(["bag", "collected"]);
+      markAsCollected();
       break;
     }
 
@@ -132,24 +140,28 @@ export const handlePlayerTouchingPickup = <
         player.state.shieldCollectedAt = player.state.gameTime;
       }
       addFloatingText(["🛡", "shield"]);
+      markAsCollected();
       break;
     }
 
     case "fast": {
       const toModify = selectHeadAbilities(player);
-      if (toModify !== undefined) {
-        toModify.fastStepsStartedAtDistance = toModify.gameWalkDistance;
+      if (toModify === undefined) {
+        return;
       }
       addFloatingText(["⚡", "fast steps"]);
+      markAsCollected();
       break;
     }
 
     case "jumps": {
       const toModify = selectHeelsAbilities(player);
-      if (toModify !== undefined) {
-        toModify.bigJumps += 10;
+      if (toModify === undefined) {
+        return;
       }
+      toModify.bigJumps += 10;
       addFloatingText(["♨", "10", "big jumps"]);
+      markAsCollected();
       break;
     }
 
@@ -168,11 +180,13 @@ export const handlePlayerTouchingPickup = <
         player.state.lives = addPokeableNumbers(player.state.lives, 2);
         addFloatingText(["+2", "lives"]);
       }
+      markAsCollected();
       break;
 
     case "scroll":
       // avoid the scroll being closed right away if the player already has jump held:
       store.dispatch(scrollRead(pickupConfig.page));
+      markAsCollected();
       break;
 
     case "reincarnation": {
@@ -196,6 +210,7 @@ export const handlePlayerTouchingPickup = <
       // adding the floating text after saving the reincarnation point means the text won't be
       // in the reloaded room
       addFloatingText(["reincarnation", "point", "saved"]);
+      markAsCollected();
       break;
     }
 
@@ -204,6 +219,7 @@ export const handlePlayerTouchingPickup = <
       // we're in the game engine:
       store.dispatch(crownCollected(pickupConfig.planet));
       addFloatingText([pickupConfig.planet, "liberated!"]);
+      markAsCollected();
       break;
     }
 

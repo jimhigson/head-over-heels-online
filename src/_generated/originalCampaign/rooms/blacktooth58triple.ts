@@ -8,7 +8,7 @@ export const room = inferRoomJson({
   id: "blacktooth58triple",
   items: {
     "block@0,11,0": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 0, y: 11, z: 0 },
       type: "block",
     },
@@ -23,7 +23,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@13,3,0": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 13, y: 3, z: 0 },
       type: "block",
     },

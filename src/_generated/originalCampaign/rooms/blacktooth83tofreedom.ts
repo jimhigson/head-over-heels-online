@@ -23,32 +23,32 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@5,3,0": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 5, y: 3, z: 0 },
       type: "block",
     },
     "block@5,3,1": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 5, y: 3, z: 1 },
       type: "block",
     },
     "block@5,3,2": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 5, y: 3, z: 2 },
       type: "block",
     },
     "block@5,7,0": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 5, y: 7, z: 0 },
       type: "block",
     },
     "block@5,7,1": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 5, y: 7, z: 1 },
       type: "block",
     },
     "block@5,7,2": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 5, y: 7, z: 2 },
       type: "block",
     },

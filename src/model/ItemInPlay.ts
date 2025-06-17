@@ -7,6 +7,7 @@ import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CharacterName, IndividualCharacterName } from "./modelTypes";
 import type { StoodOnBy } from "./StoodOnBy";
+import type { Disappear } from "./Disappear";
 
 /** types of items in-game (as opposed to in the json) - there are a few extra types */
 export type ItemInPlayType =
@@ -57,7 +58,7 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
     forCharacter: IndividualCharacterName | "crown";
   };
   stopAutowalk: EmptyObject;
-  // disappearing can be turned off (blacktooth 6 for doughnuts) so it is state, not config
+  // disappearing can be turned off (#blacktooth6 aka room with first doughnuts) so it is state, not config
   block: Omit<JsonItemConfig<"block", RoomId, RoomItemId>, "disappearing">;
 };
 
@@ -73,8 +74,6 @@ export type ItemInPlayConfig<
   : // fall back to the config from the json types:
   T extends JsonItemType ? JsonItemConfig<T, RoomId, RoomItemId, ScN>
   : EmptyObject;
-
-export type Disappear = "onStand" | "onTouch" | "onTouchByPlayer" | null;
 
 export type BaseItemState<RoomItemId extends string = string> = {
   position: Readonly<Xyz>;
@@ -95,7 +94,13 @@ export type BaseItemState<RoomItemId extends string = string> = {
    */
   stoodOnBy: StoodOnBy<RoomItemId>;
 
-  disappear: Disappear;
+  /**
+   * if given, the item disappears after the specified interaction.
+   * This must be null (not undefined) so switches can tell the difference
+   * between having no setting, and having a setting to change to null
+   * when they make something not disappearing
+   */
+  disappearing: Disappear | null;
 
   /**
    * the time when this item was last changed by a switch in the room -

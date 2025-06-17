@@ -23,7 +23,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@1,4,6": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 1, y: 4, z: 6 },
       type: "block",
     },
@@ -33,7 +33,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@2,4,5": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 2, y: 4, z: 5 },
       type: "block",
     },
@@ -43,17 +43,17 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@4,1,1": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 4, y: 1, z: 1 },
       type: "block",
     },
     "block@4,2,2": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 4, y: 2, z: 2 },
       type: "block",
     },
     "block@4,3,3": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 4, y: 3, z: 3 },
       type: "block",
     },

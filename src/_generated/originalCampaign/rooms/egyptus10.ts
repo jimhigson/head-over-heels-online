@@ -63,9 +63,9 @@ export const room = inferRoomJson({
       type: "hushPuppy",
     },
     portable: {
-      type: "portableBlock",
       config: { style: "cube" },
       position: { x: 4, y: 8, z: 4 },
+      type: "portableBlock",
     },
     pyramid1: {
       config: { style: "organic", times: { x: 5, y: 5 } },

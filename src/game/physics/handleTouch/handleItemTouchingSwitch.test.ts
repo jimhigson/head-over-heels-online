@@ -6,10 +6,11 @@ import type { PartialDeep } from "type-fest";
 import type { SwitchInRoomConfig } from "../../../model/json/SwitchConfig";
 
 type TestRoomId = "anyRoom";
-type TestItemId = "monster1" | "monster2";
+type TestItemId = "monster1" | "monster2" | "block1" | "block2";
 type TestMonsterItem = ItemInPlay<"monster", TestRoomId, TestItemId>;
+type TestBlockItem = ItemInPlay<"block", TestRoomId, TestItemId>;
 
-const testRoomItems = {
+const makeTestRoomItems = () => ({
   monster1: {
     type: "monster",
     state: {
@@ -24,10 +25,20 @@ const testRoomItems = {
       everActivated: true,
     } as MonsterState<TestItemId>,
   } satisfies PartialDeep<TestMonsterItem> as unknown as TestMonsterItem,
-};
+  block1: {
+    type: "block",
+    state: { disappearing: { on: "stand" } },
+  } satisfies PartialDeep<TestBlockItem> as unknown as TestMonsterItem,
+  block2: {
+    type: "block",
+    state: { disappearing: { on: "stand" } },
+  } satisfies PartialDeep<TestBlockItem> as unknown as TestMonsterItem,
+});
 
 describe("toggleSwitchInRoom", () => {
   test("turning two monsters on and off", () => {
+    const testRoomItems = makeTestRoomItems();
+
     const testSwitchConfig: SwitchInRoomConfig<TestRoomId, TestItemId> = {
       type: "in-room",
       modifies: [
@@ -81,14 +92,65 @@ describe("toggleSwitchInRoom", () => {
     } satisfies PartialDeep<TestMonsterItem>);
   });
 
+  test("turning disappearing on and off of blocks", () => {
+    const testRoomItems = makeTestRoomItems();
+
+    const testSwitchConfig: SwitchInRoomConfig<TestRoomId, TestItemId> = {
+      type: "in-room",
+      modifies: [
+        {
+          expectType: "block",
+          newState: { disappearing: { left: { on: "stand" }, right: null } },
+          targets: ["block1", "block2"],
+        },
+      ],
+    };
+
+    toggleSwitchInRoom(testSwitchConfig, "right", testRoomItems, 12345);
+
+    expect(testRoomItems.block1).toMatchObject({
+      state: {
+        disappearing: null,
+        switchedSetting: "right",
+        switchedAtRoomTime: 12345,
+      },
+    } satisfies PartialDeep<TestBlockItem>);
+    expect(testRoomItems.block2).toMatchObject({
+      state: {
+        disappearing: null,
+        switchedSetting: "right",
+        switchedAtRoomTime: 12345,
+      },
+    } satisfies PartialDeep<TestBlockItem>);
+
+    toggleSwitchInRoom(testSwitchConfig, "left", testRoomItems, 123456789);
+
+    expect(testRoomItems.block1).toMatchObject({
+      state: {
+        disappearing: { on: "stand" },
+        switchedSetting: "left",
+        switchedAtRoomTime: 123456789,
+      },
+    } satisfies PartialDeep<TestBlockItem>);
+    expect(testRoomItems.block2).toMatchObject({
+      state: {
+        disappearing: { on: "stand" },
+        switchedSetting: "left",
+        switchedAtRoomTime: 123456789,
+      },
+    } satisfies PartialDeep<TestBlockItem>);
+  });
+
   test("errors if item is wrong type", () => {
+    const testRoomItems = makeTestRoomItems();
+
     const testSwitchConfig: SwitchInRoomConfig<TestRoomId, TestItemId> = {
       type: "in-room",
       modifies: [
         {
           expectType: "block",
           newState: {
-            disappear: { left: "onStand", right: null },
+            disappearing: { left: { on: "stand" }, right: undefined },
           },
           targets: ["monster1", "monster2"],
         },
@@ -104,9 +166,10 @@ describe("toggleSwitchInRoom", () => {
           {
             "expectType": "block",
             "newState": {
-              "disappear": {
-                "left": "onStand",
-                "right": null
+              "disappearing": {
+                "left": {
+                  "on": "stand"
+                }
               }
             },
             "targets": [
@@ -120,13 +183,15 @@ describe("toggleSwitchInRoom", () => {
   });
 
   test("ignores items not in the room", () => {
+    const testRoomItems = makeTestRoomItems();
+
     const testSwitchConfig: SwitchInRoomConfig<TestRoomId, TestItemId> = {
       type: "in-room",
       modifies: [
         {
           expectType: "block",
           newState: {
-            disappear: { left: "onStand", right: null },
+            disappearing: { left: { on: "stand" }, right: undefined },
           },
           targets: ["block" as TestItemId],
         },

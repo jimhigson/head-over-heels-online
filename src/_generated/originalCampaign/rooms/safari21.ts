@@ -13,7 +13,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@1,7,3": {
-      config: { disappearing: "onStand", style: "organic" },
+      config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 1, y: 7, z: 3 },
       type: "block",
     },

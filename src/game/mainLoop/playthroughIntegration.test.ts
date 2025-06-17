@@ -103,6 +103,47 @@ describe("pickups", () => {
     ).not.toBeUndefined();
   });
 
+  test("when character walks into pickup that they are not eligible to collect, they just push it", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            which: "head",
+          },
+        },
+        bag: {
+          type: "pickup",
+          position: { x: 2, y: 0, z: 0 },
+          config: {
+            gives: "bag",
+          },
+        },
+      },
+    });
+
+    // the pickup should have moved:
+    const bagStartingX =
+      selectCurrentRoomState(gameState)!.items["bag"].state.position.x;
+
+    playGameThrough(gameState, {
+      setupInitialInput(inputState) {
+        inputState.mockDirectionPressed = "left";
+      },
+    });
+
+    // should *not* have recorded collecting the pickup:
+    expect(gameState.pickupsCollected[firstRoomId]?.["bag"]).toBeUndefined();
+    // the pickup should *not* have disappeared:
+    expect(selectCurrentRoomState(gameState)?.items["bag"]).toBeDefined();
+
+    // the pickup should have moved (been pushed):
+    expect(
+      selectCurrentRoomState(gameState)?.items["bag"].state.position.x,
+    ).toBeGreaterThan(bagStartingX);
+  });
+
   test("character stand on pickup by walking off adjacent block", () => {
     const gameState = basicGameState({
       firstRoomItems: {
@@ -1608,7 +1649,7 @@ describe("dissapearing items", () => {
           position: { x: 0, y: 0, z: 0 },
           config: {
             style: "organic",
-            disappearing: "onStand",
+            disappearing: { on: "stand" },
           },
         },
         disappearingBlock1: {
@@ -1618,7 +1659,7 @@ describe("dissapearing items", () => {
           position: { x: 0, y: 1, z: 1 },
           config: {
             style: "organic",
-            disappearing: "onStand",
+            disappearing: { on: "stand" },
           },
         },
         disappearingBlock2: {
@@ -1626,7 +1667,7 @@ describe("dissapearing items", () => {
           position: { x: 0, y: 2, z: 0 },
           config: {
             style: "organic",
-            disappearing: "onStand",
+            disappearing: { on: "stand" },
           },
         },
         disappearingBlock3: {
@@ -1634,7 +1675,7 @@ describe("dissapearing items", () => {
           position: { x: 0, y: 3, z: 0 },
           config: {
             style: "organic",
-            disappearing: "onStand",
+            disappearing: { on: "stand" },
           },
         },
         pickup: {

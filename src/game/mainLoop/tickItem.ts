@@ -152,10 +152,13 @@ const tickItemStandingOn = <
   // handle standing on an item with dissppear='onStand' - eg, if got onto this item
   // by walking onto it from another item, there would have been no collision with it
   // to set the standing on property
+  const {
+    state: { disappearing: disappear },
+  } = standingOn;
+
   if (
-    standingOn.state.disappear === "onStand" ||
-    standingOn.state.disappear === "onTouch" ||
-    (isPlayableItem(item) && standingOn.state.disappear === "onTouchByPlayer")
+    disappear !== null &&
+    (disappear.byType === undefined || disappear.byType.includes(item.type))
   ) {
     makeItemFadeOut({
       touchedItem: standingOn,

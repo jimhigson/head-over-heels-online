@@ -19,7 +19,9 @@
     "path": "/items/block2",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "organic"
       },
       "position": {
@@ -53,7 +55,9 @@
     "path": "/items/block4",
     "value": {
       "config": {
-        "disappearing": "onStand",
+        "disappearing": {
+          "on": "stand"
+        },
         "style": "organic"
       },
       "position": {

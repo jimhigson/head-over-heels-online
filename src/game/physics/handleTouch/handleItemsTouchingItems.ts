@@ -67,7 +67,7 @@ export const handleItemsTouchingItems = <
     handleItemTouchingJoystick(e, handleItemsTouchingItems);
   }
 
-  if (e.touchedItem.state.disappear) {
+  if (e.touchedItem.state.disappearing) {
     handleItemTouchingDissapearing(e);
   }
   // is the thing that moved has disappearing (more unusual case but could be a powerup falling on player for example,
@@ -75,7 +75,7 @@ export const handleItemsTouchingItems = <
   // this could even mean that the 'wall' touches a firedDoughnut when the doughnut (which is dissapearing on touch)
   // hits the wall
   if (
-    e.movingItem.state.disappear &&
+    e.movingItem.state.disappearing &&
     // solid check: eg, firedDoughnuts don't disappear on touching the stopAutowalk in front of a door
     isSolid(e.touchedItem, e.movingItem)
   ) {

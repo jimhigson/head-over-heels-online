@@ -1,4 +1,3 @@
-import { isPlayableItem } from "../itemPredicates";
 import { movingItemIsPlayable, type ItemTouchEvent } from "./ItemTouchEvent";
 import { jumping } from "../mechanics/jumping";
 import { walking } from "../mechanics/walking";
@@ -15,6 +14,7 @@ export const handleItemTouchingDissapearing = <
   e: ItemTouchEvent<RoomId, RoomItemId>,
 ) => {
   if (
+    // TODO: this could probably be replaced with a more generic 'notByType' like 'byType'
     e.touchedItem.type === "firedDoughnut" &&
     (e.movingItem.type === "head" || e.movingItem.type === "firedDoughnut")
   ) {
@@ -23,11 +23,21 @@ export const handleItemTouchingDissapearing = <
     return;
   }
 
+  const {
+    touchedItem: {
+      state: { disappearing: disappear },
+    },
+  } = e;
+
   const shouldDisappear =
-    e.touchedItem.state.disappear === "onTouch" ||
-    (e.touchedItem.state.disappear === "onTouchByPlayer" &&
-      isPlayableItem(e.movingItem)) ||
-    (e.touchedItem.state.disappear === "onStand" && touchTriggersOnStand(e));
+    // needs to have disappearing behaviour:
+    disappear !== null &&
+    // needs to not care about the type, or be touched by the right type:
+    (disappear.byType === undefined ||
+      disappear.byType.includes(e.movingItem.type)) &&
+    // needs to be either touched, or onStand and stood on:
+    (disappear.on === "touch" ||
+      (disappear.on === "stand" && touchTriggersOnStand(e)));
 
   if (shouldDisappear) {
     if (touchTriggersOnStand(e) && movingItemIsPlayable(e)) {

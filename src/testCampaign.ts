@@ -302,7 +302,7 @@ const rooms = {
       },
       {
         type: "barrier",
-        config: { axis: "x", disappearing: "onTouch" },
+        config: { axis: "x", disappearing: { on: "touch" } },
         position: { x: 10, y: 6, z: 1 },
       },
       {
@@ -312,7 +312,7 @@ const rooms = {
       },
       {
         type: "barrier",
-        config: { axis: "x", disappearing: "onTouch" },
+        config: { axis: "x", disappearing: { on: "touch" } },
         position: { x: 10, y: 8, z: 1 },
       },
       // tests for lifts:
@@ -335,7 +335,7 @@ const rooms = {
       {
         type: "block",
         config: {
-          disappearing: "onStand",
+          disappearing: { on: "stand" },
           style: "organic",
         },
         position: { x: 0, y: 4, z: 0 },
@@ -512,27 +512,28 @@ const rooms = {
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: "onStand" },
+        config: { style: "organic", disappearing: { on: "stand" } },
+
         position: { x: 9, y: 0, z: 0 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: "onStand" },
+        config: { style: "organic", disappearing: { on: "stand" } },
         position: { x: 9, y: 0, z: 1 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: "onStand" },
+        config: { style: "organic", disappearing: { on: "stand" } },
         position: { x: 9, y: 0, z: 3 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: "onStand" },
+        config: { style: "organic", disappearing: { on: "stand" } },
         position: { x: 10, y: 0, z: 0 },
       },
       {
         type: "block",
-        config: { style: "organic", disappearing: "onStand" },
+        config: { style: "organic", disappearing: { on: "stand" } },
         position: { x: 11, y: 0, z: 0 },
       },
 
