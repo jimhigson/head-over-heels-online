@@ -1,6 +1,11 @@
 [
   {
     "op": "replace",
+    "path": "/items/floor@0,0,0/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
     "path": "/items/deadlyBlock@1,2,0/type",
     "value": "block"
   },
@@ -8,6 +13,27 @@
     "op": "replace",
     "path": "/items/deadlyBlock@1,2,0/config/style",
     "value": "organic"
+  },
+  {
+    "op": "add",
+    "path": "/items/floorR",
+    "value": {
+      "config": {
+        "floorType": "standable",
+        "scenery": "blacktooth",
+        "skipTowardsEdge": true,
+        "times": {
+          "x": 6,
+          "y": 6
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 6,
+        "z": 0
+      },
+      "type": "floor"
+    }
   },
   {
     "op": "add",

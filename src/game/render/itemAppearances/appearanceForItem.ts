@@ -8,7 +8,6 @@ import {
   itemStaticAppearance,
 } from "./ItemAppearance";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
-import { floorEdgeAppearance } from "./floorAppearance/floorEdgeAppearance";
 import {
   bookPaletteSwapFilter,
   mainPaletteSwapFilter,
@@ -26,7 +25,7 @@ import { charlesAppearance } from "./charlesAppearance";
 import { springAppearance } from "./springAppearance";
 import { sceneryPlayerAppearance } from "./sceneryPlayer";
 import { spikyBallAppearance } from "./spikyBallAppearance";
-import { wallAppearance } from "./wallAppearance";
+import { farWallAppearance } from "./wallAppearance";
 import { switchAppearance } from "./switchAppearance";
 import { blockAppearance } from "./blockAppearance";
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
@@ -49,8 +48,6 @@ const itemAppearancesMap: {
   doorLegs: doorLegsAppearance,
   monster: monsterAppearance,
   floatingText: floatingTextAppearance,
-
-  wall: wallAppearance,
 
   barrier: itemAppearanceRenderOnce(
     ({
@@ -267,7 +264,6 @@ const itemAppearancesMap: {
   ball: itemStaticAppearance("ball"),
 
   floor: floorAppearance,
-  floorEdge: floorEdgeAppearance,
 
   particle: itemAppearanceRenderOnce(
     ({
@@ -302,6 +298,8 @@ export const appearanceForItem = <T extends ItemInPlayType>(
     const { direction } = item.config;
     if (direction === "right" || direction === "towards") {
       return undefined;
+    } else {
+      return farWallAppearance as ItemAppearanceOutsideView<T>;
     }
   }
 

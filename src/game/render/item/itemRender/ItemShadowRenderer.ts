@@ -59,9 +59,8 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     // using alpha fitler (not .alpha) to set alpha here:
     // https://pixijs.download/dev/docs/filters.AlphaFilter.html
     this.#container.filters = halfOpacity;
-    //}
 
-    // null appearance means no shadow mask is needed
+    // 'no-mask' means will accept any shadows without masking them - like on floors
     if (appearance !== "no-mask") {
       this.#shadowMaskRenderer = new ItemAppearancePixiRenderer(
         renderContext,

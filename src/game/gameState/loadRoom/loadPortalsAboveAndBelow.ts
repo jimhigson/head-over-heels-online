@@ -3,25 +3,19 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { originXy, originXyz, addXyz } from "../../../utils/vectors/vectors";
+import { originXy, addXyz } from "../../../utils/vectors/vectors";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { floorBlockMinMax } from "../../render/renderExtent";
-import {
-  floorEdgeFixedZIndex,
-  floorItemFixedZIndex,
-  nonRenderingItemFixedZIndex,
-} from "../../render/sortZ/fixedZIndexes";
+import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
-export function* loadFloorAndCeiling<
+export function* loadPortalsAboveAndBelow<
   RoomId extends string,
   RoomItemId extends string,
 >(
   roomJson: RoomJson<RoomId, RoomItemId>,
 ): Generator<
   | ItemInPlay<"floor", RoomId, RoomItemId>
-  | ItemInPlay<"floorEdge", RoomId, RoomItemId>
   | ItemInPlay<"portal", RoomId, RoomItemId>
 > {
   const roomHeightBlocks = roomJson.size.z ?? defaultRoomHeightBlocks;
@@ -31,62 +25,9 @@ export function* loadFloorAndCeiling<
     z: 1,
   });
 
-  const { blockXMax, blockXMin, blockYMax, blockYMin } =
-    floorBlockMinMax(roomJson);
-
-  /** room footprint made a bit bigger for the area under doors: */
-  const roomExtendedFootprintAabb = blockXyzToFineXyz({
-    x: blockXMax - blockXMin,
-    y: blockYMax - blockYMin,
-    z: 1,
-  });
-
   const floorPosition = blockXyzToFineXyz({ ...originXy, z: -1 });
 
-  const roomExtendedPosition = blockXyzToFineXyz({
-    x: blockXMin,
-    y: blockYMin,
-    z: -1,
-  });
-
-  yield {
-    id: "floorEdge" as RoomItemId,
-    ...defaultItemProperties,
-    type: "floorEdge",
-    state: {
-      ...defaultBaseState<RoomItemId>(),
-      // unlike the actual floor, the edge is not set down to have some depth:
-      position: { ...roomExtendedPosition, z: 0 },
-    },
-    // zero-volume:
-    aabb: originXyz,
-    config: {},
-    // this is always rendered in front of everything
-    fixedZIndex: floorEdgeFixedZIndex,
-  };
-
-  if (roomJson.floor === "none" && roomJson.roomBelow !== undefined) {
-    // yield a floor purely for the rendering ("no" floor still renders an edge)
-    yield {
-      ...defaultItemProperties,
-      ...{
-        type: "floor",
-        id: "floor" as RoomItemId,
-        config: {
-          type: "none",
-        },
-
-        aabb: roomNaturalFootprintAabb,
-        // no shadows on a none floor:
-        shadowMask: undefined,
-        state: {
-          ...defaultBaseState(),
-          position: roomExtendedPosition,
-        },
-        renders: true,
-        fixedZIndex: floorItemFixedZIndex,
-      },
-    } satisfies ItemInPlay<"floor", RoomId, RoomItemId>;
+  if (roomJson.roomBelow !== undefined) {
     // yield a portal for going to the room below:
     yield {
       ...defaultItemProperties,
@@ -116,25 +57,7 @@ export function* loadFloorAndCeiling<
         renders: false,
       },
     } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
-  } else
-    yield {
-      ...defaultItemProperties,
-      ...{
-        type: "floor",
-        id: "floor" as RoomItemId,
-        config: {
-          type: roomJson.floor === "deadly" ? "deadly" : "standable",
-        },
-
-        aabb: roomExtendedFootprintAabb,
-        shadowMask: { relativeTo: "origin" },
-        state: {
-          ...defaultBaseState(),
-          position: roomExtendedPosition,
-        },
-        fixedZIndex: floorItemFixedZIndex,
-      },
-    } satisfies ItemInPlay<"floor", RoomId, RoomItemId>;
+  }
 
   if (roomJson.roomAbove !== undefined) {
     const ceilingPosition = addXyz(floorPosition, {

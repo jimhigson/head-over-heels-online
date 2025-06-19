@@ -575,6 +575,20 @@ export const LevelEditorToolbar = () => {
             className={`sprite texture-blacktooth.wall.plain.away ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "floor",
+            config: {
+              floorType: "standable",
+              scenery: "blacktooth",
+              times: { x: 1, y: 1 },
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-blacktooth.floor ${buttonSpriteRevertColourClasses}`}
+          />
+        </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Player</BitmapText>

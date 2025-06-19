@@ -7,45 +7,45 @@ import { projectWorldXyzToScreenXy } from "../../projections";
 import type { ItemRenderContext } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
-const cuboidBB = (aabb: Aabb, graphics: Graphics) => {
+const addCuboidPaths = (cuboid: Aabb, graphics: Graphics) => {
   graphics
     // bottom:
     .poly([
       projectWorldXyzToScreenXy({}),
-      projectWorldXyzToScreenXy({ x: aabb.x }),
-      projectWorldXyzToScreenXy({ x: aabb.x, y: aabb.y }),
-      projectWorldXyzToScreenXy({ y: aabb.y }),
+      projectWorldXyzToScreenXy({ x: cuboid.x }),
+      projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }),
+      projectWorldXyzToScreenXy({ y: cuboid.y }),
     ])
     // right:
     .poly([
       projectWorldXyzToScreenXy({}),
-      projectWorldXyzToScreenXy({ z: aabb.z }),
-      projectWorldXyzToScreenXy({ y: aabb.y, z: aabb.z }),
-      projectWorldXyzToScreenXy({ y: aabb.y }),
+      projectWorldXyzToScreenXy({ z: cuboid.z }),
+      projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }),
+      projectWorldXyzToScreenXy({ y: cuboid.y }),
     ])
     // left:
     .poly([
-      projectWorldXyzToScreenXy({ x: aabb.x }),
-      projectWorldXyzToScreenXy({ x: aabb.x, z: aabb.z }),
-      projectWorldXyzToScreenXy(aabb),
-      projectWorldXyzToScreenXy({ x: aabb.x, y: aabb.y }),
+      projectWorldXyzToScreenXy({ x: cuboid.x }),
+      projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }),
+      projectWorldXyzToScreenXy(cuboid),
+      projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }),
     ])
     // top:
     .poly([
-      projectWorldXyzToScreenXy({ z: aabb.z }),
-      projectWorldXyzToScreenXy({ x: aabb.x, z: aabb.z }),
+      projectWorldXyzToScreenXy({ z: cuboid.z }),
+      projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }),
       projectWorldXyzToScreenXy({
-        x: aabb.x,
-        y: aabb.y,
-        z: aabb.z,
+        x: cuboid.x,
+        y: cuboid.y,
+        z: cuboid.z,
       }),
-      projectWorldXyzToScreenXy({ y: aabb.y, z: aabb.z }),
+      projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }),
     ]);
 };
 
 const renderBB = (aabb: Aabb, color: ColorSource) => {
   const graphics = new Graphics();
-  cuboidBB(aabb, graphics);
+  addCuboidPaths(aabb, graphics);
 
   graphics.stroke({
     width: 0.5,
@@ -59,7 +59,7 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
   });
   graphics.on("pointerleave", () => {
     graphics.clear();
-    cuboidBB(aabb, graphics);
+    addCuboidPaths(aabb, graphics);
 
     graphics.stroke({
       width: 0.5,
@@ -116,9 +116,14 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     );
     this.#container.addChild(renderBB(item.aabb, color));
     if (item.renderAabb) {
-      this.#container.addChild(
-        renderBB(item.renderAabb, "rgba(184, 184, 255)"),
-      );
+      const renderAabbColour = "rgba(184, 184, 255)";
+      const renderAabbGraphics = renderBB(item.renderAabb, renderAabbColour);
+      if (item.renderAabbOffset) {
+        const offset = projectWorldXyzToScreenXy(item.renderAabbOffset);
+        renderAabbGraphics.position.set(offset.x, offset.y);
+        renderAabbGraphics.circle(0, 0, 2).fill(renderAabbColour);
+      }
+      this.#container.addChild(renderAabbGraphics);
     }
 
     this.#container.eventMode = "static";
@@ -161,7 +166,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     });*/
   }
   tick() {
-    // never updates the rendering!
+    // never update the rendering
   }
   destroy(): void {
     this.#container.destroy({ children: true });

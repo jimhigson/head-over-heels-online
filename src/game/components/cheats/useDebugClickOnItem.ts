@@ -22,10 +22,6 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
           const toRoom = gameApi.currentRoom?.roomAbove;
           if (toRoom) gameApi.changeRoom(toRoom);
         }
-        if (item.type === "floorEdge") {
-          const toRoom = gameApi.currentRoom?.roomBelow;
-          if (toRoom) gameApi.changeRoom(toRoom);
-        }
         console.log(
           item.id,
           "item (live):",

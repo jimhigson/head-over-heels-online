@@ -5,6 +5,11 @@
     "value": 11
   },
   {
+    "op": "replace",
+    "path": "/items/floor@0,0,0/config/scenery",
+    "value": "market"
+  },
+  {
     "op": "add",
     "path": "/items/scroll",
     "value": {
@@ -19,10 +24,5 @@
       },
       "type": "pickup"
     }
-  },
-  {
-    "op": "replace",
-    "path": "/floor",
-    "value": "market"
   }
 ]

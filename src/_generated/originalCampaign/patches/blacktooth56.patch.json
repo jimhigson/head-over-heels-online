@@ -1,7 +1,7 @@
 [
   {
     "op": "replace",
-    "path": "/floor",
+    "path": "/items/floor@0,0,0/config/scenery",
     "value": "market"
   }
 ]

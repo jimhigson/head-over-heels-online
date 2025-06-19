@@ -11,7 +11,7 @@ import { blockSizePx, blockSizeXyzPx } from "../../sprites/spritePivots";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 export const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
-export const largeItemAabb: Aabb = { x: 16, y: 16, z: blockSizePx.h };
+export const fullBlockAabb: Aabb = { x: 16, y: 16, z: blockSizePx.h };
 export const doubleHeightCharacter: Aabb = {
   ...smallItemAabb,
   z: blockSizePx.h * 2,
@@ -29,7 +29,7 @@ export const boundingBoxForItem = (
       return { aabb: smallItemAabb };
     case "slidingBlock":
       return item.config.style === "book" ?
-          { aabb: largeItemAabb }
+          { aabb: fullBlockAabb }
         : { aabb: smallItemAabb };
     case "lift":
       return {
@@ -54,14 +54,14 @@ export const boundingBoxForItem = (
       return { aabb: { x: 12, y: 12, z: 12 } };
     case "pushableBlock":
     case "movingPlatform":
-      return { aabb: largeItemAabb };
+      return { aabb: fullBlockAabb };
 
     case "block": {
       switch (item.config.style) {
         case "artificial":
         case "organic":
         case "book":
-          return { aabb: largeItemAabb };
+          return { aabb: fullBlockAabb };
         case "tower":
           return { aabb: { x: 11, y: 11, z: blockSizePx.h } };
         default:
@@ -96,7 +96,7 @@ export const boundingBoxForItem = (
 
     case "deadlyBlock":
     case "spikes":
-      return { aabb: largeItemAabb };
+      return { aabb: fullBlockAabb };
 
     case "bubbles":
       return { aabb: smallItemAabb };
@@ -104,7 +104,7 @@ export const boundingBoxForItem = (
     case "conveyor":
     case "hushPuppy":
     case "teleporter": {
-      return { aabb: largeItemAabb };
+      return { aabb: fullBlockAabb };
     }
     case "barrier": {
       return {

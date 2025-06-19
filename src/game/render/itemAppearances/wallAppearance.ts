@@ -12,7 +12,7 @@ import { itemAppearanceRenderOnce } from "./ItemAppearance";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { mainPaletteSwapFilter } from "../filters/standardFilters";
 
-export const wallAppearance = itemAppearanceRenderOnce<"wall">(
+export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
       item: { id, config },
@@ -20,7 +20,7 @@ export const wallAppearance = itemAppearanceRenderOnce<"wall">(
     },
   }) => {
     if (config.direction === "right" || config.direction === "towards") {
-      throw new Error(`this wall should be non-rendering ${id}`);
+      throw new Error(`wall is near: ${id}`);
     }
 
     const { direction, tiles } = config;
@@ -29,6 +29,7 @@ export const wallAppearance = itemAppearanceRenderOnce<"wall">(
 
     const container = new Container({ label: "wallTiles" });
     for (let i = 0; i < config.tiles.length; i++) {
+      // TODO: use callback version of createSprite to create the wall with different textures
       let tileSprite: Container = createSprite({
         textureId: wallTextureId(
           room.planet,

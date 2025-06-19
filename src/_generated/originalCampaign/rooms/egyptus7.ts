@@ -4,31 +4,30 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
-  floor: "deadly",
   id: "egyptus7",
   items: {
     barrierForAnalogue: {
       config: { axis: "x", times: { x: 2, z: 3 } },
       isExtra: true,
-      position: { x: 3, y: 0.6, z: 4 },
+      position: { x: 3, y: 0.5, z: 4 },
       type: "barrier",
     },
     barrierForAnalogue2: {
       config: { axis: "y", times: { z: 3 } },
       isExtra: true,
-      position: { x: 4.6, y: 0, z: 4 },
+      position: { x: 4.5, y: 0, z: 4 },
       type: "barrier",
     },
     barrierForAnalogue3: {
       config: { axis: "y", times: { y: 2, z: 3 } },
       isExtra: true,
-      position: { x: 6.4, y: 3, z: 4 },
+      position: { x: 6.5, y: 3, z: 4 },
       type: "barrier",
     },
     barrierForAnalogue4: {
       config: { axis: "x", times: { z: 3 } },
       isExtra: true,
-      position: { x: 7, y: 2.4, z: 4 },
+      position: { x: 7, y: 2.5, z: 4 },
       type: "barrier",
     },
     "block@0,0,3": {
@@ -129,6 +128,11 @@ export const room = inferRoomJson({
       isExtra: true,
       position: { x: 7, y: 7, z: 0 },
       type: "block",
+    },
+    "floor@0,0,0": {
+      config: { floorType: "deadly", times: { x: 8, y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
     },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 8 } },

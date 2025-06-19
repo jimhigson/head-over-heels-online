@@ -3,7 +3,6 @@ import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
 import type { Xy, Xyz } from "../utils/vectors/vectors";
 import type { JsonItemUnion } from "./json/JsonItem";
-import type { Floor } from "./modelTypes";
 import { iterate } from "../utils/iterate";
 
 export type SubRooms = Record<
@@ -50,7 +49,6 @@ export type RoomJson<
   };
   /** TODO: rename to scenery */
   planet: ScN;
-  floor: Floor;
   roomAbove?: RoomId;
   subRoomAbove?: string;
   /**

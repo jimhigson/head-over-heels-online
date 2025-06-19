@@ -1,6 +1,11 @@
 [
   {
     "op": "replace",
+    "path": "/items/floor@0,0,0/config/scenery",
+    "value": "bookworld"
+  },
+  {
+    "op": "replace",
     "path": "/items/barrier@3,4,0/position/x",
     "value": 2.6
   },
@@ -8,11 +13,6 @@
     "op": "replace",
     "path": "/items/barrier@0,3,0/position/y",
     "value": 3.4
-  },
-  {
-    "op": "replace",
-    "path": "/floor",
-    "value": "bookworld"
   },
   {
     "op": "add",

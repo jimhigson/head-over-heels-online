@@ -1,5 +1,10 @@
 [
   {
+    "op": "replace",
+    "path": "/items/floor@0,0,0/config/scenery",
+    "value": "bookworld"
+  },
+  {
     "op": "add",
     "path": "/items/door@8,0,5/config/meta",
     "value": {
@@ -20,10 +25,5 @@
     "op": "replace",
     "path": "/items/block@6,0,3/position/x",
     "value": 7
-  },
-  {
-    "op": "replace",
-    "path": "/floor",
-    "value": "bookworld"
   }
 ]

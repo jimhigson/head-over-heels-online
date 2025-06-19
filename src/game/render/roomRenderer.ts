@@ -1,4 +1,5 @@
-import { Container } from "pixi.js";
+import type { IRenderLayer } from "pixi.js";
+import { Container, RenderLayer } from "pixi.js";
 import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
 import { createItemRenderer } from "./item/itemRender/createItemRenderer";
 import type { GraphEdges } from "./sortZ/toposort/toposort";
@@ -16,6 +17,8 @@ import { audioCtx } from "../../sound/audioCtx";
 import { dimLut, noFilters } from "./filters/standardFilters";
 import type { SetRequired } from "type-fest";
 import type { RoomRendererType } from "./RoomRendererType";
+import { iterateToContainer } from "../iterateToContainer";
+import { roomRendererOcclusions } from "./roomRendererOcclusions";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>
@@ -23,11 +26,21 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #destroyed = false;
 
   /**
-   * renders all items *except* the floor edge, since the floor edge is the only
+   * renders all items *except* the room edge, since the floor edge is the only
    * item that is colourised differently when colourisation is turned off
    */
   #itemsContainer: Container = new Container({ label: "items" });
-  #floorEdgeContainer: Container = new Container({ label: "floorEdge" });
+  #uncolourisedLayer: IRenderLayer = new RenderLayer({
+    sortableChildren: false,
+  });
+
+  /**
+   * container for the cutoff-off for the left and right edge, to prevent
+   * rendering inaccessible corners or rooms
+   */
+  #occlusionContainer: Container = new Container({
+    label: "occlusion",
+  });
 
   public readonly output: SetRequired<SoundAndGraphicsOutput, "graphics">;
   /**
@@ -49,6 +62,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       general: { colourised, soundSettings },
+      room,
     } = renderContext;
 
     this.initFilters(colourised, renderContext.room.color);
@@ -58,13 +72,18 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     const soundOutput: AudioNode | undefined =
       mute ? undefined : audioCtx.createGain();
 
+    iterateToContainer(roomRendererOcclusions(room), this.#occlusionContainer);
+
     this.output = {
       sound: soundOutput,
       graphics: new Container({
-        children: [this.#itemsContainer, this.#floorEdgeContainer],
         label: `RoomRenderer(${renderContext.room.id})`,
       }),
     };
+
+    this.output.graphics.addChild(this.#itemsContainer);
+    this.output.graphics.addChild(this.#uncolourisedLayer);
+    this.output.graphics.addChild(this.#occlusionContainer);
   }
 
   /**
@@ -88,10 +107,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       lastRenderRoomTime: this.#lastRenderRoomTime,
     };
 
-    //console.log("ticking items", Object.keys(room.items));
-
     for (const item of iterateRoomItems(room.items)) {
-      //console.log("ticking item ", item.id);
       let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
 
       if (
@@ -102,21 +118,17 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         // room since the last tick
         itemRenderer = createItemRenderer({
           ...this.renderContext,
+          uncolourisedLayer: this.#uncolourisedLayer,
           item,
         });
 
         this.#itemRenderers.set(item.id as RoomItemId, itemRenderer);
 
-        const addToContainer =
-          item.type === "floorEdge" ?
-            this.#floorEdgeContainer
-          : this.#itemsContainer;
-
         const { graphics, sound } = itemRenderer.output;
 
         if (graphics) {
           // item has a visual presence:
-          addToContainer.addChild(graphics);
+          this.#itemsContainer.addChild(graphics);
           if (item.fixedZIndex) {
             graphics.zIndex = item.fixedZIndex;
           }
@@ -144,23 +156,36 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
 
     // remove any renderers for items that no longer exist in the room:
+    let destroyedItemRenderers = false;
     for (const [itemId, itemRenderer] of this.#itemRenderers.entries()) {
       if (room.items[itemId] === undefined) {
         itemRenderer.destroy();
         this.#itemRenderers.delete(itemId as RoomItemId);
+        destroyedItemRenderers = true;
+      }
+    }
+    if (destroyedItemRenderers) {
+      // removing an item renderer could have removed from the scene graph something that is
+      // in a render layer
+      for (const c of this.#uncolourisedLayer.renderLayerChildren) {
+        if (c.parent === null) {
+          // c is not in the scene graph, remove from render layer too:
+          this.#uncolourisedLayer.detach(c);
+        }
       }
     }
   }
 
   #tickItemsZIndex(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
-    const { order } = sortByZPairs(
-      zEdges(
-        this.renderContext.room.items,
-        roomTickContext.movedItems,
-        this.#incrementalZEdges,
-      ),
+    const ze = zEdges(
       this.renderContext.room.items,
+      roomTickContext.movedItems,
+      // this.#incrementalZEdges will be updated in-place by the zEdges function to match
+      // the current ordering state of the room, starting from the previous ordering state
+      this.#incrementalZEdges,
     );
+
+    const { order } = sortByZPairs(ze, this.renderContext.room.items);
 
     for (let i = 0; i < order.length; i++) {
       const itemRenderer = this.#itemRenderers.get(order[i] as RoomItemId);

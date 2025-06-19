@@ -70,6 +70,8 @@ Quite a lot of rooms have been changed while keeping the original gameplay intac
 
 ![screenshot](before) ![screenshot](after)
 
+#egyptus10 - as an example
+
 Switches
 --------
 

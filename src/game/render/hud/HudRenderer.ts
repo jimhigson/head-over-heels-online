@@ -81,7 +81,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       Container
     >
 {
-  #container = new Container({ label: "HudRenderer" });
+  #container = new Container({ label: "HudRenderer", isRenderGroup: true });
 
   #onScreenControls: OnScreenControls<RoomId, RoomItemId> | undefined =
     undefined;

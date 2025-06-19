@@ -23,7 +23,6 @@ export const isItemType =
 const isNeverSolidItemType = isItemType(
   "bubbles",
   "stopAutowalk",
-  "floorEdge", // not even really a thing in the room
   "firedDoughnut",
   "floatingText",
   "emitter",
@@ -48,7 +47,7 @@ const isUnsolid = (
         // ceiling portals need to be non-solid to let lifts through
         item.config.direction.z !== 0)) ||
     // 'none' floors are not solid - items can fall out of the world this way!
-    (isFloor(item) && item.config.type === "none")
+    (isFloor(item) && item.config.floorType === "none")
   );
 };
 
@@ -216,7 +215,7 @@ export const isDeadly = <RoomId extends string, RoomItemId extends string>(
 
   return (
     isDeadlyType(item) ||
-    (item.type === "floor" && item.config.type === "deadly")
+    (item.type === "floor" && item.config.floorType === "deadly")
   );
 };
 

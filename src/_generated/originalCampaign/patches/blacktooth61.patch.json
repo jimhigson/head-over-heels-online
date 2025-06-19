@@ -1,14 +1,14 @@
 [
   {
+    "op": "replace",
+    "path": "/items/floor@0,0,0/config/scenery",
+    "value": "bookworld"
+  },
+  {
     "op": "add",
     "path": "/items/door@1,8,5/config/meta",
     "value": {
       "toSubRoom": "left"
     }
-  },
-  {
-    "op": "replace",
-    "path": "/floor",
-    "value": "bookworld"
   }
 ]

@@ -6,7 +6,6 @@ import type { GameMenusSlicePersisted, RootState } from "./store";
 import { iterateRoomItems, type RoomState } from "../model/RoomState";
 import {
   floatingTextFixedZIndex,
-  floorEdgeFixedZIndex,
   nonRenderingItemFixedZIndex,
 } from "../game/render/sortZ/fixedZIndexes";
 import type { CharacterRooms } from "../game/gameState/GameState";
@@ -98,13 +97,13 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
           if ((item as OldItem).renders === false) {
             console.log(item.id, "is a non-rendering item, giving fixedZIndex");
             item.fixedZIndex = nonRenderingItemFixedZIndex;
-          } else if (item.type === "floorEdge") {
+          } /*else if (item.type === "floorEdge") {
             console.log(
               item.id,
               "is getting .fixedZIndex = floorEdgeFixedZIndex",
             );
             item.fixedZIndex = floorEdgeFixedZIndex;
-          } else if (item.type === "floatingText") {
+          }*/ else if (item.type === "floatingText") {
             console.log(
               item.id,
               "is getting .fixedZIndex = floatingTextFixedZIndex",
@@ -170,6 +169,7 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
 
       return v14State;
     },
+    15: revertToInitialStateMigration,
   },
   { debug: true },
 );

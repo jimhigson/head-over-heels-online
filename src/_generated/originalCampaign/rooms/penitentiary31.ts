@@ -4,13 +4,17 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
-  floor: "none",
   id: "penitentiary31",
   items: {
     "block@0,0,0": {
       config: { style: "organic", times: { x: 6, y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
+    },
+    "floor@0,0,0": {
+      config: { floorType: "none", times: { x: 8, y: 2 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
     },
     "portableBlock@1,1,1": {
       config: { style: "sticks" },
@@ -72,7 +76,7 @@ export const room = inferRoomJson({
     },
   },
   planet: "penitentiary",
-  roomAbove: "penitentiary29",
+  roomAbove: "penitentiary30",
   roomBelow: "penitentiary32",
   size: { x: 8, y: 2 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "penitentiary">;

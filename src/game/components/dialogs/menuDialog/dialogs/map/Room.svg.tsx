@@ -154,7 +154,7 @@ export const RoomSvg = <RoomId extends string>({
   currentCharacterName,
   onPlayableClick,
 }: RoomSvgProps<RoomId>) => {
-  const { id, roomAbove, floor, color } = roomJson;
+  const { id, roomAbove, color, items } = roomJson;
   const label = roomJson.meta?.label;
 
   // find some notable items:
@@ -164,13 +164,19 @@ export const RoomSvg = <RoomId extends string>({
     subRoomId,
   );
 
+  const floors = Object.values(items).filter((item) => item.type === "floor");
+  const noFloor = floors.length === 0;
+  const deadlyFloor = floors.some(
+    (floor) => floor.config.floorType === "deadly",
+  );
+
   return (
     <g
       data-room-id={id}
       strokeWidth={strokeWidth}
       className={roomAccentColourClass(color)}
     >
-      {floor === "none" ?
+      {noFloor ?
         <>
           //show a floor outlining the room with a hole:
           <path
@@ -190,7 +196,7 @@ export const RoomSvg = <RoomId extends string>({
           // whole floor in colour
           <path className="fill-[var(--roomHintColor)]" d={floorFillPathD} />
           <path className="fill-white" d={floorPathFillPathD(boundaries)} />
-          {floor === "deadly" && (
+          {deadlyFloor && (
             <path
               className="stroke-[var(--roomHintColor)]"
               strokeDasharray="1, 12.4"
