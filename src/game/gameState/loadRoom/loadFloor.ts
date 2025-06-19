@@ -24,6 +24,17 @@ export const floorThicknessBlocks = 3;
  */
 export const floorEdgeRenderThicknessPx = 10;
 
+/**
+ * how much (in blocks) to extend the floor for doors?
+ * this value (for far) happens to give the right amount of floor drawn visible 'through'
+ * the door to match the original game.
+ *
+ * I could extend the rendering, but with floors as first-class items, this impacts
+ * non-extended floors too, and makes them draw too much
+ */
+const extraFloorAmountForDoorsFar = 0.52;
+const extraFloorAmountForDoorsNear = 0.5;
+
 export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   itemId: RoomItemId,
   floorJson: JsonItem<"floor", RoomId, RoomItemId>,
@@ -47,42 +58,58 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   const doorsIter = iterate(objectValues<JsonItemUnion>(roomJson.items)).filter(
     (jsonItem) => jsonItem.type === "door",
   );
-  // find any doors that sit on the edge of this floor, and expand as necessary
-  for (const doorJson of doorsIter) {
-    const {
-      position: doorPosition,
-      config: { direction },
-    } = doorJson;
 
-    switch (direction) {
-      case "towards":
-        if (doorPosition.y === naturalPositionBlocks.y) {
-          adjustedSizeBlocks = addXyz(adjustedSizeBlocks, { y: 0.5 });
-          adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
-            y: -0.5,
-          });
-        }
-        break;
-      case "away":
-        if (doorPosition.y === naturalPositionBlocks.y + times.y) {
-          adjustedSizeBlocks = addXyz(adjustedSizeBlocks, { y: 0.5 });
-        }
-        break;
-      case "right":
-        if (doorPosition.x === naturalPositionBlocks.x) {
-          adjustedSizeBlocks = addXyz(adjustedSizeBlocks, { x: 0.5 });
-          adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
-            x: -0.5,
-          });
-        }
-        break;
-      case "left":
-        if (doorPosition.x === naturalPositionBlocks.x + times.x) {
-          adjustedSizeBlocks = addXyz(adjustedSizeBlocks, { x: 0.5 });
-        }
-        break;
-      default:
-        direction satisfies never;
+  // not possible in the original game where floors are always at height 0,
+  // but in the remake, don't extend floors that are not at ground level
+  // - this could maybe be improved by only loading a door's legs as far
+  // down as the closest floor below it, and then extending all floors
+  // that legs would reach down to
+  if (floorBlockPosition.z === 0) {
+    // find any doors that sit on the edge of this floor, and expand as necessary
+    for (const doorJson of doorsIter) {
+      const {
+        position: doorJsonPosition,
+        config: { direction },
+      } = doorJson;
+
+      switch (direction) {
+        case "towards":
+          if (doorJsonPosition.y === naturalPositionBlocks.y) {
+            adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
+              y: extraFloorAmountForDoorsNear,
+            });
+            adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
+              y: -extraFloorAmountForDoorsNear,
+            });
+          }
+          break;
+        case "away":
+          if (doorJsonPosition.y === naturalPositionBlocks.y + times.y) {
+            adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
+              y: extraFloorAmountForDoorsFar,
+            });
+          }
+          break;
+        case "right":
+          if (doorJsonPosition.x === naturalPositionBlocks.x) {
+            adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
+              x: extraFloorAmountForDoorsNear,
+            });
+            adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
+              x: -extraFloorAmountForDoorsNear,
+            });
+          }
+          break;
+        case "left":
+          if (doorJsonPosition.x === naturalPositionBlocks.x + times.x) {
+            adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
+              x: extraFloorAmountForDoorsFar,
+            });
+          }
+          break;
+        default:
+          direction satisfies never;
+      }
     }
   }
 
@@ -110,6 +137,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
       ...originXyz,
       z: floorAabb.z - floorEdgeRenderThicknessPx,
     },
+
+    // unusual for a floor to cast a shadow, but could be raised somehow in the remake engine
+    shadowCastTexture: "shadow.fullBlock",
 
     // floors don't get a fixedZIndes - if there is only one
     // of them. Otherwise, they can be in front/behind each other, and need

@@ -231,7 +231,7 @@ const addFilterToContainer = (container: Container, newFilter: Filter) => {
     container.filters = [...container.filters, newFilter];
   } else {
     // If a single filter exists, convert to an array and append
-    container.filters = [container.filters, newFilter];
+    container.filters = [container.filters, newFilter].flat();
   }
 };
 
@@ -244,7 +244,7 @@ const removeFilterFromContainer = (
     Array.isArray(container.filters) ?
       container.filters.filter((f): f is Filter => !(f instanceof filterClass))
     : container.filters instanceof filterClass ? noFilters
-    : container.filters;
+    : [...container.filters];
 };
 
 const applyFilters = (

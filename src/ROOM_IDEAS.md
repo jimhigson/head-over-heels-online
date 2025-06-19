@@ -67,3 +67,5 @@ heels (more co-operation)
 * have to move a portable block around, and push a ball into it so it stops in the right place, then move the block and push it again
 
 * race against time to jump along some dissapearing barriers before mojos crash into them and make them vanish
+
+* lots of homing bots, and blocks to block them - have to be careful where stand and move strategically 

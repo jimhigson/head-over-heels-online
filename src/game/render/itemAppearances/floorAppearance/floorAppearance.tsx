@@ -25,6 +25,9 @@ import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
 import type { Subset } from "../../../../utils/subset";
 import type { RoomState } from "../../../../model/RoomState";
 import { createSprite } from "../../createSprite";
+import { OutlineFilter } from "../../filters/outlineFilter";
+import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
+import { NullFilter } from "../../filters/NullFilter";
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
@@ -149,29 +152,70 @@ export const floorAppearance: ItemAppearance<"floor"> =
         tilesContainer.addChild(renderFloorOverdraws(floorItem, room));
 
         const tilesMask = new Graphics()
-          .moveTo(tilesTop.x - 1, tilesTop.y)
-          .lineTo(tilesTop.x, tilesTop.y)
-          .lineTo(tilesTop.x + 1, tilesTop.y)
+          // top
+          .moveTo(tilesTop.x, tilesTop.y)
           // right
-          .lineTo(tilesRight.x + 1, tilesRight.y)
-          .lineTo(tilesRight.x + 1, tilesRight.y + 2)
+          .lineTo(tilesRight.x, tilesRight.y)
+          .lineTo(tilesRight.x, tilesRight.y + 3) // adding takes tiles closer to the floor edge, to match original game
           // bottom
-          .lineTo(tilesBottom.x + 1, tilesBottom.y + 2)
-          .lineTo(tilesBottom.x - 1, tilesBottom.y + 2)
-          .lineTo(tilesLeft.x - 1, tilesLeft.y + 2)
+          .lineTo(tilesBottom.x, tilesBottom.y + 3)
           // left
-          .lineTo(tilesLeft.x - 1, tilesLeft.y)
-          .lineTo(tilesLeft.x - 1, tilesLeft.y)
+          .lineTo(tilesLeft.x, tilesLeft.y + 3)
+          .lineTo(tilesLeft.x, tilesLeft.y)
           .fill({ color: 0xff0000, alpha: 0.5 });
 
         tilesContainer.addChild(tilesMask);
         tilesContainer.mask = tilesMask;
 
-        tilesContainer.filters = floorPaletteSwapFilter(room);
+        tilesContainer.filters = [floorPaletteSwapFilter(room)];
 
-        tilesContainer.cacheAsTexture(true);
+        // outline the tiles. This helps where floors are floating in the room (in remake only) - otherwise they are
+        // the only item without a black outline. Also fills the gap between the tiles and the floor edge in with some
+        // extra black pixels
+        // the output from a mask doesn't get the filter applied, so to put an outline around the floor tiles, wrap them in an
+        // extra container.
+        const tilesOutline = new Container({ children: [tilesContainer] });
+        tilesOutline.filters = new OutlineFilter({
+          outlineColor: spritesheetPalette.pureBlack,
+          upscale: 1,
+          // it is ok to snap to pixel grid
+          lowRes: false,
+        });
 
-        container.addChild(tilesContainer);
+        // for some reason, pixi struggles if we do an outline filter and cache to texture on the same container,
+        // especially if showing the outline or colour for hover/selected in the editor. A separate container for the
+        // caching fixes this.
+        //
+        // pixi docs say this:
+        // > Filters may not behave as expected with cacheAsTexture. To cache the filter effect, wrap the item in a
+        // > parent container and apply cacheAsTexture to the parent.
+        //    [https://pixijs.com/8.x/guides/components/scene-objects/container/cache-as-texture]
+        //
+        // would it be easier to just not cache to bitmap? Maybe, but we would lose the 'free' pixelisation
+        // of the diagonal-line drawn mask above, AND masks are slow
+        const tilesCacher = new Container({ children: [tilesOutline] });
+        // const g = new Graphics();
+        // g.rect(-400, -400, 800, 800).fill(0xffffff);
+        // tilesCacher.addChild(g);
+        // tilesCacher.mask = g;
+        const f = new NullFilter();
+        f.enabled = false;
+        tilesCacher.filters = f;
+        tilesCacher.cacheAsTexture(true);
+
+        container.addChild(tilesCacher);
+
+        // even with the null filter on the tilesCacher - it miss-renders #egyptus1
+        // if the main floor container is not the full size of the floor. Add a blank sprite to pin it to
+        // never shrink. For some reason, the floor tiles aren't enough to do this if they're cached to a
+        // bitmap
+        container.addChild(
+          createSprite({
+            textureId: "blank",
+            x: tilesRight.x,
+            y: tilesBottom.y + 8,
+          }),
+        );
       }
 
       {
