@@ -15,10 +15,7 @@ export function* roomRendererOcclusions<
   const { left, right } = iterateRoomItems(room.items)
     .filter(itemIsWallOrDoorFrame)
     .reduce(
-      (
-        acc,
-        { id, aabb, renderAabb, renderAabbOffset, state: { position } },
-      ) => {
+      (acc, { aabb, renderAabb, renderAabbOffset, state: { position } }) => {
         const useAabb = renderAabb ?? aabb;
         const usePosition = addXyz(position, renderAabbOffset ?? originXyz);
 

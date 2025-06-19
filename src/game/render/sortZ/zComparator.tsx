@@ -1,18 +1,40 @@
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
+import { veryClose } from "../../../utils/veryClose";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { projectAabbToHexagonCorners } from "./projectAabbToHexagonCorners";
+
+/** to compensate for floating point error, ranges have to be overlapping by this much to consider them to be visually overlapping */
+const visuallyOverlapsMinimumOverlap = 0.000_01;
+/** negative overlap means a small gap is allowed to be considered visually adjacent */
+const visuallyAdjacentMinimumOverlap = -1;
 
 const rangeOverlap = (
   aMin: number,
   aMax: number,
   bMin: number,
   bMax: number,
-  /** to compensate for floating point error, ranges have to be overlapping by this much to consider them to be overlapping */
-  tolerance: number = 0.000_01,
+
+  tolerance: number,
 ) => {
   return bMax - tolerance > aMin && bMin < aMax - tolerance;
 };
+
+const NO_OVERLAP = 0;
+const OVERLAP = 1;
+const ADJACENT_X = 2;
+const ADJACENT_Y = 3;
+//const ADJACENT_Z = 4;
+
+type NO_OVERLAP = typeof NO_OVERLAP;
+type OVERLAP = typeof OVERLAP;
+type ADJACENT_X = typeof ADJACENT_X;
+type ADJACENT_Y = typeof ADJACENT_Y;
+// ACTUALLY, we don't care about z-adjacency yet since it doesn't cause noticeable visual
+// artifacts like x and y
+//type ADJACENT_Z = typeof ADJACENT_Z;
+type VISUALLY_OVERLAPS_RETURN = NO_OVERLAP | OVERLAP | ADJACENT_X | ADJACENT_Y;
+//| ADJACENT_Z;
 
 /**
  * return true iff the projected hexagons of the two aabbs overlaps in
@@ -23,19 +45,9 @@ const visuallyOverlaps = (
   aBb: Xyz,
   bPos: Xyz,
   bBb: Xyz,
-): boolean => {
+): VISUALLY_OVERLAPS_RETURN => {
   const cornersA = projectAabbToHexagonCorners(aPos, aBb);
   const cornersB = projectAabbToHexagonCorners(bPos, bBb);
-
-  //console.log("corners:", { cornersA, cornersB });
-
-  const aXMin = cornersA.topLeft.x;
-  const aXMax = cornersA.topRight.x;
-
-  const bXMin = cornersB.topLeft.x;
-  const bXMax = cornersB.topRight.x;
-
-  const horizontalOverlap = rangeOverlap(aXMin, aXMax, bXMin, bXMax);
 
   // a (projected) line along the (world) x axis of the projected is described by:
   //  [y = x/2 - c]
@@ -44,57 +56,91 @@ const visuallyOverlaps = (
   const aXAxisSlopeMinC = cornersA.topRight.y - cornersA.topRight.x / 2;
   const aXAxisSlopeMaxC = cornersA.bottomCentre.y - cornersA.bottomCentre.x / 2;
 
-  /*
-  if (aXAxisSlopeMinC > aXAxisSlopeMaxC) {
-    throw new Error(
-      `aXAxisSlopeMinC ${aXAxisSlopeMinC} > aXAxisSlopeMaxC ${aXAxisSlopeMaxC}`,
-    );
-  }*/
-
   const bXAxisSlopeMinC = cornersB.topRight.y - cornersB.topRight.x / 2;
   const bXAxisSlopeMaxC = cornersB.bottomCentre.y - cornersB.bottomCentre.x / 2;
 
-  /*
-  if (bXAxisSlopeMinC > bXAxisSlopeMaxC) {
-    throw new Error("bXAxisSlopeMinC > bXAxisSlopeMaxC");
-  }
-    */
-
-  const xAxisSlopeOverlap = rangeOverlap(
-    aXAxisSlopeMinC,
-    aXAxisSlopeMaxC,
-    bXAxisSlopeMinC,
-    bXAxisSlopeMaxC,
-  );
-
   // now projected lines along the y axis: [y = x/2 - c] = [c = y-x/2]
-
   const aYAxisSlopeMinC = cornersA.topLeft.y + cornersA.topLeft.x / 2;
   const aYAxisSlopeMaxC = cornersA.bottomCentre.y + cornersA.bottomCentre.x / 2;
-
-  /*
-  if (aYAxisSlopeMinC > aYAxisSlopeMaxC) {
-    throw new Error("aYAxisSlopeMinC > aYAxisSlopeMaxC");
-  }
-    */
 
   const bYAxisSlopeMinC = cornersB.topLeft.y + cornersB.topLeft.x / 2;
   const bYAxisSlopeMaxC = cornersB.bottomCentre.y + cornersB.bottomCentre.x / 2;
 
-  /*
-  if (bYAxisSlopeMinC > bYAxisSlopeMaxC) {
-    throw new Error("bYAxisSlopeMinC > bYAxisSlopeMaxC");
-  }
-    */
+  // xmin/xmax defines the (z-axis) vertical lines at the left and right of the projected hexagon
+  const aXMin = cornersA.topLeft.x;
+  const aXMax = cornersA.topRight.x;
 
-  const yAxisSlopeOverlap = rangeOverlap(
+  const bXMin = cornersB.topLeft.x;
+  const bXMax = cornersB.topRight.x;
+
+  const xAxisOverlap = rangeOverlap(
+    aXAxisSlopeMinC,
+    aXAxisSlopeMaxC,
+    bXAxisSlopeMinC,
+    bXAxisSlopeMaxC,
+    visuallyOverlapsMinimumOverlap,
+  );
+  const yAxisOverlap = rangeOverlap(
     aYAxisSlopeMinC,
     aYAxisSlopeMaxC,
     bYAxisSlopeMinC,
     bYAxisSlopeMaxC,
+    visuallyOverlapsMinimumOverlap,
+  );
+  const zAxisOverlap = rangeOverlap(
+    aXMin,
+    aXMax,
+    bXMin,
+    bXMax,
+    visuallyOverlapsMinimumOverlap,
   );
 
-  return horizontalOverlap && xAxisSlopeOverlap && yAxisSlopeOverlap;
+  if (xAxisOverlap && yAxisOverlap && zAxisOverlap) {
+    return OVERLAP;
+  }
+
+  if (
+    yAxisOverlap &&
+    zAxisOverlap &&
+    // x adjacent:
+    rangeOverlap(
+      aXAxisSlopeMinC,
+      aXAxisSlopeMaxC,
+      bXAxisSlopeMinC,
+      bXAxisSlopeMaxC,
+      visuallyAdjacentMinimumOverlap,
+    )
+  ) {
+    return ADJACENT_X;
+  }
+
+  if (
+    xAxisOverlap &&
+    zAxisOverlap &&
+    // y adjacent:
+    rangeOverlap(
+      aYAxisSlopeMinC,
+      aYAxisSlopeMaxC,
+      bYAxisSlopeMinC,
+      bYAxisSlopeMaxC,
+      visuallyAdjacentMinimumOverlap,
+    )
+  ) {
+    return ADJACENT_Y;
+  }
+
+  /*  
+  if (
+    xAxisOverlap &&
+    yAxisOverlap &&
+    // z adjacent:
+    rangeOverlap(aXMin, aXMax, bXMin, bXMax, visuallyAdjacentMinimumOverlap)
+  ) {
+    return ADJACENT_Z;
+  }
+  */
+
+  return NO_OVERLAP;
 };
 
 export const zComparatorOfVisuallyOverlapping = (
@@ -145,7 +191,10 @@ export const zComparatorOfVisuallyOverlapping = (
  *    0 if neither is in front/behind the other
  *    <0 if a is behind b
  */
-export const zComparator = (a: DrawOrderComparable, b: DrawOrderComparable) => {
+export const zComparator = (
+  a: DrawOrderComparable,
+  b: DrawOrderComparable,
+): number => {
   if (
     // zero-volume (render) bb items don't participate in z-ordering - this is THE one way
     // to take an item out of z-sorting for efficiency.
@@ -166,11 +215,59 @@ export const zComparator = (a: DrawOrderComparable, b: DrawOrderComparable) => {
       addXyz(b.state.position, b.renderAabbOffset)
     : b.state.position;
 
-  if (!visuallyOverlaps(aPos, aBb, bPos, bBb)) {
-    return 0;
-  }
+  const visualOverlap = visuallyOverlaps(aPos, aBb, bPos, bBb);
 
-  return zComparatorOfVisuallyOverlapping(aPos, aBb, bPos, bBb);
+  switch (visualOverlap) {
+    case OVERLAP: {
+      return zComparatorOfVisuallyOverlapping(aPos, aBb, bPos, bBb);
+    }
+    case ADJACENT_X: {
+      // special case for where items are touching on an edge along the y axis, meaning that one
+      // item must be the same height as if it were on top of the other.
+      // eg - a wall next to a floor
+      if (
+        veryClose(aPos.y, bPos.y + bBb.y) &&
+        veryClose(aPos.z, bPos.z + bBb.z)
+      ) {
+        return 1;
+      }
+      if (
+        veryClose(bPos.y, aPos.y + aBb.y) &&
+        veryClose(bPos.z, aPos.z + aBb.z)
+      ) {
+        return -1;
+      }
+
+      // whichever has the lower x position is in front. This helps when items render outside of their
+      // bounding boxes (eg, heels standing on a floor with a wall behind, can otherwise get cut off by the wall)
+      // TODO: this would be better solved by allowing renderBBs to be larger than aabbs, but that is not implemented yet
+      // since the order detection doesn't support overlapping items
+      //return bPos.y - aPos.y;
+      return 0;
+    }
+    case ADJACENT_Y: {
+      // same as ADJACENT_X, but for adjacency along the y axis (look at x and z)
+      if (
+        veryClose(aPos.x, bPos.x + bBb.x) &&
+        veryClose(aPos.z, bPos.z + bBb.z)
+      ) {
+        return 1;
+      }
+      if (
+        veryClose(bPos.x, aPos.x + aBb.x) &&
+        veryClose(bPos.z, aPos.z + aBb.z)
+      ) {
+        return -1;
+      }
+      return 0;
+    }
+    // case ADJACENT_Z: {
+    // }
+    default: {
+      visualOverlap satisfies NO_OVERLAP;
+      return 0;
+    }
+  }
 };
 
 const zScore = (itemPosition: Xyz) =>

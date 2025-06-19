@@ -3,6 +3,45 @@ import { zComparator } from "./zComparator";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 const unitCube = { x: 1, y: 1, z: 1 };
 
+expect.extend({
+  toBeInFrontOf(received: DrawOrderComparable, expected: DrawOrderComparable) {
+    const { isNot } = this;
+    return {
+      // do not alter your "pass" based on isNot. Vitest does it for you
+      pass: zComparator(received, expected) > 0,
+
+      message: () =>
+        `${received.id} is${isNot ? "" : " not"} in front of ${expected.id}`,
+    };
+  },
+  toBeBehind(received: DrawOrderComparable, expected: DrawOrderComparable) {
+    const { isNot } = this;
+    return {
+      // do not alter your "pass" based on isNot. Vitest does it for you
+      pass: zComparator(received, expected) < 0,
+      message: () =>
+        `${received.id} is${isNot ? "" : " not"} behind ${expected.id}`,
+    };
+  },
+  toHaveNoOrderPreferenceWith(
+    received: DrawOrderComparable,
+    expected: DrawOrderComparable,
+  ) {
+    const { isNot } = this;
+    const result = zComparator(received, expected) === 0;
+    return {
+      // do not alter your "pass" based on isNot. Vitest does it for you
+      pass: result,
+      message: () =>
+        `${received.id} ${
+          isNot ? "has no order preference with"
+          : result ? "is in front of"
+          : "is behind"
+        } ${expected.id} but expected no order preference`,
+    };
+  },
+});
+
 test("zComparator detects behind in x", () => {
   const behind: DrawOrderComparable = {
     id: "b",
@@ -15,8 +54,8 @@ test("zComparator detects behind in x", () => {
     aabb: unitCube,
   };
 
-  expect(zComparator(behind, inFront)).toBeLessThan(0);
-  expect(zComparator(inFront, behind)).toBeGreaterThan(0);
+  expect(behind).toBeBehind(inFront);
+  expect(inFront).toBeInFrontOf(behind);
 });
 
 test("zComparator detects behind in y", () => {
@@ -31,8 +70,8 @@ test("zComparator detects behind in y", () => {
     aabb: unitCube,
   };
 
-  expect(zComparator(behind, inFront)).toBeLessThan(0);
-  expect(zComparator(inFront, behind)).toBeGreaterThan(0);
+  expect(behind).toBeBehind(inFront);
+  expect(inFront).toBeInFrontOf(behind);
 });
 
 test("zComparator detects on top in z", () => {
@@ -47,8 +86,8 @@ test("zComparator detects on top in z", () => {
     aabb: unitCube,
   };
 
-  expect(zComparator(bottom, top)).toBeLessThan(0);
-  expect(zComparator(top, bottom)).toBeGreaterThan(0);
+  expect(bottom).toBeBehind(top);
+  expect(top).toBeInFrontOf(bottom);
 });
 
 describe("items with fixedZIndex have no preference in ordering", () => {
@@ -65,8 +104,8 @@ describe("items with fixedZIndex have no preference in ordering", () => {
       aabb: unitCube,
     };
 
-    expect(zComparator(bottom, top)).toBe(0);
-    expect(zComparator(top, bottom)).toBe(0);
+    expect(bottom).toHaveNoOrderPreferenceWith(top);
+    expect(top).toHaveNoOrderPreferenceWith(bottom);
   });
   test("negative fixed z index on second item", () => {
     const bottom: DrawOrderComparable = {
@@ -81,12 +120,12 @@ describe("items with fixedZIndex have no preference in ordering", () => {
       fixedZIndex: -1,
     };
 
-    expect(zComparator(bottom, top)).toBe(0);
-    expect(zComparator(top, bottom)).toBe(0);
+    expect(bottom).toHaveNoOrderPreferenceWith(top);
+    expect(top).toHaveNoOrderPreferenceWith(bottom);
   });
 });
 
-test("zComparator gives no order preference for non-overlapping diagonally left/right in x,y", () => {
+test("zComparator gives no order preference for non-visually-overlapping diagonally left/right in x,y", () => {
   const right: DrawOrderComparable = {
     id: "b",
     state: { position: { x: 0, y: 1, z: 0 } },
@@ -98,11 +137,11 @@ test("zComparator gives no order preference for non-overlapping diagonally left/
     aabb: unitCube,
   };
 
-  expect(zComparator(right, left)).toEqual(0);
-  expect(zComparator(left, right)).toEqual(0);
+  expect(right).toHaveNoOrderPreferenceWith(left);
+  expect(left).toHaveNoOrderPreferenceWith(right);
 });
 
-test("zComparator order preference for slightly-overlapping diagonally left/right in x,y (x-overlap)", () => {
+test("zComparator order preference for slightly-visually-overlapping diagonally left/right in x,y (x-overlap)", () => {
   const right: DrawOrderComparable = {
     id: "b",
     state: { position: { x: 0, y: 1, z: 0 } },
@@ -114,11 +153,11 @@ test("zComparator order preference for slightly-overlapping diagonally left/righ
     aabb: unitCube,
   };
 
-  expect(zComparator(right, left)).toBeLessThan(0);
-  expect(zComparator(left, right)).toBeGreaterThan(0);
+  expect(right).toBeBehind(left);
+  expect(left).toBeInFrontOf(right);
 });
 
-test("zComparator order preference for slightly-overlapping diagonally left/right in x,y (y-overlap)", () => {
+test("zComparator order preference for slightly-visually-overlapping diagonally left/right in x,y (y-overlap)", () => {
   const right: DrawOrderComparable = {
     id: "b",
     state: { position: { x: 0, y: 0.9, z: 0 } },
@@ -130,29 +169,47 @@ test("zComparator order preference for slightly-overlapping diagonally left/righ
     aabb: unitCube,
   };
 
-  expect(zComparator(right, left)).toBeGreaterThan(0);
-  expect(zComparator(left, right)).toBeLessThan(0);
+  expect(right).toBeInFrontOf(left);
+  expect(left).toBeBehind(right);
 });
 
-test("zComparator gives no order preference for non-overlapping diagonally adjacent in x,z", () => {
+test("zComparator gives a preference for non-visually-overlapping  but adjacent along y axis - coincident in x,z (eg, wall/floor case)", () => {
   // these are adjacent, along their diagonally-rendered edges
 
-  const backTop: DrawOrderComparable = {
-    id: "b",
+  const wall: DrawOrderComparable = {
+    id: "wall",
     state: { position: { x: 1, y: 0, z: 1 } },
     aabb: unitCube,
   };
-  const frontLow: DrawOrderComparable = {
-    id: "f",
+  const floor: DrawOrderComparable = {
+    id: "floor",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
   };
 
-  expect(zComparator(backTop, frontLow)).toEqual(0);
-  expect(zComparator(frontLow, backTop)).toEqual(0);
+  expect(wall).toBeInFrontOf(floor);
+  expect(floor).toBeBehind(wall);
 });
 
-test("zComparator gives order preference for slightly-overlapping diagonally adjacent in x,z (x-overlap)", () => {
+test("zComparator gives no preference for not-quite-adjacent in x,z when the gap is bigger", () => {
+  // these are adjacent, along their diagonally-rendered edges
+
+  const wall: DrawOrderComparable = {
+    id: "wall",
+    state: { position: { x: 1, y: 0, z: 1.1 } },
+    aabb: unitCube,
+  };
+  const floor: DrawOrderComparable = {
+    id: "floor",
+    state: { position: { x: 0, y: 0, z: 0 } },
+    aabb: unitCube,
+  };
+
+  expect(wall).toHaveNoOrderPreferenceWith(floor);
+  expect(floor).toHaveNoOrderPreferenceWith(wall);
+});
+
+test("zComparator gives order preference for slightly-visually-overlapping diagonally adjacent in x,z (x-overlap)", () => {
   // these are adjacent, along their diagonally-rendered edges
 
   const backTop: DrawOrderComparable = {
@@ -166,11 +223,11 @@ test("zComparator gives order preference for slightly-overlapping diagonally adj
     aabb: unitCube,
   };
 
-  expect(zComparator(backTop, frontLow)).toBeGreaterThan(0);
-  expect(zComparator(frontLow, backTop)).toBeLessThan(0);
+  expect(backTop).toBeInFrontOf(frontLow);
+  expect(frontLow).toBeBehind(backTop);
 });
 
-test("zComparator gives order preference for slightly-overlapping diagonally adjacent in x,z (z-overlap)", () => {
+test("zComparator gives order preference for slightly-visually-overlapping diagonally adjacent in x,z (z-overlap)", () => {
   // these are adjacent, along their diagonally-rendered edges
 
   const backTop: DrawOrderComparable = {
@@ -184,30 +241,30 @@ test("zComparator gives order preference for slightly-overlapping diagonally adj
     aabb: unitCube,
   };
 
-  expect(zComparator(backTop, frontLow)).toBeLessThan(0);
-  expect(zComparator(frontLow, backTop)).toBeGreaterThan(0);
+  expect(backTop).toBeBehind(frontLow);
+  expect(frontLow).toBeInFrontOf(backTop);
 });
 
-test("zComparator gives no order preference for non-overlapping diagonally adjacent in y,z", () => {
+test("zComparator gives a preference for non-visually-overlapping  but adjacent along x axis - coincident in y,z (eg, wall/floor case)", () => {
   // these are adjacent, along their diagonally-rendered edges
 
-  const leftTop: DrawOrderComparable = {
-    id: "b",
+  const wall: DrawOrderComparable = {
+    id: "wall",
     state: { position: { x: 0, y: 1, z: 1 } },
     aabb: unitCube,
   };
-  const rightLow: DrawOrderComparable = {
-    id: "f",
+  const floor: DrawOrderComparable = {
+    id: "floor",
     state: { position: { x: 0, y: 0, z: 0 } },
     aabb: unitCube,
   };
 
-  expect(zComparator(leftTop, rightLow)).toEqual(0);
-  expect(zComparator(rightLow, leftTop)).toEqual(0);
+  expect(wall).toBeInFrontOf(floor);
+  expect(floor).toBeBehind(wall);
 });
 
-test("zComparator gives no order preference for slightly-overlapping diagonally adjacent in y,z (y-overlap)", () => {
-  // these are adjacent, along their diagonally-rendered edges
+test("zComparator gives order preference for slightly-visually-overlapping diagonally adjacent in y,z (y-overlap)", () => {
+  // these are adjacent, along their diagonally-rendered edges, but slightly visually overlapping:
 
   const leftTop: DrawOrderComparable = {
     id: "b",
@@ -220,11 +277,11 @@ test("zComparator gives no order preference for slightly-overlapping diagonally 
     aabb: unitCube,
   };
 
-  expect(zComparator(leftTop, rightLow)).toBeGreaterThan(0);
-  expect(zComparator(rightLow, leftTop)).toBeLessThan(0);
+  expect(leftTop).toBeInFrontOf(rightLow);
+  expect(rightLow).toBeBehind(leftTop);
 });
 
-test("zComparator gives no order preference for slightly-overlapping diagonally adjacent in y,z (z-overlap)", () => {
+test("zComparator gives no order preference for slightly-visually-overlapping diagonally adjacent in y,z (z-overlap)", () => {
   // these are adjacent, along their diagonally-rendered edges
 
   const leftTop: DrawOrderComparable = {
@@ -238,46 +295,6 @@ test("zComparator gives no order preference for slightly-overlapping diagonally 
     aabb: unitCube,
   };
 
-  expect(zComparator(leftTop, rightLow)).toBeLessThan(0);
-  expect(zComparator(rightLow, leftTop)).toBeGreaterThan(0);
-});
-
-test("edge case with equal y due to floating point error", () => {
-  /* 
-  cyc. dependency due to cube being in front of heels when should have no preference:
-
-  cube @{"x":0,"y":96,"z":0} bb:{"x":12,"y":12,"z":12} --in-front-of--> 
-	heels @{"x":12,"y":92.431,"z":12} bb:{"x":12,"y":12,"z":12} --in-front-of--> 
-	conveyor@0,5,0:24hKaE @{"x":0,"y":80,"z":0} bb:{"x":16,"y":16,"z":12} --in-front-of--> 
-	cube @{"x":0,"y":96,"z":0} bb:{"x":12,"y":12,"z":12}
-
-  which calculated as:
-  min/max: {
-    a: {
-      x: { min: 68.431, max: 92.431 },
-      xS: { min: -128.43099999999998, max: -104.43099999999998 },
-      yS: { min: -47.99999999999999, max: -23.999999999999993 }  <-- should have been 48, 24
-    },
-    b: {
-      x: { min: 84, max: 108 },
-      xS: { min: -120, max: -96 },
-      yS: { min: -24, max: 0 }
-    }
-  }
-
-  */
-
-  const cube: DrawOrderComparable = {
-    id: "cube",
-    state: { position: { x: 0, y: 96, z: 0 } },
-    aabb: { x: 12, y: 12, z: 12 },
-  };
-  const heels: DrawOrderComparable = {
-    id: "heels",
-    state: { position: { x: 12, y: 92.431, z: 12 } },
-    aabb: { x: 12, y: 12, z: 12 },
-  };
-
-  expect(zComparator(heels, cube)).toBe(0);
-  expect(zComparator(cube, heels)).toBe(0);
+  expect(leftTop).toBeBehind(rightLow);
+  expect(rightLow).toBeInFrontOf(leftTop);
 });

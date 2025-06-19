@@ -168,14 +168,15 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   #tickItemsZIndex(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
-    const { order } = sortByZPairs(
-      zEdges(
-        this.renderContext.room.items,
-        roomTickContext.movedItems,
-        this.#incrementalZEdges,
-      ),
+    const ze = zEdges(
       this.renderContext.room.items,
+      roomTickContext.movedItems,
+      // this.#incrementalZEdges will be updated in-place by the zEdges function to match
+      // the current ordering state of the room, starting from the previous ordering state
+      this.#incrementalZEdges,
     );
+
+    const { order } = sortByZPairs(ze, this.renderContext.room.items);
 
     for (let i = 0; i < order.length; i++) {
       const itemRenderer = this.#itemRenderers.get(order[i] as RoomItemId);
