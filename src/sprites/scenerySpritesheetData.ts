@@ -126,10 +126,16 @@ const frames = {
   },
 
   // doors names after the axis they go along: x=towards/away, y=left/right
-  "generic.door.legs.pillar": {
+  "generic.door.legs.pillar.y": {
+    frame: { x: 508, y: 476, w: wallTileSize.w, h: 12 },
+  },
+  "generic.door.legs.base.y": {
+    frame: { x: 508, y: 488, w: wallTileSize.w, h: 9 },
+  },
+  "generic.door.legs.pillar.x": {
     frame: { x: 524, y: 476, w: wallTileSize.w, h: 12 },
   },
-  "generic.door.legs.base": {
+  "generic.door.legs.base.x": {
     frame: { x: 524, y: 488, w: wallTileSize.w, h: 9 },
   },
   "generic.door.legs.threshold.double.x": {
@@ -149,8 +155,8 @@ const frames = {
   },
   "generic.door.floatingThreshold.x": {
     frame: {
-      x: 496,
-      y: 477,
+      x: 457,
+      y: 492,
       w: 26,
       h: 19,
 
@@ -159,8 +165,8 @@ const frames = {
   },
   "generic.door.floatingThreshold.y": {
     frame: {
-      x: 469,
-      y: 477,
+      x: 430,
+      y: 492,
       w: 26,
       h: 19,
 

@@ -58,14 +58,14 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
     } else {
       yield createSprite({
         pivot: { x: pivotX, y: 9 },
-        textureId: "generic.door.legs.base",
+        textureId: `generic.door.legs.base.${axis}`,
         ...addXy(offset, {}),
       });
 
       for (let h = 1; h < height; h++) {
         yield createSprite({
           pivot: { x: pivotX, y: 9 },
-          textureId: "generic.door.legs.pillar",
+          textureId: `generic.door.legs.pillar.${axis}`,
           ...addXy(offset, {
             y: -h * blockSizePx.h,
           }),
