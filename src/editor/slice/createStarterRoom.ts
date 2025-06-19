@@ -1,9 +1,9 @@
 import type { JsonItem } from "../../model/json/JsonItem";
-import type { RoomJson } from "../../model/RoomJson";
 import { type SceneryName, type Wall } from "../../sprites/planets";
 import type {
   EditorRoomId,
   EditorRoomItemId,
+  EditorRoomJson,
   EditorRoomJsonItems,
 } from "../EditorRoomId";
 
@@ -81,18 +81,24 @@ const starterRoomWallItems: EditorRoomJsonItems = {
   },
 };
 
+const starterRoomSize = { x: 8, y: 8 };
 /**
  * the room that you start from when you create a room in the editor
  */
-export const starterRoom: Omit<
-  RoomJson<EditorRoomId, EditorRoomItemId>,
-  "id"
-> = {
+export const starterRoom: Omit<EditorRoomJson, "id"> = {
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
-  floor: "blacktooth",
   items: {
     ...starterRoomWallItems,
+    ["floor" as EditorRoomItemId]: {
+      type: "floor",
+      config: {
+        floorType: "standable",
+        scenery: "blacktooth",
+        times: starterRoomSize,
+      },
+      position: { x: 0, y: 0, z: 0 },
+    },
   },
-  size: { x: 8, y: 8 },
+  size: starterRoomSize,
 };

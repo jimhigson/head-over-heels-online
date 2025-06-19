@@ -24,7 +24,7 @@ const deleteEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
 /**
  * returns a list of what is in front of what, ie:
  *
- * ```
+ * ```ts
  *    { 'idOfItemInFront: [ 'idOfItemInBack' ] }
  * ```
  */

@@ -35,6 +35,11 @@ const colourRooms = () => {
       position: { x: 4, y: 6, z: 0 },
     },
     {
+      type: "block",
+      config: { style: "book" },
+      position: { x: 4, y: 6, z: 0 },
+    },
+    {
       type: "monster",
       config: {
         which: "cyberman",
@@ -45,6 +50,7 @@ const colourRooms = () => {
       position: { x: 6, y: 0, z: 0 },
     },
   ];
+  const roomSize = { x: 8, y: 8 };
 
   function* room(): Generator<Entry<SceneryName>> {
     for (let iPlanet = 0; iPlanet < sceneryNames.length; iPlanet++) {
@@ -56,11 +62,19 @@ const colourRooms = () => {
           yield [
             `${p}-${hue}-${shade}`,
             addPerimeterWallsToRoom({
-              size: { x: 8, y: 8 },
+              size: roomSize,
               color: { hue, shade },
-              floor: p,
               planet: p,
               items: keyItems([
+                {
+                  type: "floor",
+                  config: {
+                    floorType: "standable",
+                    scenery: p,
+                    times: { x: roomSize.x, y: roomSize.y },
+                  },
+                  position: { x: 0, y: 0, z: 0 },
+                },
                 {
                   type: "teleporter",
                   position: {
@@ -132,42 +146,40 @@ const colourRooms = () => {
   >;
 };
 
+const renderEverythingSize = { x: 18, y: 18 };
 const rooms = {
   lift: addPerimeterWallsToRoom({
     size: { x: 4, y: 4 },
     planet: "safari",
     color: { hue: "yellow", shade: "dimmed" },
-    floor: "safari",
-
     id: "lift",
     items: keyItems([
+      {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "safari",
+          times: { x: 4, y: 4 },
+        },
+        position: { x: 0, y: 0, z: 0 },
+      },
       // {
-      //   type: "lift",
-      //   config: { bottom: 0, top: 4 },
-      //   position: { x: 1, y: 1, z: 3 },
+      //   type: "block",
+      //   config: { style: "artificial", times: { x: 2, y: 2, z: 2 } },
+      //   position: { x: 0, y: 2, z: 0 },
+      // },
+      // {
+      //   type: "block",
+      //   config: { style: "artificial" },
+      //   position: { x: 0, y: 3, z: 3 },
       // },
       // {
       //   type: "portableBlock",
-      //   config: { style: "cube" },
-      //   position: { x: 0, y: 3, z: 0 },
+      //   config: {
+      //     style: "cube",
+      //   },
+      //   position: { x: 1, y: 1, z: 0 },
       // },
-      {
-        type: "block",
-        config: { style: "artificial", times: { x: 2, y: 2, z: 2 } },
-        position: { x: 0, y: 2, z: 0 },
-      },
-      {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 0, y: 3, z: 3 },
-      },
-      {
-        type: "portableBlock",
-        config: {
-          style: "cube",
-        },
-        position: { x: 1, y: 1, z: 0 },
-      },
       // {
       //   type: "block",
       //   config: { style: "book" },
@@ -190,10 +202,17 @@ const rooms = {
     size: { x: 18, y: 14 },
     planet: "egyptus",
     color: { hue: "yellow", shade: "dimmed" },
-    floor: "egyptus",
-
     id: "laboratory",
     items: keyItems([
+      {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "bookworld",
+          times: { x: 18, y: 14 },
+        },
+        position: { x: 0, y: 0, z: 0 },
+      },
       {
         type: "teleporter",
         config: {
@@ -897,11 +916,18 @@ const rooms = {
   }) satisfies RoomJson<TestCampaignRoomId, string, "egyptus">,
 
   renderEverything: addPerimeterWallsToRoom({
-    size: { x: 18, y: 18 },
-    floor: "bookworld",
-
+    size: renderEverythingSize,
     id: "renderEverything",
     items: keyItems([
+      {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "bookworld",
+          times: renderEverythingSize,
+        },
+        position: { x: 0, y: 0, z: 0 },
+      },
       {
         type: "door",
         config: { toRoom: "laboratory", direction: "away" },

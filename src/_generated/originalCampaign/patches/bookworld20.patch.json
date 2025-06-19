@@ -29,20 +29,8 @@
   },
   {
     "op": "replace",
-    "path": "/items/hushPuppy@3,0,2/position/z",
-    "value": 0
-  },
-  {
-    "op": "replace",
     "path": "/items/hushPuppy@3,0,2/position/x",
     "value": 2
-  },
-  {
-    "op": "add",
-    "path": "/items/hushPuppy@3,0,2/config/times",
-    "value": {
-      "z": 3
-    }
   },
   {
     "op": "replace",
@@ -84,24 +72,6 @@
         "x": 3,
         "y": 0,
         "z": 3
-      },
-      "type": "hushPuppy"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/hushPuppyPillar1",
-    "value": {
-      "config": {
-        "times": {
-          "x": 2,
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 4,
-        "y": 0,
-        "z": 0
       },
       "type": "hushPuppy"
     }

@@ -73,6 +73,7 @@ export type Xml2JsonNoFloor = Array<{
 export type Xml2JsonRoom = {
   xTiles: string;
   yTiles: string;
+  /** optional because can be not given for some jail rooms in the xml */
   scenery?: XmlScenery;
   color: string;
   floorKind: XmlFloorKind;

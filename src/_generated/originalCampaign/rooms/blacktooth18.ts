@@ -4,7 +4,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
-  floor: "blacktooth",
   id: "blacktooth18",
   items: {
     "block@3,3,0": {
@@ -25,6 +24,15 @@ export const room = inferRoomJson({
       config: { direction: "left", toRoom: "blacktooth20" },
       position: { x: 8, y: 2, z: 4 },
       type: "door",
+    },
+    "floor@0,0,0": {
+      config: {
+        floorType: "standable",
+        scenery: "blacktooth",
+        times: { x: 8, y: 6 },
+      },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
     },
     "monster@4,3,0": {
       config: {

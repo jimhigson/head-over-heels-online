@@ -35,6 +35,11 @@
     "value": "towardsLeft"
   },
   {
+    "op": "replace",
+    "path": "/items/floor@0,0,0/config/scenery",
+    "value": "penitentiary"
+  },
+  {
     "op": "add",
     "path": "/items/crownBlacktooth",
     "value": {
@@ -130,11 +135,6 @@
       },
       "type": "emitter"
     }
-  },
-  {
-    "op": "replace",
-    "path": "/floor",
-    "value": "penitentiary"
   },
   {
     "op": "replace",

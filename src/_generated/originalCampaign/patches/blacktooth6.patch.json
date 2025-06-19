@@ -5,10 +5,11 @@
     "value": {
       "expectType": "block",
       "newState": {
-        "disappear": {
+        "disappearing": {
           "left": {
             "on": "stand"
-          }
+          },
+          "right": null
         }
       },
       "targets": ["block@0,7,0", "block@3,7,0"]

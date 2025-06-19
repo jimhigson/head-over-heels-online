@@ -4,7 +4,6 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
-  floor: "none",
   id: "bookworld39",
   items: {
     "conveyor@0,0,0": {
@@ -16,6 +15,11 @@ export const room = inferRoomJson({
       config: { direction: "away", times: { y: 2 } },
       position: { x: 7, y: 0, z: 0 },
       type: "conveyor",
+    },
+    "floor@0,0,0": {
+      config: { floorType: "none", times: { x: 8, y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
     },
     scroll: {
       config: { gives: "scroll", page: "teleportBack" },

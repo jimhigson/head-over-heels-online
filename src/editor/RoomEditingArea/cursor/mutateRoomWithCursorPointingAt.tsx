@@ -1,4 +1,4 @@
-import { largeItemAabb } from "../../../game/collision/boundingBoxes";
+import { fullBlockAabb } from "../../../game/collision/boundingBoxes";
 import { defaultBaseState } from "../../../game/gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../../game/gameState/mutators/addItemToRoom";
 import { getRoomItem, iterateRoomItems } from "../../../model/RoomState";
@@ -49,7 +49,7 @@ export const mutateRoomAddCursorItems = ({
           valid,
         },
         config: {},
-        aabb: largeItemAabb,
+        aabb: fullBlockAabb,
       };
     }
   } else {

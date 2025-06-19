@@ -16,8 +16,6 @@ export const otherIndividualCharacterName = (
 export const isCharacterName = (name: string): name is CharacterName =>
   name === "head" || name === "heels";
 
-export type Floor = "deadly" | "none" | `${SceneryName}`;
-
 export type AnyWall = Wall<SceneryName>;
 
 export const floorThickness = blockSizePx.h;

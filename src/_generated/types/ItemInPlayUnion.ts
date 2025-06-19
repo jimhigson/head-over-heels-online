@@ -6,6 +6,7 @@ type GeneratedTypeUnion =
   | "ball"
   | "barrier"
   | "block"
+  | "blocker"
   | "bubbles"
   | "charles"
   | "conveyor"
@@ -17,7 +18,6 @@ type GeneratedTypeUnion =
   | "firedDoughnut"
   | "floatingText"
   | "floor"
-  | "floorEdge"
   | "head"
   | "headOverHeels"
   | "heels"
@@ -61,6 +61,9 @@ export type ItemTypeUnion<
   | (T extends "block" ?
       ItemInPlay<"block", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
+  | (T extends "blocker" ?
+      ItemInPlay<"blocker", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
   | (T extends "bubbles" ?
       ItemInPlay<"bubbles", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
@@ -93,9 +96,6 @@ export type ItemTypeUnion<
     : never)
   | (T extends "floor" ?
       ItemInPlay<"floor", RoomId, RoomItemId, RoomItemId, ScN>
-    : never)
-  | (T extends "floorEdge" ?
-      ItemInPlay<"floorEdge", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "head" ? ItemInPlay<"head", RoomId, RoomItemId, RoomItemId, ScN>
     : never)

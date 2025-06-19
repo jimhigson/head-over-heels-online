@@ -1,5 +1,4 @@
 import { blockXyzToFineXyz } from "../../render/projections";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import {
   addXyz,
@@ -19,6 +18,7 @@ import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal
@@ -54,7 +54,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
   jsonItemId: RoomItemId,
   jsonWall: JsonItem<"wall", RoomId, RoomItemId>,
   roomJson: RoomJson<RoomId, RoomItemId>,
-): ItemInPlay<"wall", RoomId, RoomItemId> => {
+): ItemTypeUnion<"wall", RoomId, RoomItemId> => {
   const {
     config: { direction, times },
     position,
@@ -83,7 +83,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
       times,
     ),
     renderAabb:
-      isHidden ? undefined : (
+      isHidden ? originXyz : (
         multiplyBoundingBox(
           axis === "y" ? yAxisWallRenderAabb : xAxisWallRenderAabb,
           times,

@@ -4,9 +4,13 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
-  floor: "none",
   id: "egyptus30",
   items: {
+    "floor@0,0,0": {
+      config: { floorType: "none", times: { x: 6, y: 8 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
     "lift@5,0,0": {
       config: { bottom: 0, top: 11 },
       position: { x: 5, y: 0, z: 0 },

@@ -181,17 +181,17 @@ export class RoomScrollRenderer<
         : this.#roomHomePosition.y,
     };
 
-    const container = this.output.graphics;
+    const outputGraphics = this.output.graphics;
 
-    // ease towards from current rendering:
     const snapInstantly = !this.#everRendered;
     if (snapInstantly) {
-      container.x = targetRoomPositionWithScrolling.x;
-      container.y = targetRoomPositionWithScrolling.y;
+      outputGraphics.x = targetRoomPositionWithScrolling.x;
+      outputGraphics.y = targetRoomPositionWithScrolling.y;
     } else {
+      // ease towards from target position:
       const maxScrollDelta = scrollSpeedPxPerMs * deltaMS;
       const targetScrollDelta = subXy(
-        container,
+        outputGraphics,
         targetRoomPositionWithScrolling,
       );
       const targetScrollDeltaLength = lengthXy(targetScrollDelta);
@@ -202,11 +202,11 @@ export class RoomScrollRenderer<
           y: targetScrollDelta.y / targetScrollDeltaLength,
         };
 
-        container.x -= scrollDirectionUnitVector.x * maxScrollDelta;
-        container.y -= scrollDirectionUnitVector.y * maxScrollDelta;
+        outputGraphics.x -= scrollDirectionUnitVector.x * maxScrollDelta;
+        outputGraphics.y -= scrollDirectionUnitVector.y * maxScrollDelta;
       } else {
-        container.x = targetRoomPositionWithScrolling.x;
-        container.y = targetRoomPositionWithScrolling.y;
+        outputGraphics.x = targetRoomPositionWithScrolling.x;
+        outputGraphics.y = targetRoomPositionWithScrolling.y;
       }
     }
     this.#everRendered = true;

@@ -36,7 +36,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonItemId: RoomItemId,
 ): Generator<
   ItemTypeUnion<
-    "doorFrame" | "doorLegs" | "stopAutowalk" | "portal" | "wall",
+    "doorFrame" | "doorLegs" | "stopAutowalk" | "portal" | "wall" | "blocker",
     RoomId,
     RoomItemId
   >
@@ -64,132 +64,138 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   const tunnelSetbackBlocks = {
     [crossAxis]: inHidden ? -doorTunnelLengthBlocks : 0,
   };
+  const doorTunnelLengthPx = doorTunnelLengthBlocks * blockSizePx.w;
   // the extra to put onto door frame AABBs to make them longer for the tunnel
   const doorTunnelAabbPx = {
-    [crossAxis]: doorTunnelLengthBlocks * blockSizePx.w,
+    ...originXyz,
+    [crossAxis]: doorTunnelLengthPx,
   };
 
+  /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
+     the bb very well */
   const nearPostWidthInAxis = 9;
   const farPostWidthInAxis = 8;
   const postWidthInCrossAxis = 8;
 
-  yield {
-    ...jsonDoor,
-    ...defaultItemProperties,
-    ...{
-      type: "doorFrame",
-      id: `${jsonItemId}/far` as RoomItemId,
-      jsonItemId,
-      config: {
-        ...jsonDoor.config,
-        inHiddenWall: inHidden,
-        part: "far",
-      },
-      state: {
-        ...defaultBaseState(),
-        position: blockXyzToFineXyz(
-          addXyz(
-            position,
-            { [axis]: 1.5 },
-            invisibleWallSetBackBlocks,
-            tunnelSetbackBlocks,
+  {
+    const renderAabb = {
+      [axis]: farPostWidthInAxis,
+      [crossAxis]: postWidthInCrossAxis,
+      z: doorPostHeightPx,
+    } as Xyz;
+    yield {
+      ...jsonDoor,
+      ...defaultItemProperties,
+      ...{
+        type: "doorFrame",
+        id: `${jsonItemId}/frameFar` as RoomItemId,
+        jsonItemId,
+        config: {
+          ...jsonDoor.config,
+          inHiddenWall: inHidden,
+          part: "far",
+        },
+        state: {
+          ...defaultBaseState(),
+          position: blockXyzToFineXyz(
+            addXyz(
+              position,
+              { [axis]: 1.5 },
+              invisibleWallSetBackBlocks,
+              tunnelSetbackBlocks,
+            ),
           ),
-        ),
-        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+          stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+        },
+        aabb: addXyz(renderAabb, doorTunnelAabbPx),
+        renderAabb,
+        renderAabbOffset: inHidden ? doorTunnelAabbPx : undefined,
       },
-      aabb: addXyz(
-        {
-          [axis]: farPostWidthInAxis,
-          [crossAxis]: postWidthInCrossAxis,
-          z: doorPostHeightPx,
-        } as Xyz,
-        doorTunnelAabbPx,
-      ),
-    },
-  };
-  yield {
-    ...jsonDoor,
-    ...defaultItemProperties,
-    ...{
-      type: "doorFrame",
-      id: `${jsonItemId}/near` as RoomItemId,
-      jsonItemId,
-      config: {
-        ...jsonDoor.config,
-        inHiddenWall: inHidden,
-        part: "near",
-      },
-      state: {
-        ...defaultBaseState(),
-        position: blockXyzToFineXyz(
-          addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
-        ),
-        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-      },
-      /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
-         the bb very well */
-      aabb: addXyz(
-        {
-          [axis]: nearPostWidthInAxis,
-          [crossAxis]: postWidthInCrossAxis,
-          z: doorPostHeightPx,
-        } as Xyz,
-        doorTunnelAabbPx,
-      ),
-    },
-  };
-  /**
-   * the bit between the two door posts
-   */
-  yield {
-    ...jsonDoor,
-    ...defaultItemProperties,
-    ...{
-      type: "doorFrame",
-      id: `${jsonItemId}/top` as RoomItemId,
-      jsonItemId,
-      config: {
-        ...jsonDoor.config,
-        inHiddenWall: inHidden,
-        part: "top",
-      },
-      state: {
-        ...defaultBaseState(),
-        position: addXyz(
-          blockXyzToFineXyz(
+    };
+  }
+  {
+    const renderAabb = {
+      [axis]: nearPostWidthInAxis,
+      [crossAxis]: postWidthInCrossAxis,
+      z: doorPostHeightPx,
+    } as Xyz;
+
+    yield {
+      ...jsonDoor,
+      ...defaultItemProperties,
+      ...{
+        type: "doorFrame",
+        id: `${jsonItemId}/frameNear` as RoomItemId,
+        jsonItemId,
+        config: {
+          ...jsonDoor.config,
+          inHiddenWall: inHidden,
+          part: "near",
+        },
+        state: {
+          ...defaultBaseState(),
+          position: blockXyzToFineXyz(
             addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
           ),
-          {
-            [axis]: nearPostWidthInAxis,
-            z: doorPortalHeight,
-          },
-        ),
-        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+          stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+        },
+
+        aabb: addXyz(renderAabb, doorTunnelAabbPx),
+        renderAabb,
+        renderAabbOffset: inHidden ? doorTunnelAabbPx : undefined,
       },
-      aabb: addXyz(
-        {
-          [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
-          [crossAxis]: postWidthInCrossAxis,
-          z: doorPostHeightPx - doorPortalHeight,
-        } as Xyz,
-        doorTunnelAabbPx,
-      ),
-    },
-  };
+    };
+  }
+  /**
+   * the bit at the top of the frame between the two door posts
+   */
+  {
+    const renderAabb = {
+      [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
+      [crossAxis]: postWidthInCrossAxis,
+      z: doorPostHeightPx - doorPortalHeight,
+    } as Xyz;
+    yield {
+      ...jsonDoor,
+      ...defaultItemProperties,
+      ...{
+        type: "doorFrame",
+        id: `${jsonItemId}/frameTop` as RoomItemId,
+        jsonItemId,
+        config: {
+          ...jsonDoor.config,
+          inHiddenWall: inHidden,
+          part: "top",
+        },
+        state: {
+          ...defaultBaseState(),
+          position: addXyz(
+            blockXyzToFineXyz(
+              addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
+            ),
+            {
+              [axis]: nearPostWidthInAxis,
+              z: doorPortalHeight,
+            },
+          ),
+          stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+        },
+        aabb: addXyz(renderAabb, doorTunnelAabbPx),
+        renderAabb,
+        renderAabbOffset: inHidden ? doorTunnelAabbPx : undefined,
+      },
+    };
+  }
 
   // wall above the door, up to the ceiling:
   yield {
     ...jsonDoor,
     ...defaultItemProperties,
     ...{
-      type: "wall",
-      id: `${jsonItemId}/wall` as RoomItemId,
+      type: "blocker",
+      id: `${jsonItemId}/blockerAbove` as RoomItemId,
       jsonItemId,
-      config: {
-        style: "none",
-        direction: "away", // TODO: look at typings - this isn't needed for hidden walls
-        tiles: [],
-      },
+      config: {},
       renders: false,
       state: {
         ...defaultBaseState(),

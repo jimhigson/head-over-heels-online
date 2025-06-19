@@ -16,16 +16,17 @@ export type ItemInPlayType =
   | "doorFrame"
   | "stopAutowalk"
   | "portal"
-  | "floor"
-  | "floorEdge"
+  /** a non-rendering, invisible, general-purpose, collideable blocker */
+  | "blocker"
   /**
    * when another item is fading out, the bubbles are a separate item
    */
   | "bubbles"
   /**
-   * jumping or running fast, with a power-up
+   * jumping or running fast, with a power-up, crown shine effect
    */
   | "particle"
+  /** when collecting pickups */
   | "floatingText"
   /**
    * for the room editor only!
@@ -35,9 +36,6 @@ export type ItemInPlayType =
 export type SwitchSetting = "left" | "right";
 
 type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
-  floor: {
-    type: "deadly" | /** can fall through to room below */ "none" | "standable";
-  };
   portal: {
     toRoom: RoomId;
     /**
@@ -60,6 +58,13 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (#blacktooth6 aka room with first doughnuts) so it is state, not config
   block: Omit<JsonItemConfig<"block", RoomId, RoomItemId>, "disappearing">;
+  floor: JsonItemConfig<"floor", RoomId, RoomItemId> & {
+    /** the floor's footprint (in world coords), before it was extended for the doors */
+    naturalFootprint: {
+      aabb: Xyz;
+      position: Xyz;
+    };
+  };
 };
 
 export type ItemInPlayConfig<
@@ -165,6 +170,11 @@ export type ItemInPlay<
   aabb: Aabb;
   /** an optional second bb which is used only for determining render order - not for collisions */
   readonly renderAabb?: Aabb;
+  /**
+   * the offset of the render aabb from the item position. like renderAabb, has no role in collisions,
+   * only determining the render order
+   */
+  readonly renderAabbOffset?: Aabb;
 
   /* the shadow this item casts on other items */
   shadowCastTexture?: CreateSpriteOptions;

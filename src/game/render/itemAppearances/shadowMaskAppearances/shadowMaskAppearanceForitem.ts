@@ -102,10 +102,17 @@ export const itemShadowMaskAppearanceForItem = <T extends ItemInPlayType>(
   | "no-mask"
   /** no shadows cast on this item */
   | undefined => {
-  return (
-    item.type === "monster" ?
-      itemShadowMaskAppearances[`monster.${item.config.which}`]
-    : itemShadowMaskAppearances[item.type as T]) as
-    | ItemShadowAppearanceOutsideView<T>
-    | undefined;
+  switch (item.type) {
+    case "monster":
+      return itemShadowMaskAppearances[`monster.${item.config.which}`] as
+        | ItemShadowAppearanceOutsideView<T>
+        | undefined;
+    case "floor":
+      // no shadows on 'none' floors since there is nothing to cast on
+      return item.config.floorType === "none" ? undefined : "no-mask";
+    default:
+      return itemShadowMaskAppearances[item.type as T] as
+        | ItemShadowAppearanceOutsideView<T>
+        | undefined;
+  }
 };

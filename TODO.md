@@ -7,6 +7,7 @@
 ## General
 
 [ ] split integration tests up
+[ ] split hud/world into rendergroups: https://pixijs.com/8.x/guides/concepts/render-groups
 
 ### head push bag, heels pushes doughnuts
 [x] check #blacktooth6
@@ -37,14 +38,15 @@
     [ ] might be more complex than needed. ie, need a container with more modern node than ms/bookworm provides
 
 ### level editor
-[ ] add a door
-    [ ] trim the walls
-[ ] scenery changer    
-[ ] 'selector' tool    
+[x] add a door
+    [x] trim the walls
+[x] scenery changer    
+[x] 'selector' tool    
 [ ] change wall tiles
 [ ] floor type toggle
+    [ ] needs floor as 1st class type
 [ ] change facing direction on enemies
-[ ] sub-select buttons
+[x] drop-down style sub-select buttons
 [ ] change room size
 
 ### menu
@@ -78,6 +80,72 @@ front of other items
 [ ] joystick/pads that declare the d-pad as axes - treat like buttons
 
 ### Details and bugs
+
+[ ] any item landing uses same landing sound as players (by default, over-ridable)
+
+#### floors as first class items in json:
+needed:
+    [x] shadows on absent 'floors' (eg #blacktooth26 )
+    [x] triple rooms, 
+        [x] rewrite floor json
+            [x] #blacktooth17triple
+            [x] #blacktooth58triple
+            [x] #moonbase33triple
+            [x] #safari6triple
+            [x] #safari19triple
+        [x] check all 
+            * view aabbs in rooms to check floors are simplified now
+            [x] #blacktooth17triple
+                [x] gap on right
+                    - only use natural size to cutoff if block is the size of the room?
+                    - use to cutoff the room, not individual floors
+            [x] #blacktooth58triple
+            [x] #moonbase33triple
+            [x] #safari6triple
+                [x] gap on right too (between floors, due to mask)
+            [x] #safari19triple
+    [ ] dead code sweep 
+    [ ] sweep for all rooms whose size has been changed in a patch, look for floors whose size doesn't match any longer
+    [x] falling 'out of room'
+        - needs more occlusions: 
+            use #blacktooth3 to get shield and add several mojos, watch them fall out
+    [x] check patch formatting in github diff
+        [x] this is because prettier collapses/doesn't json lines based on if there is a return after the `{`
+                - ie, there is no 'correct' formatting
+        [x] fixed - patches now all consistent 
+                as per branch `consistent-patch-formatting`
+    [x] put floor overdraws back in: see `renderFloorOverdraws`
+        [ ] only for walls that need it - not over-doors
+          - maybe need a new item in play type here for an invisible, non-rendering cubiod block
+    
+    [x] floor render aabbs - track thickness of floor edge, not the whole aabb  
+        thickness
+         - requires offset renderAabbs
+            - other things need this too to work well
+    [x] check out strange shadow on floor-edge for :
+        #blacktooth58triple 
+        safari17fish
+            (?) what is casting it?
+                [x] this is cast by the doorlegs of the left-side door
+                    (?) should door legs ever cast a shadow?
+            [x] would be solved by floor edges as their own item
+    [ ] floor/back wall z-order flipping - see 
+        - #moonbase32 (left wall)
+        - #egyptus9fish
+        - need to somehow make sure walls are rendered on top of floors always
+            - except not if the floor is raised (in the editor, not in original game)
+        - could be solved by extending the floor a bit at the back end to go under
+          the wall (?) - would this create artifacts elsewhere?
+    [x] floor edge in uncolourised mode not correct colour      
+    [x] floor not always properly extended
+        #blacktooth17triple - two left-facing doors
+        #egyptus11 - left edge
+            - fall out of world if cheat-clicking from #egyptus12
+    [x] floor tiles out of phase with original game
+        (see map.png to compare)
+        #blacktooth1head
+        #blacktooth17triple
+        - still lines up ok in #moonbase33triple
 
 [ ] css upscale can be 0.5 (less than 1) - this seems wrong. Write tests for all the cases we want to cover!
 

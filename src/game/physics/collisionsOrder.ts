@@ -80,6 +80,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   stopAutowalk: 5,
   portal: 5,
   wall: 5,
+  blocker: 5,
   doorLegs: 5,
   sceneryPlayer: 5,
   bubbles: 5, // actually never solid so won't collide
@@ -101,7 +102,6 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   block: 20,
   barrier: 20,
   floor: 20,
-  floorEdge: 20, // not actually possible to touch
   hushPuppy: 20,
   teleporter: 20,
 
@@ -130,10 +130,11 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   // (in original game they are the same - deadly from any direction)
   spikes: 98,
 
+  // deadly items are the most impactful to touch
   slidingDeadly: 100,
   moveableDeadly: 100,
   deadlyBlock: 100,
-  monster: 100, // most impactful to touch
+  monster: 100,
 
   // things that are not actually possible to touch
   floatingText: 200,
