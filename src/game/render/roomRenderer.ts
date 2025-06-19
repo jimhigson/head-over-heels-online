@@ -107,10 +107,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       lastRenderRoomTime: this.#lastRenderRoomTime,
     };
 
-    //console.log("ticking items", Object.keys(room.items));
-
     for (const item of iterateRoomItems(room.items)) {
-      //console.log("ticking item ", item.id);
       let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
 
       if (
@@ -159,10 +156,22 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
 
     // remove any renderers for items that no longer exist in the room:
+    let destroyedItemRenderers = false;
     for (const [itemId, itemRenderer] of this.#itemRenderers.entries()) {
       if (room.items[itemId] === undefined) {
         itemRenderer.destroy();
         this.#itemRenderers.delete(itemId as RoomItemId);
+        destroyedItemRenderers = true;
+      }
+    }
+    if (destroyedItemRenderers) {
+      // removing an item renderer could have removed from the scene graph something that is
+      // in a render layer
+      for (const c of this.#uncolourisedLayer.renderLayerChildren) {
+        if (c.parent === null) {
+          // c is not in the scene graph, remove from render layer too:
+          this.#uncolourisedLayer.detach(c);
+        }
       }
     }
   }

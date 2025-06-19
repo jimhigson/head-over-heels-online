@@ -92,6 +92,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   return {
     type: "floor",
     id: itemId,
+    jsonItemId: itemId,
     config: {
       ...floorJson.config,
       naturalFootprint: {
