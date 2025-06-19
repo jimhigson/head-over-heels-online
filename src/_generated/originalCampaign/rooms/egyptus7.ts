@@ -9,25 +9,25 @@ export const room = inferRoomJson({
     barrierForAnalogue: {
       config: { axis: "x", times: { x: 2, z: 3 } },
       isExtra: true,
-      position: { x: 3, y: 0.6, z: 4 },
+      position: { x: 3, y: 0.5, z: 4 },
       type: "barrier",
     },
     barrierForAnalogue2: {
       config: { axis: "y", times: { z: 3 } },
       isExtra: true,
-      position: { x: 4.6, y: 0, z: 4 },
+      position: { x: 4.5, y: 0, z: 4 },
       type: "barrier",
     },
     barrierForAnalogue3: {
       config: { axis: "y", times: { y: 2, z: 3 } },
       isExtra: true,
-      position: { x: 6.4, y: 3, z: 4 },
+      position: { x: 6.5, y: 3, z: 4 },
       type: "barrier",
     },
     barrierForAnalogue4: {
       config: { axis: "x", times: { z: 3 } },
       isExtra: true,
-      position: { x: 7, y: 2.4, z: 4 },
+      position: { x: 7, y: 2.5, z: 4 },
       type: "barrier",
     },
     "block@0,0,3": {
