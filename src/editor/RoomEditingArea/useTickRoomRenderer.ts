@@ -9,9 +9,11 @@ import type {
   EditorUnionOfAllItemInPlayTypes,
 } from "../EditorRoomId";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
+import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
   const currentEditingRoomState = useEditorRoomState();
+  const pixiApp = useProvidedPixiApplication();
 
   useEffect(
     () => {
@@ -49,6 +51,7 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
           // and only removed when the progression they are marked with is old)
           progression: progression++,
         });
+        pixiApp.render();
       };
 
       Ticker.shared.add(tick);
@@ -58,6 +61,6 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
     },
     // here are the things that, if they change, a tick happens. This is the
     // 'main loop' of the editor
-    [roomRenderer, currentEditingRoomState],
+    [roomRenderer, currentEditingRoomState, pixiApp],
   );
 };

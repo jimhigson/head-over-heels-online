@@ -236,6 +236,12 @@ export class MainLoop<RoomId extends string> {
     } else {
       this.app.stage.filters = this.#filtersWhenPaused;
     }
+
+    try {
+      this.app.render();
+    } catch (e) {
+      throw new Error("Error in Pixi.js render", { cause: e });
+    }
   };
 
   start() {

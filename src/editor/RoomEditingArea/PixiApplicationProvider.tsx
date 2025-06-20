@@ -3,6 +3,7 @@ import type { PropsWithChildren } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { spritesheetPalette } from "../../../gfx/spritesheetPalette";
 import type { EmptyObject } from "type-fest";
+import { stopAppAutoRendering } from "../../utils/pixi/stopAppAutoRendering";
 
 const PixiApplicationContext = createContext<Application>(
   // don't support root context:
@@ -32,6 +33,7 @@ export const PixiApplicationProvider = ({
         //   //appThisEffect.destroy();
         //   setInitialisedApp(null);
         // } else {
+        stopAppAutoRendering(appThisEffect);
         setInitialisedApp(appThisEffect);
         // }
       });
