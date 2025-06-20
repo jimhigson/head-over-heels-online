@@ -69,7 +69,7 @@ export const LevelEditorToolbar = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="flex fixed top-0 bottom-0 right-0 w-12 box-content text-white bg-metallicBlueHalfbrite p-half gap-1 flex-wrap justify-start overflow-auto">
+    <div className="scale-editor flex w-full h-full box-content text-white bg-metallicBlueHalfbrite py-1 gap-1 flex-wrap justify-start overflow-auto">
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Campaign</BitmapText>
         <RoomSelect

@@ -7,5 +7,4 @@ build-stats.html
 *.frag
 *.md
 .vscode
-campaign.converted.json
 hohjs.code-workspace

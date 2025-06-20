@@ -69,3 +69,9 @@ heels (more co-operation)
 * race against time to jump along some dissapearing barriers before mojos crash into them and make them vanish
 
 * lots of homing bots, and blocks to block them - have to be careful where stand and move strategically 
+
+* two homing bots stacked up inside a doorway (this looks so cool)
+
+* charles can completely block a doorway, and there's no way to get him out by pushing - puzzle to get to the joystick to get him out of the way
+
+* pushable/sliding blocks stacked up in a doorway to act as a one-way door - can only come through while pushing them from the other side

@@ -44,6 +44,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
+    "react-resizable-panels": "^3.0.3",
     "redux-persist": "^6.0.0",
     "snarkdown-in-react": "^2.0.2",
     "tailwind-merge": "^2.6.0",
