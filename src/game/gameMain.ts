@@ -18,6 +18,7 @@ import {
 import type { SavedGameState } from "./gameState/saving/SavedGameState";
 import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps } from "./physics/mechanicsConstants";
+import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -41,8 +42,11 @@ export const gameMain = async <RoomId extends string>(
       click: true,
       wheel: false,
     },
+    // I will have to tell pixi.js when to render:
+    autoStart: false,
   });
 
+  stopAppAutoRendering(app);
   app.ticker.maxFPS = maxFps;
 
   const savedGameToContinueFrom = store.getState().gameMenus
