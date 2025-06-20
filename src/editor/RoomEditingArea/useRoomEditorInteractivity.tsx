@@ -185,8 +185,9 @@ export const useRoomEditorInteractivity = (
       }
 
       if (
-        ((key as string) === "z" || key === "Z") &&
-        (event.ctrlKey || event.metaKey)
+        (key as string) === "z" ||
+        key === "Z" //&&
+        //(event.ctrlKey || event.metaKey)
       ) {
         // Ctrl+Z or Cmd+Z for undo - this may not work if the browser is taking
         // this keystroke over and not passing it down to Javascript

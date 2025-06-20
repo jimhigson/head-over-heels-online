@@ -75,6 +75,12 @@ export const spritesTailwindPlugin = plugin(
       ".pixelated": {
         imageRendering: "pixelated",
       },
+
+      // sets the css vars for the editor buttons/toolbars etc
+      ".scale-editor": {
+        "--scale": "2",
+        "--block": `16px`,
+      },
     };
 
     utilities[".loading-border"] = {

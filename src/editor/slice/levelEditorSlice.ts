@@ -87,6 +87,7 @@ export const levelEditorSlice = createSlice({
       const target =
         state.campaignInProgress.rooms[state.currentlyEditingRoomId].color;
 
+      pushUndoInPlace(state);
       Object.assign(target, colour);
     },
     changeRoomScenery(
@@ -99,7 +100,7 @@ export const levelEditorSlice = createSlice({
       const state = _state as LevelEditorState;
 
       const roomJson = selectCurrentRoomFromLevelEditorState(state);
-
+      pushUndoInPlace(state);
       changeRoomSceneryInPlace(roomJson, sceneryName);
     },
     changeToRoom(_state, { payload: roomId }: PayloadAction<EditorRoomId>) {

@@ -1,4 +1,5 @@
-import { type SceneryName } from "../../sprites/planets";
+import type { PlanetName } from "../../sprites/planets";
+import { planets, type SceneryName } from "../../sprites/planets";
 import type { EditorRoomJson } from "../EditorRoomId";
 import { rotatingSceneryTiles } from "./createStarterRoom";
 
@@ -20,6 +21,12 @@ export const changeRoomSceneryInPlace = (
           sceneryName,
           i.config.tiles.length,
         );
+      }
+    }
+
+    if (i.type === "pickup" && i.config.gives === "crown") {
+      if ((planets as Readonly<SceneryName[]>).includes(sceneryName)) {
+        i.config.planet = sceneryName as PlanetName;
       }
     }
   }
