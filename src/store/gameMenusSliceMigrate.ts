@@ -169,6 +169,7 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
 
       return v14State;
     },
+    15: revertToInitialStateMigration,
   },
   { debug: true },
 );
