@@ -16,6 +16,7 @@ import {
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import {
   errorCaught,
+  selectHasError,
   type DisplaySettings,
 } from "../../store/slices/gameMenusSlice";
 import { audioCtx } from "../../sound/audioCtx";
@@ -123,6 +124,14 @@ export class MainLoop<RoomId extends string> {
 
   private tick = ({ deltaMS }: Ticker): void => {
     const tickState = store.getState();
+
+    if (selectHasError(tickState)) {
+      // if there is an error, we don't want to tick the game state
+      // as it will probably cause the same error again - do not tick
+      // until the error is dismissed
+      return;
+    }
+
     const isPaused = selectIsPaused(tickState);
     const {
       gameMenus: {

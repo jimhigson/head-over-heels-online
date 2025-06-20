@@ -620,6 +620,11 @@ export const gameMenusSlice = createSlice({
       },
     );
   },
+  selectors: {
+    selectHasError(state: GameMenusState) {
+      return state.openMenus.some((menu) => menu.menuId === "errorCaught");
+    },
+  },
 });
 
 export type GameMenusSliceAction = ReturnType<
@@ -660,5 +665,7 @@ export const {
   setShowShadowMasks,
   toggleBoolean,
 } = gameMenusSlice.actions;
+
+export const { selectHasError } = gameMenusSlice.selectors;
 
 export const gameMenusSliceActions = gameMenusSlice.actions;
