@@ -1,3 +1,4 @@
+import { cycle, take } from "iter-tools";
 import type { JsonItem } from "../../model/json/JsonItem";
 import { type SceneryName, type Wall } from "../../sprites/planets";
 import type {
@@ -28,20 +29,11 @@ const wallStarterPatterns: { [ScN in SceneryName]: Array<Wall<ScN>> } = {
   safari: ["wall", "shield", "wall", "window", "window", "wall", "shield"],
 };
 
-export const rotatingSceneryTile = <S extends SceneryName>(
-  sceneryName: S,
-  n: number,
-): Wall<S> => {
-  const pattern = wallStarterPatterns[sceneryName];
-  return pattern[n % pattern.length];
-};
 export const rotatingSceneryTiles = <S extends SceneryName>(
   sceneryName: S,
   size: number,
 ): Wall<S>[] => {
-  return new Array(size)
-    .fill(0)
-    .map((_n, i) => rotatingSceneryTile(sceneryName, i));
+  return [...take(size, cycle(wallStarterPatterns[sceneryName]))];
 };
 
 const starterRoomWallItems: EditorRoomJsonItems = {

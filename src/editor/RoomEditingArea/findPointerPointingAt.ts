@@ -176,6 +176,7 @@ const worldPositionOnFaceForScreenPosition = (
   face: DirectionXyz4,
   gameEngineXy: Xy,
   tool: Tool,
+  halfGridResolution: boolean,
 ): Xyz => {
   let offset: Partial<Xyz> = originXyz;
   let plane: OrthoPlane;
@@ -214,15 +215,21 @@ const worldPositionOnFaceForScreenPosition = (
   );
 
   // the tool placement granularity can change depending on the tool:
-  const noHalfSteps = tool.type === "item" && tool.item.type === "door";
+  const noHalfSteps =
+    !halfGridResolution || (tool.type === "item" && tool.item.type === "door");
 
   // potentially allow items to be positioned on half-blocks for x and y
   // (unlike original hoh)
   const incrementXy = noHalfSteps ? blockSizePx.w : blockSizePx.w / 2;
   const incrementZ = blockSizePx.h;
-  // bias centres the position towards the bottom of the square while the pointer points to
-  // the middle of it
-  const biasXy = incrementXy / 2;
+
+  const biasXy =
+    noHalfSteps ?
+      // not sure why, but feels more natural to have 0 here when doing whole blocks
+      0
+      // bias centres the position towards the bottom of the square while the pointer points to
+      // the middle of it
+    : incrementXy / 2;
   const biasZ = incrementZ / 2;
 
   // apply rounding, but not in the direction of a normal to the face we
@@ -267,6 +274,7 @@ export const findPointerPointingAt = (
   pointerXy: Xy,
   room: EditorRoomState,
   tool: Tool,
+  halfGridResolution: boolean,
 ): PointingAt | undefined => {
   // find the item(s) that the mouse is over:
   const itemPointingTo = frontItem(
@@ -288,6 +296,7 @@ export const findPointerPointingAt = (
         face,
         pointerXy,
         tool,
+        halfGridResolution,
       ),
     };
   } else {

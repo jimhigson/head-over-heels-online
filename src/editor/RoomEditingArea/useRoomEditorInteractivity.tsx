@@ -59,14 +59,15 @@ export const useRoomEditorInteractivity = (
       const upscaledMouseXy = upscaledMousePosition(upscale, event);
 
       // no point in re-running this effect when it changes so select it 'live':
-      const tool = selectTool(
-        store.getState() as RootStateWithLevelEditorSlice,
-      );
+      const storeState = store.getState() as RootStateWithLevelEditorSlice;
+
+      const tool = selectTool(storeState);
 
       const pointingAt = findPointerPointingAt(
         upscaledMouseXy,
         roomState,
         tool,
+        storeState.levelEditor.halfGridResolution,
       );
 
       if (nanoEqual(pointingAt, pointingAtRef.current)) {

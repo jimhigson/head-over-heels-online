@@ -27,7 +27,7 @@ export type LevelEditorState = {
   nextItemId: number;
   tool: Tool;
   selectedJsonItemIds: Array<EditorRoomItemId>;
-
+  halfGridResolution: boolean;
   history: {
     undo: Array<EditorRoomJson>;
     redo: Array<EditorRoomJson>;
@@ -48,7 +48,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   currentlyEditingRoomId: initialRoomId,
   tool: { type: "pointer" },
   selectedJsonItemIds: [],
-
+  halfGridResolution: false,
   history: {
     undo: [],
     redo: [],
@@ -169,6 +169,18 @@ export const levelEditorSlice = createSlice({
      */
     injected() {},
 
+    changeGridResolution(
+      state,
+      { payload: halfGridResolution }: PayloadAction<boolean>,
+    ) {
+      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+      // down specifically to the WritableDraft<> type here - immer was making ts slow when we
+      // assigned to the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed
+      // anyway
+      const levelEditorState = state as LevelEditorState;
+      levelEditorState.halfGridResolution = halfGridResolution;
+    },
+
     ...undoReducers,
     ...applyToolReducers,
   },
@@ -196,6 +208,7 @@ export type LevelEditorSliceActionCreator = ValueOf<
 
 export const {
   applyToolToRoomJson,
+  changeGridResolution,
   changeRoomColour,
   changeRoomScenery,
   changeToRoom,
