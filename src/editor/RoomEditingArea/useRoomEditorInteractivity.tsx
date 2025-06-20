@@ -1,7 +1,7 @@
 import { type Xy } from "../../utils/vectors/vectors";
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import type { Upscale } from "../../store/slices/upscale/upscaleSlice";
+import type { Upscale } from "src/store/slices/upscale/Upscale";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";

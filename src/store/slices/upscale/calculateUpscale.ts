@@ -1,0 +1,71 @@
+import { resolutions, type ResolutionName } from "../../../originalGame";
+import type { DeviceType } from "../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { scaleXy, type Xy } from "../../../utils/vectors/vectors";
+import type { Upscale } from "./Upscale";
+
+export type CalculateUpscaleOptions = {
+  renderAreaSize: Xy;
+  emulatedResolutionName: ResolutionName;
+  devicePixelRatio: number;
+  deviceType?: DeviceType;
+};
+
+/**
+ * The maximum upscale that the game engine will do.
+ * Past this upscale, the upscale will be done on the canvas via css
+ * This is because on large screens (ie, 4k), the filters in the game can be
+ * slow. rendering in third/quarter-pixels is fine.
+ */
+
+export const maximumCanvasUpscale = 4;
+
+export const calculateUpscale = ({
+  renderAreaSize,
+  emulatedResolutionName,
+  devicePixelRatio,
+  deviceType = detectDeviceType(),
+}: CalculateUpscaleOptions): Upscale => {
+  const emulatedResolution = resolutions[emulatedResolutionName];
+
+  // if screen is in portrait, transpose the render area size to make it effectively landscape
+  const { renderAreaSize: landscapeRenderAreaSize, rotate90 } =
+    deviceType !== "desktop" && renderAreaSize.x < renderAreaSize.y ?
+      {
+        renderAreaSize: { x: renderAreaSize.y, y: renderAreaSize.x },
+        rotate90: true,
+      }
+      // everything is fine - do not rotate
+    : { renderAreaSize, rotate90: false };
+
+  // hardware pixels: undoing the device pixel ratio scaling
+  const hardwarePixels = scaleXy(landscapeRenderAreaSize, devicePixelRatio);
+
+  const totalUpscale = Math.floor(
+    Math.min(
+      hardwarePixels.x / emulatedResolution.x,
+      hardwarePixels.y / emulatedResolution.y,
+    ),
+  );
+
+  const gameEngineUpscale = Math.min(maximumCanvasUpscale, totalUpscale);
+  const cssUpscale = totalUpscale / gameEngineUpscale / devicePixelRatio;
+
+  const gameEngineScreenSize = {
+    x: Math.floor(hardwarePixels.x / totalUpscale),
+    y: Math.floor(hardwarePixels.y / totalUpscale),
+  };
+
+  const canvasSize = {
+    x: Math.ceil(landscapeRenderAreaSize.x / cssUpscale),
+    y: Math.ceil(landscapeRenderAreaSize.y / cssUpscale),
+  };
+
+  return {
+    gameEngineUpscale,
+    cssUpscale,
+    gameEngineScreenSize,
+    canvasSize,
+    rotate90,
+  };
+};
