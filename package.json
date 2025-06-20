@@ -29,6 +29,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "@mutabazia/react-portal": "^1.0.7",
     "@radix-ui/react-collapsible": "^1.1.3",
     "@radix-ui/react-popover": "^1.1.6",
@@ -38,6 +39,7 @@
     "cmdk": "1.0.4",
     "es-iterator-helpers": "^1.2.1",
     "husky": "^9.1.7",
+    "monaco-editor": "^0.52.2",
     "nano-equal": "^2.0.2",
     "natural-orderby": "^5.0.0",
     "pixi.js": "^8.8.1",

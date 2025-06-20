@@ -6,6 +6,7 @@ import { EditorRoomStateProvider } from "./EditorRoomStateProvider";
 import { useUpdateUpscaleWhenWindowResizes } from "../store/storeFlow/useUpateUpscaleWhenWIndowResizes";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import "./levelEditor.css";
+import { JsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor";
 
 const LevelEditor = () => {
   usePageAsAnApp();
@@ -17,26 +18,16 @@ const LevelEditor = () => {
       <title>Hoh Editor</title>
 
       <PanelGroup direction="horizontal" className="w-full h-full">
-        <Panel>
-          <PanelGroup direction="vertical">
-            <Panel id="editingArea">
-              <PixiApplicationProvider>
-                <EditorRoomStateProvider>
-                  <RoomEditingArea />
-                </EditorRoomStateProvider>
-              </PixiApplicationProvider>
-            </Panel>
-            <PanelResizeHandle className="scale-editor h-1 bg-metallicBlueHalfbrite hover:border-moss hover:bg-moss border-t-[calc(1px*var(--scale))] border-metallicBlue" />
-            <Panel
-              defaultSize={25}
-              minSize={10}
-              id="jsonEditor"
-              className="text-white"
-              collapsible
-            >
-              json editor here
-            </Panel>
-          </PanelGroup>
+        <Panel id="jsonEditor" defaultSize={18} minSize={12} collapsible>
+          <JsonRoomEditor />
+        </Panel>
+        <PanelResizeHandle className="scale-editor w-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-r-[calc(1px*var(--scale))] border-metallicBlue" />
+        <Panel id="editingArea">
+          <PixiApplicationProvider>
+            <EditorRoomStateProvider>
+              <RoomEditingArea />
+            </EditorRoomStateProvider>
+          </PixiApplicationProvider>
         </Panel>
         <PanelResizeHandle className="scale-editor w-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-l-[calc(1px*var(--scale))] border-metallicBlue" />
         <Panel id="toolbar" defaultSize={20} maxSize={33} minSize={10}>
