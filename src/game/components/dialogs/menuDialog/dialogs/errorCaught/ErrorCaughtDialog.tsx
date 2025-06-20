@@ -36,9 +36,11 @@ export const ErrorCaughtDialog = ({
   const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
 
   const errorsReportText = errors.toReversed().map(
-    ({ stack }) =>
-      // don't include error.message, because (in Chrome at least) it is included in error.stack
+    ({ stack, message }) =>
+      // In Chrome the message is already included in stack, but not Safari and maybe others
       `
+${message}
+
 ${stack}
   `,
   ).join(`
