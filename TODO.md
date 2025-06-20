@@ -7,7 +7,10 @@
 ## General
 
 [ ] split integration tests up
-[ ] split hud/world into rendergroups: https://pixijs.com/8.x/guides/concepts/render-groups
+
+[x] split hud/world into rendergroups: https://pixijs.com/8.x/guides/concepts/render-groups
+
+[ ] remove size from json/room state
 
 ### head push bag, heels pushes doughnuts
 [x] check #blacktooth6
@@ -42,6 +45,8 @@
     [x] trim the walls
 [x] scenery changer    
 [x] 'selector' tool    
+[ ] fails to add walls if not blacktooth due to scenery not existing
+[ ] outline of near-facing walls (new sprite)
 [ ] change wall tiles
 [ ] floor type toggle
     [ ] needs floor as 1st class type
@@ -56,6 +61,7 @@
 [ ] svg optimal size (fit contents exactly)
 
 ### sounds
+[ ] general falling sound (for all items)
 [ ] allow spot effects to continue after leaving a room
 [ ] fanfare on game start
 [ ] room enter short music
@@ -105,7 +111,9 @@ needed:
                 [x] gap on right too (between floors, due to mask)
             [x] #safari19triple
     [ ] dead code sweep 
-    [ ] sweep for all rooms whose size has been changed in a patch, look for floors whose size doesn't match any longer
+    [x] sweep for all rooms whose size has been changed in a patch, look for floors whose size doesn't match any longer
+    [x] extra shadow of door top 'wall'
+        - see #blacktooth1head and many others
     [x] falling 'out of room'
         - needs more occlusions: 
             use #blacktooth3 to get shield and add several mojos, watch them fall out
@@ -115,8 +123,8 @@ needed:
         [x] fixed - patches now all consistent 
                 as per branch `consistent-patch-formatting`
     [x] put floor overdraws back in: see `renderFloorOverdraws`
-        [ ] only for walls that need it - not over-doors
-          - maybe need a new item in play type here for an invisible, non-rendering cubiod block
+        [x] only for walls that need it - not over-doors
+          [x] - maybe need a new item in play type here for an invisible, non-rendering cubiod block
     
     [x] floor render aabbs - track thickness of floor edge, not the whole aabb  
         thickness
@@ -129,7 +137,7 @@ needed:
                 [x] this is cast by the doorlegs of the left-side door
                     (?) should door legs ever cast a shadow?
             [x] would be solved by floor edges as their own item
-    [ ] floor/back wall z-order flipping - see 
+    [x] floor/back wall z-order flipping - see 
         - #moonbase32 (left wall)
         - #egyptus9fish
         - need to somehow make sure walls are rendered on top of floors always
@@ -147,7 +155,9 @@ needed:
         #blacktooth17triple
         - still lines up ok in #moonbase33triple
 
-[ ] css upscale can be 0.5 (less than 1) - this seems wrong. Write tests for all the cases we want to cover!
+[ ] css upscale can be 0.5 (less than 1) 
+    - this seems wrong any time browser window > emulated resolution.
+    - Write tests for all ranges/cases want to cover
 
 [ ] make FS/OSS (again)
 

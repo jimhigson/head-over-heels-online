@@ -291,8 +291,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             <div className="flex flex-row items-center gap-x-1 justify-center pb-1 pt-1 bg-shadow text-white">
               <BitmapText>BBs:</BitmapText>
               <ShowBoundingBoxSelect />
-              <BitmapText>shadow:</BitmapText>
               <Switch
+                label="shadow"
                 value={showShadowMasks}
                 onClick={(e, newValue) => {
                   dispatch(setShowShadowMasks(newValue));

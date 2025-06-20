@@ -12,6 +12,7 @@ import {
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 import { twClass } from "../twClass";
+import { HalfGridResolutionSwitch } from "./HalfGridResolutionSwitch";
 import { ItemToolButton } from "./ItemToolButton";
 import { MultipleToolButtons } from "./MultipleToolButtons";
 import { PointerToolButton } from "./PointerToolButton";
@@ -87,6 +88,7 @@ export const LevelEditorToolbar = () => {
         <BitmapText className="w-full">Edit</BitmapText>
         <PointerToolButton />
         <UndoRedoButtons />
+        <HalfGridResolutionSwitch />
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Monsters</BitmapText>
