@@ -4,6 +4,7 @@ coverage
 package.json
 pnpm-lock.yaml
 build-stats.html
+build-stats-editor.html
 *.frag
 *.md
 .vscode

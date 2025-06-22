@@ -4,9 +4,9 @@ import { DialogPortal } from "../../ui/DialogPortal";
 import { directionsXy8 } from "../../utils/vectors/vectors";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 import { playableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
-import { BitmapText } from "./tailwindSprites/Sprite";
+import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
 
-export const NotFound404Page = () => {
+export const WantedEditor = () => {
   return (
     <DialogPortal>
       <Border className="loading-border" />
@@ -15,25 +15,36 @@ export const NotFound404Page = () => {
           {directionsXy8.map((d) => (
             <span
               key={d}
-              className={`sprite ${playableTailwindSpriteClassname({ action: "walking", character: "head", facingXy8: d })}`}
+              className={`sprite ${playableTailwindSpriteClassname({ action: "idle", character: "head", facingXy8: d })}`}
             />
           ))}
         </div>
         <div className="flex flex-col grow text-center justify-center">
-          <BitmapText className="sprites-double-height">
-            404 Not found
+          <BitmapText className="sprites-double-height mb-1">
+            This is not the editor
           </BitmapText>
-          <BitmapText
+          <MultipleBitmapText
             className={`${multilineTextClass} p-1 pt-2 text-metallicBlue`}
           >
-            whatever you’re looking for, it ain’t here
-          </BitmapText>
+            <p>
+              If you’re seeing this, you’re trying to access the level editor,
+              but the web manifest is getting in the way and redirected you to
+              the game’s client-side routing.
+            </p>
+            <p className="pt-1">
+              You could try going to:{" "}
+              <a href="/editor/" className="bitmap-text-link">
+                /editor/
+              </a>{" "}
+              (with a slash on the end)
+            </p>
+          </MultipleBitmapText>
         </div>
         <div className="flex flex-col">
           {directionsXy8.toReversed().map((d) => (
             <span
               key={d}
-              className={`sprite ${playableTailwindSpriteClassname({ action: "walking", character: "heels", facingXy8: d })}`}
+              className={`sprite ${playableTailwindSpriteClassname({ action: "idle", character: "heels", facingXy8: d })}`}
             />
           ))}
         </div>

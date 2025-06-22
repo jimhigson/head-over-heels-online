@@ -9,8 +9,8 @@ import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { useEffect } from "react";
 import { useIsUncolourised } from "../../store/selectors.ts";
 import { LoadingProvider } from "./LoadingContext.tsx";
-import { LevelEditorLoader } from "../../editor/LevelEditorLoader.tsx";
-import { NotFound404PageLazy } from "./NotFound404Page.lazy.tsx";
+import { WantedEditor } from "./WantedEditor.tsx";
+import { NotFound404Page } from "./NotFound404Page.tsx";
 
 const AppInner = () => {
   const uncolourised = useIsUncolourised();
@@ -39,12 +39,12 @@ const AppInner = () => {
       </Route>
       <Route path="/editor">
         <CssVariables>
-          <LevelEditorLoader />
+          <WantedEditor />
         </CssVariables>
       </Route>
       <Route>
         <CssVariables>
-          <NotFound404PageLazy />
+          <NotFound404Page />
         </CssVariables>
       </Route>
     </Switch>

@@ -5,6 +5,8 @@ import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
 import { VitePWA } from "vite-plugin-pwa";
 
+const oneWeekInSeconds = 60 * 60 * 24 * 7;
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -23,6 +25,23 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,mp3,m4a}"],
+
+        runtimeCaching: [
+          {
+            // Cache everything *except* /editor/*
+            urlPattern: ({ url }) => !url.pathname.startsWith("/editor"),
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "app-cache",
+              expiration: {
+                maxEntries: 999,
+                maxAgeSeconds: oneWeekInSeconds,
+              },
+            },
+          },
+        ],
+        navigateFallback: "/index.html",
+        navigateFallbackDenylist: [/^\/editor/], // Don’t redirect /editor/* to index.html
       },
       manifest: {
         background_color: "#000000",
