@@ -27,11 +27,7 @@ export type ItemInPlayType =
    */
   | "particle"
   /** when collecting pickups */
-  | "floatingText"
-  /**
-   * for the room editor only!
-   */
-  | "cursor";
+  | "floatingText";
 
 export type SwitchSetting = "left" | "right";
 

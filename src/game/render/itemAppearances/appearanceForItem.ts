@@ -30,7 +30,6 @@ import { switchAppearance } from "./switchAppearance";
 import { blockAppearance } from "./blockAppearance";
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { toasterAppearance } from "./toasterAppearance";
-import { cursorAppearance } from "./cursorAppearance";
 import {
   makeTextContainer,
   showTextInContainer,
@@ -280,9 +279,6 @@ const itemAppearancesMap: {
       });
     },
   ),
-
-  // level editor appearances:
-  cursor: cursorAppearance,
 };
 
 /**
