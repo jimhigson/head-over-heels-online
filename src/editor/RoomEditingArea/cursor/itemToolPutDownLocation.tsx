@@ -113,8 +113,7 @@ export const previewItemsForCursor = <T extends JsonItemType>(
 ): EditorUnionOfAllItemInPlayTypes[] | undefined => {
   const collideableItemsInRoom = [
     ...iterateRoomItems(roomState.items).filter(
-      (item) =>
-        isSolid(item) && item.type !== "cursor" && !item.isCursorPreview,
+      (item) => isSolid(item) && !item.isCursorPreview,
     ),
   ];
 

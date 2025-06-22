@@ -4,7 +4,6 @@ import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
 import { objectEntries, objectValues } from "iter-tools";
 import { iterate } from "../utils/iterate";
-import type { EditorCursorRoomItemId } from "../editor/EditorRoomId";
 
 /*type RoomItemIdWithKnownIds = (
   | "head"
@@ -53,9 +52,6 @@ export const getRoomItem = <
           "headOverHeels",
           ScN
         >
-      : // for the room editor, the cursor has a well-known id:
-      Id extends EditorCursorRoomItemId ?
-        ItemInPlay<"cursor", RoomId, RoomItemId | "cursor", "cursor", ScN>
       : UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>)
     | undefined;
 };

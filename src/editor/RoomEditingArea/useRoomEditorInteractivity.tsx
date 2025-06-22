@@ -18,13 +18,12 @@ import {
 import { store } from "../../store/store";
 import {
   mutateRoomRemoveCursorPreviews,
-  mutateRoomAddCursorItems,
+  mutateRoomAddCursorPreviews,
 } from "./cursor/mutateRoomWithCursorPointingAt";
 import {
   previewItemsForCursor,
   itemToolPutDownLocation,
 } from "./cursor/itemToolPutDownLocation";
-import { emptyArray } from "../../utils/empty";
 import nanoEqual from "nano-equal";
 import type { ApplyToolToRoomJsonPayload } from "../slice/reducers/applyToolToRoomJson";
 import { findPointerPointingAt } from "./findPointerPointingAt";
@@ -84,27 +83,15 @@ export const useRoomEditorInteractivity = (
               roomState,
               tool.item,
             );
-            const valid = previewItems !== undefined;
 
             mutateRoomRemoveCursorPreviews(roomState);
-            mutateRoomAddCursorItems({
-              room: roomState,
-              pointingAt,
-              valid,
-              includeCursor: !valid,
-              previewItems: previewItems ?? emptyArray,
-            });
+            if (previewItems !== undefined) {
+              mutateRoomAddCursorPreviews(roomState, previewItems);
+            }
             break;
           }
           case "pointer": {
             mutateRoomRemoveCursorPreviews(roomState);
-            mutateRoomAddCursorItems({
-              room: roomState,
-              pointingAt,
-              valid: true,
-              includeCursor: true,
-              previewItems: emptyArray,
-            });
             const hoveredJsonItemId =
               roomState.items[pointingAt.itemId]?.jsonItemId;
             roomState.editor = {
