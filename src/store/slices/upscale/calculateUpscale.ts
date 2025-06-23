@@ -41,11 +41,14 @@ export const calculateUpscale = ({
   // hardware pixels: undoing the device pixel ratio scaling
   const hardwarePixels = scaleXy(landscapeRenderAreaSize, devicePixelRatio);
 
-  const totalUpscale = Math.floor(
-    Math.min(
-      hardwarePixels.x / emulatedResolution.x,
-      hardwarePixels.y / emulatedResolution.y,
+  const totalUpscale = Math.max(
+    Math.floor(
+      Math.min(
+        hardwarePixels.x / emulatedResolution.x,
+        hardwarePixels.y / emulatedResolution.y,
+      ),
     ),
+    1,
   );
 
   const gameEngineUpscale = Math.min(maximumCanvasUpscale, totalUpscale);

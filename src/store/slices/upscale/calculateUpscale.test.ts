@@ -227,23 +227,28 @@ describe("invariants hold over a huge number of cases", () => {
   ])(
     "renderAreaSize $renderAreaSize.name ($renderAreaSize.x x $renderAreaSize.y), emulated resolution $emulatedResolutionName, device pixel ratio $devicePixelRatio",
     ({ renderAreaSize, emulatedResolutionName, devicePixelRatio }) => {
+      const longSide = Math.max(renderAreaSize.x, renderAreaSize.y);
+      const shortSide = Math.min(renderAreaSize.x, renderAreaSize.y);
+
       const landscapeResult = calculateUpscale({
-        renderAreaSize,
+        renderAreaSize: { x: longSide, y: shortSide },
         emulatedResolutionName,
         devicePixelRatio,
       });
       const portraitResult = calculateUpscale({
-        renderAreaSize: { y: renderAreaSize.x, x: renderAreaSize.y },
+        renderAreaSize: { x: shortSide, y: longSide },
         emulatedResolutionName,
         devicePixelRatio,
         deviceType: "mobile",
       });
 
-      test("should multiply to the correct value", () => {
-        // expect(landscapeResult.gameEngineScreenSize).toEqual(
-        //   scaleXy(renderAreaSize, devicePixelRatio),
-        // );
-      });
+      // TODO: add to these invariants as understanding of the requirements improves
+
+      //test.todo("should multiply to the correct value", () => {
+      // expect(landscapeResult.gameEngineScreenSize).toEqual(
+      //   scaleXy(renderAreaSize, devicePixelRatio),
+      // );
+      //});
 
       test("respects maximum upscale", () => {
         // css should only be used to upscale, not downscale:
@@ -253,7 +258,8 @@ describe("invariants hold over a huge number of cases", () => {
       });
 
       test("css can be used to bring the size down, but not below the undoing of the devicePixelRatio", () => {
-        // css should only be used to upscale, not downscale:
+        // css should only be used to upscale, not downscale, but this is relative to the inherent downsizing needed for
+        // the devicePixelRatio:
         expect(landscapeResult.cssUpscale).toBeGreaterThanOrEqual(
           1 / devicePixelRatio,
         );
