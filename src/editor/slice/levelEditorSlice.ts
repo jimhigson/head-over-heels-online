@@ -35,7 +35,7 @@ export type LevelEditorState = {
 };
 
 const initialRoomId = "room#0" as EditorRoomId;
-const initialRoom = { ...structuredClone(starterRoom), id: initialRoomId };
+const initialRoom = { id: initialRoomId, ...structuredClone(starterRoom) };
 export const initialLevelEditorSliceState: LevelEditorState = {
   campaignInProgress: {
     name: "new campaign",
@@ -112,6 +112,17 @@ export const levelEditorSlice = createSlice({
 
       // clear undo/redo history when changing room:
       state.history = initialLevelEditorSliceState.history;
+    },
+
+    roomJsonEdited(
+      _state,
+      { payload: roomJson }: PayloadAction<EditorRoomJson>,
+    ) {
+      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+      // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
+      // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
+      const state = _state as LevelEditorState;
+      state.campaignInProgress.rooms[state.currentlyEditingRoomId] = roomJson;
     },
 
     /** set (or unset) the selection */
@@ -216,6 +227,7 @@ export const {
   deleteSelected,
   injected,
   redo,
+  roomJsonEdited,
   setSelectedItemInRoom,
   setTool,
   undo,

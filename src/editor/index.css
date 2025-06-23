@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* Prevent touch actions like scroll and pinch-to-zoom: */
+  touch-action: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
