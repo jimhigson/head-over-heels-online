@@ -7,7 +7,7 @@ import type {
 import type { GameState } from "../gameState/GameState";
 import type { MovedItems } from "../mainLoop/progressGameState";
 import type { SetRequired } from "type-fest";
-import type { Upscale } from "../../store/slices/upscale/upscaleSlice";
+import type { Upscale } from "src/store/slices/upscale/Upscale";
 
 /** some context that most renderers need, to be composed into their contexts */
 export type GeneralRenderContext<RoomId extends string> = {

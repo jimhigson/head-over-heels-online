@@ -1,6 +1,6 @@
 import { resolutions, type ResolutionName } from "../../../originalGame";
 import { detectDeviceType } from "../../../utils/detectDeviceType";
-import type { CalculateUpscaleOptions } from "./upscaleSlice";
+import type { CalculateUpscaleOptions } from "./calculateUpscale";
 
 const currentScreenSize = () => {
   const deviceType = detectDeviceType();
