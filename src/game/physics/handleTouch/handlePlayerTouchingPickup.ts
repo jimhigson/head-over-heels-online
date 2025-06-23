@@ -149,6 +149,7 @@ export const handlePlayerTouchingPickup = <
       if (toModify === undefined) {
         return;
       }
+      toModify.fastStepsStartedAtDistance = toModify.gameWalkDistance;
       addFloatingText(["⚡", "fast steps"]);
       markAsCollected();
       break;

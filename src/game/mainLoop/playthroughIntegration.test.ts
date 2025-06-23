@@ -240,6 +240,45 @@ describe("pickups", () => {
     ).toBeUndefined();
   });
 
+  test("after collecting a fast pickup, head has fast steps", () => {
+    // confirms fix for a bug where head couldn't collect the fast steps:
+    // https://discord.com/channels/1346483548290285568/1346483548290285571/1386696014236352612
+
+    const gameState = basicGameState({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: { x: 0, y: 4, z: 0 },
+          config: {
+            which: "head",
+          },
+        },
+        pickupLeftOfHead: {
+          type: "pickup",
+          position: { x: 2, y: 4, z: 0 },
+          config: {
+            gives: "fast",
+          },
+        },
+      },
+    });
+
+    //confirm it sets up with this number negative:
+    expect(headState(gameState).fastStepsStartedAtDistance).toBeLessThan(0);
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "left";
+      },
+      until(gameState) {
+        //picked up means no longer negative:
+        return headState(gameState).fastStepsStartedAtDistance > 0;
+      },
+      // set frame rate low since it doesn't matter for this test:
+      frameRate: 15,
+    });
+  });
+
   test.todo(
     "pickups do not reload back after collecting, leaving room, and coming back",
     () => {
