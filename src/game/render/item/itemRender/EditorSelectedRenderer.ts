@@ -14,9 +14,10 @@ import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 
 const selectionColour = spritesheetPalette.pastelBlue;
+const hoverColour = spritesheetPalette.highlightBeige;
 
 const hoverFilter = new OutlineFilter({
-  outlineColor: selectionColour,
+  outlineColor: hoverColour,
   upscale: selectGameEngineUpscale(store.getState()),
   lowRes: false,
 });
@@ -54,7 +55,7 @@ export class EditorSelectedRenderer<T extends ItemInPlayType>
       );
 
     this.output.filters =
-      isHovered && isSelected ? [hoverFilter, selectedFilter]
+      isHovered && isSelected ? [selectedFilter, hoverFilter]
       : isHovered ? hoverFilter
       : isSelected ? selectedFilter
       : noFilters;

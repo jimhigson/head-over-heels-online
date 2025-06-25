@@ -6,11 +6,16 @@ import { selectEmulatedResolutionName } from "../selectors";
 import type { ResolutionName } from "../../originalGame";
 import { upscaleToWindow } from "../slices/upscale/upscaleSlice";
 
-const updateUpscaleNow = (fixedResolution?: ResolutionName) => {
+const updateUpscaleNow = (
+  fixedEmulatedResolution?: ResolutionName,
+  targetElement?: HTMLElement,
+) => {
   store.dispatch(
     upscaleToWindow(
       upscaleOptionsForCurrentDevice(
-        fixedResolution ?? selectEmulatedResolutionName(store.getState()),
+        fixedEmulatedResolution ??
+          selectEmulatedResolutionName(store.getState()),
+        targetElement,
       ),
     ),
   );
@@ -23,7 +28,8 @@ export const useUpdateUpscaleWhenWindowResizes = (
    * Otherwise (the norm, for in-game) the resolution from the user settings or the default
    * will be used
    */
-  fixedResolution?: ResolutionName,
+  fixedEmulatedResolution?: ResolutionName,
+  targetElement?: HTMLElement,
 ): void => {
   const dispatch = useAppDispatch();
 
@@ -33,9 +39,17 @@ export const useUpdateUpscaleWhenWindowResizes = (
   }, []);
 
   useLayoutEffect(() => {
-    const handler = () => updateUpscaleNow(fixedResolution);
-    // on every resize, update the store with the correct size:
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, [dispatch, fixedResolution]);
+    const handler = () =>
+      updateUpscaleNow(fixedEmulatedResolution, targetElement);
+    // if an element is given, use its size instead of the window size:
+    if (targetElement) {
+      const resizeObserver = new ResizeObserver(handler);
+      resizeObserver.observe(targetElement);
+      return () => resizeObserver.disconnect();
+    } else {
+      // on every resize, update the store with the correct size:
+      window.addEventListener("resize", handler);
+      return () => window.removeEventListener("resize", handler);
+    }
+  }, [dispatch, targetElement, fixedEmulatedResolution]);
 };

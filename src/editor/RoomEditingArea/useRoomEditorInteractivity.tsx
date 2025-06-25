@@ -29,12 +29,23 @@ import type { ApplyToolToRoomJsonPayload } from "../slice/reducers/applyToolToRo
 import { findPointerPointingAt } from "./findPointerPointingAt";
 import type { Key } from "../../game/input/keys";
 
-const upscaledMousePosition = (upscale: Upscale, event: MouseEvent): Xy => {
+const upscaledMousePosition = (
+  upscale: Upscale,
+  event: MouseEvent,
+): Xy | undefined => {
   const totalUpscale = upscale.cssUpscale * upscale.gameEngineUpscale;
-  //const totalUpscale = upscale.gameEngineUpscale * upscale.cssUpscale;
+
+  if (event.target === null) {
+    return undefined;
+  }
+
+  const rect = (event.target as HTMLElement).getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+
   return {
-    x: event.x / totalUpscale - upscale.gameEngineScreenSize.x / 2,
-    y: event.y / totalUpscale - upscale.gameEngineScreenSize.y + 16,
+    x: x / totalUpscale - upscale.gameEngineScreenSize.x / 2,
+    y: y / totalUpscale - upscale.gameEngineScreenSize.y + 16,
   };
 };
 
@@ -56,6 +67,10 @@ export const useRoomEditorInteractivity = (
 
     const handleMouseMove = (event: MouseEvent) => {
       const upscaledMouseXy = upscaledMousePosition(upscale, event);
+
+      if (upscaledMouseXy === undefined) {
+        return;
+      }
 
       // no point in re-running this effect when it changes so select it 'live':
       const storeState = store.getState() as RootStateWithLevelEditorSlice;
