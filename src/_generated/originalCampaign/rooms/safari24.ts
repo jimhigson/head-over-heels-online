@@ -57,7 +57,7 @@ export const room = inferRoomJson({
         movement: "clockwise",
         startDirection: "away",
       },
-      isExtra: true,
+
       position: { x: 7, y: 2.5, z: 0 },
       type: "movingPlatform",
     },
@@ -67,7 +67,7 @@ export const room = inferRoomJson({
         movement: "clockwise",
         startDirection: "left",
       },
-      isExtra: true,
+
       position: { x: 3.5, y: 0, z: 0 },
       type: "movingPlatform",
     },
@@ -77,7 +77,7 @@ export const room = inferRoomJson({
         movement: "clockwise",
         startDirection: "right",
       },
-      isExtra: true,
+
       position: { x: 3.5, y: 5, z: 0 },
       type: "movingPlatform",
     },

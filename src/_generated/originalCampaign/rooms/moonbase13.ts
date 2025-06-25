@@ -104,7 +104,7 @@ export const room = inferRoomJson({
         ],
         type: "in-room",
       },
-      isExtra: true,
+
       position: { x: 0, y: 1, z: 0 },
       type: "switch",
     },
@@ -133,7 +133,7 @@ export const room = inferRoomJson({
         ],
         type: "in-room",
       },
-      isExtra: true,
+
       position: { x: 0, y: 6, z: 0 },
       type: "switch",
     },

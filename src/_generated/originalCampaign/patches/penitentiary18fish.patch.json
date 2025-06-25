@@ -90,7 +90,6 @@
       "config": {
         "gives": "shield"
       },
-      "isExtra": true,
       "position": {
         "x": 15,
         "y": 5,

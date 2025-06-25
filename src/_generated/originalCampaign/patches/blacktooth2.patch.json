@@ -4,7 +4,6 @@
     "path": "/items/extra",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 1,
@@ -18,7 +17,6 @@
     "path": "/items/extra2",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 4,
@@ -32,7 +30,6 @@
     "path": "/items/extra3",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 3.5,
@@ -46,7 +43,6 @@
     "path": "/items/extra4",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 1.5,
@@ -60,7 +56,6 @@
     "path": "/items/extra5",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 2,
@@ -74,7 +69,6 @@
     "path": "/items/extra6",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 3,
@@ -88,7 +82,6 @@
     "path": "/items/extra7",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 2.5,
@@ -105,7 +98,6 @@
         "gives": "scroll",
         "page": "historyOfTheBlacktoothEmpire"
       },
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 2.5,

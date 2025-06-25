@@ -43,7 +43,7 @@ export const room = inferRoomJson({
     },
     extraShield: {
       config: { gives: "shield" },
-      isExtra: true,
+
       position: { x: 15, y: 5, z: 3 },
       type: "pickup",
     },

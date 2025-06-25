@@ -68,7 +68,7 @@ export const room = inferRoomJson({
     },
     extraVolcano: {
       config: { style: "volcano", times: { x: 8, y: 2 } },
-      isExtra: true,
+
       position: { x: 0, y: 10, z: 0 },
       type: "deadlyBlock",
     },

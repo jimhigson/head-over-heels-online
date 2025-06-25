@@ -42,13 +42,13 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: { gives: "scroll", page: "head" },
-      isExtra: true,
+
       position: { x: 7, y: 1, z: 0 },
       type: "pickup",
     },
     scroll2: {
       config: { gives: "scroll", page: "heels" },
-      isExtra: true,
+
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
     },

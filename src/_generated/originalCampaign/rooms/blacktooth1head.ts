@@ -32,7 +32,7 @@ export const room = inferRoomJson({
         path: "userSettings.displaySettings.uncolourised",
         type: "in-store",
       },
-      isExtra: true,
+
       position: { x: 5, y: 3, z: 0 },
       type: "switch",
     },

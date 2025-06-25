@@ -22,13 +22,13 @@ export const room = inferRoomJson({
     },
     extraBall: {
       config: {},
-      isExtra: true,
+
       position: { x: 4, y: 0, z: 0 },
       type: "ball",
     },
     extraBall2: {
       config: {},
-      isExtra: true,
+
       position: { x: 7, y: 2, z: 0 },
       type: "ball",
     },
@@ -40,7 +40,7 @@ export const room = inferRoomJson({
         style: "starsAndStripes",
         which: "skiHead",
       },
-      isExtra: true,
+
       position: { x: 2, y: 0, z: 0 },
       type: "monster",
     },
@@ -52,7 +52,7 @@ export const room = inferRoomJson({
         style: "starsAndStripes",
         which: "skiHead",
       },
-      isExtra: true,
+
       position: { x: 7, y: 5, z: 0 },
       type: "monster",
     },
@@ -64,7 +64,7 @@ export const room = inferRoomJson({
         style: "greenAndPink",
         which: "skiHead",
       },
-      isExtra: true,
+
       position: { x: 7, y: 0, z: 0 },
       type: "monster",
     },
@@ -76,7 +76,7 @@ export const room = inferRoomJson({
         style: "greenAndPink",
         which: "skiHead",
       },
-      isExtra: true,
+
       position: { x: 7, y: 1, z: 0 },
       type: "monster",
     },
@@ -114,19 +114,19 @@ export const room = inferRoomJson({
     },
     raisedPlatform: {
       config: { style: "artificial", times: { x: 2, y: 4 } },
-      isExtra: true,
+
       position: { x: 4, y: 2, z: 1 },
       type: "block",
     },
     raisedPlatformSupport: {
       config: { style: "tower", times: { x: 2 } },
-      isExtra: true,
+
       position: { x: 4, y: 2, z: 0 },
       type: "block",
     },
     raisedPlatformSupport2: {
       config: { style: "tower", times: { x: 2 } },
-      isExtra: true,
+
       position: { x: 4, y: 5, z: 0 },
       type: "block",
     },

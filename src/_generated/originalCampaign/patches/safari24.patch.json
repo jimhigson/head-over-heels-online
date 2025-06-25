@@ -52,7 +52,6 @@
         "movement": "clockwise",
         "startDirection": "away"
       },
-      "isExtra": true,
       "position": {
         "x": 7,
         "y": 2.5,
@@ -70,7 +69,6 @@
         "movement": "clockwise",
         "startDirection": "left"
       },
-      "isExtra": true,
       "position": {
         "x": 3.5,
         "y": 0,
@@ -88,7 +86,6 @@
         "movement": "clockwise",
         "startDirection": "right"
       },
-      "isExtra": true,
       "position": {
         "x": 3.5,
         "y": 5,

@@ -18,13 +18,13 @@ export const room = inferRoomJson({
     },
     extraBarrier: {
       config: { axis: "x", times: { x: 5 } },
-      isExtra: true,
+
       position: { x: 0, y: 4.5, z: 1 },
       type: "barrier",
     },
     extraBlock: {
       config: { style: "artificial", times: { x: 5 } },
-      isExtra: true,
+
       position: { x: 0, y: 5, z: 0 },
       type: "block",
     },
@@ -34,7 +34,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      isExtra: true,
+
       position: { x: 0, y: 5, z: 10 },
       type: "monster",
     },

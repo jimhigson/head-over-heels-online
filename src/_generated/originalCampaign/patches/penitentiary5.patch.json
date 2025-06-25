@@ -14,7 +14,6 @@
         },
         "style": "artificial"
       },
-      "isExtra": true,
       "position": {
         "x": 2,
         "y": 5,
@@ -33,7 +32,6 @@
         },
         "style": "artificial"
       },
-      "isExtra": true,
       "position": {
         "x": 2,
         "y": 5,
@@ -52,7 +50,6 @@
         },
         "style": "artificial"
       },
-      "isExtra": true,
       "position": {
         "x": 2,
         "y": 5,
@@ -71,7 +68,6 @@
         },
         "style": "artificial"
       },
-      "isExtra": true,
       "position": {
         "x": 2,
         "y": 5,
@@ -90,7 +86,6 @@
         },
         "style": "artificial"
       },
-      "isExtra": true,
       "position": {
         "x": 2,
         "y": 5,
@@ -106,7 +101,6 @@
       "config": {
         "style": "artificial"
       },
-      "isExtra": true,
       "position": {
         "x": 5,
         "y": 5,
@@ -122,7 +116,6 @@
       "config": {
         "style": "artificial"
       },
-      "isExtra": true,
       "position": {
         "x": 5,
         "y": 5,

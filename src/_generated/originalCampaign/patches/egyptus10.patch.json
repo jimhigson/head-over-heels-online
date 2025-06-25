@@ -287,7 +287,6 @@
           "y": 5
         }
       },
-      "isExtra": true,
       "position": {
         "x": 1,
         "y": 1,
@@ -307,7 +306,6 @@
           "y": 3
         }
       },
-      "isExtra": true,
       "position": {
         "x": 2,
         "y": 2,
@@ -323,7 +321,6 @@
       "config": {
         "style": "organic"
       },
-      "isExtra": true,
       "position": {
         "x": 3,
         "y": 3,
@@ -337,7 +334,6 @@
     "path": "/items/pyramidBall",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 3,
         "y": 3,

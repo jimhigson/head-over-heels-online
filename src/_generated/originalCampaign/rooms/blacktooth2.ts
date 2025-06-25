@@ -13,43 +13,43 @@ export const room = inferRoomJson({
     },
     extra: {
       config: {},
-      isExtra: true,
+
       position: { x: 1, y: 1, z: 0 },
       type: "pushableBlock",
     },
     extra2: {
       config: {},
-      isExtra: true,
+
       position: { x: 1, y: 4, z: 0 },
       type: "pushableBlock",
     },
     extra3: {
       config: {},
-      isExtra: true,
+
       position: { x: 1, y: 3.5, z: 1 },
       type: "pushableBlock",
     },
     extra4: {
       config: {},
-      isExtra: true,
+
       position: { x: 1, y: 1.5, z: 1 },
       type: "pushableBlock",
     },
     extra5: {
       config: {},
-      isExtra: true,
+
       position: { x: 1, y: 2, z: 2 },
       type: "pushableBlock",
     },
     extra6: {
       config: {},
-      isExtra: true,
+
       position: { x: 1, y: 3, z: 2 },
       type: "pushableBlock",
     },
     extra7: {
       config: {},
-      isExtra: true,
+
       position: { x: 1, y: 2.5, z: 3 },
       type: "pushableBlock",
     },
@@ -64,7 +64,7 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: { gives: "scroll", page: "historyOfTheBlacktoothEmpire" },
-      isExtra: true,
+
       position: { x: 1, y: 2.5, z: 4 },
       type: "pickup",
     },

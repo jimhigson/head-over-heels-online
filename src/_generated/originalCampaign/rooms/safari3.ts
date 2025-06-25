@@ -38,7 +38,7 @@ export const room = inferRoomJson({
     },
     liftExtra: {
       config: { bottom: 0, top: 8 },
-      isExtra: true,
+
       position: { x: 2, y: 4, z: 0 },
       type: "lift",
     },

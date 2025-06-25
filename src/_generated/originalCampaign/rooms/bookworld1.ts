@@ -32,7 +32,7 @@ export const room = inferRoomJson({
     },
     extraLanding: {
       config: { style: "book", times: { z: 4 } },
-      isExtra: true,
+
       position: { x: 0, y: 4, z: 0 },
       type: "block",
     },

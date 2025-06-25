@@ -6,7 +6,6 @@
       "config": {
         "gives": "extra-life"
       },
-      "isExtra": true,
       "position": {
         "x": 6,
         "y": 7,
@@ -25,7 +24,6 @@
           "z": 3
         }
       },
-      "isExtra": true,
       "position": {
         "x": 4,
         "y": 7,
@@ -44,7 +42,6 @@
           "z": 6
         }
       },
-      "isExtra": true,
       "position": {
         "x": 5,
         "y": 7,
@@ -63,7 +60,6 @@
           "z": 6
         }
       },
-      "isExtra": true,
       "position": {
         "x": 6,
         "y": 7,

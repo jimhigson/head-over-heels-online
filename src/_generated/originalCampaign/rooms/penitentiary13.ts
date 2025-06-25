@@ -63,7 +63,7 @@ export const room = inferRoomJson({
     },
     extra1: {
       config: { style: "artificial" },
-      isExtra: true,
+
       position: { x: 5, y: 3, z: 0 },
       type: "block",
     },

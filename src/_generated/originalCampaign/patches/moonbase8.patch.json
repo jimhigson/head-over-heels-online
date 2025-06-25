@@ -11,7 +11,6 @@
       "config": {
         "style": "cube"
       },
-      "isExtra": true,
       "position": {
         "x": 5,
         "y": 7,
@@ -27,7 +26,6 @@
       "config": {
         "style": "cube"
       },
-      "isExtra": true,
       "position": {
         "x": 2,
         "y": 7,

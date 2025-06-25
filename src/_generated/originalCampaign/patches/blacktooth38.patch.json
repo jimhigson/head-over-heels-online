@@ -9,7 +9,6 @@
           "x": 5
         }
       },
-      "isExtra": true,
       "position": {
         "x": 0,
         "y": 4.5,
@@ -28,7 +27,6 @@
           "x": 5
         }
       },
-      "isExtra": true,
       "position": {
         "x": 0,
         "y": 5,
@@ -46,7 +44,6 @@
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },
-      "isExtra": true,
       "position": {
         "x": 0,
         "y": 5,
