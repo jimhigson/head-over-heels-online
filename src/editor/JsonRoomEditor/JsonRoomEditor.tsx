@@ -1,14 +1,12 @@
-import { useCallback, useMemo, useState } from "react";
-import type { Monaco, OnChange } from "@monaco-editor/react";
+import { useMemo, useState } from "react";
+import type { Monaco } from "@monaco-editor/react";
 import { Editor } from "@monaco-editor/react";
 import { useCurrentEditingRoomJson } from "../slice/levelEditorSelectors";
 import type { editor } from "monaco-editor";
-import { useAppDispatch } from "../../store/hooks";
-import nanoEqual from "nano-equal";
-import type { EditorRoomJson } from "../EditorRoomId";
-import { roomJsonEdited } from "../slice/levelEditorSlice";
 import { useLoadMonaco } from "./useLoadMonaco";
 import { useSyncSelectionWithMonaco } from "./useSyncSelectionWithMonaco";
+import roomSchema from "../../_generated/room.schema.json";
+import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
 
 export const JsonRoomEditor = () => {
   const monaco = useLoadMonaco();
@@ -17,33 +15,9 @@ export const JsonRoomEditor = () => {
   );
 
   const roomJson = useCurrentEditingRoomJson();
-  const dispatch = useAppDispatch();
 
+  const updateStoreWhenJsonEdited = useUpdateStoreWhenJsonEdited(editor);
   useSyncSelectionWithMonaco(editor);
-
-  const onChange = useCallback<OnChange>(
-    (text: string | undefined, _ev: editor.IModelContentChangedEvent) => {
-      if (text === undefined) {
-        return;
-      }
-
-      let parsedJson;
-      try {
-        parsedJson = JSON.parse(text) as EditorRoomJson;
-        // TODO: this doesn't actually check that the json is a valid room, only that
-        // it is valid JSON.
-      } catch (_e) {
-        return;
-      }
-
-      if (nanoEqual(parsedJson, roomJson)) {
-        return;
-      }
-
-      dispatch(roomJsonEdited(parsedJson));
-    },
-    [dispatch, roomJson],
-  );
 
   const stringifiedJson = useMemo(() => {
     return JSON.stringify(roomJson, null, 2);
@@ -51,9 +25,21 @@ export const JsonRoomEditor = () => {
 
   const handleEditorMount = (
     editor: editor.IStandaloneCodeEditor,
-    _monaco: Monaco,
+    monaco: Monaco,
   ) => {
     setEditor(editor);
+
+    // Configure JSON language service with the room schema
+    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+      validate: true,
+      schemas: [
+        {
+          uri: "https://hohjs.com/room-schema.json",
+          fileMatch: ["*"],
+          schema: roomSchema,
+        },
+      ],
+    });
   };
 
   if (monaco !== null) {
@@ -66,6 +52,9 @@ export const JsonRoomEditor = () => {
         options={
           {
             minimap: { enabled: false },
+            // since we're using monaco inside a resizable container with overflow
+            // hidden, tell it to move its tooltips up to the top of the window's DOM:
+            fixedOverflowWidgets: true,
             fontSize: 12,
             lineNumbers: "on",
             wordWrap: "on",
@@ -73,7 +62,7 @@ export const JsonRoomEditor = () => {
             "bracketPairColorization.enabled": false,
           } as editor.IStandaloneEditorConstructionOptions
         }
-        onChange={onChange}
+        onChange={updateStoreWhenJsonEdited}
         onMount={handleEditorMount}
         defaultValue="{}"
         value={stringifiedJson}

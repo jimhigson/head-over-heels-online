@@ -1,0 +1,3619 @@
+{
+  "$ref": "#/definitions/RoomJsonSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "RoomItemId": {
+      "type": "string"
+    },
+    "RoomJsonSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "ceilingRelativePoint": {
+          "additionalProperties": false,
+          "description": "usually, the ceiling portal's relative point is the centre of the room. However, in cases where multi-rooms are stitched together into a single room, this relationship is broken. Ie, bookworld28/ bookworld29. In this case, this point is used instead",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": ["x", "y"],
+          "type": "object"
+        },
+        "color": {
+          "additionalProperties": false,
+          "properties": {
+            "hue": {
+              "enum": ["yellow", "cyan", "green", "magenta", "white"],
+              "type": "string"
+            },
+            "shade": {
+              "enum": ["basic", "dimmed"],
+              "type": "string"
+            }
+          },
+          "required": ["hue", "shade"],
+          "type": "object"
+        },
+        "id": {
+          "type": "string"
+        },
+        "items": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "const": "towards",
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "required": ["x"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["direction"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "const": "right",
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "required": ["y"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["direction"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "const": "away",
+                            "type": "string"
+                          },
+                          "tiles": {
+                            "items": {},
+                            "type": "array"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "required": ["x"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["direction", "tiles"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "const": "left",
+                            "type": "string"
+                          },
+                          "tiles": {
+                            "items": {},
+                            "type": "array"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "required": ["y"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["direction", "tiles"],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "wall",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "direction": {
+                        "enum": ["towards", "right", "away", "left"],
+                        "type": "string"
+                      },
+                      "meta": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "toSubRoom": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "toRoom": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["toRoom", "direction"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "door",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "style": {
+                        "const": "white",
+                        "type": "string"
+                      },
+                      "was": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "gives": {
+                                "enum": [
+                                  "shield",
+                                  "extra-life",
+                                  "fast",
+                                  "jumps",
+                                  "doughnuts",
+                                  "bag",
+                                  "hooter",
+                                  "reincarnation",
+                                  "scroll",
+                                  "crown"
+                                ],
+                                "type": "string"
+                              },
+                              "type": {
+                                "const": "pickup",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "gives"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "type": {
+                                "const": "hushPuppy",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "type": {
+                                "const": "disappearing",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type"],
+                            "type": "object"
+                          }
+                        ],
+                        "description": "it is the bubbles that play the sound when something is fading out, not the item itself. This property helps us know which sound to play"
+                      }
+                    },
+                    "required": ["style", "was"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "bubbles",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "activatedOnStoreValue": {
+                        "enum": [
+                          "userSettings",
+                          "planetsLiberated",
+                          "gameRunning",
+                          "scrollsRead",
+                          "cheatsOn",
+                          "userSettings.displaySettings",
+                          "userSettings.infiniteLivesPoke",
+                          "userSettings.infiniteDoughnutsPoke",
+                          "userSettings.showFps",
+                          "userSettings.screenRelativeControl",
+                          "userSettings.onScreenControls",
+                          "userSettings.soundSettings",
+                          "userSettings.displaySettings.crtFilter",
+                          "userSettings.displaySettings.uncolourised",
+                          "userSettings.displaySettings.showShadowMasks",
+                          "userSettings.soundSettings.mute",
+                          "userSettings.soundSettings.noFootsteps",
+                          "planetsLiberated.blacktooth",
+                          "planetsLiberated.bookworld",
+                          "planetsLiberated.egyptus",
+                          "planetsLiberated.penitentiary",
+                          "planetsLiberated.safari",
+                          "scrollsRead.blacktooth",
+                          "scrollsRead.egyptus",
+                          "scrollsRead.penitentiary",
+                          "scrollsRead.safari",
+                          "scrollsRead.doughnuts",
+                          "scrollsRead.bag",
+                          "scrollsRead.hooter",
+                          "scrollsRead.teleportBack",
+                          "scrollsRead.historyOfTheBlacktoothEmpire",
+                          "scrollsRead.theGame",
+                          "scrollsRead.bookWorld",
+                          "scrollsRead.head",
+                          "scrollsRead.heels",
+                          "scrollsRead.reincarnationFish",
+                          "scrollsRead.cuddlyStuffedWhiteRabbits",
+                          "scrollsRead.crowns",
+                          "scrollsRead.teleports",
+                          "scrollsRead.springs",
+                          "scrollsRead.switches",
+                          "scrollsRead.conveyorBelts",
+                          "scrollsRead.hushPuppies",
+                          "scrollsRead.theEmperorsGuardian",
+                          "scrollsRead.swopKey",
+                          "scrollsRead.hintsAndTips",
+                          "scrollsRead.credits",
+                          "scrollsRead.installGuide"
+                        ],
+                        "type": "string"
+                      },
+                      "times": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "y": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "z": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "toPosition": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          },
+                          "z": {
+                            "type": "number"
+                          }
+                        },
+                        "required": ["x", "y", "z"],
+                        "type": "object"
+                      },
+                      "toRoom": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["toRoom", "toPosition"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "teleporter",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "axis": {
+                        "enum": ["x", "y"],
+                        "type": "string"
+                      },
+                      "disappearing": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "on": {
+                            "const": "touch",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["on"],
+                        "type": "object"
+                      },
+                      "times": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "y": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "z": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": ["axis"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "barrier",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "disappearing": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "on": {
+                            "const": "stand",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["on"],
+                        "type": "object"
+                      },
+                      "style": {
+                        "enum": ["book", "organic", "artificial", "tower"],
+                        "type": "string"
+                      },
+                      "times": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "y": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "z": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": ["style"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "block",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "style": {
+                        "enum": ["toaster", "volcano"],
+                        "type": "string"
+                      },
+                      "times": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "y": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "z": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": ["style"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "deadlyBlock",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "times": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "y": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "z": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "spikes",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "style": {
+                        "enum": ["drum", "sticks", "cube"],
+                        "type": "string"
+                      }
+                    },
+                    "required": ["style"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "portableBlock",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": {
+                      "not": {}
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "pushableBlock",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "activated": {
+                        "enum": ["off", "on", "on-stand"],
+                        "type": "string"
+                      },
+                      "movement": {
+                        "enum": ["clockwise", "back-forth"],
+                        "type": "string"
+                      },
+                      "startDirection": {
+                        "enum": ["towards", "right", "away", "left"],
+                        "type": "string"
+                      }
+                    },
+                    "required": ["movement", "activated", "startDirection"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "movingPlatform",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "style": {
+                        "const": "deadFish",
+                        "type": "string"
+                      }
+                    },
+                    "required": ["style"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "moveableDeadly",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "direction": {
+                        "enum": ["towards", "right", "away", "left"],
+                        "type": "string"
+                      },
+                      "disappearing": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "on": {
+                            "const": "stand",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["on"],
+                        "type": "object"
+                      },
+                      "times": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "y": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "z": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": ["direction"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "conveyor",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "gives": {
+                            "enum": [
+                              "shield",
+                              "extra-life",
+                              "fast",
+                              "jumps",
+                              "doughnuts",
+                              "bag",
+                              "hooter",
+                              "reincarnation"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": ["gives"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "gives": {
+                            "const": "scroll",
+                            "type": "string"
+                          },
+                          "page": {
+                            "enum": [
+                              "blacktooth",
+                              "egyptus",
+                              "penitentiary",
+                              "safari",
+                              "doughnuts",
+                              "bag",
+                              "hooter",
+                              "teleportBack",
+                              "historyOfTheBlacktoothEmpire",
+                              "theGame",
+                              "bookWorld",
+                              "head",
+                              "heels",
+                              "reincarnationFish",
+                              "cuddlyStuffedWhiteRabbits",
+                              "crowns",
+                              "teleports",
+                              "springs",
+                              "switches",
+                              "conveyorBelts",
+                              "hushPuppies",
+                              "theEmperorsGuardian",
+                              "swopKey",
+                              "hintsAndTips",
+                              "credits",
+                              "installGuide"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": ["gives", "page"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "gives": {
+                            "const": "crown",
+                            "type": "string"
+                          },
+                          "planet": {
+                            "enum": [
+                              "blacktooth",
+                              "bookworld",
+                              "egyptus",
+                              "penitentiary",
+                              "safari"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": ["gives", "planet"],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "pickup",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": {
+                      "not": {}
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "spring",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "startDirection": {
+                        "enum": [
+                          "towards",
+                          "right",
+                          "away",
+                          "left",
+                          "awayRight",
+                          "towardsRight",
+                          "towardsLeft",
+                          "awayLeft"
+                        ],
+                        "type": "string"
+                      },
+                      "which": {
+                        "enum": ["head", "heels", "headOverHeels"],
+                        "type": "string"
+                      }
+                    },
+                    "required": ["which", "startDirection"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "sceneryPlayer",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "planet": {
+                        "enum": [
+                          "blacktooth",
+                          "bookworld",
+                          "egyptus",
+                          "penitentiary",
+                          "safari"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": ["planet"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "sceneryCrown",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "emits": {
+                        "anyOf": [
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": {
+                                  "not": {}
+                                },
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "head",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": {
+                                  "not": {}
+                                },
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "heels",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": {
+                                  "not": {}
+                                },
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "headOverHeels",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "anyOf": [
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "while-player-near",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "towards-analogue-unless-planet-crowns",
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "emperorsGuardian",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "while-player-near",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "towards-analogue",
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "emperor",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "patrol-randomly-xy4",
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "elephant",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "turn-to-player",
+                                        "type": "string"
+                                      },
+                                      "startDirection": {
+                                        "enum": [
+                                          "towards",
+                                          "right",
+                                          "away",
+                                          "left"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "elephantHead",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "startDirection",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "enum": [
+                                          "patrol-randomly-xy4",
+                                          "towards-on-shortest-axis-xy4"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "monkey",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "enum": [
+                                          "towards-on-shortest-axis-xy4",
+                                          "patrol-randomly-xy4-and-reverse"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "computerBot",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "patrol-randomly-xy8",
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "bubbleRobot",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "patrol-randomly-diagonal",
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "dalek",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "towards-tripped-on-axis-xy4",
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "homingBot",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "patrol-randomly-xy8",
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "helicopterBug",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "while-player-near",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "towards-analogue",
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "helicopterBug",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "clockwise",
+                                        "type": "string"
+                                      },
+                                      "startDirection": {
+                                        "enum": [
+                                          "towards",
+                                          "right",
+                                          "away",
+                                          "left"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "turtle",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "movement",
+                                      "startDirection",
+                                      "activated"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "enum": [
+                                          "off",
+                                          "on",
+                                          "after-player-near"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "const": "towards-on-shortest-axis-xy4",
+                                        "type": "string"
+                                      },
+                                      "startDirection": {
+                                        "enum": [
+                                          "towards",
+                                          "right",
+                                          "away",
+                                          "left"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "cyberman",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "activated",
+                                      "movement",
+                                      "startDirection"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {
+                                        "const": "on",
+                                        "type": "string"
+                                      },
+                                      "movement": {
+                                        "enum": ["clockwise", "back-forth"],
+                                        "type": "string"
+                                      },
+                                      "startDirection": {
+                                        "enum": [
+                                          "towards",
+                                          "right",
+                                          "away",
+                                          "left"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "style": {
+                                        "enum": [
+                                          "greenAndPink",
+                                          "starsAndStripes"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "which": {
+                                        "const": "skiHead",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "which",
+                                      "activated",
+                                      "movement",
+                                      "startDirection",
+                                      "style"
+                                    ],
+                                    "type": "object"
+                                  }
+                                ]
+                              },
+                              "type": {
+                                "const": "monster",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": {
+                                  "not": {}
+                                },
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "ball",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": {
+                                  "not": {}
+                                },
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "charles",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": {
+                                  "not": {}
+                                },
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "pushableBlock",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "activated": {
+                                    "enum": ["off", "on", "on-stand"],
+                                    "type": "string"
+                                  },
+                                  "movement": {
+                                    "enum": ["clockwise", "back-forth"],
+                                    "type": "string"
+                                  },
+                                  "startDirection": {
+                                    "enum": [
+                                      "towards",
+                                      "right",
+                                      "away",
+                                      "left"
+                                    ],
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "movement",
+                                  "activated",
+                                  "startDirection"
+                                ],
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "movingPlatform",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "style": {
+                                    "const": "deadFish",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": ["style"],
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "moveableDeadly",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "anyOf": [
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "gives": {
+                                        "enum": [
+                                          "shield",
+                                          "extra-life",
+                                          "fast",
+                                          "jumps",
+                                          "doughnuts",
+                                          "bag",
+                                          "hooter",
+                                          "reincarnation"
+                                        ],
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["gives"],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "gives": {
+                                        "const": "scroll",
+                                        "type": "string"
+                                      },
+                                      "page": {
+                                        "enum": [
+                                          "blacktooth",
+                                          "egyptus",
+                                          "penitentiary",
+                                          "safari",
+                                          "doughnuts",
+                                          "bag",
+                                          "hooter",
+                                          "teleportBack",
+                                          "historyOfTheBlacktoothEmpire",
+                                          "theGame",
+                                          "bookWorld",
+                                          "head",
+                                          "heels",
+                                          "reincarnationFish",
+                                          "cuddlyStuffedWhiteRabbits",
+                                          "crowns",
+                                          "teleports",
+                                          "springs",
+                                          "switches",
+                                          "conveyorBelts",
+                                          "hushPuppies",
+                                          "theEmperorsGuardian",
+                                          "swopKey",
+                                          "hintsAndTips",
+                                          "credits",
+                                          "installGuide"
+                                        ],
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["gives", "page"],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "gives": {
+                                        "const": "crown",
+                                        "type": "string"
+                                      },
+                                      "planet": {
+                                        "enum": [
+                                          "blacktooth",
+                                          "bookworld",
+                                          "egyptus",
+                                          "penitentiary",
+                                          "safari"
+                                        ],
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["gives", "planet"],
+                                    "type": "object"
+                                  }
+                                ]
+                              },
+                              "type": {
+                                "const": "pickup",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "style": {
+                                    "enum": ["drum", "sticks", "cube"],
+                                    "type": "string"
+                                  }
+                                },
+                                "required": ["style"],
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "portableBlock",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "style": {
+                                    "enum": ["book", "puck"],
+                                    "type": "string"
+                                  }
+                                },
+                                "required": ["style"],
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "slidingBlock",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "startingPhase": {
+                                    "enum": [1, 2],
+                                    "type": "number"
+                                  },
+                                  "style": {
+                                    "const": "spikyBall",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": ["style", "startingPhase"],
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "slidingDeadly",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": {
+                                  "not": {}
+                                },
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "spring",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "startDirection": {
+                                    "enum": [
+                                      "towards",
+                                      "right",
+                                      "away",
+                                      "left",
+                                      "awayRight",
+                                      "towardsRight",
+                                      "towardsLeft",
+                                      "awayLeft"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "which": {
+                                    "enum": ["head", "heels", "headOverHeels"],
+                                    "type": "string"
+                                  }
+                                },
+                                "required": ["which", "startDirection"],
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "sceneryPlayer",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "planet": {
+                                    "enum": [
+                                      "blacktooth",
+                                      "bookworld",
+                                      "egyptus",
+                                      "penitentiary",
+                                      "safari"
+                                    ],
+                                    "type": "string"
+                                  }
+                                },
+                                "required": ["planet"],
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "sceneryCrown",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "direction": {
+                                    "enum": [
+                                      "towards",
+                                      "right",
+                                      "away",
+                                      "left",
+                                      "awayRight",
+                                      "towardsRight",
+                                      "towardsLeft",
+                                      "awayLeft"
+                                    ],
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": {
+                                "const": "firedDoughnut",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          }
+                        ],
+                        "description": "what does this emitter emit? Could be (potentially) any free item"
+                      },
+                      "maximum": {
+                        "description": "how many should this emitter emit? Null for no limit",
+                        "type": ["null", "number"]
+                      },
+                      "period": {
+                        "description": "how long between emissions?",
+                        "type": "number"
+                      }
+                    },
+                    "required": ["emits", "period", "maximum"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "emitter",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "direction": {
+                        "enum": [
+                          "towards",
+                          "right",
+                          "away",
+                          "left",
+                          "awayRight",
+                          "towardsRight",
+                          "towardsLeft",
+                          "awayLeft"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "firedDoughnut",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "startingPhase": {
+                        "enum": [1, 2],
+                        "type": "number"
+                      },
+                      "style": {
+                        "const": "spikyBall",
+                        "type": "string"
+                      }
+                    },
+                    "required": ["style", "startingPhase"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "slidingDeadly",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "style": {
+                        "enum": ["book", "puck"],
+                        "type": "string"
+                      }
+                    },
+                    "required": ["style"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "slidingBlock",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "which": {
+                        "enum": ["head", "heels", "headOverHeels"],
+                        "type": "string"
+                      }
+                    },
+                    "required": ["which"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "player",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "while-player-near",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "towards-analogue-unless-planet-crowns",
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "emperorsGuardian",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "while-player-near",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "towards-analogue",
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "emperor",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "patrol-randomly-xy4",
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "elephant",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "turn-to-player",
+                            "type": "string"
+                          },
+                          "startDirection": {
+                            "enum": ["towards", "right", "away", "left"],
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "elephantHead",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "which",
+                          "movement",
+                          "startDirection",
+                          "activated"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "enum": [
+                              "patrol-randomly-xy4",
+                              "towards-on-shortest-axis-xy4"
+                            ],
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "monkey",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "enum": [
+                              "towards-on-shortest-axis-xy4",
+                              "patrol-randomly-xy4-and-reverse"
+                            ],
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "computerBot",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "patrol-randomly-xy8",
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "bubbleRobot",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "patrol-randomly-diagonal",
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "dalek",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "towards-tripped-on-axis-xy4",
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "homingBot",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "patrol-randomly-xy8",
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "helicopterBug",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "while-player-near",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "towards-analogue",
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "helicopterBug",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["which", "movement", "activated"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "clockwise",
+                            "type": "string"
+                          },
+                          "startDirection": {
+                            "enum": ["towards", "right", "away", "left"],
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "turtle",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "which",
+                          "movement",
+                          "startDirection",
+                          "activated"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "enum": ["off", "on", "after-player-near"],
+                            "type": "string"
+                          },
+                          "movement": {
+                            "const": "towards-on-shortest-axis-xy4",
+                            "type": "string"
+                          },
+                          "startDirection": {
+                            "enum": ["towards", "right", "away", "left"],
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "cyberman",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "which",
+                          "activated",
+                          "movement",
+                          "startDirection"
+                        ],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activated": {
+                            "const": "on",
+                            "type": "string"
+                          },
+                          "movement": {
+                            "enum": ["clockwise", "back-forth"],
+                            "type": "string"
+                          },
+                          "startDirection": {
+                            "enum": ["towards", "right", "away", "left"],
+                            "type": "string"
+                          },
+                          "style": {
+                            "enum": ["greenAndPink", "starsAndStripes"],
+                            "type": "string"
+                          },
+                          "which": {
+                            "const": "skiHead",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "which",
+                          "activated",
+                          "movement",
+                          "startDirection",
+                          "style"
+                        ],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "monster",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "bottom": {
+                        "type": "number"
+                      },
+                      "top": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["top", "bottom"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "lift",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "controls": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": ["controls"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "joystick",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": {
+                      "not": {}
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "charles",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "initialSetting": {
+                            "enum": ["right", "left"],
+                            "type": "string"
+                          },
+                          "path": {
+                            "enum": [
+                              "userSettings",
+                              "planetsLiberated",
+                              "gameRunning",
+                              "scrollsRead",
+                              "cheatsOn",
+                              "userSettings.displaySettings",
+                              "userSettings.infiniteLivesPoke",
+                              "userSettings.infiniteDoughnutsPoke",
+                              "userSettings.showFps",
+                              "userSettings.screenRelativeControl",
+                              "userSettings.onScreenControls",
+                              "userSettings.soundSettings",
+                              "userSettings.displaySettings.crtFilter",
+                              "userSettings.displaySettings.uncolourised",
+                              "userSettings.displaySettings.showShadowMasks",
+                              "userSettings.soundSettings.mute",
+                              "userSettings.soundSettings.noFootsteps",
+                              "planetsLiberated.blacktooth",
+                              "planetsLiberated.bookworld",
+                              "planetsLiberated.egyptus",
+                              "planetsLiberated.penitentiary",
+                              "planetsLiberated.safari",
+                              "scrollsRead.blacktooth",
+                              "scrollsRead.egyptus",
+                              "scrollsRead.penitentiary",
+                              "scrollsRead.safari",
+                              "scrollsRead.doughnuts",
+                              "scrollsRead.bag",
+                              "scrollsRead.hooter",
+                              "scrollsRead.teleportBack",
+                              "scrollsRead.historyOfTheBlacktoothEmpire",
+                              "scrollsRead.theGame",
+                              "scrollsRead.bookWorld",
+                              "scrollsRead.head",
+                              "scrollsRead.heels",
+                              "scrollsRead.reincarnationFish",
+                              "scrollsRead.cuddlyStuffedWhiteRabbits",
+                              "scrollsRead.crowns",
+                              "scrollsRead.teleports",
+                              "scrollsRead.springs",
+                              "scrollsRead.switches",
+                              "scrollsRead.conveyorBelts",
+                              "scrollsRead.hushPuppies",
+                              "scrollsRead.theEmperorsGuardian",
+                              "scrollsRead.swopKey",
+                              "scrollsRead.hintsAndTips",
+                              "scrollsRead.credits",
+                              "scrollsRead.installGuide"
+                            ],
+                            "type": "string"
+                          },
+                          "type": {
+                            "const": "in-store",
+                            "description": "this switch targets the redux store",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["initialSetting", "type", "path"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "initialSetting": {
+                            "enum": ["right", "left"],
+                            "type": "string"
+                          },
+                          "modifies": {
+                            "anyOf": [
+                              {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "expectType": {
+                                    "enum": ["movingPlatform", "monster"],
+                                    "type": "string"
+                                  },
+                                  "newState": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activated": {},
+                                      "everActivated": {}
+                                    },
+                                    "required": ["activated", "everActivated"],
+                                    "type": "object"
+                                  },
+                                  "targets": {
+                                    "$ref": "#/definitions/RoomItemId"
+                                  }
+                                },
+                                "required": [
+                                  "expectType",
+                                  "targets",
+                                  "newState"
+                                ],
+                                "type": "object"
+                              },
+                              {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "expectType": {
+                                    "const": "block",
+                                    "type": "string"
+                                  },
+                                  "newState": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "disappearing": {
+                                        "additionalProperties": false,
+                                        "description": "if given, the item disappears after the specified interaction. This must be null (not undefined) so switches can tell the difference between having no setting, and having a setting to change to null when they make something not disappearing",
+                                        "properties": {
+                                          "left": {
+                                            "additionalProperties": false,
+                                            "description": "if not given, nothing is set on this switch throw to the left",
+                                            "properties": {
+                                              "on": {
+                                                "const": "stand",
+                                                "type": "string"
+                                              }
+                                            },
+                                            "required": ["on"],
+                                            "type": "object"
+                                          },
+                                          "right": {
+                                            "description": "if not given, nothing is set on this switch throw to the right",
+                                            "type": "null"
+                                          }
+                                        },
+                                        "type": "object"
+                                      }
+                                    },
+                                    "required": ["disappearing"],
+                                    "type": "object"
+                                  },
+                                  "targets": {
+                                    "$ref": "#/definitions/RoomItemId"
+                                  }
+                                },
+                                "required": [
+                                  "expectType",
+                                  "targets",
+                                  "newState"
+                                ],
+                                "type": "object"
+                              },
+                              {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "expectType": {
+                                    "const": "switch",
+                                    "type": "string"
+                                  },
+                                  "newState": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "setting": {}
+                                    },
+                                    "required": ["setting"],
+                                    "type": "object"
+                                  },
+                                  "targets": {
+                                    "$ref": "#/definitions/RoomItemId"
+                                  }
+                                },
+                                "required": [
+                                  "expectType",
+                                  "targets",
+                                  "newState"
+                                ],
+                                "type": "object"
+                              }
+                            ]
+                          },
+                          "type": {
+                            "const": "in-room",
+                            "description": "this switch targets items in the room",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["initialSetting", "type", "modifies"],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "switch",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "times": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "y": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          },
+                          "z": {
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 1
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "hushPuppy",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": {
+                      "not": {}
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "ball",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "floorType": {
+                            "const": "deadly",
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              },
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "required": ["x", "y"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["floorType", "times"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "floorType": {
+                            "const": "none",
+                            "description": "the room has no floor, but it is included to draw the floor edge",
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              },
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "required": ["x", "y"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["floorType", "times"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "floorType": {
+                            "const": "standable",
+                            "type": "string"
+                          },
+                          "scenery": {
+                            "enum": [
+                              "jail",
+                              "blacktooth",
+                              "bookworld",
+                              "egyptus",
+                              "market",
+                              "moonbase",
+                              "penitentiary",
+                              "safari"
+                            ],
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              },
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "required": ["x", "y"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["floorType", "scenery", "times"],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.5
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "floor",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              }
+            ]
+          },
+          "description": "by keying each item with an id, it makes the diffing easier since the array is no longer position-dependent",
+          "type": "object"
+        },
+        "meta": {
+          "additionalProperties": false,
+          "properties": {
+            "label": {
+              "additionalProperties": false,
+              "properties": {
+                "align": {
+                  "enum": ["right", "left"],
+                  "type": "string"
+                },
+                "gridOffset": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y"],
+                  "type": "object"
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": ["gridOffset", "text", "align"],
+              "type": "object"
+            },
+            "nonContiguousRelationship": {
+              "additionalProperties": false,
+              "description": "for rooms that are shown on the same map even though they don't have any physical connection",
+              "properties": {
+                "gridOffset": {
+                  "additionalProperties": false,
+                  "description": "the other room needs to have the opposite (* -1) of this",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "type": "object"
+                },
+                "with": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "room": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["room"],
+                  "type": "object"
+                }
+              },
+              "required": ["with", "gridOffset"],
+              "type": "object"
+            },
+            "subRooms": {
+              "description": "subRooms are used for the map for rooms which were modelled as multiple rooms in the original game",
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "planet": {
+          "description": "TODO: rename to scenery",
+          "enum": [
+            "jail",
+            "blacktooth",
+            "bookworld",
+            "egyptus",
+            "market",
+            "moonbase",
+            "penitentiary",
+            "safari"
+          ],
+          "type": "string"
+        },
+        "roomAbove": {
+          "type": "string"
+        },
+        "roomBelow": {
+          "type": "string"
+        },
+        "size": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "z": {
+              "type": "number"
+            }
+          },
+          "required": ["x", "y"],
+          "type": "object"
+        },
+        "subRoomAbove": {
+          "type": "string"
+        },
+        "subRoomBelow": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "size", "planet", "color", "items"],
+      "type": "object",
+      "if": {
+        "properties": {
+          "planet": {
+            "const": "jail"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "additionalProperties": {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "wall"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "config": {
+                    "properties": {
+                      "tiles": {
+                        "items": {
+                          "enum": ["bars"]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "if": {
+          "properties": {
+            "planet": {
+              "const": "blacktooth"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "items": {
+              "additionalProperties": {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "wall"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "config": {
+                      "properties": {
+                        "tiles": {
+                          "items": {
+                            "enum": ["armour", "shield", "plain"]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "planet": {
+                "const": "bookworld"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "items": {
+                "additionalProperties": {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "wall"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "config": {
+                        "properties": {
+                          "tiles": {
+                            "items": {
+                              "enum": ["cowboy", "book"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "if": {
+              "properties": {
+                "planet": {
+                  "const": "egyptus"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "items": {
+                  "additionalProperties": {
+                    "if": {
+                      "properties": {
+                        "type": {
+                          "const": "wall"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "config": {
+                          "properties": {
+                            "tiles": {
+                              "items": {
+                                "enum": ["sarcophagus", "hieroglyphics"]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "else": {
+              "if": {
+                "properties": {
+                  "planet": {
+                    "const": "market"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "items": {
+                    "additionalProperties": {
+                      "if": {
+                        "properties": {
+                          "type": {
+                            "const": "wall"
+                          }
+                        }
+                      },
+                      "then": {
+                        "properties": {
+                          "config": {
+                            "properties": {
+                              "tiles": {
+                                "items": {
+                                  "enum": ["passage", "fruits", "more-fruits"]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "else": {
+                "if": {
+                  "properties": {
+                    "planet": {
+                      "const": "moonbase"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "items": {
+                      "additionalProperties": {
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "wall"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "config": {
+                              "properties": {
+                                "tiles": {
+                                  "items": {
+                                    "enum": [
+                                      "window1",
+                                      "window2",
+                                      "window3",
+                                      "coil"
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "else": {
+                  "if": {
+                    "properties": {
+                      "planet": {
+                        "const": "penitentiary"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "items": {
+                        "additionalProperties": {
+                          "if": {
+                            "properties": {
+                              "type": {
+                                "const": "wall"
+                              }
+                            }
+                          },
+                          "then": {
+                            "properties": {
+                              "config": {
+                                "properties": {
+                                  "tiles": {
+                                    "items": {
+                                      "enum": ["loop", "skeleton"]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "else": {
+                    "if": {
+                      "properties": {
+                        "planet": {
+                          "const": "safari"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "items": {
+                          "additionalProperties": {
+                            "if": {
+                              "properties": {
+                                "type": {
+                                  "const": "wall"
+                                }
+                              }
+                            },
+                            "then": {
+                              "properties": {
+                                "config": {
+                                  "properties": {
+                                    "tiles": {
+                                      "items": {
+                                        "enum": ["window", "shield", "wall"]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

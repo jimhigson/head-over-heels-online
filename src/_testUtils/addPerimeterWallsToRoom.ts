@@ -2,7 +2,7 @@ import { consolidateItems } from "../campaignXml2Json/consolidateItems/consolida
 import type { JsonItem } from "../model/json/JsonItem";
 import { iterateRoomJsonItems, type RoomJson } from "../model/RoomJson";
 import type { Wall } from "../sprites/planets";
-import { scenery, type SceneryName } from "../sprites/planets";
+import { wallTiles, type SceneryName } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
 import type { Xy } from "../utils/vectors/vectors";
 import {
@@ -15,7 +15,7 @@ const rotatingScenery = <S extends SceneryName>(
   sceneryName: S,
   n: number,
 ): Wall<S> => {
-  const { walls } = scenery[sceneryName];
+  const walls = wallTiles[sceneryName];
   return walls[n % walls.length];
 };
 
