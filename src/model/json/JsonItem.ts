@@ -1,15 +1,11 @@
 import type { EmptyObject } from "type-fest";
 import type { SceneryName } from "../../sprites/planets";
-import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
+import type { Xyz } from "../../utils/vectors/vectors";
 import type { ItemConfigMap } from "./ItemConfigMap";
 
 export type JsonItemType =
   | "door"
   | "bubbles" // only in-play, never in json, but is created dynamically
-  | "floor" // only in-play, never in json - TODO: remove from json typings
-  | "doorFrame" // only in-play, never in json - TODO: remove from json typings
-  | "doorLegs" // only in-play, never in json - TODO: remove from json typings
-  | "portal" // only in-play, never in json - TODO: remove from json typings
   | "teleporter"
   | "barrier"
   | "block"
@@ -66,21 +62,6 @@ export const inHiddenWall = ({
 }: JsonItem<"door" | "wall", string, string>) =>
   (direction === "right" && position.x === 0) ||
   (direction === "towards" && position.y === 0);
-
-export type DoorFrameConfig<RoomId extends string> = {
-  direction: DirectionXy4;
-  inHiddenWall: boolean;
-  toRoom: RoomId;
-
-  /** is this the near post of the doorframe, or the far one? */
-  part: "near" | "far" | "top";
-};
-export type DoorLegsConfig = {
-  direction: DirectionXy4;
-  inHiddenWall: boolean;
-  // equal to the z of the door
-  height: number;
-};
 
 /** config used in both json and in-play items */
 export type JsonItemConfig<
