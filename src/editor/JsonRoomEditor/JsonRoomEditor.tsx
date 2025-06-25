@@ -1,27 +1,27 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import type { OnChange } from "@monaco-editor/react";
-import { Editor, type Monaco } from "@monaco-editor/react";
-import { monacoLoader } from "./monaco-loader";
+import { useCallback, useMemo, useState } from "react";
+import type { Monaco, OnChange } from "@monaco-editor/react";
+import { Editor } from "@monaco-editor/react";
 import { useCurrentEditingRoomJson } from "../slice/levelEditorSelectors";
 import type { editor } from "monaco-editor";
 import { useAppDispatch } from "../../store/hooks";
 import nanoEqual from "nano-equal";
 import type { EditorRoomJson } from "../EditorRoomId";
 import { roomJsonEdited } from "../slice/levelEditorSlice";
+import { useLoadMonaco } from "./useLoadMonaco";
+import { useSyncSelectionWithMonaco } from "./useSyncSelectionWithMonaco";
 
 export const JsonRoomEditor = () => {
-  const [monaco, setMonaco] = useState<Monaco | null>(null);
-
-  useEffect(() => {
-    monacoLoader().then((loadedMonaco) => {
-      setMonaco(loadedMonaco);
-    });
-  });
+  const monaco = useLoadMonaco();
+  const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(
+    null,
+  );
 
   const roomJson = useCurrentEditingRoomJson();
   const dispatch = useAppDispatch();
 
-  const handleMount = useCallback<OnChange>(
+  useSyncSelectionWithMonaco(editor);
+
+  const onChange = useCallback<OnChange>(
     (text: string | undefined, _ev: editor.IModelContentChangedEvent) => {
       if (text === undefined) {
         return;
@@ -49,6 +49,13 @@ export const JsonRoomEditor = () => {
     return JSON.stringify(roomJson, null, 2);
   }, [roomJson]);
 
+  const handleEditorMount = (
+    editor: editor.IStandaloneCodeEditor,
+    _monaco: Monaco,
+  ) => {
+    setEditor(editor);
+  };
+
   if (monaco !== null) {
     return (
       <Editor
@@ -66,7 +73,8 @@ export const JsonRoomEditor = () => {
             "bracketPairColorization.enabled": false,
           } as editor.IStandaloneEditorConstructionOptions
         }
-        onChange={handleMount}
+        onChange={onChange}
+        onMount={handleEditorMount}
         defaultValue="{}"
         value={stringifiedJson}
       />
