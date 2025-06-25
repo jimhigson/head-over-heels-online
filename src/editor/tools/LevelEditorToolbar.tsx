@@ -1,7 +1,6 @@
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
 import type { JsonItemConfig } from "../../model/json/JsonItem";
-import type { Wall } from "../../sprites/planets";
 import { useAppDispatch } from "../../store/hooks";
 import { RoomSelect } from "../../ui/RoomSelect";
 import { emptyArray, emptyObject } from "../../utils/empty";
@@ -11,7 +10,10 @@ import {
   changeToRoom,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { twClass } from "../twClass";
+import {
+  buttonSpriteRevertColourClasses,
+  buttonGroupClassname,
+} from "./buttonSizeClassNames";
 import { HalfGridResolutionSwitch } from "./HalfGridResolutionSwitch";
 import { ItemToolButton } from "./ItemToolButton";
 import { MultipleToolButtons } from "./MultipleToolButtons";
@@ -19,11 +21,7 @@ import { PointerToolButton } from "./PointerToolButton";
 import { RoomColourSelect } from "./RoomColourSelect";
 import { RoomScenerySelect } from "./RoomScenerySelect";
 import { UndoRedoButtons } from "./UndoRedoButtons";
-
-const buttonSpriteRevertColourClasses = twClass(
-  "[button:not([data-iscurrenttool=true]):not(:hover)_&]:sprite-revert-to-two-tone",
-);
-const buttonGroupClassname = twClass("flex flex-wrap gap-oneScaledPix w-full");
+import { WallToolButton } from "./WallToolButton";
 
 const StackedToolbarIcons = ({
   topClasses,
@@ -564,19 +562,7 @@ export const LevelEditorToolbar = () => {
             className={`sprite texture-door.frame.generic.x.whole ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
-        <ItemToolButton
-          itemTool={{
-            type: "wall",
-            config: {
-              direction: "away", // arbitrary, to be corrected on placement
-              tiles: ["plain"] as Wall<"blacktooth">[],
-            },
-          }}
-        >
-          <span
-            className={`sprite texture-blacktooth.wall.plain.away ${buttonSpriteRevertColourClasses}`}
-          />
-        </ItemToolButton>
+        <WallToolButton />
         <ItemToolButton
           itemTool={{
             type: "floor",
