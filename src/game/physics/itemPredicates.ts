@@ -117,7 +117,8 @@ export const portableItemTypes = [
   // just for fun/an easter egg - let pick up the characters in the final room :-)
   "sceneryPlayer",
   "sceneryCrown",
-  "monster",
+  "monster", // <-- but only small monsters
+  "slidingBlock", // <-- but only small sliding blocks
 ] as const satisfies ItemInPlayType[];
 const portableMonsters: MonsterWhich[] = [
   "dalek",
@@ -135,8 +136,8 @@ export type PortableItem<
 export const isPortable = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 ): item is ItemTypeUnion<PortableItemType, RoomId, RoomItemId> =>
-  item.type === "monster" ?
-    portableMonsters.includes(item.config.which)
+  item.type === "slidingBlock" ? item.config.style === "puck"
+  : item.type === "monster" ? portableMonsters.includes(item.config.which)
   : (portableItemTypes as Array<ItemInPlayType>).includes(item.type);
 
 export const isPlayableItem = <
