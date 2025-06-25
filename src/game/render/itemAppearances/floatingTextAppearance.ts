@@ -57,6 +57,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     general: {
       displaySettings: { uncolourised },
     },
+    frontLayer,
   },
   currentRendering,
 }) => {
@@ -76,6 +77,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
         lowRes: false,
       }),
     });
+    frontLayer?.attach(mainContainer);
 
     // add all lines early, even if some will be hidden right away:
     for (let i = 0; i < textLines.length; i++) {

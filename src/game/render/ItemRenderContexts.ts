@@ -16,6 +16,7 @@ export type ItemRenderContext<T extends ItemInPlayType> = {
    * https://pixijs.com/8.x/guides/concepts/render-layers
    */
   colourClashLayer?: IRenderLayer;
+  frontLayer: IRenderLayer;
 };
 
 export type ItemTickContext = {

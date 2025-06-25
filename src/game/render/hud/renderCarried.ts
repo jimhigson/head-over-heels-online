@@ -32,6 +32,7 @@ export const renderCarriedOnce = <
       room: tickContext.room,
       // nothing that can be carried ever renders to the uncolourised layer so cheat the types to provide this:
       colourClashLayer: undefined as unknown as IRenderLayer,
+      frontLayer: undefined as unknown as IRenderLayer,
     },
     tickContext: {
       lastRenderRoomTime: neverTime,

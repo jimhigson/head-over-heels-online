@@ -38,6 +38,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #colourClashLayer: IRenderLayer | undefined;
 
   /**
+   * render into this layer to appear over everything, event the room occlusion
+   */
+  #frontLayer: IRenderLayer = new RenderLayer({
+    sortableChildren: false,
+  });
+
+  /**
    * container for the cutoff-off for the left and right edge, to prevent
    * rendering inaccessible corners or rooms
    */
@@ -92,6 +99,8 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       this.output.graphics.addChild(this.#colourClashLayer);
     }
     this.output.graphics.addChild(this.#occlusionContainer);
+    // layer in front of all else - for floating text, etc
+    this.output.graphics.addChild(this.#frontLayer);
   }
 
   /**
@@ -131,6 +140,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         itemRenderer = createItemRenderer({
           ...this.renderContext,
           colourClashLayer: this.#colourClashLayer,
+          frontLayer: this.#frontLayer,
           item,
         });
 
@@ -176,7 +186,18 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         destroyedItemRenderers = true;
       }
     }
-    if (this.#colourClashLayer && destroyedItemRenderers) {
+
+    if (destroyedItemRenderers) {
+      this.#sanitiseRenderLayers();
+    }
+  }
+
+  /**
+   * prevent crashes in pixi.js engine by making sure render layers are empty after item
+   * renderers are destroyed
+   */
+  #sanitiseRenderLayers() {
+    if (this.#colourClashLayer) {
       // removing an item renderer could have removed from the scene graph something that is
       // in a render layer
       for (const c of this.#colourClashLayer.renderLayerChildren) {
@@ -184,6 +205,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           // c is not in the scene graph, remove from render layer too:
           this.#colourClashLayer.detach(c);
         }
+      }
+    }
+    // removing an item renderer could have removed from the scene graph something that is
+    // in a render layer
+    for (const c of this.#frontLayer.renderLayerChildren) {
+      if (c.parent === null) {
+        // c is not in the scene graph, remove from render layer too:
+        this.#frontLayer.detach(c);
       }
     }
   }
