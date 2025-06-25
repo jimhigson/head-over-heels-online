@@ -1,6 +1,7 @@
 import { Container, Graphics, TilingSprite } from "pixi.js";
 import { type TextureId } from "../../../../sprites/spriteSheetData";
 import {
+  edgeOriginalGameColour,
   edgePaletteSwapFilters,
   floorPaletteSwapFilter,
 } from "../../filters/standardFilters";
@@ -28,6 +29,7 @@ import { createSprite } from "../../createSprite";
 import { OutlineFilter } from "../../filters/outlineFilter";
 import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
 import { NullFilter } from "../../filters/NullFilter";
+import { ColourClashFilter } from "../../filters/ColourClashFilter";
 
 export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
 
@@ -37,20 +39,63 @@ const edgeSide = ({
   room,
   times,
   position,
+  colourSwap,
 }: {
   colourised: boolean;
   direction: Subset<DirectionXy4, "right" | "towards">;
   room: RoomState<string, string>;
   times: Partial<Xy> | undefined;
   position: Partial<Xyz>;
+  colourSwap: boolean;
 }) => {
   return createSprite({
     label: `floorEdge(${direction})`,
     textureId: `floorEdge.${direction}`,
-    ...projectWorldXyzToScreenXy(position),
     times,
-    filter: edgePaletteSwapFilters(room, direction, colourised),
+    filter:
+      colourSwap ?
+        edgePaletteSwapFilters(room, direction, colourised)
+      : undefined,
+    ...projectWorldXyzToScreenXy(position),
   });
+};
+
+const createColourClash = ({
+  room,
+  xSize,
+  ySize,
+  y,
+}: {
+  room: RoomState<string, string>;
+  xSize: number;
+  ySize: number;
+  y: number;
+}) => {
+  const container = new Container({
+    label: "floorColourClash",
+  });
+
+  const rightColour = edgeOriginalGameColour(room, "right");
+  for (let i = 0; i <= ySize; i++) {
+    const screenXy = projectBlockXyzToScreenXy({ x: 0, y: i, z: 0 });
+    const g = new Graphics()
+      .rect(screenXy.x - (i === 0 ? 0 : 8), screenXy.y, 8 * 3, 8)
+      .fill(rightColour);
+    g.filters = new ColourClashFilter(rightColour);
+    container.addChild(g);
+  }
+
+  const towardsColour = edgeOriginalGameColour(room, "towards");
+  for (let i = 0; i <= xSize; i++) {
+    const screenXy = projectBlockXyzToScreenXy({ x: i, y: 0, z: 0 });
+    const g = new Graphics()
+      .rect(screenXy.x - 16, screenXy.y, 8 * (i === 0 ? 2 : 3), 8)
+      .fill(towardsColour);
+    g.filters = new ColourClashFilter(towardsColour);
+    container.addChild(g);
+  }
+  container.y = y;
+  return container;
 };
 
 export const floorAppearance: ItemAppearance<"floor"> =
@@ -60,7 +105,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         room,
         item: floorItem,
         general: { colourised },
-        uncolourisedLayer,
+        colourClashLayer,
       },
     }) => {
       const {
@@ -244,34 +289,44 @@ export const floorAppearance: ItemAppearance<"floor"> =
           );
         }
 
-        if (!floorConfig.skipRightEdge) {
-          floorEdgeContainer.addChild(
-            edgeSide({
-              colourised,
-              direction: "right",
-              room,
-              times: { y: Math.ceil(aabb.y / blockSizePx.w) },
-              position: { z: aabb.z },
-            }),
-          );
-        }
-        if (!floorConfig.skipTowardsEdge) {
-          floorEdgeContainer.addChild(
-            edgeSide({
-              colourised,
-              direction: "towards",
-              room,
-              times: { x: Math.ceil(aabb.x / blockSizePx.w) },
-              position: { z: aabb.z },
-            }),
-          );
-        }
+        const edgeTilesY = Math.ceil(aabb.y / blockSizePx.w);
+        floorEdgeContainer.addChild(
+          edgeSide({
+            colourised,
+            direction: "right",
+            room,
+            times: { y: edgeTilesY },
+            position: { z: aabb.z },
+            colourSwap: colourised,
+          }),
+        );
+        const edgeTilesX = Math.ceil(aabb.x / blockSizePx.w);
+        floorEdgeContainer.addChild(
+          edgeSide({
+            colourised,
+            direction: "towards",
+            room,
+            times: { x: edgeTilesX },
+            position: { z: aabb.z },
+            colourSwap: colourised,
+          }),
+        );
 
-        floorEdgeContainer.cacheAsTexture(true);
-
-        uncolourisedLayer.attach(floorEdgeContainer);
-
+        // caching as texture here breaks rendering in 'none' floor rooms - see #blacktooth30
+        //floorEdgeContainer.cacheAsTexture(true);
         container.addChild(floorEdgeContainer);
+
+        if (!colourised) {
+          const colourClashContainer = createColourClash({
+            xSize: edgeTilesX,
+            ySize: edgeTilesY,
+            y: -aabb.z + 1,
+            room,
+          });
+
+          container.addChild(colourClashContainer);
+          colourClashLayer!.attach(colourClashContainer);
+        }
       }
 
       return container;

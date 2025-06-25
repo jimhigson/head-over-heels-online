@@ -86,10 +86,7 @@ export type ItemConfigMap<
     */
     relativePoint: Xyz;
   };
-  floor: {
-    skipRightEdge?: boolean;
-    skipTowardsEdge?: boolean;
-  } & (
+  floor:
     | {
         floorType: "deadly";
         times: Xy;
@@ -103,8 +100,7 @@ export type ItemConfigMap<
         floorType: "standable";
         scenery: SceneryName;
         times: Xy;
-      }
-  );
+      };
   wall: WallJsonConfig<ScN>;
   teleporter: ConsolidatableConfig & {
     toRoom: RoomId;

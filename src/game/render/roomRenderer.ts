@@ -19,6 +19,7 @@ import type { SetRequired } from "type-fest";
 import type { RoomRendererType } from "./RoomRendererType";
 import { iterateToContainer } from "../iterateToContainer";
 import { roomRendererOcclusions } from "./roomRendererOcclusions";
+import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>
@@ -30,9 +31,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
    * item that is colourised differently when colourisation is turned off
    */
   #itemsContainer: Container = new Container({ label: "items" });
-  #uncolourisedLayer: IRenderLayer = new RenderLayer({
-    sortableChildren: false,
-  });
+  /**
+   * render into this layer to simulate zxs colour clash; only needed
+   * when not colourised
+   */
+  #colourClashLayer: IRenderLayer | undefined;
 
   /**
    * container for the cutoff-off for the left and right edge, to prevent
@@ -82,7 +85,12 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     };
 
     this.output.graphics.addChild(this.#itemsContainer);
-    this.output.graphics.addChild(this.#uncolourisedLayer);
+    if (!colourised) {
+      this.#colourClashLayer = new RenderLayer({
+        sortableChildren: false,
+      });
+      this.output.graphics.addChild(this.#colourClashLayer);
+    }
     this.output.graphics.addChild(this.#occlusionContainer);
   }
 
@@ -96,7 +104,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         colour.shade === "dimmed" ?
           dimLut
         : noFilters
-      : new RevertColouriseFilter(getColorScheme(colour).main.original);
+      : new RevertColouriseFilter(
+          colour.shade === "dimmed" ?
+            zxSpectrumDimmed(getColorScheme(colour).main.original)
+          : getColorScheme(colour).main.original,
+        );
   }
 
   #tickItems(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
@@ -118,7 +130,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         // room since the last tick
         itemRenderer = createItemRenderer({
           ...this.renderContext,
-          uncolourisedLayer: this.#uncolourisedLayer,
+          colourClashLayer: this.#colourClashLayer,
           item,
         });
 
@@ -164,13 +176,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         destroyedItemRenderers = true;
       }
     }
-    if (destroyedItemRenderers) {
+    if (this.#colourClashLayer && destroyedItemRenderers) {
       // removing an item renderer could have removed from the scene graph something that is
       // in a render layer
-      for (const c of this.#uncolourisedLayer.renderLayerChildren) {
+      for (const c of this.#colourClashLayer.renderLayerChildren) {
         if (c.parent === null) {
           // c is not in the scene graph, remove from render layer too:
-          this.#uncolourisedLayer.detach(c);
+          this.#colourClashLayer.detach(c);
         }
       }
     }

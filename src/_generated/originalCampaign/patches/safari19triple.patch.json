@@ -23,7 +23,6 @@
       "config": {
         "floorType": "standable",
         "scenery": "safari",
-        "skipTowardsEdge": true,
         "times": {
           "x": 8,
           "y": 6

@@ -74,7 +74,6 @@ export const room = inferRoomJson({
     floorR: {
       config: {
         floorType: "deadly",
-        skipTowardsEdge: true,
         times: { x: 6, y: 8 },
       },
       position: { x: 0, y: 6, z: 0 },

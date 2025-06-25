@@ -10,13 +10,12 @@ export type ItemRenderContext<T extends ItemInPlayType> = {
   room: RoomState<string, string>;
   general: GeneralRenderContext<string>;
   /**
-   * non colourised rendering (anything that doesn't get colourise-reverted when
-   * colourisation is turned off) should be attached here, as well as being
-   * rendered normally
+   * layer to render items over the room items that emulate colour clash, ie for the floor
+   * edge colourisation
    *
    * https://pixijs.com/8.x/guides/concepts/render-layers
    */
-  uncolourisedLayer: IRenderLayer;
+  colourClashLayer?: IRenderLayer;
 };
 
 export type ItemTickContext = {

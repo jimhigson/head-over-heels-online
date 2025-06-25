@@ -19,6 +19,7 @@ import { store } from "../../../../store/store";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
 import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
+import { amigaHalfBriteBrightness } from "../../../../utils/colour/halfBrite";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -27,11 +28,7 @@ type Cast = {
   renderedOnProgression: number;
 };
 
-/**
- * make the black shadow at half opacity, crating an effect similar to Amiga OCS's EHB
- * - in practice, 0.5 is to feint, so 0.66 make it easier to see the shadow
- */
-const halfOpacity = new AlphaFilter({ alpha: 0.66 });
+const halfOpacity = new AlphaFilter({ alpha: 1 - amigaHalfBriteBrightness });
 class ItemShadowRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
