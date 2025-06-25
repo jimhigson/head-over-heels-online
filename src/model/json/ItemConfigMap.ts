@@ -8,11 +8,7 @@ import type {
   Xy,
 } from "../../utils/vectors/vectors";
 import type { CharacterName } from "../modelTypes";
-import type {
-  DoorFrameConfig,
-  DoorLegsConfig,
-  JsonItemUnion,
-} from "./JsonItem";
+import type { JsonItemUnion } from "./JsonItem";
 import type { MonsterJsonConfig } from "./MonsterJsonConfig";
 import type {
   ConsolidatableConfig,
@@ -76,8 +72,7 @@ export type ItemConfigMap<
       toSubRoom?: string;
     };
   };
-  doorFrame: DoorFrameConfig<RoomId>;
-  doorLegs: DoorLegsConfig;
+
   portal: {
     toRoom: RoomId;
     /*

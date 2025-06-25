@@ -2,7 +2,7 @@ import type { EmptyObject } from "type-fest";
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
-import type { Aabb, Xyz } from "../utils/vectors/vectors";
+import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CharacterName, IndividualCharacterName } from "./modelTypes";
@@ -13,9 +13,13 @@ import type { Disappear } from "./Disappear";
 export type ItemInPlayType =
   | Exclude<JsonItemType, "player" | "door">
   | CharacterName
+
+  // in-play, doors resolve to these four types instead of the single json "door" type:
   | "doorFrame"
+  | "doorLegs"
   | "stopAutowalk"
   | "portal"
+
   /** a non-rendering, invisible, general-purpose, collideable blocker */
   | "blocker"
   /**
@@ -30,6 +34,21 @@ export type ItemInPlayType =
   | "floatingText";
 
 export type SwitchSetting = "left" | "right";
+
+export type DoorFrameConfig<RoomId extends string> = {
+  direction: DirectionXy4;
+  inHiddenWall: boolean;
+  toRoom: RoomId;
+
+  /** is this the near post of the doorframe, or the far one? */
+  part: "near" | "far" | "top";
+};
+export type DoorLegsConfig = {
+  direction: DirectionXy4;
+  inHiddenWall: boolean;
+  // equal to the z of the door
+  height: number;
+};
 
 type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   portal: {
@@ -61,6 +80,8 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
       position: Xyz;
     };
   };
+  doorFrame: DoorFrameConfig<RoomId>;
+  doorLegs: DoorLegsConfig;
 };
 
 export type ItemInPlayConfig<
