@@ -1,14 +1,18 @@
 import { resolutions, type ResolutionName } from "../../../originalGame";
 import { detectDeviceType } from "../../../utils/detectDeviceType";
+import type { Xy } from "../../../utils/vectors/vectors";
 import type { CalculateUpscaleOptions } from "./calculateUpscale";
 
-const currentScreenSize = () => {
+const gameRenderAreaSize = (targetElement?: HTMLElement): Xy => {
   const deviceType = detectDeviceType();
-  return deviceType === "server" ?
-      resolutions.zxSpectrum
+  return (
+    deviceType === "server" ? resolutions.zxSpectrum
       // see also: window.visualViewport
       //: window.screen ? { x: window.screen.width, y: window.screen.height }
-    : { x: window.innerWidth, y: window.innerHeight };
+    : targetElement ?
+      { x: targetElement.clientWidth, y: targetElement.clientHeight }
+    : { x: window.innerWidth, y: window.innerHeight }
+  );
 };
 
 /**
@@ -18,11 +22,13 @@ const currentScreenSize = () => {
  */
 export const upscaleOptionsForCurrentDevice = (
   emulatedResolution: ResolutionName,
+  targetElement?: HTMLElement,
 ): CalculateUpscaleOptions => {
   const deviceType = detectDeviceType();
 
+  const renderAreaSize = gameRenderAreaSize(targetElement);
   return {
-    renderAreaSize: currentScreenSize(),
+    renderAreaSize,
     emulatedResolutionName: emulatedResolution,
     devicePixelRatio: deviceType === "server" ? 1 : window.devicePixelRatio,
   };

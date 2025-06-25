@@ -3,14 +3,12 @@ import { RoomEditingArea } from "./RoomEditingArea/RoomEditingArea";
 import { PixiApplicationProvider } from "./RoomEditingArea/PixiApplicationProvider";
 import { usePageAsAnApp } from "../pages/gamePage/usePageAsAnApp";
 import { EditorRoomStateProvider } from "./EditorRoomStateProvider";
-import { useUpdateUpscaleWhenWindowResizes } from "../store/storeFlow/useUpateUpscaleWhenWIndowResizes";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { JsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor";
 import { CssVariables } from "../game/components/CssVariables";
 
 const LevelEditor = () => {
   usePageAsAnApp();
-  useUpdateUpscaleWhenWindowResizes();
 
   return (
     // <ErrorBoundary>
