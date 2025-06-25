@@ -120,6 +120,10 @@ export const useRoomEditorInteractivity = (
         }
       } else {
         mutateRoomRemoveCursorPreviews(roomState);
+        roomState.editor = {
+          ...roomState.editor,
+          hoveredJsonItemId: undefined,
+        };
       }
     };
 
@@ -199,12 +203,13 @@ export const useRoomEditorInteractivity = (
 
     renderArea.addEventListener("mousemove", handleMouseMove);
     renderArea.addEventListener("click", handleMouseClick);
-    window.addEventListener("keyup", handleKeyUp);
+    renderArea.addEventListener("keyup", handleKeyUp);
+    renderArea.tabIndex = 0; // Make the div focusable to capture key events
 
     return () => {
       renderArea.removeEventListener("mousemove", handleMouseMove);
       renderArea.removeEventListener("click", handleMouseClick);
-      window.removeEventListener("keyup", handleKeyUp);
+      renderArea.removeEventListener("keyup", handleKeyUp);
     };
   }, [application.stage, upscale, renderArea, dispatch, roomState]);
 };
