@@ -73,3 +73,5 @@ export const JsonRoomEditor = () => {
     );
   }
 };
+
+export default JsonRoomEditor;
