@@ -8,7 +8,6 @@
         "path": "userSettings.displaySettings.uncolourised",
         "type": "in-store"
       },
-      "isExtra": true,
       "position": {
         "x": 5,
         "y": 3,

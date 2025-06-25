@@ -38,43 +38,43 @@ export const room = inferRoomJson({
     },
     extra1: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
-      isExtra: true,
+
       position: { x: 2, y: 5, z: 4 },
       type: "block",
     },
     extra2: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
-      isExtra: true,
+
       position: { x: 2, y: 5, z: 3 },
       type: "block",
     },
     extra3: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
-      isExtra: true,
+
       position: { x: 2, y: 5, z: 2 },
       type: "block",
     },
     extra4: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
-      isExtra: true,
+
       position: { x: 2, y: 5, z: 1 },
       type: "block",
     },
     extra5: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
-      isExtra: true,
+
       position: { x: 2, y: 5, z: 0 },
       type: "block",
     },
     extra6: {
       config: { style: "artificial" },
-      isExtra: true,
+
       position: { x: 5, y: 5, z: 1 },
       type: "block",
     },
     extra7: {
       config: { style: "artificial" },
-      isExtra: true,
+
       position: { x: 5, y: 5, z: 0 },
       type: "block",
     },

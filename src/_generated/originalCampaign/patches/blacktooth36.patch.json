@@ -81,7 +81,6 @@
     "path": "/items/extraBall",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 4,
         "y": 0,
@@ -95,7 +94,6 @@
     "path": "/items/extraBall2",
     "value": {
       "config": {},
-      "isExtra": true,
       "position": {
         "x": 7,
         "y": 2,
@@ -115,7 +113,6 @@
         "style": "starsAndStripes",
         "which": "skiHead"
       },
-      "isExtra": true,
       "position": {
         "x": 2,
         "y": 0,
@@ -135,7 +132,6 @@
         "style": "starsAndStripes",
         "which": "skiHead"
       },
-      "isExtra": true,
       "position": {
         "x": 7,
         "y": 5,
@@ -155,7 +151,6 @@
         "style": "greenAndPink",
         "which": "skiHead"
       },
-      "isExtra": true,
       "position": {
         "x": 7,
         "y": 0,
@@ -175,7 +170,6 @@
         "style": "greenAndPink",
         "which": "skiHead"
       },
-      "isExtra": true,
       "position": {
         "x": 7,
         "y": 1,
@@ -231,7 +225,6 @@
           "y": 4
         }
       },
-      "isExtra": true,
       "position": {
         "x": 4,
         "y": 2,
@@ -250,7 +243,6 @@
           "x": 2
         }
       },
-      "isExtra": true,
       "position": {
         "x": 4,
         "y": 2,
@@ -269,7 +261,6 @@
           "x": 2
         }
       },
-      "isExtra": true,
       "position": {
         "x": 4,
         "y": 5,

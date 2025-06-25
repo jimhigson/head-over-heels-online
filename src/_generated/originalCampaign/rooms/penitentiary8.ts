@@ -33,19 +33,19 @@ export const room = inferRoomJson({
     },
     extra1: {
       config: { style: "artificial" },
-      isExtra: true,
+
       position: { x: 0, y: 5, z: 5 },
       type: "block",
     },
     extra2: {
       config: { style: "artificial" },
-      isExtra: true,
+
       position: { x: 0, y: 5, z: 4 },
       type: "block",
     },
     extra3: {
       config: { style: "artificial" },
-      isExtra: true,
+
       position: { x: 0, y: 4, z: 6 },
       type: "block",
     },

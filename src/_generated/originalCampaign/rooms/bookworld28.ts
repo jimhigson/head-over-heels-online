@@ -69,61 +69,61 @@ export const room = inferRoomJson({
     },
     extraBarrier: {
       config: { axis: "y", times: { y: 6 } },
-      isExtra: true,
+
       position: { x: 2.5, y: 8, z: 1 },
       type: "barrier",
     },
     extraBarrier2: {
       config: { axis: "y", times: { y: 6 } },
-      isExtra: true,
+
       position: { x: 4.5, y: 8, z: 1 },
       type: "barrier",
     },
     extraBarrier3: {
       config: { axis: "y", times: { y: 2 } },
-      isExtra: true,
+
       position: { x: 4.5, y: 13, z: 2 },
       type: "barrier",
     },
     extraBarrier4: {
       config: { axis: "y", times: { y: 2 } },
-      isExtra: true,
+
       position: { x: 4.5, y: 14, z: 3 },
       type: "barrier",
     },
     extraBarrier5: {
       config: { axis: "y", times: { y: 2 } },
-      isExtra: true,
+
       position: { x: 2.5, y: 13, z: 2 },
       type: "barrier",
     },
     extraBarrier6: {
       config: { axis: "y", times: { y: 2 } },
-      isExtra: true,
+
       position: { x: 2.5, y: 14, z: 3 },
       type: "barrier",
     },
     extraBarrier7: {
       config: { axis: "x", times: { x: 3 } },
-      isExtra: true,
+
       position: { x: 0, y: 7.5, z: 1 },
       type: "barrier",
     },
     extraBarrier8: {
       config: { axis: "x", times: { x: 3 } },
-      isExtra: true,
+
       position: { x: 5, y: 7.5, z: 1 },
       type: "barrier",
     },
     extraStep: {
       config: { style: "organic", times: { x: 2, z: 2 } },
-      isExtra: true,
+
       position: { x: 3, y: 15, z: 1 },
       type: "block",
     },
     extraStep2: {
       config: { style: "organic", times: { x: 2 } },
-      isExtra: true,
+
       position: { x: 3, y: 14, z: 1 },
       type: "block",
     },

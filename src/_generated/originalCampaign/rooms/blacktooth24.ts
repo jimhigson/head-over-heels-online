@@ -22,25 +22,25 @@ export const room = inferRoomJson({
     },
     map: {
       config: { gives: "extra-life" },
-      isExtra: true,
+
       position: { x: 6, y: 7, z: 6 },
       type: "pickup",
     },
     mapStacka: {
       config: { style: "book", times: { z: 3 } },
-      isExtra: true,
+
       position: { x: 4, y: 7, z: 0 },
       type: "block",
     },
     mapStackb: {
       config: { style: "book", times: { z: 6 } },
-      isExtra: true,
+
       position: { x: 5, y: 7, z: 0 },
       type: "block",
     },
     mapStackc: {
       config: { style: "tower", times: { z: 6 } },
-      isExtra: true,
+
       position: { x: 6, y: 7, z: 0 },
       type: "block",
     },

@@ -92,13 +92,13 @@ export const room = inferRoomJson({
     },
     portable1: {
       config: { style: "cube" },
-      isExtra: true,
+
       position: { x: 5, y: 7, z: 0 },
       type: "portableBlock",
     },
     portable2: {
       config: { style: "cube" },
-      isExtra: true,
+
       position: { x: 2, y: 7, z: 0 },
       type: "portableBlock",
     },

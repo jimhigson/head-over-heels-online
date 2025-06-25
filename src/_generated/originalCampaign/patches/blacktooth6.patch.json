@@ -46,7 +46,6 @@
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },
-      "isExtra": true,
       "position": {
         "x": 0,
         "y": 0,
@@ -64,7 +63,6 @@
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },
-      "isExtra": true,
       "position": {
         "x": 7,
         "y": 7,
@@ -82,7 +80,6 @@
         "movement": "patrol-randomly-diagonal",
         "which": "dalek"
       },
-      "isExtra": true,
       "position": {
         "x": 6,
         "y": 7,

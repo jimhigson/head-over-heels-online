@@ -48,7 +48,7 @@ export const room = inferRoomJson({
         startDirection: "left",
         which: "turtle",
       },
-      isExtra: true,
+
       position: { x: 0, y: 0, z: 1 },
       type: "monster",
     },
@@ -59,7 +59,7 @@ export const room = inferRoomJson({
         startDirection: "right",
         which: "turtle",
       },
-      isExtra: true,
+
       position: { x: 7, y: 7, z: 1 },
       type: "monster",
     },

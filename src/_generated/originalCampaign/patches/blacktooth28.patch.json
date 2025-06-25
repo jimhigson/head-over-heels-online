@@ -7,7 +7,6 @@
         "gives": "scroll",
         "page": "bag"
       },
-      "isExtra": true,
       "position": {
         "x": 3,
         "y": 0,
@@ -23,7 +22,6 @@
       "config": {
         "style": "organic"
       },
-      "isExtra": true,
       "position": {
         "x": 3,
         "y": 0,

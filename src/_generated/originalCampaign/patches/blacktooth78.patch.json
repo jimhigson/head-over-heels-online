@@ -16,7 +16,6 @@
       "config": {
         "style": "tower"
       },
-      "isExtra": true,
       "position": {
         "x": 3,
         "y": 7,
@@ -32,7 +31,6 @@
       "config": {
         "style": "tower"
       },
-      "isExtra": true,
       "position": {
         "x": 3,
         "y": 7,
@@ -48,7 +46,6 @@
       "config": {
         "style": "tower"
       },
-      "isExtra": true,
       "position": {
         "x": 3,
         "y": 7,
@@ -64,7 +61,6 @@
       "config": {
         "style": "tower"
       },
-      "isExtra": true,
       "position": {
         "x": 4,
         "y": 7,
@@ -80,7 +76,6 @@
       "config": {
         "style": "tower"
       },
-      "isExtra": true,
       "position": {
         "x": 4,
         "y": 7,
@@ -96,7 +91,6 @@
       "config": {
         "style": "tower"
       },
-      "isExtra": true,
       "position": {
         "x": 4,
         "y": 7,
@@ -112,7 +106,6 @@
       "config": {
         "style": "tower"
       },
-      "isExtra": true,
       "position": {
         "x": 7,
         "y": 3,
@@ -128,7 +121,6 @@
       "config": {
         "style": "tower"
       },
-      "isExtra": true,
       "position": {
         "x": 7,
         "y": 3,

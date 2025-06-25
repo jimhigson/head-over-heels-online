@@ -77,25 +77,25 @@ export const room = inferRoomJson({
     },
     pyramid1: {
       config: { style: "organic", times: { x: 5, y: 5 } },
-      isExtra: true,
+
       position: { x: 1, y: 1, z: 0 },
       type: "block",
     },
     pyramid2: {
       config: { style: "organic", times: { x: 3, y: 3 } },
-      isExtra: true,
+
       position: { x: 2, y: 2, z: 1 },
       type: "block",
     },
     pyramid3: {
       config: { style: "organic" },
-      isExtra: true,
+
       position: { x: 3, y: 3, z: 2 },
       type: "block",
     },
     pyramidBall: {
       config: {},
-      isExtra: true,
+
       position: { x: 3, y: 3, z: 3 },
       type: "ball",
     },
