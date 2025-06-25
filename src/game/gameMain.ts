@@ -44,6 +44,9 @@ export const gameMain = async <RoomId extends string>(
     },
     // I will have to tell pixi.js when to render:
     autoStart: false,
+    // the ColourClash filter requires a backbuffer (although this is
+    // only used when not colourised)
+    useBackBuffer: true,
   });
 
   stopAppAutoRendering(app);

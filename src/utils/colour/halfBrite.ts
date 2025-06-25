@@ -1,8 +1,24 @@
 import { Color } from "pixi.js";
 
+/**
+ * make the black shadow at half opacity, crating an effect similar to Amiga OCS's EHB
+ * - in practice, 0.5 is to feint, so 0.66 make it easier to see the shadow
+ */
+export const amigaHalfBriteBrightness = 0.33;
+
+export const zxSpectrumDimmed = (c: Color) => {
+  const [r, g, b] = c.toUint8RgbArray();
+  // 0.5 seems a bit too dim, 0.75 seems to match the original hardware better
+  const hb = new Color({ r: r * 0.75, g: g * 0.75, b: b * 0.75 });
+  return hb;
+};
 export const halfbrite = (c: Color) => {
   const [r, g, b] = c.toUint8RgbArray();
-  const hb = new Color({ r: r / 2, g: g / 2, b: b / 2 });
+  const hb = new Color({
+    r: r * amigaHalfBriteBrightness,
+    g: g * amigaHalfBriteBrightness,
+    b: b * amigaHalfBriteBrightness,
+  });
   return hb;
 };
 export function halfbriteHex(hex: string) {
@@ -15,9 +31,9 @@ export function halfbriteHex(hex: string) {
   let b = parseInt(hex.substring(4, 6), 16);
 
   // Halve the brightness of each channel
-  r = Math.floor(r / 2);
-  g = Math.floor(g / 2);
-  b = Math.floor(b / 2);
+  r = Math.floor(r * amigaHalfBriteBrightness);
+  g = Math.floor(g * amigaHalfBriteBrightness);
+  b = Math.floor(b * amigaHalfBriteBrightness);
 
   // Convert back to hex and pad with zeros if necessary
   const toHex = (val: number) => val.toString(16).padStart(2, "0");

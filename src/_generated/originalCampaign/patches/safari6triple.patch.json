@@ -61,7 +61,6 @@
     "value": {
       "config": {
         "floorType": "deadly",
-        "skipTowardsEdge": true,
         "times": {
           "x": 6,
           "y": 6

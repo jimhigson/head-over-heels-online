@@ -55,20 +55,9 @@ export const room = inferRoomJson({
       config: {
         floorType: "standable",
         scenery: "moonbase",
-        times: { x: 6, y: 8 },
+        times: { x: 6, y: 16 },
       },
       position: { x: 6, y: 0, z: 0 },
-      type: "floor",
-    },
-    floorM: {
-      config: {
-        floorType: "standable",
-        scenery: "moonbase",
-        skipRightEdge: true,
-        skipTowardsEdge: true,
-        times: { x: 6, y: 8 },
-      },
-      position: { x: 6, y: 8, z: 0 },
       type: "floor",
     },
     floorR: {

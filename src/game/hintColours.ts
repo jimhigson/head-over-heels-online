@@ -39,8 +39,20 @@ export const greenShades = {
 export type ColorScheme = {
   main: Shades;
   edges: {
-    right: Shades;
-    towards: Shades;
+    right: Shades & {
+      /**
+       * are the edges dimmed in the original? This only impacts when not colourised, since
+       * when colourised, we change the colour of the edges but don't change them to be dimmed/not
+       */
+      dimInOriginal: boolean;
+    };
+    towards: Shades & {
+      /**
+       * are the edges dimmed in the original? This only impacts when not colourised, since
+       * when colourised, we change the colour of the edges but don't change them to be dimmed/not
+       */
+      dimInOriginal: boolean;
+    };
   };
   hud: {
     lives: Shades;
@@ -49,11 +61,17 @@ export type ColorScheme = {
   };
 };
 
-export const colorScheme = {
+export const colorScheme: Record<
+  ZxSpectrumRoomHue,
+  Record<ZxSpectrumShade, ColorScheme>
+> = {
   white: {
     basic: {
       main: whiteShades,
-      edges: { towards: cyanShades, right: yellowShades },
+      edges: {
+        towards: { ...cyanShades, dimInOriginal: false },
+        right: { ...yellowShades, dimInOriginal: true },
+      },
       hud: {
         lives: yellowShades,
         dimmed: magentaShades,
@@ -62,7 +80,10 @@ export const colorScheme = {
     },
     dimmed: {
       main: whiteShades,
-      edges: { towards: greenShades, right: cyanShades },
+      edges: {
+        towards: { ...greenShades, dimInOriginal: false },
+        right: { ...cyanShades, dimInOriginal: true },
+      },
       hud: {
         // probably wrong
         lives: yellowShades,
@@ -74,7 +95,10 @@ export const colorScheme = {
   yellow: {
     basic: {
       main: yellowShades,
-      edges: { towards: greenShades, right: whiteShades },
+      edges: {
+        towards: { ...greenShades, dimInOriginal: false },
+        right: { ...whiteShades, dimInOriginal: true },
+      },
       hud: {
         lives: cyanShades,
         dimmed: magentaShades,
@@ -83,7 +107,10 @@ export const colorScheme = {
     },
     dimmed: {
       main: yellowShades,
-      edges: { towards: cyanShades, right: cyanShades },
+      edges: {
+        towards: { ...cyanShades, dimInOriginal: true },
+        right: { ...cyanShades, dimInOriginal: false },
+      },
       hud: {
         // probably wrong
         lives: cyanShades,
@@ -92,17 +119,22 @@ export const colorScheme = {
       },
     },
   },
-  // yellow dimmed edges should be cyan/cyan
-  // yellow dimmed hud is white/magenta/green
+
   magenta: {
     basic: {
       main: magentaShades,
-      edges: { towards: greenShades, right: cyanShades },
+      edges: {
+        towards: { ...greenShades, dimInOriginal: true },
+        right: { ...cyanShades, dimInOriginal: true },
+      },
       hud: { lives: whiteShades, dimmed: cyanShades, icons: yellowShades },
     },
     dimmed: {
       main: magentaShades,
-      edges: { towards: greenShades, right: cyanShades },
+      edges: {
+        towards: { ...greenShades, dimInOriginal: true },
+        right: { ...cyanShades, dimInOriginal: true },
+      },
       hud: {
         // maybe wrong
         lives: whiteShades,
@@ -114,7 +146,10 @@ export const colorScheme = {
   cyan: {
     basic: {
       main: cyanShades,
-      edges: { towards: magentaShades, right: whiteShades },
+      edges: {
+        towards: { ...magentaShades, dimInOriginal: false },
+        right: { ...whiteShades, dimInOriginal: false },
+      },
       hud: {
         lives: whiteShades,
         dimmed: greenShades,
@@ -123,7 +158,10 @@ export const colorScheme = {
     },
     dimmed: {
       main: cyanShades,
-      edges: { towards: magentaShades, right: whiteShades },
+      edges: {
+        towards: { ...magentaShades, dimInOriginal: true },
+        right: { ...whiteShades, dimInOriginal: true },
+      },
       hud: {
         // maybe wrong
         lives: whiteShades,
@@ -135,7 +173,10 @@ export const colorScheme = {
   green: {
     basic: {
       main: greenShades,
-      edges: { towards: cyanShades, right: yellowShades },
+      edges: {
+        towards: { ...cyanShades, dimInOriginal: false },
+        right: { ...yellowShades, dimInOriginal: false },
+      },
       hud: {
         lives: whiteShades,
         dimmed: magentaShades,
@@ -144,7 +185,10 @@ export const colorScheme = {
     },
     dimmed: {
       main: greenShades,
-      edges: { towards: cyanShades, right: yellowShades },
+      edges: {
+        towards: { ...cyanShades, dimInOriginal: true },
+        right: { ...yellowShades, dimInOriginal: true },
+      },
       hud: {
         // maybe wrong
         lives: whiteShades,
@@ -153,11 +197,7 @@ export const colorScheme = {
       },
     },
   },
-  // green dimmed edges is the same
-} as const satisfies Record<
-  ZxSpectrumRoomHue,
-  Record<ZxSpectrumShade, ColorScheme>
->;
+};
 
 export const getColorScheme = (colour: ZxSpectrumRoomColour): ColorScheme =>
   colorScheme[colour.hue][colour.shade];

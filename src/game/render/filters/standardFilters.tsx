@@ -8,7 +8,7 @@ import type { Shades } from "../../hintColours";
 import { colorScheme, getColorScheme } from "../../hintColours";
 import { emptyArray } from "../../../utils/empty";
 import { RevertColouriseFilter } from "./RevertColouriseFilter";
-import { halfbrite } from "../../../utils/colour/halfBrite";
+import { halfbrite, zxSpectrumDimmed } from "../../../utils/colour/halfBrite";
 import { HalfBriteFilter } from "./HalfBriteFilter";
 import type { UnknownRoomState } from "../../../model/RoomState";
 
@@ -50,6 +50,20 @@ export const doughnuttedFilter = new PaletteSwapFilter({
 
 export const replaceWithHalfbriteFilter = (c: Color) =>
   new PaletteSwapFilter({ replaceLight: c, replaceDark: halfbrite(c) });
+
+export const edgeOriginalGameColour = (
+  room: Pick<UnknownRoomState, "color">,
+  side: "right" | "towards",
+): Color => {
+  const edge = getColorScheme(room.color).edges[side];
+  const basicColour = edge.original;
+
+  if (edge.dimInOriginal) {
+    return zxSpectrumDimmed(basicColour);
+  }
+
+  return basicColour;
+};
 
 export const edgePaletteSwapFilters = (
   room: Pick<UnknownRoomState, "color">,

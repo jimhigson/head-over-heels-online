@@ -53,7 +53,6 @@ export const room = inferRoomJson({
       config: {
         floorType: "standable",
         scenery: "safari",
-        skipTowardsEdge: true,
         times: { x: 8, y: 6 },
       },
       position: { x: 0, y: 4, z: 0 },

@@ -94,7 +94,6 @@ export const room = inferRoomJson({
       config: {
         floorType: "standable",
         scenery: "blacktooth",
-        skipTowardsEdge: true,
         times: { x: 6, y: 6 },
       },
       position: { x: 0, y: 6, z: 0 },

@@ -65,8 +65,6 @@
       "config": {
         "floorType": "standable",
         "scenery": "moonbase",
-        "skipRightEdge": true,
-        "skipTowardsEdge": true,
         "times": {
           "x": 6,
           "y": 8
