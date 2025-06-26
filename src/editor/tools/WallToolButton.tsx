@@ -23,12 +23,12 @@ export const WallToolButton = () => {
   const textureClassname = twClass(
     scenery === "blacktooth" ? "texture-blacktooth.wall.plain.away"
     : scenery === "bookworld" ? "texture-bookworld.wall.cowboy.away"
-    : scenery === "jail" ? "texture-jail.wall.bars.away."
+    : scenery === "jail" ? "texture-jail.wall.bars.away"
     : scenery === "egyptus" ? "texture-egyptus.wall.hieroglyphics.away"
     : scenery === "market" ? "texture-market.wall.passage.away"
     : scenery === "moonbase" ? "texture-moonbase.wall.window1.away"
     : scenery === "penitentiary" ? "texture-penitentiary.wall.loop.away"
-    : "texture-safari.wall.window.away",
+    : "texture-safari.wall.wall.away",
   );
 
   return (

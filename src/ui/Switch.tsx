@@ -25,14 +25,16 @@ export const Switch = ({
   const falseLabelPadded = falseLabel.padEnd(labelLength, " ");
 
   return (
-    <span className={cn("inline-flex justify-between", className)}>
+    <span
+      onClick={(e) => onClick?.(e, !value)}
+      className={cn("inline-flex justify-between", className)}
+    >
       {label && (
         <BitmapText className="inline-block mr-1 text-lightGrey" noSlitWords>
           {label}
         </BitmapText>
       )}
       <BitmapText
-        onClick={(e) => onClick?.(e, !value)}
         className={clsx(
           "inline-block w-min h-min",
           value ?

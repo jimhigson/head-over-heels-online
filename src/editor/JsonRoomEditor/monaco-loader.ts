@@ -4,6 +4,7 @@ import * as monaco from "monaco-editor";
 import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
 import paletteJson from "../../../gfx/spritesheetPalette.json";
+import { halfbriteHex } from "../../utils/colour/halfBrite";
 
 export const monacoLoader = async (): Promise<Monaco> => {
   self.MonacoEnvironment = {
@@ -44,17 +45,22 @@ export const monacoLoader = async (): Promise<Monaco> => {
         token: "punctuation.separator.array.json",
         foreground: paletteJson.midGrey,
       },
-      { token: "delimiter.bracket.json", foreground: paletteJson.pink },
+      { token: "delimiter.bracket.json", foreground: paletteJson.redShadow },
       { token: "delimiter.array.json", foreground: paletteJson.moss },
       { token: "delimiter.comma.json", foreground: paletteJson.midGrey },
       { token: "delimiter.colon.json", foreground: paletteJson.midGrey },
     ],
+    // list of colours at https://github.com/microsoft/monaco-editor/issues/1631
     colors: {
       "editor.foreground": paletteJson.midGrey,
       "editor.background": paletteJson.pureBlack,
       "editorLineNumber.foreground": paletteJson.shadow,
       "editorLineNumber.activeForeground": paletteJson.midRed,
       "editor.selectionBackground": paletteJson.shadow,
+      "editorIndentGuide.background1": paletteJson.shadow,
+      "editorIndentGuide.activeBackground1": paletteJson.midRed,
+      "editor.lineHighlightBackground": halfbriteHex(paletteJson.redShadow),
+      "editor.lineHighlightBorder": "#00000000", // transparent
     },
   });
 
