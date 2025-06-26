@@ -48,7 +48,7 @@ export const room = inferRoomJson({
     },
     "door@3,0,0": {
       config: { direction: "towards", toRoom: "safari33" },
-      position: { x: 3, y: 0, z: 0 },
+      position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
     "floor@0,0,0": {
@@ -91,14 +91,19 @@ export const room = inferRoomJson({
       position: { x: 3, y: 5, z: 0 },
       type: "pushableBlock",
     },
+    JonsBlock: {
+      config: {},
+      position: { x: 5, y: 1, z: 0 },
+      type: "pushableBlock",
+    },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     "wall(towards)@0,0,0": {
-      config: { direction: "towards", times: { x: 3 } },
-      position: { x: 0, y: 0, z: 0 },
+      config: { direction: "towards", times: { x: 6 } },
+      position: { x: 2, y: 0, z: 0 },
       type: "wall",
     },
     "wall@0,8,0": {
@@ -117,11 +122,6 @@ export const room = inferRoomJson({
         times: { x: 8 },
       },
       position: { x: 0, y: 8, z: 0 },
-      type: "wall",
-    },
-    "wall@5,0,0": {
-      config: { direction: "towards", times: { x: 3 } },
-      position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
