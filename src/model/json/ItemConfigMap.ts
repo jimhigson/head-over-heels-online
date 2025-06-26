@@ -114,15 +114,11 @@ export type ItemConfigMap<
     style: BlockStyle;
     // barriers can only disappear on stand (never touch):
     disappearing?: Subset<Disappear, { on: "stand" }>;
-    times?: Partial<Xyz>;
   };
   deadlyBlock: ConsolidatableConfig & {
     style: DeadlyBlockStyle;
-    times?: Partial<Xyz>;
   };
-  spikes: ConsolidatableConfig & {
-    times?: Partial<Xyz>;
-  };
+  spikes: ConsolidatableConfig;
   moveableDeadly: {
     // these can move (fall, be pushed etc) and are deadly
     style: "deadFish";

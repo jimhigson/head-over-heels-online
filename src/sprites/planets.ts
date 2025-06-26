@@ -1,18 +1,18 @@
 import type { Subset } from "../utils/subset";
 
-export const scenery = {
-  jail: { walls: ["bars"] },
-  blacktooth: { walls: ["armour", "shield", "plain"] },
-  bookworld: { walls: ["cowboy", "book"] },
-  egyptus: { walls: ["sarcophagus", "hieroglyphics"] },
-  market: { walls: ["passage", "fruits", "more-fruits"] },
-  moonbase: { walls: ["window1", "window2", "window3", "coil"] },
-  penitentiary: { walls: ["loop", "skeleton"] },
-  safari: { walls: ["window", "shield", "wall"] },
-} as const satisfies Record<string, { walls: string[] }>;
+export const wallTiles = {
+  jail: ["bars"],
+  blacktooth: ["armour", "shield", "plain"],
+  bookworld: ["cowboy", "book"],
+  egyptus: ["sarcophagus", "hieroglyphics"],
+  market: ["passage", "fruits", "more-fruits"],
+  moonbase: ["window1", "window2", "window3", "coil"],
+  penitentiary: ["loop", "skeleton"],
+  safari: ["window", "shield", "wall"],
+} as const satisfies Record<string, string[]>;
 
-export type SceneryName = keyof typeof scenery;
-export const sceneryNames = Object.keys(scenery) as SceneryName[];
+export type SceneryName = keyof typeof wallTiles;
+export const sceneryNames = Object.keys(wallTiles) as SceneryName[];
 
 export const planets = [
   "blacktooth",
@@ -24,5 +24,5 @@ export const planets = [
 
 export type PlanetName = Subset<SceneryName, (typeof planets)[number]>;
 
-export type AllScenery = typeof scenery;
-export type Wall<S extends SceneryName> = AllScenery[S]["walls"][number];
+export type AllScenery = typeof wallTiles;
+export type Wall<S extends SceneryName> = AllScenery[S][number];

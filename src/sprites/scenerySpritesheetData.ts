@@ -1,7 +1,7 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import type { SceneryName, Wall } from "./planets";
-import { scenery } from "./planets";
+import { wallTiles } from "./planets";
 import { wallTileSize, floorTileSize } from "./textureSizes";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { withSpeed } from "./withSpeed";
@@ -35,7 +35,7 @@ const backgroundFrames = <
     startX: number,
     startY: number,
   ): Generator<[BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData]> {
-    const { walls } = scenery[planet];
+    const walls = wallTiles[planet];
 
     const { w, h } = wallTileSize;
     const yStep = w >> 1;

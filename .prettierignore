@@ -9,3 +9,4 @@ build-stats-editor.html
 *.md
 .vscode
 hohjs.code-workspace
+.claude
