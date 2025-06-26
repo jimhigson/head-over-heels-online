@@ -48,7 +48,6 @@ export const room = inferRoomJson({
           "hieroglyphics",
           "hieroglyphics",
         ],
-        times: { x: 8 },
       },
       position: { x: 0, y: 2, z: 0 },
       type: "wall",

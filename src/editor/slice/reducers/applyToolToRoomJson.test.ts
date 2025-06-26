@@ -12,7 +12,10 @@ import type {
 } from "../../EditorRoomId";
 import { produce } from "immer";
 import type { Tool } from "src/editor/Tool";
-import type { WallJsonConfig } from "src/model/json/WallJsonConfig";
+import type {
+  AwayWallConfig,
+  WallJsonConfig,
+} from "src/model/json/WallJsonConfig";
 
 const testRoomId = "testRoomId" as EditorRoomId;
 const wallItemId = "testWall" as EditorRoomItemId;
@@ -41,13 +44,12 @@ const editorStateWithOneRoomWithNoItems: Omit<LevelEditorState, "tool"> = {
     },
   },
 };
-const editorStateWithOneRoomWithOneWall: Omit<LevelEditorState, "tool"> =
+const editorStateWithOneRoomWithOneAwayWall: Omit<LevelEditorState, "tool"> =
   produce(editorStateWithOneRoomWithNoItems, (draftState) => {
     draftState.campaignInProgress.rooms[testRoomId].items[wallItemId] = {
       type: "wall",
       config: {
         direction: "away",
-        times: { x: 5 },
         tiles: ["armour", "armour", "armour", "armour", "armour"],
       },
       position: { x: 0, y: 5, z: 0 },
@@ -127,20 +129,20 @@ describe("applying tools", () => {
           blockPosition: doorPosition,
           pointedAtItem: {
             type: "wall",
-            config: editorStateWithOneRoomWithOneWall.campaignInProgress.rooms[
-              testRoomId
-            ].items[wallItemId].config as WallJsonConfig<"blacktooth">,
+            config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
+              .rooms[testRoomId].items[wallItemId]
+              .config as WallJsonConfig<"blacktooth">,
           },
         };
 
         const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneWall, tool: doorItemTool },
+          { ...editorStateWithOneRoomWithOneAwayWall, tool: doorItemTool },
           actionPayload,
         );
 
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
-        ).toMatchObject<EditorRoomJsonItems>({
+        ).toEqual<EditorRoomJsonItems>({
           ["door#0" as EditorRoomItemId]: {
             config: {
               direction: "away",
@@ -153,9 +155,6 @@ describe("applying tools", () => {
             config: {
               direction: "away",
               tiles: ["armour"],
-              times: {
-                x: 1,
-              },
             },
             position: {
               x: 4,
@@ -168,9 +167,6 @@ describe("applying tools", () => {
             config: {
               direction: "away",
               tiles: ["armour", "armour"],
-              times: {
-                x: 2,
-              },
             },
             position: {
               x: 0,
@@ -187,20 +183,28 @@ describe("applying tools", () => {
           blockPosition: doorPosition,
           pointedAtItem: {
             type: "wall",
-            config: editorStateWithOneRoomWithOneWall.campaignInProgress.rooms[
-              testRoomId
-            ].items[wallItemId].config as WallJsonConfig<"blacktooth">,
+            config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
+              .rooms[testRoomId].items[wallItemId]
+              .config as WallJsonConfig<"blacktooth">,
           },
         };
 
         const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneWall, tool: doorItemTool },
+          { ...editorStateWithOneRoomWithOneAwayWall, tool: doorItemTool },
           actionPayload,
         );
 
+        expect(Object.keys(next.campaignInProgress.rooms[testRoomId].items))
+          .toMatchInlineSnapshot(`
+          [
+            "testWall",
+            "door#0",
+          ]
+        `);
+
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
-        ).toMatchObject<EditorRoomJsonItems>({
+        ).toEqual<EditorRoomJsonItems>({
           ["door#0" as EditorRoomItemId]: {
             config: {
               direction: "away",
@@ -213,9 +217,6 @@ describe("applying tools", () => {
             config: {
               direction: "away",
               tiles: ["armour", "armour", "armour"],
-              times: {
-                x: 3,
-              },
             },
             position: {
               x: 2,
@@ -232,20 +233,20 @@ describe("applying tools", () => {
           blockPosition: doorPosition,
           pointedAtItem: {
             type: "wall",
-            config: editorStateWithOneRoomWithOneWall.campaignInProgress.rooms[
-              testRoomId
-            ].items[wallItemId].config as WallJsonConfig<"blacktooth">,
+            config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
+              .rooms[testRoomId].items[wallItemId]
+              .config as WallJsonConfig<"blacktooth">,
           },
         };
 
         const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneWall, tool: doorItemTool },
+          { ...editorStateWithOneRoomWithOneAwayWall, tool: doorItemTool },
           actionPayload,
         );
 
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
-        ).toMatchObject<EditorRoomJsonItems>({
+        ).toEqual<EditorRoomJsonItems>({
           ["door#0" as EditorRoomItemId]: {
             config: {
               direction: "away",
@@ -258,9 +259,6 @@ describe("applying tools", () => {
             config: {
               direction: "away",
               tiles: ["armour", "armour", "armour"],
-              times: {
-                x: 3,
-              },
             },
             position: {
               x: 0,
@@ -272,20 +270,73 @@ describe("applying tools", () => {
         });
       });
 
+      test("deletes a wall if a door completely covers it", () => {
+        const editorStateWithOneRoomWithOneSmallAwayWall = produce(
+          editorStateWithOneRoomWithOneAwayWall,
+          (draft) => {
+            const wall =
+              draft.campaignInProgress.rooms[testRoomId].items[wallItemId];
+            (wall.config as AwayWallConfig<"blacktooth">).tiles = [
+              "armour",
+              "armour",
+            ];
+          },
+        );
+
+        const wallPosition =
+          editorStateWithOneRoomWithOneSmallAwayWall.campaignInProgress.rooms[
+            testRoomId
+          ].items[wallItemId].position;
+        const actionPayload: ApplyToolToRoomJsonPayload = {
+          blockPosition:
+            // placing at the wall's position:
+            wallPosition,
+          pointedAtItem: {
+            type: "wall",
+            config: editorStateWithOneRoomWithOneSmallAwayWall
+              .campaignInProgress.rooms[testRoomId].items[wallItemId]
+              .config as WallJsonConfig<"blacktooth">,
+          },
+        };
+
+        const next = applyToolToRoomJsonNext(
+          { ...editorStateWithOneRoomWithOneSmallAwayWall, tool: doorItemTool },
+          actionPayload,
+        );
+
+        expect(
+          Object.keys(next.campaignInProgress.rooms[testRoomId].items),
+        ).toEqual(["door#0"]);
+
+        expect(
+          next.campaignInProgress.rooms[testRoomId].items,
+        ).toEqual<EditorRoomJsonItems>({
+          // the wall is gone!
+          ["door#0" as EditorRoomItemId]: {
+            config: {
+              direction: "away",
+              toRoom: "room#1" as EditorRoomId,
+            },
+            position: wallPosition,
+            type: "door",
+          },
+        });
+      });
+
       test("creates a new room with a door for the reverse direction", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
           pointedAtItem: {
             type: "wall",
-            config: editorStateWithOneRoomWithOneWall.campaignInProgress.rooms[
-              testRoomId
-            ].items[wallItemId].config as WallJsonConfig<"blacktooth">,
+            config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
+              .rooms[testRoomId].items[wallItemId]
+              .config as WallJsonConfig<"blacktooth">,
           },
         };
 
         const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneWall, tool: doorItemTool },
+          { ...editorStateWithOneRoomWithOneAwayWall, tool: doorItemTool },
           actionPayload,
         );
 

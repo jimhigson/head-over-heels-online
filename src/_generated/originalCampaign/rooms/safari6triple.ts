@@ -122,10 +122,7 @@ export const room = inferRoomJson({
       type: "floor",
     },
     floorR: {
-      config: {
-        floorType: "deadly",
-        times: { x: 6, y: 6 },
-      },
+      config: { floorType: "deadly", times: { x: 6, y: 6 } },
       position: { x: 0, y: 6, z: 0 },
       type: "floor",
     },
@@ -135,12 +132,12 @@ export const room = inferRoomJson({
       type: "pickup",
     },
     "wall(away)@6,6,0": {
-      config: { direction: "away", tiles: ["wall", "shield"], times: { x: 2 } },
+      config: { direction: "away", tiles: ["wall", "shield"] },
       position: { x: 6, y: 6, z: 0 },
       type: "wall",
     },
     "wall(left)@6,6,0": {
-      config: { direction: "left", tiles: ["wall", "shield"], times: { y: 2 } },
+      config: { direction: "left", tiles: ["wall", "shield"] },
       position: { x: 6, y: 6, z: 0 },
       type: "wall",
     },
@@ -158,7 +155,6 @@ export const room = inferRoomJson({
       config: {
         direction: "away",
         tiles: ["shield", "wall", "window", "window", "wall", "shield"],
-        times: { x: 6 },
       },
       position: { x: 0, y: 12, z: 0 },
       type: "wall",
@@ -169,7 +165,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@10,6,0": {
-      config: { direction: "away", tiles: ["shield", "wall"], times: { x: 2 } },
+      config: { direction: "away", tiles: ["shield", "wall"] },
       position: { x: 10, y: 6, z: 0 },
       type: "wall",
     },
@@ -177,13 +173,12 @@ export const room = inferRoomJson({
       config: {
         direction: "left",
         tiles: ["shield", "wall", "window", "window", "wall", "shield"],
-        times: { y: 6 },
       },
       position: { x: 12, y: 0, z: 0 },
       type: "wall",
     },
     "wall@6,10,0": {
-      config: { direction: "left", tiles: ["shield", "wall"], times: { y: 2 } },
+      config: { direction: "left", tiles: ["shield", "wall"] },
       position: { x: 6, y: 10, z: 0 },
       type: "wall",
     },

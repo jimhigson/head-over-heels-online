@@ -13,43 +13,36 @@ export const room = inferRoomJson({
     },
     extra: {
       config: {},
-
       position: { x: 1, y: 1, z: 0 },
       type: "pushableBlock",
     },
     extra2: {
       config: {},
-
       position: { x: 1, y: 4, z: 0 },
       type: "pushableBlock",
     },
     extra3: {
       config: {},
-
       position: { x: 1, y: 3.5, z: 1 },
       type: "pushableBlock",
     },
     extra4: {
       config: {},
-
       position: { x: 1, y: 1.5, z: 1 },
       type: "pushableBlock",
     },
     extra5: {
       config: {},
-
       position: { x: 1, y: 2, z: 2 },
       type: "pushableBlock",
     },
     extra6: {
       config: {},
-
       position: { x: 1, y: 3, z: 2 },
       type: "pushableBlock",
     },
     extra7: {
       config: {},
-
       position: { x: 1, y: 2.5, z: 3 },
       type: "pushableBlock",
     },
@@ -64,7 +57,6 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: { gives: "scroll", page: "historyOfTheBlacktoothEmpire" },
-
       position: { x: 1, y: 2.5, z: 4 },
       type: "pickup",
     },
@@ -87,7 +79,6 @@ export const room = inferRoomJson({
       config: {
         direction: "away",
         tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],
-        times: { x: 6 },
       },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
@@ -110,7 +101,6 @@ export const room = inferRoomJson({
           "armour",
           "plain",
         ],
-        times: { y: 8 },
       },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",

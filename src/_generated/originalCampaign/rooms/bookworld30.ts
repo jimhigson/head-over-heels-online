@@ -75,7 +75,6 @@ export const room = inferRoomJson({
           "book",
           "book",
         ],
-        times: { x: 8 },
       },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",

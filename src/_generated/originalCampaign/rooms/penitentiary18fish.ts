@@ -43,7 +43,6 @@ export const room = inferRoomJson({
     },
     extraShield: {
       config: { gives: "shield" },
-
       position: { x: 15, y: 5, z: 3 },
       type: "pickup",
     },
@@ -125,18 +124,17 @@ export const room = inferRoomJson({
           "loop",
           "loop",
         ],
-        times: { x: 16 },
       },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
     "wall@16,0,0": {
-      config: { direction: "left", tiles: ["loop", "loop"], times: { y: 2 } },
+      config: { direction: "left", tiles: ["loop", "loop"] },
       position: { x: 16, y: 0, z: 0 },
       type: "wall",
     },
     "wall@16,4,0": {
-      config: { direction: "left", tiles: ["loop", "loop"], times: { y: 2 } },
+      config: { direction: "left", tiles: ["loop", "loop"] },
       position: { x: 16, y: 4, z: 0 },
       type: "wall",
     },

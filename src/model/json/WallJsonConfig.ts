@@ -1,29 +1,39 @@
 import type { SceneryName, Wall } from "../../sprites/planets";
 import type { DirectionXy4, Xy } from "../../utils/vectors/vectors";
 
+export type AwayWallConfig<ScN extends SceneryName> = {
+  direction: "away";
+  tiles: Array<Wall<ScN>>;
+};
+
+export type LeftWallConfig<ScN extends SceneryName> = {
+  direction: "left";
+  tiles: Array<Wall<ScN>>;
+};
+
+export type TowardsWallConfig = {
+  direction: "towards";
+  times?: {
+    x: number;
+  };
+};
+
+export type RightWallConfig = {
+  direction: "right";
+  times?: {
+    y: number;
+  };
+};
+
 /**
  * a view of the wall json config type that locks it down to protect against
  * mistakes, especially when editing static room json
  */
 export type WallJsonConfig<ScN extends SceneryName> =
-  | {
-      direction: "away";
-      times?: { x: number };
-      tiles: Array<Wall<ScN>>;
-    }
-  | {
-      direction: "left";
-      times?: { y: number };
-      tiles: Array<Wall<ScN>>;
-    }
-  | {
-      direction: "towards";
-      times?: { x: number };
-    }
-  | {
-      direction: "right";
-      times?: { y: number };
-    };
+  | AwayWallConfig<ScN>
+  | LeftWallConfig<ScN>
+  | TowardsWallConfig
+  | RightWallConfig;
 
 export type WallJsonConfigWithTiles<ScN extends SceneryName> = Extract<
   WallJsonConfig<ScN>,

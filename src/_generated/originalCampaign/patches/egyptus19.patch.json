@@ -11,11 +11,6 @@
   },
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/times/y",
-    "value": 10
-  },
-  {
-    "op": "replace",
     "path": "/items/wall@8,0,0/config/tiles/6",
     "value": "sarcophagus"
   },

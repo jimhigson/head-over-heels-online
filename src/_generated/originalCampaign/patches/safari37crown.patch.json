@@ -24,6 +24,19 @@
   },
   {
     "op": "add",
+    "path": "/items/JonsBlock",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 5,
+        "y": 1,
+        "z": 0
+      },
+      "type": "pushableBlock"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/block@6,3,0-2",
     "value": {
       "config": {
@@ -38,19 +51,6 @@
         "z": 1
       },
       "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/JonsBlock",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 5,
-        "y": 1,
-        "z": 0
-      },
-      "type": "pushableBlock"
     }
   }
 ]

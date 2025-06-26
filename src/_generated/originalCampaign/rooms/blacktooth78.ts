@@ -13,19 +13,16 @@ export const room = inferRoomJson({
     },
     "block@3,7,0": {
       config: { style: "tower" },
-
       position: { x: 3, y: 7, z: 0 },
       type: "block",
     },
     "block@3,7,1": {
       config: { style: "tower" },
-
       position: { x: 3, y: 7, z: 1 },
       type: "block",
     },
     "block@3,7,2": {
       config: { style: "tower" },
-
       position: { x: 3, y: 7, z: 2 },
       type: "block",
     },
@@ -36,19 +33,16 @@ export const room = inferRoomJson({
     },
     "block@4,7,0": {
       config: { style: "tower" },
-
       position: { x: 4, y: 7, z: 0 },
       type: "block",
     },
     "block@4,7,1": {
       config: { style: "tower" },
-
       position: { x: 4, y: 7, z: 1 },
       type: "block",
     },
     "block@4,7,2": {
       config: { style: "tower" },
-
       position: { x: 4, y: 7, z: 2 },
       type: "block",
     },
@@ -59,13 +53,11 @@ export const room = inferRoomJson({
     },
     "block@7,3,0": {
       config: { style: "tower" },
-
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
     "block@7,3,1": {
       config: { style: "tower" },
-
       position: { x: 7, y: 3, z: 1 },
       type: "block",
     },
@@ -147,38 +139,22 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["plain", "shield", "plain"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["plain", "shield", "plain"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
     "wall@5,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["plain", "shield", "plain"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["plain", "shield", "plain"] },
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["plain", "shield", "plain"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,5,0": {
-      config: {
-        direction: "left",
-        tiles: ["plain", "shield", "plain"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",
     },

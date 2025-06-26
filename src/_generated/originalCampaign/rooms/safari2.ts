@@ -68,7 +68,6 @@ export const room = inferRoomJson({
     },
     extraVolcano: {
       config: { style: "volcano", times: { x: 8, y: 2 } },
-
       position: { x: 0, y: 10, z: 0 },
       type: "deadlyBlock",
     },
@@ -106,11 +105,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["wall", "shield", "wall"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["wall", "shield", "wall"] },
       position: { x: 0, y: 12, z: 0 },
       type: "wall",
     },
@@ -120,11 +115,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@5,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["wall", "window", "wall"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["wall", "window", "wall"] },
       position: { x: 5, y: 12, z: 0 },
       type: "wall",
     },
@@ -145,7 +136,6 @@ export const room = inferRoomJson({
           "wall",
           "window",
         ],
-        times: { y: 12 },
       },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",

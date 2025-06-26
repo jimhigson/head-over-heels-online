@@ -1,7 +1,4 @@
-import {
-  boundingBoxForItem,
-  multiplyBoundingBox,
-} from "../../collision/boundingBoxes";
+import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { loadDoor } from "./loadDoor";
 import { loadPlayer } from "./loadPlayer";
 import type { RoomPickupsCollected } from "../GameState";
@@ -19,6 +16,7 @@ import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { loadFloor } from "./loadFloor";
+import { multiplyBoundingBox } from "../../collision/boundingBoxTimes";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;

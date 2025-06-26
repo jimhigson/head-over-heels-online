@@ -5,11 +5,6 @@
     "value": 6
   },
   {
-    "op": "replace",
-    "path": "/items/wall@5,8,0/config/times/x",
-    "value": 2
-  },
-  {
     "op": "remove",
     "path": "/items/wall@5,8,0/config/tiles/2"
   },
@@ -17,11 +12,6 @@
     "op": "replace",
     "path": "/items/wall@5,8,0/config/tiles/1",
     "value": "window1"
-  },
-  {
-    "op": "replace",
-    "path": "/items/wall@0,8,0/config/times/x",
-    "value": 4
   },
   {
     "op": "replace",

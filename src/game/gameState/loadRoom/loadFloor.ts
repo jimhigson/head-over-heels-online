@@ -1,17 +1,16 @@
 import { blockXyzToFineXyz } from "../../render/projections";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import { type JsonItem } from "../../../model/json/JsonItem";
 
-import {
-  fullBlockAabb,
-  multiplyBoundingBox,
-} from "../../collision/boundingBoxes";
+import { fullBlockAabb } from "../../collision/boundingBoxes";
 import type { RoomJson } from "../../../model/RoomJson";
 import { defaultBaseState } from "./itemDefaultStates";
 import { objectValues } from "iter-tools";
 import { iterate } from "../../../utils/iterate";
+import { multiplyBoundingBox } from "../../collision/boundingBoxTimes";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal.
@@ -65,6 +64,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   // down as the closest floor below it, and then extending all floors
   // that legs would reach down to
   if (floorBlockPosition.z === 0) {
+    // can only expand once per direction:
+    const expandedDirections: { [d in DirectionXy4]?: true } = {};
+
     // find any doors that sit on the edge of this floor, and expand as necessary
     for (const doorJson of doorsIter) {
       const {
@@ -74,37 +76,53 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
 
       switch (direction) {
         case "towards":
-          if (doorJsonPosition.y === naturalPositionBlocks.y) {
+          if (
+            !expandedDirections.towards &&
+            doorJsonPosition.y === naturalPositionBlocks.y
+          ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               y: extraFloorAmountForDoorsNear,
             });
             adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
               y: -extraFloorAmountForDoorsNear,
             });
+            expandedDirections.towards = true;
           }
           break;
         case "away":
-          if (doorJsonPosition.y === naturalPositionBlocks.y + times.y) {
+          if (
+            !expandedDirections.away &&
+            doorJsonPosition.y === naturalPositionBlocks.y + times.y
+          ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               y: extraFloorAmountForDoorsFar,
             });
+            expandedDirections.away = true;
           }
           break;
         case "right":
-          if (doorJsonPosition.x === naturalPositionBlocks.x) {
+          if (
+            !expandedDirections.right &&
+            doorJsonPosition.x === naturalPositionBlocks.x
+          ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               x: extraFloorAmountForDoorsNear,
             });
             adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
               x: -extraFloorAmountForDoorsNear,
             });
+            expandedDirections.right = true;
           }
           break;
         case "left":
-          if (doorJsonPosition.x === naturalPositionBlocks.x + times.x) {
+          if (
+            !expandedDirections.left &&
+            doorJsonPosition.x === naturalPositionBlocks.x + times.x
+          ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               x: extraFloorAmountForDoorsFar,
             });
+            expandedDirections.left = true;
           }
           break;
         default:

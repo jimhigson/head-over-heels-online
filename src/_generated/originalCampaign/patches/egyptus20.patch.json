@@ -5,11 +5,6 @@
     "value": 10
   },
   {
-    "op": "replace",
-    "path": "/items/wall@8,5,0/config/times/y",
-    "value": 5
-  },
-  {
     "op": "add",
     "path": "/items/wall@8,5,0/config/tiles/3",
     "value": "sarcophagus"

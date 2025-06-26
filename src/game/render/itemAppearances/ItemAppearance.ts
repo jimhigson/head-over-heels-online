@@ -19,7 +19,7 @@ import {
   renderMultipliedXy,
 } from "../../../utils/pixi/renderMultpliedXy";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import type { Xyz } from "../../../utils/vectors/vectors";
+import { itemInPlayTimes } from "../../collision/boundingBoxTimes";
 
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,
@@ -54,7 +54,7 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
         ...(typeof createSpriteOptions === "string" ?
           { textureId: createSpriteOptions }
         : createSpriteOptions),
-        times: subject.config.times,
+        times: itemInPlayTimes(subject),
       });
     } else {
       return createSprite(createSpriteOptions);
@@ -79,7 +79,7 @@ export const itemStaticSpriteAppearance = <T extends ItemInPlayType>(
         return renderMultipliedXy(
           pixiRenderer,
           createSpriteOptions,
-          subject.config.times,
+          itemInPlayTimes(subject),
         );
       } else {
         const container = createSprite(createSpriteOptions);
@@ -158,10 +158,7 @@ export const itemAppearanceShadowMaskFromConfig =
     currentRendering,
   }) => {
     if (currentRendering === undefined) {
-      const times =
-        isMultipliedItem(item) ?
-          (item.config.times as Partial<Xyz>)
-        : undefined;
+      const times = itemInPlayTimes(item);
 
       const appearanceReturn = {
         output: renderMultipliedXy(

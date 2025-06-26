@@ -48,7 +48,6 @@ export const room = inferRoomJson({
     },
     extra0: {
       config: { style: "artificial", times: { z: 3 } },
-
       position: { x: 4, y: 9, z: 0 },
       type: "block",
     },
@@ -105,11 +104,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["loop", "skeleton", "loop"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 0, y: 10, z: 0 },
       type: "wall",
     },
@@ -119,20 +114,12 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@5,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["loop", "skeleton", "loop"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 5, y: 10, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["loop", "skeleton", "loop"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
@@ -140,7 +127,6 @@ export const room = inferRoomJson({
       config: {
         direction: "left",
         tiles: ["loop", "loop", "skeleton", "loop", "loop"],
-        times: { y: 5 },
       },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",

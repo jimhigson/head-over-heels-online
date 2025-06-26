@@ -6,11 +6,6 @@
   },
   {
     "op": "replace",
-    "path": "/items/wall@5,8,0/config/times/x",
-    "value": 5
-  },
-  {
-    "op": "replace",
     "path": "/items/wall@5,8,0/config/tiles/2",
     "value": "skeleton"
   },
@@ -25,9 +20,14 @@
     "value": "loop"
   },
   {
-    "op": "replace",
-    "path": "/items/wall@0,8,0/config/times/x",
-    "value": 1
+    "op": "add",
+    "path": "/items/wall@5,8,0/config/tiles/5",
+    "value": "skeleton"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@5,8,0/config/tiles/6",
+    "value": "loop"
   },
   {
     "op": "remove",

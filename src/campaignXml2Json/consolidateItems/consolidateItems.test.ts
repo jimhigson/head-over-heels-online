@@ -589,9 +589,6 @@ describe("walls", () => {
               "cowboy",
               "book",
             ],
-            "times": {
-              "y": 2,
-            },
           },
           "position": {
             "x": 0,
@@ -638,13 +635,96 @@ describe("walls", () => {
               "book",
               "book",
             ],
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+      ]
+    `);
+  });
+  test("can consolidate right-facing walls using 'times' if they are invisible since they don't have tiles", () => {
+    const items: JsonItemUnion[] = [
+      {
+        type: "wall",
+        config: { direction: "right" },
+        position: { x: 1, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "right" },
+        position: { x: 1, y: 1, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "right" },
+        position: { x: 1, y: 2, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "right" },
+        position: { x: 1, y: 3, z: 0 },
+      },
+    ];
+
+    expect(consolidateItems(items)).toMatchInlineSnapshot(`
+      [
+        {
+          "config": {
+            "direction": "right",
+            "times": {
+              "y": 4,
+            },
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+      ]
+    `);
+  });
+  test("can consolidate towards-facing walls using 'times' if they are invisible since they don't have tiles", () => {
+    const items: JsonItemUnion[] = [
+      {
+        type: "wall",
+        config: { direction: "towards" },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "towards" },
+        position: { x: 1, y: 2, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "towards" },
+        position: { x: 2, y: 2, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "towards" },
+        position: { x: 3, y: 2, z: 0 },
+      },
+    ];
+
+    expect(consolidateItems(items)).toMatchInlineSnapshot(`
+      [
+        {
+          "config": {
+            "direction": "towards",
             "times": {
               "x": 4,
             },
           },
           "position": {
             "x": 0,
-            "y": 0,
+            "y": 2,
             "z": 0,
           },
           "type": "wall",
@@ -692,6 +772,117 @@ describe("walls", () => {
           "position": {
             "x": 0,
             "y": 1,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+      ]
+    `);
+  });
+  test("consolidates four walls (two blocks each) around a room correctly", () => {
+    const items: JsonItemUnion[] = [
+      // towards
+      {
+        type: "wall",
+        config: { direction: "towards" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "towards" },
+        position: { x: 1, y: 0, z: 0 },
+      },
+      // right
+      {
+        type: "wall",
+        config: { direction: "right" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "right" },
+        position: { x: 0, y: 1, z: 0 },
+      },
+      // away
+      {
+        type: "wall",
+        config: { direction: "away", tiles: ["book"] },
+        position: { x: 0, y: 2, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "away", tiles: ["book"] },
+        position: { x: 1, y: 2, z: 0 },
+      },
+      // left
+      {
+        type: "wall",
+        config: { direction: "left", tiles: ["cowboy"] },
+        position: { x: 1, y: 0, z: 0 },
+      },
+      {
+        type: "wall",
+        config: { direction: "left", tiles: ["cowboy"] },
+        position: { x: 1, y: 1, z: 0 },
+      },
+    ];
+
+    expect(consolidateItems(items)).toMatchInlineSnapshot(`
+      [
+        {
+          "config": {
+            "direction": "towards",
+            "times": {
+              "x": 2,
+            },
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+        {
+          "config": {
+            "direction": "right",
+            "times": {
+              "y": 2,
+            },
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+        {
+          "config": {
+            "direction": "away",
+            "tiles": [
+              "book",
+              "book",
+            ],
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "z": 0,
+          },
+          "type": "wall",
+        },
+        {
+          "config": {
+            "direction": "left",
+            "tiles": [
+              "cowboy",
+              "cowboy",
+            ],
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
             "z": 0,
           },
           "type": "wall",

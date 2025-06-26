@@ -20,18 +20,8 @@ export const room = inferRoomJson({
       position: { x: 4, y: 6, z: 2 },
       type: "door",
     },
-    extraBall: {
-      config: {},
-
-      position: { x: 4, y: 0, z: 0 },
-      type: "ball",
-    },
-    extraBall2: {
-      config: {},
-
-      position: { x: 7, y: 2, z: 0 },
-      type: "ball",
-    },
+    extraBall: { config: {}, position: { x: 4, y: 0, z: 0 }, type: "ball" },
+    extraBall2: { config: {}, position: { x: 7, y: 2, z: 0 }, type: "ball" },
     extraMonster: {
       config: {
         activated: "on",
@@ -40,7 +30,6 @@ export const room = inferRoomJson({
         style: "starsAndStripes",
         which: "skiHead",
       },
-
       position: { x: 2, y: 0, z: 0 },
       type: "monster",
     },
@@ -52,7 +41,6 @@ export const room = inferRoomJson({
         style: "starsAndStripes",
         which: "skiHead",
       },
-
       position: { x: 7, y: 5, z: 0 },
       type: "monster",
     },
@@ -64,7 +52,6 @@ export const room = inferRoomJson({
         style: "greenAndPink",
         which: "skiHead",
       },
-
       position: { x: 7, y: 0, z: 0 },
       type: "monster",
     },
@@ -76,7 +63,6 @@ export const room = inferRoomJson({
         style: "greenAndPink",
         which: "skiHead",
       },
-
       position: { x: 7, y: 1, z: 0 },
       type: "monster",
     },
@@ -114,19 +100,16 @@ export const room = inferRoomJson({
     },
     raisedPlatform: {
       config: { style: "artificial", times: { x: 2, y: 4 } },
-
       position: { x: 4, y: 2, z: 1 },
       type: "block",
     },
     raisedPlatformSupport: {
       config: { style: "tower", times: { x: 2 } },
-
       position: { x: 4, y: 2, z: 0 },
       type: "block",
     },
     raisedPlatformSupport2: {
       config: { style: "tower", times: { x: 2 } },
-
       position: { x: 4, y: 5, z: 0 },
       type: "block",
     },
@@ -149,13 +132,12 @@ export const room = inferRoomJson({
       config: {
         direction: "away",
         tiles: ["plain", "shield", "shield", "plain"],
-        times: { x: 4 },
       },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
     "wall@4,6,0": {
-      config: { direction: "away", tiles: ["plain", "plain"], times: { x: 4 } },
+      config: { direction: "away", tiles: ["plain", "plain"] },
       position: { x: 6, y: 6, z: 0 },
       type: "wall",
     },
@@ -163,7 +145,6 @@ export const room = inferRoomJson({
       config: {
         direction: "left",
         tiles: ["plain", "plain", "shield", "shield", "plain", "plain"],
-        times: { y: 6 },
       },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",

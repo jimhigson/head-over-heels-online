@@ -21,11 +21,6 @@
   },
   {
     "op": "replace",
-    "path": "/items/wall@8,5,0/config/times/y",
-    "value": 5
-  },
-  {
-    "op": "replace",
     "path": "/items/wall@8,5,0/config/tiles/2",
     "value": "sarcophagus"
   },
@@ -45,14 +40,59 @@
     "value": "hieroglyphics"
   },
   {
-    "op": "replace",
-    "path": "/items/wall@8,0,0/position/x",
-    "value": 9
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/5",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/6",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/7",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/8",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/9",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/10",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/11",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/12",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/13",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@8,5,0/config/tiles/14",
+    "value": "hieroglyphics"
   },
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/times/y",
-    "value": 2
+    "path": "/items/wall@8,0,0/position/x",
+    "value": 9
   },
   {
     "op": "remove",
@@ -74,11 +114,6 @@
     "value": 7
   },
   {
-    "op": "replace",
-    "path": "/items/wall@5,8,0/config/times/x",
-    "value": 2
-  },
-  {
     "op": "remove",
     "path": "/items/wall@5,8,0/config/tiles/2"
   },
@@ -96,11 +131,6 @@
     "op": "replace",
     "path": "/items/wall@0,8,0/position/y",
     "value": 9
-  },
-  {
-    "op": "replace",
-    "path": "/items/wall@0,8,0/config/times/x",
-    "value": 5
   },
   {
     "op": "add",

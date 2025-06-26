@@ -77,28 +77,20 @@ export const room = inferRoomJson({
     },
     pyramid1: {
       config: { style: "organic", times: { x: 5, y: 5 } },
-
       position: { x: 1, y: 1, z: 0 },
       type: "block",
     },
     pyramid2: {
       config: { style: "organic", times: { x: 3, y: 3 } },
-
       position: { x: 2, y: 2, z: 1 },
       type: "block",
     },
     pyramid3: {
       config: { style: "organic" },
-
       position: { x: 3, y: 3, z: 2 },
       type: "block",
     },
-    pyramidBall: {
-      config: {},
-
-      position: { x: 3, y: 3, z: 3 },
-      type: "ball",
-    },
+    pyramidBall: { config: {}, position: { x: 3, y: 3, z: 3 }, type: "ball" },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 9 } },
       position: { x: 0, y: 0, z: 0 },
@@ -119,7 +111,6 @@ export const room = inferRoomJson({
           "hieroglyphics",
           "hieroglyphics",
         ],
-        times: { x: 5 },
       },
       position: { x: 0, y: 9, z: 0 },
       type: "wall",
@@ -130,20 +121,12 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@5,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["hieroglyphics", "hieroglyphics"],
-        times: { x: 2 },
-      },
+      config: { direction: "away", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 7, y: 9, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["hieroglyphics", "hieroglyphics"],
-        times: { y: 2 },
-      },
+      config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 9, y: 0, z: 0 },
       type: "wall",
     },
@@ -156,8 +139,17 @@ export const room = inferRoomJson({
           "sarcophagus",
           "sarcophagus",
           "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics",
         ],
-        times: { y: 5 },
       },
       position: { x: 9, y: 4, z: 0 },
       type: "wall",

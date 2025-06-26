@@ -231,10 +231,27 @@ export const consolidateItems = (
     const zTimes = endZ - startZ + 1;
     // Update repetitions for the consolidated item
     if (xTimes + yTimes + zTimes > 3) {
-      item.config.times = {};
-      if (xTimes !== 1) item.config.times.x = xTimes;
-      if (yTimes !== 1) item.config.times.y = yTimes;
-      if (zTimes !== 1) item.config.times.z = zTimes;
+      if (item.type === "wall") {
+        switch (item.config.direction) {
+          case "away":
+          case "left":
+            // these walls have size defined by tile count - no need to set times
+            break;
+          case "towards":
+            if (xTimes !== 1) item.config.times = { x: xTimes };
+            break;
+          case "right":
+            if (yTimes !== 1) item.config.times = { y: yTimes };
+            break;
+        }
+      } else {
+        if (xTimes !== 1)
+          item.config.times = { ...item.config.times, x: xTimes };
+        if (yTimes !== 1)
+          item.config.times = { ...item.config.times, y: yTimes };
+        if (zTimes !== 1)
+          item.config.times = { ...item.config.times, z: zTimes };
+      }
     }
 
     // Clear the consolidated item from all other cells

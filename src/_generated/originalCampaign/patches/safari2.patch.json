@@ -5,11 +5,6 @@
     "value": 12
   },
   {
-    "op": "replace",
-    "path": "/items/wall@8,0,0/config/times/y",
-    "value": 12
-  },
-  {
     "op": "add",
     "path": "/items/wall@8,0,0/config/tiles/8",
     "value": "shield"

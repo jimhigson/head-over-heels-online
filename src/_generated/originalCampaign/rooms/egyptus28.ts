@@ -63,7 +63,6 @@ export const room = inferRoomJson({
           "hieroglyphics",
           "hieroglyphics",
         ],
-        times: { x: 8 },
       },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
@@ -74,20 +73,12 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@8,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["hieroglyphics", "hieroglyphics"],
-        times: { y: 2 },
-      },
+      config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,4,0": {
-      config: {
-        direction: "left",
-        tiles: ["hieroglyphics", "hieroglyphics"],
-        times: { y: 2 },
-      },
+      config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 8, y: 4, z: 0 },
       type: "wall",
     },

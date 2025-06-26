@@ -40,12 +40,12 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,8,0": {
-      config: { direction: "away", tiles: ["wall", "shield"], times: { x: 2 } },
+      config: { direction: "away", tiles: ["wall", "shield"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
     "wall@4,8,0": {
-      config: { direction: "away", tiles: ["shield", "wall"], times: { x: 2 } },
+      config: { direction: "away", tiles: ["shield", "wall"] },
       position: { x: 4, y: 8, z: 0 },
       type: "wall",
     },
@@ -62,7 +62,6 @@ export const room = inferRoomJson({
           "window",
           "wall",
         ],
-        times: { y: 8 },
       },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
