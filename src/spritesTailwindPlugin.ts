@@ -139,6 +139,15 @@ export const spritesTailwindPlugin = plugin(
         animation: `sprite-animation-${animationName.replaceAll(".", "_")} ${animationDuration}s steps(${frames.length}, end) infinite`,
       };
 
+      utilities[`.texture-animated-once-${e(animationName)}`] = {
+        "--w": `${spritesheetData.frames[frames[0]].frame.w}px`,
+        "--h": `${spritesheetData.frames[frames[0]].frame.h}px`,
+        // let stay on the last frame after the animation ends:
+        "--x": `${spritesheetData.frames[frames.at(-1)!].frame.x}px`,
+        "--y": `${spritesheetData.frames[frames.at(-1)!].frame.y}px`,
+        animation: `sprite-animation-${animationName.replaceAll(".", "_")} ${animationDuration}s steps(${frames.length}, end) 1`,
+      };
+
       animations[
         `@keyframes sprite-animation-${animationName.replaceAll(".", "_")}`
       ] = Object.fromEntries(
