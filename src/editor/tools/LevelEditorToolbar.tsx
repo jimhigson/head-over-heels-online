@@ -108,7 +108,7 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton
           itemTool={{
             type: "block",
-            config: { style: "organic", disappearing: { on: "stand" } },
+            config: { style: "organic" },
           }}
         >
           <span
@@ -118,7 +118,7 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton
           itemTool={{
             type: "block",
-            config: { style: "organic" },
+            config: { style: "organic", disappearing: { on: "stand" } },
           }}
         >
           <DissapearingToolbarIcon

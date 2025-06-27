@@ -5,6 +5,7 @@ import type { editor } from "monaco-editor";
 import {
   parseTree,
   type ParseError,
+  type Node,
   findNodeAtLocation,
   getLocation,
 } from "jsonc-parser";
@@ -13,6 +14,7 @@ import { twClass } from "../twClass";
 import { useAppDispatch } from "../../store/hooks";
 import type { AnyRoomJson } from "../../model/RoomJson";
 import type { EditorRoomItemId } from "../EditorRoomId";
+import type { Monaco } from "@monaco-editor/react";
 
 export const useSyncSelectionWithMonaco = (
   editor: editor.IStandaloneCodeEditor | null,
@@ -72,21 +74,59 @@ export const useSyncSelectionWithMonaco = (
     return disposable.dispose;
   }, [dispatch, editor, monaco]);
 
+  function* generateDecorations({
+    rootNode,
+    editorModel,
+    selectedJsonItemIds,
+    monaco,
+    decorationsOptions,
+  }: {
+    rootNode: Node;
+    editorModel: editor.ITextModel;
+    selectedJsonItemIds: EditorRoomItemId[];
+    monaco: Monaco;
+    decorationsOptions: editor.IModelDecorationOptions;
+  }) {
+    for (const selectedJsonItemId of selectedJsonItemIds) {
+      const node = findNodeAtLocation(rootNode, ["items", selectedJsonItemId]);
+
+      if (node === undefined) {
+        continue;
+      }
+
+      const { lineNumber: startLineNumber, column: startColumn } =
+        editorModel.getPositionAt(node.offset);
+      const { lineNumber: endLineNumber, column: endColumn } =
+        editorModel.getPositionAt(node.offset + node.length);
+
+      yield {
+        range: new monaco.Range(
+          startLineNumber,
+          startColumn,
+          endLineNumber,
+          endColumn,
+        ),
+        options: decorationsOptions,
+      };
+    }
+  }
+
   // sync store -> monaco selection
   useEffect(() => {
     if (editor === null || monaco === null) {
       return;
     }
+
+    const decorationsOptions: editor.IModelDecorationOptions = {
+      stickiness:
+        monaco.editor.TrackedRangeStickiness.AlwaysGrowsWhenTypingAtEdges,
+      blockClassName: twClass("editor-selected"),
+    };
+
     const unSub = startAppListening({
       actionCreator: setSelectedItemInRoom,
       effect(action, { getState }) {
         const { selectedJsonItemIds } = getState().levelEditor!;
-
-        if (selectedJsonItemIds.length > 1 || action.payload.additive) {
-          return;
-        }
-        // we have a single item selected
-        const [singleSelectedJsonItemId] = selectedJsonItemIds;
 
         const editorModel = editor.getModel();
         if (editorModel === null) {
@@ -106,42 +146,15 @@ export const useSyncSelectionWithMonaco = (
         if (rootNode === undefined) {
           return;
         }
-        // we have a parsed json tree
-
-        const node = findNodeAtLocation(rootNode, [
-          "items",
-          singleSelectedJsonItemId,
-        ]);
-
-        if (node === undefined) {
-          return;
-        }
-
-        const { lineNumber: startLineNumber, column: startColumn } =
-          editorModel.getPositionAt(node.offset);
-        const { lineNumber: endLineNumber, column: endColumn } =
-          editorModel.getPositionAt(node.offset + node.length);
-
-        const decorationsOptions: editor.IModelDecorationOptions = {
-          stickiness:
-            monaco.editor.TrackedRangeStickiness.AlwaysGrowsWhenTypingAtEdges,
-          blockClassName: twClass("border-l-1 border-metallicBlue"),
-
-          glyphMarginHoverMessage: {
-            value: `Selected item: ${singleSelectedJsonItemId}`,
-          },
-        };
 
         const decorations = [
-          {
-            range: new monaco.Range(
-              startLineNumber,
-              startColumn,
-              endLineNumber,
-              endColumn,
-            ),
-            options: decorationsOptions,
-          },
+          ...generateDecorations({
+            rootNode,
+            editorModel,
+            selectedJsonItemIds,
+            monaco,
+            decorationsOptions,
+          }),
         ];
 
         if (!collectionRef.current) {
@@ -151,15 +164,13 @@ export const useSyncSelectionWithMonaco = (
           collectionRef.current.set(decorations); // replaces previous
         }
 
-        editor.revealRangeInCenterIfOutsideViewport(
-          new monaco.Range(
-            startLineNumber,
-            startColumn,
-            endLineNumber,
-            endColumn,
-          ),
-          monaco.editor.ScrollType.Smooth,
-        );
+        if (decorations.length > 0) {
+          editor.revealRangeInCenterIfOutsideViewport(
+            // go to the end of the array for the most recently selected (probably)
+            decorations.at(-1)!.range,
+            monaco.editor.ScrollType.Smooth,
+          );
+        }
       },
     });
 

@@ -132,15 +132,6 @@ export type RoomState<
      * is the current room
      */
     roomTime: number;
-
-    /**
-     * properties set on the room state by the level editor - will not exist
-     * in-play
-     */
-    editor?: {
-      hoveredJsonItemId?: RoomItemId;
-      selectedJsonItemId?: Array<RoomItemId>;
-    };
   }
 >;
 export type UnknownRoomState = RoomState<string, string, SceneryName>;

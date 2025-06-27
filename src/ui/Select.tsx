@@ -1,4 +1,4 @@
-import type { WheelEvent, CSSProperties, FC, ReactNode } from "react";
+import type { CSSProperties, FC, ReactNode } from "react";
 import { useRef, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { CssVariables } from "../game/components/CssVariables";
@@ -13,8 +13,8 @@ import {
 import { Button } from "./button";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 import { emptyObject } from "../utils/empty";
-import normalizeWheel from "normalize-wheel-es";
 import { cn } from "./cn";
+import { useMouseWheelOptions } from "./useMouseWheel";
 
 type OptionCommandItemComponent<Value extends string> = FC<{
   value: Value;
@@ -50,7 +50,6 @@ const DefaultOptionCommandItem: OptionCommandItemComponent<string> = ({
 
 export const Select = <Value extends string>(props: SelectProps<Value>) => {
   const {
-    value,
     values,
     onSelect,
     triggerButtonClassName = "",
@@ -60,7 +59,11 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
   } = props;
 
   const [open, setOpen] = useState(false);
-  const wheelY = useRef(0);
+
+  const wheelElementRef = useRef<HTMLButtonElement | null>(null);
+  useMouseWheelOptions(wheelElementRef, values, (value) => {
+    onSelect(value);
+  });
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -71,22 +74,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
             triggerButtonClassName,
           )}
           style={triggerButtonStyle}
-          onWheel={(e: WheelEvent<HTMLButtonElement>) => {
-            const norm = normalizeWheel(e.nativeEvent);
-
-            wheelY.current -= norm.spinY;
-
-            if (wheelY.current >= 1 || wheelY.current <= -1) {
-              // find currently selected item's index:
-              const curIdx = values.indexOf(value);
-              const newIndex =
-                (Math.round(curIdx + wheelY.current) + 99 * values.length) %
-                values.length;
-              const newValue = values[newIndex];
-              onSelect(newValue);
-              wheelY.current = 0;
-            }
-          }}
+          ref={wheelElementRef}
         >
           {typeof triggerButtonLabel === "string" ?
             <BitmapText className="grow overflow-hidden text-left">

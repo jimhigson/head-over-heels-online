@@ -12,6 +12,11 @@ import { store } from "../../../../store/store";
 import { selectGameEngineUpscale } from "../../../../store/slices/upscale/upscaleSlice";
 import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import type { RootStateWithLevelEditorSlice } from "../../../../editor/slice/levelEditorSlice";
+import {
+  selectHoveredJsonItemId,
+  selectSelectedJsonItemIds,
+} from "../../../../editor/slice/levelEditorSlice";
 
 const selectionColour = spritesheetPalette.pastelBlue;
 const hoverColour = spritesheetPalette.highlightBeige;
@@ -41,18 +46,16 @@ export class EditorSelectedRenderer<T extends ItemInPlayType>
     const {
       renderContext: {
         item: { jsonItemId },
-        room: { editor },
       },
     } = this;
 
-    const isHovered =
-      jsonItemId &&
-      (editor?.hoveredJsonItemId as string[] | undefined)?.includes(jsonItemId);
+    const state = store.getState() as RootStateWithLevelEditorSlice;
+    const hoveredJsonItemId = selectHoveredJsonItemId(state);
+    const selectedJsonItemIds = selectSelectedJsonItemIds(state);
+
+    const isHovered = jsonItemId && hoveredJsonItemId === jsonItemId;
     const isSelected =
-      jsonItemId &&
-      (editor?.selectedJsonItemId as string[] | undefined)?.includes(
-        jsonItemId,
-      );
+      jsonItemId && (selectedJsonItemIds as string[]).includes(jsonItemId);
 
     this.output.filters =
       isHovered && isSelected ? [selectedFilter, hoverFilter]
