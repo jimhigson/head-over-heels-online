@@ -29,6 +29,10 @@ import {
   doorOverallWidthPx,
   doorPostHeightPx,
 } from "../../../game/gameState/loadRoom/loadDoor";
+import {
+  completeTimesXy,
+  wallTimes,
+} from "../../../game/collision/boundingBoxTimes";
 
 let cursorItemCount = 0;
 
@@ -58,7 +62,7 @@ export const itemToolPutDownLocation = (
       state: { position: wallPosition },
     } = pointingAtItem;
 
-    const currentWallTimes: Xy = { x: 1, y: 1, ...wallConfig.times };
+    const currentWallTimes: Xy = completeTimesXy(wallTimes(wallConfig));
 
     /** axis running along the wall the door sits on */
     const alongWallAxis = perpendicularAxisXy(

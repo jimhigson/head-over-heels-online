@@ -8,7 +8,6 @@ export const room = inferRoomJson({
   items: {
     crownsScroll: {
       config: { gives: "scroll", page: "crowns" },
-
       position: { x: 5, y: 4, z: 1 },
       type: "pickup",
     },
@@ -107,11 +106,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["window3", "coil", "window2"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["window3", "coil", "window2"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
@@ -121,29 +116,17 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@5,8,0": {
-      config: {
-        direction: "away",
-        tiles: ["window2", "coil", "window1"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["window2", "coil", "window1"] },
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["window3", "coil", "window2"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["window3", "coil", "window2"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,5,0": {
-      config: {
-        direction: "left",
-        tiles: ["window2", "coil", "window1"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["window2", "coil", "window1"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",
     },

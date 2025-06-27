@@ -57,7 +57,6 @@ export const room = inferRoomJson({
         movement: "clockwise",
         startDirection: "away",
       },
-
       position: { x: 7, y: 2.5, z: 0 },
       type: "movingPlatform",
     },
@@ -67,7 +66,6 @@ export const room = inferRoomJson({
         movement: "clockwise",
         startDirection: "left",
       },
-
       position: { x: 3.5, y: 0, z: 0 },
       type: "movingPlatform",
     },
@@ -77,7 +75,6 @@ export const room = inferRoomJson({
         movement: "clockwise",
         startDirection: "right",
       },
-
       position: { x: 3.5, y: 5, z: 0 },
       type: "movingPlatform",
     },
@@ -118,18 +115,17 @@ export const room = inferRoomJson({
           "window",
           "wall",
         ],
-        times: { x: 8 },
       },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
-      config: { direction: "left", tiles: ["wall", "shield"], times: { y: 2 } },
+      config: { direction: "left", tiles: ["wall", "shield"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,4,0": {
-      config: { direction: "left", tiles: ["shield", "wall"], times: { y: 2 } },
+      config: { direction: "left", tiles: ["shield", "wall"] },
       position: { x: 8, y: 4, z: 0 },
       type: "wall",
     },

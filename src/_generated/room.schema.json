@@ -61,7 +61,8 @@
                               "x": {
                                 "type": "number",
                                 "multipleOf": 1,
-                                "minimum": 1
+                                "minimum": 1,
+                                "maximum": 20
                               }
                             },
                             "required": ["x"],
@@ -84,7 +85,8 @@
                               "y": {
                                 "type": "number",
                                 "multipleOf": 1,
-                                "minimum": 1
+                                "minimum": 1,
+                                "maximum": 20
                               }
                             },
                             "required": ["y"],
@@ -104,18 +106,6 @@
                           "tiles": {
                             "items": {},
                             "type": "array"
-                          },
-                          "times": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "x": {
-                                "type": "number",
-                                "multipleOf": 1,
-                                "minimum": 1
-                              }
-                            },
-                            "required": ["x"],
-                            "type": "object"
                           }
                         },
                         "required": ["direction", "tiles"],
@@ -131,18 +121,6 @@
                           "tiles": {
                             "items": {},
                             "type": "array"
-                          },
-                          "times": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "y": {
-                                "type": "number",
-                                "multipleOf": 1,
-                                "minimum": 1
-                              }
-                            },
-                            "required": ["y"],
-                            "type": "object"
                           }
                         },
                         "required": ["direction", "tiles"],
@@ -155,15 +133,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -208,15 +192,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -302,15 +292,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -389,17 +385,20 @@
                           "x": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           }
                         },
                         "type": "object"
@@ -432,15 +431,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -481,17 +486,20 @@
                           "x": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           }
                         },
                         "type": "object"
@@ -505,15 +513,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -554,17 +568,20 @@
                           "x": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           }
                         },
                         "type": "object"
@@ -578,15 +595,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -616,17 +639,20 @@
                           "x": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           }
                         },
                         "type": "object"
@@ -640,15 +666,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -674,17 +706,20 @@
                           "x": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           }
                         },
                         "type": "object"
@@ -697,15 +732,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -738,15 +779,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -774,15 +821,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -823,15 +876,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -864,15 +923,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -913,17 +978,20 @@
                           "x": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           }
                         },
                         "type": "object"
@@ -937,15 +1005,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -1054,15 +1128,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -1090,15 +1170,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -1144,15 +1230,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -1191,15 +1283,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2077,15 +2175,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2126,15 +2230,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2171,15 +2281,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2212,15 +2328,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2253,15 +2375,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2600,15 +2728,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2643,15 +2777,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2686,15 +2826,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2722,15 +2868,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2946,15 +3098,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -2980,17 +3138,20 @@
                           "x": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
-                            "minimum": 1
+                            "minimum": 1,
+                            "maximum": 20
                           }
                         },
                         "type": "object"
@@ -3003,15 +3164,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -3039,15 +3206,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],
@@ -3079,12 +3252,14 @@
                               "x": {
                                 "type": "number",
                                 "multipleOf": 1,
-                                "minimum": 1
+                                "minimum": 1,
+                                "maximum": 20
                               },
                               "y": {
                                 "type": "number",
                                 "multipleOf": 1,
-                                "minimum": 1
+                                "minimum": 1,
+                                "maximum": 20
                               }
                             },
                             "required": ["x", "y"],
@@ -3108,12 +3283,14 @@
                               "x": {
                                 "type": "number",
                                 "multipleOf": 1,
-                                "minimum": 1
+                                "minimum": 1,
+                                "maximum": 20
                               },
                               "y": {
                                 "type": "number",
                                 "multipleOf": 1,
-                                "minimum": 1
+                                "minimum": 1,
+                                "maximum": 20
                               }
                             },
                             "required": ["x", "y"],
@@ -3149,12 +3326,14 @@
                               "x": {
                                 "type": "number",
                                 "multipleOf": 1,
-                                "minimum": 1
+                                "minimum": 1,
+                                "maximum": 20
                               },
                               "y": {
                                 "type": "number",
                                 "multipleOf": 1,
-                                "minimum": 1
+                                "minimum": 1,
+                                "maximum": 20
                               }
                             },
                             "required": ["x", "y"],
@@ -3171,15 +3350,21 @@
                     "properties": {
                       "x": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "y": {
                         "type": "number",
-                        "multipleOf": 0.5
+                        "multipleOf": 0.5,
+                        "minimum": -3,
+                        "maximum": 20
                       },
                       "z": {
                         "type": "number",
-                        "multipleOf": 1
+                        "multipleOf": 1,
+                        "minimum": -1,
+                        "maximum": 20
                       }
                     },
                     "required": ["x", "y", "z"],

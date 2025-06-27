@@ -12,13 +12,16 @@ import {
   defaultRoomHeightBlocks,
   wallRenderHeight,
 } from "../../physics/mechanicsConstants";
-import { multiplyBoundingBox } from "../../collision/boundingBoxes";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import {
+  wallTimes,
+  multiplyBoundingBox,
+} from "../../collision/boundingBoxTimes";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal
@@ -56,21 +59,23 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
   roomJson: RoomJson<RoomId, RoomItemId>,
 ): ItemTypeUnion<"wall", RoomId, RoomItemId> => {
   const {
-    config: { direction, times },
+    config: { direction },
     position,
   } = jsonWall;
+
+  const times = wallTimes(jsonWall.config);
 
   const {
     size: { z: roomSizeZ },
   } = roomJson;
-  const axis = doorAlongAxis(direction);
-  const crossAxis = perpendicularAxisXy(axis);
+  const wallTangentAxis = doorAlongAxis(direction);
+  const wallNormalAxis = perpendicularAxisXy(wallTangentAxis);
 
   const isHidden = direction === "towards" || direction === "right";
 
   const invisibleWallSetBackBlocks: Xyz = {
     ...originXyz,
-    [crossAxis]: isHidden ? -wallThicknessBlocks : 0,
+    [wallNormalAxis]: isHidden ? -wallThicknessBlocks : 0,
   };
 
   return {
@@ -79,13 +84,15 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     jsonItemId,
     config: jsonWall.config,
     aabb: multiplyBoundingBox(
-      axis === "y" ? yAxisWallAabb(roomSizeZ) : xAxisWallAabb(roomSizeZ),
+      wallTangentAxis === "y" ?
+        yAxisWallAabb(roomSizeZ)
+      : xAxisWallAabb(roomSizeZ),
       times,
     ),
     renderAabb:
       isHidden ? originXyz : (
         multiplyBoundingBox(
-          axis === "y" ? yAxisWallRenderAabb : xAxisWallRenderAabb,
+          wallTangentAxis === "y" ? yAxisWallRenderAabb : xAxisWallRenderAabb,
           times,
         )
       ),
@@ -96,7 +103,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },
     shadowCastTexture:
-      axis === "y" ? "shadow.wall.y" : (
+      wallTangentAxis === "y" ? "shadow.wall.y" : (
         { textureId: "shadow.wall.y", flipX: true }
       ),
   };

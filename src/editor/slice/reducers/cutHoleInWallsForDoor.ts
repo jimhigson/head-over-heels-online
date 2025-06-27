@@ -1,5 +1,4 @@
 import { produce } from "immer";
-import type { AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
 import { entries, fromAllEntries } from "../../../utils/entries";
 import type { Xyz, Xy, DirectionXy4 } from "../../../utils/vectors/vectors";
 import {
@@ -14,6 +13,10 @@ import type {
   EditorRoomJsonItemUnion,
   EditorRoomJson,
 } from "../../EditorRoomId";
+import {
+  completeTimesXy,
+  wallTimes,
+} from "../../../game/collision/boundingBoxTimes";
 
 function* iterateRoomItemsToCutWallsForDoors(
   items: EditorRoomJsonItems,
@@ -32,7 +35,7 @@ function* iterateRoomItemsToCutWallsForDoors(
     }
 
     const { position: wallPosition, config: wallConfig } = item;
-    const currentWallTimes: Xy = { x: 1, y: 1, ...wallConfig.times };
+    const currentWallTimes: Xy = completeTimesXy(wallTimes(wallConfig));
 
     /** axis running along the wall the door sits on */
     const alongWallAxis = perpendicularAxisXy(
@@ -70,15 +73,22 @@ function* iterateRoomItemsToCutWallsForDoors(
         id,
         produce(item, (itemDraft) => {
           itemDraft.position = addXyz(wallPosition, { [alongWallAxis]: 2 });
-          const draftConfig = itemDraft.config as AnyWallJsonConfig;
+          const draftConfig = itemDraft.config;
 
-          draftConfig.times = {
-            [alongWallAxis]: currentWallTimes[alongWallAxis] - 2,
-          };
-
-          // remove the first two tiles:
-          if (draftConfig.tiles) {
-            draftConfig.tiles = draftConfig.tiles.slice(2);
+          switch (draftConfig.direction) {
+            case "towards":
+              draftConfig.times = {
+                x: currentWallTimes[alongWallAxis] - 2,
+              };
+              break;
+            case "right":
+              draftConfig.times = {
+                y: currentWallTimes[alongWallAxis] - 2,
+              };
+              break;
+            default:
+              // remove the first two tiles:
+              draftConfig.tiles = draftConfig.tiles.slice(2);
           }
         }),
       ];
@@ -91,61 +101,86 @@ function* iterateRoomItemsToCutWallsForDoors(
       yield [
         id,
         produce(item, (itemDraft) => {
-          const draftConfig = itemDraft.config as AnyWallJsonConfig;
+          const draftConfig = itemDraft.config;
 
-          draftConfig.times = {
-            [alongWallAxis]: currentWallTimes[alongWallAxis] - 2,
-          };
-
-          // remove the last two tiles:
-          if (draftConfig.tiles) {
-            draftConfig.tiles = draftConfig.tiles.slice(
-              0,
-              draftConfig.tiles.length - 2,
-            );
+          switch (draftConfig.direction) {
+            case "towards":
+              draftConfig.times = {
+                x: currentWallTimes[alongWallAxis] - 2,
+              };
+              break;
+            case "right":
+              draftConfig.times = {
+                y: currentWallTimes[alongWallAxis] - 2,
+              };
+              break;
+            default:
+              // remove the last two tiles:
+              draftConfig.tiles = draftConfig.tiles.slice(0, -2);
           }
         }),
       ];
     }
 
-    // cut the wall in two, if the door is in the middle:
-    yield [
-      `${id}/beforeDoor` as EditorRoomItemId,
-      produce(item, (itemDraft) => {
-        const draftConfig = itemDraft.config as AnyWallJsonConfig;
-        draftConfig.times = {
-          [alongWallAxis]: relativePosition[alongWallAxis],
-        };
-        if (draftConfig.tiles) {
-          draftConfig.tiles = draftConfig.tiles.slice(
-            0,
-            relativePosition[alongWallAxis],
-          );
-        }
-      }),
-    ];
-    yield [
-      `${id}/afterDoor` as EditorRoomItemId,
-      produce(item, (itemDraft) => {
-        itemDraft.position = {
-          ...wallPosition,
-          [alongWallAxis]: doorPosition[alongWallAxis] + 2,
-        };
+    // if not cutting the door at either end, cut into two parts:
+    if (!cutWallAtStart && !cutWallAtEnd) {
+      yield [
+        `${id}/beforeDoor` as EditorRoomItemId,
+        produce(item, (itemDraft) => {
+          const draftConfig = itemDraft.config;
+          switch (draftConfig.direction) {
+            case "towards":
+              draftConfig.times = {
+                x: relativePosition[alongWallAxis],
+              };
+              break;
+            case "right":
+              draftConfig.times = {
+                y: relativePosition[alongWallAxis],
+              };
+              break;
+            default:
+              draftConfig.tiles = draftConfig.tiles.slice(
+                0,
+                relativePosition[alongWallAxis],
+              );
+          }
+        }),
+      ];
+      yield [
+        `${id}/afterDoor` as EditorRoomItemId,
+        produce(item, (itemDraft) => {
+          itemDraft.position = {
+            ...wallPosition,
+            [alongWallAxis]: doorPosition[alongWallAxis] + 2,
+          };
 
-        const draftConfig = itemDraft.config as AnyWallJsonConfig;
-        draftConfig.times = {
-          [alongWallAxis]:
-            currentWallTimes[alongWallAxis] -
-            relativePosition[alongWallAxis] -
-            2,
-        };
-        if (draftConfig.tiles) {
-          draftConfig.tiles = draftConfig.tiles.slice(
-            relativePosition[alongWallAxis] + 2,
-          );
-        }
-      }),
-    ];
+          const draftConfig = itemDraft.config;
+          switch (draftConfig.direction) {
+            case "towards":
+              draftConfig.times = {
+                x:
+                  currentWallTimes[alongWallAxis] -
+                  relativePosition[alongWallAxis] -
+                  2,
+              };
+              break;
+            case "right":
+              draftConfig.times = {
+                y:
+                  currentWallTimes[alongWallAxis] -
+                  relativePosition[alongWallAxis] -
+                  2,
+              };
+              break;
+            default:
+              draftConfig.tiles = draftConfig.tiles.slice(
+                relativePosition[alongWallAxis] + 2,
+              );
+          }
+        }),
+      ];
+    }
   }
 }
 

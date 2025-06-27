@@ -83,26 +83,17 @@ export const room = inferRoomJson({
           "sarcophagus",
           "hieroglyphics",
         ],
-        times: { x: 12 },
       },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
     "wall@12,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["hieroglyphics", "hieroglyphics"],
-        times: { y: 2 },
-      },
+      config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 12, y: 0, z: 0 },
       type: "wall",
     },
     "wall@12,4,0": {
-      config: {
-        direction: "left",
-        tiles: ["hieroglyphics", "hieroglyphics"],
-        times: { y: 2 },
-      },
+      config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 12, y: 4, z: 0 },
       type: "wall",
     },

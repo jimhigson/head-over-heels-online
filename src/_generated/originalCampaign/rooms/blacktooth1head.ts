@@ -32,7 +32,6 @@ export const room = inferRoomJson({
         path: "userSettings.displaySettings.uncolourised",
         type: "in-store",
       },
-
       position: { x: 5, y: 3, z: 0 },
       type: "switch",
     },
@@ -94,7 +93,6 @@ export const room = inferRoomJson({
       config: {
         direction: "away",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars"],
-        times: { x: 6 },
       },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
@@ -103,7 +101,6 @@ export const room = inferRoomJson({
       config: {
         direction: "left",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-        times: { y: 8 },
       },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",

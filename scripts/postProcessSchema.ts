@@ -1,5 +1,6 @@
 #!/usr/bin/env -S pnpm tsx
 
+import type { JsonArray, JsonObject, JsonValue } from "type-fest";
 import { wallTiles } from "../src/sprites/planets.js";
 
 // Read from stdin
@@ -10,75 +11,91 @@ process.stdin.on("data", (chunk) => {
   input += chunk;
 });
 
+function assertIsJsonObject(val: JsonValue): asserts val is JsonObject {
+  if (!(typeof val === "object" && val !== null && !Array.isArray(val))) {
+    throw new Error("Expected a JSON object");
+  }
+}
+function isJsonObjectOrArray(val: JsonValue): val is JsonObject | JsonArray {
+  return typeof val === "object" && val !== null;
+}
+function isJsonObject(val: JsonValue): val is JsonObject {
+  return typeof val === "object" && val !== null && !Array.isArray(val);
+}
+
 process.stdin.on("end", () => {
   try {
-    // Parse the JSON
-    const schema = JSON.parse(input) as Record<string, unknown>;
+    const schema = JSON.parse(input) as JsonObject;
 
-    // Function to recursively find and modify position and times properties
-    const addMultipleOf = (obj: unknown, path: string[] = []): void => {
-      if (typeof obj !== "object" || obj === null) return;
-
-      const record = obj as Record<string, unknown>;
-
+    // recursively add validation beyond what the typescript we converted from can handle:
+    const addExtraValidation = (
+      node: JsonObject | JsonArray,
+      path: string[] = [],
+    ): void => {
       // Check if we're at a position object with x, y, z properties
-      const currentPath = path.join(".");
-      if (
-        currentPath.endsWith("properties.position") &&
-        record.properties &&
-        typeof record.properties === "object"
-      ) {
-        const props = record.properties as Record<string, unknown>;
+      if (isJsonObject(node)) {
+        const currentPath = path.join(".");
+        if (currentPath.endsWith("properties.position")) {
+          assertIsJsonObject(node.properties);
 
-        // Add multipleOf to x and y (0.5)
-        if (props.x && typeof props.x === "object") {
-          (props.x as Record<string, unknown>).multipleOf = 0.5;
+          // Add multipleOf to x and y (0.5)
+          if (node.properties.x) {
+            assertIsJsonObject(node.properties.x);
+            node.properties.x.multipleOf = 0.5;
+            node.properties.x.minimum = -3;
+            node.properties.x.maximum = 20;
+          }
+          if (node.properties.y) {
+            assertIsJsonObject(node.properties.y);
+            node.properties.y.multipleOf = 0.5;
+            node.properties.y.minimum = -3;
+            node.properties.y.maximum = 20;
+          }
+          // Add multipleOf to z (1)
+          if (node.properties.z) {
+            assertIsJsonObject(node.properties.z);
+            node.properties.z.multipleOf = 1;
+            node.properties.z.minimum = -1;
+            node.properties.z.maximum = 20;
+          }
         }
-        if (props.y && typeof props.y === "object") {
-          (props.y as Record<string, unknown>).multipleOf = 0.5;
-        }
-        // Add multipleOf to z (1)
-        if (props.z && typeof props.z === "object") {
-          (props.z as Record<string, unknown>).multipleOf = 1;
+
+        // Check if we're at a times object with x, y, z properties
+        if (currentPath.endsWith("properties.times")) {
+          assertIsJsonObject(node.properties);
+
+          // Add multipleOf and minimum to x, y, and z (all integers with minimum 1)
+          if (node.properties.x) {
+            assertIsJsonObject(node.properties.x);
+            node.properties.x.multipleOf = 1;
+            node.properties.x.minimum = 1;
+            node.properties.x.maximum = 20;
+          }
+          if (node.properties.y) {
+            assertIsJsonObject(node.properties.y);
+            node.properties.y.multipleOf = 1;
+            node.properties.y.minimum = 1;
+            node.properties.y.maximum = 20;
+          }
+          if (node.properties.z) {
+            assertIsJsonObject(node.properties.z);
+            node.properties.z.multipleOf = 1;
+            node.properties.z.minimum = 1;
+            node.properties.z.maximum = 20;
+          }
         }
       }
 
-      // Check if we're at a times object with x, y, z properties
-      if (
-        currentPath.endsWith("properties.times") &&
-        record.properties &&
-        typeof record.properties === "object"
-      ) {
-        const props = record.properties as Record<string, unknown>;
-
-        // Add multipleOf and minimum to x, y, and z (all integers with minimum 1)
-        if (props.x && typeof props.x === "object") {
-          const xProp = props.x as Record<string, unknown>;
-          xProp.multipleOf = 1;
-          xProp.minimum = 1;
-        }
-        if (props.y && typeof props.y === "object") {
-          const yProp = props.y as Record<string, unknown>;
-          yProp.multipleOf = 1;
-          yProp.minimum = 1;
-        }
-        if (props.z && typeof props.z === "object") {
-          const zProp = props.z as Record<string, unknown>;
-          zProp.multipleOf = 1;
-          zProp.minimum = 1;
-        }
-      }
-
-      // Recursively process all properties
-      for (const key in record) {
-        if (Object.prototype.hasOwnProperty.call(record, key)) {
-          addMultipleOf(record[key], [...path, key]);
+      // Recursively process child properties
+      for (const [key, childNode] of Object.entries(node)) {
+        if (isJsonObjectOrArray(childNode)) {
+          addExtraValidation(childNode, [...path, key]);
         }
       }
     };
 
     // Apply the modifications
-    addMultipleOf(schema);
+    addExtraValidation(schema);
 
     // Generate conditional wall tile validation rules
     const generateWallTileConditions = () => {

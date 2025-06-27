@@ -69,61 +69,51 @@ export const room = inferRoomJson({
     },
     extraBarrier: {
       config: { axis: "y", times: { y: 6 } },
-
       position: { x: 2.5, y: 8, z: 1 },
       type: "barrier",
     },
     extraBarrier2: {
       config: { axis: "y", times: { y: 6 } },
-
       position: { x: 4.5, y: 8, z: 1 },
       type: "barrier",
     },
     extraBarrier3: {
       config: { axis: "y", times: { y: 2 } },
-
       position: { x: 4.5, y: 13, z: 2 },
       type: "barrier",
     },
     extraBarrier4: {
       config: { axis: "y", times: { y: 2 } },
-
       position: { x: 4.5, y: 14, z: 3 },
       type: "barrier",
     },
     extraBarrier5: {
       config: { axis: "y", times: { y: 2 } },
-
       position: { x: 2.5, y: 13, z: 2 },
       type: "barrier",
     },
     extraBarrier6: {
       config: { axis: "y", times: { y: 2 } },
-
       position: { x: 2.5, y: 14, z: 3 },
       type: "barrier",
     },
     extraBarrier7: {
       config: { axis: "x", times: { x: 3 } },
-
       position: { x: 0, y: 7.5, z: 1 },
       type: "barrier",
     },
     extraBarrier8: {
       config: { axis: "x", times: { x: 3 } },
-
       position: { x: 5, y: 7.5, z: 1 },
       type: "barrier",
     },
     extraStep: {
       config: { style: "organic", times: { x: 2, z: 2 } },
-
       position: { x: 3, y: 15, z: 1 },
       type: "block",
     },
     extraStep2: {
       config: { style: "organic", times: { x: 2 } },
-
       position: { x: 3, y: 14, z: 1 },
       type: "block",
     },
@@ -158,20 +148,12 @@ export const room = inferRoomJson({
       type: "wall",
     },
     "wall@0,16,0": {
-      config: {
-        direction: "away",
-        tiles: ["book", "book", "cowboy"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["book", "book", "cowboy"] },
       position: { x: 0, y: 16, z: 0 },
       type: "wall",
     },
     "wall@5,16,0": {
-      config: {
-        direction: "away",
-        tiles: ["cowboy", "book", "book"],
-        times: { x: 3 },
-      },
+      config: { direction: "away", tiles: ["cowboy", "book", "book"] },
       position: { x: 5, y: 16, z: 0 },
       type: "wall",
     },
@@ -196,7 +178,6 @@ export const room = inferRoomJson({
           "cowboy",
           "book",
         ],
-        times: { y: 16 },
       },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",

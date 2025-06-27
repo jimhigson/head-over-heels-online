@@ -53,13 +53,11 @@ export const room = inferRoomJson({
     },
     extra1: {
       config: { style: "organic" },
-
       position: { x: 3, y: 5, z: 0 },
       type: "block",
     },
     extra2: {
       config: { style: "organic" },
-
       position: { x: 1, y: 5, z: 0 },
       type: "block",
     },
@@ -103,7 +101,6 @@ export const room = inferRoomJson({
           "sarcophagus",
           "hieroglyphics",
         ],
-        times: { x: 6 },
       },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
@@ -124,7 +121,6 @@ export const room = inferRoomJson({
           "sarcophagus",
           "hieroglyphics",
         ],
-        times: { y: 6 },
       },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",

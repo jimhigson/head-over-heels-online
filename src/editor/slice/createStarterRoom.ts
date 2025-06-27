@@ -23,7 +23,7 @@ const wallStarterPatterns: { [ScN in SceneryName]: Array<Wall<ScN>> } = {
     "sarcophagus",
     "sarcophagus",
   ],
-  market: ["passage", "more-fruits", "more-fruits", "more-fruits", "fruits"],
+  market: ["passage", "more-fruits", "fruits", "more-fruits", "fruits"],
   moonbase: ["coil", "window1", "window2", "window3"],
   penitentiary: ["loop", "loop", "skeleton"],
   safari: ["wall", "shield", "wall", "window", "window", "wall", "shield"],
@@ -41,7 +41,6 @@ const starterRoomWallItems: EditorRoomJsonItems = {
     type: "wall",
     config: {
       direction: "away",
-      times: { x: 8 },
       tiles: rotatingSceneryTiles("blacktooth", 8),
     },
     position: { x: 0, y: 8, z: 0 },
@@ -50,7 +49,6 @@ const starterRoomWallItems: EditorRoomJsonItems = {
     type: "wall",
     config: {
       direction: "left",
-      times: { y: 8 },
       tiles: rotatingSceneryTiles("blacktooth", 8),
     },
     position: { x: 8, y: 0, z: 0 },

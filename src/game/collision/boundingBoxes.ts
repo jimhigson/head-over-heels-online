@@ -1,13 +1,7 @@
-import type { Xyz } from "../../utils/vectors/vectors";
-import {
-  originXyz,
-  productXyz,
-  subXyz,
-  type Aabb,
-} from "../../utils/vectors/vectors";
+import { originXyz, type Aabb } from "../../utils/vectors/vectors";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../model/json/JsonItem";
-import { blockSizePx, blockSizeXyzPx } from "../../sprites/spritePivots";
+import { blockSizePx } from "../../sprites/spritePivots";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
 export const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
@@ -128,15 +122,4 @@ export const boundingBoxForItem = (
       //console.warn("giving default aabb for item", item);
       return { aabb: mediumItemAabb };
   }
-};
-
-export const multiplyBoundingBox = (
-  singleItemBB: Xyz,
-  timesConfig?: Partial<Xyz>,
-): Xyz => {
-  const times = { x: 1, y: 1, z: 1, ...timesConfig };
-
-  const difference = subXyz(blockSizeXyzPx, singleItemBB);
-
-  return subXyz(productXyz(times, blockSizeXyzPx), difference);
 };

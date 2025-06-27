@@ -22,25 +22,21 @@ export const room = inferRoomJson({
     },
     map: {
       config: { gives: "extra-life" },
-
       position: { x: 6, y: 7, z: 6 },
       type: "pickup",
     },
     mapStacka: {
       config: { style: "book", times: { z: 3 } },
-
       position: { x: 4, y: 7, z: 0 },
       type: "block",
     },
     mapStackb: {
       config: { style: "book", times: { z: 6 } },
-
       position: { x: 5, y: 7, z: 0 },
       type: "block",
     },
     mapStackc: {
       config: { style: "tower", times: { z: 6 } },
-
       position: { x: 6, y: 7, z: 0 },
       type: "block",
     },
@@ -77,26 +73,17 @@ export const room = inferRoomJson({
           "armour",
           "plain",
         ],
-        times: { x: 8 },
       },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["plain", "shield", "plain"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,5,0": {
-      config: {
-        direction: "left",
-        tiles: ["plain", "shield", "plain"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",
     },

@@ -43,7 +43,6 @@ export const room = inferRoomJson({
     },
     extraSupport: {
       config: { style: "organic", times: { x: 2, z: 3 } },
-
       position: { x: 4, y: 0, z: 0 },
       type: "block",
     },
@@ -144,7 +143,6 @@ export const room = inferRoomJson({
           "window3",
           "window1",
         ],
-        times: { x: 8 },
       },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
@@ -158,13 +156,12 @@ export const room = inferRoomJson({
       config: {
         direction: "left",
         tiles: ["window3", "coil", "window2", "coil", "window1"],
-        times: { y: 5 },
       },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,5,0": {
-      config: { direction: "left", tiles: ["window2"], times: { y: 1 } },
+      config: { direction: "left", tiles: ["window2"] },
       position: { x: 8, y: 7, z: 0 },
       type: "wall",
     },

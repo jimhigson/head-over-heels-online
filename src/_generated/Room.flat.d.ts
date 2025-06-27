@@ -68,16 +68,10 @@ export type RoomJsonSchema = {
             }
           | {
               direction: "away";
-              times?: {
-                x: number;
-              };
               tiles: any[];
             }
           | {
               direction: "left";
-              times?: {
-                y: number;
-              };
               tiles: any[];
             };
       }

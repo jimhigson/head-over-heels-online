@@ -154,6 +154,9 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       this.#container.removeChild(textNode);
       textNode = undefined;
     });
+
+    renderContext.frontLayer.attach(this.#container);
+
     /*this.#container.on("pointerleave", () => {
       graphics.clear();
       cuboidBB(aabb, graphics);

@@ -6,6 +6,11 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "safari37crown",
   items: {
+    JonsBlock: {
+      config: {},
+      position: { x: 5, y: 1, z: 0 },
+      type: "pushableBlock",
+    },
     "block@0,2,0": {
       config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 2, z: 0 },
@@ -91,11 +96,6 @@ export const room = inferRoomJson({
       position: { x: 3, y: 5, z: 0 },
       type: "pushableBlock",
     },
-    JonsBlock: {
-      config: {},
-      position: { x: 5, y: 1, z: 0 },
-      type: "pushableBlock",
-    },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
@@ -119,7 +119,6 @@ export const room = inferRoomJson({
           "window",
           "wall",
         ],
-        times: { x: 8 },
       },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
@@ -137,7 +136,6 @@ export const room = inferRoomJson({
           "window",
           "wall",
         ],
-        times: { y: 8 },
       },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",

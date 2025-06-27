@@ -18,13 +18,11 @@ export const room = inferRoomJson({
     },
     extraBarrier: {
       config: { axis: "x", times: { x: 5 } },
-
       position: { x: 0, y: 4.5, z: 1 },
       type: "barrier",
     },
     extraBlock: {
       config: { style: "artificial", times: { x: 5 } },
-
       position: { x: 0, y: 5, z: 0 },
       type: "block",
     },
@@ -34,7 +32,6 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-
       position: { x: 0, y: 5, z: 10 },
       type: "monster",
     },
@@ -57,7 +54,6 @@ export const room = inferRoomJson({
       config: {
         direction: "away",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars"],
-        times: { x: 6 },
       },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
@@ -71,7 +67,6 @@ export const room = inferRoomJson({
       config: {
         direction: "left",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars"],
-        times: { y: 6 },
       },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",

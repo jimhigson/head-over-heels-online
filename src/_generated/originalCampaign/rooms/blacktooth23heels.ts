@@ -42,13 +42,11 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: { gives: "scroll", page: "head" },
-
       position: { x: 7, y: 1, z: 0 },
       type: "pickup",
     },
     scroll2: {
       config: { gives: "scroll", page: "heels" },
-
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
     },
@@ -71,26 +69,17 @@ export const room = inferRoomJson({
       config: {
         direction: "away",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-        times: { x: 8 },
       },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["bars", "bars", "bars"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["bars", "bars", "bars"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
     "wall@8,5,0": {
-      config: {
-        direction: "left",
-        tiles: ["bars", "bars", "bars"],
-        times: { y: 3 },
-      },
+      config: { direction: "left", tiles: ["bars", "bars", "bars"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",
     },
