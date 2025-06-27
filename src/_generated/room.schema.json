@@ -3508,10 +3508,13 @@
         }
       },
       "then": {
+        "type": "object",
         "properties": {
           "items": {
+            "type": "object",
             "additionalProperties": {
               "if": {
+                "type": "object",
                 "properties": {
                   "type": {
                     "const": "wall"
@@ -3519,10 +3522,13 @@
                 }
               },
               "then": {
+                "type": "object",
                 "properties": {
                   "config": {
+                    "type": "object",
                     "properties": {
                       "tiles": {
+                        "type": "array",
                         "items": {
                           "enum": ["bars"]
                         }
@@ -3544,10 +3550,13 @@
           }
         },
         "then": {
+          "type": "object",
           "properties": {
             "items": {
+              "type": "object",
               "additionalProperties": {
                 "if": {
+                  "type": "object",
                   "properties": {
                     "type": {
                       "const": "wall"
@@ -3555,10 +3564,13 @@
                   }
                 },
                 "then": {
+                  "type": "object",
                   "properties": {
                     "config": {
+                      "type": "object",
                       "properties": {
                         "tiles": {
+                          "type": "array",
                           "items": {
                             "enum": ["armour", "shield", "plain"]
                           }
@@ -3580,10 +3592,13 @@
             }
           },
           "then": {
+            "type": "object",
             "properties": {
               "items": {
+                "type": "object",
                 "additionalProperties": {
                   "if": {
+                    "type": "object",
                     "properties": {
                       "type": {
                         "const": "wall"
@@ -3591,10 +3606,13 @@
                     }
                   },
                   "then": {
+                    "type": "object",
                     "properties": {
                       "config": {
+                        "type": "object",
                         "properties": {
                           "tiles": {
+                            "type": "array",
                             "items": {
                               "enum": ["cowboy", "book"]
                             }
@@ -3616,10 +3634,13 @@
               }
             },
             "then": {
+              "type": "object",
               "properties": {
                 "items": {
+                  "type": "object",
                   "additionalProperties": {
                     "if": {
+                      "type": "object",
                       "properties": {
                         "type": {
                           "const": "wall"
@@ -3627,10 +3648,13 @@
                       }
                     },
                     "then": {
+                      "type": "object",
                       "properties": {
                         "config": {
+                          "type": "object",
                           "properties": {
                             "tiles": {
+                              "type": "array",
                               "items": {
                                 "enum": ["sarcophagus", "hieroglyphics"]
                               }
@@ -3652,10 +3676,13 @@
                 }
               },
               "then": {
+                "type": "object",
                 "properties": {
                   "items": {
+                    "type": "object",
                     "additionalProperties": {
                       "if": {
+                        "type": "object",
                         "properties": {
                           "type": {
                             "const": "wall"
@@ -3663,10 +3690,13 @@
                         }
                       },
                       "then": {
+                        "type": "object",
                         "properties": {
                           "config": {
+                            "type": "object",
                             "properties": {
                               "tiles": {
+                                "type": "array",
                                 "items": {
                                   "enum": ["passage", "fruits", "more-fruits"]
                                 }
@@ -3688,10 +3718,13 @@
                   }
                 },
                 "then": {
+                  "type": "object",
                   "properties": {
                     "items": {
+                      "type": "object",
                       "additionalProperties": {
                         "if": {
+                          "type": "object",
                           "properties": {
                             "type": {
                               "const": "wall"
@@ -3699,10 +3732,13 @@
                           }
                         },
                         "then": {
+                          "type": "object",
                           "properties": {
                             "config": {
+                              "type": "object",
                               "properties": {
                                 "tiles": {
+                                  "type": "array",
                                   "items": {
                                     "enum": [
                                       "window1",
@@ -3729,10 +3765,13 @@
                     }
                   },
                   "then": {
+                    "type": "object",
                     "properties": {
                       "items": {
+                        "type": "object",
                         "additionalProperties": {
                           "if": {
+                            "type": "object",
                             "properties": {
                               "type": {
                                 "const": "wall"
@@ -3740,10 +3779,13 @@
                             }
                           },
                           "then": {
+                            "type": "object",
                             "properties": {
                               "config": {
+                                "type": "object",
                                 "properties": {
                                   "tiles": {
+                                    "type": "array",
                                     "items": {
                                       "enum": ["loop", "skeleton"]
                                     }
@@ -3765,10 +3807,13 @@
                       }
                     },
                     "then": {
+                      "type": "object",
                       "properties": {
                         "items": {
+                          "type": "object",
                           "additionalProperties": {
                             "if": {
+                              "type": "object",
                               "properties": {
                                 "type": {
                                   "const": "wall"
@@ -3776,10 +3821,13 @@
                               }
                             },
                             "then": {
+                              "type": "object",
                               "properties": {
                                 "config": {
+                                  "type": "object",
                                   "properties": {
                                     "tiles": {
+                                      "type": "array",
                                       "items": {
                                         "enum": ["window", "shield", "wall"]
                                       }
