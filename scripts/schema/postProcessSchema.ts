@@ -119,19 +119,25 @@ process.stdin.on("end", () => {
             },
           },
           then: {
+            type: "object",
             properties: {
               items: {
+                type: "object",
                 additionalProperties: {
                   if: {
+                    type: "object",
                     properties: {
                       type: { const: "wall" },
                     },
                   },
                   then: {
+                    type: "object",
                     properties: {
                       config: {
+                        type: "object",
                         properties: {
                           tiles: {
+                            type: "array",
                             items: {
                               enum: tiles,
                             },
