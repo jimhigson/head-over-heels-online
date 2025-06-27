@@ -34,7 +34,7 @@ export const JsonRoomEditor = () => {
       validate: true,
       schemas: [
         {
-          uri: "https://hohjs.com/room-schema.json",
+          uri: "https://blockstack.org/room.schema.json",
           fileMatch: ["*"],
           schema: roomSchema,
         },
@@ -56,9 +56,10 @@ export const JsonRoomEditor = () => {
             // hidden, tell it to move its tooltips up to the top of the window's DOM:
             fixedOverflowWidgets: true,
             fontSize: 12,
-            lineNumbers: "on",
+            lineNumbers: "off",
             wordWrap: "on",
             wrappingIndent: "indent",
+            folding: false,
             "bracketPairColorization.enabled": false,
           } as editor.IStandaloneEditorConstructionOptions
         }
