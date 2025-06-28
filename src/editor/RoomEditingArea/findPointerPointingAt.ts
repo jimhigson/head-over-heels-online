@@ -25,13 +25,43 @@ import type {
 import type { Tool } from "../Tool";
 import type { PointingAt } from "./cursor/PointingAt";
 
+const itemBounds = (
+  item: EditorUnionOfAllItemInPlayTypes,
+  tool: Tool,
+): {
+  position: Xyz;
+  aabb: Xyz;
+} => {
+  if (tool.type === "item" && item.type === "wall") {
+    // putting items on walls is a special case since we want to be able
+    // to point high on walls, above where they render
+    return {
+      position: item.state.position,
+      aabb: item.aabb,
+    };
+  }
+
+  return {
+    position: addXyz(item.state.position, item.renderAabbOffset ?? originXyz),
+    aabb: item.renderAabb ?? item.aabb,
+  };
+};
+
 const pointIntersectsItemAABB =
-  ({ x, y }: Xy) =>
+  (
+    /**
+     * the pointer screen location
+     */
+    { x: pX, y: pY }: Xy,
+    tool: Tool,
+  ) =>
   (item: EditorUnionOfAllItemInPlayTypes) => {
+    const { position, aabb } = itemBounds(item, tool);
+
     const { bottomCentre, topLeft, topRight } = projectAabbToHexagonCorners(
-      item.state.position,
+      position,
       // using aabb, not renderAabb, so doors can be placed on walls above where they render
-      item.aabb,
+      aabb,
     );
 
     /*
@@ -48,32 +78,33 @@ const pointIntersectsItemAABB =
      *       \/
      *      [bc]
      */
-    if (x < topLeft.x) {
+    if (pX < topLeft.x) {
       // z1
       return false;
     }
-    if (x > topRight.x) {
+    if (pX > topRight.x) {
       // z2
       return false;
     }
-    if (y < topRight.y - (topRight.x - x) / 2) {
+    if (pY < topRight.y - (topRight.x - pX) / 2) {
       // x2
       return false;
     }
-    if (y < topLeft.y - (x - topLeft.x) / 2) {
+    if (pY < topLeft.y - (pX - topLeft.x) / 2) {
       // y1
       return false;
     }
-    if (y > bottomCentre.y - (x - bottomCentre.x) / 2) {
+    if (pY > bottomCentre.y - (pX - bottomCentre.x) / 2) {
       // y2
       return false;
     }
-    if (y > bottomCentre.y - (bottomCentre.x - x) / 2) {
+    if (pY > bottomCentre.y - (bottomCentre.x - pX) / 2) {
       // x1
       return false;
     }
     return true;
   };
+
 /**
  * if we already know that the pointer intersects an item, get the face the pointer is over
  */
@@ -134,16 +165,20 @@ const pointerIntersectionFace = (
     return leftOfZLine ? "towards" : "right";
   }
 };
+
 const isFixedZIndexItem = (
   i: EditorUnionOfAllItemInPlayTypes,
 ): i is SetRequired<EditorUnionOfAllItemInPlayTypes, "fixedZIndex"> =>
   i.fixedZIndex !== undefined;
+
 const frontItem = (
   items: Array<EditorUnionOfAllItemInPlayTypes>,
 ): EditorUnionOfAllItemInPlayTypes | undefined => {
   if (items.every(isFixedZIndexItem)) {
     // all items have fixed z-index (don't work in topographic sort) - return
     // the highest from them:
+    // this is how doors can get put on invisible walls, because they have fixed z-indexes
+    // (but they prefer visible walls)
     return items.toSorted((ia, ib) => ib.fixedZIndex - ia.fixedZIndex).at(0);
   }
 
@@ -171,6 +206,7 @@ const frontItem = (
 
   return topographicallySortableItemsMap[order[0]];
 };
+
 const worldPositionOnFaceForScreenPosition = (
   { state: { position }, aabb }: EditorUnionOfAllItemInPlayTypes,
   face: DirectionXyz4,
@@ -280,7 +316,7 @@ export const findPointerPointingAt = (
     Array.from(
       iterateRoomItems(room.items)
         .filter(isPointableItemForTool(tool))
-        .filter(pointIntersectsItemAABB(pointerXy)),
+        .filter(pointIntersectsItemAABB(pointerXy, tool)),
     ),
   );
 

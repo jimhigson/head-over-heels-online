@@ -26,6 +26,7 @@ export type LevelEditorState = {
   nextRoomId: number;
   nextItemId: number;
   tool: Tool;
+  hoveredJsonItemId?: EditorRoomItemId;
   selectedJsonItemIds: Array<EditorRoomItemId>;
   halfGridResolution: boolean;
   history: {
@@ -47,6 +48,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   nextItemId: 0,
   currentlyEditingRoomId: initialRoomId,
   tool: { type: "pointer" },
+  hoveredJsonItemId: undefined,
   selectedJsonItemIds: [],
   halfGridResolution: false,
   history: {
@@ -125,16 +127,23 @@ export const levelEditorSlice = createSlice({
       state.campaignInProgress.rooms[state.currentlyEditingRoomId] = roomJson;
     },
 
+    setHoveredItemInRoom(
+      state,
+      action: PayloadAction<EditorRoomItemId | undefined>,
+    ) {
+      state.hoveredJsonItemId = action.payload;
+    },
+
     /** set (or unset) the selection */
     setSelectedItemInRoom(
       state,
       {
-        payload: { jsonItemId, additive },
+        payload: { jsonItemId, additive = false },
       }: PayloadAction<{
         jsonItemId: EditorRoomItemId | undefined;
         /** if true, will toggle the given ids to the current selection instead of replacing it
          * this is used for multi-select */
-        additive: boolean;
+        additive?: boolean;
       }>,
     ) {
       if (additive) {
@@ -204,6 +213,7 @@ export const levelEditorSlice = createSlice({
       selectCurrentRoomFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
     selectSelectedJsonItemIds: (state) => state.selectedJsonItemIds,
+    selectHoveredJsonItemId: (state) => state.hoveredJsonItemId,
     ...undoSelectors,
   },
 });
@@ -228,18 +238,20 @@ export const {
   injected,
   redo,
   roomJsonEdited,
+  setHoveredItemInRoom,
   setSelectedItemInRoom,
   setTool,
   undo,
 } = levelEditorSlice.actions;
 export const {
-  selectCurrentEditingRoomJson,
-  selectTool,
-  selectCurrentEditingRoomColour,
-  selectCurrentEditingRoomScenery,
-  selectSelectedJsonItemIds,
   selectCanRedo,
   selectCanUndo,
+  selectCurrentEditingRoomColour,
+  selectCurrentEditingRoomJson,
+  selectCurrentEditingRoomScenery,
+  selectHoveredJsonItemId,
+  selectSelectedJsonItemIds,
+  selectTool,
 } = levelEditorSlice.selectors;
 
 export type RootStateWithLevelEditorSlice = SetRequired<

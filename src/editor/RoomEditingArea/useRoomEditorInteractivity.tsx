@@ -14,6 +14,8 @@ import {
   deleteSelected,
   undo,
   redo,
+  setHoveredItemInRoom,
+  selectHoveredJsonItemId,
 } from "../slice/levelEditorSlice";
 import { store } from "../../store/store";
 import {
@@ -106,13 +108,12 @@ export const useRoomEditorInteractivity = (
             break;
           }
           case "pointer": {
-            mutateRoomRemoveCursorPreviews(roomState);
             const hoveredJsonItemId =
               roomState.items[pointingAt.itemId]?.jsonItemId;
-            roomState.editor = {
-              ...roomState.editor,
-              hoveredJsonItemId,
-            };
+            if (selectHoveredJsonItemId(storeState) !== pointingAt.itemId) {
+              mutateRoomRemoveCursorPreviews(roomState);
+              dispatch(setHoveredItemInRoom(hoveredJsonItemId));
+            }
             break;
           }
           default:
@@ -120,10 +121,9 @@ export const useRoomEditorInteractivity = (
         }
       } else {
         mutateRoomRemoveCursorPreviews(roomState);
-        roomState.editor = {
-          ...roomState.editor,
-          hoveredJsonItemId: undefined,
-        };
+        if (selectHoveredJsonItemId(storeState) !== undefined) {
+          dispatch(setHoveredItemInRoom(undefined));
+        }
       }
     };
 
@@ -166,10 +166,21 @@ export const useRoomEditorInteractivity = (
         }
         case "pointer": {
           const currentPointingAt = pointingAtRef.current;
-          if (!currentPointingAt) {
-            return;
+
+          const jsonItemId =
+            currentPointingAt === undefined ? undefined : (
+              roomState.items[currentPointingAt.itemId].jsonItemId
+            );
+
+          if (jsonItemId === undefined) {
+            // clicking on nothing unselects:
+            dispatch(
+              setSelectedItemInRoom({
+                jsonItemId: undefined,
+              }),
+            );
+            break;
           }
-          const { jsonItemId } = roomState.items[currentPointingAt.itemId];
 
           dispatch(
             setSelectedItemInRoom({

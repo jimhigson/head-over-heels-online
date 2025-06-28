@@ -12,3 +12,8 @@ body,
 #root {
   height: 100%;
 }
+
+.editor-selected {
+  @apply border-metallicBlue;
+  border-left-width: calc(2 * var(--vscode-editorCodeLens-fontSize));
+}
