@@ -1,30 +1,27 @@
-precision mediump float;
+#version 300 es
+precision lowp float;
+
 in vec2 vTextureCoord;
 out vec4 finalColor;
 
 uniform sampler2D uTexture;
 uniform vec3 uTargetColor;
 
-// colours are floats so check if they're very close rather than exactly equal:
-bool colorsEffectivelyEqual(vec3 color1, vec3 color2) {
-
-    return distance(color1, color2) < 0.05;
-}
-
-vec3 black3 = vec3(0, 0, 0);
-vec4 black4 = vec4(0, 0, 0, 1);
+vec4 black = vec4(0.0, 0.0, 0.0, 1.0);
 
 void main(void) {
     vec4 c = texture(uTexture, vTextureCoord);
 
-    if(c.a == 0.0) {
-        finalColor = c;
-        return;
-    }
+    // 1 if black, 0 if non-black
+    float isBlack = step(length(c.rgb), 0.01);
 
-    if(colorsEffectivelyEqual(c.rgb, black3)) {
-        finalColor = black4;
-    } else {
-        finalColor = vec4(uTargetColor, 1);
-    }
+    // keep original if either:
+    //      * black
+    //      * transparent
+
+    finalColor = mix(    
+        vec4(uTargetColor, 1),    
+        c, 
+        max(isBlack, 1.0 - c.a)
+    );
 }
