@@ -16,3 +16,5 @@ dist-ssr
 
 #vite-pwa dist for in dev
 dev-dist
+
+.vite

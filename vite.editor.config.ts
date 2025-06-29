@@ -18,6 +18,9 @@ export default defineConfig({
   /* the path the editor is served from after being built */
   base: "/editor/",
 
+  // don't conflict with the game's vite cache
+  cacheDir: path.resolve(__dirname, ".vite/editor"),
+
   plugins: [
     react({
       // during development, use the same build target as builds - ie,

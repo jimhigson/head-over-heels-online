@@ -80,7 +80,6 @@ export const starterRoom: Omit<EditorRoomJson, "id"> = {
   color: { hue: "cyan", shade: "basic" },
   size: starterRoomSize,
   items: {
-    ...starterRoomWallItems,
     ["floor" as EditorRoomItemId]: {
       type: "floor",
       config: {
@@ -90,5 +89,6 @@ export const starterRoom: Omit<EditorRoomJson, "id"> = {
       },
       position: { x: 0, y: 0, z: 0 },
     },
+    ...starterRoomWallItems,
   },
 };

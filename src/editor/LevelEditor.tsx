@@ -13,7 +13,7 @@ const LevelEditor = () => {
 
   const loadingFallback = (
     <div className="flex h-full items-center justify-center bg-pureBlack">
-      <span className="sprite texture-animated-head.walking.right" />
+      <span className="sprite texture-animated-head_walking_right" />
     </div>
   );
   return (

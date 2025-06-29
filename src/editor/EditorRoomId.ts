@@ -18,11 +18,8 @@ export type EditorRoomItemId<ItemId extends string = string> = Tagged<
 export type EditorRoomState = RoomState<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomJson = RoomJson<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomJsonItems = RoomJsonItems<EditorRoomItemId, EditorRoomId>;
-export type EditorRoomJsonItemUnion = JsonItemUnion<
-  EditorRoomId,
-  EditorRoomItemId
->;
-export type EditorRoomJsonItem<T extends JsonItemType> = JsonItem<
+export type EditorJsonItemUnion = JsonItemUnion<EditorRoomId, EditorRoomItemId>;
+export type EditorJsonItem<T extends JsonItemType> = JsonItem<
   T,
   EditorRoomId,
   EditorRoomItemId

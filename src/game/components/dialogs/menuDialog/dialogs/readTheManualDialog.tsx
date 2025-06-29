@@ -70,11 +70,11 @@ export const ReadTheManualDialog = () => {
               " mb-1"
             }
           >
-            <span className="sprite texture-book.x zx:sprite-revert-to-white sprites-normal-height" />
+            <span className="sprite texture-book_x zx:sprite-revert-to-white sprites-normal-height" />
             <BitmapText className="sprites-double-height mx-1">
               Read the manual
             </BitmapText>
-            <span className="sprite texture-book.y zx:sprite-revert-to-white sprites-normal-height" />
+            <span className="sprite texture-book_y zx:sprite-revert-to-white sprites-normal-height" />
           </h1>
           <MenuItems>
             {[

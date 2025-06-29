@@ -43,7 +43,7 @@ export function RoomSelect<RoomId extends string>({
         >
           {viewingRoomId || "Select a room"}
           <span
-            className={`sprite ml-2 h-4 w-4 shrink-0 ${open ? "texture-hud.char.X" : "texture-hud.char.⬇"}`}
+            className={`sprite ml-2 h-4 w-4 shrink-0 ${open ? "texture-hud_char_X" : "texture-hud_char_⬇"}`}
           />
         </Button>
       </PopoverTrigger>
@@ -65,10 +65,10 @@ export function RoomSelect<RoomId extends string>({
                     }}
                   >
                     {headRoomId === r && (
-                      <span className="sprite m-1 texture-head.walking.towards.2" />
+                      <span className="sprite m-1 texture-head_walking_towards_2" />
                     )}
                     {heelsRoomId === r && (
-                      <span className="sprite m-1 texture-heels.walking.towards.2" />
+                      <span className="sprite m-1 texture-heels_walking_towards_2" />
                     )}
                     {r}
                   </CommandItem>

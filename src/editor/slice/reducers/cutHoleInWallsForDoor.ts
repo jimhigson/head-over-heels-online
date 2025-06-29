@@ -10,7 +10,7 @@ import {
 import type {
   EditorRoomJsonItems,
   EditorRoomItemId,
-  EditorRoomJsonItemUnion,
+  EditorJsonItemUnion,
   EditorRoomJson,
 } from "../../EditorRoomId";
 import {
@@ -22,7 +22,7 @@ function* iterateRoomItemsToCutWallsForDoors(
   items: EditorRoomJsonItems,
   doorDirection: DirectionXy4,
   doorPosition: Xyz,
-): Generator<[EditorRoomItemId, EditorRoomJsonItemUnion]> {
+): Generator<[EditorRoomItemId, EditorJsonItemUnion]> {
   for (const entry of entries(items)) {
     const [id, item] = entry;
     if (item.type !== "wall") {

@@ -59,7 +59,10 @@ const maybeAddBob = (
   room: RoomState<string, string>,
   currentOutput: Container,
 ) => {
-  if ((which === "cyberman" || which === "bubbleRobot") && state.activated) {
+  if (
+    ((which === "cyberman" || which === "bubbleRobot") && state.activated) ||
+    which === "emperorsGuardian"
+  ) {
     const outputTyped = currentOutput as StackedSpritesContainer<Sprite>;
     outputTyped[stackedTopSymbol].y =
       -blockSizePx.h + floatingVerticalBob(room.roomTime, id);

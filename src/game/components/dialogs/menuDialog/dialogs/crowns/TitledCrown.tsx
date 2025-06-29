@@ -1,8 +1,10 @@
 import type { TailwindPalette } from "../../../../../../../tailwind.config";
+import { twClass } from "../../../../../../editor/twClass";
 import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureId } from "../../../../../../sprites/spriteSheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/selectors";
+import type { SanitisedForClassName } from "../../../../tailwindSprites/SanitiseForClassName";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 const colourCycle: Record<PlanetName, `text-${TailwindPalette}`[]> = {
@@ -14,14 +16,15 @@ const colourCycle: Record<PlanetName, `text-${TailwindPalette}`[]> = {
 };
 
 const crownTextureClasses: {
-  [P in PlanetName]: `texture-crown.${P}` & `texture-${TextureId}`;
+  [P in PlanetName]: `texture-crown_${P}` &
+    `texture-${SanitisedForClassName<TextureId>}`;
 } = {
   // thanks tailwind - these have to be in the source :-s
-  egyptus: "texture-crown.egyptus",
-  blacktooth: "texture-crown.blacktooth",
-  bookworld: "texture-crown.bookworld",
-  penitentiary: "texture-crown.penitentiary",
-  safari: "texture-crown.safari",
+  egyptus: twClass("texture-crown_egyptus"),
+  blacktooth: twClass("texture-crown_blacktooth"),
+  bookworld: twClass("texture-crown_bookworld"),
+  penitentiary: twClass("texture-crown_penitentiary"),
+  safari: twClass("texture-crown_safari"),
 };
 
 export const TitledCrown = ({

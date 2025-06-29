@@ -9,6 +9,9 @@ const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // don't conflict with the editor's vite cache
+  cacheDir: ".vite/game",
+
   plugins: [
     react({
       // during development, use the same build target as builds - ie,

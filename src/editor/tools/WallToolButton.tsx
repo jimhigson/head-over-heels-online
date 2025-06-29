@@ -21,14 +21,14 @@ export const WallToolButton = () => {
   } as const;
 
   const textureClassname = twClass(
-    scenery === "blacktooth" ? "texture-blacktooth.wall.plain.away"
-    : scenery === "bookworld" ? "texture-bookworld.wall.cowboy.away"
-    : scenery === "jail" ? "texture-jail.wall.bars.away"
-    : scenery === "egyptus" ? "texture-egyptus.wall.hieroglyphics.away"
-    : scenery === "market" ? "texture-market.wall.passage.away"
-    : scenery === "moonbase" ? "texture-moonbase.wall.window1.away"
-    : scenery === "penitentiary" ? "texture-penitentiary.wall.loop.away"
-    : "texture-safari.wall.wall.away",
+    scenery === "blacktooth" ? "texture-blacktooth_wall_plain_away"
+    : scenery === "bookworld" ? "texture-bookworld_wall_cowboy_away"
+    : scenery === "jail" ? "texture-jail_wall_bars_away"
+    : scenery === "egyptus" ? "texture-egyptus_wall_hieroglyphics_away"
+    : scenery === "market" ? "texture-market_wall_passage_away"
+    : scenery === "moonbase" ? "texture-moonbase_wall_window1_away"
+    : scenery === "penitentiary" ? "texture-penitentiary_wall_loop_away"
+    : "texture-safari_wall_wall_away",
   );
 
   return (

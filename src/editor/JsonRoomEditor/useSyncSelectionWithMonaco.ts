@@ -4,7 +4,6 @@ import { setSelectedItemInRoom } from "../slice/levelEditorSlice";
 import type { editor } from "monaco-editor";
 import {
   parseTree,
-  type ParseError,
   type Node,
   findNodeAtLocation,
   getLocation,
@@ -74,7 +73,7 @@ export const useSyncSelectionWithMonaco = (
     return disposable.dispose;
   }, [dispatch, editor, monaco]);
 
-  function* generateDecorations({
+  function* generateDecorationsForSelectedItems({
     rootNode,
     editorModel,
     selectedJsonItemIds,
@@ -111,7 +110,7 @@ export const useSyncSelectionWithMonaco = (
     }
   }
 
-  // sync store -> monaco selection
+  // sync store selection -> monaco caret/decorations
   useEffect(() => {
     if (editor === null || monaco === null) {
       return;
@@ -140,15 +139,14 @@ export const useSyncSelectionWithMonaco = (
         }
         // we have some editor text
 
-        const errors: ParseError[] = [];
-        const rootNode = parseTree(editorText, errors);
+        const rootNode = parseTree(editorText);
 
         if (rootNode === undefined) {
           return;
         }
 
         const decorations = [
-          ...generateDecorations({
+          ...generateDecorationsForSelectedItems({
             rootNode,
             editorModel,
             selectedJsonItemIds,
@@ -165,9 +163,10 @@ export const useSyncSelectionWithMonaco = (
         }
 
         if (decorations.length > 0) {
+          // go to the end of the array for the most recently selected (probably)
+          const rangeToReveal = decorations.at(-1)!.range;
           editor.revealRangeInCenterIfOutsideViewport(
-            // go to the end of the array for the most recently selected (probably)
-            decorations.at(-1)!.range,
+            rangeToReveal,
             monaco.editor.ScrollType.Smooth,
           );
         }

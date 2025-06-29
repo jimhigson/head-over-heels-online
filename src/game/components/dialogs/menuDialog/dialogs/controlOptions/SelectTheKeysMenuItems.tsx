@@ -54,8 +54,8 @@ export const SelectTheKeysMenuItems = () => {
           <span
             className={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
-                "texture-head.walking.towardsLeft.2 selectedMenuItem:texture-animated-head.walking.towardsLeft"
-              : "texture-head.walking.left.2 selectedMenuItem:texture-animated-head.walking.left"
+                "texture-head_walking_towardsLeft_2 selectedMenuItem:texture-animated-head_walking_towardsLeft"
+              : "texture-head_walking_left_2 selectedMenuItem:texture-animated-head_walking_left"
             }`}
           />
         }
@@ -69,8 +69,8 @@ export const SelectTheKeysMenuItems = () => {
           <span
             className={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
-                "texture-head.walking.awayRight.2 selectedMenuItem:texture-animated-head.walking.awayRight"
-              : "texture-head.walking.right.2 selectedMenuItem:texture-animated-head.walking.right"
+                "texture-head_walking_awayRight_2 selectedMenuItem:texture-animated-head_walking_awayRight"
+              : "texture-head_walking_right_2 selectedMenuItem:texture-animated-head_walking_right"
             }`}
           />
         }
@@ -84,8 +84,8 @@ export const SelectTheKeysMenuItems = () => {
           <span
             className={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
-                "texture-head.walking.awayLeft.2 selectedMenuItem:texture-animated-head.walking.awayLeft"
-              : "texture-head.walking.away.2 selectedMenuItem:texture-animated-head.walking.away"
+                "texture-head_walking_awayLeft_2 selectedMenuItem:texture-animated-head_walking_awayLeft"
+              : "texture-head_walking_away_2 selectedMenuItem:texture-animated-head_walking_away"
             }`}
           />
         }
@@ -99,8 +99,8 @@ export const SelectTheKeysMenuItems = () => {
           <span
             className={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
-                "texture-head.walking.towardsRight.2 selectedMenuItem:texture-animated-head.walking.towardsRight"
-              : "texture-head.walking.towards.2 selectedMenuItem:texture-animated-head.walking.towards"
+                "texture-head_walking_towardsRight_2 selectedMenuItem:texture-animated-head_walking_towardsRight"
+              : "texture-head_walking_towards_2 selectedMenuItem:texture-animated-head_walking_towards"
             }`}
           />
         }
@@ -121,7 +121,7 @@ export const SelectTheKeysMenuItems = () => {
         label="Jump"
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-spring.released selectedMenuItem:texture-spring.compressed`}
+            className={`${spriteLeaderClasses} texture-spring_released selectedMenuItem:texture-spring_compressed`}
           />
         }
         valueElement={<SelectKeysMenuAssignmentValue action="jump" />}
@@ -176,10 +176,10 @@ export const SelectTheKeysMenuItems = () => {
             className={`${spriteLeaderClasses} texture-blank relative overflow-hidden`}
           >
             <span
-              className={`${spriteLeaderClasses} texture-head.walking.towardsRight.2 selectedMenuItem:texture-animated-head.walking.towardsRight absolute right-[50%]`}
+              className={`${spriteLeaderClasses} texture-head_walking_towardsRight_2 selectedMenuItem:texture-animated-head_walking_towardsRight absolute right-[50%]`}
             />
             <span
-              className={`${spriteLeaderClasses} texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.walking.towardsRight absolute left-[50%]`}
+              className={`${spriteLeaderClasses} texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_walking_towardsRight absolute left-[50%]`}
             />
           </span>
         }
@@ -202,7 +202,7 @@ export const SelectTheKeysMenuItems = () => {
         hintInline
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-head.walking.towardsRight.2 selectedMenuItem:texture-animated-head.walking.towardsRight`}
+            className={`${spriteLeaderClasses} texture-head_walking_towardsRight_2 selectedMenuItem:texture-animated-head_walking_towardsRight`}
           />
         }
       />
@@ -229,7 +229,7 @@ export const SelectTheKeysMenuItems = () => {
         hintInline
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-heels.walking.towardsRight.2 selectedMenuItem:texture-animated-heels.walking.towardsRight`}
+            className={`${spriteLeaderClasses} texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_walking_towardsRight`}
           />
         }
       />

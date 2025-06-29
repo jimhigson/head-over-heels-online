@@ -7,7 +7,7 @@ The object in the bag will be displayed immediately above the bag’s icon at th
 bottom right of the screen. To pick up an object just stand on top of it and
 press the *CARRY* key. 
 
-![](texture-cube)![](texture-drum)![](texture-spring.compressed)![](texture-sticks)
+![](texture-cube)![](texture-drum)![](texture-spring_compressed)![](texture-sticks)
 
 It is not possible to take items through doorways.
 

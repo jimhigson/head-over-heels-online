@@ -1,15 +1,12 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { LevelEditorState } from "../levelEditorSlice";
 import { oppositeDirection, type Xyz } from "../../../utils/vectors/vectors";
-import type {
-  JsonItemConfig,
-  JsonItemType,
-  JsonItemUnion,
-} from "../../../model/json/JsonItem";
+import type { JsonItemType, JsonItemUnion } from "../../../model/json/JsonItem";
 import type {
   EditorRoomId,
   EditorRoomItemId,
-  EditorRoomJsonItem,
+  EditorRoomJson,
+  EditorJsonItem,
   EditorUnionOfAllItemInPlayTypes,
 } from "../../EditorRoomId";
 import type { ItemTool } from "../../Tool";
@@ -19,28 +16,40 @@ import type { DistributedPick } from "type-fest";
 import { pushUndoInPlace } from "./undoReducers";
 import { starterRoom } from "../createStarterRoom";
 import { changeRoomSceneryInPlace } from "../changeRoomSceneryInPlace";
+import type { MonsterJsonConfig } from "../../../model/json/MonsterJsonConfig";
 
-const nextItemId = (
-  state: LevelEditorState,
-  type: JsonItemType,
+const nextItemId = <T extends JsonItemType = JsonItemType>(
+  fromRoomJson: EditorRoomJson,
+  itemTool: ItemTool<T>,
 ): EditorRoomItemId => {
-  return `${type}#${state.nextItemId++}` as EditorRoomItemId;
+  const baseName =
+    itemTool.type === "monster" ?
+      // special case monsters since they have so many variations:
+      (itemTool.config as MonsterJsonConfig).which
+    : itemTool.type;
+
+  // eslint-disable-next-line no-constant-condition -- while(true) is ok; this will terminate
+  for (let i = 1; true; i++) {
+    const itemId = (
+      i === 1 ? baseName : `${baseName}_${i}`) as EditorRoomItemId;
+    if (!fromRoomJson.items[itemId]) {
+      return itemId;
+    }
+  }
 };
 
 const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   state: LevelEditorState,
-  type: T,
-  config: JsonItemConfig<T, EditorRoomId, EditorRoomItemId>,
+  itemTool: ItemTool<T>,
   blockPosition: Xyz,
 ) => {
-  const id = nextItemId(state, type);
   const room = selectCurrentRoomFromLevelEditorState(state);
-  state.nextItemId++;
+  const id = nextItemId(room, itemTool);
 
   // add to the room json - the loaded state of the room will flow from there
   room.items[id] = {
-    type,
-    config,
+    type: itemTool.type,
+    config: itemTool.config,
     position: blockPosition,
   } as JsonItemUnion<EditorRoomId, EditorRoomItemId>;
 };
@@ -77,8 +86,7 @@ export const applyToolReducers = {
 
     switch (tool?.type) {
       case "item": {
-        const itemTool = tool.item;
-        if (isDoorTool(itemTool) && pointedAtItem.type === "wall") {
+        if (isDoorTool(tool.item) && pointedAtItem.type === "wall") {
           pushUndoInPlace(state);
 
           const fromRoomJson = selectCurrentRoomFromLevelEditorState(state);
@@ -90,15 +98,16 @@ export const applyToolReducers = {
           // TODO: do this conditionally, only if there isn't already a room
           // in this grid position
           const toRoomId = `room#${state.nextRoomId++}` as EditorRoomId;
-          console.log(toRoomId, "toRoomId");
 
           addItemInPlace(
             state,
-            itemTool.type,
             {
-              ...tool.item.config,
-              toRoom: toRoomId,
-              direction: doorDirection,
+              ...tool.item,
+              config: {
+                ...tool.item.config,
+                toRoom: toRoomId,
+                direction: doorDirection,
+              },
             },
             blockPosition,
           );
@@ -113,7 +122,7 @@ export const applyToolReducers = {
 
           // create a new room so the door we put down has somewhere to go:
           state.campaignInProgress.rooms[toRoomId] = toRoomJson;
-          const returnDoorId = nextItemId(state, "door");
+          const returnDoorId = nextItemId(toRoomJson, tool.item);
 
           const returnDoorPosition: Xyz = {
             x:
@@ -129,7 +138,7 @@ export const applyToolReducers = {
 
           const returnDoorDirection = oppositeDirection(doorDirection);
 
-          const returnDoorItemJson: EditorRoomJsonItem<"door"> = {
+          const returnDoorItemJson: EditorJsonItem<"door"> = {
             type: "door",
             config: {
               toRoom: fromRoomJson.id,
@@ -148,12 +157,7 @@ export const applyToolReducers = {
         } else {
           pushUndoInPlace(state);
           // add any other item:
-          addItemInPlace(
-            state,
-            tool.item.type,
-            tool.item.config,
-            blockPosition,
-          );
+          addItemInPlace(state, tool.item, blockPosition);
         }
         state.selectedJsonItemIds = [];
         break;

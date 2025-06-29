@@ -3,7 +3,7 @@
 ![](texture-teleporter)Sire, I took the liberty of installing this teleporter 
 to aid your magnificent return to the moonbase after the daily crown inspections.
 
-![](texture-cyberman.towards)Supplies are running short of teleporters, so I set it up one-way
+![](texture-cyberman_towards)Supplies are running short of teleporters, so I set it up one-way
 until more come in.
 May I humbly suggest you teleport after inspecting the crown or his grace
 will have a long walk (well, ride on a minion’s back) to get back here.

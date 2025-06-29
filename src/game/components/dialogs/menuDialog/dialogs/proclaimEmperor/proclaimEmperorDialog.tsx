@@ -18,12 +18,12 @@ export const ProclaimEmperorDialog = () => {
         <div className="flex flex-col gap-3 items-center">
           <div className="flex gap-7">
             <div className="flex flex-col gap-y-oneScaledPix items-center me-1">
-              <span className="sprite texture-crown.blacktooth zx:sprite-revert-zxYellow" />
-              <span className="sprite zx:sprite-revert-zxYellow texture-animated-head.idle.right hover:texture-animated-head.walking.right relative z-topSprite" />
+              <span className="sprite texture-crown_blacktooth zx:sprite-revert-zxYellow" />
+              <span className="sprite zx:sprite-revert-zxYellow texture-animated-head_idle_right hover:texture-animated-head_walking_right relative z-topSprite" />
             </div>
             <div className="flex flex-col items-center me-1">
-              <span className="sprite texture-crown.blacktooth zx:sprite-revert-zxYellow" />
-              <span className="sprite zx:sprite-revert-zxYellow texture-heels.walking.towards.2 hover:texture-animated-heels.walking.towards relative z-topSprite" />
+              <span className="sprite texture-crown_blacktooth zx:sprite-revert-zxYellow" />
+              <span className="sprite zx:sprite-revert-zxYellow texture-heels_walking_towards_2 hover:texture-animated-heels_walking_towards relative z-topSprite" />
             </div>
           </div>
           <div className="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan">

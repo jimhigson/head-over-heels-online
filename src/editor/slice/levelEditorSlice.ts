@@ -24,7 +24,6 @@ export type LevelEditorState = {
   campaignInProgress: Campaign<EditorRoomId>;
   currentlyEditingRoomId: EditorRoomId;
   nextRoomId: number;
-  nextItemId: number;
   tool: Tool;
   hoveredJsonItemId?: EditorRoomItemId;
   selectedJsonItemIds: Array<EditorRoomItemId>;
@@ -45,7 +44,6 @@ export const initialLevelEditorSliceState: LevelEditorState = {
     },
   },
   nextRoomId: 1,
-  nextItemId: 0,
   currentlyEditingRoomId: initialRoomId,
   tool: { type: "pointer" },
   hoveredJsonItemId: undefined,
@@ -73,6 +71,11 @@ export const levelEditorSlice = createSlice({
       // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
       // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
       const state = _state as LevelEditorState;
+
+      // unselect if using an item tool
+      if (tool.type === "item") {
+        state.selectedJsonItemIds = [];
+      }
 
       state.tool = tool;
     },

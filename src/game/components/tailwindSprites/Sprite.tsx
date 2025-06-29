@@ -11,6 +11,7 @@ import { isTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 import { ClassnameWrap } from "../../../utils/react/ClassnameWrap";
+import { sanitiseForClassName } from "./SanitiseForClassName";
 
 export interface CssSpriteProps {
   className?: string;
@@ -90,10 +91,11 @@ export const BitmapText = ({
                   key={charIndex}
                   className={`sprite ${
                     isTextureId(textureId) ?
-                      // all texture-hud.char.* classnames are whitelisted in tailwind config so it is
+                      // all texture-hud_char_* classnames are whitelisted in tailwind config so it is
                       // fine to construct dynamically:
-                      `texture-${textureId}`
-                    : "texture-hud.char.?"
+                      //twClass("texture-hud_char_A")
+                      `texture-${sanitiseForClassName(textureId)}`
+                    : "texture-hud_char_?"
                   }
                   ${noTint ? "" : "sprite-tinted"}
                   ${
