@@ -1,30 +1,45 @@
+#version 300 es
+// keep this one at mediump for the hash function's precision
+precision mediump float;
+
 in vec2 vTextureCoord;
 out vec4 finalColor;
 
-const int SWOP_COUNT = ${SWOP_COUNT};
+const float LUT_SIZE = 256.0;
+const float magicNumber = 31.0; // Small prime number
 
 uniform sampler2D uTexture;
-uniform vec3 uOriginal[SWOP_COUNT];
-uniform vec3 uReplacement[SWOP_COUNT];
+uniform sampler2D uLut;
 
-// colours are floats so check if they're very close rather than exactly equal:
-bool colorsEffectivelyEqual(vec3 color1, vec3 color2) {       
-    return distance(color1, color2) < 0.05;
+/** returns in [0, LUT_SIZE] range
+this must match the TypeScript version of the hash function*/
+float hashColor(vec3 color) {
+    vec3 c255 = floor(color * 255.0);
+    
+    float hash = mod(
+        c255.r + c255.g * magicNumber + c255.b * magicNumber * magicNumber, 
+        LUT_SIZE
+    );
+    return hash;
 }
 
 void main(void) {
     vec4 c = texture(uTexture, vTextureCoord);
 
-    if( c.a == 0.0 ) {
-        finalColor = c;
-        return;
-    }
+    float h = hashColor(c.rgb);
+
+    // use the hash to look up the replacement in the LUT:
+    vec4 replacementColour = texture(
+        uLut, 
+        vec2(
+            // normalise h to [0, 1] range
+            (h + 0.5) / LUT_SIZE, 
+            0.5
+        )
+    );
     
-    for(int i = 0; i < SWOP_COUNT; i++) {
-        if ( colorsEffectivelyEqual(c.rgb, uOriginal[i]) ) {
-            finalColor = vec4(uReplacement[i], c.a);            
-            return;
-        }
-    }    
-    finalColor = vec4(c.rgb, c.a);
+    // use original if either: 
+    //      original alpha is 0 (because keep transparent)
+    //      or lut alpha is 0 (signals nothing in this slot of the LUT)
+    finalColor = mix(c, replacementColour, c.a * replacementColour.a);
 }
