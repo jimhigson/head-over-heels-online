@@ -50,10 +50,10 @@ export const useSyncSelectionWithMonaco = (
       }
       // we have some editor text
 
-      const rootNode = parseTree(editorText);
-      if (rootNode === undefined) {
-        return;
-      }
+      // const rootNode = parseTree(editorText);
+      // if (rootNode === undefined) {
+      //   return;
+      // }
       const { path } = getLocation(editorText, offset);
       if (path.length < 2) {
         return;

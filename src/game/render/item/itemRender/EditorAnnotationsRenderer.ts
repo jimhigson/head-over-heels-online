@@ -97,9 +97,14 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
       case "doorFrame":
         if (item.config.part === "top" && !item.isCursorPreview) {
+          const { rooms } = (store.getState() as RootStateWithLevelEditorSlice)
+            .levelEditor.campaignInProgress;
+
           const {
             config: { toRoom, direction },
           } = item;
+
+          const toRoomExists = !!rooms[toRoom];
 
           const toRoomUpper = toRoom.toUpperCase();
 
@@ -112,7 +117,11 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           this.#addTextAnnotation({
             annotationText: text,
             yAdj: direction === "left" || direction === "away" ? -24 : 24,
-            clickDispatch: () => changeToRoom(toRoom as EditorRoomId),
+            error: !toRoomExists,
+            clickDispatch:
+              toRoomExists ?
+                () => changeToRoom(toRoom as EditorRoomId)
+              : undefined,
           });
         }
         break;
@@ -129,8 +138,9 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           const toRoomExists = !!rooms[toRoom];
 
           this.#addTextAnnotation({
-            annotationText: `${toRoom.toUpperCase()}➡`,
+            annotationText: `➡${toRoom.toUpperCase()}`,
             yAdj: -12,
+            error: !toRoomExists,
             clickDispatch:
               toRoomExists ?
                 () => changeToRoom(toRoom as EditorRoomId)
@@ -208,12 +218,20 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         store.dispatch(clickDispatch());
       });
       annotationContainer.on("mouseover", () => {
+        if (
+          (store.getState() as RootStateWithLevelEditorSlice).levelEditor.tool
+            .type !== "pointer"
+        ) {
+          return;
+        }
         // TODO: this is over-dispatching - need some way to
         // prevent firing when enter/leave children
         store.dispatch(setClickableAnnotationHovered(true));
+        colourFilter.targetColor = spritesheetPalette.pastelBlue;
       });
       annotationContainer.on("mouseout", () => {
         store.dispatch(setClickableAnnotationHovered(false));
+        colourFilter.targetColor = spritesheetPalette.white;
       });
       annotationContainer.cursor = "pointer";
     }

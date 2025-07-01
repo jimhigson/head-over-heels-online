@@ -8,6 +8,7 @@ import { useSyncSelectionWithMonaco } from "./useSyncSelectionWithMonaco";
 import roomSchema from "../../_generated/room.schema.json";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
 import { ItemContentWidgets } from "./ItemIconDecorations";
+import { useMonacoSuggestions } from "./useMonacoSuggestions";
 
 export const JsonRoomEditor = () => {
   const monaco = useLoadMonaco();
@@ -19,6 +20,7 @@ export const JsonRoomEditor = () => {
 
   const updateStoreWhenJsonEdited = useUpdateStoreWhenJsonEdited(editor);
   useSyncSelectionWithMonaco(editor);
+  useMonacoSuggestions();
 
   const stringifiedJson = useMemo(() => {
     return JSON.stringify(roomJson, null, 2);
@@ -64,6 +66,15 @@ export const JsonRoomEditor = () => {
               wrappingIndent: "indent",
               //folding: false,
               "bracketPairColorization.enabled": false,
+              quickSuggestions: {
+                other: true,
+                string: true,
+                comments: false,
+              },
+              quickSuggestionsDelay: 100,
+              inlineSuggest: {
+                enabled: true,
+              },
             } as editor.IStandaloneEditorConstructionOptions
           }
           onChange={updateStoreWhenJsonEdited}
