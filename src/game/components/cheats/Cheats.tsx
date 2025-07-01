@@ -160,9 +160,9 @@ const SummonPlayableButton = <RoomId extends string>({
     >
       {playableName === "headOverHeels" ?
         <>
-          <span className="sprite texture-head.walking.right.2 [button:hover_&]:texture-animated-head.walking.towards" />
+          <span className="sprite texture-head_walking_right_2 [button:hover_&]:texture-animated-head_walking_towards" />
           over
-          <span className="sprite texture-heels.walking.right.2 [button:hover_&]:texture-animated-heels.walking.towards" />
+          <span className="sprite texture-heels_walking_right_2 [button:hover_&]:texture-animated-heels_walking_towards" />
         </>
       : <span
           className={`sprite texture-${playableName}.walking.right.2 [button:hover_&]:texture-animated-${playableName}.walking.towards`}
@@ -243,7 +243,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         className="absolute bottom-0 right-1 flex flex-col z-cheats text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <span className="sprite texture-helicopterBug.1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
+        <span className="sprite texture-helicopterBug_1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <CssVariables scaleFactor={2}>
@@ -355,7 +355,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-spring.released" />
+                <span className="sprite texture-spring_released" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -368,7 +368,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-dalek.1 hover:texture-animated-dalek" />
+                <span className="sprite texture-dalek_1 hover:texture-animated-dalek" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -382,7 +382,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-turtle.towards.1 hover:texture-animated-turtle.towards" />
+                <span className="sprite texture-turtle_towards_1 hover:texture-animated-turtle_towards" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -398,7 +398,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-skiHead.greenAndPink.towards" />
+                <span className="sprite texture-skiHead_greenAndPink_towards" />
               </Button>
             </div>
             <div className="flex flex-row items-center">
@@ -409,7 +409,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown.bookworld" />
+                <span className="sprite texture-crown_bookworld" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -418,7 +418,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown.egyptus" />
+                <span className="sprite texture-crown_egyptus" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -427,7 +427,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown.safari" />
+                <span className="sprite texture-crown_safari" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -439,7 +439,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown.penitentiary" />
+                <span className="sprite texture-crown_penitentiary" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -451,7 +451,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown.blacktooth" />
+                <span className="sprite texture-crown_blacktooth" />
               </Button>
             </div>
             <div className="flex flex-row items-center">
@@ -463,7 +463,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span className="sprite texture-whiteRabbit" />
-                <span className="sprite texture-hud.char.2 left-m2 relative" />
+                <span className="sprite texture-hud_char_2 left-m2 relative" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -473,7 +473,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span className="sprite texture-whiteRabbit" />
-                <span className="sprite texture-hud.char.🛡 left-m2 relative" />
+                <span className="sprite texture-hud_char_🛡 left-m2 relative" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -483,7 +483,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span className="sprite texture-whiteRabbit" />
-                <span className="sprite texture-hud.char.⚡ left-m2 relative" />
+                <span className="sprite texture-hud_char_⚡ left-m2 relative" />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -493,7 +493,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span className="sprite texture-whiteRabbit" />
-                <span className="sprite texture-hud.char.♨ left-m2 relative" />
+                <span className="sprite texture-hud_char_♨ left-m2 relative" />
               </Button>
             </div>
 
@@ -629,8 +629,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-head.walking.right.2" />
-                <span className="sprite texture-heels.walking.right.2" />
+                <span className="sprite texture-head_walking_right_2" />
+                <span className="sprite texture-heels_walking_right_2" />
               </Button>
             </div>
           </div>

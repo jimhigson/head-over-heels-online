@@ -1,6 +1,6 @@
 ## EGYPTUS
 
-![](texture-egyptus.wall.sarcophagus.left)![](texture-egyptus.wall.sarcophagus.away?float-right)![](texture-egyptus.wall.hieroglyphics.left?clear-left)![](texture-egyptus.wall.hieroglyphics.away?float-right&clear-right)Once, a long time ago, a craft from Blacktooth got a bit lost while doing a
+![](texture-egyptus_wall_sarcophagus_left)![](texture-egyptus_wall_sarcophagus_away?float-right)![](texture-egyptus_wall_hieroglyphics_left?clear-left)![](texture-egyptus_wall_hieroglyphics_away?float-right&clear-right)Once, a long time ago, a craft from Blacktooth got a bit lost while doing a
 hyperspace jump and landed on an unknown planet.
 
 Here the crew found a primitive

@@ -38,7 +38,7 @@ export const QuitGameConfirmDialog = () => {
                 label="Back"
                 leader={
                   <span
-                    className={`${spriteLeaderClasses} sprite texture-head.walking.awayLeft.2 selectedMenuItem:texture-animated-head.walking.towardsRight sprites-normal-height zx:sprite-revert-to-white`}
+                    className={`${spriteLeaderClasses} sprite texture-head_walking_awayLeft_2 selectedMenuItem:texture-animated-head_walking_towardsRight sprites-normal-height zx:sprite-revert-to-white`}
                   />
                 }
                 onSelect={useDispatchActionCallback(backToParentMenu)}
@@ -51,7 +51,7 @@ export const QuitGameConfirmDialog = () => {
                   label="Reincarnate"
                   leader={
                     <span
-                      className={`${spriteLeaderClasses} sprite texture-fish.1 selectedMenuItem:texture-animated-fish sprites-normal-height zx:sprite-revert-to-white`}
+                      className={`${spriteLeaderClasses} sprite texture-fish_1 selectedMenuItem:texture-animated-fish sprites-normal-height zx:sprite-revert-to-white`}
                     />
                   }
                   onSelect={() => reincarnateSelected(gameApi)}
@@ -67,7 +67,7 @@ export const QuitGameConfirmDialog = () => {
                 })}
                 leader={
                   <span
-                    className={`${spriteLeaderClasses} sprite texture-bubbles.white.1 selectedMenuItem:texture-animated-bubbles.bounce.white sprites-normal-height zx:sprite-revert-to-white`}
+                    className={`${spriteLeaderClasses} sprite texture-bubbles_white_1 selectedMenuItem:texture-animated-bubbles_bounce_white sprites-normal-height zx:sprite-revert-to-white`}
                   />
                 }
                 hint={

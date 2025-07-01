@@ -14,6 +14,7 @@ export default tseslint.config(
       "package.json",
       "vite.config.ts.*",
       "dev-dist",
+      ".vite",
     ],
   },
   {

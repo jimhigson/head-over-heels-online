@@ -89,8 +89,8 @@ export const NotableItemSvg = ({ item }: { item: NotableItem<string> }) => {
   if (item.type === "lift") {
     return (
       <>
-        <SpriteInRoom className={`${scaleClass} texture-lift.static`} />
-        <SpriteInRoom className={`${scaleClass} texture-lift.2`} />
+        <SpriteInRoom className={`${scaleClass} texture-lift_static`} />
+        <SpriteInRoom className={`${scaleClass} texture-lift_2`} />
       </>
     );
   }
@@ -111,13 +111,13 @@ export const NotableItemSvg = ({ item }: { item: NotableItem<string> }) => {
     : item.config.gives === "bag" ? "texture-bag"
     : item.config.gives === "reincarnation" ? "texture-animated-fish"
     : item.config.gives === "crown" ?
-      item.config.planet === "blacktooth" ? "texture-crown.blacktooth"
-      : item.config.planet === "egyptus" ? "texture-crown.egyptus"
-      : item.config.planet === "penitentiary" ? "texture-crown.penitentiary"
-      : item.config.planet === "safari" ? "texture-crown.safari"
-      : item.config.planet === "bookworld" ? "texture-crown.bookworld"
-      : "texture-crown.dark"
-    : "texture-block.organic";
+      item.config.planet === "blacktooth" ? "texture-crown_blacktooth"
+      : item.config.planet === "egyptus" ? "texture-crown_egyptus"
+      : item.config.planet === "penitentiary" ? "texture-crown_penitentiary"
+      : item.config.planet === "safari" ? "texture-crown_safari"
+      : item.config.planet === "bookworld" ? "texture-crown_bookworld"
+      : "texture-crown_dark"
+    : "texture-block_organic";
 
   return <SpriteInRoom className={`${scaleClass} ${spriteClassName}`} />;
 };

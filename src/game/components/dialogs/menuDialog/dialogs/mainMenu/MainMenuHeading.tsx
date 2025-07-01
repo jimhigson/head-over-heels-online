@@ -15,8 +15,8 @@ export const MainMenuHeading = ({
           Head
         </BitmapText>
         <div className="mt-1 resHandheld:mt-0 relative">
-          <span className="sprite zx:sprite-revert-to-white texture-animated-head.idle.right hover:texture-animated-head.walking.right relative z-topSprite" />
-          <span className="sprite zx:hidden texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
+          <span className="sprite zx:sprite-revert-to-white texture-animated-head_idle_right hover:texture-animated-head_walking_right relative z-topSprite" />
+          <span className="sprite zx:hidden texture-shadow_smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
         </div>
       </div>
       <BitmapText
@@ -30,8 +30,8 @@ export const MainMenuHeading = ({
           Heels
         </BitmapText>
         <div className="mt-1 resHandheld:mt-0 relative">
-          <span className="sprite zx:sprite-revert-to-white texture-animated-heels.idle.towards hover:texture-animated-heels.walking.towards relative z-topSprite" />
-          <span className="sprite zx:hidden texture-shadow.smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
+          <span className="sprite zx:sprite-revert-to-white texture-animated-heels_idle_towards hover:texture-animated-heels_walking_towards relative z-topSprite" />
+          <span className="sprite zx:hidden texture-shadow_smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
         </div>
       </div>
     </h1>

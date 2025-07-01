@@ -13,6 +13,12 @@ const spritesheetSize = imageSize("gfx/sprites.png");
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
   ({ addUtilities, addBase, addVariant, e }) => {
+    const sanitiseId = (id: string) =>
+      // spritesheet texture/anim ids contain dots. This is fine in tailwind, but monaco editor strips
+      // them out. To make decorations in monaco with sprites, we need to remove the dots
+      // TODO: the better fix would be to rename all textures to not use dots!
+      e(id.replaceAll(".", "_"));
+
     const animations: CSSRuleObject = {};
 
     const spriteStyles = (type: "background" | "mask") => ({
@@ -81,6 +87,22 @@ export const spritesTailwindPlugin = plugin(
         "--scale": "2",
         "--block": `16px`,
       },
+      ".unscaled": {
+        "--scale": "1",
+        "--block": `8px`,
+      },
+      ".sprite-in-glyph-margin": {
+        "--scale": "0.75",
+        // since monaco is hard-coded to 18px for glyph margin icons, we can't set the width/height
+        // of the element. Instead of relying on the element's size to clip the spritesheet, a clip-path
+        // does the same:
+        "clip-path": `inset(
+          0                                                         
+          clamp(0px, calc(18px - var(--w) * var(--scale)), calc(18px - var(--w) * var(--scale)))  
+          clamp(0px, calc(18px - var(--h) * var(--scale)), calc(18px - var(--h) * var(--scale)))  
+          0                                                         
+        )`,
+      },
     };
 
     utilities[".loading-border"] = {
@@ -115,7 +137,7 @@ export const spritesTailwindPlugin = plugin(
         frame: { h, w, x, y },
       },
     ] of objectEntriesIter(spritesheetData.frames)) {
-      utilities[`.texture-${e(textureId)}`] = {
+      utilities[`.texture-${sanitiseId(textureId)}`] = {
         "--w": `${w}px`,
         "--h": `${h}px`,
         "--x": `${x}px`,
@@ -133,42 +155,41 @@ export const spritesTailwindPlugin = plugin(
       const animationDuration =
         (frames.length * (1 / zxSpectrumFrameRate)) / pixiJsAnimationSpeed;
 
-      utilities[`.texture-animated-${e(animationName)}`] = {
+      utilities[`.texture-animated-${sanitiseId(animationName)}`] = {
         "--w": `${spritesheetData.frames[frames[0]].frame.w}px`,
         "--h": `${spritesheetData.frames[frames[0]].frame.h}px`,
-        animation: `sprite-animation-${animationName.replaceAll(".", "_")} ${animationDuration}s steps(${frames.length}, end) infinite`,
+        animation: `sprite-animation-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) infinite`,
       };
 
-      utilities[`.texture-animated-once-${e(animationName)}`] = {
+      utilities[`.texture-animated-once-${sanitiseId(animationName)}`] = {
         "--w": `${spritesheetData.frames[frames[0]].frame.w}px`,
         "--h": `${spritesheetData.frames[frames[0]].frame.h}px`,
         // let stay on the last frame after the animation ends:
         "--x": `${spritesheetData.frames[frames.at(-1)!].frame.x}px`,
         "--y": `${spritesheetData.frames[frames.at(-1)!].frame.y}px`,
-        animation: `sprite-animation-${animationName.replaceAll(".", "_")} ${animationDuration}s steps(${frames.length}, end) 1`,
+        animation: `sprite-animation-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) 1`,
       };
 
-      animations[
-        `@keyframes sprite-animation-${animationName.replaceAll(".", "_")}`
-      ] = Object.fromEntries(
-        frames.map((frame, i) => [
-          `${(i * 100) / (frames.length - 1)}%`,
-          {
-            "--x": `${spritesheetData.frames[frame].frame.x}px`,
-            "--y": `${spritesheetData.frames[frame].frame.y}px`,
-          },
-        ]),
-      );
+      animations[`@keyframes sprite-animation-${sanitiseId(animationName)}`] =
+        Object.fromEntries(
+          frames.map((frame, i) => [
+            `${(i * 100) / (frames.length - 1)}%`,
+            {
+              "--x": `${spritesheetData.frames[frame].frame.x}px`,
+              "--y": `${spritesheetData.frames[frame].frame.y}px`,
+            },
+          ]),
+        );
 
       const reversedFrames = frames.toReversed();
-      utilities[`.texture-animated-reversed-${e(animationName)}`] = {
+      utilities[`.texture-animated-reversed-${sanitiseId(animationName)}`] = {
         "--w": `${spritesheetData.frames[reversedFrames[0]].frame.w}px`,
         "--h": `${spritesheetData.frames[reversedFrames[0]].frame.h}px`,
-        animation: `sprite-animation-reversed-${animationName.replaceAll(".", "_")} ${animationDuration}s steps(${frames.length}, end) infinite`,
+        animation: `sprite-animation-reversed-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) infinite`,
       };
 
       animations[
-        `@keyframes sprite-animation-reversed-${animationName.replaceAll(".", "_")}`
+        `@keyframes sprite-animation-reversed-${sanitiseId(animationName)}`
       ] = Object.fromEntries(
         reversedFrames.map((frame, i) => [
           `${(i * 100) / (frames.length - 1)}%`,

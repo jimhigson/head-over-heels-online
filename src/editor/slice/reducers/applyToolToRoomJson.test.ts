@@ -108,7 +108,7 @@ describe("applying tools", () => {
       expect(
         next.campaignInProgress.rooms[testRoomId].items,
       ).toMatchObject<EditorRoomJsonItems>({
-        ["pickup#0" as EditorRoomItemId]: {
+        ["pickup" as EditorRoomItemId]: {
           config: {
             gives: "bag",
           },
@@ -143,7 +143,7 @@ describe("applying tools", () => {
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
-          ["door#0" as EditorRoomItemId]: {
+          ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
               toRoom: "room#1" as EditorRoomId,
@@ -198,14 +198,14 @@ describe("applying tools", () => {
           .toMatchInlineSnapshot(`
           [
             "testWall",
-            "door#0",
+            "door",
           ]
         `);
 
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
-          ["door#0" as EditorRoomItemId]: {
+          ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
               toRoom: "room#1" as EditorRoomId,
@@ -247,7 +247,7 @@ describe("applying tools", () => {
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
-          ["door#0" as EditorRoomItemId]: {
+          ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
               toRoom: "room#1" as EditorRoomId,
@@ -306,13 +306,13 @@ describe("applying tools", () => {
 
         expect(
           Object.keys(next.campaignInProgress.rooms[testRoomId].items),
-        ).toEqual(["door#0"]);
+        ).toEqual(["door"]);
 
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
           // the wall is gone!
-          ["door#0" as EditorRoomItemId]: {
+          ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
               toRoom: "room#1" as EditorRoomId,
@@ -350,7 +350,7 @@ describe("applying tools", () => {
           id: "room#1",
           items: {
             // here's the return door:
-            "door#2": {
+            door: {
               config: {
                 direction: "towards",
                 toRoom: "testRoomId",

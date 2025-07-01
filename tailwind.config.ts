@@ -105,7 +105,7 @@ export default {
     {
       // any single-char sprite could be shown by parsing a markdown file, the others
       // have to be specifically referenced
-      pattern: /texture-hud\.char\./,
+      pattern: /texture-hud_char_/,
     },
   ],
   theme: {

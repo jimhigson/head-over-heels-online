@@ -1,6 +1,7 @@
 import type { IndividualCharacterName } from "../../../model/modelTypes";
 import type { AnimationId, TextureId } from "../../../sprites/spriteSheetData";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
+import type { SanitisedForClassName } from "./SanitiseForClassName";
 
 export const playableTailwindSpriteClassname = ({
   facingXy8,
@@ -10,7 +11,9 @@ export const playableTailwindSpriteClassname = ({
   character: IndividualCharacterName;
   facingXy8: DirectionXy8;
   action: "walking" | "idle";
-}): `texture-animated-${AnimationId}` | `texture-${TextureId}` => {
+}):
+  | `texture-animated-${SanitisedForClassName<AnimationId>}`
+  | `texture-${SanitisedForClassName<TextureId>}` => {
   // keep tailwind happy by listing all the classnames
 
   switch (character) {
@@ -19,21 +22,21 @@ export const playableTailwindSpriteClassname = ({
         case "walking": {
           switch (facingXy8) {
             case "away":
-              return "texture-animated-head.walking.away";
+              return "texture-animated-head_walking_away";
             case "towards":
-              return "texture-animated-head.walking.towards";
+              return "texture-animated-head_walking_towards";
             case "left":
-              return "texture-animated-head.walking.left";
+              return "texture-animated-head_walking_left";
             case "right":
-              return "texture-animated-head.walking.right";
+              return "texture-animated-head_walking_right";
             case "awayRight":
-              return "texture-animated-head.walking.awayRight";
+              return "texture-animated-head_walking_awayRight";
             case "towardsRight":
-              return "texture-animated-head.walking.towardsRight";
+              return "texture-animated-head_walking_towardsRight";
             case "towardsLeft":
-              return "texture-animated-head.walking.towardsLeft";
+              return "texture-animated-head_walking_towardsLeft";
             case "awayLeft":
-              return "texture-animated-head.walking.awayLeft";
+              return "texture-animated-head_walking_awayLeft";
             default:
               facingXy8 satisfies never;
               throw new Error(`Invalid facingXy8: ${facingXy8}`);
@@ -42,21 +45,21 @@ export const playableTailwindSpriteClassname = ({
         case "idle": {
           switch (facingXy8) {
             case "towards":
-              return "texture-animated-head.idle.towards";
+              return "texture-animated-head_idle_towards";
             case "right":
-              return "texture-animated-head.idle.right";
+              return "texture-animated-head_idle_right";
             case "awayRight":
-              return "texture-animated-head.idle.awayRight";
+              return "texture-animated-head_idle_awayRight";
             case "towardsRight":
-              return "texture-animated-head.idle.towardsRight";
+              return "texture-animated-head_idle_towardsRight";
             case "towardsLeft":
-              return "texture-animated-head.idle.towardsLeft";
+              return "texture-animated-head_idle_towardsLeft";
             case "away":
-              return "texture-head.walking.away.2";
+              return "texture-head_walking_away_2";
             case "left":
-              return "texture-head.walking.left.2";
+              return "texture-head_walking_left_2";
             case "awayLeft":
-              return "texture-head.walking.awayLeft.2";
+              return "texture-head_walking_awayLeft_2";
             default:
               facingXy8 satisfies never;
               throw new Error(`Invalid facingXy8: ${facingXy8}`);
@@ -70,21 +73,21 @@ export const playableTailwindSpriteClassname = ({
         case "walking": {
           switch (facingXy8) {
             case "away":
-              return "texture-animated-heels.walking.away";
+              return "texture-animated-heels_walking_away";
             case "towards":
-              return "texture-animated-heels.walking.towards";
+              return "texture-animated-heels_walking_towards";
             case "left":
-              return "texture-animated-heels.walking.left";
+              return "texture-animated-heels_walking_left";
             case "right":
-              return "texture-animated-heels.walking.right";
+              return "texture-animated-heels_walking_right";
             case "awayRight":
-              return "texture-animated-heels.walking.awayRight";
+              return "texture-animated-heels_walking_awayRight";
             case "towardsRight":
-              return "texture-animated-heels.walking.towardsRight";
+              return "texture-animated-heels_walking_towardsRight";
             case "towardsLeft":
-              return "texture-animated-heels.walking.towardsLeft";
+              return "texture-animated-heels_walking_towardsLeft";
             case "awayLeft":
-              return "texture-animated-heels.walking.awayLeft";
+              return "texture-animated-heels_walking_awayLeft";
             default:
               facingXy8 satisfies never;
               throw new Error(`Invalid facingXy8: ${facingXy8}`);
@@ -93,21 +96,21 @@ export const playableTailwindSpriteClassname = ({
         case "idle": {
           switch (facingXy8) {
             case "towards":
-              return "texture-heels.walking.towards.2";
+              return "texture-heels_walking_towards_2";
             case "right":
-              return "texture-heels.walking.right.2";
+              return "texture-heels_walking_right_2";
             case "awayRight":
-              return "texture-heels.walking.awayRight.2";
+              return "texture-heels_walking_awayRight_2";
             case "towardsRight":
-              return "texture-heels.walking.towardsRight.2";
+              return "texture-heels_walking_towardsRight_2";
             case "towardsLeft":
-              return "texture-heels.walking.towardsLeft.2";
+              return "texture-heels_walking_towardsLeft_2";
             case "away":
-              return "texture-heels.walking.away.2";
+              return "texture-heels_walking_away_2";
             case "left":
-              return "texture-heels.walking.left.2";
+              return "texture-heels_walking_left_2";
             case "awayLeft":
-              return "texture-heels.walking.awayLeft.2";
+              return "texture-heels_walking_awayLeft_2";
             default:
               facingXy8 satisfies never;
               throw new Error(`Invalid facingXy8: ${facingXy8}`);

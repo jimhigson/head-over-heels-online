@@ -75,3 +75,7 @@ heels (more co-operation)
 * charles can completely block a doorway, and there's no way to get him out by pushing - puzzle to get to the joystick to get him out of the way
 
 * pushable/sliding blocks stacked up in a doorway to act as a one-way door - can only come through while pushing them from the other side
+
+* a room where hush puppies keep dangerous monsters in, and when head enters they are released
+
+* room with several/many balls on top of volcanos - have to knock off carefully

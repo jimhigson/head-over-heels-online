@@ -173,7 +173,7 @@ export const CurrentKeyAssignments = ({
         );
       })}
       {flashingCursor && (
-        <span className="sprite texture-hud.char.space bg-[currentColor] animate-flash" />
+        <span className="sprite texture-hud_char_space bg-[currentColor] animate-flash" />
       )}
     </div>
   );

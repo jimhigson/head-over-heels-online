@@ -7,6 +7,7 @@ import { useLoadMonaco } from "./useLoadMonaco";
 import { useSyncSelectionWithMonaco } from "./useSyncSelectionWithMonaco";
 import roomSchema from "../../_generated/room.schema.json";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
+import { ItemContentWidgets } from "./ItemIconDecorations";
 
 export const JsonRoomEditor = () => {
   const monaco = useLoadMonaco();
@@ -44,30 +45,34 @@ export const JsonRoomEditor = () => {
 
   if (monaco !== null) {
     return (
-      <Editor
-        height="100%"
-        width="100%"
-        language="json"
-        theme="hoh-dark"
-        options={
-          {
-            minimap: { enabled: false },
-            // since we're using monaco inside a resizable container with overflow
-            // hidden, tell it to move its tooltips up to the top of the window's DOM:
-            fixedOverflowWidgets: true,
-            fontSize: 12,
-            lineNumbers: "off",
-            wordWrap: "on",
-            wrappingIndent: "indent",
-            folding: false,
-            "bracketPairColorization.enabled": false,
-          } as editor.IStandaloneEditorConstructionOptions
-        }
-        onChange={updateStoreWhenJsonEdited}
-        onMount={handleEditorMount}
-        defaultValue="{}"
-        value={stringifiedJson}
-      />
+      <>
+        <Editor
+          height="100%"
+          width="100%"
+          language="json"
+          theme="hoh-dark"
+          options={
+            {
+              minimap: { enabled: false },
+              // since we're using monaco inside a resizable container with overflow
+              // hidden, tell it to move its tooltips up to the top of the window's DOM:
+              fixedOverflowWidgets: true,
+              fontSize: 12,
+              lineNumbers: "off",
+              wordWrap: "on",
+              glyphMargin: true,
+              wrappingIndent: "indent",
+              //folding: false,
+              "bracketPairColorization.enabled": false,
+            } as editor.IStandaloneEditorConstructionOptions
+          }
+          onChange={updateStoreWhenJsonEdited}
+          onMount={handleEditorMount}
+          defaultValue="{}"
+          value={stringifiedJson}
+        />
+        <ItemContentWidgets editor={editor} />
+      </>
     );
   }
 };

@@ -12,7 +12,7 @@ How a fish
 can remember anything when it's been eaten has never been successfully
 explained.
 
-![](texture-fish.1)You must be very careful to check that the fish is
+![](texture-fish_1)You must be very careful to check that the fish is
 alive and wriggling as **dead fish decompose very quickly and it rapidly
 turns so poisonous that a single lick can kill.**
 

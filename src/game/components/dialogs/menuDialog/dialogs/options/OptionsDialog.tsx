@@ -34,7 +34,7 @@ import {
 
 const markdownClassname = "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan";
 
-const colouriseMarkdown = `![](texture-animated-head.walking.towards?float-right)**off**: Original *two-tone* spectrum graphics
+const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right)**off**: Original *two-tone* spectrum graphics
 
 **on**: *16-colour* palette with colourised sprites`;
 

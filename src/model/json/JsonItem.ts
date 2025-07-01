@@ -5,7 +5,7 @@ import type { ItemConfigMap } from "./ItemConfigMap";
 
 export type JsonItemType =
   | "door"
-  | "bubbles" // only in-play, never in json, but is created dynamically
+  | "bubbles" // only in-play, never in json, but is created dynamically via loadItemFromJson
   | "teleporter"
   | "barrier"
   | "block"
