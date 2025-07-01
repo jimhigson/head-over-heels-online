@@ -97,7 +97,7 @@ export const applyToolReducers = {
 
           // TODO: do this conditionally, only if there isn't already a room
           // in this grid position
-          const toRoomId = `room#${state.nextRoomId++}` as EditorRoomId;
+          const toRoomId = `room_${state.nextRoomId++}` as EditorRoomId;
 
           addItemInPlace(
             state,

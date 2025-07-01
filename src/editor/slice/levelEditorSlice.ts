@@ -26,6 +26,7 @@ export type LevelEditorState = {
   nextRoomId: number;
   tool: Tool;
   hoveredJsonItemId?: EditorRoomItemId;
+  clickableAnnotationHovered: boolean;
   selectedJsonItemIds: Array<EditorRoomItemId>;
   halfGridResolution: boolean;
   history: {
@@ -34,7 +35,7 @@ export type LevelEditorState = {
   };
 };
 
-const initialRoomId = "room#0" as EditorRoomId;
+const initialRoomId = "room_0" as EditorRoomId;
 const initialRoom = { id: initialRoomId, ...structuredClone(starterRoom) };
 export const initialLevelEditorSliceState: LevelEditorState = {
   campaignInProgress: {
@@ -47,6 +48,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   currentlyEditingRoomId: initialRoomId,
   tool: { type: "pointer" },
   hoveredJsonItemId: undefined,
+  clickableAnnotationHovered: false,
   selectedJsonItemIds: [],
   halfGridResolution: false,
   history: {
@@ -113,7 +115,18 @@ export const levelEditorSlice = createSlice({
       // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
       // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
       const state = _state as LevelEditorState;
+
+      if (!state.campaignInProgress.rooms[roomId]) {
+        console.warn(`can't change to room ${roomId} - it doesn't exist`);
+        // If the room doesn't exist, we can't change to it
+        return;
+      }
+
       state.currentlyEditingRoomId = roomId;
+
+      state.clickableAnnotationHovered = false;
+      state.hoveredJsonItemId = undefined;
+      state.selectedJsonItemIds = [];
 
       // clear undo/redo history when changing room:
       state.history = initialLevelEditorSliceState.history;
@@ -135,6 +148,9 @@ export const levelEditorSlice = createSlice({
       action: PayloadAction<EditorRoomItemId | undefined>,
     ) {
       state.hoveredJsonItemId = action.payload;
+    },
+    setClickableAnnotationHovered(state, action: PayloadAction<boolean>) {
+      state.clickableAnnotationHovered = action.payload;
     },
 
     /** set (or unset) the selection */
@@ -241,6 +257,7 @@ export const {
   injected,
   redo,
   roomJsonEdited,
+  setClickableAnnotationHovered,
   setHoveredItemInRoom,
   setSelectedItemInRoom,
   setTool,

@@ -7,7 +7,11 @@ import type {
 } from "../model/json/JsonItem";
 import type { RoomJsonItems, RoomJson } from "../model/RoomJson";
 import type { RoomState } from "../model/RoomState";
-import type { UnionOfAllItemInPlayTypes } from "../model/ItemInPlay";
+import type {
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../model/ItemInPlay";
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 
 export type EditorRoomId = Tagged<string, "EditorRoomId">;
 export type EditorRoomItemId<ItemId extends string = string> = Tagged<
@@ -25,6 +29,11 @@ export type EditorJsonItem<T extends JsonItemType> = JsonItem<
   EditorRoomItemId
 >;
 export type EditorRoomRenderer = RoomRenderer<EditorRoomId, EditorRoomItemId>;
+export type EditorItemInPlayUnion<T extends ItemInPlayType> = ItemTypeUnion<
+  T,
+  EditorRoomId,
+  EditorRoomItemId
+>;
 export type EditorUnionOfAllItemInPlayTypes = UnionOfAllItemInPlayTypes<
   EditorRoomId,
   EditorRoomItemId

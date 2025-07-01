@@ -60,15 +60,15 @@ export const useRoomEditorInteractivity = (
   const dispatch = useAppDispatch();
   const roomState = useEditorRoomState();
   const pointingAtRef = useRef<PointingAt | undefined>(undefined);
+  const mouseDownPointingAtRef = useRef<PointingAt | undefined>(undefined);
 
   useEffect(() => {
-    application.stage.eventMode = "none";
     if (renderArea === null) {
       return;
     }
 
-    const handleMouseMove = (event: MouseEvent) => {
-      const upscaledMouseXy = upscaledMousePosition(upscale, event);
+    const handleMouseMove = (mouseEvent: MouseEvent) => {
+      const upscaledMouseXy = upscaledMousePosition(upscale, mouseEvent);
 
       if (upscaledMouseXy === undefined) {
         return;
@@ -128,14 +128,44 @@ export const useRoomEditorInteractivity = (
     };
 
     const handleMouseClick = (mouseEvent: MouseEvent) => {
+      const storeState = store.getState() as RootStateWithLevelEditorSlice;
+
+      if (roomState.id !== storeState.levelEditor.currentlyEditingRoomId) {
+        return;
+      }
+
+      const upscaledMouseXy = upscaledMousePosition(upscale, mouseEvent);
+      if (upscaledMouseXy === undefined) {
+        return;
+      }
+
       // no point in re-running this effect when it changes so select it 'live':
       const tool = selectTool(
         store.getState() as RootStateWithLevelEditorSlice,
       );
 
+      // get a fresh PointingAt - the one in the ref could be pointing
+      // at a previous room if we just switched
+      const pointingAt = findPointerPointingAt(
+        upscaledMouseXy,
+        roomState,
+        tool,
+        storeState.levelEditor.halfGridResolution,
+      );
+
+      if (
+        pointingAt !== undefined &&
+        mouseDownPointingAtRef.current !== undefined &&
+        pointingAt.roomId !== mouseDownPointingAtRef.current.roomId
+      ) {
+        // if the click started in a different room, don't do anything - this can happen if the
+        // user clicks a door annotation to change room
+        return;
+      }
+
       switch (tool.type) {
         case "item": {
-          const currentPointingAt = pointingAtRef.current;
+          const currentPointingAt = pointingAt;
           if (currentPointingAt === undefined) {
             return;
           }
@@ -165,7 +195,7 @@ export const useRoomEditorInteractivity = (
           break;
         }
         case "pointer": {
-          const currentPointingAt = pointingAtRef.current;
+          const currentPointingAt = pointingAt;
 
           const jsonItemId =
             currentPointingAt === undefined ? undefined : (
@@ -195,6 +225,40 @@ export const useRoomEditorInteractivity = (
       }
     };
 
+    const handleMouseLeave = (_mouseEvent: MouseEvent) => {
+      const tool = selectTool(
+        store.getState() as RootStateWithLevelEditorSlice,
+      );
+
+      switch (tool.type) {
+        case "item": {
+          mutateRoomRemoveCursorPreviews(roomState);
+          break;
+        }
+        case "pointer": {
+          dispatch(setHoveredItemInRoom(undefined));
+          break;
+        }
+        default:
+          tool satisfies never;
+      }
+    };
+
+    const handleMouseDown = (mouseEvent: MouseEvent) => {
+      const upscaledMouseXy = upscaledMousePosition(upscale, mouseEvent);
+      const storeState = store.getState() as RootStateWithLevelEditorSlice;
+      const tool = selectTool(storeState);
+
+      mouseDownPointingAtRef.current =
+        upscaledMouseXy &&
+        findPointerPointingAt(
+          upscaledMouseXy,
+          roomState,
+          tool,
+          storeState.levelEditor.halfGridResolution,
+        );
+    };
+
     const handleKeyUp = (event: KeyboardEvent) => {
       const key = event.key as Key;
       if (key === "Backspace" || key === "Delete") {
@@ -214,12 +278,16 @@ export const useRoomEditorInteractivity = (
 
     renderArea.addEventListener("mousemove", handleMouseMove);
     renderArea.addEventListener("click", handleMouseClick);
+    renderArea.addEventListener("mousedown", handleMouseDown);
+    renderArea.addEventListener("mouseleave", handleMouseLeave);
     renderArea.addEventListener("keyup", handleKeyUp);
     renderArea.tabIndex = 0; // Make the div focusable to capture key events
 
     return () => {
       renderArea.removeEventListener("mousemove", handleMouseMove);
       renderArea.removeEventListener("click", handleMouseClick);
+      renderArea.removeEventListener("mouseleave", handleMouseLeave);
+      renderArea.addEventListener("mousedown", handleMouseDown);
       renderArea.removeEventListener("keyup", handleKeyUp);
     };
   }, [application.stage, upscale, renderArea, dispatch, roomState]);

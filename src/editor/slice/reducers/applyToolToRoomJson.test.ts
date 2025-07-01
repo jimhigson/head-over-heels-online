@@ -146,7 +146,7 @@ describe("applying tools", () => {
           ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "room#1" as EditorRoomId,
+              toRoom: "room_1" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -208,7 +208,7 @@ describe("applying tools", () => {
           ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "room#1" as EditorRoomId,
+              toRoom: "room_1" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -250,7 +250,7 @@ describe("applying tools", () => {
           ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "room#1" as EditorRoomId,
+              toRoom: "room_1" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -315,7 +315,7 @@ describe("applying tools", () => {
           ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "room#1" as EditorRoomId,
+              toRoom: "room_1" as EditorRoomId,
             },
             position: wallPosition,
             type: "door",
@@ -341,13 +341,13 @@ describe("applying tools", () => {
         );
 
         expect(
-          next.campaignInProgress.rooms["room#1" as EditorRoomId],
+          next.campaignInProgress.rooms["room_1" as EditorRoomId],
         ).toMatchObject({
           color: {
             hue: "cyan",
             shade: "basic",
           },
-          id: "room#1",
+          id: "room_1",
           items: {
             // here's the return door:
             door: {

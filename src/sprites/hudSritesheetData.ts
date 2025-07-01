@@ -50,6 +50,8 @@ const alphaNumeric = [
   "7",
   "8",
   "9",
+  "_",
+  "#",
   "⚡",
   "🛡",
   // unicode char is actually "hot spring" because there is no "spring" - this means big jumps

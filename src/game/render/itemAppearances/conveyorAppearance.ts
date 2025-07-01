@@ -49,13 +49,11 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy },
     },
     room: { roomTime },
-    general: { editor },
   },
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
-  // always animate inside the level editor (or maybe an arrow overlay would be better?)
-  const moving = isStoodOn(stoodOnBy) || editor;
+  const moving = isStoodOn(stoodOnBy);
 
   const roomTimeStoppedMoving =
     (!moving && currentlyRenderedProps?.moving ?
