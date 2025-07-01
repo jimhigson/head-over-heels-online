@@ -24,7 +24,9 @@ import {
 } from "../../collision/boundingBoxTimes";
 
 // can't take room height blocks times block height, or it is still possible to
-// jump over the wall in some cases in rooms without a ceiling portal
+// jump over the wall in some cases in rooms without a ceiling portal.
+// this could be thicker for more safety, but for walls-in-rooms situations (not around the
+// edges of rooms) is would get in the way of gameplay
 export const wallThicknessBlocks = 1;
 
 export const xAxisWallAabb = (

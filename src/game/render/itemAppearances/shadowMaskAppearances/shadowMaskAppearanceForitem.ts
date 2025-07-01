@@ -35,6 +35,18 @@ const itemShadowMaskAppearances: {
     flipX: directionAxis(direction) === "x",
   })),
 
+  doorLegs: itemAppearanceShadowMaskFromConfig(({ direction }) => {
+    const floating = direction === "right" || direction === "towards";
+
+    return {
+      textureId:
+        floating ?
+          "shadowMask.door.floatingThreshold.double.y"
+        : "shadowMask.door.legs.threshold.double.y",
+      flipX: directionAxis(direction) === "y",
+    };
+  }),
+
   teleporter: teleporterShadowMaskAppearance,
 
   // no shadow mast for the floor
@@ -77,7 +89,7 @@ const itemShadowMaskAppearances: {
       case "shield":
         return "shadowMask.whiteRabbit";
       default:
-        // cheaply have no shadows
+        // cheaply have no shadows cast on them
         return "blank";
     }
   }),

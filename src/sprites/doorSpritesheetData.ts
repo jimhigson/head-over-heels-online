@@ -48,7 +48,7 @@ const doorFrames = <SN extends SceneryName>(
             y: 0,
             w: 40,
             h: 64,
-            pivot: { x: 9, y: 52 },
+            pivot: { x: 9, y: 63 },
           }),
         },
       },

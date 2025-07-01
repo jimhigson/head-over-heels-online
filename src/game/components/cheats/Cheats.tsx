@@ -165,7 +165,7 @@ const SummonPlayableButton = <RoomId extends string>({
           <span className="sprite texture-heels_walking_right_2 [button:hover_&]:texture-animated-heels_walking_towards" />
         </>
       : <span
-          className={`sprite texture-${playableName}.walking.right.2 [button:hover_&]:texture-animated-${playableName}.walking.towards`}
+          className={`sprite texture-${playableName}_walking_right_2 [button:hover_&]:texture-animated-${playableName}_walking_towards`}
         />
       }
     </Button>

@@ -179,9 +179,13 @@ const frames = {
       y: 480,
       w: 42,
       h: 21,
-      // the legs are as deep as the wall is, so this pivot value is sensitive to the
-      // depth of the door legs bb:
-      pivot: { x: 24, y: 28 },
+      // this is a bit of a hack, and relies on knowing how thick this the door legs
+      // are loaded at when they are loaded over-wide for the door tunnels:
+      //pivot: { x: 24, y: 28 },
+      // this is more accurate to the sprite, but still slightly off because the
+      // rendering of this makes it 0.5blocks deep, whereas it is actually slightly
+      // more (like ~0.6 or similar)
+      pivot: { x: 8, y: 20 },
     },
   },
   "shadow.door.floatingThreshold.double.y": {

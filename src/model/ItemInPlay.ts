@@ -193,8 +193,21 @@ export type ItemInPlay<
    */
   readonly renderAabbOffset?: Aabb;
 
-  /* the shadow this item casts on other items */
+  /** the shadow this item casts on other items */
   shadowCastTexture?: CreateSpriteOptions;
+
+  /**
+   * Where this item's shadow mask is considered to be relative to its origin.
+   *
+   * For shadow masks (this item being cast on), the full xyz is considered to move the shadow mask
+   *
+   * For this item as the caster, the xy part is used but not the z, since the item's z doesn't matter
+   * for where the shadow is cast on another item
+   *
+   * Eg, door legs can be any height, and need to move their shadow
+   * masks to their top-side, so they should have a z-value
+   */
+  shadowOffset?: Partial<Xyz>;
 
   /**
    * if defined, the z-index for this item will not be based on
