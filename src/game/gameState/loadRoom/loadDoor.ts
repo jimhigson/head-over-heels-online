@@ -46,15 +46,15 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     position,
   } = jsonDoor;
 
-  const axis = doorAlongAxis(direction);
-  const crossAxis = perpendicularAxisXy(axis);
+  const alongWallAxis = doorAlongAxis(direction);
+  const throughDoorAxis = perpendicularAxisXy(alongWallAxis);
 
   const inHidden = inHiddenWall(jsonDoor);
 
   // doors on the left/towards side are set back half a square to embed them inside the unseen near-side wall:
   const invisibleWallSetBackBlocks: Xyz = {
     ...originXyz,
-    [crossAxis]: inHidden ? -0.5 : 0,
+    [throughDoorAxis]: inHidden ? -0.5 : 0,
   };
 
   // bounding boxes for doors form a long tunnel-like structure longer than the door's rendering
@@ -62,13 +62,13 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   // to not have MTVs that snag behind the door
   const doorTunnelLengthBlocks = 1;
   const tunnelSetbackBlocks = {
-    [crossAxis]: inHidden ? -doorTunnelLengthBlocks : 0,
+    [throughDoorAxis]: inHidden ? -doorTunnelLengthBlocks : 0,
   };
   const doorTunnelLengthPx = doorTunnelLengthBlocks * blockSizePx.w;
   // the extra to put onto door frame AABBs to make them longer for the tunnel
   const doorTunnelAabbPx = {
     ...originXyz,
-    [crossAxis]: doorTunnelLengthPx,
+    [throughDoorAxis]: doorTunnelLengthPx,
   };
 
   /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
@@ -79,8 +79,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
 
   {
     const renderAabb = {
-      [axis]: farPostWidthInAxis,
-      [crossAxis]: postWidthInCrossAxis,
+      [alongWallAxis]: farPostWidthInAxis,
+      [throughDoorAxis]: postWidthInCrossAxis,
       z: doorPostHeightPx,
     } as Xyz;
     yield {
@@ -100,7 +100,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           position: blockXyzToFineXyz(
             addXyz(
               position,
-              { [axis]: 1.5 },
+              { [alongWallAxis]: 1.5 },
               invisibleWallSetBackBlocks,
               tunnelSetbackBlocks,
             ),
@@ -115,8 +115,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   }
   {
     const renderAabb = {
-      [axis]: nearPostWidthInAxis,
-      [crossAxis]: postWidthInCrossAxis,
+      [alongWallAxis]: nearPostWidthInAxis,
+      [throughDoorAxis]: postWidthInCrossAxis,
       z: doorPostHeightPx,
     } as Xyz;
 
@@ -151,8 +151,9 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
    */
   {
     const renderAabb = {
-      [axis]: 2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
-      [crossAxis]: postWidthInCrossAxis,
+      [alongWallAxis]:
+        2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
+      [throughDoorAxis]: postWidthInCrossAxis,
       z: doorPostHeightPx - doorPortalHeight,
     } as Xyz;
     yield {
@@ -174,7 +175,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
               addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
             ),
             {
-              [axis]: nearPostWidthInAxis,
+              [alongWallAxis]: nearPostWidthInAxis,
               z: doorPortalHeight,
             },
           ),
@@ -208,8 +209,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
       aabb: blockXyzToFineXyz({
-        [axis]: 2,
-        [crossAxis]: 0.5,
+        [alongWallAxis]: 2,
+        [throughDoorAxis]: 0.5,
         z: defaultRoomHeightBlocks - doorPostHeightBlocks - position.z,
       }),
       fixedZIndex: nonRenderingItemFixedZIndex,
@@ -229,7 +230,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         inHidden,
         relativePoint: blockXyzToFineXyz({
           ...originXyz,
-          [crossAxis]: inHidden ? 0.25 : -0.25,
+          [throughDoorAxis]: inHidden ? 0.25 : -0.25,
         }),
         direction: unitVectors[direction],
       },
@@ -242,28 +243,27 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
               position,
 
               {
-                [crossAxis]: inHidden ? -0.5 : 0.5,
+                [throughDoorAxis]: inHidden ? -0.5 : 0.5,
               },
             ),
           ),
-          { [axis]: nearPostWidthInAxis },
+          { [alongWallAxis]: nearPostWidthInAxis },
         ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
       aabb: {
-        [axis]:
+        [alongWallAxis]:
           doorOverallWidthBlocks * blockSizePx.w -
           nearPostWidthInAxis -
           farPostWidthInAxis,
-        [crossAxis]: 0,
+        [throughDoorAxis]: 0,
         z: doorPortalHeight,
       } as Xyz,
     },
   };
 
   // door legs
-  // door legs currently aren't tunnels - this might need to be
-  if (position.z !== 0)
+  if (position.z !== 0) {
     yield {
       ...jsonDoor,
       ...defaultItemProperties,
@@ -280,17 +280,12 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         },
         renders: true,
         shadowCastTexture:
-          inHidden ? "shadow.door.floatingThreshold.double.y" : undefined,
-        shadowMask: {
-          spriteOptions: {
-            textureId:
-              inHidden ?
-                "shadowMask.door.floatingThreshold.double.y"
-              : "shadowMask.door.legs.threshold.double.y",
-            flipX: axis === "x",
-          },
-          relativeTo: "top",
-        },
+          inHidden ?
+            {
+              textureId: "shadow.door.floatingThreshold.double.y",
+              flipX: alongWallAxis === "x",
+            }
+          : undefined,
         state: {
           ...defaultBaseState(),
           position: {
@@ -301,16 +296,58 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           },
         },
         aabb: addXyz(
-          blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0.5, z: position.z }),
+          blockXyzToFineXyz({
+            [alongWallAxis]: 2,
+            [throughDoorAxis]: 0.5,
+            z: position.z,
+          }),
           doorTunnelAabbPx,
         ),
+        renderAabb:
+          inHidden ?
+            addXyz(
+              blockXyzToFineXyz({
+                [alongWallAxis]: 2,
+                // assume the floating threhold is 0.5 blocks wide
+                // in the direction through the door - this is actually
+                // slightly low since it is drawn to extend further than
+                // the door frame
+                [throughDoorAxis]: 0.5,
+                z: 0.5,
+              }),
+            )
+          : undefined,
+        renderAabbOffset:
+          inHidden ?
+            addXyz(
+              {
+                [alongWallAxis]: 0,
+                [throughDoorAxis]: 0,
+                z: (position.z - 0.5) * blockSizePx.h,
+              } as Xyz,
+              {
+                [throughDoorAxis]: doorTunnelAabbPx[throughDoorAxis],
+              },
+            )
+          : undefined,
+        shadowOffset: {
+          // bring shadows up to the top of the legs:
+          z: position.z * blockSizePx.h,
+          [throughDoorAxis]:
+            inHidden ? doorTunnelAabbPx[throughDoorAxis] : undefined,
+        },
       },
     };
+  }
   yield {
     type: "stopAutowalk",
     id: `${jsonItemId}/stopAutowalk` as RoomItemId,
     jsonItemId,
-    aabb: blockXyzToFineXyz({ [axis]: 2, [crossAxis]: 0, z: 2 } as Xyz),
+    aabb: blockXyzToFineXyz({
+      [alongWallAxis]: 2,
+      [throughDoorAxis]: 0,
+      z: 2,
+    } as Xyz),
     config: {},
     fixedZIndex: nonRenderingItemFixedZIndex,
     state: {

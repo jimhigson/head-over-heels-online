@@ -6,7 +6,7 @@ import { concat, objectEntries } from "iter-tools";
 import type { SetRequired } from "type-fest";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { subXy } from "../../../../utils/vectors/vectors";
+import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
 import type {
   ItemRenderContext,
   ItemTickContext,
@@ -57,14 +57,26 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     // https://pixijs.download/dev/docs/filters.AlphaFilter.html
     this.#container.filters = halfOpacity;
 
-    // 'no-mask' means will accept any shadows without masking them - like on floors
+    // 'no-mask' means will accept any shadows without masking them - eg, on floors
     if (appearance !== "no-mask") {
       this.#shadowMaskRenderer = new ItemAppearancePixiRenderer(
         renderContext,
         appearance,
       );
 
-      this.#container.addChild(this.#shadowMaskRenderer.output);
+      // add the whole shadow mask renderer output as a child of the top-level, even though
+      // the sprite will be plucked out of its output and used directly as a mask
+      if (renderContext.item.shadowOffset === undefined) {
+        this.#container.addChild(this.#shadowMaskRenderer.output);
+      } else {
+        // create a new container to offset the shadow mask:
+        const shadowMaskOffset = new Container({
+          label: "shadowMaskOffset",
+          ...projectWorldXyzToScreenXy(renderContext.item.shadowOffset),
+          children: [this.#shadowMaskRenderer.output],
+        });
+        this.#container.addChild(shadowMaskOffset);
+      }
     }
 
     this.#container.addChild(this.#shadowsContainer);
@@ -84,8 +96,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       return;
     }
 
-    // -1 here (assuming hte last child is the shadow mask) is not very safe!
-    // might need something better.
+    // Containers can't be masks - only sprites can, even though the whole output
+    // can be added as a child of the ItemShadowRenderer. This means that we have to get the sprite
+    // out of the renderer's output container.
+    // This means the renderers for shadow masks must always return a container with a single sprite
     const previousSprite = this.#shadowMaskRenderer.output.children.at(0);
     this.#shadowMaskRenderer.tick(itemTickContext);
     const newSprite = this.#shadowMaskRenderer.output.children.at(0);
@@ -99,7 +113,11 @@ class ItemShadowRenderer<T extends ItemInPlayType>
 
     if (previousSprite !== newSprite) {
       if (!this.#showShadowMasks) {
+        // not debugging: use shadow mask sprite normally
         this.#container.mask = newSprite;
+      } else {
+        // for debugging: put the shadow mask in front of everything:
+        this.renderContext.frontLayer.attach(newSprite);
       }
     }
   }
@@ -200,7 +218,12 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       const { sprite } = this.#casts[casterItem.id];
 
       const screenXy = projectWorldXyzToScreenXy({
-        ...subXy(casterItem.state.position, item.state.position),
+        ...addXy(
+          subXy(casterItem.state.position, item.state.position),
+          // use just the xy part of the shadow offset to position the shadow on the surface:
+          casterItem.shadowOffset ?? originXy,
+        ),
+        // on the top of the item:
         z: item.aabb.z,
       });
       // this fails for composite sprites, since they get their x,y set in the sprite they are rendered to
