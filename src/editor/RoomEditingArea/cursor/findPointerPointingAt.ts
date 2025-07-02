@@ -1,13 +1,13 @@
 import type { SetRequired } from "type-fest";
-import { isSolid } from "../../game/physics/itemPredicates";
-import { unprojectScreenXyToWorldXyzOnFace } from "../../game/render/projections";
-import { projectAabbToHexagonCorners } from "../../game/render/sortZ/projectAabbToHexagonCorners";
+import { isSolid } from "../../../game/physics/itemPredicates";
+import { unprojectScreenXyToWorldXyzOnFace } from "../../../game/render/projections";
+import { projectAabbToHexagonCorners } from "../../../game/render/sortZ/projectAabbToHexagonCorners";
 import {
   zEdges,
   sortByZPairs,
-} from "../../game/render/sortZ/sortItemsByDrawOrder";
-import { iterateRoomItems } from "../../model/RoomState";
-import { blockSizePx } from "../../sprites/spritePivots";
+} from "../../../game/render/sortZ/sortItemsByDrawOrder";
+import { iterateRoomItems } from "../../../model/RoomState";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   type Xy,
   type DirectionXyz4,
@@ -16,14 +16,14 @@ import {
   originXyz,
   type OrthoPlane,
   addXyz,
-} from "../../utils/vectors/vectors";
+} from "../../../utils/vectors/vectors";
 import type {
   EditorUnionOfAllItemInPlayTypes,
   EditorRoomItemId,
   EditorRoomState,
-} from "../EditorRoomId";
-import type { Tool } from "../Tool";
-import type { PointingAt } from "./cursor/PointingAt";
+} from "../../EditorRoomId";
+import type { Tool } from "../../Tool";
+import type { MaybePointingAtSomething } from "./PointingAt";
 
 const itemVisibleBounds = (
   item: EditorUnionOfAllItemInPlayTypes,
@@ -207,6 +207,56 @@ const frontItem = (
   return topographicallySortableItemsMap[order[0]];
 };
 
+export const roundXyzProjection = (
+  /** the world position to round */
+  positionXyzPx: Xyz,
+
+  /**
+   * the plane projected onto to get the @see positionXyzPx -
+   * applies rounding, but not in the direction of a normal to this plane
+   */
+  projectedPlane: string,
+  tool: Tool,
+  halfGridResolution: boolean,
+) => {
+  const noHalfSteps =
+    !halfGridResolution ||
+    // the tool placement granularity can change depending on the tool - doors can never be placed at half-steps:
+    (tool.type === "item" && tool.item.type === "door");
+
+  // potentially allow items to be positioned on half-blocks for x and y
+  // (unlike original hoh)
+  const incrementXy = noHalfSteps ? blockSizePx.w : blockSizePx.w / 2;
+  const incrementZ = blockSizePx.h;
+
+  const biasXy =
+    noHalfSteps ?
+      // not sure why, but feels more natural to have 0 here when doing whole blocks
+      0
+      // bias centres the position towards the bottom of the square while the pointer points to
+      // the middle of it
+    : incrementXy / 2;
+  const biasZ = incrementZ / 2;
+
+  return {
+    x:
+      projectedPlane === "yz" ?
+        // normal to plane: snap to the nearest increment since could be placing based off an item that is
+        // smaller than a full block (face pointer is on is not on a (half) grid boundary)
+        Math.round(positionXyzPx.x / incrementXy) * incrementXy
+        // tangent to plane: apply rounding to place on the surface in half-block increments:
+      : Math.floor((positionXyzPx.x - biasXy) / incrementXy) * incrementXy,
+    y:
+      projectedPlane === "xz" ?
+        Math.round(positionXyzPx.y / incrementXy) * incrementXy
+      : Math.floor((positionXyzPx.y - biasXy) / incrementXy) * incrementXy,
+    z:
+      projectedPlane === "xy" ?
+        Math.round(positionXyzPx.z / incrementZ) * incrementZ
+      : Math.floor((positionXyzPx.z + biasZ) / incrementZ) * incrementZ,
+  };
+};
+
 const worldPositionOnFaceForScreenPosition = (
   { state: { position }, aabb }: EditorUnionOfAllItemInPlayTypes,
   face: DirectionXyz4,
@@ -250,46 +300,16 @@ const worldPositionOnFaceForScreenPosition = (
     plane,
   );
 
-  // the tool placement granularity can change depending on the tool:
-  const noHalfSteps =
-    !halfGridResolution || (tool.type === "item" && tool.item.type === "door");
-
-  // potentially allow items to be positioned on half-blocks for x and y
-  // (unlike original hoh)
-  const incrementXy = noHalfSteps ? blockSizePx.w : blockSizePx.w / 2;
-  const incrementZ = blockSizePx.h;
-
-  const biasXy =
-    noHalfSteps ?
-      // not sure why, but feels more natural to have 0 here when doing whole blocks
-      0
-      // bias centres the position towards the bottom of the square while the pointer points to
-      // the middle of it
-    : incrementXy / 2;
-  const biasZ = incrementZ / 2;
-
-  // apply rounding, but not in the direction of a normal to the face we
-  // just unprojected onto. Ie, don't let the rounding take the xyz point
+  // Ie, don't let the rounding take the xyz point
   // off the face, only allow it to snap to a new position on that face.
-  return {
-    x:
-      plane === "yz" ?
-        // normal to plane: snap to the nearest increment since could be placing based off an item that is
-        // smaller than a full block (face pointer is on is not on a (half) grid boundary)
-        Math.round(cursorWorldPosition.x / incrementXy) * incrementXy
-        // tangent to plane: apply rounding to place on the surface in half-block increments:
-      : Math.floor((cursorWorldPosition.x - biasXy) / incrementXy) *
-        incrementXy,
-    y:
-      plane === "xz" ?
-        Math.round(cursorWorldPosition.y / incrementXy) * incrementXy
-      : Math.floor((cursorWorldPosition.y - biasXy) / incrementXy) *
-        incrementXy,
-    z:
-      plane === "xy" ?
-        Math.round(cursorWorldPosition.z / incrementZ) * incrementZ
-      : Math.floor((cursorWorldPosition.z + biasZ) / incrementZ) * incrementZ,
-  };
+  const rounded = roundXyzProjection(
+    cursorWorldPosition,
+    plane,
+    tool,
+    halfGridResolution,
+  );
+
+  return rounded;
 };
 /** get what is considered a pointable item for the given tool. Ie, what
  * can be pointed at and interacted with by the tool */
@@ -306,36 +326,46 @@ const isPointableItemForTool =
     return basicPointability;
   };
 export const findPointerPointingAt = (
-  pointerXy: Xy,
+  scrXy: Xy,
   room: EditorRoomState,
   tool: Tool,
   halfGridResolution: boolean,
-): PointingAt | undefined => {
+): MaybePointingAtSomething => {
   // find the item(s) that the mouse is over:
   const itemPointingTo = frontItem(
     Array.from(
       iterateRoomItems(room.items)
         .filter(isPointableItemForTool(tool))
-        .filter(pointIntersectsItemAABB(pointerXy, tool)),
+        .filter(pointIntersectsItemAABB(scrXy, tool)),
     ),
   );
 
+  const roomId = room.id;
+
   if (itemPointingTo) {
-    const face = pointerIntersectionFace(itemPointingTo, pointerXy, tool);
+    const face = pointerIntersectionFace(itemPointingTo, scrXy, tool);
 
     return {
-      roomId: room.id,
-      itemId: itemPointingTo.id,
-      face,
-      position: worldPositionOnFaceForScreenPosition(
-        itemPointingTo,
+      roomId,
+      scrXy,
+      world: {
+        itemId: itemPointingTo.id,
         face,
-        pointerXy,
-        tool,
-        halfGridResolution,
-      ),
+        position: worldPositionOnFaceForScreenPosition(
+          itemPointingTo,
+          face,
+          scrXy,
+          tool,
+          halfGridResolution,
+        ),
+      },
     };
   } else {
-    return undefined;
+    return {
+      roomId,
+      scrXy,
+      world: undefined,
+      // no world - did not find anything in the world that we were pointing at
+    };
   }
 };

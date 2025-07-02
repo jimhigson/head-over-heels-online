@@ -18,6 +18,7 @@ import {
   undoSelectors,
 } from "./reducers/undoReducers";
 import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";
+import { addXyz, type Xyz } from "../../utils/vectors/vectors";
 
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
@@ -29,6 +30,7 @@ export type LevelEditorState = {
   clickableAnnotationHovered: boolean;
   selectedJsonItemIds: Array<EditorRoomItemId>;
   halfGridResolution: boolean;
+  wallsFloorsLocked: boolean;
   history: {
     undo: Array<EditorRoomJson>;
     redo: Array<EditorRoomJson>;
@@ -51,6 +53,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   clickableAnnotationHovered: false,
   selectedJsonItemIds: [],
   halfGridResolution: false,
+  wallsFloorsLocked: true,
   history: {
     undo: [],
     redo: [],
@@ -186,6 +189,29 @@ export const levelEditorSlice = createSlice({
       }
     },
 
+    moveItemInRoom(
+      _state,
+      {
+        payload: { jsonItemId, positionDelta },
+      }: PayloadAction<{
+        jsonItemId: EditorRoomItemId;
+        positionDelta: Xyz;
+      }>,
+    ) {
+      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+      // down specifically to the WritableDraft<> type here - immer was making ts slow when we
+      // assigned to the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed
+      // anyway
+      const state = _state as LevelEditorState;
+      const roomJson = selectCurrentRoomFromLevelEditorState(state);
+      pushUndoInPlace(state);
+      const item = roomJson.items[jsonItemId];
+      item.position = addXyz(
+        roomJson.items[jsonItemId].position,
+        positionDelta,
+      );
+    },
+
     deleteSelected(_state) {
       // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
       // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
@@ -220,6 +246,17 @@ export const levelEditorSlice = createSlice({
       const levelEditorState = state as LevelEditorState;
       levelEditorState.halfGridResolution = halfGridResolution;
     },
+    changeWallsFloorsLocked(
+      state,
+      { payload: wallsFloorsLocked }: PayloadAction<boolean>,
+    ) {
+      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+      // down specifically to the WritableDraft<> type here - immer was making ts slow when we
+      // assigned to the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed
+      // anyway
+      const levelEditorState = state as LevelEditorState;
+      levelEditorState.wallsFloorsLocked = wallsFloorsLocked;
+    },
 
     ...undoReducers,
     ...applyToolReducers,
@@ -253,8 +290,10 @@ export const {
   changeRoomColour,
   changeRoomScenery,
   changeToRoom,
+  changeWallsFloorsLocked,
   deleteSelected,
   injected,
+  moveItemInRoom,
   redo,
   roomJsonEdited,
   setClickableAnnotationHovered,

@@ -1,14 +1,12 @@
 import { isEmpty } from "iter-tools";
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
-import { isSolid } from "../../../game/physics/itemPredicates";
-import { iterateRoomItems } from "../../../model/RoomState";
 import type {
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomState,
   EditorUnionOfAllItemInPlayTypes,
 } from "../../EditorRoomId";
-import type { PointingAt } from "./PointingAt";
+import type { PointingAtItem } from "./PointingAt";
 import type { ItemTool } from "../../Tool";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { fineXyzToBlockXyz } from "../../../game/render/projections";
@@ -33,17 +31,26 @@ import {
   completeTimesXy,
   wallTimes,
 } from "../../../game/collision/boundingBoxTimes";
+import { findCollideableItemsInRoom } from "./findCollideableItemsInRoom";
 
 let cursorItemCount = 0;
 
 export const itemToolPutDownLocation = (
-  pointingAt: PointingAt,
+  pointingAt: PointingAtItem,
   roomState: EditorRoomState,
   itemTool: ItemTool,
 ): Xyz | undefined => {
-  if (pointingAt.face === "up") {
+  const {
+    world: {
+      face: pointingAtFace,
+      position: pointingAtPosition,
+      itemId: pointingAtItemId,
+    },
+  } = pointingAt;
+
+  if (pointingAtFace === "up") {
     // on top is the simple case - putdown will be at the location
-    return fineXyzToBlockXyz(pointingAt.position);
+    return fineXyzToBlockXyz(pointingAtPosition);
   }
 
   if (
@@ -52,7 +59,7 @@ export const itemToolPutDownLocation = (
     // other items would be:
     itemTool.type === "door"
   ) {
-    const pointingAtItem = roomState.items[pointingAt.itemId];
+    const pointingAtItem = roomState.items[pointingAtItemId];
     if (pointingAtItem.type !== "wall") {
       return undefined;
     }
@@ -88,19 +95,19 @@ export const itemToolPutDownLocation = (
 
     const clampedPosition = {
       [alongWallAxis]: Math.max(
-        Math.min(pointingAt.position[alongWallAxis], alongMax),
+        Math.min(pointingAtPosition[alongWallAxis], alongMax),
         alongMin,
       ),
-      [doorDirectionAxis]: pointingAt.position[doorDirectionAxis],
-      z: Math.max(Math.min(pointingAt.position.z, zMax), zMin),
+      [doorDirectionAxis]: pointingAtPosition[doorDirectionAxis],
+      z: Math.max(Math.min(pointingAtPosition.z, zMax), zMin),
     } as Xyz;
 
     return fineXyzToBlockXyz(clampedPosition);
   }
 
-  const normalToSurface = unitVectors[pointingAt.face];
+  const normalToSurface = unitVectors[pointingAtFace];
 
-  return addXyz(fineXyzToBlockXyz(pointingAt.position), normalToSurface);
+  return addXyz(fineXyzToBlockXyz(pointingAtPosition), normalToSurface);
 };
 
 /**
@@ -111,16 +118,10 @@ export const itemToolPutDownLocation = (
  * @returns the location, or undefined if this putdown is invalid
  */
 export const previewItemsForCursor = <T extends JsonItemType>(
-  pointingAt: PointingAt,
+  pointingAt: PointingAtItem,
   roomState: EditorRoomState,
   itemTool: ItemTool<T>,
 ): EditorUnionOfAllItemInPlayTypes[] | undefined => {
-  const collideableItemsInRoom = [
-    ...iterateRoomItems(roomState.items).filter(
-      (item) => isSolid(item) && !item.isCursorPreview,
-    ),
-  ];
-
   const loadItems = <T2 extends JsonItemType>(
     type: T2,
     config: JsonItemConfig<T2, EditorRoomId, EditorRoomItemId>,
@@ -154,7 +155,7 @@ export const previewItemsForCursor = <T extends JsonItemType>(
   }
 
   if (itemTool.type === "door") {
-    const pointingAtItem = roomState.items[pointingAt.itemId];
+    const pointingAtItem = roomState.items[pointingAt.world.itemId];
 
     if (pointingAtItem.type !== "wall") {
       return undefined;
@@ -185,8 +186,10 @@ export const previewItemsForCursor = <T extends JsonItemType>(
     jsonBlockPosition,
   );
 
+  const collideableItems = Array.from(findCollideableItemsInRoom(roomState));
+
   const hasCollisions = loadedItems.some((loadedItem) => {
-    const collisions = collision1toManyIter(loadedItem, collideableItemsInRoom);
+    const collisions = collision1toManyIter(loadedItem, collideableItems);
 
     return !isEmpty(collisions);
   });

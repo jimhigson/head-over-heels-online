@@ -81,3 +81,7 @@ heels (more co-operation)
 * room with several/many balls on top of volcanos - have to knock off carefully
 
 * heads pushes a ball and then heels runs along under it to the other side of the room (rolling on Heels) to help it get to destination
+
+* a room with two homing bots and a switch. The switch
+changes which of the two is active (only one is at a time)
+and need to change between them - they can also hit their own switch

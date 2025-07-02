@@ -1,10 +1,12 @@
 import type { Container } from "pixi.js";
 import { blockSizePx } from "../../sprites/spritePivots";
-import type {
-  XyMaybeZ,
-  Xyz,
-  Xy,
-  OrthoPlane,
+import {
+  type XyMaybeZ,
+  type Xyz,
+  type Xy,
+  type OrthoPlane,
+  addXyz,
+  subXy,
 } from "../../utils/vectors/vectors";
 
 export const moveContainerToBlockXyz = (
@@ -37,43 +39,57 @@ export const projectWorldXyzToScreenXy = ({
 };
 
 /**
- * for the editor, mostly - convert screen (mouse) to world, on
+ * for the editor - convert screen (mouse) xy to world xyz, on
  * the visible surface of an object
  */
 export const unprojectScreenXyToWorldXyzOnFace = (
-  { x: xs, y: ys }: Xy,
+  /** the screen x,y in game engine (scaled) pixels */
+  scrPos: Xy,
   itemPosition: Xyz,
   plane: OrthoPlane,
 ): Xyz => {
   const itemOriginScreen = projectWorldXyzToScreenXy(itemPosition);
 
   // adjust xs, xy to be relative to the projected-on-screen origin of the item:
-  const xsAdj = xs - itemOriginScreen.x;
-  const ysAdj = ys - itemOriginScreen.y;
+  const scrPosAdj = subXy(scrPos, itemOriginScreen);
+
+  return addXyz(unprojectScreenXyToWorldXyz(scrPosAdj, plane), itemPosition);
+};
+
+/**
+ * for the editor - convert screen (mouse) xy to world xyz, for a plane
+ * starting at the origin
+ */
+export const unprojectScreenXyToWorldXyz = (
+  /** the screen x,y in game engine (scaled) pixels */
+  { x: xScr, y: yScr }: Xy,
+  plane: OrthoPlane,
+): Xyz => {
+  // adjust xs, xy to be relative to the projected-on-screen origin of the item:
 
   switch (plane) {
     case "xy": {
       // top/bottom face
       return {
-        x: -(xsAdj / 2 + ysAdj) + itemPosition.x,
-        y: xsAdj / 2 - ysAdj + itemPosition.y,
-        z: itemPosition.z,
+        x: -(xScr / 2 + yScr),
+        y: xScr / 2 - yScr,
+        z: 0,
       };
     }
     case "xz": {
       // away/towards face
       return {
-        x: -xsAdj + itemPosition.x,
-        y: itemPosition.y,
-        z: xsAdj / 2 - ysAdj + itemPosition.z,
+        x: -xScr,
+        y: 0,
+        z: xScr / 2 - yScr,
       };
     }
     case "yz": {
       // left/right face
       return {
-        x: itemPosition.x,
-        y: xsAdj + itemPosition.y,
-        z: -xsAdj / 2 - ysAdj + itemPosition.z,
+        x: 0,
+        y: xScr,
+        z: -xScr / 2 - yScr,
       };
     }
     default:

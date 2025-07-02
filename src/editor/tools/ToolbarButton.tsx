@@ -20,8 +20,12 @@ export const ToolbarButton = ({
   return (
     <Button
       disabled={disabled}
-      data-iscurrenttool={isCurrentTool}
-      className={`active:pt-oneScaledPix ${buttonSizeClassNames} gap-0 inline-flex overflow-hidden ${isCurrentTool ? "bg-pastelBlue" : ""} ${disabled ? "bg-midGrey text-lightGrey" : ""} ${className ?? ""}`}
+      selected={isCurrentTool}
+      className={`
+        ${buttonSizeClassNames} 
+        active:pt-oneScaledPix  gap-0 inline-flex overflow-hidden 
+        
+        ${className ?? ""}`}
       onClick={onClick}
     >
       {children}
