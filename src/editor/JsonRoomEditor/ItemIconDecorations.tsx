@@ -6,13 +6,14 @@ import {
 import { useEffect, useRef } from "react";
 import { useLoadMonaco } from "./useLoadMonaco";
 import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../EditorRoomId";
-import { findNodeAtLocation, parseTree } from "jsonc-parser";
+import { findNodeAtLocation } from "jsonc-parser";
 import { twClass } from "../twClass";
 import type { Monaco } from "@monaco-editor/react";
 import { keys } from "../../utils/entries";
 import type { SceneryName } from "../../sprites/planets";
 import type { TextureId } from "../../sprites/spriteSheetData";
 import type { SanitisedForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { getParsedJsonFromEditor } from "./getParsedJsonFromEditor";
 
 const textureForItem = (
   item: EditorJsonItemUnion,
@@ -357,14 +358,7 @@ function* generateItemIconDecorations({
     return;
   }
 
-  const editorText = editorModel?.getValue();
-
-  if (editorText === undefined) {
-    return;
-  }
-  // we have some editor text
-
-  const rootNode = parseTree(editorText);
+  const rootNode = getParsedJsonFromEditor(editor);
 
   if (rootNode === undefined) {
     return;
