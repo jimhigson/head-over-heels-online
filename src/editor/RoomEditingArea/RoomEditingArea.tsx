@@ -9,6 +9,7 @@ import { usePutUpscaleOnAppStage } from "./usePutUpscaleOnAppStage";
 import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplicationToMatchCanvasSize";
 import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
 import { useUpdateUpscaleWhenWindowResizes } from "../../store/storeFlow/useUpateUpscaleWhenWIndowResizes";
+import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 export const RoomEditingArea = () => {
@@ -16,6 +17,13 @@ export const RoomEditingArea = () => {
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
   const [renderSizingArea, setRenderSizingArea] =
     useState<HTMLDivElement | null>(null);
+
+  const cursorClassname = useAppSelectorWithLevelEditorSlice(
+    ({ levelEditor }) =>
+      levelEditor.clickableAnnotationHovered ? "cursor-pointer"
+      : levelEditor.hoveredJsonItemId ? "cursor-default"
+      : "cursor-crosshair",
+  );
 
   useUpdateUpscaleWhenWindowResizes(undefined, renderSizingArea ?? undefined);
   useResizePixiApplicationToMatchCanvasSize();
@@ -27,7 +35,10 @@ export const RoomEditingArea = () => {
   const canvasInlineStyle = useCanvasInlineStyle();
 
   return (
-    <div className="w-full h-full overflow-hidden" ref={setRenderSizingArea}>
+    <div
+      className={`w-full h-full overflow-hidden ${cursorClassname}`}
+      ref={setRenderSizingArea}
+    >
       <div style={canvasInlineStyle} ref={setRenderArea} />
     </div>
   );

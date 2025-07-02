@@ -25,7 +25,7 @@ import type {
 import type { Tool } from "../Tool";
 import type { PointingAt } from "./cursor/PointingAt";
 
-const itemBounds = (
+const itemVisibleBounds = (
   item: EditorUnionOfAllItemInPlayTypes,
   tool: Tool,
 ): {
@@ -56,7 +56,7 @@ const pointIntersectsItemAABB =
     tool: Tool,
   ) =>
   (item: EditorUnionOfAllItemInPlayTypes) => {
-    const { position, aabb } = itemBounds(item, tool);
+    const { position, aabb } = itemVisibleBounds(item, tool);
 
     const { bottomCentre, topLeft, topRight } = projectAabbToHexagonCorners(
       position,
@@ -324,6 +324,7 @@ export const findPointerPointingAt = (
     const face = pointerIntersectionFace(itemPointingTo, pointerXy, tool);
 
     return {
+      roomId: room.id,
       itemId: itemPointingTo.id,
       face,
       position: worldPositionOnFaceForScreenPosition(

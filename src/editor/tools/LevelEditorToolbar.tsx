@@ -627,7 +627,7 @@ export const LevelEditorToolbar = () => {
           itemTool={{
             type: "teleporter",
             config: {
-              toRoom: "(placeholder)" as EditorRoomId,
+              toRoom: "to?" as EditorRoomId,
               toPosition: originXyz,
             },
           }}

@@ -35,8 +35,9 @@ export const gameMain = async <RoomId extends string>(
     background: "#000000",
     // run on the shared ticker to keep in sync with the input state tracker
     sharedTicker: true,
-    // https://pixijs.com/8.x/guides/components/interaction
     eventFeatures: {
+      // https://pixijs.com/8.x/guides/components/interaction
+      // this is needed for the on-screen controls:
       move: true,
       globalMove: true,
       click: true,

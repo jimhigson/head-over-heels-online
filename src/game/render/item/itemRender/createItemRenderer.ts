@@ -26,7 +26,7 @@ import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppear
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { maybeWrapInPortableItemPickUpNextHighlightRenderer } from "./PortableItemPickUpNextHighlightRenderer";
 import { debugItemClicked } from "../../../../store/slices/gameMenusSlice";
-import { maybeWrapInEditorSelectedRenderer } from "./EditorSelectedRenderer";
+import { maybeWrapInEditorSelectedRenderer } from "./EditorAnnotationsRenderer";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(

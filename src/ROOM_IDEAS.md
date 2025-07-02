@@ -79,3 +79,5 @@ heels (more co-operation)
 * a room where hush puppies keep dangerous monsters in, and when head enters they are released
 
 * room with several/many balls on top of volcanos - have to knock off carefully
+
+* heads pushes a ball and then heels runs along under it to the other side of the room (rolling on Heels) to help it get to destination

@@ -213,6 +213,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         [throughDoorAxis]: 0.5,
         z: defaultRoomHeightBlocks - doorPostHeightBlocks - position.z,
       }),
+      // helps the editor to know not to consider a hover on this:
+      renderAabb: originXyz,
       fixedZIndex: nonRenderingItemFixedZIndex,
     },
   };
