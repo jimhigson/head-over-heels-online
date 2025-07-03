@@ -1,6 +1,5 @@
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
-import type { JsonItemConfig } from "../../model/json/JsonItem";
 import { useAppDispatch } from "../../store/hooks";
 import { RoomSelect } from "../../ui/RoomSelect";
 import { emptyArray, emptyObject } from "../../utils/empty";
@@ -15,6 +14,7 @@ import {
   buttonSpriteRevertColourClasses,
   buttonGroupClassname,
 } from "./buttonSizeClassNames";
+import { DeleteItemToolButton } from "./DeleteItemButton";
 import { HalfGridResolutionSwitch } from "./HalfGridResolutionSwitch";
 import { ItemToolButton } from "./ItemToolButton";
 import { MultipleToolButtons } from "./MultipleToolButtons";
@@ -22,6 +22,8 @@ import { PointerToolButton } from "./PointerToolButton";
 import { RoomColourSelect } from "./RoomColourSelect";
 import { RoomScenerySelect } from "./RoomScenerySelect";
 import { UndoRedoButtons } from "./UndoRedoButtons";
+import { WallsFloorsLockedSwitch } from "./WallsFloorsLockedSwitch";
+import { DoorToolButton } from "./DoorToolButton";
 import { WallToolButton } from "./WallToolButton";
 
 const StackedToolbarIcons = ({
@@ -101,7 +103,9 @@ export const LevelEditorToolbar = () => {
         <BitmapText className="w-full">Edit</BitmapText>
         <PointerToolButton />
         <UndoRedoButtons />
+        <DeleteItemToolButton />
         <HalfGridResolutionSwitch />
+        <WallsFloorsLockedSwitch />
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Blocks</BitmapText>
@@ -665,19 +669,7 @@ export const LevelEditorToolbar = () => {
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Structure</BitmapText>
-        <ItemToolButton
-          itemTool={{
-            type: "door",
-            config: {
-              direction: "away", // arbitrary, to be corrected on placement
-              toRoom: "(placeholder)" as EditorRoomId, // arbitrary, to be corrected on placement
-            } satisfies JsonItemConfig<"door", EditorRoomId, EditorRoomItemId>,
-          }}
-        >
-          <span
-            className={`sprite texture-door_frame_generic_x_whole ${buttonSpriteRevertColourClasses}`}
-          />
-        </ItemToolButton>
+        <DoorToolButton />
         <WallToolButton />
         <ItemToolButton
           itemTool={{

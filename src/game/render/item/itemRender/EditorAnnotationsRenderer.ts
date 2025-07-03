@@ -96,7 +96,13 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         break;
 
       case "doorFrame":
-        if (item.config.part === "top" && !item.isCursorPreview) {
+        if (
+          // by annotating the near part of the door, the annotation won't be
+          // covered up by a closer part of the same door (render layers don't impact
+          // pointer hit testing)
+          item.config.part === "near" &&
+          !item.isCursorPreview
+        ) {
           const { rooms } = (store.getState() as RootStateWithLevelEditorSlice)
             .levelEditor.campaignInProgress;
 
@@ -116,7 +122,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
           this.#addTextAnnotation({
             annotationText: text,
-            yAdj: direction === "left" || direction === "away" ? -24 : 24,
+            yAdj: direction === "left" || direction === "away" ? -48 : 0,
             error: !toRoomExists,
             clickDispatch:
               toRoomExists ?
