@@ -111,7 +111,10 @@ export const blockXyzToFineXyz = ({
   };
 };
 
-/** get the in-game x,y,z for any given block x,y,z */
+/**
+ * get the in-game x,y,z for any given block x,y,z
+ * * without rounding, so results can be fractional
+ */
 export const fineXyzToBlockXyz = ({
   x: xf = 0,
   y: yf = 0,
