@@ -38,7 +38,7 @@ export type LevelEditorState = {
 };
 
 const initialRoomId = "room_0" as EditorRoomId;
-const initialRoom = { id: initialRoomId, ...structuredClone(starterRoom) };
+const initialRoom = { id: initialRoomId, ...starterRoom({ x: 8, y: 8 }) };
 export const initialLevelEditorSliceState: LevelEditorState = {
   campaignInProgress: {
     name: "new campaign",

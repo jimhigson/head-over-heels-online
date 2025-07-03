@@ -4,6 +4,20 @@ import type {
   MovementsSubset,
 } from "./utilityJsonConfigTypes";
 
+export type CybermanConfig = {
+  which: "cyberman";
+  activated: ActivatedWhenSubset<
+    // walking around normally
+    | "on"
+    // can wake up from charging:
+    | "after-player-near"
+    // charging and does not wake up when approached:
+    | "off"
+  >;
+  movement: MovementsSubset<"towards-on-shortest-axis-xy4">;
+  startDirection: DirectionXy4;
+};
+
 export type MonsterJsonConfig =
   | {
       which: "emperorsGuardian";
@@ -75,19 +89,7 @@ export type MonsterJsonConfig =
       startDirection: DirectionXy4;
       activated: ActivatedWhenSubset<"on">;
     }
-  | {
-      which: "cyberman";
-      activated: ActivatedWhenSubset<
-        // walking around normally
-        | "on"
-        // can wake up from charging:
-        | "after-player-near"
-        // charging and does not wake up when approached:
-        | "off"
-      >;
-      movement: MovementsSubset<"towards-on-shortest-axis-xy4">;
-      startDirection: DirectionXy4;
-    }
+  | CybermanConfig
   | {
       which: "skiHead";
       activated: ActivatedWhenSubset<"on">;

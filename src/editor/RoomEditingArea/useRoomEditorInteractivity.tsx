@@ -364,6 +364,7 @@ export const useRoomEditorInteractivity = (
               pointedAtItem: {
                 type: pointedAtItemInPlay.type,
                 config: pointedAtItemInPlay.config,
+                state: pointedAtItemInPlay.state,
                 jsonItemId: pointedAtItemInPlay.jsonItemId,
               } as ApplyToolToRoomJsonPayload["pointedAtItem"],
             }),
