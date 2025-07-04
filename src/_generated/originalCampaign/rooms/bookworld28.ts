@@ -137,6 +137,26 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3, z: 3 },
       type: "lift",
     },
+    extraTurtle1: {
+      type: "monster",
+      config: {
+        which: "turtle",
+        startDirection: "away",
+        movement: "clockwise",
+        activated: "on",
+      },
+      position: { x: 7, y: 0, z: 1 },
+    },
+    extraTurtle2: {
+      type: "monster",
+      config: {
+        which: "turtle",
+        startDirection: "towards",
+        movement: "clockwise",
+        activated: "on",
+      },
+      position: { x: 0, y: 7, z: 1 },
+    },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 16 } },
       position: { x: 0, y: 0, z: 0 },
