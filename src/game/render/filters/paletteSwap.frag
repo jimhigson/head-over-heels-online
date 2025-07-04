@@ -5,8 +5,8 @@ precision mediump float;
 in vec2 vTextureCoord;
 out vec4 finalColor;
 
-const float LUT_SIZE = 256.0;
-const float magicNumber = 31.0; // Small prime number
+const float LUT_SIZE = 512.0;
+const float magicNumber = 37.0; // Small prime number
 
 uniform sampler2D uTexture;
 uniform sampler2D uLut;

@@ -8,8 +8,8 @@ import { objectEntriesIter } from "../../../utils/entries";
 
 export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
 
-const lutSize = 256;
-const smallPrime = 31;
+const lutSize = 512;
+const smallPrime = 37;
 
 function hashColor(color: Color): number {
   const ri = Math.floor(color.red * 255);

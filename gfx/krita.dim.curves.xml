@@ -1,0 +1,12 @@
+<!DOCTYPE params>
+<params version="1">
+ <param name="nTransfers">8</param>
+ <param name="curve0">0,0;0.396186,0.305882;0.805085,0.737255;1,1;</param>
+ <param name="curve1">0,0;0.472458,0.380392;0.766949,0.705882;1,1;</param>
+ <param name="curve2">0,0;0.213983,0.0980392;0.387712,0.345098;0.661017,0.658824;1,1;</param>
+ <param name="curve3">0,0;0.209746,0.239216;0.427967,0.411765;0.684322,0.615686;1,1;</param>
+ <param name="curve4">0,0;1,1;</param>
+ <param name="curve5">0,0;1,1;</param>
+ <param name="curve6">0,0;1,1;</param>
+ <param name="curve7">0,0;1,1;</param>
+</params>

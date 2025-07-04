@@ -2,7 +2,7 @@ import { Color } from "pixi.js";
 // this file is generated from the spritesheet by iff2png.sh, do not edit directly
 export const spritesheetPalette = {
   pureBlack: new Color("#000000"),
-  shadow: new Color("#325149"),
+  shadow: new Color("#094145"),
   midGrey: new Color("#7F7773"),
   lightGrey: new Color("#BBB1AB"),
   white: new Color("#FBFEFB"),
@@ -17,5 +17,13 @@ export const spritesheetPalette = {
   alpha: new Color("#1E7790"),
   replaceLight: new Color("#08A086"),
   replaceDark: new Color("#0A4730"),
+  yellowBasic: new Color("#EFEA63"),
+  yellowDim: new Color("#9B900E"),
+  magentaBasic: new Color("#E56BEF"),
+  magentaDim: new Color("#AE28A5"),
+  greenBasic: new Color("#39B33D"),
+  greenDim: new Color("#2F8E2C"),
+  cyanBasic: new Color("#34CBC4"),
+  cyanDim: new Color("#178882"),
 } as const;
 export type SpritesheetPaletteColourName = keyof typeof spritesheetPalette;

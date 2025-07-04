@@ -1,6 +1,6 @@
 {
   "pureBlack": "#000000",
-  "shadow": "#1B2D3B",
+  "shadow": "#041B38",
   "midGrey": "#505A55",
   "lightGrey": "#929981",
   "white": "#F8FEF8",
@@ -14,5 +14,13 @@
   "highlightBeige": "#DBB269",
   "alpha": "#105A69",
   "replaceLight": "#048662",
-  "replaceDark": "#052229"
+  "replaceDark": "#052229",
+  "yellowBasic": "#E6E320",
+  "yellowDim": "#6B750C",
+  "magentaBasic": "#ED22FF",
+  "magentaDim": "#81097A",
+  "greenBasic": "#0D9E19",
+  "greenDim": "#045509",
+  "cyanBasic": "#00C3AD",
+  "cyanDim": "#007363"
 }

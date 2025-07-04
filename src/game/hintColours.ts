@@ -16,24 +16,24 @@ export const whiteShades = {
 };
 export const yellowShades = {
   original: new Color(zxSpectrumColors.zxYellow),
-  basic: spritesheetPalette.midRed,
-  dimmed: spritesheetPalette.redShadow,
+  basic: spritesheetPalette.yellowBasic,
+  dimmed: spritesheetPalette.yellowDim,
 };
 export const magentaShades = {
   original: new Color(zxSpectrumColors.zxMagenta),
-  basic: spritesheetPalette.pink,
-  dimmed: halfbrite(spritesheetPalette.pink),
+  basic: spritesheetPalette.magentaBasic,
+  dimmed: halfbrite(spritesheetPalette.magentaDim),
 };
 export const cyanShades = {
   original: new Color(zxSpectrumColors.zxCyan),
-  basic: spritesheetPalette.pastelBlue,
+  basic: spritesheetPalette.cyanBasic,
   //dimmed: spritesheetPalette.shadow,
-  dimmed: halfbrite(spritesheetPalette.pastelBlue), // trying to be halfway between basic and spritesheet shadow
+  dimmed: spritesheetPalette.cyanDim, // trying to be halfway between basic and spritesheet shadow
 };
 export const greenShades = {
   original: new Color(zxSpectrumColors.zxGreen),
-  basic: spritesheetPalette.moss,
-  dimmed: halfbrite(spritesheetPalette.moss),
+  basic: spritesheetPalette.greenBasic,
+  dimmed: halfbrite(spritesheetPalette.greenDim),
 };
 
 export type ColorScheme = {

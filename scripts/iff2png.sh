@@ -26,7 +26,7 @@ OUT_DIR="gfx"
 # we write everything to a temp dir, then switch, to avoid vite, tsc, etc picking up half-converted files
 TMP_DIR="gfx_temp"
 TMP_DIR_ICONS="icon_temp"
-colorNames=(pureBlack shadow midGrey lightGrey white pastelBlue metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
+colorNames=(pureBlack shadow midGrey lightGrey white pastelBlue metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark yellowBasic yellowDim magentaBasic magentaDim greenBasic greenDim cyanBasic cyanDim) 
 
 # call like : write_palette(sourcePng, destinationName)
 write_palette() {
@@ -36,14 +36,14 @@ write_palette() {
     echo "export const $2 = {" >> "$TMP_DIR/$2.ts"
     echo "{" >> "$TMP_DIR/$2.json"
 
-    for i in $(seq 0 15);
+    for i in $(seq 0 23);
     do
         color=$(magick $1 -format "#%[hex:u.p{$i,0}]" info:);
         echo ${colorNames[$i]} $color
         echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> "$TMP_DIR/$2.ts"
         echo "  \"${colorNames[$i]}\": \"$color\"" >> "$TMP_DIR/$2.json"
 
-        if [ $i -ne 15 ]; then
+        if [ $i -ne 23 ]; then
             echo "," >> "$TMP_DIR/$2.json"
         fi
     done
