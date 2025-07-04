@@ -278,6 +278,42 @@
   },
   {
     "op": "add",
+    "path": "/items/extraTurtle1",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "clockwise",
+        "startDirection": "away",
+        "which": "turtle"
+      },
+      "position": {
+        "x": 7,
+        "y": 0,
+        "z": 1
+      },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraTurtle2",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "clockwise",
+        "startDirection": "towards",
+        "which": "turtle"
+      },
+      "position": {
+        "x": 0,
+        "y": 7,
+        "z": 1
+      },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
     "path": "/ceilingRelativePoint",
     "value": {
       "x": 4,
