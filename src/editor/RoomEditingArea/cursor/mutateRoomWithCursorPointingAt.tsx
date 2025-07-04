@@ -46,7 +46,7 @@ export const mutateRoomForDrag = (
   /**
    * how far the user has dragged the item
    */
-  drag: Xyz,
+  positionDelta: Xyz,
 ): boolean => {
   const itemsToDrag = Array.from(
     iterateRoomItems(roomState.items).filter(
@@ -59,7 +59,7 @@ export const mutateRoomForDrag = (
 
   const hasCollisions = itemsToDrag.some((itemToDrag) => {
     const itemCopyAtNewLocation = produce(itemToDrag, (draft) => {
-      draft.state.position = addXyz(itemToDrag.state.position, drag);
+      draft.state.position = addXyz(itemToDrag.state.position, positionDelta);
     });
     const collisions = collision1toManyIter(
       itemCopyAtNewLocation,
@@ -71,7 +71,10 @@ export const mutateRoomForDrag = (
 
   if (!hasCollisions) {
     for (const itemToDrag of itemsToDrag) {
-      itemToDrag.state.position = addXyz(itemToDrag.state.position, drag);
+      itemToDrag.state.position = addXyz(
+        itemToDrag.state.position,
+        positionDelta,
+      );
     }
   }
   return !hasCollisions;

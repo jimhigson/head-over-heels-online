@@ -20,8 +20,18 @@ export const RoomEditingArea = () => {
 
   const cursorClassname = useAppSelectorWithLevelEditorSlice(
     ({ levelEditor }) =>
-      levelEditor.clickableAnnotationHovered ? "cursor-pointer"
-      : levelEditor.hoveredJsonItemId ? "cursor-default"
+      levelEditor.dragInProgress ? "cursor-grabbing"
+      : levelEditor.clickableAnnotationHovered ? "cursor-pointer"
+      : levelEditor.hoveredJsonItemId ?
+        (
+          // if hovering on the selected item, use grab cursor to suggest can
+          // move it
+          levelEditor.selectedJsonItemIds.includes(
+            levelEditor.hoveredJsonItemId,
+          )
+        ) ?
+          "cursor-grab"
+        : "cursor-default"
       : "cursor-crosshair",
   );
 

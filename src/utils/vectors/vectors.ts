@@ -174,6 +174,11 @@ export const roundXyz = ({ x, y, z }: Xyz) => ({
   y: Math.round(y),
   z: Math.round(z),
 });
+export const roundXyzToXyHalves = ({ x, y, z }: Xyz) => ({
+  x: Math.round(x * 2) / 2,
+  y: Math.round(y * 2) / 2,
+  z: Math.round(z),
+});
 
 export const originXy: Xy = Object.freeze({ x: 0, y: 0 });
 export const originXyz: Xyz = Object.freeze({ x: 0, y: 0, z: 0 });

@@ -1,7 +1,8 @@
 import type { Xyz } from "../../utils/vectors/vectors";
 import {
+  addXyz,
   lengthXy,
-  originXyz,
+  roundXyzToXyHalves,
   subXy,
   subXyz,
   xyzEqual,
@@ -26,6 +27,7 @@ import {
   selectHoveredJsonItemId,
   setTool,
   moveItemInRoom,
+  changeDragInProgress,
 } from "../slice/levelEditorSlice";
 import { store } from "../../store/store";
 import {
@@ -74,10 +76,27 @@ const upscaledMousePosition = (upscale: Upscale, event: MouseEvent): Xy => {
   };
 };
 
+const upscaledMouseMove = (upscale: Upscale, event: MouseEvent): Xy => {
+  const totalUpscale = upscale.cssUpscale * upscale.gameEngineUpscale;
+
+  if (event.target === null) {
+    throw new Error("Mouse event target is null");
+  }
+
+  const x = event.movementX;
+  const y = event.movementY;
+
+  return {
+    x: x / totalUpscale,
+    y: y / totalUpscale,
+  };
+};
+
 const getDrag = (
   /** undefined if the mouse is not down */
   mouseDownAt: Xy | undefined,
   mousePosition: Xy,
+  mouseMove: Xy,
   vertical: boolean,
   draggingAlready: boolean,
 ) => {
@@ -95,24 +114,27 @@ const getDrag = (
 
   const plane = vertical ? "yz" : "xy";
 
-  const levelEditorState = (store.getState() as RootStateWithLevelEditorSlice)
-    .levelEditor;
-
-  const dragVectorWorldPx = unprojectScreenXyToWorldXyz(dragVectorScrPx, plane);
-  const dragVectorWorldPxRounded = roundXyzProjection(
-    dragVectorWorldPx,
-    plane,
-    levelEditorState.tool,
-    levelEditorState.halfGridResolution,
-  );
+  const dragVectorWorldPx = unprojectScreenXyToWorldXyz(mouseMove, plane);
 
   return vertical ?
       {
         x: 0,
         y: 0,
-        z: dragVectorWorldPxRounded.z,
+        z: dragVectorWorldPx.z,
       }
-    : dragVectorWorldPxRounded;
+    : dragVectorWorldPx;
+};
+
+const roundDragVector = (dragVector: Xyz) => {
+  const levelEditorState = (store.getState() as RootStateWithLevelEditorSlice)
+    .levelEditor;
+
+  return roundXyzProjection(
+    dragVector,
+    "xy",
+    levelEditorState.tool,
+    levelEditorState.halfGridResolution,
+  );
 };
 
 const jsonItemIdForItemId = (
@@ -155,7 +177,8 @@ export const useRoomEditorInteractivity = (
     undefined,
   );
   /* while dragging, set to the current drag vector, otherwise will be undefined */
-  const dragVector = useRef<Xyz | undefined>(undefined);
+  const dragItemPosition = useRef<Xyz | undefined>(undefined);
+  const dragItemStartPosition = useRef<Xyz | undefined>(undefined);
 
   useEffect(() => {
     if (renderArea === null) {
@@ -163,13 +186,16 @@ export const useRoomEditorInteractivity = (
     }
 
     const handleMouseMove = (mouseEvent: MouseEvent) => {
-      const upscaledMouseXy = upscaledMousePosition(upscale, mouseEvent);
+      const mousePosXy = upscaledMousePosition(upscale, mouseEvent);
+      const mouseMoveXy = upscaledMouseMove(upscale, mouseEvent);
 
-      const newDragVector = getDrag(
+      /** unrounded */
+      const dragDeltaVec: Xyz | undefined = getDrag(
         mouseDownPointingAtRef.current?.scrXy,
-        upscaledMouseXy,
+        mousePosXy,
+        mouseMoveXy,
         mouseEvent.metaKey || mouseEvent.shiftKey,
-        dragVector.current !== undefined,
+        dragItemPosition.current !== undefined,
       );
 
       // no point in re-running this effect when it changes so select it 'live':
@@ -178,7 +204,7 @@ export const useRoomEditorInteractivity = (
       const tool = selectTool(storeState);
 
       const pointingAt = findPointerPointingAt(
-        upscaledMouseXy,
+        mousePosXy,
         roomState,
         tool,
         storeState.levelEditor.halfGridResolution,
@@ -211,11 +237,16 @@ export const useRoomEditorInteractivity = (
           break;
         }
         case "pointer": {
-          if (newDragVector) {
+          if (dragDeltaVec) {
             // we are dragging - move items etc
 
             const dragItem =
               roomState.items[mouseDownPointingAtRef.current!.world!.itemId];
+            if (dragItemStartPosition.current === undefined) {
+              store.dispatch(changeDragInProgress(true));
+              dragItemStartPosition.current = dragItem.state.position;
+            }
+
             if (
               dragItem.jsonItemId === undefined ||
               itemIsLocked(dragItem, storeState)
@@ -229,23 +260,35 @@ export const useRoomEditorInteractivity = (
                 setSelectedItemInRoom({ jsonItemId: dragItem.jsonItemId }),
               );
             }
-            const dragDelta = subXyz(
-              newDragVector,
-              dragVector.current ?? originXyz,
+
+            const dragPosition = addXyz(
+              dragItemPosition.current ?? dragItemStartPosition.current,
+              dragDeltaVec,
             );
-            if (xyzEqual(dragDelta, originXyz)) {
-              // no delta since last actioned a drag - skip
-              break;
+            const positionRounded = roundDragVector(dragPosition);
+            const prevPositionRounded = roundDragVector(
+              dragItemPosition.current ?? dragItemStartPosition.current,
+            );
+
+            if (!xyzEqual(positionRounded, prevPositionRounded)) {
+              // item world positions aren't exactly on grid lines:
+              const itemPositionInsideGridBlock = subXyz(
+                dragItemStartPosition.current,
+                roundDragVector(dragItemStartPosition.current),
+              );
+              mutateRoomForDrag(
+                roomState,
+                dragItem.jsonItemId,
+                // this needs to be relative since many in-play items
+                // can have the same jsonItemId
+                subXyz(
+                  addXyz(positionRounded, itemPositionInsideGridBlock),
+                  dragItem.state.position,
+                ),
+              );
             }
 
-            const dragHappened = mutateRoomForDrag(
-              roomState,
-              dragItem.jsonItemId,
-              dragDelta,
-            );
-            if (dragHappened) {
-              dragVector.current = newDragVector;
-            }
+            dragItemPosition.current = dragPosition;
           } else {
             // hovering, not dragging- can set focus:
             if (!pointingAtChanged) {
@@ -284,8 +327,6 @@ export const useRoomEditorInteractivity = (
     const handleMouseUp = (mouseEvent: MouseEvent) => {
       const storeState = store.getState() as RootStateWithLevelEditorSlice;
 
-      const isDragEnd = dragVector.current !== undefined;
-
       if (roomState.id !== storeState.levelEditor.currentlyEditingRoomId) {
         return;
       }
@@ -305,6 +346,32 @@ export const useRoomEditorInteractivity = (
         storeState.levelEditor.halfGridResolution,
       );
 
+      const isDragEnd = dragItemPosition.current !== undefined;
+
+      if (isDragEnd) {
+        const {
+          state: { position: dragPosition },
+        } = roomState.items[mouseDownPointingAtRef.current!.world!.itemId];
+
+        const moveDeltaPx = subXyz(
+          dragPosition,
+          dragItemStartPosition.current!,
+        );
+        const moveDeltaBlocks = roundXyzToXyHalves(
+          fineXyzToBlockXyz(moveDeltaPx),
+        );
+
+        store.dispatch(
+          moveItemInRoom({
+            jsonItemId: jsonItemIdForItemId(
+              roomState,
+              mouseDownPointingAtRef.current!.world!.itemId,
+            )!,
+            positionDelta: moveDeltaBlocks,
+          }),
+        );
+      }
+
       const isClick =
         !isDragEnd &&
         // it is ok to click on nothing, but...
@@ -315,21 +382,11 @@ export const useRoomEditorInteractivity = (
         pointingAt.world?.itemId ===
           mouseDownPointingAtRef.current?.world?.itemId;
 
-      if (isDragEnd) {
-        store.dispatch(
-          moveItemInRoom({
-            jsonItemId: jsonItemIdForItemId(
-              roomState,
-              mouseDownPointingAtRef.current!.world!.itemId,
-            )!,
-            positionDelta: fineXyzToBlockXyz(dragVector.current!),
-          }),
-        );
-      }
-
       // clear some state now no longer mouse down:;
-      dragVector.current = undefined;
+      dragItemPosition.current = undefined;
       mouseDownPointingAtRef.current = undefined;
+      dragItemStartPosition.current = undefined;
+      store.dispatch(changeDragInProgress(false));
 
       if (!isClick && !isDragEnd) {
         console.log("mouseUp - not a click or drag end - skipping");
@@ -409,8 +466,9 @@ export const useRoomEditorInteractivity = (
         store.getState() as RootStateWithLevelEditorSlice,
       );
 
-      dragVector.current = undefined;
+      dragItemPosition.current = undefined;
       mouseDownPointingAtRef.current = undefined;
+      dragItemStartPosition.current = undefined;
 
       switch (tool.type) {
         case "item": {
@@ -438,7 +496,6 @@ export const useRoomEditorInteractivity = (
         tool,
         storeState.levelEditor.halfGridResolution,
       );
-      console.log("mousedown assigning pointing at", pointingAt);
       mouseDownPointingAtRef.current = pointingAt;
     };
 
