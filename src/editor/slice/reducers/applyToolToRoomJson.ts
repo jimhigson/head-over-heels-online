@@ -16,7 +16,11 @@ import type { DistributedPick } from "type-fest";
 import { pushUndoInPlace } from "./undoReducers";
 import { starterRoom } from "../createStarterRoom";
 import { changeRoomSceneryInPlace } from "../changeRoomSceneryInPlace";
-import type { MonsterJsonConfig } from "../../../model/json/MonsterJsonConfig";
+import type {
+  CybermanConfig,
+  MonsterJsonConfig,
+} from "../../../model/json/MonsterJsonConfig";
+import { fineXyzToBlockXyz } from "../../../game/render/projections";
 
 const nextItemId = <T extends JsonItemType = JsonItemType>(
   fromRoomJson: EditorRoomJson,
@@ -57,6 +61,14 @@ const addItemInPlace = <T extends JsonItemType = JsonItemType>(
 const isDoorTool = (itemTool: ItemTool): itemTool is ItemTool<"door"> => {
   return itemTool.type === "door";
 };
+const isCybermanTool = (
+  itemTool: ItemTool,
+): itemTool is ItemTool<"monster", CybermanConfig> => {
+  return (
+    itemTool.type === "monster" &&
+    (itemTool.config as MonsterJsonConfig).which === "cyberman"
+  );
+};
 
 export type ApplyToolToRoomJsonPayload = {
   blockPosition: Xyz;
@@ -66,7 +78,7 @@ export type ApplyToolToRoomJsonPayload = {
    */
   pointedAtItem: DistributedPick<
     EditorUnionOfAllItemInPlayTypes,
-    "type" | "config" | "jsonItemId"
+    "type" | "config" | "jsonItemId" | "state"
   >;
 };
 
@@ -114,7 +126,7 @@ export const applyToolReducers = {
 
           const toRoomJson = {
             id: toRoomId,
-            ...structuredClone(starterRoom),
+            ...structuredClone(starterRoom({ x: 8, y: 8 })),
             // give the same scenery and colour as the current room:
             color: fromRoomJson.color,
           };
@@ -153,6 +165,27 @@ export const applyToolReducers = {
             toRoomJson,
             returnDoorDirection,
             returnDoorPosition,
+          );
+        } else if (
+          isCybermanTool(tool.item) &&
+          pointedAtItem.type === "deadlyBlock" &&
+          pointedAtItem.config.style === "toaster" &&
+          // putting down one block above the toaster:
+          fineXyzToBlockXyz(pointedAtItem.state.position).z + 1 ===
+            blockPosition.z
+        ) {
+          // special case for cybermen - if placed on a toaster, they start charging
+          pushUndoInPlace(state);
+          addItemInPlace(
+            state,
+            {
+              ...tool.item,
+              config: {
+                ...tool.item.config,
+                activated: "off",
+              },
+            },
+            blockPosition,
           );
         } else {
           pushUndoInPlace(state);

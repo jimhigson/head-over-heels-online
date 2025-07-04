@@ -7,6 +7,7 @@ import type {
   EditorRoomJson,
   EditorRoomJsonItems,
 } from "../EditorRoomId";
+import type { Xy } from "../../utils/vectors/vectors";
 
 /**
  * some standard wall patterns that can be repeated for creating the wall tiles
@@ -36,28 +37,28 @@ export const rotatingSceneryTiles = <S extends SceneryName>(
   return [...take(size, cycle(wallStarterPatterns[sceneryName]))];
 };
 
-const starterRoomWallItems: EditorRoomJsonItems = {
+const starterRoomWallItems = (size: Xy): EditorRoomJsonItems => ({
   ["awayWall" as EditorRoomItemId]: {
     type: "wall",
     config: {
       direction: "away",
-      tiles: rotatingSceneryTiles("blacktooth", 8),
+      tiles: rotatingSceneryTiles("blacktooth", size.x),
     },
-    position: { x: 0, y: 8, z: 0 },
+    position: { x: 0, y: size.y, z: 0 },
   } satisfies JsonItem<"wall", EditorRoomId, EditorRoomItemId, "blacktooth">,
   ["leftWall" as EditorRoomItemId]: {
     type: "wall",
     config: {
       direction: "left",
-      tiles: rotatingSceneryTiles("blacktooth", 8),
+      tiles: rotatingSceneryTiles("blacktooth", size.y),
     },
-    position: { x: 8, y: 0, z: 0 },
+    position: { x: size.x, y: 0, z: 0 },
   },
   ["towardsWall" as EditorRoomItemId]: {
     type: "wall",
     config: {
       direction: "towards",
-      times: { x: 8 },
+      times: { x: size.x },
     },
     position: { x: 0, y: 0, z: 0 },
   },
@@ -65,30 +66,29 @@ const starterRoomWallItems: EditorRoomJsonItems = {
     type: "wall",
     config: {
       direction: "right",
-      times: { y: 8 },
+      times: { y: size.y },
     },
     position: { x: 0, y: 0, z: 0 },
   },
-};
+});
 
-const starterRoomSize = { x: 8, y: 8 };
 /**
  * the room that you start from when you create a room in the editor
  */
-export const starterRoom: Omit<EditorRoomJson, "id"> = {
+export const starterRoom = (size: Xy): Omit<EditorRoomJson, "id"> => ({
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
-  size: starterRoomSize,
+  size,
   items: {
     ["floor" as EditorRoomItemId]: {
       type: "floor",
       config: {
         floorType: "standable",
         scenery: "blacktooth",
-        times: starterRoomSize,
+        times: size,
       },
       position: { x: 0, y: 0, z: 0 },
     },
-    ...starterRoomWallItems,
+    ...starterRoomWallItems(size),
   },
-};
+});

@@ -16,6 +16,7 @@ import type {
   AwayWallConfig,
   WallJsonConfig,
 } from "src/model/json/WallJsonConfig";
+import type { ItemState } from "../../../model/ItemInPlay";
 
 const testRoomId = "testRoomId" as EditorRoomId;
 const wallItemId = "testWall" as EditorRoomItemId;
@@ -86,6 +87,12 @@ describe("applying tools", () => {
               aabb: { x: 8, y: 8, z: 8 },
             },
           },
+          // fake state for tests since it doesn't matter here:
+          state: {} as unknown as ItemState<
+            "floor",
+            EditorRoomId,
+            EditorRoomItemId
+          >,
         },
       };
 
@@ -122,6 +129,87 @@ describe("applying tools", () => {
       });
     });
 
+    describe("adding cybermen", () => {
+      test.each([
+        {
+          style: "volcano",
+          activated: "on",
+          deadlyBlockPosition: { x: 16, y: 32, z: 0 },
+        },
+        {
+          style: "toaster",
+          activated: "off",
+          deadlyBlockPosition: { x: 16, y: 32, z: 0 },
+        },
+        // toaster but alongside, not below:
+        {
+          style: "toaster",
+          activated: "on",
+          deadlyBlockPosition: { x: 16, y: 16, z: 12 },
+        },
+      ] as const)(
+        "clicking on a volcano adds a normal cyberman",
+        ({ activated, style, deadlyBlockPosition }) => {
+          const actionPayload: ApplyToolToRoomJsonPayload = {
+            blockPosition: { x: 1, y: 2, z: 1 },
+            pointedAtItem: {
+              type: "deadlyBlock",
+              config: {
+                style,
+              },
+              // fake state for tests since it doesn't matter here:
+              state: {
+                position: deadlyBlockPosition,
+              } as unknown as ItemState<
+                "deadlyBlock",
+                EditorRoomId,
+                EditorRoomItemId
+              >,
+            },
+          };
+
+          const addCybermanTool: Tool = {
+            type: "item",
+            item: {
+              type: "monster",
+              config: {
+                which: "cyberman",
+                activated: "on",
+                movement: "towards-on-shortest-axis-xy4",
+                startDirection: "towards",
+              },
+            },
+          };
+          const next = applyToolToRoomJsonNext(
+            {
+              ...editorStateWithOneRoomWithNoItems,
+              tool: addCybermanTool,
+            },
+            actionPayload,
+          );
+
+          expect(
+            next.campaignInProgress.rooms[testRoomId].items,
+          ).toMatchObject<EditorRoomJsonItems>({
+            ["cyberman" as EditorRoomItemId]: {
+              type: "monster",
+              config: {
+                which: "cyberman",
+                movement: "towards-on-shortest-axis-xy4",
+                startDirection: "towards",
+                activated,
+              },
+              position: {
+                x: 1,
+                y: 2,
+                z: 1,
+              },
+            },
+          });
+        },
+      );
+    });
+
     describe("adding doors", () => {
       test("can cut a hole in a wall, making it into two walls", () => {
         const doorPosition = { x: 2, y: 5, z: 0 };
@@ -132,6 +220,12 @@ describe("applying tools", () => {
             config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
               .rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
+            // fake state for tests since it doesn't matter here:
+            state: {} as unknown as ItemState<
+              "wall",
+              EditorRoomId,
+              EditorRoomItemId
+            >,
           },
         };
 
@@ -186,6 +280,12 @@ describe("applying tools", () => {
             config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
               .rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
+            // fake state for tests since it doesn't matter here:
+            state: {} as unknown as ItemState<
+              "wall",
+              EditorRoomId,
+              EditorRoomItemId
+            >,
           },
         };
 
@@ -236,6 +336,12 @@ describe("applying tools", () => {
             config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
               .rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
+            // fake state for tests since it doesn't matter here:
+            state: {} as unknown as ItemState<
+              "wall",
+              EditorRoomId,
+              EditorRoomItemId
+            >,
           },
         };
 
@@ -296,6 +402,12 @@ describe("applying tools", () => {
             config: editorStateWithOneRoomWithOneSmallAwayWall
               .campaignInProgress.rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
+            // fake state for tests since it doesn't matter here:
+            state: {} as unknown as ItemState<
+              "wall",
+              EditorRoomId,
+              EditorRoomItemId
+            >,
           },
         };
 
@@ -332,6 +444,12 @@ describe("applying tools", () => {
             config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
               .rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
+            // fake state for tests since it doesn't matter here:
+            state: {} as unknown as ItemState<
+              "wall",
+              EditorRoomId,
+              EditorRoomItemId
+            >,
           },
         };
 
