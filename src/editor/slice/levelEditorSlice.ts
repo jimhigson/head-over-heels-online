@@ -19,6 +19,7 @@ import {
 } from "./reducers/undoReducers";
 import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";
 import { addXyz, type Xyz } from "../../utils/vectors/vectors";
+import { keysIter } from "../../utils/entries";
 
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
@@ -230,6 +231,31 @@ export const levelEditorSlice = createSlice({
 
       state.selectedJsonItemIds = [];
     },
+    clearRoom(_state) {
+      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+      // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
+      // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
+      const state = _state as LevelEditorState;
+
+      const roomJson = selectCurrentRoomFromLevelEditorState(state);
+
+      pushUndoInPlace(state);
+
+      for (const k of keysIter(roomJson.items)) {
+        const item = roomJson.items[k];
+        if (
+          item.type !== "floor" &&
+          item.type !== "wall" &&
+          item.type !== "door"
+        ) {
+          // remove all items except the floor and walls
+          delete roomJson.items[k];
+          state.selectedJsonItemIds = state.selectedJsonItemIds.filter(
+            (id) => id !== k,
+          );
+        }
+      }
+    },
 
     /**
      * noop reducer to force the store to give this slice its initial value in the store, since this slice is lazy-loaded.
@@ -305,6 +331,7 @@ export const {
   changeRoomScenery,
   changeToRoom,
   changeWallsFloorsLocked,
+  clearRoom,
   deleteSelected,
   injected,
   moveItemInRoom,
