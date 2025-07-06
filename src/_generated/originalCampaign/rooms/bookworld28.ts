@@ -117,6 +117,26 @@ export const room = inferRoomJson({
       position: { x: 3, y: 14, z: 1 },
       type: "block",
     },
+    extraTurtle1: {
+      config: {
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "away",
+        which: "turtle",
+      },
+      position: { x: 7, y: 0, z: 1 },
+      type: "monster",
+    },
+    extraTurtle2: {
+      config: {
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "towards",
+        which: "turtle",
+      },
+      position: { x: 0, y: 7, z: 1 },
+      type: "monster",
+    },
     "floor@0,0,0": {
       config: { floorType: "deadly", times: { x: 8, y: 16 } },
       position: { x: 0, y: 0, z: 0 },
@@ -136,26 +156,6 @@ export const room = inferRoomJson({
       config: { bottom: 0, top: 16 },
       position: { x: 3, y: 3, z: 3 },
       type: "lift",
-    },
-    extraTurtle1: {
-      type: "monster",
-      config: {
-        which: "turtle",
-        startDirection: "away",
-        movement: "clockwise",
-        activated: "on",
-      },
-      position: { x: 7, y: 0, z: 1 },
-    },
-    extraTurtle2: {
-      type: "monster",
-      config: {
-        which: "turtle",
-        startDirection: "towards",
-        movement: "clockwise",
-        activated: "on",
-      },
-      position: { x: 0, y: 7, z: 1 },
     },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 16 } },
