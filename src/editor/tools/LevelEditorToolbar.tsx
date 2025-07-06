@@ -25,6 +25,7 @@ import { UndoRedoButtons } from "./UndoRedoButtons";
 import { WallsFloorsLockedSwitch } from "./WallsFloorsLockedSwitch";
 import { DoorToolButton } from "./DoorToolButton";
 import { WallToolButton } from "./WallToolButton";
+import { ClearRoomButton } from "./ClearRoomButton";
 
 const StackedToolbarIcons = ({
   topClasses,
@@ -104,6 +105,7 @@ export const LevelEditorToolbar = () => {
         <PointerToolButton />
         <UndoRedoButtons />
         <DeleteItemToolButton />
+        <ClearRoomButton />
         <HalfGridResolutionSwitch />
         <WallsFloorsLockedSwitch />
       </div>
