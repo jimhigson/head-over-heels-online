@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import type { editor } from "monaco-editor";
 import nanoEqual from "nano-equal";
 import { useCurrentEditingRoomJson } from "../slice/levelEditorSelectors";
-import type { EditorRoomJson } from "../EditorRoomId";
+import type { EditorRoomJson } from "../editorTypes";
 import { roomJsonEdited } from "../slice/levelEditorSlice";
 import { useAppDispatch } from "../../store/hooks";
 import roomSchema from "../../_generated/room.schema.json";

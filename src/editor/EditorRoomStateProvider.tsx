@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import type { EditorRoomState } from "./EditorRoomId";
+import type { EditorRoomState } from "./editorTypes";
 import type { RootStateWithLevelEditorSlice } from "./slice/levelEditorSlice";
 import {
   selectCurrentEditingRoomJson,
@@ -14,7 +14,7 @@ import { store } from "../store/store";
 const EditorRoomStateContext = createContext<EditorRoomState | null>(null);
 
 const useLoadRoomStateForCurrentRoomJson = () => {
-  const [roomState, setRoomState] = useState<EditorRoomState | null>(() => {
+  const [roomState, setRoomState] = useState<EditorRoomState>(() => {
     return loadRoom({
       roomJson: selectCurrentEditingRoomJson(
         store.getState() as RootStateWithLevelEditorSlice,
@@ -31,7 +31,7 @@ const useLoadRoomStateForCurrentRoomJson = () => {
   );
 
   useEffect(() => {
-    const roomState = loadRoom({
+    const newRoomState = loadRoom({
       roomJson: currentRoomJson,
       roomPickupsCollected: emptyObject,
       scrollsRead: emptyObject,
@@ -41,7 +41,7 @@ const useLoadRoomStateForCurrentRoomJson = () => {
 
     // (roomState as any).i = loadCount++;
     // console.log("currentRoomJson updated. Reloading room state", i);
-    setRoomState(roomState);
+    setRoomState(newRoomState);
   }, [currentRoomJson]);
 
   return roomState;
@@ -59,7 +59,7 @@ export const EditorRoomStateProvider = ({
   );
 };
 
-export const useEditorRoomState = () => {
+export const useEditorRoomState = (): EditorRoomState => {
   const value = useContext(EditorRoomStateContext);
   if (value === null) {
     throw new Error("no room state in context, or no context");

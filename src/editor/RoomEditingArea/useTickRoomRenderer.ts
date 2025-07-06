@@ -7,7 +7,7 @@ import type {
   EditorRoomId,
   EditorRoomItemId,
   EditorUnionOfAllItemInPlayTypes,
-} from "../EditorRoomId";
+} from "../editorTypes";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 

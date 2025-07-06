@@ -12,7 +12,7 @@ import { useLoadMonaco } from "./useLoadMonaco";
 import { twClass } from "../twClass";
 import { useAppDispatch } from "../../store/hooks";
 import type { AnyRoomJson } from "../../model/RoomJson";
-import type { EditorRoomItemId } from "../EditorRoomId";
+import type { EditorRoomItemId } from "../editorTypes";
 import type { Monaco } from "@monaco-editor/react";
 
 export const useSyncSelectionWithMonaco = (

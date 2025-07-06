@@ -4,9 +4,9 @@ import {
   type XyMaybeZ,
   type Xyz,
   type Xy,
-  type OrthoPlane,
   addXyz,
   subXy,
+  orthoPlaneForNormal,
 } from "../../utils/vectors/vectors";
 
 export const moveContainerToBlockXyz = (
@@ -40,61 +40,72 @@ export const projectWorldXyzToScreenXy = ({
 
 /**
  * for the editor - convert screen (mouse) xy to world xyz, on
- * the visible surface of an object
+ * a plane
  */
 export const unprojectScreenXyToWorldXyzOnFace = (
+  /** any point on the plane we are projecting to */
+  pointOnPlane: Xyz,
+  /** vector of normal to the plane */
+  plane: Xyz,
   /** the screen x,y in game engine (scaled) pixels */
-  scrPos: Xy,
-  itemPosition: Xyz,
-  plane: OrthoPlane,
+  scrXy: Xy,
 ): Xyz => {
-  const itemOriginScreen = projectWorldXyzToScreenXy(itemPosition);
+  const scrXyOfPointOnPlane = projectWorldXyzToScreenXy(pointOnPlane);
 
   // adjust xs, xy to be relative to the projected-on-screen origin of the item:
-  const scrPosAdj = subXy(scrPos, itemOriginScreen);
+  const scrXyRelativeToItemOrigin = subXy(scrXy, scrXyOfPointOnPlane);
 
-  return addXyz(unprojectScreenXyToWorldXyz(scrPosAdj, plane), itemPosition);
+  return addXyz(
+    unprojectScreenXyToWorldXyz(plane, scrXyRelativeToItemOrigin),
+    pointOnPlane,
+  );
 };
 
 /**
+ * Inverse of @see {projectWorldXyzToScreenXy}
  * for the editor - convert screen (mouse) xy to world xyz, for a plane
  * starting at the origin
  */
 export const unprojectScreenXyToWorldXyz = (
-  /** the screen x,y in game engine (scaled) pixels */
+  /** the normal vector to the plane */
+  planeNormal: Xyz,
   { x: xScr, y: yScr }: Xy,
-  plane: OrthoPlane,
 ): Xyz => {
-  // adjust xs, xy to be relative to the projected-on-screen origin of the item:
+  const orthoPlane = orthoPlaneForNormal(planeNormal);
 
-  switch (plane) {
-    case "xy": {
-      // top/bottom face
+  switch (orthoPlane) {
+    case "xy":
+      // For xy-plane (normal = [0, 0, 1]), z = 0
+      // on top/bottom face
       return {
-        x: -(xScr / 2 + yScr),
+        x: -xScr / 2 - yScr,
         y: xScr / 2 - yScr,
         z: 0,
       };
-    }
-    case "xz": {
-      // away/towards face
+
+    case "xz":
+      // For xz-plane (normal = [0, 1, 0]), y = 0
+      // on away/towards face
       return {
         x: -xScr,
         y: 0,
         z: xScr / 2 - yScr,
       };
-    }
-    case "yz": {
+
+    case "yz":
+      // For yz-plane (normal = [1, 0, 0]), x = 0
       // left/right face
       return {
         x: 0,
         y: xScr,
         z: -xScr / 2 - yScr,
       };
-    }
+
     default:
-      plane satisfies never;
-      throw new Error(`unknown plane ${plane}`);
+      orthoPlane satisfies never;
+      throw new Error(
+        "only axis-aligned planes are supported for unprojection",
+      );
   }
 };
 

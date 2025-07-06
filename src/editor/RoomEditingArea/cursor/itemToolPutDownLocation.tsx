@@ -5,7 +5,7 @@ import type {
   EditorRoomItemId,
   EditorRoomState,
   EditorUnionOfAllItemInPlayTypes,
-} from "../../EditorRoomId";
+} from "../../editorTypes";
 import type { PointingAtItem } from "./PointingAt";
 import type { ItemTool } from "../../Tool";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
@@ -22,7 +22,6 @@ import {
   perpendicularAxisXy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   doorOverallWidthPx,
   doorPostHeightPx,
@@ -31,7 +30,8 @@ import {
   completeTimesXy,
   wallTimes,
 } from "../../../game/collision/boundingBoxTimes";
-import { findCollideableItemsInRoom } from "./findCollideableItemsInRoom";
+import { collideableItemsInRoom } from "./collideableItemsInRoom";
+import { epsilon } from "../../../utils/veryClose";
 
 let cursorItemCount = 0;
 
@@ -42,13 +42,13 @@ export const itemToolPutDownLocation = (
 ): Xyz | undefined => {
   const {
     world: {
-      face: pointingAtFace,
+      onItem: { face: pointingAtFace },
       position: pointingAtPosition,
       itemId: pointingAtItemId,
     },
   } = pointingAt;
 
-  if (pointingAtFace === "up") {
+  if (pointingAtFace.z > epsilon) {
     // on top is the simple case - putdown will be at the location
     return fineXyzToBlockXyz(pointingAtPosition);
   }
@@ -105,9 +105,10 @@ export const itemToolPutDownLocation = (
     return fineXyzToBlockXyz(clampedPosition);
   }
 
-  const normalToSurface = unitVectors[pointingAtFace];
-
-  return addXyz(fineXyzToBlockXyz(pointingAtPosition), normalToSurface);
+  // for pointing at vertical surfaces, move the location out of the item being pointed at
+  // by adding the normal of the face. Since the normal of the face points out of the item
+  // being pointed at, this prevents putting down inside the item we are pointing at
+  return addXyz(fineXyzToBlockXyz(pointingAtPosition), pointingAtFace);
 };
 
 /**
@@ -186,7 +187,7 @@ export const previewItemsForCursor = <T extends JsonItemType>(
     jsonBlockPosition,
   );
 
-  const collideableItems = Array.from(findCollideableItemsInRoom(roomState));
+  const collideableItems = Array.from(collideableItemsInRoom(roomState));
 
   const hasCollisions = loadedItems.some((loadedItem) => {
     const collisions = collision1toManyIter(loadedItem, collideableItems);

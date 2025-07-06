@@ -1,5 +1,5 @@
 import type { JsonItemType, JsonItemConfig } from "../model/json/JsonItem";
-import type { EditorRoomId, EditorRoomItemId } from "./EditorRoomId";
+import type { EditorRoomId, EditorRoomItemId } from "./editorTypes";
 
 export type ItemTool<
   T extends JsonItemType = JsonItemType,

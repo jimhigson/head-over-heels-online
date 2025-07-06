@@ -1,7 +1,6 @@
 import type { SetRequired } from "type-fest";
 import { isSolid } from "../../../game/physics/itemPredicates";
 import { unprojectScreenXyToWorldXyzOnFace } from "../../../game/render/projections";
-import { projectAabbToHexagonCorners } from "../../../game/render/sortZ/projectAabbToHexagonCorners";
 import {
   zEdges,
   sortByZPairs,
@@ -10,22 +9,24 @@ import { iterateRoomItems } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   type Xy,
-  type DirectionXyz4,
-  oppositeDirection,
   type Xyz,
   originXyz,
-  type OrthoPlane,
   addXyz,
+  orthoPlaneForNormal,
 } from "../../../utils/vectors/vectors";
 import type {
   EditorUnionOfAllItemInPlayTypes,
   EditorRoomItemId,
   EditorRoomState,
-} from "../../EditorRoomId";
+} from "../../editorTypes";
 import type { Tool } from "../../Tool";
 import type { MaybePointingAtSomething } from "./PointingAt";
+import { pointerIntersectionFace } from "./pointerIntersectionFace";
+import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
+import { pointerIntersectionEdge } from "./pointerIntersectionEdge";
+import { pointIntersectsItemAABB } from "./pointIntersectsItemAABB";
 
-const itemVisibleBounds = (
+export const itemVisibleBounds = (
   item: EditorUnionOfAllItemInPlayTypes,
   tool: Tool,
 ): {
@@ -45,125 +46,6 @@ const itemVisibleBounds = (
     position: addXyz(item.state.position, item.renderAabbOffset ?? originXyz),
     aabb: item.renderAabb ?? item.aabb,
   };
-};
-
-const pointIntersectsItemAABB =
-  (
-    /**
-     * the pointer screen location
-     */
-    { x: pX, y: pY }: Xy,
-    tool: Tool,
-  ) =>
-  (item: EditorUnionOfAllItemInPlayTypes) => {
-    const { position, aabb } = itemVisibleBounds(item, tool);
-
-    const { bottomCentre, topLeft, topRight } = projectAabbToHexagonCorners(
-      position,
-      // using aabb, not renderAabb, so doors can be placed on walls above where they render
-      aabb,
-    );
-
-    /*
-     * check against each of 6 lines based on 3 [corners]:
-     *
-     *       /\
-     *   y1 /  \ x2
-     *[tl] /    \ [tr]
-     *    |      |
-     * z1 |      | z2
-     *    |      |
-     *     \    /
-     *   x1 \  / y2
-     *       \/
-     *      [bc]
-     */
-    if (pX < topLeft.x) {
-      // z1
-      return false;
-    }
-    if (pX > topRight.x) {
-      // z2
-      return false;
-    }
-    if (pY < topRight.y - (topRight.x - pX) / 2) {
-      // x2
-      return false;
-    }
-    if (pY < topLeft.y - (pX - topLeft.x) / 2) {
-      // y1
-      return false;
-    }
-    if (pY > bottomCentre.y - (pX - bottomCentre.x) / 2) {
-      // y2
-      return false;
-    }
-    if (pY > bottomCentre.y - (bottomCentre.x - pX) / 2) {
-      // x1
-      return false;
-    }
-    return true;
-  };
-
-/**
- * if we already know that the pointer intersects an item, get the face the pointer is over
- */
-const pointerIntersectionFace = (
-  item: EditorUnionOfAllItemInPlayTypes,
-  { x, y }: Xy,
-  tool: Tool,
-): DirectionXyz4 => {
-  if (
-    tool.type === "item" &&
-    tool.item.type === "door" &&
-    item.type === "wall"
-  ) {
-    // for placing doors on walls, only consider the face of the wall
-    // that is towards the room:
-    return oppositeDirection(item.config.direction);
-  }
-
-  /*
-   * normal case - consider the three visible plans of the aabb:
-   * up, towards and right
-   *
-   * find <face> by finding the side on each of 3 lines based on 3 [corners]:
-   *            .
-   *           / \
-   *          /   \
-   *         /     \
-   *        /       \
-   *  [tl] /  <up>   \ [tr]
-   *      |\         /|
-   *      | \       / |
-   *      |  \x   y/  |
-   *      |   \   /   |
-   *      |<Tw>\ /<Rt>|
-   *       \    V    /
-   *        \   |z  /
-   *         \  |  /
-   *          \ | /
-   *           \|/
-   *            V
-   *           [bc]
-   */
-  const { bottomCentre, topLeft, topRight } = projectAabbToHexagonCorners(
-    item.state.position,
-    // using aabb, not renderAabb, so doors can be placed on walls above where they render
-    item.aabb,
-  );
-
-  const aboveXLine = y < topLeft.y - (topLeft.x - x) / 2;
-
-  if (aboveXLine) {
-    const aboveYLine = y < topRight.y - (x - topRight.x) / 2;
-
-    return aboveYLine ? "up" : "right";
-  } else {
-    const leftOfZLine = x < bottomCentre.x;
-
-    return leftOfZLine ? "towards" : "right";
-  }
 };
 
 const isFixedZIndexItem = (
@@ -215,7 +97,7 @@ export const roundXyzProjection = (
    * the plane projected onto to get the @see positionXyzPx -
    * applies rounding, but not in the direction of a normal to this plane
    */
-  projectedPlane: string,
+  planeNormal: Xyz,
   tool: Tool,
   halfGridResolution: boolean,
 ) => {
@@ -238,20 +120,22 @@ export const roundXyzProjection = (
     : incrementXy / 2;
   const biasZ = incrementZ / 2;
 
+  const orthoPlane = orthoPlaneForNormal(planeNormal);
+
   return {
     x:
-      projectedPlane === "yz" ?
+      orthoPlane === "yz" ?
         // normal to plane: snap to the nearest increment since could be placing based off an item that is
         // smaller than a full block (face pointer is on is not on a (half) grid boundary)
         Math.round(positionXyzPx.x / incrementXy) * incrementXy
         // tangent to plane: apply rounding to place on the surface in half-block increments:
       : Math.floor((positionXyzPx.x - biasXy) / incrementXy) * incrementXy,
     y:
-      projectedPlane === "xz" ?
+      orthoPlane === "xz" ?
         Math.round(positionXyzPx.y / incrementXy) * incrementXy
       : Math.floor((positionXyzPx.y - biasXy) / incrementXy) * incrementXy,
     z:
-      projectedPlane === "xy" ?
+      orthoPlane === "xy" ?
         Math.round(positionXyzPx.z / incrementZ) * incrementZ
       : Math.floor((positionXyzPx.z + biasZ) / incrementZ) * incrementZ,
   };
@@ -259,48 +143,27 @@ export const roundXyzProjection = (
 
 const worldPositionOnFaceForScreenPosition = (
   { state: { position }, aabb }: EditorUnionOfAllItemInPlayTypes,
-  face: DirectionXyz4,
+  // vector pointing to the face, from the middle of the item.
+  // the face we are projecting onto is described by all vectors at a normal to
+  // this vector
+  plane: Xyz,
   gameEngineXy: Xy,
   tool: Tool,
   halfGridResolution: boolean,
 ): Xyz => {
-  let offset: Partial<Xyz> = originXyz;
-  let plane: OrthoPlane;
-
-  switch (face) {
-    case "up":
-      offset = { z: aabb.z };
-      plane = "xy";
-      break;
-    case "down":
-      plane = "xy";
-      break;
-    case "towards":
-      plane = "xz";
-      break;
-    case "away":
-      offset = { y: aabb.y };
-      plane = "xz";
-      break;
-    case "left":
-      offset = { x: aabb.x };
-      plane = "yz";
-      break;
-    case "right":
-      plane = "yz";
-      break;
-    default:
-      face satisfies never;
-      throw new Error('unexpected face "' + face + '"');
-  }
+  const pointOnPlane = {
+    x: position.x + (plane.x < 0 ? 0 : aabb.x),
+    y: position.y + (plane.y < 0 ? 0 : aabb.y),
+    z: position.z + (plane.z < 0 ? 0 : aabb.z),
+  };
 
   const cursorWorldPosition = unprojectScreenXyToWorldXyzOnFace(
-    gameEngineXy,
-    addXyz(position, offset),
+    pointOnPlane,
     plane,
+    gameEngineXy,
   );
 
-  // Ie, don't let the rounding take the xyz point
+  // apply rounding: don't let the rounding take the xyz point
   // off the face, only allow it to snap to a new position on that face.
   const rounded = roundXyzProjection(
     cursorWorldPosition,
@@ -350,7 +213,11 @@ export const findPointerPointingAt = (
       scrXy,
       world: {
         itemId: itemPointingTo.id,
-        face,
+        onItem: {
+          face,
+          corner: pointerIntersectionCorner(itemPointingTo, scrXy, tool),
+          edge: pointerIntersectionEdge(itemPointingTo, scrXy, face, tool),
+        },
         position: worldPositionOnFaceForScreenPosition(
           itemPointingTo,
           face,

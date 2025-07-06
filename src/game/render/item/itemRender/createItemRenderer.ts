@@ -80,9 +80,6 @@ export const createItemRenderer = <T extends ItemInPlayType>(
         ),
       ),
     );
-    if (renderBoundingBoxes) {
-      rendererWithSwitchFlashing.output.alpha = 0.66;
-    }
   }
 
   // non-colourised rendering doesn't have shadows (yet) since it prevents

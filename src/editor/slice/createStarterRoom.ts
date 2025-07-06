@@ -6,7 +6,7 @@ import type {
   EditorRoomItemId,
   EditorRoomJson,
   EditorRoomJsonItems,
-} from "../EditorRoomId";
+} from "../editorTypes";
 import type { Xy } from "../../utils/vectors/vectors";
 
 /**

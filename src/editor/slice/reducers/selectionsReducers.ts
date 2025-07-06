@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import type { LevelEditorState } from "../levelEditorSlice";
-import type { EditorRoomItemId } from "../../EditorRoomId";
+import type { HoveredItem, LevelEditorState } from "../levelEditorSlice";
+import type { EditorRoomItemId } from "../../editorTypes";
 
 export const selectionsReducers = {
   /** set (or unset) the selection */
@@ -36,11 +36,8 @@ export const selectionsReducers = {
     }
   },
 
-  setHoveredItemInRoom(
-    state,
-    action: PayloadAction<EditorRoomItemId | undefined>,
-  ) {
-    state.hoveredJsonItemId = action.payload;
+  setHoveredItemInRoom(state, action: PayloadAction<HoveredItem | undefined>) {
+    state.hoveredItem = action.payload;
   },
   setClickableAnnotationHovered(state, action: PayloadAction<boolean>) {
     state.clickableAnnotationHovered = action.payload;

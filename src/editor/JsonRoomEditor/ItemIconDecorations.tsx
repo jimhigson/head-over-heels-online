@@ -5,7 +5,7 @@ import {
 } from "../slice/levelEditorSlice";
 import { useEffect, useRef } from "react";
 import { useLoadMonaco } from "./useLoadMonaco";
-import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../EditorRoomId";
+import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
 import { findNodeAtLocation } from "jsonc-parser";
 import { twClass } from "../twClass";
 import type { Monaco } from "@monaco-editor/react";

@@ -1,4 +1,5 @@
 export const epsilon = 0.000_1;
+export const negativeEpsilon = -0.000_1;
 export const veryClose = (a: number, b: number): boolean =>
   Math.abs(a - b) < epsilon;
 

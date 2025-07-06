@@ -8,7 +8,7 @@ import type {
   EditorRoomJson,
   EditorJsonItem,
   EditorUnionOfAllItemInPlayTypes,
-} from "../../EditorRoomId";
+} from "../../editorTypes";
 import type { ItemTool } from "../../Tool";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 import { cutHoleInWallsForDoors } from "./cutHoleInWallsForDoor";
@@ -81,8 +81,8 @@ export type ApplyToolToRoomJsonPayload = {
   >;
 };
 
-export const applyToolReducers = {
-  applyToolToRoomJson(
+export const applyItemToolReducers = {
+  applyItemTool(
     _state,
     {
       payload: { blockPosition, pointedAtItem },

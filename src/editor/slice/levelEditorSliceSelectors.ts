@@ -3,7 +3,7 @@ import type {
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
-} from "../EditorRoomId";
+} from "../editorTypes";
 import type { LevelEditorState } from "./levelEditorSlice";
 
 export const selectCurrentRoomFromLevelEditorState = (
@@ -18,19 +18,12 @@ export const selectRoomFromLevelEditorState = (
   roomId: EditorRoomId,
 ) => state.campaignInProgress.rooms[roomId] as EditorRoomJson | undefined;
 
-export const selectItemFromLevelEditorState = (
-  state: LevelEditorState,
-  roomId: EditorRoomId,
-  itemId: EditorRoomItemId,
-) =>
-  state.campaignInProgress.rooms[roomId]?.items[itemId] as
-    | EditorJsonItemUnion
-    | undefined;
-
-export const selectItemInCurrentRoomFromLevelEditorState = (
+export const selectItemInLevelEditorState = (
   state: LevelEditorState,
   itemId: EditorRoomItemId,
+  /** if not given, uses the room currently being edited */
+  roomId?: EditorRoomId,
 ) =>
-  state.campaignInProgress.rooms[state.currentlyEditingRoomId]?.items[
+  state.campaignInProgress.rooms[roomId ?? state.currentlyEditingRoomId]?.items[
     itemId
   ] as EditorJsonItemUnion | undefined;

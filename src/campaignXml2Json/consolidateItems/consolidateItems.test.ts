@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import type { JsonItemUnion } from "../../model/json/JsonItem";
 import { consolidateItems } from "./consolidateItems";
+import { size } from "iter-tools";
 
 test("can consolidate two blocks in y at the origin", () => {
   const items: JsonItemUnion[] = [
@@ -179,6 +180,8 @@ test("does not consolidate disappearing barriers", () => {
       position: { x: 0, y: 1, z: 0 },
     },
   ];
+
+  expect(size(consolidateItems(items))).toBe(2);
 
   expect(consolidateItems(items)).toMatchInlineSnapshot(`
     [
