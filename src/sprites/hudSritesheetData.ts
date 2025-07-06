@@ -13,7 +13,7 @@ export const iosMacShare = ""; // \uf50e;
 export const iosMacAddToDock = "󱂩"; // \uf10a9;
 export const iosMacAddToHomeScreen = ""; // \uf457;
 
-const alphaNumeric = [
+const firstRow = [
   "A",
   "B",
   "C",
@@ -57,9 +57,11 @@ const alphaNumeric = [
   // unicode char is actually "hot spring" because there is no "spring" - this means big jumps
   "♨",
   "🕹",
+  { char: "∞", double: true },
+  { char: nerdFontDiscordChar, double: true },
 ] as const;
 
-const punctuation = [
+const secondRow = [
   " ",
   "?",
   "!",
@@ -113,24 +115,30 @@ export type CharSpriteTextureId<C extends string> =
   `hud.char.${EscapedForTailwind<C>}`;
 
 const charFrames = <Char extends string>(
-  ar: Readonly<Char[]>,
+  ar: Readonly<(Char | { char: Char; double: true })[]>,
   startPosition: Xy,
 ): Record<CharSpriteTextureId<Char>, SpritesheetFrameData> => {
   function* charFramesGenerator(): Generator<
     [CharSpriteTextureId<Char>, SpritesheetFrameData]
   > {
+    let { x } = startPosition;
     for (let i = 0; i < ar.length; i++) {
-      const char = ar[i];
+      const ari = ar[i];
+      const char = typeof ari === "string" ? ari : ari.char;
+      const double = typeof ari === "string" ? false : ari.double;
+      const w = double ? hudCharTextureSize.w * 2 : hudCharTextureSize.w;
       yield [
         `hud.char.${escapeCharForTailwind(char)}`,
         {
           frame: {
-            x: startPosition.x + i * (hudCharTextureSize.w + 1),
+            x,
             y: startPosition.y,
             ...hudCharTextureSize,
+            w,
           },
         },
       ];
+      x += w + 1;
     }
   }
 
@@ -139,21 +147,7 @@ const charFrames = <Char extends string>(
 
 export const hudSpritesheetData = {
   frames: {
-    ...charFrames(alphaNumeric, { x: 151, y: 2 }),
-    ...charFrames(punctuation, { x: 151, y: 11 }),
-    "hud.char.∞": {
-      frame: {
-        x: 511,
-        y: 2,
-        ...{ w: hudCharTextureSize.w * 2, h: hudCharTextureSize.h },
-      },
-    },
-    [`hud.char.${nerdFontDiscordChar}`]: {
-      frame: {
-        x: 527,
-        y: 2,
-        ...{ w: hudCharTextureSize.w * 2, h: hudCharTextureSize.h },
-      },
-    },
+    ...charFrames(firstRow, { x: 151, y: 2 }),
+    ...charFrames(secondRow, { x: 151, y: 11 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;
