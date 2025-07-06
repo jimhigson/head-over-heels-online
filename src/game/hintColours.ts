@@ -14,7 +14,12 @@ export const whiteShades = {
   basic: spritesheetPalette.white,
   dimmed: spritesheetPalette.lightGrey,
 };
-export const yellowShades = {
+export const yellowShadesInBasicRooms = {
+  original: new Color(zxSpectrumColors.zxYellow),
+  basic: new Color(0xeedd66),
+  dimmed: halfbrite(new Color(0xeedd66), 0.5),
+};
+export const yellowShadesInDimmedRooms = {
   original: new Color(zxSpectrumColors.zxYellow),
   basic: spritesheetPalette.midRed,
   dimmed: spritesheetPalette.redShadow,
@@ -22,18 +27,18 @@ export const yellowShades = {
 export const magentaShades = {
   original: new Color(zxSpectrumColors.zxMagenta),
   basic: spritesheetPalette.pink,
-  dimmed: halfbrite(spritesheetPalette.pink),
+  dimmed: halfbrite(spritesheetPalette.pink, 0.5),
 };
 export const cyanShades = {
   original: new Color(zxSpectrumColors.zxCyan),
   basic: spritesheetPalette.pastelBlue,
   //dimmed: spritesheetPalette.shadow,
-  dimmed: halfbrite(spritesheetPalette.pastelBlue), // trying to be halfway between basic and spritesheet shadow
+  dimmed: halfbrite(spritesheetPalette.pastelBlue, 0.5), // trying to be halfway between basic and spritesheet shadow
 };
 export const greenShades = {
   original: new Color(zxSpectrumColors.zxGreen),
   basic: spritesheetPalette.moss,
-  dimmed: halfbrite(spritesheetPalette.moss),
+  dimmed: halfbrite(spritesheetPalette.moss, 0.5),
 };
 
 export type ColorScheme = {
@@ -70,10 +75,10 @@ export const colorScheme: Record<
       main: whiteShades,
       edges: {
         towards: { ...cyanShades, dimInOriginal: false },
-        right: { ...yellowShades, dimInOriginal: true },
+        right: { ...yellowShadesInBasicRooms, dimInOriginal: true },
       },
       hud: {
-        lives: yellowShades,
+        lives: yellowShadesInBasicRooms,
         dimmed: magentaShades,
         icons: cyanShades,
       },
@@ -86,7 +91,7 @@ export const colorScheme: Record<
       },
       hud: {
         // probably wrong
-        lives: yellowShades,
+        lives: yellowShadesInDimmedRooms,
         dimmed: magentaShades,
         icons: cyanShades,
       },
@@ -94,7 +99,7 @@ export const colorScheme: Record<
   },
   yellow: {
     basic: {
-      main: yellowShades,
+      main: yellowShadesInBasicRooms,
       edges: {
         towards: { ...greenShades, dimInOriginal: false },
         right: { ...whiteShades, dimInOriginal: true },
@@ -106,7 +111,7 @@ export const colorScheme: Record<
       },
     },
     dimmed: {
-      main: yellowShades,
+      main: yellowShadesInBasicRooms,
       edges: {
         towards: { ...cyanShades, dimInOriginal: true },
         right: { ...cyanShades, dimInOriginal: false },
@@ -127,7 +132,11 @@ export const colorScheme: Record<
         towards: { ...greenShades, dimInOriginal: true },
         right: { ...cyanShades, dimInOriginal: true },
       },
-      hud: { lives: whiteShades, dimmed: cyanShades, icons: yellowShades },
+      hud: {
+        lives: whiteShades,
+        dimmed: cyanShades,
+        icons: yellowShadesInBasicRooms,
+      },
     },
     dimmed: {
       main: magentaShades,
@@ -139,7 +148,7 @@ export const colorScheme: Record<
         // maybe wrong
         lives: whiteShades,
         dimmed: cyanShades,
-        icons: yellowShades,
+        icons: yellowShadesInBasicRooms,
       },
     },
   },
@@ -153,7 +162,7 @@ export const colorScheme: Record<
       hud: {
         lives: whiteShades,
         dimmed: greenShades,
-        icons: yellowShades,
+        icons: yellowShadesInBasicRooms,
       },
     },
     dimmed: {
@@ -166,7 +175,7 @@ export const colorScheme: Record<
         // maybe wrong
         lives: whiteShades,
         dimmed: greenShades,
-        icons: yellowShades,
+        icons: yellowShadesInBasicRooms,
       },
     },
   },
@@ -175,7 +184,7 @@ export const colorScheme: Record<
       main: greenShades,
       edges: {
         towards: { ...cyanShades, dimInOriginal: false },
-        right: { ...yellowShades, dimInOriginal: false },
+        right: { ...yellowShadesInBasicRooms, dimInOriginal: false },
       },
       hud: {
         lives: whiteShades,
@@ -187,7 +196,7 @@ export const colorScheme: Record<
       main: greenShades,
       edges: {
         towards: { ...cyanShades, dimInOriginal: true },
-        right: { ...yellowShades, dimInOriginal: true },
+        right: { ...yellowShadesInBasicRooms, dimInOriginal: true },
       },
       hud: {
         // maybe wrong
