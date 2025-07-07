@@ -11,11 +11,11 @@ export const GameApiConnectedRoomSelect = <RoomId extends string>() => {
       campaign={gameApi.campaign}
       headRoomId={gameApi.gameState.characterRooms.head?.id}
       heelsRoomId={gameApi.gameState.characterRooms.heels?.id}
-      className="w-full"
-      onRoomSelect={(roomId) => {
+      triggerButtonClassName="w-full"
+      onSelect={(roomId) => {
         gameApi.changeRoom(roomId);
       }}
-      viewingRoomId={viewingRoomId}
+      value={viewingRoomId}
     />
   );
 };

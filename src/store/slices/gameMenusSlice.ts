@@ -594,7 +594,9 @@ export const gameMenusSlice = createSlice({
       _state,
       _action: PayloadAction<{ characterName: CharacterName; roomId: string }>,
     ) {
-      // currently a noop, although could be used to update the player rooms if this gets into the store
+      // currently a noop for listeners.
+      // Could be used to update the player rooms if this state
+      // is moved into the store
     },
   },
   extraReducers(builder) {

@@ -12,6 +12,9 @@ import type {
   UnionOfAllItemInPlayTypes,
 } from "../model/ItemInPlay";
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import type { Campaign } from "../model/modelTypes";
+
+export type EditorCampaign = Campaign<EditorRoomId>;
 
 export type EditorRoomId = Tagged<string, "EditorRoomId">;
 export type EditorRoomItemId<ItemId extends string = string> = Tagged<
