@@ -5,28 +5,48 @@ import { type Filter } from "pixi.js";
 import type { PaletteSwaps } from "./PaletteSwapFilter";
 import { PaletteSwapFilter } from "./PaletteSwapFilter";
 import type { Shades } from "../../hintColours";
-import { colorScheme, getColorScheme } from "../../hintColours";
+import {
+  colorScheme,
+  getColorScheme,
+  yellowShadesInBasicRooms,
+  yellowShadesInDimmedRooms,
+} from "../../hintColours";
 import { emptyArray } from "../../../utils/empty";
 import { RevertColouriseFilter } from "./RevertColouriseFilter";
 import { halfbrite, zxSpectrumDimmed } from "../../../utils/colour/halfBrite";
 import { HalfBriteFilter } from "./HalfBriteFilter";
 import type { UnknownRoomState } from "../../../model/RoomState";
 
+/**
+ * get the replaceLight/replaceDark swops for the given shade
+ */
 const replaceMapForShades = ({ basic, dimmed }: Shades): PaletteSwaps => ({
   replaceLight: basic,
   replaceDark: dimmed,
 });
 
-const replaceMapForRoom = (
-  room: Pick<UnknownRoomState, "color">,
-): PaletteSwaps =>
-  replaceMapForShades(colorScheme[room.color.hue][room.color.shade].main);
+/**
+ * get the replaceLight/replaceDark swops for a room
+ */
+const replaceMapForRoom = ({
+  color: { hue, shade },
+  planet,
+}: Pick<UnknownRoomState, "color" | "planet">): PaletteSwaps => {
+  const shades: Shades =
+    hue === "yellow" ?
+      shade === "dimmed" || planet === "jail" ?
+        yellowShadesInDimmedRooms
+      : yellowShadesInBasicRooms
+    : colorScheme[hue][shade].main;
+
+  return replaceMapForShades(shades);
+};
 
 /**
  * if given, will do colour replace - eg, deactivated cyber men
  * still have their backpacks in room colour
  */
-export const greyFilter = (room?: Pick<UnknownRoomState, "color">) =>
+export const greyFilter = (room?: Pick<UnknownRoomState, "color" | "planet">) =>
   new PaletteSwapFilter({
     lightBeige: spritesheetPalette.lightGrey,
     redShadow: spritesheetPalette.shadow,
@@ -79,11 +99,11 @@ export const edgePaletteSwapFilters = (
   : new RevertColouriseFilter(getColorScheme(room.color).edges[side].original);
 
 export const mainPaletteSwapFilter = (
-  room: Pick<UnknownRoomState, "color">,
+  room: Pick<UnknownRoomState, "color" | "planet">,
 ): Filter => new PaletteSwapFilter(replaceMapForRoom(room));
 
 export const floorPaletteSwapFilter = (
-  room: Pick<UnknownRoomState, "color">,
+  room: Pick<UnknownRoomState, "color" | "planet">,
 ): Filter => {
   switch (room.color.hue) {
     case "white":
@@ -99,7 +119,7 @@ export const floorPaletteSwapFilter = (
 };
 
 export const bookPaletteSwapFilter = (
-  room: Pick<UnknownRoomState, "color">,
+  room: Pick<UnknownRoomState, "color" | "planet">,
 ): Filter => {
   switch (room.color.hue) {
     case "white":
@@ -108,6 +128,11 @@ export const bookPaletteSwapFilter = (
         replaceLight: spritesheetPalette.lightBeige,
         replaceDark: spritesheetPalette.midRed,
         shadow: spritesheetPalette.redShadow,
+      });
+    case "yellow":
+      return mainPaletteSwapFilter({
+        planet: room.planet,
+        color: { hue: "yellow", shade: "dimmed" },
       });
     default:
       return mainPaletteSwapFilter(room);
