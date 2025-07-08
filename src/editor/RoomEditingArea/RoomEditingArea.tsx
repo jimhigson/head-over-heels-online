@@ -10,6 +10,7 @@ import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplic
 import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
 import { useUpdateUpscaleWhenWindowResizes } from "../../store/storeFlow/useUpateUpscaleWhenWIndowResizes";
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 export const RoomEditingArea = () => {
@@ -42,6 +43,7 @@ export const RoomEditingArea = () => {
   useRoomEditorInteractivity(renderArea);
   useAddApplicationCanvasToDom(renderArea);
   usePutUpscaleOnAppStage();
+  useRemoveCursorPreviewsWhenToolChanges();
   const canvasInlineStyle = useCanvasInlineStyle();
 
   return (

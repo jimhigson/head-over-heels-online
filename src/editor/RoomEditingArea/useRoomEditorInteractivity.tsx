@@ -20,9 +20,6 @@ import {
   applyToolToRoomJson,
   setSelectedItemInRoom,
   selectTool,
-  deleteSelected,
-  undo,
-  redo,
   setHoveredItemInRoom,
   selectHoveredJsonItemId,
   setTool,
@@ -45,7 +42,6 @@ import {
   findPointerPointingAt,
   roundXyzProjection,
 } from "./cursor/findPointerPointingAt";
-import type { Key } from "../../game/input/keys";
 import {
   fineXyzToBlockXyz,
   unprojectScreenXyToWorldXyz,
@@ -56,6 +52,9 @@ import type {
   EditorRoomState,
   EditorUnionOfAllItemInPlayTypes,
 } from "../EditorRoomId";
+import { selectItemInCurrentRoomFromLevelEditorState } from "../slice/levelEditorSliceSelectors";
+import type { Tool } from "../Tool";
+import { editorKeyboardShortcuts } from "./editorKeyboardShortcuts";
 
 const dragMinimumDistance = 5; // pixels
 
@@ -293,30 +292,15 @@ export const useRoomEditorInteractivity = (
             // hovering, not dragging- can set focus:
             if (!pointingAtChanged) {
               // not thing new to point at
-              break;
+              return;
             }
-
-            const pointingAtItemId = pointingAt.world?.itemId;
-            {
-              // convert from id of item in world to id of item in json:
-              const hoveredItem =
-                pointingAtItemId && roomState.items[pointingAtItemId];
-
-              const newHoveredItemJsonId =
-                hoveredItem !== undefined ?
-                  itemIsLocked(hoveredItem, storeState) ? undefined
-                  : hoveredItem.jsonItemId
-                : undefined;
-
-              if (
-                selectHoveredJsonItemId(storeState) !== newHoveredItemJsonId
-              ) {
-                dispatch(setHoveredItemInRoom(newHoveredItemJsonId));
-              }
-            }
+            updateHoveredItem(storeState, pointingAt, roomState);
           }
           break;
         }
+        case "eyeDropper":
+          updateHoveredItem(storeState, pointingAt, roomState);
+          break;
         default:
           tool satisfies never;
       }
@@ -457,6 +441,46 @@ export const useRoomEditorInteractivity = (
           }
           break;
         }
+        case "eyeDropper": {
+          if (isClick) {
+            // TODO: skip locked items!
+
+            const itemId = pointingAt.world?.itemId;
+
+            if (itemId === undefined) {
+              console.warn("no itemId");
+              break;
+            }
+
+            const clickedOnItem = roomState.items[itemId];
+
+            if (itemIsLocked(clickedOnItem, storeState)) {
+              break;
+            }
+
+            const jsonItemId = jsonItemIdForItemId(roomState, itemId)!;
+            const jsonItem = selectItemInCurrentRoomFromLevelEditorState(
+              storeState.levelEditor,
+              jsonItemId,
+            );
+
+            if (jsonItem === undefined) {
+              console.warn("no json item");
+              break;
+            }
+
+            const itemTool: Tool = {
+              type: "item",
+              item: {
+                type: jsonItem.type,
+                config: jsonItem.config,
+              },
+            };
+
+            dispatch(setTool(itemTool));
+          }
+          break;
+        }
         default:
           tool satisfies never;
       }
@@ -480,6 +504,9 @@ export const useRoomEditorInteractivity = (
           dispatch(setHoveredItemInRoom(undefined));
           break;
         }
+        case "eyeDropper":
+          // nothing to do
+          break;
         default:
           tool satisfies never;
       }
@@ -497,24 +524,12 @@ export const useRoomEditorInteractivity = (
         tool,
         storeState.levelEditor.halfGridResolution,
       );
+      console.log("setting mouseDownPointingAtRef to", pointingAt);
       mouseDownPointingAtRef.current = pointingAt;
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
-      const key = event.key as Key;
-      if (key === "Backspace" || key === "Delete") {
-        dispatch(deleteSelected());
-      }
-
-      if (
-        (key as string) === "z" ||
-        key === "Z" //&&
-        //(event.ctrlKey || event.metaKey)
-      ) {
-        // Ctrl+Z or Cmd+Z for undo - this may not work if the browser is taking
-        // this keystroke over and not passing it down to Javascript
-        store.dispatch(event.shiftKey ? redo() : undo());
-      }
+      editorKeyboardShortcuts(event);
     };
 
     const handleMouseMoveCatch = catchErrors(handleMouseMove);
@@ -534,4 +549,25 @@ export const useRoomEditorInteractivity = (
       renderArea.removeEventListener("keyup", handleKeyUp);
     };
   }, [application.stage, upscale, renderArea, dispatch, roomState]);
+};
+
+const updateHoveredItem = (
+  storeState: RootStateWithLevelEditorSlice,
+  pointingAt: MaybePointingAtSomething,
+  roomState: EditorRoomState,
+) => {
+  const pointingAtItemId = pointingAt.world?.itemId;
+
+  // convert from id of item in world to id of item in json:
+  const hoveredItem = pointingAtItemId && roomState.items[pointingAtItemId];
+
+  const newHoveredItemJsonId =
+    hoveredItem !== undefined ?
+      itemIsLocked(hoveredItem, storeState) ? undefined
+      : hoveredItem.jsonItemId
+    : undefined;
+
+  if (selectHoveredJsonItemId(storeState) !== newHoveredItemJsonId) {
+    store.dispatch(setHoveredItemInRoom(newHoveredItemJsonId));
+  }
 };

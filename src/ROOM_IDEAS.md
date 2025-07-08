@@ -85,3 +85,7 @@ heels (more co-operation)
 * a room with two homing bots and a switch. The switch
 changes which of the two is active (only one is at a time)
 and need to change between them - they can also hit their own switch
+
+* room with hush puppies with monsters on top, otherwise constrained by barriers
+  - if head enters they are released! But powerups in the room that are for head, which
+  heels needs to move for him first
