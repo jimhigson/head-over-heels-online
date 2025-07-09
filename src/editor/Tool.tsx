@@ -13,4 +13,7 @@ export type ItemTool<
   config: Config;
 };
 
-export type Tool = { type: "item"; item: ItemTool } | { type: "pointer" };
+export type Tool =
+  | { type: "item"; item: ItemTool }
+  | { type: "eyeDropper" }
+  | { type: "pointer" };

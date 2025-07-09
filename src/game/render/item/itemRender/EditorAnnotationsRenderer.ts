@@ -17,6 +17,7 @@ import {
   changeToRoom,
   selectHoveredJsonItemId,
   selectSelectedJsonItemIds,
+  selectTool,
   setClickableAnnotationHovered,
 } from "../../../../editor/slice/levelEditorSlice";
 import { showTextInContainer } from "../../hud/showNumberInContainer";
@@ -27,10 +28,16 @@ import type {
 } from "../../../../editor/EditorRoomId";
 
 const selectionColour = spritesheetPalette.pastelBlue;
-const hoverColour = spritesheetPalette.highlightBeige;
+const pointerHoverColour = spritesheetPalette.highlightBeige;
+const eyeDropperHoverColour = spritesheetPalette.midRed;
 
-const hoverFilter = new OutlineFilter({
-  outlineColor: hoverColour,
+const pointerHoverFilter = new OutlineFilter({
+  outlineColor: pointerHoverColour,
+  upscale: selectGameEngineUpscale(store.getState()),
+  lowRes: false,
+});
+const eyeDropperHoverFilter = new OutlineFilter({
+  outlineColor: eyeDropperHoverColour,
   upscale: selectGameEngineUpscale(store.getState()),
   lowRes: false,
 });
@@ -266,6 +273,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     const state = store.getState() as RootStateWithLevelEditorSlice;
     const hoveredJsonItemId = selectHoveredJsonItemId(state);
     const selectedJsonItemIds = selectSelectedJsonItemIds(state);
+    const tool = selectTool(state);
 
     const isHovered =
       jsonItemId &&
@@ -275,8 +283,17 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
       jsonItemId && (selectedJsonItemIds as string[]).includes(jsonItemId);
 
     this.output.filters =
-      isHovered && isSelected ? [selectedFilter, hoverFilter]
-      : isHovered ? hoverFilter
+      isHovered && isSelected ?
+        [
+          selectedFilter,
+          tool.type === "eyeDropper" ?
+            eyeDropperHoverFilter
+          : pointerHoverFilter,
+        ]
+      : isHovered ?
+        tool.type === "eyeDropper" ?
+          eyeDropperHoverFilter
+        : pointerHoverFilter
       : isSelected ? selectedFilter
       : noFilters;
   }

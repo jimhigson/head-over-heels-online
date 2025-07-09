@@ -30,6 +30,7 @@ import {
   RoomAboveSelectOrCreate,
   RoomBelowSelectOrCreate,
 } from "./RoomsAboveOrBelow";
+import { EyeDropperButton } from "./EyeDropperButton";
 
 const StackedToolbarIcons = ({
   topClasses,
@@ -118,6 +119,7 @@ export const LevelEditorToolbar = () => {
         <UndoRedoButtons />
         <DeleteItemToolButton />
         <ClearRoomButton />
+        <EyeDropperButton />
         <div className="h-1 w-full" />
         <HalfGridResolutionSwitch />
         <WallsFloorsLockedSwitch />
