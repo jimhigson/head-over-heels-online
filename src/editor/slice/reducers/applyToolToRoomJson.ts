@@ -14,13 +14,12 @@ import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelect
 import { cutHoleInWallsForDoors } from "./cutHoleInWallsForDoor";
 import type { DistributedPick } from "type-fest";
 import { pushUndoInPlace } from "./undoReducers";
-import { starterRoom } from "../createStarterRoom";
-import { changeRoomSceneryInPlace } from "../changeRoomSceneryInPlace";
 import type {
   CybermanConfig,
   MonsterJsonConfig,
 } from "../../../model/json/MonsterJsonConfig";
 import { fineXyzToBlockXyz } from "../../../game/render/projections";
+import { addNewRoomInPlace } from "../inPlaceMutators.ts/addNewRoomInPlace";
 
 const nextItemId = <T extends JsonItemType = JsonItemType>(
   fromRoomJson: EditorRoomJson,
@@ -107,9 +106,11 @@ export const applyToolReducers = {
           // for doors, trim walls around where the door was placed:
           cutHoleInWallsForDoors(fromRoomJson, doorDirection, blockPosition);
 
-          // TODO: do this conditionally, only if there isn't already a room
-          // in this grid position
-          const toRoomId = `room_${state.nextRoomId++}` as EditorRoomId;
+          const toRoomJson = addNewRoomInPlace(
+            state,
+            fromRoomJson.planet,
+            fromRoomJson.color,
+          );
 
           addItemInPlace(
             state,
@@ -117,23 +118,13 @@ export const applyToolReducers = {
               ...tool.item,
               config: {
                 ...tool.item.config,
-                toRoom: toRoomId,
+                toRoom: toRoomJson.id,
                 direction: doorDirection,
               },
             },
             blockPosition,
           );
 
-          const toRoomJson = {
-            id: toRoomId,
-            ...structuredClone(starterRoom({ x: 8, y: 8 })),
-            // give the same scenery and colour as the current room:
-            color: fromRoomJson.color,
-          };
-          changeRoomSceneryInPlace(toRoomJson, fromRoomJson.planet);
-
-          // create a new room so the door we put down has somewhere to go:
-          state.campaignInProgress.rooms[toRoomId] = toRoomJson;
           const returnDoorId = nextItemId(toRoomJson, tool.item);
 
           const returnDoorPosition: Xyz = {

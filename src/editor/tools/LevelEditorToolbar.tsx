@@ -26,6 +26,10 @@ import { WallsFloorsLockedSwitch } from "./WallsFloorsLockedSwitch";
 import { DoorToolButton } from "./DoorToolButton";
 import { WallToolButton } from "./WallToolButton";
 import { ClearRoomButton } from "./ClearRoomButton";
+import {
+  RoomAboveSelectOrCreate,
+  RoomBelowSelectOrCreate,
+} from "./RoomsAboveOrBelow";
 
 const StackedToolbarIcons = ({
   topClasses,
@@ -82,6 +86,9 @@ export const LevelEditorToolbar = () => {
   const campaign = useAppSelectorWithLevelEditorSlice(
     (state) => state.levelEditor.campaignInProgress,
   );
+  const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
+    (state) => state.levelEditor.currentlyEditingRoomId,
+  );
   const dispatch = useAppDispatch();
 
   return (
@@ -89,28 +96,34 @@ export const LevelEditorToolbar = () => {
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Campaign</BitmapText>
         <RoomSelect
+          value={currentlyEditingRoomId}
           campaign={campaign}
-          onRoomSelect={(roomId) => {
+          onSelect={(roomId) => {
             dispatch(changeToRoom(roomId));
           }}
+          triggerButtonClassName="w-full"
         />
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">Room</BitmapText>
+        <BitmapText className="w-full pt-2">Room</BitmapText>
         <RoomScenerySelect />
         <RoomColourSelect />
+        <div className="h-1 w-full" />
+        <RoomAboveSelectOrCreate />
+        <RoomBelowSelectOrCreate />
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">Edit</BitmapText>
+        <BitmapText className="w-full pt-2">Edit</BitmapText>
         <PointerToolButton />
         <UndoRedoButtons />
         <DeleteItemToolButton />
         <ClearRoomButton />
+        <div className="h-1 w-full" />
         <HalfGridResolutionSwitch />
         <WallsFloorsLockedSwitch />
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">Blocks</BitmapText>
+        <BitmapText className="w-full pt-2">Blocks</BitmapText>
         <ItemToolButton
           itemTool={{
             type: "block",
@@ -746,7 +759,7 @@ export const LevelEditorToolbar = () => {
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">debug</BitmapText>
+        <BitmapText className="w-full pt-2">debug</BitmapText>
         <ShowBoundingBoxSelect />
       </div>
     </div>

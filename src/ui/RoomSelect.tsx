@@ -1,83 +1,53 @@
-import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { Button } from "./button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "./command";
-import { CssVariables } from "../game/components/CssVariables";
+import { CommandItem } from "./command";
 import type { Campaign } from "../model/modelTypes";
+import { Select } from "./Select";
+import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 
 export type RoomSelectProps<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   headRoomId?: RoomId;
   heelsRoomId?: RoomId;
-  viewingRoomId?: RoomId;
-  className?: string;
-  onRoomSelect?: (roomId: RoomId) => void;
+  value?: RoomId;
+  triggerButtonClassName?: string;
+  onSelect?: (roomId: RoomId) => void;
+  excludeRoomIds?: RoomId[];
 };
 
 export function RoomSelect<RoomId extends string>({
   campaign,
-  onRoomSelect,
+  onSelect,
   headRoomId,
   heelsRoomId,
-  viewingRoomId,
-  className,
+  value,
+  triggerButtonClassName,
+  excludeRoomIds = [],
 }: RoomSelectProps<RoomId>) {
-  const [open, setOpen] = useState(false);
-
-  const roomIds = Object.keys(campaign.rooms) as RoomId[];
+  const roomIds = Object.keys(campaign.rooms).filter(
+    (r) => !excludeRoomIds.includes(r as RoomId),
+  ) as RoomId[];
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          role="combobox"
-          aria-expanded={open}
-          className={`justify-between ${className}`}
-        >
-          {viewingRoomId || "Select a room"}
-          <span
-            className={`sprite ml-2 h-4 w-4 shrink-0 ${open ? "texture-hud_char_X" : "texture-hud_char_⬇"}`}
-          />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <CssVariables scaleFactor={1}>
-          <Command className="w-[--radix-popper-anchor-width]">
-            <CommandInput placeholder="Room id" />
-            <CommandList>
-              <CommandEmpty>No room found</CommandEmpty>
-              <CommandGroup>
-                {roomIds.map((r) => (
-                  <CommandItem
-                    key={r}
-                    value={r}
-                    className={viewingRoomId === r ? "bg-moss" : ""}
-                    onSelect={(currentValue) => {
-                      onRoomSelect?.(currentValue as RoomId);
-                      setOpen(false);
-                    }}
-                  >
-                    {headRoomId === r && (
-                      <span className="sprite m-1 texture-head_walking_towards_2" />
-                    )}
-                    {heelsRoomId === r && (
-                      <span className="sprite m-1 texture-heels_walking_towards_2" />
-                    )}
-                    {r}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </CssVariables>
-      </PopoverContent>
-    </Popover>
+    <Select<RoomId>
+      onSelect={(roomId) => onSelect?.(roomId)}
+      value={value}
+      values={roomIds}
+      triggerButtonClassName={triggerButtonClassName}
+      placeholder="room id"
+      disableCommandInput={false}
+      triggerButtonLabel={value ?? "none"}
+      OptionCommandItem={({ value, onSelect }) => {
+        return (
+          <CommandItem value={value} onSelect={onSelect} className="px-1">
+            {headRoomId === value && (
+              <span className="sprite mr-1 my-1 texture-head_walking_towards_2" />
+            )}
+            {heelsRoomId === value && (
+              <span className="sprite mr-1 my-1 texture-heels_walking_towards_2" />
+            )}
+            <BitmapText>{value}</BitmapText>
+          </CommandItem>
+        );
+      }}
+    />
   );
 }

@@ -22,7 +22,8 @@ type OptionCommandItemComponent<Value extends string> = FC<{
 }>;
 
 export type SelectProps<Value extends string> = {
-  value: Value;
+  /** undefined if no value is selected */
+  value: Value | undefined;
   values: Readonly<Value[]>;
   OptionCommandItem?: OptionCommandItemComponent<Value>;
   triggerButtonClassName?: string;
@@ -70,7 +71,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            `h-2 px-1 flex flex-row gap-1 justify-start`,
+            `h-2 px-1 flex flex-row gap-1 justify-start leading-none`,
             triggerButtonClassName,
           )}
           style={triggerButtonStyle}
@@ -91,7 +92,9 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
               <CommandInput placeholder={props.placeholder} />
             )}
             <CommandList>
-              <CommandEmpty>No room found</CommandEmpty>
+              <CommandEmpty>
+                <BitmapText>Nothing found</BitmapText>
+              </CommandEmpty>
               <CommandGroup>
                 {values.map((value) => (
                   <OptionCommandItem

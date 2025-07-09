@@ -57,6 +57,8 @@ export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 export type PortableBlockStyle = "drum" | "sticks" | "cube";
 export type DeadlyBlockStyle = "toaster" | "volcano";
 
+export type FloorType = "deadly" | "none" | "standable";
+
 export type ItemConfigMap<
   RoomId extends string,
   /** ids of items in this room */
@@ -83,17 +85,17 @@ export type ItemConfigMap<
   };
   floor:
     | {
-        floorType: "deadly";
+        floorType: Subset<FloorType, "deadly">;
         times: Xy;
       }
     | {
         /** the room has no floor, but it is included to draw the floor edge */
-        floorType: "none";
+        floorType: Subset<FloorType, "none">;
         times: Xy;
       }
     | {
-        floorType: "standable";
-        scenery: SceneryName;
+        floorType: Subset<FloorType, "standable">;
+        scenery: ScN;
         times: Xy;
       };
   wall: WallJsonConfig<ScN>;

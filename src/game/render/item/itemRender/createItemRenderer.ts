@@ -33,7 +33,7 @@ const assignPointerActions = <RoomId extends string>(
   item: UnionOfAllItemInPlayTypes<RoomId>,
   container: Container,
 ) => {
-  if (container !== undefined) {
+  if (container !== undefined && store.getState().gameMenus.cheatsOn) {
     container.eventMode = "static";
     container.on("pointertap", () => {
       store.dispatch(debugItemClicked({ item }));

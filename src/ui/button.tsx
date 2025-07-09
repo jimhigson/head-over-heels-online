@@ -23,8 +23,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           bg-metallicBlue zx:bg-zxBlue border-none border-shadow
           gap-2
            disabled:bg-midGrey disabled:text-lightGrey 
-           data-[selected=true]:bg-midRed
-           [&:not(:disabled):hover:not([data-selected=true])]:bg-moss 
+           data-[selected=true]:bg-lightBeige
+           [&:not(:disabled):hover:not([data-selected=true])]:bg-pastelBlue 
            `,
           className,
         )}

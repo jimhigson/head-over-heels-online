@@ -458,6 +458,12 @@ describe("applying tools", () => {
           actionPayload,
         );
 
+        // should have one more room id:
+        expect(Object.keys(next.campaignInProgress.rooms)).toMatchObject([
+          "testRoomId",
+          "room_1",
+        ]);
+
         expect(
           next.campaignInProgress.rooms["room_1" as EditorRoomId],
         ).toMatchObject({

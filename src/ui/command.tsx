@@ -21,12 +21,12 @@ const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
+  <div className="flex items-center border-b px-1 pb-1" cmdk-input-wrapper="">
     <span className="sprite mr-1 texture-hud_char_gt" />
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        "flex h-3 w-full bg-midGrey py-3 outline-none placeholder:text-shadow disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-1 w-full bg-pastelBlue py-1 outline-none placeholder:text-shadow disabled:cursor-not-allowed",
         className,
       )}
       {...props}
@@ -53,11 +53,7 @@ const CommandEmpty = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Empty>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>
 >((props, ref) => (
-  <CommandPrimitive.Empty
-    ref={ref}
-    className="py-6 text-center text-sm"
-    {...props}
-  />
+  <CommandPrimitive.Empty ref={ref} className="pl-1" {...props} />
 ));
 
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName;
