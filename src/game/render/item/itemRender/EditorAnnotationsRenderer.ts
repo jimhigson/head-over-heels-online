@@ -15,7 +15,7 @@ import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion
 import type { RootStateWithLevelEditorSlice } from "../../../../editor/slice/levelEditorSlice";
 import {
   changeToRoom,
-  selectHoveredJsonItemId,
+  selectHoveredItem,
   selectSelectedJsonItemIds,
   selectTool,
   setClickableAnnotationHovered,
@@ -25,7 +25,7 @@ import type { UnknownAction } from "@reduxjs/toolkit";
 import type {
   EditorItemInPlayUnion,
   EditorRoomId,
-} from "../../../../editor/EditorRoomId";
+} from "../../../../editor/editorTypes";
 
 const selectionColour = spritesheetPalette.pastelBlue;
 const pointerHoverColour = spritesheetPalette.highlightBeige;
@@ -271,13 +271,13 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     const { jsonItemId } = item;
 
     const state = store.getState() as RootStateWithLevelEditorSlice;
-    const hoveredJsonItemId = selectHoveredJsonItemId(state);
+    const hoveredJsonItem = selectHoveredItem(state);
     const selectedJsonItemIds = selectSelectedJsonItemIds(state);
     const tool = selectTool(state);
 
     const isHovered =
       jsonItemId &&
-      hoveredJsonItemId === jsonItemId &&
+      hoveredJsonItem?.jsonItemId === jsonItemId &&
       !clickableAnnotationHovered;
     const isSelected =
       jsonItemId && (selectedJsonItemIds as string[]).includes(jsonItemId);

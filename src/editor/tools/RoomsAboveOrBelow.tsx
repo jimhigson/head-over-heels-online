@@ -2,7 +2,7 @@ import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { useAppDispatch } from "../../store/hooks";
 import { Button } from "../../ui/button";
 import { RoomSelect } from "../../ui/RoomSelect";
-import type { EditorRoomId } from "../EditorRoomId";
+import type { EditorRoomId } from "../editorTypes";
 import {
   setRoomAboveOrBelow,
   useAppSelectorWithLevelEditorSlice,

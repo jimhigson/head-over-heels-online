@@ -3,13 +3,13 @@ import { iterateRoomItems } from "../../../model/RoomState";
 import type {
   EditorRoomState,
   EditorUnionOfAllItemInPlayTypes,
-} from "../../EditorRoomId";
+} from "../../editorTypes";
 
 /**
  * find items that items being added/moved to the room would need to care about
  * colliding with, when they are added/moved
  */
-export const findCollideableItemsInRoom = (
+export const collideableItemsInRoom = (
   roomState: EditorRoomState,
 ): Iterable<EditorUnionOfAllItemInPlayTypes> => {
   return iterateRoomItems(roomState.items).filter(

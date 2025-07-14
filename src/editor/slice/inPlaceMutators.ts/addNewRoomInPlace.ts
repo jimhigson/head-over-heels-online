@@ -1,6 +1,6 @@
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { SceneryName } from "../../../sprites/planets";
-import type { EditorRoomId, EditorRoomJson } from "../../EditorRoomId";
+import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
 import { starterRoom } from "../createStarterRoom";
 import type { LevelEditorState } from "../levelEditorSlice";
 import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";

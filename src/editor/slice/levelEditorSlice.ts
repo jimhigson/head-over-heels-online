@@ -2,18 +2,28 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { SetRequired, ValueOf } from "type-fest";
 import { starterRoom } from "./createStarterRoom";
-import type { EditorCampaign, EditorRoomJson } from "../EditorRoomId";
-import { type EditorRoomId, type EditorRoomItemId } from "../EditorRoomId";
+import type { EditorCampaign, EditorRoomJson } from "../editorTypes";
+import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
 import type { Tool } from "../Tool";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
-import { applyToolReducers } from "./reducers/applyToolToRoomJson";
-import { selectCurrentRoomFromLevelEditorState } from "./levelEditorSliceSelectors";
+import { applyItemToolReducers } from "./reducers/applyToolToRoomJson";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectItemInLevelEditorState,
+} from "./levelEditorSliceSelectors";
 import { undoReducers, undoSelectors } from "./reducers/undoReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
+import { editItemReducers } from "./reducers/editItemReducers";
+import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { editRoomReducers } from "./reducers/editRoomReducers";
+
+export type HoveredItem = {
+  jsonItemId: EditorRoomItemId;
+  pointingAtOnItem: PointingAtOnItem;
+};
 
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
@@ -21,7 +31,7 @@ export type LevelEditorState = {
   currentlyEditingRoomId: EditorRoomId;
   nextRoomId: number;
   tool: Tool;
-  hoveredJsonItemId?: EditorRoomItemId;
+  hoveredItem?: HoveredItem;
   clickableAnnotationHovered: boolean;
   selectedJsonItemIds: Array<EditorRoomItemId>;
   halfGridResolution: boolean;
@@ -45,7 +55,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   nextRoomId: 1,
   currentlyEditingRoomId: initialRoomId,
   tool: { type: "pointer" },
-  hoveredJsonItemId: undefined,
+  hoveredItem: undefined,
   clickableAnnotationHovered: false,
   selectedJsonItemIds: [],
   halfGridResolution: false,
@@ -97,7 +107,7 @@ export const levelEditorSlice = createSlice({
       state.currentlyEditingRoomId = roomId;
 
       state.clickableAnnotationHovered = false;
-      state.hoveredJsonItemId = undefined;
+      state.hoveredItem = undefined;
       state.selectedJsonItemIds = [];
 
       // clear undo/redo history when changing room:
@@ -112,20 +122,22 @@ export const levelEditorSlice = createSlice({
 
     ...editorSettingsReducers,
     ...undoReducers,
-    ...applyToolReducers,
+    ...applyItemToolReducers,
     ...dragToMoveReducers,
     ...selectionsReducers,
     ...editRoomReducers,
+    ...editItemReducers,
   },
   selectors: {
     selectCurrentEditingRoomJson: selectCurrentRoomFromLevelEditorState,
+    selectItem: selectItemInLevelEditorState,
     selectCurrentEditingRoomColour: (state) =>
       selectCurrentRoomFromLevelEditorState(state).color,
     selectCurrentEditingRoomScenery: (state) =>
       selectCurrentRoomFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
     selectSelectedJsonItemIds: (state) => state.selectedJsonItemIds,
-    selectHoveredJsonItemId: (state) => state.hoveredJsonItemId,
+    selectHoveredItem: (state) => state.hoveredItem,
     ...undoSelectors,
   },
 });
@@ -141,7 +153,7 @@ export type LevelEditorSliceActionCreator = ValueOf<
 >;
 
 export const {
-  applyToolToRoomJson,
+  applyItemTool,
   changeDragInProgress,
   changeGridResolution,
   changeRoomColour,
@@ -151,8 +163,8 @@ export const {
   clearRoom,
   deleteSelected,
   injected,
-  moveItemInRoom,
   redo,
+  moveOrResizeItem,
   roomJsonEdited,
   setClickableAnnotationHovered,
   setHoveredItemInRoom,
@@ -166,8 +178,9 @@ export const {
   selectCanUndo,
   selectCurrentEditingRoomColour,
   selectCurrentEditingRoomJson,
+  selectItem,
   selectCurrentEditingRoomScenery,
-  selectHoveredJsonItemId,
+  selectHoveredItem,
   selectSelectedJsonItemIds,
   selectTool,
 } = levelEditorSlice.selectors;

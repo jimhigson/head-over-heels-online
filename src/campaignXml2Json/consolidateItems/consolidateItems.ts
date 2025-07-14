@@ -1,37 +1,11 @@
 import { canonicalize } from "json-canonicalize";
 import type { Xyz } from "../../utils/vectors/vectors";
 import { omit } from "../../utils/pick";
-import type { JsonItemType, JsonItemUnion } from "../../model/json/JsonItem";
+import type { JsonItemUnion } from "../../model/json/JsonItem";
 import type { SceneryName } from "../../sprites/planets";
 import type { WallJsonConfigWithTiles } from "../../model/json/WallJsonConfig";
-
-export const consolidatableJsonItemTypes = [
-  "block",
-  "deadlyBlock",
-  "barrier",
-  "conveyor",
-  "hushPuppy",
-  "wall",
-  "teleporter",
-] as const satisfies JsonItemType[];
-export type ConsolidatableJsonItemType =
-  (typeof consolidatableJsonItemTypes)[number];
-export type ConsolidatableJsonItem = Extract<
-  JsonItemUnion,
-  { type: ConsolidatableJsonItemType }
->;
-
-const isConsolidatable = (
-  jsonItem: JsonItemUnion,
-): jsonItem is ConsolidatableJsonItem => {
-  return (
-    (consolidatableJsonItemTypes as JsonItemType[]).includes(jsonItem.type) &&
-    !(jsonItem.type === "block" && jsonItem.config.disappearing) &&
-    !(jsonItem.type === "barrier" && jsonItem.config.disappearing) //&&
-    // toasters could share AABBs, but need to render individually
-    //!(jsonItem.type === "deadlyBlock" && jsonItem.config.style === "toaster")
-  );
-};
+import type { ConsolidatableJsonItem } from "../../model/json/ConsolidatableJsonItem";
+import { isConsolidatable } from "../../model/json/ConsolidatableJsonItem";
 
 // 3d grid to keep the items in
 type Grid = Set<ConsolidatableJsonItem>[][][];

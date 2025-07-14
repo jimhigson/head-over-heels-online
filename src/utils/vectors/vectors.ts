@@ -86,8 +86,8 @@ export const productXyz = (a: Xyz, b: Xyz): Xyz => ({
   z: a.z * b.z,
 });
 
-export const lengthXyz = ({ x, y, z }: Xyz) => Math.sqrt(x * x + y * y + z * z);
-export const lengthXy = ({ x, y }: Xy) => Math.sqrt(x * x + y * y);
+export const lengthXyz = ({ x, y, z }: Xyz) => Math.hypot(x, y, z);
+export const lengthXy = ({ x, y }: Xy) => Math.hypot(x, y);
 
 export const unitVector = (xyz: Xyz): Xyz => {
   const l = lengthXyz(xyz);
@@ -96,6 +96,27 @@ export const unitVector = (xyz: Xyz): Xyz => {
   }
   return scaleXyz(xyz, 1 / l);
 };
+
+export const cornerVectorsXyz = [
+  { x: 0, y: 0, z: 0 },
+  { x: 0, y: 0, z: 1 },
+  { x: 0, y: 1, z: 0 },
+  { x: 0, y: 1, z: 1 },
+  { x: 1, y: 0, z: 0 },
+  { x: 1, y: 0, z: 1 },
+  { x: 1, y: 1, z: 0 },
+  { x: 1, y: 1, z: 1 },
+] as const satisfies Array<Xyz>;
+/** the corners that are visible in the isometric view */
+export const visibleCornerVectorsXyz = [
+  { x: 0, y: 0, z: 0 },
+  { x: 0, y: 0, z: 1 },
+  { x: 0, y: 1, z: 0 },
+  { x: 0, y: 1, z: 1 },
+  { x: 1, y: 0, z: 0 },
+  { x: 1, y: 0, z: 1 },
+  { x: 1, y: 1, z: 1 },
+] as const satisfies Array<Xyz>;
 
 /**
  * clockwise rotation of the xy component
@@ -114,6 +135,20 @@ export const addXyz = (...xyzs: Array<Partial<Xyz>>): Xyz => {
       z: acZ + iZ,
     }),
     originXyz,
+  );
+};
+
+/**
+ * Calc the element-wise (or Hadamard) product
+ */
+export const elementWiseProductXyz = (...xyzs: Array<Xyz>): Xyz => {
+  return xyzs.reduce<Xyz>(
+    ({ x: acX, y: acY, z: acZ }, { x: iX, y: iY, z: iZ }) => ({
+      x: acX * iX,
+      y: acY * iY,
+      z: acZ * iZ,
+    }),
+    unitXyz,
   );
 };
 
@@ -182,6 +217,7 @@ export const roundXyzToXyHalves = ({ x, y, z }: Xyz) => ({
 
 export const originXy: Xy = Object.freeze({ x: 0, y: 0 });
 export const originXyz: Xyz = Object.freeze({ x: 0, y: 0, z: 0 });
+export const unitXyz: Xyz = Object.freeze({ x: 1, y: 1, z: 1 });
 
 export type Xyz = {
   x: number;
@@ -287,4 +323,51 @@ export const manhattanDistanceXy = (
 ) => {
   return Math.abs(x2 - x1) + Math.abs(y2 - y1);
 };
+
 export type OrthoPlane = "xy" | "xz" | "yz";
+
+/**
+ * For when a text descrition of a plane is easier to work with,
+ * convert a normal vector to a plane
+ */
+export const orthoPlaneForNormal = (
+  /** the normal vector to the plane */
+  planeNormal: Xyz,
+): OrthoPlane => {
+  const { x: nx, y: ny, z: nz } = planeNormal;
+
+  // For xy-plane (normal = [0, 0, 1]), z = 0
+  // on top/bottom face
+  if (veryClose(nx, 0) && veryClose(ny, 0) && !veryClose(nz, 0)) {
+    return "xy";
+  }
+
+  // For xz-plane (normal = [0, 1, 0]), y = 0
+  // on away/towards face
+  if (veryClose(nx, 0) && !veryClose(ny, 0) && veryClose(nz, 0)) {
+    return "xz";
+  }
+
+  // For yz-plane (normal = [1, 0, 0]), x = 0
+  // left/right face
+  if (!veryClose(nx, 0) && veryClose(ny, 0) && veryClose(nz, 0)) {
+    return "yz";
+  }
+
+  throw new Error(
+    `only axis-aligned planes are supported, cannot get normal plane for ${JSON.stringify(planeNormal)}`,
+  );
+};
+
+export type Plane = {
+  /** vector of a normal to all points on the plane */
+  normal: Xyz;
+  /** any point on the plane */
+  point: Xyz;
+};
+
+export const absXyz = ({ x, y, z }: Xyz): Xyz => ({
+  x: Math.abs(x),
+  y: Math.abs(y),
+  z: Math.abs(z),
+});

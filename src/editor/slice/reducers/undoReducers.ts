@@ -1,7 +1,7 @@
 import type { SliceSelectors } from "@reduxjs/toolkit";
 import { current, type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { LevelEditorState } from "../levelEditorSlice";
-import type { EditorRoomJson } from "../../EditorRoomId";
+import type { EditorRoomJson } from "../../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 
 // to be called from other reducers when they are ready to do something

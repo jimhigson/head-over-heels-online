@@ -14,7 +14,7 @@ import type {
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
-} from "../../EditorRoomId";
+} from "../../editorTypes";
 import { addNewRoomInPlace } from "../inPlaceMutators.ts/addNewRoomInPlace";
 import {
   iterateRoomJsonItems,

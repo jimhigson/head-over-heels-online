@@ -89,3 +89,9 @@ and need to change between them - they can also hit their own switch
 * room with hush puppies with monsters on top, otherwise constrained by barriers
   - if head enters they are released! But powerups in the room that are for head, which
   heels needs to move for him first
+
+* room with hush-puppy bridge for heels to cross, but some puzzle that needs head in the room for heels to get into another door
+
+* have to manipulate a cyberman to hit a spiky ball (that you can't touch yourself) into rolling and pressing a switch that otherwise would be pseudo-deadly to touch (no way to jump back to safety after landing on it)
+
+* simple movement on raised platforms, but if make wrong step, homing bots hit switches and make the platform dissapearing. need to navigate without them hitting switches

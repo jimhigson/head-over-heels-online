@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   addXyz,
+  elementWiseProductXyz,
   vectorClosestDirectionXy4,
   vectorClosestDirectionXy8,
   xyzSnapIfCloseToIntegers,
@@ -146,5 +147,61 @@ describe("xyzSnapIfCloseToIntegers", () => {
     const input = { x: 0.000001, y: 59.835000000000036, z: 0 };
     const result = xyzSnapIfCloseToIntegers(input);
     expect(result).toEqual({ x: 0, y: 59.835000000000036, z: 0 });
+  });
+});
+
+describe("elementWiseProductXyz", () => {
+  test("multiplies two vectors element-wise", () => {
+    const vector1 = { x: 2, y: 3, z: 4 };
+    const vector2 = { x: 5, y: 6, z: 7 };
+    const result = elementWiseProductXyz(vector1, vector2);
+    expect(result).toEqual({ x: 10, y: 18, z: 28 });
+  });
+
+  test("multiplies three vectors element-wise", () => {
+    const vector1 = { x: 2, y: 3, z: 4 };
+    const vector2 = { x: 5, y: 6, z: 7 };
+    const vector3 = { x: 1, y: 2, z: 3 };
+    const result = elementWiseProductXyz(vector1, vector2, vector3);
+    expect(result).toEqual({ x: 10, y: 36, z: 84 });
+  });
+
+  test("returns unit vector when called with no arguments", () => {
+    const result = elementWiseProductXyz();
+    expect(result).toEqual({ x: 1, y: 1, z: 1 });
+  });
+
+  test("returns the same vector when called with single argument", () => {
+    const vector = { x: 2, y: 3, z: 4 };
+    const result = elementWiseProductXyz(vector);
+    expect(result).toEqual(vector);
+  });
+
+  test("handles negative values correctly", () => {
+    const vector1 = { x: -2, y: 3, z: -4 };
+    const vector2 = { x: 5, y: -6, z: 7 };
+    const result = elementWiseProductXyz(vector1, vector2);
+    expect(result).toEqual({ x: -10, y: -18, z: -28 });
+  });
+
+  test("handles zero values correctly", () => {
+    const vector1 = { x: 0, y: 3, z: 4 };
+    const vector2 = { x: 5, y: 0, z: 7 };
+    const result = elementWiseProductXyz(vector1, vector2);
+    expect(result).toEqual({ x: 0, y: 0, z: 28 });
+  });
+
+  test("handles fractional values correctly", () => {
+    const vector1 = { x: 0.5, y: 2.5, z: 1.5 };
+    const vector2 = { x: 2, y: 4, z: 6 };
+    const result = elementWiseProductXyz(vector1, vector2);
+    expect(result).toEqual({ x: 1, y: 10, z: 9 });
+  });
+
+  test("multiplication with unit vector returns original", () => {
+    const vector = { x: 2, y: 3, z: 4 };
+    const unitVector = { x: 1, y: 1, z: 1 };
+    const result = elementWiseProductXyz(vector, unitVector);
+    expect(result).toEqual(vector);
   });
 });

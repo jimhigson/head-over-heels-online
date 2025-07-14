@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import type { ApplyToolToRoomJsonPayload } from "./applyToolToRoomJson";
-import { applyToolReducers } from "./applyToolToRoomJson";
+import { applyItemToolReducers } from "./applyToolToRoomJson";
 import {
   initialLevelEditorSliceState,
   type LevelEditorState,
@@ -9,7 +9,7 @@ import type {
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJsonItems,
-} from "../../EditorRoomId";
+} from "../../editorTypes";
 import { produce } from "immer";
 import type { Tool } from "src/editor/Tool";
 import type {
@@ -62,7 +62,7 @@ const applyToolToRoomJsonNext = (
   payload: ApplyToolToRoomJsonPayload,
 ) => {
   return produce(state, (draftState) =>
-    applyToolReducers.applyToolToRoomJson(draftState, {
+    applyItemToolReducers.applyItemTool(draftState, {
       type: "",
       payload,
     }),

@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { useState, useEffect } from "react";
 import { useAppSelector } from "../../store/hooks";
 import { selectGameEngineScreenSize } from "../../store/slices/upscale/upscaleSlice";
-import type { EditorRoomRenderer } from "../EditorRoomId";
+import type { EditorRoomRenderer } from "../editorTypes";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 export const useAddRoomRendererOutputToApplicationStage = (

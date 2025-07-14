@@ -6,9 +6,9 @@ import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import type {
   EditorRoomItemId,
   EditorUnionOfAllItemInPlayTypes,
-} from "../../EditorRoomId";
-import { type EditorRoomState } from "../../EditorRoomId";
-import { findCollideableItemsInRoom } from "./findCollideableItemsInRoom";
+} from "../../editorTypes";
+import { type EditorRoomState } from "../../editorTypes";
+import { collideableItemsInRoom } from "./collideableItemsInRoom";
 import { produce } from "immer";
 
 /**
@@ -37,17 +37,16 @@ export const mutateRoomRemoveCursorPreviews = (room: EditorRoomState) => {
  *
  * This will not mutate the room if there are collisions
  * with other items in the room.
- *
- * @returns true if the room was mutated, false otherwise
  */
-export const mutateRoomForDrag = (
+export const mutateRoomMoveItemForDrag = (
   roomState: EditorRoomState,
   jsonItemId: EditorRoomItemId,
   /**
    * how far the user has dragged the item
    */
   positionDelta: Xyz,
-): boolean => {
+) => {
+  // could be multiple in-play items to move for a single json id - find them all:
   const itemsToDrag = Array.from(
     iterateRoomItems(roomState.items).filter(
       (item) => item.jsonItemId === jsonItemId,
@@ -55,12 +54,16 @@ export const mutateRoomForDrag = (
   );
 
   // check for collisions:
-  const collideableItems = Array.from(findCollideableItemsInRoom(roomState));
+  const collideableItems = Array.from(collideableItemsInRoom(roomState));
 
   const hasCollisions = itemsToDrag.some((itemToDrag) => {
-    const itemCopyAtNewLocation = produce(itemToDrag, (draft) => {
-      draft.state.position = addXyz(itemToDrag.state.position, positionDelta);
+    const itemCopyAtNewLocation = produce(itemToDrag, (draftItem) => {
+      draftItem.state.position = addXyz(
+        itemToDrag.state.position,
+        positionDelta,
+      );
     });
+    // item won't collide with the unmodified version of itself because they have the same id:
     const collisions = collision1toManyIter(
       itemCopyAtNewLocation,
       collideableItems,
@@ -77,5 +80,4 @@ export const mutateRoomForDrag = (
       );
     }
   }
-  return !hasCollisions;
 };

@@ -9,8 +9,9 @@ import { usePutUpscaleOnAppStage } from "./usePutUpscaleOnAppStage";
 import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplicationToMatchCanvasSize";
 import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
 import { useUpdateUpscaleWhenWindowResizes } from "../../store/storeFlow/useUpateUpscaleWhenWIndowResizes";
-import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
+
+import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 export const RoomEditingArea = () => {
@@ -19,22 +20,7 @@ export const RoomEditingArea = () => {
   const [renderSizingArea, setRenderSizingArea] =
     useState<HTMLDivElement | null>(null);
 
-  const cursorClassname = useAppSelectorWithLevelEditorSlice(
-    ({ levelEditor }) =>
-      levelEditor.dragInProgress ? "cursor-grabbing"
-      : levelEditor.clickableAnnotationHovered ? "cursor-pointer"
-      : levelEditor.hoveredJsonItemId ?
-        (
-          // if hovering on the selected item, use grab cursor to suggest can
-          // move it
-          levelEditor.selectedJsonItemIds.includes(
-            levelEditor.hoveredJsonItemId,
-          )
-        ) ?
-          "cursor-grab"
-        : "cursor-default"
-      : "cursor-crosshair",
-  );
+  const cursorClassname = useRoomEditingAreaCursorClassName();
 
   useUpdateUpscaleWhenWindowResizes(undefined, renderSizingArea ?? undefined);
   useResizePixiApplicationToMatchCanvasSize();

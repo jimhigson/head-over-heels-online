@@ -7,7 +7,7 @@ import type {
   EditorRoomId,
   EditorRoomRenderer,
   EditorRoomState,
-} from "../EditorRoomId";
+} from "../editorTypes";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";

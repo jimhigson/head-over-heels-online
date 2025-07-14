@@ -41,3 +41,7 @@ export type EditorUnionOfAllItemInPlayTypes = UnionOfAllItemInPlayTypes<
   EditorRoomId,
   EditorRoomItemId
 >;
+export type EditorJsonItemWithTimes = Extract<
+  EditorJsonItemUnion,
+  { config: { times?: unknown } }
+>;

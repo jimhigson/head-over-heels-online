@@ -2,7 +2,7 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
 import { veryClose } from "../../../utils/veryClose";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
-import { projectAabbToHexagonCorners } from "./projectAabbToHexagonCorners";
+import { projectAabbCorners } from "./projectAabbCorners";
 
 /** to compensate for floating point error, ranges have to be overlapping by this much to consider them to be visually overlapping */
 const visuallyOverlapsMinimumOverlap = 0.000_01;
@@ -46,32 +46,40 @@ const visuallyOverlaps = (
   bPos: Xyz,
   bBb: Xyz,
 ): VISUALLY_OVERLAPS_RETURN => {
-  const cornersA = projectAabbToHexagonCorners(aPos, aBb);
-  const cornersB = projectAabbToHexagonCorners(bPos, bBb);
+  const {
+    topLeft: topLeftA,
+    topRight: topRightA,
+    bottomCentre: bottomCentreA,
+  } = projectAabbCorners(aPos, aBb);
+  const {
+    topLeft: topLeftB,
+    topRight: topRightB,
+    bottomCentre: bottomCentreB,
+  } = projectAabbCorners(bPos, bBb);
 
   // a (projected) line along the (world) x axis of the projected is described by:
   //  [y = x/2 - c]
   //  = [c = y + x/2]
   // a greater c means projected higher on the screen -ie, a higher value in y and/or z (world-x is orthogonal)
-  const aXAxisSlopeMinC = cornersA.topRight.y - cornersA.topRight.x / 2;
-  const aXAxisSlopeMaxC = cornersA.bottomCentre.y - cornersA.bottomCentre.x / 2;
+  const aXAxisSlopeMinC = topRightA.y - topRightA.x / 2;
+  const aXAxisSlopeMaxC = bottomCentreA.y - bottomCentreA.x / 2;
 
-  const bXAxisSlopeMinC = cornersB.topRight.y - cornersB.topRight.x / 2;
-  const bXAxisSlopeMaxC = cornersB.bottomCentre.y - cornersB.bottomCentre.x / 2;
+  const bXAxisSlopeMinC = topRightB.y - topRightB.x / 2;
+  const bXAxisSlopeMaxC = bottomCentreB.y - bottomCentreB.x / 2;
 
   // now projected lines along the y axis: [y = x/2 - c] = [c = y-x/2]
-  const aYAxisSlopeMinC = cornersA.topLeft.y + cornersA.topLeft.x / 2;
-  const aYAxisSlopeMaxC = cornersA.bottomCentre.y + cornersA.bottomCentre.x / 2;
+  const aYAxisSlopeMinC = topLeftA.y + topLeftA.x / 2;
+  const aYAxisSlopeMaxC = bottomCentreA.y + bottomCentreA.x / 2;
 
-  const bYAxisSlopeMinC = cornersB.topLeft.y + cornersB.topLeft.x / 2;
-  const bYAxisSlopeMaxC = cornersB.bottomCentre.y + cornersB.bottomCentre.x / 2;
+  const bYAxisSlopeMinC = topLeftB.y + topLeftB.x / 2;
+  const bYAxisSlopeMaxC = bottomCentreB.y + bottomCentreB.x / 2;
 
   // xmin/xmax defines the (z-axis) vertical lines at the left and right of the projected hexagon
-  const aXMin = cornersA.topLeft.x;
-  const aXMax = cornersA.topRight.x;
+  const aXMin = topLeftA.x;
+  const aXMax = topRightA.x;
 
-  const bXMin = cornersB.topLeft.x;
-  const bXMax = cornersB.topRight.x;
+  const bXMin = topLeftB.x;
+  const bXMax = topRightB.x;
 
   const xAxisOverlap = rangeOverlap(
     aXAxisSlopeMinC,

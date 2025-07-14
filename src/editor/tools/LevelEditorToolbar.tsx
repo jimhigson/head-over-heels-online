@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { RoomSelect } from "../../ui/RoomSelect";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { originXyz } from "../../utils/vectors/vectors";
-import type { EditorRoomId, EditorRoomItemId } from "../EditorRoomId";
+import type { EditorRoomId, EditorRoomItemId } from "../editorTypes";
 import {
   changeToRoom,
   useAppSelectorWithLevelEditorSlice,

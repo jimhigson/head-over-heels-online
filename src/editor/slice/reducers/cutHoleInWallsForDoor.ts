@@ -12,7 +12,7 @@ import type {
   EditorRoomItemId,
   EditorJsonItemUnion,
   EditorRoomJson,
-} from "../../EditorRoomId";
+} from "../../editorTypes";
 import {
   completeTimesXy,
   wallTimes,

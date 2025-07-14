@@ -3,7 +3,12 @@ import type { WallJsonConfig } from "../../model/json/WallJsonConfig";
 import type { SceneryName } from "../../sprites/planets";
 import { blockSizeXyzPx } from "../../sprites/spritePivots";
 import type { Xy } from "../../utils/vectors/vectors";
-import { type Xyz, subXyz, productXyz } from "../../utils/vectors/vectors";
+import {
+  type Xyz,
+  subXyz,
+  productXyz,
+  unitXyz,
+} from "../../utils/vectors/vectors";
 import { isMultipliedItem } from "../physics/itemPredicates";
 
 export const multiplyBoundingBox = (
@@ -38,15 +43,13 @@ export const itemInPlayTimes = (
   item: UnionOfAllItemInPlayTypes,
 ): Partial<Xyz> | undefined => {
   return (
-    isMultipliedItem(item) ?
-      item.type === "wall" ?
-        wallTimes(item.config as WallJsonConfig<SceneryName>)
-      : item.config.times
+    item.type === "wall" ? wallTimes(item.config as WallJsonConfig<SceneryName>)
+    : isMultipliedItem(item) ? item.config.times
     : undefined
   );
 };
 
-export const completeTimesXyz = (xyz: Partial<Xyz>): Xyz => {
+export const completeTimesXyz = (xyz: Partial<Xyz> = unitXyz): Xyz => {
   return {
     x: xyz.x ?? 1,
     y: xyz.y ?? 1,

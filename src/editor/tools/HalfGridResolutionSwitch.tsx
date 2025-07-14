@@ -11,15 +11,15 @@ export const HalfGridResolutionSwitch = () => {
   return (
     <Switch
       className="w-full"
-      label="res"
+      label="snap"
       value={useAppSelectorWithLevelEditorSlice(
         (state) => state.levelEditor.halfGridResolution,
       )}
       onClick={(_e, value) => {
         dispatch(changeGridResolution(value));
       }}
-      falseLabel="Blocks"
-      trueLabel="Halves"
+      falseLabel="Block"
+      trueLabel="Half"
     />
   );
 };

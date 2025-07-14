@@ -1,5 +1,5 @@
 import type { JsonItemConfig } from "../../model/json/JsonItem";
-import type { EditorRoomId, EditorRoomItemId } from "../EditorRoomId";
+import type { EditorRoomId, EditorRoomItemId } from "../editorTypes";
 import {
   selectCurrentEditingRoomJson,
   useAppSelectorWithLevelEditorSlice,

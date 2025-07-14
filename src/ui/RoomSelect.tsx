@@ -32,7 +32,7 @@ export function RoomSelect<RoomId extends string>({
       value={value}
       values={roomIds}
       triggerButtonClassName={triggerButtonClassName}
-      placeholder="room id"
+      placeholder="search"
       disableCommandInput={false}
       triggerButtonLabel={value ?? "none"}
       OptionCommandItem={({ value, onSelect }) => {
