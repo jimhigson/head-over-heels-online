@@ -27,8 +27,8 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@5,5,2": {
-      config: { style: "artificial" },
-      position: { x: 5, y: 5, z: 2 },
+      config: { style: "artificial", times: { z: 3 } },
+      position: { x: 5, y: 5, z: 0 },
       type: "block",
     },
     "block@5,5,4": {
@@ -59,16 +59,6 @@ export const room = inferRoomJson({
     extra5: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 2, y: 5, z: 0 },
-      type: "block",
-    },
-    extra6: {
-      config: { style: "artificial" },
-      position: { x: 5, y: 5, z: 1 },
-      type: "block",
-    },
-    extra7: {
-      config: { style: "artificial" },
-      position: { x: 5, y: 5, z: 0 },
       type: "block",
     },
     "floor@0,0,0": {

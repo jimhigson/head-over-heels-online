@@ -81,13 +81,8 @@ export const room = inferRoomJson({
       type: "spikes",
     },
     "spikes@1,4,1": {
-      config: {},
+      config: { times: { x: 2 } },
       position: { x: 1, y: 4, z: 1 },
-      type: "spikes",
-    },
-    "spikes@2,4,1": {
-      config: {},
-      position: { x: 2, y: 4, z: 1 },
       type: "spikes",
     },
     "spikes@7,7,0": {

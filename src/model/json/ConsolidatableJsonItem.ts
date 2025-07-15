@@ -11,6 +11,7 @@ export const consolidatableJsonItemTypes = [
   "wall",
   "teleporter",
   "floor",
+  "spikes",
 ] as const satisfies JsonItemType[];
 export type ConsolidatableJsonItemType =
   (typeof consolidatableJsonItemTypes)[number];
@@ -58,6 +59,7 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
       return { x: 1, y: 1, z: 0 };
 
     case "floor":
+    case "spikes":
       return { x: 1, y: 1, z: 0 };
 
     case "block":

@@ -5,138 +5,58 @@
     "value": 12
   },
   {
+    "op": "replace",
+    "path": "/items/block@5,5,2/position/z",
+    "value": 0
+  },
+  {
     "op": "add",
-    "path": "/items/extra1",
+    "path": "/items/block@5,5,2/config/times",
     "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 4,
-        "y": 5,
-        "z": 0
-      },
-      "type": "block"
+      "z": 3
     }
   },
   {
     "op": "add",
-    "path": "/items/extra2",
+    "path": "/items/block@5,2,6/config/disappearing",
     "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 5,
-        "z": 1
-      },
-      "type": "block"
+      "on": "stand"
     }
   },
   {
-    "op": "add",
-    "path": "/items/extra2b",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 5,
-        "z": 0
-      },
-      "type": "block"
-    }
+    "op": "replace",
+    "path": "/items/block@5,1,2/position/z",
+    "value": 0
   },
   {
     "op": "add",
-    "path": "/items/extra3",
+    "path": "/items/block@5,1,2/config/times",
     "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 1,
-        "z": 1
-      },
-      "type": "block"
+      "z": 3
     }
   },
   {
-    "op": "add",
-    "path": "/items/extra4",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 1,
-        "z": 0
-      },
-      "type": "block"
-    }
+    "op": "replace",
+    "path": "/items/block@5,0,4/position/z",
+    "value": 0
   },
   {
     "op": "add",
-    "path": "/items/extra5",
+    "path": "/items/block@5,0,4/config/times",
     "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 0,
-        "z": 3
-      },
-      "type": "block"
+      "z": 5
     }
   },
   {
-    "op": "add",
-    "path": "/items/extra6",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 0,
-        "z": 2
-      },
-      "type": "block"
-    }
+    "op": "replace",
+    "path": "/items/block@4,5,1/position/z",
+    "value": 0
   },
   {
     "op": "add",
-    "path": "/items/extra7",
+    "path": "/items/block@4,5,1/config/times",
     "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 0,
-        "z": 1
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra8",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
+      "z": 2
     }
   },
   {

@@ -5,6 +5,18 @@
     "value": 12
   },
   {
+    "op": "replace",
+    "path": "/items/block@5,5,2/position/z",
+    "value": 0
+  },
+  {
+    "op": "add",
+    "path": "/items/block@5,5,2/config/times",
+    "value": {
+      "z": 3
+    }
+  },
+  {
     "op": "add",
     "path": "/items/extra1",
     "value": {
@@ -88,36 +100,6 @@
       },
       "position": {
         "x": 2,
-        "y": 5,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra6",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
-        "y": 5,
-        "z": 1
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra7",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 5,
         "y": 5,
         "z": 0
       },
