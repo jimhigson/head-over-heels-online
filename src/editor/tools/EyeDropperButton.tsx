@@ -1,4 +1,3 @@
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { store } from "../../store/store";
 import {
   setTool,
@@ -16,7 +15,7 @@ export const EyeDropperButton = () => {
       isCurrentTool={isCurrentTool}
       onClick={() => store.dispatch(setTool({ type: "eyeDropper" }))}
     >
-      <BitmapText className="relative leading-none">ED</BitmapText>
+      <span className="relative sprite texture-editor_tool_eyedropper leading-none" />
     </ToolbarButton>
   );
 };
