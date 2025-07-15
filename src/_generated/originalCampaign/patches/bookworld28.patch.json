@@ -248,36 +248,6 @@
   },
   {
     "op": "add",
-    "path": "/items/jumpingOff",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 0,
-        "y": 3,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/jumpingOff2",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 3,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/extraTurtle1",
     "value": {
       "config": {
@@ -310,6 +280,36 @@
         "z": 1
       },
       "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/jumpingOff",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 0,
+        "y": 3,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/jumpingOff2",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "type": "block"
     }
   },
   {
