@@ -16,7 +16,7 @@ export const WallToolButton = () => {
     type: "wall",
     config: {
       direction: "away", // arbitrary, to be corrected on placement
-      tiles: rotatingSceneryTiles(scenery, 1),
+      tiles: Array.from(rotatingSceneryTiles(scenery, 1)),
     },
   } as const;
 

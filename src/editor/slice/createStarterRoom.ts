@@ -1,4 +1,4 @@
-import { cycle, take } from "iter-tools";
+import { cycle, drop, take } from "iter-tools";
 import type { JsonItem } from "../../model/json/JsonItem";
 import { type SceneryName, type Wall } from "../../sprites/planets";
 import type {
@@ -33,8 +33,11 @@ const wallStarterPatterns: { [ScN in SceneryName]: Array<Wall<ScN>> } = {
 export const rotatingSceneryTiles = <S extends SceneryName>(
   sceneryName: S,
   size: number,
-): Wall<S>[] => {
-  return [...take(size, cycle(wallStarterPatterns[sceneryName]))];
+  skip: number = 0,
+): IterableIterator<Wall<S>> => {
+  const c = cycle(wallStarterPatterns[sceneryName]);
+
+  return drop(skip, take(size + skip, c));
 };
 
 const starterRoomWallItems = (size: Xy): EditorRoomJsonItems => ({
@@ -42,7 +45,7 @@ const starterRoomWallItems = (size: Xy): EditorRoomJsonItems => ({
     type: "wall",
     config: {
       direction: "away",
-      tiles: rotatingSceneryTiles("blacktooth", size.x),
+      tiles: Array.from(rotatingSceneryTiles("blacktooth", size.x)),
     },
     position: { x: 0, y: size.y, z: 0 },
   } satisfies JsonItem<"wall", EditorRoomId, EditorRoomItemId, "blacktooth">,
@@ -50,7 +53,7 @@ const starterRoomWallItems = (size: Xy): EditorRoomJsonItems => ({
     type: "wall",
     config: {
       direction: "left",
-      tiles: rotatingSceneryTiles("blacktooth", size.y),
+      tiles: Array.from(rotatingSceneryTiles("blacktooth", size.y)),
     },
     position: { x: size.x, y: 0, z: 0 },
   },

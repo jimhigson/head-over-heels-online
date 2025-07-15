@@ -75,12 +75,14 @@
     "uncombining",
     "unproject",
     "unprojected",
+    "unprojection",
     "unsnag",
     "unsolid",
     "upscaler",
     "vels",
     "wasd",
-    "xyzs"
+    "xyzs",
+    "zeroable"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.language": "en-GB,en-US",
