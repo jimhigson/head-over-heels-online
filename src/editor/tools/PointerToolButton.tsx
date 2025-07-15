@@ -16,7 +16,7 @@ export const PointerToolButton = () => {
       onClick={() => store.dispatch(setTool({ type: "pointer" }))}
       isCurrentTool={isCurrentTool}
     >
-      <span className={`sprite texture-hud_char_↖ relative`} />
+      <span className={`sprite texture-editor_tool_pointer relative`} />
     </ToolbarButton>
   );
 };

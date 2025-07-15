@@ -5,6 +5,7 @@ import { scenerySpritesheetData } from "./scenerySpritesheetData";
 import { hudSpritesheetData } from "./hudSritesheetData";
 import { doorSpritesheetData } from "./doorSpritesheetData";
 import { itemsSpritesheetData } from "./itemsSpritesheetData";
+import { editorSpritesheetData } from "./editorSritesheetData";
 
 const frames = {
   ...itemsSpritesheetData.frames,
@@ -12,6 +13,7 @@ const frames = {
   ...scenerySpritesheetData.frames,
   ...hudSpritesheetData.frames,
   ...doorSpritesheetData.frames,
+  ...editorSpritesheetData.frames,
 };
 
 export type TextureId = keyof typeof frames;
