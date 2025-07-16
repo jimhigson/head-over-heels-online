@@ -19,6 +19,8 @@ import { selectionsReducers } from "./reducers/selectionsReducers";
 import { editItemReducers } from "./reducers/editItemReducers";
 import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { editRoomReducers } from "./reducers/editRoomReducers";
+import { keysIter } from "../../utils/entries";
+import { first } from "iter-tools";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
@@ -114,6 +116,28 @@ export const levelEditorSlice = createSlice({
       state.history = initialLevelEditorSliceState.history;
     },
 
+    loadCampaign(
+      _state,
+      { payload: { campaign } }: PayloadAction<{ campaign: EditorCampaign }>,
+    ) {
+      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+      // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
+      // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
+      const state = _state as LevelEditorState;
+
+      state.campaignInProgress = campaign;
+      state.hoveredItem = undefined;
+      state.selectedJsonItemIds = [];
+      state.clickableAnnotationHovered = false;
+      state.dragInProgress = false;
+      state.history = initialLevelEditorSliceState.history;
+      const roomId = first(keysIter(campaign.rooms));
+      if (roomId === undefined) {
+        throw new Error("could not find any rooms in this campaign");
+      }
+      state.currentlyEditingRoomId = roomId;
+    },
+
     /**
      * noop reducer to force the store to give this slice its initial value in the store, since this slice is lazy-loaded.
      * Dispatching anything would also have this effect, we just need the reducer to run so it can give the initial state
@@ -129,6 +153,7 @@ export const levelEditorSlice = createSlice({
     ...editItemReducers,
   },
   selectors: {
+    selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
     selectCurrentEditingRoomJson: selectCurrentRoomFromLevelEditorState,
     selectItem: selectItemInLevelEditorState,
     selectCurrentEditingRoomColour: (state) =>
@@ -163,8 +188,9 @@ export const {
   clearRoom,
   deleteSelected,
   injected,
-  redo,
+  loadCampaign,
   moveOrResizeItem,
+  redo,
   roomJsonEdited,
   setClickableAnnotationHovered,
   setHoveredItemInRoom,
@@ -176,11 +202,12 @@ export const {
 export const {
   selectCanRedo,
   selectCanUndo,
+  selectCurrentCampaignInProgress,
   selectCurrentEditingRoomColour,
   selectCurrentEditingRoomJson,
-  selectItem,
   selectCurrentEditingRoomScenery,
   selectHoveredItem,
+  selectItem,
   selectSelectedJsonItemIds,
   selectTool,
 } = levelEditorSlice.selectors;
