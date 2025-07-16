@@ -31,57 +31,13 @@ import {
   RoomBelowSelectOrCreate,
 } from "./RoomsAboveOrBelow";
 import { EyeDropperButton } from "./EyeDropperButton";
-
-const StackedToolbarIcons = ({
-  topClasses,
-  bottomClasses = "texture-headlessBase",
-}: {
-  topClasses: string;
-  bottomClasses?: string;
-}) => {
-  return (
-    <div className="relative w-full h-full">
-      <span
-        className={`sprite absolute top-[calc(9px*var(--scale))] left-0 ${bottomClasses} ${buttonSpriteRevertColourClasses}`}
-      />
-      <span
-        className={`sprite absolute top-[calc(-3px*var(--scale))] left-0 ${topClasses} ${buttonSpriteRevertColourClasses}`}
-      />
-    </div>
-  );
-};
-const DissapearingToolbarIcon = ({
-  iconClassName,
-}: {
-  iconClassName: string;
-}) => {
-  return (
-    <StackedToolbarIcons
-      topClasses={twClass(
-        "texture-bubbles_white_2 [button:hover_&]:texture-animated-bubbles_white",
-      )}
-      bottomClasses={iconClassName}
-    />
-  );
-};
-const LabelledToolbarIcon = ({
-  iconClasses,
-  text,
-}: {
-  iconClasses: string;
-  text: string;
-}) => {
-  return (
-    <div className="relative w-full h-full">
-      <span
-        className={`sprite absolute top-0 left-0 ${iconClasses} ${buttonSpriteRevertColourClasses}`}
-      />
-      <BitmapText className="bg-metallicBlueHalfbrite absolute top-0 right-0 pl-oneScaledPix block">
-        {text}
-      </BitmapText>
-    </div>
-  );
-};
+import { LoadButton, SaveButton } from "./SaveAndLoadButtons";
+import {
+  DissapearingToolbarIcon,
+  LabelledToolbarIcon,
+  StackedToolbarIcons,
+} from "./ToolbarButtonContentPatterns";
+import { MapButton } from "./MapButton";
 
 export const LevelEditorToolbar = () => {
   const campaign = useAppSelectorWithLevelEditorSlice(
@@ -96,6 +52,9 @@ export const LevelEditorToolbar = () => {
     <div className="scale-editor flex w-full h-full text-white bg-metallicBlueHalfbrite py-1 gap-1 flex-wrap justify-start overflow-auto">
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Campaign</BitmapText>
+        <SaveButton />
+        <LoadButton />
+        <MapButton />
         <RoomSelect
           value={currentlyEditingRoomId}
           campaign={campaign}
@@ -115,11 +74,13 @@ export const LevelEditorToolbar = () => {
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full pt-2">Edit</BitmapText>
-        <PointerToolButton />
+        <div className={buttonGroupClassname}>
+          <PointerToolButton />
+          <EyeDropperButton />
+        </div>
         <UndoRedoButtons />
         <DeleteItemToolButton />
         <ClearRoomButton />
-        <EyeDropperButton />
         <div className="h-1 w-full" />
         <HalfGridResolutionSwitch />
         <WallsFloorsLockedSwitch />

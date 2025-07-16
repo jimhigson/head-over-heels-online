@@ -8,10 +8,7 @@ import {
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
-
-const arrowClassname = "[button:not(:disabled):hover_&]:hidden mt-quarter";
-const topText = "hidden [button:not(:disabled):hover_&]:inline mt-quarter";
-const bottomText = "hidden [button:not(:disabled):hover_&]:inline";
+import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
 
 export const UndoRedoButtons = () => {
   const dispatch = useAppDispatch();
@@ -20,29 +17,31 @@ export const UndoRedoButtons = () => {
   const canRedo = useAppSelectorWithLevelEditorSlice(selectCanRedo);
 
   return (
-    <>
+    <div className="flex flex-row gap-oneScaledPix bg-metallicBlue">
       <ToolbarButton
         disabled={!canUndo}
-        className="flex-col"
         onClick={() => {
           dispatch(undo());
         }}
       >
-        <BitmapText className={arrowClassname}>⬅</BitmapText>
-        <BitmapText className={topText}>Un</BitmapText>
-        <BitmapText className={bottomText}>do</BitmapText>
+        <IconWithTwoLineHoverText
+          icon={<BitmapText>⬅</BitmapText>}
+          topText="un"
+          bottomText="do"
+        />
       </ToolbarButton>
       <ToolbarButton
         disabled={!canRedo}
-        className="flex-col"
         onClick={() => {
           dispatch(redo());
         }}
       >
-        <BitmapText className={arrowClassname}>➡</BitmapText>
-        <BitmapText className={topText}>Re</BitmapText>
-        <BitmapText className={bottomText}>do</BitmapText>
+        <IconWithTwoLineHoverText
+          icon={<BitmapText>➡</BitmapText>}
+          topText="re"
+          bottomText="do"
+        />
       </ToolbarButton>
-    </>
+    </div>
   );
 };

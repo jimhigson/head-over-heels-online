@@ -4,7 +4,7 @@ import type { PropsWithChildren } from "react";
 import { buttonSizeClassNames } from "./buttonSizeClassNames";
 
 type ToolbarButtonProps = {
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
   isCurrentTool?: boolean;
   disabled?: boolean;
