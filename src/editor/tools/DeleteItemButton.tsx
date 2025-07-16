@@ -12,6 +12,7 @@ export const DeleteItemToolButton = () => {
 
   return (
     <ToolbarButton
+      className="bg-midRed"
       disabled={!somethingSelected}
       onClick={() => store.dispatch(deleteSelected())}
     >

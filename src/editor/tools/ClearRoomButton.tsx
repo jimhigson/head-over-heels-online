@@ -5,7 +5,10 @@ import { ToolbarButton } from "./ToolbarButton";
 
 export const ClearRoomButton = () => {
   return (
-    <ToolbarButton onClick={() => store.dispatch(clearRoom())}>
+    <ToolbarButton
+      className="bg-midRed"
+      onClick={() => store.dispatch(clearRoom())}
+    >
       <BitmapText className="relative leading-none">CLR</BitmapText>
     </ToolbarButton>
   );

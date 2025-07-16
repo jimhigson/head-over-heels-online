@@ -5,7 +5,7 @@ import { scenerySpritesheetData } from "./scenerySpritesheetData";
 import { hudSpritesheetData } from "./hudSritesheetData";
 import { doorSpritesheetData } from "./doorSpritesheetData";
 import { itemsSpritesheetData } from "./itemsSpritesheetData";
-import { editorSpritesheetData } from "./editorSritesheetData";
+import { editorSpritesheetData } from "./editorSpritesheetData";
 
 const frames = {
   ...itemsSpritesheetData.frames,
