@@ -52,7 +52,7 @@ export function RoomColourSelect() {
         triggerButtonLabel="colour"
         triggerButtonClassName={cn(
           "w-full",
-          `${currentRoomColour.hue === "white" ? "text-pureBlack" : "text-white"}`,
+          `${currentRoomColour.hue === "white" || currentRoomColour.hue === "yellow" ? "text-pureBlack" : "text-white"}`,
         )}
         triggerButtonStyle={itemColourCss(currentRoomColour.hue)}
       />

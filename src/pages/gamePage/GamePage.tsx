@@ -8,7 +8,6 @@ import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.t
 import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import { useCheatsOn, useIsGameRunning } from "../../store/selectors.ts";
-import type { OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId.ts";
 import type Cheats from "../../game/components/cheats/Cheats.tsx";
 import { importOriginalCampaign } from "../../_generated/originalCampaign/campaign.import.ts";
 import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
@@ -25,23 +24,30 @@ import { createSerialisableErrors } from "../../utils/redux/createSerialisableEr
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
 import { ErrorBoundary } from "../../utils/react/ErrorBoundary.tsx";
+import { decompressObject } from "../../db/compressObject.ts";
+import type { Campaign } from "../../model/modelTypes.ts";
+import { typedURLSearchParams } from "../../options/queryParams.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
 const loadGameAssets = importOnce((cheatsOn: boolean) => {
+  const queryParams = typedURLSearchParams();
+  const hasUrlCampaignData = queryParams.get("campaignData");
+
   return Promise.all([
     importGameMain(),
-    importOriginalCampaign(),
-    cheatsOn ? importTestCampaign() : undefined,
+    hasUrlCampaignData ? undefined : importOriginalCampaign(),
+    cheatsOn && !hasUrlCampaignData ? importTestCampaign() : undefined,
+    hasUrlCampaignData ?
+      decompressObject<Campaign<string>>(hasUrlCampaignData)
+    : undefined,
     loadSpritesheet(),
     loadSounds(),
   ]);
 });
 
-const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
-  const [gameApi, setGameApi] = useState<
-    GameApi<OriginalCampaignRoomId> | undefined
-  >();
+const useGame = (): GameApi<string> | undefined => {
+  const [gameApi, setGameApi] = useState<GameApi<string> | undefined>();
   const isGameRunning = useIsGameRunning();
   const inputState = useInputStateTracker();
   const cheatsOn = useCheatsOn();
@@ -56,31 +62,35 @@ const useGame = (): GameApi<OriginalCampaignRoomId> | undefined => {
       return;
     }
     let thisEffectCancelled = false;
-    let thisEffectGameApi: GameApi<OriginalCampaignRoomId> | undefined;
+    let thisEffectGameApi: GameApi<string> | undefined;
 
     const go = async () => {
       try {
-        // to avoid top-level await in Safari, load the sprites early:
         loadingStarted();
         const [
           gameMain,
           originalCampaignImport,
-          testCampaignImport,
-          //spriteSheet,
+          testCampaign,
+          urlCampaign,
+          //_spriteSheet,
+          //_sounds,
         ] = await loadGameAssets(cheatsOn);
         loadingFinished();
 
         if (!thisEffectCancelled) {
+          const baseCampaign =
+            urlCampaign ? urlCampaign : originalCampaignImport!.campaign;
+
           const campaign =
             cheatsOn ?
               {
-                ...originalCampaignImport.campaign,
+                ...baseCampaign,
                 rooms: {
-                  ...originalCampaignImport.campaign.rooms,
-                  ...testCampaignImport?.testCampaign.rooms,
+                  ...baseCampaign.rooms,
+                  ...testCampaign?.testCampaign.rooms,
                 },
               }
-            : originalCampaignImport.campaign;
+            : baseCampaign;
 
           thisEffectGameApi = await gameMain.default(campaign, inputState);
           setGameApi(thisEffectGameApi);

@@ -19,6 +19,7 @@ import type { SavedGameState } from "./gameState/saving/SavedGameState";
 import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps } from "./physics/mechanicsConstants";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
+import { typedURLSearchParams } from "../options/queryParams";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -53,8 +54,14 @@ export const gameMain = async <RoomId extends string>(
   stopAppAutoRendering(app);
   app.ticker.maxFPS = maxFps;
 
-  const savedGameToContinueFrom = store.getState().gameMenus
-    .currentGame as SavedGameState<RoomId>;
+  const noSaves = typedURLSearchParams().get("noSaves");
+
+  const savedGameToContinueFrom =
+    noSaves ? undefined : (
+      (store.getState().gameMenus.currentGame as
+        | SavedGameState<RoomId>
+        | undefined)
+    );
 
   const gameState = loadGameState({
     campaign,
@@ -66,8 +73,11 @@ export const gameMain = async <RoomId extends string>(
       gameRestoreFromSave(savedGameToContinueFrom.store.gameMenus),
     );
   } else {
-    store.dispatch(roomExplored(gameState.characterRooms.head!.id));
-    store.dispatch(roomExplored(gameState.characterRooms.heels!.id));
+    // starting a new game - the player has at least explored the rooms they start in:
+    if (gameState.characterRooms.head)
+      store.dispatch(roomExplored(gameState.characterRooms.head.id));
+    if (gameState.characterRooms.heels)
+      store.dispatch(roomExplored(gameState.characterRooms.heels.id));
   }
 
   const loop = new MainLoop(app, gameState).start();

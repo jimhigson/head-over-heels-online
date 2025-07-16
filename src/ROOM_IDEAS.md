@@ -95,3 +95,5 @@ and need to change between them - they can also hit their own switch
 * have to manipulate a cyberman to hit a spiky ball (that you can't touch yourself) into rolling and pressing a switch that otherwise would be pseudo-deadly to touch (no way to jump back to safety after landing on it)
 
 * simple movement on raised platforms, but if make wrong step, homing bots hit switches and make the platform dissapearing. need to navigate without them hitting switches
+
+* whole floor of a room is a teleporter, but have to teleport from different places in the room to do differnet things. Only some of the room you go to is teleporters going back

@@ -34,6 +34,7 @@ import type { RootState } from "../store";
 import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { CharacterName } from "../../model/modelTypes";
+import { typedURLSearchParams } from "../../options/queryParams";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
@@ -101,7 +102,7 @@ const inBrowser = detectDeviceType() !== "server";
 const cheatsOn =
   inBrowser ?
     // in a browser
-    new URLSearchParams(window.location.search).has("cheats")
+    typedURLSearchParams().has("cheats")
     // in node (probably vitest)
   : false;
 

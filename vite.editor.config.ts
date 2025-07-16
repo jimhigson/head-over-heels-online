@@ -15,7 +15,7 @@ import { visualizer } from "rollup-plugin-visualizer";
  */
 // https://vitejs.dev/config/
 export default defineConfig({
-  /* the path the editor is served from after being built */
+  /* the path the editor webapp is served from after being built */
   base: "/editor/",
 
   // don't conflict with the game's vite cache

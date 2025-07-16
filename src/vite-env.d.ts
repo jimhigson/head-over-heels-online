@@ -19,3 +19,10 @@ declare module "virtual:pwa-register" {
     options?: RegisterSWOptions,
   ): (reloadPage?: boolean) => void;
 }
+interface ImportMetaEnv {
+  readonly VITE_GAME_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
