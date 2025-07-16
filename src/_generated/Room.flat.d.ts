@@ -55,6 +55,9 @@ export type RoomJsonSchema = {
         };
         config:
           | {
+              /**
+               * this wall would normally be found on the (invisible) towards side of the room
+               */
               direction: "towards";
               times?: {
                 x: number;
@@ -67,11 +70,23 @@ export type RoomJsonSchema = {
               };
             }
           | {
+              /**
+               * this wall would normally be found/rendered on the away side of the room
+               */
               direction: "away";
+              /**
+               * the tiles to show - the length of this array also determines the size of the wall
+               */
               tiles: any[];
             }
           | {
+              /**
+               * this wall would normally be found/rendered on the left side of the room
+               */
               direction: "left";
+              /**
+               * the tiles to show - the length of this array also determines the size of the wall
+               */
               tiles: any[];
             };
       }

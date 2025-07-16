@@ -2,22 +2,28 @@ import type { SceneryName, Wall } from "../../sprites/planets";
 import type { DirectionXy4, Xy } from "../../utils/vectors/vectors";
 
 export type AwayWallConfig<ScN extends SceneryName> = {
+  /** this wall would normally be found/rendered on the away side of the room */
   direction: "away";
+  /** the tiles to show - the length of this array also determines the size of the wall */
   tiles: Array<Wall<ScN>>;
 };
 
 export type LeftWallConfig<ScN extends SceneryName> = {
+  /** this wall would normally be found/rendered on the left side of the room */
   direction: "left";
+  /** the tiles to show - the length of this array also determines the size of the wall */
   tiles: Array<Wall<ScN>>;
 };
 
 export type TowardsWallConfig = {
+  /** this wall would normally be found on the (invisible) towards side of the room */
   direction: "towards";
   times?: {
     x: number;
   };
 };
 
+/** this wall would normally be found on the (invisible) right side of the room */
 export type RightWallConfig = {
   direction: "right";
   times?: {

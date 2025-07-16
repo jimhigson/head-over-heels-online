@@ -3,12 +3,125 @@ import { type SliceCaseReducers } from "@reduxjs/toolkit";
 import { type LevelEditorState } from "../levelEditorSlice";
 
 import type {
+  EditorJsonItem,
   EditorJsonItemWithTimes,
   EditorRoomItemId,
+  EditorRoomJson,
 } from "../../editorTypes";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import { selectItemInLevelEditorState } from "../levelEditorSliceSelectors";
+import {
+  addXyz,
+  originXyz,
+  xyEqual,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectItemInLevelEditorState,
+} from "../levelEditorSliceSelectors";
 import { pushUndoInPlace } from "./undoReducers";
+import { iterateRoomJsonItems } from "../../../model/RoomJson";
+import { rotatingSceneryTiles } from "../createStarterRoom";
+import type { SceneryName, Wall } from "../../../sprites/planets";
+import { wallTimes } from "../../../game/collision/boundingBoxTimes";
+
+const addOrRemoveWallTilesInPlace = <S extends SceneryName>(
+  tiles: Array<Wall<S>>,
+  scenery: S,
+  newSize: number,
+) => {
+  const sizeDelta = newSize - tiles.length;
+  if (sizeDelta > 0) {
+    tiles.push(...rotatingSceneryTiles(scenery, sizeDelta, tiles.length));
+  } else if (sizeDelta < 0) {
+    tiles.splice(newSize);
+  }
+};
+
+const changeWallsForFloorChangeInPlace = (
+  room: EditorRoomJson,
+  floor: EditorJsonItem<"floor">,
+  newPosition: Xyz,
+  newTimes?: Xyz,
+) => {
+  iterateRoomJsonItems(room)
+    .filter((i) => i.type === "wall")
+    .forEach((wall) => {
+      if (wall.position.z !== floor.position.z) {
+        return;
+      }
+
+      const wt = wallTimes(wall.config);
+
+      switch (wall.config.direction) {
+        case "towards":
+          if (
+            xyEqual(wall.position, floor.position) &&
+            wt.x === floor.config.times.x
+          ) {
+            wall.position = newPosition;
+            if (newTimes) {
+              wall.config.times = { x: newTimes.x };
+            }
+          }
+          break;
+
+        case "right":
+          if (
+            xyEqual(wall.position, floor.position) &&
+            wt.y === floor.config.times.y
+          ) {
+            wall.position = newPosition;
+            if (newTimes) {
+              wall.config.times = { y: newTimes.y };
+            }
+          }
+          break;
+
+        case "away":
+          if (
+            wall.position.x === floor.position.x &&
+            wall.position.y === floor.position.y + floor.config.times.y &&
+            wt.x === floor.config.times.x
+          ) {
+            wall.position = addXyz(
+              newPosition,
+              newTimes ? { y: newTimes.y } : originXyz,
+            );
+            if (newTimes) {
+              addOrRemoveWallTilesInPlace(
+                wall.config.tiles,
+                room.planet,
+                newTimes.x,
+              );
+            }
+          }
+          break;
+
+        case "left":
+          if (
+            wall.position.x === floor.position.x + floor.config.times.x &&
+            wall.position.y === floor.position.y &&
+            wt.y === floor.config.times.y
+          ) {
+            wall.position = addXyz(
+              newPosition,
+              newTimes ? { x: newTimes.x } : originXyz,
+            );
+            if (newTimes) {
+              addOrRemoveWallTilesInPlace(
+                wall.config.tiles,
+                room.planet,
+                newTimes.y,
+              );
+            }
+          }
+          break;
+        default:
+          wall.config satisfies never;
+          break;
+      }
+    });
+};
 
 export const editItemReducers = {
   /** add or remove the room above the current room */
@@ -19,7 +132,7 @@ export const editItemReducers = {
     }: PayloadAction<{
       jsonItemId: EditorRoomItemId;
       newTimes?: Xyz;
-      newPosition?: Xyz;
+      newPosition: Xyz;
       startOfGesture: boolean;
     }>,
   ) {
@@ -37,8 +150,14 @@ export const editItemReducers = {
       return;
     }
 
-    // TODO: for wall items, put extra tiles in for visible walls,
-    // don't set the times property
+    if (jsonItem.type === "floor") {
+      changeWallsForFloorChangeInPlace(
+        selectCurrentRoomFromLevelEditorState(state),
+        jsonItem,
+        newPosition,
+        newTimes,
+      );
+    }
 
     if (newTimes !== undefined) {
       const { config } = jsonItem as EditorJsonItemWithTimes;

@@ -53,6 +53,7 @@
                         "properties": {
                           "direction": {
                             "const": "towards",
+                            "description": "this wall would normally be found on the (invisible) towards side of the room",
                             "type": "string"
                           },
                           "times": {
@@ -101,9 +102,11 @@
                         "properties": {
                           "direction": {
                             "const": "away",
+                            "description": "this wall would normally be found/rendered on the away side of the room",
                             "type": "string"
                           },
                           "tiles": {
+                            "description": "the tiles to show - the length of this array also determines the size of the wall",
                             "items": {},
                             "type": "array"
                           }
@@ -116,9 +119,11 @@
                         "properties": {
                           "direction": {
                             "const": "left",
+                            "description": "this wall would normally be found/rendered on the left side of the room",
                             "type": "string"
                           },
                           "tiles": {
+                            "description": "the tiles to show - the length of this array also determines the size of the wall",
                             "items": {},
                             "type": "array"
                           }
