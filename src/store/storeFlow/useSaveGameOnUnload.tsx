@@ -4,6 +4,9 @@ import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
 import { persistor, store } from "../store";
 import { holdPressed, saveCurrentGame } from "../slices/gameMenusSlice";
+import { typedURLSearchParams } from "../../options/queryParams";
+
+const noSaves = typedURLSearchParams().get("noSaves");
 
 export const useSaveGameOnUnload = (): void => {
   const dispatch = useAppDispatch();
@@ -17,7 +20,10 @@ export const useSaveGameOnUnload = (): void => {
       return;
     }
 
-    const save = () => {
+    const maybeSave = () => {
+      if (noSaves) {
+        return;
+      }
       console.log("saving current game");
 
       dispatch(
@@ -32,14 +38,14 @@ export const useSaveGameOnUnload = (): void => {
         console.log("pausing due to visibilityState=hidden");
         dispatch(holdPressed("hold"));
         // this is also a good time to save since the user might not come back:
-        save();
+        maybeSave();
       }
     };
     document.addEventListener("visibilitychange", hold);
-    window.addEventListener("beforeunload", save);
+    window.addEventListener("beforeunload", maybeSave);
     return () => {
       document.removeEventListener("visibilitychange", hold);
-      window.removeEventListener("beforeunload", save);
+      window.removeEventListener("beforeunload", maybeSave);
     };
   }, [dispatch, gameApi]);
 };

@@ -18,3 +18,9 @@ body,
   @apply border-metallicBlue;
   border-left-width: calc(2 * var(--vscode-editorCodeLens-fontSize));
 }
+
+:focus-visible {
+  /* @apply outline-midRed outline-1; */
+  outline: calc(var(--scale) * 1px) solid;
+  @apply outline-midRed;
+}

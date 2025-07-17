@@ -31,13 +31,15 @@ import {
   RoomBelowSelectOrCreate,
 } from "./RoomsAboveOrBelow";
 import { EyeDropperButton } from "./EyeDropperButton";
-import { LoadButton, SaveButton } from "./SaveAndLoadButtons";
+import { SaveAndLoadButtons } from "./SaveAndLoadButtons";
 import {
   DissapearingToolbarIcon,
   LabelledToolbarIcon,
   StackedToolbarIcons,
 } from "./ToolbarButtonContentPatterns";
 import { MapButton } from "./MapButton";
+import { PlayTestButton } from "./PlayTestButton";
+import { LoggedInStatus } from "./LoggedInStatus";
 
 export const LevelEditorToolbar = () => {
   const campaign = useAppSelectorWithLevelEditorSlice(
@@ -49,12 +51,18 @@ export const LevelEditorToolbar = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="scale-editor flex w-full h-full text-white bg-metallicBlueHalfbrite py-1 gap-1 flex-wrap justify-start overflow-auto">
+    <div className="scale-editor flex w-full h-full text-white bg-metallicBlueHalfbrite pb-1 gap-1 flex-wrap justify-start overflow-auto">
+      <div className={buttonGroupClassname}>
+        <LoggedInStatus className="w-full mb-1" />
+      </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Campaign</BitmapText>
-        <SaveButton />
-        <LoadButton />
+        <SaveAndLoadButtons />
         <MapButton />
+        <PlayTestButton />
+      </div>
+      <div className={buttonGroupClassname}>
+        <BitmapText className="w-full pt-2">Room</BitmapText>
         <RoomSelect
           value={currentlyEditingRoomId}
           campaign={campaign}
@@ -63,9 +71,7 @@ export const LevelEditorToolbar = () => {
           }}
           triggerButtonClassName="w-full"
         />
-      </div>
-      <div className={buttonGroupClassname}>
-        <BitmapText className="w-full pt-2">Room</BitmapText>
+        <div className="h-1 w-full" />
         <RoomScenerySelect />
         <RoomColourSelect />
         <div className="h-1 w-full" />
@@ -470,7 +476,13 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton
           itemTool={{
             type: "joystick",
-            config: { controls: ["(placeholder)"] as EditorRoomItemId[] },
+
+            config: {
+              controls: [
+                // the first charles put into a room will always have 'charles' as the id:
+                "charles",
+              ] as EditorRoomItemId[],
+            },
           }}
         >
           <span
