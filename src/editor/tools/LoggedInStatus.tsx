@@ -4,13 +4,25 @@ import { cn } from "../../ui/cn";
 import { Button } from "../../ui/button";
 import { useSupabaseUser } from "./useSupabaseUser";
 import type { Provider } from "@supabase/supabase-js";
+import { nerdFontDiscordChar } from "../../sprites/hudSritesheetData";
 
 export const LoggedInStatus = ({ className }: { className?: string }) => {
   const user = useSupabaseUser();
 
   const handleLogin = (provider: Provider) => async () => {
+    // Remove everything after, and including, #.
+    // the # was causing issues since the redirect adds another # with the auth
+    // token to the url when coming back to our site, then leaves one which
+    // can still be there if we log out and in again
+    const redirectToUrl = new URL(window.location.href);
+    redirectToUrl.hash = "";
+    const redirectTo = redirectToUrl.toString();
+
     const { error } = await supabaseDb.auth.signInWithOAuth({
       provider,
+      options: {
+        redirectTo,
+      },
     });
     if (error) console.error("Login error:", error);
   };
@@ -47,7 +59,7 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
                 <BitmapText>GitHub</BitmapText>
               </Button>
               <Button className="px-1" onClick={handleLogin("discord")}>
-                <BitmapText>Discord</BitmapText>
+                <BitmapText>{nerdFontDiscordChar} Discord</BitmapText>
               </Button>
             </div>
           }
