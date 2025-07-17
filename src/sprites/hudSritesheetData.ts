@@ -8,6 +8,7 @@ import { escapeCharForTailwind } from "./escapeCharForTailwind";
 // this source really needs a nerd font to read it:
 // https://www.nerdfonts.com/cheat-sheet
 export const nerdFontDiscordChar = "\uf1ff";
+export const nerdFontGithubChar = "\ue709";
 export const chromePwaInstall = ""; // \uea78
 export const iosMacShare = ""; // \uf50e;
 export const iosMacAddToDock = "󱂩"; // \uf10a9;
@@ -59,6 +60,7 @@ const firstRow = [
   "🕹",
   { char: "∞", double: true },
   { char: nerdFontDiscordChar, double: true },
+  { char: nerdFontGithubChar, double: true },
 ] as const;
 
 const secondRow = [
