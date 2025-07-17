@@ -4,7 +4,25 @@ import { cn } from "../../ui/cn";
 import { Button } from "../../ui/button";
 import { useSupabaseUser } from "./useSupabaseUser";
 import type { Provider } from "@supabase/supabase-js";
-import { nerdFontDiscordChar } from "../../sprites/hudSritesheetData";
+import {
+  nerdFontDiscordChar,
+  nerdFontGithubChar,
+} from "../../sprites/hudSritesheetData";
+import type { Subset } from "../../utils/subset";
+
+type SupportedProvider = Subset<Provider, "github" | "discord">;
+
+const providerIcon = (provider: SupportedProvider): string => {
+  switch (provider) {
+    case "github":
+      return nerdFontGithubChar;
+    case "discord":
+      return nerdFontDiscordChar;
+    default:
+      provider satisfies never;
+      throw new Error();
+  }
+};
 
 export const LoggedInStatus = ({ className }: { className?: string }) => {
   const user = useSupabaseUser();
@@ -33,38 +51,42 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn(className)}>
-      <div className={cn("px-1", user ? "bg-moss" : "bg-midRed")}>
-        {user ?
-          <>
-            <BitmapText>{`${user.email}`}</BitmapText>
-            <BitmapText>{`via ${user.app_metadata.provider}`}</BitmapText>
-          </>
-        : <>
-            <BitmapText className="block w-full sprites-double-height pb-1">
-              Not logged in
-            </BitmapText>
-            <BitmapText className="block w-full text-highlightBeige">
-              You will not be able to save
-            </BitmapText>
-          </>
-        }
-        <div>
-          {user ?
-            <Button className="px-1" onClick={handleLogout}>
-              <BitmapText>Logout</BitmapText>
-            </Button>
-          : <div className="pt-1">
-              <BitmapText>Log in with:</BitmapText>
-              <Button className="px-1" onClick={handleLogin("github")}>
-                <BitmapText>GitHub</BitmapText>
-              </Button>
-              <Button className="px-1" onClick={handleLogin("discord")}>
-                <BitmapText>{nerdFontDiscordChar} Discord</BitmapText>
-              </Button>
-            </div>
-          }
+      {user ?
+        <div className="bg-moss">
+          <BitmapText
+            noSlitWords
+            className="overflow-hidden"
+          >{`${providerIcon(user.app_metadata.provider as SupportedProvider)}${user.email}`}</BitmapText>
+          <Button className="px-1 w-full" onClick={handleLogout}>
+            <BitmapText>Logout</BitmapText>
+          </Button>
         </div>
-      </div>
+      : <div className="px-1 bg-midRed">
+          <BitmapText className="block w-full sprites-double-height pb-1">
+            Not logged in
+          </BitmapText>
+          <BitmapText className="block w-full text-highlightBeige">
+            You will not be able to save
+          </BitmapText>
+          <div className="pt-1 flex flex-col gap-half">
+            <BitmapText>Log in with:</BitmapText>
+            <Button
+              className="px-1 w-full flex-row justify-between bg-redShadow"
+              onClick={handleLogin("github")}
+            >
+              <BitmapText>{nerdFontGithubChar}</BitmapText>
+              <BitmapText>GitHub</BitmapText>
+            </Button>
+            <Button
+              className="px-1 w-full flex-row justify-between bg-redShadow"
+              onClick={handleLogin("discord")}
+            >
+              <BitmapText>{nerdFontDiscordChar}</BitmapText>
+              <BitmapText>Discord</BitmapText>
+            </Button>
+          </div>
+        </div>
+      }
     </div>
   );
 };
