@@ -1,20 +1,8 @@
-import { isEmpty } from "iter-tools";
-import { collision1toManyIter } from "../../../game/collision/aabbCollision";
-import type {
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomState,
-  EditorUnionOfAllItemInPlayTypes,
-} from "../../editorTypes";
+import type { EditorRoomState } from "../../editorTypes";
 import type { PointingAtItem } from "./PointingAt";
 import type { ItemTool } from "../../Tool";
-import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { fineXyzToBlockXyz } from "../../../game/render/projections";
-import type {
-  JsonItemConfig,
-  JsonItemType,
-  JsonItemUnion,
-} from "../../../model/json/JsonItem";
+
 import type { Xy } from "../../../utils/vectors/vectors";
 import {
   addXyz,
@@ -30,10 +18,7 @@ import {
   completeTimesXy,
   wallTimes,
 } from "../../../game/collision/boundingBoxTimes";
-import { collideableItemsInRoom } from "./collideableItemsInRoom";
 import { epsilon } from "../../../utils/veryClose";
-
-let cursorItemCount = 0;
 
 export const itemToolPutDownLocation = (
   pointingAt: PointingAtItem,
@@ -109,90 +94,4 @@ export const itemToolPutDownLocation = (
   // by adding the normal of the face. Since the normal of the face points out of the item
   // being pointed at, this prevents putting down inside the item we are pointing at
   return addXyz(fineXyzToBlockXyz(pointingAtPosition), pointingAtFace);
-};
-
-/**
- * if we're using an item tool, load the items(s) where we would put them down, for preview.
- *
- * Can also be used to validate - if returns undefined, the putdown can't happen
- *
- * @returns the location, or undefined if this putdown is invalid
- */
-export const previewItemsForCursor = <T extends JsonItemType>(
-  pointingAt: PointingAtItem,
-  roomState: EditorRoomState,
-  itemTool: ItemTool<T>,
-): EditorUnionOfAllItemInPlayTypes[] | undefined => {
-  const loadItems = <T2 extends JsonItemType>(
-    type: T2,
-    config: JsonItemConfig<T2, EditorRoomId, EditorRoomItemId>,
-    position: Xyz,
-  ) => {
-    const loadedItems = loadItemFromJson(
-      `cursor/${cursorItemCount++}`,
-      {
-        type,
-        config,
-        position,
-      } as JsonItemUnion<string, string>,
-      roomState.roomJson,
-    ).toArray() as EditorUnionOfAllItemInPlayTypes[];
-
-    loadedItems.forEach((item) => {
-      item.isCursorPreview = true;
-    });
-
-    return loadedItems;
-  };
-
-  const jsonBlockPosition = itemToolPutDownLocation(
-    pointingAt,
-    roomState,
-    itemTool,
-  );
-
-  if (jsonBlockPosition === undefined) {
-    return undefined; // can't put down here
-  }
-
-  if (itemTool.type === "door") {
-    const pointingAtItem = roomState.items[pointingAt.world.itemId];
-
-    if (pointingAtItem.type !== "wall") {
-      return undefined;
-    }
-
-    const wallDirection = pointingAtItem.config.direction;
-
-    const loadedItems = loadItems<"door">(
-      "door",
-      {
-        ...(itemTool.config as JsonItemConfig<
-          "door",
-          EditorRoomId,
-          EditorRoomItemId
-        >),
-        direction: wallDirection,
-      },
-      jsonBlockPosition,
-    );
-
-    // doors are a special case since they can only be added on walls:
-    return loadedItems;
-  }
-
-  const loadedItems = loadItems(
-    itemTool.type,
-    itemTool.config,
-    jsonBlockPosition,
-  );
-
-  const collideableItems = Array.from(collideableItemsInRoom(roomState));
-
-  const hasCollisions = loadedItems.some((loadedItem) => {
-    const collisions = collision1toManyIter(loadedItem, collideableItems);
-
-    return !isEmpty(collisions);
-  });
-  return hasCollisions ? undefined : loadedItems;
 };

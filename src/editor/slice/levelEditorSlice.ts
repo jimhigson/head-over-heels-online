@@ -2,12 +2,16 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { SetRequired, ValueOf } from "type-fest";
 import { starterRoom } from "./createStarterRoom";
-import type { EditorCampaign, EditorRoomJson } from "../editorTypes";
+import type {
+  EditorCampaign,
+  EditorRoomJson,
+  EditorRoomJsonItems,
+} from "../editorTypes";
 import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
 import type { Tool } from "../Tool";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
-import { applyItemToolReducers } from "./reducers/applyToolToRoomJson";
+import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
 import {
   selectCurrentRoomFromLevelEditorState,
   selectItemInLevelEditorState,
@@ -16,21 +20,33 @@ import { undoReducers, undoSelectors } from "./reducers/undoReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
-import { editItemReducers } from "./reducers/editItemReducers";
+import { moveOrResizeItemReducers } from "./reducers/moveOrResizeItemReducers";
 import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { keysIter } from "../../utils/entries";
 import { first } from "iter-tools";
+import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
   pointingAtOnItem: PointingAtOnItem;
 };
 
+export type PreviewedRoomItemEdits = {
+  [k in keyof EditorRoomJsonItems]: EditorRoomJsonItems[k] | null;
+};
+
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
   campaignInProgress: EditorCampaign;
   currentlyEditingRoomId: EditorRoomId;
+  /**
+   * room edits that are for the current cursor's position, which are not yet
+   * committed to the room.
+   *
+   * Can be null, which means the item is deleted in the preview
+   */
+  previewedEdits: PreviewedRoomItemEdits;
   nextRoomId: number;
   tool: Tool;
   hoveredItem?: HoveredItem;
@@ -56,6 +72,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   },
   nextRoomId: 1,
   currentlyEditingRoomId: initialRoomId,
+  previewedEdits: {},
   tool: { type: "pointer" },
   hoveredItem: undefined,
   clickableAnnotationHovered: false,
@@ -150,7 +167,8 @@ export const levelEditorSlice = createSlice({
     ...dragToMoveReducers,
     ...selectionsReducers,
     ...editRoomReducers,
-    ...editItemReducers,
+    ...moveOrResizeItemReducers,
+    ...itemPreviewReducers,
   },
   selectors: {
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
@@ -191,6 +209,7 @@ export const {
   loadCampaign,
   moveOrResizeItem,
   redo,
+  resetPreviewedEdits,
   roomJsonEdited,
   setClickableAnnotationHovered,
   setHoveredItemInRoom,

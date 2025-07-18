@@ -107,8 +107,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           // by annotating the near part of the door, the annotation won't be
           // covered up by a closer part of the same door (render layers don't impact
           // pointer hit testing)
-          item.config.part === "near" &&
-          !item.isCursorPreview
+          item.config.part === "near"
         ) {
           const { rooms } = (store.getState() as RootStateWithLevelEditorSlice)
             .levelEditor.campaignInProgress;
@@ -140,7 +139,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         break;
 
       case "teleporter":
-        if (!item.isCursorPreview) {
+        {
           const { rooms } = (store.getState() as RootStateWithLevelEditorSlice)
             .levelEditor.campaignInProgress;
 

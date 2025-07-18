@@ -9,7 +9,7 @@ import type {
   EditorRoomState,
 } from "../editorTypes";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
-import { useEditorRoomState } from "../EditorRoomStateProvider";
+import { useEditorRoomStateWithPreviews } from "../EditorRoomStateProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import type { ShowBoundingBoxes } from "../../store/slices/gameMenusSlice";
 import { useShowBoundingBoxes } from "../../store/selectors";
@@ -54,7 +54,7 @@ export const useRoomRenderer = () => {
     throw new Error("this should never be falsey (typescript violation)");
   }
 
-  const currentEditingRoomState = useEditorRoomState();
+  const currentEditingRoomState = useEditorRoomStateWithPreviews();
   const [roomRenderer, setRoomRenderer] = useState<EditorRoomRenderer>(() =>
     createRoomRenderer(
       currentEditingRoomState,

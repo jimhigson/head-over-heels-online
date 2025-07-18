@@ -30,18 +30,12 @@ import {
   changeDragInProgress,
   selectItem,
   moveOrResizeItem,
+  resetPreviewedEdits,
 } from "../slice/levelEditorSlice";
 import { store } from "../../store/store";
-import {
-  mutateRoomRemoveCursorPreviews,
-  mutateRoomAddCursorPreviews,
-} from "./cursor/mutateRoomWithCursorPointingAt";
-import {
-  previewItemsForCursor,
-  itemToolPutDownLocation,
-} from "./cursor/itemToolPutDownLocation";
+
+import { itemToolPutDownLocation } from "./cursor/itemToolPutDownLocation";
 import nanoEqual from "nano-equal";
-import type { ApplyToolToRoomJsonPayload } from "../slice/reducers/applyToolToRoomJson";
 import {
   findPointerPointingAt,
   roundXyzProjection,
@@ -64,7 +58,10 @@ import {
   getConsolidatableVector,
   isConsolidatable,
 } from "../../model/json/ConsolidatableJsonItem";
-import { itemChangeCausesCollision } from "./cursor/itemChangeCausesCollision";
+import {
+  addingItemWouldCollide,
+  itemMoveOrResizeWouldCollide,
+} from "./cursor/editWouldCollide";
 import { completeTimesXyz } from "../../game/collision/boundingBoxTimes";
 import { resizeTimesAndPosition } from "./resizeTimesAndPosition";
 
@@ -311,15 +308,50 @@ export const useRoomEditorInteractivity = (
             break;
           }
 
-          // update item put-down preview by directly mutating room state:
-          const previewItems =
-            pointingAt.world &&
-            previewItemsForCursor(pointingAt, roomState, tool.item);
+          // remove old previews
+          dispatch(resetPreviewedEdits());
 
-          mutateRoomRemoveCursorPreviews(roomState);
-          if (previewItems !== undefined) {
-            mutateRoomAddCursorPreviews(roomState, previewItems);
+          if (pointingAt.world === undefined) {
+            break;
           }
+
+          const jsonItemId = jsonItemIdForItemId(
+            roomState,
+            pointingAt.world.itemId,
+          )!;
+          const jsonItem = selectItem(storeState, jsonItemId);
+          if (jsonItem === undefined) {
+            break;
+          }
+
+          const putDownBlockPosition = itemToolPutDownLocation(
+            pointingAt,
+            roomState,
+            tool.item,
+          );
+
+          if (putDownBlockPosition === undefined) {
+            break;
+          }
+
+          const collides = addingItemWouldCollide({
+            roomState,
+            blockPosition: putDownBlockPosition,
+            itemTool: tool.item,
+          });
+
+          if (collides) {
+            break;
+          }
+
+          dispatch(
+            applyItemTool({
+              blockPosition: putDownBlockPosition,
+              pointedAtItemJson: jsonItem,
+              preview: true,
+            }),
+          );
+
           break;
         }
         case "pointer": {
@@ -408,7 +440,7 @@ export const useRoomEditorInteractivity = (
 
           const blockDragAccVec = fineXyzToBlockXyz(nextDragAccVecRound);
 
-          let newPosition: Xyz;
+          let newBlockPosition: Xyz;
           let newTimes: Xyz | undefined = undefined;
 
           if (isResizing) {
@@ -418,19 +450,20 @@ export const useRoomEditorInteractivity = (
             //     ↘ ┌-┐
             //       └-┘
             //
-            ({ newTimes, newPosition } = resizeTimesAndPosition({
-              jsonItem,
-              blockDragAccVec,
-              resizeEdgeDirection: resizeEdge.point,
-              startTimes,
-              startPosition,
-            }));
+            ({ newTimes, newPosition: newBlockPosition } =
+              resizeTimesAndPosition({
+                jsonItem,
+                blockDragAccVec,
+                resizeEdgeDirection: resizeEdge.point,
+                startTimes,
+                startPosition,
+              }));
           } else {
             // moving
             //
             //   ⌑ -> ⌑
             //
-            newPosition = addXyz(startPosition, blockDragAccVec);
+            newBlockPosition = addXyz(startPosition, blockDragAccVec);
           }
           if (
             (!newTimes ||
@@ -440,16 +473,18 @@ export const useRoomEditorInteractivity = (
                   (jsonItem as EditorJsonItemWithTimes).config.times,
                 ),
               )) &&
-            xyzEqual(newPosition, jsonItem.position)
+            xyzEqual(newBlockPosition, jsonItem.position)
           ) {
             // break out - the size of the item (times) or position isn't different from what it already is
             break;
           }
 
-          const collides = itemChangeCausesCollision({
+          // collision has to happen on the loaded room, not the json, so can't
+          // be done in the reducer:
+          const collides = itemMoveOrResizeWouldCollide({
             roomState,
             jsonItemId,
-            newPosition,
+            newBlockPosition,
             newTimes,
           });
 
@@ -459,7 +494,7 @@ export const useRoomEditorInteractivity = (
           dispatch(
             moveOrResizeItem({
               jsonItemId,
-              newPosition,
+              newPosition: newBlockPosition,
               newTimes,
               startOfGesture: isItemsFirstMove.current,
             }),
@@ -530,31 +565,29 @@ export const useRoomEditorInteractivity = (
             dispatch(setTool({ type: "pointer" }));
             break;
           }
-          const putDownItems = previewItemsForCursor(
-            pointingAt,
+
+          const pointingAtItemJsonItemId = jsonItemIdForItemId(
             roomState,
-            tool.item,
+            pointingAt.world.itemId,
+          )!;
+          const pointingAtItemJsonItem = selectItem(
+            storeState,
+            pointingAtItemJsonItemId,
           );
-          if (putDownItems === undefined) {
-            // clicked but unable to make any items here - skip
-            break;
+
+          if (pointingAtItemJsonItem !== undefined) {
+            dispatch(
+              applyItemTool({
+                blockPosition: itemToolPutDownLocation(
+                  pointingAt,
+                  roomState,
+                  tool.item,
+                )!,
+                pointedAtItemJson: pointingAtItemJsonItem,
+                preview: false,
+              }),
+            );
           }
-          const pointedAtItemInPlay = roomState.items[pointingAt.world.itemId];
-          dispatch(
-            applyItemTool({
-              blockPosition: itemToolPutDownLocation(
-                pointingAt,
-                roomState,
-                tool.item,
-              )!,
-              pointedAtItem: {
-                type: pointedAtItemInPlay.type,
-                config: pointedAtItemInPlay.config,
-                state: pointedAtItemInPlay.state,
-                jsonItemId: pointedAtItemInPlay.jsonItemId,
-              } as ApplyToolToRoomJsonPayload["pointedAtItem"],
-            }),
-          );
           break;
         }
         case "pointer": {
@@ -639,7 +672,7 @@ export const useRoomEditorInteractivity = (
 
       switch (tool.type) {
         case "item": {
-          mutateRoomRemoveCursorPreviews(roomState);
+          dispatch(resetPreviewedEdits());
           break;
         }
         case "pointer": {
