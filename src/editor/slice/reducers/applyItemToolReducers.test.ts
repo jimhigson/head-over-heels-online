@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import type { ApplyToolToRoomJsonPayload } from "./applyToolToRoomJson";
-import { applyItemToolReducers } from "./applyToolToRoomJson";
+import type { ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
+import { applyItemToolReducers } from "./applyItemToolReducers";
 import {
   initialLevelEditorSliceState,
   type LevelEditorState,
@@ -16,7 +16,7 @@ import type {
   AwayWallConfig,
   WallJsonConfig,
 } from "src/model/json/WallJsonConfig";
-import type { ItemState } from "../../../model/ItemInPlay";
+import { originXyz } from "../../../utils/vectors/vectors";
 
 const testRoomId = "testRoomId" as EditorRoomId;
 const wallItemId = "testWall" as EditorRoomItemId;
@@ -76,24 +76,16 @@ describe("applying tools", () => {
 
       const actionPayload: ApplyToolToRoomJsonPayload = {
         blockPosition: itemPosition,
-        pointedAtItem: {
+        pointedAtItemJson: {
           type: "floor",
           config: {
             floorType: "standable",
             scenery: "blacktooth",
             times: { x: 8, y: 8 },
-            naturalFootprint: {
-              position: { x: 8, y: 8, z: -8 },
-              aabb: { x: 8, y: 8, z: 8 },
-            },
           },
-          // fake state for tests since it doesn't matter here:
-          state: {} as unknown as ItemState<
-            "floor",
-            EditorRoomId,
-            EditorRoomItemId
-          >,
+          position: originXyz,
         },
+        preview: false,
       };
 
       const next = applyToolToRoomJsonNext(
@@ -152,20 +144,15 @@ describe("applying tools", () => {
         ({ activated, style, deadlyBlockPosition }) => {
           const actionPayload: ApplyToolToRoomJsonPayload = {
             blockPosition: { x: 1, y: 2, z: 1 },
-            pointedAtItem: {
+            pointedAtItemJson: {
               type: "deadlyBlock",
               config: {
                 style,
               },
               // fake state for tests since it doesn't matter here:
-              state: {
-                position: deadlyBlockPosition,
-              } as unknown as ItemState<
-                "deadlyBlock",
-                EditorRoomId,
-                EditorRoomItemId
-              >,
+              position: deadlyBlockPosition,
             },
+            preview: false,
           };
 
           const addCybermanTool: Tool = {
@@ -215,18 +202,15 @@ describe("applying tools", () => {
         const doorPosition = { x: 2, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
-          pointedAtItem: {
+          pointedAtItemJson: {
             type: "wall",
             config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
               .rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
             // fake state for tests since it doesn't matter here:
-            state: {} as unknown as ItemState<
-              "wall",
-              EditorRoomId,
-              EditorRoomItemId
-            >,
+            position: originXyz,
           },
+          preview: false,
         };
 
         const next = applyToolToRoomJsonNext(
@@ -275,18 +259,15 @@ describe("applying tools", () => {
         const doorPosition = { x: 0, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
-          pointedAtItem: {
+          pointedAtItemJson: {
             type: "wall",
             config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
               .rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
             // fake state for tests since it doesn't matter here:
-            state: {} as unknown as ItemState<
-              "wall",
-              EditorRoomId,
-              EditorRoomItemId
-            >,
+            position: originXyz,
           },
+          preview: false,
         };
 
         const next = applyToolToRoomJsonNext(
@@ -331,18 +312,15 @@ describe("applying tools", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
-          pointedAtItem: {
+          pointedAtItemJson: {
             type: "wall",
             config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
               .rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
             // fake state for tests since it doesn't matter here:
-            state: {} as unknown as ItemState<
-              "wall",
-              EditorRoomId,
-              EditorRoomItemId
-            >,
+            position: originXyz,
           },
+          preview: false,
         };
 
         const next = applyToolToRoomJsonNext(
@@ -397,18 +375,15 @@ describe("applying tools", () => {
           blockPosition:
             // placing at the wall's position:
             wallPosition,
-          pointedAtItem: {
+          pointedAtItemJson: {
             type: "wall",
             config: editorStateWithOneRoomWithOneSmallAwayWall
               .campaignInProgress.rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
             // fake state for tests since it doesn't matter here:
-            state: {} as unknown as ItemState<
-              "wall",
-              EditorRoomId,
-              EditorRoomItemId
-            >,
+            position: originXyz,
           },
+          preview: false,
         };
 
         const next = applyToolToRoomJsonNext(
@@ -439,18 +414,15 @@ describe("applying tools", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
-          pointedAtItem: {
+          pointedAtItemJson: {
             type: "wall",
             config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
               .rooms[testRoomId].items[wallItemId]
               .config as WallJsonConfig<"blacktooth">,
             // fake state for tests since it doesn't matter here:
-            state: {} as unknown as ItemState<
-              "wall",
-              EditorRoomId,
-              EditorRoomItemId
-            >,
+            position: originXyz,
           },
+          preview: false,
         };
 
         const next = applyToolToRoomJsonNext(

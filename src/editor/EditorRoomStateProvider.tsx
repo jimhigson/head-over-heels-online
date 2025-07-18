@@ -10,8 +10,15 @@ import { emptyObject } from "../utils/empty";
 import { loadRoom } from "../game/gameState/loadRoom/loadRoom";
 import type { EmptyObject } from "type-fest";
 import { store } from "../store/store";
+import { selectCurrentEditingRoomJsonWithPreviews } from "./slice/levelEditorSelectors";
 
-const EditorRoomStateContext = createContext<EditorRoomState | null>(null);
+type EditorRoomStateContextValue = {
+  roomState: EditorRoomState;
+  roomStateWithPreviews: EditorRoomState;
+};
+
+const EditorRoomStateContext =
+  createContext<EditorRoomStateContextValue | null>(null);
 
 const useLoadRoomStateForCurrentRoomJson = () => {
   const [roomState, setRoomState] = useState<EditorRoomState>(() => {
@@ -25,9 +32,14 @@ const useLoadRoomStateForCurrentRoomJson = () => {
       isNewGame: true,
     });
   });
+  const [roomStateWithPreviews, setRoomStateWithPreviews] =
+    useState<EditorRoomState>(roomState);
 
   const currentRoomJson = useAppSelectorWithLevelEditorSlice(
     selectCurrentEditingRoomJson,
+  );
+  const currentRoomJsonWithPreviews = useAppSelectorWithLevelEditorSlice(
+    selectCurrentEditingRoomJsonWithPreviews,
   );
 
   useEffect(() => {
@@ -39,12 +51,26 @@ const useLoadRoomStateForCurrentRoomJson = () => {
       isNewGame: true,
     });
 
-    // (roomState as any).i = loadCount++;
-    // console.log("currentRoomJson updated. Reloading room state", i);
     setRoomState(newRoomState);
-  }, [currentRoomJson]);
 
-  return roomState;
+    if (currentRoomJson === currentRoomJsonWithPreviews) {
+      // no previews currently
+      setRoomStateWithPreviews(newRoomState);
+    } else {
+      const withPreviews = loadRoom({
+        roomJson: currentRoomJsonWithPreviews,
+        roomPickupsCollected: emptyObject,
+        scrollsRead: emptyObject,
+        // display heads and heels in their starting rooms:
+        isNewGame: true,
+      });
+
+      // have previews - load a second room state for rendering in the editor pane:
+      setRoomStateWithPreviews(withPreviews);
+    }
+  }, [currentRoomJson, currentRoomJsonWithPreviews]);
+
+  return { roomState, roomStateWithPreviews };
 };
 
 export const EditorRoomStateProvider = ({
@@ -64,5 +90,13 @@ export const useEditorRoomState = (): EditorRoomState => {
   if (value === null) {
     throw new Error("no room state in context, or no context");
   }
-  return value;
+  return value.roomState;
+};
+
+export const useEditorRoomStateWithPreviews = (): EditorRoomState => {
+  const value = useContext(EditorRoomStateContext);
+  if (value === null) {
+    throw new Error("no room state in context, or no context");
+  }
+  return value.roomStateWithPreviews;
 };

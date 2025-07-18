@@ -123,7 +123,7 @@ const changeWallsForFloorChangeInPlace = (
     });
 };
 
-export const editItemReducers = {
+export const moveOrResizeItemReducers = {
   /** add or remove the room above the current room */
   moveOrResizeItem(
     _state,

@@ -63,7 +63,9 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
 
   if (jsonItem.config.which === "head") {
     return {
-      id: "head" as RoomItemId,
+      // the id will almost always be 'head' - it can only be different if it is
+      // a preview in the level editor
+      id: jsonItemId as RoomItemId,
       jsonItemId,
       type: "head",
       ...defaultItemProperties,
@@ -83,7 +85,9 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
     };
   } else {
     return {
-      id: "heels" as RoomItemId,
+      // the id will almost always be 'heels' - it can only be different if it is
+      // a preview in the level editor
+      id: jsonItemId as RoomItemId,
       jsonItemId,
       type: "heels",
       ...defaultItemProperties,

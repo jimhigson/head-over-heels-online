@@ -1,35 +1,11 @@
 import { isEmpty } from "iter-tools";
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
-import { addItemToRoom } from "../../../game/gameState/mutators/addItemToRoom";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
-import type {
-  EditorRoomItemId,
-  EditorUnionOfAllItemInPlayTypes,
-} from "../../editorTypes";
+import type { EditorRoomItemId } from "../../editorTypes";
 import { type EditorRoomState } from "../../editorTypes";
 import { collideableItemsInRoom } from "./collideableItemsInRoom";
 import { produce } from "immer";
-
-/**
- * mutate the given room in-place
- */
-export const mutateRoomAddCursorPreviews = (
-  room: EditorRoomState,
-  previewItems: Iterable<EditorUnionOfAllItemInPlayTypes>,
-) => {
-  for (const item of previewItems) {
-    addItemToRoom({ room, item });
-  }
-};
-
-export const mutateRoomRemoveCursorPreviews = (room: EditorRoomState) => {
-  for (const item of iterateRoomItems(room.items)) {
-    if (item.isCursorPreview) {
-      delete room.items[item.id];
-    }
-  }
-};
 
 /**
  * mutate the room state to move the item with the given jsonItemId

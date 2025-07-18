@@ -1,18 +1,14 @@
 import { useEffect } from "react";
 import { startAppListening } from "../../store/listenerMiddleware";
-import { useEditorRoomState } from "../EditorRoomStateProvider";
-import { setTool } from "../slice/levelEditorSlice";
-import { mutateRoomRemoveCursorPreviews } from "./cursor/mutateRoomWithCursorPointingAt";
+import { resetPreviewedEdits, setTool } from "../slice/levelEditorSlice";
 
 export const useRemoveCursorPreviewsWhenToolChanges = () => {
-  const roomState = useEditorRoomState();
-
   useEffect(() => {
     return startAppListening({
       actionCreator: setTool,
-      effect() {
-        mutateRoomRemoveCursorPreviews(roomState);
+      effect(_action, { dispatch }) {
+        dispatch(resetPreviewedEdits());
       },
     });
-  }, [roomState]);
+  });
 };

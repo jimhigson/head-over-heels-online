@@ -8,11 +8,11 @@ import type {
   EditorRoomItemId,
   EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import { useEditorRoomState } from "../EditorRoomStateProvider";
+import { useEditorRoomStateWithPreviews } from "../EditorRoomStateProvider";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
-  const currentEditingRoomState = useEditorRoomState();
+  const currentEditingRoomState = useEditorRoomStateWithPreviews();
   const pixiApp = useProvidedPixiApplication();
 
   useEffect(

@@ -178,15 +178,15 @@ const worldPositionOnFaceForScreenPosition = (
  * can be pointed at and interacted with by the tool */
 const isPointableItemForTool =
   (tool: Tool) => (item: EditorUnionOfAllItemInPlayTypes) => {
-    const basicPointability = isSolid(item) && !item.isCursorPreview;
+    const itemIsSolid = isSolid(item);
 
     if (tool.type === "item" && tool.item.type === "door") {
       // when placing a door, we can only place it on (so only point at) walls
-      return basicPointability && item.type === "wall";
+      return itemIsSolid && item.type === "wall";
     }
 
     // for everything else, no special rules
-    return basicPointability;
+    return itemIsSolid;
   };
 export const findPointerPointingAt = (
   scrXy: Xy,

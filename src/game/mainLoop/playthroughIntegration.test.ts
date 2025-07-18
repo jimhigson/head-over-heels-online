@@ -867,7 +867,7 @@ describe("teleporter", () => {
   test("can teleport to the next room", () => {
     const gameState = basicGameState({
       firstRoomItems: {
-        head: {
+        heels: {
           type: "player",
           position: { x: 0, y: 2, z: 1 },
           config: {
@@ -1110,7 +1110,7 @@ describe("monsters", () => {
     (playableName: CharacterName) => {
       const gameState = basicGameState({
         firstRoomItems: {
-          head: {
+          [playableName]: {
             type: "player",
             position: { x: 0, y: 0, z: 0 },
             config: {
