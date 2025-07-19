@@ -75,12 +75,12 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
      the bb very well */
   const nearPostWidthInAxis = 9;
   const farPostWidthInAxis = 8;
-  const postWidthInCrossAxis = 8;
+  const postWidthInThroughDoorAxis = 8;
 
   {
     const renderAabb = {
       [alongWallAxis]: farPostWidthInAxis,
-      [throughDoorAxis]: postWidthInCrossAxis,
+      [throughDoorAxis]: postWidthInThroughDoorAxis,
       z: doorPostHeightPx,
     } as Xyz;
     yield {
@@ -116,7 +116,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   {
     const renderAabb = {
       [alongWallAxis]: nearPostWidthInAxis,
-      [throughDoorAxis]: postWidthInCrossAxis,
+      [throughDoorAxis]: postWidthInThroughDoorAxis,
       z: doorPostHeightPx,
     } as Xyz;
 
@@ -153,7 +153,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     const renderAabb = {
       [alongWallAxis]:
         2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
-      [throughDoorAxis]: postWidthInCrossAxis,
+      [throughDoorAxis]: postWidthInThroughDoorAxis,
       z: doorPostHeightPx - doorPortalHeight,
     } as Xyz;
     yield {
@@ -201,18 +201,23 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       state: {
         ...defaultBaseState(),
         position: addXyz(
-          blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
+          blockXyzToFineXyz(
+            addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
+          ),
           {
             z: doorPostHeightPx,
           },
         ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
-      aabb: blockXyzToFineXyz({
-        [alongWallAxis]: 2,
-        [throughDoorAxis]: 0.5,
-        z: defaultRoomHeightBlocks - doorPostHeightBlocks - position.z,
-      }),
+      aabb: addXyz(
+        blockXyzToFineXyz({
+          [alongWallAxis]: 2,
+          [throughDoorAxis]: doorTunnelLengthBlocks,
+          z: defaultRoomHeightBlocks - doorPostHeightBlocks - position.z,
+        }),
+        { [throughDoorAxis]: postWidthInThroughDoorAxis },
+      ),
       // helps the editor to know not to consider a hover on this:
       renderAabb: originXyz,
       fixedZIndex: nonRenderingItemFixedZIndex,
