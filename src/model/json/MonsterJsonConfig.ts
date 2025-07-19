@@ -32,14 +32,14 @@ export type MonsterJsonConfig =
   | {
       which: "elephant";
       movement: MovementsSubset<"patrol-randomly-xy4">;
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | {
       which: "elephantHead";
       movement: MovementsSubset<"turn-to-player">;
       startDirection: DirectionXy4;
       // is always unmoving:
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | {
       which: "monkey";
@@ -47,7 +47,7 @@ export type MonsterJsonConfig =
         // moonbase16
         "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4"
       >;
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | {
       which: "computerBot";
@@ -55,27 +55,27 @@ export type MonsterJsonConfig =
         // moonbase16
         "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4-and-reverse"
       >;
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | {
       which: "bubbleRobot";
       movement: MovementsSubset<"patrol-randomly-xy8">;
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | {
       which: "dalek";
       movement: MovementsSubset<"patrol-randomly-diagonal">;
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | {
       which: "homingBot";
       movement: MovementsSubset<"towards-tripped-on-axis-xy4">;
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | {
       which: "helicopterBug";
       movement: MovementsSubset<"patrol-randomly-xy8">;
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | {
       which: "helicopterBug";
@@ -87,12 +87,12 @@ export type MonsterJsonConfig =
       which: "turtle";
       movement: MovementsSubset<"clockwise">;
       startDirection: DirectionXy4;
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
     }
   | CybermanConfig
   | {
       which: "skiHead";
-      activated: ActivatedWhenSubset<"on">;
+      activated: ActivatedWhenSubset<"on" | "off">;
       movement: MovementsSubset<
         // #bookworld31
         "clockwise" | "back-forth"

@@ -1430,7 +1430,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1453,7 +1453,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1486,7 +1486,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1512,7 +1512,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1538,7 +1538,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1561,7 +1561,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1584,7 +1584,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1607,7 +1607,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1653,7 +1653,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -1723,7 +1723,7 @@
                                     "additionalProperties": false,
                                     "properties": {
                                       "activated": {
-                                        "const": "on",
+                                        "enum": ["off", "on"],
                                         "type": "string"
                                       },
                                       "movement": {
@@ -2455,7 +2455,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2474,7 +2474,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2502,7 +2502,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2524,7 +2524,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2546,7 +2546,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2565,7 +2565,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2584,7 +2584,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2603,7 +2603,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2641,7 +2641,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
@@ -2697,7 +2697,7 @@
                         "additionalProperties": false,
                         "properties": {
                           "activated": {
-                            "const": "on",
+                            "enum": ["off", "on"],
                             "type": "string"
                           },
                           "movement": {
