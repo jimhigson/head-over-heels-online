@@ -60,11 +60,13 @@ export const addDoorInPlace = (
       x:
         doorDirection === "left" ? 0
         : doorDirection === "right" ? toRoomJson.size.x
-        : Math.floor(toRoomJson.size.x / 2),
+          // line up to match the door we just added (this assumes the room going to is big enough)
+        : blockPosition.x,
       y:
         doorDirection === "away" ? 0
         : doorDirection === "towards" ? toRoomJson.size.x
-        : Math.floor(toRoomJson.size.x / 2),
+          // line up to match the door we just added (this assumes the room going to is big enough)
+        : blockPosition.y,
       z: blockPosition.z,
     };
 
@@ -81,16 +83,6 @@ export const addDoorInPlace = (
 
     toRoomJson.items[returnDoorId] = returnDoorItemJson;
 
-    console.log("cutting hole for return door");
-    console.log(
-      state,
-      "toRoomJson.id",
-      toRoomJson.id,
-      "returnDoorDirection",
-      returnDoorDirection,
-      "returnDoorPosition",
-      returnDoorPosition,
-    );
     cutHoleInWallsForDoorsInPlace(
       state,
       toRoomJson.id,

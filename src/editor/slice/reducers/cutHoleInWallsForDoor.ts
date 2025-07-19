@@ -87,14 +87,9 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
 
         switch (draftConfig.direction) {
           case "towards":
-            draftConfig.times = {
-              x: currentWallTimes[alongWallAxis] - 2,
-            };
-            break;
           case "right":
-            draftConfig.times = {
-              y: currentWallTimes[alongWallAxis] - 2,
-            };
+            (draftConfig.times as Xy)[alongWallAxis] =
+              currentWallTimes[alongWallAxis] - 2;
             break;
           default:
             // remove the first two tiles:
@@ -113,15 +108,11 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
 
         switch (draftConfig.direction) {
           case "towards":
-            draftConfig.times = {
-              x: currentWallTimes[alongWallAxis] - 2,
-            };
-            break;
           case "right":
-            draftConfig.times = {
-              y: currentWallTimes[alongWallAxis] - 2,
-            };
+            (draftConfig.times as Xy)[alongWallAxis] =
+              currentWallTimes[alongWallAxis] - 2;
             break;
+
           default:
             // remove the last two tiles:
             draftConfig.tiles = draftConfig.tiles.slice(0, -2);
@@ -137,14 +128,10 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
         const draftConfig = itemDraft.config;
         switch (draftConfig.direction) {
           case "towards":
-            draftConfig.times = {
-              x: relativePosition[alongWallAxis],
-            };
-            break;
           case "right":
-            draftConfig.times = {
-              y: relativePosition[alongWallAxis],
-            };
+            (draftConfig.times as Xy)[alongWallAxis] =
+              relativePosition[alongWallAxis];
+
             break;
           default:
             draftConfig.tiles = draftConfig.tiles.slice(
@@ -163,20 +150,11 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
         const draftConfig = itemDraft.config;
         switch (draftConfig.direction) {
           case "towards":
-            draftConfig.times = {
-              x:
-                currentWallTimes[alongWallAxis] -
-                relativePosition[alongWallAxis] -
-                2,
-            };
-            break;
           case "right":
-            draftConfig.times = {
-              y:
-                currentWallTimes[alongWallAxis] -
-                relativePosition[alongWallAxis] -
-                2,
-            };
+            (draftConfig.times as Xy)[alongWallAxis] =
+              currentWallTimes[alongWallAxis] -
+              relativePosition[alongWallAxis] -
+              2;
             break;
           default:
             console.log("cutting tiles down in ", id);
