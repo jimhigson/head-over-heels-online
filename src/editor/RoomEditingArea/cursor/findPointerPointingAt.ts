@@ -20,7 +20,7 @@ import type {
   EditorRoomState,
 } from "../../editorTypes";
 import type { Tool } from "../../Tool";
-import type { MaybePointingAtSomething } from "./PointingAt";
+import type { MaybePointingAtSomething, PointingAtNothing } from "./PointingAt";
 import { pointerIntersectionFace } from "./pointerIntersectionFace";
 import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
 import { pointerIntersectionEdge } from "./pointerIntersectionEdge";
@@ -208,31 +208,39 @@ export const findPointerPointingAt = (
   if (itemPointingTo) {
     const face = pointerIntersectionFace(itemPointingTo, scrXy, tool);
 
-    return {
-      roomId,
-      scrXy,
-      world: {
-        itemId: itemPointingTo.id,
-        onItem: {
-          face,
-          corner: pointerIntersectionCorner(itemPointingTo, scrXy, tool),
-          edge: pointerIntersectionEdge(itemPointingTo, scrXy, face, tool),
+    // special case - some items get an immutable empty object for their stoodOnBy
+    // because they are impossible to stand on in-game. Detect this and skip them.
+    // (eg, the tops of walls)
+    const skipDueToImpossibleToStandOn =
+      face.z > 0 && !Object.isExtensible(itemPointingTo.state.stoodOnBy);
+
+    if (!skipDueToImpossibleToStandOn) {
+      return {
+        roomId,
+        scrXy,
+        world: {
+          itemId: itemPointingTo.id,
+          onItem: {
+            face,
+            corner: pointerIntersectionCorner(itemPointingTo, scrXy, tool),
+            edge: pointerIntersectionEdge(itemPointingTo, scrXy, face, tool),
+          },
+          position: worldPositionOnFaceForScreenPosition(
+            itemPointingTo,
+            face,
+            scrXy,
+            tool,
+            halfGridResolution,
+          ),
         },
-        position: worldPositionOnFaceForScreenPosition(
-          itemPointingTo,
-          face,
-          scrXy,
-          tool,
-          halfGridResolution,
-        ),
-      },
-    };
-  } else {
-    return {
-      roomId,
-      scrXy,
-      world: undefined,
-      // no world - did not find anything in the world that we were pointing at
-    };
+      };
+    }
   }
+
+  return {
+    roomId,
+    scrXy,
+    world: undefined,
+    // no world - did not find anything in the world that we were pointing at
+  } satisfies PointingAtNothing;
 };
