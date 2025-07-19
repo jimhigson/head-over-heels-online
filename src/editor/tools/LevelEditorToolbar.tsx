@@ -88,7 +88,7 @@ export const LevelEditorToolbar = () => {
         <DeleteItemToolButton />
         <ClearRoomButton />
         <div className="h-1 w-full" />
-        <div className="flex flex-row justify-between flex-wrap gap-x-1">
+        <div className="flex flex-row justify-between flex-wrap gap-x-2">
           <HalfGridResolutionSwitch className="" />
           <WallsFloorsLockedSwitch className="" />
         </div>
@@ -416,6 +416,14 @@ export const LevelEditorToolbar = () => {
         </ItemToolButton>
 
         <ItemToolButton
+          itemTool={{ type: "pickup", config: { gives: "reincarnation" } }}
+        >
+          <span
+            className={`sprite texture-fish_1 [button:hover_&]:texture-animated-fish ${buttonSpriteRevertColourClasses}`}
+          />
+        </ItemToolButton>
+
+        <ItemToolButton
           itemTool={{
             type: "pickup",
             config: { gives: "crown", planet: "blacktooth" },
@@ -467,6 +475,13 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton itemTool={{ type: "spikes", config: emptyObject }}>
           <span
             className={`sprite texture-spikes ${buttonSpriteRevertColourClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{ type: "moveableDeadly", config: { style: "deadFish" } }}
+        >
+          <span
+            className={`sprite texture-fish_1 ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
       </div>

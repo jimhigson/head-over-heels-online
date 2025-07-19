@@ -81,9 +81,12 @@ export const room = inferRoomJson({
         modifies: [
           {
             expectType: "monster",
-            newState: {
-              activated: { left: true, right: false },
-              everActivated: { left: true },
+            leftState: {
+              activated: true,
+              everActivated: true,
+            },
+            rightState: {
+              activated: false,
             },
             targets: [
               "extraMonster",

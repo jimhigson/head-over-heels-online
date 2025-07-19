@@ -57,7 +57,7 @@ export function RoomColourSelect() {
         triggerButtonStyle={itemColourCss(currentRoomColour.hue)}
       />
       <Switch
-        className="w-full"
+        className=""
         label="shade"
         value={currentRoomColour.shade === "basic"}
         onClick={(_e, value) => {

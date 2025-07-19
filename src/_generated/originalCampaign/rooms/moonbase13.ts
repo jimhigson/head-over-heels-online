@@ -85,9 +85,12 @@ export const room = inferRoomJson({
         modifies: [
           {
             expectType: "monster",
-            newState: {
-              activated: { left: true, right: false },
-              everActivated: { left: true },
+            leftState: {
+              activated: true,
+              everActivated: true,
+            },
+            rightState: {
+              activated: false,
             },
             targets: [
               "monster@0,2,1",
@@ -98,7 +101,8 @@ export const room = inferRoomJson({
           },
           {
             expectType: "switch",
-            newState: { setting: { left: "left", right: "right" } },
+            leftState: { setting: "left" },
+            rightState: { setting: "right" },
             targets: ["switch2"],
           },
         ],
@@ -113,9 +117,12 @@ export const room = inferRoomJson({
         modifies: [
           {
             expectType: "monster",
-            newState: {
-              activated: { left: true, right: false },
-              everActivated: { left: true },
+            leftState: {
+              activated: true,
+              everActivated: true,
+            },
+            rightState: {
+              activated: false,
             },
             targets: [
               "monster@0,2,1",
@@ -126,7 +133,8 @@ export const room = inferRoomJson({
           },
           {
             expectType: "switch",
-            newState: { setting: { left: "left", right: "right" } },
+            leftState: { setting: "left" },
+            rightState: { setting: "right" },
             targets: ["switch"],
           },
         ],

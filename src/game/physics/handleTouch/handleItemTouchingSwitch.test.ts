@@ -44,9 +44,12 @@ describe("toggleSwitchInRoom", () => {
       modifies: [
         {
           expectType: "monster",
-          newState: {
-            activated: { left: false, right: true },
-            everActivated: { right: true },
+          leftState: {
+            activated: false,
+          },
+          rightState: {
+            activated: true,
+            everActivated: true,
           },
           targets: ["monster1", "monster2"],
         },
@@ -100,7 +103,12 @@ describe("toggleSwitchInRoom", () => {
       modifies: [
         {
           expectType: "block",
-          newState: { disappearing: { left: { on: "stand" }, right: null } },
+          leftState: {
+            disappearing: { on: "stand" },
+          },
+          rightState: {
+            disappearing: null,
+          },
           targets: ["block1", "block2"],
         },
       ],
@@ -149,8 +157,11 @@ describe("toggleSwitchInRoom", () => {
       modifies: [
         {
           expectType: "block",
-          newState: {
-            disappearing: { left: { on: "stand" }, right: undefined },
+          leftState: {
+            disappearing: { on: "stand" },
+          },
+          rightState: {
+            disappearing: undefined,
           },
           targets: ["monster1", "monster2"],
         },
@@ -165,13 +176,12 @@ describe("toggleSwitchInRoom", () => {
         "modifies": [
           {
             "expectType": "block",
-            "newState": {
+            "leftState": {
               "disappearing": {
-                "left": {
-                  "on": "stand"
-                }
+                "on": "stand"
               }
             },
+            "rightState": {},
             "targets": [
               "monster1",
               "monster2"
@@ -190,8 +200,11 @@ describe("toggleSwitchInRoom", () => {
       modifies: [
         {
           expectType: "block",
-          newState: {
-            disappearing: { left: { on: "stand" }, right: undefined },
+          leftState: {
+            disappearing: { on: "stand" },
+          },
+          rightState: {
+            disappearing: undefined,
           },
           targets: ["block" as TestItemId],
         },

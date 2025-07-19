@@ -19,8 +19,7 @@ describe("genericConstraints", () => {
         "SwitchConfig",
       );
       expect(switchResult).toContain("controls:");
-      // When inline, the array type doesn't need parentheses
-      expect(switchResult).toContain('"item1" | "item2"[]');
+      expect(switchResult).toContain('("item1" | "item2")[]');
       expect(switchResult).toContain('type: "local" | "global"');
     },
   );
