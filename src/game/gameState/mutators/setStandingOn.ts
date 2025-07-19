@@ -11,6 +11,15 @@ export const setStandingOn = <
   above: FreeItem<RoomId, RoomItemId>;
   below: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 }) => {
+  const belowStoodOnBy = below.state.stoodOnBy;
+
+  // TODO: this kind of protection could be hidden behind a macro etc
+  if (!Object.isExtensible(belowStoodOnBy)) {
+    throw new Error(
+      `${above.id} can't stand on ${below.id} - its standingOn is not extensible`,
+    );
+  }
+
   above.state.standingOnItemId = below.id;
-  below.state.stoodOnBy[above.id] = true;
+  belowStoodOnBy[above.id] = true;
 };
