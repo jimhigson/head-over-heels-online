@@ -3,7 +3,7 @@ import { wallTileSize } from "../../../sprites/textureSizes";
 import type { Xy } from "../../../utils/vectors/vectors";
 import {
   perpendicularAxisXy,
-  directionAxis,
+  tangentAxis,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { projectBlockXyzToScreenXy } from "../projections";
@@ -25,7 +25,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
 
     const { direction, tiles } = config;
 
-    const alongAxis = perpendicularAxisXy(directionAxis(direction));
+    const alongAxis = perpendicularAxisXy(tangentAxis(direction));
 
     const container = new Container({ label: "wallTiles" });
     for (let i = 0; i < config.tiles.length; i++) {

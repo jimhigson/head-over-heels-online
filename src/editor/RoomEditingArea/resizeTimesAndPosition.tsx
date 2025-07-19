@@ -1,4 +1,4 @@
-import { getConsolidatableVector } from "../../model/json/ConsolidatableJsonItem";
+import { getConsolidatableVector } from "../../consolidateItems/ConsolidatableJsonItem";
 import { eachAxis } from "../../utils/vectors/eachAxis";
 import {
   type Xyz,

@@ -1,7 +1,7 @@
 import type { AnimatedSprite } from "pixi.js";
 import type { Container } from "pixi.js";
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { directionAxis } from "../../../utils/vectors/vectors";
+import { tangentAxis } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import type { ItemAppearance } from "./ItemAppearance";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
@@ -60,7 +60,7 @@ const conveyorAppearanceImpl: ItemAppearance<
       roomTime
     : currentlyRenderedProps?.roomTimeStoppedMoving) ?? neverTime;
 
-  const axis = directionAxis(direction);
+  const axis = tangentAxis(direction);
   const rendering =
     currentRendering?.output ??
     staggerAnimation(

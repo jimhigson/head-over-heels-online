@@ -5,8 +5,6 @@ describe("realWorldEmitter", { timeout: 20_000 }, () => {
   it("should correctly handle emitter emits property as union of objects", async () => {
     const result = await flattenFixture("realWorldEmitter", "TestEmitter");
 
-    console.log("Full result:", result);
-
     // Should have emits as a union
     expect(result).toMatch(/emits:\s*\|/);
 

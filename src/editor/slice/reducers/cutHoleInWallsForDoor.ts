@@ -4,7 +4,7 @@ import type { Xyz, Xy, DirectionXy4 } from "../../../utils/vectors/vectors";
 import {
   subXyz,
   addXyz,
-  directionAxis,
+  tangentAxis,
   perpendicularAxisXy,
 } from "../../../utils/vectors/vectors";
 import type {
@@ -47,10 +47,10 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
 
     /** axis running along the wall the door sits on */
     const alongWallAxis = perpendicularAxisXy(
-      directionAxis(wallConfig.direction),
+      tangentAxis(wallConfig.direction),
     );
     /** axis for direction of travel through the doorway */
-    const doorDirectionAxis = directionAxis(wallConfig.direction);
+    const doorDirectionAxis = tangentAxis(wallConfig.direction);
 
     const relativePosition = subXyz(doorPosition, wallPosition);
     if (relativePosition[doorDirectionAxis] !== 0) {

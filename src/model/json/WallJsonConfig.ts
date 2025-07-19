@@ -35,7 +35,7 @@ export type RightWallConfig = {
  * a view of the wall json config type that locks it down to protect against
  * mistakes, especially when editing static room json
  */
-export type WallJsonConfig<ScN extends SceneryName> =
+export type WallJsonConfig<ScN extends SceneryName = SceneryName> =
   | AwayWallConfig<ScN>
   | LeftWallConfig<ScN>
   | TowardsWallConfig
@@ -54,4 +54,8 @@ export type AnyWallJsonConfig<ScN extends SceneryName = SceneryName> = {
   direction: DirectionXy4;
   times?: Partial<Xy>;
   tiles?: Array<Wall<ScN>>;
+};
+
+export const isWallHidden = (direction: DirectionXy4) => {
+  return direction === "towards" || direction === "right";
 };

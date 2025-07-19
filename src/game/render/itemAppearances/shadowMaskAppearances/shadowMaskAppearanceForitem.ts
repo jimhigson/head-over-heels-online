@@ -1,6 +1,6 @@
 import type { Sprite } from "pixi.js";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { directionAxis } from "../../../../utils/vectors/vectors";
+import { tangentAxis } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 import {
   itemAppearanceShadowMaskFromConfig,
@@ -32,7 +32,7 @@ const itemShadowMaskAppearances: {
   lift: itemStaticSpriteAppearance("shadowMask.smallBlock"),
   conveyor: itemAppearanceShadowMaskFromConfig(({ direction }) => ({
     textureId: "shadowMask.conveyor",
-    flipX: directionAxis(direction) === "x",
+    flipX: tangentAxis(direction) === "x",
   })),
 
   doorLegs: itemAppearanceShadowMaskFromConfig(({ direction }) => {
@@ -43,7 +43,7 @@ const itemShadowMaskAppearances: {
         floating ?
           "shadowMask.door.floatingThreshold.double.y"
         : "shadowMask.door.legs.threshold.double.y",
-      flipX: directionAxis(direction) === "y",
+      flipX: tangentAxis(direction) === "y",
     };
   }),
 

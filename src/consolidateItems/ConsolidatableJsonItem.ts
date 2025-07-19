@@ -1,6 +1,6 @@
-import type { Xyz } from "../../utils/vectors/vectors";
-import { lengthXyz, originXyz, unitXyz } from "../../utils/vectors/vectors";
-import type { JsonItemType, JsonItemUnion } from "./JsonItem";
+import type { Xyz } from "../utils/vectors/vectors";
+import { lengthXyz, originXyz, unitXyz } from "../utils/vectors/vectors";
+import type { JsonItemType, JsonItemUnion } from "../model/json/JsonItem";
 
 export const consolidatableJsonItemTypes = [
   "block",

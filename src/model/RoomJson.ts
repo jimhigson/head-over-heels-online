@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { objectEntries, objectValues } from "iter-tools";
 import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
 import type { Xy, Xyz } from "../utils/vectors/vectors";
@@ -123,6 +123,17 @@ export const roomJsonItemsIterable = <
   >;
 };
 
+export const roomJsonItemsEntriesIterable = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  roomJsonItems: RoomJsonItems<RoomItemId, RoomId>,
+) => {
+  return objectEntries(
+    roomJsonItems as Record<string, unknown>,
+  ) as IterableIterator<[RoomItemId, JsonItemUnion<RoomId, RoomItemId>]>;
+};
+
 export const iterateRoomJsonItems = <
   RoomId extends string,
   RoomItemId extends string,
@@ -131,4 +142,13 @@ export const iterateRoomJsonItems = <
   roomJson: RoomJson<RoomId, RoomItemId, ScN>,
 ) => {
   return iterate(roomJsonItemsIterable(roomJson));
+};
+
+export const iterateRoomJsonItemsWithIds = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  roomJsonItems: RoomJsonItems<RoomItemId, RoomId>,
+) => {
+  return iterate(roomJsonItemsEntriesIterable(roomJsonItems));
 };

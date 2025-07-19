@@ -6,7 +6,7 @@ import { fineXyzToBlockXyz } from "../../../game/render/projections";
 import type { Xy } from "../../../utils/vectors/vectors";
 import {
   addXyz,
-  directionAxis,
+  tangentAxis,
   perpendicularAxisXy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
@@ -58,10 +58,10 @@ export const itemToolPutDownLocation = (
 
     /** axis running along the wall the door sits on */
     const alongWallAxis = perpendicularAxisXy(
-      directionAxis(wallConfig.direction),
+      tangentAxis(wallConfig.direction),
     );
     /** axis for direction of travel through the doorway */
-    const doorDirectionAxis = directionAxis(wallConfig.direction);
+    const doorDirectionAxis = tangentAxis(wallConfig.direction);
 
     if (currentWallTimes[alongWallAxis] < 2) {
       return undefined; // wall not big enough for a door

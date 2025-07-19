@@ -107,8 +107,8 @@ export const writeOut = async ({
                 const failedPath = e.operation.path;
                 console.warn(
                   `⚠️⚠️⚠️ Could not apply a path ${failedPath} for a patch at room ${room.id} - will drop this, but please check if this was not expected`,
-                  room.id,
-                  failedPath,
+                  "room ids are",
+                  Object.keys(room.items),
                 );
 
                 roomPatch = roomPatch?.filter((op) => op.path !== failedPath);

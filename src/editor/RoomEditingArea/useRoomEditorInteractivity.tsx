@@ -57,7 +57,7 @@ import { editorKeyboardShortcuts } from "./editorKeyboardShortcuts";
 import {
   getConsolidatableVector,
   isConsolidatable,
-} from "../../model/json/ConsolidatableJsonItem";
+} from "../../consolidateItems/ConsolidatableJsonItem";
 import {
   addingItemWouldCollide,
   itemMoveOrResizeWouldCollide,
@@ -146,11 +146,6 @@ const getDragVector = (
     return undefined;
   }
 
-  // TODO: this isn't taking any account of if the item is resizable, which
-  // is probably a mistake given that it is possible to grab on an edge of
-  // a non-resizable item. As-is, it is a bit confusing which axes the drag-move
-  // of an item will happen on since there's no feedback given if going to drag
-  // on their corner
   const plane = getDragPlaneNormal(
     mouseDownPointingAt,
     modifierPressed,
