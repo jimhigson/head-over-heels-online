@@ -102,6 +102,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     state: {
       ...defaultBaseState(),
       position: blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
+      // walls can never be stood on:
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },
     shadowCastTexture:
