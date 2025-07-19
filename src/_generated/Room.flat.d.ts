@@ -488,47 +488,47 @@ export type RoomJsonSchema = {
                   | {
                       which: "elephant";
                       movement: "patrol-randomly-xy4";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "elephantHead";
                       movement: "turn-to-player";
                       startDirection: "towards" | "right" | "away" | "left";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "monkey";
                       movement:
                         | "patrol-randomly-xy4"
                         | "towards-on-shortest-axis-xy4";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "computerBot";
                       movement:
                         | "towards-on-shortest-axis-xy4"
                         | "patrol-randomly-xy4-and-reverse";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "bubbleRobot";
                       movement: "patrol-randomly-xy8";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "dalek";
                       movement: "patrol-randomly-diagonal";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "homingBot";
                       movement: "towards-tripped-on-axis-xy4";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "helicopterBug";
                       movement: "patrol-randomly-xy8";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "helicopterBug";
@@ -539,7 +539,7 @@ export type RoomJsonSchema = {
                       which: "turtle";
                       movement: "clockwise";
                       startDirection: "towards" | "right" | "away" | "left";
-                      activated: "on";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "cyberman";
@@ -549,7 +549,7 @@ export type RoomJsonSchema = {
                     }
                   | {
                       which: "skiHead";
-                      activated: "on";
+                      activated: "off" | "on";
                       movement: "clockwise" | "back-forth";
                       startDirection: "towards" | "right" | "away" | "left";
                       style: "greenAndPink" | "starsAndStripes";
@@ -782,45 +782,45 @@ export type RoomJsonSchema = {
           | {
               which: "elephant";
               movement: "patrol-randomly-xy4";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "elephantHead";
               movement: "turn-to-player";
               startDirection: "towards" | "right" | "away" | "left";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "monkey";
               movement: "patrol-randomly-xy4" | "towards-on-shortest-axis-xy4";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "computerBot";
               movement:
                 | "towards-on-shortest-axis-xy4"
                 | "patrol-randomly-xy4-and-reverse";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "bubbleRobot";
               movement: "patrol-randomly-xy8";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "dalek";
               movement: "patrol-randomly-diagonal";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "homingBot";
               movement: "towards-tripped-on-axis-xy4";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "helicopterBug";
               movement: "patrol-randomly-xy8";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "helicopterBug";
@@ -831,7 +831,7 @@ export type RoomJsonSchema = {
               which: "turtle";
               movement: "clockwise";
               startDirection: "towards" | "right" | "away" | "left";
-              activated: "on";
+              activated: "off" | "on";
             }
           | {
               which: "cyberman";
@@ -841,7 +841,7 @@ export type RoomJsonSchema = {
             }
           | {
               which: "skiHead";
-              activated: "on";
+              activated: "off" | "on";
               movement: "clockwise" | "back-forth";
               startDirection: "towards" | "right" | "away" | "left";
               style: "greenAndPink" | "starsAndStripes";
