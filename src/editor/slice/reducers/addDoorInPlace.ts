@@ -83,6 +83,16 @@ export const addDoorInPlace = (
 
     toRoomJson.items[returnDoorId] = returnDoorItemJson;
 
+    console.log("cutting hole for return door");
+    console.log(
+      state,
+      "toRoomJson.id",
+      toRoomJson.id,
+      "returnDoorDirection",
+      returnDoorDirection,
+      "returnDoorPosition",
+      returnDoorPosition,
+    );
     cutHoleInWallsForDoorsInPlace(
       state,
       toRoomJson.id,
