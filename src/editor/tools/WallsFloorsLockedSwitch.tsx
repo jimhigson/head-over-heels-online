@@ -5,12 +5,16 @@ import {
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 
-export const WallsFloorsLockedSwitch = () => {
+export const WallsFloorsLockedSwitch = ({
+  className,
+}: {
+  className?: string;
+}) => {
   const dispatch = useAppDispatch();
 
   return (
     <Switch
-      className="w-full"
+      className={className}
       label="scenery"
       value={useAppSelectorWithLevelEditorSlice(
         (state) => state.levelEditor.wallsFloorsLocked,

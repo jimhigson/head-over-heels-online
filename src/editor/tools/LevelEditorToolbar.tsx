@@ -88,8 +88,10 @@ export const LevelEditorToolbar = () => {
         <DeleteItemToolButton />
         <ClearRoomButton />
         <div className="h-1 w-full" />
-        <HalfGridResolutionSwitch />
-        <WallsFloorsLockedSwitch />
+        <div className="flex flex-row justify-between flex-wrap gap-x-1">
+          <HalfGridResolutionSwitch className="" />
+          <WallsFloorsLockedSwitch className="" />
+        </div>
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full pt-2">Blocks</BitmapText>

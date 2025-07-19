@@ -153,10 +153,13 @@ export default {
     bottom: blockMultiples,
     borderWidth: blockMultiples,
     maxWidth: {
+      ...blockMultiples,
       // widest dialog is 50% wider than the zx screen:
       widestDialog: `calc(var(--scale) * ${resolutions.zxSpectrum.x * 1.4}px)`,
     },
     maxHeight: {
+      ...blockMultiples,
+
       min: "min-content",
     },
     gridTemplateColumns: {
