@@ -31,6 +31,8 @@ export const addDoorInPlace = (
     isPreview ?
       // previews don't create any other rooms when doors are added:
       undefined
+      // TODO: option to do this conditionally, only if there isn't already a room
+      // in this grid position
     : addNewRoomInPlace(state, fromRoomJson.planet, fromRoomJson.color);
 
   addItemInPlace(
@@ -79,6 +81,16 @@ export const addDoorInPlace = (
 
     toRoomJson.items[returnDoorId] = returnDoorItemJson;
 
+    console.log("cutting hole for return door");
+    console.log(
+      state,
+      "toRoomJson.id",
+      toRoomJson.id,
+      "returnDoorDirection",
+      returnDoorDirection,
+      "returnDoorPosition",
+      returnDoorPosition,
+    );
     cutHoleInWallsForDoorsInPlace(
       state,
       toRoomJson.id,

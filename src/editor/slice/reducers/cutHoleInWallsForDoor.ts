@@ -19,7 +19,7 @@ import {
 } from "../../../game/collision/boundingBoxTimes";
 import { roomEditTarget } from "./addItemInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { selectRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 
 function* iterateRoomItemsToCutWallsForDoors(
   items: EditorRoomJsonItems,
@@ -73,6 +73,7 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
 
     if (currentWallTimes[alongWallAxis] === 2) {
       // door completely replaces this wall
+      console.log("yielding for for removal (complete replace) of ", id);
       yield [id, null];
       continue;
     }
@@ -178,6 +179,7 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
             };
             break;
           default:
+            console.log("cutting tiles down in ", id);
             draftConfig.tiles = draftConfig.tiles.slice(
               relativePosition[alongWallAxis] + 2,
             );
@@ -186,6 +188,7 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
       yield [`${id}/afterDoor` as EditorRoomItemId, modifiedWallAfter];
 
       // remove the pre-splitting item:
+      console.log("yielding for removal (after splitting) of ", id);
       yield [id, null];
     }
   }
@@ -198,7 +201,12 @@ export const cutHoleInWallsForDoorsInPlace = (
   blockPosition: Xyz,
   preview: boolean,
 ) => {
-  const room = selectCurrentRoomFromLevelEditorState(state);
+  const room = selectRoomFromLevelEditorState(state, roomId);
+
+  if (room === undefined) {
+    throw new Error("can't cut hole in walls for a room that does not exist");
+  }
+
   const target = roomEditTarget(state, preview, roomId);
 
   for (const [itemId, modifiedWall] of iterateRoomItemsToCutWallsForDoors(

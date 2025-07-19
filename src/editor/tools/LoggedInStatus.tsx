@@ -18,6 +18,8 @@ const providerIcon = (provider: SupportedProvider): string => {
       return nerdFontGithubChar;
     case "discord":
       return nerdFontDiscordChar;
+    // case "email":
+    //   return "@";
     default:
       provider satisfies never;
       throw new Error();
