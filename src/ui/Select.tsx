@@ -62,9 +62,14 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
   const [open, setOpen] = useState(false);
 
   const wheelElementRef = useRef<HTMLButtonElement | null>(null);
-  useMouseWheelOptions(wheelElementRef, values, (value) => {
-    onSelect(value);
-  });
+  useMouseWheelOptions(
+    wheelElementRef,
+    values,
+    (value) => {
+      onSelect(value);
+    },
+    !open,
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

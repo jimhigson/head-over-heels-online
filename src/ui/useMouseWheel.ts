@@ -5,11 +5,16 @@ import normalizeWheel from "normalize-wheel-es";
 export const useMouseWheel = (
   elementRef: RefObject<Element | null>,
   callback: (direction: 1 | -1) => void,
+  disabled: boolean = false,
 ) => {
   const wheelY = useRef(0);
 
   const onWheel = useCallback(
     (e: Event) => {
+      if (disabled) {
+        return;
+      }
+
       const wheelEvent = e as WheelEvent;
 
       wheelEvent.preventDefault();
@@ -29,7 +34,7 @@ export const useMouseWheel = (
         wheelY.current = 0;
       }
     },
-    [callback],
+    [callback, disabled],
   );
 
   useEffect(() => {
@@ -49,13 +54,21 @@ export const useMouseWheelOptions = <T>(
   elementRef: RefObject<Element | null>,
   values: Readonly<T[]>,
   callback: (value: T, idx: number) => void,
+  disabled: boolean = false,
 ) => {
   const valueRef = useRef<number>(0);
 
-  return useMouseWheel(elementRef, (delta) => {
-    const newIndex =
-      (valueRef.current + delta + 256 * values.length) % values.length;
-    valueRef.current = newIndex;
-    callback(values[newIndex], newIndex);
-  });
+  return useMouseWheel(
+    elementRef,
+    (delta) => {
+      if (values.length === 0) {
+        return;
+      }
+      const newIndex =
+        (valueRef.current + delta + 256 * values.length) % values.length;
+      valueRef.current = newIndex;
+      callback(values[newIndex], newIndex);
+    },
+    disabled,
+  );
 };
