@@ -47,7 +47,6 @@ export type LevelEditorState = {
    * Can be null, which means the item is deleted in the preview
    */
   previewedEdits: PreviewedRoomItemEdits;
-  nextRoomId: number;
   tool: Tool;
   hoveredItem?: HoveredItem;
   clickableAnnotationHovered: boolean;
@@ -70,7 +69,6 @@ export const initialLevelEditorSliceState: LevelEditorState = {
       [initialRoomId]: initialRoom,
     },
   },
-  nextRoomId: 1,
   currentlyEditingRoomId: initialRoomId,
   previewedEdits: {},
   tool: { type: "pointer" },
