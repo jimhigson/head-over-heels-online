@@ -5,12 +5,16 @@ import {
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 
-export const HalfGridResolutionSwitch = () => {
+export const HalfGridResolutionSwitch = ({
+  className,
+}: {
+  className?: string;
+}) => {
   const dispatch = useAppDispatch();
 
   return (
     <Switch
-      className="w-full"
+      className={className}
       label="snap"
       value={useAppSelectorWithLevelEditorSlice(
         (state) => state.levelEditor.halfGridResolution,

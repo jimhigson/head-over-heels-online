@@ -22,7 +22,10 @@ export const RoomEditingArea = () => {
 
   const cursorClassname = useRoomEditingAreaCursorClassName();
 
-  useUpdateUpscaleWhenWindowResizes(undefined, renderSizingArea ?? undefined);
+  useUpdateUpscaleWhenWindowResizes(
+    "amigaLowResPal",
+    renderSizingArea ?? undefined,
+  );
   useResizePixiApplicationToMatchCanvasSize();
   useAddRoomRendererOutputToApplicationStage(roomRenderer);
   useTickRoomRenderer(roomRenderer);
