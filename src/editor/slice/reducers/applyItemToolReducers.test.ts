@@ -224,7 +224,7 @@ describe("applying tools", () => {
           ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "room_1" as EditorRoomId,
+              toRoom: "room_0" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -289,7 +289,7 @@ describe("applying tools", () => {
           ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "room_1" as EditorRoomId,
+              toRoom: "room_0" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -334,7 +334,7 @@ describe("applying tools", () => {
           ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "room_1" as EditorRoomId,
+              toRoom: "room_0" as EditorRoomId,
             },
             position: doorPosition,
             type: "door",
@@ -402,7 +402,7 @@ describe("applying tools", () => {
           ["door" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              toRoom: "room_1" as EditorRoomId,
+              toRoom: "room_0" as EditorRoomId,
             },
             position: wallPosition,
             type: "door",
@@ -433,17 +433,17 @@ describe("applying tools", () => {
         // should have one more room id:
         expect(Object.keys(next.campaignInProgress.rooms)).toMatchObject([
           "testRoomId",
-          "room_1",
+          "room_0",
         ]);
 
         expect(
-          next.campaignInProgress.rooms["room_1" as EditorRoomId],
+          next.campaignInProgress.rooms["room_0" as EditorRoomId],
         ).toMatchObject({
           color: {
             hue: "cyan",
             shade: "basic",
           },
-          id: "room_1",
+          id: "room_0",
           items: {
             // here's the return door:
             door: {
@@ -452,7 +452,7 @@ describe("applying tools", () => {
                 toRoom: "testRoomId",
               },
               position: {
-                x: 4,
+                x: 3,
                 y: 0,
                 z: 0,
               },

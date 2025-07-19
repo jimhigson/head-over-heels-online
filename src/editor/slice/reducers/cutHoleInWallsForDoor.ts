@@ -19,7 +19,7 @@ import {
 } from "../../../game/collision/boundingBoxTimes";
 import { roomEditTarget } from "./addItemInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { selectRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 
 function* iterateRoomItemsToCutWallsForDoors(
   items: EditorRoomJsonItems,
@@ -73,6 +73,7 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
 
     if (currentWallTimes[alongWallAxis] === 2) {
       // door completely replaces this wall
+      console.log("yielding for for removal (complete replace) of ", id);
       yield [id, null];
       continue;
     }
@@ -86,14 +87,9 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
 
         switch (draftConfig.direction) {
           case "towards":
-            draftConfig.times = {
-              x: currentWallTimes[alongWallAxis] - 2,
-            };
-            break;
           case "right":
-            draftConfig.times = {
-              y: currentWallTimes[alongWallAxis] - 2,
-            };
+            (draftConfig.times as Xy)[alongWallAxis] =
+              currentWallTimes[alongWallAxis] - 2;
             break;
           default:
             // remove the first two tiles:
@@ -112,15 +108,11 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
 
         switch (draftConfig.direction) {
           case "towards":
-            draftConfig.times = {
-              x: currentWallTimes[alongWallAxis] - 2,
-            };
-            break;
           case "right":
-            draftConfig.times = {
-              y: currentWallTimes[alongWallAxis] - 2,
-            };
+            (draftConfig.times as Xy)[alongWallAxis] =
+              currentWallTimes[alongWallAxis] - 2;
             break;
+
           default:
             // remove the last two tiles:
             draftConfig.tiles = draftConfig.tiles.slice(0, -2);
@@ -136,14 +128,10 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
         const draftConfig = itemDraft.config;
         switch (draftConfig.direction) {
           case "towards":
-            draftConfig.times = {
-              x: relativePosition[alongWallAxis],
-            };
-            break;
           case "right":
-            draftConfig.times = {
-              y: relativePosition[alongWallAxis],
-            };
+            (draftConfig.times as Xy)[alongWallAxis] =
+              relativePosition[alongWallAxis];
+
             break;
           default:
             draftConfig.tiles = draftConfig.tiles.slice(
@@ -162,22 +150,14 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
         const draftConfig = itemDraft.config;
         switch (draftConfig.direction) {
           case "towards":
-            draftConfig.times = {
-              x:
-                currentWallTimes[alongWallAxis] -
-                relativePosition[alongWallAxis] -
-                2,
-            };
-            break;
           case "right":
-            draftConfig.times = {
-              y:
-                currentWallTimes[alongWallAxis] -
-                relativePosition[alongWallAxis] -
-                2,
-            };
+            (draftConfig.times as Xy)[alongWallAxis] =
+              currentWallTimes[alongWallAxis] -
+              relativePosition[alongWallAxis] -
+              2;
             break;
           default:
+            console.log("cutting tiles down in ", id);
             draftConfig.tiles = draftConfig.tiles.slice(
               relativePosition[alongWallAxis] + 2,
             );
@@ -186,6 +166,7 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
       yield [`${id}/afterDoor` as EditorRoomItemId, modifiedWallAfter];
 
       // remove the pre-splitting item:
+      console.log("yielding for removal (after splitting) of ", id);
       yield [id, null];
     }
   }
@@ -198,7 +179,12 @@ export const cutHoleInWallsForDoorsInPlace = (
   blockPosition: Xyz,
   preview: boolean,
 ) => {
-  const room = selectCurrentRoomFromLevelEditorState(state);
+  const room = selectRoomFromLevelEditorState(state, roomId);
+
+  if (room === undefined) {
+    throw new Error("can't cut hole in walls for a room that does not exist");
+  }
+
   const target = roomEditTarget(state, preview, roomId);
 
   for (const [itemId, modifiedWall] of iterateRoomItemsToCutWallsForDoors(

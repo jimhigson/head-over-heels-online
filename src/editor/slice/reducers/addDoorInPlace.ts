@@ -31,6 +31,8 @@ export const addDoorInPlace = (
     isPreview ?
       // previews don't create any other rooms when doors are added:
       undefined
+      // TODO: option to do this conditionally, only if there isn't already a room
+      // in this grid position
     : addNewRoomInPlace(state, fromRoomJson.planet, fromRoomJson.color);
 
   addItemInPlace(
@@ -58,11 +60,13 @@ export const addDoorInPlace = (
       x:
         doorDirection === "left" ? 0
         : doorDirection === "right" ? toRoomJson.size.x
-        : Math.floor(toRoomJson.size.x / 2),
+          // line up to match the door we just added (this assumes the room going to is big enough)
+        : blockPosition.x,
       y:
         doorDirection === "away" ? 0
         : doorDirection === "towards" ? toRoomJson.size.x
-        : Math.floor(toRoomJson.size.x / 2),
+          // line up to match the door we just added (this assumes the room going to is big enough)
+        : blockPosition.y,
       z: blockPosition.z,
     };
 
