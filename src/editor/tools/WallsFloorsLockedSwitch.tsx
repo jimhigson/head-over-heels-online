@@ -19,11 +19,12 @@ export const WallsFloorsLockedSwitch = ({
       value={useAppSelectorWithLevelEditorSlice(
         (state) => state.levelEditor.wallsFloorsLocked,
       )}
-      onClick={(_e, value) => {
+      onChange={(value) => {
         dispatch(changeWallsFloorsLocked(value));
       }}
       falseLabel="edit"
       trueLabel="lock"
+      shortcutKeys={["C"]}
     />
   );
 };

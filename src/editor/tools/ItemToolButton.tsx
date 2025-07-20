@@ -9,7 +9,7 @@ import type { ItemTool } from "../Tool";
 import nanoEqual from "nano-equal";
 
 import type { PropsWithChildren } from "react";
-import type { ShortcutKeys } from "./useKeyboardShortcut";
+import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
 import { ToolbarButton } from "./ToolbarButton";
 
 type ItemToolButtonProps<T extends JsonItemType> = {

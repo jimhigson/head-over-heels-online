@@ -3,7 +3,7 @@ import { type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { LevelEditorState } from "../levelEditorSlice";
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { SceneryName } from "../../../sprites/planets";
-import { changeRoomSceneryInPlace } from "../inPlaceMutators.ts/changeRoomSceneryInPlace";
+import { changeRoomSceneryInPlace } from "../inPlaceMutators/changeRoomSceneryInPlace";
 import {
   selectCurrentRoomFromLevelEditorState,
   selectRoomFromLevelEditorState,
@@ -11,12 +11,11 @@ import {
 import { pushUndoInPlace } from "./undoReducers";
 import { keysIter } from "../../../utils/entries";
 import type {
-  EditorJsonItem,
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
 } from "../../editorTypes";
-import { addNewRoomInPlace } from "../inPlaceMutators.ts/addNewRoomInPlace";
+import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import {
   iterateRoomJsonItems,
   type AnyRoomJson,
@@ -24,13 +23,7 @@ import {
 import type { Subset } from "../../../utils/subset";
 import type { FloorType } from "../../../model/json/ItemConfigMap";
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
-import { nextItemId } from "./addItemInPlace";
-import {
-  isWallHidden,
-  type WallJsonConfig,
-} from "../../../model/json/WallJsonConfig";
-import { rotatingSceneryTiles } from "../createStarterRoom";
-import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
+import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 
 export type AboveOrBelowProperties = Subset<
   keyof AnyRoomJson,
@@ -68,53 +61,6 @@ const changeFloorTypeInPlace = (
         ...{ scenery: floorType === "standable" ? roomJson.planet : undefined },
       } as JsonItemConfig<"floor", EditorRoomId, EditorRoomItemId>;
     });
-};
-
-const deleteItemInPlace = (
-  roomJson: EditorRoomJson,
-  itemId: EditorRoomItemId,
-) => {
-  const item = roomJson.items[itemId];
-
-  if (item.type === "door") {
-    const replacementWall: EditorJsonItem<"wall"> = {
-      type: "wall" as const,
-      config:
-        isWallHidden(item.config.direction) ?
-          item.config.direction === "towards" ?
-            ({
-              direction: item.config.direction,
-              times: { x: 2 },
-            } satisfies WallJsonConfig)
-          : ({
-              direction: item.config.direction,
-              times: { y: 2 },
-            } satisfies WallJsonConfig)
-        : ({
-            direction: item.config.direction,
-            tiles: [
-              ...rotatingSceneryTiles(
-                roomJson.planet,
-                2,
-                item.position[item.config.direction === "away" ? "x" : "y"],
-              ),
-            ],
-          } satisfies WallJsonConfig),
-      position: { ...item.position, z: 0 },
-    } satisfies EditorJsonItem<"wall">;
-
-    // deleting a door - replace with the equivalent wall, and then consolidate to
-    // join the new wall with adjacent walls:
-    const nextWallId = nextItemId(roomJson, replacementWall, false);
-
-    roomJson.items[nextWallId] = replacementWall;
-
-    // consolidate all walls in this room, to 'heal' any walls around the wall we just added:
-    // TODO: this will currently consolidate unknown items too!
-    roomJson.items = consolidateItemsMap(roomJson.items);
-  }
-
-  delete roomJson.items[itemId];
 };
 
 export const editRoomReducers = {

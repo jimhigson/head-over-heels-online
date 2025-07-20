@@ -19,7 +19,7 @@ import {
   renderMultipliedXy,
 } from "../../../utils/pixi/renderMultpliedXy";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { itemInPlayTimes } from "../../collision/boundingBoxTimes";
+import { itemInPlayTimes } from "../../../model/times";
 
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,

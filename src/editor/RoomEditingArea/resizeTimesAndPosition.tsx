@@ -1,9 +1,11 @@
 import { getConsolidatableVector } from "../../consolidateItems/ConsolidatableJsonItem";
+import { getJsonItemTimes } from "../../model/times";
 import { eachAxis } from "../../utils/vectors/eachAxis";
 import {
   type Xyz,
   elementWiseProductXyz,
   addXyz,
+  subXyz,
 } from "../../utils/vectors/vectors";
 import type { EditorJsonItemUnion } from "../editorTypes";
 
@@ -34,15 +36,18 @@ export const resizeTimesAndPosition = ({
   jsonItem,
   blockDragAccVec,
   resizeEdgeDirection: resizeEdge,
-  startTimes,
-  startPosition,
+  // startTimes,
+  // startPosition,
 }: {
   jsonItem: EditorJsonItemUnion;
   blockDragAccVec: Xyz;
   resizeEdgeDirection: Xyz;
-  startTimes: Xyz;
-  startPosition: Xyz;
+  // startTimes: Xyz;
+  // startPosition: Xyz;
 }) => {
+  const startPosition = jsonItem.position;
+  const startTimes = getJsonItemTimes(jsonItem);
+
   const sizeChangeInDragDirection = elementWiseProductXyz(
     blockDragAccVec,
     resizeEdge,
@@ -82,5 +87,8 @@ export const resizeTimesAndPosition = ({
     newTimes,
   );
 
-  return { newTimes, newPosition };
+  return {
+    timesDelta: subXyz(newTimes, startTimes),
+    positionDelta: subXyz(newPosition, startPosition),
+  };
 };

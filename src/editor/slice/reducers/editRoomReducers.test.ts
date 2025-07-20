@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import {
   applyItemTool,
   deleteSelected,
-  setSelectedItemInRoom,
+  setSelectedItemsInRoom,
   setTool,
 } from "../levelEditorSlice";
 import {
@@ -15,7 +15,6 @@ import {
 import type { EditorJsonItemUnion } from "../../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
-import { inspect } from "node:util";
 
 test('deleting a door "heals" the void where the door once stood by extending and joining existing walls', () => {
   const state0 = editorStateWithOneRoomWithOneAwayWall;
@@ -42,9 +41,8 @@ test('deleting a door "heals" the void where the door once stood by extending an
         expect.fail("no door in room");
       }
 
-      return setSelectedItemInRoom({
-        jsonItemId: doorEntry[0],
-        additive: false,
+      return setSelectedItemsInRoom({
+        jsonItemIds: [doorEntry[0]],
       });
     },
     deleteSelected(),
@@ -55,13 +53,6 @@ test('deleting a door "heals" the void where the door once stood by extending an
   );
   const state1RoomItems = Object.values(
     state1.campaignInProgress.rooms[testRoomId].items,
-  );
-
-  console.log(
-    "before",
-    inspect(state0RoomItems, { depth: 4, colors: true }),
-    "after",
-    inspect(state1RoomItems, { depth: 4, colors: true }),
   );
 
   // the room that had the door added and removed again should be identical to when it started:

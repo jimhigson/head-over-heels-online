@@ -27,3 +27,8 @@ export const selectItemInLevelEditorState = (
   state.campaignInProgress.rooms[roomId ?? state.currentlyEditingRoomId]?.items[
     itemId
   ] as EditorJsonItemUnion | undefined;
+
+export const selectItemIsSelectedInLevelEditorState = (
+  state: LevelEditorState,
+  itemId: EditorRoomItemId,
+) => state.selectedJsonItemIds.includes(itemId);

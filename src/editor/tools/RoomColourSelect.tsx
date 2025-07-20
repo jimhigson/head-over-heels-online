@@ -60,7 +60,7 @@ export function RoomColourSelect() {
         className=""
         label="shade"
         value={currentRoomColour.shade === "basic"}
-        onClick={(_e, value) => {
+        onChange={(value) => {
           dispatch(
             changeRoomColour({
               shade: value ? "basic" : "dimmed",

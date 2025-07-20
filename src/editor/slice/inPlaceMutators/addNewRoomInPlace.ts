@@ -1,16 +1,21 @@
 import { range } from "iter-tools";
-import type { ZxSpectrumRoomColour } from "../../../originalGame";
+import {
+  zxSpectrumRoomHue,
+  type ZxSpectrumRoomColour,
+} from "../../../originalGame";
 import type { SceneryName } from "../../../sprites/planets";
 import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
 import { starterRoom } from "../createStarterRoom";
 import type { LevelEditorState } from "../levelEditorSlice";
 import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";
 import { iterate } from "../../../utils/iterate";
+import { randomFromArray } from "../../../utils/random/randomFromArray";
 
 export const addNewRoomInPlace = (
   state: LevelEditorState,
   scenery: SceneryName,
-  colour: ZxSpectrumRoomColour,
+  /** if not given, will be chosen randomly */
+  maybeColour?: ZxSpectrumRoomColour,
 ): EditorRoomJson => {
   const firstUntakenRoomNumber = iterate(range({ start: 0 })).find(
     (n) =>
@@ -18,6 +23,11 @@ export const addNewRoomInPlace = (
   );
 
   const toRoomId = `room_${firstUntakenRoomNumber}` as EditorRoomId;
+
+  const colour: ZxSpectrumRoomColour = maybeColour ?? {
+    hue: randomFromArray(zxSpectrumRoomHue),
+    shade: Math.random() < 0.66 ? "basic" : "dimmed",
+  };
 
   const toRoomJson = {
     id: toRoomId,

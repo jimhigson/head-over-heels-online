@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { Key } from "../../game/input/keys";
+import type { Key } from "../game/input/keys";
 
 // Valid modifier combinations (no duplicates allowed)
 type ValidModifiers =
@@ -36,7 +36,7 @@ const hasDuplicateModifiers = (modifiers: string): boolean => {
 export const useKeyboardShortcut = (
   shortcutKeys: ShortcutKeys | undefined,
   disabled: boolean,
-  onClick: (() => void) | undefined,
+  run: (() => void) | undefined,
 ) => {
   const shortcutKeysString = shortcutKeys?.join(" ");
 
@@ -82,7 +82,7 @@ export const useKeyboardShortcut = (
 
         if (event.key.toLowerCase() === key.toLowerCase() && modifierMatches) {
           if (!disabled) {
-            onClick?.();
+            run?.();
           }
           // still prevent the default if we are disabled (eg, don't allow the browser
           // to show a 'save as' dialog, or use other default behaviour for shortcuts)
@@ -96,5 +96,5 @@ export const useKeyboardShortcut = (
       window.removeEventListener("keydown", handleKeydown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabled, onClick, shortcutKeysString]);
+  }, [disabled, run, shortcutKeysString]);
 };

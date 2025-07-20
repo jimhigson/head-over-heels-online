@@ -28,6 +28,7 @@ export const DoorToolButton = () => {
           toRoom: "(placeholder)" as EditorRoomId, // arbitrary, to be corrected on placement
         } satisfies JsonItemConfig<"door", EditorRoomId, EditorRoomItemId>,
       }}
+      shortcutKeys={["D"]}
     >
       <span
         className={`sprite ${textureClassname} ${buttonSpriteRevertColourClasses}`}

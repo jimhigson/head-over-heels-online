@@ -6,7 +6,8 @@
   "scripts": {
     "dev:game": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite",
     "dev:editor": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite --config vite.editor.config.ts --mode development src/editor",
-    "preview": "vite preview",
+    "preview:game": "vite preview",
+    "preview:editor": "vite --config vite.editor.config.ts preview",
     "build:game": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite build",
     "build:editor": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite build --config vite.editor.config.ts --emptyOutDir src/editor",
     "build": "pnpm run \"/^build:.*/\"",

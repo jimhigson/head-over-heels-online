@@ -12,7 +12,7 @@ import type { RoomState } from "../../../../model/RoomState";
 import { iterateRoomItems } from "../../../../model/RoomState";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import { wallTimes } from "../../../collision/boundingBoxTimes";
+import { wallTimes } from "../../../../model/times";
 
 export const renderFloorOverdraws = (
   { state: { position: floorPosition } }: ItemInPlay<"floor", string, string>,

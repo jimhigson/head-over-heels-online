@@ -33,13 +33,15 @@ import {
 import { EyeDropperButton } from "./EyeDropperButton";
 import { SaveAndLoadButtons } from "./SaveAndLoadButtons";
 import {
-  DissapearingToolbarIcon,
+  DissapearingItemToolbarIcon,
   LabelledToolbarIcon,
   StackedToolbarIcons,
 } from "./ToolbarButtonContentPatterns";
 import { MapButton } from "./MapButton";
 import { PlayTestButton } from "./PlayTestButton";
 import { LoggedInStatus } from "./LoggedInStatus";
+import { AddAndDeleteRoomButtons } from "./AddAndRemoveRoomButtons";
+import { NudgeButtons } from "./NudgeButtons";
 
 export const LevelEditorToolbar = () => {
   const campaign = useAppSelectorWithLevelEditorSlice(
@@ -63,6 +65,7 @@ export const LevelEditorToolbar = () => {
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full pt-2">Room</BitmapText>
+        <AddAndDeleteRoomButtons />
         <RoomSelect
           value={currentlyEditingRoomId}
           campaign={campaign}
@@ -87,10 +90,11 @@ export const LevelEditorToolbar = () => {
         <UndoRedoButtons />
         <DeleteItemToolButton />
         <ClearRoomButton />
+        <NudgeButtons />
         <div className="h-1 w-full" />
         <div className="flex flex-row justify-between flex-wrap gap-x-2">
-          <HalfGridResolutionSwitch className="" />
-          <WallsFloorsLockedSwitch className="" />
+          <HalfGridResolutionSwitch />
+          <WallsFloorsLockedSwitch />
         </div>
       </div>
       <div className={buttonGroupClassname}>
@@ -112,7 +116,7 @@ export const LevelEditorToolbar = () => {
             config: { style: "organic", disappearing: { on: "stand" } },
           }}
         >
-          <DissapearingToolbarIcon
+          <DissapearingItemToolbarIcon
             iconClassName={twClass("texture-block_organic_disappearing")}
           />
         </ItemToolButton>
@@ -129,7 +133,7 @@ export const LevelEditorToolbar = () => {
             config: { style: "artificial", disappearing: { on: "stand" } },
           }}
         >
-          <DissapearingToolbarIcon
+          <DissapearingItemToolbarIcon
             iconClassName={twClass("texture-block_artificial_disappearing")}
           />
         </ItemToolButton>
@@ -162,7 +166,7 @@ export const LevelEditorToolbar = () => {
               config: { axis: "x", disappearing: { on: "touch" } },
             }}
           >
-            <DissapearingToolbarIcon
+            <DissapearingItemToolbarIcon
               iconClassName={twClass("texture-barrier_x")}
             />
           </ItemToolButton>
@@ -172,7 +176,7 @@ export const LevelEditorToolbar = () => {
               config: { axis: "y", disappearing: { on: "touch" } },
             }}
           >
-            <DissapearingToolbarIcon
+            <DissapearingItemToolbarIcon
               iconClassName={twClass("texture-barrier_y")}
             />
           </ItemToolButton>

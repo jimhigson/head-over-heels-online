@@ -18,11 +18,9 @@ import { emptyObject } from "../../../utils/empty";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import {
-  wallTimes,
-  multiplyBoundingBox,
-} from "../../collision/boundingBoxTimes";
 import { isWallHidden } from "../../../model/json/WallJsonConfig";
+import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+import { wallTimes } from "../../../model/times";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal.

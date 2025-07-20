@@ -2,31 +2,38 @@ import clsx from "clsx";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 import type { MouseEvent } from "react";
 import { cn } from "./cn";
+import { useKeyboardShortcut, type ShortcutKeys } from "./useKeyboardShortcut";
 
 export type SwitchProps = {
   value: boolean;
   className?: string;
-  onClick?: (e: MouseEvent<HTMLElement>, newValue: boolean) => void;
+  onChange?: (newValue: boolean, e?: MouseEvent<HTMLElement>) => void;
   trueLabel?: string;
   falseLabel?: string;
   label?: string;
+  shortcutKeys?: ShortcutKeys | undefined;
 };
 
 export const Switch = ({
   className,
   value,
-  onClick,
+  onChange,
   trueLabel = "ON",
   falseLabel = "OFF",
   label,
+  shortcutKeys,
 }: SwitchProps) => {
   const labelLength = Math.max(trueLabel.length, falseLabel.length) + 1;
   const trueLabelPadded = trueLabel.padStart(labelLength, " ");
   const falseLabelPadded = falseLabel.padEnd(labelLength, " ");
 
+  useKeyboardShortcut(shortcutKeys, false, () => {
+    onChange?.(!value, undefined);
+  });
+
   return (
     <span
-      onClick={(e) => onClick?.(e, !value)}
+      onClick={(e) => onChange?.(!value, e)}
       className={cn("inline-flex justify-between", className)}
     >
       {label && (

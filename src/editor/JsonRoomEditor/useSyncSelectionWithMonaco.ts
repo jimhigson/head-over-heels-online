@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { startAppListening } from "../../store/listenerMiddleware";
-import { setSelectedItemInRoom } from "../slice/levelEditorSlice";
+import { setSelectedItemsInRoom } from "../slice/levelEditorSlice";
 import type { editor } from "monaco-editor";
 import {
   parseTree,
@@ -61,9 +61,8 @@ export const useSyncSelectionWithMonaco = (
       if (path[0] === ("items" satisfies keyof AnyRoomJson)) {
         const [, jsonItemId] = path;
         dispatch(
-          setSelectedItemInRoom({
-            additive: false,
-            jsonItemId: jsonItemId as EditorRoomItemId,
+          setSelectedItemsInRoom({
+            jsonItemIds: [jsonItemId as EditorRoomItemId],
           }),
         );
       }
@@ -123,7 +122,7 @@ export const useSyncSelectionWithMonaco = (
     };
 
     const unSub = startAppListening({
-      actionCreator: setSelectedItemInRoom,
+      actionCreator: setSelectedItemsInRoom,
       effect(action, { getState }) {
         const { selectedJsonItemIds } = getState().levelEditor!;
 

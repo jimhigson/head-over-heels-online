@@ -14,11 +14,8 @@ import {
   doorOverallWidthPx,
   doorPostHeightPx,
 } from "../../../game/gameState/loadRoom/loadDoor";
-import {
-  completeTimesXy,
-  wallTimes,
-} from "../../../game/collision/boundingBoxTimes";
 import { epsilon } from "../../../utils/veryClose";
+import { completeTimesXy, wallTimes } from "../../../model/times";
 
 export const itemToolPutDownLocation = (
   pointingAt: PointingAtItem,

@@ -5,6 +5,7 @@ import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
 import paletteJson from "../../../gfx/spritesheetPalette.json";
 import { halfbriteHex } from "../../utils/colour/halfBrite";
+import { importOnce } from "../../utils/importOnce";
 
 export const monacoLoader = async (): Promise<Monaco> => {
   self.MonacoEnvironment = {
@@ -70,3 +71,5 @@ export const monacoLoader = async (): Promise<Monaco> => {
 
   return monacoInstance;
 };
+
+export const loadMonacoOnce = importOnce(monacoLoader);

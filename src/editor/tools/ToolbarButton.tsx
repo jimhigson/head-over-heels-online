@@ -1,9 +1,12 @@
 import { Button } from "../../ui/button";
 
 import { type PropsWithChildren } from "react";
-import { buttonSizeClassNames } from "./buttonSizeClassNames";
-import type { ShortcutKeys } from "./useKeyboardShortcut";
-import { useKeyboardShortcut } from "./useKeyboardShortcut";
+import {
+  buttonSizeClassNames,
+  buttonSmallSizeClassNames,
+} from "./buttonSizeClassNames";
+import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
+import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
 
 type ToolbarButtonProps = {
   onClick?: () => void;
@@ -11,6 +14,7 @@ type ToolbarButtonProps = {
   isCurrentTool?: boolean;
   disabled?: boolean;
   shortcutKeys?: ShortcutKeys;
+  small?: boolean;
 };
 
 export const ToolbarButton = ({
@@ -20,6 +24,7 @@ export const ToolbarButton = ({
   disabled = false,
   isCurrentTool = false,
   shortcutKeys,
+  small = false,
 }: PropsWithChildren<ToolbarButtonProps>) => {
   useKeyboardShortcut(shortcutKeys, disabled, onClick);
 
@@ -28,7 +33,7 @@ export const ToolbarButton = ({
       disabled={disabled}
       selected={isCurrentTool}
       className={`
-        ${buttonSizeClassNames} 
+        ${small ? buttonSmallSizeClassNames : buttonSizeClassNames} 
         active:pt-oneScaledPix  gap-0 inline-flex overflow-hidden 
         
         ${className ?? ""}`}

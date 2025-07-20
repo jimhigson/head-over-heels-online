@@ -294,9 +294,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               <Switch
                 label="shadow"
                 value={showShadowMasks}
-                onClick={(e, newValue) => {
+                onChange={(newValue, e) => {
                   dispatch(setShowShadowMasks(newValue));
-                  e.currentTarget.blur();
+                  e?.currentTarget.blur();
                 }}
               />
             </div>
