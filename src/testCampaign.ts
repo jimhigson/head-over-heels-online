@@ -818,9 +818,12 @@ const rooms = {
             {
               expectType: "monster",
               targets: ["t1"],
-              newState: {
-                activated: { left: false, right: true },
-                everActivated: { right: true },
+              leftState: {
+                activated: false,
+              },
+              rightState: {
+                activated: true,
+                everActivated: true,
               },
             },
           ],

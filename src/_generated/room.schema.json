@@ -2,9 +2,6 @@
   "$ref": "#/definitions/RoomJsonSchema",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "RoomItemId": {
-      "type": "string"
-    },
     "RoomJsonSchema": {
       "additionalProperties": false,
       "properties": {
@@ -2983,109 +2980,193 @@
                             "type": "string"
                           },
                           "modifies": {
-                            "anyOf": [
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "expectType": {
-                                    "enum": ["movingPlatform", "monster"],
-                                    "type": "string"
-                                  },
-                                  "newState": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                      "activated": {},
-                                      "everActivated": {}
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "enum": ["movingPlatform", "monster"],
+                                      "type": "string"
                                     },
-                                    "required": ["activated", "everActivated"],
-                                    "type": "object"
-                                  },
-                                  "targets": {
-                                    "$ref": "#/definitions/RoomItemId"
-                                  }
-                                },
-                                "required": [
-                                  "expectType",
-                                  "targets",
-                                  "newState"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "expectType": {
-                                    "const": "block",
-                                    "type": "string"
-                                  },
-                                  "newState": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                      "disappearing": {
-                                        "additionalProperties": false,
-                                        "description": "if given, the item disappears after the specified interaction. This must be null (not undefined) so switches can tell the difference between having no setting, and having a setting to change to null when they make something not disappearing",
-                                        "properties": {
-                                          "left": {
-                                            "additionalProperties": false,
-                                            "description": "if not given, nothing is set on this switch throw to the left",
-                                            "properties": {
-                                              "on": {
-                                                "const": "stand",
-                                                "type": "string"
-                                              }
-                                            },
-                                            "required": ["on"],
-                                            "type": "object"
-                                          },
-                                          "right": {
-                                            "description": "if not given, nothing is set on this switch throw to the right",
-                                            "type": "null"
-                                          }
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "activated": {
+                                          "const": false,
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "activated": {
+                                          "const": true,
+                                          "type": "boolean"
                                         },
-                                        "type": "object"
-                                      }
+                                        "everActivated": {
+                                          "const": true,
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
                                     },
-                                    "required": ["disappearing"],
-                                    "type": "object"
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
                                   },
-                                  "targets": {
-                                    "$ref": "#/definitions/RoomItemId"
-                                  }
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
                                 },
-                                "required": [
-                                  "expectType",
-                                  "targets",
-                                  "newState"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "expectType": {
-                                    "const": "switch",
-                                    "type": "string"
-                                  },
-                                  "newState": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                      "setting": {}
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "enum": ["movingPlatform", "monster"],
+                                      "type": "string"
                                     },
-                                    "required": ["setting"],
-                                    "type": "object"
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "activated": {
+                                          "const": true,
+                                          "type": "boolean"
+                                        },
+                                        "everActivated": {
+                                          "const": true,
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "activated": {
+                                          "const": false,
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
                                   },
-                                  "targets": {
-                                    "$ref": "#/definitions/RoomItemId"
-                                  }
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
                                 },
-                                "required": [
-                                  "expectType",
-                                  "targets",
-                                  "newState"
-                                ],
-                                "type": "object"
-                              }
-                            ]
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "block",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "disappearing": {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "on": {
+                                              "const": "stand",
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["on"],
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "disappearing": {
+                                          "type": "null"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "switch",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "setting": {
+                                          "const": "left",
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "setting": {
+                                          "const": "right",
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
+                                }
+                              ]
+                            },
+                            "type": "array"
                           },
                           "type": {
                             "const": "in-room",

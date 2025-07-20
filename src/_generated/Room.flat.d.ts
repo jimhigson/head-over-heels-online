@@ -949,46 +949,52 @@ export type RoomJsonSchema = {
                * this switch targets items in the room
                */
               type: "in-room";
-              modifies:
+              modifies: (
                 | {
                     expectType: "movingPlatform" | "monster";
-                    targets: RoomItemId;
-                    newState: {
-                      activated: any;
-                      everActivated: any;
+                    targets: string[];
+                    leftState: {
+                      activated?: false;
+                    };
+                    rightState: {
+                      activated?: true;
+                      everActivated?: true;
+                    };
+                  }
+                | {
+                    expectType: "movingPlatform" | "monster";
+                    targets: string[];
+                    leftState: {
+                      activated?: true;
+                      everActivated?: true;
+                    };
+                    rightState: {
+                      activated?: false;
                     };
                   }
                 | {
                     expectType: "block";
-                    targets: RoomItemId;
-                    newState: {
-                      /**
-                       * if given, the item disappears after the specified interaction.
-                       * This must be null (not undefined) so switches can tell the difference
-                       * between having no setting, and having a setting to change to null
-                       * when they make something not disappearing
-                       */
-                      disappearing: {
-                        /**
-                         * if not given, nothing is set on this switch throw to the left
-                         */
-                        left?: {
-                          on: "stand";
-                        };
-                        /**
-                         * if not given, nothing is set on this switch throw to the right
-                         */
-                        right?: null;
+                    targets: string[];
+                    leftState: {
+                      disappearing?: {
+                        on: "stand";
                       };
+                    };
+                    rightState: {
+                      disappearing?: null;
                     };
                   }
                 | {
                     expectType: "switch";
-                    targets: RoomItemId;
-                    newState: {
-                      setting: any;
+                    targets: string[];
+                    leftState: {
+                      setting?: "left";
                     };
-                  };
+                    rightState: {
+                      setting?: "right";
+                    };
+                  }
+              )[];
             };
       }
     | {

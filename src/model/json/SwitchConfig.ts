@@ -1,26 +1,8 @@
 import type { GameMenusState } from "../../store/slices/gameMenusSlice";
+import type { Subset } from "../../utils/subset";
 import type { ToggleablePaths } from "../../utils/Toggleable";
-import type { ItemInPlayType, ItemState, SwitchSetting } from "../ItemInPlay";
+import type { ItemState, SwitchSetting } from "../ItemInPlay";
 
-type SwitchItemModification<
-  RoomId extends string,
-  RoomItemId extends string,
-  T extends ItemInPlayType,
-  KS extends keyof ItemState<T, RoomId, RoomItemId>,
-  Left extends ItemState<T, RoomId, RoomItemId>[KS],
-  Right extends ItemState<T, RoomId, RoomItemId>[KS],
-> = {
-  expectType: T;
-  targets: Array<NoInfer<RoomItemId>>;
-  newState: {
-    [K in KS]: {
-      /** if not given, nothing is set on this switch throw to the left */
-      left?: Left;
-      /** if not given, nothing is set on this switch throw to the right */
-      right?: Right;
-    };
-  };
-};
 // switches are 'on rails' with a fairly restricted range of things they can change for the sake of avoiding
 // errors in the json but this could be added to as needed. Technically, the engine can change any property
 // of an item's state if it ignores these types
@@ -28,46 +10,80 @@ type SwitchItemModificationUnion<
   RoomId extends string,
   RoomItemId extends string,
 > =
-  | SwitchItemModification<
-      RoomId,
-      RoomItemId,
-      "monster" | "movingPlatform",
-      "activated" | "everActivated",
-      // deactivated by default:
-      false,
-      true
-    >
-  | SwitchItemModification<
-      RoomId,
-      RoomItemId,
-      "monster" | "movingPlatform",
-      "activated" | "everActivated",
-      // activated by default:
-      true,
-      false
-    >
+  // Monsters/platforms that are deactivated by default:
+  | {
+      expectType: "monster" | "movingPlatform";
+      targets: RoomItemId[];
+      leftState: Subset<
+        Partial<ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>>,
+        {
+          activated?: false;
+        }
+      >;
+      rightState: Subset<
+        Partial<ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>>,
+        {
+          activated?: true;
+          everActivated?: true;
+        }
+      >;
+    }
+  // Monsters/platforms that are activated by default:
+  | {
+      expectType: "monster" | "movingPlatform";
+      targets: RoomItemId[];
+      leftState: Subset<
+        Partial<ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>>,
+        {
+          activated?: true;
+          everActivated?: true;
+        }
+      >;
+      rightState: Subset<
+        Partial<ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>>,
+        {
+          activated?: false;
+        }
+      >;
+    }
   // turning off disappearing blocks:
-  | SwitchItemModification<
-      RoomId,
-      RoomItemId,
-      "block",
-      "disappearing",
-      {
-        // currently, we only have the ability to totally turn on/off disappearing when touched by anything,
-        // (in the ts types) for #blacktooth6. Not ability to change what triggers the disappearing etc
-        on: "stand";
-      },
-      null
-    >
+  | {
+      expectType: "block";
+      targets: RoomItemId[];
+      leftState: Subset<
+        Partial<ItemState<"block", RoomId, RoomItemId>>,
+        {
+          disappearing?: {
+            // currently, we only have the ability to totally turn on/off disappearing when touched by anything,
+            // (in the ts types) for #blacktooth6. Not ability to change what triggers the disappearing etc
+            on: "stand";
+          };
+        }
+      >;
+      rightState: Subset<
+        Partial<ItemState<"block", RoomId, RoomItemId>>,
+        {
+          disappearing?: null;
+        }
+      >;
+    }
   // gangs of switches (#penitentiary3)
-  | SwitchItemModification<
-      RoomId,
-      RoomItemId,
-      "switch",
-      "setting",
-      "left",
-      "right"
-    >;
+  | {
+      expectType: "switch";
+      targets: RoomItemId[];
+      leftState: Subset<
+        Partial<ItemState<"switch", RoomId, RoomItemId>>,
+        {
+          setting?: "left";
+        }
+      >;
+      rightState: Subset<
+        Partial<ItemState<"switch", RoomId, RoomItemId>>,
+        {
+          setting?: "right";
+        }
+      >;
+    };
 
 export type SwitchInRoomConfig<
   RoomId extends string,
@@ -77,7 +93,7 @@ export type SwitchInRoomConfig<
   /** this switch targets items in the room */
   type: "in-room";
   // list of all items (de)activated by this switch
-  modifies: Array<NoInfer<SwitchItemModificationUnion<RoomId, RoomItemId>>>;
+  modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
 };
 
 export type SwitchConfig<

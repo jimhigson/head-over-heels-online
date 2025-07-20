@@ -539,9 +539,27 @@ export class TypeFlattener {
           `${typeName}Element`,
           depth + 1,
         );
-        return `${elementTypeName}[]`;
+        // Always wrap in parentheses - prettier will remove them if unnecessary
+        // This ensures union types like (A | B)[] are handled correctly
+        return `(${elementTypeName})[]`;
       }
       return "any[]";
+    }
+
+    // Check if this is Array<T> syntax
+    if (
+      typeSymbol?.getName() === "Array" &&
+      type.getTypeArguments().length === 1
+    ) {
+      const [elementType] = type.getTypeArguments();
+      const elementTypeName = this.processType(
+        elementType,
+        `${typeName}Element`,
+        depth + 1,
+      );
+      // Always wrap in parentheses - prettier will remove them if unnecessary
+      // This ensures union types like (A | B)[] are handled correctly
+      return `(${elementTypeName})[]`;
     }
 
     // Handle union types
