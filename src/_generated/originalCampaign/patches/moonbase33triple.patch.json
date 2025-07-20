@@ -87,14 +87,12 @@
         "modifies": [
           {
             "expectType": "monster",
-            "newState": {
-              "activated": {
-                "left": true,
-                "right": false
-              },
-              "everActivated": {
-                "left": true
-              }
+            "leftState": {
+              "activated": true,
+              "everActivated": true
+            },
+            "rightState": {
+              "activated": false
             },
             "targets": [
               "monster@0,10,1",
