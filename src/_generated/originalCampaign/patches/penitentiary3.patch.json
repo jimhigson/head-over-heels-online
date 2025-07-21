@@ -4,14 +4,12 @@
     "path": "/items/switch@7,7,0/config/modifies/0",
     "value": {
       "expectType": "movingPlatform",
-      "newState": {
-        "activated": {
-          "left": true,
-          "right": false
-        },
-        "everActivated": {
-          "left": true
-        }
+      "leftState": {
+        "activated": true,
+        "everActivated": true
+      },
+      "rightState": {
+        "activated": false
       },
       "targets": ["movingPlatform@0,1,0"]
     }
@@ -21,11 +19,11 @@
     "path": "/items/switch@7,7,0/config/modifies/1",
     "value": {
       "expectType": "switch",
-      "newState": {
-        "setting": {
-          "left": "left",
-          "right": "right"
-        }
+      "leftState": {
+        "setting": "left"
+      },
+      "rightState": {
+        "setting": "right"
       },
       "targets": ["switch@0,0,0"]
     }
@@ -40,14 +38,12 @@
     "path": "/items/switch@0,0,0/config/modifies/0",
     "value": {
       "expectType": "movingPlatform",
-      "newState": {
-        "activated": {
-          "left": true,
-          "right": false
-        },
-        "everActivated": {
-          "left": true
-        }
+      "leftState": {
+        "activated": true,
+        "everActivated": true
+      },
+      "rightState": {
+        "activated": false
       },
       "targets": ["movingPlatform@0,1,0"]
     }
@@ -57,11 +53,11 @@
     "path": "/items/switch@0,0,0/config/modifies/1",
     "value": {
       "expectType": "switch",
-      "newState": {
-        "setting": {
-          "left": "left",
-          "right": "right"
-        }
+      "leftState": {
+        "setting": "left"
+      },
+      "rightState": {
+        "setting": "right"
       },
       "targets": ["switch@7,7,0"]
     }

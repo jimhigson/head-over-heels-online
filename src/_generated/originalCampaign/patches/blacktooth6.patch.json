@@ -4,13 +4,13 @@
     "path": "/items/switch@6,0,1/config/modifies/0",
     "value": {
       "expectType": "block",
-      "newState": {
+      "leftState": {
         "disappearing": {
-          "left": {
-            "on": "stand"
-          },
-          "right": null
+          "on": "stand"
         }
+      },
+      "rightState": {
+        "disappearing": null
       },
       "targets": ["block@0,7,0", "block@3,7,0"]
     }
@@ -20,14 +20,12 @@
     "path": "/items/switch@6,0,1/config/modifies/1",
     "value": {
       "expectType": "monster",
-      "newState": {
-        "activated": {
-          "left": true,
-          "right": false
-        },
-        "everActivated": {
-          "left": true
-        }
+      "leftState": {
+        "activated": true,
+        "everActivated": true
+      },
+      "rightState": {
+        "activated": false
       },
       "targets": [
         "monster@3,0,1",
