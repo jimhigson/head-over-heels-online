@@ -18,8 +18,7 @@ import type { Monaco } from "@monaco-editor/react";
 export const useSyncSelectionWithMonaco = (
   editor: editor.IStandaloneCodeEditor | null,
 ) => {
-  // select in monaco whenever the item selection in the store changes
-
+  // select matching text in monaco whenever the item selection in the store changes
   const monaco = useLoadMonaco();
 
   const collectionRef = useRef<editor.IEditorDecorationsCollection | null>(
@@ -110,7 +109,8 @@ export const useSyncSelectionWithMonaco = (
     }
   }
 
-  // sync store selection -> monaco caret/decorations
+  // sync store item selection -> monaco caret/decorations
+  // (blue bar on left, not the little icons)
   useEffect(() => {
     if (editor === null || monaco === null) {
       return;
