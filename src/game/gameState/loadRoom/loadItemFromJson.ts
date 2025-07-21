@@ -6,7 +6,7 @@ import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { Xyz } from "../../../utils/vectors/vectors";
-import { directionAxis } from "../../../utils/vectors/vectors";
+import { tangentAxis } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
 import { loadWall } from "./loadWalls";
@@ -131,7 +131,7 @@ const shadowCast = (
     case "conveyor":
       return {
         textureId: "shadow.fullBlock",
-        flipX: directionAxis(jsonItem.config.direction) === "x",
+        flipX: tangentAxis(jsonItem.config.direction) === "x",
       };
     case "barrier":
       return {

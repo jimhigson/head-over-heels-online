@@ -1,12 +1,13 @@
-import { consolidateItems } from "../campaignXml2Json/consolidateItems/consolidateItems";
+import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
 import type { JsonItem } from "../model/json/JsonItem";
+import type { RoomJsonItems } from "../model/RoomJson";
 import { iterateRoomJsonItems, type RoomJson } from "../model/RoomJson";
 import type { Wall } from "../sprites/planets";
 import { wallTiles, type SceneryName } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
 import type { Xy } from "../utils/vectors/vectors";
 import {
-  directionAxis,
+  tangentAxis,
   perpendicularAxisXy,
   type DirectionXy4,
 } from "../utils/vectors/vectors";
@@ -30,7 +31,7 @@ export const addPerimeterWallsToRoom = <
   const wallBlocks: JsonItem<"wall", RoomId, RoomItemId>[] = [];
 
   const isDoorAt = (coord: Xy, direction: DirectionXy4) => {
-    const axis = directionAxis(direction);
+    const axis = tangentAxis(direction);
     const crossAxis = perpendicularAxisXy(axis);
     return iterateRoomJsonItems(roomJson).some(
       (item) =>
@@ -77,17 +78,16 @@ export const addPerimeterWallsToRoom = <
     }
   }
 
-  const wallRuns = [...consolidateItems(wallBlocks)] as JsonItem<
-    "wall",
-    ScN,
+  const wallRuns = consolidateItemsMap(keyItems(wallBlocks)) as RoomJsonItems<
+    RoomItemId,
     RoomId
-  >[];
+  >;
 
   const roomJsonClone = structuredClone(roomJson);
 
   roomJsonClone.items = {
     ...roomJsonClone.items,
-    ...keyItems(wallRuns),
+    ...wallRuns,
   };
 
   return roomJsonClone;

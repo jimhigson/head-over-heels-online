@@ -3,7 +3,7 @@ import { createSprite } from "../../createSprite";
 import { projectWorldXyzToScreenXy } from "../../projections";
 
 import {
-  directionAxis,
+  tangentAxis,
   perpendicularAxisXy,
   subXyz,
 } from "../../../../utils/vectors/vectors";
@@ -56,7 +56,7 @@ export const renderFloorOverdraws = (
             item.type === "wall" ?
               wallTimes(item.config)
               // doors are two blocks wide:
-            : { [perpendicularAxisXy(directionAxis(direction))]: 2 },
+            : { [perpendicularAxisXy(tangentAxis(direction))]: 2 },
           anchor: { x: 0, y: 1 },
           flipX: direction === "away",
         });

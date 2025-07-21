@@ -11,6 +11,7 @@ import {
 import { pushUndoInPlace } from "./undoReducers";
 import { keysIter } from "../../../utils/entries";
 import type {
+  EditorJsonItem,
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
@@ -23,6 +24,13 @@ import {
 import type { Subset } from "../../../utils/subset";
 import type { FloorType } from "../../../model/json/ItemConfigMap";
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
+import { nextItemId } from "./addItemInPlace";
+import {
+  isWallHidden,
+  type WallJsonConfig,
+} from "../../../model/json/WallJsonConfig";
+import { rotatingSceneryTiles } from "../createStarterRoom";
+import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 
 export type AboveOrBelowProperties = Subset<
   keyof AnyRoomJson,
@@ -60,6 +68,53 @@ const changeFloorTypeInPlace = (
         ...{ scenery: floorType === "standable" ? roomJson.planet : undefined },
       } as JsonItemConfig<"floor", EditorRoomId, EditorRoomItemId>;
     });
+};
+
+const deleteItemInPlace = (
+  roomJson: EditorRoomJson,
+  itemId: EditorRoomItemId,
+) => {
+  const item = roomJson.items[itemId];
+
+  if (item.type === "door") {
+    const replacementWall: EditorJsonItem<"wall"> = {
+      type: "wall" as const,
+      config:
+        isWallHidden(item.config.direction) ?
+          item.config.direction === "towards" ?
+            ({
+              direction: item.config.direction,
+              times: { x: 2 },
+            } satisfies WallJsonConfig)
+          : ({
+              direction: item.config.direction,
+              times: { y: 2 },
+            } satisfies WallJsonConfig)
+        : ({
+            direction: item.config.direction,
+            tiles: [
+              ...rotatingSceneryTiles(
+                roomJson.planet,
+                2,
+                item.position[item.config.direction === "away" ? "x" : "y"],
+              ),
+            ],
+          } satisfies WallJsonConfig),
+      position: { ...item.position, z: 0 },
+    } satisfies EditorJsonItem<"wall">;
+
+    // deleting a door - replace with the equivalent wall, and then consolidate to
+    // join the new wall with adjacent walls:
+    const nextWallId = nextItemId(roomJson, replacementWall, false);
+
+    roomJson.items[nextWallId] = replacementWall;
+
+    // consolidate all walls in this room, to 'heal' any walls around the wall we just added:
+    // TODO: this will currently consolidate unknown items too!
+    roomJson.items = consolidateItemsMap(roomJson.items);
+  }
+
+  delete roomJson.items[itemId];
 };
 
 export const editRoomReducers = {
@@ -115,7 +170,7 @@ export const editRoomReducers = {
     pushUndoInPlace(state);
 
     state.selectedJsonItemIds.forEach((id) => {
-      delete roomJson.items[id];
+      deleteItemInPlace(roomJson, id);
     });
 
     state.selectedJsonItemIds = [];

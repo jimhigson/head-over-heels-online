@@ -22,6 +22,7 @@ import {
   wallTimes,
   multiplyBoundingBox,
 } from "../../collision/boundingBoxTimes";
+import { isWallHidden } from "../../../model/json/WallJsonConfig";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal.
@@ -73,7 +74,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
   const wallTangentAxis = doorAlongAxis(direction);
   const wallNormalAxis = perpendicularAxisXy(wallTangentAxis);
 
-  const isHidden = direction === "towards" || direction === "right";
+  const isHidden = isWallHidden(direction);
 
   const invisibleWallSetBackBlocks: Xyz = {
     ...originXyz,

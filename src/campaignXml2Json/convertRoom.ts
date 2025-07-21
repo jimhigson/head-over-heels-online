@@ -1,6 +1,6 @@
 import type { AnyRoomJson } from "../model/RoomJson";
 import { keyItems } from "../utils/keyItems";
-import { consolidateItems } from "./consolidateItems/consolidateItems";
+import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
 import { map, convertRoomColour } from "./convertCampaign";
 import { convertFloor } from "./convertFloor";
 import { convertItemsArray } from "./convertItems";
@@ -37,11 +37,9 @@ export const convertRoom = async (
     roomXmlJson,
     roomSidesWithDoors,
   );
-  const items = keyItems([
-    // rooms in the original all had a single floor - for big rooms, this can
-    // be corrected in patches
-    ...convertFloor(roomDimensions, xmlFloorKind, xmlScenery),
-    ...consolidateItems([
+  const items = consolidateItemsMap(
+    keyItems([
+      ...convertFloor(roomDimensions, xmlFloorKind, xmlScenery),
       ...convertedItems,
       ...convertWalls(
         roomXmlJson,
@@ -49,7 +47,7 @@ export const convertRoom = async (
         convertedItems.filter((i) => i.type === "door"),
       ),
     ]),
-  ]);
+  );
 
   const roomId = convertRoomId(xmlRoomName);
 

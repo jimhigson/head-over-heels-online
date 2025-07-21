@@ -1,5 +1,5 @@
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { ConsolidatableJsonItemType } from "../../model/json/ConsolidatableJsonItem";
+import type { ConsolidatableJsonItemType } from "../../consolidateItems/ConsolidatableJsonItem";
 import type {
   ItemInPlayType,
   ItemInPlay,

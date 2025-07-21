@@ -26,8 +26,11 @@ type Matrix3x3 = [
   number, number, number, // Row 3
 ];
 
-export const directionAxis = (direction: DirectionXy4): AxisXy =>
+export const tangentAxis = (direction: DirectionXy4): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";
+
+export const normalAxis = (direction: DirectionXy4): AxisXy =>
+  perpendicularAxisXy(tangentAxis(direction));
 
 export const oppositeDirection = (direction: DirectionXy4): DirectionXy4 =>
   direction === "away" ? "towards"
@@ -39,7 +42,7 @@ export const oppositeDirection = (direction: DirectionXy4): DirectionXy4 =>
  * doors sit along the axis perpendicular to their direction
  */
 export const doorAlongAxis = (doorDirection: DirectionXy4): AxisXy =>
-  perpendicularAxisXy(directionAxis(doorDirection));
+  perpendicularAxisXy(tangentAxis(doorDirection));
 
 export type DirectionZ = "down" | "up";
 export type Direction4Xyz = DirectionXy4 | DirectionZ;

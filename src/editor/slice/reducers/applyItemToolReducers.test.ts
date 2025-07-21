@@ -1,73 +1,24 @@
 import { describe, expect, test } from "vitest";
 import type { ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
-import { applyItemToolReducers } from "./applyItemToolReducers";
-import {
-  initialLevelEditorSliceState,
-  type LevelEditorState,
-} from "../levelEditorSlice";
 import type {
+  EditorJsonItemUnion,
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJsonItems,
 } from "../../editorTypes";
 import { produce } from "immer";
 import type { Tool } from "src/editor/Tool";
-import type {
-  AwayWallConfig,
-  WallJsonConfig,
-} from "src/model/json/WallJsonConfig";
+import type { AwayWallConfig } from "src/model/json/WallJsonConfig";
 import { originXyz } from "../../../utils/vectors/vectors";
-
-const testRoomId = "testRoomId" as EditorRoomId;
-const wallItemId = "testWall" as EditorRoomItemId;
-
-const doorItemTool: Tool = {
-  type: "item",
-  item: {
-    type: "door",
-    config: { toRoom: "(placeholder)" as EditorRoomId, direction: "towards" },
-  },
-};
-
-const editorStateWithOneRoomWithNoItems: Omit<LevelEditorState, "tool"> = {
-  ...initialLevelEditorSliceState,
-  currentlyEditingRoomId: testRoomId,
-  campaignInProgress: {
-    name: "testCampaign",
-    rooms: {
-      [testRoomId]: {
-        id: testRoomId,
-        planet: "blacktooth",
-        color: { hue: "cyan", shade: "basic" },
-        items: {},
-        size: { x: 5, y: 5 },
-      },
-    },
-  },
-};
-const editorStateWithOneRoomWithOneAwayWall: Omit<LevelEditorState, "tool"> =
-  produce(editorStateWithOneRoomWithNoItems, (draftState) => {
-    draftState.campaignInProgress.rooms[testRoomId].items[wallItemId] = {
-      type: "wall",
-      config: {
-        direction: "away",
-        tiles: ["armour", "armour", "armour", "armour", "armour"],
-      },
-      position: { x: 0, y: 5, z: 0 },
-    };
-  });
-
-const applyToolToRoomJsonNext = (
-  state: LevelEditorState,
-  payload: ApplyToolToRoomJsonPayload,
-) => {
-  return produce(state, (draftState) =>
-    applyItemToolReducers.applyItemTool(draftState, {
-      type: "",
-      payload,
-    }),
-  );
-};
+import {
+  applyLevelEditorActions,
+  doorItemTool,
+  editorStateWithOneRoomWithNoItems,
+  editorStateWithOneRoomWithOneAwayWall,
+  testRoomId,
+  wallItemId,
+} from "./__test__/storeStates";
+import { applyItemTool, setTool } from "../levelEditorSlice";
 
 describe("applying tools", () => {
   describe("applying items", () => {
@@ -88,7 +39,7 @@ describe("applying tools", () => {
         preview: false,
       };
 
-      const next = applyToolToRoomJsonNext(
+      const next = applyLevelEditorActions(
         {
           ...editorStateWithOneRoomWithNoItems,
           tool: {
@@ -101,7 +52,7 @@ describe("applying tools", () => {
             },
           },
         },
-        actionPayload,
+        applyItemTool(actionPayload),
       );
 
       expect(
@@ -149,7 +100,6 @@ describe("applying tools", () => {
               config: {
                 style,
               },
-              // fake state for tests since it doesn't matter here:
               position: deadlyBlockPosition,
             },
             preview: false,
@@ -167,12 +117,12 @@ describe("applying tools", () => {
               },
             },
           };
-          const next = applyToolToRoomJsonNext(
+          const next = applyLevelEditorActions(
             {
               ...editorStateWithOneRoomWithNoItems,
               tool: addCybermanTool,
             },
-            actionPayload,
+            applyItemTool(actionPayload),
           );
 
           expect(
@@ -202,20 +152,17 @@ describe("applying tools", () => {
         const doorPosition = { x: 2, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
-          pointedAtItemJson: {
-            type: "wall",
-            config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
-              .rooms[testRoomId].items[wallItemId]
-              .config as WallJsonConfig<"blacktooth">,
-            // fake state for tests since it doesn't matter here:
-            position: originXyz,
-          },
+          pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
+            .campaignInProgress.rooms[testRoomId].items[
+            wallItemId
+          ] as EditorJsonItemUnion,
           preview: false,
         };
 
-        const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneAwayWall, tool: doorItemTool },
-          actionPayload,
+        const next = applyLevelEditorActions(
+          editorStateWithOneRoomWithOneAwayWall,
+          setTool(doorItemTool),
+          applyItemTool(actionPayload),
         );
 
         expect(
@@ -232,7 +179,7 @@ describe("applying tools", () => {
           ["testWall/afterDoor" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              tiles: ["armour"],
+              tiles: ["shield"],
             },
             position: {
               x: 4,
@@ -244,7 +191,7 @@ describe("applying tools", () => {
           ["testWall/beforeDoor" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              tiles: ["armour", "armour"],
+              tiles: ["plain", "plain"],
             },
             position: {
               x: 0,
@@ -259,20 +206,17 @@ describe("applying tools", () => {
         const doorPosition = { x: 0, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
-          pointedAtItemJson: {
-            type: "wall",
-            config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
-              .rooms[testRoomId].items[wallItemId]
-              .config as WallJsonConfig<"blacktooth">,
-            // fake state for tests since it doesn't matter here:
-            position: originXyz,
-          },
+          pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
+            .campaignInProgress.rooms[testRoomId].items[
+            wallItemId
+          ] as EditorJsonItemUnion,
           preview: false,
         };
 
-        const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneAwayWall, tool: doorItemTool },
-          actionPayload,
+        const next = applyLevelEditorActions(
+          editorStateWithOneRoomWithOneAwayWall,
+          setTool(doorItemTool),
+          applyItemTool(actionPayload),
         );
 
         expect(Object.keys(next.campaignInProgress.rooms[testRoomId].items))
@@ -297,7 +241,7 @@ describe("applying tools", () => {
           ["testWall" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              tiles: ["armour", "armour", "armour"],
+              tiles: ["armour", "shield", "shield"],
             },
             position: {
               x: 2,
@@ -312,20 +256,17 @@ describe("applying tools", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
-          pointedAtItemJson: {
-            type: "wall",
-            config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
-              .rooms[testRoomId].items[wallItemId]
-              .config as WallJsonConfig<"blacktooth">,
-            // fake state for tests since it doesn't matter here:
-            position: originXyz,
-          },
+          pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
+            .campaignInProgress.rooms[testRoomId].items[
+            wallItemId
+          ] as EditorJsonItemUnion,
           preview: false,
         };
 
-        const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneAwayWall, tool: doorItemTool },
-          actionPayload,
+        const next = applyLevelEditorActions(
+          editorStateWithOneRoomWithOneAwayWall,
+          setTool(doorItemTool),
+          applyItemTool(actionPayload),
         );
 
         expect(
@@ -342,7 +283,7 @@ describe("applying tools", () => {
           ["testWall" as EditorRoomItemId]: {
             config: {
               direction: "away",
-              tiles: ["armour", "armour", "armour"],
+              tiles: ["plain", "plain", "armour"],
             },
             position: {
               x: 0,
@@ -375,20 +316,17 @@ describe("applying tools", () => {
           blockPosition:
             // placing at the wall's position:
             wallPosition,
-          pointedAtItemJson: {
-            type: "wall",
-            config: editorStateWithOneRoomWithOneSmallAwayWall
-              .campaignInProgress.rooms[testRoomId].items[wallItemId]
-              .config as WallJsonConfig<"blacktooth">,
-            // fake state for tests since it doesn't matter here:
-            position: originXyz,
-          },
+          pointedAtItemJson: editorStateWithOneRoomWithOneSmallAwayWall
+            .campaignInProgress.rooms[testRoomId].items[
+            wallItemId
+          ] as EditorJsonItemUnion,
           preview: false,
         };
 
-        const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneSmallAwayWall, tool: doorItemTool },
-          actionPayload,
+        const next = applyLevelEditorActions(
+          editorStateWithOneRoomWithOneSmallAwayWall,
+          setTool(doorItemTool),
+          applyItemTool(actionPayload),
         );
 
         expect(
@@ -414,20 +352,17 @@ describe("applying tools", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
-          pointedAtItemJson: {
-            type: "wall",
-            config: editorStateWithOneRoomWithOneAwayWall.campaignInProgress
-              .rooms[testRoomId].items[wallItemId]
-              .config as WallJsonConfig<"blacktooth">,
-            // fake state for tests since it doesn't matter here:
-            position: originXyz,
-          },
+          pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
+            .campaignInProgress.rooms[testRoomId].items[
+            wallItemId
+          ] as EditorJsonItemUnion,
           preview: false,
         };
 
-        const next = applyToolToRoomJsonNext(
-          { ...editorStateWithOneRoomWithOneAwayWall, tool: doorItemTool },
-          actionPayload,
+        const next = applyLevelEditorActions(
+          editorStateWithOneRoomWithOneAwayWall,
+          setTool(doorItemTool),
+          applyItemTool(actionPayload),
         );
 
         // should have one more room id:

@@ -5,8 +5,6 @@ describe("emitterRealCase", { timeout: 20_000 }, () => {
   it("should flatten emitter with EmittableItemRecipe as union", async () => {
     const result = await flattenFixture("emitterRealCase", "TestEmitterReal");
 
-    console.log("Full result:", result);
-
     // The emits property should be a union of objects with type and config
     // NOT an object with separate type and config properties
     expect(result).toContain("emits:");

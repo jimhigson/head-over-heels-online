@@ -1,6 +1,16 @@
 [
   {
     "op": "replace",
+    "path": "/items/spikes@0,9,0/type",
+    "value": "block"
+  },
+  {
+    "op": "add",
+    "path": "/items/spikes@0,9,0/config/style",
+    "value": "organic"
+  },
+  {
+    "op": "replace",
     "path": "/items/floor@0,0,0/config/times/y",
     "value": 6
   },
