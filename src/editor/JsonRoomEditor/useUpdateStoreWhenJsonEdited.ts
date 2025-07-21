@@ -48,27 +48,6 @@ export const useUpdateStoreWhenJsonEdited = (
         return;
       }
 
-      // Check if the JSON has validation errors from the schema
-      /*
-      const model = editor.getModel();
-      if (model && monaco) {
-        const markers = monaco.editor.getModelMarkers({ resource: model.uri });
-
-        console.log("Markers:", markers);
-
-        const hasErrors = markers.some(
-          (marker) => marker.severity === monaco.MarkerSeverity.Error,
-        );
-
-        if (hasErrors) {
-          console.warn("JSON has schema validation errors, not dispatching.");
-          // Don't update the state if there are schema validation errors
-          return;
-        } else {
-          console.log("no errors");
-        }
-      }*/
-
       dispatch(roomJsonEdited(parsedJson as EditorRoomJson));
     },
     [editor, roomJson, ajvValidate, dispatch],

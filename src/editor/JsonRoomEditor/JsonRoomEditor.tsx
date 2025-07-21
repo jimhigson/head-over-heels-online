@@ -1,7 +1,6 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { Monaco } from "@monaco-editor/react";
 import { Editor } from "@monaco-editor/react";
-import { useCurrentEditingRoomJson } from "../slice/levelEditorSelectors";
 import type { editor } from "monaco-editor";
 import { useLoadMonaco } from "./useLoadMonaco";
 import { useSyncSelectionWithMonaco } from "./useSyncSelectionWithMonaco";
@@ -9,6 +8,7 @@ import roomSchema from "../../_generated/room.schema.json";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
 import { ItemContentWidgets } from "./ItemIconDecorations";
 import { useMonacoSuggestions } from "./useMonacoSuggestions";
+import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
 
 export const JsonRoomEditor = () => {
   const monaco = useLoadMonaco();
@@ -16,15 +16,10 @@ export const JsonRoomEditor = () => {
     null,
   );
 
-  const roomJson = useCurrentEditingRoomJson();
-
   const updateStoreWhenJsonEdited = useUpdateStoreWhenJsonEdited(editor);
   useSyncSelectionWithMonaco(editor);
   useMonacoSuggestions();
-
-  const stringifiedJson = useMemo(() => {
-    return JSON.stringify(roomJson, null, 2);
-  }, [roomJson]);
+  useUpdateJsonTextWhenStoreChanges(editor);
 
   const handleEditorMount = (
     editor: editor.IStandaloneCodeEditor,
@@ -80,7 +75,6 @@ export const JsonRoomEditor = () => {
           onChange={updateStoreWhenJsonEdited}
           onMount={handleEditorMount}
           defaultValue="{}"
-          value={stringifiedJson}
         />
         <ItemContentWidgets editor={editor} />
       </>

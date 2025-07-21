@@ -6,6 +6,9 @@ import { store } from "../../store/store";
 import type { AnyRoomJson } from "../../model/RoomJson";
 import type { ItemInPlayConfig } from "../../model/ItemInPlay";
 
+/**
+ * suggest room ids when editing toRoom, roomAbove, or roomBelow properties
+ */
 export const useMonacoSuggestions = () => {
   const monaco = useLoadMonaco();
 

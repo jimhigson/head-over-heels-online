@@ -36,7 +36,11 @@ export const monacoLoader = async (): Promise<Monaco> => {
       { token: "string.key.json", foreground: paletteJson.pastelBlue },
       { token: "string.value.json", foreground: paletteJson.lightBeige },
       { token: "number.json", foreground: paletteJson.lightBeige },
-      { token: "keyword.json", foreground: "FF5555", fontStyle: "bold" },
+      {
+        token: "keyword.json",
+        foreground: paletteJson.midRed,
+        fontStyle: "bold",
+      },
       {
         token: "punctuation.separator.key-value.json",
         foreground: paletteJson.pink,

@@ -26,10 +26,12 @@ import type {
   EditorItemInPlayUnion,
   EditorRoomId,
 } from "../../../../editor/editorTypes";
+import { iterateRoomItems } from "../../../../model/RoomState";
 
 const selectionColour = spritesheetPalette.pastelBlue;
 const pointerHoverColour = spritesheetPalette.highlightBeige;
 const eyeDropperHoverColour = spritesheetPalette.midRed;
+const connectedToSwitchColour = spritesheetPalette.white;
 
 const pointerHoverFilter = new OutlineFilter({
   outlineColor: pointerHoverColour,
@@ -38,6 +40,11 @@ const pointerHoverFilter = new OutlineFilter({
 });
 const eyeDropperHoverFilter = new OutlineFilter({
   outlineColor: eyeDropperHoverColour,
+  upscale: selectGameEngineUpscale(store.getState()),
+  lowRes: false,
+});
+const connectedToSwitchFilter = new OutlineFilter({
+  outlineColor: connectedToSwitchColour,
   upscale: selectGameEngineUpscale(store.getState()),
   lowRes: false,
 });
@@ -260,7 +267,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
   #updateSelectedAndHovered() {
     const {
-      renderContext: { item },
+      renderContext: { item, room },
     } = this;
 
     const { clickableAnnotationHovered } = (
@@ -281,6 +288,44 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     const isSelected =
       jsonItemId && (selectedJsonItemIds as string[]).includes(jsonItemId);
 
+    const isConnectedToSwitch = () =>
+      jsonItemId !== undefined &&
+      // highlight the connected item with the switch is hovered:
+      (iterateRoomItems(room.items).some((otherItem) => {
+        return (
+          otherItem.jsonItemId === hoveredJsonItem?.jsonItemId &&
+          otherItem.type === "switch" &&
+          otherItem.config.type === "in-room" &&
+          otherItem.config.modifies.some((m) => m.targets.includes(jsonItemId))
+        );
+      }) ||
+        // highlight the switch when the item it is connected to is hovered
+        (item.type === "switch" &&
+          iterateRoomItems(room.items).some(
+            ({ jsonItemId: otherItemJsonItemId }) => {
+              return (
+                otherItemJsonItemId !== undefined &&
+                otherItemJsonItemId === hoveredJsonItem?.jsonItemId &&
+                item.config.type === "in-room" &&
+                item.config.modifies.some((m) =>
+                  m.targets.includes(otherItemJsonItemId),
+                )
+              );
+            },
+          )) ||
+        // highlight charles when controlling joystick hovered:
+        (item.type === "charles" &&
+          iterateRoomItems(room.items).some((otherItem) => {
+            return (
+              otherItem.jsonItemId === hoveredJsonItem?.jsonItemId &&
+              otherItem.type === "joystick" &&
+              otherItem.config.controls.some((c) => c === jsonItemId)
+            );
+          })) ||
+        // highlight joysticks when the charles they control is hovered:
+        (item.type === "joystick" &&
+          item.config.controls.some((c) => hoveredJsonItem?.jsonItemId === c)));
+
     this.output.filters =
       isHovered && isSelected ?
         [
@@ -294,6 +339,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           eyeDropperHoverFilter
         : pointerHoverFilter
       : isSelected ? selectedFilter
+      : isConnectedToSwitch() ? connectedToSwitchFilter
       : noFilters;
   }
 
