@@ -2,13 +2,16 @@ import { fromUint8Array, toUint8Array } from "js-base64";
 
 const urlSafeBase64 = true;
 
+/** browsers don't yet have brotli native */
+export const compressionFormat: CompressionFormat = "gzip";
+
 export const compressObject = async (obj: object): Promise<string> => {
-  const json = JSON.stringify(obj);
+  const jsonStr = JSON.stringify(obj);
   const encoder = new TextEncoder();
-  const uncompressedBinary = encoder.encode(json);
+  const jsonStrAsBinary = encoder.encode(jsonStr);
 
   // Create blob and stream it through compression
-  const blob = new Blob([uncompressedBinary]);
+  const blob = new Blob([jsonStrAsBinary]);
   const cs = new CompressionStream(compressionFormat);
   const compressStream = blob.stream().pipeThrough(cs);
 
@@ -35,6 +38,4 @@ export const decompressObject = async <ExpectedType extends object>(
   } catch (e) {
     throw new Error("error decompressing object", { cause: e });
   }
-}; // browsers don't yet have brotli
-
-export const compressionFormat: CompressionFormat = "gzip";
+};

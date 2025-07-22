@@ -17,18 +17,24 @@ export type Database = {
       campaigns: {
         Row: {
           created_at: string;
-          data: string | null;
+          created_by: string;
+          data: string;
           name: string;
+          version: number;
         };
         Insert: {
           created_at?: string;
-          data?: string | null;
+          created_by?: string;
+          data: string;
           name: string;
+          version?: number;
         };
         Update: {
           created_at?: string;
-          data?: string | null;
+          created_by?: string;
+          data?: string;
           name?: string;
+          version?: number;
         };
         Relationships: [];
       };
@@ -37,7 +43,26 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_latest_campaign: {
+        Args: { p_name: string; p_created_by?: string };
+        Returns: {
+          created_at: string;
+          created_by: string;
+          data: string;
+          name: string;
+          version: number;
+        };
+      };
+      save_campaign_version: {
+        Args: { p_name: string; p_data: string; p_created_by?: string };
+        Returns: {
+          created_at: string;
+          created_by: string;
+          data: string;
+          name: string;
+          version: number;
+        };
+      };
     };
     Enums: {
       [_ in never]: never;

@@ -29,12 +29,13 @@
     "deploy": "gh-pages -d dist",
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\"",
-    "genRoomSchema:ts": "./scripts/schema/flattenType.ts --file src/model/RoomJson.ts --type AnyRoomJson --output-type RoomJsonSchema | prettier --parser typescript > src/_generated/Room.flat.d.ts",
-    "genRoomSchema:json": "ts-json-schema-generator --path src/_generated/Room.flat.d.ts --type RoomJsonSchema | scripts/schema/postProcessSchema.ts | prettier --parser json > src/_generated/room.schema.json",
-    "genRoomSchema": "pnpm genRoomSchema:ts; pnpm genRoomSchema:json",
     "check:circDep": "dpdm -T --exit-code circular:1 src/main.tsx",
-    "genTypes": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType > src/_generated/types/ItemInPlayUnion.ts && prettier src/_generated/types/ --write",
-    "genDbTypes": "pnpx supabase gen types typescript --project-id pkswdnpftrundnewgnya > src/_generated/db.d.ts",
+    "gen:types": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType > src/_generated/types/ItemInPlayUnion.ts && prettier src/_generated/types/ --write",
+    "gen:roomSchema:ts": "./scripts/schema/flattenType.ts --file src/model/RoomJson.ts --type AnyRoomJson --output-type RoomJsonSchema | prettier --parser typescript > src/_generated/Room.flat.d.ts",
+    "gen:roomSchema:json": "ts-json-schema-generator --path src/_generated/Room.flat.d.ts --type RoomJsonSchema | scripts/schema/postProcessSchema.ts | prettier --parser json > src/_generated/room.schema.json",
+    "gen:roomSchema": "pnpm gen:roomSchema:ts; pnpm gen:roomSchema:json",
+    "gen:dbTypes": "supabase gen types typescript --project-id pkswdnpftrundnewgnya > src/_generated/db.d.ts",
+    "dumpDb": "pg_dump-17 -h aws-0-eu-west-2.pooler.supabase.com -p 6543 -d postgres -U postgres.pkswdnpftrundnewgnya --schema=public --no-owner --no-privileges > schema.sql",
     "prepare": "husky"
   },
   "dependencies": {
@@ -102,6 +103,7 @@
     "react-resize-detector": "^12.0.2",
     "rollup-plugin-visualizer": "^5.14.0",
     "seedrandom": "^3.0.5",
+    "supabase": "^2.31.8",
     "tailwindcss": "^3.4.17",
     "ts-json-schema-generator": "^2.4.0",
     "ts-morph": "^25.0.1",
@@ -122,7 +124,8 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@swc/core",
-      "esbuild"
+      "esbuild",
+      "supabase"
     ]
   }
 }
