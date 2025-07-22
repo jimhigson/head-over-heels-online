@@ -1,4 +1,4 @@
-import { loadCampaignFromDb, saveCampaignToDb } from "../../db/campaignTable";
+import { loadCampaignFromDb, saveCampaignToDb } from "../../db/campaign";
 import { store } from "../../store/store";
 import { cn } from "../../ui/cn";
 import type { EditorCampaign } from "../editorTypes";
