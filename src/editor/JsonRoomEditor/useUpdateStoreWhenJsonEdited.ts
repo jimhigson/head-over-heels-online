@@ -9,6 +9,34 @@ import { useAppDispatch } from "../../store/hooks";
 import roomSchema from "../../_generated/room.schema.json";
 import Ajv from "ajv";
 
+/**
+ * extremely basic JSON fixup to add quotes and remove trailing commas
+ * This is not a full JSON parser, and will break if it detects these
+ * features inside strings
+ */
+const fixJson = (text: string) =>
+  text
+    // quote unquoted keys
+    .replace(/([{,]\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:/g, '$1"$2":')
+    // remove trailing commas before closing brackets
+    .replace(/,(\s*[}\]])/g, "$1");
+
+const parseJsonWithCorrection = (text: string): object | undefined => {
+  let parsedJson;
+  try {
+    parsedJson = JSON.parse(text);
+  } catch (_e) {
+    try {
+      // since the fixing can be destructive, only use it if the text is not valid JSON,
+      // and it makes it valid:
+      parsedJson = JSON.parse(fixJson(text));
+    } catch (_e2) {
+      return undefined;
+    }
+  }
+  return parsedJson;
+};
+
 export const useUpdateStoreWhenJsonEdited = (
   editor: editor.IStandaloneCodeEditor | null,
 ) => {
@@ -23,11 +51,12 @@ export const useUpdateStoreWhenJsonEdited = (
         return;
       }
 
-      let parsedJson;
-      try {
-        parsedJson = JSON.parse(text);
-      } catch (_e) {
-        console.warn("Text in editor: does not parse as JSON. not dispatching");
+      const parsedJson = parseJsonWithCorrection(text);
+
+      if (parsedJson === undefined) {
+        console.warn(
+          "Text in editor: is not valid JSON, even after correction",
+        );
         return;
       }
 

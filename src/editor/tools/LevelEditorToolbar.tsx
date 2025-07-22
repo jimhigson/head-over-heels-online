@@ -100,6 +100,7 @@ export const LevelEditorToolbar = () => {
             type: "block",
             config: { style: "organic" },
           }}
+          shortcutKeys={["B"]}
         >
           <span
             className={`sprite texture-block_organic ${buttonSpriteRevertColourClasses}`}

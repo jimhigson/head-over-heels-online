@@ -2,7 +2,7 @@ import { emptyObject } from "../../../../../../utils/empty";
 import { entries } from "../../../../../../utils/entries";
 import { type Xy } from "../../../../../../utils/vectors/vectors";
 
-const grid: Xy[] = [
+const possiblePositions: Xy[] = [
   { x: 0, y: 0 },
   { x: 0.5, y: 0 },
   { x: 1, y: 0 },
@@ -62,6 +62,7 @@ type RoomItemPositionsOptions<ItemId extends string, Item> = {
   itemNormalisedPosition: (item: Item) => Xy;
 };
 
+export const maximumItemsForRoomLayoutOnMap = 3;
 export const roomItemPositions = <Item, ItemId extends string>({
   items,
   itemNormalisedPosition,
@@ -71,9 +72,9 @@ export const roomItemPositions = <Item, ItemId extends string>({
   if (itemCount === 0) {
     return emptyObject as Record<ItemId, Xy>;
   }
-  if (itemCount > 3) {
+  if (itemCount > maximumItemsForRoomLayoutOnMap) {
     throw new Error(
-      `roomItemPositions supports up to 3 items, but got ${itemCount}: ${Object.keys(items).join(", ")}`,
+      `roomItemPositions supports up to ${maximumItemsForRoomLayoutOnMap} items, but got ${itemCount}: ${Object.keys(items).join(", ")}`,
     );
   }
 
@@ -92,7 +93,7 @@ export const roomItemPositions = <Item, ItemId extends string>({
   }
 
   for (const indexCombo of validGridIndexCombosByCount[itemCount]) {
-    const slotCombo = indexCombo.map((i) => grid[i]);
+    const slotCombo = indexCombo.map((i) => possiblePositions[i]);
 
     for (const slotPerm of permutations(slotCombo)) {
       const assignment: Record<string, Xy> = {};

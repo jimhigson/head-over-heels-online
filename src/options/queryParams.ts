@@ -3,6 +3,7 @@ export type AllowedQueryParams = {
   campaignData: string | null;
   noSaves: "1" | null;
   cheats: "1" | null;
+  playAsHeels: "1" | null;
 };
 
 export type TypedURLSearchParams = {
@@ -23,5 +24,8 @@ export type TypedURLSearchParams = {
  * parse a query string to the typed version of URLSearchParams
  * (just a wrapper around the native one)
  */
-export const typedURLSearchParams = (search: string = window.location.search) =>
-  new URLSearchParams(search) as TypedURLSearchParams;
+export const typedURLSearchParams = (
+  search: string = typeof globalThis.window === "undefined" ?
+    ""
+  : window.location.search,
+) => new URLSearchParams(search) as TypedURLSearchParams;

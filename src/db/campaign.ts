@@ -20,8 +20,6 @@ export const saveCampaignToDb = async (
     );
   }
 
-  console.log("saved ok", res.data);
-
   return res.data;
 };
 

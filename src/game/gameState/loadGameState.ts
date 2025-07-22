@@ -10,6 +10,7 @@ import { emptyObject } from "../../utils/empty";
 import type { SavedGameState } from "./saving/SavedGameState";
 import { transformObject } from "../../utils/entries";
 import { badJsonClone } from "../../utils/badJsonClone";
+import { typedURLSearchParams } from "../../options/queryParams";
 
 export type StartingRooms<RoomId extends string> = Partial<
   Record<CharacterName, RoomId>
@@ -127,10 +128,16 @@ export const loadGameState = <RoomId extends string>({
     ...(savedGame ?
       badJsonClone(savedGame?.gameState)
     : {
-        // not saving - initialise some things:
+        // not restoring a saved game - initialise some things:
 
         // if head isn't in the campaign (unusual!), start with heels
-        currentCharacterName: roomIds.head === undefined ? "heels" : "head",
+        currentCharacterName:
+          roomIds.head === undefined ? "heels"
+            // query param can switch from the default initial character when
+            // starting a new game - this is used by the editor to allow play-testing
+            // with either char:
+          : typedURLSearchParams().get("playAsHeels") === "1" ? "heels"
+          : "head",
         entryState: {
           head:
             headRoom === undefined ? undefined : (

@@ -32,7 +32,7 @@ export type SelectProps<Value extends string> = {
   onSelect: (value: Value) => void;
 } & (
   | {
-      disableCommandInput: undefined | false;
+      disableCommandInput?: undefined | false;
       placeholder: string;
     }
   | {
@@ -51,6 +51,7 @@ const DefaultOptionCommandItem: OptionCommandItemComponent<string> = ({
 
 export const Select = <Value extends string>(props: SelectProps<Value>) => {
   const {
+    value,
     values,
     onSelect,
     triggerButtonClassName = "",
@@ -92,7 +93,11 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <CssVariables scaleFactor={2}>
-          <Command className="w-[--radix-popper-anchor-width]">
+          <Command
+            value={value}
+            onValueChange={(newValue) => onSelect(newValue as Value)}
+            className="w-[--radix-popper-anchor-width]"
+          >
             {props.disableCommandInput === true ? null : (
               <CommandInput placeholder={props.placeholder} />
             )}

@@ -5,6 +5,8 @@ import { iterate } from "../../../../../../utils/iterate";
 import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
 import type { NotableItem } from "./NotableItem";
+import { restrictItemsToShowInRoomCount } from "./restrictItemsToShowInRoomCount";
+import { maximumItemsForRoomLayoutOnMap } from "./roomItemPositions";
 
 export const useNotableItems = <
   RoomId extends string,
@@ -41,6 +43,9 @@ export const useNotableItems = <
         jsonItemIsNotable(entry[1], subRoomId, roomJson),
       );
 
-    return fromAllEntries(notableIter);
+    return restrictItemsToShowInRoomCount(
+      fromAllEntries(notableIter),
+      maximumItemsForRoomLayoutOnMap,
+    );
   }, [roomJson, roomPickupsCollected, subRoomId]);
 };

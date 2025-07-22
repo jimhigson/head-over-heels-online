@@ -22,7 +22,7 @@ export function RoomScenerySelect() {
         dispatch(changeRoomScenery(currentValue as SceneryName));
       }}
       values={sceneryNames}
-      disableCommandInput
+      placeholder="scenery"
       triggerButtonClassName="w-full"
       triggerButtonLabel={currentRoomScenery}
     />

@@ -130,6 +130,7 @@ export const useUpdateJsonTextWhenStoreChanges = (
     }
 
     const unSub = startAppListening({
+      // predicate is any time the json for the room has changed:
       predicate(action, currentState, originalState) {
         return (
           selectCurrentEditingRoomJson(

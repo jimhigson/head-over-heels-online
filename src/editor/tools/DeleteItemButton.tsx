@@ -15,6 +15,7 @@ export const DeleteItemToolButton = () => {
       className="bg-midRed"
       disabled={!somethingSelected}
       onClick={() => store.dispatch(deleteSelected())}
+      shortcutKeys={["Delete", "Backspace"]}
     >
       <span className={`sprite sprite-tinted texture-hud_char_X relative`} />
     </ToolbarButton>

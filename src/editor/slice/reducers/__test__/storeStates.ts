@@ -3,10 +3,8 @@ import type {
   LevelEditorSliceAction,
   LevelEditorState,
 } from "../../levelEditorSlice";
-import {
-  initialLevelEditorSliceState,
-  levelEditorSlice,
-} from "../../levelEditorSlice";
+import { levelEditorSlice } from "../../levelEditorSlice";
+import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
 import type { EditorRoomId, EditorRoomItemId } from "../../../editorTypes";
 import type { Tool } from "../../../Tool";
 import { rotatingSceneryTiles } from "../../createStarterRoom";
