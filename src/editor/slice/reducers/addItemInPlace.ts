@@ -1,7 +1,6 @@
 import type {
   JsonItemConfig,
   JsonItemType,
-  JsonItemUnion,
 } from "../../../model/json/JsonItem";
 import type { MonsterJsonConfig } from "../../../model/json/MonsterJsonConfig";
 import type { Xyz } from "../../../utils/vectors/vectors";
@@ -10,6 +9,8 @@ import type {
   EditorRoomItemId,
   EditorRoomId,
   EditorRoomJsonItems,
+  EditorJsonItem,
+  EditorJsonItemUnion,
 } from "../../editorTypes";
 import type { ItemTool } from "../../Tool";
 import type {
@@ -58,18 +59,21 @@ export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   itemTool: ItemTool<T>,
   blockPosition: Xyz,
   isPreview: boolean,
-) => {
+): [EditorRoomItemId, EditorJsonItem<T>] => {
   const room = selectCurrentRoomFromLevelEditorState(state);
   const id = nextItemId(room, itemTool, isPreview);
 
   const target = roomEditTarget(state, isPreview);
 
-  // add to the room json - the loaded state of the room will flow from there
-  target[id] = {
+  const itemJson = {
     type: itemTool.type,
     config: itemTool.config,
     position: blockPosition,
-  } as JsonItemUnion<EditorRoomId, EditorRoomItemId>;
+  };
+
+  target[id] = itemJson as EditorJsonItemUnion;
+
+  return [id, itemJson as EditorJsonItem<T>];
 };
 
 export const roomEditTarget = (

@@ -99,6 +99,13 @@ export type RoomJsonSchema = {
         };
         config: {
           toRoom: string;
+          /**
+           * the id of the door in the destination room. This usually does not need to be given
+           * since the game can choose the door facing the right way from the destination room.
+           * only give this if there are multiple doors in the same direction between the two
+           * rooms
+           */
+          toDoor?: string;
           direction: "towards" | "right" | "away" | "left";
           meta?: {
             toSubRoom?: string;

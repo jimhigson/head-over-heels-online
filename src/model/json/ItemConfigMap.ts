@@ -67,6 +67,13 @@ export type ItemConfigMap<
 > = {
   door: {
     toRoom: RoomId;
+    /**
+     * the id of the door in the destination room. This usually does not need to be given
+     * since the game can choose the door facing the right way from the destination room.
+     * only give this if there are multiple doors in the same direction between the two
+     * rooms */
+    toDoor?: string;
+
     // the direction this door takes the character when they walk through it
     direction: DirectionXy4;
 
@@ -75,14 +82,6 @@ export type ItemConfigMap<
     };
   };
 
-  portal: {
-    toRoom: RoomId;
-    /*
-      when moving through portals, the position of the character relative to this point is
-      taken, and preserved to be relative to the relativePoint of the portal in the new room
-    */
-    relativePoint: Xyz;
-  };
   floor:
     | {
         floorType: Subset<FloorType, "deadly">;

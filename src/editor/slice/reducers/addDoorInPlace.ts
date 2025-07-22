@@ -1,12 +1,51 @@
+import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
+import { iterate } from "../../../utils/iterate";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import { type Xyz, oppositeDirection } from "../../../utils/vectors/vectors";
-import type { EditorRoomId, EditorJsonItem } from "../../editorTypes";
+import {
+  type Xyz,
+  oppositeDirection,
+  xyzEqual,
+} from "../../../utils/vectors/vectors";
+import type {
+  EditorRoomId,
+  EditorJsonItem,
+  EditorRoomJson,
+} from "../../editorTypes";
 import type { ItemTool } from "../../Tool";
 import { addNewRoomInPlace } from "../inPlaceMutators.ts/addNewRoomInPlace";
 import type { LevelEditorState } from "../levelEditorSlice";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 import { addItemInPlace, nextItemId } from "./addItemInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoor";
+
+const getDestinationRoom = (
+  state: LevelEditorState,
+  fromRoomJson: EditorRoomJson,
+  direction: DirectionXy4,
+  isPreview: boolean,
+): EditorRoomJson | undefined => {
+  const campaign = state.campaignInProgress;
+  const existingRoomGridPositionSpec = iterate(
+    roomGridPositions({
+      campaign,
+      roomId: fromRoomJson.id,
+    }),
+  ).find(({ gridPosition }) => xyzEqual(gridPosition, unitVectors[direction]));
+
+  if (existingRoomGridPositionSpec) {
+    return campaign.rooms[
+      existingRoomGridPositionSpec.roomId
+    ] as EditorRoomJson;
+  }
+
+  // no existing room
+  if (isPreview) {
+    return undefined;
+  }
+
+  return addNewRoomInPlace(state, fromRoomJson.planet, fromRoomJson.color);
+};
 
 export const addDoorInPlace = (
   state: LevelEditorState,
@@ -27,25 +66,24 @@ export const addDoorInPlace = (
     isPreview,
   );
 
-  const toRoomJson =
-    isPreview ?
-      // previews don't create any other rooms when doors are added:
-      undefined
-      // TODO: option to do this conditionally, only if there isn't already a room
-      // in this grid position
-    : addNewRoomInPlace(state, fromRoomJson.planet, fromRoomJson.color);
+  const toRoomJson = getDestinationRoom(
+    state,
+    fromRoomJson,
+    doorDirection,
+    isPreview,
+  );
 
-  addItemInPlace(
+  const [doorId, doorJsonItem] = addItemInPlace(
     state,
     {
-      type: toolItem.type,
+      type: "door",
       config: {
         ...toolItem.config,
         toRoom:
           toRoomJson ?
             toRoomJson.id
             // preview rooms go to nowhere:
-          : ("nowhere" as EditorRoomId),
+          : ("(new)" as EditorRoomId),
         direction: doorDirection,
       },
     },
@@ -53,7 +91,13 @@ export const addDoorInPlace = (
     isPreview,
   );
 
-  if (toRoomJson) {
+  if (!isPreview) {
+    if (toRoomJson === undefined) {
+      throw new Error(
+        "if not a preview, should have guaranteed a room to go to",
+      );
+    }
+
     const returnDoorId = nextItemId(toRoomJson, toolItem, isPreview);
 
     const returnDoorPosition: Xyz = {
@@ -82,6 +126,9 @@ export const addDoorInPlace = (
     };
 
     toRoomJson.items[returnDoorId] = returnDoorItemJson;
+
+    returnDoorItemJson.config.toDoor = doorId;
+    doorJsonItem.config.toDoor = returnDoorId;
 
     cutHoleInWallsForDoorsInPlace(
       state,

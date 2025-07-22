@@ -54,6 +54,11 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   portal: {
     toRoom: RoomId;
     /**
+     * if the portal is created for a door, and the door has the optional property
+     * giving the corresponding door in the destination room, this is that door's id
+     */
+    toDoor?: string;
+    /**
      * when moving through portals, the position of the character relative to this point is
      * taken, and preserved to be relative to the relativePoint of the portal in the new room
      */
