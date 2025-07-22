@@ -92,6 +92,8 @@ const findDestinationPortal = <
         (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
           isPortal(i) &&
           i.config.toRoom === fromRoom.id &&
+          (sourcePortal.config.toDoor === undefined ||
+            i.jsonItemId === sourcePortal.config.toDoor) &&
           // portal is going in the opposite direction - see for example the double-door transition
           // between #safari6triple and #safari7
           xyzEqual(

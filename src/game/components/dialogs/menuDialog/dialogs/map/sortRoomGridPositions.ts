@@ -6,6 +6,7 @@ export type SortedObjectOfRoomGridPositionSpecs<RoomId extends string> = Record<
   RoomGridPositionSpec<RoomId>
 >;
 
+/* sort the grid positions into render order - by z, then by x+y */
 export const sortRoomGridPositions = <RoomId extends string>(
   roomGridPositions: Iterable<RoomGridPositionSpec<RoomId>>,
 ): SortedObjectOfRoomGridPositionSpecs<RoomId> => {

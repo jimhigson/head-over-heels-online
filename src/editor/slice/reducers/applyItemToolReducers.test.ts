@@ -172,6 +172,7 @@ describe("applying tools", () => {
             config: {
               direction: "away",
               toRoom: "room_0" as EditorRoomId,
+              toDoor: "door",
             },
             position: doorPosition,
             type: "door",
@@ -234,6 +235,7 @@ describe("applying tools", () => {
             config: {
               direction: "away",
               toRoom: "room_0" as EditorRoomId,
+              toDoor: "door",
             },
             position: doorPosition,
             type: "door",
@@ -276,6 +278,7 @@ describe("applying tools", () => {
             config: {
               direction: "away",
               toRoom: "room_0" as EditorRoomId,
+              toDoor: "door",
             },
             position: doorPosition,
             type: "door",
@@ -341,6 +344,7 @@ describe("applying tools", () => {
             config: {
               direction: "away",
               toRoom: "room_0" as EditorRoomId,
+              toDoor: "door",
             },
             position: wallPosition,
             type: "door",

@@ -18,6 +18,7 @@ import { blockXyzToFineXyz } from "../../render/projections";
 import { emptyObject } from "../../../utils/empty";
 import { defaultBaseState } from "./itemDefaultStates";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { pick } from "../../../utils/pick";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
@@ -233,7 +234,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       id: `${jsonItemId}/portal` as RoomItemId,
       jsonItemId,
       config: {
-        ...jsonDoor.config,
+        ...pick(jsonDoor.config, "toRoom", "toDoor"),
         inHidden,
         relativePoint: blockXyzToFineXyz({
           ...originXyz,
