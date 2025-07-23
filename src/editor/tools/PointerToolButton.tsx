@@ -15,6 +15,7 @@ export const PointerToolButton = () => {
     <ToolbarButton
       onClick={() => store.dispatch(setTool({ type: "pointer" }))}
       isCurrentTool={isCurrentTool}
+      shortcutKeys={["Escape"]} // Escape key to switch back to default pointer tool
     >
       <span className={`sprite texture-editor_tool_pointer relative`} />
     </ToolbarButton>

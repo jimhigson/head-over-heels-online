@@ -53,7 +53,6 @@ import type {
   EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import type { Tool } from "../Tool";
-import { editorKeyboardShortcuts } from "./editorKeyboardShortcuts";
 import {
   getConsolidatableVector,
   isConsolidatable,
@@ -698,10 +697,6 @@ export const useRoomEditorInteractivity = (
       mouseDownPointingAtRef.current = pointingAt;
     };
 
-    const handleKeyUp = (event: KeyboardEvent) => {
-      editorKeyboardShortcuts(event);
-    };
-
     const handleMouseMoveCatch = catchErrors(handleMouseMove);
 
     renderArea.addEventListener("mousemove", handleMouseMoveCatch);
@@ -709,14 +704,12 @@ export const useRoomEditorInteractivity = (
     renderArea.addEventListener("mousedown", handleMouseDown);
     renderArea.addEventListener("mouseleave", handleMouseLeave);
     renderArea.tabIndex = 0; // Make the div focusable to capture key events
-    renderArea.addEventListener("keyup", handleKeyUp);
 
     return () => {
       renderArea.removeEventListener("mousemove", handleMouseMoveCatch);
       renderArea.removeEventListener("mouseup", handleMouseUp);
       renderArea.removeEventListener("mousedown", handleMouseDown);
       renderArea.removeEventListener("mouseleave", handleMouseLeave);
-      renderArea.removeEventListener("keyup", handleKeyUp);
     };
   }, [application.stage, upscale, renderArea, dispatch, roomState]);
 };

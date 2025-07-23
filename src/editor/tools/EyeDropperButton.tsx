@@ -12,6 +12,12 @@ export const EyeDropperButton = () => {
 
   return (
     <ToolbarButton
+      shortcutKeys={[
+        // i copies photoshop, gimp, Krita, etc
+        "I",
+        // comma copies dpaint
+        ",",
+      ]}
       isCurrentTool={isCurrentTool}
       onClick={() => store.dispatch(setTool({ type: "eyeDropper" }))}
     >

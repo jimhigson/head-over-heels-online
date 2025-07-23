@@ -19,6 +19,7 @@ import {
   wallItemId,
 } from "./__test__/storeStates";
 import { applyItemTool, setTool } from "../levelEditorSlice";
+import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
 
 describe("applying tools", () => {
   describe("applying items", () => {
@@ -379,8 +380,8 @@ describe("applying tools", () => {
           next.campaignInProgress.rooms["room_0" as EditorRoomId],
         ).toMatchObject({
           color: {
-            hue: "cyan",
-            shade: "basic",
+            hue: expect.toBeOneOf(zxSpectrumRoomHue as unknown as string[]),
+            shade: expect.toBeOneOf(zxSpectrumShades as unknown as string[]),
           },
           id: "room_0",
           items: {

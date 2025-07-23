@@ -55,13 +55,7 @@ export type Database = {
       };
       save_campaign_version: {
         Args: { p_name: string; p_data: string; p_created_by?: string };
-        Returns: {
-          created_at: string;
-          created_by: string;
-          data: string;
-          name: string;
-          version: number;
-        };
+        Returns: number;
       };
     };
     Enums: {

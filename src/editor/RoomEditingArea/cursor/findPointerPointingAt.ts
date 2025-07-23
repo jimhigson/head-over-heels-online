@@ -1,22 +1,14 @@
-import type { SetRequired } from "type-fest";
 import { isSolid } from "../../../game/physics/itemPredicates";
 import { unprojectScreenXyToWorldXyzOnFace } from "../../../game/render/projections";
-import {
-  zEdges,
-  sortByZPairs,
-} from "../../../game/render/sortZ/sortItemsByDrawOrder";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   type Xy,
   type Xyz,
-  originXyz,
-  addXyz,
   orthoPlaneForNormal,
 } from "../../../utils/vectors/vectors";
 import type {
   EditorUnionOfAllItemInPlayTypes,
-  EditorRoomItemId,
   EditorRoomState,
 } from "../../editorTypes";
 import type { Tool } from "../../Tool";
@@ -24,70 +16,12 @@ import type { MaybePointingAtSomething, PointingAtNothing } from "./PointingAt";
 import { pointerIntersectionFace } from "./pointerIntersectionFace";
 import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
 import { pointerIntersectionEdge } from "./pointerIntersectionEdge";
+import type {
+  PointerItemIntersection,
+  PointerItemMaybeIntersection,
+} from "./pointIntersectsItemAABB";
 import { pointIntersectsItemAABB } from "./pointIntersectsItemAABB";
-
-export const itemVisibleBounds = (
-  item: EditorUnionOfAllItemInPlayTypes,
-  tool: Tool,
-): {
-  position: Xyz;
-  aabb: Xyz;
-} => {
-  if (tool.type === "item" && item.type === "wall") {
-    // putting items on walls is a special case since we want to be able
-    // to point high on walls, above where they render
-    return {
-      position: item.state.position,
-      aabb: item.aabb,
-    };
-  }
-
-  return {
-    position: addXyz(item.state.position, item.renderAabbOffset ?? originXyz),
-    aabb: item.renderAabb ?? item.aabb,
-  };
-};
-
-const isFixedZIndexItem = (
-  i: EditorUnionOfAllItemInPlayTypes,
-): i is SetRequired<EditorUnionOfAllItemInPlayTypes, "fixedZIndex"> =>
-  i.fixedZIndex !== undefined;
-
-const frontItem = (
-  items: Array<EditorUnionOfAllItemInPlayTypes>,
-): EditorUnionOfAllItemInPlayTypes | undefined => {
-  if (items.every(isFixedZIndexItem)) {
-    // all items have fixed z-index (don't work in topographic sort) - return
-    // the highest from them:
-    // this is how doors can get put on invisible walls, because they have fixed z-indexes
-    // (but they prefer visible walls)
-    return items.toSorted((ia, ib) => ib.fixedZIndex - ia.fixedZIndex).at(0);
-  }
-
-  const topographicallySortableItems = items.filter(
-    (i) => !isFixedZIndexItem(i),
-  );
-
-  if (topographicallySortableItems.length === 0) {
-    return undefined;
-  }
-
-  if (topographicallySortableItems.length === 1) {
-    return topographicallySortableItems[0];
-  }
-
-  const topographicallySortableItemsMap = Object.fromEntries(
-    topographicallySortableItems.map((i) => [i.id, i]),
-  ) as Record<EditorRoomItemId, EditorUnionOfAllItemInPlayTypes>;
-
-  /**
-   * note: zEdges will not include ids of items with fixed z order
-   */
-  const ze = zEdges(topographicallySortableItemsMap);
-  const { order } = sortByZPairs(ze, topographicallySortableItemsMap);
-
-  return topographicallySortableItemsMap[order[0]];
-};
+import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
 
 export const roundXyzProjection = (
   /** the world position to round */
@@ -194,13 +128,20 @@ export const findPointerPointingAt = (
   tool: Tool,
   halfGridResolution: boolean,
 ): MaybePointingAtSomething => {
+  const intersections = iterateRoomItems(room.items)
+    .filter(isPointableItemForTool(tool))
+    .map((item): [typeof item, PointerItemMaybeIntersection] => [
+      item,
+      pointIntersectsItemAABB(scrXy, tool, item),
+    ])
+    .filter(
+      (tup): tup is [(typeof tup)[0], PointerItemIntersection] =>
+        tup[1] !== "non-intersecting",
+    );
+
   // find the item(s) that the mouse is over:
-  const itemPointingTo = frontItem(
-    Array.from(
-      iterateRoomItems(room.items)
-        .filter(isPointableItemForTool(tool))
-        .filter(pointIntersectsItemAABB(scrXy, tool)),
-    ),
+  const itemPointingTo = frontItemFromPointerIntersections(
+    Array.from(intersections),
   );
 
   const roomId = room.id;

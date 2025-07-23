@@ -1,7 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { SetRequired, ValueOf } from "type-fest";
-import { starterRoom } from "./createStarterRoom";
 import type {
   EditorCampaign,
   EditorRoomJson,
@@ -23,9 +22,9 @@ import { selectionsReducers } from "./reducers/selectionsReducers";
 import { moveOrResizeItemReducers } from "./reducers/moveOrResizeItemReducers";
 import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { editRoomReducers } from "./reducers/editRoomReducers";
-import { keysIter } from "../../utils/entries";
-import { first } from "iter-tools";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
+import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
+import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
@@ -39,6 +38,9 @@ export type PreviewedRoomItemEdits = {
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
   campaignInProgress: EditorCampaign;
+  /** the campaign in the db (as far as we know, unless someone else saved to
+   * it while the editor was running) */
+  savedCampaign: EditorCampaign | undefined;
   currentlyEditingRoomId: EditorRoomId;
   /**
    * room edits that are for the current cursor's position, which are not yet
@@ -58,30 +60,6 @@ export type LevelEditorState = {
     undo: Array<EditorRoomJson>;
     redo: Array<EditorRoomJson>;
   };
-};
-
-const initialRoomId = "room_0" as EditorRoomId;
-const initialRoom = { id: initialRoomId, ...starterRoom({ x: 8, y: 8 }) };
-export const initialLevelEditorSliceState: LevelEditorState = {
-  campaignInProgress: {
-    name: "new campaign",
-    rooms: {
-      [initialRoomId]: initialRoom,
-    },
-  },
-  currentlyEditingRoomId: initialRoomId,
-  previewedEdits: {},
-  tool: { type: "pointer" },
-  hoveredItem: undefined,
-  clickableAnnotationHovered: false,
-  selectedJsonItemIds: [],
-  halfGridResolution: false,
-  wallsFloorsLocked: true,
-  dragInProgress: false,
-  history: {
-    undo: [],
-    redo: [],
-  },
 };
 
 /**
@@ -131,28 +109,6 @@ export const levelEditorSlice = createSlice({
       state.history = initialLevelEditorSliceState.history;
     },
 
-    loadCampaign(
-      _state,
-      { payload: { campaign } }: PayloadAction<{ campaign: EditorCampaign }>,
-    ) {
-      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
-      // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
-      // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
-      const state = _state as LevelEditorState;
-
-      state.campaignInProgress = campaign;
-      state.hoveredItem = undefined;
-      state.selectedJsonItemIds = [];
-      state.clickableAnnotationHovered = false;
-      state.dragInProgress = false;
-      state.history = initialLevelEditorSliceState.history;
-      const roomId = first(keysIter(campaign.rooms));
-      if (roomId === undefined) {
-        throw new Error("could not find any rooms in this campaign");
-      }
-      state.currentlyEditingRoomId = roomId;
-    },
-
     /**
      * noop reducer to force the store to give this slice its initial value in the store, since this slice is lazy-loaded.
      * Dispatching anything would also have this effect, we just need the reducer to run so it can give the initial state
@@ -167,6 +123,7 @@ export const levelEditorSlice = createSlice({
     ...editRoomReducers,
     ...moveOrResizeItemReducers,
     ...itemPreviewReducers,
+    ...saveAndLoadReducers,
   },
   selectors: {
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
@@ -195,6 +152,7 @@ export type LevelEditorSliceActionCreator = ValueOf<
 
 export const {
   applyItemTool,
+  campaignSaved,
   changeDragInProgress,
   changeGridResolution,
   changeRoomColour,

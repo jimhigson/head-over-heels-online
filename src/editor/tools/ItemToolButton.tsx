@@ -9,17 +9,20 @@ import type { ItemTool } from "../Tool";
 import nanoEqual from "nano-equal";
 
 import type { PropsWithChildren } from "react";
+import type { ShortcutKeys } from "./useKeyboardShortcut";
 import { ToolbarButton } from "./ToolbarButton";
 
 type ItemToolButtonProps<T extends JsonItemType> = {
   itemTool: ItemTool<T>;
   className?: string;
+  shortcutKeys?: ShortcutKeys;
 };
 
 export const ItemToolButton = <T extends JsonItemType>({
   itemTool,
   children,
   className,
+  shortcutKeys,
 }: PropsWithChildren<ItemToolButtonProps<T>>) => {
   const currentTool = useAppSelectorWithLevelEditorSlice(selectTool);
 
@@ -32,6 +35,7 @@ export const ItemToolButton = <T extends JsonItemType>({
       isCurrentTool={isCurrentTool}
       className={className}
       onClick={() => store.dispatch(setTool({ type: "item", item: itemTool }))}
+      shortcutKeys={shortcutKeys}
     >
       {children}
     </ToolbarButton>
