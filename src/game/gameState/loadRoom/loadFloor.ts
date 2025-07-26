@@ -10,7 +10,7 @@ import type { RoomJson } from "../../../model/RoomJson";
 import { defaultBaseState } from "./itemDefaultStates";
 import { objectValues } from "iter-tools";
 import { iterate } from "../../../utils/iterate";
-import { multiplyBoundingBox } from "../../collision/boundingBoxTimes";
+import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal.

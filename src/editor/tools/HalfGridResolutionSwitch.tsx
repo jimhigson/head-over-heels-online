@@ -19,11 +19,12 @@ export const HalfGridResolutionSwitch = ({
       value={useAppSelectorWithLevelEditorSlice(
         (state) => state.levelEditor.halfGridResolution,
       )}
-      onClick={(_e, value) => {
+      onChange={(value) => {
         dispatch(changeGridResolution(value));
       }}
       falseLabel="Block"
       trueLabel="Half"
+      shortcutKeys={["S"]}
     />
   );
 };

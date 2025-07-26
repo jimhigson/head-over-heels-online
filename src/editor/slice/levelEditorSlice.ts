@@ -14,17 +14,19 @@ import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
 import {
   selectCurrentRoomFromLevelEditorState,
   selectItemInLevelEditorState,
+  selectItemIsSelectedInLevelEditorState,
 } from "./levelEditorSliceSelectors";
 import { undoReducers, undoSelectors } from "./reducers/undoReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
-import { moveOrResizeItemReducers } from "./reducers/moveOrResizeItemReducers";
+import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreviewReducers";
 import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
+import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
@@ -121,9 +123,10 @@ export const levelEditorSlice = createSlice({
     ...dragToMoveReducers,
     ...selectionsReducers,
     ...editRoomReducers,
-    ...moveOrResizeItemReducers,
+    ...moveOrResizeItemPreviewReducers,
     ...itemPreviewReducers,
     ...saveAndLoadReducers,
+    ...addOrRemoveRoomReducers,
   },
   selectors: {
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
@@ -136,6 +139,7 @@ export const levelEditorSlice = createSlice({
     selectTool: (state) => state.tool,
     selectSelectedJsonItemIds: (state) => state.selectedJsonItemIds,
     selectHoveredItem: (state) => state.hoveredItem,
+    selectItemIsSelected: selectItemIsSelectedInLevelEditorState,
     ...undoSelectors,
   },
 });
@@ -151,6 +155,7 @@ export type LevelEditorSliceActionCreator = ValueOf<
 >;
 
 export const {
+  addRoom,
   applyItemTool,
   campaignSaved,
   changeDragInProgress,
@@ -160,18 +165,21 @@ export const {
   changeToRoom,
   changeWallsFloorsLocked,
   clearRoom,
+  commitCurrentPreviewedEdits,
   deleteSelected,
   injected,
   loadCampaign,
-  moveOrResizeItem,
+  moveOrResizeItemAsPreview,
   redo,
+  removeRoom,
   resetPreviewedEdits,
   roomJsonEdited,
   setClickableAnnotationHovered,
   setHoveredItemInRoom,
   setRoomAboveOrBelow,
-  setSelectedItemInRoom,
+  setSelectedItemsInRoom,
   setTool,
+  toggleSelectedItemInRoom,
   undo,
 } = levelEditorSlice.actions;
 export const {
@@ -183,6 +191,7 @@ export const {
   selectCurrentEditingRoomScenery,
   selectHoveredItem,
   selectItem,
+  selectItemIsSelected,
   selectSelectedJsonItemIds,
   selectTool,
 } = levelEditorSlice.selectors;

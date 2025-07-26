@@ -1,18 +1,21 @@
 import { produce } from "immer";
-import { type Xyz } from "../../../utils/vectors/vectors";
+import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import type {
   EditorJsonItemUnion,
   EditorJsonItemWithTimes,
   EditorRoomItemId,
   EditorRoomState,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import { collideableItemsInRoom } from "./collideableItemsInRoom";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
-import { isEmpty } from "iter-tools";
+import { filter, flatMap, isEmpty, map, pipe, some } from "iter-tools";
 import { iterate } from "../../../utils/iterate";
 import type { ItemTool } from "../../Tool";
 import type { JsonItemType } from "../../../model/json/JsonItem";
+import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreviewReducers";
+import { isSolid } from "../../../game/physics/itemPredicates";
 
 const collideableForItem = (
   roomState: EditorRoomState,
@@ -20,51 +23,120 @@ const collideableForItem = (
 ) => {
   const collideableItems = iterate(collideableItemsInRoom(roomState));
 
-  const collideableItemsForThisTool =
+  const collideableItemsForThisItem =
     forItemType === "door" ?
       // doors can collide with walls, and that's ok since they cut into the wall:
       collideableItems.filter((item) => item.type !== "wall")
     : collideableItems;
-  return collideableItemsForThisTool;
+  return collideableItemsForThisItem;
 };
 
 export const itemMoveOrResizeWouldCollide = ({
   roomState,
-  jsonItemId,
-  newBlockPosition,
-  newTimes,
+  jsonItemIds,
+  blockPositionDelta,
+  timesDelta,
 }: {
   roomState: EditorRoomState;
-  jsonItemId: EditorRoomItemId;
-  newBlockPosition: Xyz;
-  newTimes?: Xyz;
+  jsonItemIds: EditorRoomItemId[];
+  blockPositionDelta: Xyz;
+  timesDelta?: Xyz;
 }) => {
-  const itemToChange = roomState.roomJson.items[jsonItemId];
+  const modifyAndLoadPipe = pipe(
+    // get the json items from the room json:
+    map(
+      (jsonItemId: EditorRoomItemId) =>
+        [jsonItemId, roomState.roomJson.items[jsonItemId]] as [
+          EditorRoomItemId,
+          EditorJsonItemUnion,
+        ],
+    ),
 
-  // load the modified version of the item from JSON:
-  const modifiedItems = loadItemFromJson(
-    "testItem" as EditorRoomItemId,
-    produce(itemToChange, (draftItemJson) => {
-      if (newTimes) {
-        (draftItemJson as EditorJsonItemWithTimes).config.times = newTimes;
+    // modify the json items to their new position/size:
+    map(
+      ([jsonItemId, jsonItem]) =>
+        [
+          jsonItemId,
+          produce(jsonItem, (draftItemJson) => {
+            draftItemJson.position = addXyz(
+              draftItemJson.position,
+              blockPositionDelta,
+            );
+            addTimesDeltaToJsonItemInPlace(
+              draftItemJson as EditorJsonItemWithTimes,
+              timesDelta,
+            );
+          }),
+        ] as [EditorRoomItemId, EditorJsonItemUnion],
+    ),
+
+    // load the json items to in-play items (could me multiple per json item)
+    flatMap(function* ([jsonItemId, modifiedJsonItem]) {
+      for (const loadedItem of loadItemFromJson(
+        jsonItemId,
+        modifiedJsonItem,
+        roomState.roomJson,
+      )) {
+        yield [jsonItemId, modifiedJsonItem, loadedItem] as [
+          EditorRoomItemId,
+          EditorJsonItemUnion,
+          EditorUnionOfAllItemInPlayTypes,
+        ];
       }
-      draftItemJson.position = newBlockPosition;
     }),
-    roomState.roomJson,
+
+    // ignore any non-solid items we just loaded:
+    filter(([, , loadedItem]) => isSolid(loadedItem)),
   );
 
-  const collideableItems = iterate(
-    collideableForItem(roomState, itemToChange.type),
-  ).filter(
-    // not colliding with itself:
-    (item) => item.id !== jsonItemId,
+  const loadedModifiedItemTuples = Array.from(modifyAndLoadPipe(jsonItemIds));
+
+  const collidePipe = pipe(
+    some(
+      ([, modifiedJsonItem, loadedItem]: [
+        EditorRoomItemId,
+        EditorJsonItemUnion,
+        EditorUnionOfAllItemInPlayTypes,
+      ]) => {
+        // check for collisions with items that were already in the room:
+        const collideableItemsAlreadyInRoom = iterate(
+          collideableForItem(roomState, modifiedJsonItem.type),
+        ).filter(
+          // do not colliding with the items we are currently moving - that will come next
+          (item) => item.jsonItemId && !jsonItemIds.includes(item.jsonItemId),
+        );
+
+        for (const c of collision1toManyIter(
+          loadedItem,
+          collideableItemsAlreadyInRoom,
+        )) {
+          console.warn(loadedItem.id, "colliding with static item", c.id);
+          return true;
+        }
+
+        // check for collisions with other items we just loaded
+        for (const c of collision1toManyIter(
+          loadedItem,
+          loadedModifiedItemTuples.map(([_, __, otherLoaded]) => otherLoaded),
+        )) {
+          console.warn(
+            loadedItem.id,
+            "colliding with other mutating item",
+            c.id,
+          );
+          return true;
+        }
+
+        // we also need to check for collisions with the other items being moved/resized.
+        // for moving, this generally won't be an issue, since they'll all move by the same amount,
+        // but resizing could make them overlap each other.
+
+        return false;
+      },
+    ),
   );
 
-  return modifiedItems.some((loadedItem) => {
-    const collisions = collision1toManyIter(loadedItem, collideableItems);
-
-    return !isEmpty(collisions);
-  });
+  return collidePipe(loadedModifiedItemTuples);
 };
 
 export const addingItemWouldCollide = ({
@@ -86,9 +158,8 @@ export const addingItemWouldCollide = ({
     roomState.roomJson,
   );
 
-  const collideableItemsForThisTool = collideableForItem(
-    roomState,
-    itemTool.type,
+  const collideableItemsForThisTool = Array.from(
+    collideableForItem(roomState, itemTool.type),
   );
 
   return newItems.some((loadedItem) => {

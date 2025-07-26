@@ -88,6 +88,7 @@ export type JsonItem<
 export type JsonItemUnion<
   RoomId extends string = string,
   RoomItemId extends string = string,
+  OfTypes extends JsonItemType = JsonItemType,
 > = {
-  [IT in JsonItemType]: JsonItem<IT, RoomId, RoomItemId, SceneryName>;
-}[JsonItemType];
+  [IT in OfTypes]: JsonItem<IT, RoomId, RoomItemId, SceneryName>;
+}[OfTypes];

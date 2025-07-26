@@ -48,7 +48,7 @@ describe("descriptive cases", () => {
     });
   });
 
-  test("screen 4x the emulated resolution size - game engine scales up 4x", () => {
+  test("screen 4x the emulated resolution size and honest pixels - game engine scales up 4x", () => {
     const result = calculateUpscale({
       renderAreaSize: scaleXy(resolutions.zxSpectrum, 4),
       emulatedResolutionName: "zxSpectrum",
@@ -67,7 +67,7 @@ describe("descriptive cases", () => {
     });
   });
 
-  test("screen 8x the emulated resolution - game engine scales up 4x, with an extra 2x from css", () => {
+  test("screen 8x the emulated resolution and honest pixels - game engine scales up 8x, with nothing extra from css", () => {
     const result = calculateUpscale({
       renderAreaSize: scaleXy(resolutions.zxSpectrum, 8),
       emulatedResolutionName: "zxSpectrum",
@@ -76,12 +76,11 @@ describe("descriptive cases", () => {
     });
 
     expect(result).toMatchObject({
-      canvasSize: scaleXy(resolutions.zxSpectrum, 4),
+      canvasSize: scaleXy(resolutions.zxSpectrum, 8),
       gameEngineScreenSize: zxSpectrumRes,
-      // no css upscale, the output is not big enough:
-      cssUpscale: 2,
+      cssUpscale: 1,
       // render at quad-size in the game engine:
-      gameEngineUpscale: 4,
+      gameEngineUpscale: 8,
       rotate90: false,
     });
   });
@@ -95,12 +94,12 @@ describe("descriptive cases", () => {
     });
 
     expect(result).toMatchObject({
-      canvasSize: scaleXy(resolutions.zxSpectrum, 4),
+      canvasSize: scaleXy(resolutions.zxSpectrum, 8),
       gameEngineScreenSize: zxSpectrumRes,
-      // no css upscale, the output is not big enough:
-      cssUpscale: 1,
-      // render at quad-size in the game engine:
-      gameEngineUpscale: 4,
+      // get down to hardware pixels:
+      cssUpscale: 0.5,
+      // since we're going to 8x (really), is at max upscale:
+      gameEngineUpscale: 8,
       rotate90: false,
     });
   });
@@ -128,17 +127,16 @@ describe("descriptive cases", () => {
     // maximum allowed upscale in the game engine:
 
     expect(result).toMatchObject({
-      // aspect ratios match, so take up the whole screen. This means
-      // to get to the reported size, but after css scaling of 0.75:
+      // aspect ratios match, so take up the whole screen and use hardware pixels:
       canvasSize: {
-        x: Math.ceil(800 / 0.75),
-        y: Math.ceil(600 / 0.75),
+        x: 1600,
+        y: 1200,
       },
       //gameEngineScreenSize: zxSpectrumRes,
-      // up to the max cap
-      gameEngineUpscale: 4,
-      // just enough css upscale to get the size we want:
-      cssUpscale: 0.75,
+      // not quite up to the max cap
+      gameEngineUpscale: 6,
+      // gets back down to hardware pixels:
+      cssUpscale: 0.5,
       rotate90: false,
     });
   });

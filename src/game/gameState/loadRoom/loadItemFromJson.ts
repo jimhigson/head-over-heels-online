@@ -16,7 +16,7 @@ import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { loadFloor } from "./loadFloor";
-import { multiplyBoundingBox } from "../../collision/boundingBoxTimes";
+import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;

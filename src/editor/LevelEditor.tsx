@@ -19,27 +19,27 @@ const LevelEditor = () => {
   return (
     // <ErrorBoundary>
     <>
-      <CssVariables>
-        <PanelGroup direction="horizontal" className="w-full h-full">
-          <Panel id="jsonEditor" defaultSize={18} minSize={12} collapsible>
-            <Suspense fallback={loadingFallback}>
-              <LazyJsonRoomEditor />
-            </Suspense>
-          </Panel>
-          <PanelResizeHandle className="scale-editor w-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-r-[calc(1px*var(--scale))] border-metallicBlue" />
-          <Panel id="editingArea">
-            <PixiApplicationProvider>
-              <EditorRoomStateProvider>
+      <EditorRoomStateProvider>
+        <CssVariables>
+          <PanelGroup direction="horizontal" className="w-full h-full">
+            <Panel id="jsonEditor" defaultSize={18} minSize={12} collapsible>
+              <Suspense fallback={loadingFallback}>
+                <LazyJsonRoomEditor />
+              </Suspense>
+            </Panel>
+            <PanelResizeHandle className="scale-editor w-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-r-[calc(1px*var(--scale))] border-metallicBlue" />
+            <Panel id="editingArea">
+              <PixiApplicationProvider>
                 <RoomEditingArea />
-              </EditorRoomStateProvider>
-            </PixiApplicationProvider>
-          </Panel>
-          <PanelResizeHandle className="scale-editor w-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-l-[calc(1px*var(--scale))] border-metallicBlue" />
-          <Panel id="toolbar" defaultSize={20} maxSize={33} minSize={10}>
-            <LevelEditorToolbar />
-          </Panel>
-        </PanelGroup>
-      </CssVariables>
+              </PixiApplicationProvider>
+            </Panel>
+            <PanelResizeHandle className="scale-editor w-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-l-[calc(1px*var(--scale))] border-metallicBlue" />
+            <Panel id="toolbar" defaultSize={20} maxSize={33} minSize={10}>
+              <LevelEditorToolbar />
+            </Panel>
+          </PanelGroup>
+        </CssVariables>
+      </EditorRoomStateProvider>
     </>
     // </ErrorBoundary>
   );

@@ -3,6 +3,7 @@ import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { twClass } from "../twClass";
 import { buttonSpriteRevertColourClasses } from "./buttonSizeClassNames";
 
+/** a main icon, plus a small explanatory side-icon giving some attribute such as conveyor direction */
 export const LabelledToolbarIcon = ({
   iconClasses,
   text,
@@ -21,7 +22,8 @@ export const LabelledToolbarIcon = ({
     </div>
   );
 };
-export const DissapearingToolbarIcon = ({
+/** icon with a puff of smoke also, indicating a disappearing item */
+export const DissapearingItemToolbarIcon = ({
   iconClassName,
 }: {
   iconClassName: string;

@@ -8,8 +8,8 @@ import type {
   CybermanConfig,
   MonsterJsonConfig,
 } from "../../../model/json/MonsterJsonConfig";
-import { addDoorInPlace } from "./addDoorInPlace";
-import { addItemInPlace } from "./addItemInPlace";
+import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
+import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
 
 const isDoorTool = (itemTool: ItemTool): itemTool is ItemTool<"door"> => {
   return itemTool.type === "door";

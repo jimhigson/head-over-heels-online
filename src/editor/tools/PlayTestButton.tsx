@@ -49,20 +49,22 @@ export const PlayTestButton = () => {
     >
       {[
         <Switch
+          key="fromStart"
           className="w-full"
           value={fromStart}
           label="from"
           falseLabel="room"
           trueLabel="start"
-          onClick={(_e, value) => setFromStart(value)}
+          onChange={(value) => setFromStart(value)}
         />,
         <Switch
+          key="playAsHeels"
           className="w-full"
           value={playAsHeels}
           label="as"
           falseLabel="head"
           trueLabel="heels"
-          onClick={(_e, value) => setPlayAsHeels(value)}
+          onChange={(value) => setPlayAsHeels(value)}
         />,
       ]}
     </MenuButton>

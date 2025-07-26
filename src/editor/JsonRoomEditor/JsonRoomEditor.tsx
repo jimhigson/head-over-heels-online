@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { Monaco } from "@monaco-editor/react";
 import { Editor } from "@monaco-editor/react";
 import type { editor } from "monaco-editor";
-import { useLoadMonaco } from "./useLoadMonaco";
 import { useSyncSelectionWithMonaco } from "./useSyncSelectionWithMonaco";
 import roomSchema from "../../_generated/room.schema.json";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
@@ -11,7 +10,7 @@ import { useMonacoSuggestions } from "./useMonacoSuggestions";
 import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
 
 export const JsonRoomEditor = () => {
-  const monaco = useLoadMonaco();
+  //const monaco = useLoadMonaco();
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(
     null,
   );
@@ -40,46 +39,45 @@ export const JsonRoomEditor = () => {
     });
   };
 
-  if (monaco !== null) {
-    return (
-      <>
-        <Editor
-          height="100%"
-          width="100%"
-          language="json"
-          theme="hoh-dark"
-          options={
-            {
-              minimap: { enabled: false },
-              // since we're using monaco inside a resizable container with overflow
-              // hidden, tell it to move its tooltips up to the top of the window's DOM:
-              fixedOverflowWidgets: true,
-              fontSize: 12,
-              lineNumbers: "off",
-              wordWrap: "on",
-              glyphMargin: true,
-              wrappingIndent: "indent",
-              //folding: false,
-              "bracketPairColorization.enabled": false,
-              quickSuggestions: {
-                other: true,
-                string: true,
-                comments: false,
-              },
-              quickSuggestionsDelay: 100,
-              inlineSuggest: {
-                enabled: true,
-              },
-            } as editor.IStandaloneEditorConstructionOptions
-          }
-          onChange={updateStoreWhenJsonEdited}
-          onMount={handleEditorMount}
-          defaultValue="{}"
-        />
-        <ItemContentWidgets editor={editor} />
-      </>
-    );
-  }
+  //if (monaco !== null) { <- this wait stops json loading properly in vite dev for some reason
+  return (
+    <>
+      <Editor
+        height="100%"
+        width="100%"
+        language="json"
+        theme="hoh-dark"
+        options={
+          {
+            minimap: { enabled: false },
+            // since we're using monaco inside a resizable container with overflow
+            // hidden, tell it to move its tooltips up to the top of the window's DOM:
+            fixedOverflowWidgets: true,
+            fontSize: 12,
+            lineNumbers: "off",
+            wordWrap: "on",
+            glyphMargin: true,
+            wrappingIndent: "indent",
+            //folding: false,
+            "bracketPairColorization.enabled": false,
+            quickSuggestions: {
+              other: true,
+              string: true,
+              comments: false,
+            },
+            quickSuggestionsDelay: 100,
+            inlineSuggest: {
+              enabled: true,
+            },
+          } as editor.IStandaloneEditorConstructionOptions
+        }
+        onChange={updateStoreWhenJsonEdited}
+        onMount={handleEditorMount}
+      />
+      <ItemContentWidgets editor={editor} />
+    </>
+  );
+  //}
 };
 
 export default JsonRoomEditor;

@@ -42,6 +42,9 @@ export type PointingAtOnItem = {
 export type PointingAtItem = Simplify<
   BasePointingAt & {
     world: {
+      /**
+       * the in-play item that was pointed at
+       */
       itemId: EditorRoomItemId;
       /**
        * the position of location being pointed at, in world coords

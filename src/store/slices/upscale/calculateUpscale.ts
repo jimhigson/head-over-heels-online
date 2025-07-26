@@ -18,7 +18,7 @@ export type CalculateUpscaleOptions = {
  * slow. rendering in third/quarter-pixels is fine.
  */
 
-export const maximumCanvasUpscale = 4;
+export const maximumCanvasUpscale = 8;
 
 export const calculateUpscale = ({
   renderAreaSize,

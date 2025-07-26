@@ -14,9 +14,11 @@ export type ButtonProps = Simplify<
 >;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, selected, ...props }, ref) => {
+  ({ className, selected, disabled = false, onClick, ...props }, ref) => {
     return (
       <button
+        disabled={disabled}
+        onClick={onClick}
         data-selected={selected}
         className={cn(
           `inline-flex items-center justify-center whitespace-nowrap 

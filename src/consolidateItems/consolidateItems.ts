@@ -1,5 +1,5 @@
 import { canonicalize } from "json-canonicalize";
-import { unitXyz, type Xyz } from "../utils/vectors/vectors";
+import { type Xyz } from "../utils/vectors/vectors";
 import { omit } from "../utils/pick";
 import type { SceneryName } from "../sprites/planets";
 import type { WallJsonConfigWithTiles } from "../model/json/WallJsonConfig";
@@ -9,10 +9,7 @@ import {
   getConsolidatableVector,
 } from "./ConsolidatableJsonItem";
 import type { JsonItemUnion } from "../model/json/JsonItem";
-import {
-  completeTimesXyz,
-  wallTimes,
-} from "../game/collision/boundingBoxTimes";
+import { getJsonItemTimes } from "../model/times";
 
 export type ItemWithId = [itemId: string, item: JsonItemUnion];
 export type ConsolidatableItemWithId = [
@@ -22,26 +19,6 @@ export type ConsolidatableItemWithId = [
 
 // 3d grid to keep the items in
 type Grid = Set<ConsolidatableItemWithId>[][][];
-
-const getJsonItemTimes = (item: JsonItemUnion): Xyz => {
-  const isMultipliedItem = (
-    item: JsonItemUnion,
-  ): item is JsonItemUnion & { config: { times: Partial<Xyz> } } => {
-    type ItemConfigMaybeWithMultiplication = {
-      times?: undefined | Partial<Xyz>;
-    };
-
-    return (
-      (item.config as ItemConfigMaybeWithMultiplication).times !== undefined
-    );
-  };
-
-  return (
-    item.type === "wall" ? completeTimesXyz(wallTimes(item.config))
-    : isMultipliedItem(item) ? completeTimesXyz(item.config.times)
-    : unitXyz
-  );
-};
 
 // Generate a stable hash key for the visited map
 const hashItem = (o: ConsolidatableJsonItem): string => {

@@ -13,11 +13,11 @@ import type {
   EditorRoomJson,
 } from "../../editorTypes";
 import type { ItemTool } from "../../Tool";
-import { addNewRoomInPlace } from "../inPlaceMutators.ts/addNewRoomInPlace";
+import { addNewRoomInPlace } from "./addNewRoomInPlace";
 import type { LevelEditorState } from "../levelEditorSlice";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 import { addItemInPlace, nextItemId } from "./addItemInPlace";
-import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoor";
+import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
 
 const getDestinationRoom = (
   state: LevelEditorState,
@@ -44,7 +44,7 @@ const getDestinationRoom = (
     return undefined;
   }
 
-  return addNewRoomInPlace(state, fromRoomJson.planet, fromRoomJson.color);
+  return addNewRoomInPlace(state, fromRoomJson.planet);
 };
 
 export const addDoorInPlace = (
