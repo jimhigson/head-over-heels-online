@@ -3,13 +3,13 @@ import type { ItemAppearance } from "./ItemAppearance";
 import { emptyObject } from "../../../utils/empty";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
 import { showTextInContainer } from "../hud/showNumberInContainer";
-import { OutlineFilter } from "../filters/outlineFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { store } from "../../../store/store";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { noFilters } from "../filters/standardFilters";
+import { OutlineFilter } from "../filters/outlineFilter";
 import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import { store } from "../../../store/store";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;
@@ -99,6 +99,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     mainContainer = previousRendering!;
   }
 
+  let anyVisible = false;
   // set line colours/visibility (every frame):
   for (let i = 0; i < textLines.length; i++) {
     const lineContainer = mainContainer.children[i];
@@ -111,6 +112,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     const visible = lineHeight > 0 && lineHeight < maxLineHeight;
 
     lineContainer.visible = visible;
+    anyVisible ||= visible;
 
     if (visible && lineColourFilter) {
       const colourIndex = Math.floor(
@@ -119,6 +121,12 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
       lineColourFilter.targetColor = fadeOrderColourised[colourIndex];
     }
   }
+
+  // pixi crashes sometimes if we destroy renderers and there are filters
+  // in render layers (???) - this can be avoided by making the container
+  // not visible when it isn't needed - this means it will be invisible when
+  // it its renderer is destroyed/removed
+  mainContainer.visible = anyVisible;
 
   mainContainer.y = -itemRenderHeight;
 
