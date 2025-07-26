@@ -12,7 +12,7 @@ import {
   lengthXyz,
   originXyz,
 } from "../../utils/vectors/vectors";
-import { epsilon } from "../../utils/veryClose";
+import { epsilon } from "../../utils/epsilon";
 import { fastStepsRemaining } from "../gameState/gameStateSelectors/selectPickupAbilities";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";

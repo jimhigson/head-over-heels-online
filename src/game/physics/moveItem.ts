@@ -26,7 +26,7 @@ import { maxPushRecursionDepth } from "./mechanicsConstants";
 import { roomItemsIterable, type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
-import { veryClose } from "../../utils/veryClose";
+import { veryClose } from "../../utils/epsilon";
 
 const log = 0;
 

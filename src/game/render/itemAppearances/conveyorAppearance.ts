@@ -5,8 +5,8 @@ import { tangentAxis } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import type { ItemAppearance } from "./ItemAppearance";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
-import { neverTime } from "../../../utils/veryClose";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+import { neverTime } from "../../../utils/neverTime";
 
 const slowdownTimeMs = 500;
 

@@ -11,7 +11,7 @@ import { originXyz, scaleXyz } from "../../../utils/vectors/vectors";
 import { freeItemTypes, slidingItemTypes } from "../../physics/itemPredicates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 import { emptyObject } from "../../../utils/empty";
-import { neverTime } from "../../../utils/veryClose";
+import { neverTime } from "../../../utils/neverTime";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
 
 export const defaultBaseState = <RoomItemId extends string>() =>

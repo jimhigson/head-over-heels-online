@@ -33,6 +33,7 @@ import { objectValues } from "iter-tools";
 import type { TurnStrategy } from "./turnedVector";
 import { turnedVector } from "./turnedVector";
 import { randomFromArray } from "../../../utils/random/randomFromArray";
+import { nonZero } from "../../../utils/epsilon";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
@@ -265,7 +266,7 @@ const walkTowardIfInSquare = <RoomId extends string, RoomItemId extends string>(
   }
 
   const vectorXyToClosestPlayer = subXy(
-    closestPlayable?.state.position,
+    closestPlayable.state.position,
     monsterPosition,
   );
 
@@ -274,12 +275,13 @@ const walkTowardIfInSquare = <RoomId extends string, RoomItemId extends string>(
   // in the original game, the monster would move at their normal speed in axis-aligned directions, and sqrt(2) times that
   // in diagonal directions [ie, moving in vector (0,2) or (2,2) pixels in (x,y)]. Instead, I always move the average of these
   // two to keep the end result about the same without any strange-looking speed changes:
-  const adjustCoefficient = (1 + Math.sqrt(2)) / 2;
+  const adjustCoefficient = (1 + Math.SQRT2) / 2;
   const adjustedSpeed = monsterSpeed * adjustCoefficient;
 
   const walkVelocity = scaleXyz(
     { ...vectorXyToClosestPlayer, z: 0 },
-    (adjustedSpeed / lengthXy(vectorXyToClosestPlayer)) * (opposite ? -1 : 1),
+    (adjustedSpeed / nonZero(lengthXy(vectorXyToClosestPlayer))) *
+      (opposite ? -1 : 1),
   );
 
   return {
@@ -288,7 +290,10 @@ const walkTowardIfInSquare = <RoomId extends string, RoomItemId extends string>(
       walking: walkVelocity,
     },
     stateDelta: {
-      facing: unitVector(walkVelocity),
+      // this isn't a unit vector, but since the walkVelocity can
+      // be (0,0,0) seems safer not to convert it to one - not sure
+      // anything uses this for the emperor's guardian anyway.
+      facing: walkVelocity,
     },
   };
 };
@@ -513,11 +518,14 @@ export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
         deltaMS,
       );
     }
+    // ie, the stationary elephant heads - turn towards the player while not moving
     case "turn-to-player":
       return turnTowardsPlayer(itemWithMovement, room, gameState, deltaMS);
 
     case "towards-analogue":
       return walkTowardIfInSquare(itemWithMovement, room, gameState, deltaMS);
+
+    // ie, emperor's guardian
     case "towards-analogue-unless-planet-crowns":
       return walkTowardIfInSquare(
         itemWithMovement,

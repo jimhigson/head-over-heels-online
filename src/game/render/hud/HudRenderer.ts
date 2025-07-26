@@ -38,7 +38,6 @@ import {
 } from "./hudFilters";
 import { renderCarriedOnce } from "./renderCarried";
 import type { Renderer } from "../Renderer";
-import { neverTime } from "../../../utils/veryClose";
 import {
   makeTextContainer,
   showTextInContainer,
@@ -48,6 +47,7 @@ import type {
   HudRendererTickContext,
 } from "./hudRendererContexts";
 import type { PortableItem } from "../../physics/itemPredicates";
+import { neverTime } from "../../../utils/neverTime";
 
 const fpsUpdatePeriod = 250;
 

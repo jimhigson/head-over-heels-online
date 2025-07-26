@@ -10,7 +10,7 @@ import {
 } from "../soundUtils/createBracketedSound";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
-import { neverTime } from "../../utils/veryClose";
+import { neverTime } from "../../utils/neverTime";
 
 export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   public readonly output: GainNode = audioCtx.createGain();

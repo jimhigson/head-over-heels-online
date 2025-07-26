@@ -18,7 +18,7 @@ import {
   selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
 } from "../../../store/selectors";
-import { neverTime } from "../../../utils/veryClose";
+import { neverTime } from "../../../utils/neverTime";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,

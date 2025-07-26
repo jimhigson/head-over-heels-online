@@ -1,4 +1,4 @@
-import { veryClose } from "../veryClose";
+import { veryClose } from "../epsilon";
 
 export const directionsXy4 = ["away", "towards", "left", "right"] as const;
 export type DirectionXy4 = (typeof directionsXy4)[number];
