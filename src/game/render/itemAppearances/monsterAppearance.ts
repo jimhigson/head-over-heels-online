@@ -25,7 +25,15 @@ import type { RoomState } from "../../../model/RoomState";
 
 const greyWhileDeactivated: Array<
   ItemConfigMap<string, string>["monster"]["which"]
-> = ["cyberman", "dalek", "skiHead", "bubbleRobot", "computerBot", "turtle"];
+> = [
+  "cyberman",
+  "dalek",
+  "skiHead",
+  "bubbleRobot",
+  "computerBot",
+  "turtle",
+  "homingBot",
+];
 
 type MonsterRenderProps = {
   walking?: boolean;
@@ -220,10 +228,17 @@ export const monsterAppearance: ItemAppearance<
 
       return {
         filter,
-        output: createSprite({
-          animationId: walking ? "headlessBase.flash" : "headlessBase.scan",
-          filter,
-        }),
+        output: createSprite(
+          activated && !busyLickingDoughnutsOffFace ?
+            {
+              animationId: walking ? "headlessBase.flash" : "headlessBase.scan",
+              filter,
+            }
+          : {
+              textureId: `headlessBase`,
+              filter,
+            },
+        ),
         renderProps: {
           activated,
           busyLickingDoughnutsOffFace,
