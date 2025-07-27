@@ -12,8 +12,8 @@ import { ToolbarButton } from "./ToolbarButton";
 import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
 
 export const PlayTestButton = () => {
-  const [fromStart, setFromStart] = useState(true);
-  const [playAsHeels, setPlayAsHeels] = useState(true);
+  const [fromStart, setFromStart] = useState(false);
+  const [playAsHeels, setPlayAsHeels] = useState(false);
 
   return (
     <MenuButton
