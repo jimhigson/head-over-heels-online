@@ -4,13 +4,15 @@ import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { filter, first, objectKeys } from "iter-tools";
 import type { EditorRoomId } from "../../editorTypes";
+import { changeRoomInPlace } from "./changeRoomReducers";
 
 export const addOrRemoveRoomReducers = {
   addRoom(state) {
     const currentRoom =
       state.campaignInProgress.rooms[state.currentlyEditingRoomId];
     const newRoom = addNewRoomInPlace(state, currentRoom.planet);
-    state.currentlyEditingRoomId = newRoom.id;
+
+    changeRoomInPlace(state, newRoom.id);
   },
   removeRoom(state) {
     const currentRoom =

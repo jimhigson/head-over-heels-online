@@ -42,6 +42,9 @@ import { PlayTestButton } from "./PlayTestButton";
 import { LoggedInStatus } from "./LoggedInStatus";
 import { AddAndDeleteRoomButtons } from "./AddAndRemoveRoomButtons";
 import { NudgeButtons } from "./NudgeButtons";
+import { BackAndForwardRoomButtons } from "./BackAndForwardRoomButtons";
+
+const HorizontalGap = () => <div className="w-[calc(var(--block)-1px)]" />;
 
 export const LevelEditorToolbar = () => {
   const campaign = useAppSelectorWithLevelEditorSlice(
@@ -60,11 +63,14 @@ export const LevelEditorToolbar = () => {
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Campaign</BitmapText>
         <SaveAndLoadButtons />
+        <HorizontalGap />
         <MapButton />
         <PlayTestButton />
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full pt-2">Room</BitmapText>
+        <BitmapText className="w-full pt-1">Room</BitmapText>
+        <BackAndForwardRoomButtons />
+        <HorizontalGap />
         <AddAndDeleteRoomButtons />
         <RoomSelect
           value={currentlyEditingRoomId}
@@ -77,17 +83,18 @@ export const LevelEditorToolbar = () => {
         <div className="h-1 w-full" />
         <RoomScenerySelect />
         <RoomColourSelect />
-        <div className="h-1 w-full" />
+        <div className="h-half w-full" />
         <RoomAboveSelectOrCreate />
         <RoomBelowSelectOrCreate />
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full pt-2">Edit</BitmapText>
+        <BitmapText className="w-full pt-1">Edit</BitmapText>
         <div className={buttonGroupClassname}>
           <PointerToolButton />
           <EyeDropperButton />
         </div>
         <UndoRedoButtons />
+        <HorizontalGap />
         <DeleteItemToolButton />
         <ClearRoomButton />
         <NudgeButtons />
@@ -98,7 +105,7 @@ export const LevelEditorToolbar = () => {
         </div>
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full pt-2">Blocks</BitmapText>
+        <BitmapText className="w-full pt-1">Blocks</BitmapText>
         <ItemToolButton
           itemTool={{
             type: "block",

@@ -16,6 +16,10 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   // after the first edit
   savedCampaign: initialCampaign,
   currentlyEditingRoomId: initialRoomId,
+  editingRoomIdHistory: {
+    back: [],
+    forward: [],
+  },
   previewedEdits: {},
   tool: { type: "pointer" },
   hoveredItem: undefined,
