@@ -9,11 +9,18 @@ import type { EditorRoomId, EditorRoomItemId } from "../../../editorTypes";
 import type { Tool } from "../../../Tool";
 import { rotatingSceneryTiles } from "../../createStarterRoom";
 
-export const doorItemTool: Tool = {
+export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",
   item: {
     type: "door",
-    config: { toRoom: "(placeholder)" as EditorRoomId, direction: "towards" },
+    config: { toRoom: "+" as EditorRoomId, direction: "towards" },
+  },
+};
+export const doorItemToolWithoutAutoAddRooms: Tool = {
+  type: "item",
+  item: {
+    type: "door",
+    config: { toRoom: "nowhere" as EditorRoomId, direction: "towards" },
   },
 };
 

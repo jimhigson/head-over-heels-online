@@ -7,16 +7,18 @@ import { buttonSpriteRevertColourClasses } from "./buttonSizeClassNames";
 export const LabelledToolbarIcon = ({
   iconClasses,
   text,
+  className = "",
 }: {
   iconClasses: string;
   text: string;
+  className?: string;
 }) => {
   return (
-    <div className="relative w-full h-full">
+    <div className={`relative w-full h-full ${className}`}>
       <span
         className={`sprite absolute top-0 left-0 ${iconClasses} ${buttonSpriteRevertColourClasses}`}
       />
-      <BitmapText className="bg-metallicBlueHalfbrite absolute top-0 right-0 pl-oneScaledPix block">
+      <BitmapText className="bg-moss text-pureBlack absolute top-0 left-0 pl-oneScaledPix py-oneScaledPix block leading-none">
         {text}
       </BitmapText>
     </div>

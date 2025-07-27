@@ -34,7 +34,7 @@ export const ToolbarButton = ({
       selected={isCurrentTool}
       className={`
         ${small ? buttonSmallSizeClassNames : buttonSizeClassNames} 
-        active:pt-oneScaledPix  gap-0 inline-flex overflow-hidden 
+        active:pt-oneScaledPix gap-0 inline-flex overflow-hidden 
         
         ${className ?? ""}`}
       onClick={onClick}

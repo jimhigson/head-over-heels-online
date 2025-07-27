@@ -71,7 +71,7 @@ export function* roomGridPositions<RoomId extends string>(
     const error = e as Error;
 
     throw new Error(
-      `\n  error in recursion ${options.roomId}/${options.subRoomId ?? "*"} ---found--v \n ${error.message}`,
+      `\n  error in recursion ${options.roomId}/${options.subRoomId ?? "*"}`,
       {
         cause: error,
       },
@@ -90,6 +90,12 @@ function* _roomGridPositions<RoomId extends string>({
   vectorFromPrevious,
   previousRoomGridPosition = originXyz,
 }: RoomGridPositionsOptions<RoomId>): Generator<RoomGridPositionSpec<RoomId>> {
+  if (roomId === "nowhere") {
+    // nowhere is a special value in the editor that means the door hasn't had
+    // anywhere for it to go wired up yet
+    return;
+  }
+
   if (visited[roomId]?.[subRoomId]) {
     // already visited this room
     return;
