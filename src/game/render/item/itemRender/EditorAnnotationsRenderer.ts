@@ -27,6 +27,8 @@ import type {
   EditorRoomId,
 } from "../../../../editor/editorTypes";
 import { iterateRoomItems } from "../../../../model/RoomState";
+import type { JsonMovement } from "../../../../model/json/utilityJsonConfigTypes";
+import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 
 const selectionColour = spritesheetPalette.pastelBlue;
 const pointerHoverColour = spritesheetPalette.highlightBeige;
@@ -55,6 +57,50 @@ const directionArrows = {
   away: `↗`,
   right: `↘`,
   towards: `↙`,
+};
+
+const movementPatternAnnotationText = (
+  movement: JsonMovement,
+  startDirection: DirectionXy4,
+) => {
+  switch (movement) {
+    case "back-forth": {
+      switch (startDirection) {
+        case "left":
+          return "↖↘";
+        case "right":
+          return "↘↖";
+        case "away":
+          return "↗↙";
+        case "towards":
+          return "↙↗";
+        default:
+          startDirection satisfies never;
+          throw new Error(`Unexpected startDirection`);
+      }
+    }
+
+    case "clockwise": {
+      switch (startDirection) {
+        case "left":
+          return "↖↗↘↙";
+        case "right":
+          return "↘↙↖↘";
+        case "away":
+          return "↗↘↙↖";
+        case "towards":
+          return "↙↖↗↘";
+        default:
+          startDirection satisfies never;
+          throw new Error(`Unexpected startDirection`);
+      }
+    }
+
+    case "towards-analogue":
+      return "➡.⬅";
+  }
+  // something we didn't write one for yet
+  return "";
 };
 
 /** adds annotations on top of the normal item renderer, for items
@@ -177,6 +223,38 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           const arrow = directionArrows[direction];
 
           this.#addTextAnnotation({ annotationText: arrow, yAdj: -12 });
+        }
+        break;
+
+      case "movingPlatform":
+        {
+          const {
+            config: { movement, startDirection },
+          } = item;
+
+          this.#addTextAnnotation({
+            annotationText: movementPatternAnnotationText(
+              movement,
+              startDirection,
+            ),
+            yAdj: -12,
+          });
+        }
+        break;
+
+      case "monster":
+        {
+          const { config } = item;
+
+          if (config.which === "turtle" || config.which === "skiHead") {
+            this.#addTextAnnotation({
+              annotationText: movementPatternAnnotationText(
+                config.movement,
+                config.startDirection,
+              ),
+              yAdj: -12,
+            });
+          }
         }
         break;
     }

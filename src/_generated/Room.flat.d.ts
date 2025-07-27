@@ -316,7 +316,7 @@ export type RoomJsonSchema = {
           z: number;
         };
         config: {
-          movement: "clockwise" | "back-forth";
+          movement: "clockwise" | "back-forth" | "towards-analogue";
           activated: "off" | "on" | "on-stand";
           startDirection: "towards" | "right" | "away" | "left";
         };
@@ -577,7 +577,7 @@ export type RoomJsonSchema = {
             | {
                 type: "movingPlatform";
                 config: {
-                  movement: "clockwise" | "back-forth";
+                  movement: "clockwise" | "back-forth" | "towards-analogue";
                   activated: "off" | "on" | "on-stand";
                   startDirection: "towards" | "right" | "away" | "left";
                 };
