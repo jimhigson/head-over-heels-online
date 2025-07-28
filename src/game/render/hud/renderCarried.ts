@@ -1,10 +1,10 @@
 import type { Container, IRenderLayer } from "pixi.js";
 import { emptySet } from "../../../utils/empty";
-import { neverTime } from "../../../utils/veryClose";
 import type { PortableItem } from "../../physics/itemPredicates";
 import { appearanceForItem } from "../itemAppearances/appearanceForItem";
 import type { HudRendererTickContext } from "./hudRendererContexts";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
+import { neverTime } from "../../../utils/neverTime";
 
 type RenderContextSubset<RoomId extends string> = {
   general: GeneralRenderContext<RoomId>;

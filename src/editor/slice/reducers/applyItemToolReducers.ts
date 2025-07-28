@@ -82,14 +82,13 @@ export const applyItemToolReducers = {
         pointedAtItemJson.config.style === "toaster" &&
         // putting down one block above the toaster:
         pointedAtItemJson.position.z + 1 === blockPosition.z: {
-        // special case for cybermen - if placed on a toaster, they start charging
-
         addItemInPlace(
           state,
           {
             ...tool.item,
             config: {
               ...tool.item.config,
+              // special case for cybermen - if placed on a toaster, they start charging:
               activated: "off",
             },
           },

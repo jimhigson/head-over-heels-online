@@ -1,4 +1,5 @@
 import type { InputDirectionMode } from "../../store/slices/gameMenusSlice";
+import { nonZero } from "../../utils/epsilon";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   dotProductXyz,
@@ -41,7 +42,10 @@ export const isometricInputVector = (input: Xyz): Xyz => {
     z: 0,
   };
 
-  return scaleXyz(newDirection, inputMagnitude / lengthXyz(newDirection));
+  return scaleXyz(
+    newDirection,
+    inputMagnitude / nonZero(lengthXyz(newDirection)),
+  );
 };
 
 export const strictSnapXy4 = (input: Xyz) => {

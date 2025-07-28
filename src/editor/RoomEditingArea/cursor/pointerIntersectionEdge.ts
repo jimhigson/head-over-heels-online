@@ -1,4 +1,5 @@
 import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
+import { nonZero } from "../../../utils/epsilon";
 import type { Plane } from "../../../utils/vectors/vectors";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
@@ -30,7 +31,7 @@ function distancePointToLine2D(
   const cross = AP.x * d.y - AP.y * d.x;
 
   // Magnitude of v using hypot:
-  return Math.abs(cross) / Math.hypot(d.x, d.y);
+  return Math.abs(cross) / nonZero(Math.hypot(d.x, d.y));
 }
 
 export const betweenRightAndTowards: Plane = {

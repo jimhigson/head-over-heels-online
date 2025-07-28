@@ -1,6 +1,6 @@
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
-import { veryClose } from "../../../utils/veryClose";
+import { veryClose } from "../../../utils/epsilon";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { projectAabbCorners } from "./projectAabbCorners";
 

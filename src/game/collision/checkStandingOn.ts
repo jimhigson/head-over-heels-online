@@ -5,7 +5,7 @@ import { collisionsPriorityComparator } from "../physics/collisionsOrder";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { iterate } from "../../utils/iterate";
 import { addXyz } from "../../utils/vectors/vectors";
-import { epsilon } from "../../utils/veryClose";
+import { epsilon } from "../../utils/epsilon";
 import { collision1to1 } from "./aabbCollision";
 
 export const spatiallyCheckStandingOn = <

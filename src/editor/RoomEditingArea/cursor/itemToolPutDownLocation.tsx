@@ -14,7 +14,7 @@ import {
   doorOverallWidthPx,
   doorPostHeightPx,
 } from "../../../game/gameState/loadRoom/loadDoor";
-import { epsilon } from "../../../utils/veryClose";
+import { epsilon } from "../../../utils/epsilon";
 import { completeTimesXy, wallTimes } from "../../../model/times";
 
 export const itemToolPutDownLocation = (

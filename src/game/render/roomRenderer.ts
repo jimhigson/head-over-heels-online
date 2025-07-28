@@ -170,7 +170,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         itemRenderer.tick(itemTickContext);
       } catch (e) {
         throw new Error(
-          `RoomRenderer caught error while ticking Renderer for item "${item.id}" - item in play object is:
+          `RoomRenderer for room ${this.renderContext.room.id} caught error while ticking Renderer for item "${item.id}" - item in play object is:
            ${JSON.stringify(item, null, 2)}`,
           { cause: e },
         );
