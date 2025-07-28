@@ -238,7 +238,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         inHidden,
         relativePoint: blockXyzToFineXyz({
           ...originXyz,
-          [throughDoorAxis]: inHidden ? 0.25 : -0.25,
+          // the relative point gets put halfway through the doorframe
+          [throughDoorAxis]: inHidden ? doorTunnelLengthBlocks + 0.25 : -0.25,
         }),
         direction: unitVectors[direction],
       },
@@ -247,13 +248,12 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         ...defaultBaseState(),
         position: addXyz(
           blockXyzToFineXyz(
-            addXyz(
-              position,
-
-              {
-                [throughDoorAxis]: inHidden ? -0.5 : 0.5,
-              },
-            ),
+            addXyz(position, {
+              // set the portal back to the 'back' side of the door (looking from
+              // inside the room) so the character has to walk all the way to the
+              // other side of the frame to touch it
+              [throughDoorAxis]: inHidden ? -0.5 - doorTunnelLengthBlocks : 0.5,
+            }),
           ),
           { [alongWallAxis]: nearPostWidthInAxis },
         ),
@@ -264,7 +264,11 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           doorOverallWidthBlocks * blockSizePx.w -
           nearPostWidthInAxis -
           farPostWidthInAxis,
-        [throughDoorAxis]: 0,
+        // portals get thickness for the same reason walls do -
+        // it makes it harder to push items such as enemies through
+        // them during collisions with a lot of overlap - ie, if items
+        // spawn on top of each other
+        [throughDoorAxis]: doorTunnelLengthPx,
         z: doorPortalHeight,
       } as Xyz,
     },
