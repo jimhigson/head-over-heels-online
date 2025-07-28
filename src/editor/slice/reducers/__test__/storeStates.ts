@@ -38,7 +38,7 @@ export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
         planet: "blacktooth",
         color: { hue: "cyan", shade: "basic" },
         items: {},
-        size: { x: 5, y: 5 },
+        //size: { x: 5, y: 5 },
       },
     },
   },

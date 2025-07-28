@@ -58,5 +58,4 @@ export const room = inferRoomJson({
     },
   },
   planet: "market",
-  size: { x: 2, y: 8 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "market">;

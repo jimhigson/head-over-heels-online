@@ -1,11 +1,6 @@
 [
   {
     "op": "add",
-    "path": "/size/z",
-    "value": 12
-  },
-  {
-    "op": "add",
     "path": "/items/extra1",
     "value": {
       "config": {
@@ -53,5 +48,10 @@
     "op": "replace",
     "path": "/color/shade",
     "value": "dimmed"
+  },
+  {
+    "op": "add",
+    "path": "/height",
+    "value": 11
   }
 ]

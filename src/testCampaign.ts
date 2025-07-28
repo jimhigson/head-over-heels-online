@@ -62,7 +62,6 @@ const colourRooms = () => {
           yield [
             `${p}-${hue}-${shade}`,
             addPerimeterWallsToRoom({
-              size: roomSize,
               color: { hue, shade },
               planet: p,
               items: keyItems([
@@ -146,10 +145,8 @@ const colourRooms = () => {
   >;
 };
 
-const renderEverythingSize = { x: 18, y: 18 };
 const rooms = {
   lift: addPerimeterWallsToRoom({
-    size: { x: 4, y: 4 },
     planet: "safari",
     color: { hue: "yellow", shade: "dimmed" },
     id: "lift",
@@ -199,7 +196,6 @@ const rooms = {
   }) satisfies RoomJson<TestCampaignRoomId, string, "safari">,
 
   laboratory: addPerimeterWallsToRoom({
-    size: { x: 18, y: 14 },
     planet: "egyptus",
     color: { hue: "yellow", shade: "dimmed" },
     id: "laboratory",
@@ -919,7 +915,6 @@ const rooms = {
   }) satisfies RoomJson<TestCampaignRoomId, string, "egyptus">,
 
   renderEverything: addPerimeterWallsToRoom({
-    size: renderEverythingSize,
     id: "renderEverything",
     items: keyItems([
       {
@@ -927,7 +922,7 @@ const rooms = {
         config: {
           floorType: "standable",
           scenery: "bookworld",
-          times: renderEverythingSize,
+          times: { x: 18, y: 18 },
         },
         position: { x: 0, y: 0, z: 0 },
       },

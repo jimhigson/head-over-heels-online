@@ -1,9 +1,7 @@
 import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXy } from "./projections";
-import { floorRenderExtent } from "./renderExtent";
-import { moveSpeedPixPerMs } from "../physics/mechanicsConstants";
-import type { AnyRoomJson } from "../../model/RoomJson";
-import { wallTileSize } from "../../sprites/textureSizes";
+import { floorsRenderExtent } from "./floorsExtent";
+import { moveSpeedPixPerMs, wallHeightPx } from "../physics/mechanicsConstants";
 import type { Xy } from "../../utils/vectors/vectors";
 import { addXyz, subXy, lengthXy } from "../../utils/vectors/vectors";
 import { detectDeviceType } from "../../utils/detectDeviceType";
@@ -20,14 +18,11 @@ import type {
 } from "./RoomRendererType";
 import type { SetRequired } from "type-fest";
 import { roundToNearest } from "../../utils/maths/maths";
+import type { RoomState } from "../../model/RoomState";
 
 const scrollLimit = 0.33;
 // how much to move the room up (at home position) to bring off the hud
 const worldBottomMargin = detectDeviceType() === "mobile" ? -4 : 16;
-
-// the height without the width - ie, the height from wall bottom on a x-coord of the sprite
-// to the wall top on the same x-coord column
-const wallHeight = wallTileSize.h - wallTileSize.w / 2;
 
 const scrollSpeedPxPerMs = moveSpeedPixPerMs.heels;
 
@@ -63,12 +58,11 @@ export class RoomScrollRenderer<
       },
     } = renderContext;
 
-    const { edgeLeftX, edgeRightX, frontSide, topEdgeY } = floorRenderExtent(
-      room.roomJson,
-    );
+    const { edgeLeftX, edgeRightX, bottomEdgeY, topEdgeY } =
+      floorsRenderExtent(room);
     // take into account the that floor isn't always rendered at 0,0:
-    this.#edgeLeftXTranslated = edgeLeftX + frontSide.x;
-    this.#edgeRightXTranslated = edgeRightX + frontSide.x;
+    this.#edgeLeftXTranslated = edgeLeftX;
+    this.#edgeRightXTranslated = edgeRightX;
 
     const renderingMedianX = (edgeRightX + edgeLeftX) / 2;
 
@@ -77,7 +71,7 @@ export class RoomScrollRenderer<
       y:
         effectiveScreenSize.y -
         worldBottomMargin -
-        frontSide.y -
+        bottomEdgeY -
         /* moving up by half the x offset preserves movement in 2:1 ratio of isometric projection
        - while also avoiding the hud elements */
         Math.abs(renderingMedianX / 2),
@@ -92,7 +86,7 @@ export class RoomScrollRenderer<
       effectiveScreenSize.x;
 
     // scrollable up in y if the top of the room is off the top of the screen when in the home position:
-    this.#scrollableUp = this.#roomHomePosition.y + topEdgeY - wallHeight < 0;
+    this.#scrollableUp = this.#roomHomePosition.y + topEdgeY - wallHeightPx < 0;
 
     const childRendererGraphics = this.childRenderer.output.graphics;
     if (childRendererGraphics === undefined) {
@@ -113,9 +107,7 @@ export class RoomScrollRenderer<
     if (showBoundingBoxes !== "none") {
       // these aren't really bounding boxes, but it is useful to be abl to turn them on and I don't want to add
       // any more switches:
-      output.graphics.addChild(
-        showRoomScrollBounds(renderContext.room.roomJson),
-      );
+      output.graphics.addChild(showRoomScrollBounds(renderContext.room));
     }
     this.output = output;
   }
@@ -259,26 +251,26 @@ export class RoomScrollRenderer<
 /**
  * for debugging, show scroll info overlaid on a room
  */
-export const showRoomScrollBounds = (roomJson: AnyRoomJson) => {
-  const { edgeLeftX, edgeRightX, frontSide, topEdgeY } =
-    floorRenderExtent(roomJson);
+export const showRoomScrollBounds = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  roomState: RoomState<RoomId, RoomItemId>,
+) => {
+  const { edgeLeftX, edgeRightX, bottomEdgeY, topEdgeY } =
+    floorsRenderExtent(roomState);
 
   //const wallHeight = 0;
 
   const graphics = new Graphics()
     .rect(
-      edgeLeftX + frontSide.x,
-      topEdgeY - wallHeight,
+      edgeLeftX,
+      topEdgeY - wallHeightPx,
       edgeRightX - edgeLeftX,
-      frontSide.y - topEdgeY + wallHeight,
+      bottomEdgeY - topEdgeY + wallHeightPx,
     )
     .stroke("red")
-    .rect(
-      edgeLeftX + frontSide.x,
-      topEdgeY,
-      edgeRightX - edgeLeftX,
-      frontSide.y - topEdgeY,
-    )
+    .rect(edgeLeftX, topEdgeY, edgeRightX - edgeLeftX, bottomEdgeY - topEdgeY)
     .stroke("blue");
 
   return graphics;

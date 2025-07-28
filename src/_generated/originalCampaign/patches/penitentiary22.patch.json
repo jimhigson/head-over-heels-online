@@ -1,11 +1,6 @@
 [
   {
     "op": "add",
-    "path": "/size/z",
-    "value": 13
-  },
-  {
-    "op": "add",
     "path": "/items/extra1",
     "value": {
       "config": {
@@ -93,5 +88,10 @@
       },
       "type": "block"
     }
+  },
+  {
+    "op": "add",
+    "path": "/height",
+    "value": 12
   }
 ]

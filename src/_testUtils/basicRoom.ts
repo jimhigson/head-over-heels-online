@@ -33,7 +33,7 @@ export const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
       position: { x: 0, y: 0, z: 0 },
     },
   },
-  size: basicRoomSize,
+  //size: basicRoomSize,
 });
 const basicEmptyRoomWithItems = (
   id: TestRoomId,
@@ -75,7 +75,6 @@ export const basicGameState = ({
   secondRoomProps = {},
   firstRoomDeadlyFloor = false,
   secondRoomDeadlyFloor = false,
-  //inputState,
 }: BasicGameStateOptions): GameStateWithMockInput => {
   const campaign = {
     name: "basicGameStateTestCampaign",
@@ -118,6 +117,4 @@ export const basicGameState = ({
   }) as GameStateWithMockInput;
 
   return gameState;
-
-  //return gameStateWithInput(gameState, inputState);
 };

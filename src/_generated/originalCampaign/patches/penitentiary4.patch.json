@@ -1,10 +1,5 @@
 [
   {
-    "op": "add",
-    "path": "/size/z",
-    "value": 12
-  },
-  {
     "op": "replace",
     "path": "/items/block@5,5,2/position/z",
     "value": 0
@@ -63,5 +58,10 @@
     "op": "replace",
     "path": "/color/hue",
     "value": "green"
+  },
+  {
+    "op": "add",
+    "path": "/height",
+    "value": 11
   }
 ]

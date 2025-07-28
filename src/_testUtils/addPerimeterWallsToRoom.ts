@@ -43,11 +43,20 @@ export const addPerimeterWallsToRoom = <
     );
   };
 
+  // going to assume there is only one floor in the room:
+  const floor = iterateRoomJsonItems(roomJson).find((i) => i.type === "floor");
+  if (floor === undefined) {
+    throw new Error("No floor found in room to add perimeter walls to");
+  }
+  const floorSize = floor.config.times;
+
   // side towards/away
-  for (let x = 0; x < roomJson.size.x; x++) {
-    for (const y of [0, roomJson.size.y]) {
+  for (let x = 0; x < floorSize.x; x++) {
+    for (const y of [0, floorSize.y]) {
       const direction = y === 0 ? "towards" : "away";
 
+      // adds lots of single-block walls (but multi-block runs of fewer walls)
+      // - to be consolidated below
       if (!isDoorAt({ x, y }, direction)) {
         wallBlocks.push({
           type: "wall",
@@ -61,8 +70,8 @@ export const addPerimeterWallsToRoom = <
     }
   }
   // side left/right
-  for (let y = 0; y < roomJson.size.y; y++) {
-    for (const x of [0, roomJson.size.x]) {
+  for (let y = 0; y < floorSize.y; y++) {
+    for (const x of [0, floorSize.x]) {
       const direction = x === 0 ? "right" : "left";
 
       if (!isDoorAt({ x, y }, direction)) {

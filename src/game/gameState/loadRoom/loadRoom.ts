@@ -70,11 +70,15 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   /** if true, this is a new game - ie, load head and heels if they are in the room */
   isNewGame?: boolean;
 }): RoomState<RoomId, RoomItemId> => {
+  const loadedRoomItems = itemsInItemObjectMap(
+    loadItems(roomJson, roomPickupsCollected, scrollsRead, isNewGame),
+  );
+
   const items: RoomStateItems<RoomId, RoomItemId> = {
-    ...itemsInItemObjectMap(loadPortalsAboveAndBelow(roomJson)),
     ...itemsInItemObjectMap(
-      loadItems(roomJson, roomPickupsCollected, scrollsRead, isNewGame),
+      loadPortalsAboveAndBelow(roomJson, loadedRoomItems),
     ),
+    ...loadedRoomItems,
   };
 
   // the physics will go nuts if things are overlapping, so check and reject

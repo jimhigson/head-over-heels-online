@@ -38,15 +38,13 @@ export type RoomJson<
   ScN extends SceneryName = SceneryName,
 > = {
   id: RoomId;
-  size: {
-    /* width in game blocks. this is the integer unit of room size and different from the width in pixels */
-    x: number;
-    /* depth in game blocks. this is the integer unit of room size and different from the width in pixels */
-    y: number;
-
-    // custom room height in blocks. If not set, the default room height is used. only a few rooms need this.
-    z?: number;
-  };
+  /**
+   * custom room height that can be set per-room in blocks.
+   * If not set, the default room height is used. Only a few of the original game rooms need this
+   * to make the transition to the next room above work better. Can be used to fine-tune the
+   * point in a jump where the room above loads.
+   */
+  height?: number;
   /** TODO: rename to scenery */
   planet: ScN;
   roomAbove?: RoomId;

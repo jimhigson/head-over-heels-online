@@ -14,6 +14,7 @@ import type { LevelEditorState } from "../levelEditorSlice";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 import { addItemInPlace, nextItemId } from "./addItemInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 
 const getDestinationRoom = ({
   state,
@@ -52,6 +53,39 @@ const getDestinationRoom = ({
       // auto add doors is turned off, we can make a door to nowhere
     : undefined;
 };
+
+const roomFloorMinY = (roomJson: EditorRoomJson): number =>
+  iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
+    (min, [, item]) => {
+      const itemTop = item.position.y;
+      return Math.min(min, itemTop);
+    },
+    Number.POSITIVE_INFINITY,
+  );
+const roomFloorMaxY = (roomJson: EditorRoomJson): number =>
+  iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
+    (max, [, item]) => {
+      const itemBottom = item.position.y + item.config.times.y;
+      return Math.max(max, itemBottom);
+    },
+    Number.NEGATIVE_INFINITY,
+  );
+const roomFloorMinX = (roomJson: EditorRoomJson): number =>
+  iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
+    (min, [, item]) => {
+      const itemTop = item.position.x;
+      return Math.min(min, itemTop);
+    },
+    Number.POSITIVE_INFINITY,
+  );
+const roomFloorMaxX = (roomJson: EditorRoomJson): number =>
+  iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
+    (max, [, item]) => {
+      const itemBottom = item.position.x + item.config.times.x;
+      return Math.max(max, itemBottom);
+    },
+    Number.NEGATIVE_INFINITY,
+  );
 
 export const addDoorInPlace = (
   state: LevelEditorState,
@@ -106,13 +140,13 @@ export const addDoorInPlace = (
 
     const returnDoorPosition: Xyz = {
       x:
-        doorDirection === "left" ? 0
-        : doorDirection === "right" ? toRoomJson.size.x
+        doorDirection === "left" ? roomFloorMinX(toRoomJson)
+        : doorDirection === "right" ? roomFloorMaxX(toRoomJson)
           // line up to match the door we just added (this assumes the room going to is big enough)
         : blockPosition.x,
       y:
-        doorDirection === "away" ? 0
-        : doorDirection === "towards" ? toRoomJson.size.x
+        doorDirection === "away" ? roomFloorMinY(toRoomJson)
+        : doorDirection === "towards" ? roomFloorMaxY(toRoomJson)
           // line up to match the door we just added (this assumes the room going to is big enough)
         : blockPosition.y,
       z: blockPosition.z,

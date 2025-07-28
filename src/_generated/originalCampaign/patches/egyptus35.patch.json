@@ -1,10 +1,5 @@
 [
   {
-    "op": "add",
-    "path": "/size/z",
-    "value": 13
-  },
-  {
     "op": "replace",
     "path": "/items/wall@2,0,0/config/tiles/5",
     "value": "hieroglyphics"
@@ -55,5 +50,10 @@
     "op": "replace",
     "path": "/color/hue",
     "value": "yellow"
+  },
+  {
+    "op": "add",
+    "path": "/height",
+    "value": 12
   }
 ]

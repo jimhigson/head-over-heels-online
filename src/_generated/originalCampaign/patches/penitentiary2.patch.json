@@ -1,11 +1,6 @@
 [
   {
     "op": "replace",
-    "path": "/size/y",
-    "value": 10
-  },
-  {
-    "op": "replace",
     "path": "/items/wall@8,5,0/config/tiles/2",
     "value": "skeleton"
   },

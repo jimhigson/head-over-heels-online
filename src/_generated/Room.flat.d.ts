@@ -6,11 +6,13 @@ type RoomItemId = string;
 
 export type RoomJsonSchema = {
   id: string;
-  size: {
-    x: number;
-    y: number;
-    z?: number;
-  };
+  /**
+   * custom room height that can be set per-room in blocks.
+   * If not set, the default room height is used. Only a few of the original game rooms need this
+   * to make the transition to the next room above work better. Can be used to fine-tune the
+   * point in a jump where the room above loads.
+   */
+  height?: number;
   /**
    * TODO: rename to scenery
    */

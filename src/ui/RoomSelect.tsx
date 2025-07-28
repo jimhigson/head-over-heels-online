@@ -35,9 +35,9 @@ export function RoomSelect<RoomId extends string>({
       placeholder="search"
       disableCommandInput={false}
       triggerButtonLabel={value ?? "none"}
-      OptionCommandItem={({ value, onSelect }) => {
+      OptionCommandItem={({ value }) => {
         return (
-          <CommandItem value={value} onSelect={onSelect} className="px-1">
+          <CommandItem value={value} className="px-1">
             {headRoomId === value && (
               <span className="sprite mr-1 my-1 texture-head_walking_towards_2" />
             )}

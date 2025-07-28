@@ -1,12 +1,12 @@
 [
   {
-    "op": "add",
-    "path": "/size/z",
-    "value": 13
-  },
-  {
     "op": "replace",
     "path": "/color/hue",
     "value": "yellow"
+  },
+  {
+    "op": "add",
+    "path": "/height",
+    "value": 12
   }
 ]

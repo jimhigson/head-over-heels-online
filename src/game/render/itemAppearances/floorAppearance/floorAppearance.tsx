@@ -31,8 +31,6 @@ import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
 import { NullFilter } from "../../filters/NullFilter";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
 
-export type SidesWithDoors = Partial<Record<DirectionXy4, true>>;
-
 const edgeSide = ({
   colourised,
   direction,
