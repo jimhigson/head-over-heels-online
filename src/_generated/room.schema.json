@@ -866,7 +866,7 @@
                         "type": "string"
                       },
                       "movement": {
-                        "enum": ["clockwise", "back-forth"],
+                        "enum": ["clockwise", "back-forth", "towards-analogue"],
                         "type": "string"
                       },
                       "startDirection": {
@@ -1833,7 +1833,11 @@
                                     "type": "string"
                                   },
                                   "movement": {
-                                    "enum": ["clockwise", "back-forth"],
+                                    "enum": [
+                                      "clockwise",
+                                      "back-forth",
+                                      "towards-analogue"
+                                    ],
                                     "type": "string"
                                   },
                                   "startDirection": {

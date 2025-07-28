@@ -190,7 +190,7 @@ export type ItemConfigMap<
     style: PortableBlockStyle;
   };
   movingPlatform: {
-    movement: MovementsSubset<"clockwise" | "back-forth">;
+    movement: MovementsSubset<"clockwise" | "back-forth" | "towards-analogue">;
     /* if this item starts initially activated */
     activated: ActivatedWhenSubset<
       // off : needs to be turned on by a switch
