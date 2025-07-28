@@ -19,6 +19,7 @@ import type {
   RoomRendererTypeInGameOnly,
 } from "./RoomRendererType";
 import type { SetRequired } from "type-fest";
+import { roundToNearest } from "../../utils/maths/maths";
 
 const scrollLimit = 0.33;
 // how much to move the room up (at home position) to bring off the hud
@@ -122,7 +123,10 @@ export class RoomScrollRenderer<
   tick(tickContext: RoomTickContext<RoomId, RoomItemId>) {
     const {
       general: {
-        upscale: { gameEngineScreenSize: effectiveScreenSize },
+        upscale: {
+          gameEngineScreenSize: effectiveScreenSize,
+          gameEngineUpscale,
+        },
         gameState,
       },
     } = this.renderContext;
@@ -183,10 +187,27 @@ export class RoomScrollRenderer<
 
     const outputGraphics = this.output.graphics;
 
+    /**
+     * allowing the x/y of the container to be an unrounded fraction often ends up with
+     * it being n + 0.5 (where n is an integer) which causes wobbly artifacts on animated sprites
+     * if the upscale is not divisible by 2 (ie, upscale of 5, offset by half, gives offset of 2.5)
+     * - but rounding to int creates an unsmooth stepping effect when scrolling. Rounding to 1/ scale factor
+     * works - it is as smooth as the pixels, and avoids the wobbly artifacts.
+     */
+    const increment = 1 / gameEngineUpscale;
+
     const snapInstantly = !this.#everRendered;
     if (snapInstantly) {
-      outputGraphics.x = targetRoomPositionWithScrolling.x;
-      outputGraphics.y = targetRoomPositionWithScrolling.y;
+      // rounding here prevents wobbly artifacts on animated sprites when
+      // the scroll position is a fractional number
+      outputGraphics.x = roundToNearest(
+        targetRoomPositionWithScrolling.x,
+        increment,
+      );
+      outputGraphics.y = roundToNearest(
+        targetRoomPositionWithScrolling.y,
+        increment,
+      );
     } else {
       // ease towards from target position:
       const maxScrollDelta = scrollSpeedPxPerMs * deltaMS;
@@ -202,11 +223,26 @@ export class RoomScrollRenderer<
           y: targetScrollDelta.y / targetScrollDeltaLength,
         };
 
-        outputGraphics.x -= scrollDirectionUnitVector.x * maxScrollDelta;
-        outputGraphics.y -= scrollDirectionUnitVector.y * maxScrollDelta;
+        // allow fractional movements during scrolling for smoothness
+        outputGraphics.x = roundToNearest(
+          outputGraphics.x - scrollDirectionUnitVector.x * maxScrollDelta,
+          increment,
+        );
+        outputGraphics.y = roundToNearest(
+          outputGraphics.y - scrollDirectionUnitVector.y * maxScrollDelta,
+          increment,
+        );
       } else {
-        outputGraphics.x = targetRoomPositionWithScrolling.x;
-        outputGraphics.y = targetRoomPositionWithScrolling.y;
+        // rounding here prevents wobbly artifacts on animated sprites when
+        // the scroll position is a fractional number
+        outputGraphics.x = roundToNearest(
+          targetRoomPositionWithScrolling.x,
+          increment,
+        );
+        outputGraphics.y = roundToNearest(
+          targetRoomPositionWithScrolling.y,
+          increment,
+        );
       }
     }
     this.#everRendered = true;
