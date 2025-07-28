@@ -2,7 +2,7 @@ import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { useAppDispatch } from "../../store/hooks";
 import { store } from "../../store/store";
 import { unitVectors } from "../../utils/vectors/unitVectors";
-import type { Xyz } from "../../utils/vectors/vectors";
+import { elementWiseProductXyz, type Xyz } from "../../utils/vectors/vectors";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
 import { itemMoveOrResizeWouldCollide } from "../RoomEditingArea/cursor/editWouldCollide";
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
@@ -21,7 +21,7 @@ export const NudgeButtons = () => {
   );
   const roomState = useEditorRoomState();
 
-  const handleMove = (positionDelta: Xyz) => {
+  const handleMove = (unitVector: Xyz) => {
     if (roomState === null) {
       return;
     }
@@ -30,7 +30,14 @@ export const NudgeButtons = () => {
       store.getState() as RootStateWithLevelEditorSlice
     ).levelEditor;
 
-    const jsonItemIds = levelEditorStoreState.selectedJsonItemIds;
+    const { halfGridResolution, selectedJsonItemIds: jsonItemIds } =
+      levelEditorStoreState;
+
+    const positionDelta =
+      halfGridResolution ?
+        elementWiseProductXyz(unitVector, { x: 0.5, y: 0.5, z: 1 })
+      : unitVector;
+
     const collides = itemMoveOrResizeWouldCollide({
       roomState,
       jsonItemIds,
