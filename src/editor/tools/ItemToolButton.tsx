@@ -1,16 +1,12 @@
 import type { JsonItemType } from "../../model/json/JsonItem";
 import { store } from "../../store/store";
-import {
-  selectTool,
-  setTool,
-  useAppSelectorWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
+import { setTool } from "../slice/levelEditorSlice";
 import type { ItemTool } from "../Tool";
-import nanoEqual from "nano-equal";
 
 import type { PropsWithChildren } from "react";
 import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
 import { ToolbarButton } from "./ToolbarButton";
+import { useIsCurrentItemTool } from "./useIsCurrentItemTool";
 
 type ItemToolButtonProps<T extends JsonItemType> = {
   itemTool: ItemTool<T>;
@@ -24,12 +20,8 @@ export const ItemToolButton = <T extends JsonItemType>({
   className,
   shortcutKeys,
 }: PropsWithChildren<ItemToolButtonProps<T>>) => {
-  const currentTool = useAppSelectorWithLevelEditorSlice(selectTool);
+  const isCurrentTool = useIsCurrentItemTool(itemTool);
 
-  const isCurrentTool = nanoEqual(
-    currentTool?.type === "item" && currentTool.item,
-    itemTool,
-  );
   return (
     <ToolbarButton
       isCurrentTool={isCurrentTool}

@@ -35,7 +35,7 @@ export const MenuButton = ({
 
           <PopoverTrigger asChild>
             <Button className="absolute bottom-0 right-0 bg-metallicBlueHalfbrite">
-              <BitmapText className="pl-oneScaledPix">
+              <BitmapText className="pl-oneScaledPix leading-none py-oneScaledPix">
                 {open ? "X" : "⬇"}
               </BitmapText>
             </Button>

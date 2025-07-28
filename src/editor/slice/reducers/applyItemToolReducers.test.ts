@@ -12,7 +12,8 @@ import type { AwayWallConfig } from "src/model/json/WallJsonConfig";
 import { originXyz } from "../../../utils/vectors/vectors";
 import {
   applyLevelEditorActions,
-  doorItemTool,
+  doorItemToolWithAutoAddRooms,
+  doorItemToolWithoutAutoAddRooms,
   editorStateWithOneRoomWithNoItems,
   editorStateWithOneRoomWithOneAwayWall,
   testRoomId,
@@ -162,7 +163,7 @@ describe("applying tools", () => {
 
         const next = applyLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
-          setTool(doorItemTool),
+          setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
@@ -217,7 +218,7 @@ describe("applying tools", () => {
 
         const next = applyLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
-          setTool(doorItemTool),
+          setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
@@ -268,7 +269,7 @@ describe("applying tools", () => {
 
         const next = applyLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
-          setTool(doorItemTool),
+          setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
@@ -329,7 +330,7 @@ describe("applying tools", () => {
 
         const next = applyLevelEditorActions(
           editorStateWithOneRoomWithOneSmallAwayWall,
-          setTool(doorItemTool),
+          setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
@@ -353,7 +354,7 @@ describe("applying tools", () => {
         });
       });
 
-      test("creates a new room with a door for the reverse direction", () => {
+      test("creates a new room with a door for the reverse direction if auto-add is on in the tool", () => {
         const doorPosition = { x: 3, y: 5, z: 0 };
         const actionPayload: ApplyToolToRoomJsonPayload = {
           blockPosition: doorPosition,
@@ -366,7 +367,7 @@ describe("applying tools", () => {
 
         const next = applyLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
-          setTool(doorItemTool),
+          setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
         );
 
@@ -405,6 +406,29 @@ describe("applying tools", () => {
             y: 8,
           },
         });
+      });
+
+      test("does not creates a new room with a door for the reverse direction if auto-add is off in the tool", () => {
+        const doorPosition = { x: 3, y: 5, z: 0 };
+        const actionPayload: ApplyToolToRoomJsonPayload = {
+          blockPosition: doorPosition,
+          pointedAtItemJson: editorStateWithOneRoomWithOneAwayWall
+            .campaignInProgress.rooms[testRoomId].items[
+            wallItemId
+          ] as EditorJsonItemUnion,
+          preview: false,
+        };
+
+        const next = applyLevelEditorActions(
+          editorStateWithOneRoomWithOneAwayWall,
+          setTool(doorItemToolWithoutAutoAddRooms),
+          applyItemTool(actionPayload),
+        );
+
+        // should have the same single room:
+        expect(Object.keys(next.campaignInProgress.rooms)).toMatchObject([
+          "testRoomId",
+        ]);
       });
     });
   });
