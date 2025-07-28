@@ -27,6 +27,7 @@ import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
+import { changeRoomReducers } from "./reducers/changeRoomReducers";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
@@ -44,6 +45,10 @@ export type LevelEditorState = {
    * it while the editor was running) */
   savedCampaign: EditorCampaign | undefined;
   currentlyEditingRoomId: EditorRoomId;
+  editingRoomIdHistory: {
+    back: EditorRoomId[];
+    forward: EditorRoomId[];
+  };
   /**
    * room edits that are for the current cursor's position, which are not yet
    * committed to the room.
@@ -89,28 +94,6 @@ export const levelEditorSlice = createSlice({
       state.tool = tool;
     },
 
-    changeToRoom(_state, { payload: roomId }: PayloadAction<EditorRoomId>) {
-      // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
-      // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
-      // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
-      const state = _state as LevelEditorState;
-
-      if (!state.campaignInProgress.rooms[roomId]) {
-        console.warn(`can't change to room ${roomId} - it doesn't exist`);
-        // If the room doesn't exist, we can't change to it
-        return;
-      }
-
-      state.currentlyEditingRoomId = roomId;
-
-      state.clickableAnnotationHovered = false;
-      state.hoveredItem = undefined;
-      state.selectedJsonItemIds = [];
-
-      // clear undo/redo history when changing room:
-      state.history = initialLevelEditorSliceState.history;
-    },
-
     /**
      * noop reducer to force the store to give this slice its initial value in the store, since this slice is lazy-loaded.
      * Dispatching anything would also have this effect, we just need the reducer to run so it can give the initial state
@@ -127,6 +110,7 @@ export const levelEditorSlice = createSlice({
     ...itemPreviewReducers,
     ...saveAndLoadReducers,
     ...addOrRemoveRoomReducers,
+    ...changeRoomReducers,
   },
   selectors: {
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
@@ -181,6 +165,8 @@ export const {
   setTool,
   toggleSelectedItemInRoom,
   undo,
+  roomBack,
+  roomForward,
 } = levelEditorSlice.actions;
 export const {
   selectCanRedo,
