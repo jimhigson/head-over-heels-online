@@ -1,0 +1,530 @@
+{
+  "floor@0,0,0": {
+    "type": "floor",
+    "config": {
+      "floorType": "deadly",
+      "times": {
+        "x": 8,
+        "y": 8
+      }
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "block@4,7,1": {
+    "type": "block",
+    "config": {
+      "style": "organic"
+    },
+    "position": {
+      "x": 4,
+      "y": 7,
+      "z": 1
+    }
+  },
+  "block@3,7,1": {
+    "type": "block",
+    "config": {
+      "style": "organic"
+    },
+    "position": {
+      "x": 3,
+      "y": 7,
+      "z": 1
+    }
+  },
+  "deadlyBlock@0,7,0": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 0,
+      "y": 7,
+      "z": 0
+    }
+  },
+  "block@7,4,0": {
+    "type": "block",
+    "config": {
+      "style": "organic"
+    },
+    "position": {
+      "x": 7,
+      "y": 4,
+      "z": 0
+    }
+  },
+  "deadlyBlock@4,3,0": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 4,
+      "y": 3,
+      "z": 0
+    }
+  },
+  "deadlyBlock@2,3,0": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 2,
+      "y": 3,
+      "z": 0
+    }
+  },
+  "deadlyBlock@0,1,1": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 0,
+      "y": 1,
+      "z": 1
+    }
+  },
+  "deadlyBlock@7,0,0": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 7,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "deadlyBlock@7,0,1": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 7,
+      "y": 0,
+      "z": 1
+    }
+  },
+  "deadlyBlock@6,0,1": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 6,
+      "y": 0,
+      "z": 1
+    }
+  },
+  "block@4,0,0": {
+    "type": "block",
+    "config": {
+      "style": "organic"
+    },
+    "position": {
+      "x": 4,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "block@3,0,0": {
+    "type": "block",
+    "config": {
+      "style": "organic"
+    },
+    "position": {
+      "x": 3,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "deadlyBlock@0,0,0": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "deadlyBlock@0,0,1": {
+    "type": "deadlyBlock",
+    "config": {
+      "style": "volcano"
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 1
+    }
+  },
+  "movingPlatform@7,1,0": {
+    "type": "movingPlatform",
+    "config": {
+      "movement": "clockwise",
+      "startDirection": "away",
+      "activated": "off"
+    },
+    "position": {
+      "x": 7,
+      "y": 1,
+      "z": 0
+    }
+  },
+  "door@3,8,3": {
+    "type": "door",
+    "config": {
+      "direction": "away",
+      "toRoom": "safari3"
+    },
+    "position": {
+      "x": 3,
+      "y": 8,
+      "z": 3
+    }
+  },
+  "door@3,0,1": {
+    "type": "door",
+    "config": {
+      "direction": "towards",
+      "toRoom": "safari1"
+    },
+    "position": {
+      "x": 3,
+      "y": 0,
+      "z": 1
+    }
+  },
+  "wall@7,8,0": {
+    "type": "wall",
+    "config": {
+      "direction": "away",
+      "tiles": ["wall"]
+    },
+    "position": {
+      "x": 7,
+      "y": 8,
+      "z": 0
+    }
+  },
+  "wall@6,8,0": {
+    "type": "wall",
+    "config": {
+      "direction": "away",
+      "tiles": ["window"]
+    },
+    "position": {
+      "x": 6,
+      "y": 8,
+      "z": 0
+    }
+  },
+  "wall@8,7,0": {
+    "type": "wall",
+    "config": {
+      "direction": "left",
+      "tiles": ["wall"]
+    },
+    "position": {
+      "x": 8,
+      "y": 7,
+      "z": 0
+    }
+  },
+  "wall@5,8,0": {
+    "type": "wall",
+    "config": {
+      "direction": "away",
+      "tiles": ["wall"]
+    },
+    "position": {
+      "x": 5,
+      "y": 8,
+      "z": 0
+    }
+  },
+  "wall@8,6,0": {
+    "type": "wall",
+    "config": {
+      "direction": "left",
+      "tiles": ["window"]
+    },
+    "position": {
+      "x": 8,
+      "y": 6,
+      "z": 0
+    }
+  },
+  "wall@8,5,0": {
+    "type": "wall",
+    "config": {
+      "direction": "left",
+      "tiles": ["wall"]
+    },
+    "position": {
+      "x": 8,
+      "y": 5,
+      "z": 0
+    }
+  },
+  "wall@8,4,0": {
+    "type": "wall",
+    "config": {
+      "direction": "left",
+      "tiles": ["shield"]
+    },
+    "position": {
+      "x": 8,
+      "y": 4,
+      "z": 0
+    }
+  },
+  "wall@8,3,0": {
+    "type": "wall",
+    "config": {
+      "direction": "left",
+      "tiles": ["shield"]
+    },
+    "position": {
+      "x": 8,
+      "y": 3,
+      "z": 0
+    }
+  },
+  "wall@1,8,0": {
+    "type": "wall",
+    "config": {
+      "direction": "away",
+      "tiles": ["shield"]
+    },
+    "position": {
+      "x": 1,
+      "y": 8,
+      "z": 0
+    }
+  },
+  "wall@8,2,0": {
+    "type": "wall",
+    "config": {
+      "direction": "left",
+      "tiles": ["wall"]
+    },
+    "position": {
+      "x": 8,
+      "y": 2,
+      "z": 0
+    }
+  },
+  "wall@0,8,0": {
+    "type": "wall",
+    "config": {
+      "direction": "away",
+      "tiles": ["wall"]
+    },
+    "position": {
+      "x": 0,
+      "y": 8,
+      "z": 0
+    }
+  },
+  "wall@8,1,0": {
+    "type": "wall",
+    "config": {
+      "direction": "left",
+      "tiles": ["window"]
+    },
+    "position": {
+      "x": 8,
+      "y": 1,
+      "z": 0
+    }
+  },
+  "wall@8,0,0": {
+    "type": "wall",
+    "config": {
+      "direction": "left",
+      "tiles": ["wall"]
+    },
+    "position": {
+      "x": 8,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "wall@2,8,0": {
+    "type": "wall",
+    "config": {
+      "direction": "away",
+      "tiles": ["wall"]
+    },
+    "position": {
+      "x": 2,
+      "y": 8,
+      "z": 0
+    }
+  },
+  "wall(towards)@0,0,0": {
+    "type": "wall",
+    "config": {
+      "direction": "towards"
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "wall@1,0,0": {
+    "type": "wall",
+    "config": {
+      "direction": "towards"
+    },
+    "position": {
+      "x": 1,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "wall@2,0,0": {
+    "type": "wall",
+    "config": {
+      "direction": "towards"
+    },
+    "position": {
+      "x": 2,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "wall@5,0,0": {
+    "type": "wall",
+    "config": {
+      "direction": "towards"
+    },
+    "position": {
+      "x": 5,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "wall@6,0,0": {
+    "type": "wall",
+    "config": {
+      "direction": "towards"
+    },
+    "position": {
+      "x": 6,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "wall@7,0,0": {
+    "type": "wall",
+    "config": {
+      "direction": "towards"
+    },
+    "position": {
+      "x": 7,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "wall(right)@0,0,0": {
+    "type": "wall",
+    "config": {
+      "direction": "right"
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  "wall@0,1,0": {
+    "type": "wall",
+    "config": {
+      "direction": "right"
+    },
+    "position": {
+      "x": 0,
+      "y": 1,
+      "z": 0
+    }
+  },
+  "wall@0,2,0": {
+    "type": "wall",
+    "config": {
+      "direction": "right"
+    },
+    "position": {
+      "x": 0,
+      "y": 2,
+      "z": 0
+    }
+  },
+  "wall@0,3,0": {
+    "type": "wall",
+    "config": {
+      "direction": "right"
+    },
+    "position": {
+      "x": 0,
+      "y": 3,
+      "z": 0
+    }
+  },
+  "wall@0,4,0": {
+    "type": "wall",
+    "config": {
+      "direction": "right"
+    },
+    "position": {
+      "x": 0,
+      "y": 4,
+      "z": 0
+    }
+  },
+  "wall@0,5,0": {
+    "type": "wall",
+    "config": {
+      "direction": "right"
+    },
+    "position": {
+      "x": 0,
+      "y": 5,
+      "z": 0
+    }
+  },
+  "wall@0,6,0": {
+    "type": "wall",
+    "config": {
+      "direction": "right"
+    },
+    "position": {
+      "x": 0,
+      "y": 6,
+      "z": 0
+    }
+  },
+  "wall@0,7,0": {
+    "type": "wall",
+    "config": {
+      "direction": "right"
+    },
+    "position": {
+      "x": 0,
+      "y": 7,
+      "z": 0
+    }
+  }
+}

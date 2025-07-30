@@ -1032,6 +1032,9 @@ describe("changeWallsForFloorChangeInPlace", () => {
       const state0: LevelEditorState = produce(
         editorStateWithOneRoomWithNoItems,
         (draft) => {
+          // turn consolidation off to make the tests easier to understand:
+          draft.autoCoalesce = false;
+
           const room = draft.campaignInProgress.rooms[testRoomId];
 
           // Add a 4x6 floor
@@ -2057,6 +2060,9 @@ describe("changeWallsForFloorChangeInPlace", () => {
         editorStateWithOneRoomWithNoItems,
         (draft) => {
           const room = draft.campaignInProgress.rooms[testRoomId];
+
+          // turn off auto coalesce for this test to isolate the thing we are testing for
+          draft.autoCoalesce = false;
 
           // Add an 8x8 floor at origin
           room.items[floorId] = {

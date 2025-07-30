@@ -26,6 +26,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   clickableAnnotationHovered: false,
   selectedJsonItemIds: [],
   halfGridResolution: false,
+  autoCoalesce: true,
   wallsFloorsLocked: true,
   dragInProgress: false,
   history: {
