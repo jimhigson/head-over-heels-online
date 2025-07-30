@@ -7,6 +7,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { CssVariables } from "../game/components/CssVariables";
 import { LazyJsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor.lazy";
 import { Suspense } from "react";
+import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
 
 const LevelEditor = () => {
   usePageAsAnApp();
@@ -35,7 +36,9 @@ const LevelEditor = () => {
             </Panel>
             <PanelResizeHandle className="scale-editor w-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-l-[calc(1px*var(--scale))] border-metallicBlue" />
             <Panel id="toolbar" defaultSize={20} maxSize={33} minSize={10}>
-              <LevelEditorToolbar />
+              <TooltipProvider>
+                <LevelEditorToolbar />
+              </TooltipProvider>
             </Panel>
           </PanelGroup>
         </CssVariables>

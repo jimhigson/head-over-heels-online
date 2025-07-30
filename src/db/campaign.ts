@@ -23,9 +23,15 @@ export const saveCampaignToDb = async (
   return res.data;
 };
 
-export const loadCampaignFromDb = async (name: string) => {
+export const loadCampaignFromDb = async (options: {
+  name: string;
+  createdBy?: string;
+  version?: number;
+}) => {
   const res = await supabaseDb.rpc("get_latest_campaign", {
-    p_name: name,
+    p_name: options.name,
+    p_created_by: options.createdBy,
+    p_version: options.version,
   });
 
   if (res.error) {

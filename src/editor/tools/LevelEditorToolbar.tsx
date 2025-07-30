@@ -44,6 +44,7 @@ import { AddAndDeleteRoomButtons } from "./AddAndRemoveRoomButtons";
 import { NudgeButtons } from "./NudgeButtons";
 import { BackAndForwardRoomButtons } from "./BackAndForwardRoomButtons";
 import { AutoCoalesceSwitch } from "./AutoCoalesceSwitch";
+import { ShareCampaignButton } from "./ShareCampaignButton";
 
 const HorizontalGap = () => <div className="w-[calc(var(--block)-1px)]" />;
 
@@ -64,6 +65,7 @@ export const LevelEditorToolbar = () => {
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Campaign</BitmapText>
         <SaveAndLoadButtons />
+        <ShareCampaignButton />
         <HorizontalGap />
         <MapButton />
         <PlayTestButton />
@@ -73,6 +75,8 @@ export const LevelEditorToolbar = () => {
         <BackAndForwardRoomButtons />
         <HorizontalGap />
         <AddAndDeleteRoomButtons />
+        <HorizontalGap />
+        <ClearRoomButton />
         <RoomSelect
           value={currentlyEditingRoomId}
           campaign={campaign}
@@ -97,7 +101,6 @@ export const LevelEditorToolbar = () => {
         <UndoRedoButtons />
         <HorizontalGap />
         <DeleteItemToolButton />
-        <ClearRoomButton />
         <NudgeButtons />
         <div className="h-1 w-full" />
         <div className="flex flex-row justify-between flex-wrap gap-x-2">
@@ -202,6 +205,10 @@ export const LevelEditorToolbar = () => {
               activated: "on",
             },
           }}
+          tooltipContent={`## mojo
+the emperor’s worker bots
+
+patrols randomly in a diagonal pattern`}
         >
           <span
             className={`sprite texture-dalek_1 [button:hover_&]:texture-animated-dalek" ${buttonSpriteRevertColourClasses}`}
@@ -217,6 +224,12 @@ export const LevelEditorToolbar = () => {
               startDirection: "towards",
             },
           }}
+          tooltipContent={`## guard
+hovers towards the player on the shortest axis
+
+heels can outrun, but not head
+
+place on a toaster to make a charging guard`}
         >
           <StackedToolbarIcons
             topClasses="texture-cyberman_towards [button:hover_&]:texture-cyberman_right"
@@ -234,6 +247,10 @@ export const LevelEditorToolbar = () => {
               startDirection: "towards",
             },
           }}
+          tooltipContent={`## monster
+moves *back and forth* by default
+
+or can be set to *patrol clockwise*`}
         >
           <span
             className={`sprite texture-skiHead_greenAndPink_towards [button:hover_&]:texture-skiHead_greenAndPink_right ${buttonSpriteRevertColourClasses}`}
@@ -263,6 +280,8 @@ export const LevelEditorToolbar = () => {
               startDirection: "towards",
             },
           }}
+          tooltipContent={`## turtle
+plods along in a clockwise pattern`}
         >
           <span
             className={`sprite texture-turtle_towards_1 [button:hover_&]:texture-animated-turtle_right ${buttonSpriteRevertColourClasses}`}
@@ -277,6 +296,8 @@ export const LevelEditorToolbar = () => {
               movement: "towards-tripped-on-axis-xy4",
             },
           }}
+          tooltipContent={`## homing bot
+detects a player in a straight line on an axis and rushes towards them`}
         >
           <span
             className={`sprite texture-headlessBase [button:hover_&]:texture-headlessBase_all ${buttonSpriteRevertColourClasses}`}
@@ -291,6 +312,8 @@ export const LevelEditorToolbar = () => {
               movement: "patrol-randomly-xy4-and-reverse",
             },
           }}
+          tooltipContent={`## Computer bot
+usually patrols randomly, but can be programmed to move towards the player`}
         >
           <StackedToolbarIcons topClasses="texture-computerBot_towards [button:hover_&]:texture-computerBot_right" />
         </ItemToolButton>
@@ -303,6 +326,10 @@ export const LevelEditorToolbar = () => {
               movement: "patrol-randomly-xy8",
             },
           }}
+          tooltipContent={`## Bubble bot
+patrols randomly in 8 directions
+
+fast and dangerous`}
         >
           <StackedToolbarIcons
             topClasses={twClass(
@@ -345,6 +372,10 @@ export const LevelEditorToolbar = () => {
               startDirection: "towards",
             },
           }}
+          tooltipContent={`## Elephant head
+Things have gone weird
+
+Stationary, but deadly`}
         >
           <span
             className={`sprite texture-elephant_towards [button:hover_&]:texture-elephant_right ${buttonSpriteRevertColourClasses}`}
@@ -360,6 +391,14 @@ export const LevelEditorToolbar = () => {
             },
           }}
           className="inline relative"
+          tooltipContent={`## Emperor's Guardian
+
+very dangerous
+
+moves towards the player, unless they have all four planet crowns
+
+does not *like doughnuts*
+`}
         >
           <StackedToolbarIcons
             topClasses="texture-ball"
@@ -375,6 +414,8 @@ export const LevelEditorToolbar = () => {
               movement: "towards-analogue",
             },
           }}
+          tooltipContent={`## Emperor
+The end boss, usually found guarding his Blacktooth crown`}
         >
           <span
             className={`sprite texture-bubbles_cold_2 [button:hover_&]:texture-animated-bubbles_cold ${buttonSpriteRevertColourClasses}`}
@@ -415,6 +456,9 @@ export const LevelEditorToolbar = () => {
             type: "pickup",
             config: { gives: "hooter" },
           }}
+          tooltipContent={`## hooter
+
+head's doughnut firing hooter`}
         >
           <span
             className={`sprite texture-hooter ${buttonSpriteRevertColourClasses}`}
@@ -481,18 +525,35 @@ export const LevelEditorToolbar = () => {
             type: "slidingDeadly",
             config: { style: "spikyBall", startingPhase: 1 },
           }}
+          tooltipContent={`## Spiky ball
+rolls fast if pushed
+
+deadly to touch`}
         >
           <span
             className={`sprite texture-spikyBall_1 [button:hover_&]:texture-spikyBall_2 ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
-        <ItemToolButton itemTool={{ type: "spikes", config: emptyObject }}>
+        <ItemToolButton
+          itemTool={{ type: "spikes", config: emptyObject }}
+          tooltipContent={`## spikes
+
+deadly to touch on top
+
+safe to run into the sides`}
+        >
           <span
             className={`sprite texture-spikes ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
           itemTool={{ type: "moveableDeadly", config: { style: "deadFish" } }}
+          tooltipContent={`## dead fish
+
+(deadly to touch)
+
+dead fish decompose very quickly and it rapidly
+turns so poisonous that a single lick can kill`}
         >
           <span
             className={`sprite texture-fish_1 ${buttonSpriteRevertColourClasses}`}
@@ -585,6 +646,9 @@ export const LevelEditorToolbar = () => {
             type: "slidingBlock",
             config: { style: "puck" },
           }}
+          tooltipContent={`## Sliding puck
+
+Small item that can be stood on and slides when touched`}
         >
           <span
             className={`sprite texture-puck ${buttonSpriteRevertColourClasses}`}
@@ -595,6 +659,9 @@ export const LevelEditorToolbar = () => {
             type: "slidingBlock",
             config: { style: "book" },
           }}
+          tooltipContent={`## Sliding book
+
+Why are the books slippery?`}
         >
           <span
             className={`sprite texture-book_y ${buttonSpriteRevertColourClasses}`}
@@ -671,6 +738,12 @@ export const LevelEditorToolbar = () => {
               startDirection: "towards",
             },
           }}
+          tooltipContent={`## Moving Platform
+Clockwise or back-and-forth
+
+Can be (de)activated by a switch, or touch 
+
+Why a sandwich?`}
         >
           <span
             className={`sprite texture-sandwich ${buttonSpriteRevertColourClasses}`}
@@ -714,6 +787,11 @@ export const LevelEditorToolbar = () => {
             type: "player",
             config: { which: "head" },
           }}
+          tooltipContent={`## Head
+
+Place on of these into one room
+
+This is where head will start the game`}
         >
           <span
             className={`sprite texture-head_walking_towards_2 [button:hover_&]:texture-animated-head_walking_right ${buttonSpriteRevertColourClasses}`}
@@ -724,6 +802,11 @@ export const LevelEditorToolbar = () => {
             type: "player",
             config: { which: "heels" },
           }}
+          tooltipContent={`## Heels
+
+Place on of these into one room
+
+This is where head will start the game`}
         >
           <span
             className={`sprite texture-heels_walking_towards_2 [button:hover_&]:texture-animated-heels_walking_right ${buttonSpriteRevertColourClasses}`}

@@ -9,11 +9,9 @@ import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import { useCheatsOn, useIsGameRunning } from "../../store/selectors.ts";
 import type Cheats from "../../game/components/cheats/Cheats.tsx";
-import { importOriginalCampaign } from "../../_generated/originalCampaign/campaign.import.ts";
 import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
 import { importGameMain } from "../../game/gameMain.import.ts";
 import { loadSpritesheet } from "../../sprites/spriteSheet.ts";
-import { importTestCampaign } from "../../testCampaign.import.ts";
 import { useLoading } from "../../game/components/LoadingContext.tsx";
 import { importOnce } from "../../utils/importOnce.ts";
 import { loadSounds } from "../../sound/soundsLoader.ts";
@@ -27,20 +25,48 @@ import { ErrorBoundary } from "../../utils/react/ErrorBoundary.tsx";
 import { decompressObject } from "../../db/compressObject.ts";
 import type { Campaign } from "../../model/modelTypes.ts";
 import { typedURLSearchParams } from "../../options/queryParams.ts";
+import { loadCampaignFromDb } from "../../db/campaign.ts";
+import { importTestCampaign } from "../../testCampaign.import.ts";
+import { importOriginalCampaign } from "../../_generated/originalCampaign/campaign.import.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
-const loadGameAssets = importOnce((cheatsOn: boolean) => {
+const loadCampaign = async (cheatsOn: boolean) => {
   const queryParams = typedURLSearchParams();
   const hasUrlCampaignData = queryParams.get("campaignData");
 
+  const urlCampaignAuthor = queryParams.get("campaignAuthor");
+  const urlCampaignName = queryParams.get("campaignName");
+  const hasDatabaseCampaign = urlCampaignAuthor && urlCampaignName;
+
+  if (hasUrlCampaignData)
+    return decompressObject<Campaign<string>>(hasUrlCampaignData);
+
+  if (hasDatabaseCampaign)
+    return loadCampaignFromDb({
+      name: urlCampaignName,
+      createdBy: urlCampaignAuthor,
+    });
+
+  if (cheatsOn) {
+    const [{ campaign: originalCampaign }, { testCampaign }] =
+      await Promise.all([importOriginalCampaign(), importTestCampaign()]);
+    return {
+      ...originalCampaign,
+      rooms: {
+        ...originalCampaign.rooms,
+        ...testCampaign.rooms,
+      },
+    };
+  } else {
+    return (await importOriginalCampaign()).campaign;
+  }
+};
+
+const loadGameAssets = importOnce((cheatsOn: boolean) => {
   return Promise.all([
     importGameMain(),
-    hasUrlCampaignData ? undefined : importOriginalCampaign(),
-    cheatsOn && !hasUrlCampaignData ? importTestCampaign() : undefined,
-    hasUrlCampaignData ?
-      decompressObject<Campaign<string>>(hasUrlCampaignData)
-    : undefined,
+    loadCampaign(cheatsOn),
     loadSpritesheet(),
     loadSounds(),
   ]);
@@ -69,29 +95,13 @@ const useGame = (): GameApi<string> | undefined => {
         loadingStarted();
         const [
           gameMain,
-          originalCampaignImport,
-          testCampaign,
-          urlCampaign,
+          campaign,
           //_spriteSheet,
           //_sounds,
         ] = await loadGameAssets(cheatsOn);
         loadingFinished();
 
         if (!thisEffectCancelled) {
-          const baseCampaign =
-            urlCampaign ? urlCampaign : originalCampaignImport!.campaign;
-
-          const campaign =
-            cheatsOn ?
-              {
-                ...baseCampaign,
-                rooms: {
-                  ...baseCampaign.rooms,
-                  ...testCampaign?.testCampaign.rooms,
-                },
-              }
-            : baseCampaign;
-
           thisEffectGameApi = await gameMain.default(campaign, inputState);
           setGameApi(thisEffectGameApi);
         }

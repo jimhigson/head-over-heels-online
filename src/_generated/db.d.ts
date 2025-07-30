@@ -44,7 +44,7 @@ export type Database = {
     };
     Functions: {
       get_latest_campaign: {
-        Args: { p_name: string; p_created_by?: string };
+        Args: { p_name: string; p_created_by?: string; p_version?: number };
         Returns: {
           created_at: string;
           created_by: string;
