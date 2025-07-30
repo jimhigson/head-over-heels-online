@@ -163,3 +163,7 @@ export const wallHeightPx = wallTileSize.h - wallTileSize.w / 2;
 // in practice, walls render details above their height, so give the render height a couple of
 // extra pixels:
 export const wallRenderHeight = wallHeightPx + 2;
+
+// walls, shadows, etc essentially go up forever so nothing can get on top of them
+// - about 800 blocks high!
+export const veryHighZ = 9999;

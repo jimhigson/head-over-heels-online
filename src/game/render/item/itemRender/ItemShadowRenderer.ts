@@ -19,6 +19,7 @@ import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
 import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { amigaHalfBriteBrightness } from "../../../../utils/colour/halfBrite";
+import { veryHighZ } from "../../../physics/mechanicsConstants";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -26,8 +27,6 @@ type Cast = {
   /* used for tracking the shadows that have been used in this frame (ie, don't have to be removed) */
   renderedOnProgression: number;
 };
-
-const veryHighZ = 9999;
 
 const halfOpacity = new AlphaFilter({ alpha: 1 - amigaHalfBriteBrightness });
 class ItemShadowRenderer<T extends ItemInPlayType>

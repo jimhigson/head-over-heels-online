@@ -13,12 +13,12 @@ import {
   subXyz,
   scaleXyz,
 } from "../../../utils/vectors/vectors";
-import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { emptyObject } from "../../../utils/empty";
 import { defaultBaseState } from "./itemDefaultStates";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { pick } from "../../../utils/pick";
+import { veryHighZ } from "../../physics/mechanicsConstants";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
@@ -215,7 +215,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         blockXyzToFineXyz({
           [alongWallAxis]: 2,
           [throughDoorAxis]: doorTunnelLengthBlocks,
-          z: defaultRoomHeightBlocks - doorPostHeightBlocks - position.z,
+          z: veryHighZ,
         }),
         { [throughDoorAxis]: postWidthInThroughDoorAxis },
       ),

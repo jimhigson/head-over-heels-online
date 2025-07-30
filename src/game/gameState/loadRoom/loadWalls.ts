@@ -8,11 +8,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import {
-  defaultRoomHeightBlocks,
-  wallRenderHeight,
-} from "../../physics/mechanicsConstants";
-import type { RoomJson } from "../../../model/RoomJson";
+import { veryHighZ, wallRenderHeight } from "../../physics/mechanicsConstants";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
@@ -28,26 +24,22 @@ import { wallTimes } from "../../../model/times";
 // edges of rooms) is would get in the way of gameplay
 export const wallThicknessBlocks = 1;
 
-export const xAxisWallAabb = (
-  roomHeight: number = defaultRoomHeightBlocks,
-) => ({
+export const xAxisWallAabb = {
   x: blockSizePx.w,
   y: blockSizePx.d * wallThicknessBlocks,
-  z: roomHeight * blockSizePx.h,
-});
+  z: veryHighZ,
+};
 export const xAxisWallRenderAabb = {
   x: blockSizePx.w,
   y: 0,
   // for rendering it extends to the drawn height of the wall tile:
   z: wallRenderHeight,
 };
-export const yAxisWallAabb = (
-  roomHeight: number = defaultRoomHeightBlocks,
-) => ({
+export const yAxisWallAabb = {
   x: blockSizePx.w * wallThicknessBlocks,
   y: blockSizePx.d,
-  z: roomHeight * blockSizePx.h,
-});
+  z: veryHighZ,
+};
 export const yAxisWallRenderAabb = {
   x: 0,
   y: blockSizePx.d,
@@ -57,7 +49,6 @@ export const yAxisWallRenderAabb = {
 export const loadWall = <RoomId extends string, RoomItemId extends string>(
   jsonItemId: RoomItemId,
   jsonWall: JsonItem<"wall", RoomId, RoomItemId>,
-  roomJson: RoomJson<RoomId, RoomItemId>,
 ): ItemTypeUnion<"wall", RoomId, RoomItemId> => {
   const {
     config: { direction },
@@ -66,7 +57,6 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
 
   const times = wallTimes(jsonWall.config);
 
-  const { height: roomHeight } = roomJson;
   const wallTangentAxis = doorAlongAxis(direction);
   const wallNormalAxis = perpendicularAxisXy(wallTangentAxis);
 
@@ -83,9 +73,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     jsonItemId,
     config: jsonWall.config,
     aabb: multiplyBoundingBox(
-      wallTangentAxis === "y" ?
-        yAxisWallAabb(roomHeight)
-      : xAxisWallAabb(roomHeight),
+      wallTangentAxis === "y" ? yAxisWallAabb : xAxisWallAabb,
       times,
     ),
     renderAabb:
