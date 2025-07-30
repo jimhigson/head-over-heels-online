@@ -20,9 +20,11 @@ export const EyeDropperButton = () => {
       ]}
       isCurrentTool={isCurrentTool}
       onClick={() => store.dispatch(setTool({ type: "eyeDropper" }))}
-      tooltipContent={`## eye dropper
+      tooltipContent={`## eye-dropper
 
-click on an item in the room to copy it and put a copy down somewhere else`}
+click on an item in the room to copy it and put a copy down somewhere else
+  
+hotkey: **I** or **,**`}
     >
       <span className="relative sprite texture-editor_tool_eyedropper leading-none" />
     </ToolbarButton>

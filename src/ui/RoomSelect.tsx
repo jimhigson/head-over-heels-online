@@ -2,6 +2,7 @@ import { CommandItem } from "./command";
 import type { Campaign } from "../model/modelTypes";
 import { Select } from "./Select";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
+import type { ReactNode } from "react";
 
 export type RoomSelectProps<RoomId extends string> = {
   campaign: Campaign<RoomId>;
@@ -11,6 +12,7 @@ export type RoomSelectProps<RoomId extends string> = {
   triggerButtonClassName?: string;
   onSelect?: (roomId: RoomId) => void;
   excludeRoomIds?: RoomId[];
+  tooltipContent?: ReactNode;
 };
 
 export function RoomSelect<RoomId extends string>({
@@ -21,6 +23,7 @@ export function RoomSelect<RoomId extends string>({
   value,
   triggerButtonClassName,
   excludeRoomIds = [],
+  tooltipContent,
 }: RoomSelectProps<RoomId>) {
   const roomIds = Object.keys(campaign.rooms).filter(
     (r) => !excludeRoomIds.includes(r as RoomId),
@@ -33,6 +36,7 @@ export function RoomSelect<RoomId extends string>({
       values={roomIds}
       triggerButtonClassName={triggerButtonClassName}
       placeholder="search"
+      tooltipContent={tooltipContent}
       disableCommandInput={false}
       triggerButtonLabel={value ?? "none"}
       OptionCommandItem={({ value }) => {

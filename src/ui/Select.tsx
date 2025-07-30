@@ -30,6 +30,7 @@ export type SelectProps<Value extends string> = {
   triggerButtonStyle?: CSSProperties;
   triggerButtonLabel?: ReactNode;
   onSelect: (value: Value) => void;
+  tooltipContent?: ReactNode;
 } & (
   | {
       disableCommandInput?: undefined | false;
@@ -58,6 +59,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
     triggerButtonStyle = emptyObject,
     triggerButtonLabel = "",
     OptionCommandItem = DefaultOptionCommandItem as OptionCommandItemComponent<Value>,
+    tooltipContent,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -82,6 +84,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
           )}
           style={triggerButtonStyle}
           ref={wheelElementRef}
+          tooltipContent={!open && tooltipContent}
         >
           {typeof triggerButtonLabel === "string" ?
             <BitmapText className="grow overflow-hidden text-left">

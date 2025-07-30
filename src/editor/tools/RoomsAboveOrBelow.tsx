@@ -8,14 +8,13 @@ import {
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSliceSelectors";
-import type { AboveOrBelowProperties } from "../slice/reducers/editRoomReducers";
 
 const RoomsAboveOrBelowSelectOrCreate = ({
   currentRoomId,
   direction,
 }: {
   currentRoomId: EditorRoomId | undefined;
-  direction: AboveOrBelowProperties;
+  direction: "above" | "below";
 }) => {
   const campaign = useAppSelectorWithLevelEditorSlice(
     ({ levelEditor }) => levelEditor.campaignInProgress,
@@ -29,11 +28,14 @@ const RoomsAboveOrBelowSelectOrCreate = ({
     <>
       <div className="flex flex-row gap-oneScaledPix w-full flex-wrap pt-1">
         <BitmapText className="text-lightGrey leading-none">
-          Room {direction === "roomAbove" ? "⬆" : "⬇"}
+          Room {direction === "above" ? "⬆" : "⬇"}
         </BitmapText>
         <div className="flex-grow" />
         <div className="flex flex-row gap-oneScaledPix">
-          <Button className="w-2 leading-none bg-moss">
+          <Button
+            className="w-2 leading-none bg-moss"
+            tooltipContent={`Add a new room *${direction}* this one`}
+          >
             <BitmapText
               onClick={() =>
                 dispatch(
@@ -47,7 +49,10 @@ const RoomsAboveOrBelowSelectOrCreate = ({
               +
             </BitmapText>
           </Button>
-          <Button className="w-2 leading-none bg-midRed">
+          <Button
+            className="w-2 leading-none bg-midRed"
+            tooltipContent={`Break the link with the room *${direction}*`}
+          >
             <BitmapText
               onClick={() =>
                 dispatch(
@@ -79,6 +84,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
               }),
             );
           }}
+          tooltipContent={`Select a room to place *${direction}* this one`}
         />
       </div>
     </>
@@ -94,7 +100,7 @@ export const RoomAboveSelectOrCreate = () => {
     <>
       <RoomsAboveOrBelowSelectOrCreate
         currentRoomId={roomAboveId}
-        direction="roomAbove"
+        direction="above"
       />
     </>
   );
@@ -109,7 +115,7 @@ export const RoomBelowSelectOrCreate = () => {
     <>
       <RoomsAboveOrBelowSelectOrCreate
         currentRoomId={roomBelowId}
-        direction="roomBelow"
+        direction="below"
       />
     </>
   );

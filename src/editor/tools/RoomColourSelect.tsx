@@ -55,6 +55,7 @@ export function RoomColourSelect() {
           `${currentRoomColour.hue === "white" || currentRoomColour.hue === "yellow" ? "text-pureBlack" : "text-white"}`,
         )}
         triggerButtonStyle={itemColourCss(currentRoomColour.hue)}
+        tooltipContent="Change the colour of this room"
       />
       <Switch
         className=""

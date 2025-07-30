@@ -1,8 +1,9 @@
 import clsx from "clsx";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
-import type { MouseEvent } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { cn } from "./cn";
 import { useKeyboardShortcut, type ShortcutKeys } from "./useKeyboardShortcut";
+import { Tooltip } from "./Tooltip";
 
 export type SwitchProps = {
   value: boolean;
@@ -12,6 +13,7 @@ export type SwitchProps = {
   falseLabel?: string;
   label?: string;
   shortcutKeys?: ShortcutKeys | undefined;
+  tooltipContent?: ReactNode;
 };
 
 export const Switch = ({
@@ -22,6 +24,7 @@ export const Switch = ({
   falseLabel = "OFF",
   label,
   shortcutKeys,
+  tooltipContent,
 }: SwitchProps) => {
   const labelLength = Math.max(trueLabel.length, falseLabel.length) + 1;
   const trueLabelPadded = trueLabel.padStart(labelLength, " ");
@@ -31,7 +34,7 @@ export const Switch = ({
     onChange?.(!value, undefined);
   });
 
-  return (
+  const element = (
     <span
       onClick={(e) => onChange?.(!value, e)}
       className={cn("inline-flex justify-between", className)}
@@ -54,4 +57,6 @@ export const Switch = ({
       </BitmapText>
     </span>
   );
+
+  return <Tooltip triggerContent={element} tooltipContent={tooltipContent} />;
 };

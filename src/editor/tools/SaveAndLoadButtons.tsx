@@ -25,11 +25,13 @@ put your campaign on cassette tape, or even floppy disk!
 to be shared or worked on later
 
 (really, saves to a cloud database)
+
+hotkey: **Cmd-S**
 `;
 const loadTooltipMarkdown = `
 ## Load
 
-load your last save to continue working on it
+continue working from your last save
 `;
 
 export const useSavedIsInSync = () => {

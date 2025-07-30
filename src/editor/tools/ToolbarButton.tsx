@@ -8,14 +8,6 @@ import {
 } from "./buttonSizeClassNames";
 import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
 import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
-import {
-  Root as TooltipRoot,
-  TooltipTrigger,
-  TooltipContent,
-  TooltipPortal,
-} from "@radix-ui/react-tooltip";
-import { CssVariables } from "../../game/components/CssVariables";
-import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 
 type ToolbarButtonProps = {
   onClick?: () => void;
@@ -39,7 +31,7 @@ export const ToolbarButton = ({
 }: PropsWithChildren<ToolbarButtonProps>) => {
   useKeyboardShortcut(shortcutKeys, disabled, onClick);
 
-  const button = (
+  return (
     <Button
       disabled={disabled}
       selected={isCurrentTool}
@@ -49,32 +41,9 @@ export const ToolbarButton = ({
         
         ${className ?? ""}`}
       onClick={onClick}
+      tooltipContent={tooltipContent}
     >
       {children}
     </Button>
   );
-
-  if (tooltipContent) {
-    return (
-      <TooltipRoot>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
-        <TooltipPortal>
-          <CssVariables scaleFactor={2}>
-            <TooltipContent
-              side="bottom"
-              align="end"
-              className="bg-highlightBeige text-white p-1 mt-oneScaledPix drop-shadow-oneBlock z-popups"
-            >
-              {typeof tooltipContent === "string" ?
-                <div className="max-w-15">
-                  <BlockyMarkdown markdown={tooltipContent} />
-                </div>
-              : tooltipContent}
-            </TooltipContent>
-          </CssVariables>
-        </TooltipPortal>
-      </TooltipRoot>
-    );
-  }
-  return button;
 };

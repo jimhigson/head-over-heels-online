@@ -84,6 +84,7 @@ export const LevelEditorToolbar = () => {
             dispatch(changeToRoom(roomId));
           }}
           triggerButtonClassName="w-full"
+          tooltipContent="Choose the room to view/edit"
         />
         <div className="h-1 w-full" />
         <RoomScenerySelect />
@@ -117,6 +118,9 @@ export const LevelEditorToolbar = () => {
             config: { style: "organic" },
           }}
           shortcutKeys={["B"]}
+          tooltipContent={`## Block 
+The basic block            
+hotkey: **B**`}
         >
           <span
             className={`sprite texture-block_organic ${buttonSpriteRevertColourClasses}`}
@@ -576,6 +580,10 @@ turns so poisonous that a single lick can kill`}
               ] as EditorRoomItemId[],
             },
           }}
+          tooltipContent={`## Joystick
+Controls one or more Charles bots
+
+Change *which* Charles in the json`}
         >
           <span
             className={`sprite texture-joystick ${buttonSpriteRevertColourClasses}`}
@@ -590,6 +598,14 @@ turns so poisonous that a single lick can kill`}
               modifies: emptyArray,
             },
           }}
+          tooltipContent={`## Switch
+toggles when touched.
+
+edit the json to choose:
+
+* de/activate monsters
+* turn on/off moving platforms
+* make blocks disappear on touch`}
         >
           <span
             className={`sprite texture-switch_left [button:hover_&]:texture-switch_right ${buttonSpriteRevertColourClasses}`}
@@ -820,6 +836,10 @@ This is where head will start the game`}
             type: "sceneryPlayer",
             config: { which: "head", startDirection: "towards" },
           }}
+          tooltipContent={`##NPC head
+Citizens of Freedom
+
+stand around not doing much`}
         >
           <span
             className={`sprite texture-head_walking_towards_2 [button:hover_&]:texture-animated-head_walking_right ${buttonSpriteRevertColourClasses}`}
@@ -830,6 +850,10 @@ This is where head will start the game`}
             type: "sceneryPlayer",
             config: { which: "heels", startDirection: "towards" },
           }}
+          tooltipContent={`##NPC heels
+Citizens of Freedom
+
+stand around not doing much`}
         >
           <span
             className={`sprite texture-heels_walking_towards_2 [button:hover_&]:texture-animated-heels_walking_right ${buttonSpriteRevertColourClasses}`}
@@ -840,6 +864,10 @@ This is where head will start the game`}
             type: "sceneryPlayer",
             config: { which: "headOverHeels", startDirection: "towards" },
           }}
+          tooltipContent={`##NPC head over heels
+Citizens of Freedom
+
+stand around not doing much`}
         >
           <StackedToolbarIcons
             topClasses="texture-head_walking_towards_2 [button:hover_&]:texture-animated-head_walking_right"

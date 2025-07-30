@@ -16,32 +16,23 @@ import type {
   EditorRoomJson,
 } from "../../editorTypes";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
-import {
-  iterateRoomJsonItems,
-  type AnyRoomJson,
-} from "../../../model/RoomJson";
-import type { Subset } from "../../../utils/subset";
+import { iterateRoomJsonItems } from "../../../model/RoomJson";
 import type { FloorType } from "../../../model/json/ItemConfigMap";
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 
-export type AboveOrBelowProperties = Subset<
-  keyof AnyRoomJson,
-  "roomAbove" | "roomBelow"
->;
-
 export type SetRoomAboveOrBelowPayload =
   | {
-      direction: AboveOrBelowProperties;
+      direction: "above" | "below";
       roomId: EditorRoomId;
       createNew: false;
     }
   | {
-      direction: AboveOrBelowProperties;
+      direction: "above" | "below";
       createNew: true;
     }
   | {
-      direction: AboveOrBelowProperties;
+      direction: "above" | "below";
       /** to break the link */
       roomId: undefined;
       createNew: false;
@@ -154,8 +145,9 @@ export const editRoomReducers = {
   ) {
     const state = _state as LevelEditorState;
 
-    const forwardDirection = payload.direction;
-    const reverseDirection: AboveOrBelowProperties =
+    const forwardDirection =
+      payload.direction === "above" ? "roomAbove" : "roomBelow";
+    const reverseProperty =
       forwardDirection === "roomAbove" ? "roomBelow" : "roomAbove";
 
     const currentRoomJson = selectCurrentRoomFromLevelEditorState(state);
@@ -172,9 +164,9 @@ export const editRoomReducers = {
 
     // break the link the other way, if one exists:
     if (
-      previouslyLinkedRoom?.[reverseDirection] === state.currentlyEditingRoomId
+      previouslyLinkedRoom?.[reverseProperty] === state.currentlyEditingRoomId
     ) {
-      previouslyLinkedRoom[reverseDirection] = undefined;
+      previouslyLinkedRoom[reverseProperty] = undefined;
     }
 
     currentRoomJson[forwardDirection] = newLinkedToRoomId;
@@ -185,7 +177,7 @@ export const editRoomReducers = {
 
     if (newlyLinkedToRoom !== undefined) {
       // add the link back down, if there is a room to add it to:
-      newlyLinkedToRoom[reverseDirection] = currentRoomJson.id;
+      newlyLinkedToRoom[reverseProperty] = currentRoomJson.id;
     }
 
     // if creating a link, remove some floors:

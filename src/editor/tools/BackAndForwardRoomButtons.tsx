@@ -10,12 +10,16 @@ const backTooltipMarkdown = `
 ## Back
 
 Go back to the previous room
+
+hotkey: **<**
 `;
 
 const forwardTooltipMarkdown = `
 ## Forward
 
 The opposite of back
+
+hotkey: **>**
 `;
 
 export const BackAndForwardRoomButtons = () => {

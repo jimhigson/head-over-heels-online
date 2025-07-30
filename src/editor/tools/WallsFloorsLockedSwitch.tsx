@@ -25,6 +25,10 @@ export const WallsFloorsLockedSwitch = ({
       falseLabel="edit"
       trueLabel="lock"
       shortcutKeys={["C"]}
+      tooltipContent={`locks walls and floors, to edit their contents
+
+hotkey: **C**
+`}
     />
   );
 };

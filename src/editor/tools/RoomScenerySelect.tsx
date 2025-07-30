@@ -25,6 +25,7 @@ export function RoomScenerySelect() {
       placeholder="scenery"
       triggerButtonClassName="w-full"
       triggerButtonLabel={currentRoomScenery}
+      tooltipContent="Change this room’s scenery"
     />
   );
 }
