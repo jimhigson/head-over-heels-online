@@ -43,6 +43,7 @@ import { LoggedInStatus } from "./LoggedInStatus";
 import { AddAndDeleteRoomButtons } from "./AddAndRemoveRoomButtons";
 import { NudgeButtons } from "./NudgeButtons";
 import { BackAndForwardRoomButtons } from "./BackAndForwardRoomButtons";
+import { AutoCoalesceSwitch } from "./AutoCoalesceSwitch";
 
 const HorizontalGap = () => <div className="w-[calc(var(--block)-1px)]" />;
 
@@ -102,6 +103,7 @@ export const LevelEditorToolbar = () => {
         <div className="flex flex-row justify-between flex-wrap gap-x-2">
           <HalfGridResolutionSwitch />
           <WallsFloorsLockedSwitch />
+          <AutoCoalesceSwitch />
         </div>
       </div>
       <div className={buttonGroupClassname}>

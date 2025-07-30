@@ -1,7 +1,13 @@
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import { convertCampaign } from "./convertCampaign";
 
-test("covert campaign handbrake to protect against accidental changes", async () => {
-  //the whole original campaign in a single snapshot - if this test breaks but a change was intentional, regenerate the snapshots
-  expect(await convertCampaign()).toMatchSnapshot();
+const converted = await convertCampaign();
+
+describe("covert campaign handbrake to protect against accidental changes", async () => {
+  test.each(Object.entries(converted.rooms))(
+    "%s",
+    async (_campaignName, campaign) => {
+      expect(campaign).toMatchSnapshot();
+    },
+  );
 });

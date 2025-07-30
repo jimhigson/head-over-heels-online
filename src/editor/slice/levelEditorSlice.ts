@@ -61,6 +61,7 @@ export type LevelEditorState = {
   clickableAnnotationHovered: boolean;
   selectedJsonItemIds: Array<EditorRoomItemId>;
   halfGridResolution: boolean;
+  autoCoalesce: boolean;
   wallsFloorsLocked: boolean;
   dragInProgress?: boolean;
   history: {
@@ -157,7 +158,9 @@ export const {
   redo,
   removeRoom,
   resetPreviewedEdits,
+  roomBack,
   roomJsonEdited,
+  setAutoCoalesce,
   setClickableAnnotationHovered,
   setHoveredItemInRoom,
   setRoomAboveOrBelow,
@@ -165,7 +168,6 @@ export const {
   setTool,
   toggleSelectedItemInRoom,
   undo,
-  roomBack,
   roomForward,
 } = levelEditorSlice.actions;
 export const {

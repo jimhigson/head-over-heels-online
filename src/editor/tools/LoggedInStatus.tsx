@@ -54,7 +54,7 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
   return (
     <div className={cn(className)}>
       {user ?
-        <div className="bg-moss">
+        <div className="bg-moss overflow-hidden text-center">
           <BitmapText
             noSlitWords
             className="overflow-hidden"

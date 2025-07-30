@@ -1,0 +1,275 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`actual room items > safari2 1`] = `
+{
+  "block@3,0,0": {
+    "config": {
+      "style": "organic",
+      "times": {
+        "x": 2,
+      },
+    },
+    "position": {
+      "x": 3,
+      "y": 0,
+      "z": 0,
+    },
+    "type": "block",
+  },
+  "block@3,7,1": {
+    "config": {
+      "style": "organic",
+      "times": {
+        "x": 2,
+      },
+    },
+    "position": {
+      "x": 3,
+      "y": 7,
+      "z": 1,
+    },
+    "type": "block",
+  },
+  "block@7,4,0": {
+    "config": {
+      "style": "organic",
+    },
+    "position": {
+      "x": 7,
+      "y": 4,
+      "z": 0,
+    },
+    "type": "block",
+  },
+  "deadlyBlock@0,0,0": {
+    "config": {
+      "style": "volcano",
+      "times": {
+        "z": 2,
+      },
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "type": "deadlyBlock",
+  },
+  "deadlyBlock@0,1,1": {
+    "config": {
+      "style": "volcano",
+    },
+    "position": {
+      "x": 0,
+      "y": 1,
+      "z": 1,
+    },
+    "type": "deadlyBlock",
+  },
+  "deadlyBlock@0,7,0": {
+    "config": {
+      "style": "volcano",
+    },
+    "position": {
+      "x": 0,
+      "y": 7,
+      "z": 0,
+    },
+    "type": "deadlyBlock",
+  },
+  "deadlyBlock@2,3,0": {
+    "config": {
+      "style": "volcano",
+    },
+    "position": {
+      "x": 2,
+      "y": 3,
+      "z": 0,
+    },
+    "type": "deadlyBlock",
+  },
+  "deadlyBlock@4,3,0": {
+    "config": {
+      "style": "volcano",
+    },
+    "position": {
+      "x": 4,
+      "y": 3,
+      "z": 0,
+    },
+    "type": "deadlyBlock",
+  },
+  "deadlyBlock@6,0,1": {
+    "config": {
+      "style": "volcano",
+      "times": {
+        "x": 2,
+      },
+    },
+    "position": {
+      "x": 6,
+      "y": 0,
+      "z": 1,
+    },
+    "type": "deadlyBlock",
+  },
+  "deadlyBlock@7,0,0": {
+    "config": {
+      "style": "volcano",
+    },
+    "position": {
+      "x": 7,
+      "y": 0,
+      "z": 0,
+    },
+    "type": "deadlyBlock",
+  },
+  "door@3,0,1": {
+    "config": {
+      "direction": "towards",
+      "toRoom": "safari1",
+    },
+    "position": {
+      "x": 3,
+      "y": 0,
+      "z": 1,
+    },
+    "type": "door",
+  },
+  "door@3,8,3": {
+    "config": {
+      "direction": "away",
+      "toRoom": "safari3",
+    },
+    "position": {
+      "x": 3,
+      "y": 8,
+      "z": 3,
+    },
+    "type": "door",
+  },
+  "floor@0,0,0": {
+    "config": {
+      "floorType": "deadly",
+      "times": {
+        "x": 8,
+        "y": 8,
+      },
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "type": "floor",
+  },
+  "movingPlatform@7,1,0": {
+    "config": {
+      "activated": "off",
+      "movement": "clockwise",
+      "startDirection": "away",
+    },
+    "position": {
+      "x": 7,
+      "y": 1,
+      "z": 0,
+    },
+    "type": "movingPlatform",
+  },
+  "wall(right)@0,0,0": {
+    "config": {
+      "direction": "right",
+      "times": {
+        "y": 8,
+      },
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "type": "wall",
+  },
+  "wall(towards)@0,0,0": {
+    "config": {
+      "direction": "towards",
+      "times": {
+        "x": 3,
+      },
+    },
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "type": "wall",
+  },
+  "wall@0,8,0": {
+    "config": {
+      "direction": "away",
+      "tiles": [
+        "wall",
+        "shield",
+        "wall",
+      ],
+    },
+    "position": {
+      "x": 0,
+      "y": 8,
+      "z": 0,
+    },
+    "type": "wall",
+  },
+  "wall@5,0,0": {
+    "config": {
+      "direction": "towards",
+      "times": {
+        "x": 3,
+      },
+    },
+    "position": {
+      "x": 5,
+      "y": 0,
+      "z": 0,
+    },
+    "type": "wall",
+  },
+  "wall@5,8,0": {
+    "config": {
+      "direction": "away",
+      "tiles": [
+        "wall",
+        "window",
+        "wall",
+      ],
+    },
+    "position": {
+      "x": 5,
+      "y": 8,
+      "z": 0,
+    },
+    "type": "wall",
+  },
+  "wall@8,0,0": {
+    "config": {
+      "direction": "left",
+      "tiles": [
+        "wall",
+        "window",
+        "wall",
+        "shield",
+        "shield",
+        "wall",
+        "window",
+        "wall",
+      ],
+    },
+    "position": {
+      "x": 8,
+      "y": 0,
+      "z": 0,
+    },
+    "type": "wall",
+  },
+}
+`;
