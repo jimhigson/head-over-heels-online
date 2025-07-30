@@ -56,7 +56,7 @@ export function* loadItemFromJson<
     }
 
     case "wall": {
-      yield loadWall(jsonItemId, jsonItem, roomJson);
+      yield loadWall(jsonItemId, jsonItem);
       return;
     }
 
