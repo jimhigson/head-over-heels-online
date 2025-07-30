@@ -25,6 +25,12 @@ export const HalfGridResolutionSwitch = ({
       falseLabel="Block"
       trueLabel="Half"
       shortcutKeys={["S"]}
+      tooltipContent={`snaps to either the grid (like the original game)
+
+or, allows placing on a half-block grid
+
+hotkey: **S**
+`}
     />
   );
 };
