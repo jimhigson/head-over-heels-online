@@ -180,10 +180,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 12,
-        "y": 6,
-      },
     },
     "blacktooth11": {
       "color": {
@@ -428,10 +424,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth12": {
       "color": {
@@ -576,10 +568,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "blacktooth13": {
       "color": {
@@ -834,10 +822,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth14": {
       "color": {
@@ -1069,10 +1053,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth15": {
       "color": {
@@ -1160,10 +1140,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "blacktooth16": {
       "color": {
@@ -1374,10 +1350,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth17triple": {
       "color": {
@@ -1774,10 +1746,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 12,
-        "y": 12,
-      },
     },
     "blacktooth18": {
       "color": {
@@ -1964,10 +1932,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth19": {
       "color": {
@@ -2209,10 +2173,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth1head": {
       "color": {
@@ -2410,10 +2370,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "blacktooth2": {
       "color": {
@@ -2552,10 +2508,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "blacktooth20": {
       "color": {
@@ -2725,10 +2677,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth21fish": {
       "color": {
@@ -2971,10 +2919,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth22": {
       "color": {
@@ -3109,10 +3053,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": "blacktooth44market",
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth23heels": {
       "color": {
@@ -3326,10 +3266,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth24": {
       "color": {
@@ -3476,10 +3412,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth25": {
       "color": {
@@ -3635,10 +3567,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": "blacktooth26",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth26": {
       "color": {
@@ -3797,10 +3725,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": "blacktooth25",
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth27fish": {
       "color": {
@@ -3995,10 +3919,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "blacktooth28": {
       "color": {
@@ -4209,10 +4129,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth29": {
       "color": {
@@ -4361,10 +4277,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": "blacktooth30",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "blacktooth3": {
       "color": {
@@ -4498,10 +4410,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": "blacktooth4",
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth30": {
       "color": {
@@ -4638,10 +4546,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": "blacktooth29",
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "blacktooth31": {
       "color": {
@@ -4997,10 +4901,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 12,
-      },
     },
     "blacktooth32": {
       "color": {
@@ -5088,10 +4988,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "blacktooth33": {
       "color": {
@@ -5266,10 +5162,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": "blacktooth34",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth34": {
       "color": {
@@ -5426,10 +5318,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": "blacktooth33",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth35": {
       "color": {
@@ -5680,10 +5568,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 16,
-      },
     },
     "blacktooth36": {
       "color": {
@@ -5827,10 +5711,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth37": {
       "color": {
@@ -6035,10 +5915,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "blacktooth38": {
       "color": {
@@ -6173,10 +6049,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": "blacktooth39",
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth39": {
       "color": {
@@ -6386,10 +6258,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": "blacktooth38",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth4": {
       "color": {
@@ -6524,10 +6392,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": "blacktooth3",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth40fish": {
       "color": {
@@ -6858,10 +6722,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 16,
-      },
     },
     "blacktooth41": {
       "color": {
@@ -6949,10 +6809,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "blacktooth42": {
       "color": {
@@ -7064,10 +6920,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "blacktooth43": {
       "color": {
@@ -7202,10 +7054,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": "blacktooth46market",
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth44market": {
       "color": {
@@ -7326,10 +7174,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": "blacktooth22",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth45market": {
       "color": {
@@ -7572,10 +7416,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth46market": {
       "color": {
@@ -7730,10 +7570,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": "blacktooth43",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth47market": {
       "color": {
@@ -8077,10 +7913,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth48market": {
       "color": {
@@ -8194,10 +8026,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "blacktooth49market": {
       "color": {
@@ -8314,10 +8142,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "blacktooth5": {
       "color": {
@@ -8442,10 +8266,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "blacktooth50market": {
       "color": {
@@ -8659,10 +8479,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth51": {
       "color": {
@@ -8802,10 +8618,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "blacktooth52market": {
       "color": {
@@ -9049,10 +8861,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth53market": {
       "color": {
@@ -9242,10 +9050,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "market",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "blacktooth54": {
       "color": {
@@ -9382,10 +9186,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": "blacktooth55",
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth55": {
       "color": {
@@ -9543,10 +9343,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": "blacktooth54",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth56": {
       "color": {
@@ -9690,10 +9486,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "blacktooth57": {
       "color": {
@@ -9858,10 +9650,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth58triple": {
       "color": {
@@ -10258,10 +10046,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 14,
-        "y": 14,
-      },
     },
     "blacktooth59": {
       "color": {
@@ -10554,10 +10338,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth6": {
       "color": {
@@ -10809,10 +10589,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth60": {
       "color": {
@@ -11020,10 +10796,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth61": {
       "color": {
@@ -11220,10 +10992,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "blacktooth62fish": {
       "color": {
@@ -11523,10 +11291,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 16,
-      },
     },
     "blacktooth63": {
       "color": {
@@ -11720,10 +11484,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "blacktooth64": {
       "color": {
@@ -11861,10 +11621,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth65": {
       "color": {
@@ -11966,10 +11722,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "blacktooth66": {
       "color": {
@@ -12141,10 +11893,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "blacktooth67": {
       "color": {
@@ -12393,10 +12141,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth68": {
       "color": {
@@ -12738,10 +12482,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth69": {
       "color": {
@@ -12879,10 +12619,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth7": {
       "color": {
@@ -12993,10 +12729,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "blacktooth70": {
       "color": {
@@ -13144,10 +12876,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "blacktooth71": {
       "color": {
@@ -13400,10 +13128,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth72": {
       "color": {
@@ -13637,10 +13361,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth73": {
       "color": {
@@ -13927,10 +13647,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth74": {
       "color": {
@@ -14164,10 +13880,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "blacktooth75": {
       "color": {
@@ -14406,10 +14118,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "blacktooth76": {
       "color": {
@@ -14713,10 +14421,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth77": {
       "color": {
@@ -14975,10 +14679,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 4,
-      },
     },
     "blacktooth78": {
       "color": {
@@ -15263,10 +14963,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": "blacktooth79fish",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth79fish": {
       "color": {
@@ -15416,10 +15112,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": "blacktooth78",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth80": {
       "color": {
@@ -15628,10 +15320,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "blacktooth81": {
       "color": {
@@ -15893,10 +15581,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth82": {
       "color": {
@@ -16172,10 +15856,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "blacktooth83tofreedom": {
       "color": {
@@ -16529,10 +16209,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth84": {
       "color": {
@@ -16774,10 +16450,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth85": {
       "color": {
@@ -17016,10 +16688,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth86": {
       "color": {
@@ -17170,10 +16838,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "blacktooth87crown": {
       "color": {
@@ -17414,10 +17078,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "blacktooth8fish": {
       "color": {
@@ -17608,10 +17268,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "blacktooth9": {
       "color": {
@@ -17872,10 +17528,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "blacktooth",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld1": {
       "color": {
@@ -18073,10 +17725,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld10": {
       "color": {
@@ -18235,10 +17883,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "bookworld11": {
       "color": {
@@ -18353,10 +17997,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "bookworld12fish": {
       "color": {
@@ -18551,10 +18191,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "bookworld13": {
       "color": {
@@ -18642,10 +18278,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "bookworld14": {
       "color": {
@@ -18872,10 +18504,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld15": {
       "color": {
@@ -19088,10 +18716,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld16": {
       "color": {
@@ -19255,10 +18879,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "bookworld17": {
       "color": {
@@ -19413,10 +19033,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "bookworld18": {
       "color": {
@@ -19669,10 +19285,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "bookworld19": {
       "color": {
@@ -19803,10 +19415,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "bookworld2": {
       "color": {
@@ -20164,10 +19772,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 12,
-        "y": 6,
-      },
     },
     "bookworld20": {
       "color": {
@@ -20361,10 +19965,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "bookworld21": {
       "color": {
@@ -20576,10 +20176,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld22": {
       "color": {
@@ -20782,10 +20378,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "bookworld23": {
       "color": {
@@ -20955,10 +20547,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "bookworld24": {
       "color": {
@@ -21195,10 +20783,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "bookworld25": {
       "color": {
@@ -21286,10 +20870,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "bookworld26": {
       "color": {
@@ -21484,10 +21064,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "bookworld27": {
       "color": {
@@ -21602,10 +21178,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "bookworld28": {
       "color": {
@@ -21877,10 +21449,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": "bookworld29",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 16,
-      },
     },
     "bookworld29": {
       "color": {
@@ -22076,10 +21644,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": "bookworld28",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld3": {
       "color": {
@@ -22251,10 +21815,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "bookworld30": {
       "color": {
@@ -22418,10 +21978,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 4,
-      },
     },
     "bookworld31": {
       "color": {
@@ -22643,10 +22199,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 16,
-        "y": 6,
-      },
     },
     "bookworld32": {
       "color": {
@@ -22767,10 +22319,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": "bookworld33",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld33": {
       "color": {
@@ -22945,10 +22493,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": "bookworld32",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld34": {
       "color": {
@@ -23224,10 +22768,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 16,
-      },
     },
     "bookworld35": {
       "color": {
@@ -23511,10 +23051,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld36": {
       "color": {
@@ -23718,10 +23254,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "bookworld37": {
       "color": {
@@ -23824,10 +23356,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "bookworld38": {
       "color": {
@@ -23951,10 +23479,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": "bookworld39",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld39": {
       "color": {
@@ -24101,10 +23625,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": "bookworld38",
       "roomBelow": "bookworld40",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld4": {
       "color": {
@@ -24230,10 +23750,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "bookworld40": {
       "color": {
@@ -24367,10 +23883,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": "bookworld39",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld41crown": {
       "color": {
@@ -24591,10 +24103,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "bookworld5": {
       "color": {
@@ -24758,10 +24266,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "bookworld6": {
       "color": {
@@ -24966,10 +24470,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "bookworld7": {
       "color": {
@@ -25134,10 +24634,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "bookworld8": {
       "color": {
@@ -25346,10 +24842,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "bookworld9": {
       "color": {
@@ -25524,10 +25016,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "bookworld",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 4,
-      },
     },
     "egyptus1": {
       "color": {
@@ -25669,10 +25157,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus10": {
       "color": {
@@ -25909,10 +25393,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus11": {
       "color": {
@@ -26000,10 +25480,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "egyptus12": {
       "color": {
@@ -26328,10 +25804,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus13": {
       "color": {
@@ -26529,10 +26001,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus14",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus14": {
       "color": {
@@ -26740,10 +26208,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus19",
       "roomBelow": "egyptus13",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus15": {
       "color": {
@@ -26978,10 +26442,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus16",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "egyptus16": {
       "color": {
@@ -27113,10 +26573,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": "egyptus15",
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "egyptus17": {
       "color": {
@@ -27344,10 +26800,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 12,
-        "y": 6,
-      },
     },
     "egyptus18": {
       "color": {
@@ -27494,10 +26946,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "egyptus19": {
       "color": {
@@ -27703,10 +27151,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus20",
       "roomBelow": "egyptus14",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus2": {
       "color": {
@@ -27947,10 +27391,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus20": {
       "color": {
@@ -28122,10 +27562,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": "egyptus19",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus21": {
       "color": {
@@ -28213,10 +27649,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "egyptus22": {
       "color": {
@@ -28404,10 +27836,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "egyptus23": {
       "color": {
@@ -28707,10 +28135,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "egyptus24": {
       "color": {
@@ -28945,10 +28369,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "egyptus25": {
       "color": {
@@ -29109,10 +28529,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 4,
-      },
     },
     "egyptus26": {
       "color": {
@@ -29300,10 +28716,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "egyptus27": {
       "color": {
@@ -29488,10 +28900,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus28": {
       "color": {
@@ -29674,10 +29082,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "egyptus29": {
       "color": {
@@ -29823,10 +29227,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": "egyptus30",
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "egyptus3": {
       "color": {
@@ -29923,10 +29323,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "egyptus30": {
       "color": {
@@ -30034,10 +29430,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus29",
       "roomBelow": "egyptus31",
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "egyptus31": {
       "color": {
@@ -30185,10 +29577,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus30",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "egyptus32": {
       "color": {
@@ -30292,10 +29680,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": "egyptus33",
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "egyptus33": {
       "color": {
@@ -30411,10 +29795,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus32",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "egyptus34fish": {
       "color": {
@@ -30638,10 +30018,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "egyptus35": {
       "color": {
@@ -30859,10 +30235,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus36",
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "egyptus36": {
       "color": {
@@ -30981,10 +30353,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": "egyptus37",
       "roomBelow": "egyptus35",
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "egyptus37": {
       "color": {
@@ -31141,10 +30509,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": "egyptus36",
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "egyptus38": {
       "color": {
@@ -31404,10 +30768,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus39crown": {
       "color": {
@@ -31612,10 +30972,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus4": {
       "color": {
@@ -31871,10 +31227,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus5": {
       "color": {
@@ -32129,10 +31481,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "egyptus6": {
       "color": {
@@ -32321,10 +31669,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus7": {
       "color": {
@@ -32561,10 +31905,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus8": {
       "color": {
@@ -32856,10 +32196,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "egyptus9fish": {
       "color": {
@@ -33065,10 +32401,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "egyptus",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "finalroom": {
       "color": {
@@ -33537,10 +32869,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "jail",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 12,
-        "y": 8,
-      },
     },
     "moonbase1": {
       "color": {
@@ -33932,10 +33260,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase10": {
       "color": {
@@ -34141,10 +33465,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase11": {
       "color": {
@@ -34255,10 +33575,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "moonbase12": {
       "color": {
@@ -34466,10 +33782,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase13": {
       "color": {
@@ -34700,10 +34012,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "moonbase14": {
       "color": {
@@ -34935,10 +34243,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "moonbase15": {
       "color": {
@@ -35065,10 +34369,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "moonbase16": {
       "color": {
@@ -35304,10 +34604,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 12,
-        "y": 6,
-      },
     },
     "moonbase17": {
       "color": {
@@ -35445,10 +34741,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "moonbase18": {
       "color": {
@@ -35586,10 +34878,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "moonbase19": {
       "color": {
@@ -35733,10 +35021,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "moonbase2": {
       "color": {
@@ -35992,10 +35276,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "moonbase20": {
       "color": {
@@ -36302,10 +35582,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase21tosafari": {
       "color": {
@@ -36546,10 +35822,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "moonbase22topenitentiary": {
       "color": {
@@ -36787,10 +36059,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "moonbase23": {
       "color": {
@@ -37097,10 +36365,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase24toegyptus": {
       "color": {
@@ -37469,10 +36733,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase25tobookworld": {
       "color": {
@@ -37838,10 +37098,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase26": {
       "color": {
@@ -37985,10 +37241,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "moonbase27": {
       "color": {
@@ -38102,10 +37354,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "moonbase28": {
       "color": {
@@ -38290,10 +37538,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "moonbase29": {
       "color": {
@@ -38662,10 +37906,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase3": {
       "color": {
@@ -38980,10 +38220,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase30": {
       "color": {
@@ -39124,10 +38360,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "moonbase31": {
       "color": {
@@ -39268,10 +38500,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "moonbase32": {
       "color": {
@@ -39637,10 +38865,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase33triple": {
       "color": {
@@ -40252,10 +39476,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 12,
-        "y": 16,
-      },
     },
     "moonbase34": {
       "color": {
@@ -40463,10 +39683,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 4,
-      },
     },
     "moonbase35": {
       "color": {
@@ -40747,10 +39963,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "moonbase36": {
       "color": {
@@ -41031,10 +40243,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "moonbase4": {
       "color": {
@@ -41383,10 +40591,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase5": {
       "color": {
@@ -41563,10 +40767,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "moonbase6": {
       "color": {
@@ -41837,10 +41037,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase7": {
       "color": {
@@ -42156,10 +41352,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase8": {
       "color": {
@@ -42433,10 +41625,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "moonbase9": {
       "color": {
@@ -42574,10 +41762,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "moonbase",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "penitentiary1": {
       "color": {
@@ -42717,10 +41901,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "penitentiary10": {
       "color": {
@@ -42836,10 +42016,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": "penitentiary9",
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "penitentiary11": {
       "color": {
@@ -43012,10 +42188,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "penitentiary12": {
       "color": {
@@ -43263,10 +42435,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary13": {
       "color": {
@@ -43520,10 +42688,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary14",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 4,
-      },
     },
     "penitentiary14": {
       "color": {
@@ -43695,10 +42859,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary15",
       "roomBelow": "penitentiary13",
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "penitentiary15": {
       "color": {
@@ -43984,10 +43144,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary16",
       "roomBelow": "penitentiary14",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary16": {
       "color": {
@@ -44145,10 +43301,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary17",
       "roomBelow": "penitentiary15",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary17": {
       "color": {
@@ -44285,10 +43437,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": "penitentiary16",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary18fish": {
       "color": {
@@ -44511,10 +43659,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 16,
-        "y": 6,
-      },
     },
     "penitentiary19": {
       "color": {
@@ -44689,10 +43833,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "penitentiary2": {
       "color": {
@@ -44973,10 +44113,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary20": {
       "color": {
@@ -45170,10 +44306,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary21",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "penitentiary21": {
       "color": {
@@ -45465,10 +44597,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary22",
       "roomBelow": "penitentiary20",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary22": {
       "color": {
@@ -45734,10 +44862,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary23",
       "roomBelow": "penitentiary21",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary23": {
       "color": {
@@ -45949,10 +45073,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary24",
       "roomBelow": "penitentiary22",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary24": {
       "color": {
@@ -46085,10 +45205,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": "penitentiary23",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary25": {
       "color": {
@@ -46176,10 +45292,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "penitentiary26": {
       "color": {
@@ -46391,10 +45503,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary27": {
       "color": {
@@ -46543,10 +45651,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "penitentiary28": {
       "color": {
@@ -46774,10 +45878,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary29": {
       "color": {
@@ -46906,10 +46006,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": "penitentiary31",
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "penitentiary3": {
       "color": {
@@ -47151,10 +46247,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary30": {
       "color": {
@@ -47336,10 +46428,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 4,
-      },
     },
     "penitentiary31": {
       "color": {
@@ -47506,10 +46594,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary30",
       "roomBelow": "penitentiary32",
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "penitentiary32": {
       "color": {
@@ -47681,10 +46765,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary31",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "penitentiary33": {
       "color": {
@@ -47944,10 +47024,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary34crown": {
       "color": {
@@ -48174,10 +47250,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "penitentiary4": {
       "color": {
@@ -48383,10 +47455,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary5",
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "penitentiary5": {
       "color": {
@@ -48554,10 +47622,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary6",
       "roomBelow": "penitentiary4",
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "penitentiary6": {
       "color": {
@@ -48713,10 +47777,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": "penitentiary5",
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "penitentiary7": {
       "color": {
@@ -48915,10 +47975,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "penitentiary8": {
       "color": {
@@ -49093,10 +48149,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary9",
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "penitentiary9": {
       "color": {
@@ -49200,10 +48252,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "penitentiary",
       "roomAbove": "penitentiary10",
       "roomBelow": "penitentiary8",
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "safari1": {
       "color": {
@@ -49343,10 +48391,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 8,
-      },
     },
     "safari10": {
       "color": {
@@ -49491,10 +48535,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": "safari9",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "safari11": {
       "color": {
@@ -49693,10 +48733,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "safari12": {
       "color": {
@@ -49912,10 +48948,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": "safari13",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "safari13": {
       "color": {
@@ -50136,10 +49168,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": "safari12",
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "safari14": {
       "color": {
@@ -50360,10 +49388,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari15": {
       "color": {
@@ -50663,10 +49687,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 16,
-      },
     },
     "safari16": {
       "color": {
@@ -50872,10 +49892,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "safari17fish": {
       "color": {
@@ -51100,10 +50116,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari18": {
       "color": {
@@ -51308,10 +50320,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 16,
-      },
     },
     "safari19triple": {
       "color": {
@@ -51629,10 +50637,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 16,
-        "y": 10,
-      },
     },
     "safari2": {
       "color": {
@@ -51917,10 +50921,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari20": {
       "color": {
@@ -52087,10 +51087,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "safari21": {
       "color": {
@@ -52328,10 +51324,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari22": {
       "color": {
@@ -52446,10 +51438,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "safari23": {
       "color": {
@@ -52719,10 +51707,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "safari24": {
       "color": {
@@ -52954,10 +51938,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "safari25": {
       "color": {
@@ -53142,10 +52122,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari26": {
       "color": {
@@ -53398,10 +52374,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 12,
-      },
     },
     "safari27": {
       "color": {
@@ -53595,10 +52567,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
     "safari28": {
       "color": {
@@ -53768,10 +52736,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari29": {
       "color": {
@@ -53958,10 +52922,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari3": {
       "color": {
@@ -54140,10 +53100,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 4,
-        "y": 8,
-      },
     },
     "safari30": {
       "color": {
@@ -54260,10 +53216,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 2,
-        "y": 8,
-      },
     },
     "safari31": {
       "color": {
@@ -54567,10 +53519,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari32": {
       "color": {
@@ -54658,10 +53606,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "safari33": {
       "color": {
@@ -54869,10 +53813,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": "safari36",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari34": {
       "color": {
@@ -55068,10 +54008,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": "safari35",
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari35": {
       "color": {
@@ -55246,10 +54182,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": "safari34",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari36": {
       "color": {
@@ -55463,10 +54395,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": "safari33",
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari37crown": {
       "color": {
@@ -55744,10 +54672,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari4": {
       "color": {
@@ -55988,10 +54912,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 8,
-      },
     },
     "safari5": {
       "color": {
@@ -56168,10 +55088,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 4,
-      },
     },
     "safari6triple": {
       "color": {
@@ -56628,10 +55544,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 13,
-        "y": 13,
-      },
     },
     "safari7": {
       "color": {
@@ -56853,10 +55765,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 6,
-        "y": 6,
-      },
     },
     "safari8": {
       "color": {
@@ -56944,10 +55852,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": undefined,
-      "size": {
-        "x": 8,
-        "y": 2,
-      },
     },
     "safari9": {
       "color": {
@@ -57143,10 +56047,6 @@ exports[`covert campaign handbrake to protect against accidental changes 1`] = `
       "planet": "safari",
       "roomAbove": undefined,
       "roomBelow": "safari10",
-      "size": {
-        "x": 8,
-        "y": 6,
-      },
     },
   },
 }

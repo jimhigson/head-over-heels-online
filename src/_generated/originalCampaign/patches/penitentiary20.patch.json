@@ -1,11 +1,6 @@
 [
   {
     "op": "add",
-    "path": "/size/z",
-    "value": 14
-  },
-  {
-    "op": "add",
     "path": "/items/hintAboveA",
     "value": {
       "config": {
@@ -98,5 +93,10 @@
     "op": "replace",
     "path": "/color/shade",
     "value": "dimmed"
+  },
+  {
+    "op": "add",
+    "path": "/height",
+    "value": 13
   }
 ]

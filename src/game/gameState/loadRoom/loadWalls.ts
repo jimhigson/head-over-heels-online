@@ -66,9 +66,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
 
   const times = wallTimes(jsonWall.config);
 
-  const {
-    size: { z: roomSizeZ },
-  } = roomJson;
+  const { height: roomHeight } = roomJson;
   const wallTangentAxis = doorAlongAxis(direction);
   const wallNormalAxis = perpendicularAxisXy(wallTangentAxis);
 
@@ -86,8 +84,8 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     config: jsonWall.config,
     aabb: multiplyBoundingBox(
       wallTangentAxis === "y" ?
-        yAxisWallAabb(roomSizeZ)
-      : xAxisWallAabb(roomSizeZ),
+        yAxisWallAabb(roomHeight)
+      : xAxisWallAabb(roomHeight),
       times,
     ),
     renderAabb:

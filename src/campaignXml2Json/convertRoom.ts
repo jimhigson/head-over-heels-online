@@ -60,7 +60,6 @@ export const convertRoom = async (
     roomAbove:
       roomOnMap["above"] &&
       convertRoomId(roomNameFromXmlFilename(roomOnMap["above"])),
-    size: roomDimensions,
     items,
     color: convertRoomColour(color),
   };

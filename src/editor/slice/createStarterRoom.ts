@@ -81,7 +81,6 @@ const starterRoomWallItems = (size: Xy): EditorRoomJsonItems => ({
 export const starterRoom = (size: Xy): Omit<EditorRoomJson, "id"> => ({
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
-  size,
   items: {
     ["floor" as EditorRoomItemId]: {
       type: "floor",

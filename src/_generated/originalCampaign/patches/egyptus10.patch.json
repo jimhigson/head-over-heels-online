@@ -1,16 +1,6 @@
 [
   {
     "op": "replace",
-    "path": "/size/y",
-    "value": 9
-  },
-  {
-    "op": "replace",
-    "path": "/size/x",
-    "value": 9
-  },
-  {
-    "op": "replace",
     "path": "/items/wall@8,5,0/position/y",
     "value": 4
   },

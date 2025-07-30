@@ -1,16 +1,6 @@
 [
   {
     "op": "replace",
-    "path": "/size/y",
-    "value": 10
-  },
-  {
-    "op": "add",
-    "path": "/size/z",
-    "value": 12
-  },
-  {
-    "op": "replace",
     "path": "/items/wall@8,0,0/config/tiles/6",
     "value": "sarcophagus"
   },
@@ -83,5 +73,10 @@
     "op": "replace",
     "path": "/color/hue",
     "value": "yellow"
+  },
+  {
+    "op": "add",
+    "path": "/height",
+    "value": 11
   }
 ]

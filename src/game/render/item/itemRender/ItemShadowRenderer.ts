@@ -4,7 +4,6 @@ import type { Collideable } from "../../../collision/aabbCollision";
 import { collision1to1 } from "../../../collision/aabbCollision";
 import { concat, objectEntries } from "iter-tools";
 import type { SetRequired } from "type-fest";
-import { veryHighZ } from "../../../physics/mechanicsConstants";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
 import type {
@@ -27,6 +26,8 @@ type Cast = {
   /* used for tracking the shadows that have been used in this frame (ie, don't have to be removed) */
   renderedOnProgression: number;
 };
+
+const veryHighZ = 9999;
 
 const halfOpacity = new AlphaFilter({ alpha: 1 - amigaHalfBriteBrightness });
 class ItemShadowRenderer<T extends ItemInPlayType>

@@ -4,6 +4,7 @@ import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
+  height: 11,
   id: "egyptus14",
   items: {
     "block@2,7,1": {
@@ -100,5 +101,4 @@ export const room = inferRoomJson({
   planet: "egyptus",
   roomAbove: "egyptus19",
   roomBelow: "egyptus13",
-  size: { x: 8, y: 10, z: 12 },
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "egyptus">;

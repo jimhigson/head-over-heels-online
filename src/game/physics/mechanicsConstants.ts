@@ -3,6 +3,7 @@ import type { JsonItemConfig } from "../../model/json/JsonItem";
 import type { CharacterName } from "../../model/modelTypes";
 import { zxSpectrumFrameRate } from "../../originalGame";
 import { blockSizePx } from "../../sprites/spritePivots";
+import { wallTileSize } from "../../sprites/textureSizes";
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 
@@ -134,12 +135,10 @@ export const playerJumpHeightPx = {
 // original game lift speed was 1px per frame
 export const liftSpeed = pxPerFrameSpeed(2);
 
-export const defaultRoomHeightBlocks = 11;
+export const defaultRoomHeightBlocks = 10;
 
 /** how long (in ms) a shield bunny lasts for */
 export const shieldDuration = 60_000;
-
-export const veryHighZ = 9999;
 
 export const originalGameStartingLives = 8;
 
@@ -156,4 +155,11 @@ export const afterDeathInvulnerabilityFlashPhaseDuration = 0.15;
  * items pushing items pushing items
  */
 export const maxPushRecursionDepth = 8;
-export const wallRenderHeight = 50;
+
+// the height of a wall tile without the width - ie, the height from wall bottom on a x-coord of the sprite
+// to the wall-top on the same x-coord column
+export const wallHeightPx = wallTileSize.h - wallTileSize.w / 2;
+
+// in practice, walls render details above their height, so give the render height a couple of
+// extra pixels:
+export const wallRenderHeight = wallHeightPx + 2;
