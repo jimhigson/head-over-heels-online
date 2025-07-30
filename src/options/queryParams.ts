@@ -4,6 +4,8 @@ export type AllowedQueryParams = {
   noSaves: "1" | null;
   cheats: "1" | null;
   playAsHeels: "1" | null;
+  campaignName: string | null;
+  campaignAuthor: string | null;
 };
 
 export type TypedURLSearchParams = {

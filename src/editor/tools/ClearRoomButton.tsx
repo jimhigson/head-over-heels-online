@@ -8,6 +8,9 @@ export const ClearRoomButton = () => {
     <ToolbarButton
       className="bg-midRed"
       onClick={() => store.dispatch(clearRoom())}
+      tooltipContent={`## Clear room
+
+Clears the room out, leaving just walls, floors, and doors`}
     >
       <BitmapText className="relative leading-none">CLR</BitmapText>
     </ToolbarButton>

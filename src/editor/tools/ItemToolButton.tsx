@@ -3,7 +3,7 @@ import { store } from "../../store/store";
 import { setTool } from "../slice/levelEditorSlice";
 import type { ItemTool } from "../Tool";
 
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
 import { ToolbarButton } from "./ToolbarButton";
 import { useIsCurrentItemTool } from "./useIsCurrentItemTool";
@@ -12,6 +12,7 @@ type ItemToolButtonProps<T extends JsonItemType> = {
   itemTool: ItemTool<T>;
   className?: string;
   shortcutKeys?: ShortcutKeys;
+  tooltipContent?: ReactNode;
 };
 
 export const ItemToolButton = <T extends JsonItemType>({
@@ -19,6 +20,7 @@ export const ItemToolButton = <T extends JsonItemType>({
   children,
   className,
   shortcutKeys,
+  tooltipContent,
 }: PropsWithChildren<ItemToolButtonProps<T>>) => {
   const isCurrentTool = useIsCurrentItemTool(itemTool);
 
@@ -28,6 +30,7 @@ export const ItemToolButton = <T extends JsonItemType>({
       className={className}
       onClick={() => store.dispatch(setTool({ type: "item", item: itemTool }))}
       shortcutKeys={shortcutKeys}
+      tooltipContent={tooltipContent}
     >
       {children}
     </ToolbarButton>
