@@ -2,7 +2,6 @@ import { describe, expect, test } from "vitest";
 import { consolidateItemsMap } from "./consolidateItems";
 import type { JsonItem, JsonItemUnion } from "../model/json/JsonItem";
 import { readFileSync } from "fs";
-import { canonicalize } from "json-canonicalize";
 
 // Custom matcher for testing consolidation results
 declare module "vitest" {
@@ -19,10 +18,15 @@ expect.extend({
     expectedItems: T[],
   ) {
     const pass = expectedItems.every((expectedItem) =>
-      received.some(
-        (receivedItem) =>
-          canonicalize(receivedItem) === canonicalize(expectedItem),
-      ),
+      received.some((receivedItem) => {
+        try {
+          // Use expect's deep equality check which supports matchers like expect.closeTo
+          expect(receivedItem).toEqual(expectedItem);
+          return true;
+        } catch {
+          return false;
+        }
+      }),
     );
 
     return {
@@ -74,6 +78,196 @@ describe("blocks", () => {
         },
       },
     ]);
+  });
+
+  describe("fractional positions", () => {
+    test("can consolidate two blocks on fractional grid position in x", () => {
+      const items: Record<string, JsonItem<"block">> = {
+        block1: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 0.5, y: 0, z: 0 },
+        },
+        block2: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 0.5, y: 1, z: 0 },
+        },
+      };
+
+      const result = consolidateItemsMap(items);
+      const resultValues = Object.values(result);
+
+      expect(resultValues).toHaveLength(1);
+      expect(resultValues).toContainConsolidatedItems<JsonItem<"block">>([
+        {
+          type: "block",
+          config: {
+            style: "organic",
+            times: {
+              y: 2,
+            },
+          },
+          position: {
+            x: 0.5,
+            y: 0,
+            z: 0,
+          },
+        },
+      ]);
+    });
+
+    test("can consolidate two blocks on fractional grid position by 16ths in x", () => {
+      const items: Record<string, JsonItem<"block">> = {
+        block1: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 1 / 16, y: 0, z: 0 },
+        },
+        block2: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 1 / 16, y: 1, z: 0 },
+        },
+      };
+
+      const result = consolidateItemsMap(items);
+      const resultValues = Object.values(result);
+
+      expect(resultValues).toHaveLength(1);
+      expect(resultValues).toContainConsolidatedItems<JsonItem<"block">>([
+        {
+          type: "block",
+          config: {
+            style: "organic",
+            times: {
+              y: 2,
+            },
+          },
+          position: {
+            x: expect.closeTo(1 / 16),
+            y: 0,
+            z: 0,
+          },
+        },
+      ]);
+    });
+
+    test("can consolidate two blocks on fractional grid position by 3 16ths in x", () => {
+      const items: Record<string, JsonItem<"block">> = {
+        block1: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 3 / 16, y: 0, z: 0 },
+        },
+        block2: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 3 / 16, y: 1, z: 0 },
+        },
+      };
+
+      const result = consolidateItemsMap(items);
+      const resultValues = Object.values(result);
+
+      expect(resultValues).toHaveLength(1);
+      expect(resultValues).toContainConsolidatedItems<JsonItem<"block">>([
+        {
+          type: "block",
+          config: {
+            style: "organic",
+            times: {
+              y: 2,
+            },
+          },
+          position: {
+            x: expect.closeTo(3 / 16),
+            y: 0,
+            z: 0,
+          },
+        },
+      ]);
+    });
+
+    test("can consolidate two blocks on fractional grid position in x and y", () => {
+      const items: Record<string, JsonItem<"block">> = {
+        block1: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 7 / 16, y: 9 / 16, z: 0 },
+        },
+        block2: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 7 / 16, y: 9 / 16 + 1, z: 0 },
+        },
+      };
+
+      const result = consolidateItemsMap(items);
+      const resultValues = Object.values(result);
+
+      expect(resultValues).toHaveLength(1);
+      expect(resultValues).toContainConsolidatedItems<JsonItem<"block">>([
+        {
+          type: "block",
+          config: {
+            style: "organic",
+            times: {
+              y: 2,
+            },
+          },
+          position: {
+            x: expect.closeTo(7 / 16),
+            y: expect.closeTo(9 / 16),
+            z: 0,
+          },
+        },
+      ]);
+    });
+
+    test("does not consolidate two blocks on fractional grid positions that only partially overlap but differ in x", () => {
+      const items: Record<string, JsonItem<"block">> = {
+        block1: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+        block2: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 0.5, y: 1, z: 0 },
+        },
+      };
+
+      const result = consolidateItemsMap(items);
+      const resultValues = Object.values(result);
+
+      // has not changed anything:
+      expect(resultValues).toHaveLength(2);
+      expect(result).toEqual(items);
+    });
+
+    test("does not consolidate two blocks on fractional grid positions that only partially overlap but differ in y", () => {
+      const items: Record<string, JsonItem<"block">> = {
+        block1: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+        block2: {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 1, y: 0.5, z: 0 },
+        },
+      };
+
+      const result = consolidateItemsMap(items);
+      const resultValues = Object.values(result);
+
+      // has not changed anything:
+      expect(resultValues).toHaveLength(2);
+      expect(result).toEqual(items);
+    });
   });
 
   test("can consolidate four blocks in x and y at the origin", () => {
