@@ -32,6 +32,13 @@ export const doorPostHeightPx = blockSizePx.h * doorPostHeightBlocks;
 export const doorOverallWidthBlocks = 2;
 export const doorOverallWidthPx = 2 * blockSizePx.w;
 
+// to be true to the original game, this should be 0.75 blocks
+const autoWalkDistanceBlocks = 0.4;
+// the stop autowalk isn't just a plane, in case the player gets pushed
+// through a long way in one frame, like an item being introduced to
+// the room, like the other player walking through the door
+const stopAutoWalkDepthBlocks = 2;
+
 export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
   jsonItemId: RoomItemId,
@@ -357,7 +364,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     jsonItemId,
     aabb: blockXyzToFineXyz({
       [alongWallAxis]: 2,
-      [throughDoorAxis]: 0,
+      [throughDoorAxis]: stopAutoWalkDepthBlocks,
       z: 2,
     } as Xyz),
     config: {},
@@ -365,7 +372,11 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     state: {
       ...defaultBaseState(),
       position: blockXyzToFineXyz(
-        subXyz(position, scaleXyz(unitVectors[direction], 0.75)),
+        subXyz(
+          position,
+          scaleXyz(unitVectors[direction], autoWalkDistanceBlocks),
+          inHidden ? originXyz : { [throughDoorAxis]: stopAutoWalkDepthBlocks },
+        ),
       ),
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },
