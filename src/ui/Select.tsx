@@ -98,7 +98,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
         <CssVariables scaleFactor={2}>
           <Command
             value={value}
-            onValueChange={(newValue) => onSelect(newValue as Value)}
+            // onValueChange here to react to preselection of the items (changing the command's value)
             className="w-[--radix-popper-anchor-width]"
           >
             {props.disableCommandInput === true ? null : (
