@@ -7,17 +7,14 @@ import { imageSize } from "image-size";
 import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
 import spritesheetPalette from "../gfx/spritesheetPalette.json";
 import { halfbriteHex } from "./utils/colour/halfBrite";
+import { sanitiseForClassName } from "./game/components/tailwindSprites/SanitiseForClassName";
 
 const spritesheetSize = imageSize("gfx/sprites.png");
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
   ({ addUtilities, addBase, addVariant, e }) => {
-    const sanitiseId = (id: string) =>
-      // spritesheet texture/anim ids contain dots. This is fine in tailwind, but monaco editor strips
-      // them out. To make decorations in monaco with sprites, we need to remove the dots
-      // TODO: the better fix would be to rename all textures to not use dots!
-      e(id.replaceAll(".", "_"));
+    const sanitiseId = (id: string) => e(sanitiseForClassName(id));
 
     const animations: CSSRuleObject = {};
 
