@@ -38,5 +38,13 @@ export const loadCampaignFromDb = async (options: {
     throw res.error;
   }
 
-  return (await decompressObject(res.data.data)) as Campaign<string>;
+  const data = (await decompressObject(res.data.data)) as Campaign<string>;
+
+  Object.values(data.rooms).forEach((room) => {
+    // migrate rooms to newer format - this can be removed when .size is gone from all campaigns likely to be loaded
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- need any since this is explicitly not a type we have any more since .size was removed
+    delete (room as any).size;
+  });
+
+  return data;
 };

@@ -15,6 +15,7 @@ import {
 import type { JsonItemUnion } from "../model/json/JsonItem";
 import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
 import { Grid } from "./grid";
+import { blockSizeXyzPx } from "../sprites/spritePivots";
 
 export type ItemWithId = [itemId: string, item: JsonItemUnion];
 export type ConsolidatableItemWithId = [
@@ -44,10 +45,54 @@ const isConsolidatableItemWithId = (
   return isConsolidatable(input[1]);
 };
 
-export const consolidateItems = (
-  items: Iterable<ItemWithId>,
-): Iterable<ItemWithId> => {
-  let currentItems = [...items];
+/**
+ * FRACTIONAL POSITION CONSOLIDATION
+ *
+ * This implementation handles items that can be placed at fractional positions
+ * (e.g., x=0.5, y=0.75). In the game, blocks can appear at fractional positions
+ * based on the block's pixel size. Currently blocks are 16x16 pixels, meaning
+ * there are 16 possible positions within each integer grid cell.
+ *
+ * The key insight is that items can only be adjacent (and thus consolidatable)
+ * if they share the same fractional offset. For example:
+ * - Items at positions 0, 1, 2 can consolidate together
+ * - Items at positions 0.5, 1.5, 2.5 can consolidate together
+ * - But an item at position 0 cannot be adjacent to an item at 0.5
+ *
+ * This is because adjacency means being exactly one block away. With a block size
+ * of 16 pixels, position 0 is adjacent to position 1 (16/16ths away), but not to
+ * 0.5 (8/16ths away).
+ *
+ * Our approach:
+ * 1. Bin items by their fractional offset (0/blockSize, 1/blockSize, ..., (blockSize-1)/blockSize for both x and y)
+ * 2. Create a separate Grid for each non-empty bin
+ * 3. Within each bin, floor all positions to integers (so 1.5 becomes 1)
+ * 4. Run the original consolidation algorithm on each bin's integer grid
+ * 5. After consolidation, restore the fractional offsets to the results
+ *
+ * This way, we can run the known-good integer consolidation algorithm up to
+ * blockSizeX * blockSizeY times (currently 16x16 = 256 possible offsets), but
+ * typically far fewer since most offset combinations will be empty.
+ */
+
+// Helper to get the fractional offset of a position
+// For example with 16px blocks: position 2.25 has offset 4 (since 0.25 * 16 = 4)
+const getFractionalOffset = (position: Xyz): { x: number; y: number } => {
+  return {
+    x: Math.floor((position.x % 1) * blockSizeXyzPx.x),
+    y: Math.floor((position.y % 1) * blockSizeXyzPx.y),
+  };
+};
+
+// Helper to create a bin key from fractional offsets
+const makeBinKey = (offsetX: number, offsetY: number): string => {
+  return `${offsetX},${offsetY}`;
+};
+
+// Consolidate items within a single bin using the original algorithm
+// This runs multiple passes until no more consolidations are possible
+const consolidateBin = (items: ItemWithId[]): ItemWithId[] => {
+  let currentItems = items;
   let previousItemCount = currentItems.length;
 
   // Run consolidation iteratively until no more consolidations occur
@@ -63,6 +108,83 @@ export const consolidateItems = (
     previousItemCount = consolidatedItems.length;
     currentItems = consolidatedItems;
   }
+};
+
+export const consolidateItems = (
+  items: Iterable<ItemWithId>,
+): Iterable<ItemWithId> => {
+  // Bin items by their fractional position offset
+  // Each bin contains items that could potentially be adjacent to each other
+  const bins = new Map<string, ItemWithId[]>();
+  const nonConsolidatable: ItemWithId[] = [];
+
+  for (const itemWithId of items) {
+    const [, item] = itemWithId;
+
+    if (isConsolidatable(item as JsonItemUnion)) {
+      // Get the fractional offset of this item's position
+      // e.g., with 16px blocks: position 3.25 → offset (4, 0) since 0.25 * 16 = 4
+      const offset = getFractionalOffset(item.position);
+      const binKey = makeBinKey(offset.x, offset.y);
+
+      if (!bins.has(binKey)) {
+        bins.set(binKey, []);
+      }
+      bins.get(binKey)!.push(itemWithId);
+    } else {
+      nonConsolidatable.push(itemWithId);
+    }
+  }
+
+  // Consolidate each bin independently
+  // Items in different bins can never be adjacent, so they're processed separately
+  const consolidatedItems: ItemWithId[] = [];
+
+  for (const [binKey, binItems] of bins) {
+    if (binItems.length > 0) {
+      // Create items with floored positions for this bin
+      // This converts fractional positions to integers for the consolidation algorithm
+      // e.g., positions 0.5, 1.5, 2.5 become 0, 1, 2
+      const flooredItems: ItemWithId[] = binItems.map(([id, item]) => [
+        id,
+        {
+          ...item,
+          position: {
+            x: Math.floor(item.position.x),
+            y: Math.floor(item.position.y),
+            z: item.position.z, // z is always integer
+          },
+        } as ConsolidatableJsonItem,
+      ]);
+
+      // Run the consolidation algorithm on this bin
+      // The algorithm now sees integer positions and works as originally designed
+      const consolidatedBin = consolidateBin(flooredItems);
+
+      // Restore the fractional offsets to the consolidated results
+      // This ensures consolidated items maintain their correct fractional positions
+      const [offsetX, offsetY] = binKey.split(",").map(Number);
+      const fractionalX = offsetX / blockSizeXyzPx.x;
+      const fractionalY = offsetY / blockSizeXyzPx.y;
+
+      for (const [id, item] of consolidatedBin) {
+        consolidatedItems.push([
+          id,
+          {
+            ...item,
+            position: {
+              x: item.position.x + fractionalX,
+              y: item.position.y + fractionalY,
+              z: item.position.z,
+            },
+          } as JsonItemUnion,
+        ]);
+      }
+    }
+  }
+
+  // Return all consolidated items plus non-consolidatable items
+  return [...consolidatedItems, ...nonConsolidatable];
 };
 
 const consolidateItemsSinglePass = (
