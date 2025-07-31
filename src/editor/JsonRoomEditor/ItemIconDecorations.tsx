@@ -387,7 +387,7 @@ function* generateItemIconDecorations({
   }
 }
 
-const useItemIconDecorations = (
+export const useItemIconDecorations = (
   editor: editor.IStandaloneCodeEditor | null,
 ): editor.IEditorDecorationsCollection | null => {
   const monaco = useLoadMonaco();
@@ -424,14 +424,4 @@ const useItemIconDecorations = (
   }, [editor, jsonItems, monaco, scenery]);
 
   return collectionRef.current;
-};
-
-export const ItemContentWidgets = ({
-  editor,
-}: {
-  editor: editor.IStandaloneCodeEditor | null;
-}) => {
-  useItemIconDecorations(editor);
-
-  return null;
 };

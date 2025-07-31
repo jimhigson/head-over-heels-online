@@ -4,7 +4,7 @@ import type { LevelEditorState } from "../levelEditorSlice";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
 import { pushUndoInPlace } from "./undoReducers";
-import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
+import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 
 export const itemPreviewReducers = {
   setAutoCoalesce(_state: LevelEditorState, action: PayloadAction<boolean>) {
@@ -20,8 +20,7 @@ export const itemPreviewReducers = {
       state.previewedEdits,
     );
     if (state.autoCoalesce) {
-      const currentRoom = selectCurrentRoomFromLevelEditorState(state);
-      currentRoom.items = consolidateItemsMap(currentRoom.items);
+      consolidateCurrentRoomInPlace(state);
     }
 
     state.previewedEdits = {};
