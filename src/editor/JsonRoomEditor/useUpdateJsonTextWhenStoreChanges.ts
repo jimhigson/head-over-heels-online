@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { startAppListening } from "../../store/listenerMiddleware";
 import {
   selectCurrentEditingRoomJson,
   type RootStateWithLevelEditorSlice,
+  useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 import type { editor } from "monaco-editor";
 import { store } from "../../store/store";
@@ -15,81 +15,84 @@ const updateTextNow = (
   state: RootStateWithLevelEditorSlice,
   monaco: Monaco | null,
 ) => {
-  const roomJson = selectCurrentEditingRoomJson(state);
+  if (!monaco) {
+    return;
+  }
 
-  if (roomJson === undefined) {
-    editor.setValue("");
+  const roomJson = selectCurrentEditingRoomJson(state);
+  const { currentlyEditingRoomId } = state.levelEditor;
+
+  if (roomJson === undefined || !currentlyEditingRoomId) {
+    return;
+  }
+
+  // Get the model for this specific room
+  const modelUri = monaco.Uri.parse(`${currentlyEditingRoomId}.json`);
+  const model = monaco.editor.getModel(modelUri);
+
+  if (!model) {
     return;
   }
 
   const stringifiedJson = JSON.stringify(roomJson, null, 2);
 
-  if (editor.getValue() === stringifiedJson) {
+  if (model.getValue() === stringifiedJson) {
     return;
   }
 
-  // text has changes - get where the cursor is in the json now:
-  const editorModel = editor.getModel();
+  // Check if this model is currently being edited
+  const isCurrentlyActive = editor.getModel() === model;
 
-  if (editorModel === null) {
-    return;
+  // Get current text before updating
+  const currentText = model.getValue();
+
+  // If this is the active model, capture cursor position before updating
+  let cursorPath: (string | number)[] = [];
+  if (isCurrentlyActive) {
+    const currentPosition = editor.getPosition();
+    if (currentPosition) {
+      // Get the json path at the current monaco cursor position
+      const offset = model.getOffsetAt(currentPosition);
+      const location = getLocation(currentText, offset);
+      cursorPath = location.path;
+    }
   }
 
-  // Get the current cursor position and text
-  const currentPosition = editor.getPosition();
-  const currentText = editor.getValue();
+  // Always update the model text to keep it in sync
+  model.setValue(stringifiedJson);
 
-  if (!currentPosition) {
-    editor.setValue(stringifiedJson);
-    return;
-  }
-
-  // Get the json path at the current monaco cursor position
-  const offset = editorModel.getOffsetAt(currentPosition);
-  const { path } = getLocation(currentText, offset);
-
-  // Set the new value
-  editor.setValue(stringifiedJson);
-
-  // Try to restore cursor position to the same JSON path
-  if (path.length > 0) {
+  // If this is the active model and we had a cursor position, try to keep the cursor position
+  // (relative to the json) the same
+  if (isCurrentlyActive && cursorPath.length > 0) {
+    // Try to restore cursor position to the same JSON path
     const newRootNode = parseTree(stringifiedJson);
     if (newRootNode) {
-      const targetNode = findNodeAtLocation(newRootNode, path);
+      const targetNode = findNodeAtLocation(newRootNode, cursorPath);
 
       if (targetNode) {
         // Found the same path in the new JSON, restore cursor there
-        const newPosition = editorModel.getPositionAt(targetNode.offset);
+        const newPosition = model.getPositionAt(targetNode.offset);
         editor.setPosition(newPosition);
 
-        // Use smooth scrolling if monaco is available
-        if (monaco) {
-          editor.revealPositionInCenterIfOutsideViewport(
-            newPosition,
-            monaco.editor.ScrollType.Smooth,
-          );
-        } else {
-          editor.revealPositionInCenter(newPosition);
-        }
+        // Use smooth scrolling
+        editor.revealPositionInCenterIfOutsideViewport(
+          newPosition,
+          monaco.editor.ScrollType.Smooth,
+        );
       } else {
         // Path not found, try to find the closest parent path
-        for (let i = path.length - 1; i > 0; i--) {
-          const parentPath = path.slice(0, i);
+        for (let i = cursorPath.length - 1; i > 0; i--) {
+          const parentPath = cursorPath.slice(0, i);
           const parentNode = findNodeAtLocation(newRootNode, parentPath);
 
           if (parentNode) {
-            const newPosition = editorModel.getPositionAt(parentNode.offset);
+            const newPosition = model.getPositionAt(parentNode.offset);
             editor.setPosition(newPosition);
 
-            // Use smooth scrolling if monaco is available
-            if (monaco) {
-              editor.revealPositionInCenterIfOutsideViewport(
-                newPosition,
-                monaco.editor.ScrollType.Smooth,
-              );
-            } else {
-              editor.revealPositionInCenter(newPosition);
-            }
+            editor.revealPositionInCenterIfOutsideViewport(
+              newPosition,
+              monaco.editor.ScrollType.Smooth,
+            );
             break;
           }
         }
@@ -98,58 +101,86 @@ const updateTextNow = (
   }
 };
 
+const useUpdateTextWhenJsonChangesInSameRoom = (
+  editor: editor.IStandaloneCodeEditor | null,
+  monaco: Monaco | null,
+) => {
+  const currentRoomJson = useAppSelectorWithLevelEditorSlice(
+    selectCurrentEditingRoomJson,
+  );
+  const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
+    (state) => state.levelEditor.currentlyEditingRoomId,
+  );
+  const previousRoomIdRef = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (editor === null || !currentRoomJson || !currentlyEditingRoomId) {
+      return;
+    }
+
+    const roomChanged =
+      previousRoomIdRef.current !== undefined &&
+      previousRoomIdRef.current !== currentlyEditingRoomId;
+    // Check if room ID changed - if so, don't update text
+    // (the document switching is handled by useCreateDocumentsInMonacoWhenCurrentRoomChanges)
+    if (roomChanged) {
+      previousRoomIdRef.current = currentlyEditingRoomId;
+      return;
+    }
+
+    previousRoomIdRef.current = currentlyEditingRoomId;
+
+    const state = store.getState() as RootStateWithLevelEditorSlice;
+    updateTextNow(editor, state, monaco);
+  }, [editor, monaco, currentRoomJson, currentlyEditingRoomId]);
+};
+
+const useCreateDocumentsInMonacoWhenCurrentRoomChanges = (
+  monaco: Monaco | null,
+) => {
+  const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
+    (state) => state.levelEditor.currentlyEditingRoomId,
+  );
+
+  useEffect(() => {
+    if (!monaco) {
+      return;
+    }
+
+    // Check if a model already exists for this room
+    const modelUri = monaco.Uri.parse(
+      // this is the monaco recommended way:
+      //`inmemory://model/${currentlyEditingRoomId}`,
+      // but this is simpler:
+      `${currentlyEditingRoomId}.json`,
+    );
+    const existingModel = monaco.editor.getModel(modelUri);
+
+    if (!existingModel) {
+      // Create a new model for this room
+      const state = store.getState() as RootStateWithLevelEditorSlice;
+      const roomJson = selectCurrentEditingRoomJson(state);
+      const content = roomJson ? JSON.stringify(roomJson, null, 2) : "";
+
+      monaco.editor.createModel(content, "json", modelUri);
+    } else {
+      // Update existing model's content
+      const state = store.getState() as RootStateWithLevelEditorSlice;
+      const roomJson = selectCurrentEditingRoomJson(state);
+      const content = roomJson ? JSON.stringify(roomJson, null, 2) : "";
+
+      existingModel.setValue(content);
+    }
+  }, [monaco, currentlyEditingRoomId]);
+};
+
 export const useUpdateJsonTextWhenStoreChanges = (
   editor: editor.IStandaloneCodeEditor | null,
 ) => {
   const monaco = useLoadMonaco();
-  const initialised = useRef(false);
 
-  // initial setting of editor state:
-  useEffect(() => {
-    if (editor === null) {
-      return;
-    }
-
-    if (initialised.current) {
-      return;
-    }
-
-    updateTextNow(
-      editor,
-      store.getState() as RootStateWithLevelEditorSlice,
-      monaco,
-    );
-
-    initialised.current = true;
-  }, [editor, monaco]);
-
-  // set editor state every time the store changes:
-  useEffect(() => {
-    if (editor === null) {
-      return;
-    }
-
-    const unSub = startAppListening({
-      // predicate is any time the json for the room has changed:
-      predicate(action, currentState, originalState) {
-        return (
-          selectCurrentEditingRoomJson(
-            currentState as RootStateWithLevelEditorSlice,
-          ) !==
-          selectCurrentEditingRoomJson(
-            originalState as RootStateWithLevelEditorSlice,
-          )
-        );
-      },
-      effect(action, { getState }) {
-        updateTextNow(
-          editor,
-          getState() as RootStateWithLevelEditorSlice,
-          monaco,
-        );
-      },
-    });
-
-    return unSub;
-  }, [editor, monaco]);
+  // update text in editor model for existing document when the current room's contents change::
+  useUpdateTextWhenJsonChangesInSameRoom(editor, monaco);
+  // create new documents when we open rooms we haven't edited before:
+  useCreateDocumentsInMonacoWhenCurrentRoomChanges(monaco);
 };

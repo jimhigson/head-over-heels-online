@@ -10,8 +10,7 @@ import type {
 } from "../../../model/json/MonsterJsonConfig";
 import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
-import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 
 const isDoorTool = (itemTool: ItemTool): itemTool is ItemTool<"door"> => {
   return itemTool.type === "door";
@@ -107,8 +106,7 @@ export const applyItemToolReducers = {
     }
 
     if (!preview && state.autoCoalesce) {
-      const currentRoom = selectCurrentRoomFromLevelEditorState(state);
-      currentRoom.items = consolidateItemsMap(currentRoom.items);
+      consolidateCurrentRoomInPlace(state);
     }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
