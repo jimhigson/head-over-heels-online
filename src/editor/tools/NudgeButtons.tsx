@@ -74,6 +74,7 @@ export const NudgeButtons = () => {
             handleMove(unitVectors.left);
           }}
           shortcutKeys={["ArrowLeft"]}
+          tooltipContent="Hotkey: **⬅**"
         >
           <BitmapText className="relative leading-none">↖</BitmapText>
         </ToolbarButton>
@@ -84,6 +85,7 @@ export const NudgeButtons = () => {
             handleMove(unitVectors.right);
           }}
           shortcutKeys={["ArrowRight"]}
+          tooltipContent="Hotkey: **➡**"
         >
           <BitmapText className="relative leading-none">↘</BitmapText>
         </ToolbarButton>
@@ -94,6 +96,7 @@ export const NudgeButtons = () => {
             handleMove(unitVectors.away);
           }}
           shortcutKeys={["ArrowUp"]}
+          tooltipContent="Hotkey: **⬆**"
         >
           <BitmapText className="relative leading-none">↗</BitmapText>
         </ToolbarButton>
@@ -104,6 +107,7 @@ export const NudgeButtons = () => {
             handleMove(unitVectors.towards);
           }}
           shortcutKeys={["ArrowDown"]}
+          tooltipContent="Hotkey: **⬇**"
         >
           <BitmapText className="relative leading-none">↙</BitmapText>
         </ToolbarButton>
@@ -114,6 +118,7 @@ export const NudgeButtons = () => {
             handleMove(unitVectors.up);
           }}
           shortcutKeys={["⇧ArrowUp"]}
+          tooltipContent="Hotkey: **shift-⬆**"
         >
           <BitmapText className="relative leading-none">⬆</BitmapText>
         </ToolbarButton>
@@ -124,6 +129,7 @@ export const NudgeButtons = () => {
             handleMove(unitVectors.down);
           }}
           shortcutKeys={["⇧ArrowDown"]}
+          tooltipContent="Hotkey: **shift-⬇**"
         >
           <BitmapText className="relative leading-none">⬇</BitmapText>
         </ToolbarButton>

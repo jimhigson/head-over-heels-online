@@ -155,6 +155,9 @@ hotkey: **B**`}
         </ItemToolButton>
         <ItemToolButton
           itemTool={{ type: "block", config: { style: "tower" } }}
+          shortcutKeys={["T"]}
+          tooltipContent={`## Tower
+Hotkey: **T**`}
         >
           <span
             className={`sprite texture-tower ${buttonSpriteRevertColourClasses}`}
