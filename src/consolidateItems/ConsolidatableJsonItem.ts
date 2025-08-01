@@ -63,9 +63,11 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
       return { x: 1, y: 1, z: 0 };
 
     case "block":
+      /*
+      dissapearing blocks are now consolidatable, but they load as individual smaller blocks
       if (jsonItem.config.disappearing) {
         return originXyz;
-      }
+      }*/
       return unitXyz;
     case "barrier":
       if (jsonItem.config.disappearing) {

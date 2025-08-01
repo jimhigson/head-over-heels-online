@@ -228,7 +228,10 @@ const walkAlongShortestAxisTowardsPlayer = <
   };
 };
 
-const walkTowardIfInSquare = <RoomId extends string, RoomItemId extends string>(
+const walkTowardAnalogueIfInSquare = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
@@ -262,6 +265,12 @@ const walkTowardIfInSquare = <RoomId extends string, RoomItemId extends string>(
 
   if (!inSquare) {
     // outside of a 5x5 square around the monster
+    return notWalking;
+  }
+
+  if (closestPlayable.state.standingOnItemId === itemWithMovement.id) {
+    // for example, platforms that follow the player will only move when jumping,
+    // not when standing. If a monster, the player has lost a life anyway here
     return notWalking;
   }
 
@@ -523,11 +532,16 @@ export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
       return turnTowardsPlayer(itemWithMovement, room, gameState, deltaMS);
 
     case "towards-analogue":
-      return walkTowardIfInSquare(itemWithMovement, room, gameState, deltaMS);
+      return walkTowardAnalogueIfInSquare(
+        itemWithMovement,
+        room,
+        gameState,
+        deltaMS,
+      );
 
     // ie, emperor's guardian
     case "towards-analogue-unless-planet-crowns":
-      return walkTowardIfInSquare(
+      return walkTowardAnalogueIfInSquare(
         itemWithMovement,
         room,
         gameState,

@@ -12,6 +12,7 @@ type TestBlockItem = ItemInPlay<"block", TestRoomId, TestItemId>;
 
 const makeTestRoomItems = () => ({
   monster1: {
+    jsonItemId: "monster1",
     type: "monster",
     state: {
       activated: false,
@@ -19,6 +20,7 @@ const makeTestRoomItems = () => ({
     },
   } satisfies PartialDeep<TestMonsterItem> as unknown as TestMonsterItem,
   monster2: {
+    jsonItemId: "monster2",
     type: "monster",
     state: {
       activated: true,
@@ -26,10 +28,12 @@ const makeTestRoomItems = () => ({
     } as MonsterState<TestItemId>,
   } satisfies PartialDeep<TestMonsterItem> as unknown as TestMonsterItem,
   block1: {
+    jsonItemId: "block1",
     type: "block",
     state: { disappearing: { on: "stand" } },
   } satisfies PartialDeep<TestBlockItem> as unknown as TestMonsterItem,
   block2: {
+    jsonItemId: "block2",
     type: "block",
     state: { disappearing: { on: "stand" } },
   } satisfies PartialDeep<TestBlockItem> as unknown as TestMonsterItem,

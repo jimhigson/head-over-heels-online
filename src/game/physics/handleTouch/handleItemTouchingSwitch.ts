@@ -1,6 +1,9 @@
 import type { ItemInPlayType, SwitchSetting } from "../../../model/ItemInPlay";
 import type { SwitchInRoomConfig } from "../../../model/json/SwitchConfig";
-import type { RoomStateItems } from "../../../model/RoomState";
+import {
+  iterateRoomItems,
+  type RoomStateItems,
+} from "../../../model/RoomState";
 import { toggleBoolean } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
@@ -65,28 +68,35 @@ export const toggleSwitchInRoom = <
 ) => {
   // loop over the top-level of the switch's modification list:
   for (const modifiesItem of switchConfig.modifies) {
-    for (const target of modifiesItem.targets) {
-      const targetItem = roomItems[target];
+    // loop here because there could be multiple items with the same jsonItemId
+    for (const roomItem of iterateRoomItems(roomItems)) {
+      if (
+        !roomItem.jsonItemId ||
+        !modifiesItem.targets.includes(roomItem.jsonItemId)
+      ) {
+        // skip items that are not targeted by this switch
+        continue;
+      }
 
-      if (targetItem === undefined) {
+      if (roomItem === undefined) {
         // item could have been deleted from the room (ie, be a disappearing block
         // that's already been stood on)
         continue;
       }
 
-      if (targetItem.type !== modifiesItem.expectType) {
+      if (roomItem.type !== modifiesItem.expectType) {
         throw new Error(
-          `item "${targetItem.id}" is of type "${targetItem.type}" - does not match expected type "${modifiesItem.expectType}" from switch config ${JSON.stringify(switchConfig, null, 2)}`,
+          `item "${roomItem.id}" is of type "${roomItem.type}" - does not match expected type "${modifiesItem.expectType}" from switch config ${JSON.stringify(switchConfig, null, 2)}`,
         );
       }
 
-      const targetItemCast = targetItem as {
+      const targetItemCast = roomItem as {
         state: Record<string, unknown>;
       };
 
       // loop the states to modify:
       targetItemCast.state = {
-        ...targetItem.state,
+        ...roomItem.state,
         ...modifiesItem[`${newSetting}State`],
         switchedAtRoomTime: roomTime,
         switchedSetting: newSetting,

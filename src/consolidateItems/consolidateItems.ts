@@ -16,6 +16,7 @@ import type { JsonItemUnion } from "../model/json/JsonItem";
 import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
 import { Grid } from "./grid";
 import { blockSizeXyzPx } from "../sprites/spritePivots";
+import type { ValueOf } from "type-fest";
 
 export type ItemWithId = [itemId: string, item: JsonItemUnion];
 export type ConsolidatableItemWithId = [
@@ -91,13 +92,18 @@ const makeBinKey = (offsetX: number, offsetY: number): string => {
 
 // Consolidate items within a single bin using the original algorithm
 // This runs multiple passes until no more consolidations are possible
-const consolidateBin = (items: ItemWithId[]): ItemWithId[] => {
+const consolidateBin = (
+  items: ItemWithId[],
+  considerItem: (item: ItemWithId) => boolean,
+): ItemWithId[] => {
   let currentItems = items;
   let previousItemCount = currentItems.length;
 
   // Run consolidation iteratively until no more consolidations occur
   while (true) {
-    const consolidatedItems = [...consolidateItemsSinglePass(currentItems)];
+    const consolidatedItems = [
+      ...consolidateItemsSinglePass(currentItems, considerItem),
+    ];
 
     // If the number of items didn't change, we're done
     if (consolidatedItems.length === previousItemCount) {
@@ -112,6 +118,11 @@ const consolidateBin = (items: ItemWithId[]): ItemWithId[] => {
 
 export const consolidateItems = (
   items: Iterable<ItemWithId>,
+  /**
+   * A function to determine if an item should be considered for consolidation,
+   * if not given, all items will be considered
+   */
+  considerItem: (item: ItemWithId) => boolean = () => true,
 ): Iterable<ItemWithId> => {
   // Bin items by their fractional position offset
   // Each bin contains items that could potentially be adjacent to each other
@@ -121,7 +132,10 @@ export const consolidateItems = (
   for (const itemWithId of items) {
     const [, item] = itemWithId;
 
-    if (isConsolidatable(item as JsonItemUnion)) {
+    // Check if the item should be considered for consolidation
+    if (!considerItem(itemWithId)) {
+      nonConsolidatable.push(itemWithId);
+    } else if (isConsolidatable(item as JsonItemUnion)) {
       // Get the fractional offset of this item's position
       // e.g., with 16px blocks: position 3.25 → offset (4, 0) since 0.25 * 16 = 4
       const offset = getFractionalOffset(item.position);
@@ -159,7 +173,7 @@ export const consolidateItems = (
 
       // Run the consolidation algorithm on this bin
       // The algorithm now sees integer positions and works as originally designed
-      const consolidatedBin = consolidateBin(flooredItems);
+      const consolidatedBin = consolidateBin(flooredItems, considerItem);
 
       // Restore the fractional offsets to the consolidated results
       // This ensures consolidated items maintain their correct fractional positions
@@ -189,13 +203,21 @@ export const consolidateItems = (
 
 const consolidateItemsSinglePass = (
   items: Iterable<ItemWithId>,
+  /**
+   * A function to determine if an item should be considered for consolidation,
+   * if not given, all items will be considered
+   */
+  considerItem: (item: ItemWithId) => boolean = () => true,
 ): Iterable<ItemWithId> => {
   // Separate consolidatable and non-consolidatable items
   const consolidatableItems: ConsolidatableItemWithId[] = [];
   const nonConsolidatable: ItemWithId[] = [];
 
   for (const itemWithId of items) {
-    if (isConsolidatableItemWithId(itemWithId)) {
+    if (!considerItem(itemWithId)) {
+      // Item should not be considered for consolidation
+      nonConsolidatable.push(itemWithId);
+    } else if (isConsolidatableItemWithId(itemWithId)) {
       consolidatableItems.push(itemWithId);
     } else {
       nonConsolidatable.push(itemWithId);
@@ -580,8 +602,12 @@ const consolidateItemsSinglePass = (
 /** convenience for when you have a map of items to consolidate, not a raw entries iterable */
 export const consolidateItemsMap = <T extends Record<string, JsonItemUnion>>(
   items: T,
+  considerItem?: (item: ValueOf<T>) => boolean,
 ): T => {
   return Object.fromEntries(
-    consolidateItems(Object.entries(items) as Iterable<ItemWithId>),
+    consolidateItems(
+      Object.entries(items) as Iterable<ItemWithId>,
+      considerItem as unknown as (item: ItemWithId) => boolean,
+    ),
   ) as T;
 };

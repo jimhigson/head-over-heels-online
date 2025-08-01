@@ -1,14 +1,16 @@
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
+import type { EditorJsonItemUnion } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 
 export const consolidateCurrentRoomInPlace = (
   levelEditorSliceState: LevelEditorState,
+  considerItem?: (item: EditorJsonItemUnion) => boolean,
 ) => {
   const currentRoom = selectCurrentRoomFromLevelEditorState(
     levelEditorSliceState,
   );
-  currentRoom.items = consolidateItemsMap(currentRoom.items);
+  currentRoom.items = consolidateItemsMap(currentRoom.items, considerItem);
 
   // consolidation could have removed some items, so no longer let them
   // be selected. However, we want to avoid a state update if nothing is being filtered,

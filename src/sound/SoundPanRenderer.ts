@@ -51,10 +51,10 @@ export class SoundPanRenderer<T extends ItemInPlayType>
     this.output.maxDistance = 5;
     this.output.distanceModel = "exponential";
 
-    const renderExtends = floorsRenderExtent(renderContext.room);
+    const floorRenderExtends = floorsRenderExtent(renderContext.room).floors;
 
-    this.soundPositionMinX = renderExtends.edgeLeftX;
-    this.soundPositionMaxX = renderExtends.edgeRightX;
+    this.soundPositionMinX = floorRenderExtends.edgeLeftX;
+    this.soundPositionMaxX = floorRenderExtends.edgeRightX;
   }
 
   tick(tickContext: ItemTickContext) {

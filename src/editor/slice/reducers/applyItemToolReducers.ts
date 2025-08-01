@@ -105,8 +105,9 @@ export const applyItemToolReducers = {
       }
     }
 
-    if (!preview && state.autoCoalesce) {
-      consolidateCurrentRoomInPlace(state);
+    if (!preview) {
+      // consolidate just the walls in the room:
+      consolidateCurrentRoomInPlace(state, (item) => item.type === "wall");
     }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

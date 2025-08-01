@@ -38,6 +38,8 @@ import type { CharacterName } from "../../model/modelTypes";
 import { individualCharacterNames } from "../../model/modelTypes";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { store } from "../../store/store";
+import { iterateRoomItems } from "../../model/RoomState";
+import { size } from "iter-tools";
 
 beforeEach(() => {
   store.dispatch({ type: "@@_RESET_FOR_TESTS" });
@@ -1743,6 +1745,42 @@ describe("dissapearing items", () => {
         return heelsState(gameState).lives === 10;
       },
     });
+  });
+  test("can partially destroy a multiplied dissapearing blocks in the json", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 3, y: 0, z: 3 },
+          config: {
+            which: "heels",
+          },
+        },
+        // 3- long block, but should only land on the middle one:
+        disappearingBlock0: {
+          type: "block",
+          position: { x: 2, y: 0, z: 0 },
+          config: {
+            style: "organic",
+            times: { x: 3 },
+            disappearing: { on: "stand" },
+          },
+        },
+      },
+      firstRoomDeadlyFloor: true,
+    });
+
+    playGameThrough(gameState, {
+      until: 2_000,
+    });
+
+    const blocksInRoomCount = size(
+      iterateRoomItems(gameState.characterRooms.heels!.items).filter(
+        (item) => item.type === "block",
+      ),
+    );
+
+    expect(blocksInRoomCount).toBe(2);
   });
   test("can not walk along a line of disappearing blocks", () => {
     playGameThrough(gameStateWithDisappearingBlocks(), {

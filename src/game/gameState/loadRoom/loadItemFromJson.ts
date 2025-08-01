@@ -6,7 +6,11 @@ import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { Xyz } from "../../../utils/vectors/vectors";
-import { tangentAxis } from "../../../utils/vectors/vectors";
+import {
+  lengthXyz,
+  tangentAxis,
+  unitXyz,
+} from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import { initialState } from "./itemDefaultStates";
 import { loadWall } from "./loadWalls";
@@ -17,6 +21,8 @@ import { emptyObject } from "../../../utils/empty";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { loadFloor } from "./loadFloor";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+import { getJsonItemTimes } from "../../../model/times";
+import { produce } from "immer";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: undefined | Partial<Xyz>;
@@ -32,6 +38,7 @@ export function* loadItemFromJson<
   roomPickupsCollected: RoomPickupsCollected = emptyObject,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
+  itemIdSuffix = "",
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
   if (roomPickupsCollected[jsonItemId]) {
     // skip pickups that have already been collected
@@ -46,36 +53,64 @@ export function* loadItemFromJson<
     return;
   }
 
-  switch (jsonItem.type) {
-    case "door": {
+  switch (true) {
+    case jsonItem.type === "door": {
       return yield* loadDoor<RoomId, RoomItemId>(jsonItem, jsonItemId);
     }
-    case "player": {
+    case jsonItem.type === "player": {
       yield loadPlayer(jsonItem, jsonItemId);
       return;
     }
 
-    case "wall": {
+    case jsonItem.type === "wall": {
       yield loadWall(jsonItemId, jsonItem);
       return;
     }
 
-    case "floor": {
+    case jsonItem.type === "floor": {
       yield loadFloor(jsonItemId, jsonItem, roomJson);
       return;
     }
 
-    case "sceneryCrown": {
-      if (
-        !store.getState().gameMenus.planetsLiberated[jsonItem.config.planet]
-      ) {
-        // yield nothing - scenery crowns only show if we have collected that crown
-        return;
+    // this is a multiple dissapearing blocks - recursively load as multiple individual blocks (with the same jsonItemId)
+    case jsonItem.type === "block" &&
+      jsonItem.config.disappearing !== undefined &&
+      lengthXyz(getJsonItemTimes(jsonItem)) >= 2: {
+      const times = getJsonItemTimes(jsonItem);
+      for (let x = 0; x < times.x; x++) {
+        for (let y = 0; y < times.y; y++) {
+          for (let z = 0; z < times.z; z++) {
+            const individualBlock = produce(jsonItem, (draft) => {
+              draft.position = {
+                x: jsonItem.position.x + x,
+                y: jsonItem.position.y + y,
+                z: jsonItem.position.z + z,
+              };
+              draft.config.times = unitXyz;
+            });
+            yield* loadItemFromJson(
+              jsonItemId,
+              individualBlock,
+              roomJson,
+              roomPickupsCollected,
+              scrollsRead,
+              `${itemIdSuffix}_${x}_${y}_${z}`,
+            );
+          }
+        }
       }
+
+      break;
+    }
+
+    case jsonItem.type === "sceneryCrown" &&
+      !store.getState().gameMenus.planetsLiberated[jsonItem.config.planet]: {
+      // yield nothing - scenery crowns only show if we have collected that crown
+      return;
     }
 
     // catch-all for all items that don't need special handling:
-    // eslint-disable-next-line no-fallthrough -- allow sceneryCrown to fall-through
+
     default: {
       const boundingBoxes = boundingBoxForItem(jsonItem);
 
@@ -109,7 +144,7 @@ export function* loadItemFromJson<
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxesMultiplied,
-        id: jsonItemId,
+        id: `${jsonItemId}${itemIdSuffix}`,
         jsonItemId,
         fixedZIndex:
           jsonItem.type === "emitter" ? nonRenderingItemFixedZIndex : undefined,
