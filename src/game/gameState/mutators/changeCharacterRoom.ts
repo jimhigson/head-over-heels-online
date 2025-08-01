@@ -35,6 +35,7 @@ import {
 } from "../../../model/RoomState";
 import type { RoomJson } from "../../../model/RoomJson";
 import { emptyObject } from "../../../utils/empty";
+import { iterate } from "../../../utils/iterate";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -378,7 +379,10 @@ export const changeCharacterRoom = <
 
   const collisionsInDestinationRoom = collision1toMany(
     playableItem,
-    roomItemsIterable(toRoom.items),
+    iterate(roomItemsIterable(toRoom.items))
+      // colliding with the portal is normal - only warn for other collisions
+      // on room enter:
+      .filter((item) => item.type !== "portal"),
   );
   if (collisionsInDestinationRoom.length > 0) {
     console.warn(

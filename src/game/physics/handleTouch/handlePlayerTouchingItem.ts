@@ -2,14 +2,20 @@ import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
 import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
-import { handlePlayerTouchingStopAutowalk } from "./handlePlayerTouchingStopAutowalk";
 import {
   touchedItemIsDeadly,
   touchedItemIsType,
   type ItemTouchEvent,
 } from "./ItemTouchEvent";
-import type { PlayableItem } from "../itemPredicates";
+import { isItemType, type PlayableItem } from "../itemPredicates";
 import type { CharacterName } from "../../../model/modelTypes";
+
+const doesNotStopAutowalk = isItemType(
+  "floor",
+  "doorLegs",
+  "doorFrame",
+  "portal",
+);
 
 /**
  * @returns true is the physics needs to halt after this handler
@@ -25,10 +31,6 @@ export const handlePlayerTouchingItem = <
   >,
 ) => {
   switch (true) {
-    case touchedItemIsType(e, "stopAutowalk"):
-      handlePlayerTouchingStopAutowalk<RoomId, RoomItemId>(e);
-      break;
-
     case touchedItemIsDeadly(e):
       handlePlayerTouchingDeadly<RoomId, RoomItemId>(e);
       break;
@@ -45,5 +47,14 @@ export const handlePlayerTouchingItem = <
     case touchedItemIsType(e, "doorFrame"):
       handlePlayerTouchingDoorFrame(e);
       break;
+  }
+
+  if (!doesNotStopAutowalk(e.touchedItem)) {
+    // the "stopAutowalk" special item is in front of every door
+    // to ensure there's something to collide with when coming through,
+    // but to fix the player getting stuck in an autowalk (if there's an
+    // item in front of the door that can't be pushed) we also stop if
+    // they collide with anything other than a few scenery items:
+    e.movingItem.state.autoWalk = false;
   }
 };
