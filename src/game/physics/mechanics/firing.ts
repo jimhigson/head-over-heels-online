@@ -21,9 +21,10 @@ import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 
 /**
  * how far ahead of head the doughnuts start. This has to be enough to clear his bounding box,
- * even when shooting them diagonally
+ * even when shooting them diagonally, and even when in symiosis and running towards
+ * the doughnut
  */
-const aheadStart = blockSizePx.w * 0.8;
+const aheadStart = blockSizePx.w * 1.2;
 
 export const firing = <RoomId extends string, RoomItemId extends string>(
   firer: PlayableItem<"head" | "headOverHeels", RoomId, RoomItemId>,

@@ -34,11 +34,10 @@ expect.extend({
       message: () =>
         pass ?
           `Expected not to contain all items`
-        : `Expected to contain all items:\n${JSON.stringify(
-            expectedItems,
-            null,
-            2,
-          )}\n\nReceived:\n${JSON.stringify(received, null, 2)}`,
+        : `Expected to contain all items`,
+      // Vitest will automatically generate a diff when these are provided
+      actual: received,
+      expected: expectedItems,
     };
   },
 });
@@ -897,7 +896,9 @@ describe("teleporters", () => {
   });
 });
 
-test("does not consolidate disappearing blocks", () => {
+test("consolidates disappearing blocks", () => {
+  // these load into the in-game state as two blocks, but should be consolidated into one
+  // for the json:
   const items: Record<string, JsonItem<"block">> = {
     block1: {
       type: "block",
@@ -914,7 +915,7 @@ test("does not consolidate disappearing blocks", () => {
   const result = consolidateItemsMap(items);
   const resultValues = Object.values(result);
 
-  expect(resultValues).toHaveLength(2);
+  expect(resultValues).toHaveLength(1);
   expect(resultValues).toContainConsolidatedItems<JsonItem<"block">>([
     {
       type: "block",
@@ -923,24 +924,13 @@ test("does not consolidate disappearing blocks", () => {
           on: "stand",
         },
         style: "organic",
+        times: {
+          y: 2,
+        },
       },
       position: {
         x: 0,
         y: 0,
-        z: 0,
-      },
-    },
-    {
-      type: "block",
-      config: {
-        disappearing: {
-          on: "stand",
-        },
-        style: "organic",
-      },
-      position: {
-        x: 0,
-        y: 1,
         z: 0,
       },
     },
@@ -2023,5 +2013,193 @@ describe("actual room items", () => {
     );
 
     expect(result).toMatchSnapshot();
+  });
+});
+
+describe("considerItem function", () => {
+  test("skips items based on considerItem predicate", () => {
+    const items: Record<string, JsonItem<"block">> = {
+      block1: {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      block2: {
+        type: "block",
+        config: { style: "artificial" }, // Different style - will be skipped
+        position: { x: 0, y: 1, z: 0 },
+      },
+      block3: {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0, y: 2, z: 0 },
+      },
+    };
+
+    // Skip artificial blocks from consolidation
+    const result = consolidateItemsMap(
+      items,
+      (item) => item.type !== "block" || item.config.style !== "artificial",
+    );
+    const resultValues = Object.values(result);
+
+    expect(resultValues).toHaveLength(3);
+    // block1 and block3 should not consolidate because block2 was skipped
+    expect(resultValues).toContainConsolidatedItems<JsonItem<"block">>([
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "artificial" }, // This was skipped, so preserved as-is
+        position: { x: 0, y: 1, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0, y: 2, z: 0 },
+      },
+    ]);
+  });
+
+  test("considerItem preserves non-consolidatable items", () => {
+    const items: Record<string, JsonItemUnion> = {
+      block1: {
+        type: "block",
+        config: { style: "artificial" }, // Will be skipped
+        position: { x: 0, y: 0, z: 0 },
+      },
+      block2: {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0, y: 1, z: 0 },
+      },
+      door1: {
+        type: "door",
+        config: { direction: "left", toRoom: "someRoom" },
+        position: { x: 2, y: 0, z: 0 },
+      },
+    };
+
+    // Skip artificial blocks from consolidation
+    const result = consolidateItemsMap(
+      items,
+      (item) => item.type !== "block" || item.config.style !== "artificial",
+    );
+
+    expect(result).toHaveProperty("block1");
+    expect(result).toHaveProperty("block2");
+    expect(result).toHaveProperty("door1");
+
+    // block1 should be preserved as-is since it was skipped
+    expect(result.block1).toEqual(items.block1);
+    // block2 should not be consolidated since block1 was skipped
+    expect(result.block2).toEqual(items.block2);
+    // door should remain unchanged
+    expect(result.door1).toEqual(items.door1);
+  });
+
+  test("considerItem with fractional positions", () => {
+    const items: Record<string, JsonItem<"block">> = {
+      block1: {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0.5, y: 0, z: 0 },
+      },
+      block2: {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0.5, y: 1, z: 0 },
+      },
+      block3: {
+        type: "block",
+        config: { style: "artificial" }, // Different style - will be skipped
+        position: { x: 0.5, y: 2, z: 0 },
+      },
+    };
+
+    // Only consider organic blocks for consolidation
+    const result = consolidateItemsMap(
+      items,
+      (item) => item.type !== "block" || item.config.style === "organic",
+    );
+    const resultValues = Object.values(result);
+
+    expect(resultValues).toHaveLength(2);
+    expect(resultValues).toContainConsolidatedItems<JsonItem<"block">>([
+      {
+        type: "block",
+        config: {
+          style: "organic",
+          times: { y: 2 },
+        },
+        position: { x: 0.5, y: 0, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "artificial" }, // This was skipped, so preserved as-is
+        position: { x: 0.5, y: 2, z: 0 },
+      },
+    ]);
+  });
+
+  test("considerItem allows selective consolidation groups", () => {
+    const items: Record<string, JsonItem<"block">> = {
+      // Group A - will consolidate (organic)
+      blockA1: {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      blockA2: {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 0, y: 1, z: 0 },
+      },
+      // Group B - won't consolidate because one is artificial
+      blockB1: {
+        type: "block",
+        config: { style: "artificial" }, // Different style - will be skipped
+        position: { x: 2, y: 0, z: 0 },
+      },
+      blockB2: {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 2, y: 1, z: 0 },
+      },
+    };
+
+    // Skip artificial blocks to prevent group B from consolidating
+    const result = consolidateItemsMap(
+      items,
+      (item) => item.type !== "block" || item.config.style !== "artificial",
+    );
+    const resultValues = Object.values(result);
+
+    expect(resultValues).toHaveLength(3);
+    expect(resultValues).toContainConsolidatedItems<JsonItem<"block">>([
+      // Group A consolidated
+      {
+        type: "block",
+        config: {
+          style: "organic",
+          times: { y: 2 },
+        },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      // Group B not consolidated
+      {
+        type: "block",
+        config: { style: "artificial" }, // This was skipped
+        position: { x: 2, y: 0, z: 0 },
+      },
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 2, y: 1, z: 0 },
+      },
+    ]);
   });
 });

@@ -1,7 +1,7 @@
 import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXy } from "./projections";
 import { floorsRenderExtent } from "./floorsExtent";
-import { moveSpeedPixPerMs, wallHeightPx } from "../physics/mechanicsConstants";
+import { moveSpeedPixPerMs } from "../physics/mechanicsConstants";
 import type { Xy } from "../../utils/vectors/vectors";
 import { addXyz, subXy, lengthXy } from "../../utils/vectors/vectors";
 import { detectDeviceType } from "../../utils/detectDeviceType";
@@ -20,7 +20,10 @@ import type { SetRequired } from "type-fest";
 import { roundToNearest } from "../../utils/maths/maths";
 import type { RoomState } from "../../model/RoomState";
 
-const scrollLimit = 0.33;
+// a higher value means more scrolling will occur.
+// 0.33 is generally good for original game levels, 0.4 is good for new remake-specific levels
+// with more verticality
+const scrollLimit = 0.4;
 // how much to move the room up (at home position) to bring off the hud
 const worldBottomMargin = detectDeviceType() === "mobile" ? -4 : 16;
 
@@ -58,20 +61,26 @@ export class RoomScrollRenderer<
       },
     } = renderContext;
 
-    const { edgeLeftX, edgeRightX, bottomEdgeY, topEdgeY } =
-      floorsRenderExtent(room);
+    const {
+      floors: {
+        edgeLeftX: floorsEdgeLeftX,
+        edgeRightX: floorsEdgeRightX,
+        bottomEdgeY: floorsBottomEdgeY,
+      },
+      allItems: { topEdgeY: allItemsTopEdgeY },
+    } = floorsRenderExtent(room);
     // take into account the that floor isn't always rendered at 0,0:
-    this.#edgeLeftXTranslated = edgeLeftX;
-    this.#edgeRightXTranslated = edgeRightX;
+    this.#edgeLeftXTranslated = floorsEdgeLeftX;
+    this.#edgeRightXTranslated = floorsEdgeRightX;
 
-    const renderingMedianX = (edgeRightX + edgeLeftX) / 2;
+    const renderingMedianX = (floorsEdgeRightX + floorsEdgeLeftX) / 2;
 
     this.#roomHomePosition = {
       x: effectiveScreenSize.x / 2 - renderingMedianX,
       y:
         effectiveScreenSize.y -
         worldBottomMargin -
-        bottomEdgeY -
+        floorsBottomEdgeY -
         /* moving up by half the x offset preserves movement in 2:1 ratio of isometric projection
        - while also avoiding the hud elements */
         Math.abs(renderingMedianX / 2),
@@ -85,8 +94,9 @@ export class RoomScrollRenderer<
       this.#roomHomePosition.x + this.#edgeRightXTranslated >
       effectiveScreenSize.x;
 
-    // scrollable up in y if the top of the room is off the top of the screen when in the home position:
-    this.#scrollableUp = this.#roomHomePosition.y + topEdgeY - wallHeightPx < 0;
+    // scrollable up in y if the top of the room is off the top of the screen when
+    // in the home position:
+    this.#scrollableUp = this.#roomHomePosition.y + allItemsTopEdgeY < 0;
 
     const childRendererGraphics = this.childRenderer.output.graphics;
     if (childRendererGraphics === undefined) {
@@ -257,20 +267,32 @@ export const showRoomScrollBounds = <
 >(
   roomState: RoomState<RoomId, RoomItemId>,
 ) => {
-  const { edgeLeftX, edgeRightX, bottomEdgeY, topEdgeY } =
-    floorsRenderExtent(roomState);
+  const {
+    floors: {
+      edgeLeftX: floorEdgeLeftX,
+      edgeRightX: floorEdgeRightX,
+      bottomEdgeY: floorBottomEdgeY,
+      topEdgeY: floorTopEdgeY,
+    },
+    allItems: { topEdgeY: allItemsTopEdgeY },
+  } = floorsRenderExtent(roomState);
 
   //const wallHeight = 0;
 
   const graphics = new Graphics()
     .rect(
-      edgeLeftX,
-      topEdgeY - wallHeightPx,
-      edgeRightX - edgeLeftX,
-      bottomEdgeY - topEdgeY + wallHeightPx,
+      floorEdgeLeftX,
+      allItemsTopEdgeY,
+      floorEdgeRightX - floorEdgeLeftX,
+      floorBottomEdgeY - allItemsTopEdgeY,
     )
     .stroke("red")
-    .rect(edgeLeftX, topEdgeY, edgeRightX - edgeLeftX, bottomEdgeY - topEdgeY)
+    .rect(
+      floorEdgeLeftX,
+      floorTopEdgeY,
+      floorEdgeRightX - floorEdgeLeftX,
+      floorBottomEdgeY - floorTopEdgeY,
+    )
     .stroke("blue");
 
   return graphics;

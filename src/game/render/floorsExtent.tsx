@@ -3,22 +3,32 @@ import { iterateRoomJsonItems } from "../../model/RoomJson";
 import { iterateRoomItems, type RoomState } from "../../model/RoomState";
 import type { Xyz } from "../../utils/vectors/vectors";
 import { addXyz, originXyz } from "../../utils/vectors/vectors";
-import { isFloor } from "../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "./projections";
 
-type FloorsRenderExtent = {
-  edgeLeftX: number;
-  edgeRightX: number;
-  topEdgeY: number;
-  bottomEdgeY: number;
+type ItemsProjectedExtents = {
+  floors: {
+    edgeLeftX: number;
+    edgeRightX: number;
+    topEdgeY: number;
+    bottomEdgeY: number;
+  };
+  allItems: {
+    topEdgeY: number;
+  };
 };
 
-const nullFloorsRenderExtent: FloorsRenderExtent = {
-  edgeLeftX: Number.POSITIVE_INFINITY,
-  edgeRightX: Number.NEGATIVE_INFINITY,
-  topEdgeY: Number.POSITIVE_INFINITY,
-  bottomEdgeY: Number.NEGATIVE_INFINITY,
+const nullFloorsRenderExtent: ItemsProjectedExtents = {
+  floors: {
+    edgeLeftX: Number.POSITIVE_INFINITY,
+    edgeRightX: Number.NEGATIVE_INFINITY,
+    topEdgeY: Number.POSITIVE_INFINITY,
+    bottomEdgeY: Number.NEGATIVE_INFINITY,
+  },
+  allItems: {
+    topEdgeY: Number.POSITIVE_INFINITY,
+  },
 };
+
 /**
  * get projected rectangle for the floor(s) of a room, used for room scrolling
  * like:
@@ -38,20 +48,18 @@ export const floorsRenderExtent = <
   RoomItemId extends string,
 >(
   roomState: RoomState<RoomId, RoomItemId>,
-): FloorsRenderExtent => {
-  return iterateRoomItems(roomState.items)
-    .filter(isFloor)
-    .reduce(
-      (
-        ac: FloorsRenderExtent,
-        {
+): ItemsProjectedExtents => {
+  return iterateRoomItems(roomState.items).reduce(
+    (ac: ItemsProjectedExtents, item): ItemsProjectedExtents => {
+      if (item.type === "floor") {
+        const {
           config: { naturalFootprint },
           state: { position },
           renderAabb,
           renderAabbOffset,
           aabb,
-        },
-      ): FloorsRenderExtent => {
+        } = item;
+
         // natural position:
         const floorEdgeLeftX = projectWorldXyzToScreenXy(
           addXyz(naturalFootprint.position, {
@@ -81,14 +89,35 @@ export const floorsRenderExtent = <
         ).y;
 
         return {
-          edgeLeftX: Math.min(ac.edgeLeftX, floorEdgeLeftX),
-          edgeRightX: Math.max(ac.edgeRightX, floorEdgeRightX),
-          topEdgeY: Math.min(ac.topEdgeY, topEdgeY),
-          bottomEdgeY: Math.max(ac.bottomEdgeY, frontSide),
+          allItems: ac.allItems,
+          floors: {
+            edgeLeftX: Math.min(ac.floors.edgeLeftX, floorEdgeLeftX),
+            edgeRightX: Math.max(ac.floors.edgeRightX, floorEdgeRightX),
+            topEdgeY: Math.min(ac.floors.topEdgeY, topEdgeY),
+            bottomEdgeY: Math.max(ac.floors.bottomEdgeY, frontSide),
+          },
         };
-      },
-      nullFloorsRenderExtent,
-    );
+      } else {
+        // any non-floor item
+        // natural position:
+        const topEdgeY = projectWorldXyzToScreenXy(
+          addXyz(
+            item.state.position,
+            item.renderAabb ?? originXyz,
+            item.renderAabbOffset ?? originXyz,
+          ),
+        ).y;
+
+        return {
+          allItems: {
+            topEdgeY: Math.min(ac.allItems.topEdgeY, topEdgeY),
+          },
+          floors: ac.floors,
+        };
+      }
+    },
+    nullFloorsRenderExtent,
+  );
 };
 
 export type RoomJsonFloorsExtent = {

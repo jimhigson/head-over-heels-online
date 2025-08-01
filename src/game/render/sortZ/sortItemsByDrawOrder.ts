@@ -127,11 +127,11 @@ export const sortByZPairs = <ItemId extends string>(
       // loop by removing one link and try again.
       edges.get(cyclicItemIds[0])?.delete(cyclicItemIds[1]);
 
-      console.warn(
-        "cyclc dependency detected: ",
-        cyclicItemIds.join(" --front-of--> "),
-        `breaking link ${cyclicItemIds[0]} --front-of--> ${cyclicItemIds[1]}`,
-      );
+      // console.warn(
+      //   "cyclc dependency detected: ",
+      //   cyclicItemIds.join(" --front-of--> "),
+      //   `breaking link ${cyclicItemIds[0]} --front-of--> ${cyclicItemIds[1]}`,
+      // );
 
       return {
         order: sortByZPairs(edges, items, retries - 1).order,

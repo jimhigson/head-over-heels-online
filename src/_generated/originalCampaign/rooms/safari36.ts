@@ -12,13 +12,12 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@4,4,0": {
-      config: { disappearing: { on: "stand" }, style: "organic" },
+      config: {
+        disappearing: { on: "stand" },
+        style: "organic",
+        times: { y: 2 },
+      },
       position: { x: 4, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@4,5,0": {
-      config: { disappearing: { on: "stand" }, style: "organic" },
-      position: { x: 4, y: 5, z: 0 },
       type: "block",
     },
     "block@4,6,0": {
