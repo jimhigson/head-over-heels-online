@@ -32,12 +32,21 @@ type TimedRelationWithOtherItem<RoomItemId extends string> = {
   by: Record<RoomItemId, true>;
 };
 
+export type LatentMovementFrame = {
+  /** the time that the movement is scheduled to start happening */
+  startAtRoomTime: number;
+  /** the time that the movement is scheduled to stop happening */
+  endAtRoomTime: number;
+  /** the velocity to move at between the start and end times, in pixels per ms */
+  velocity: Xyz;
+};
+
 export type FreeItemState<RoomItemId extends string> = {
   /* id of the single item we are considered to be standing on, or null if not standing on anything */
   standingOnItemId: RoomItemId | null;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
-  latentMovement: Array<{ moveAtRoomTime: number; positionDelta: Xyz }>;
+  latentMovement: Array<LatentMovementFrame>;
 
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */

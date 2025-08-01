@@ -115,7 +115,12 @@ export const progressGameState = <
     ),
   ) as MovedItems<RoomId, RoomItemId>;
 
-  assignLatentMovementFromStandingOn(movedItems, room, startingPositions);
+  assignLatentMovementFromStandingOn(
+    movedItems,
+    room,
+    startingPositions,
+    deltaMS,
+  );
   snapInactiveItemsToPixelGrid(room, movedItems);
 
   return movedItems;

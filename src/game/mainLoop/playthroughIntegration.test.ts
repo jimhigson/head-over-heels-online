@@ -275,7 +275,7 @@ describe("pickups", () => {
         return headState(gameState).fastStepsStartedAtDistance > 0;
       },
       // set frame rate low since it doesn't matter for this test:
-      frameRate: 15,
+      frameRate: { fps: [15] }, // keep frame rate low to reduce computation
     });
   });
 
@@ -347,7 +347,7 @@ describe("pickups", () => {
 
 describe("jumping", () => {
   test.each(testFrameRates)(
-    "head can jump between two blocks forming a ladder (%fHz)",
+    "head can jump between two blocks forming a ladder (%j)",
     (frameRate) => {
       const gameState = basicGameState({
         firstRoomItems: {
@@ -399,7 +399,7 @@ describe("jumping", () => {
   );
 
   test.each(testFrameRates)(
-    "doesn't snag on the boundary between bounding boxes on the way up a jump (%fHz)",
+    "doesn't snag on the boundary between bounding boxes on the way up a jump (%j)",
     (frameRate) => {
       const gameState = basicGameState({
         firstRoomItems: {
@@ -439,7 +439,7 @@ describe("jumping", () => {
   );
 
   test.each(testFrameRates)(
-    "doesn't snag on the boundary between bounding boxes while falling (%fHz)",
+    "doesn't snag on the boundary between bounding boxes while falling (%j)",
     (frameRate) => {
       const gameState = basicGameState({
         firstRoomItems: {
@@ -495,7 +495,7 @@ describe("jumping", () => {
     },
   );
 
-  describe.each(testFrameRates)("max jump heights (%fHz)", (frameRate) => {
+  describe.each(testFrameRates)("max jump heights (%j)", (frameRate) => {
     describe.each(individualCharacterNames)(
       `%s (without a spring) jump height`,
       (name) => {
@@ -533,18 +533,23 @@ describe("jumping", () => {
           });
 
           /* 
-            variable frame rate simulations aren't that accurate :-/
+            Not so much allowable error, as FOUND error!
+
+            Variable tick step simulations aren't that accurate :-/
             to get better than this, we'd need to account for deceleration
             that happens between the velocity being reduced once per frame,
             or have a lower maximum tick delta ms
+
+            ~2px between lowest and highest jump height isn't that fair
+            to players on different spec hardware!
            */
-          const allowableError = 0.95;
+          const allowableError = [-0.66, 1];
 
           expect(maxFoundHeight).toBeGreaterThan(
-            expectedJumpHeight - allowableError,
+            expectedJumpHeight + allowableError[0],
           );
           expect(maxFoundHeight).toBeLessThan(
-            expectedJumpHeight + allowableError,
+            expectedJumpHeight + allowableError[1],
           );
         });
       },
@@ -552,7 +557,7 @@ describe("jumping", () => {
   });
 
   test.each(testFrameRates)(
-    "head can get onto a 4-high tower by jumping from a spring (%fHz)",
+    "head can get onto a 4-high tower by jumping from a spring (%j)",
     (frameRate) => {
       // similar to safari9triple (except that needs more blocks under the spring)
       const gameState = basicGameState({
@@ -595,7 +600,7 @@ describe("jumping", () => {
     },
   );
   test.each(testFrameRates)(
-    "head can't get onto a 5-high tower by jumping from a spring (%fHz)",
+    "head can't get onto a 5-high tower by jumping from a spring (%j)",
     (frameRate) => {
       // similar to safari9triple (except that needs more blocks under the spring)
       const gameState = basicGameState({
@@ -890,7 +895,7 @@ describe("teleporter", () => {
     });
 
     playGameThrough(gameState, {
-      frameRate: 15,
+      frameRate: { fps: [15] }, // keep frame rate low to reduce computation
 
       setupInitialInput(mockInputStateTracker) {
         mockInputStateTracker.mockPressing("jump");
@@ -1045,7 +1050,7 @@ describe("deadly blocks", () => {
     playGameThrough(gameState, {
       // this needs a long time now that the player gets invulnerability after dying for a few seconds
       until: (gameState) => gameState.characterRooms.head === undefined,
-      frameRate: 15, // keep frame rate low to reduce computation since this runs for a long time
+      frameRate: { fps: [15] }, // keep frame rate low to reduce computation since this runs for a long time
     });
 
     // heels fell on to the volcano and lost a life repeatedly until none left and switched to heels
@@ -1517,7 +1522,7 @@ describe("carrying", () => {
     });
 
     playGameThrough(gameState, {
-      frameRate: 15,
+      frameRate: { fps: [15] },
       until: () => heelsState(gameState).standingOnItemId !== "higherBlock",
       frameCallbacks(gameState) {
         gameState.inputStateTracker.mockPressing("right");
@@ -1818,7 +1823,7 @@ describe("dissapearing items", () => {
   });
 });
 
-test("platforms that move on stand", () => {
+test("platforms that move when stood on", () => {
   const gameState = basicGameState({
     firstRoomItems: {
       heels: {
@@ -1942,5 +1947,88 @@ describe("reincarnation", () => {
     expect(reincarnationPointHeelsRoomItems.floor.state.stoodOnBy["fish"]).toBe(
       undefined,
     );
+  });
+});
+
+describe("latent movement", () => {
+  test.each(testFrameRates)("%j Hz", (frameRate) => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          // note - heels starts a little ahead of the block, to make it more likely
+          // to fall off if the code is not working right
+          position: { x: 0, y: 0.6, z: 0 },
+          config: {
+            which: "heels",
+          },
+        },
+        // heels has a block on their head:
+        pushableBlock: {
+          type: "pushableBlock",
+          config: {},
+          position: { x: 0, y: 0, z: 1 },
+        },
+      },
+    });
+
+    const yDeltaNow = () => {
+      const heelsNewPosition = heelsState(gameState).position;
+      const pushableBlockPosition = itemState(
+        gameState,
+        "pushableBlock",
+      )!.position;
+
+      // the block should be slightly behind heels:
+      return heelsNewPosition.y - pushableBlockPosition.y;
+    };
+    const pushableBlockZ = () => {
+      const pushableBlockPosition = itemState(
+        gameState,
+        "pushableBlock",
+      )!.position;
+
+      // the block should be slightly behind heels:
+      return pushableBlockPosition.z;
+    };
+
+    let initialPositionDelta: number | undefined = undefined;
+
+    playGameThrough(gameState, {
+      frameRate,
+      until: 2_000,
+      setupInitialInput(mockInputStateTracker) {
+        initialPositionDelta = yDeltaNow();
+        mockInputStateTracker.mockDirectionPressed = "away";
+      },
+    });
+
+    if (initialPositionDelta === undefined) {
+      throw new Error("behindByOnFirstFrame was not set");
+    }
+
+    const behindByWhileWalking = yDeltaNow() - initialPositionDelta;
+
+    // should still be on heels (not fallen on the floor - if zero, it has slipped off!):
+    expect(pushableBlockZ()).toBe(blockSizePx.h);
+    expect(behindByWhileWalking).toBeGreaterThanOrEqual(4.1);
+    expect(behindByWhileWalking).toBeLessThanOrEqual(4.5);
+
+    playGameThrough(gameState, {
+      frameRate,
+      until: 2_500, // another half-second to stop
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = undefined;
+      },
+    });
+
+    const behindByAfterStopping = yDeltaNow() - initialPositionDelta;
+
+    // should still be on heels (not fallen on the floor):
+    expect(pushableBlockZ()).toBe(blockSizePx.h);
+
+    // the block should no longer be behind
+    expect(behindByAfterStopping).toBeGreaterThanOrEqual(-1);
+    expect(behindByAfterStopping).toBeLessThanOrEqual(1);
   });
 });

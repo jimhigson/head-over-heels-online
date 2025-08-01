@@ -1,11 +1,19 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import type { LatentMovementFrame } from "../../../model/ItemStateMap";
 import type { RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import type { Xyz } from "../../../utils/vectors/vectors";
-import { subXyz, xyzEqual, originXyz } from "../../../utils/vectors/vectors";
+import {
+  subXyz,
+  xyzEqual,
+  originXyz,
+  scaleXyz,
+} from "../../../utils/vectors/vectors";
 import type { FreeItem } from "../../physics/itemPredicates";
 import { originalFramePeriod } from "../../render/animationTimings";
 
+// since the original game pushes items every other frame, the practical latency
+// for standing-on items is two frames
 const latency = 2 * originalFramePeriod;
 
 export const assignLatentMovement = <
@@ -15,13 +23,15 @@ export const assignLatentMovement = <
   itemToMove: FreeItem<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   movementDelta: Xyz,
+  deltaMS: number,
 ) => {
-  itemToMove.state.latentMovement.push({
-    // since the original game pushes items every other frame, the practical latency
-    // for standing-on items is two frames
-    moveAtRoomTime: room.roomTime + latency,
-    positionDelta: movementDelta,
-  });
+  const latentMovementFrame: LatentMovementFrame = {
+    endAtRoomTime: room.roomTime + deltaMS + latency,
+    startAtRoomTime: room.roomTime + latency,
+    velocity: scaleXyz(movementDelta, 1 / deltaMS),
+  };
+
+  itemToMove.state.latentMovement.push(latentMovementFrame);
 };
 
 export const assignLatentMovementFromStandingOn = <
@@ -31,6 +41,7 @@ export const assignLatentMovementFromStandingOn = <
   movedItems: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
   room: RoomState<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
+  deltaMS: number,
 ) => {
   /**
    * standing on updated here for all - because, eg, if a lift moves down with a player on it,
@@ -48,15 +59,18 @@ export const assignLatentMovementFromStandingOn = <
     // check what is standing on us - this implies that we're also checking what everything is stood on,
     // but gives us a chance to apply latent movement:
     const movementDelta = subXyz(moverItem.state.position, previousPosition);
+
     // latent movement is only horizontal - anything else, collisions and gravity can handle
     const latentMovement = { ...movementDelta, z: 0 };
 
+    // TODO: quit early if nothing standing on this item
+    // TODO: optimise by using xyEqual here instead, and create xyz only when needed
     if (!xyzEqual(latentMovement, originXyz)) {
       for (const standerItem of iterateStoodOnByItems(
         moverItem.state.stoodOnBy,
         room,
       )) {
-        assignLatentMovement(standerItem, room, latentMovement);
+        assignLatentMovement(standerItem, room, latentMovement, deltaMS);
       }
     }
   }
