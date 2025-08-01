@@ -1,3 +1,4 @@
+import { cycle } from "iter-tools";
 import type { GameState } from "../game/gameState/GameState";
 import { progressGameState } from "../game/mainLoop/progressGameState";
 import { progressWithSubTicks } from "../game/mainLoop/progressWithSubTicks";
@@ -7,6 +8,7 @@ import type {
   GameStateWithMockInput,
   MockInputStateTracker,
 } from "./MockInputStateTracker";
+import type { FrameRateSpec } from "./testFrameRates";
 
 type FrameCallback = (
   gameState: GameStateWithMockInput,
@@ -14,7 +16,7 @@ type FrameCallback = (
 ) => GameStateWithMockInput | void;
 
 type PlayGameThroughOptions = {
-  frameRate?: number;
+  frameRate?: FrameRateSpec;
   until?: number | ((gameState: GameState<TestRoomId>) => boolean);
   /**
    * allows us to change the gamestate after certain frames, for example to change the
@@ -25,18 +27,19 @@ type PlayGameThroughOptions = {
   setupInitialInput?: (mockInputStateTracker: MockInputStateTracker) => void;
 };
 
+const defaultFps = { fps: [60] };
 export const playGameThrough = (
   gameState: GameStateWithMockInput,
   {
-    frameRate = 60,
+    frameRate = defaultFps,
     until = 1000,
     frameCallbacks = [],
     setupInitialInput = () => {},
-  }: PlayGameThroughOptions = { frameRate: 60, until: 1000 },
+  }: PlayGameThroughOptions = { frameRate: defaultFps, until: 1000 },
 ) => {
+  const frameRateIter = cycle(frameRate.fps);
   const ticker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
 
-  const deltaMS = 1000 / frameRate;
   const frameCallbacksArray =
     Array.isArray(frameCallbacks) ? frameCallbacks : [frameCallbacks];
 
@@ -46,6 +49,9 @@ export const playGameThrough = (
   while (
     typeof until === "number" ? gameState.gameTime < until : !until(gameState)
   ) {
+    const fpsThisFrame = frameRateIter.next().value;
+    const deltaMS = 1_000 / fpsThisFrame;
+
     ticker(gameState, deltaMS);
     gameState.inputStateTracker.mockTick();
     gameState = frameCallbacksArray.reduce((gameStateAc, frameCallback) => {
@@ -64,6 +70,11 @@ export const playGameThrough = (
     }
 
     frameNumber++;
+
+    // protect against infinite loops crashing node or upsetting ci/cd and taking ages to be killed:
+    if (frameNumber > 5_000_000) {
+      throw new Error(`test didn't exit after 5M frames ${fpsThisFrame}`);
+    }
   }
 };
 
