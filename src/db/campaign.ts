@@ -35,7 +35,7 @@ export const loadCampaignFromDb = async (options: {
   });
 
   if (res.error) {
-    throw res.error;
+    throw new Error("could not get campaign", { cause: res.error });
   }
 
   const data = (await decompressObject(res.data.data)) as Campaign<string>;

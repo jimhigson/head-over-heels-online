@@ -32,8 +32,10 @@ export const doorPostHeightPx = blockSizePx.h * doorPostHeightBlocks;
 export const doorOverallWidthBlocks = 2;
 export const doorOverallWidthPx = 2 * blockSizePx.w;
 
-// to be true to the original game, this should be 0.75 blocks
-const autoWalkDistanceBlocks = 0.4;
+// to be true to the original game, this should be 0.75 blocks, which is
+// enough to be completely outside the doorframe, and to fall off the ledge
+// of the door (if z>0)
+const autoWalkDistanceBlocks = 0.5;
 // the stop autowalk isn't just a plane, in case the player gets pushed
 // through a long way in one frame, like an item being introduced to
 // the room, like the other player walking through the door
