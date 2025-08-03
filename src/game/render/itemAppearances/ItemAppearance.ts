@@ -14,12 +14,13 @@ import type {
 } from "../appearance/Appearance";
 import type { ItemRenderContext, ItemTickContext } from "../ItemRenderContexts";
 import type { EmptyObject } from "type-fest";
-import {
-  renderContainerToSprite,
-  renderMultipliedXy,
-} from "../../../utils/pixi/renderMultpliedXy";
+import { renderMultipliedXy } from "../../../utils/pixi/renderMultpliedXy";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { itemInPlayTimes } from "../../../model/times";
+import {
+  maybeRenderContainerToSprite,
+  renderContainerToSprite,
+} from "../../../utils/pixi/renderContainerToSprite";
 
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,
@@ -76,10 +77,9 @@ export const itemStaticSpriteAppearance = <T extends ItemInPlayType>(
       },
     }) => {
       if (isMultipliedItem(subject)) {
-        return renderMultipliedXy(
+        return maybeRenderContainerToSprite(
           pixiRenderer,
-          createSpriteOptions,
-          itemInPlayTimes(subject),
+          renderMultipliedXy(createSpriteOptions, itemInPlayTimes(subject)),
         );
       } else {
         const container = createSprite(createSpriteOptions);
@@ -161,12 +161,14 @@ export const itemAppearanceShadowMaskFromConfig =
       const times = itemInPlayTimes(item);
 
       const appearanceReturn = {
-        output: renderMultipliedXy(
+        output: maybeRenderContainerToSprite(
           pixiRenderer,
-          spriteOptionsFromConfig(
-            item.config as ItemInPlayConfig<T, string, string>,
+          renderMultipliedXy(
+            spriteOptionsFromConfig(
+              item.config as ItemInPlayConfig<T, string, string>,
+            ),
+            times,
           ),
-          times,
         ),
         renderProps: emptyObject,
       };

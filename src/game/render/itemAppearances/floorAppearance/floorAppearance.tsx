@@ -28,8 +28,8 @@ import type { RoomState } from "../../../../model/RoomState";
 import { createSprite } from "../../createSprite";
 import { OutlineFilter } from "../../filters/outlineFilter";
 import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
-import { NullFilter } from "../../filters/NullFilter";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
+import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 
 const edgeSide = ({
   colourised,
@@ -102,7 +102,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
       renderContext: {
         room,
         item: floorItem,
-        general: { colourised },
+        general: { colourised, pixiRenderer },
         colourClashLayer,
       },
     }) => {
@@ -225,40 +225,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
           lowRes: false,
         });
 
-        // for some reason, pixi struggles if we do an outline filter and cache to texture on the same container,
-        // especially if showing the outline or colour for hover/selected in the editor. A separate container for the
-        // caching fixes this.
-        //
-        // pixi docs say this:
-        // > Filters may not behave as expected with cacheAsTexture. To cache the filter effect, wrap the item in a
-        // > parent container and apply cacheAsTexture to the parent.
-        //    [https://pixijs.com/8.x/guides/components/scene-objects/container/cache-as-texture]
-        //
-        // would it be easier to just not cache to bitmap? Maybe, but we would lose the 'free' pixelisation
-        // of the diagonal-line drawn mask above, AND masks are slow
-        const tilesCacher = new Container({ children: [tilesOutline] });
-        // const g = new Graphics();
-        // g.rect(-400, -400, 800, 800).fill(0xffffff);
-        // tilesCacher.addChild(g);
-        // tilesCacher.mask = g;
-        const f = new NullFilter();
-        f.enabled = false;
-        tilesCacher.filters = f;
-        tilesCacher.cacheAsTexture(true);
-
-        container.addChild(tilesCacher);
-
-        // even with the null filter on the tilesCacher - it miss-renders #egyptus1
-        // if the main floor container is not the full size of the floor. Add a blank sprite to pin it to
-        // never shrink. For some reason, the floor tiles aren't enough to do this if they're cached to a
-        // bitmap
-        container.addChild(
-          createSprite({
-            textureId: "blank",
-            x: tilesRight.x,
-            y: tilesBottom.y + 8,
-          }),
-        );
+        container.addChild(renderContainerToSprite(pixiRenderer, tilesOutline));
       }
 
       {
@@ -311,8 +278,9 @@ export const floorAppearance: ItemAppearance<"floor"> =
         );
 
         // caching as texture here breaks rendering in 'none' floor rooms - see #blacktooth30
-        //floorEdgeContainer.cacheAsTexture(true);
-        container.addChild(floorEdgeContainer);
+        container.addChild(
+          renderContainerToSprite(pixiRenderer, floorEdgeContainer),
+        );
 
         if (!colourised) {
           const colourClashContainer = createColourClash({

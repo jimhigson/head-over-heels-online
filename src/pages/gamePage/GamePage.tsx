@@ -72,7 +72,7 @@ const loadGameAssets = importOnce((cheatsOn: boolean) => {
   ]);
 });
 
-const useGame = (): GameApi<string> | undefined => {
+const useCreateGameApi = (): GameApi<string> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<string> | undefined>();
   const isGameRunning = useIsGameRunning();
   const inputState = useInputStateTracker();
@@ -94,7 +94,7 @@ const useGame = (): GameApi<string> | undefined => {
       try {
         loadingStarted();
         const [
-          gameMain,
+          { default: gameMain },
           campaign,
           //_spriteSheet,
           //_sounds,
@@ -102,7 +102,7 @@ const useGame = (): GameApi<string> | undefined => {
         loadingFinished();
 
         if (!thisEffectCancelled) {
-          thisEffectGameApi = await gameMain.default(campaign, inputState);
+          thisEffectGameApi = await gameMain(campaign, inputState);
           setGameApi(thisEffectGameApi);
         }
       } catch (thrown) {
@@ -128,7 +128,7 @@ export const GamePage = () => {
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
 
   const cheatsOn = useCheatsOn();
-  const gameApi = useGame();
+  const gameApi = useCreateGameApi();
   const canvasSize = useAppSelector(selectCanvasSize);
 
   const canvasInlineStyle = useCanvasInlineStyle();

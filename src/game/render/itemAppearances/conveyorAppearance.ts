@@ -1,6 +1,7 @@
-import type { AnimatedSprite } from "pixi.js";
-import type { Container } from "pixi.js";
+import { AnimatedSprite } from "pixi.js";
+import { Container } from "pixi.js";
 import { isStoodOn } from "../../../model/StoodOnBy";
+import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 import { tangentAxis } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import type { ItemAppearance } from "./ItemAppearance";
@@ -34,8 +35,34 @@ const staggerAnimation = (
     const frame = i % frameCount;
     c.gotoAndStop(reverse ? frameCount - frame - 1 : frame);
   }
+};
 
-  return rendering;
+const createRendering = (
+  direction: DirectionXy4,
+  times: Partial<Xy> | undefined,
+): Container<AnimatedSprite> => {
+  const axis = tangentAxis(direction);
+  const sprites = createSprite({
+    animationId: `conveyor.${axis}`,
+    reverse: direction === "towards" || direction === "right",
+    times,
+  });
+  // createSprite will return a single AnimatedSprite for a single conveyor,
+  // which is generally fine to avoid creating unnecessary containers. However,
+  // for this appearance it makes things awkward going into the children to
+  // stagger/start/stop
+  const animatedSpritesContainer =
+    sprites instanceof AnimatedSprite ?
+      new Container<AnimatedSprite>({ children: [sprites] })
+    : sprites;
+
+  staggerAnimation(
+    // createSprite given times, so will actually generate a container of AnimatedSprites
+    animatedSpritesContainer,
+    direction === "towards" || direction === "right",
+  );
+
+  return animatedSpritesContainer;
 };
 
 const conveyorAppearanceImpl: ItemAppearance<
@@ -60,18 +87,8 @@ const conveyorAppearanceImpl: ItemAppearance<
       roomTime
     : currentlyRenderedProps?.roomTimeStoppedMoving) ?? neverTime;
 
-  const axis = tangentAxis(direction);
   const rendering =
-    currentRendering?.output ??
-    staggerAnimation(
-      // createSprite given times, so will actually generate a container of AnimatedSprites
-      createSprite({
-        animationId: `conveyor.${axis}`,
-        reverse: direction === "towards" || direction === "right",
-        times,
-      }),
-      direction === "towards" || direction === "right",
-    );
+    currentRendering?.output ?? createRendering(direction, times);
 
   const periodSinceStopped =
     moving ? 0 : Math.min(roomTime - roomTimeStoppedMoving, slowdownTimeMs);

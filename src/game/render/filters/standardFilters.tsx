@@ -3,7 +3,7 @@ import { spritesheetPaletteDim } from "gfx/spritesheetPaletteDim";
 import type { Color } from "pixi.js";
 import { type Filter } from "pixi.js";
 import type { PaletteSwaps } from "./PaletteSwapFilter";
-import { PaletteSwapFilter } from "./PaletteSwapFilter";
+import { getPaletteSwapFilter } from "./PaletteSwapFilter";
 import type { Shades } from "../../hintColours";
 import {
   colorScheme,
@@ -47,7 +47,7 @@ const replaceMapForRoom = ({
  * still have their backpacks in room colour
  */
 export const greyFilter = (room?: Pick<UnknownRoomState, "color" | "planet">) =>
-  new PaletteSwapFilter({
+  getPaletteSwapFilter({
     lightBeige: spritesheetPalette.lightGrey,
     redShadow: spritesheetPalette.shadow,
     pink: spritesheetPalette.lightGrey,
@@ -57,7 +57,7 @@ export const greyFilter = (room?: Pick<UnknownRoomState, "color" | "planet">) =>
     ...(room && replaceMapForRoom(room)),
   });
 
-export const doughnuttedFilter = new PaletteSwapFilter({
+export const doughnuttedFilter = getPaletteSwapFilter({
   midGrey: spritesheetPalette.midRed,
   lightGrey: spritesheetPalette.lightBeige,
   white: spritesheetPalette.highlightBeige,
@@ -69,7 +69,7 @@ export const doughnuttedFilter = new PaletteSwapFilter({
 });
 
 export const replaceWithHalfbriteFilter = (c: Color) =>
-  new PaletteSwapFilter({ replaceLight: c, replaceDark: halfbrite(c) });
+  getPaletteSwapFilter({ replaceLight: c, replaceDark: halfbrite(c) });
 
 export const edgeOriginalGameColour = (
   room: Pick<UnknownRoomState, "color">,
@@ -91,7 +91,7 @@ export const edgePaletteSwapFilters = (
   colourise: boolean,
 ): Filter =>
   colourise ?
-    new PaletteSwapFilter(
+    getPaletteSwapFilter(
       replaceMapForShades(
         colorScheme[room.color.hue][room.color.shade].edges[side],
       ),
@@ -100,7 +100,7 @@ export const edgePaletteSwapFilters = (
 
 export const mainPaletteSwapFilter = (
   room: Pick<UnknownRoomState, "color" | "planet">,
-): Filter => new PaletteSwapFilter(replaceMapForRoom(room));
+): Filter => getPaletteSwapFilter(replaceMapForRoom(room));
 
 export const floorPaletteSwapFilter = (
   room: Pick<UnknownRoomState, "color" | "planet">,
@@ -109,7 +109,7 @@ export const floorPaletteSwapFilter = (
     case "white":
       // avoid white floors standing out too much, since floors need to not
       // be too distracting so that items stand out:
-      return new PaletteSwapFilter({
+      return getPaletteSwapFilter({
         replaceLight: spritesheetPalette.lightGrey,
         replaceDark: spritesheetPalette.midGrey,
       });
@@ -124,7 +124,7 @@ export const bookPaletteSwapFilter = (
   switch (room.color.hue) {
     case "white":
       // the white books look a bit much, use a lighter version of the red filter instead
-      return new PaletteSwapFilter({
+      return getPaletteSwapFilter({
         replaceLight: spritesheetPalette.lightBeige,
         replaceDark: spritesheetPalette.midRed,
         shadow: spritesheetPalette.redShadow,
@@ -143,4 +143,4 @@ export const halfBriteFilter = new HalfBriteFilter();
 
 export const noFilters: Filter[] = emptyArray;
 
-export const dimLut = new PaletteSwapFilter(spritesheetPaletteDim);
+export const dimLut = getPaletteSwapFilter(spritesheetPaletteDim);

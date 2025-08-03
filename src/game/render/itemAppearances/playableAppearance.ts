@@ -37,7 +37,7 @@ import {
   playableHasShield,
   shieldRemainingForAbilities,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
-import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
+import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
@@ -149,7 +149,7 @@ const updateIndividualPlayableSprite = (
 };
 
 /** the shine on the spritesheet has a blue glow - convert to pink for heels */
-export const shineFilterForHeels = new PaletteSwapFilter({
+export const shineFilterForHeels = getPaletteSwapFilter({
   pastelBlue: spritesheetPalette.pink,
 });
 

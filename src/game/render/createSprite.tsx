@@ -13,8 +13,9 @@ import {
 } from "../../sprites/spriteSheetData";
 import { loadedSpriteSheet } from "../../sprites/spriteSheet";
 import { originalGameFrameDuration } from "../../originalGame";
-import { type Xy, type Xyz } from "../../utils/vectors/vectors";
+import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
+import { completeTimesXyz } from "../../model/times";
 
 export type AnimatedCreateSpriteOptions = {
   // animated
@@ -93,60 +94,66 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
   } else {
     const { anchor, flipX, pivot, x, y, filter, times, label } = options;
 
-    let sprite: Sprite;
+    // `times: undefined` or `times: {x:1}` should NOT cause the sprite to be wrapped in a container
+    // even if this means the the types change between two otherwise identical calls
+    if (options.times) {
+      const completeTimes = completeTimesXyz(times);
+      // only actually do multiplied rendering if we have a times vector
+      // with actual multiple instances in it (not 1x1x1) - this is important
+      // because other code looks at the output from createSprite and creates
+      // new sprites based off the container returned if it isn't a simple sprite
+      const needsMultipliedRendering = lengthXyz(completeTimes) >= 2;
 
+      if (needsMultipliedRendering) {
+        const container = new Container({ label: label ?? "timesXyz" });
+        for (let { x } = completeTimes; x >= 1; x--) {
+          for (let { y } = completeTimes; y >= 1; y--) {
+            for (let z = 1; z <= completeTimes.z; z++) {
+              const subSpriteOptions = {
+                ...options,
+                textureId:
+                  options.textureId ??
+                  options.textureIdCallback?.(x - 1, y - 1, z - 1),
+                label: `(${x},${y},${z})`,
+              };
+              delete subSpriteOptions.times;
+              const component = _createSprite(
+                subSpriteOptions as CreateSpriteOptions,
+              );
+              const displaceXy = projectBlockXyzToScreenXy({
+                x: x - 1,
+                y: y - 1,
+                z: z - 1,
+              });
+              component.x += displaceXy.x;
+              component.y += +displaceXy.y;
+
+              container.addChild(component);
+            }
+          }
+        }
+        return container;
+      }
+    }
+
+    let sprite: Sprite;
     if (isAnimatedOptions(options)) {
       sprite = createAnimatedSprite(options);
     } else {
-      sprite = new Sprite(loadedSpriteSheet().textures[options.textureId!]);
-    }
-
-    // even times: undefined should cause the sprite to be wrapped in a container
-    // for consistency when it is passed in optionally, so the types don't change
-    // between two otherwise identical calls
-    //if (options.times) { <- not this!
-    if (options.hasOwnProperty("times")) {
-      const completeTimes = { x: 1, y: 1, z: 1, ...times };
-
-      const container = new Container({ label: label ?? "timesXyz" });
-      for (let { x } = completeTimes; x >= 1; x--) {
-        for (let { y } = completeTimes; y >= 1; y--) {
-          for (let z = 1; z <= completeTimes.z; z++) {
-            const subSpriteOptions = {
-              ...options,
-              textureId:
-                options.textureId ??
-                options.textureIdCallback?.(x - 1, y - 1, z - 1),
-              label: `(${x},${y},${z})`,
-            };
-            delete subSpriteOptions.times;
-            const component = _createSprite(
-              subSpriteOptions as CreateSpriteOptions,
-            );
-            const displaceXy = projectBlockXyzToScreenXy({
-              x: x - 1,
-              y: y - 1,
-              z: z - 1,
-            });
-            component.x += displaceXy.x;
-            component.y += +displaceXy.y;
-
-            container.addChild(component);
-          }
-        }
-      }
-      return container;
+      const textureId =
+        options.textureId ?? options.textureIdCallback?.(0, 0, 0);
+      sprite = new Sprite(loadedSpriteSheet().textures[textureId]);
     }
 
     if (anchor === undefined && pivot === undefined) {
       if (!isAnimatedOptions(options)) {
+        const textureId =
+          options.textureId ?? options.textureIdCallback?.(0, 0, 0);
         const spritesheetFrameData: SpritesheetFrameData | undefined =
-          loadedSpriteSheet().data.frames[options.textureId!];
+          loadedSpriteSheet().data.frames[textureId];
 
         if (spritesheetFrameData === undefined) {
-          throw new Error(
-            `no spritesheet entry for textureId "${options.textureId}"`,
-          );
+          throw new Error(`no spritesheet entry for textureId "${textureId}"`);
         }
         // There is a non-standard (unknown to Pixi.js) pivot property on the sprites:
         const spriteDataFrame =
@@ -198,9 +205,12 @@ export const createSprite = _createSprite as <O extends CreateSpriteOptions>(
 ) => O extends TextureId ? Sprite
 : O extends AnimatedCreateSpriteOptions ?
   O extends { times?: Partial<Xyz> } ?
-    Container<AnimatedSprite>
+    // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
+    AnimatedSprite | Container<AnimatedSprite>
   : AnimatedSprite
-: O extends { times?: Partial<Xyz> } ? Container<Sprite>
+: O extends { times?: Partial<Xyz> } ?
+  // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
+  Sprite | Container<Sprite>
 : Sprite;
 
 function createAnimatedSprite({

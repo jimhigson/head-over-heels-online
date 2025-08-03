@@ -11,10 +11,12 @@ import { wallTextureId } from "../wallTextureId";
 import { itemAppearanceRenderOnce } from "./ItemAppearance";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { mainPaletteSwapFilter } from "../filters/standardFilters";
+import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
+      general: { pixiRenderer },
       item: { id, config },
       room,
     },
@@ -27,61 +29,62 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
 
     const alongAxis = perpendicularAxisXy(tangentAxis(direction));
 
-    const container = new Container({ label: "wallTiles" });
+    const wallTilesContainer = new Container({ label: "wallTiles" });
+    const wallAnimationsContainer = new Container({ label: "wallAnimations" });
     for (let i = 0; i < config.tiles.length; i++) {
-      // TODO: use callback version of createSprite to create the wall with different textures
-      let tileSprite: Container = createSprite({
-        textureId: wallTextureId(
-          room.planet,
-          tiles[i],
-          direction,
-          room.color.shade === "dimmed",
-        ),
-        // to match the original, the walls need to be rendered 2px lower than we'd expect. Unfortunately, this
-        // means they're outside their bounding box, so it sometimes doesn't work with z-index rendering
-        y: 1,
-        pivot:
-          direction === "away" ?
-            {
-              x: wallTileSize.w,
-              // walls need to be rendered 1px high to match original game (original puts them 1px low, but
-              // we already position them (in world space) 2px low to match original rendering while keeping
-              // bounding boxes correct
-              y: wallTileSize.h + 1,
-            }
-          : { x: 0, y: wallTileSize.h + 1 },
-      });
-
       const tileRenderPosition: Xy = projectBlockXyzToScreenXy({
         [alongAxis]: i,
       });
+
+      // TODO: use callback version of createSprite to create the wall with different textures
+      wallTilesContainer.addChild(
+        createSprite({
+          textureId: wallTextureId(
+            room.planet,
+            tiles[i],
+            direction,
+            room.color.shade === "dimmed",
+          ),
+          ...tileRenderPosition,
+          pivot:
+            direction === "away" ?
+              {
+                x: wallTileSize.w,
+                y: wallTileSize.h,
+              }
+            : { x: 0, y: wallTileSize.h },
+        }),
+      );
 
       if (room.planet === "moonbase") {
         const animationId = `moonbase.wall.screen.${tiles[i]}.away`;
         // only moonbase has animated walls
         if (isAnimationId(animationId)) {
-          tileSprite = new Container({
-            children: [tileSprite],
-          });
-          tileSprite.addChild(
+          wallAnimationsContainer.addChild(
             createSprite({
               animationId,
               randomiseStartFrame: true,
               flipX: direction === "left",
-              x: direction === "away" ? -8 : 8,
-              y: -23,
+              x: tileRenderPosition.x + (direction === "away" ? -8 : 8),
+              y: tileRenderPosition.y - 23,
             }),
           );
         }
       }
-
-      tileSprite.x += tileRenderPosition.x;
-      tileSprite.y += tileRenderPosition.y;
-
-      container.addChild(tileSprite);
-      container.filters = mainPaletteSwapFilter(room);
     }
 
-    return container;
+    const mainContainer = new Container({ label: "wallAppearance" });
+    // since .cacheAsTexture() is buggy, much safer to replace the container
+    // entirely with a single sprite:
+    mainContainer.addChild(
+      renderContainerToSprite(pixiRenderer, wallTilesContainer),
+    );
+    if (wallAnimationsContainer.children.length > 0) {
+      // only add animations if there are any:
+      mainContainer.addChild(wallAnimationsContainer);
+    }
+
+    mainContainer.filters = mainPaletteSwapFilter(room);
+    return mainContainer;
   },
 );

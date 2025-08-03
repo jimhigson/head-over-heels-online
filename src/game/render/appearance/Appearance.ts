@@ -5,7 +5,7 @@ export type RenderSubject = { id: string };
 
 export type AppearanceRendering<
   RenderProps extends object,
-  Output = Container,
+  Output extends Container = Container,
 > = {
   /**
    * a new or existing rendering, returned from the appearance if one is required.
@@ -19,7 +19,10 @@ export type AppearanceRendering<
   renderProps: RenderProps;
 };
 
-export type AppearanceReturn<RenderProps extends object, Output = Container> =
+export type AppearanceReturn<
+  RenderProps extends object,
+  Output extends Container = Container,
+> =
   // output is optional, to explicitly say not to render anything, and remove any current rendering
   AppearanceRendering<RenderProps, Output> | "no-update";
 
@@ -31,7 +34,7 @@ export type AppearanceOptions<
   RenderContext extends object,
   TickContext extends object,
   RP extends object,
-  RenderTarget = Container,
+  RenderTarget extends Container = Container,
 > = {
   /**
    * The current rendering. The appearance may choose to modify this rendering,
@@ -57,7 +60,7 @@ export type Appearance<
   RenderContext extends object,
   TickContext extends object,
   RP extends object,
-  RenderTarget = Container,
+  RenderTarget extends Container = Container,
 > = (
   options: AppearanceOptions<RenderContext, TickContext, RP, RenderTarget>,
 ) => AppearanceReturn<RP, RenderTarget>;
