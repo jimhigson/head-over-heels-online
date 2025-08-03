@@ -3,6 +3,7 @@ import { zComparator } from "./zComparator";
 import type { GraphEdges } from "./toposort/toposort";
 import { CyclicDependencyError, toposort } from "./toposort/toposort";
 import { objectValues } from "iter-tools";
+import { emptyArray } from "../../../utils/empty";
 
 const addEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
   if (!edges.has(from)) {
@@ -102,9 +103,17 @@ export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
   return inFrontOf;
 };
 
+type BrokenLink<ItemId extends string> = [front: ItemId, back: ItemId];
+
 export type SortByZPairsReturn<ItemId extends string> = {
   order: ItemId[];
-  impossible: boolean;
+  /**
+   * cyclic links are links that were broken to allow the sort to complete
+   * - these items have the given sort order, but it was not possible to
+   * represent this as a topographic sort (painters algorithm) and masking
+   * is required to render
+   */
+  cyclicLinks: BrokenLink<ItemId>[];
 };
 
 /** sorts sprites in z by the z-pairs given in zPairs function - returns an order as a sorted list of item ids
@@ -115,16 +124,19 @@ export const sortByZPairs = <ItemId extends string>(
   edges: GraphEdges<ItemId>,
   items: Record<ItemId, DrawOrderComparable>,
   retries: number = 3,
+  alreadyBroken: BrokenLink<ItemId>[] = [],
 ): SortByZPairsReturn<ItemId> => {
   try {
-    return { order: toposort(edges), impossible: false };
+    return { order: toposort(edges), cyclicLinks: emptyArray };
   } catch (e) {
     if (e instanceof CyclicDependencyError) {
       const cyclicItemIds = e.cyclicDependency as Array<ItemId>;
 
-      // it is inevitable that cyclist dependencies will happen in very rare cases (the test room contains one on purpose) - in
-      // this case there is no way to render the nodes correctly using z-order and painters algorithm. All I can do is break the
-      // loop by removing one link and try again.
+      // It is inevitable that cyclist dependencies will happen in (the test room contains one on purpose) - in
+      // this case there is no way to render the nodes correctly using z-order and painters algorithm.
+      // All I can do is break the loop by removing one link and try again.
+      // CONSIDER LATER: instead of relying on trying again, try to implement toposort to sort once, removing
+      // and reporting cycles as it goes
       edges.get(cyclicItemIds[0])?.delete(cyclicItemIds[1]);
 
       // console.warn(
@@ -135,7 +147,7 @@ export const sortByZPairs = <ItemId extends string>(
 
       return {
         order: sortByZPairs(edges, items, retries - 1).order,
-        impossible: true,
+        cyclicLinks: [...alreadyBroken, [cyclicItemIds[0], cyclicItemIds[1]]],
       };
     } else {
       throw e;

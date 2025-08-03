@@ -20,6 +20,7 @@ import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shad
 import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { amigaHalfBriteBrightness } from "../../../../utils/colour/halfBrite";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
+import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -125,6 +126,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
   destroy() {
     this.#container.destroy(true);
     this.#shadowMaskRenderer?.destroy();
+    for (const c of Object.values(this.#casts)) {
+      // destroy all sprites, and destroy texture too if it was uniquely created for this cast
+      c.sprite.destroy();
+    }
   }
   /**
    * @returns true iff the item needs z-order resorting for the room
@@ -200,10 +205,9 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       for (const casterItem of bins.create) {
         const { times } = casterItem.config as ConsolidatableConfig;
 
-        const newShadowSprite = renderMultipliedXy(
+        const newShadowSprite: Sprite = maybeRenderContainerToSprite(
           pixiRenderer,
-          casterItem.shadowCastTexture,
-          times,
+          renderMultipliedXy(casterItem.shadowCastTexture, times),
         );
         newShadowSprite.label = casterItem.id;
         //newShadowSprite.filters = [new BlurFilter()];
@@ -235,27 +239,27 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       //blurFilter.strength = 0.5 + (8 * heightDifference) / 36;
     }
 
-    // clean out casts that are no longer needed:
+    // clean out casts that have not been updated to be marked as used on this frame:
     for (const [
       id,
-      { sprite: container, renderedOnProgression: currentAsOfProgression },
+      { sprite, renderedOnProgression: currentAsOfProgression },
     ] of objectEntries(this.#casts)) {
       if (currentAsOfProgression !== progression) {
-        container.destroy();
+        sprite.destroy();
         delete this.#casts[id];
       }
     }
 
     // for efficiency, hide all shadow rendering if nothing is casting on this item:
-    const visible =
+    const hasAnyShadowsCastOn =
       (bins.keepUnchanged?.length ?? 0) +
         (bins.update?.length ?? 0) +
         (bins.create?.length ?? 0) >
       0;
-    this.#container.visible = visible;
+    this.#container.visible = hasAnyShadowsCastOn;
 
     // for efficiency, only tick the shadow mask if this renderer is showing something
-    if (visible) {
+    if (hasAnyShadowsCastOn) {
       this.#tickShadowMask(itemTickContext);
     }
   }

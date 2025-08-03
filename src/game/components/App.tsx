@@ -9,7 +9,7 @@ import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { useEffect } from "react";
 import { useIsUncolourised } from "../../store/selectors.ts";
 import { LoadingProvider } from "./LoadingContext.tsx";
-import { WantedEditor } from "./WantedEditor.tsx";
+import { WantedEditor404 } from "./WantedEditor404.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
 
 const AppInner = () => {
@@ -37,7 +37,7 @@ const AppInner = () => {
       </Route>
       <Route path="/editor">
         <CssVariables>
-          <WantedEditor />
+          <WantedEditor404 />
         </CssVariables>
       </Route>
       <Route>

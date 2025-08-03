@@ -226,7 +226,10 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       this.#incrementalZEdges,
     );
 
-    const { order } = sortByZPairs(ze, this.renderContext.room.items);
+    const { order, cyclicLinks: brokenLinks } = sortByZPairs(
+      ze,
+      this.renderContext.room.items,
+    );
 
     for (let i = 0; i < order.length; i++) {
       const itemRenderer = this.#itemRenderers.get(order[i] as RoomItemId);
@@ -242,6 +245,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         throw new Error(
           `order ${order[i]} was given a z-order by sorting, but item has no graphics`,
         );
+    }
+
+    for (const [front, back] of brokenLinks) {
+      const _frontRenderer = this.#itemRenderers.get(front as RoomItemId)!;
+      const _backRenderer = this.#itemRenderers.get(back as RoomItemId)!;
+
+      // since the rendered sprite can change, on every frame we need to render
+      // the front sprite to a texture:
     }
   }
 
