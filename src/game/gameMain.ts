@@ -20,6 +20,7 @@ import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCur
 import { maxFps } from "./physics/mechanicsConstants";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
 import { typedURLSearchParams } from "../options/queryParams";
+import { trackTextures } from "../texture-inspector/main";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -50,6 +51,8 @@ export const gameMain = async <RoomId extends string>(
     // only used when not colourised)
     useBackBuffer: true,
   });
+
+  trackTextures(app);
 
   stopAppAutoRendering(app);
   app.ticker.maxFPS = maxFps;

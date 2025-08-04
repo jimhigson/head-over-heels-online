@@ -6,7 +6,7 @@ import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 import { playableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
 import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
 
-export const WantedEditor = () => {
+export const WantedEditor404 = () => {
   return (
     <DialogPortal>
       <Border className="loading-border" />

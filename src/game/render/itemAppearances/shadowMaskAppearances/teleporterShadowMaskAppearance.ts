@@ -4,6 +4,7 @@ import { teleporterIsActive } from "../../../physics/mechanics/teleporting";
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
 import { isPlayableItem } from "../../../physics/itemPredicates";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
+import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 
 type RenderProps = {
   flashing: boolean;
@@ -45,15 +46,17 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   }
 
   return {
-    output: renderMultipliedXy(
+    output: maybeRenderContainerToSprite(
       pixiRenderer,
-      {
-        textureId:
-          flashing ? "shadowMask.teleporter.flashing"
-          : activated ? "shadowMask.teleporter"
-          : "shadowMask.fullBlock",
-      },
-      times,
+      renderMultipliedXy(
+        {
+          textureId:
+            flashing ? "shadowMask.teleporter.flashing"
+            : activated ? "shadowMask.teleporter"
+            : "shadowMask.fullBlock",
+        },
+        times,
+      ),
     ),
     renderProps: { flashing, activated },
   };

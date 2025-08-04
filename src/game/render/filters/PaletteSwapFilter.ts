@@ -11,6 +11,9 @@ export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
 const lutSize = 256;
 const smallPrime = 31;
 
+// Cache for PaletteSwapFilter instances
+const filterCache = new Map<string, PaletteSwapFilter>();
+
 function hashColor(color: Color): number {
   const ri = Math.floor(color.red * 255);
   const gi = Math.floor(color.green * 255);
@@ -62,7 +65,7 @@ function createLut(swops: PaletteSwaps): Texture {
 /**
  * Filter to emulate palette swopping from the indexed graphics days
  */
-export class PaletteSwapFilter extends Filter {
+class PaletteSwapFilter extends Filter {
   #lutTexture: Texture;
 
   /**
@@ -134,3 +137,31 @@ export class PaletteSwapFilter extends Filter {
     super.destroy(options);
   }
 }
+
+/**
+ * Generate a hash key for a PaletteSwaps object
+ */
+const hashSwops = (swops: PaletteSwaps): string => {
+  return Object.entries(swops)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, color]) => `${key}:${color.toHex()}`)
+    .join("|");
+};
+
+/**
+ * Factory function to get or create a cached PaletteSwapFilter
+ * This prevents creating duplicate filters for the same palette swaps
+ */
+export const getPaletteSwapFilter = (
+  swops: PaletteSwaps,
+): PaletteSwapFilter => {
+  const key = hashSwops(swops);
+
+  let filter = filterCache.get(key);
+  if (!filter) {
+    filter = new PaletteSwapFilter(swops);
+    filterCache.set(key, filter);
+  }
+
+  return filter;
+};

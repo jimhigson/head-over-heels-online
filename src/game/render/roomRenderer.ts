@@ -237,12 +237,21 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       }
 
       const graphicsOutput = itemRenderer.output.graphics;
-      if (graphicsOutput) graphicsOutput!.zIndex = order.length - i;
-      else
+      if (graphicsOutput) {
+        graphicsOutput!.zIndex = order.length - i;
+      } else
         throw new Error(
           `order ${order[i]} was given a z-order by sorting, but item has no graphics`,
         );
     }
+
+    // for (const [front, back] of brokenLinks) {
+    //   const _frontRenderer = this.#itemRenderers.get(front as RoomItemId)!;
+    //   const _backRenderer = this.#itemRenderers.get(back as RoomItemId)!;
+
+    //   // since the rendered sprite can change, on every frame we need to render
+    //   // the front sprite to a texture:
+    // }
   }
 
   get #everRendered() {

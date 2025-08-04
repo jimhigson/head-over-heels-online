@@ -32,8 +32,8 @@ export class CyclicDependencyError<T> extends Error {
 
 /**
  * @param edges An array of directed edges describing a graph. An edge looks
- *              like this: `[node1, node2]` (vertices needn't be strings but can
- *              be of any type).
+ * like this: `Map{ from => Set{to, to, to} }`
+ * @param N The type of the nodes in the graph
  * @returns a list of vertices, sorted from "start" to "end"
  * @throws if there are any cycles in the graph
  */

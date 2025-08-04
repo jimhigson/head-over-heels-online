@@ -1,5 +1,6 @@
 import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import type { TextureId } from "../../../sprites/spriteSheetData";
+import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
 import {
   bookPaletteSwapFilter,
@@ -32,6 +33,7 @@ const blockTextureId = (
 
 export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
+    general: { pixiRenderer },
     item: {
       config: { style, times },
       state: { disappearing: disappear },
@@ -51,18 +53,21 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   }
 
   return {
-    output: createSprite({
-      textureId: blockTextureId(
-        room.color.shade === "dimmed",
-        style,
-        isDissapearing,
-      ),
-      filter:
-        style === "organic" ? mainPaletteSwapFilter(room)
-        : style === "book" ? bookPaletteSwapFilter(room)
-        : undefined,
-      times,
-    }),
+    output: maybeRenderContainerToSprite(
+      pixiRenderer,
+      createSprite({
+        textureId: blockTextureId(
+          room.color.shade === "dimmed",
+          style,
+          isDissapearing,
+        ),
+        filter:
+          style === "organic" ? mainPaletteSwapFilter(room)
+          : style === "book" ? bookPaletteSwapFilter(room)
+          : undefined,
+        times,
+      }),
+    ),
     renderProps: { isDissapearing },
   };
 };

@@ -60,6 +60,13 @@ export class AppearanceRenderer<
       if (this.output.children.at(0) !== rendering.output) {
         if (this.#currentRendering?.output) {
           this.output.removeChild(this.#currentRendering.output);
+          // #currentRendering may contain textures that need to be freed
+          // to prevent memory leaks. Without this, the dynamic teleporter shadow
+          // maps textures (for multiplied teleporters) were not being freed
+          this.#currentRendering.output.destroy({
+            texture: true,
+            children: true,
+          });
         }
 
         if (rendering.output !== undefined)
