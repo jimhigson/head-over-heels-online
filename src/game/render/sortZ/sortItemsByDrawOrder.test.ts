@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
-import type { SortByZPairsReturn } from "./sortItemsByDrawOrder";
-import { sortByZPairs, zEdges } from "./sortItemsByDrawOrder";
+import { updateZEdges } from "./sortItemsByDrawOrder";
+import { toposort } from "./toposort/toposort";
 import { collision1toMany } from "../../collision/aabbCollision";
 
 type TestItems = Record<string, DrawOrderComparable>;
@@ -34,23 +34,23 @@ test("detects behind in x", () => {
     },
   };
 
-  const edges = zEdges(items);
+  const edges = updateZEdges(items);
   // front => behind
   expect(edges).toMatchInlineSnapshot(`
     Map {
-      "1" => Set {
-        "2",
+      "2" => Map {
+        "1" => false,
       },
-      "2" => Set {
-        "3",
+      "3" => Map {
+        "2" => false,
       },
-      "3" => Set {
-        "4",
+      "4" => Map {
+        "3" => false,
       },
     }
   `);
   // no cyclic dependencies
-  expect(() => sortByZPairs(edges, items)).not.toThrow();
+  expect(() => toposort(edges)).not.toThrow();
 });
 
 test("detects behind in y", () => {
@@ -81,23 +81,23 @@ test("detects behind in y", () => {
     },
   };
 
-  const relations = zEdges(items);
+  const relations = updateZEdges(items);
   // front => behind
   expect(relations).toMatchInlineSnapshot(`
     Map {
-      "1" => Set {
-        "2",
+      "2" => Map {
+        "1" => false,
       },
-      "2" => Set {
-        "3",
+      "3" => Map {
+        "2" => false,
       },
-      "3" => Set {
-        "4",
+      "4" => Map {
+        "3" => false,
       },
     }
   `);
   // no cyclic dependencies
-  expect(() => sortByZPairs(relations, items)).not.toThrow();
+  expect(() => toposort(relations)).not.toThrow();
 });
 
 test("detects behind in z (inverted from x and y - higher is in front)", () => {
@@ -128,24 +128,24 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
     },
   };
 
-  const relations = zEdges(items);
+  const relations = updateZEdges(items);
   // front => behind
   expect(relations).toMatchInlineSnapshot(`
     Map {
-      "2" => Set {
-        "1",
+      "1" => Map {
+        "2" => false,
       },
-      "3" => Set {
-        "2",
+      "2" => Map {
+        "3" => false,
       },
-      "4" => Set {
-        "3",
+      "3" => Map {
+        "4" => false,
       },
     }
   `);
   // no cyclic dependencies
-  expect(() => sortByZPairs(relations, items)).not.toThrow();
-  expect(sortByZPairs(relations, items).brokenLinks).toEqual([]);
+  expect(() => toposort(relations)).not.toThrow();
+  toposort(relations);
 });
 
 test("detects as in front if on top and set back while overlapping", () => {
@@ -164,18 +164,17 @@ test("detects as in front if on top and set back while overlapping", () => {
     },
   };
 
-  const relations = zEdges(items);
+  const relations = updateZEdges(items);
   // front => behind - top in front of bottom:
   expect(relations).toMatchInlineSnapshot(`
     Map {
-      "top" => Set {
-        "bottom",
+      "bottom" => Map {
+        "top" => false,
       },
     }
   `);
   // no cyclic dependencies
-  expect(() => sortByZPairs(relations, items)).not.toThrow();
-  expect(sortByZPairs(relations, items).brokenLinks).toEqual([]);
+  expect(() => toposort(relations)).not.toThrow();
 });
 
 test("detects a tall item is front of two smaller items", () => {
@@ -207,18 +206,19 @@ test("detects a tall item is front of two smaller items", () => {
     },
   };
 
-  const relations = zEdges(items);
+  const relations = updateZEdges(items);
   expect(relations).toMatchInlineSnapshot(`
     Map {
-      "tallThinFront" => Set {
-        "smallerTop",
-        "smallerBottom",
+      "smallerTop" => Map {
+        "tallThinFront" => false,
+      },
+      "smallerBottom" => Map {
+        "tallThinFront" => false,
       },
     }
   `);
   // no cyclic dependencies
-  expect(() => sortByZPairs(relations, items)).not.toThrow();
-  expect(sortByZPairs(relations, items).brokenLinks).toEqual([]);
+  expect(() => toposort(relations)).not.toThrow();
 });
 
 test.todo("uses renderaabb if there is one", () => {
@@ -253,18 +253,18 @@ test("incrementally updates", () => {
     },
   };
 
-  const edges = zEdges(items);
+  const edges = updateZEdges(items);
   // front => behind
   expect(edges).toMatchInlineSnapshot(`
     Map {
-      "1" => Set {
-        "2",
+      "2" => Map {
+        "1" => false,
       },
-      "2" => Set {
-        "3",
+      "3" => Map {
+        "2" => false,
       },
-      "3" => Set {
-        "4",
+      "4" => Map {
+        "3" => false,
       },
     }
   `);
@@ -273,15 +273,15 @@ test("incrementally updates", () => {
   items[1].state.position.x = 40;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
   items[2].state.position.z = 100;
-  zEdges(items, new Set([items[1], items[2]]), edges);
+  updateZEdges(items, new Set([items[1], items[2]]), edges);
 
   expect(edges).toMatchInlineSnapshot(`
     Map {
-      "3" => Set {
-        "4",
+      "4" => Map {
+        "3" => false,
       },
-      "4" => Set {
-        "1",
+      "1" => Map {
+        "4" => false,
       },
     }
   `);
@@ -324,9 +324,8 @@ describe("cyclic dependencies", () => {
       },
     };
 
-    const relations = zEdges(items);
-    expect(() => sortByZPairs(relations, items)).not.toThrow();
-    expect(sortByZPairs(relations, items)?.brokenLinks).toEqual([]);
+    const relations = updateZEdges(items);
+    expect(() => toposort(relations)).not.toThrow();
   });
 
   test("found situation 2 - genuine cyclic dependency - not possible to render without splitting sprites up!", () => {
@@ -383,26 +382,23 @@ describe("cyclic dependencies", () => {
       expect(collision1toMany(i, Object.values(items))).toEqual([]);
     }
 
-    const relations = zEdges(items);
+    const relations = updateZEdges(items);
 
     // front => behind - this is a cycle!
     expect(relations).toMatchInlineSnapshot(`
       Map {
-        "pushableBlock" => Set {
-          "monster",
+        "monster" => Map {
+          "pushableBlock" => false,
         },
-        "pickup" => Set {
-          "pushableBlock",
+        "pushableBlock" => Map {
+          "pickup" => false,
         },
-        "monster" => Set {
-          "pickup",
+        "pickup" => Map {
+          "monster" => false,
         },
       }
     `);
 
-    let result: SortByZPairsReturn<keyof TestItems> | undefined;
-    expect(() => (result = sortByZPairs(relations, items))).not.toThrow();
-    // this is only one of three valid outputs - a better test would check if the output is any of those three!
-    expect(result?.brokenLinks).toEqual([["pickup", "pushableBlock"]]);
+    expect(() => toposort(relations)).not.toThrow();
   });
 });

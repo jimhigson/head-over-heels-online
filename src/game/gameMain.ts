@@ -20,7 +20,7 @@ import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCur
 import { maxFps } from "./physics/mechanicsConstants";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
 import { typedURLSearchParams } from "../options/queryParams";
-import { trackTextures } from "../texture-inspector/main";
+import { trackTextures } from "../textureInspector/main";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 

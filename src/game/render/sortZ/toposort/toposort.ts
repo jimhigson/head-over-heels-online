@@ -7,7 +7,7 @@
  *      [npm](https://www.npmjs.com/package/@types/toposort)
  *
  * - converted to typescript
- * - reports cyclic dependencies in thrown object
+ * - marks links as broken on finding cycles (no longer throws)
  *
  * Topological sorting function
  *
@@ -15,30 +15,28 @@
  * @returns {Array}
  */
 
-export type GraphEdges<NodeId> = Map<NodeId, Set<NodeId>>;
+// magic to tell v8 this is one to pre-compile:
+//# allFunctionsCalledOnLoad
 
-export class CyclicDependencyError<T> extends Error {
-  constructor(
-    public readonly cyclicDependency: Array<T>,
-    public readonly hasClosedCycle: boolean,
-    options?: ErrorOptions,
-  ) {
-    super(
-      `CyclicDependencyError: .cyclicDependency property of this error has nodes as an array. ${cyclicDependency.join(" -> ")}`,
-      options,
-    );
-  }
-}
+import { emptySet } from "../../../../utils/empty";
+import type { ZGraph } from "../GraphEdges";
 
 /**
  * @param edges An array of directed edges describing a graph. An edge looks
- * like this: `Map{ from => Set{to, to, to} }`
+ * like this: `Map{ from => Map{to => edge} }`
  * @param N The type of the nodes in the graph
  * @returns a list of vertices, sorted from "start" to "end"
- * @throws if there are any cycles in the graph
+ * @note automatically breaks cycles by marking edges as broken
  */
-export const toposort = <N>(outgoingEdges: GraphEdges<N>): N[] => {
-  const nodes = uniqueNodes(outgoingEdges);
+export const toposort = <N>(graph: ZGraph<N>): N[] => {
+  // Mark all edges as not broken on entry
+  for (const [, toMap] of graph) {
+    for (const [to] of toMap) {
+      toMap.set(to, false);
+    }
+  }
+
+  const nodes = Array.from(uniqueNodes(graph));
 
   let cursor = nodes.length;
   let i = cursor;
@@ -48,46 +46,40 @@ export const toposort = <N>(outgoingEdges: GraphEdges<N>): N[] => {
   const nodeIndexLookup = makeNodeIndexLookup(nodes);
 
   while (i--) {
-    if (!visited[i]) visit(nodes[i], i, new Set());
+    if (!visited[i]) visit(nodes[i], i, new Set(), null);
   }
 
   return sorted;
 
-  function visit(node: N, i: number, predecessors: Set<N>) {
+  function visit(node: N, i: number, predecessors: Set<N>, parent: N | null) {
     if (predecessors.has(node)) {
-      throw new CyclicDependencyError(
-        [node],
-        false, // can't describe a cycle with a single node
-      );
+      // We've found a cycle - mark the edge from parent to this node as broken
+      if (parent !== null) {
+        const parentEdges = graph.get(parent);
+        if (parentEdges?.has(node)) {
+          parentEdges.set(node, true);
+        }
+      }
+      return; // Skip this node since we're breaking the edge
     }
 
     if (visited[i]) return;
     visited[i] = true;
 
-    const outgoing = outgoingEdges.get(node) || new Set();
-    const outgoingArray = Array.from(outgoing);
+    const sourceMap = graph.get(node);
+    const outgoingNodes = Array.from(
+      sourceMap?.entries() ?? (emptySet as Set<[N, boolean]>),
+    );
 
-    if ((i = outgoingArray.length)) {
+    if ((i = outgoingNodes.length)) {
       predecessors.add(node);
       do {
-        const child = outgoingArray[--i];
-        try {
-          visit(child, nodeIndexLookup.get(child)!, predecessors);
-        } catch (e) {
-          if (e instanceof CyclicDependencyError) {
-            if (e.hasClosedCycle) {
-              // the error already describes a loop - no need to add more nodes on the way up the call stack
-              throw e;
-            } else {
-              throw new CyclicDependencyError<N>(
-                [node, ...e.cyclicDependency],
-                e.cyclicDependency.includes(node),
-              );
-            }
-          } else {
-            throw e;
-          }
+        const [child, broken] = outgoingNodes[--i];
+        if (broken) {
+          // skip broken links:
+          continue;
         }
+        visit(child, nodeIndexLookup.get(child)!, predecessors, node);
       } while (i);
       predecessors.delete(node);
     }
@@ -96,17 +88,17 @@ export const toposort = <N>(outgoingEdges: GraphEdges<N>): N[] => {
   }
 };
 
-function uniqueNodes<T>(edges: GraphEdges<T>): Array<T> {
-  const res = new Set<T>();
+function uniqueNodes<N>(edges: ZGraph<N>): Set<N> {
+  const res = new Set<N>();
 
   for (const [source, targets] of edges.entries()) {
     res.add(source);
-    for (const target of targets) {
+    for (const target of targets.keys()) {
       res.add(target);
     }
   }
 
-  return Array.from(res);
+  return res;
 }
 
 function makeNodeIndexLookup<T>(arr: ReadonlyArray<T>): Map<T, number> {

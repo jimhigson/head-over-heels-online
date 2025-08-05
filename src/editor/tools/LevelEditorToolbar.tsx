@@ -131,6 +131,11 @@ hotkey: **B**`}
             type: "block",
             config: { style: "organic", disappearing: { on: "stand" } },
           }}
+          shortcutKeys={["⇧B"]}
+          tooltipContent={`## Block 
+Disappearing basic block
+
+hotkey: **Shift B**`}
         >
           <DissapearingItemToolbarIcon
             iconClassName={twClass("texture-block_organic_disappearing")}
@@ -138,6 +143,11 @@ hotkey: **B**`}
         </ItemToolButton>
         <ItemToolButton
           itemTool={{ type: "block", config: { style: "artificial" } }}
+          shortcutKeys={["⌥B"]}
+          tooltipContent={`## Block 
+Basic block with a metallic look
+
+hotkey: **Alt B**`}
         >
           <span
             className={`sprite texture-block_artificial ${buttonSpriteRevertColourClasses}`}
@@ -148,6 +158,11 @@ hotkey: **B**`}
             type: "block",
             config: { style: "artificial", disappearing: { on: "stand" } },
           }}
+          shortcutKeys={["⌥⇧B"]}
+          tooltipContent={`## Block 
+Disappearing metallic look block
+
+hotkey: **Alt Shift B**`}
         >
           <DissapearingItemToolbarIcon
             iconClassName={twClass("texture-block_artificial_disappearing")}

@@ -2,7 +2,7 @@ import type { UnknownAction, WithSlice } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
 import type { GameMenusState } from "./slices/gameMenusSlice";
-import { gameMenusSlice } from "./slices/gameMenusSlice";
+import { debugItemClicked, gameMenusSlice } from "./slices/gameMenusSlice";
 import storage from "redux-persist/lib/storage";
 import type { PersistConfig } from "redux-persist";
 import {
@@ -75,7 +75,16 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+          // this action has pixi containers in the payload. It is only for debugging and logging those containers:
+          debugItemClicked.type,
+        ],
       },
     }).prepend(listenerMiddleware.middleware),
 });

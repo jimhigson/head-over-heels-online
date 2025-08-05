@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
-describe("intersectionType", { timeout: 20_000 }, () => {
-  it("should handle intersection types", { timeout: 20_000 }, async () => {
+describe("intersectionType", { timeout }, () => {
+  it("should handle intersection types", { timeout }, async () => {
     const result = await flattenFixture("intersectionType", "ExtendedConfig");
     expect(result).toContain("id: string");
     expect(result).toContain("name: string");

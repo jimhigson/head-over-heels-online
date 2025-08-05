@@ -4,6 +4,8 @@ import type { RoomState } from "../../model/RoomState";
 import type { MovedItems } from "../mainLoop/progressGameState";
 import type { GeneralRenderContext } from "./RoomRenderContexts";
 import type { IRenderLayer } from "pixi.js";
+import type { ZGraph } from "./sortZ/GraphEdges";
+import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 
 export type ItemRenderContext<T extends ItemInPlayType> = {
   item: ItemTypeUnion<T, string, string>;
@@ -17,6 +19,20 @@ export type ItemRenderContext<T extends ItemInPlayType> = {
    */
   colourClashLayer?: IRenderLayer;
   frontLayer: IRenderLayer;
+  /**
+   * the (mutated in place) record of which items is in front of which,
+   * including what can't be applied due to cyclic dependencies
+   * - updated by the time the
+   * item renders
+   */
+  zEdges: ZGraph<string>;
+  /**
+   * allows any item's renderers to get access to another item's current
+   * render pipeline (ie, for masking against other items's renderings)
+   */
+  getItemRenderPipeline: (
+    itemid: string,
+  ) => ItemRenderPipeline<ItemInPlayType> | undefined;
 };
 
 export type ItemTickContext = {

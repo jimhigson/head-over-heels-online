@@ -7,13 +7,8 @@ export const room = inferRoomJson({
   id: "egyptus16",
   items: {
     "block@0,5,0": {
-      config: { style: "organic", times: { x: 2 } },
+      config: { style: "organic", times: { x: 6 } },
       position: { x: 0, y: 5, z: 0 },
-      type: "block",
-    },
-    blockAddedToSplitAfterExistingBlockCausedCyclicZOrder: {
-      config: { style: "organic", times: { x: 4 } },
-      position: { x: 2, y: 5, z: 0 },
       type: "block",
     },
     "door@2,6,1": {

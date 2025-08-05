@@ -10,16 +10,6 @@
     "value": 9
   },
   {
-    "op": "replace",
-    "path": "/items/wall@8,5,0/config/tiles/2",
-    "value": "sarcophagus"
-  },
-  {
-    "op": "replace",
-    "path": "/items/wall@8,5,0/config/tiles/1",
-    "value": "hieroglyphics"
-  },
-  {
     "op": "add",
     "path": "/items/wall@8,5,0/config/tiles/3",
     "value": "sarcophagus"
@@ -27,56 +17,6 @@
   {
     "op": "add",
     "path": "/items/wall@8,5,0/config/tiles/4",
-    "value": "hieroglyphics"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/5",
-    "value": "sarcophagus"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/6",
-    "value": "hieroglyphics"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/7",
-    "value": "sarcophagus"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/8",
-    "value": "hieroglyphics"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/9",
-    "value": "sarcophagus"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/10",
-    "value": "hieroglyphics"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/11",
-    "value": "sarcophagus"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/12",
-    "value": "hieroglyphics"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/13",
-    "value": "sarcophagus"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/14",
     "value": "hieroglyphics"
   },
   {
@@ -125,7 +65,7 @@
   {
     "op": "add",
     "path": "/items/wall@0,8,0/config/tiles/3",
-    "value": "hieroglyphics"
+    "value": "sarcophagus"
   },
   {
     "op": "add",

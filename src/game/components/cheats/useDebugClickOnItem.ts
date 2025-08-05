@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { debugItemClicked } from "../../../store/slices/gameMenusSlice";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { pixiContainerToString } from "../../../utils/pixi/pixiContainerToString";
 
 export const useDebugClickOnItem = <RoomId extends string>() => {
   const gameApi = useGameApi<RoomId>();
@@ -22,6 +23,7 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
           const toRoom = gameApi.currentRoom?.roomAbove;
           if (toRoom) gameApi.changeRoom(toRoom);
         }
+        console.groupCollapsed(item.id);
         console.log(
           item.id,
           "item (live):",
@@ -38,7 +40,9 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
           isFreeItem(item) ?
             item.state.standingOnItemId
           : "n/a (not free to move)",
+          pixiContainerToString(action.payload.pixiContainer),
         );
+        console.groupEnd();
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).item = item;

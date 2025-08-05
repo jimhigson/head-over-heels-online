@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper";
+import { timeout } from "./timeout";
 
-describe("omitUnion", { timeout: 20_000 }, () => {
+describe("omitUnion", { timeout }, () => {
   it("should handle Omit on union types", async () => {
     const result = await flattenFixture("omitUnion", "TestOmitUnion");
 

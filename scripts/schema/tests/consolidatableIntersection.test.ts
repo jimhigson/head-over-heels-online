@@ -1,10 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
 describe("consolidatableIntersection", () => {
   it(
     "should handle consolidatable intersection pattern",
-    { timeout: 20_000 },
+    { timeout },
     async () => {
       const result = await flattenFixture(
         "consolidatableIntersection",

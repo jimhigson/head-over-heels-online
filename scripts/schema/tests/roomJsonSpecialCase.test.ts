@@ -1,10 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
 describe("roomJsonSpecialCase", () => {
   it(
     "should handle RoomJson items property special case",
-    { timeout: 20_000 },
+    { timeout },
     async () => {
       const result = await flattenFixture(
         "roomJsonSpecialCase",

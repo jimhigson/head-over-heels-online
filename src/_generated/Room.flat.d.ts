@@ -546,7 +546,7 @@ export type RoomJsonSchema = {
                     }
                   | {
                       which: "turtle";
-                      movement: "clockwise";
+                      movement: "clockwise" | "back-forth";
                       startDirection: "towards" | "right" | "away" | "left";
                       activated: "off" | "on";
                     }
@@ -838,7 +838,7 @@ export type RoomJsonSchema = {
             }
           | {
               which: "turtle";
-              movement: "clockwise";
+              movement: "clockwise" | "back-forth";
               startDirection: "towards" | "right" | "away" | "left";
               activated: "off" | "on";
             }

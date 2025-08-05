@@ -36,15 +36,32 @@ const assignPointerActions = <RoomId extends string>(
   if (container !== undefined && store.getState().gameMenus.cheatsOn) {
     container.eventMode = "static";
     container.on("pointertap", () => {
-      store.dispatch(debugItemClicked({ item }));
+      store.dispatch(debugItemClicked({ item, pixiContainer: container }));
     });
   }
+};
+
+/**
+ * creating an item renderer creates one special 'top' property which is the "render this item
+ * in every way it needs to be rendered" machine. However, there are also hooks into the pipeline
+ * available to get access to some of the sub-renderers.
+ *
+ * Eg, if masking against an item's appearance,
+ * we don't need to get its shadows, sounds, annotations, etc, just its basic item appearance
+ * renderer output
+ */
+export type ItemRenderPipeline<T extends ItemInPlayType> = {
+  /** the top-level, chained renderer that was created for this item. Tick this to tick the item */
+  top: ItemSoundAndGraphicsRenderer<T>;
+
+  // hooks into sub-renderers - more could be added later if needed
+  itemAppearanceRenderer?: ItemAppearancePixiRenderer<T, object, Container>;
 };
 
 /** factory to create the correct combinations of renderer(s) for any item */
 export const createItemRenderer = <T extends ItemInPlayType>(
   itemRenderContext: ItemRenderContext<T>,
-): ItemSoundAndGraphicsRenderer<T> => {
+): ItemRenderPipeline<T> => {
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = !selectIsUncolourised(state);
@@ -59,9 +76,12 @@ export const createItemRenderer = <T extends ItemInPlayType>(
   const siblingPixiRenderers: ItemPixiRenderer<T>[] = [];
 
   const appearance = appearanceForItem(item) as ItemAppearanceOutsideView<T>;
+  let itemAppearanceRenderer:
+    | ItemRenderPipeline<T>["itemAppearanceRenderer"]
+    | undefined = undefined;
 
   if (appearance !== undefined) {
-    const itemAppearanceRenderer = new ItemAppearancePixiRenderer(
+    itemAppearanceRenderer = new ItemAppearancePixiRenderer(
       itemRenderContext,
       appearance,
     );
@@ -108,9 +128,9 @@ export const createItemRenderer = <T extends ItemInPlayType>(
           itemRenderContext,
         );
 
-    assignPointerActions(item, compositeRenderer.output);
-
     graphics = new ItemPositionRenderer(itemRenderContext, compositeRenderer);
+
+    assignPointerActions(item, graphics.output);
   }
 
   const mute =
@@ -127,10 +147,13 @@ export const createItemRenderer = <T extends ItemInPlayType>(
       new SoundPanRenderer(itemRenderContext, soundRenderer)
     );
 
-  return new ItemSoundAndGraphicsRenderer(itemRenderContext, {
-    graphics,
-    sound,
-  });
+  return {
+    top: new ItemSoundAndGraphicsRenderer(itemRenderContext, {
+      graphics,
+      sound,
+    }),
+    itemAppearanceRenderer,
+  };
 };
 
 class CompositeItemGraphicsRenderer<T extends ItemInPlayType>

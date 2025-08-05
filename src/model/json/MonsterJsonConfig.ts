@@ -85,7 +85,7 @@ export type MonsterJsonConfig =
     }
   | {
       which: "turtle";
-      movement: MovementsSubset<"clockwise">;
+      movement: MovementsSubset<"clockwise" | "back-forth">;
       startDirection: DirectionXy4;
       activated: ActivatedWhenSubset<"on" | "off">;
     }

@@ -19,10 +19,6 @@
     "value": 0
   },
   {
-    "op": "remove",
-    "path": "/items/block@6,3,0/config/times"
-  },
-  {
     "op": "add",
     "path": "/items/JonsBlock",
     "value": {
@@ -33,24 +29,6 @@
         "z": 0
       },
       "type": "pushableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@6,3,0-2",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "z": 2
-        }
-      },
-      "position": {
-        "x": 6,
-        "y": 3,
-        "z": 1
-      },
-      "type": "block"
     }
   }
 ]
