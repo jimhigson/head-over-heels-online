@@ -41,13 +41,13 @@ process.stdin.on("end", () => {
           // Add multipleOf to x and y (0.5)
           if (node.properties.x) {
             assertIsJsonObject(node.properties.x);
-            node.properties.x.multipleOf = 0.5;
+            node.properties.x.multipleOf = 0.125;
             node.properties.x.minimum = -3;
             node.properties.x.maximum = 20;
           }
           if (node.properties.y) {
             assertIsJsonObject(node.properties.y);
-            node.properties.y.multipleOf = 0.5;
+            node.properties.y.multipleOf = 0.125;
             node.properties.y.minimum = -3;
             node.properties.y.maximum = 20;
           }

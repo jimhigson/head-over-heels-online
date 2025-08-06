@@ -1,7 +1,9 @@
 import { useAppDispatch } from "../../store/hooks";
-import { Switch } from "../../ui/Switch";
+import { Switch3 } from "../../ui/Switch";
+import type { GridResolution } from "../slice/levelEditorSlice";
 import {
   changeGridResolution,
+  gridResolutions,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 
@@ -13,21 +15,21 @@ export const HalfGridResolutionSwitch = ({
   const dispatch = useAppDispatch();
 
   return (
-    <Switch
+    <Switch3
       className={className}
       label="snap"
+      values={gridResolutions}
       value={useAppSelectorWithLevelEditorSlice(
-        (state) => state.levelEditor.halfGridResolution,
+        (state) => state.levelEditor.gridResolution,
       )}
-      onChange={(value) => {
+      onChange={(value: GridResolution) => {
         dispatch(changeGridResolution(value));
       }}
-      falseLabel="Block"
-      trueLabel="Half"
+      valueLabels={["block", "half", "2px"]}
       shortcutKeys={["S"]}
       tooltipContent={`snaps to either the grid (like the original game)
 
-or, allows placing on a half-block grid
+or, allows placing on a half-block grid, or to 2px resolution
 
 hotkey: **S**
 `}

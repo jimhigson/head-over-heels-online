@@ -22,6 +22,7 @@ import type {
 } from "./pointIntersectsItemAABB";
 import { pointIntersectsItemAABB } from "./pointIntersectsItemAABB";
 import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
+import type { GridResolution } from "../../slice/levelEditorSlice";
 
 export const roundXyzProjection = (
   /** the world position to round */
@@ -33,25 +34,24 @@ export const roundXyzProjection = (
    */
   planeNormal: Xyz,
   tool: Tool,
-  halfGridResolution: boolean,
+  gridResolutionParam: GridResolution,
 ) => {
-  const noHalfSteps =
-    !halfGridResolution ||
+  const gridResolution: GridResolution =
     // the tool placement granularity can change depending on the tool - doors can never be placed at half-steps:
-    (tool.type === "item" && tool.item.type === "door");
+    tool.type === "item" && tool.item.type === "door" ? 1 : gridResolutionParam;
 
   // potentially allow items to be positioned on half-blocks for x and y
   // (unlike original hoh)
-  const incrementXy = noHalfSteps ? blockSizePx.w : blockSizePx.w / 2;
+  const incrementXy = blockSizePx.w * gridResolution;
   const incrementZ = blockSizePx.h;
 
   const biasXy =
-    noHalfSteps ?
-      // not sure why, but feels more natural to have 0 here when doing whole blocks
+    gridResolution === 1 ?
+      // not sure why, but for full blocks it feels more natural to have no bias
       0
       // bias centres the position towards the bottom of the square while the pointer points to
       // the middle of it
-    : incrementXy / 2;
+    : blockSizePx.w / 2;
   const biasZ = incrementZ / 2;
 
   const orthoPlane = orthoPlaneForNormal(planeNormal);
@@ -83,7 +83,7 @@ const worldPositionOnFaceForScreenPosition = (
   plane: Xyz,
   gameEngineXy: Xy,
   tool: Tool,
-  halfGridResolution: boolean,
+  gridResolution: GridResolution,
 ): Xyz => {
   const pointOnPlane = {
     x: position.x + (plane.x < 0 ? 0 : aabb.x),
@@ -103,7 +103,7 @@ const worldPositionOnFaceForScreenPosition = (
     cursorWorldPosition,
     plane,
     tool,
-    halfGridResolution,
+    gridResolution,
   );
 
   return rounded;
@@ -126,7 +126,7 @@ export const findPointerPointingAt = (
   scrXy: Xy,
   room: EditorRoomState,
   tool: Tool,
-  halfGridResolution: boolean,
+  gridResolution: GridResolution,
 ): MaybePointingAtSomething => {
   const intersections = iterateRoomItems(room.items)
     .filter(isPointableItemForTool(tool))
@@ -171,7 +171,7 @@ export const findPointerPointingAt = (
             face,
             scrXy,
             tool,
-            halfGridResolution,
+            gridResolution,
           ),
         },
       };

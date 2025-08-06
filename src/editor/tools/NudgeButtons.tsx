@@ -30,13 +30,14 @@ export const NudgeButtons = () => {
       store.getState() as RootStateWithLevelEditorSlice
     ).levelEditor;
 
-    const { halfGridResolution, selectedJsonItemIds: jsonItemIds } =
+    const { gridResolution, selectedJsonItemIds: jsonItemIds } =
       levelEditorStoreState;
 
-    const positionDelta =
-      halfGridResolution ?
-        elementWiseProductXyz(unitVector, { x: 0.5, y: 0.5, z: 1 })
-      : unitVector;
+    const positionDelta = elementWiseProductXyz(unitVector, {
+      x: gridResolution,
+      y: gridResolution,
+      z: 1,
+    });
 
     const collides = itemMoveOrResizeWouldCollide({
       roomState,
