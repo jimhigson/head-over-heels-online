@@ -1,10 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
 describe("noInferWrapper", () => {
   it(
     "should handle NoInfer wrapper in complex contexts",
-    { timeout: 20_000 },
+    { timeout },
     async () => {
       const result = await flattenFixture("noInferWrapper", "TestType");
       expect(result).toContain("Record<string,");

@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
-describe("jsonItemUnionPattern", { timeout: 20_000 }, () => {
-  it("should handle json item union pattern", { timeout: 20_000 }, async () => {
+describe("jsonItemUnionPattern", { timeout }, () => {
+  it("should handle json item union pattern", { timeout }, async () => {
     const result = await flattenFixture("jsonItemUnionPattern", "TestUnion");
     expect(result).toContain("|");
     expect(result).toContain('type: "door"');

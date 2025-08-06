@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper";
+import { timeout } from "./timeout";
 
-describe("emitterRealCase", { timeout: 20_000 }, () => {
+describe("emitterRealCase", { timeout }, () => {
   it("should flatten emitter with EmittableItemRecipe as union", async () => {
     const result = await flattenFixture("emitterRealCase", "TestEmitterReal");
 

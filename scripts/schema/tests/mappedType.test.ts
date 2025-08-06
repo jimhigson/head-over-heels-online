@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
 describe("mappedType", () => {
-  it("should handle mapped types", { timeout: 20_000 }, async () => {
+  it("should handle mapped types", { timeout }, async () => {
     const result = await flattenFixture("mappedType", "ItemUnion");
     expect(result).toContain("|");
     expect(result).toContain('type: "door"');

@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
-describe("literalTypes", { timeout: 20_000 }, () => {
-  it("should handle literal types", { timeout: 20_000 }, async () => {
+describe("literalTypes", { timeout }, () => {
+  it("should handle literal types", { timeout }, async () => {
     expect(await flattenFixture("literalTypes", "TestStringLiteral")).toBe(
       '"hello"',
     );

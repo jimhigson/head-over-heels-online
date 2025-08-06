@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
-describe("conditionalType", { timeout: 20_000 }, () => {
-  it("should handle conditional types", { timeout: 20_000 }, async () => {
+describe("conditionalType", { timeout }, () => {
+  it("should handle conditional types", { timeout }, async () => {
     expect(await flattenFixture("conditionalType", "Test")).toBe("true");
   });
 });

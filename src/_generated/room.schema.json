@@ -1662,7 +1662,7 @@
                                         "type": "string"
                                       },
                                       "movement": {
-                                        "const": "clockwise",
+                                        "enum": ["clockwise", "back-forth"],
                                         "type": "string"
                                       },
                                       "startDirection": {
@@ -2654,7 +2654,7 @@
                             "type": "string"
                           },
                           "movement": {
-                            "const": "clockwise",
+                            "enum": ["clockwise", "back-forth"],
                             "type": "string"
                           },
                           "startDirection": {

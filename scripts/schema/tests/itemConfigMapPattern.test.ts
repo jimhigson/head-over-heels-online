@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
-describe("itemConfigMapPattern", { timeout: 20_000 }, () => {
-  it("should handle item config map pattern", { timeout: 20_000 }, async () => {
+describe("itemConfigMapPattern", { timeout }, () => {
+  it("should handle item config map pattern", { timeout }, async () => {
     const doorResult = await flattenFixture(
       "itemConfigMapPattern",
       "DoorConfig",

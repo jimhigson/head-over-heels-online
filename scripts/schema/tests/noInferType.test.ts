@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
-describe("noInferType", { timeout: 20_000 }, () => {
-  it("should handle NoInfer wrapper types", { timeout: 20_000 }, async () => {
+describe("noInferType", { timeout }, () => {
+  it("should handle NoInfer wrapper types", { timeout }, async () => {
     expect(await flattenFixture("noInferType", "TestType")).toBe("string");
   });
 });

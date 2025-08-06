@@ -1,10 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper.js";
+import { timeout } from "./timeout.js";
 
 describe("recordWithUnion", () => {
   it.skip(
     "should handle Record with union value types",
-    { timeout: 20_000 },
+    { timeout },
     async () => {
       // NOTE: This is a known limitation of the TypeScript compiler API
       // When TypeScript resolves Record<string, UnionType>, it may simplify

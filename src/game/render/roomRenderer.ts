@@ -1,8 +1,9 @@
 import type { IRenderLayer } from "pixi.js";
 import { Container, RenderLayer } from "pixi.js";
-import { sortByZPairs, zEdges } from "./sortZ/sortItemsByDrawOrder";
+import { updateZEdges } from "./sortZ/sortItemsByDrawOrder";
+import { toposort } from "./sortZ/toposort/toposort";
+import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import { createItemRenderer } from "./item/itemRender/createItemRenderer";
-import type { GraphEdges } from "./sortZ/toposort/toposort";
 import type { ItemTickContext } from "./ItemRenderContexts";
 import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
 import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
@@ -11,8 +12,10 @@ import { getColorScheme } from "../hintColours";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import { iterateRoomItems } from "../../model/RoomState";
-import type { ItemInPlayType } from "../../model/ItemInPlay";
-import type { ItemSoundAndGraphicsRenderer } from "./item/itemRender/ItemSoundAndGraphicsRenderer";
+import type {
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlay";
 import { audioCtx } from "../../sound/audioCtx";
 import { dimLut, noFilters } from "./filters/standardFilters";
 import type { SetRequired } from "type-fest";
@@ -20,6 +23,7 @@ import type { RoomRendererType } from "./RoomRendererType";
 import { iterateToContainer } from "../iterateToContainer";
 import { roomRendererOcclusions } from "./roomRendererOcclusions";
 import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
+import { type ZGraph } from "./sortZ/GraphEdges";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>
@@ -61,11 +65,10 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   /**
    * store the edges of the behind/front graph between frames so we can incrementally update it
    */
-  #incrementalZEdges: GraphEdges<string> = new Map();
-  #itemRenderers: Map<
-    RoomItemId,
-    ItemSoundAndGraphicsRenderer<ItemInPlayType>
-  > = new Map();
+  #zEdges: ZGraph<RoomItemId> = new Map();
+
+  #itemRenderers: Map<RoomItemId, ItemRenderPipeline<ItemInPlayType>> =
+    new Map();
 
   constructor(
     public readonly renderContext: RoomRenderContext<RoomId, RoomItemId>,
@@ -120,6 +123,61 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         );
   }
 
+  #getItemRenderPipeline = (itemId: string) => {
+    return this.#itemRenderers.get(itemId as RoomItemId);
+  };
+
+  #tickItem(
+    itemTickContext: ItemTickContext,
+    item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ) {
+    let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
+
+    if (itemRenderer === undefined) {
+      // have never ticked this item before - either first tick in the room or item was introduced to the
+      // room since the last tick
+      itemRenderer = createItemRenderer({
+        ...this.renderContext,
+        colourClashLayer: this.#colourClashLayer,
+        frontLayer: this.#frontLayer,
+        item,
+        zEdges: this.#zEdges,
+        getItemRenderPipeline: this.#getItemRenderPipeline,
+      });
+
+      this.#itemRenderers.set(item.id as RoomItemId, itemRenderer);
+
+      const { graphics, sound } = itemRenderer.top.output;
+
+      if (graphics) {
+        // item has a visual presence:
+        this.#itemsContainer.addChild(graphics);
+        if (item.fixedZIndex) {
+          graphics.zIndex = item.fixedZIndex;
+        }
+      }
+
+      if (sound) {
+        if (!this.output.sound) {
+          throw new Error(
+            "item renderer has sound, but room renderer does not - this probably means that they disagree on if the user has sound muted",
+          );
+        }
+        // item has a sound presence:
+        sound.connect(this.output.sound);
+      }
+    }
+    try {
+      itemRenderer.top.tick(itemTickContext);
+    } catch (e) {
+      throw new Error(
+        `RoomRenderer: error while ticking item "${item.id}"\nin room "${this.renderContext.room.id}"\nitem in play object is:
+           \n${JSON.stringify(item, null, 2)}`,
+        { cause: e },
+      );
+    }
+  }
+
   #tickItems(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
     const { room } = this.renderContext;
 
@@ -128,60 +186,41 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       lastRenderRoomTime: this.#lastRenderRoomTime,
     };
 
-    for (const item of iterateRoomItems(room.items)) {
-      let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
+    const tickedItemIds = new Set<RoomItemId>();
 
-      if (
-        itemRenderer ===
-        undefined /* equivalent to if( this.#itemRenderers.has(item.id) ) */
-      ) {
-        // have never ticked this item before - either first tick in the room or item was introduced to the
-        // room since the last tick
-        itemRenderer = createItemRenderer({
-          ...this.renderContext,
-          colourClashLayer: this.#colourClashLayer,
-          frontLayer: this.#frontLayer,
-          item,
-        });
-
-        this.#itemRenderers.set(item.id as RoomItemId, itemRenderer);
-
-        const { graphics, sound } = itemRenderer.output;
-
-        if (graphics) {
-          // item has a visual presence:
-          this.#itemsContainer.addChild(graphics);
-          if (item.fixedZIndex) {
-            graphics.zIndex = item.fixedZIndex;
+    /*
+     * for broken links, the front items
+     * have to be ticked first. This is because the back items may use them as
+     * a mask, so if they're done second they may capture the front item's
+     * container to a texture before it updates
+     */
+    const tickItemWithGuard = (itemId: RoomItemId) => {
+      if (tickedItemIds.has(itemId)) {
+        // already ticked, nothing to do
+        return;
+      }
+      const edges = this.#zEdges.get(itemId);
+      if (edges) {
+        for (const [front, broken] of edges.entries()) {
+          if (broken) {
+            // tick front first
+            tickItemWithGuard(front);
           }
         }
+      }
+      this.#tickItem(itemTickContext, room.items[itemId]);
+      tickedItemIds.add(itemId);
+    };
 
-        if (sound) {
-          if (!this.output.sound) {
-            throw new Error(
-              "item renderer has sound, but room renderer does not - this probably means that they disagree on if the user has sound muted",
-            );
-          }
-          // item has a sound presence:
-          sound.connect(this.output.sound);
-        }
-      }
-      try {
-        itemRenderer.tick(itemTickContext);
-      } catch (e) {
-        throw new Error(
-          `RoomRenderer for room ${this.renderContext.room.id} caught error while ticking Renderer for item "${item.id}" - item in play object is:
-           ${JSON.stringify(item, null, 2)}`,
-          { cause: e },
-        );
-      }
+    for (const itemId in room.items) {
+      tickItemWithGuard(itemId);
     }
 
     // remove any renderers for items that no longer exist in the room:
     let destroyedItemRenderers = false;
     for (const [itemId, itemRenderer] of this.#itemRenderers.entries()) {
       if (room.items[itemId] === undefined) {
-        itemRenderer.destroy();
+        itemRenderer.top.destroy();
         this.#itemRenderers.delete(itemId as RoomItemId);
         destroyedItemRenderers = true;
       }
@@ -217,17 +256,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
-  #tickItemsZIndex(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
-    const ze = zEdges(
-      this.renderContext.room.items,
-      roomTickContext.movedItems,
-      // this.#incrementalZEdges will be updated in-place by the zEdges function to match
-      // the current ordering state of the room, starting from the previous ordering state
-      this.#incrementalZEdges,
-    );
-
-    const { order } = sortByZPairs(ze, this.renderContext.room.items);
-
+  #tickItemsZIndex(order: RoomItemId[]) {
     for (let i = 0; i < order.length; i++) {
       const itemRenderer = this.#itemRenderers.get(order[i] as RoomItemId);
       if (itemRenderer === undefined) {
@@ -236,22 +265,15 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         );
       }
 
-      const graphicsOutput = itemRenderer.output.graphics;
-      if (graphicsOutput) {
-        graphicsOutput!.zIndex = order.length - i;
-      } else
+      const graphicsOutput = itemRenderer.top.output.graphics;
+      if (!graphicsOutput) {
         throw new Error(
           `order ${order[i]} was given a z-order by sorting, but item has no graphics`,
         );
+      }
+
+      graphicsOutput!.zIndex = i;
     }
-
-    // for (const [front, back] of brokenLinks) {
-    //   const _frontRenderer = this.#itemRenderers.get(front as RoomItemId)!;
-    //   const _backRenderer = this.#itemRenderers.get(back as RoomItemId)!;
-
-    //   // since the rendered sprite can change, on every frame we need to render
-    //   // the front sprite to a texture:
-    // }
   }
 
   get #everRendered() {
@@ -272,10 +294,24 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         }
       );
 
+    // it it important that we sort before rendering. This is because sorting updates
+    // this.#brokenLinks, which will be used in this.#tickItems to update the rendering,
+    // which can be influenced by the broken links (by showing masking)
+
+    updateZEdges<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>, RoomItemId>(
+      this.renderContext.room.items,
+      tickContext.movedItems,
+      // this.#incrementalZEdges will be updated in-place by the zEdges function to match
+      // the current ordering state of the room, starting from the previous ordering state
+      this.#zEdges,
+    );
+
+    const order = toposort(this.#zEdges);
+
     this.#tickItems(tickContext);
 
     if (!this.#everRendered || tickContext.movedItems.size > 0) {
-      this.#tickItemsZIndex(tickContext);
+      this.#tickItemsZIndex(order);
     }
 
     this.#lastRenderRoomTime = this.renderContext.room.roomTime;
@@ -286,7 +322,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     this.output.graphics.destroy({ children: true });
     this.output.sound?.disconnect();
     this.#itemRenderers.forEach((itemRenderer) => {
-      itemRenderer.destroy();
+      itemRenderer.top.destroy();
     });
     this.#destroyed = true;
   }

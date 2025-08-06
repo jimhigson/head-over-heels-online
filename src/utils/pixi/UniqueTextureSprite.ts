@@ -1,4 +1,4 @@
-import { Sprite, Texture } from "pixi.js";
+import { Sprite } from "pixi.js";
 import type { DestroyOptions } from "pixi.js";
 
 /**
@@ -6,10 +6,8 @@ import type { DestroyOptions } from "pixi.js";
  * Use this for sprites with unique textures that won't be shared with other sprites.
  */
 export class UniqueTextureSprite extends Sprite {
-  constructor(param: ConstructorParameters<typeof Sprite>[0]) {
-    if (!(param instanceof Texture) && !param?.texture) {
-      throw new Error("UniqueTextureSprite requires a Texture");
-    }
+  constructor(...params: ConstructorParameters<typeof Sprite>) {
+    const [param] = params;
 
     super(param);
   }
@@ -25,6 +23,9 @@ export class UniqueTextureSprite extends Sprite {
     // - this means if .destroy() is called twice on this sprite, the second call
     // causes a null pointer exception. Guard against this by only destroying the texture
     // if we have one.
+    //
+    // It is also ok to create a UniqueTextureSprite without a texture, then destroy it before
+    // adding one, which would also cause this.texture to be null.
     const hasTexture = this.texture !== null;
 
     // Ensure texture destruction is always enabled

@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper";
+import { timeout } from "./timeout";
 
-describe("realWorldEmitter", { timeout: 20_000 }, () => {
+describe("realWorldEmitter", { timeout }, () => {
   it("should correctly handle emitter emits property as union of objects", async () => {
     const result = await flattenFixture("realWorldEmitter", "TestEmitter");
 

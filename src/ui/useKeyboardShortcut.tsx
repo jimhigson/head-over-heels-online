@@ -7,23 +7,32 @@ type ValidModifiers =
   | "^" // just ctrl
   | "⌘" // just cmd
   | "⇧" // just shift
+  | "⌥" // just alt/option
   | "^⇧" // ctrl+shift
   | "⌘⇧" // cmd+shift
+  | "⌥⇧" // alt+shift
+  | "^⌥" // ctrl+alt
+  | "⌘⌥" // cmd+alt
   | "^⌘" // ctrl+cmd (unusual but valid)
-  | "^⌘⇧"; // ctrl+cmd+shift (unusual but valid)
+  | "^⌥⇧" // ctrl+alt+shift
+  | "⌘⌥⇧" // cmd+alt+shift
+  | "^⌘⇧" // ctrl+cmd+shift (unusual but valid)
+  | "^⌘⌥" // ctrl+cmd+alt
+  | "^⌘⌥⇧"; // ctrl+cmd+alt+shift
 
 /**
  * A single shortcut key combination
  *  * '^s' for Ctrl+S
  *  * '⌘s' for Cmd+S
  *  * '⇧s' for shift+s
+ *  * '⌥s' for alt/option+s
  *  * '⌘⇧s' for cmd+shift+s
  *  * 's' for pressing 's' with no modifier
  */
 type SingleShortcut = `${ValidModifiers}${Key}`;
 
 export type ShortcutKeys = SingleShortcut[];
-const shortcutKeyRegex = /^(?<modifiers>[⇧⌘^]*)(?<key>.+)$/;
+const shortcutKeyRegex = /^(?<modifiers>[⇧⌘^⌥]*)(?<key>.+)$/;
 // Helper to check for duplicate modifiers
 const hasDuplicateModifiers = (modifiers: string): boolean => {
   const seen = new Set<string>();
@@ -69,18 +78,31 @@ export const useKeyboardShortcut = (
         const requiredCtrl = modifiers.includes("^");
         const requiredCmd = modifiers.includes("⌘");
         const requiredShift = modifiers.includes("⇧");
-        const hasAnyModifier = requiredCtrl || requiredCmd || requiredShift;
+        const requiredAlt = modifiers.includes("⌥");
+        const hasAnyModifier =
+          requiredCtrl || requiredCmd || requiredShift || requiredAlt;
 
         // Check if current key state matches requirements
         const modifierMatches =
           requiredCtrl === event.ctrlKey &&
           requiredCmd === event.metaKey &&
           requiredShift === event.shiftKey &&
+          requiredAlt === event.altKey &&
           // If no modifiers are required, ensure none are pressed
           (hasAnyModifier ||
-            (!event.ctrlKey && !event.metaKey && !event.shiftKey));
+            (!event.ctrlKey &&
+              !event.metaKey &&
+              !event.shiftKey &&
+              !event.altKey));
 
-        if (event.key.toLowerCase() === key.toLowerCase() && modifierMatches) {
+        // When Alt is pressed on macOS, the key character can be modified
+        // so we need to check the code instead
+        const keyToCheck =
+          requiredAlt && event.altKey ?
+            event.code.replace(/^Key/, "").toLowerCase()
+          : event.key.toLowerCase();
+
+        if (keyToCheck === key.toLowerCase() && modifierMatches) {
           if (!disabled) {
             run?.();
           }

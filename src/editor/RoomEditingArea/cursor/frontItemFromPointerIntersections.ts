@@ -1,13 +1,11 @@
 import type { SetRequired } from "type-fest";
-import {
-  zEdges,
-  sortByZPairs,
-} from "../../../game/render/sortZ/sortItemsByDrawOrder";
+import { updateZEdges } from "../../../game/render/sortZ/sortItemsByDrawOrder";
 import type {
   EditorUnionOfAllItemInPlayTypes,
   EditorRoomItemId,
 } from "../../editorTypes";
 import type { PointerItemIntersection } from "./pointIntersectsItemAABB";
+import { toposort } from "../../../game/render/sortZ/toposort/toposort";
 
 const isFixedZIndexItem = (
   i: EditorUnionOfAllItemInPlayTypes,
@@ -60,8 +58,9 @@ export const frontItemFromPointerIntersections = (
   /**
    * note: zEdges will not include ids of items with fixed z order
    */
-  const ze = zEdges(topographicallySortableItemsMap);
-  const { order } = sortByZPairs(ze, topographicallySortableItemsMap);
+  const ze = updateZEdges(topographicallySortableItemsMap);
+  const order = toposort(ze);
 
-  return topographicallySortableItemsMap[order[0]];
+  // items are sorted back-to-front, so we need the last one:
+  return topographicallySortableItemsMap[order.at(-1)!];
 };

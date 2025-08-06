@@ -35,6 +35,7 @@ import type { SerialisableError } from "../../utils/redux/createSerialisableErro
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { CharacterName } from "../../model/modelTypes";
 import { typedURLSearchParams } from "../../options/queryParams";
+import type { Container } from "pixi.js";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
@@ -589,6 +590,7 @@ export const gameMenusSlice = createSlice({
       _state,
       _action: PayloadAction<{
         item: UnionOfAllItemInPlayTypes<string, string>;
+        pixiContainer: Container;
       }>,
     ) {},
     characterRoomChange(

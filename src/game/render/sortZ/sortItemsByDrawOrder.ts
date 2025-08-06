@@ -1,35 +1,22 @@
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
-import type { GraphEdges } from "./toposort/toposort";
-import { CyclicDependencyError, toposort } from "./toposort/toposort";
 import { objectValues } from "iter-tools";
-import { emptyArray } from "../../../utils/empty";
-
-const addEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
-  if (!edges.has(from)) {
-    edges.set(from, new Set());
-  }
-  edges.get(from)!.add(to);
-};
-
-const deleteEdge = <T>(edges: GraphEdges<T>, from: T, to: T) => {
-  const s = edges.get(from);
-  if (s !== undefined) {
-    s?.delete(to);
-    if (s.size === 0) {
-      edges.delete(from);
-    }
-  }
-};
+import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
 
 /**
  * returns a list of what is in front of what, ie:
  *
+ * order back->front is important, because it is ultimately the back item that has to
+ * 'do' something - it needs to mask itself with the front if there's a cycle found
+ *
  * ```ts
- *    { 'idOfItemInFront: [ 'idOfItemInBack' ] }
+ *    Map{ 'idOfItemBehind' => Set{ 'idOfItemInFront' } }
  * ```
  */
-export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
+export const updateZEdges = <
+  TItem extends DrawOrderComparable,
+  Tid extends string,
+>(
   items: Record<Tid, TItem>,
   /**
    * the nodes that have moved - nodes that did not move are not considered
@@ -39,20 +26,20 @@ export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
   /**
    * if given, will create an incremental update starting from the previous edges
    */
-  inFrontOf: GraphEdges<Tid> = new Map(),
-): GraphEdges<Tid> => {
+  zEdges: ZGraph<Tid> = new Map(),
+): ZGraph<Tid> => {
   // track items that have already been compared to cut out duplicate comparisons:
-  const comparisonsDone: GraphEdges<TItem> = new Map();
+  const comparisonsDone: Map<TItem, Set<TItem>> = new Map();
 
-  // sanitise the given inFrontOf for nodes that no longer exist - this
+  // sanitise the given behindEdges for nodes that no longer exist - this
   // is important for incremental updates:
-  for (const [front, behinds] of inFrontOf) {
-    if (!items[front]) {
-      inFrontOf.delete(front);
+  for (const [behind, fronts] of zEdges) {
+    if (!items[behind]) {
+      zEdges.delete(behind);
     } else {
-      for (const behind of behinds) {
-        if (!items[behind]) {
-          deleteEdge(inFrontOf, front, behind);
+      for (const [f] of fronts) {
+        if (!items[f]) {
+          deleteEdge(zEdges, behind, f);
         }
       }
     }
@@ -66,8 +53,9 @@ export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
     }
 
     // moved nodes are compared against all nodes (moving or not):
-    // - only unmoved/umomved pairs can be skipped since they
+    // - only unmoved/unmoved pairs can be skipped since they
     // are known not to have changed
+    // ie - every moved node is compared again against every other node
     for (const itemJ of objectValues(items) as Iterable<TItem>) {
       if (
         itemJ.fixedZIndex !== undefined ||
@@ -81,76 +69,27 @@ export const zEdges = <TItem extends DrawOrderComparable, Tid extends string>(
 
       const comparison = zComparator(itemI, itemJ);
 
-      addEdge(comparisonsDone, itemI, itemJ);
+      if (!comparisonsDone.has(itemI)) {
+        comparisonsDone.set(itemI, new Set());
+      }
+      comparisonsDone.get(itemI)!.add(itemJ);
 
       if (comparison === 0) {
-        deleteEdge(inFrontOf, itemI.id, itemJ.id);
-        deleteEdge(inFrontOf, itemJ.id, itemI.id);
+        deleteEdge(zEdges, itemI.id, itemJ.id);
+        deleteEdge(zEdges, itemJ.id, itemI.id);
         continue;
       }
 
       const front = comparison > 0 ? itemI.id : itemJ.id;
       const back = comparison > 0 ? itemJ.id : itemI.id;
 
-      addEdge(inFrontOf, front, back);
+      addEdge(zEdges, back, front, false);
 
       // can't link the other way - delete if it does:
-      deleteEdge(inFrontOf, back, front);
+      deleteEdge(zEdges, front, back);
     }
   }
 
   //console.log(comparisonCount);
-  return inFrontOf;
-};
-
-type BrokenLink<ItemId extends string> = [front: ItemId, back: ItemId];
-
-export type SortByZPairsReturn<ItemId extends string> = {
-  order: ItemId[];
-  /**
-   * cyclic links are links that were broken to allow the sort to complete
-   * - these items have the given sort order, but it was not possible to
-   * represent this as a topographic sort (painters algorithm) and masking
-   * is required to render
-   */
-  brokenLinks: BrokenLink<ItemId>[];
-};
-
-/** sorts sprites in z by the z-pairs given in zPairs function - returns an order as a sorted list of item ids
- *
- * Note that in the case of cyclic dependencies, this function MODIFIED the @param edges until it can run
- */
-export const sortByZPairs = <ItemId extends string>(
-  edges: GraphEdges<ItemId>,
-  items: Record<ItemId, DrawOrderComparable>,
-  retries: number = 3,
-  alreadyBroken: BrokenLink<ItemId>[] = [],
-): SortByZPairsReturn<ItemId> => {
-  try {
-    return { order: toposort(edges), brokenLinks: emptyArray };
-  } catch (e) {
-    if (e instanceof CyclicDependencyError) {
-      const cyclicItemIds = e.cyclicDependency as Array<ItemId>;
-
-      // It is inevitable that cyclic dependencies will happen in (the test room contains one on purpose) - in
-      // this case there is no way to render the nodes correctly using z-order and painters algorithm.
-      // All I can do is break the loop by removing one link and try again.
-      // CONSIDER LATER: instead of relying on trying again, try to implement toposort to sort once, removing
-      // and reporting cycles as it goes
-      edges.get(cyclicItemIds[0])?.delete(cyclicItemIds[1]);
-
-      // console.warn(
-      //   "cyclc dependency detected: ",
-      //   cyclicItemIds.join(" --front-of--> "),
-      //   `breaking link ${cyclicItemIds[0]} --front-of--> ${cyclicItemIds[1]}`,
-      // );
-
-      return {
-        order: sortByZPairs(edges, items, retries - 1).order,
-        brokenLinks: [...alreadyBroken, [cyclicItemIds[0], cyclicItemIds[1]]],
-      };
-    } else {
-      throw e;
-    }
-  }
+  return zEdges;
 };

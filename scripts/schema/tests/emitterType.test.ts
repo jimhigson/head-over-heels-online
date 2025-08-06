@@ -1,11 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { flattenFixture } from "./testHelper";
+import { timeout } from "./timeout";
 
-describe("emitterType", { timeout: 20_000 }, () => {
+describe("emitterType", { timeout }, () => {
   it("should flatten emitter type with correct emits union", async () => {
     const result = await flattenFixture("emitterType", "TestEmitter");
-
-    console.log("Full result:", result);
 
     // The emits property should be a union of objects with type and config
     expect(result).toContain("emits:");
