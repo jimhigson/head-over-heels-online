@@ -38,6 +38,9 @@ export type PreviewedRoomItemEdits = {
   [k in keyof EditorRoomJsonItems]: EditorRoomJsonItems[k] | null;
 };
 
+export const gridResolutions = [1, 0.5, 0.125] as const;
+export type GridResolution = (typeof gridResolutions)[number];
+
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
   campaignInProgress: EditorCampaign;
@@ -60,7 +63,7 @@ export type LevelEditorState = {
   hoveredItem?: HoveredItem;
   clickableAnnotationHovered: boolean;
   selectedJsonItemIds: Array<EditorRoomItemId>;
-  halfGridResolution: boolean;
+  gridResolution: GridResolution;
   autoCoalesce: boolean;
   wallsFloorsLocked: boolean;
   dragInProgress?: boolean;

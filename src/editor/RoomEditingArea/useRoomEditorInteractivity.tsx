@@ -147,7 +147,7 @@ const roundDragVector = (
    * if given and false, the halfGridResolution setting is ignored and will never
    * round to halves
    */
-  noHalves = false,
+  alwaysFullBlocks = false,
 ) => {
   const levelEditorState = (store.getState() as RootStateWithLevelEditorSlice)
     .levelEditor;
@@ -156,7 +156,7 @@ const roundDragVector = (
     dragVector,
     { x: 0, y: 0, z: 1 },
     levelEditorState.tool,
-    !noHalves && levelEditorState.halfGridResolution,
+    alwaysFullBlocks ? 1 : levelEditorState.gridResolution,
   );
 };
 
@@ -290,7 +290,7 @@ export const useRoomEditorInteractivity = (
         mousePosXy,
         roomState,
         tool,
-        storeState.levelEditor.halfGridResolution,
+        storeState.levelEditor.gridResolution,
       );
 
       // we don't care if just the xy of the mouse changed (if it didn't point at anything new),
@@ -529,7 +529,7 @@ export const useRoomEditorInteractivity = (
         upscaledMouseXy,
         roomState,
         tool,
-        storeState.levelEditor.halfGridResolution,
+        storeState.levelEditor.gridResolution,
       );
 
       const isDragEnd = dragAccVec.current !== undefined;
@@ -699,7 +699,7 @@ export const useRoomEditorInteractivity = (
         upscaledMouseXy,
         roomState,
         tool,
-        storeState.levelEditor.halfGridResolution,
+        storeState.levelEditor.gridResolution,
       );
       console.log("setting mouseDownPointingAtRef to", pointingAt);
       mouseDownPointingAtRef.current = pointingAt;
