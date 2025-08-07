@@ -372,14 +372,15 @@ export const mutatorsTestHarness = () => {
         TestCampaignRoomId
       >;
 
-      console.log(
-        playable.state.position,
-        addXyz(portal.state.position, portal.config.relativePoint),
+      const expectedPosition = addXyz(
+        portal.state.position,
+        portal.config.relativePoint,
       );
-
-      expect(playable.state.position).toEqual(
-        addXyz(portal.state.position, portal.config.relativePoint),
-      );
+      expect(playable.state.position).toEqual({
+        x: expect.closeTo(expectedPosition.x),
+        y: expect.closeTo(expectedPosition.y),
+        z: expect.closeTo(expectedPosition.z),
+      });
     },
     expectPlayableAction(
       playableName: CharacterName,

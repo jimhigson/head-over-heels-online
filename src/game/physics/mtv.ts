@@ -1,4 +1,10 @@
 import type { Xyz } from "../../utils/vectors/vectors";
+import {
+  axesXyz,
+  lengthXyz,
+  scaleXyz,
+  unitVector,
+} from "../../utils/vectors/vectors";
 
 /**
  * zBias causes the sliding collision to slightly favour moving in z over x and y.
@@ -16,7 +22,132 @@ import type { Xyz } from "../../utils/vectors/vectors";
 const zWeight = 0.5;
 
 /**
- * Calculate the Minimum Translation Vector (MTV) to get the @param item out of the @param solidItem
+ * Check if two rectangular objects are colliding.
+ */
+const checkRectangularCollision = (
+  moverPosition: Xyz,
+  moverAabb: Xyz,
+  obstaclePosition: Xyz,
+  obstacleAabb: Xyz,
+): boolean => {
+  return (
+    moverPosition.x < obstaclePosition.x + obstacleAabb.x &&
+    moverPosition.x + moverAabb.x > obstaclePosition.x &&
+    moverPosition.y < obstaclePosition.y + obstacleAabb.y &&
+    moverPosition.y + moverAabb.y > obstaclePosition.y &&
+    moverPosition.z < obstaclePosition.z + obstacleAabb.z &&
+    moverPosition.z + moverAabb.z > obstaclePosition.z
+  );
+};
+
+/**
+ * Calculate the minimum translation along a specific direction vector to separate two rectangular objects.
+ * Uses arithmetic ray-AABB intersection to find the exact distance along the vector for separation.
+ *
+ * @param vector - The direction vector along which to calculate separation.
+ *                 Can be any direction, not limited to axis-aligned.
+ * @returns The minimum translation vector along the constraint direction to separate the objects.
+ */
+export const mtvAlongVector = (
+  moverPosition: Xyz,
+  moverAabb: Xyz,
+  obstaclePosition: Xyz,
+  obstacleAabb: Xyz,
+  vector: Xyz,
+): Xyz => {
+  // Normalize the vector
+  const vectorLength = lengthXyz(vector);
+  if (vectorLength < 0.0001) {
+    // Zero vector - can't constrain
+    return { x: 0, y: 0, z: 0 };
+  }
+  const direction = unitVector(vector);
+
+  // First, check if objects are already separated
+  if (
+    !checkRectangularCollision(
+      moverPosition,
+      moverAabb,
+      obstaclePosition,
+      obstacleAabb,
+    )
+  ) {
+    return { x: 0, y: 0, z: 0 };
+  }
+
+  // Ray-AABB intersection approach
+  // We need to find the minimum t where the boxes no longer overlap
+
+  let tMin = -Infinity;
+  let tMax = Infinity;
+
+  // For each axis, calculate the range of t where boxes overlap
+  for (const axis of axesXyz) {
+    const dirComponent = direction[axis];
+
+    if (Math.abs(dirComponent) < 0.0001) {
+      // No movement along this axis - check if already overlapping
+      const moverMin = moverPosition[axis];
+      const moverMax = moverPosition[axis] + moverAabb[axis];
+      const obstacleMin = obstaclePosition[axis];
+      const obstacleMax = obstaclePosition[axis] + obstacleAabb[axis];
+
+      if (moverMax <= obstacleMin || moverMin >= obstacleMax) {
+        // No overlap on this axis means no collision at all
+        return { x: 0, y: 0, z: 0 };
+      }
+      // Otherwise, this axis doesn't constrain t
+      continue;
+    }
+
+    // Calculate t values where the boxes align on this axis
+    // We want the range where they overlap
+    const obstacleMin = obstaclePosition[axis];
+    const obstacleMax = obstaclePosition[axis] + obstacleAabb[axis];
+    const moverMin = moverPosition[axis];
+    const moverMax = moverPosition[axis] + moverAabb[axis];
+
+    // t values where edges align
+    const t1 = (obstacleMin - moverMax) / dirComponent;
+    const t2 = (obstacleMax - moverMin) / dirComponent;
+
+    // The overlap range depends on direction
+    const tEnter = Math.min(t1, t2);
+    const tExit = Math.max(t1, t2);
+
+    // Update the overall overlap range
+    tMin = Math.max(tMin, tEnter);
+    tMax = Math.min(tMax, tExit);
+  }
+
+  // If tMin > tMax, boxes don't overlap at any point along the ray
+  if (tMin > tMax) {
+    return { x: 0, y: 0, z: 0 };
+  }
+
+  // We're currently overlapping (t=0 is in range [tMin, tMax])
+  // We need to move to t=tMax to just exit the overlap
+  // Actually, we want to move just past tMax to fully separate
+
+  // Since we start overlapping, we want to exit the overlap
+  // If tMax > 0, move forward to tMax
+  // If tMin < 0, move backward to tMin
+
+  if (tMax > 0 && (tMin >= 0 || tMax < -tMin)) {
+    // Move forward to exit
+    return scaleXyz(direction, tMax);
+  } else if (tMin < 0) {
+    // Move backward to exit
+    return scaleXyz(direction, tMin);
+  } else {
+    // Already separated or touching
+    return { x: 0, y: 0, z: 0 };
+  }
+};
+
+/**
+ * Calculate the standard axis-aligned Minimum Translation Vector (MTV) to separate two rectangular objects.
+ * Returns the shortest axis-aligned vector to push the mover out of the obstacle.
  */
 export const mtv = (
   moverPosition: Xyz,
