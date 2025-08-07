@@ -19,8 +19,7 @@ export const AutoCoalesceSwitch = ({ className }: { className?: string }) => {
         dispatch(setAutoCoalesce(value));
       }}
       shortcutKeys={["L"]}
-      tooltipContent={`optimise blocks into single items while editing, or keep separate?
-hotkey: **L**`}
+      tooltipContent={`optimise blocks into single items while editing, or keep separate?`}
     />
   );
 };

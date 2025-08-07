@@ -119,8 +119,7 @@ export const LevelEditorToolbar = () => {
           }}
           shortcutKeys={["B"]}
           tooltipContent={`## Block 
-The basic block            
-hotkey: **B**`}
+The basic block`}
         >
           <span
             className={`sprite texture-block_organic ${buttonSpriteRevertColourClasses}`}
@@ -133,9 +132,7 @@ hotkey: **B**`}
           }}
           shortcutKeys={["⇧B"]}
           tooltipContent={`## Block 
-Disappearing basic block
-
-hotkey: **Shift B**`}
+Disappearing basic block`}
         >
           <DissapearingItemToolbarIcon
             iconClassName={twClass("texture-block_organic_disappearing")}
@@ -145,9 +142,7 @@ hotkey: **Shift B**`}
           itemTool={{ type: "block", config: { style: "artificial" } }}
           shortcutKeys={["⌥B"]}
           tooltipContent={`## Block 
-Basic block with a metallic look
-
-hotkey: **Alt B**`}
+Basic block with a metallic look`}
         >
           <span
             className={`sprite texture-block_artificial ${buttonSpriteRevertColourClasses}`}
@@ -160,9 +155,7 @@ hotkey: **Alt B**`}
           }}
           shortcutKeys={["⌥⇧B"]}
           tooltipContent={`## Block 
-Disappearing metallic look block
-
-hotkey: **Alt Shift B**`}
+Disappearing metallic look block`}
         >
           <DissapearingItemToolbarIcon
             iconClassName={twClass("texture-block_artificial_disappearing")}
@@ -172,7 +165,7 @@ hotkey: **Alt Shift B**`}
           itemTool={{ type: "block", config: { style: "tower" } }}
           shortcutKeys={["T"]}
           tooltipContent={`## Tower
-Hotkey: **T**`}
+Very high block`}
         >
           <span
             className={`sprite texture-tower ${buttonSpriteRevertColourClasses}`}

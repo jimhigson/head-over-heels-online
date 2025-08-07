@@ -10,16 +10,12 @@ const backTooltipMarkdown = `
 ## Back
 
 Go back to the previous room
-
-hotkey: **<**
 `;
 
 const forwardTooltipMarkdown = `
 ## Forward
 
 The opposite of back
-
-hotkey: **>**
 `;
 
 export const BackAndForwardRoomButtons = () => {
@@ -36,6 +32,7 @@ export const BackAndForwardRoomButtons = () => {
   return (
     <>
       <ToolbarButton
+        className="bg-highlightBeige"
         disabled={!hasBack}
         onClick={() => {
           dispatch(roomBack());
@@ -49,6 +46,7 @@ export const BackAndForwardRoomButtons = () => {
         <span className={`sprite texture-hud_char_lt relative`} />
       </ToolbarButton>
       <ToolbarButton
+        className="bg-highlightBeige"
         disabled={!hasForward}
         onClick={() => {
           dispatch(roomForward());

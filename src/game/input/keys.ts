@@ -83,6 +83,8 @@ const keys = [
   "ArrowDown",
   "ArrowLeft",
   "ArrowRight",
+  "PageUp",
+  "PageDown",
   "Numpad0",
   "Numpad1",
   "Numpad2",

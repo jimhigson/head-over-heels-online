@@ -25,8 +25,6 @@ put your campaign on cassette tape, or even floppy disk!
 to be shared or worked on later
 
 (really, saves to a cloud database)
-
-hotkey: **Cmd-S**
 `;
 const loadTooltipMarkdown = `
 ## Load
