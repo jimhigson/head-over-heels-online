@@ -1580,6 +1580,45 @@ describe("pushing", () => {
     );
   });
 
+  test("player can push a block diagonally", () => {
+    const gameState = basicGameState({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            which: "heels",
+          },
+        },
+        somethingToPush: {
+          type: "portableBlock",
+          position: { x: 1, y: 1, z: 0 },
+          config: {
+            style: "cube",
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        // heels is moving diagonally
+        mockInputStateTracker.directionVector = { x: 1, y: 1, z: 0 };
+      },
+      until() {
+        const portableBlockState = itemState(gameState, "somethingToPush")!;
+        // continue until we have pushed it a couple of blocks distance (it started at 1)
+        return portableBlockState.position.x > blockSizePx.w * 3;
+      },
+    });
+
+    const portableBlockState = itemState(gameState, "somethingToPush")!;
+    // diagonal movement means its x should still equal its y (withing 1px)
+    expect(portableBlockState.position.y).toEqual(
+      expect.closeTo(portableBlockState.position.x, 0),
+    );
+  });
+
   test("can push multiple blocks in a row", () => {
     const gameState = basicGameState({
       ...withBlockToPush,

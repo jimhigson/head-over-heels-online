@@ -91,6 +91,8 @@ export const productXyz = (a: Xyz, b: Xyz): Xyz => ({
 
 export const lengthXyz = ({ x, y, z }: Xyz) => Math.hypot(x, y, z);
 export const lengthXy = ({ x, y }: Xy) => Math.hypot(x, y);
+export const lengthXyzSquared = ({ x, y, z }: Xyz) => x ** 2 + y ** 2 + z ** 2;
+export const lengthXySquared = ({ x, y }: Xy) => x ** 2 + y ** 2;
 
 export const unitVector = (xyz: Xyz): Xyz => {
   const l = lengthXyz(xyz);

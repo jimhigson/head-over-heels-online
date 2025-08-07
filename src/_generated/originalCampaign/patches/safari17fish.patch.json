@@ -15,36 +15,6 @@
     "value": "wall"
   },
   {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/4",
-    "value": "wall"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/5",
-    "value": "wall"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/6",
-    "value": "wall"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/7",
-    "value": "wall"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/8",
-    "value": "wall"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@8,5,0/config/tiles/9",
-    "value": "wall"
-  },
-  {
     "op": "remove",
     "path": "/items/wall@8,0,0/config/tiles/2"
   },
