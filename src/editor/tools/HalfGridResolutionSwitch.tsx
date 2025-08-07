@@ -25,14 +25,13 @@ export const HalfGridResolutionSwitch = ({
       onChange={(value: GridResolution) => {
         dispatch(changeGridResolution(value));
       }}
-      valueLabels={["block", "half", "2px"]}
+      valueLabels={["block", "half", "fine"]}
       shortcutKeys={["S"]}
       tooltipContent={`snaps to either the grid (like the original game)
 
-or, allows placing on a half-block grid, or to 2px resolution
+or, on a half-block grid
 
-hotkey: **S**
-`}
+or to a fine 2px resolution`}
     />
   );
 };

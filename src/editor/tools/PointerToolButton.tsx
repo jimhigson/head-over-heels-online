@@ -21,8 +21,7 @@ export const PointerToolButton = () => {
         // dot copies the dpaint shortcut to go back to a single pixel brush
         ".",
       ]}
-      tooltipContent={`## Pointer
-hotkey: **Esc** or **.**`}
+      tooltipContent={`## Pointer`}
     >
       <span className={`sprite texture-editor_tool_pointer relative`} />
     </ToolbarButton>

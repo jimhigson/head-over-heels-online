@@ -111,6 +111,10 @@ const secondRow = [
   iosMacAddToDock,
   iosMacAddToHomeScreen,
   "•",
+  "⇧",
+  "^",
+  "⌥",
+  "⌘",
 ] as const;
 
 export type CharSpriteTextureId<C extends string> =

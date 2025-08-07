@@ -4,6 +4,7 @@ import { useCallback, type MouseEvent, type ReactNode } from "react";
 import { cn } from "./cn";
 import { useKeyboardShortcut, type ShortcutKeys } from "./useKeyboardShortcut";
 import { Tooltip } from "./Tooltip";
+import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
 
 export type SwitchProps = {
   value: boolean;
@@ -58,7 +59,15 @@ export const Switch = ({
     </span>
   );
 
-  return <Tooltip triggerContent={element} tooltipContent={tooltipContent} />;
+  const finalTooltipContent =
+    enhanceTooltipWithHotkeys(
+      typeof tooltipContent === "string" ? tooltipContent : undefined,
+      shortcutKeys,
+    ) ?? tooltipContent;
+
+  return (
+    <Tooltip triggerContent={element} tooltipContent={finalTooltipContent} />
+  );
 };
 
 export type Switch3Props<TValue extends string | number> = {
@@ -124,11 +133,21 @@ export const Switch3 = <TValue extends string | number>({
         {valueIndex === 0 ?
           valueLabels[0].padEnd(labelLength, " ")
         : valueIndex === 1 ?
-          ` ${valueLabels[1].padStart(Math.floor((labelLength - valueLabels[1].length - 2) / 2) + valueLabels[1].length, " ").padEnd(labelLength - 1, " ")} `
+          valueLabels[1]
+            .padStart(Math.ceil((labelLength + valueLabels[1].length) / 2), " ")
+            .padEnd(labelLength, " ")
         : valueLabels[2].padStart(labelLength, " ")}
       </BitmapText>
     </span>
   );
 
-  return <Tooltip triggerContent={element} tooltipContent={tooltipContent} />;
+  const finalTooltipContent =
+    enhanceTooltipWithHotkeys(
+      typeof tooltipContent === "string" ? tooltipContent : undefined,
+      shortcutKeys,
+    ) ?? tooltipContent;
+
+  return (
+    <Tooltip triggerContent={element} tooltipContent={finalTooltipContent} />
+  );
 };

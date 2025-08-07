@@ -1,13 +1,14 @@
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { useAppDispatch } from "../../store/hooks";
-import { Button } from "../../ui/button";
 import { RoomSelect } from "../../ui/RoomSelect";
 import type { EditorRoomId } from "../editorTypes";
 import {
+  changeToRoom,
   setRoomAboveOrBelow,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSliceSelectors";
+import { ToolbarButton } from "./ToolbarButton";
 
 const RoomsAboveOrBelowSelectOrCreate = ({
   currentRoomId,
@@ -24,16 +25,32 @@ const RoomsAboveOrBelowSelectOrCreate = ({
   );
   const dispatch = useAppDispatch();
 
+  const directionArrow = direction === "above" ? "⬆" : "⬇";
   return (
     <>
-      <div className="flex flex-row gap-oneScaledPix w-full flex-wrap pt-1">
-        <BitmapText className="text-lightGrey leading-none">
-          Room {direction === "above" ? "⬆" : "⬇"}
+      <div className="flex flex-row gap-oneScaledPix w-full flex-wrap pt-1 items-center">
+        <BitmapText className="text-lightGrey leading-none h-1">
+          Room {directionArrow}
         </BitmapText>
         <div className="flex-grow" />
         <div className="flex flex-row gap-oneScaledPix">
-          <Button
-            className="w-2 leading-none bg-moss"
+          <ToolbarButton
+            small
+            className="bg-highlightBeige w-max px-half"
+            tooltipContent={`Switch to the room *${direction}*`}
+            disabled={!currentRoomId}
+          >
+            <BitmapText
+              onClick={() =>
+                currentRoomId && dispatch(changeToRoom(currentRoomId))
+              }
+            >
+              {`go ${directionArrow}`}
+            </BitmapText>
+          </ToolbarButton>
+          <ToolbarButton
+            small
+            className=" bg-moss"
             tooltipContent={`Add a new room *${direction}* this one`}
           >
             <BitmapText
@@ -48,9 +65,10 @@ const RoomsAboveOrBelowSelectOrCreate = ({
             >
               +
             </BitmapText>
-          </Button>
-          <Button
-            className="w-2 leading-none bg-midRed"
+          </ToolbarButton>
+          <ToolbarButton
+            small
+            className="bg-midRed"
             tooltipContent={`Break the link with the room *${direction}*`}
           >
             <BitmapText
@@ -66,7 +84,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
             >
               x
             </BitmapText>
-          </Button>
+          </ToolbarButton>
         </div>
       </div>
       <div className="flex flex-row gap-oneScaledPix w-full flex-wrap">

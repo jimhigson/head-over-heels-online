@@ -3,17 +3,24 @@ import type { Simplify } from "type-fest";
 import type { PropsWithChildren, Ref } from "react";
 import { type ReactNode } from "react";
 import { Tooltip } from "./Tooltip";
+import type { ShortcutKeys } from "./useKeyboardShortcut";
+import { useKeyboardShortcut } from "./useKeyboardShortcut";
+import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
+import type { MouseEvent, ButtonHTMLAttributes } from "react";
 
 export type ButtonProps = Simplify<
   Pick<
     // support selected html attributes
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    "onClick" | "role" | "style" | "disabled" | "className"
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    "role" | "style" | "disabled" | "className"
   > &
     PropsWithChildren<{
       selected?: boolean;
       tooltipContent?: ReactNode;
+      shortcutKeys?: ShortcutKeys;
       ref?: Ref<HTMLButtonElement>;
+      /** make the event optional, in case the button wasn't triggered by clicking */
+      onClick?: (event?: MouseEvent<HTMLButtonElement>) => void;
     }>
 >;
 
@@ -24,8 +31,10 @@ export const Button = ({
   onClick,
   ref,
   tooltipContent,
+  shortcutKeys,
   ...props
 }: ButtonProps) => {
+  useKeyboardShortcut(shortcutKeys, disabled, onClick);
   const button = (
     <button
       disabled={disabled}
@@ -46,5 +55,13 @@ export const Button = ({
     />
   );
 
-  return <Tooltip triggerContent={button} tooltipContent={tooltipContent} />;
+  const finalTooltipContent =
+    enhanceTooltipWithHotkeys(
+      typeof tooltipContent === "string" ? tooltipContent : undefined,
+      shortcutKeys,
+    ) ?? tooltipContent;
+
+  return (
+    <Tooltip triggerContent={button} tooltipContent={finalTooltipContent} />
+  );
 };
