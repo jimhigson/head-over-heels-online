@@ -522,6 +522,8 @@ head's doughnut firing hooter`}
         <MultipleToolButtons>
           <ItemToolButton
             itemTool={{ type: "deadlyBlock", config: { style: "volcano" } }}
+            tooltipContent={`## Volcano`}
+            shortcutKeys={["V"]}
           >
             <span
               className={`sprite texture-volcano_1 [button:hover_&]:texture-animated-volcano ${buttonSpriteRevertColourClasses}`}
@@ -529,6 +531,7 @@ head's doughnut firing hooter`}
           </ItemToolButton>
           <ItemToolButton
             itemTool={{ type: "deadlyBlock", config: { style: "toaster" } }}
+            tooltipContent={`## Toaster\n\ncharging stations for the Emperor's Guardians`}
           >
             <span
               className={`sprite texture-toaster_off ${buttonSpriteRevertColourClasses}`}

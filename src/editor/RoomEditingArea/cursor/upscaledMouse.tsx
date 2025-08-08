@@ -1,8 +1,11 @@
 import type { Upscale } from "../../../store/slices/upscale/Upscale";
 import type { Xy } from "../../../utils/vectors/vectors";
+import type { RenderedRoomDimensions } from "../../slice/levelEditorSelectors";
+import { roomEditingAreaMarginPx } from "../roomEditingAreaMarginPx";
 
 export const upscaledMousePosition = (
   upscale: Upscale,
+  roomRenderSize: RenderedRoomDimensions,
   event: MouseEvent,
 ): Xy => {
   const totalUpscale = upscale.cssUpscale * upscale.gameEngineUpscale;
@@ -15,10 +18,12 @@ export const upscaledMousePosition = (
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
 
-  return {
-    x: x / totalUpscale - upscale.gameEngineScreenSize.x / 2,
-    y: y / totalUpscale - upscale.gameEngineScreenSize.y + 16,
+  const result: Xy = {
+    x: x / totalUpscale + roomRenderSize.l - roomEditingAreaMarginPx,
+    y: y / totalUpscale + roomRenderSize.t - roomEditingAreaMarginPx,
   };
+
+  return result;
 };
 export const upscaledMouseMove = (upscale: Upscale, event: MouseEvent): Xy => {
   const totalUpscale = upscale.cssUpscale * upscale.gameEngineUpscale;

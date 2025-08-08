@@ -8,7 +8,7 @@ import {
 } from "./buttonSizeClassNames";
 import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
 
-type ToolbarButtonProps = {
+export type ToolbarButtonProps = {
   onClick?: () => void;
   className?: string;
   isCurrentTool?: boolean;

@@ -2,6 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { HoveredItem, LevelEditorState } from "../levelEditorSlice";
 import type { EditorRoomItemId } from "../../editorTypes";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
 
 export const selectionsReducers = {
   /** set (or unset) the selection */
@@ -14,6 +15,15 @@ export const selectionsReducers = {
       jsonItemIds: EditorRoomItemId[];
     }>,
   ) {
+    const roomItems = selectCurrentRoomFromLevelEditorState(state).items;
+    jsonItemIds.forEach((jsonItemId) => {
+      if (!roomItems[jsonItemId]) {
+        throw new Error(
+          `Item with json item id "${jsonItemId}" is not in the current room`,
+        );
+      }
+    });
+
     state.selectedJsonItemIds = jsonItemIds;
   },
 

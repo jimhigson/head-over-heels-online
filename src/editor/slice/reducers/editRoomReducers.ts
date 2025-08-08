@@ -93,7 +93,22 @@ export const editRoomReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
+    pushUndoInPlace(state);
     state.campaignInProgress.rooms[state.currentlyEditingRoomId] = roomJson;
+
+    // selected items may no longer exist in the room after reloading - remove these selections:
+    const selectedJsonItemIdsThatStillExist = state.selectedJsonItemIds.filter(
+      (id) => roomJson.items[id] !== undefined,
+    );
+    if (
+      // check first for removals, since state.foo = state.foo.filter() creates a state change even
+      // if all items are kept
+      selectedJsonItemIdsThatStillExist.length !==
+      state.selectedJsonItemIds.length
+    ) {
+      // some items were removed, so update the selection
+      state.selectedJsonItemIds = selectedJsonItemIdsThatStillExist;
+    }
   },
 
   deleteSelected(_state) {

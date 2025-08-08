@@ -19,6 +19,8 @@ export const resolutions = {
   // Amiga hires: in game, too many pixels, game doesn't fill enough of the screen
   // but, in the level editor is quite useful
   amigaHiResPal: { x: 640, y: 512 },
+  // didn't have a HoH port, but is nicely between Amiga hires and low res
+  classicMac: { x: 512, y: 384 },
   amigaLowResPal: { x: 320, y: 256 },
   zxSpectrum: { x: 256, y: 192 },
   // there was never really a handheld port, and this is a bit big for period-correct

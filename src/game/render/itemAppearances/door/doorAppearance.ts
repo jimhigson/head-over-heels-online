@@ -137,7 +137,9 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           // since the level editor also has a campaign, but not a running game
           room
           // in the game, show them properly in the colours of the room they lead to
-        : gameState.campaign.rooms[toRoom];
+        : (gameState.campaign.rooms[toRoom] ??
+          // toRoom might not exist if working in the editor and didn't make it yet
+          room);
 
       const doorFrameSprite = createSprite({
         textureId: doorTexture(room, axis, part),

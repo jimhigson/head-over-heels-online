@@ -42,21 +42,21 @@ process.stdin.on("end", () => {
           if (node.properties.x) {
             assertIsJsonObject(node.properties.x);
             node.properties.x.multipleOf = 0.125;
-            node.properties.x.minimum = -3;
-            node.properties.x.maximum = 20;
+            node.properties.x.minimum = -30;
+            node.properties.x.maximum = 30;
           }
           if (node.properties.y) {
             assertIsJsonObject(node.properties.y);
             node.properties.y.multipleOf = 0.125;
-            node.properties.y.minimum = -3;
-            node.properties.y.maximum = 20;
+            node.properties.y.minimum = -30;
+            node.properties.y.maximum = 30;
           }
           // Add multipleOf to z (1)
           if (node.properties.z) {
             assertIsJsonObject(node.properties.z);
             node.properties.z.multipleOf = 1;
-            node.properties.z.minimum = -1;
-            node.properties.z.maximum = 20;
+            node.properties.z.minimum = -30;
+            node.properties.z.maximum = 30;
           }
         }
 

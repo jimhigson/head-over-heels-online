@@ -107,7 +107,6 @@ export const addDoorInPlace = (
   );
 
   const autoAddRooms = toolItem.config.toRoom === "+";
-  console.log("autoAddRooms:", autoAddRooms);
 
   const toRoomJson = getDestinationRoom({
     state,

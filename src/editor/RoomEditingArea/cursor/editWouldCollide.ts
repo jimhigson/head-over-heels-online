@@ -156,7 +156,9 @@ export const addingItemWouldCollide = ({
       position: blockPosition,
     } as EditorJsonItemUnion,
     roomState.roomJson,
-  );
+  )
+    // our new item may have some non-solid items, which are fine to collide (eg, stopAutowalk doors)
+    .filter((i) => isSolid(i));
 
   const collideableItemsForThisTool = Array.from(
     collideableForItem(roomState, itemTool.type),

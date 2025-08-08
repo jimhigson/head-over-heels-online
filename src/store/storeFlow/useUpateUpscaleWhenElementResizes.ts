@@ -21,7 +21,7 @@ const updateUpscaleNow = (
   );
 };
 
-export const useUpdateUpscaleWhenWindowResizes = (
+export const useUpdateUpscaleWhenElementResizes = (
   /**
    * if given, this emulated resolution will always be used - for the level editor
    *

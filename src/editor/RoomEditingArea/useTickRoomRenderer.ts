@@ -8,7 +8,7 @@ import type {
   EditorRoomItemId,
   EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import { useEditorRoomStateWithPreviews } from "../EditorRoomStateProvider";
+import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {

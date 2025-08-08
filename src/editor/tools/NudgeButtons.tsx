@@ -10,7 +10,7 @@ import {
   unitXyz,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { useEditorRoomState } from "../EditorRoomStateProvider";
+import { selectEditorRoomState } from "../slice/levelEditorSelectors";
 import { itemMoveOrResizeWouldCollide } from "../RoomEditingArea/cursor/editWouldCollide";
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import {
@@ -33,7 +33,6 @@ export const NudgeButtons = () => {
     ),
   );
   const anythingSelected = selectedJsonItems.length > 0;
-  const roomState = useEditorRoomState();
 
   const consolidatableAxes =
     anythingSelected ?
@@ -59,13 +58,12 @@ export const NudgeButtons = () => {
   const nudgeBy =
     (posVector: Xyz = originXyz, timesDelta?: Partial<Xyz>) =>
     () => {
-      if (roomState === null) {
-        return;
-      }
-
       const levelEditorStoreState = (
         store.getState() as RootStateWithLevelEditorSlice
       ).levelEditor;
+      const roomState = selectEditorRoomState(
+        store.getState() as RootStateWithLevelEditorSlice,
+      );
 
       const { gridResolution, selectedJsonItemIds: jsonItemIds } =
         levelEditorStoreState;
