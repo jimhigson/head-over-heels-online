@@ -5,8 +5,10 @@ import {
   type ZxSpectrumRoomHue,
   zxSpectrumColors,
 } from "../originalGame";
+import type { SpritesheetPaletteColourName } from "../../gfx/spritesheetPalette";
 import { spritesheetPalette } from "../../gfx/spritesheetPalette";
 import { halfbrite } from "../utils/colour/halfBrite";
+import type { IndividualCharacterName } from "../model/modelTypes";
 
 export type Shades = { basic: Color; dimmed: Color; original: Color };
 export const whiteShades = {
@@ -211,7 +213,10 @@ export const colorScheme: Record<
 export const getColorScheme = (colour: ZxSpectrumRoomColour): ColorScheme =>
   colorScheme[colour.hue][colour.shade];
 
-export const accentColours = {
-  head: spritesheetPalette.pastelBlue,
-  heels: spritesheetPalette.pink,
+export const accentColours: Record<
+  IndividualCharacterName,
+  SpritesheetPaletteColourName
+> = {
+  head: "pastelBlue",
+  heels: "pink",
 };

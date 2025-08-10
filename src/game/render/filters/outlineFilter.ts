@@ -1,23 +1,23 @@
-import type { Color } from "pixi.js";
+import type { Color, FilterSystem, RenderTexture, Texture } from "pixi.js";
 import { Filter, GlProgram } from "pixi.js";
 import { vertex } from "./defaults";
 import fragment from "./outline.frag?raw";
+import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import { store } from "../../../store/store";
+import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import { transformObject } from "../../../utils/entries";
 
-export type OutlineFilterOptions = {
-  outlineColor: Color;
-  /**
-   * the width of the outline - since the outline is always 1px, it need to (in practice)
-   * be bigger when we are upscaled
-   */
-  upscale: number;
-  /**
-   * if given true, the resolution of the filter will be dropped to the inverse of the upscale.
-   * This only works if the thing being rendered is strictly on the pixel grid.
-   */
-  lowRes: boolean;
-};
+/** Current global upscale value for all outline filters */
+let currentUpscale = selectGameEngineUpscale(store.getState());
+
+// Subscribe to store changes to update currentUpscale
+store.subscribe(() => {
+  currentUpscale = selectGameEngineUpscale(store.getState());
+});
+
 export class OutlineFilter extends Filter {
-  constructor({ outlineColor, upscale, lowRes }: OutlineFilterOptions) {
+  constructor(outlineColor: Color) {
     const glProgram = GlProgram.from({
       vertex,
       fragment,
@@ -26,7 +26,7 @@ export class OutlineFilter extends Filter {
 
     super({
       glProgram,
-      padding: upscale,
+      padding: currentUpscale,
       resources: {
         colorReplaceUniforms: {
           uOutline: {
@@ -43,7 +43,7 @@ export class OutlineFilter extends Filter {
 
     const uniforms = this.resources.colorReplaceUniforms.uniforms as {
       uOutline: Float32Array;
-      uOutlineWidth: Int32Array;
+      uOutlineWidth: Float32Array;
     };
 
     const [r, g, b] = outlineColor.toArray();
@@ -51,14 +51,33 @@ export class OutlineFilter extends Filter {
     uniforms.uOutline[0] = r;
     uniforms.uOutline[1] = g;
     uniforms.uOutline[2] = b;
-    uniforms.uOutlineWidth[0] = upscale;
+    uniforms.uOutlineWidth[0] = currentUpscale;
+  }
 
-    // this means easier rendering, in actual unscaled sprite space, but
-    // also that the sprite can't smoothly transition by being rendered 'between' pixels
-    if (lowRes) {
-      this.resolution = 1 / upscale;
-      this.padding = upscale;
-      uniforms.uOutlineWidth[0] = 1;
-    }
+  override apply(
+    filterSystem: FilterSystem,
+    input: Texture,
+    output: RenderTexture,
+    clearMode: boolean,
+  ): void {
+    // Update uniforms and padding from the global upscale value before rendering
+    const uniforms = this.resources.colorReplaceUniforms.uniforms as {
+      uOutline: Float32Array;
+      uOutlineWidth: Float32Array;
+    };
+
+    this.padding = currentUpscale;
+    uniforms.uOutlineWidth[0] = currentUpscale;
+
+    super.apply(filterSystem, input, output, clearMode);
   }
 }
+
+/** Pre-baked outline filters for all spritesheet palette colors */
+export const outlineFilters: Record<
+  SpritesheetPaletteColourName,
+  OutlineFilter
+> = transformObject(spritesheetPalette, ([colorName, color]) => [
+  colorName,
+  new OutlineFilter(color),
+]);

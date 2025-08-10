@@ -8,20 +8,12 @@ import {
   isPortable,
   type PortableItemType,
 } from "../../../physics/itemPredicates";
-import { store } from "../../../../store/store";
-import { OutlineFilter } from "../../filters/outlineFilter";
-import { carryableOutlineColour } from "../../itemAppearances/itemAppearanceColours";
+import { outlineFilters } from "../../filters/outlineFilter";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { noFilters } from "../../filters/standardFilters";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import { selectGameEngineUpscale } from "../../../../store/slices/upscale/upscaleSlice";
 
-const makeOutlineFilter = () =>
-  new OutlineFilter({
-    outlineColor: carryableOutlineColour,
-    lowRes: false,
-    upscale: selectGameEngineUpscale(store.getState()),
-  });
+const makeOutlineFilter = () => outlineFilters.moss;
 
 class PortableItemPickUpNextHighlightRenderer
   implements ItemPixiRenderer<PortableItemType>

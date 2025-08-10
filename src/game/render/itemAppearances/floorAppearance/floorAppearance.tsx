@@ -26,8 +26,7 @@ import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
 import type { Subset } from "../../../../utils/subset";
 import type { RoomState } from "../../../../model/RoomState";
 import { createSprite } from "../../createSprite";
-import { OutlineFilter } from "../../filters/outlineFilter";
-import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
+import { outlineFilters } from "../../filters/outlineFilter";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 
@@ -218,12 +217,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         // the output from a mask doesn't get the filter applied, so to put an outline around the floor tiles, wrap them in an
         // extra container.
         const tilesOutline = new Container({ children: [tilesContainer] });
-        tilesOutline.filters = new OutlineFilter({
-          outlineColor: spritesheetPalette.pureBlack,
-          upscale: 1,
-          // it is ok to snap to pixel grid
-          lowRes: false,
-        });
+        tilesOutline.filters = outlineFilters.pureBlack;
 
         container.addChild(renderContainerToSprite(pixiRenderer, tilesOutline));
       }
