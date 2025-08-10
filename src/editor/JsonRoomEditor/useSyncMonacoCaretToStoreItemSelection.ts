@@ -50,6 +50,12 @@ export const useSyncMonacoCaretToStoreItemSelection = (
         return;
       }
 
+      if (path[1] === "") {
+        // sometimes, button the cursor to the very start of the line where the items object
+        // opens gives a path of ["items", ""] - weird
+        return;
+      }
+
       if (path[0] === ("items" satisfies keyof AnyRoomJson)) {
         const [, jsonItemId] = path;
         dispatch(

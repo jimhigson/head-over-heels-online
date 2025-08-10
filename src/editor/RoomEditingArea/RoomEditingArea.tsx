@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { useRoomRenderer } from "./useRoomRenderer";
-import { useRoomEditorInteractivity } from "./useRoomEditorInteractivity";
-import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlineStyle";
+import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
+import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";
 import { TextureStyle } from "pixi.js";
 import { useTickRoomRenderer } from "./useTickRoomRenderer";
 import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
 import { usePutUpscaleOnAppStage } from "./usePutUpscaleOnAppStage";
 import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplicationToMatchCanvasSize";
 import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
-import { useUpdateUpscaleWhenWindowResizes } from "../../store/storeFlow/useUpateUpscaleWhenWIndowResizes";
+import { useUpdateUpscaleWhenElementResizes } from "../../store/storeFlow/useUpateUpscaleWhenElementResizes";
 import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
+import { useCenterScrollOnLoad } from "./useCenterScrollOnLoad";
 
 import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
 TextureStyle.defaultOptions.scaleMode = "nearest";
@@ -22,7 +23,7 @@ export const RoomEditingArea = () => {
 
   const cursorClassname = useRoomEditingAreaCursorClassName();
 
-  useUpdateUpscaleWhenWindowResizes(
+  useUpdateUpscaleWhenElementResizes(
     "amigaLowResPal",
     renderSizingArea ?? undefined,
   );
@@ -33,14 +34,22 @@ export const RoomEditingArea = () => {
   useAddApplicationCanvasToDom(renderArea);
   usePutUpscaleOnAppStage();
   useRemoveCursorPreviewsWhenToolChanges();
-  const canvasInlineStyle = useCanvasInlineStyle();
+  useCenterScrollOnLoad(renderSizingArea, renderArea);
 
   return (
     <div
-      className={`w-full h-full overflow-hidden ${cursorClassname}`}
+      className={`w-full h-full bg-editor-checkerboard overflow-scroll flex scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue ${cursorClassname}`}
       ref={setRenderSizingArea}
     >
-      <div style={canvasInlineStyle} ref={setRenderArea} />
+      <div className="flex justify-center items-center w-[500dvw] h-[500dvh]">
+        <div
+          style={{
+            transform: useCanvasTransform(),
+            transformOrigin: "center center",
+          }}
+          ref={setRenderArea}
+        />
+      </div>
     </div>
   );
 };

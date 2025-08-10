@@ -5,7 +5,7 @@ import type { Xyz } from "../../utils/vectors/vectors";
 import { addXyz, originXyz } from "../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "./projections";
 
-type ItemsProjectedExtents = {
+export type ItemsProjectedExtents = {
   floors: {
     edgeLeftX: number;
     edgeRightX: number;
@@ -39,8 +39,8 @@ const nullFloorsRenderExtent: ItemsProjectedExtents = {
  *  floor natural pos/aabb                 | floor natural pos/aabb
  *                     |                   |
  *                     |                   |
- *                     ---------------------
- *                            floor *extended* pos/aabb
+ *                     -------------------- <-floor *extended* pos/aabb
+ *
  * ```
  */
 export const floorsRenderExtent = <
@@ -103,7 +103,7 @@ export const floorsRenderExtent = <
         const topEdgeY = projectWorldXyzToScreenXy(
           addXyz(
             item.state.position,
-            item.renderAabb ?? originXyz,
+            item.renderAabb ?? item.aabb ?? originXyz,
             item.renderAabbOffset ?? originXyz,
           ),
         ).y;

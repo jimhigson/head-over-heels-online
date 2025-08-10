@@ -59,28 +59,28 @@ export type DeadlyBlockStyle = "toaster" | "volcano";
 
 export type FloorType = "deadly" | "none" | "standable";
 
+export type DoorConfig<RoomId extends string> = {
+  toRoom: RoomId;
+  /**
+   * the id of the door in the destination room. This usually does not need to be given
+   * since the game can choose the door facing the right way from the destination room.
+   * only give this if there are multiple doors in the same direction between the two
+   * rooms */
+  toDoor?: string;
+  // the direction this door takes the character when they walk through it
+  direction: DirectionXy4;
+  meta?: {
+    toSubRoom?: string;
+  };
+};
+
 export type ItemConfigMap<
   RoomId extends string,
   /** ids of items in this room */
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
 > = {
-  door: {
-    toRoom: RoomId;
-    /**
-     * the id of the door in the destination room. This usually does not need to be given
-     * since the game can choose the door facing the right way from the destination room.
-     * only give this if there are multiple doors in the same direction between the two
-     * rooms */
-    toDoor?: string;
-
-    // the direction this door takes the character when they walk through it
-    direction: DirectionXy4;
-
-    meta?: {
-      toSubRoom?: string;
-    };
-  };
+  door: DoorConfig<RoomId>;
 
   floor:
     | {

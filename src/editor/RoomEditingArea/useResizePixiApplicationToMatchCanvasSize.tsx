@@ -1,14 +1,25 @@
 import { useEffect } from "react";
-import { useAppSelector } from "../../store/hooks";
-import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
+import { useEditorRoomRenderDimensions } from "../slice/levelEditorSelectors";
+import { useAppSelector } from "../../store/hooks";
+import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";
 
 export const useResizePixiApplicationToMatchCanvasSize = () => {
   const application = useProvidedPixiApplication();
 
-  const canvasSize = useAppSelector(selectCanvasSize);
+  // this size actually only applies in the game engine, not in the editor, where we
+  // want the canvas to be bigger than what can be shown on the screen for native scrolling:
+  //const canvasSize = useAppSelector(selectCanvasSize);
+  const roomRenderSize = useEditorRoomRenderDimensions();
+  const upscale = useAppSelector((state) => state.upscale.upscale);
 
   useEffect(() => {
-    application.renderer?.resize(canvasSize.x, canvasSize.y);
-  }, [application.renderer, canvasSize]);
+    const scaledW =
+      (2 * roomEditingAreaMarginPx + roomRenderSize.w) *
+      upscale.gameEngineUpscale;
+    const scaledH =
+      (2 * roomEditingAreaMarginPx + roomRenderSize.h) *
+      upscale.gameEngineUpscale;
+    application.renderer?.resize(scaledW, scaledH);
+  }, [application.renderer, roomRenderSize, upscale]);
 };

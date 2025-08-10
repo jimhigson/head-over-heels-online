@@ -1,9 +1,9 @@
 import { useSaveGameOnUnload } from "./useSaveGameOnUnload";
 import { useUniversalKeys } from "./useUniversalKeys";
-import { useUpdateUpscaleWhenWindowResizes } from "./useUpateUpscaleWhenWIndowResizes";
+import { useUpdateUpscaleWhenElementResizes } from "./useUpateUpscaleWhenElementResizes";
 
 export const ConnectInputToStore = () => {
-  useUpdateUpscaleWhenWindowResizes();
+  useUpdateUpscaleWhenElementResizes();
   useUniversalKeys();
   useSaveGameOnUnload();
   return null;

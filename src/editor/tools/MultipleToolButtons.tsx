@@ -1,10 +1,11 @@
-import type { PropsWithChildren, ReactElement } from "react";
-import { useRef, useState } from "react";
+import type { ReactElement } from "react";
+import { cloneElement, useRef, useState } from "react";
 import { useMouseWheelOptions } from "../../ui/useMouseWheel";
 import { MenuButton } from "./MenuButton";
+import type { ToolbarButtonProps } from "./ToolbarButton";
 
 export interface MultipleToolButtonsProps {
-  children: ReactElement<PropsWithChildren>[];
+  children: ReactElement<ToolbarButtonProps>[];
 }
 
 export const MultipleToolButtons = ({ children }: MultipleToolButtonsProps) => {
@@ -35,7 +36,14 @@ export const MultipleToolButtons = ({ children }: MultipleToolButtonsProps) => {
               setButtonIndex(index);
             }}
           >
-            {child}
+            {child === null ? null : (
+              cloneElement(child, {
+                onClick() {
+                  setButtonIndex(index);
+                  child.props.onClick?.();
+                },
+              })
+            )}
           </div>
         );
       })}

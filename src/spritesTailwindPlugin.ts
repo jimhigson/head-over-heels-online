@@ -92,6 +92,9 @@ export const spritesTailwindPlugin = plugin(
         "--scale": "1",
         "--block": `8px`,
       },
+      ".bg-editor-checkerboard": {
+        background: `repeating-conic-gradient(${spritesheetPalette.pureBlack} 0 25%, ${halfbriteHex(spritesheetPalette.shadow)} 0 50%) 50% / calc(4*var(--block)) calc(4*var(--block))`,
+      },
       ".sprite-in-glyph-margin": {
         "--scale": "0.75",
         // since monaco is hard-coded to 18px for glyph margin icons, we can't set the width/height

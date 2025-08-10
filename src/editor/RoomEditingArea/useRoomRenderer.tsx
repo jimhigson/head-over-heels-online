@@ -9,7 +9,7 @@ import type {
   EditorRoomState,
 } from "../editorTypes";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
-import { useEditorRoomStateWithPreviews } from "../EditorRoomStateProvider";
+import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import type { ShowBoundingBoxes } from "../../store/slices/gameMenusSlice";
 import { useShowBoundingBoxes } from "../../store/selectors";
