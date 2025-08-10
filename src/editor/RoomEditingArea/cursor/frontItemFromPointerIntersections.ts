@@ -1,5 +1,5 @@
 import type { SetRequired } from "type-fest";
-import { updateZEdges } from "../../../game/render/sortZ/sortItemsByDrawOrder";
+import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
 import type {
   EditorUnionOfAllItemInPlayTypes,
   EditorRoomItemId,

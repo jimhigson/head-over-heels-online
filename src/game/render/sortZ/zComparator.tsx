@@ -1,3 +1,5 @@
+//# allFunctionsCalledOnLoad
+
 import type { Xyz } from "../../../utils/vectors/vectors";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
 import { veryClose } from "../../../utils/epsilon";
@@ -50,12 +52,47 @@ const visuallyOverlaps = (
     topLeft: topLeftA,
     topRight: topRightA,
     bottomCentre: bottomCentreA,
+    //c111: topCentreA,
   } = projectAabbCorners(aPos, aBb);
   const {
     topLeft: topLeftB,
     topRight: topRightB,
     bottomCentre: bottomCentreB,
+    //c111: topCentreB,
   } = projectAabbCorners(bPos, bBb);
+
+  // xmin/xmax defines the (z-axis) vertical lines at the left and right of the projected hexagon
+  const aXMin = topLeftA.x;
+  const aXMax = topRightA.x;
+
+  const bXMin = topLeftB.x;
+  const bXMax = topRightB.x;
+
+  const zAxisOverlap = rangeOverlap(
+    aXMin,
+    aXMax,
+    bXMin,
+    bXMax,
+    visuallyOverlapsMinimumOverlap,
+  );
+  // if (!zAxisOverlap) {
+  //   //disabled: this makes little/no difference in benchmarks:
+  //   // early exit since no other conditions can be met below without z-axis overlap
+  //   return NO_OVERLAP;
+  // }
+
+  // const yScreenOverlap = rangeOverlap(
+  //   topCentreA.y,
+  //   bottomCentreA.y,
+  //   topCentreB.y,
+  //   bottomCentreB.y,
+  //   visuallyOverlapsMinimumOverlap,
+  // );
+  // if (!yScreenOverlap) {
+  //   //disabled: this makes little/no difference in benchmarks:
+  //   // early exit since no other conditions can be met below without z-axis overlap
+  //   return NO_OVERLAP;
+  // }
 
   // a (projected) line along the (world) x axis of the projected is described by:
   //  [y = x/2 - c]
@@ -67,20 +104,6 @@ const visuallyOverlaps = (
   const bXAxisSlopeMinC = topRightB.y - topRightB.x / 2;
   const bXAxisSlopeMaxC = bottomCentreB.y - bottomCentreB.x / 2;
 
-  // now projected lines along the y axis: [y = x/2 - c] = [c = y-x/2]
-  const aYAxisSlopeMinC = topLeftA.y + topLeftA.x / 2;
-  const aYAxisSlopeMaxC = bottomCentreA.y + bottomCentreA.x / 2;
-
-  const bYAxisSlopeMinC = topLeftB.y + topLeftB.x / 2;
-  const bYAxisSlopeMaxC = bottomCentreB.y + bottomCentreB.x / 2;
-
-  // xmin/xmax defines the (z-axis) vertical lines at the left and right of the projected hexagon
-  const aXMin = topLeftA.x;
-  const aXMax = topRightA.x;
-
-  const bXMin = topLeftB.x;
-  const bXMax = topRightB.x;
-
   const xAxisOverlap = rangeOverlap(
     aXAxisSlopeMinC,
     aXAxisSlopeMaxC,
@@ -88,18 +111,19 @@ const visuallyOverlaps = (
     bXAxisSlopeMaxC,
     visuallyOverlapsMinimumOverlap,
   );
+
+  // now projected lines along the y axis: [y = x/2 - c] = [c = y-x/2]
+  const aYAxisSlopeMinC = topLeftA.y + topLeftA.x / 2;
+  const aYAxisSlopeMaxC = bottomCentreA.y + bottomCentreA.x / 2;
+
+  const bYAxisSlopeMinC = topLeftB.y + topLeftB.x / 2;
+  const bYAxisSlopeMaxC = bottomCentreB.y + bottomCentreB.x / 2;
+
   const yAxisOverlap = rangeOverlap(
     aYAxisSlopeMinC,
     aYAxisSlopeMaxC,
     bYAxisSlopeMinC,
     bYAxisSlopeMaxC,
-    visuallyOverlapsMinimumOverlap,
-  );
-  const zAxisOverlap = rangeOverlap(
-    aXMin,
-    aXMax,
-    bXMin,
-    bXMax,
     visuallyOverlapsMinimumOverlap,
   );
 
