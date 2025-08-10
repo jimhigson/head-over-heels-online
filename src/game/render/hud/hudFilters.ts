@@ -1,19 +1,13 @@
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
-import { store } from "../../../store/store";
 import { halfbrite } from "../../../utils/colour/halfBrite";
 import { accentColours } from "../../hintColours";
-import { OutlineFilter } from "../filters/outlineFilter";
+import type { OutlineFilter } from "../filters/outlineFilter";
+import { outlineFilters } from "../filters/outlineFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 
 export type OutlineAndColouriseFilter = [OutlineFilter, RevertColouriseFilter];
 
-export const hudOutlineFilter = new OutlineFilter({
-  outlineColor: spritesheetPalette.pureBlack,
-  upscale: selectGameEngineUpscale(store.getState()),
-  // it is ok to snap to pixel grid
-  lowRes: true,
-});
+export const hudOutlineFilter = outlineFilters.pureBlack;
 
 export const hudLowlightedFilter: RevertColouriseFilter =
   new RevertColouriseFilter();
@@ -54,21 +48,25 @@ export const hudLivesTextFilter = {
     head: {
       active: [
         hudOutlineFilter,
-        new RevertColouriseFilter(accentColours.head),
+        new RevertColouriseFilter(spritesheetPalette[accentColours.head]),
       ] as OutlineAndColouriseFilter,
       inactive: [
         hudOutlineFilter,
-        new RevertColouriseFilter(halfbrite(accentColours.head)),
+        new RevertColouriseFilter(
+          halfbrite(spritesheetPalette[accentColours.head]),
+        ),
       ] as OutlineAndColouriseFilter,
     },
     heels: {
       active: [
         hudOutlineFilter,
-        new RevertColouriseFilter(accentColours.heels),
+        new RevertColouriseFilter(spritesheetPalette[accentColours.heels]),
       ] as OutlineAndColouriseFilter,
       inactive: [
         hudOutlineFilter,
-        new RevertColouriseFilter(halfbrite(accentColours.heels)),
+        new RevertColouriseFilter(
+          halfbrite(spritesheetPalette[accentColours.heels]),
+        ),
       ] as OutlineAndColouriseFilter,
     },
   },

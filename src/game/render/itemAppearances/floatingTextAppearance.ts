@@ -7,9 +7,7 @@ import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { noFilters } from "../filters/standardFilters";
-import { OutlineFilter } from "../filters/outlineFilter";
-import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
-import { store } from "../../../store/store";
+import { outlineFilters } from "../filters/outlineFilter";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;
@@ -70,12 +68,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
 
   if (previousRendering === undefined) {
     mainContainer = new Container({
-      filters: new OutlineFilter({
-        outlineColor: spritesheetPalette.pureBlack,
-        upscale: selectGameEngineUpscale(store.getState()),
-        // it is not ok to snap to pixel grid - this needs to render between pixels while scrolling up
-        lowRes: false,
-      }),
+      filters: outlineFilters.pureBlack,
     });
     frontLayer?.attach(mainContainer);
 

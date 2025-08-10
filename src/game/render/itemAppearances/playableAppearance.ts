@@ -7,7 +7,7 @@ import {
   stackedTopSymbol,
   stackSprites,
 } from "./createStackedSprites";
-import { OutlineFilter } from "../filters/outlineFilter";
+import { outlineFilters, OutlineFilter } from "../filters/outlineFilter";
 import {
   type IndividualCharacterName,
   type CharacterName,
@@ -18,7 +18,6 @@ import {
   vectorClosestDirectionXy8,
 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import { store } from "../../../store/store";
 import type { Filter } from "pixi.js";
 import { Container } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
@@ -41,7 +40,6 @@ import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
-import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 
 type PlayableRenderProps = {
   facingXy8: DirectionXy8;
@@ -255,22 +253,17 @@ const applyFilters = (
 ) => {
   const currentlyHighlighted = currentlyRenderedProps?.highlighted ?? false;
   if (highlighted && !currentlyHighlighted) {
-    addFilterToContainer(
-      container,
-      new OutlineFilter({
-        outlineColor: accentColours[name],
-        upscale: selectGameEngineUpscale(store.getState()),
-        // player can move between pixels:
-        lowRes: false,
-      }),
-    );
+    addFilterToContainer(container, outlineFilters[accentColours[name]]);
   } else if (!highlighted && currentlyHighlighted) {
     removeFilterFromContainer(container, OutlineFilter);
   }
 
   const currentlyFlashing = currentlyRenderedProps?.flashing ?? false;
   if (flashing && !currentlyFlashing) {
-    addFilterToContainer(container, new OneColourFilter(accentColours[name]));
+    addFilterToContainer(
+      container,
+      new OneColourFilter(spritesheetPalette[accentColours[name]]),
+    );
   } else if (!flashing && currentlyFlashing) {
     removeFilterFromContainer(container, OneColourFilter);
   }

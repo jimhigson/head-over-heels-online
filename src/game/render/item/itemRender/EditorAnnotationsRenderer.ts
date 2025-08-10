@@ -7,9 +7,8 @@ import type {
 } from "../../ItemRenderContexts";
 import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
 import { noFilters } from "../../filters/standardFilters";
-import { OutlineFilter } from "../../filters/outlineFilter";
+import { outlineFilters } from "../../filters/outlineFilter";
 import { store } from "../../../../store/store";
-import { selectGameEngineUpscale } from "../../../../store/slices/upscale/upscaleSlice";
 import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import type { RootStateWithLevelEditorSlice } from "../../../../editor/slice/levelEditorSlice";
@@ -31,25 +30,9 @@ import type { JsonMovement } from "../../../../model/json/utilityJsonConfigTypes
 import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 
 const selectionColour = spritesheetPalette.pastelBlue;
-const pointerHoverColour = spritesheetPalette.highlightBeige;
-const eyeDropperHoverColour = spritesheetPalette.midRed;
-const connectedToSwitchColour = spritesheetPalette.white;
-
-const pointerHoverFilter = new OutlineFilter({
-  outlineColor: pointerHoverColour,
-  upscale: selectGameEngineUpscale(store.getState()),
-  lowRes: false,
-});
-const eyeDropperHoverFilter = new OutlineFilter({
-  outlineColor: eyeDropperHoverColour,
-  upscale: selectGameEngineUpscale(store.getState()),
-  lowRes: false,
-});
-const connectedToSwitchFilter = new OutlineFilter({
-  outlineColor: connectedToSwitchColour,
-  upscale: selectGameEngineUpscale(store.getState()),
-  lowRes: false,
-});
+const pointerHoverFilter = outlineFilters.highlightBeige;
+const eyeDropperHoverFilter = outlineFilters.midRed;
+const connectedToSwitchFilter = outlineFilters.white;
 const selectedFilter = new RevertColouriseFilter(selectionColour);
 
 const directionArrows = {
@@ -293,14 +276,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     const annotationContainer = showTextInContainer(
       new Container({
         label: "EditorAnnotationTextContainer",
-        filters: [
-          colourFilter,
-          new OutlineFilter({
-            lowRes: true,
-            outlineColor: spritesheetPalette.pureBlack,
-            upscale: selectGameEngineUpscale(store.getState()),
-          }),
-        ],
+        filters: [colourFilter, outlineFilters.pureBlack],
       }),
       annotationText,
     );
