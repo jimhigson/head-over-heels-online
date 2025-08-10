@@ -53,9 +53,7 @@ export const projectAabbCorners = (position: Xyz, aabb: Xyz) => {
       );
     },
     get c111() {
-      return projectWorldXyzToScreenXy(
-        addXyz(position, { x: aabb.x, y: aabb.y, z: aabb.z }),
-      );
+      return projectWorldXyzToScreenXy(addXyz(position, aabb));
     },
     projectCorner(cornerVector: Xyz) {
       return projectWorldXyzToScreenXy(

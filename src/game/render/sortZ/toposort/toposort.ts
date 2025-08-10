@@ -1,3 +1,5 @@
+//# allFunctionsCalledOnLoad
+
 /**
  *
  * fork/update of toposort:
@@ -14,9 +16,6 @@
  * @param {Array} edges
  * @returns {Array}
  */
-
-// magic to tell v8 this is one to pre-compile:
-//# allFunctionsCalledOnLoad
 
 import { emptySet } from "../../../../utils/empty";
 import type { ZGraph } from "../GraphEdges";

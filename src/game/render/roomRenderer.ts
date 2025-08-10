@@ -1,6 +1,6 @@
 import type { IRenderLayer } from "pixi.js";
 import { Container, RenderLayer } from "pixi.js";
-import { updateZEdges } from "./sortZ/sortItemsByDrawOrder";
+import { updateZEdges } from "./sortZ/updateZEdges";
 import { toposort } from "./sortZ/toposort/toposort";
 import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import { createItemRenderer } from "./item/itemRender/createItemRenderer";

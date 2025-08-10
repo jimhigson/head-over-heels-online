@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
-import { updateZEdges } from "./sortItemsByDrawOrder";
+import { updateZEdges } from "./updateZEdges";
 import { toposort } from "./toposort/toposort";
 import { collision1toMany } from "../../collision/aabbCollision";
 

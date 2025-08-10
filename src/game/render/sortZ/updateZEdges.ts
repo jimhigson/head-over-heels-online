@@ -1,3 +1,5 @@
+//# allFunctionsCalledOnLoad
+
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
 import { objectValues } from "iter-tools";
