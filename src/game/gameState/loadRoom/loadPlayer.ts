@@ -23,6 +23,7 @@ import { neverTime } from "../../../utils/neverTime";
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
   shadowCastTexture: "shadow.smallRound",
+  castsShadowWhileStoodOn: true,
   // head's nose is rendered outside of his bb in the original
   aabb: smallItemAabb,
 } satisfies Partial<PlayableItem<CharacterName, string>>;

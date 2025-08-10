@@ -307,6 +307,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
               flipX: alongWallAxis === "x",
             }
           : undefined,
+        castsShadowWhileStoodOn: inHidden,
         state: {
           ...defaultBaseState(),
           position: {
@@ -361,6 +362,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     };
   }
   yield {
+    ...defaultItemProperties,
     type: "stopAutowalk",
     id: `${jsonItemId}/stopAutowalk` as RoomItemId,
     jsonItemId,

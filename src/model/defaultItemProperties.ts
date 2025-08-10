@@ -8,4 +8,5 @@ import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
  **/
 export const defaultItemProperties = {
   aabb: smallItemAabb,
+  castsShadowWhileStoodOn: false,
 } as const satisfies Partial<UnionOfAllItemInPlayTypes>;

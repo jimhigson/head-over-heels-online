@@ -149,6 +149,23 @@ export function* loadItemFromJson<
         fixedZIndex:
           jsonItem.type === "emitter" ? nonRenderingItemFixedZIndex : undefined,
         shadowCastTexture: shadowCast(jsonItem),
+        // items that have true here are items that let a little bit of the floor below them
+        // be seen while they are standing on it
+        castsShadowWhileStoodOn:
+          (jsonItem.type === "monster" &&
+            (jsonItem.config.which === "emperor" ||
+              jsonItem.config.which === "emperorsGuardian" ||
+              jsonItem.config.which === "turtle" ||
+              jsonItem.config.which === "helicopterBug")) ||
+          jsonItem.type === "pickup" ||
+          jsonItem.type === "ball" ||
+          jsonItem.type === "lift" ||
+          // ie, stepstool - see its own shadow via the hole in it:
+          jsonItem.type === "pushableBlock" ||
+          jsonItem.type === "sceneryPlayer" ||
+          // spiky balls:
+          jsonItem.type === "slidingDeadly" ||
+          jsonItem.type === "spring",
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         config: jsonItem.config as any,
         state,
@@ -162,6 +179,7 @@ const shadowCast = (
 ): CreateSpriteOptions | undefined => {
   switch (jsonItem.type) {
     case "lift":
+    case "switch":
       return "shadow.smallBlock";
     case "conveyor":
       return {
