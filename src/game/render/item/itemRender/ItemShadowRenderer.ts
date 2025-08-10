@@ -159,20 +159,6 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       },
     );
 
-    const spaceAboveSurface: Collideable = {
-      id: item.id,
-      state: {
-        position: {
-          ...item.state.position,
-          z: itemTop,
-        },
-      },
-      aabb: {
-        ...item.aabb,
-        z: veryHighZ,
-      },
-    };
-
     // collide up from this item to find which of the shadow casters is above it:
     const bins = Object.groupBy(shadowCastersIter, (caster) => {
       const previouslyHadShadow = this.#casts[caster.id] !== undefined;
@@ -185,11 +171,33 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           return "noShadow";
         }
       }
-      if (collision1to1(spaceAboveSurface, caster)) {
-        if (previouslyHadShadow) {
-          return "update";
-        } else {
-          return "create";
+      if (
+        // as an optimisation, if the caster is sat on top of this item, shadows can usually be
+        // skipped since most casters completely cover up their own shadow
+        caster.castsShadowWhileStoodOn ||
+        caster.state.position.z > item.state.position.z + item.aabb.z
+      ) {
+        // check if the caster intersects the space above the item:
+        const spaceAboveSurface: Collideable = {
+          id: item.id,
+          state: {
+            position: {
+              ...item.state.position,
+              z: itemTop,
+            },
+          },
+          aabb: {
+            ...item.aabb,
+            z: veryHighZ,
+          },
+        };
+
+        if (collision1to1(spaceAboveSurface, caster)) {
+          if (previouslyHadShadow) {
+            return "update";
+          } else {
+            return "create";
+          }
         }
       }
       // no collision with the space above the surface, so no shadow:

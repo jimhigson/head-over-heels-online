@@ -94,5 +94,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
       wallTangentAxis === "y" ? "shadow.wall.y" : (
         { textureId: "shadow.wall.y", flipX: true }
       ),
+    //hidden walls cast shadows to give a hint of the unreachable areas on the floor
+    castsShadowWhileStoodOn: isHidden,
   };
 };

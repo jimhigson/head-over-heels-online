@@ -18,6 +18,7 @@ import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
 import type { PlayableItem } from "../physics/itemPredicates";
 import { randomFromArray } from "../../utils/random/randomFromArray";
+import { defaultItemProperties } from "../../model/defaultItemProperties";
 
 const particleLifetimeMs =
   originalGameFrameDuration *
@@ -40,6 +41,7 @@ const createParticleItemInPlay = (
   position: Xyz,
   roomTime: number,
 ): ItemInPlay<"particle"> => ({
+  ...defaultItemProperties,
   id: `particle.${forItemId}.${particlesAdded++}`,
   type: "particle",
   aabb: originXyz,

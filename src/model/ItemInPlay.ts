@@ -202,6 +202,12 @@ export type ItemInPlay<
   shadowCastTexture?: CreateSpriteOptions;
 
   /**
+   * if true casts shadow while stood on. Most items can cast casting a shadow in this case, since
+   * they will completely cover up and hide their own shadow
+   */
+  castsShadowWhileStoodOn: boolean;
+
+  /**
    * Where this item's shadow mask is considered to be relative to its origin.
    *
    * For shadow masks (this item being cast on), the full xyz is considered to move the shadow mask

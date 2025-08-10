@@ -8,6 +8,7 @@ import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { defaultItemProperties } from "../../model/defaultItemProperties";
 
 const player = loadPlayer({
   type: "player",
@@ -46,6 +47,7 @@ const pushableBlock = first(
 )!;
 
 const horizontalPortal: UnionOfAllItemInPlayTypes = {
+  ...defaultItemProperties,
   type: "portal",
   id: "portal",
   aabb: originXyz,
@@ -58,6 +60,7 @@ const horizontalPortal: UnionOfAllItemInPlayTypes = {
 };
 
 const portalToBelow: UnionOfAllItemInPlayTypes = {
+  ...defaultItemProperties,
   type: "portal",
   id: "portal",
   aabb: originXyz,
@@ -69,6 +72,7 @@ const portalToBelow: UnionOfAllItemInPlayTypes = {
   state: { position: originXyz, ...defaultBaseState() },
 };
 const portalToAbove: UnionOfAllItemInPlayTypes = {
+  ...defaultItemProperties,
   type: "portal",
   id: "portal",
   aabb: originXyz,
