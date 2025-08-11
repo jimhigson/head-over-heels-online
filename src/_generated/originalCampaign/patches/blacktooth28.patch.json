@@ -5,7 +5,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "bag"
+        "page": "bag",
+        "source": "manual"
       },
       "position": {
         "x": 3,

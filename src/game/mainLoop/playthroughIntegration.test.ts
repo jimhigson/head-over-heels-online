@@ -820,12 +820,12 @@ describe("scrolls", () => {
         },
         scrollThatGetsPickedUp: {
           type: "pickup",
-          config: { gives: "scroll", page: "bag" },
+          config: { gives: "scroll", source: "manual", page: "bag" },
           position: { x: 1, y: 2.5, z: 0 },
         },
         scrollThatDoesNotGetPickedUp: {
           type: "pickup",
-          config: { gives: "scroll", page: "crowns" },
+          config: { gives: "scroll", source: "manual", page: "crowns" },
           position: { x: 5, y: 2.5, z: 0 },
         },
         doorToSecondRoom: {
@@ -842,12 +842,12 @@ describe("scrolls", () => {
         },
         scrollThatShouldNotLoad: {
           type: "pickup",
-          config: { gives: "scroll", page: "bag" },
+          config: { gives: "scroll", source: "manual", page: "bag" },
           position: { x: 0, y: 0, z: 0 },
         },
         scrollThatShouldLoad: {
           type: "pickup",
-          config: { gives: "scroll", page: "crowns" },
+          config: { gives: "scroll", source: "manual", page: "crowns" },
           position: { x: 0, y: 0, z: 1 },
         },
       },

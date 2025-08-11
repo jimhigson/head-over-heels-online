@@ -7,7 +7,7 @@ export const room = inferRoomJson({
   id: "moonbase20",
   items: {
     crownsScroll: {
-      config: { gives: "scroll", page: "crowns" },
+      config: { gives: "scroll", source: "manual", page: "crowns" },
       position: { x: 5, y: 4, z: 1 },
       type: "pickup",
     },

@@ -81,7 +81,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "theEmperorsGuardian"
+        "page": "theEmperorsGuardian",
+        "source": "manual"
       },
       "position": {
         "x": 7,

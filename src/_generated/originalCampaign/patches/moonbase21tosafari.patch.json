@@ -5,7 +5,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "safari"
+        "page": "safari",
+        "source": "manual"
       },
       "position": {
         "x": 1,

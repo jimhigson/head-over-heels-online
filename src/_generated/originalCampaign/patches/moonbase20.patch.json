@@ -5,7 +5,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "crowns"
+        "page": "crowns",
+        "source": "manual"
       },
       "position": {
         "x": 5,

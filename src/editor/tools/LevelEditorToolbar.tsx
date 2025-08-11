@@ -509,7 +509,11 @@ head's doughnut firing hooter`}
         <ItemToolButton
           itemTool={{
             type: "pickup",
-            config: { gives: "scroll", page: "blacktooth" },
+            config: {
+              gives: "scroll",
+              source: "inline",
+              markdown: "#Write me\n\nTODO: Put content here",
+            },
           }}
         >
           <span

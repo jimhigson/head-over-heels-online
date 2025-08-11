@@ -47,6 +47,7 @@ export function* loadItemFromJson<
   if (
     jsonItem.type === "pickup" &&
     jsonItem.config.gives === "scroll" &&
+    jsonItem.config.source === "manual" &&
     scrollsRead[jsonItem.config.page]
   ) {
     // don't show scrolls the player has already read

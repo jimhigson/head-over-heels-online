@@ -19,7 +19,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "springs"
+        "page": "springs",
+        "source": "manual"
       },
       "position": {
         "x": 2,

@@ -70,7 +70,11 @@ export const room = inferRoomJson({
       type: "portableBlock",
     },
     scroll: {
-      config: { gives: "scroll", page: "theEmperorsGuardian" },
+      config: {
+        gives: "scroll",
+        source: "manual",
+        page: "theEmperorsGuardian",
+      },
       position: { x: 7, y: 4, z: 0 },
       type: "pickup",
     },

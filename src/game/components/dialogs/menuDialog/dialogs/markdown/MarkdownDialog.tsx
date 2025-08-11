@@ -15,12 +15,19 @@ import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 
-export const MarkdownDialog = ({
-  pageName,
-}: {
-  pageName: MarkdownPageName;
-}) => {
-  const markdown = markdownPages[pageName];
+export const MarkdownDialog = (
+  props:
+    | {
+        source: "manual";
+        pageName: MarkdownPageName;
+      }
+    | {
+        source: "inline";
+        markdown: string;
+      },
+) => {
+  const markdown =
+    props.source === "manual" ? markdownPages[props.pageName] : props.markdown;
   const contentRef = useScrollingFromInput();
 
   return (

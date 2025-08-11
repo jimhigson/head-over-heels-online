@@ -24,6 +24,18 @@ import type { WallJsonConfig } from "./WallJsonConfig";
 import type { Disappear } from "../Disappear";
 import type { Subset } from "../../utils/subset";
 
+export type ScrollConfig =
+  | {
+      gives: "scroll";
+      source: "manual";
+      page: MarkdownPageName;
+    }
+  | {
+      gives: "scroll";
+      source: "inline";
+      markdown: string;
+    };
+
 type PickupConfig =
   | {
       gives:
@@ -36,10 +48,7 @@ type PickupConfig =
         | "hooter"
         | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
     }
-  | {
-      gives: "scroll";
-      page: MarkdownPageName;
-    }
+  | ScrollConfig
   | {
       gives: "crown";
       planet: PlanetName;

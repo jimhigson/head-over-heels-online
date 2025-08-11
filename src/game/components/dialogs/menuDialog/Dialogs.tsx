@@ -36,13 +36,26 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
   }
 
   if (isMarkdownPage(topOpenMenu.menuId)) {
-    return (
-      <MarkdownDialog
-        pageName={
-          topOpenMenu.menuId.slice("markdown/".length) as MarkdownPageName
-        }
-      />
-    );
+    if (topOpenMenu.menuId === "markdown/inline") {
+      // inline markdown pages are passed the markdown content directly - this is for scrolls added
+      // in the level editor, since they can contain any text the room creator wants
+      return (
+        <MarkdownDialog
+          source="inline"
+          markdown={topOpenMenu.menuParam.markdown}
+        />
+      );
+    } else {
+      // standard manual pages:
+      return (
+        <MarkdownDialog
+          source="manual"
+          pageName={
+            topOpenMenu.menuId.slice("markdown/".length) as MarkdownPageName
+          }
+        />
+      );
+    }
   }
 
   switch (topOpenMenu.menuId) {
@@ -59,7 +72,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "inputPreset":
       return <InputPresetDialog />;
     case "installGuide":
-      return <MarkdownDialog pageName="installGuide" />;
+      return <MarkdownDialog source="manual" pageName="installGuide" />;
     case "mainMenu":
       return <MainMenuDialog />;
     case "map":

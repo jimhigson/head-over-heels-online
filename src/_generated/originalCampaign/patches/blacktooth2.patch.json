@@ -96,7 +96,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "historyOfTheBlacktoothEmpire"
+        "page": "historyOfTheBlacktoothEmpire",
+        "source": "manual"
       },
       "position": {
         "x": 1,

@@ -37,7 +37,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "cuddlyStuffedWhiteRabbits"
+        "page": "cuddlyStuffedWhiteRabbits",
+        "source": "manual"
       },
       "position": {
         "x": 3,
@@ -53,7 +54,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "theGame"
+        "page": "theGame",
+        "source": "manual"
       },
       "position": {
         "x": 3,

@@ -186,7 +186,7 @@ export const handlePlayerTouchingPickup = <
 
     case "scroll":
       // avoid the scroll being closed right away if the player already has jump held:
-      store.dispatch(scrollRead(pickupConfig.page));
+      store.dispatch(scrollRead(pickupConfig));
       markAsCollected();
       break;
 

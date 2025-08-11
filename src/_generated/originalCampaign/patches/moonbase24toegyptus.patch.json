@@ -10,7 +10,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "egyptus"
+        "page": "egyptus",
+        "source": "manual"
       },
       "position": {
         "x": 2,

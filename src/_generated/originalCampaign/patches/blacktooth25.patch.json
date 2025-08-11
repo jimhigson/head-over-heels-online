@@ -10,7 +10,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "conveyorBelts"
+        "page": "conveyorBelts",
+        "source": "manual"
       },
       "position": {
         "x": 3,

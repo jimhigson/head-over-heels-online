@@ -92,7 +92,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "doughnuts"
+        "page": "doughnuts",
+        "source": "manual"
       },
       "position": {
         "x": 2,
