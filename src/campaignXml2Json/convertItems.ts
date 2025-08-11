@@ -30,10 +30,13 @@ import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 const monsterBehaviourConversions = {
   "behavior of detector": "towards-tripped-on-axis-xy4",
   "behavior of hunter in four directions": "towards-on-shortest-axis-xy4",
+  // sic
   "behavior of random patroling in four primary directions":
     "patrol-randomly-xy4",
+  // sic
   "behavior of random patroling in four secondary directions":
     "patrol-randomly-diagonal",
+  // sic
   "behavior of random patroling in eight directions": "patrol-randomly-xy8",
   "behavior of waiting hunter in eight directions": "towards-analogue",
   // seems only to be used for cybermen when they are charging and can wake up:

@@ -5,7 +5,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "penitentiary"
+        "page": "penitentiary",
+        "source": "manual"
       },
       "position": {
         "x": 1,

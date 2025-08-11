@@ -374,6 +374,7 @@ export type RoomJsonSchema = {
             }
           | {
               gives: "scroll";
+              source: "manual";
               page:
                 | "blacktooth"
                 | "egyptus"
@@ -401,6 +402,11 @@ export type RoomJsonSchema = {
                 | "hintsAndTips"
                 | "credits"
                 | "installGuide";
+            }
+          | {
+              gives: "scroll";
+              source: "inline";
+              markdown: string;
             }
           | {
               gives: "crown";
@@ -606,6 +612,7 @@ export type RoomJsonSchema = {
                     }
                   | {
                       gives: "scroll";
+                      source: "manual";
                       page:
                         | "blacktooth"
                         | "egyptus"
@@ -633,6 +640,11 @@ export type RoomJsonSchema = {
                         | "hintsAndTips"
                         | "credits"
                         | "installGuide";
+                    }
+                  | {
+                      gives: "scroll";
+                      source: "inline";
+                      markdown: string;
                     }
                   | {
                       gives: "crown";

@@ -41,7 +41,7 @@ export const room = inferRoomJson({
       type: "portableBlock",
     },
     scroll: {
-      config: { gives: "scroll", page: "teleportBack" },
+      config: { gives: "scroll", source: "manual", page: "teleportBack" },
       position: { x: 3, y: 6, z: 0 },
       type: "pickup",
     },

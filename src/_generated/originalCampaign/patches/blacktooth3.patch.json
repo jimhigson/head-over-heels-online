@@ -5,7 +5,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "hintsAndTips"
+        "page": "hintsAndTips",
+        "source": "manual"
       },
       "position": {
         "x": 7,

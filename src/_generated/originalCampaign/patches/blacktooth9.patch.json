@@ -5,7 +5,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "hooter"
+        "page": "hooter",
+        "source": "manual"
       },
       "position": {
         "x": 7,

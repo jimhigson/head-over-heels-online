@@ -5,7 +5,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "blacktooth"
+        "page": "blacktooth",
+        "source": "manual"
       },
       "position": {
         "x": 1,

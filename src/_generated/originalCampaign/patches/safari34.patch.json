@@ -30,7 +30,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "teleportBack"
+        "page": "teleportBack",
+        "source": "manual"
       },
       "position": {
         "x": 3,

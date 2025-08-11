@@ -5,7 +5,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "bookWorld"
+        "page": "bookWorld",
+        "source": "manual"
       },
       "position": {
         "x": 6,

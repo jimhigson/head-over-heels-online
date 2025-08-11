@@ -36,6 +36,7 @@ import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { CharacterName } from "../../model/modelTypes";
 import { typedURLSearchParams } from "../../options/queryParams";
 import type { Container } from "pixi.js";
+import type { ScrollConfig } from "../../model/json/ItemConfigMap";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
@@ -49,7 +50,7 @@ type BaseOpenMenu = {
 };
 export type OpenMenu =
   | (BaseOpenMenu & {
-      menuId: Exclude<DialogId, "crowns" | "errorCaught">;
+      menuId: Exclude<DialogId, "crowns" | "errorCaught" | "markdown/inline">;
 
       /**
        * menu-specific parameters - for example, the crowns menu can play music
@@ -66,6 +67,11 @@ export type OpenMenu =
   | (BaseOpenMenu & {
       menuId: "errorCaught";
       menuParam: Array<SerialisableError>;
+    })
+  | (BaseOpenMenu & {
+      menuId: "markdown/inline";
+      // the markdown content
+      menuParam: { markdown: string };
     });
 
 export type DisplaySettings = {
@@ -229,18 +235,25 @@ export const gameMenusSlice = createSlice({
       state.userSettings.displaySettings.emulatedResolution =
         emulatedResolution;
     },
-    scrollRead(
-      state,
-      { payload: markdownPageName }: PayloadAction<MarkdownPageName>,
-    ) {
-      state.scrollsRead[markdownPageName] = true;
-      state.openMenus = [
-        {
-          menuId: `markdown/${markdownPageName}`,
-          scrollableSelection: false,
-          menuParam: emptyObject,
-        },
-      ];
+    scrollRead(state, { payload: scrollConfig }: PayloadAction<ScrollConfig>) {
+      if (scrollConfig.source === "manual") {
+        state.scrollsRead[scrollConfig.page] = true;
+        state.openMenus = [
+          {
+            menuId: `markdown/${scrollConfig.page}`,
+            scrollableSelection: false,
+            menuParam: emptyObject,
+          },
+        ];
+      } else {
+        state.openMenus = [
+          {
+            menuId: `markdown/inline`,
+            scrollableSelection: false,
+            menuParam: { markdown: scrollConfig.markdown },
+          },
+        ];
+      }
     },
     nextInputDirectionMode(state) {
       state.userSettings.inputDirectionMode = nextInCycle(

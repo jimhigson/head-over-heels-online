@@ -1105,9 +1105,31 @@
                               "installGuide"
                             ],
                             "type": "string"
+                          },
+                          "source": {
+                            "const": "manual",
+                            "type": "string"
                           }
                         },
-                        "required": ["gives", "page"],
+                        "required": ["gives", "source", "page"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "gives": {
+                            "const": "scroll",
+                            "type": "string"
+                          },
+                          "markdown": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "const": "inline",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["gives", "source", "markdown"],
                         "type": "object"
                       },
                       {
@@ -1953,9 +1975,31 @@
                                           "installGuide"
                                         ],
                                         "type": "string"
+                                      },
+                                      "source": {
+                                        "const": "manual",
+                                        "type": "string"
                                       }
                                     },
-                                    "required": ["gives", "page"],
+                                    "required": ["gives", "source", "page"],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "gives": {
+                                        "const": "scroll",
+                                        "type": "string"
+                                      },
+                                      "markdown": {
+                                        "type": "string"
+                                      },
+                                      "source": {
+                                        "const": "inline",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["gives", "source", "markdown"],
                                     "type": "object"
                                   },
                                   {

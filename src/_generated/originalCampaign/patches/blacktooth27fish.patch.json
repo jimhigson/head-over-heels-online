@@ -15,7 +15,8 @@
     "value": {
       "config": {
         "gives": "scroll",
-        "page": "reincarnationFish"
+        "page": "reincarnationFish",
+        "source": "manual"
       },
       "position": {
         "x": 3,
