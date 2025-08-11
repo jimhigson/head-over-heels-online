@@ -20,6 +20,7 @@ import { iterateRoomJsonItems } from "../../../model/RoomJson";
 import type { FloorType } from "../../../model/json/ItemConfigMap";
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
+import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
 
 export type SetRoomAboveOrBelowPayload =
   | {
@@ -108,6 +109,10 @@ export const editRoomReducers = {
     ) {
       // some items were removed, so update the selection
       state.selectedJsonItemIds = selectedJsonItemIdsThatStillExist;
+    }
+
+    if (roomJson.id !== state.currentlyEditingRoomId) {
+      changeIdOfCurrentRoomInPlace(state, roomJson.id);
     }
   },
 
