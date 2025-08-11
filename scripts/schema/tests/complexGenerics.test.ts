@@ -8,10 +8,16 @@ describe("complexGenerics", () => {
     { timeout },
     async () => {
       const result = await flattenFixture("complexGenerics", "MyConfig");
-      // TypeScript may simplify generic Record types when the type argument is too broad
-      // In this case, ConfigMap<string> with string as the generic parameter
-      // may result in Record<string, any> due to type erasure
-      expect(result).toBe("Record<string, any>");
+      // With our fix, Record types now properly expand their nested object structure
+      // instead of being simplified to Record<string, any>
+      const expected = `Record<
+  string,
+  {
+    type: string;
+    config: any;
+  }
+>`;
+      expect(result).toBe(expected);
     },
   );
 });

@@ -6,9 +6,14 @@ describe("recordType", () => {
   it("should handle Record types", { timeout }, async () => {
     const result = await flattenFixture("recordType", "ItemMap");
 
-    // Check the entire normalized output
-    // Note: Record types might not always be expanded
-    const expected = `Record<string, any>`;
+    // With our fix, Record types now properly expand their nested object structure
+    const expected = `Record<
+  string,
+  {
+    name: string;
+    value: number;
+  }
+>`;
 
     expect(result).toBe(expected);
   });

@@ -8,12 +8,17 @@ describe("noInferWrapper", () => {
     { timeout },
     async () => {
       const result = await flattenFixture("noInferWrapper", "TestType");
-      expect(result).toContain("Record<string,");
+      // With our fix, Record types now properly expand their nested object structure
+      const expected = `Record<
+  string,
+  {
+    type: string;
+    config: any;
+  }
+>`;
+      expect(result).toBe(expected);
+      // Verify NoInfer was properly unwrapped
       expect(result).not.toContain("NoInfer");
-      // Record value types might be simplified to any for complex cases
-      expect(result).toMatch(
-        /Record<string,\s*(\{[^}]*type:\s*string[^}]*\}|any)>/,
-      );
     },
   );
 });

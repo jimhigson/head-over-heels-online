@@ -3591,6 +3591,61 @@
               "type": "object"
             },
             "subRooms": {
+              "additionalProperties": {
+                "additionalProperties": false,
+                "properties": {
+                  "gridPosition": {
+                    "additionalProperties": false,
+                    "description": "the grid position (on the map) of this sub-room",
+                    "properties": {
+                      "x": {
+                        "type": "number"
+                      },
+                      "y": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["x", "y"],
+                    "type": "object"
+                  },
+                  "physicalPosition": {
+                    "additionalProperties": false,
+                    "description": "where the sub-room actually starts and ends on the map (so we can work out which sub-room items are in)",
+                    "properties": {
+                      "from": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          }
+                        },
+                        "required": ["x", "y"],
+                        "type": "object"
+                      },
+                      "to": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          }
+                        },
+                        "required": ["x", "y"],
+                        "type": "object"
+                      }
+                    },
+                    "required": ["from", "to"],
+                    "type": "object"
+                  }
+                },
+                "required": ["gridPosition", "physicalPosition"],
+                "type": "object"
+              },
               "description": "subRooms are used for the map for rooms which were modelled as multiple rooms in the original game",
               "type": "object"
             }

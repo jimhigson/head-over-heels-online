@@ -167,14 +167,17 @@ describe("ItemConfigMap Pattern", { timeout }, () => {
     { timeout },
     async () => {
       // This test is now covered by noInferComplex fixture
-      // The flattened output for RoomItems<NoInfer<string>> is Record<string, { type: string; config: any; }>
+      // With our fix, Record types now properly expand their nested object structure
       const result = await flattenFixture("noInferComplex", "TestType");
-      expect(result).toContain("Record<string,");
+
+      // Check that it's a Record type with expanded nested structure
+      expect(result).toContain("Record<");
+      expect(result).toContain("string");
       expect(result).not.toContain("NoInfer");
-      // The value type might be simplified or expanded
-      expect(result).toMatch(
-        /Record<string,\s*(\{[^}]*type:\s*string[^}]*\}|any)>/,
-      );
+
+      // Verify the nested structure is expanded
+      expect(result).toContain("type: string");
+      expect(result).toContain("config: any");
     },
   );
 

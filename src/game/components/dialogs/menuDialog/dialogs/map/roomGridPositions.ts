@@ -218,14 +218,23 @@ function* _roomGridPositions<RoomId extends string>({
   // branch via doors:
   for (const doorItem of doors) {
     const { toRoom } = doorItem.config;
-    yield* roomGridPositions({
-      roomId: toRoom,
-      campaign,
-      visited,
-      subRoomId: doorItem.config.meta?.toSubRoom,
-      vectorFromPrevious: unitVectors[doorItem.config.direction],
-      previousRoomGridPosition: gridPosition,
-    });
+    try {
+      yield* roomGridPositions({
+        roomId: toRoom,
+        campaign,
+        visited,
+        subRoomId: doorItem.config.meta?.toSubRoom,
+        vectorFromPrevious: unitVectors[doorItem.config.direction],
+        previousRoomGridPosition: gridPosition,
+      });
+    } catch (e) {
+      throw new Error(
+        `error while traversing door ${JSON.stringify(doorItem, null, 2)} in room ${roomId} to room ${toRoom}`,
+        {
+          cause: e,
+        },
+      );
+    }
   }
 
   // branch via non-contiguous relationshps (rooms that aren't joined but are

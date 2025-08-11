@@ -132,7 +132,11 @@ export const useSyncStoreItemSelectionToMonacoDecorations = (
       collectionRef.current.set(decorations); // replaces previous
     }
 
-    if (decorations.length > 0) {
+    if (
+      decorations.length > 0 &&
+      // only change position while not editing - this can be quite annoying!
+      !editor.hasTextFocus()
+    ) {
       // go to the end of the array for the most recently selected (probably)
       const rangeToReveal = decorations.at(-1)!.range;
       editor.revealRangeInCenterIfOutsideViewport(

@@ -79,7 +79,11 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
         case "towards":
           if (
             !expandedDirections.towards &&
-            doorJsonPosition.y === naturalPositionBlocks.y
+            // in on the edge of the flor in the door's axis of travel:
+            doorJsonPosition.y === naturalPositionBlocks.y &&
+            // in the range of the floor on the axis the door is sitting on:
+            doorJsonPosition.x >= naturalPositionBlocks.x &&
+            doorJsonPosition.x <= naturalPositionBlocks.x + times.x - 2
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               y: extraFloorAmountForDoorsNear,
@@ -93,7 +97,11 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
         case "away":
           if (
             !expandedDirections.away &&
-            doorJsonPosition.y === naturalPositionBlocks.y + times.y
+            // in on the edge of the flor in the door's axis of travel:
+            doorJsonPosition.y === naturalPositionBlocks.y + times.y &&
+            // in the range of the floor on the axis the door is sitting on:
+            doorJsonPosition.x >= naturalPositionBlocks.x &&
+            doorJsonPosition.x <= naturalPositionBlocks.x + times.x - 2
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               y: extraFloorAmountForDoorsFar,
@@ -104,7 +112,11 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
         case "right":
           if (
             !expandedDirections.right &&
-            doorJsonPosition.x === naturalPositionBlocks.x
+            // in on the edge of the flor in the door's axis of travel:
+            doorJsonPosition.x === naturalPositionBlocks.x &&
+            // in the range of the floor on the axis the door is sitting on:
+            doorJsonPosition.y >= naturalPositionBlocks.y &&
+            doorJsonPosition.y <= naturalPositionBlocks.y + times.y - 2
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               x: extraFloorAmountForDoorsNear,
@@ -118,7 +130,11 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
         case "left":
           if (
             !expandedDirections.left &&
-            doorJsonPosition.x === naturalPositionBlocks.x + times.x
+            // in on the edge of the flor in the door's axis of travel:
+            doorJsonPosition.x === naturalPositionBlocks.x + times.x &&
+            // in the range of the floor on the axis the door is sitting on:
+            doorJsonPosition.y >= naturalPositionBlocks.y &&
+            doorJsonPosition.y <= naturalPositionBlocks.y + times.y - 2
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               x: extraFloorAmountForDoorsFar,

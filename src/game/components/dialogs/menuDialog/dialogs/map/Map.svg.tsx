@@ -58,7 +58,8 @@ const selectPlayableItemInRoomAndSubroom = <
         roomId === characterRooms[characterName]!.roomJson.id &&
         subRoomId ===
           findSubRoomForItem(
-            playableItemInPlay,
+            playableItemInPlay.state.position,
+            "fine",
             characterRooms[characterName]!.roomJson,
           )
     ) ?
