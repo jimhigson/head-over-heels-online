@@ -1,13 +1,21 @@
 import type { OnChange } from "@monaco-editor/react";
-import { useCallback, useState } from "react";
+import { useMemo } from "react";
 import type { editor } from "monaco-editor";
 import nanoEqual from "nano-equal";
-import { useCurrentEditingRoomJson } from "../slice/levelEditorSelectors";
 import type { EditorRoomJson } from "../editorTypes";
+import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { roomJsonEdited } from "../slice/levelEditorSlice";
-import { useAppDispatch } from "../../store/hooks";
 import roomSchema from "../../_generated/room.schema.json";
 import Ajv from "ajv";
+import { debounce } from "@github/mini-throttle";
+import { store } from "../../store/store";
+import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSliceSelectors";
+
+const ajvValidate = new Ajv().compile<EditorRoomJson>(roomSchema);
+
+// performance is fine without a debounce, but it can be annoying
+// if the editor changes during typing:
+const debounceMs = 1_000;
 
 /**
  * extremely basic JSON fixup to add quotes and remove trailing commas
@@ -40,45 +48,61 @@ const parseJsonWithCorrection = (text: string): object | undefined => {
 export const useUpdateStoreWhenJsonEdited = (
   editor: editor.IStandaloneCodeEditor | null,
 ) => {
-  const roomJson = useCurrentEditingRoomJson();
-  const dispatch = useAppDispatch();
+  return useMemo<OnChange>(() => {
+    return debounce(
+      (text: string | undefined, _ev: editor.IModelContentChangedEvent) => {
+        const levelEditorState = (
+          store.getState() as RootStateWithLevelEditorSlice
+        ).levelEditor;
+        const roomJson =
+          selectCurrentRoomFromLevelEditorState(levelEditorState);
 
-  const [ajvValidate] = useState(() => new Ajv().compile(roomSchema));
+        if (text === undefined || !editor) {
+          return;
+        }
 
-  return useCallback<OnChange>(
-    (text: string | undefined, _ev: editor.IModelContentChangedEvent) => {
-      if (text === undefined || !editor) {
-        return;
-      }
+        const parsedJson = parseJsonWithCorrection(text);
 
-      const parsedJson = parseJsonWithCorrection(text);
+        if (parsedJson === undefined) {
+          console.warn(
+            "Text in editor: is not valid JSON, even after correction",
+          );
+          return;
+        }
 
-      if (parsedJson === undefined) {
-        console.warn(
-          "Text in editor: is not valid JSON, even after correction",
-        );
-        return;
-      }
+        if (nanoEqual(parsedJson, roomJson)) {
+          console.warn(
+            "Text in editor: after JSON parse is equal to current roomJson. not dispatching",
+          );
+          return;
+        }
 
-      if (nanoEqual(parsedJson, roomJson)) {
-        console.warn(
-          "Text in editor: after JSON parse is equal to current roomJson. not dispatching",
-        );
-        return;
-      }
+        /* checking monaco markers is not effective. They are added asynchronously
+         * and not available immediately after the text change. Use ajv instead.
+         */
+        if (!ajvValidate(parsedJson)) {
+          console.warn(
+            "Text in editor: after JSON parse, does not match schema. Not dispatching.",
+          );
+          return;
+        }
 
-      /* checking monaco markers is not effective. They are added asynchronously
-       * and not available immediately after the text change. Use ajv instead.
-       */
-      if (!ajvValidate(parsedJson)) {
-        console.warn(
-          "Text in editor: after JSON parse, does not match schema. Not dispatching.",
-        );
-        return;
-      }
+        if (parsedJson.id !== roomJson.id) {
+          // it is ok to change the id of the room, but not over the top of another room's id:
+          if (
+            levelEditorState.campaignInProgress.rooms[parsedJson.id] !==
+            undefined
+          ) {
+            console.warn(
+              "Edit to room id would overwrite another room, not populating.",
+            );
+            return;
+          }
+        }
 
-      dispatch(roomJsonEdited(parsedJson as EditorRoomJson));
-    },
-    [editor, roomJson, ajvValidate, dispatch],
-  );
+        store.dispatch(roomJsonEdited(parsedJson as EditorRoomJson));
+      },
+      debounceMs,
+    );
+  }, [editor]);
 };

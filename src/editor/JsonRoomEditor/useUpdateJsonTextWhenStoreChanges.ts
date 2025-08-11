@@ -135,6 +135,13 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
   }, [editor, monaco, currentRoomJson, currentlyEditingRoomId]);
 };
 
+/**
+ * @warn ⚠️ KNOWN ISSUE HERE: this can't detect the id of the current room being updated
+ * and detects that as a change to a different room
+ * however:
+ *      * edits to the room's id are quite rare
+ *      * not clear how to fix this since ids are ids
+ */
 const useCreateDocumentsInMonacoWhenCurrentRoomChanges = (
   monaco: Monaco | null,
 ) => {
