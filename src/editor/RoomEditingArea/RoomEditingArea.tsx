@@ -11,6 +11,8 @@ import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRenderer
 import { useUpdateUpscaleWhenElementResizes } from "../../store/storeFlow/useUpateUpscaleWhenElementResizes";
 import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
 import { useCenterScrollOnLoad } from "./useCenterScrollOnLoad";
+import { type ResolutionName } from "../../originalGame";
+import { ResolutionControls } from "./ResolutionControls";
 
 import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
 TextureStyle.defaultOptions.scaleMode = "nearest";
@@ -20,11 +22,13 @@ export const RoomEditingArea = () => {
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
   const [renderSizingArea, setRenderSizingArea] =
     useState<HTMLDivElement | null>(null);
+  const [selectedResolution, setSelectedResolution] =
+    useState<ResolutionName>("amigaLowResPal");
 
   const cursorClassname = useRoomEditingAreaCursorClassName();
 
   useUpdateUpscaleWhenElementResizes(
-    "amigaLowResPal",
+    selectedResolution,
     renderSizingArea ?? undefined,
   );
   useResizePixiApplicationToMatchCanvasSize();
@@ -37,18 +41,24 @@ export const RoomEditingArea = () => {
   useCenterScrollOnLoad(renderSizingArea, renderArea);
 
   return (
-    <div
-      className={`w-full h-full bg-editor-checkerboard overflow-scroll flex scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue ${cursorClassname}`}
-      ref={setRenderSizingArea}
-    >
-      <div className="flex justify-center items-center w-[500dvw] h-[500dvh]">
-        <div
-          style={{
-            transform: useCanvasTransform(),
-            transformOrigin: "center center",
-          }}
-          ref={setRenderArea}
-        />
+    <div className={`w-full h-full ${cursorClassname} relative scale-editor`}>
+      <ResolutionControls
+        selectedResolution={selectedResolution}
+        onResolutionChange={setSelectedResolution}
+      />
+      <div
+        className={`w-full h-full bg-editor-checkerboard overflow-scroll flex scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue ${cursorClassname}`}
+        ref={setRenderSizingArea}
+      >
+        <div className="flex justify-center items-center w-[500dvw] h-[500dvh]">
+          <div
+            style={{
+              transform: useCanvasTransform(),
+              transformOrigin: "center center",
+            }}
+            ref={setRenderArea}
+          />
+        </div>
       </div>
     </div>
   );
