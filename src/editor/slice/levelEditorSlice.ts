@@ -15,7 +15,7 @@ import {
   selectCurrentRoomFromLevelEditorState,
   selectItemInLevelEditorState,
   selectItemIsSelectedInLevelEditorState,
-} from "./levelEditorSliceSelectors";
+} from "./levelEditorSelectors";
 import { undoReducers, undoSelectors } from "./reducers/undoReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";

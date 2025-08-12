@@ -17,7 +17,7 @@ import type {
   LevelEditorState,
   PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const nextItemId = <T extends JsonItemType = JsonItemType>(
   targetRoomJson: EditorRoomJson,

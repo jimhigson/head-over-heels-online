@@ -88,4 +88,5 @@ export const JsonRoomEditor = () => {
   //}
 };
 
+// default export for lazy loading
 export default JsonRoomEditor;

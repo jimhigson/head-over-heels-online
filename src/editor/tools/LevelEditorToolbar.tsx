@@ -37,7 +37,6 @@ import {
   LabelledToolbarIcon,
   StackedToolbarIcons,
 } from "./ToolbarButtonContentPatterns";
-import { MapButton } from "./MapButton";
 import { PlayTestButton } from "./PlayTestButton";
 import { LoggedInStatus } from "./LoggedInStatus";
 import { AddAndDeleteRoomButtons } from "./AddAndRemoveRoomButtons";
@@ -67,7 +66,6 @@ export const LevelEditorToolbar = () => {
         <SaveAndLoadButtons />
         <ShareCampaignButton />
         <HorizontalGap />
-        <MapButton />
         <PlayTestButton />
       </div>
       <div className={buttonGroupClassname}>

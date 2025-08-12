@@ -1,35 +1,24 @@
 import { RoomSvg } from "./Room.svg";
 import type {
-  Campaign,
   CharacterName,
   IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
-import type {
-  CharacterRooms,
-  PickupsCollected,
-} from "../../../../../gameState/GameState";
+import type { CharacterRooms } from "../../../../../gameState/GameState";
 import { emptyObject } from "../../../../../../utils/empty";
 import { roomWorldPosition } from "./roomWorldPosition";
-import type { ReactElement } from "react";
-import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 import type { ValueOf } from "type-fest";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { getRoomItem } from "../../../../../../model/RoomState";
 import type { PlayableItem } from "../../../../../physics/itemPredicates";
 import { translateXyz } from "./svgHelpers";
+import type { MapData } from "./MapData";
+import { MapBackground } from "./MapBackground";
 
-export type MapSvgProps<RoomId extends string> = {
-  campaign: Campaign<RoomId>;
-  pickupsCollected: PickupsCollected<RoomId>;
-  gridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
-  currentCharacterName: CharacterName;
-  characterRooms: CharacterRooms<RoomId>;
-  background: ReactElement | null;
-  mapBounds: Bounds;
-  containerWidth: number;
-  roomsExplored: Record<RoomId, true>;
+export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
+  containerWidth?: number;
   onPlayableClick?: (name: IndividualCharacterName) => void;
+  onRoomClick?: (roomId: RoomId) => void;
 };
 
 export type Bounds = {
@@ -67,18 +56,28 @@ const selectPlayableItemInRoomAndSubroom = <
     : undefined;
 };
 
-export const MapSvg = <RoomId extends string>({
-  campaign,
-  pickupsCollected,
-  gridPositions,
-  currentCharacterName,
-  characterRooms,
-  background,
-  mapBounds,
-  containerWidth,
-  roomsExplored,
-  onPlayableClick,
-}: MapSvgProps<RoomId>) => {
+export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
+  const {
+    campaign,
+    pickupsCollected,
+    gridPositions,
+    currentCharacterName,
+    characterRooms,
+    mapBounds,
+    containerWidth,
+    roomsExplored,
+    onPlayableClick,
+    curRoomId,
+    onRoomClick,
+  } = props;
+
+  if (containerWidth === undefined) {
+    // until the container width is known, don't render anything. This prop is optional
+    // to avoid the multiple call-sites that all need the same check from having to
+    // do the branching themselves
+    return null;
+  }
+
   const contentW = mapBounds.r - mapBounds.l + 2 * mapSvgMarginX;
   const contentH = mapBounds.b - mapBounds.t + 2 * mapSvgMarginY;
 
@@ -96,7 +95,13 @@ export const MapSvg = <RoomId extends string>({
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {background}
+      {curRoomId === undefined ? null : (
+        <MapBackground<RoomId>
+          {...props}
+          curRoomId={curRoomId}
+          containerWidth={containerWidth}
+        />
+      )}
       <g
         transform={`translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + +mapSvgMarginY})`}
       >
@@ -135,6 +140,7 @@ export const MapSvg = <RoomId extends string>({
                 currentCharacterName={currentCharacterName}
                 roomVisited={roomsExplored[roomId] ?? false}
                 onPlayableClick={onPlayableClick}
+                onRoomClick={onRoomClick}
               />
             </g>
           );

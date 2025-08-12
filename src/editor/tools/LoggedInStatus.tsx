@@ -29,6 +29,12 @@ const providerIcon = (provider: SupportedProvider): string => {
 export const LoggedInStatus = ({ className }: { className?: string }) => {
   const user = useSupabaseUser();
 
+  if (user === undefined) {
+    // no data yet - don't know if logged in. Render a space-holder to stop the
+    // ui jumping around as much:
+    return <div className="bg-shadow h-4" />;
+  }
+
   const handleLogin = (provider: Provider) => async () => {
     // Remove everything after, and including, #.
     // the # was causing issues since the redirect adds another # with the auth
@@ -53,7 +59,7 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn(className)}>
-      {user ?
+      {user !== null ?
         <div className="bg-moss overflow-hidden text-center">
           <BitmapText
             noSlitWords

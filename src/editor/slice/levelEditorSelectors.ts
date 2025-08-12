@@ -1,8 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { selectorHook } from "../../utils/react/selectorHook";
-import type { RootStateWithLevelEditorSlice } from "./levelEditorSlice";
-import { selectCurrentEditingRoomJson } from "./levelEditorSlice";
 import type {
+  LevelEditorState,
+  RootStateWithLevelEditorSlice,
+} from "./levelEditorSlice";
+import type {
+  EditorJsonItemUnion,
+  EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
   EditorRoomState,
@@ -14,8 +18,8 @@ import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { emptyObject } from "../../utils/empty";
 import { floorsRenderExtent } from "../../game/render/floorsExtent";
 
-export const useCurrentEditingRoomJson = selectorHook(
-  selectCurrentEditingRoomJson,
+export const useCurrentEditingRoomJson = selectorHook((state) =>
+  selectCurrentRoomFromLevelEditorState(state.levelEditor),
 );
 
 /**
@@ -24,7 +28,7 @@ export const useCurrentEditingRoomJson = selectorHook(
  */
 export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
   [
-    selectCurrentEditingRoomJson,
+    (state) => selectCurrentRoomFromLevelEditorState(state.levelEditor),
     (state: RootStateWithLevelEditorSlice) => state.levelEditor.previewedEdits,
   ],
   (roomJson, previewedEdits): EditorRoomJson => {
@@ -50,7 +54,7 @@ export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
  * Memoized so it only recomputes when the room JSON changes.
  */
 export const selectEditorRoomState = createSelector(
-  [selectCurrentEditingRoomJson],
+  [(state) => selectCurrentRoomFromLevelEditorState(state.levelEditor)],
   (roomJson): EditorRoomState => {
     return loadRoom({
       roomJson,
@@ -125,3 +129,29 @@ export const useEditorRoomStateWithPreviews = selectorHook(
 export const useEditorRoomRenderDimensions = selectorHook(
   selectEditorRoomRenderDimensions,
 );
+export const selectCurrentRoomFromLevelEditorState = (
+  state: LevelEditorState,
+) =>
+  state.campaignInProgress.rooms[
+    state.currentlyEditingRoomId
+  ] as EditorRoomJson;
+
+export const selectRoomFromLevelEditorState = (
+  state: LevelEditorState,
+  roomId: EditorRoomId,
+) => state.campaignInProgress.rooms[roomId] as EditorRoomJson | undefined;
+
+export const selectItemInLevelEditorState = (
+  state: LevelEditorState,
+  itemId: EditorRoomItemId,
+  /** if not given, uses the room currently being edited */
+  roomId?: EditorRoomId,
+) =>
+  state.campaignInProgress.rooms[roomId ?? state.currentlyEditingRoomId]?.items[
+    itemId
+  ] as EditorJsonItemUnion | undefined;
+
+export const selectItemIsSelectedInLevelEditorState = (
+  state: LevelEditorState,
+  itemId: EditorRoomItemId,
+) => state.selectedJsonItemIds.includes(itemId);

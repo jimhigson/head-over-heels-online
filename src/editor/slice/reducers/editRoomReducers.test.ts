@@ -13,7 +13,7 @@ import {
   testRoomId,
 } from "./__test__/storeStates";
 import type { EditorJsonItemUnion } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 
 test('deleting a door "heals" the void where the door once stood by extending and joining existing walls', () => {

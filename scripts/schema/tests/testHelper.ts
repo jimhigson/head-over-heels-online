@@ -31,9 +31,19 @@ export async function flattenFixture(
       fixturePath.includes("itemConfig") ||
       fixturePath.includes("realWorld") ||
       fixturePath.includes("mapped") ||
-      fixturePath.includes("conditional")
+      fixturePath.includes("conditional") ||
+      fixturePath.includes("requireAtLeastOne") ||
+      fixturePath.includes("nonEmptyRecord")
     ) {
       testProject.addSourceFilesAtPaths("node_modules/type-fest/**/*.d.ts");
+    }
+
+    // Also add our custom type utilities
+    if (
+      fixturePath.includes("requireAtLeastOne") ||
+      fixturePath.includes("nonEmptyRecord")
+    ) {
+      testProject.addSourceFileAtPath("src/utils/types/NonEmptyRecord.ts");
     }
 
     const fullOutput = await flattenTypes(

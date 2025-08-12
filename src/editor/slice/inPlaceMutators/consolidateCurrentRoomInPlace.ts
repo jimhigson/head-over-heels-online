@@ -1,7 +1,7 @@
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import type { EditorJsonItemUnion } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const consolidateCurrentRoomInPlace = (
   levelEditorSliceState: LevelEditorState,

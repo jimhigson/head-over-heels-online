@@ -140,6 +140,7 @@ type RoomSvgProps<RoomId extends string> = {
   headOverHeelsItemInRoom?: PlayableItem<"headOverHeels", RoomId>;
   roomPickupsCollected: RoomPickupsCollected;
   onPlayableClick?: (name: IndividualCharacterName) => void;
+  onRoomClick?: (roomId: RoomId) => void;
   currentCharacterName: CharacterName;
 };
 
@@ -153,6 +154,7 @@ export const RoomSvg = <RoomId extends string>({
   headOverHeelsItemInRoom,
   currentCharacterName,
   onPlayableClick,
+  onRoomClick,
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, color, items } = roomJson;
   const label = roomJson.meta?.label;
@@ -178,7 +180,7 @@ export const RoomSvg = <RoomId extends string>({
     >
       {noFloor ?
         <>
-          //show a floor outlining the room with a hole:
+          {/* show a floor outlining the room with a hole: */}
           <path
             className="fill-[var(--roomHintColor)]"
             fillRule="evenodd"
@@ -193,8 +195,9 @@ export const RoomSvg = <RoomId extends string>({
           />
         </>
       : <>
-          // whole floor in colour
+          {/* whole floor in colour */}
           <path className="fill-[var(--roomHintColor)]" d={floorFillPathD} />
+          {/* white in the middle w/ to doors */}
           <path className="fill-white" d={floorPathFillPathD(boundaries)} />
           {deadlyFloor && (
             <path
@@ -388,6 +391,17 @@ z
           </foreignObject>
         </g>
       )}
+      {onRoomClick ?
+        // add a transparent area over the whole floor if we need to handle clicks.
+        // otherwise, the rendering above is too complex to handle this
+        <path
+          className="fill-transparent cursor-pointer"
+          d={floorFillPathD}
+          onClick={() => {
+            onRoomClick(id);
+          }}
+        />
+      : null}
     </g>
   );
 };

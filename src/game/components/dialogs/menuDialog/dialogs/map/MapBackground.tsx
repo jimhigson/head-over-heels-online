@@ -1,10 +1,8 @@
-import type { Campaign } from "../../../../../../model/modelTypes";
 import type { SceneryName } from "../../../../../../sprites/planets";
-import { type Bounds } from "./Map.svg";
 import { MapBackgroundSection } from "./MapBackgroundSection";
+import { getMapColoursClass } from "./mapColours";
+import type { MapData } from "./MapData";
 import { OriginalCampaignMainMapBackground } from "./OriginalCampaignMainMapBackground";
-import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
-import { useMapColours } from "./useMapColours";
 
 const sceneryToMapTitle: Record<SceneryName, string> = {
   blacktooth: "blacktooth",
@@ -17,11 +15,8 @@ const sceneryToMapTitle: Record<SceneryName, string> = {
   safari: "safari",
 };
 
-export type MapBackgroundProps<RoomId extends string> = {
-  campaign: Campaign<RoomId>;
+export type MapBackgroundProps<RoomId extends string> = MapData<RoomId> & {
   curRoomId: RoomId;
-  gridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
-  mapBounds: Bounds;
   containerWidth: number;
 };
 
@@ -36,7 +31,8 @@ export const MapBackground = <RoomId extends string>(
       campaign.rooms[curRoomId].planet,
     );
 
-  const mapColours = useMapColours();
+  const mapColours = getMapColoursClass(props.curRoomScenery);
+
   if (isMainMapForOriginalCampaign) {
     return <OriginalCampaignMainMapBackground {...props} />;
   } else {
