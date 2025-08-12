@@ -1090,7 +1090,32 @@ export type RoomJsonSchema = {
      * subRooms are used for the map for rooms which were modelled as multiple rooms
      * in the original game
      */
-    subRooms?: Record<string, any>;
+    subRooms?: Record<
+      string,
+      {
+        /**
+         * the grid position (on the map) of this sub-room
+         */
+        gridPosition: {
+          x: number;
+          y: number;
+        };
+        /**
+         * where the sub-room actually starts and ends on the map (so we
+         * can work out which sub-room items are in)
+         */
+        physicalPosition: {
+          from: {
+            x: number;
+            y: number;
+          };
+          to: {
+            x: number;
+            y: number;
+          };
+        };
+      }
+    >;
     /**
      * for rooms that are shown on the same map even though they don't
      * have any physical connection

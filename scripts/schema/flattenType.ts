@@ -65,6 +65,19 @@ export class TypeFlattener {
       if (callSignatures.length > 0) {
         return "(...args: any[]) => any";
       }
+
+      // Check for string index signature (Record types)
+      const stringIndexType = type.getStringIndexType();
+      if (stringIndexType) {
+        // This is a Record<string, T> type - process the value type
+        const valueType = this.processType(
+          stringIndexType,
+          this.capitalizeTypeName(`${typeName}Value`),
+          depth + 1,
+        );
+        return `Record<string, ${valueType}>`;
+      }
+
       return "Record<string, any>";
     }
 
@@ -706,13 +719,24 @@ export class TypeFlattener {
 
           // For the value type, check if it's an object type that needs expansion
           const [, valueTypeArg] = typeArguments;
-          const valueType: string =
-            // Process the value type
-            this.processType(
+
+          // Process the value type - if it's an object, make sure to expand it properly
+          let valueType: string;
+          if (valueTypeArg.isObject() && !valueTypeArg.isArray()) {
+            // For object types, use processTypeAsObject to ensure all properties are expanded
+            valueType = this.processTypeAsObject(
               valueTypeArg,
               this.capitalizeTypeName(`${typeName}Value`),
               depth + 1,
             );
+          } else {
+            // For non-object types, process normally
+            valueType = this.processType(
+              valueTypeArg,
+              this.capitalizeTypeName(`${typeName}Value`),
+              depth + 1,
+            );
+          }
 
           // Special case: Record<string, never> should be {} for JSON schema
           if (keyType === "string" && valueType === "never") {
@@ -722,26 +746,24 @@ export class TypeFlattener {
           return `Record<${keyType}, ${valueType}>`;
         } else if (typeArguments.length === 0) {
           // TypeScript might have already resolved the Record type
-          // In this case, we should treat it as a regular object
+          // Check for string index signature first
+          const stringIndexType = type.getStringIndexType();
+          if (stringIndexType) {
+            // This is a Record<string, T> type - process the value type properly
+            const valueType = this.processType(
+              stringIndexType,
+              this.capitalizeTypeName(`${typeName}Value`),
+              depth + 1,
+            );
+            return `Record<string, ${valueType}>`;
+          }
+
+          // Otherwise, treat it as a regular object
           const objectDefinition = this.processTypeAsObject(
             type,
             typeName,
             depth,
           );
-
-          // If it looks like a Record pattern from the definition, keep it as Record
-          if (objectDefinition === "Record<string, any>") {
-            // Try to get more information from the type's properties
-            const props = type.getProperties();
-            if (
-              props.length === 0 ||
-              (props.length === 1 && props[0].getName() === "__index")
-            ) {
-              // This is likely a Record type that's been resolved
-              // We can't get the original value type, so we have to accept it as is
-              return objectDefinition;
-            }
-          }
 
           return objectDefinition;
         }

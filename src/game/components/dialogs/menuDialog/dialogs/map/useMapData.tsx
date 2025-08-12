@@ -33,7 +33,11 @@ export const useMapData = <RoomId extends string>() => {
 
           if (!curCharacterItem) curSubRoom = "*";
           else {
-            curSubRoom = findSubRoomForItem(curCharacterItem, curRoom.roomJson);
+            curSubRoom = findSubRoomForItem(
+              curCharacterItem.state.position,
+              "fine",
+              curRoom.roomJson,
+            );
           }
         }
       }

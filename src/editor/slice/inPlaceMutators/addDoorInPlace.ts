@@ -15,29 +15,37 @@ import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelect
 import { addItemInPlace, nextItemId } from "./addItemInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
 
 const getDestinationRoom = ({
   state,
   fromRoomJson,
+  subRoomId,
   direction,
   isPreview,
   autoAddRooms,
 }: {
   state: LevelEditorState;
   fromRoomJson: EditorRoomJson;
+  // the subroom the door is being added into - to start the search from
+  subRoomId: string;
   direction: DirectionXy4;
   isPreview: boolean;
   autoAddRooms: boolean;
 }): EditorRoomJson | undefined => {
   const campaign = state.campaignInProgress;
-  const existingRoomGridPositionSpec = iterate(
-    roomGridPositions({
-      campaign,
-      roomId: fromRoomJson.id,
-    }),
-  ).find(({ gridPosition }) => xyzEqual(gridPosition, unitVectors[direction]));
+  const gridPositions = roomGridPositions({
+    campaign,
+    roomId: fromRoomJson.id,
+    subRoomId,
+  });
+
+  const existingRoomGridPositionSpec = iterate(gridPositions).find(
+    ({ gridPosition }) => xyzEqual(gridPosition, unitVectors[direction]),
+  );
 
   if (existingRoomGridPositionSpec) {
+    // found an existing room for this door to go to
     return campaign.rooms[
       existingRoomGridPositionSpec.roomId
     ] as EditorRoomJson;
@@ -108,9 +116,16 @@ export const addDoorInPlace = (
 
   const autoAddRooms = toolItem.config.toRoom === "+";
 
+  const fromDoorSubroom = findSubRoomForItem(
+    blockPosition,
+    "block",
+    fromRoomJson,
+  );
+
   const toRoomJson = getDestinationRoom({
     state,
     fromRoomJson,
+    subRoomId: fromDoorSubroom,
     direction: doorDirection,
     isPreview,
     autoAddRooms,
@@ -158,6 +173,12 @@ export const addDoorInPlace = (
       config: {
         toRoom: fromRoomJson.id,
         direction: returnDoorDirection,
+        meta:
+          fromDoorSubroom === "*" ? undefined : (
+            {
+              toSubRoom: fromDoorSubroom,
+            }
+          ),
       },
       position: returnDoorPosition,
     };

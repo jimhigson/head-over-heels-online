@@ -29,6 +29,9 @@ importers:
       '@types/nano-equal':
         specifier: ^2.0.2
         version: 2.0.2
+      '@types/natural-compare-lite':
+        specifier: ^1.4.2
+        version: 1.4.2
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -47,6 +50,9 @@ importers:
       nano-equal:
         specifier: ^2.0.2
         version: 2.0.2
+      natural-compare-lite:
+        specifier: ^1.4.0
+        version: 1.4.0
       natural-orderby:
         specifier: ^5.0.0
         version: 5.0.0
@@ -1804,6 +1810,9 @@ packages:
   '@types/nano-equal@2.0.2':
     resolution: {integrity: sha512-5p/cTMHlBb3Rka1DtMn46lgpb4BMmhjObGnzbv2gwlL8k/T9260ImQQcW3Ucz/apxO26AP+o59S8kNWTwOM+zw==}
 
+  '@types/natural-compare-lite@1.4.2':
+    resolution: {integrity: sha512-kk1ie31cI6AUm17qOi72lEOBfpRhcknJPsJQoKBulaZC9y00MHUWqxGTk/luWEnenLB+lHoNThrKAKdYVydlew==}
+
   '@types/node@22.13.10':
     resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
 
@@ -3235,6 +3244,9 @@ packages:
     resolution: {integrity: sha512-vSJJTG+t/dIKAUhUDw/dLdZ9s//5OxcHqLaDWWrW4Cdq7o6tdLIczUkMXt2MBNmk6sJRZBZRXVixs7URY1CmIg==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  natural-compare-lite@1.4.0:
+    resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
@@ -5981,6 +5993,8 @@ snapshots:
 
   '@types/nano-equal@2.0.2': {}
 
+  '@types/natural-compare-lite@1.4.2': {}
+
   '@types/node@22.13.10':
     dependencies:
       undici-types: 6.20.0
@@ -7536,6 +7550,8 @@ snapshots:
   nano-equal@2.0.2: {}
 
   nanoid@3.3.10: {}
+
+  natural-compare-lite@1.4.0: {}
 
   natural-compare@1.4.0: {}
 

@@ -3,6 +3,7 @@ import type { Campaign } from "../model/modelTypes";
 import { Select } from "./Select";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 import type { ReactNode } from "react";
+import naturalCompare from "natural-compare-lite";
 
 export type RoomSelectProps<RoomId extends string> = {
   campaign: Campaign<RoomId>;
@@ -25,9 +26,9 @@ export function RoomSelect<RoomId extends string>({
   excludeRoomIds = [],
   tooltipContent,
 }: RoomSelectProps<RoomId>) {
-  const roomIds = Object.keys(campaign.rooms).filter(
-    (r) => !excludeRoomIds.includes(r as RoomId),
-  ) as RoomId[];
+  const roomIds = Object.keys(campaign.rooms)
+    .filter((r) => !excludeRoomIds.includes(r as RoomId))
+    .sort(naturalCompare) as RoomId[];
 
   return (
     <Select<RoomId>
