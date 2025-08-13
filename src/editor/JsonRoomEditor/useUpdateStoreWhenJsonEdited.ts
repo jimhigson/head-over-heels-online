@@ -9,7 +9,7 @@ import roomSchema from "../../_generated/room.schema.json";
 import Ajv from "ajv";
 import { debounce } from "@github/mini-throttle";
 import { store } from "../../store/store";
-import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSliceSelectors";
+import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 
 const ajvValidate = new Ajv().compile<EditorRoomJson>(roomSchema);
 

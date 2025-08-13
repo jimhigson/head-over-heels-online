@@ -102,3 +102,9 @@ export const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
       throw new Error("unknown hue");
   }
 };
+
+export const getMapColoursClass = (scenery?: SceneryName) =>
+  (scenery && mapClasses[scenery]) ?? {
+    bgClassName: "fill-shadow",
+    containerClassName: "",
+  };

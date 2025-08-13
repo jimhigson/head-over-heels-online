@@ -15,9 +15,10 @@ import { type ResolutionName } from "../../originalGame";
 import { ResolutionControls } from "./ResolutionControls";
 
 import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
+import { PixiApplicationProvider } from "./PixiApplicationProvider";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
-export const RoomEditingArea = () => {
+const RoomEditingAreaInner = () => {
   const roomRenderer = useRoomRenderer();
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
   const [renderSizingArea, setRenderSizingArea] =
@@ -63,3 +64,14 @@ export const RoomEditingArea = () => {
     </div>
   );
 };
+
+const RoomEditingArea = () => {
+  return (
+    <PixiApplicationProvider>
+      <RoomEditingAreaInner />
+    </PixiApplicationProvider>
+  );
+};
+
+// default export for lazy loading
+export default RoomEditingArea;

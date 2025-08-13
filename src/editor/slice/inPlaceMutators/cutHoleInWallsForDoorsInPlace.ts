@@ -16,7 +16,7 @@ import type {
 import { roomEditTarget } from "./addItemInPlace";
 import type { PreviewedRoomItemEdits } from "../levelEditorSlice";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { selectRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { selectRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { completeTimesXy, wallTimes } from "../../../model/times";
 
 export function* generateHoleInWallsForDoor(

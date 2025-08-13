@@ -19,7 +19,7 @@ import {
 import {
   selectCurrentRoomFromLevelEditorState,
   selectItemInLevelEditorState,
-} from "../levelEditorSliceSelectors";
+} from "../levelEditorSelectors";
 import type { SceneryName } from "../../../sprites/planets";
 import {
   getJsonItemTimes,

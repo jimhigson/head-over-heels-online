@@ -84,6 +84,13 @@ process.stdin.on("end", () => {
             node.properties.z.maximum = 20;
           }
         }
+
+        // Check if we're at a subRooms object - enforce at least one property
+        // this avoids crashes in the editor where it thinks there are sub-rooms
+        // but zero are defined
+        if (currentPath.endsWith("properties.subRooms")) {
+          node.minProperties = 1;
+        }
       }
 
       // Recursively process child properties

@@ -11,7 +11,7 @@ import type { EditorJsonItem, EditorRoomJson } from "../../editorTypes";
 import type { ItemTool } from "../../Tool";
 import { addNewRoomInPlace } from "./addNewRoomInPlace";
 import type { LevelEditorState } from "../levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { addItemInPlace, nextItemId } from "./addItemInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";

@@ -36,12 +36,20 @@ export const SpriteInRoom = ({
       width={100}
       height={100}
       className={className}
+      // because of its width and height, this will cover up other rooms behind this one,
+      // and will stop clicks on them - eg, in the editor to change room via the map.
+      // however, this may come at the cost of switching by clicking on char on the map in-game
+      style={{ pointerEvents: "none" }}
     >
       <div
         className={`sprite zx:sprite-revert-to-two-tone ml-[calc(50px-var(--scale)*var(--w)/2)] mt-[calc(100px-var(--scale)*var(--h))] ${
           className
         }`}
         onClick={onClick}
+        // having turned pointer events off for the foreign object, turn them back on for the item
+        // sprite *iff* we have a click handler to call
+        // TODO: test this in iphone Safari, since it struggles with fos!
+        style={onClick ? { pointerEvents: "all" } : {}}
       />
       {scrollTo && <ScrollIntoView />}
     </foreignObject>

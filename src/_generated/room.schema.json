@@ -3647,7 +3647,8 @@
                 "type": "object"
               },
               "description": "subRooms are used for the map for rooms which were modelled as multiple rooms in the original game",
-              "type": "object"
+              "type": "object",
+              "minProperties": 1
             }
           },
           "type": "object"

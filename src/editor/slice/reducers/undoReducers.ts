@@ -2,7 +2,7 @@ import type { SliceSelectors } from "@reduxjs/toolkit";
 import { current, type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { LevelEditorState } from "../levelEditorSlice";
 import type { EditorRoomJson } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSliceSelectors";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 // to be called from other reducers when they are ready to do something
 // that should be undoable, e.g. adding an item to the room

@@ -3,8 +3,8 @@ import type {
   EditorRoomItemId,
   EditorJsonItemUnion,
 } from "../../editorTypes";
+import { selectItemInLevelEditorState } from "../../slice/levelEditorSelectors";
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
-import { selectItemInLevelEditorState } from "../../slice/levelEditorSliceSelectors";
 
 export const jsonItemAndIdForInPlayItemId = (
   { levelEditor: levelEditorState }: RootStateWithLevelEditorSlice,

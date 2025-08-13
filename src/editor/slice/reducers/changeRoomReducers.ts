@@ -2,28 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { LevelEditorState } from "../levelEditorSlice";
 import type { EditorRoomId } from "../../editorTypes";
-import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
-
-export const changeRoomInPlace = (
-  state: LevelEditorState,
-  roomId: EditorRoomId,
-) => {
-  if (!state.campaignInProgress.rooms[roomId]) {
-    console.warn(`can't change to room ${roomId} - it doesn't exist`);
-    // If the room doesn't exist, we can't change to it
-    return;
-  }
-
-  state.editingRoomIdHistory.back.push(state.currentlyEditingRoomId);
-  state.currentlyEditingRoomId = roomId;
-
-  state.clickableAnnotationHovered = false;
-  state.hoveredItem = undefined;
-  state.selectedJsonItemIds = [];
-
-  // clear undo/redo history when changing room:
-  state.history = initialLevelEditorSliceState.history;
-};
+import { changeRoomInPlace } from "../inPlaceMutators/changeRoomInPlace";
 
 export const changeRoomReducers = {
   changeToRoom(_state, { payload: roomId }: PayloadAction<EditorRoomId>) {
@@ -46,8 +25,8 @@ export const changeRoomReducers = {
       return;
     }
     const previousRoomId = editingRoomIdHistory.back.pop() as EditorRoomId;
+    changeRoomInPlace(state, previousRoomId, true);
     editingRoomIdHistory.forward.push(state.currentlyEditingRoomId);
-    state.currentlyEditingRoomId = previousRoomId;
   },
 
   roomForward(_state) {
@@ -62,7 +41,7 @@ export const changeRoomReducers = {
       return;
     }
     const nextRoomId = editingRoomIdHistory.forward.pop() as EditorRoomId;
+    changeRoomInPlace(state, nextRoomId, true);
     editingRoomIdHistory.back.push(state.currentlyEditingRoomId);
-    state.currentlyEditingRoomId = nextRoomId;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

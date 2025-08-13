@@ -270,6 +270,21 @@ export class TypeFlattener {
       return "string";
     }
 
+    // Handle NonEmptyRecord<T> types specially
+    const aliasSymbol = type.getAliasSymbol();
+    if (aliasSymbol?.getName() === "NonEmptyRecord") {
+      const typeArgs = type.getAliasTypeArguments();
+      if (typeArgs && typeArgs.length > 0) {
+        // NonEmptyRecord<T> should be flattened to Record<string, T>
+        const valueType = this.processType(
+          typeArgs[0],
+          `${typeName}Value`,
+          depth + 1,
+        );
+        return `Record<string, ${valueType}>`;
+      }
+    }
+
     // Handle Partial<T> types specially
     if (type.getSymbol()?.getName() === "Partial") {
       const typeArgs = type.getTypeArguments();
@@ -628,6 +643,20 @@ export class TypeFlattener {
     // Handle intersection types (A & B)
     if (type.isIntersection()) {
       const members = type.getIntersectionTypes();
+
+      // Check if this is a NonEmptyRecord pattern (Record<string, T> & { [K in string]: T })
+      // This pattern has a Record type in the intersection
+      const recordMember = members.find(
+        (m) =>
+          m.getText().includes("Record<string") ||
+          m.getSymbol()?.getName() === "Record",
+      );
+
+      if (recordMember && members.length === 2) {
+        // This looks like NonEmptyRecord - just return the Record part
+        return this.processType(recordMember, typeName, depth + 1);
+      }
+
       const objectMembers: Type[] = [];
       const unionMembers: Type[] = [];
 

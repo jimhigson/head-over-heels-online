@@ -7,7 +7,7 @@ import { changeRoomSceneryInPlace } from "../inPlaceMutators/changeRoomSceneryIn
 import {
   selectCurrentRoomFromLevelEditorState,
   selectRoomFromLevelEditorState,
-} from "../levelEditorSliceSelectors";
+} from "../levelEditorSelectors";
 import { pushUndoInPlace } from "./undoReducers";
 import { keysIter } from "../../../utils/entries";
 import type {
@@ -21,6 +21,7 @@ import type { FloorType } from "../../../model/json/ItemConfigMap";
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
+import { scaleXyz } from "../../../utils/vectors/vectors";
 
 export type SetRoomAboveOrBelowPayload =
   | {
@@ -95,7 +96,9 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
     pushUndoInPlace(state);
-    state.campaignInProgress.rooms[state.currentlyEditingRoomId] = roomJson;
+    const { rooms } = state.campaignInProgress;
+    const prevRoomJson = rooms[state.currentlyEditingRoomId];
+    rooms[state.currentlyEditingRoomId] = roomJson;
 
     // selected items may no longer exist in the room after reloading - remove these selections:
     const selectedJsonItemIdsThatStillExist = state.selectedJsonItemIds.filter(
@@ -113,6 +116,29 @@ export const editRoomReducers = {
 
     if (roomJson.id !== state.currentlyEditingRoomId) {
       changeIdOfCurrentRoomInPlace(state, roomJson.id);
+    }
+
+    const previousNonContiguousRelationship =
+      prevRoomJson.meta?.nonContiguousRelationship;
+
+    const nonContiguousRelationship = roomJson.meta?.nonContiguousRelationship;
+    if (nonContiguousRelationship !== undefined) {
+      const otherRoom = rooms[nonContiguousRelationship.with.room];
+      otherRoom.meta = {
+        ...otherRoom.meta,
+        nonContiguousRelationship: {
+          with: { room: roomJson.id },
+          gridOffset: scaleXyz(nonContiguousRelationship.gridOffset, -1),
+        },
+      };
+    }
+    if (previousNonContiguousRelationship !== undefined) {
+      // TODO: several more cases - clear out what previousNonContiguousRelationship linked to's link back
+      // if we don't have one any more
+      // TODO: remove this or something:
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const _otherRoom = rooms[previousNonContiguousRelationship.with.room];
+      //otherRoom.meta = omit(otherRoom.meta, "nonContiguousRelationship");
     }
   },
 

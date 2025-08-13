@@ -4,24 +4,24 @@ import type { SceneryName } from "../sprites/planets";
 import type { Xy, Xyz } from "../utils/vectors/vectors";
 import type { JsonItemType, JsonItemUnion } from "./json/JsonItem";
 import { iterate } from "../utils/iterate";
+import type { NonEmptyRecord } from "../utils/types/NonEmptyRecord";
 
-export type SubRooms = Record<
-  string,
-  {
-    /**
-     * the grid position (on the map) of this sub-room
-     */
-    gridPosition: Xy;
-    /**
-     * where the sub-room actually starts and ends on the map (so we
-     * can work out which sub-room items are in)
-     */
-    physicalPosition: {
-      from: Xy;
-      to: Xy;
-    };
-  }
->;
+type SubRoom = {
+  /**
+   * the grid position (on the map) of this sub-room
+   */
+  gridPosition: Xy;
+  /**
+   * where the sub-room actually starts and ends on the map (so we
+   * can work out which sub-room items are in)
+   */
+  physicalPosition: {
+    from: Xy;
+    to: Xy;
+  };
+};
+
+export type SubRooms = NonEmptyRecord<SubRoom>;
 
 export type RoomJsonItems<
   RoomItemId extends string,

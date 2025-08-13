@@ -2,7 +2,7 @@ import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { twClass } from "../twClass";
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
-import { selectItemInLevelEditorState } from "../slice/levelEditorSliceSelectors";
+import { selectItemInLevelEditorState } from "../slice/levelEditorSelectors";
 import {
   betweenRightAndTowards,
   betweenRightAndUp,

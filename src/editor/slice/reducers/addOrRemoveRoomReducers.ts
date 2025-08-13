@@ -4,7 +4,7 @@ import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { filter, first, objectKeys } from "iter-tools";
 import type { EditorRoomId } from "../../editorTypes";
-import { changeRoomInPlace } from "./changeRoomReducers";
+import { changeRoomInPlace } from "../inPlaceMutators/changeRoomInPlace";
 
 export const addOrRemoveRoomReducers = {
   addRoom(state) {

@@ -18,7 +18,7 @@ import {
   moveOrResizeItemAsPreview,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSliceSelectors";
+import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const NudgeButtons = () => {
