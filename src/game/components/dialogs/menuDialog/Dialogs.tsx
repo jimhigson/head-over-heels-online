@@ -21,6 +21,7 @@ import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 import { MapDialog } from "./dialogs/map/MapDialog";
 import { SoundDialog } from "./dialogs/sound/SoundDialog";
 import { ReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog";
+import { SureWantEditorDialog } from "./dialogs/sureWantEditor/SureWantEditorDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -93,6 +94,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <ScoreDialog />;
     case "sound":
       return <SoundDialog />;
+    case "sureWantEditor":
+      return <SureWantEditorDialog />;
     default:
       topOpenMenu.menuId satisfies never;
       return (
