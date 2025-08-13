@@ -219,7 +219,7 @@ const convertItem = async ({
         config: {
           axis: xml2JsonItem.kind === "bars-ns" ? "y" : "x",
           disappearing:
-            xml2JsonItem.behavior === "behavior of disappearance on touch" ?
+            xml2JsonItem.behavior === "vanishing on contact" ?
               { on: "touch" }
             : undefined,
         },
@@ -248,7 +248,12 @@ const convertItem = async ({
         config: {
           style: styleConversion[xml2JsonItem.kind],
           disappearing:
-            xml2JsonItem.behavior === "behavior of disappearance on jump into" ?
+            (
+              xml2JsonItem.behavior ===
+                "vanishing when some free dude is above" ||
+              xml2JsonItem.behavior ===
+                "slowly vanishing when some free dude is above"
+            ) ?
               { on: "stand" }
             : undefined,
         },
@@ -288,7 +293,7 @@ const convertItem = async ({
         config: {
           direction: convertDirection(xml2JsonItem.orientation),
           disappearing:
-            xml2JsonItem.behavior === "behavior of disappearance on jump into" ?
+            xml2JsonItem.behavior === "vanishing when some free dude is above" ?
               { on: "stand" }
             : undefined,
         },
@@ -307,7 +312,7 @@ const convertItem = async ({
       };
 
     case "extra-life":
-    case "high-jumps":
+    case "big-jumps":
     case "quick-steps":
     case "donuts":
     case "horn":
@@ -317,7 +322,7 @@ const convertItem = async ({
       const conversions = {
         horn: "hooter",
         handbag: "bag",
-        "high-jumps": "jumps",
+        "big-jumps": "jumps",
         "extra-life": "extra-life",
         shield: "shield",
         donuts: "doughnuts",
@@ -360,7 +365,7 @@ const convertItem = async ({
         position,
       };
 
-    case "trampoline": {
+    case "spring-stool": {
       return {
         type: "spring",
         config: {},
@@ -473,7 +478,7 @@ const convertItem = async ({
               disappearing:
                 (
                   xml2JsonItem.behavior ===
-                  "behavior of disappearance on jump into"
+                  "vanishing when some free dude is above"
                 ) ?
                   { on: "stand" }
                 : undefined,

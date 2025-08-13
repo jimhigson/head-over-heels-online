@@ -1,11 +1,6 @@
 [
   {
     "op": "replace",
-    "path": "/roomAbove",
-    "value": "penitentiary29"
-  },
-  {
-    "op": "replace",
     "path": "/color/hue",
     "value": "yellow"
   }

@@ -1,5 +1,6 @@
 import type { Xml2JsonRoom } from "./readToJson";
 import { readMapToJson } from "./readToJson";
+import { gamedataMapXmlLocation } from "./gamedataMapXmlLocation";
 import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 import { readdir } from "node:fs/promises";
 import { convertRoomId } from "./convertRoomId";
@@ -11,7 +12,7 @@ import type { Campaign } from "../model/modelTypes";
 
 export const map = await readMapToJson();
 
-const allRoomNames = (await readdir("gamedata-map-xml"))
+const allRoomNames = (await readdir(gamedataMapXmlLocation))
   .filter((name) => name.endsWith(".xml") && name !== "map.xml")
   .map(roomNameFromXmlFilename);
 

@@ -6,29 +6,29 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "penitentiary18fish",
   items: {
-    block2: {
-      config: { disappearing: { on: "stand" }, style: "organic" },
-      position: { x: 7, y: 4, z: 3 },
-      type: "block",
-    },
-    block3: {
+    "block@0,4,3": {
       config: { style: "organic", times: { x: 6 } },
-      position: { x: 8, y: 4, z: 3 },
+      position: { x: 0, y: 4, z: 3 },
       type: "block",
     },
-    block4: {
+    "block@14,4,3": {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 14, y: 4, z: 3 },
       type: "block",
     },
-    block5: {
+    "block@15,4,3": {
       config: { style: "organic" },
       position: { x: 15, y: 4, z: 3 },
       type: "block",
     },
-    "block@0,4,3": {
+    "block@6,4,3": {
+      config: { disappearing: { on: "stand" }, style: "organic" },
+      position: { x: 6, y: 4, z: 3 },
+      type: "block",
+    },
+    "block@7,4,3": {
       config: { style: "organic", times: { x: 7 } },
-      position: { x: 0, y: 4, z: 3 },
+      position: { x: 7, y: 4, z: 3 },
       type: "block",
     },
     "door@16,2,2": {

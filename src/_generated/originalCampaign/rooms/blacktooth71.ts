@@ -72,8 +72,8 @@ export const room = inferRoomJson({
     scroll: {
       config: {
         gives: "scroll",
-        source: "manual",
         page: "theEmperorsGuardian",
+        source: "manual",
       },
       position: { x: 7, y: 4, z: 0 },
       type: "pickup",

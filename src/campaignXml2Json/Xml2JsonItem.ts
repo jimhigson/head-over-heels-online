@@ -3,8 +3,10 @@ import type { Subset } from "../utils/subset";
 
 // just the behavio(u)rs that we care to parse
 export type DisappearingBehavior =
-  | "behavior of disappearance on jump into"
-  | "behavior of disappearance on touch";
+  | "vanishing when some free dude is above"
+  | "slowly vanishing when some free dude is above"
+  | "vanishing on contact"
+  | "behavior of disappearance as soon as Head appears";
 
 export type XmlItemMonsterBehaviour =
   | "behavior of random patroling in four primary directions" // [sic]
@@ -56,7 +58,7 @@ export type Xml2JsonItem = {
         | "drum"
         | "extra-life"
         | "handbag"
-        | "high-jumps"
+        | "big-jumps"
         | "horn" // hooter
         | "mortal-fish"
         | "quick-steps"
@@ -65,7 +67,7 @@ export type Xml2JsonItem = {
         | "remote-control" //joystick
         | "shield"
         | "switch"
-        | "trampoline"
+        | "spring-stool"
         | "mortal-cap";
       class: "freeitem";
     }
@@ -83,7 +85,7 @@ export type Xml2JsonItem = {
     }
   | {
       kind: "bars-ew" | "bars-ns";
-      behavior: "behavior of disappearance on touch";
+      behavior: "vanishing on contact";
       class: "freeitem"; // why is this free?
     }
   | {
@@ -127,7 +129,7 @@ export type Xml2JsonItem = {
   | {
       kind: "book";
       class: "griItem";
-      behavior?: "behavior of disappearance on jump into";
+      behavior?: "vanishing when some free dude is above";
     }
   | {
       kind: "imperial-guard-head" | "diver" | "turtle";
@@ -141,7 +143,7 @@ export type Xml2JsonItem = {
       class: "griditem";
       // one room has a conveyor with a disappearing behavior (bookworld|byblos)2
       behavior?:
-        | "behavior of disappearance on jump into"
+        | "vanishing when some free dude is above"
         | "behavior of conveyor";
     }
   | {
@@ -149,6 +151,9 @@ export type Xml2JsonItem = {
       top: string;
       bottom: string;
       class: "freeitem";
+      ascent?: string;
+      ascending?: string;
+      behavior?: "behavior of elevator";
     }
   | {
       kind: "head" | "heels" | "headoverheels";

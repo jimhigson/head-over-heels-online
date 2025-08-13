@@ -25,22 +25,8 @@
     "value": "skeleton"
   },
   {
-    "op": "add",
-    "path": "/items/block@4,3,2/config/disappearing",
-    "value": {
-      "on": "stand"
-    }
-  },
-  {
     "op": "remove",
     "path": "/items/block@1,0,1/config/times"
-  },
-  {
-    "op": "add",
-    "path": "/items/block@1,0,1/config/disappearing",
-    "value": {
-      "on": "stand"
-    }
   },
   {
     "op": "add",

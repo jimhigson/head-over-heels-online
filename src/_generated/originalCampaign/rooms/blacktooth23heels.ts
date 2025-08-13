@@ -41,12 +41,12 @@ export const room = inferRoomJson({
       type: "player",
     },
     scroll: {
-      config: { gives: "scroll", source: "manual", page: "head" },
+      config: { gives: "scroll", page: "head", source: "manual" },
       position: { x: 7, y: 1, z: 0 },
       type: "pickup",
     },
     scroll2: {
-      config: { gives: "scroll", source: "manual", page: "heels" },
+      config: { gives: "scroll", page: "heels", source: "manual" },
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
     },

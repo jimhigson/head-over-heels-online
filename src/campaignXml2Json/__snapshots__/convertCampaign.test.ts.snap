@@ -6288,7 +6288,9 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
     "block@5,7,0": {
       "config": {
-        "disappearing": undefined,
+        "disappearing": {
+          "on": "stand",
+        },
         "style": "organic",
       },
       "position": {
@@ -28123,7 +28125,9 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
   "items": {
     "block@0,5,2": {
       "config": {
-        "disappearing": undefined,
+        "disappearing": {
+          "on": "stand",
+        },
         "style": "organic",
       },
       "position": {
@@ -28195,7 +28199,9 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
     "block@3,5,4": {
       "config": {
-        "disappearing": undefined,
+        "disappearing": {
+          "on": "stand",
+        },
         "style": "organic",
       },
       "position": {
@@ -44306,7 +44312,9 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
     "block@1,0,1": {
       "config": {
-        "disappearing": undefined,
+        "disappearing": {
+          "on": "stand",
+        },
         "style": "artificial",
         "times": {
           "x": 2,
@@ -44357,7 +44365,9 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
     "block@4,3,2": {
       "config": {
-        "disappearing": undefined,
+        "disappearing": {
+          "on": "stand",
+        },
         "style": "artificial",
       },
       "position": {
@@ -45314,11 +45324,66 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
         "disappearing": undefined,
         "style": "organic",
         "times": {
-          "x": 16,
+          "x": 6,
         },
       },
       "position": {
         "x": 0,
+        "y": 4,
+        "z": 3,
+      },
+      "type": "block",
+    },
+    "block@14,4,3": {
+      "config": {
+        "disappearing": {
+          "on": "stand",
+        },
+        "style": "organic",
+      },
+      "position": {
+        "x": 14,
+        "y": 4,
+        "z": 3,
+      },
+      "type": "block",
+    },
+    "block@15,4,3": {
+      "config": {
+        "disappearing": undefined,
+        "style": "organic",
+      },
+      "position": {
+        "x": 15,
+        "y": 4,
+        "z": 3,
+      },
+      "type": "block",
+    },
+    "block@6,4,3": {
+      "config": {
+        "disappearing": {
+          "on": "stand",
+        },
+        "style": "organic",
+      },
+      "position": {
+        "x": 6,
+        "y": 4,
+        "z": 3,
+      },
+      "type": "block",
+    },
+    "block@7,4,3": {
+      "config": {
+        "disappearing": undefined,
+        "style": "organic",
+        "times": {
+          "x": 7,
+        },
+      },
+      "position": {
+        "x": 7,
         "y": 4,
         "z": 3,
       },
@@ -47949,7 +48014,7 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary30",
+  "roomAbove": "penitentiary29",
   "roomBelow": "penitentiary32",
 }
 `;

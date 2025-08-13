@@ -1,20 +1,6 @@
 [
   {
     "op": "add",
-    "path": "/items/block@3,5,4/config/disappearing",
-    "value": {
-      "on": "stand"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@0,5,2/config/disappearing",
-    "value": {
-      "on": "stand"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/extra1",
     "value": {
       "config": {

@@ -55,7 +55,7 @@ export const room = inferRoomJson({
       type: "pickup",
     },
     scroll: {
-      config: { gives: "scroll", source: "manual", page: "hooter" },
+      config: { gives: "scroll", page: "hooter", source: "manual" },
       position: { x: 7, y: 1, z: 1 },
       type: "pickup",
     },
