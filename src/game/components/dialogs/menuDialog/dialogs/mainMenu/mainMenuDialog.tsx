@@ -15,7 +15,10 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { useCallback } from "react";
 import { Border } from "../../../../../../ui/Border";
 import { nerdFontDiscordChar } from "../../../../../../sprites/hudSritesheetData";
-import { detectIsPwa } from "../../../../../../utils/detectDeviceType";
+import {
+  detectDeviceType,
+  detectIsPwa,
+} from "../../../../../../utils/detectDeviceType";
 import { VersionDebugInfo } from "./VersionDebugInfo";
 import { useAppSelector } from "../../../../../../store/hooks";
 
@@ -36,6 +39,17 @@ const InstallMenuItem = () => {
       label="Install"
       doubleHeightWhenFocussed
       onSelect={useDispatchActionCallback(goToSubmenu, "installGuide")}
+    />
+  );
+};
+
+const LevelEditorMenuItem = () => {
+  return (
+    <MenuItem
+      id="levelEditor"
+      label="Level Editor"
+      doubleHeightWhenFocussed
+      onSelect={useDispatchActionCallback(goToSubmenu, "sureWantEditor")}
     />
   );
 };
@@ -86,6 +100,9 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               doubleHeightWhenFocussed
               onSelect={useDispatchActionCallback(gameStarted)}
             />
+            {!isGameRunning && detectDeviceType() === "desktop" && (
+              <LevelEditorMenuItem />
+            )}
             <MenuItem
               id="map"
               label="use the Map"

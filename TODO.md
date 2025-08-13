@@ -1,5 +1,32 @@
 # TODO
 
+TO RELEASE
+----------
+[x] remove .xml levels from project (location outside repo in env var)
+[x] link to editor from home screen
+    * with a warning or "in progress" messages
+[3] option to load sequel or community-edited (mark as a work in progress)
+    [ ] don't show on no network
+    [ ] in-game saves are per-campaign, not universal
+    [ ] load community campaigns
+[ ] multiple savable campaigns in editor    
+    - or just one, and it only loads against the campaign it belongs to
+[ ] sounds - buy/licence/etc
+[ ] final room - something should happen
+    - will take people a while to finish
+    - could just put a scroll in there
+[ ] OSS licence (???)
+[ ] death sound/music?
+
+[x] plausible.io - just pay; don't self-host for now
+    - or *Umami* has a free tier and is also self-hostable
+
+Nice to have
+------------
+[ ] Editor autosave
+[x] fix circ render bug(s) w/ masking
+
+
 ## xml-> json
 
 [ ] parseInt from xml earlier and remove many parseInt 

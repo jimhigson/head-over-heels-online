@@ -20,10 +20,11 @@ export const dialogIds = [
   "offerReincarnation",
   "proclaimEmperor",
   "quitGameConfirm",
-  "reincarnatedRestart",
   "readTheManual",
+  "reincarnatedRestart",
   "score",
   "sound",
+  "sureWantEditor",
   // 'standard' pages from the original game manual
   ...manualDialogIds,
   // inline markdown pages - the content is stored in the scroll item's json config

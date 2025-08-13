@@ -1,5 +1,6 @@
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { mainMenuCycle } from "./mainMenuCycle";
+import { CharacterSprite } from "./CharacterSprite";
 
 export const MainMenuHeading = ({
   noSubtitle,
@@ -14,10 +15,11 @@ export const MainMenuHeading = ({
         <BitmapText className="sprites-double-height text-pastelBlue zx:text-zxYellow resHandheld:mt-1">
           Head
         </BitmapText>
-        <div className="mt-1 resHandheld:mt-0 relative">
-          <span className="sprite zx:sprite-revert-to-white texture-animated-head_idle_right hover:texture-animated-head_walking_right relative z-topSprite" />
-          <span className="sprite zx:hidden texture-shadow_smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
-        </div>
+        <CharacterSprite
+          character="head"
+          defaultFacing="right"
+          className="mt-1 resHandheld:mt-0"
+        />
       </div>
       <BitmapText
         classnameCycle={mainMenuCycle}
@@ -29,10 +31,11 @@ export const MainMenuHeading = ({
         <BitmapText className="sprites-double-height text-pink zx:text-zxYellow resHandheld:mt-1">
           Heels
         </BitmapText>
-        <div className="mt-1 resHandheld:mt-0 relative">
-          <span className="sprite zx:sprite-revert-to-white texture-animated-heels_idle_towards hover:texture-animated-heels_walking_towards relative z-topSprite" />
-          <span className="sprite zx:hidden texture-shadow_smallRound absolute left-0 top-[calc(var(--scale)*1px)] opacity-halfBrite" />
-        </div>
+        <CharacterSprite
+          character="heels"
+          defaultFacing="towards"
+          className="mt-1 resHandheld:mt-0"
+        />
       </div>
     </h1>
     {noSubtitle || (
