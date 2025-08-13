@@ -8,6 +8,11 @@ import { store } from "../../../store/store";
 import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { transformObject } from "../../../utils/entries";
 
+export type OutlineFilterOptions = {
+  color: Color;
+  width?: number;
+};
+
 /** Current global upscale value for all outline filters */
 let currentUpscale = selectGameEngineUpscale(store.getState());
 
@@ -17,16 +22,20 @@ store.subscribe(() => {
 });
 
 export class OutlineFilter extends Filter {
-  constructor(outlineColor: Color) {
+  private outlineWidth?: number;
+
+  constructor({ color, width }: OutlineFilterOptions) {
     const glProgram = GlProgram.from({
       vertex,
       fragment,
       name: "outline-filter",
     });
 
+    const upscale = width ?? currentUpscale;
+
     super({
       glProgram,
-      padding: currentUpscale,
+      padding: upscale,
       resources: {
         colorReplaceUniforms: {
           uOutline: {
@@ -41,17 +50,19 @@ export class OutlineFilter extends Filter {
       },
     });
 
+    this.outlineWidth = width;
+
     const uniforms = this.resources.colorReplaceUniforms.uniforms as {
       uOutline: Float32Array;
       uOutlineWidth: Float32Array;
     };
 
-    const [r, g, b] = outlineColor.toArray();
+    const [r, g, b] = color.toArray();
 
     uniforms.uOutline[0] = r;
     uniforms.uOutline[1] = g;
     uniforms.uOutline[2] = b;
-    uniforms.uOutlineWidth[0] = currentUpscale;
+    // uOutlineWidth is set in apply() method
   }
 
   override apply(
@@ -66,18 +77,30 @@ export class OutlineFilter extends Filter {
       uOutlineWidth: Float32Array;
     };
 
-    this.padding = currentUpscale;
-    uniforms.uOutlineWidth[0] = currentUpscale;
+    // Use custom width if provided, otherwise use standard behavior
+    const outlineWidth = this.outlineWidth ?? currentUpscale;
+
+    this.padding = outlineWidth;
+    uniforms.uOutlineWidth[0] = outlineWidth;
 
     super.apply(filterSystem, input, output, clearMode);
   }
 }
 
+type PrebakedFilterName = SpritesheetPaletteColourName | "black1pxFilter";
+
 /** Pre-baked outline filters for all spritesheet palette colors */
-export const outlineFilters: Record<
-  SpritesheetPaletteColourName,
-  OutlineFilter
-> = transformObject(spritesheetPalette, ([colorName, color]) => [
-  colorName,
-  new OutlineFilter(color),
-]);
+export const outlineFilters: Record<PrebakedFilterName, OutlineFilter> = {
+  ...transformObject(spritesheetPalette, ([colorName, color]) => [
+    colorName,
+    new OutlineFilter({ color }),
+  ]),
+  /**
+   * Special black outline filter with 1px width. For example, for
+   * pre-rasterised sprites that need a consistent outline
+   */
+  black1pxFilter: new OutlineFilter({
+    color: spritesheetPalette.pureBlack,
+    width: 1,
+  }),
+};

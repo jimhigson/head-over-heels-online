@@ -217,7 +217,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         // the output from a mask doesn't get the filter applied, so to put an outline around the floor tiles, wrap them in an
         // extra container.
         const tilesOutline = new Container({ children: [tilesContainer] });
-        tilesOutline.filters = outlineFilters.pureBlack;
+        tilesOutline.filters = outlineFilters.black1pxFilter;
 
         container.addChild(renderContainerToSprite(pixiRenderer, tilesOutline));
       }
