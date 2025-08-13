@@ -80,6 +80,7 @@
     "@types/seedrandom": "^3.0.8",
     "@types/umami": "^2.10.0",
     "@vitejs/plugin-react-swc": "^3.8.0",
+    "dougmencken/HeadOverHeels": "github:dougmencken/HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f",
     "ajv": "^8.17.1",
     "autoprefixer": "^10.4.21",
     "chalk": "^5.4.1",

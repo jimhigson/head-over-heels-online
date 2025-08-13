@@ -135,6 +135,9 @@ importers:
       commander:
         specifier: ^14.0.0
         version: 14.0.0
+      dougmencken/HeadOverHeels:
+        specifier: github:dougmencken/HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f
+        version: HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f
       dpdm:
         specifier: ^3.14.0
         version: 3.14.0
@@ -1932,6 +1935,10 @@ packages:
   '@xmldom/xmldom@0.8.10':
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
     engines: {node: '>=10.0.0'}
+
+  HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f:
+    resolution: {tarball: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f}
+    version: 0.0.0
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -6152,6 +6159,8 @@ snapshots:
   '@webgpu/types@0.1.56': {}
 
   '@xmldom/xmldom@0.8.10': {}
+
+  HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f: {}
 
   acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:

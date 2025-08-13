@@ -12,6 +12,8 @@ import type { Campaign } from "../model/modelTypes";
 
 export const map = await readMapToJson();
 
+console.log("converting from", gamedataMapXmlLocation);
+
 const allRoomNames = (await readdir(gamedataMapXmlLocation))
   .filter((name) => name.endsWith(".xml") && name !== "map.xml")
   .map(roomNameFromXmlFilename);
