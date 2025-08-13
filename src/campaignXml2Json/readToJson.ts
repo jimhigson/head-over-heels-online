@@ -1,14 +1,12 @@
-// this file is way looser than most because the xml parser ("xml-js") we're using doesn't have great typing.
-// TODO: use a different xml parser!
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any -- the xml2js parse doesn't support great typing, needs any */
 import { xml2js } from "xml-js";
 import { readFile } from "node:fs/promises";
 import type { Xml2JsonItem } from "./Xml2JsonItem";
 import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
+import { gamedataMapXmlLocation } from "./gamedataMapXmlLocation";
 
 const readXmlToJson = async (fileName: string) => {
-  const xmlText = await readFile(`gamedata-map-xml/${fileName}.xml`, {
+  const xmlText = await readFile(`${gamedataMapXmlLocation}/${fileName}.xml`, {
     encoding: "utf-8",
   });
   const json = xml2js(xmlText, {

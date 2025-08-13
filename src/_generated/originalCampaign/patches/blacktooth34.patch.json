@@ -8,13 +8,6 @@
   },
   {
     "op": "add",
-    "path": "/items/block@5,7,0/config/disappearing",
-    "value": {
-      "on": "stand"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/scroll",
     "value": {
       "config": {

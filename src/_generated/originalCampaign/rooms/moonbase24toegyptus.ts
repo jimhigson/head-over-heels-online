@@ -161,7 +161,7 @@ export const room = inferRoomJson({
       type: "monster",
     },
     scroll: {
-      config: { gives: "scroll", source: "manual", page: "egyptus" },
+      config: { gives: "scroll", page: "egyptus", source: "manual" },
       position: { x: 2, y: 3, z: 0 },
       type: "pickup",
     },
