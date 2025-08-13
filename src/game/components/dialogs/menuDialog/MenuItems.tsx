@@ -131,7 +131,7 @@ export const MenuItems = ({
           // are too difficult to hit with a finger
           "mobile:!gap-y-half mobile:sprites-double-height " +
           // h-min not usually needed, but menus shouldn't take up extra space if stretched vertically, ie side-by-side
-          // menus on the main menu dislog
+          // menus on the main menu dialog
           "h-min",
         className,
       )}

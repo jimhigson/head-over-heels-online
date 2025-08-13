@@ -38,11 +38,30 @@ export type Database = {
         };
         Relationships: [];
       };
+      user_details: {
+        Row: {
+          userId: string;
+          username: string;
+        };
+        Insert: {
+          userId: string;
+          username: string;
+        };
+        Update: {
+          userId?: string;
+          username?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
+      get_all_users_latest_campaigns: {
+        Args: Record<PropertyKey, never>;
+        Returns: Json;
+      };
       get_latest_campaign: {
         Args: { p_name: string; p_created_by?: string; p_version?: number };
         Returns: {

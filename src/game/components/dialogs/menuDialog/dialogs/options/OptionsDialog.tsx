@@ -151,19 +151,6 @@ export const OptionsDialog = () => {
                 )}
                 disabled={useIsGameRunning()}
               />
-              {/* <MenuItem
-                doubleHeightWhenFocussed
-                id="extraItems"
-                label="Extra items"
-                valueElement={<Switch value={true} />}
-                hint={
-                  <BlockyMarkdown
-                    className={markdownClassname}
-                    markdown={extraItemsMarkdown}
-                  />
-                }
-                disabled={true}
-              /> */}
               <MenuItem
                 doubleHeightWhenFocussed
                 id="showFps"

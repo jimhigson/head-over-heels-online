@@ -21,7 +21,7 @@ import { errorCaught } from "../../store/slices/gameMenusSlice.ts";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
-import { ErrorBoundary } from "../../utils/react/ErrorBoundary.tsx";
+import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
 import { decompressObject } from "../../db/compressObject.ts";
 import type { Campaign } from "../../model/modelTypes.ts";
 import { typedURLSearchParams } from "../../options/queryParams.ts";
@@ -153,10 +153,10 @@ export const GamePage = () => {
     <>
       <div style={canvasInlineStyle} ref={setRenderArea} />
       <GameApiProvider gameApi={gameApi}>
-        <ErrorBoundary>
+        <DispatchingErrorBoundary>
           <ConnectInputToStore />
           <Dialogs />
-        </ErrorBoundary>
+        </DispatchingErrorBoundary>
         {gameApi && cheatsOn && (
           <Suspense fallback={null}>
             <LazyCheats />

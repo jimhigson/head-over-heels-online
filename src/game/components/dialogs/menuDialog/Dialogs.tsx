@@ -22,6 +22,8 @@ import { MapDialog } from "./dialogs/map/MapDialog";
 import { SoundDialog } from "./dialogs/sound/SoundDialog";
 import { ReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog";
 import { SureWantEditorDialog } from "./dialogs/sureWantEditor/SureWantEditorDialog";
+import { WhichGameDialog } from "./dialogs/whichGame/WhichGameDialog";
+import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,
@@ -60,6 +62,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
   }
 
   switch (topOpenMenu.menuId) {
+    case "communityGames":
+      return <CommunityGamesDialog />;
     case "controlOptions":
       return <ControlOptionsDialog />;
     case "crowns":
@@ -96,6 +100,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <SoundDialog />;
     case "sureWantEditor":
       return <SureWantEditorDialog />;
+    case "whichGame":
+      return <WhichGameDialog />;
     default:
       topOpenMenu.menuId satisfies never;
       return (

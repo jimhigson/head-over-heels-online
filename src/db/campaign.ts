@@ -48,3 +48,30 @@ export const loadCampaignFromDb = async (options: {
 
   return data;
 };
+
+export type CampaignDirectory = {
+  [userId: string]: {
+    user: {
+      id: string;
+      username: string;
+    };
+    campaigns: {
+      [campaignName: string]: {
+        name: string;
+        version: number;
+        created_at: string;
+      };
+    };
+  };
+};
+
+export const getAllUsersLatestCampaigns =
+  async (): Promise<CampaignDirectory> => {
+    const res = await supabaseDb.rpc("get_all_users_latest_campaigns");
+
+    if (res.error) {
+      throw new Error("could not get user campaigns", { cause: res.error });
+    }
+
+    return res.data as CampaignDirectory;
+  };

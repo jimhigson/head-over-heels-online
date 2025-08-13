@@ -22,13 +22,25 @@ import {
 import { VersionDebugInfo } from "./VersionDebugInfo";
 import { useAppSelector } from "../../../../../../store/hooks";
 
-const PlayGameLabel = () => {
+const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
+  const startGame = useDispatchActionCallback(gameStarted);
+  const goToWhichGameSubmenu = useDispatchActionCallback(
+    goToSubmenu,
+    "whichGame",
+  );
 
   return (
-    <BitmapText>
-      {isGameRunning ? "Resume the game" : "Play the game"}
-    </BitmapText>
+    <MenuItem
+      id="playGame"
+      label={
+        <BitmapText>
+          {isGameRunning ? "Resume the game" : "Play the game"}
+        </BitmapText>
+      }
+      doubleHeightWhenFocussed
+      onSelect={isGameRunning ? startGame : goToWhichGameSubmenu}
+    />
   );
 };
 
@@ -94,12 +106,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
         />
         <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1">
           <MenuItems className="w-24 mx-auto">
-            <MenuItem
-              id="playGame"
-              label={<PlayGameLabel />}
-              doubleHeightWhenFocussed
-              onSelect={useDispatchActionCallback(gameStarted)}
-            />
+            <PlayGameMenuItem />
             {!isGameRunning && detectDeviceType() === "desktop" && (
               <LevelEditorMenuItem />
             )}
