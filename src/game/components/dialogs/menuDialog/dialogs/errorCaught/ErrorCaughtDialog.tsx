@@ -91,7 +91,7 @@ export const ErrorCaughtDialog = ({
   errors: Array<SerialisableError>;
 }) => {
   const hasReincarnationPoint = useAppSelector(
-    (state) => state.gameMenus.reincarnationPoint !== undefined,
+    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
   );
   const [copied, setCopied] = useState<boolean>(false);
   const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);

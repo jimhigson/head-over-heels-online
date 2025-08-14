@@ -1,10 +1,5 @@
-import { describe, expect, test } from "vitest";
-import v13Json from "./__test__/persistedVersionSamples/v13.json";
-import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
-import type { GameMenusSlicePersisted } from "./store";
-import { nonRenderingItemFixedZIndex } from "../game/render/sortZ/fixedZIndexes";
-import type { PersistedState } from "redux-persist";
-
+/*
+// no longer relevant - kept to document only
 describe("v13 -> 14 migration", () => {
   const migrationTargetVersion = 14;
 
@@ -40,3 +35,4 @@ describe("v13 -> 14 migration", () => {
     ).toEqual(nonRenderingItemFixedZIndex);
   });
 });
+*/

@@ -3,7 +3,6 @@ import { pick } from "../../../utils/pick";
 import type { GameState } from "../GameState";
 import { badJsonClone } from "../../../utils/badJsonClone";
 import {
-  savedGameGameMenuSliceFields,
   savedGameGameStateFields,
   type SavedGameState,
 } from "./SavedGameState";
@@ -20,12 +19,14 @@ export const createSavedGame = <RoomId extends string>(
 ): SavedGameState => {
   const reincarnationPoint: SavedGameState = badJsonClone({
     saveTime: Date.now(),
-    screenshotBase64: "IAMANIMAGE",
     campaignId: "original",
     gameState: pick(gameState, ...savedGameGameStateFields),
-    store: {
-      gameMenus: pick(storeState.gameMenus, ...savedGameGameMenuSliceFields),
-    },
+    store:
+      // a deep-pick of just one object from the store - none others are needed
+      // currently but could potentially be added later:
+      {
+        gameMenus: { gameInPlay: storeState.gameMenus.gameInPlay },
+      },
   } satisfies SavedGameState);
 
   if (pickupId !== undefined) {

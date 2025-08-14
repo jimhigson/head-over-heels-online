@@ -24,7 +24,7 @@ export const CampaignListContent = () => {
               {userEntry.user.username}
             </BitmapText>
             {Object.values(userEntry.campaigns).map((campaign) => (
-              <Fragment key={`${userEntry.user.id}-${campaign.name}`}>
+              <Fragment key={campaign.name}>
                 <MenuItems>
                   <MenuItem
                     id={`campaign-${userEntry.user.id}-${campaign.name}`}

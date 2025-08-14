@@ -69,7 +69,7 @@ const LevelEditorMenuItem = () => {
 const QuitGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
   const hasReincarnationPoint = useAppSelector(
-    (state) => state.gameMenus.reincarnationPoint !== undefined,
+    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
   );
 
   return (

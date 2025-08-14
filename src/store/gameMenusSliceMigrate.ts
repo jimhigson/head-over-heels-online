@@ -1,16 +1,6 @@
 import { initialGameMenuSliceState } from "./slices/gameMenusSlice";
 import type { PersistedState, PersistMigrate } from "redux-persist";
 import { createMigrate } from "redux-persist";
-import type { OmitDeep } from "type-fest";
-import type { GameMenusSlicePersisted, RootState } from "./store";
-import { iterateRoomItems, type RoomState } from "../model/RoomState";
-import {
-  floatingTextFixedZIndex,
-  nonRenderingItemFixedZIndex,
-} from "../game/render/sortZ/fixedZIndexes";
-import type { CharacterRooms } from "../game/gameState/GameState";
-import type { SavedGameState } from "../game/gameState/saving/SavedGameState";
-import { objectEntriesIter } from "../utils/entries";
 
 /**
  * A non-migration migration - just throws the user's config away and reverts to
@@ -35,6 +25,9 @@ const revertToInitialStateMigration = (
   return migrateTo as unknown as PersistedState;
 };
 
+/** TODO: before completing this refactor, we will need t
+ * remove old migrations, or add a new one
+ */
 export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
   {
     1: revertToInitialStateMigration,
@@ -49,6 +42,13 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
     10: revertToInitialStateMigration,
     11: revertToInitialStateMigration,
     12: revertToInitialStateMigration,
+    13: revertToInitialStateMigration,
+    14: revertToInitialStateMigration,
+    15: revertToInitialStateMigration,
+
+    // old migrations aren't relevant anymore, but being kept commented-out
+    // to refer to in future migrations
+    /*
     13(persistedState: PersistedState) {
       // here we introduced sound settings - simply add them:
       const v12State = persistedState as OmitDeep<
@@ -71,11 +71,11 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
 
       return v13State;
     },
-    /** to test:
-     *  ```sh
-     *    git switch --detach 7a400fd02d5022
-     *  ```
-     */
+    // to test:
+    // ```sh
+    //   git switch --detach 7a400fd02d5022
+    // ```
+    //
     14(persistedState: PersistedState) {
       console.group(
         "redux-persist migration: migrating state 13->14 to add fixedZIndexes",
@@ -97,13 +97,7 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
           if ((item as OldItem).renders === false) {
             console.log(item.id, "is a non-rendering item, giving fixedZIndex");
             item.fixedZIndex = nonRenderingItemFixedZIndex;
-          } /*else if (item.type === "floorEdge") {
-            console.log(
-              item.id,
-              "is getting .fixedZIndex = floorEdgeFixedZIndex",
-            );
-            item.fixedZIndex = floorEdgeFixedZIndex;
-          }*/ else if (item.type === "floatingText") {
+          }  else if (item.type === "floatingText") {
             console.log(
               item.id,
               "is getting .fixedZIndex = floatingTextFixedZIndex",
@@ -112,10 +106,10 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
           }
         }
       };
-      /**
-       * update a 1 or 2 rooms for head, heels, headOverHeels - whichever
-       * exists in the object given
-       */
+      //
+      //update a 1 or 2 rooms for head, heels, headOverHeels - whichever
+      //exists in the object given
+      //
       const updateAllCharacterRooms = (
         characterRooms: CharacterRooms<string>,
       ) => {
@@ -140,10 +134,10 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
         console.groupEnd();
       }
 
-      /**
-       * reincarnation points can contain reincarnation points - recursively
-       * migrate them however deep the json goes
-       */
+      
+       // reincarnation points can contain reincarnation points - recursively
+       // migrate them however deep the json goes
+       
       const recursivelyMigrateReincarnationPoints = (
         savedGameState: SavedGameState | undefined,
       ) => {
@@ -168,8 +162,7 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
       console.groupEnd();
 
       return v14State;
-    },
-    15: revertToInitialStateMigration,
+    },*/
   },
   { debug: true },
 );

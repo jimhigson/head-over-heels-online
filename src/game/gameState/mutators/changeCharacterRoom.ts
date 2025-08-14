@@ -256,7 +256,7 @@ export const changeCharacterRoom = <
         roomJson: toRoomJson,
         roomPickupsCollected:
           gameState.pickupsCollected[toRoomId] ?? emptyObject,
-        scrollsRead: store.getState().gameMenus.scrollsRead,
+        scrollsRead: store.getState().gameMenus.gameInPlay.scrollsRead,
       }) as RoomState<RoomId, RoomItemId>);
 
   // take the character out of the previous room:

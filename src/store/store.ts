@@ -21,7 +21,7 @@ import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 import { updateUpscaleWhenEmulatedResolutionChanges } from "./slices/upscale/updateUpscaleWhenEmulatedResolutionChanges";
 
-export const storeLatestVersion = 15;
+export const storeLatestVersion = 16;
 
 export const gameMenusSliceWhitelist = [
   `userSettings`,

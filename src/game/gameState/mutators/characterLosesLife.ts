@@ -149,7 +149,7 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
   const reloadedRoom = loadRoom({
     roomJson: campaign.rooms[roomId],
     roomPickupsCollected: gameState.pickupsCollected[roomId] ?? emptyObject,
-    scrollsRead: store.getState().gameMenus.scrollsRead,
+    scrollsRead: store.getState().gameMenus.gameInPlay.scrollsRead,
   });
   for (const playableItem of playableItems) {
     addItemToRoom({ room: reloadedRoom, item: playableItem });

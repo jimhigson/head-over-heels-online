@@ -24,10 +24,7 @@ import {
 } from "../selectors";
 import type { BooleanAction } from "../../game/input/actions";
 import { nextInCycle } from "../../utils/nextInCycle";
-import type {
-  SavableFromGameMenusState,
-  SavedGameState,
-} from "../../game/gameState/saving/SavedGameState";
+import type { SavedGameState } from "../../game/gameState/saving/SavedGameState";
 import { REHYDRATE } from "redux-persist";
 import { emptyObject } from "../../utils/empty";
 import type { RootState } from "../store";
@@ -117,6 +114,48 @@ export type ScrollsRead = {
   [m in MarkdownPageName]?: true;
 };
 
+/**
+ * the parts of a game in play state that are kept in the store. Not everything
+ * goes in the store because in-play rooms etc need to be mutated in-place fo
+ * performance
+ *
+ * this works:
+ *  * in play
+ *  * for saves (plus serialisation of the gameState)
+ *  * for reincarnation fish save points
+ */
+export type GameInPlayStoreState = {
+  planetsLiberated: Record<PlanetName, boolean>;
+  roomsExplored: Record<string, true>;
+  /**
+    we don't want to show the same scroll twice, even if it is in a different room
+    so record what we've read:
+  */
+  scrollsRead: ScrollsRead;
+  /**
+   * The reincarnation point to continue from after losing all lives.
+   *
+   * Recursively (optionally) contains another reincarnationPoint, so it naturally
+   * creates a linked-list of saves. This is how multiple saves are handled from
+   * a single property.
+   */
+  reincarnationPoint?: SavedGameState;
+};
+
+const noPlanetsLiberated = {
+  blacktooth: false,
+  bookworld: false,
+  egyptus: false,
+  penitentiary: false,
+  safari: false,
+};
+const initialGameInPlayStoreState: GameInPlayStoreState = {
+  planetsLiberated: noPlanetsLiberated,
+  roomsExplored: {},
+  scrollsRead: {},
+  reincarnationPoint: undefined,
+};
+
 export type GameMenusState = {
   /**
    * stack of menus currently open - empty if none are
@@ -138,8 +177,13 @@ export type GameMenusState = {
     job is to use a default instead */
   userSettings: UserSettings;
 
-  planetsLiberated: Record<PlanetName, boolean>;
-  roomsExplored: Record<string, true>; // RoomId ?
+  /**
+   * this could maybe be replaced with conditionality of gameInPlay. However, currently
+   * this would break the score dialog after game over, since at that point the game is
+   * not playing, but it does need the data from this object.
+   */
+  gameRunning: boolean;
+  gameInPlay: GameInPlayStoreState;
 
   /**
    * the current game, saved in case the game is closed and come back
@@ -148,35 +192,11 @@ export type GameMenusState = {
    */
   currentGame?: SavedGameState;
 
-  /**
-   * The reincarnation point to continue from after losing all lives.
-   *
-   * Recursively (optionally) contains another reincarnationPoint, so it naturally
-   * creates a linked-list of saves. This is how multiple saves are handled from
-   * a single property.
-   */
-  reincarnationPoint?: SavedGameState;
-
-  gameRunning: boolean;
-  /**
-    we don't want to show the same scroll twice, even if it is in a different room
-    so record what we've read:
-  */
-  scrollsRead: ScrollsRead;
-
   // if cheats are on, some cheat/debugging options are available
   cheatsOn: boolean;
 };
 
 type BooleanStatePaths = ToggleablePaths<GameMenusState>;
-
-const noPlanetsLiberated = {
-  blacktooth: false,
-  bookworld: false,
-  egyptus: false,
-  penitentiary: false,
-  safari: false,
-};
 
 export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
@@ -184,10 +204,8 @@ export const initialGameMenuSliceState: GameMenusState = {
     soundSettings: {},
   },
 
-  planetsLiberated: noPlanetsLiberated,
-  roomsExplored: {},
-  scrollsRead: {},
   gameRunning: cheatsOn,
+  gameInPlay: initialGameInPlayStoreState,
 
   openMenus:
     cheatsOn ?
@@ -207,7 +225,6 @@ export const initialGameMenuSliceState: GameMenusState = {
   // optional fields given explicitly as undefined so that on restoring
   // a blank state after a crash, this can be used to overwrite the store
   currentGame: undefined,
-  reincarnationPoint: undefined,
 };
 
 /**
@@ -237,7 +254,7 @@ export const gameMenusSlice = createSlice({
     },
     scrollRead(state, { payload: scrollConfig }: PayloadAction<ScrollConfig>) {
       if (scrollConfig.source === "manual") {
-        state.scrollsRead[scrollConfig.page] = true;
+        state.gameInPlay.scrollsRead[scrollConfig.page] = true;
         state.openMenus = [
           {
             menuId: `markdown/${scrollConfig.page}`,
@@ -358,8 +375,10 @@ export const gameMenusSlice = createSlice({
     },
     gameStarted(state) {
       if (state.gameRunning) {
+        // resuming an already-running game:
         state.openMenus = [];
       } else {
+        // starting a new game:
         // go to crowns menu page if not already started the game
         state.openMenus = [
           {
@@ -369,9 +388,7 @@ export const gameMenusSlice = createSlice({
           },
         ];
         state.gameRunning = true;
-        state.planetsLiberated = noPlanetsLiberated;
-        state.roomsExplored = {};
-        state.scrollsRead = {};
+        state.gameInPlay = initialGameInPlayStoreState;
       }
     },
     backToParentMenu(state) {
@@ -475,9 +492,11 @@ export const gameMenusSlice = createSlice({
     },
 
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
-      state.planetsLiberated[planet] = true;
+      state.gameInPlay.planetsLiberated[planet] = true;
 
-      const allCrowns = Object.values(state.planetsLiberated).every((b) => b);
+      const allCrowns = Object.values(state.gameInPlay.planetsLiberated).every(
+        (b) => b,
+      );
 
       const crownsMenu = {
         menuId: "crowns",
@@ -499,7 +518,7 @@ export const gameMenusSlice = createSlice({
       }
     },
     roomExplored(state, { payload: roomId }: PayloadAction<string>) {
-      state.roomsExplored[roomId] = true;
+      state.gameInPlay.roomsExplored[roomId] = true;
     },
     gameOver(
       state,
@@ -507,7 +526,10 @@ export const gameMenusSlice = createSlice({
         payload: { offerReincarnation },
       }: PayloadAction<{ offerReincarnation: boolean }>,
     ) {
-      if (offerReincarnation && state.reincarnationPoint !== undefined) {
+      if (
+        offerReincarnation &&
+        state.gameInPlay.reincarnationPoint !== undefined
+      ) {
         state.openMenus = [
           {
             menuId: "score",
@@ -522,13 +544,13 @@ export const gameMenusSlice = createSlice({
         ];
       } else {
         state.gameRunning = false;
-        delete state.reincarnationPoint;
+        delete state.gameInPlay.reincarnationPoint;
         delete state.currentGame;
         /*
         keep these for the scores dialog
-        state.planetsLiberated = noPlanetsLiberated;
-        state.roomsExplored = {};
-        state.scrollsRead = {};
+        state.gameInPlay.planetsLiberated = noPlanetsLiberated;
+        state.gameInPlay.roomsExplored = {};
+        state.gameInPlay.scrollsRead = {};
         */
         state.openMenus = [
           {
@@ -545,10 +567,10 @@ export const gameMenusSlice = createSlice({
       }
     },
     reincarnationFishEaten(state, { payload }: PayloadAction<SavedGameState>) {
-      state.reincarnationPoint = payload;
+      state.gameInPlay.reincarnationPoint = payload;
     },
     reincarnationAccepted(state) {
-      delete state.reincarnationPoint;
+      delete state.gameInPlay.reincarnationPoint;
       // close the menu offering reincarnation
       state.openMenus = [
         {
@@ -563,9 +585,9 @@ export const gameMenusSlice = createSlice({
     },
     gameRestoreFromSave(
       state,
-      { payload }: PayloadAction<SavableFromGameMenusState>,
+      { payload }: PayloadAction<GameInPlayStoreState>,
     ) {
-      Object.assign(state, payload);
+      state.gameInPlay = payload;
     },
     errorCaught(
       state,

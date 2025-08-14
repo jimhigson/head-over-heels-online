@@ -2,7 +2,7 @@
   {
     "op": "add",
     "path": "/items/teleporter@7,3,0/config/activatedOnStoreValue",
-    "value": "planetsLiberated.bookworld"
+    "value": "gameInPlay.planetsLiberated.bookworld"
   },
   {
     "op": "add",

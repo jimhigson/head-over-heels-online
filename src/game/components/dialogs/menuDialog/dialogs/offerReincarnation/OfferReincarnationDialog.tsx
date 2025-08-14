@@ -15,7 +15,9 @@ import type { GameApi } from "../../../../../GameApi";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 
 export const reincarnateSelected = (gameApi: GameApi<string>) => {
-  gameApi.reincarnateFrom(store.getState().gameMenus.reincarnationPoint!);
+  gameApi.reincarnateFrom(
+    store.getState().gameMenus.gameInPlay.reincarnationPoint!,
+  );
   // dispatch something to close the menu and remove the reincarnation point
   store.dispatch(reincarnationAccepted());
 };

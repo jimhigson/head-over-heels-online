@@ -2,7 +2,6 @@ import type {
   gameMenusSlice,
   GameMenusState,
 } from "../../../store/slices/gameMenusSlice";
-import type { Subset } from "../../../utils/subset";
 import type { GameState } from "../GameState";
 
 /**
@@ -19,34 +18,12 @@ export const savedGameGameStateFields = [
   "previousPlayable",
 ] as const;
 
-/**
- * the fields from the game menus slice (which is really a catch-all)
- * that are serialised for a saved game
- */
-export const savedGameGameMenuSliceFields = [
-  "planetsLiberated",
-  "scrollsRead",
-  "roomsExplored",
-  "reincarnationPoint",
-] as const;
-
-type GameMenuSliceSavedField = Subset<
-  keyof GameMenusState,
-  (typeof savedGameGameMenuSliceFields)[number]
->;
-
-export type SavableFromGameMenusState = Pick<
-  GameMenusState,
-  GameMenuSliceSavedField
->;
-
 export type SavedGameState<RoomId extends string = string> = {
   saveTime: number;
   // only the original campaign is supported
   campaignId: "original";
-  screenshotBase64: string;
   gameState: Pick<GameState<RoomId>, (typeof savedGameGameStateFields)[number]>;
   store: {
-    [gameMenusSlice.reducerPath]: SavableFromGameMenusState;
+    [gameMenusSlice.reducerPath]: Pick<GameMenusState, "gameInPlay">;
   };
 };

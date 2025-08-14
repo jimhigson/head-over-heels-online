@@ -495,6 +495,15 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 <span className="sprite texture-whiteRabbit" />
                 <span className="sprite texture-hud_char_♨ left-m2 relative" />
               </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "reincarnation" });
+                  e?.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-fish_1 hover:texture-animated-fish" />
+              </Button>
             </div>
 
             <Heading>game speed x:</Heading>

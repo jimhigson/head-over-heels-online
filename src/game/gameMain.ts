@@ -72,9 +72,8 @@ export const gameMain = async <RoomId extends string>(
     savedGame: savedGameToContinueFrom,
   });
   if (savedGameToContinueFrom !== undefined) {
-    store.dispatch(
-      gameRestoreFromSave(savedGameToContinueFrom.store.gameMenus),
-    );
+    const savedGameInPlay = savedGameToContinueFrom.store.gameMenus.gameInPlay;
+    store.dispatch(gameRestoreFromSave(savedGameInPlay));
   } else {
     // starting a new game - the player has at least explored the rooms they start in:
     if (gameState.characterRooms.head)

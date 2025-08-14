@@ -83,10 +83,10 @@ export const selectIsInfiniteDoughnutsPoke = selectUserSetting(
 
 export const selectHasAllPlanetCrowns = (state: RootState) => {
   return (
-    state.gameMenus.planetsLiberated.egyptus &&
-    state.gameMenus.planetsLiberated.bookworld &&
-    state.gameMenus.planetsLiberated.penitentiary &&
-    state.gameMenus.planetsLiberated.safari
+    state.gameMenus.gameInPlay.planetsLiberated.egyptus &&
+    state.gameMenus.gameInPlay.planetsLiberated.bookworld &&
+    state.gameMenus.gameInPlay.planetsLiberated.penitentiary &&
+    state.gameMenus.gameInPlay.planetsLiberated.safari
   );
 };
 
@@ -99,7 +99,11 @@ export const useInputDirectionMode = (): InputDirectionMode =>
   useAppSelector(selectInputDirectionMode);
 
 export const selectPlanetsLiberatedCount = (state: RootState) =>
-  size(iterate(objectValues(state.gameMenus.planetsLiberated)).filter(Boolean));
+  size(
+    iterate(objectValues(state.gameMenus.gameInPlay.planetsLiberated)).filter(
+      Boolean,
+    ),
+  );
 
 export const selectShowBoundingBoxes = selectUserSetting(
   "displaySettings.showBoundingBoxes",
@@ -151,6 +155,6 @@ export const selectAtPath = (
 
 export const useRoomsExplored = <RoomId extends string>() => {
   return useAppSelector(
-    (state) => state.gameMenus.roomsExplored as Record<RoomId, true>,
+    (state) => state.gameMenus.gameInPlay.roomsExplored as Record<RoomId, true>,
   );
 };
