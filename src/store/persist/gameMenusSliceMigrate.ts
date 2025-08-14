@@ -1,4 +1,4 @@
-import { initialGameMenuSliceState } from "./slices/gameMenusSlice";
+import { initialGameMenuSliceState } from "../slices/gameMenusSlice";
 import type { PersistedState, PersistMigrate } from "redux-persist";
 import { createMigrate } from "redux-persist";
 

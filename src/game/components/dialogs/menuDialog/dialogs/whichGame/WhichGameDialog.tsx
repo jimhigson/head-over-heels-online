@@ -19,6 +19,7 @@ import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
+import { originalCampaignLocator } from "../../../../../../model/modelTypes";
 
 export const WhichGameDialog = (_emptyProps: EmptyObject) => {
   return (
@@ -47,7 +48,9 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
                 label="original remastered"
                 doubleHeightWhenFocussed
                 hintInline
-                onSelect={useDispatchActionCallback(gameStarted)}
+                onSelect={useDispatchActionCallback(gameStarted, {
+                  campaignLocator: originalCampaignLocator,
+                })}
                 leader={
                   <span
                     className={`${spriteLeaderClasses} sprite texture-head_walking_right_2 selectedMenuItem:texture-animated-head_walking_right sprites-normal-height zx:sprite-revert-to-white`}
@@ -65,9 +68,14 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
                 label="Sequel (Beta)"
                 doubleHeightWhenFocussed
                 hintInline
-                onSelect={() => {
-                  // Remake dispatch to be implemented later
-                }}
+                onSelect={useDispatchActionCallback(gameStarted, {
+                  campaignLocator: {
+                    // this uuid is the user id of jim@blockstack.ing on github for supabase
+                    userId: "2924c962-99f1-4dd2-9b9c-fef832dc991b",
+                    campaignName: "sequel",
+                    version: -1,
+                  },
+                })}
                 leader={
                   <span
                     className={`${spriteLeaderClasses} sprite texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_walking_right sprites-normal-height zx:sprite-revert-to-white`}

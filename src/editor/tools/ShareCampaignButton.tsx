@@ -37,8 +37,7 @@ export const ShareCampaignButton = () => {
           }
 
           searchParams.set("campaignName", "sequel");
-          searchParams.set("campaignAuthor", userId);
-          searchParams.set("noSaves", "1");
+          searchParams.set("campaignAuthorUserId", userId);
 
           navigator.clipboard.writeText(url.toString()).then(doneNow);
         }}

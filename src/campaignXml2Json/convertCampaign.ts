@@ -8,7 +8,7 @@ import type { DirectionXy4 } from "../utils/vectors/vectors";
 import { convertRoom } from "./convertRoom";
 import type { ZxSpectrumRoomHue, ZxSpectrumShade } from "../originalGame";
 import type { AnyRoomJson } from "../model/RoomJson";
-import type { Campaign } from "../model/modelTypes";
+import { originalCampaignLocator, type Campaign } from "../model/modelTypes";
 
 export const map = await readMapToJson();
 
@@ -108,5 +108,5 @@ export const convertCampaign = async (): Promise<Campaign<string>> => {
             ${(e as Error).stack}`);
     }
   }
-  return { rooms, name: "original" };
+  return { rooms, locator: originalCampaignLocator };
 };

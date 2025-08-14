@@ -1,5 +1,6 @@
 import { loadGameState } from "../game/gameState/loadGameState";
 import type { JsonItem } from "../model/json/JsonItem";
+import type { Campaign } from "../model/modelTypes";
 import type { RoomJson } from "../model/RoomJson";
 import { addPerimeterWallsToRoom } from "./addPerimeterWallsToRoom";
 import type { GameStateWithMockInput } from "./MockInputStateTracker";
@@ -76,8 +77,12 @@ export const basicGameState = ({
   firstRoomDeadlyFloor = false,
   secondRoomDeadlyFloor = false,
 }: BasicGameStateOptions): GameStateWithMockInput => {
-  const campaign = {
-    name: "basicGameStateTestCampaign",
+  const campaign: Campaign<TestRoomId> = {
+    locator: {
+      campaignName: "basicGameStateTestCampaign",
+      userId: "anon",
+      version: 0,
+    },
     rooms: {
       [firstRoomId]: addPerimeterWallsToRoom({
         ...basicEmptyRoomWithItems(firstRoomId, firstRoomItems),

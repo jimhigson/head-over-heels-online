@@ -21,9 +21,24 @@ export type AnyWall = Wall<SceneryName>;
 export const floorThickness = blockSizePx.h;
 export const wallThickness = blockSizePx.w / 2;
 
+/**
+ * special value to use in place of a superbase auth.users.id
+ * for *.ts campaigns created baked-in to the game's deploy
+ * (ie, the original game)
+ *
+ * @see Campaign.userId
+ */
+export const originalUserId = "@@original" as const;
+export const originalCampaignName = "original" as const;
+export const originalCampaignLocator: CampaignLocator = {
+  userId: originalUserId,
+  campaignName: originalCampaignName,
+  version: -1,
+};
+
 export type Campaign<RoomId extends string> = {
   rooms: Record<RoomId, RoomJson<RoomId, string, SceneryName>>;
-  name: string;
+  locator: CampaignLocator;
 };
 
 export type UnknownCampaign = Campaign<string>;
@@ -37,3 +52,18 @@ export type CampaignRoom<C extends UnknownCampaign> =
 export type SpriteFrame = SpritesheetFrameData["frame"];
 export type SpritePosition = Pick<SpriteFrame, "x" | "y">;
 export type SpriteSize = Pick<SpriteFrame, "w" | "h">;
+
+/**
+ * A locator for a specific campaign, identified by user ID and campaign name.
+ */
+export type CampaignLocator = {
+  /**
+   * the id (from supabase at auth.users.id, which is a uuid) of the user who
+   * created this campaign, or special value '@@original'
+   * @see originalUserId
+   */
+  userId: string;
+  campaignName: string;
+  /** -1 means 'latest' */
+  version: number;
+};

@@ -36,6 +36,7 @@ import {
 import type { RoomJson } from "../../../model/RoomJson";
 import { emptyObject } from "../../../utils/empty";
 import { iterate } from "../../../utils/iterate";
+import { selectCurrentCampaign } from "../../../store/selectors";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
@@ -241,10 +242,8 @@ export const changeCharacterRoom = <
         // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
       ] as RoomState<RoomId, RoomItemId>);
 
-  const toRoomJson = gameState.campaign.rooms[toRoomId] as RoomJson<
-    RoomId,
-    RoomItemId
-  >;
+  const campaign = selectCurrentCampaign(store.getState());
+  const toRoomJson = campaign.rooms[toRoomId] as RoomJson<RoomId, RoomItemId>;
   if (toRoomJson === undefined) {
     throw new Error(`room ${toRoomId} does not exist in campaign`);
   }

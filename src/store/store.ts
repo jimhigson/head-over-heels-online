@@ -1,12 +1,8 @@
 import type { UnknownAction, WithSlice } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
-import type { GameMenusState } from "./slices/gameMenusSlice";
 import { debugItemClicked, gameMenusSlice } from "./slices/gameMenusSlice";
-import storage from "redux-persist/lib/storage";
-import type { PersistConfig } from "redux-persist";
 import {
-  persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -15,41 +11,19 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
-import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
 import { listenerMiddleware } from "./listenerMiddleware";
 import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 import { updateUpscaleWhenEmulatedResolutionChanges } from "./slices/upscale/updateUpscaleWhenEmulatedResolutionChanges";
-
-export const storeLatestVersion = 16;
-
-export const gameMenusSliceWhitelist = [
-  `userSettings`,
-  "currentGame",
-] as const satisfies Array<keyof GameMenusState>;
-
-export type GameMenusSlicePersisted = Pick<
-  GameMenusState,
-  (typeof gameMenusSliceWhitelist)[number]
->;
-
-const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
-  key: "hohol/gameMenus/userSettings",
-  version: storeLatestVersion,
-  migrate: gameMenusSliceMigrate,
-  storage,
-  // this really says that userSettings should be its own slice, not tacked onto gameMenus!
-  whitelist: gameMenusSliceWhitelist,
-};
-
-const gameMenusPersistedReducer = persistReducer(
-  gameMenusSlicePersistConfig,
-  gameMenusSlice.reducer,
-);
+import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
+import { manualLoadingSlice } from "./slices/manualLoadingSlice";
+import { gameMenusPersistedReducer } from "./persist/persist";
 
 const appReducer = combineSlices({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,
+  [campaignsApiSlice.reducerPath]: campaignsApiSlice.reducer,
+  [manualLoadingSlice.reducerPath]: manualLoadingSlice.reducer,
 }).withLazyLoadedSlices<
   // pre-empting the lazy-loaded slices for the types only (no run-time importing)
   // because it is easier. This could also be done via module augmentation in typescript
@@ -86,7 +60,9 @@ export const store = configureStore({
           debugItemClicked.type,
         ],
       },
-    }).prepend(listenerMiddleware.middleware),
+    })
+      .prepend(listenerMiddleware.middleware)
+      .concat(campaignsApiSlice.middleware),
 });
 
 updateUpscaleWhenEmulatedResolutionChanges();

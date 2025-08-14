@@ -1,11 +1,14 @@
 import nanoEqual from "nano-equal";
-import { loadCampaignFromDb, saveCampaignToDb } from "../../db/campaign";
+import {
+  loadCampaignFromApi,
+  saveCampaignViaApi,
+} from "../../store/slices/campaigns/campaignApiHelpers";
 import { store } from "../../store/store";
 import { cn } from "../../ui/cn";
 import type { EditorCampaign } from "../editorTypes";
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import {
-  campaignSaved,
+  setRemoteCampaign,
   loadCampaign,
   selectCurrentCampaignInProgress,
   useAppSelectorWithLevelEditorSlice,
@@ -34,7 +37,7 @@ continue working from your last save
 
 export const useSavedIsInSync = () => {
   return useAppSelectorWithLevelEditorSlice(
-    ({ levelEditor: { savedCampaign, campaignInProgress } }) =>
+    ({ levelEditor: { remoteCampaign: savedCampaign, campaignInProgress } }) =>
       nanoEqual(savedCampaign, campaignInProgress),
   );
 };
@@ -48,21 +51,34 @@ export const SaveAndLoadButtons = () => {
     const state = store.getState() as RootStateWithLevelEditorSlice;
     const campaign = selectCurrentCampaignInProgress(state);
     console.info("saving...", campaign);
-    const version = await saveCampaignToDb("sequel", campaign);
-    console.info(`...saved as v${version}`);
-    store.dispatch(campaignSaved({ campaign }));
-    doneNow();
+    const result = await saveCampaignViaApi(campaign);
+    if (result.data !== undefined) {
+      console.info(`...saved as v${result.data}`);
+      store.dispatch(setRemoteCampaign({ campaign }));
+      doneNow();
+    } else if (result.error) {
+      console.error("Failed to save:", result.error);
+    }
   };
 
   const handleLoadClicked = async () => {
-    try {
-      const campaign = (await loadCampaignFromDb({
-        name: "sequel",
-      })) as EditorCampaign;
+    const result = await loadCampaignFromApi(
+      {
+        campaignName: "sequel",
+        userId: user?.id,
+        version: -1, // latest version
+      },
+      {
+        forceRefetch: true,
+      },
+    );
+
+    if (result.data) {
+      const campaign = result.data as EditorCampaign;
       console.info("loaded", campaign);
       store.dispatch(loadCampaign({ campaign }));
-    } catch (e) {
-      console.error(e);
+    } else if (result.error) {
+      console.error("Failed to load:", result.error);
     }
   };
 

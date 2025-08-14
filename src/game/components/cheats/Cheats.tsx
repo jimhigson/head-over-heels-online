@@ -41,6 +41,7 @@ import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
 import { BitmapText } from "../tailwindSprites/Sprite";
 import { CssVariables } from "../CssVariables";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
+import { addPokeableNumbers } from "../../../model/ItemStateMap";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;
@@ -555,6 +556,71 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               />
             </div>
 
+            <Heading>pokes:</Heading>
+            <div className="flex flex-row items-center flex-wrap">
+              <Button
+                className="flex-grow h-3"
+                onClick={(e) => {
+                  if (!gameApi) {
+                    return;
+                  }
+                  const playable = selectCurrentPlayableItem(gameApi.gameState);
+                  if (!playable) {
+                    return;
+                  }
+                  if (playable.type === "headOverHeels") {
+                    playable.state.head.lives = addPokeableNumbers(
+                      playable.state.head.lives,
+                      1,
+                    );
+                    playable.state.heels.lives = addPokeableNumbers(
+                      playable.state.heels.lives,
+                      1,
+                    );
+                  } else {
+                    playable.state.lives = addPokeableNumbers(
+                      playable.state.lives,
+                      1,
+                    );
+                  }
+
+                  e?.currentTarget.blur();
+                }}
+              >
+                lives++
+              </Button>
+              <Button
+                className="flex-grow h-3"
+                onClick={(e) => {
+                  if (!gameApi) {
+                    return;
+                  }
+                  const playable = selectCurrentPlayableItem(gameApi.gameState);
+                  if (!playable) {
+                    return;
+                  }
+                  if (playable.type === "headOverHeels") {
+                    playable.state.head.lives = addPokeableNumbers(
+                      playable.state.head.lives,
+                      -1,
+                    );
+                    playable.state.heels.lives = addPokeableNumbers(
+                      playable.state.heels.lives,
+                      -1,
+                    );
+                  } else {
+                    playable.state.lives = addPokeableNumbers(
+                      playable.state.lives,
+                      -1,
+                    );
+                  }
+
+                  e?.currentTarget.blur();
+                }}
+              >
+                lives--
+              </Button>
+            </div>
             <Heading>write to console:</Heading>
             <div className="flex flex-row items-center flex-wrap">
               <Button

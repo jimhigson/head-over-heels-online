@@ -31,7 +31,10 @@ export const useMonacoSuggestions = () => {
           lastPathSegment ===
             ("toRoom" satisfies keyof ItemInPlayConfig<"teleporter">) ||
           lastPathSegment === ("roomAbove" satisfies keyof AnyRoomJson) ||
-          lastPathSegment === ("roomBelow" satisfies keyof AnyRoomJson);
+          lastPathSegment === ("roomBelow" satisfies keyof AnyRoomJson) ||
+          (path.at(-3) === "meta" &&
+            path.at(-2) === "with" &&
+            path.at(-1) === "room");
 
         const isEditingToRoomValue = isRoomIdProperty && !isAtPropertyKey;
 

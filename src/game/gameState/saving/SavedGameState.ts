@@ -20,8 +20,6 @@ export const savedGameGameStateFields = [
 
 export type SavedGameState<RoomId extends string = string> = {
   saveTime: number;
-  // only the original campaign is supported
-  campaignId: "original";
   gameState: Pick<GameState<RoomId>, (typeof savedGameGameStateFields)[number]>;
   store: {
     [gameMenusSlice.reducerPath]: Pick<GameMenusState, "gameInPlay">;

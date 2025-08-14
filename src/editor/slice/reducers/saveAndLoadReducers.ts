@@ -16,7 +16,7 @@ export const saveAndLoadReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    state.savedCampaign = campaign;
+    state.remoteCampaign = campaign;
     state.campaignInProgress = campaign;
 
     state.hoveredItem = undefined;
@@ -31,7 +31,7 @@ export const saveAndLoadReducers = {
     state.currentlyEditingRoomId = roomId;
   },
 
-  campaignSaved(
+  setRemoteCampaign(
     _state,
     { payload: { campaign } }: PayloadAction<{ campaign: EditorCampaign }>,
   ) {
@@ -40,6 +40,6 @@ export const saveAndLoadReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    state.savedCampaign = campaign;
+    state.remoteCampaign = campaign;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

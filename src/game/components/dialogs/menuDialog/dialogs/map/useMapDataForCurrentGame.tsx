@@ -8,7 +8,10 @@ import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
 import { useTickingCurrentCharacterName } from "./useCurrentCharacterName";
-import { useRoomsExplored } from "../../../../../../store/selectors";
+import {
+  useCurrentCampaign,
+  useRoomsExplored,
+} from "../../../../../../store/selectors";
 import type { MapData } from "./MapData";
 
 /**
@@ -24,10 +27,10 @@ export const useMapDataForCurrentGame = <
   const roomsExplored = useRoomsExplored<RoomId>();
 
   const { gameState } = useGameApi<RoomId>();
+  const campaign = useCurrentCampaign<RoomId>();
 
   return useMemo(() => {
     try {
-      const { campaign } = gameState;
       const curRoom = selectCurrentRoomState<RoomId, string>(gameState);
       const centreRoomId =
         curRoom?.roomJson.id ?? startingRoomIds(campaign).head!;
@@ -76,11 +79,5 @@ export const useMapDataForCurrentGame = <
     } catch (e) {
       throw new Error("error getting map data", { cause: e });
     }
-  }, [
-    currentCharacterName,
-    gameState,
-    // roomsExplored is ok here as a dependency, efficiency-wise since it won't change
-    // while viewing the map
-    roomsExplored,
-  ]);
+  }, [campaign, currentCharacterName, gameState, roomsExplored]);
 };

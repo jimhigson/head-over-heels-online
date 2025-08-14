@@ -1,20 +1,43 @@
 import { Fragment } from "react/jsx-runtime";
-import { getAllUsersLatestCampaigns } from "../../../../../../db/campaign";
-import { suspend } from "suspend-react";
+import type { CampaignDirectory } from "../../../../../../db/campaign";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
+import { gameStarted } from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import type { CampaignLocator } from "../../../../../../model/modelTypes";
 
-export const CampaignListContent = () => {
-  const campaigns = suspend(
-    () => getAllUsersLatestCampaigns(),
-    ["getAllUsersLatestCampaigns"], // cache key
-    {
-      lifespan: 60_000, // Cache for 1 minute
-    },
+const CampaignMenuItem = ({
+  userId,
+  campaignName,
+  label,
+}: {
+  userId: string;
+  campaignName: string;
+  label: string;
+}) => {
+  return (
+    <MenuItem
+      id={`campaign-${userId}-${campaignName}`}
+      label={label}
+      doubleHeightWhenFocussed
+      onSelect={useDispatchActionCallback(gameStarted, {
+        campaignLocator: {
+          userId,
+          campaignName,
+          version: -1,
+        } satisfies CampaignLocator,
+      })}
+    />
   );
+};
 
+export const CampaignListContent = ({
+  campaigns,
+}: {
+  campaigns: CampaignDirectory;
+}) => {
   return (
     <>
       <div className="zx:text-zxCyan  resHandheld:mt-half flex flex-col gap-2">
@@ -26,13 +49,10 @@ export const CampaignListContent = () => {
             {Object.values(userEntry.campaigns).map((campaign) => (
               <Fragment key={campaign.name}>
                 <MenuItems>
-                  <MenuItem
-                    id={`campaign-${userEntry.user.id}-${campaign.name}`}
-                    label={`‘${campaign.name}’`}
-                    doubleHeightWhenFocussed
-                    onSelect={() => {
-                      // Campaign selection to be implemented later
-                    }}
+                  <CampaignMenuItem
+                    userId={userEntry.user.id}
+                    campaignName={campaign.name}
+                    label={`'${campaign.name}'`}
                   />
                 </MenuItems>
                 <div className="pl-3">

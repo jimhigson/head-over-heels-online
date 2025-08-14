@@ -1,5 +1,5 @@
 import type { IndividualCharacterName } from "../../model/modelTypes";
-import { type CharacterName, type Campaign } from "../../model/modelTypes";
+import { type CharacterName } from "../../model/modelTypes";
 import type { PlayableEntryState } from "./PlayableEntryState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import type { RoomState } from "../../model/RoomState";
@@ -27,7 +27,11 @@ export type CharacterRooms<RoomId extends string> =
   }>;
 
 export type GameState<RoomId extends string> = {
-  campaign: Campaign<RoomId>;
+  /**
+   * TODO: the campaign is non-cyclic, serialisable json that never mutates
+   * - this is being moved to the store
+   */
+  //campaign: Campaign<RoomId>;
   currentCharacterName: CharacterName;
   /** 
     if playing combined, which character was paid immediately before combining?

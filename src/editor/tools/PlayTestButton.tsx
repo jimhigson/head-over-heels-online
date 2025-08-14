@@ -26,8 +26,7 @@ export const PlayTestButton = () => {
 
             const url = new URL(import.meta.env.VITE_GAME_URL);
             const searchParams = url.searchParams as TypedURLSearchParams;
-            searchParams.set("campaignData", encodedCampaign);
-            searchParams.set("noSaves", "1");
+            searchParams.set("campaignName", `data:/${encodedCampaign}`);
             searchParams.set("cheats", "1");
             if (playAsHeels) {
               searchParams.set("playAsHeels", "1");

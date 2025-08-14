@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import type { EmptyObject } from "type-fest";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
@@ -9,21 +10,20 @@ import { Border } from "../../../../../../ui/Border";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
-import { Suspense, useEffect } from "react";
-import { SpinnerHead } from "../../../../../../ui/Spinner";
 import { CampaignListContent } from "./CampaignListContent";
-import { ErrorBoundary } from "../../../../../../utils/react/ErrorBoundary";
 import { NonIdealState } from "../../../../../../ui/NonIdealState";
-import { clear } from "suspend-react";
+import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
+import { SpinnerHead } from "../../../../../../ui/Spinner";
 
 export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
-  // Clear cache on unmount to ensure fresh data next time, including
-  // not caching failures if the user leaves this dialog to try again
+  const { data, error, isLoading, refetch } =
+    useGetAllUsersLatestCampaignsQuery();
+
   useEffect(() => {
-    return () => {
-      clear(["getAllUsersLatestCampaigns"]);
-    };
-  }, []);
+    // Force refetch on mount to get latest campaigns
+    refetch();
+  }, [refetch]);
+
   return (
     <DialogPortal>
       <Border
@@ -42,13 +42,15 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
             Community Contributed
           </BitmapText>
         </div>
-        <ErrorBoundary
-          fallback={<NonIdealState text="Failed to load campaigns" />}
-        >
-          <Suspense fallback={<SpinnerHead />}>
-            <CampaignListContent />
-          </Suspense>
-        </ErrorBoundary>
+        {error !== undefined ?
+          <NonIdealState text="Failed to load campaigns" />
+        : null}
+        {isLoading ?
+          <SpinnerHead />
+        : null}
+        {data !== undefined ?
+          <CampaignListContent campaigns={data} />
+        : null}
         {isTouchDevice() || (
           <MenuItems>
             <BackMenuItem />

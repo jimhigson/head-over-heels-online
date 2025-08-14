@@ -6,11 +6,10 @@ TO RELEASE
 [x] link to editor from home screen
     * with a warning or "in progress" messages
 [3] option to load sequel or community-edited (mark as a work in progress)
-    [ ] don't show on no network
-    [ ] in-game saves are per-campaign, not universal
-    [ ] load community campaigns
-[ ] multiple savable campaigns in editor    
-    - or just one, and it only loads against the campaign it belongs to
+    [x] don't show on no network
+    [x] load community/sequel campaigns
+    [x] in-game saves are per-campaign, not universal
+[ ] save against different campaign names in editor
 [ ] sounds - buy/licence/etc
 [ ] final room - something should happen
     - will take people a while to finish

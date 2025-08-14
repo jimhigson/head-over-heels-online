@@ -1,6 +1,6 @@
 import type { EmptyObject } from "type-fest";
 import {
-  gameStarted,
+  closeAllMenus,
   goToSubmenu,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
@@ -24,22 +24,29 @@ import { useAppSelector } from "../../../../../../store/hooks";
 
 const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
-  const startGame = useDispatchActionCallback(gameStarted);
+  const resume = useDispatchActionCallback(closeAllMenus);
   const goToWhichGameSubmenu = useDispatchActionCallback(
     goToSubmenu,
     "whichGame",
   );
 
+  if (isGameRunning) {
+    return (
+      <MenuItem
+        id="playGame"
+        label={<BitmapText>Resume the game</BitmapText>}
+        doubleHeightWhenFocussed
+        onSelect={resume}
+      />
+    );
+  }
+
   return (
     <MenuItem
       id="playGame"
-      label={
-        <BitmapText>
-          {isGameRunning ? "Resume the game" : "Play the game"}
-        </BitmapText>
-      }
+      label={<BitmapText>Play the game</BitmapText>}
       doubleHeightWhenFocussed
-      onSelect={isGameRunning ? startGame : goToWhichGameSubmenu}
+      onSelect={goToWhichGameSubmenu}
     />
   );
 };

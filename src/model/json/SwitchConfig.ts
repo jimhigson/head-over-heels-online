@@ -1,6 +1,5 @@
-import type { GameMenusState } from "../../store/slices/gameMenusSlice";
+import type { BooleanStatePaths } from "../../store/slices/gameMenusSlice";
 import type { Subset } from "../../utils/subset";
-import type { ToggleablePaths } from "../../utils/Toggleable";
 import type { ItemState, SwitchSetting } from "../ItemInPlay";
 
 // switches are 'on rails' with a fairly restricted range of things they can change for the sake of avoiding
@@ -110,6 +109,6 @@ export type SwitchConfig<
       /** this switch targets the redux store */
       type: "in-store";
       // special case for switches that read from and dispatch to the store:
-      path: ToggleablePaths<GameMenusState>;
+      path: BooleanStatePaths;
     }
 );

@@ -11,11 +11,14 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BackMenuItem } from "../../BackMenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
-import { selectPlanetsLiberatedCount } from "../../../../../../store/selectors";
-import { Suspense, use } from "react";
-import { importOriginalCampaign } from "../../../../../../_generated/originalCampaign/campaign.import";
-import { LoadingBorder } from "../../../../../../ui/LoadingBorder";
+import {
+  selectPlanetsLiberatedCount,
+  useCurrentCampaign,
+} from "../../../../../../store/selectors";
+import { Suspense } from "react";
 import { multilineTextClass } from "../../multilineTextClass";
+
+const ORIGINAL_GAME_MAX_SCORE = 94_000;
 
 const calculateScore = (
   roomsExploredCount: number,
@@ -25,10 +28,35 @@ const calculateScore = (
   return roomsExploredCount * 160 + planetsLiberatedCount * 10_000;
 };
 
+type ScoreThreshold = {
+  /** Proportion of max score (0-1), exclusice of the upper limit */
+  upToProportion: number;
+  label: string;
+};
+
+// Thresholds from original game as proportions of the original game's max score
+const scoreThresholds: ScoreThreshold[] = [
+  { upToProportion: 8_000 / ORIGINAL_GAME_MAX_SCORE, label: "beginner" }, // ~0.085
+  { upToProportion: 20_000 / ORIGINAL_GAME_MAX_SCORE, label: "novice" }, // ~0.213
+  { upToProportion: 30_000 / ORIGINAL_GAME_MAX_SCORE, label: "spy" }, // ~0.319
+  { upToProportion: 55_000 / ORIGINAL_GAME_MAX_SCORE, label: "master-spy" }, // ~0.585
+  { upToProportion: 84_000 / ORIGINAL_GAME_MAX_SCORE, label: "hero" }, // ~0.894
+  { upToProportion: 1.0, label: "liberator" },
+  { upToProportion: Infinity, label: "completionist" },
+];
+
+const getScoreLabel = (score: number, maxScore: number): string => {
+  const proportion = score / maxScore;
+
+  for (const { upToProportion, label } of scoreThresholds) {
+    if (proportion < upToProportion) return label;
+  }
+  // This should never be reached due to Infinity threshold
+  return "completionist";
+};
+
 const ScoreDialogContents = () => {
-  // somehow, this is stopping when the promise is already resolved and throwing up to the suspense
-  // boundary, even though to get here you must already have the campaign imported :-/
-  const { campaign } = use(importOriginalCampaign());
+  const campaign = useCurrentCampaign();
 
   const planetsLiberatedCount = useAppSelector(selectPlanetsLiberatedCount);
   const roomsExploredCount = useAppSelector(
@@ -41,21 +69,10 @@ const ScoreDialogContents = () => {
 
   const score = calculateScore(roomsExploredCount, planetsLiberatedCount);
 
-  // we are assuming the original campaign - will need to be changed
-  // when others are supported
   const roomCount = size(objectKeys(campaign.rooms));
-
   const maxScore = calculateScore(roomCount, 5);
 
-  const scoreLabel =
-    // dummy in the original but I thought that's a bit rude!
-    score < 8_000 ? "beginner"
-    : score < 20_000 ? "novice"
-    : score < 30_000 ? "spy"
-    : score < 55_000 ? "master-spy"
-    : score < 84_000 ? "hero"
-    : score < maxScore ? "liberator"
-    : "completionist";
+  const scoreLabel = getScoreLabel(score, maxScore);
 
   return (
     <>
@@ -91,7 +108,7 @@ export const ScoreDialog = () => {
       <Suspense
         fallback={
           <>
-            <LoadingBorder />
+            <Border className="bg-metallicBlue zx:bg-zxCyan" />
             <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed h-full block" />
           </>
         }

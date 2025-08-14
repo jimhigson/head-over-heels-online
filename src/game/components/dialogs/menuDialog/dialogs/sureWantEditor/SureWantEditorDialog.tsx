@@ -14,11 +14,13 @@ import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 
 const blurbMarkdown = `##*HoH-ed ➡* The Level editor
-After porting the original game, I built an *editor* so I could make the **sequel levels**
+I built an *editor* so I could make the **sequel levels**
 
-![](texture-headlessBase?float-left)**Share puzzles** and *Challenge* others to **solve them**
+![](texture-headlessBase?float-left)**Make puzzles**!
 
-hoh-ed is **in beta** - occasional crashes and frequent confusion`;
+*Challenge* others to **solve them**!
+
+**in beta**; expect occasional crashes and *frequent confusion*`;
 
 export const SureWantEditorDialog = () => {
   const goToEditor = useCallback(() => {
@@ -28,10 +30,10 @@ export const SureWantEditorDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-metallicBlue zx:bg-zxCyan"
+        className="bg-metallicBlueHalfbrite zx:bg-zxCyan"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxBlack px-1">
+      <Dialog className="bg-shadowHalfbrite zx:bg-zxBlack px-1">
         <Portal.Provider>
           <div className="flex flex-col gap-y-2 mt-1 h-full">
             {isTouchDevice() && (
@@ -51,7 +53,9 @@ export const SureWantEditorDialog = () => {
                 label="Edit the levels"
                 onSelect={goToEditor}
               />
-              {isTouchDevice() || <BackMenuItem />}
+              {isTouchDevice() || (
+                <BackMenuItem customLabel="I’m scared, go back" />
+              )}
             </MenuItems>
             {isTouchDevice() || (
               <SelectedItemHint className="text-midGrey zx:text-zxWhite resHandheld:hidden" />

@@ -1,3 +1,4 @@
+import { originalUserId } from "../../../../../../model/modelTypes";
 import type { SceneryName } from "../../../../../../sprites/planets";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { getMapColoursClass } from "./mapColours";
@@ -26,7 +27,7 @@ export const MapBackground = <RoomId extends string>(
   const { campaign, curRoomId } = props;
 
   const isMainMapForOriginalCampaign =
-    campaign.name === "original" &&
+    campaign.locator.userId === originalUserId &&
     !["penitentiary", "bookworld", "egyptus", "safari"].includes(
       campaign.rooms[curRoomId].planet,
     );

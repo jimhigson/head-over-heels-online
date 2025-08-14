@@ -17,6 +17,9 @@ import type { Get, Paths } from "type-fest";
 import type { ToggleablePaths } from "../utils/Toggleable";
 import { getAtPath } from "../utils/getAtPath";
 import { selectTotalUpscale } from "./slices/upscale/upscaleSlice";
+import type { Campaign } from "../model/modelTypes";
+import { selectMaybeLoadedCampaignData } from "./slices/campaigns/campaignsApiSlice";
+import { selectorHook } from "../utils/react/selectorHook";
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>
@@ -157,4 +160,27 @@ export const useRoomsExplored = <RoomId extends string>() => {
   return useAppSelector(
     (state) => state.gameMenus.gameInPlay.roomsExplored as Record<RoomId, true>,
   );
+};
+
+export const selectCurrentCampaign = <RoomId extends string = string>(
+  state: RootState,
+): Campaign<RoomId> => {
+  const maybeCampaign = selectMaybeCurrentCampaign<RoomId>(state);
+  if (!maybeCampaign) {
+    throw new Error("No current campaign");
+  }
+  return maybeCampaign;
+};
+
+export const useCurrentCampaign = selectorHook(selectCurrentCampaign) as <
+  T extends string,
+>() => Campaign<T>;
+
+export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
+  state: RootState,
+): Campaign<RoomId> | undefined => {
+  const currentCampaignLocator = state.gameMenus.gameInPlay.campaignLocator;
+  return currentCampaignLocator === undefined ? undefined : (
+      selectMaybeLoadedCampaignData<RoomId>(state, currentCampaignLocator)
+    );
 };

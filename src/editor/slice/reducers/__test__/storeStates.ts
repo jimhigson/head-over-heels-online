@@ -31,7 +31,11 @@ export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
   ...initialLevelEditorSliceState,
   currentlyEditingRoomId: testRoomId,
   campaignInProgress: {
-    name: "testCampaign",
+    locator: {
+      campaignName: "testCampaign",
+      userId: "testUserId",
+      version: 0,
+    },
     rooms: {
       [testRoomId]: {
         id: testRoomId,

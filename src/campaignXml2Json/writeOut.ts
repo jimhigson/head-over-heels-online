@@ -22,7 +22,7 @@ const patchFilename = (roomId: string) =>
 
 export const writeOut = async ({
   rooms: convertedRooms,
-  name: campaignName,
+  locator,
 }: Campaign<string>) => {
   const targetDir = "src/_generated/originalCampaign/";
   const tsBarrellFilename = `${targetDir}/campaign.ts`;
@@ -58,7 +58,7 @@ export const writeOut = async ({
       .join("\n")};\n
         
     export const campaign = { 
-      "name": "${campaignName}",
+      "locator": ${canonicalize(locator)},
       "rooms": { 
         ${roomIdsSorted.join(",\n")}
        },

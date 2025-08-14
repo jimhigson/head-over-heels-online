@@ -1,6 +1,5 @@
 "use client";
-import { Border } from "./Border";
 
 export const LoadingBorder = () => (
-  <Border className="loading-border zx:zx-loading-border" />
+  <div className="fixed inset-0 z-border loading-border zx:zx-loading-border" />
 );

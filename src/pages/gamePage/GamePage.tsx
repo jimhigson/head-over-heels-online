@@ -12,7 +12,10 @@ import type Cheats from "../../game/components/cheats/Cheats.tsx";
 import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
 import { importGameMain } from "../../game/gameMain.import.ts";
 import { loadSpritesheet } from "../../sprites/spriteSheet.ts";
-import { useLoading } from "../../game/components/LoadingContext.tsx";
+import {
+  manualLoadingStarted,
+  manualLoadingFinished,
+} from "../../store/slices/manualLoadingSlice.ts";
 import { importOnce } from "../../utils/importOnce.ts";
 import { loadSounds } from "../../sound/soundsLoader.ts";
 import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
@@ -22,90 +25,58 @@ import { createSerialisableErrors } from "../../utils/redux/createSerialisableEr
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
-import { decompressObject } from "../../db/compressObject.ts";
-import type { Campaign } from "../../model/modelTypes.ts";
-import { typedURLSearchParams } from "../../options/queryParams.ts";
-import { loadCampaignFromDb } from "../../db/campaign.ts";
-import { importTestCampaign } from "../../testCampaign.import.ts";
-import { importOriginalCampaign } from "../../_generated/originalCampaign/campaign.import.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
-const loadCampaign = async (cheatsOn: boolean) => {
-  const queryParams = typedURLSearchParams();
-  const hasUrlCampaignData = queryParams.get("campaignData");
-
-  const urlCampaignAuthor = queryParams.get("campaignAuthor");
-  const urlCampaignName = queryParams.get("campaignName");
-  const hasDatabaseCampaign = urlCampaignAuthor && urlCampaignName;
-
-  if (hasUrlCampaignData)
-    return decompressObject<Campaign<string>>(hasUrlCampaignData);
-
-  if (hasDatabaseCampaign)
-    return loadCampaignFromDb({
-      name: urlCampaignName,
-      createdBy: urlCampaignAuthor,
-    });
-
-  if (cheatsOn) {
-    const [{ campaign: originalCampaign }, { testCampaign }] =
-      await Promise.all([importOriginalCampaign(), importTestCampaign()]);
-    return {
-      ...originalCampaign,
-      rooms: {
-        ...originalCampaign.rooms,
-        ...testCampaign.rooms,
-      },
-    };
-  } else {
-    return (await importOriginalCampaign()).campaign;
-  }
-};
-
-const loadGameAssets = importOnce((cheatsOn: boolean) => {
-  return Promise.all([
-    importGameMain(),
-    loadCampaign(cheatsOn),
-    loadSpritesheet(),
-    loadSounds(),
-  ]);
+const loadGameAssets = importOnce(() => {
+  return Promise.all([importGameMain(), loadSpritesheet(), loadSounds()]);
 });
 
 const useCreateGameApi = (): GameApi<string> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<string> | undefined>();
   const isGameRunning = useIsGameRunning();
+  const currentCampaignLocator = useAppSelector(
+    (store) => store.gameMenus.gameInPlay.campaignLocator,
+  );
   const inputState = useInputStateTracker();
-  const cheatsOn = useCheatsOn();
-  const { loadingStarted, loadingFinished } = useLoading();
 
   useEffect(() => {
     if (!isGameRunning) {
       setGameApi(undefined);
       // the game isn't running, but we will pre-load the assets.
-      // they can't load twice so this is ok
-      loadGameAssets(cheatsOn);
+      // they can't load twice so this is safe to call any time
+      loadGameAssets();
       return;
     }
+
     let thisEffectCancelled = false;
     let thisEffectGameApi: GameApi<string> | undefined;
 
     const go = async () => {
+      let startedLoading = false;
       try {
-        loadingStarted();
-        const [
-          { default: gameMain },
-          campaign,
-          //_spriteSheet,
-          //_sounds,
-        ] = await loadGameAssets(cheatsOn);
-        loadingFinished();
+        if (currentCampaignLocator === undefined) {
+          throw new Error(
+            "game is marked as running, but we have no campaign locator, no way to know which campaign to load",
+          );
+        }
+
+        startedLoading = true;
+        store.dispatch(manualLoadingStarted());
+        const [{ default: gameMain }] = await loadGameAssets();
+        store.dispatch(manualLoadingFinished());
 
         if (!thisEffectCancelled) {
-          thisEffectGameApi = await gameMain(campaign, inputState);
+          thisEffectGameApi = await gameMain(
+            currentCampaignLocator,
+            inputState,
+          );
           setGameApi(thisEffectGameApi);
         }
       } catch (thrown) {
+        if (startedLoading) {
+          store.dispatch(manualLoadingFinished());
+        }
         store.dispatch(errorCaught(createSerialisableErrors(thrown)));
       }
     };
@@ -116,7 +87,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
       thisEffectGameApi?.stop();
       thisEffectCancelled = true;
     };
-  }, [cheatsOn, isGameRunning, inputState, loadingStarted, loadingFinished]);
+  }, [isGameRunning, inputState, currentCampaignLocator]);
 
   return gameApi;
 };
@@ -151,7 +122,14 @@ export const GamePage = () => {
 
   return (
     <>
-      <div style={canvasInlineStyle} ref={setRenderArea} />
+      {/* 👇👇 where the magic happens - the element the game plays in! 👇👇 */}
+      <div
+        // without tabIndex here, Chrome doesn't allow tab key to be used to open the map
+        // (or anything else) because it moves focus to the address bar
+        tabIndex={0}
+        style={canvasInlineStyle}
+        ref={setRenderArea}
+      />
       <GameApiProvider gameApi={gameApi}>
         <DispatchingErrorBoundary>
           <ConnectInputToStore />

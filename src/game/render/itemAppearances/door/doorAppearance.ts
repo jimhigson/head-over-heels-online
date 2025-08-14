@@ -22,6 +22,8 @@ import { iterateToContainer } from "../../../iterateToContainer";
 import type { ItemAppearance } from "../ItemAppearance";
 import { itemAppearanceRenderOnce } from "../ItemAppearance";
 import type { RoomState } from "../../../../model/RoomState";
+import { selectMaybeCurrentCampaign } from "../../../../store/selectors";
+import { store } from "../../../../store/store";
 
 function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   {
@@ -128,6 +130,9 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
         general: { gameState },
       },
     }) => {
+      // TODO: put store state on general render context
+      const campaign = selectMaybeCurrentCampaign(store.getState());
+
       const axis = doorAlongAxis(direction);
 
       const useColoursFromRoom =
@@ -137,7 +142,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           // since the level editor also has a campaign, but not a running game
           room
           // in the game, show them properly in the colours of the room they lead to
-        : (gameState.campaign.rooms[toRoom] ??
+        : (campaign?.rooms[toRoom] ??
           // toRoom might not exist if working in the editor and didn't make it yet
           room);
 

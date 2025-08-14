@@ -7,7 +7,7 @@ export type Json =
   | Json[];
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)";
@@ -63,7 +63,11 @@ export type Database = {
         Returns: Json;
       };
       get_latest_campaign: {
-        Args: { p_name: string; p_created_by?: string; p_version?: number };
+        Args: {
+          p_campaign_name: string;
+          p_user_id?: string;
+          p_version?: number;
+        };
         Returns: {
           created_at: string;
           created_by: string;
@@ -73,7 +77,7 @@ export type Database = {
         };
       };
       save_campaign_version: {
-        Args: { p_name: string; p_data: string; p_created_by?: string };
+        Args: { p_created_by?: string; p_data: string; p_name: string };
         Returns: number;
       };
     };

@@ -43,7 +43,11 @@ export const roomProperties = {
 } as const satisfies Partial<RoomState<"blacktooth", TestCampaignRoomId>>;
 
 const testCampaign = {
-  name: "testCampaign",
+  locator: {
+    campaignName: "mutatorsTestHarnessCampaign",
+    userId: "mutatorsTestHarnessCampaignAuthor",
+    version: 0,
+  },
   rooms: {
     headStartingRoom: {
       ...roomProperties,

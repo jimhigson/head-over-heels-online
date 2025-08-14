@@ -8,7 +8,6 @@ import { store } from "../../store/store.ts";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { useEffect } from "react";
 import { useIsUncolourised } from "../../store/selectors.ts";
-import { LoadingProvider } from "./LoadingContext.tsx";
 import { WantedEditor404 } from "./WantedEditor404.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
 
@@ -26,9 +25,7 @@ const AppInner = () => {
       <Route path="/">
         <CssVariables>
           <InputStateProvider>
-            <LoadingProvider>
-              <GamePage />
-            </LoadingProvider>
+            <GamePage />
           </InputStateProvider>
         </CssVariables>
       </Route>

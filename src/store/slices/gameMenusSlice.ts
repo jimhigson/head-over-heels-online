@@ -30,13 +30,26 @@ import { emptyObject } from "../../utils/empty";
 import type { RootState } from "../store";
 import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { CharacterName } from "../../model/modelTypes";
+import type { CampaignLocator, CharacterName } from "../../model/modelTypes";
 import { typedURLSearchParams } from "../../options/queryParams";
 import type { Container } from "pixi.js";
 import type { ScrollConfig } from "../../model/json/ItemConfigMap";
+import { canonicalize } from "json-canonicalize";
+import type { gameMenusSliceWhitelist } from "../persist/gameMenusSliceWhitelist";
+import { pick } from "../../utils/pick";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
+
+/**
+ * make a key so we can store campaigns against campaign locators, with composite keys,
+ * as values on a plain old js objects in the store
+ */
+const gameStateLocatorKey = (campaignLocator: CampaignLocator) => {
+  // leave version out, since a new version of a campaign can be made and hopefully the saves
+  // can still apply
+  return canonicalize(pick(campaignLocator, "userId", "campaignName"));
+};
 
 type BaseOpenMenu = {
   // will be undefined if the menu items have not been rendered yet, since relies
@@ -140,6 +153,10 @@ export type GameInPlayStoreState = {
    * a single property.
    */
   reincarnationPoint?: SavedGameState;
+  /**
+   * the userid/name of the campaign being played, or undefined if none
+   */
+  campaignLocator?: CampaignLocator;
 };
 
 const noPlanetsLiberated = {
@@ -149,7 +166,7 @@ const noPlanetsLiberated = {
   penitentiary: false,
   safari: false,
 };
-const initialGameInPlayStoreState: GameInPlayStoreState = {
+const initialGameInPlayStoreState = {
   planetsLiberated: noPlanetsLiberated,
   roomsExplored: {},
   scrollsRead: {},
@@ -186,17 +203,30 @@ export type GameMenusState = {
   gameInPlay: GameInPlayStoreState;
 
   /**
-   * the current game, saved in case the game is closed and come back
+   * current saved games, per-campaign, saved in case the game is closed and come back
    * to later - eg mobile app is switched away from, or the user switches
    * to another tab
    */
-  currentGame?: SavedGameState;
+  savedGames: {
+    saves: { [campaignLocatorFlat: string]: SavedGameState };
+    /**
+     * location of the campaign that was most recently saved. This is the one the
+     * app will automatically restore from on reloading - must exist as
+     * a key in saves
+     */
+    lastSavedCampaignLocator?: CampaignLocator;
+  };
 
   // if cheats are on, some cheat/debugging options are available
   cheatsOn: boolean;
 };
 
-type BooleanStatePaths = ToggleablePaths<GameMenusState>;
+/**
+ * paths used in switches and teleporters when they reference into the store
+ */
+export type BooleanStatePaths = ToggleablePaths<
+  Pick<GameMenusState, "userSettings" | "gameInPlay">
+>;
 
 export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
@@ -224,7 +254,9 @@ export const initialGameMenuSliceState: GameMenusState = {
 
   // optional fields given explicitly as undefined so that on restoring
   // a blank state after a crash, this can be used to overwrite the store
-  currentGame: undefined,
+  savedGames: {
+    saves: {},
+  },
 };
 
 /**
@@ -373,10 +405,18 @@ export const gameMenusSlice = createSlice({
         ...state.openMenus,
       ];
     },
-    gameStarted(state) {
+    closeAllMenus(state) {
+      state.openMenus = [];
+    },
+    gameStarted(
+      state,
+      {
+        payload: { campaignLocator },
+      }: PayloadAction<{ campaignLocator: CampaignLocator }>,
+    ) {
       if (state.gameRunning) {
         // resuming an already-running game:
-        state.openMenus = [];
+        throw new Error("game is already running");
       } else {
         // starting a new game:
         // go to crowns menu page if not already started the game
@@ -388,7 +428,10 @@ export const gameMenusSlice = createSlice({
           },
         ];
         state.gameRunning = true;
-        state.gameInPlay = initialGameInPlayStoreState;
+        state.gameInPlay = {
+          ...initialGameInPlayStoreState,
+          campaignLocator,
+        };
       }
     },
     backToParentMenu(state) {
@@ -545,7 +588,11 @@ export const gameMenusSlice = createSlice({
       } else {
         state.gameRunning = false;
         delete state.gameInPlay.reincarnationPoint;
-        delete state.currentGame;
+        const currentCampaignLocator = state.gameInPlay.campaignLocator;
+        delete state.savedGames.saves[
+          gameStateLocatorKey(currentCampaignLocator!)
+        ];
+        delete state.savedGames.lastSavedCampaignLocator;
         /*
         keep these for the scores dialog
         state.gameInPlay.planetsLiberated = noPlanetsLiberated;
@@ -580,8 +627,21 @@ export const gameMenusSlice = createSlice({
         },
       ];
     },
-    saveCurrentGame(state, { payload }: PayloadAction<SavedGameState>) {
-      state.currentGame = payload;
+    saveGame(state, { payload }: PayloadAction<SavedGameState>) {
+      const currentCampaignLocator = state.gameInPlay.campaignLocator;
+
+      if (currentCampaignLocator === undefined) {
+        throw new Error(
+          "trying to save a game, but seems like there's no campaign to save against",
+        );
+      }
+
+      // only puts the saved game in the store - it is up to
+      // redux-persist to actually save it. The savedGame property should be
+      // on its whitelist
+      state.savedGames.saves[gameStateLocatorKey(currentCampaignLocator)] =
+        payload;
+      state.savedGames.lastSavedCampaignLocator = currentCampaignLocator;
     },
     gameRestoreFromSave(
       state,
@@ -639,16 +699,29 @@ export const gameMenusSlice = createSlice({
   },
   extraReducers(builder) {
     type RehydrateAction = PayloadAction<
-      Pick<GameMenusState, "currentGame"> | undefined,
+      | Pick<GameMenusState, (typeof gameMenusSliceWhitelist)[number]>
+      | undefined,
       typeof REHYDRATE
     >;
 
+    // add a case for when the state is restored from redux-persist. Redux persist
+    // will put the .savedGame property in for us, we just do a bit of housekeeping
+    // for it
     builder.addCase<typeof REHYDRATE, RehydrateAction>(
       REHYDRATE,
       (state, action) => {
-        if (action.payload?.currentGame) {
+        const savedGames = action.payload?.savedGames;
+        const lastSavedCampaignLocator = savedGames?.lastSavedCampaignLocator;
+
+        const inPlaySave =
+          lastSavedCampaignLocator &&
+          savedGames.saves[gameStateLocatorKey(lastSavedCampaignLocator)];
+
+        if (inPlaySave) {
           // we have just loaded and a game is already in progress from a previous session
           state.gameRunning = true;
+          state.gameInPlay = inPlaySave.store.gameMenus.gameInPlay;
+          // start paused:
           state.openMenus = [
             {
               menuId: "hold",
@@ -663,6 +736,12 @@ export const gameMenusSlice = createSlice({
   selectors: {
     selectHasError(state: GameMenusState) {
       return state.openMenus.some((menu) => menu.menuId === "errorCaught");
+    },
+    selectSaveForCampaign(
+      state: GameMenusState,
+      campaignLocator: CampaignLocator,
+    ) {
+      return state.savedGames.saves[gameStateLocatorKey(campaignLocator)];
     },
   },
 });
@@ -679,6 +758,7 @@ export const {
   assignInputStart,
   backToParentMenu,
   characterRoomChange,
+  closeAllMenus,
   crownCollected,
   debugItemClicked,
   doneAssigningInput,
@@ -697,7 +777,7 @@ export const {
   reincarnationAccepted,
   reincarnationFishEaten,
   roomExplored,
-  saveCurrentGame,
+  saveGame,
   scrollRead,
   setEmulatedResolution,
   setFocussedMenuItemId,
@@ -707,5 +787,12 @@ export const {
 } = gameMenusSlice.actions;
 
 export const { selectHasError } = gameMenusSlice.selectors;
+
+// provide a variant of this selector that can provide a RoomId without the callsite casting
+export const selectSaveForCampaign = gameMenusSlice.selectors
+  .selectSaveForCampaign as <RoomId extends string>(
+  state: { gameMenus: GameMenusState },
+  campaignLocator: CampaignLocator,
+) => SavedGameState<RoomId>;
 
 export const gameMenusSliceActions = gameMenusSlice.actions;

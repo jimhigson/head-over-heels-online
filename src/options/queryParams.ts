@@ -1,11 +1,9 @@
 /** strong-typing for query params used in the game or editor */
 export type AllowedQueryParams = {
-  campaignData: string | null;
-  noSaves: "1" | null;
   cheats: "1" | null;
   playAsHeels: "1" | null;
   campaignName: string | null;
-  campaignAuthor: string | null;
+  campaignAuthorUserId: string | null;
 };
 
 export type TypedURLSearchParams = {
