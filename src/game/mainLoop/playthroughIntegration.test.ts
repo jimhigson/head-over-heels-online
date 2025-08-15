@@ -15,7 +15,7 @@ import type {
   BasicGameStateOptions,
 } from "../../_testUtils/basicRoom";
 import {
-  basicGameState,
+  setUpBasicGame,
   firstRoomId,
   secondRoomId,
 } from "../../_testUtils/basicRoom";
@@ -40,14 +40,15 @@ import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selec
 import { store } from "../../store/store";
 import { iterateRoomItems } from "../../model/RoomState";
 import { size } from "iter-tools";
+import { resetStore } from "../../_testUtils/initStoreForTests";
 
 beforeEach(() => {
-  store.dispatch({ type: "@@_RESET_FOR_TESTS" });
+  resetStore();
 });
 
 describe("pickups", () => {
   test("character walks into pickup", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -106,7 +107,7 @@ describe("pickups", () => {
   });
 
   test("when character walks into pickup that they are not eligible to collect, they just push it", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -147,7 +148,7 @@ describe("pickups", () => {
   });
 
   test("character stand on pickup by walking off adjacent block", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -209,7 +210,7 @@ describe("pickups", () => {
   });
 
   test("pickup can land on character", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -246,7 +247,7 @@ describe("pickups", () => {
     // confirms fix for a bug where head couldn't collect the fast steps:
     // https://discord.com/channels/1346483548290285568/1346483548290285571/1386696014236352612
 
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -284,7 +285,7 @@ describe("pickups", () => {
   test.todo(
     "pickups do not reload back after collecting, leaving room, and coming back",
     () => {
-      const gameState = basicGameState({
+      const gameState = setUpBasicGame({
         firstRoomItems: {
           heels: {
             type: "player",
@@ -351,7 +352,7 @@ describe("jumping", () => {
   test.each(testFrameRates)(
     "head can jump between two blocks forming a ladder (%j)",
     (frameRate) => {
-      const gameState = basicGameState({
+      const gameState = setUpBasicGame({
         firstRoomItems: {
           head: {
             type: "player",
@@ -403,7 +404,7 @@ describe("jumping", () => {
   test.each(testFrameRates)(
     "doesn't snag on the boundary between bounding boxes on the way up a jump (%j)",
     (frameRate) => {
-      const gameState = basicGameState({
+      const gameState = setUpBasicGame({
         firstRoomItems: {
           head: {
             type: "player",
@@ -443,7 +444,7 @@ describe("jumping", () => {
   test.each(testFrameRates)(
     "doesn't snag on the boundary between bounding boxes while falling (%j)",
     (frameRate) => {
-      const gameState = basicGameState({
+      const gameState = setUpBasicGame({
         firstRoomItems: {
           head: {
             type: "player",
@@ -503,7 +504,7 @@ describe("jumping", () => {
       (name) => {
         const expectedJumpHeight = playerJumpHeightPx[name];
         test(`expect a height of ${expectedJumpHeight}px`, () => {
-          const gameState = basicGameState({
+          const gameState = setUpBasicGame({
             firstRoomItems: {
               [name]: {
                 type: "player",
@@ -562,7 +563,7 @@ describe("jumping", () => {
     "head can get onto a 4-high tower by jumping from a spring (%j)",
     (frameRate) => {
       // similar to safari9triple (except that needs more blocks under the spring)
-      const gameState = basicGameState({
+      const gameState = setUpBasicGame({
         firstRoomItems: {
           head: {
             type: "player",
@@ -605,7 +606,7 @@ describe("jumping", () => {
     "head can't get onto a 5-high tower by jumping from a spring (%j)",
     (frameRate) => {
       // similar to safari9triple (except that needs more blocks under the spring)
-      const gameState = basicGameState({
+      const gameState = setUpBasicGame({
         firstRoomItems: {
           head: {
             type: "player",
@@ -661,7 +662,7 @@ describe("doors", () => {
       z: 0,
     },
   ])("moving from first room to second through door", (startPosition) => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -695,7 +696,7 @@ describe("doors", () => {
   });
 
   test("character can push each other through a door", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -756,7 +757,7 @@ describe("doors", () => {
   });
 
   test("character can slide down a wall and through a door", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -804,7 +805,7 @@ describe("scrolls", () => {
   // test potentially!
   // THIS MAY CAUSE RANDOM FAILURES UNTIL THE STORE IS NO LONGER A SINGLETON!
   test("collecting a scroll in one room means it does not get loaded in another room with the same scroll", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -872,7 +873,7 @@ describe("scrolls", () => {
 
 describe("teleporter", () => {
   test("can teleport to the next room", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -916,7 +917,7 @@ describe("teleporter", () => {
 
   test("teleporter can be inactive based on a store value", () => {
     // set
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -961,7 +962,7 @@ describe("teleporter", () => {
   });
   test("teleporter can be activated based on a store value", () => {
     // set
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1019,7 +1020,7 @@ describe("teleporter", () => {
 
 describe("conveyors", () => {
   test("items move on conveyors and can slide on top of other items", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         portableBlock: {
           type: "portableBlock",
@@ -1072,7 +1073,7 @@ describe("conveyors", () => {
   });
 
   test("conveyors can take item around corners (see blacktooth26)", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         portableBlock: {
           type: "portableBlock",
@@ -1125,7 +1126,7 @@ describe("conveyors", () => {
 
 describe("deadly blocks", () => {
   test("player loses life on touching volcano", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -1164,7 +1165,7 @@ describe("deadly blocks", () => {
   });
 
   test("can't jump off of spikes during death animation", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -1217,7 +1218,7 @@ describe("monsters", () => {
   test.each(["head", "heels"] as const)(
     "homing bot rushes towards %s",
     (playableName: CharacterName) => {
-      const gameState = basicGameState({
+      const gameState = setUpBasicGame({
         firstRoomItems: {
           [playableName]: {
             type: "player",
@@ -1255,7 +1256,7 @@ describe("monsters", () => {
 
 describe("snapping stationary items to pixel grid", () => {
   test("snaps to grid after moving and stopping", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         head: {
           type: "player",
@@ -1311,7 +1312,7 @@ describe("lifts", () => {
   test("heels stays stood on a lift", () => {
     // this is failing because heels hasn't had enough time to fall fast enough to match the lift's fall speed
 
-    const gameState = basicGameState(playerOnALift);
+    const gameState = setUpBasicGame(playerOnALift);
     const heelsStandingOnPerFrame: Array<
       PlayableItem<"heels", TestRoomId>["state"]["standingOnItemId"]
     > = [];
@@ -1331,7 +1332,7 @@ describe("lifts", () => {
   });
 
   test("player on a lift reaches lift height", () => {
-    const gameState = basicGameState(playerOnALift);
+    const gameState = setUpBasicGame(playerOnALift);
 
     let maxHeight = 0;
 
@@ -1348,7 +1349,7 @@ describe("lifts", () => {
   });
 
   test("player under a lift blocks it", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1379,7 +1380,7 @@ describe("lifts", () => {
   });
 
   test("lift can take player to next room vertically", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1424,7 +1425,7 @@ describe("lifts", () => {
   });
 
   test("player partially on lift can be deposited and picked up", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1479,7 +1480,7 @@ describe("lifts", () => {
   });
 
   test("player squashed between rising lift and higher block stays in place standing on lift", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1513,7 +1514,7 @@ describe("lifts", () => {
   });
 
   test("lift does not move if a heavy item is on it (blacktooth 78)", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1550,7 +1551,7 @@ describe("lifts", () => {
 
 describe("carrying", () => {
   test("heels can pick up a cube", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1591,7 +1592,7 @@ describe("carrying", () => {
   });
 
   test("heels can jump-pick up a cube by holding jump and carry while falling onto it", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1665,7 +1666,7 @@ describe("pushing", () => {
   };
 
   test("player pushes a block until reaching an obstruction", () => {
-    const gameState = basicGameState(withBlockToPush);
+    const gameState = setUpBasicGame(withBlockToPush);
 
     playGameThrough(gameState, {
       setupInitialInput(mockInputStateTracker) {
@@ -1683,7 +1684,7 @@ describe("pushing", () => {
   });
 
   test("player can push a block diagonally", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1722,7 +1723,7 @@ describe("pushing", () => {
   });
 
   test("can push multiple blocks in a row", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       ...withBlockToPush,
       firstRoomItems: {
         ...withBlockToPush.firstRoomItems,
@@ -1752,7 +1753,7 @@ describe("pushing", () => {
   });
 
   test("can not push a charging cyberman", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         toaster: {
           type: "deadlyBlock",
@@ -1822,7 +1823,7 @@ describe("jumping", () => {
 
 describe("dissapearing items", () => {
   const gameStateWithDisappearingBlocks = () =>
-    basicGameState({
+    setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1893,7 +1894,7 @@ describe("dissapearing items", () => {
     });
   });
   test("can partially destroy a multiplied dissapearing blocks in the json", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -1941,7 +1942,7 @@ describe("dissapearing items", () => {
     });
   });
   test("can jump along a line of pickups, collecting them", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -2003,7 +2004,7 @@ describe("dissapearing items", () => {
 });
 
 test("platforms that move when stood on", () => {
-  const gameState = basicGameState({
+  const gameState = setUpBasicGame({
     firstRoomItems: {
       heels: {
         type: "player",
@@ -2040,7 +2041,7 @@ test("platforms that move when stood on", () => {
 });
 
 test("monsters don't fall out of rooms via the doorways", () => {
-  const gameState = basicGameState({
+  const gameState = setUpBasicGame({
     firstRoomItems: {
       heels: {
         type: "player",
@@ -2086,7 +2087,7 @@ describe("touching", () => {
 
 describe("reincarnation", () => {
   test("saves the game without the fish in it", () => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",
@@ -2134,7 +2135,7 @@ describe("reincarnation", () => {
 
 describe("latent movement", () => {
   test.each(testFrameRates)("%j Hz", (frameRate) => {
-    const gameState = basicGameState({
+    const gameState = setUpBasicGame({
       firstRoomItems: {
         heels: {
           type: "player",

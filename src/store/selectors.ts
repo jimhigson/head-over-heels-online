@@ -167,7 +167,9 @@ export const selectCurrentCampaign = <RoomId extends string = string>(
 ): Campaign<RoomId> => {
   const maybeCampaign = selectMaybeCurrentCampaign<RoomId>(state);
   if (!maybeCampaign) {
-    throw new Error("No current campaign");
+    throw new Error(
+      `No current campaign. Campaign locator is:\n${JSON.stringify(state.gameMenus.gameInPlay.campaignLocator, null, 2)}`,
+    );
   }
   return maybeCampaign;
 };

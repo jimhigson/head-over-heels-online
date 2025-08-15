@@ -3,6 +3,7 @@ import type { JsonItem } from "../model/json/JsonItem";
 import type { Campaign } from "../model/modelTypes";
 import type { RoomJson } from "../model/RoomJson";
 import { addPerimeterWallsToRoom } from "./addPerimeterWallsToRoom";
+import { gameStartedWithCampaign } from "./initStoreForTests";
 import type { GameStateWithMockInput } from "./MockInputStateTracker";
 import { MockInputStateTracker } from "./MockInputStateTracker";
 
@@ -69,7 +70,7 @@ export type BasicGameStateOptions = {
   secondRoomDeadlyFloor?: boolean;
 };
 
-export const basicGameState = ({
+export const setUpBasicGame = ({
   firstRoomItems,
   firstRoomProps = {},
   secondRoomItems = {},
@@ -115,6 +116,8 @@ export const basicGameState = ({
       times: floorItem.config.times,
     };
   }
+
+  gameStartedWithCampaign(campaign);
 
   const gameState = loadGameState<TestRoomId>({
     campaign,

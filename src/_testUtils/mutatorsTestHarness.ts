@@ -32,6 +32,7 @@ import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { PortableItemType } from "../game/physics/itemPredicates";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameOver } from "../store/slices/gameMenusSlice";
+import { gameStartedWithCampaign } from "./initStoreForTests";
 
 export type TestCampaignRoomId =
   | "heelsStartingRoom"
@@ -116,6 +117,8 @@ const testCampaign = {
 } as const satisfies Campaign<TestCampaignRoomId>;
 
 export const mutatorsTestHarness = () => {
+  gameStartedWithCampaign(testCampaign);
+
   const gameState = loadGameState({
     campaign: testCampaign,
     inputStateTracker: new MockInputStateTracker(),

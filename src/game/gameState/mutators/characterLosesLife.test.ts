@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import { mutatorsTestHarness } from "../../../_testUtils/mutatorsTestHarness";
 import {
   individualCharacterNames,
@@ -6,6 +6,11 @@ import {
 } from "../../../model/modelTypes";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
 import { selectAbilities } from "../gameStateSelectors/selectPlayableItem";
+import { resetStore } from "../../../_testUtils/initStoreForTests";
+
+beforeEach(() => {
+  resetStore();
+});
 
 describe("while not in symbiosis", () => {
   describe.each(individualCharacterNames)(

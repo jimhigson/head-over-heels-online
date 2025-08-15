@@ -121,7 +121,6 @@ export const loadGameState = <RoomId extends string>({
   // create a gameApi
   return Object.assign(writeInto, {
     inputStateTracker,
-    campaign,
     gameSpeed: 1,
 
     // saved game can override any of the above

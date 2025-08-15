@@ -1,5 +1,10 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, beforeEach } from "vitest";
 import { mutatorsTestHarness } from "../../../_testUtils/mutatorsTestHarness";
+import { resetStore } from "../../../_testUtils/initStoreForTests";
+
+beforeEach(() => {
+  resetStore();
+});
 
 describe("hush puppies integration", () => {
   test("vanish when head enters", () => {
