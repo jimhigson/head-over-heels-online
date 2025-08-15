@@ -17,6 +17,9 @@ import type { Get, Paths } from "type-fest";
 import type { ToggleablePaths } from "../utils/Toggleable";
 import { getAtPath } from "../utils/getAtPath";
 import { selectTotalUpscale } from "./slices/upscale/upscaleSlice";
+import type { Campaign } from "../model/modelTypes";
+import { selectMaybeLoadedCampaignData } from "./slices/campaigns/campaignsApiSlice";
+import { selectorHook } from "../utils/react/selectorHook";
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>
@@ -83,10 +86,10 @@ export const selectIsInfiniteDoughnutsPoke = selectUserSetting(
 
 export const selectHasAllPlanetCrowns = (state: RootState) => {
   return (
-    state.gameMenus.planetsLiberated.egyptus &&
-    state.gameMenus.planetsLiberated.bookworld &&
-    state.gameMenus.planetsLiberated.penitentiary &&
-    state.gameMenus.planetsLiberated.safari
+    state.gameMenus.gameInPlay.planetsLiberated.egyptus &&
+    state.gameMenus.gameInPlay.planetsLiberated.bookworld &&
+    state.gameMenus.gameInPlay.planetsLiberated.penitentiary &&
+    state.gameMenus.gameInPlay.planetsLiberated.safari
   );
 };
 
@@ -99,7 +102,11 @@ export const useInputDirectionMode = (): InputDirectionMode =>
   useAppSelector(selectInputDirectionMode);
 
 export const selectPlanetsLiberatedCount = (state: RootState) =>
-  size(iterate(objectValues(state.gameMenus.planetsLiberated)).filter(Boolean));
+  size(
+    iterate(objectValues(state.gameMenus.gameInPlay.planetsLiberated)).filter(
+      Boolean,
+    ),
+  );
 
 export const selectShowBoundingBoxes = selectUserSetting(
   "displaySettings.showBoundingBoxes",
@@ -151,6 +158,31 @@ export const selectAtPath = (
 
 export const useRoomsExplored = <RoomId extends string>() => {
   return useAppSelector(
-    (state) => state.gameMenus.roomsExplored as Record<RoomId, true>,
+    (state) => state.gameMenus.gameInPlay.roomsExplored as Record<RoomId, true>,
   );
+};
+
+export const selectCurrentCampaign = <RoomId extends string = string>(
+  state: RootState,
+): Campaign<RoomId> => {
+  const maybeCampaign = selectMaybeCurrentCampaign<RoomId>(state);
+  if (!maybeCampaign) {
+    throw new Error(
+      `No current campaign. Campaign locator is:\n${JSON.stringify(state.gameMenus.gameInPlay.campaignLocator, null, 2)}`,
+    );
+  }
+  return maybeCampaign;
+};
+
+export const useCurrentCampaign = selectorHook(selectCurrentCampaign) as <
+  T extends string,
+>() => Campaign<T>;
+
+export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
+  state: RootState,
+): Campaign<RoomId> | undefined => {
+  const currentCampaignLocator = state.gameMenus.gameInPlay.campaignLocator;
+  return currentCampaignLocator === undefined ? undefined : (
+      selectMaybeLoadedCampaignData<RoomId>(state, currentCampaignLocator)
+    );
 };

@@ -7,20 +7,10 @@ import { Suspense } from "react";
 import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
 import { LazyRoomEditingArea } from "./RoomEditingArea/RoomEditingArea.lazy";
 import { EditorMap } from "./EditorMap/EditorMap";
+import { SpinnerHead, SpinnerHeels } from "../ui/Spinner";
 
 const LevelEditor = () => {
   usePageAsAnApp();
-
-  const loadingFallbackHead = (
-    <div className="flex h-full items-center justify-center bg-pureBlack">
-      <span className="sprite texture-animated-head_walking_right" />
-    </div>
-  );
-  const loadingFallbackHeels = (
-    <div className="flex h-full items-center justify-center bg-pureBlack">
-      <span className="sprite texture-animated-heels_walking_towards" />
-    </div>
-  );
 
   return (
     // <ErrorBoundary>
@@ -29,7 +19,7 @@ const LevelEditor = () => {
         <TooltipProvider>
           <PanelGroup direction="horizontal" className="w-full h-full">
             <Panel id="jsonEditor" defaultSize={18} minSize={12} collapsible>
-              <Suspense fallback={loadingFallbackHead}>
+              <Suspense fallback={<SpinnerHead />}>
                 <LazyJsonRoomEditor />
               </Suspense>
             </Panel>
@@ -41,7 +31,7 @@ const LevelEditor = () => {
                 </Panel>
                 <PanelResizeHandle className="scale-editor h-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-b-[calc(1px*var(--scale))] border-metallicBlue" />
                 <Panel id="editingArea">
-                  <Suspense fallback={loadingFallbackHeels}>
+                  <Suspense fallback={<SpinnerHeels />}>
                     <LazyRoomEditingArea />
                   </Suspense>
                 </Panel>

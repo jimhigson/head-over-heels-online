@@ -7,6 +7,7 @@ const manualDialogIds = keys(markdownPages).map(
 ) as `markdown/${MarkdownPageName}`[];
 
 export const dialogIds = [
+  "communityGames",
   "controlOptions",
   "crowns",
   "emulatedResolution",
@@ -25,6 +26,7 @@ export const dialogIds = [
   "score",
   "sound",
   "sureWantEditor",
+  "whichGame",
   // 'standard' pages from the original game manual
   ...manualDialogIds,
   // inline markdown pages - the content is stored in the scroll item's json config

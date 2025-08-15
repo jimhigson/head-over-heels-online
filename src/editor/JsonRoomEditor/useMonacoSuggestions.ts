@@ -1,10 +1,166 @@
 import { useEffect } from "react";
 import { useLoadMonaco } from "./useLoadMonaco";
-import { getLocation } from "jsonc-parser";
-import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import {
+  getLocation,
+  parseTree,
+  findNodeAtOffset,
+  type Node,
+} from "jsonc-parser";
+import {
+  selectCurrentEditingRoomJson,
+  type RootStateWithLevelEditorSlice,
+} from "../slice/levelEditorSlice";
 import { store } from "../../store/store";
-import type { AnyRoomJson } from "../../model/RoomJson";
-import type { ItemInPlayConfig } from "../../model/ItemInPlay";
+import { iterateRoomJsonItemsWithIds } from "../../model/RoomJson";
+import { emptyArray, emptySet } from "../../utils/empty";
+import type { JsonItemType } from "../../model/json/JsonItem";
+import { iterate } from "../../utils/iterate";
+import type { EditorRoomJson } from "../editorTypes";
+
+/**
+ * Get the value of a property from an object node
+ */
+const getNodeValue = (
+  node: Node,
+  propertyName: string,
+): string | number | boolean | null | undefined => {
+  if (node.type !== "object" || !node.children) {
+    return undefined;
+  }
+
+  // Find the property node with the matching name
+  const propertyNode = node.children.find((child) => {
+    if (child.type === "property" && child.children?.[0]) {
+      return child.children[0].value === propertyName;
+    }
+    return false;
+  });
+
+  // Return the value of the property (primitives only)
+  if (propertyNode?.type === "property" && propertyNode.children?.[1]) {
+    const [, valueNode] = propertyNode.children;
+    return valueNode.value;
+  }
+
+  return undefined;
+};
+
+/**
+ * Build an array of nodes from the given node up to the root
+ */
+const getNodeAncestors = (node: Node | undefined): Node[] => {
+  const ancestors: Node[] = [];
+  let current = node;
+  while (current) {
+    ancestors.push(current);
+    current = current.parent;
+  }
+  return ancestors;
+};
+
+/**
+ * Get all room IDs except the currently editing one
+ */
+const getOtherRoomIds = (
+  storeState: RootStateWithLevelEditorSlice,
+  _currentRoomJson: EditorRoomJson,
+  ..._nodeAncestors: Node[]
+): string[] =>
+  Object.keys(storeState.levelEditor.campaignInProgress.rooms).filter(
+    (roomId) => roomId !== storeState.levelEditor.currentlyEditingRoomId,
+  );
+
+/**
+ * Patterns for property paths and their corresponding suggestion generators
+ */
+const suggestionPatterns: Record<
+  string,
+  (
+    storeState: RootStateWithLevelEditorSlice,
+    currentRoomJson: EditorRoomJson,
+    ...nodeAncestors: Node[]
+  ) => string[]
+> = {
+  toRoom: getOtherRoomIds,
+  roomAbove: getOtherRoomIds,
+  roomBelow: getOtherRoomIds,
+  "meta.nonContiguousRelationship.with.room": getOtherRoomIds,
+  // joytsticks:
+  ["config.controls.*"](storeState, currentRoomJson, _node, targetsArray) {
+    const existingTargets =
+      (targetsArray.children &&
+        new Set(
+          iterate(targetsArray.children)
+            ?.map((c) => c.value)
+            .filter((s) => typeof s === "string"),
+        )) ??
+      (emptySet as Set<string>);
+
+    return (
+      iterateRoomJsonItemsWithIds(currentRoomJson.items, "charles")
+        .map(([id]) => id)
+        // only suggest the ids that aren't already in the array (in existingTargets)
+        .filter((id) => !existingTargets.has(id))
+        .toArray()
+    );
+  },
+  // switches:
+  ["modifies.*.targets.*"](
+    storeState,
+    currentRoomJson,
+    _node,
+    targetsArray,
+    _,
+    config,
+  ) {
+    const expectType = getNodeValue(config, "expectType");
+
+    if (typeof expectType !== "string") {
+      return emptyArray;
+    }
+
+    const existingTargets =
+      (targetsArray.children &&
+        new Set(
+          iterate(targetsArray.children)
+            ?.map((c) => c.value)
+            .filter((s) => typeof s === "string"),
+        )) ??
+      (emptySet as Set<string>);
+
+    return (
+      iterateRoomJsonItemsWithIds(
+        currentRoomJson.items,
+        expectType as JsonItemType,
+      )
+        .map(([id]) => id)
+        // only suggest the ids that aren't already in the array (in existingTargets)
+        .filter((id) => !existingTargets.has(id))
+        .toArray()
+    );
+  },
+};
+
+/**
+ * Find a matching pattern for the given JSON path
+ */
+const findMatchingPattern = (path: (string | number)[]): string | null => {
+  for (const pattern of Object.keys(suggestionPatterns)) {
+    const patternParts = pattern.split(".");
+    const pathTail = path.slice(-patternParts.length);
+
+    // Check if pattern matches, handling wildcards
+    const matches = patternParts.every((part, index) => {
+      const pathPart = pathTail[index];
+      return part === "*" || String(pathPart) === part;
+    });
+
+    if (matches && pathTail.length === patternParts.length) {
+      return pattern;
+    }
+  }
+  return null;
+};
 
 /**
  * suggest room ids when editing toRoom, roomAbove, or roomBelow properties
@@ -26,19 +182,28 @@ export const useMonacoSuggestions = () => {
 
         const { path, isAtPropertyKey } = getLocation(editorText, offset);
 
-        const lastPathSegment = path.at(-1);
-        const isRoomIdProperty =
-          lastPathSegment ===
-            ("toRoom" satisfies keyof ItemInPlayConfig<"teleporter">) ||
-          lastPathSegment === ("roomAbove" satisfies keyof AnyRoomJson) ||
-          lastPathSegment === ("roomBelow" satisfies keyof AnyRoomJson);
+        if (isAtPropertyKey) {
+          return { suggestions: [] };
+        }
 
-        const isEditingToRoomValue = isRoomIdProperty && !isAtPropertyKey;
+        // Parse the tree to get nodes with parent references
+        const tree = parseTree(editorText);
+        const currentNode = tree ? findNodeAtOffset(tree, offset) : undefined;
+        const nodeAncestors = getNodeAncestors(currentNode);
 
-        if (isEditingToRoomValue) {
+        const matchedPattern = findMatchingPattern(path);
+
+        if (matchedPattern) {
           const wordInfo = editorModel.getWordAtPosition(position);
-
           const storeState = store.getState() as RootStateWithLevelEditorSlice;
+
+          // Get suggestions from the matched pattern's callback
+          const currentRoomJson = selectCurrentEditingRoomJson(storeState);
+          const suggestionStrings = suggestionPatterns[matchedPattern](
+            storeState,
+            currentRoomJson,
+            ...nodeAncestors,
+          );
 
           const { lineNumber } = position;
           const startColumn = wordInfo?.startColumn ?? position.column;
@@ -55,19 +220,18 @@ export const useMonacoSuggestions = () => {
           const insertQuoteBefore = charBefore !== '"';
           const insertQuoteAfter = charAfter !== '"';
 
+          // Check if we're in an array context
+          const [, parentNode] = nodeAncestors;
+          const isInArray = parentNode?.type === "array";
+
           return {
-            suggestions: Object.keys(
-              storeState.levelEditor.campaignInProgress.rooms,
-            )
-              // filter out the current room's own id:
-              .filter(
-                (roomId) =>
-                  roomId !== storeState.levelEditor.currentlyEditingRoomId,
-              )
-              .map((roomId) => ({
-                label: roomId,
+            suggestions: suggestionStrings.map((suggestion) => {
+              const insertText = `${insertQuoteBefore ? '"' : ""}${suggestion}${insertQuoteAfter ? '"' : ""}${insertQuoteAfter && isInArray ? "," : ""}`;
+
+              return {
+                label: suggestion,
                 kind: monaco.languages.CompletionItemKind.Reference,
-                insertText: `${insertQuoteBefore ? '"' : ""}${roomId}${insertQuoteAfter ? '"' : ""}`,
+                insertText,
                 insertTextRules:
                   monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: {
@@ -76,7 +240,8 @@ export const useMonacoSuggestions = () => {
                   endLineNumber: position.lineNumber,
                   endColumn,
                 },
-              })),
+              };
+            }),
           };
         } else {
           return { suggestions: [] };

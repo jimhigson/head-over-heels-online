@@ -51,7 +51,7 @@ export const room = inferRoomJson({
     },
     returnTeleport: {
       config: {
-        activatedOnStoreValue: "planetsLiberated.safari",
+        activatedOnStoreValue: "gameInPlay.planetsLiberated.safari",
         times: { x: 2, y: 2 },
         toPosition: { x: 2, y: 3, z: 0 },
         toRoom: "safari1",

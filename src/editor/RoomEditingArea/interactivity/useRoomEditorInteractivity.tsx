@@ -217,7 +217,6 @@ export const useRoomEditorInteractivity = (
     renderArea.addEventListener("mouseup", handleMouseUp);
     renderArea.addEventListener("mousedown", handleMouseDown);
     renderArea.addEventListener("mouseleave", handleMouseLeave);
-    renderArea.tabIndex = 0; // Make the div focusable to capture key events
 
     return () => {
       renderArea.removeEventListener("mousemove", handleMouseMoveCatch);

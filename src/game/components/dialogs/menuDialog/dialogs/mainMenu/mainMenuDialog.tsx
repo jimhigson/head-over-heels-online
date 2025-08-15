@@ -1,6 +1,6 @@
 import type { EmptyObject } from "type-fest";
 import {
-  gameStarted,
+  closeAllMenus,
   goToSubmenu,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
@@ -22,13 +22,32 @@ import {
 import { VersionDebugInfo } from "./VersionDebugInfo";
 import { useAppSelector } from "../../../../../../store/hooks";
 
-const PlayGameLabel = () => {
+const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
+  const resume = useDispatchActionCallback(closeAllMenus);
+  const goToWhichGameSubmenu = useDispatchActionCallback(
+    goToSubmenu,
+    "whichGame",
+  );
+
+  if (isGameRunning) {
+    return (
+      <MenuItem
+        id="playGame"
+        label={<BitmapText>Resume the game</BitmapText>}
+        doubleHeightWhenFocussed
+        onSelect={resume}
+      />
+    );
+  }
 
   return (
-    <BitmapText>
-      {isGameRunning ? "Resume the game" : "Play the game"}
-    </BitmapText>
+    <MenuItem
+      id="playGame"
+      label={<BitmapText>Play the game</BitmapText>}
+      doubleHeightWhenFocussed
+      onSelect={goToWhichGameSubmenu}
+    />
   );
 };
 
@@ -57,7 +76,7 @@ const LevelEditorMenuItem = () => {
 const QuitGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
   const hasReincarnationPoint = useAppSelector(
-    (state) => state.gameMenus.reincarnationPoint !== undefined,
+    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
   );
 
   return (
@@ -94,12 +113,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
         />
         <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1">
           <MenuItems className="w-24 mx-auto">
-            <MenuItem
-              id="playGame"
-              label={<PlayGameLabel />}
-              doubleHeightWhenFocussed
-              onSelect={useDispatchActionCallback(gameStarted)}
-            />
+            <PlayGameMenuItem />
             {!isGameRunning && detectDeviceType() === "desktop" && (
               <LevelEditorMenuItem />
             )}

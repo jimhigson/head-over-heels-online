@@ -37,7 +37,7 @@ export const TitledCrown = ({
   className?: string;
 }) => {
   const collected = useAppSelector(
-    (state) => state.gameMenus.planetsLiberated[planet],
+    (state) => state.gameMenus.gameInPlay.planetsLiberated[planet],
   );
   const colourised = !useIsUncolourised();
 

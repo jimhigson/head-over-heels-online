@@ -1,11 +1,12 @@
-import { expect, vi, test } from "vitest";
+import { expect, vi, test, beforeEach } from "vitest";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 import type { TestRoomId } from "../../_testUtils/basicRoom";
-import { basicGameState } from "../../_testUtils/basicRoom";
+import { setUpBasicGame } from "../../_testUtils/basicRoom";
 import type { MovedItems, ProgressGameState } from "./progressGameState";
 import type { GameState } from "../gameState/GameState";
 import type { ItemInPlay } from "../../model/ItemInPlay";
 import type { RoomStateItems } from "../../model/RoomState";
+import { resetStore } from "../../_testUtils/initStoreForTests";
 
 const createGameState = ({
   gameSpeed,
@@ -14,7 +15,7 @@ const createGameState = ({
   gameSpeed: number;
   itemIds: string[];
 }): GameState<TestRoomId> => ({
-  ...basicGameState({
+  ...setUpBasicGame({
     firstRoomItems: {
       head: {
         type: "player",
@@ -58,6 +59,10 @@ const mockItemsInRoom = (movedItemIds: string[]) => {
   }
   return movedItems;
 };
+
+beforeEach(() => {
+  resetStore();
+});
 
 test("calls progress only once if below maxStepDeltaMs", () => {
   const mockProgress = vi

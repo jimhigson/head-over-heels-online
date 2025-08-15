@@ -29,7 +29,7 @@
     "path": "/items/returnTeleport",
     "value": {
       "config": {
-        "activatedOnStoreValue": "planetsLiberated.safari",
+        "activatedOnStoreValue": "gameInPlay.planetsLiberated.safari",
         "times": {
           "x": 2,
           "y": 2

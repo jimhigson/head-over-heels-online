@@ -74,7 +74,7 @@ export function* loadPortalsAboveAndBelow<
         ...defaultItemProperties,
         ...{
           type: "portal",
-          id: "ceilingPortal" as RoomItemId,
+          id: `${floor.id}/ceilingPortal` as RoomItemId,
           fixedZIndex: nonRenderingItemFixedZIndex,
           config: {
             toRoom: roomJson.roomAbove,

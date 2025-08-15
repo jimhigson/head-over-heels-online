@@ -105,7 +105,9 @@ export function* loadItemFromJson<
     }
 
     case jsonItem.type === "sceneryCrown" &&
-      !store.getState().gameMenus.planetsLiberated[jsonItem.config.planet]: {
+      !store.getState().gameMenus.gameInPlay.planetsLiberated[
+        jsonItem.config.planet
+      ]: {
       // yield nothing - scenery crowns only show if we have collected that crown
       return;
     }

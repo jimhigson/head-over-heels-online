@@ -64,7 +64,7 @@
                                 "type": "number",
                                 "multipleOf": 1,
                                 "minimum": 1,
-                                "maximum": 20
+                                "maximum": 99
                               }
                             },
                             "required": ["x"],
@@ -88,7 +88,7 @@
                                 "type": "number",
                                 "multipleOf": 1,
                                 "minimum": 1,
-                                "maximum": 20
+                                "maximum": 99
                               }
                             },
                             "required": ["y"],
@@ -339,9 +339,8 @@
                       "activatedOnStoreValue": {
                         "enum": [
                           "userSettings",
-                          "planetsLiberated",
                           "gameRunning",
-                          "scrollsRead",
+                          "gameInPlay",
                           "cheatsOn",
                           "userSettings.displaySettings",
                           "userSettings.infiniteLivesPoke",
@@ -355,37 +354,39 @@
                           "userSettings.displaySettings.showShadowMasks",
                           "userSettings.soundSettings.mute",
                           "userSettings.soundSettings.noFootsteps",
-                          "planetsLiberated.blacktooth",
-                          "planetsLiberated.bookworld",
-                          "planetsLiberated.egyptus",
-                          "planetsLiberated.penitentiary",
-                          "planetsLiberated.safari",
-                          "scrollsRead.blacktooth",
-                          "scrollsRead.egyptus",
-                          "scrollsRead.penitentiary",
-                          "scrollsRead.safari",
-                          "scrollsRead.doughnuts",
-                          "scrollsRead.bag",
-                          "scrollsRead.hooter",
-                          "scrollsRead.teleportBack",
-                          "scrollsRead.historyOfTheBlacktoothEmpire",
-                          "scrollsRead.theGame",
-                          "scrollsRead.bookWorld",
-                          "scrollsRead.head",
-                          "scrollsRead.heels",
-                          "scrollsRead.reincarnationFish",
-                          "scrollsRead.cuddlyStuffedWhiteRabbits",
-                          "scrollsRead.crowns",
-                          "scrollsRead.teleports",
-                          "scrollsRead.springs",
-                          "scrollsRead.switches",
-                          "scrollsRead.conveyorBelts",
-                          "scrollsRead.hushPuppies",
-                          "scrollsRead.theEmperorsGuardian",
-                          "scrollsRead.swopKey",
-                          "scrollsRead.hintsAndTips",
-                          "scrollsRead.credits",
-                          "scrollsRead.installGuide"
+                          "gameInPlay.planetsLiberated",
+                          "gameInPlay.scrollsRead",
+                          "gameInPlay.planetsLiberated.blacktooth",
+                          "gameInPlay.planetsLiberated.bookworld",
+                          "gameInPlay.planetsLiberated.egyptus",
+                          "gameInPlay.planetsLiberated.penitentiary",
+                          "gameInPlay.planetsLiberated.safari",
+                          "gameInPlay.scrollsRead.blacktooth",
+                          "gameInPlay.scrollsRead.egyptus",
+                          "gameInPlay.scrollsRead.penitentiary",
+                          "gameInPlay.scrollsRead.safari",
+                          "gameInPlay.scrollsRead.doughnuts",
+                          "gameInPlay.scrollsRead.bag",
+                          "gameInPlay.scrollsRead.hooter",
+                          "gameInPlay.scrollsRead.teleportBack",
+                          "gameInPlay.scrollsRead.historyOfTheBlacktoothEmpire",
+                          "gameInPlay.scrollsRead.theGame",
+                          "gameInPlay.scrollsRead.bookWorld",
+                          "gameInPlay.scrollsRead.head",
+                          "gameInPlay.scrollsRead.heels",
+                          "gameInPlay.scrollsRead.reincarnationFish",
+                          "gameInPlay.scrollsRead.cuddlyStuffedWhiteRabbits",
+                          "gameInPlay.scrollsRead.crowns",
+                          "gameInPlay.scrollsRead.teleports",
+                          "gameInPlay.scrollsRead.springs",
+                          "gameInPlay.scrollsRead.switches",
+                          "gameInPlay.scrollsRead.conveyorBelts",
+                          "gameInPlay.scrollsRead.hushPuppies",
+                          "gameInPlay.scrollsRead.theEmperorsGuardian",
+                          "gameInPlay.scrollsRead.swopKey",
+                          "gameInPlay.scrollsRead.hintsAndTips",
+                          "gameInPlay.scrollsRead.credits",
+                          "gameInPlay.scrollsRead.installGuide"
                         ],
                         "type": "string"
                       },
@@ -396,19 +397,19 @@
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           }
                         },
                         "type": "object"
@@ -497,19 +498,19 @@
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           }
                         },
                         "type": "object"
@@ -579,19 +580,19 @@
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           }
                         },
                         "type": "object"
@@ -650,19 +651,19 @@
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           }
                         },
                         "type": "object"
@@ -717,19 +718,19 @@
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           }
                         },
                         "type": "object"
@@ -989,19 +990,19 @@
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           }
                         },
                         "type": "object"
@@ -2969,10 +2970,7 @@
                           "path": {
                             "enum": [
                               "userSettings",
-                              "planetsLiberated",
-                              "gameRunning",
-                              "scrollsRead",
-                              "cheatsOn",
+                              "gameInPlay",
                               "userSettings.displaySettings",
                               "userSettings.infiniteLivesPoke",
                               "userSettings.infiniteDoughnutsPoke",
@@ -2985,37 +2983,39 @@
                               "userSettings.displaySettings.showShadowMasks",
                               "userSettings.soundSettings.mute",
                               "userSettings.soundSettings.noFootsteps",
-                              "planetsLiberated.blacktooth",
-                              "planetsLiberated.bookworld",
-                              "planetsLiberated.egyptus",
-                              "planetsLiberated.penitentiary",
-                              "planetsLiberated.safari",
-                              "scrollsRead.blacktooth",
-                              "scrollsRead.egyptus",
-                              "scrollsRead.penitentiary",
-                              "scrollsRead.safari",
-                              "scrollsRead.doughnuts",
-                              "scrollsRead.bag",
-                              "scrollsRead.hooter",
-                              "scrollsRead.teleportBack",
-                              "scrollsRead.historyOfTheBlacktoothEmpire",
-                              "scrollsRead.theGame",
-                              "scrollsRead.bookWorld",
-                              "scrollsRead.head",
-                              "scrollsRead.heels",
-                              "scrollsRead.reincarnationFish",
-                              "scrollsRead.cuddlyStuffedWhiteRabbits",
-                              "scrollsRead.crowns",
-                              "scrollsRead.teleports",
-                              "scrollsRead.springs",
-                              "scrollsRead.switches",
-                              "scrollsRead.conveyorBelts",
-                              "scrollsRead.hushPuppies",
-                              "scrollsRead.theEmperorsGuardian",
-                              "scrollsRead.swopKey",
-                              "scrollsRead.hintsAndTips",
-                              "scrollsRead.credits",
-                              "scrollsRead.installGuide"
+                              "gameInPlay.planetsLiberated",
+                              "gameInPlay.scrollsRead",
+                              "gameInPlay.planetsLiberated.blacktooth",
+                              "gameInPlay.planetsLiberated.bookworld",
+                              "gameInPlay.planetsLiberated.egyptus",
+                              "gameInPlay.planetsLiberated.penitentiary",
+                              "gameInPlay.planetsLiberated.safari",
+                              "gameInPlay.scrollsRead.blacktooth",
+                              "gameInPlay.scrollsRead.egyptus",
+                              "gameInPlay.scrollsRead.penitentiary",
+                              "gameInPlay.scrollsRead.safari",
+                              "gameInPlay.scrollsRead.doughnuts",
+                              "gameInPlay.scrollsRead.bag",
+                              "gameInPlay.scrollsRead.hooter",
+                              "gameInPlay.scrollsRead.teleportBack",
+                              "gameInPlay.scrollsRead.historyOfTheBlacktoothEmpire",
+                              "gameInPlay.scrollsRead.theGame",
+                              "gameInPlay.scrollsRead.bookWorld",
+                              "gameInPlay.scrollsRead.head",
+                              "gameInPlay.scrollsRead.heels",
+                              "gameInPlay.scrollsRead.reincarnationFish",
+                              "gameInPlay.scrollsRead.cuddlyStuffedWhiteRabbits",
+                              "gameInPlay.scrollsRead.crowns",
+                              "gameInPlay.scrollsRead.teleports",
+                              "gameInPlay.scrollsRead.springs",
+                              "gameInPlay.scrollsRead.switches",
+                              "gameInPlay.scrollsRead.conveyorBelts",
+                              "gameInPlay.scrollsRead.hushPuppies",
+                              "gameInPlay.scrollsRead.theEmperorsGuardian",
+                              "gameInPlay.scrollsRead.swopKey",
+                              "gameInPlay.scrollsRead.hintsAndTips",
+                              "gameInPlay.scrollsRead.credits",
+                              "gameInPlay.scrollsRead.installGuide"
                             ],
                             "type": "string"
                           },
@@ -3281,19 +3281,19 @@
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "y": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           },
                           "z": {
                             "type": "number",
                             "multipleOf": 1,
                             "minimum": 1,
-                            "maximum": 20
+                            "maximum": 99
                           }
                         },
                         "type": "object"
@@ -3395,13 +3395,13 @@
                                 "type": "number",
                                 "multipleOf": 1,
                                 "minimum": 1,
-                                "maximum": 20
+                                "maximum": 99
                               },
                               "y": {
                                 "type": "number",
                                 "multipleOf": 1,
                                 "minimum": 1,
-                                "maximum": 20
+                                "maximum": 99
                               }
                             },
                             "required": ["x", "y"],
@@ -3426,13 +3426,13 @@
                                 "type": "number",
                                 "multipleOf": 1,
                                 "minimum": 1,
-                                "maximum": 20
+                                "maximum": 99
                               },
                               "y": {
                                 "type": "number",
                                 "multipleOf": 1,
                                 "minimum": 1,
-                                "maximum": 20
+                                "maximum": 99
                               }
                             },
                             "required": ["x", "y"],
@@ -3469,13 +3469,13 @@
                                 "type": "number",
                                 "multipleOf": 1,
                                 "minimum": 1,
-                                "maximum": 20
+                                "maximum": 99
                               },
                               "y": {
                                 "type": "number",
                                 "multipleOf": 1,
                                 "minimum": 1,
-                                "maximum": 20
+                                "maximum": 99
                               }
                             },
                             "required": ["x", "y"],

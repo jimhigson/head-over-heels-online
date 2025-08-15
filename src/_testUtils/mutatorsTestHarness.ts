@@ -8,7 +8,7 @@ import {
 import type { StartingRooms } from "../game/gameState/loadGameState";
 import {
   loadGameState,
-  startingRoomIds,
+  findStartingRoomsInCampaign,
 } from "../game/gameState/loadGameState";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
 import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
@@ -32,6 +32,7 @@ import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { PortableItemType } from "../game/physics/itemPredicates";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameOver } from "../store/slices/gameMenusSlice";
+import { gameStartedWithCampaign } from "./initStoreForTests";
 
 export type TestCampaignRoomId =
   | "heelsStartingRoom"
@@ -43,7 +44,11 @@ export const roomProperties = {
 } as const satisfies Partial<RoomState<"blacktooth", TestCampaignRoomId>>;
 
 const testCampaign = {
-  name: "testCampaign",
+  locator: {
+    campaignName: "mutatorsTestHarnessCampaign",
+    userId: "mutatorsTestHarnessCampaignAuthor",
+    version: 0,
+  },
   rooms: {
     headStartingRoom: {
       ...roomProperties,
@@ -112,6 +117,8 @@ const testCampaign = {
 } as const satisfies Campaign<TestCampaignRoomId>;
 
 export const mutatorsTestHarness = () => {
+  gameStartedWithCampaign(testCampaign);
+
   const gameState = loadGameState({
     campaign: testCampaign,
     inputStateTracker: new MockInputStateTracker(),
@@ -132,7 +139,7 @@ export const mutatorsTestHarness = () => {
     },
     gameState,
     gameOverFn,
-    startingRooms: startingRoomIds(testCampaign) as Required<
+    startingRooms: findStartingRoomsInCampaign(testCampaign) as Required<
       StartingRooms<TestCampaignRoomId>
     >,
     originalRooms: {

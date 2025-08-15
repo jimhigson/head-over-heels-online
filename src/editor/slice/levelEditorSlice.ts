@@ -44,9 +44,8 @@ export type GridResolution = (typeof gridResolutions)[number];
 export type LevelEditorState = {
   /** the campaign the user is currently editing */
   campaignInProgress: EditorCampaign;
-  /** the campaign in the db (as far as we know, unless someone else saved to
-   * it while the editor was running) */
-  savedCampaign: EditorCampaign | undefined;
+  /** the campaign in the db (as far as we know) - can be used to check if we have edits since the last save */
+  remoteCampaign: EditorCampaign | undefined;
   currentlyEditingRoomId: EditorRoomId;
   editingRoomIdHistory: {
     back: EditorRoomId[];
@@ -145,7 +144,7 @@ export type LevelEditorSliceActionCreator = ValueOf<
 export const {
   addRoom,
   applyItemTool,
-  campaignSaved,
+  setRemoteCampaign,
   changeDragInProgress,
   changeGridResolution,
   changeRoomColour,

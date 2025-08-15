@@ -19,7 +19,7 @@ import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 
 export const QuitGameConfirmDialog = () => {
   const hasReincarnationPoint = useAppSelector(
-    (state) => state.gameMenus.reincarnationPoint !== undefined,
+    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
   );
   const gameApi = useGameApi();
   return (

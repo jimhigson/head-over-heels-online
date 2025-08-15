@@ -5,8 +5,7 @@ import { BackMenuItem } from "../../BackMenuItem";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
-import { useIsLoading } from "../../../../LoadingContext";
-import { LoadingBorder } from "../../../../../../ui/LoadingBorder";
+import { useIsLoading } from "../../../../../../store/hooks/loadingHooks";
 import { Border } from "../../../../../../ui/Border";
 import music from "../../../../../../../sounds/rock.mp3";
 
@@ -20,9 +19,7 @@ export const CrownsDialog = ({
   const closeDialog = useDispatchActionCallback(backToParentMenu);
   return (
     <DialogPortal>
-      {isLoading ?
-        <LoadingBorder />
-      : <Border className={"bg-pureBlack zx:bg-zxBlack"} />}
+      <Border className="bg-pureBlack zx:bg-zxBlack" />
 
       <Dialog
         className="bg-pureBlack w-zx h-full block p-0"

@@ -3,10 +3,8 @@ import { useAppDispatch } from "../hooks";
 import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
 import { persistor, store } from "../store";
-import { holdPressed, saveCurrentGame } from "../slices/gameMenusSlice";
-import { typedURLSearchParams } from "../../options/queryParams";
-
-const noSaves = typedURLSearchParams().get("noSaves");
+import { holdPressed, saveGame } from "../slices/gameMenusSlice";
+import { isInPlaytestMode } from "../../game/isInPlaytestMode";
 
 export const useSaveGameOnUnload = (): void => {
   const dispatch = useAppDispatch();
@@ -21,21 +19,18 @@ export const useSaveGameOnUnload = (): void => {
     }
 
     const maybeSave = () => {
-      if (noSaves) {
+      if (isInPlaytestMode()) {
+        // we don't save while playtesting
         return;
       }
-      console.log("saving current game");
 
-      dispatch(
-        saveCurrentGame(createSavedGame(gameApi.gameState, store.getState())),
-      );
+      dispatch(saveGame(createSavedGame(gameApi.gameState, store.getState())));
       // we might not have long before the page goes away so we can't wait for redux-persist's throttled/debounced
       // updates to write:
       persistor.flush();
     };
     const hold = () => {
       if (document.visibilityState === "hidden") {
-        console.log("pausing due to visibilityState=hidden");
         dispatch(holdPressed("hold"));
         // this is also a good time to save since the user might not come back:
         maybeSave();
@@ -43,6 +38,7 @@ export const useSaveGameOnUnload = (): void => {
     };
     document.addEventListener("visibilitychange", hold);
     window.addEventListener("beforeunload", maybeSave);
+
     return () => {
       document.removeEventListener("visibilitychange", hold);
       window.removeEventListener("beforeunload", maybeSave);

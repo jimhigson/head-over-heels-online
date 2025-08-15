@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { hudCharTextureSize } from "../../../sprites/textureSizes";
-import { iterateToContainer } from "../../iterateToContainer";
+import { iterateToContainer } from "../../../utils/pixi/iterateToContainer";
 import { createSprite } from "../createSprite";
 import type { PokeableNumber } from "../../../model/ItemStateMap";
 import { hudOutlinedTextFilters, hudTextFilter } from "./hudFilters";

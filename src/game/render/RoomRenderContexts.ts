@@ -9,7 +9,11 @@ import type { MovedItems } from "../mainLoop/progressGameState";
 import type { SetRequired } from "type-fest";
 import type { Upscale } from "src/store/slices/upscale/Upscale";
 
-/** some context that most renderers need, to be composed into their contexts */
+/** some context that most renderers need, to be composed into their contexts
+ *
+ * TODO: a lot of stuff in there from the store - would be cheaper to just
+ * put the whole store state in
+ */
 export type GeneralRenderContext<RoomId extends string> = {
   displaySettings: DisplaySettings;
   soundSettings: SoundSettings;

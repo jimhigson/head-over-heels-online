@@ -1,5 +1,5 @@
 import { Application } from "pixi.js";
-import { type Campaign } from "../model/modelTypes";
+import type { CampaignLocator } from "../model/modelTypes";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { loadGameState } from "./gameState/loadGameState";
 import type { GameApi } from "./GameApi";
@@ -14,57 +14,63 @@ import { store } from "../store/store";
 import {
   gameRestoreFromSave,
   roomExplored,
+  selectSaveForCampaign,
 } from "../store/slices/gameMenusSlice";
 import type { SavedGameState } from "./gameState/saving/SavedGameState";
 import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps } from "./physics/mechanicsConstants";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
-import { typedURLSearchParams } from "../options/queryParams";
 import { trackTextures } from "../textureInspector/main";
+import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 /**
- * we are now outside of React-land - pure pixi game engine!
+ * If you came from GamePage, we are now outside of React-land
+ * - pure pixi/openGl game engine!
  */
 export const gameMain = async <RoomId extends string>(
-  campaign: Campaign<RoomId>,
+  campaignLocator: CampaignLocator,
   inputStateTracker: InputStateTrackerInterface,
 ): Promise<GameApi<RoomId>> => {
   const app = new Application();
 
-  await app.init({
-    background: "#000000",
-    // run on the shared ticker to keep in sync with the input state tracker
-    sharedTicker: true,
-    eventFeatures: {
-      // https://pixijs.com/8.x/guides/components/interaction
-      // this is needed for the on-screen controls:
-      move: true,
-      globalMove: true,
-      click: true,
-      wheel: false,
-    },
-    // I will have to tell pixi.js when to render:
-    autoStart: false,
-    // the ColourClash filter requires a backbuffer (although this is
-    // only used when not colourised)
-    useBackBuffer: true,
-  });
+  const [campaignResult] = await Promise.all([
+    loadCampaignFromApi<RoomId>(campaignLocator),
+    app.init({
+      background: "#000000",
+      // run on the shared ticker to keep in sync with the input state tracker
+      sharedTicker: true,
+      eventFeatures: {
+        // https://pixijs.com/8.x/guides/components/interaction
+        // this is needed for the on-screen controls:
+        move: true,
+        globalMove: true,
+        click: true,
+        wheel: false,
+      },
+      // I will have to tell pixi.js when to render:
+      autoStart: false,
+      // the ColourClash filter requires a backbuffer (although this is
+      // only used when not colourised)
+      useBackBuffer: true,
+    }),
+  ]);
+
+  if (campaignResult.error) {
+    throw new Error("could not load campaign", { cause: campaignResult.error });
+  }
+  const campaign = campaignResult.data;
 
   trackTextures(app);
 
   stopAppAutoRendering(app);
   app.ticker.maxFPS = maxFps;
 
-  const noSaves = typedURLSearchParams().get("noSaves");
-
-  const savedGameToContinueFrom =
-    noSaves ? undefined : (
-      (store.getState().gameMenus.currentGame as
-        | SavedGameState<RoomId>
-        | undefined)
-    );
+  const savedGameToContinueFrom = selectSaveForCampaign<RoomId>(
+    store.getState(),
+    campaignLocator,
+  );
 
   const gameState = loadGameState({
     campaign,
@@ -72,9 +78,8 @@ export const gameMain = async <RoomId extends string>(
     savedGame: savedGameToContinueFrom,
   });
   if (savedGameToContinueFrom !== undefined) {
-    store.dispatch(
-      gameRestoreFromSave(savedGameToContinueFrom.store.gameMenus),
-    );
+    const savedGameInPlay = savedGameToContinueFrom.store.gameMenus.gameInPlay;
+    store.dispatch(gameRestoreFromSave(savedGameInPlay));
   } else {
     // starting a new game - the player has at least explored the rooms they start in:
     if (gameState.characterRooms.head)

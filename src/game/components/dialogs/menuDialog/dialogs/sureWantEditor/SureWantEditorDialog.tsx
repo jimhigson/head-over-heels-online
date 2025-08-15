@@ -9,12 +9,18 @@ import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
 import Portal from "@mutabazia/react-portal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { BackMenuItem } from "../../BackMenuItem";
+import { MobileStyleBackButton } from "../MobileStyleBackButton";
+import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 
-const blurbMarkdown = `##Level editor
-This remake comes with an editor for the community to get creative.
+const blurbMarkdown = `##*HoH-ed ➡* The Level editor
+I built an *editor* so I could make the **sequel levels**
 
-*beta*. Expect to deal with
-occasional, even frequent, crashes.`;
+![](texture-headlessBase?float-left)**Make puzzles**!
+
+*Challenge* others to **solve them**!
+
+**in beta**; expect occasional crashes and *frequent confusion*`;
 
 export const SureWantEditorDialog = () => {
   const goToEditor = useCallback(() => {
@@ -23,10 +29,16 @@ export const SureWantEditorDialog = () => {
 
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlue zx:bg-zxCyan" />
-      <Dialog className="bg-white zx:bg-zxBlack px-1">
+      <Border
+        className="bg-pureBlack zx:bg-zxBlack"
+        onClick={useDispatchActionCallback(backToParentMenu)}
+      />
+      <Dialog className="bg-shadowHalfbrite zx:bg-zxBlack px-1">
         <Portal.Provider>
           <div className="flex flex-col gap-y-2 mt-1 h-full">
+            {isTouchDevice() && (
+              <MobileStyleBackButton className="text-midGrey zx:text-zxWhite" />
+            )}
             <div>
               <BlockyMarkdown
                 className={`text-midGrey zx:text-zxWhite`}
@@ -41,14 +53,13 @@ export const SureWantEditorDialog = () => {
                 label="Edit the levels"
                 onSelect={goToEditor}
               />
-              <MenuItem
-                doubleHeightWhenFocussed
-                id="no"
-                label="I’m scared, go back"
-                onSelect={useDispatchActionCallback(backToParentMenu)}
-              />
+              {isTouchDevice() || (
+                <BackMenuItem customLabel="I’m scared, go back" />
+              )}
             </MenuItems>
-            <SelectedItemHint className="text-midGrey zx:text-zxWhite resHandheld:hidden" />
+            {isTouchDevice() || (
+              <SelectedItemHint className="text-midGrey zx:text-zxWhite resHandheld:hidden" />
+            )}
           </div>
         </Portal.Provider>
       </Dialog>

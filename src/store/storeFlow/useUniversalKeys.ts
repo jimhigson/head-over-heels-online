@@ -8,7 +8,9 @@ import {
 import { useActionTap } from "../../game/components/dialogs/useActionTap";
 import { useAppSelector } from "../hooks";
 import { useDispatchActionCallback } from "../useDispatchCallback";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { store } from "../store";
+import { isInPlaytestMode } from "../../game/isInPlaytestMode";
 
 export const useUniversalKeys = () => {
   const assigningKeys = useAppSelector(
@@ -20,7 +22,13 @@ export const useUniversalKeys = () => {
 
   useActionTap({
     action: "menu_openOrExit",
-    handler: useDispatchActionCallback(menuOpenOrExitPressed),
+    handler: useCallback(() => {
+      if (isInPlaytestMode()) {
+        // when playtesting, don't show a menu, just close the window
+        window.close();
+      }
+      store.dispatch(menuOpenOrExitPressed());
+    }, []),
     disabled: assigningKeys,
   });
 

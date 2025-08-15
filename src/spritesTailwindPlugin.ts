@@ -111,7 +111,7 @@ export const spritesTailwindPlugin = plugin(
 
     utilities[".loading-border"] = {
       "--c1": spritesheetPalette.pureBlack,
-      "--c2": halfbriteHex(spritesheetPalette.metallicBlue),
+      "--c2": halfbriteHex(spritesheetPalette.shadow),
       "--stripeWidth": "5vh",
       background: `repeating-linear-gradient(
           to bottom,
@@ -120,6 +120,7 @@ export const spritesTailwindPlugin = plugin(
         )`,
       // smooth scrolling effect:
       backgroundSize: "100% calc(2 * var(--stripeWidth))",
+      backgroundAttachment: "fixed",
       animation: "spectrum-load 0.5s linear infinite",
     };
     utilities[".zx-loading-border"] = {
