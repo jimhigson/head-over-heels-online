@@ -21,6 +21,9 @@ import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 import { originalCampaignLocator } from "../../../../../../model/modelTypes";
 
+// this uuid is the user id of jim@blockstack.ing on github for supabase
+const jimAtBlockstackingUserId = "2924c962-99f1-4dd2-9b9c-fef832dc991b";
+
 export const WhichGameDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
@@ -70,8 +73,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
                 hintInline
                 onSelect={useDispatchActionCallback(gameStarted, {
                   campaignLocator: {
-                    // this uuid is the user id of jim@blockstack.ing on github for supabase
-                    userId: "2924c962-99f1-4dd2-9b9c-fef832dc991b",
+                    userId: jimAtBlockstackingUserId,
                     campaignName: "sequel",
                     version: -1,
                   },

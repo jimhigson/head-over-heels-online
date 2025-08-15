@@ -25,9 +25,6 @@ const revertToInitialStateMigration = (
   return migrateTo as unknown as PersistedState;
 };
 
-/** TODO: before completing this refactor, we will need t
- * remove old migrations, or add a new one
- */
 export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
   {
     1: revertToInitialStateMigration,
@@ -45,124 +42,8 @@ export const gameMenusSliceMigrate: PersistMigrate = createMigrate(
     13: revertToInitialStateMigration,
     14: revertToInitialStateMigration,
     15: revertToInitialStateMigration,
-
-    // old migrations aren't relevant anymore, but being kept commented-out
-    // to refer to in future migrations
-    /*
-    13(persistedState: PersistedState) {
-      // here we introduced sound settings - simply add them:
-      const v12State = persistedState as OmitDeep<
-        GameMenusSlicePersisted,
-        "userSettings.soundSettings"
-      > &
-        PersistedState;
-
-      const v13State = structuredClone(persistedState) as RootState &
-        PersistedState;
-
-      v13State.gameMenus.userSettings.soundSettings = {};
-
-      console.log(
-        "redux-persist migration: migrating state 12->13 by adding `{}` at `gameMenus.userSettings.soundSettings`",
-        v12State,
-        "->",
-        v13State,
-      );
-
-      return v13State;
-    },
-    // to test:
-    // ```sh
-    //   git switch --detach 7a400fd02d5022
-    // ```
-    //
-    14(persistedState: PersistedState) {
-      console.group(
-        "redux-persist migration: migrating state 13->14 to add fixedZIndexes",
-      );
-
-      // here we introduced sound settings - simply add them:
-      const v13State = persistedState as GameMenusSlicePersisted &
-        PersistedState;
-
-      const v14State = structuredClone(v13State) as GameMenusSlicePersisted &
-        PersistedState;
-
-      const giveFixedZIndexes = (room: RoomState<string, string>) => {
-        for (const item of iterateRoomItems(room.items)) {
-          type OldItem = Omit<typeof item, "fixedZIndex"> & {
-            renders?: boolean;
-          };
-
-          if ((item as OldItem).renders === false) {
-            console.log(item.id, "is a non-rendering item, giving fixedZIndex");
-            item.fixedZIndex = nonRenderingItemFixedZIndex;
-          }  else if (item.type === "floatingText") {
-            console.log(
-              item.id,
-              "is getting .fixedZIndex = floatingTextFixedZIndex",
-            );
-            item.fixedZIndex = floatingTextFixedZIndex;
-          }
-        }
-      };
-      //
-      //update a 1 or 2 rooms for head, heels, headOverHeels - whichever
-      //exists in the object given
-      //
-      const updateAllCharacterRooms = (
-        characterRooms: CharacterRooms<string>,
-      ) => {
-        for (const [characterName, savedRoom] of objectEntriesIter(
-          characterRooms,
-        )) {
-          console.group(
-            "fixing room for",
-            characterName,
-            savedRoom.roomJson.id,
-          );
-          giveFixedZIndexes(savedRoom);
-          console.groupEnd();
-        }
-      };
-
-      const { currentGame } = v14State;
-
-      if (currentGame !== undefined) {
-        console.group("found a currentGame - migrating...");
-        updateAllCharacterRooms(currentGame.gameState.characterRooms);
-        console.groupEnd();
-      }
-
-      
-       // reincarnation points can contain reincarnation points - recursively
-       // migrate them however deep the json goes
-       
-      const recursivelyMigrateReincarnationPoints = (
-        savedGameState: SavedGameState | undefined,
-      ) => {
-        const reincarnationPoint =
-          savedGameState?.store.gameMenus.reincarnationPoint;
-
-        if (reincarnationPoint === undefined) {
-          return;
-        }
-        console.log("found a reincarnation point - migrating...");
-        updateAllCharacterRooms(reincarnationPoint.gameState.characterRooms);
-        console.log("...reincarnation point migrated");
-        const nextStateDeeper =
-          reincarnationPoint.store.gameMenus.reincarnationPoint;
-        if (nextStateDeeper !== undefined) {
-          recursivelyMigrateReincarnationPoints(nextStateDeeper);
-        }
-      };
-      recursivelyMigrateReincarnationPoints(currentGame);
-
-      console.log("migration done");
-      console.groupEnd();
-
-      return v14State;
-    },*/
+    16: revertToInitialStateMigration,
+    17: revertToInitialStateMigration,
   },
   { debug: true },
 );

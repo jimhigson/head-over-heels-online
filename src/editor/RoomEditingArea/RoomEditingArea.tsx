@@ -57,6 +57,9 @@ const RoomEditingAreaInner = () => {
             transformOrigin: "center center",
           }}
           ref={setRenderArea}
+          tabIndex={1}
+          // remove outline when has focus:
+          className="focus-visible:outline-none"
         />
       </div>
     </div>

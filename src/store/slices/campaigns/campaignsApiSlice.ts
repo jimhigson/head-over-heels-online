@@ -41,7 +41,11 @@ export const campaignsApiSlice = createApi({
           // load via the database:
           return { data: await loadCampaignFromDb(campaignLocator) };
         } catch (e) {
-          return { error: new Error(`queryFn failed: ${e}`) };
+          return {
+            error: new Error(
+              `getCampaign queryFn( ${JSON.stringify(campaignLocator)} ) failed: ${e}`,
+            ),
+          };
         }
       },
     }),
@@ -51,7 +55,11 @@ export const campaignsApiSlice = createApi({
           const campaigns = await getAllUsersLatestCampaigns();
           return { data: campaigns };
         } catch (e) {
-          return { error: new Error(`queryFn failed: ${e}`) };
+          return {
+            error: new Error(
+              `getAllUsersLatestCampaigns queryFn() failed: ${e}`,
+            ),
+          };
         }
       },
     }),
@@ -61,7 +69,11 @@ export const campaignsApiSlice = createApi({
           const version = await saveCampaignToDb(campaign);
           return { data: version };
         } catch (e) {
-          return { error: new Error(`queryFn failed: ${e}`) };
+          return {
+            error: new Error(
+              `saveCampaign queryFn( ${JSON.stringify(campaign)} ) failed: ${e}`,
+            ),
+          };
         }
       },
     }),
