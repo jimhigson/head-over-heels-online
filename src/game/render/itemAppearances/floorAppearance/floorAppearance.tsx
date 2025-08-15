@@ -118,6 +118,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
       const { floorType, naturalFootprint } = floorConfig;
 
       const container = new Container({ label: "floorAppearance" });
+      const spritesRenderContainer = new Container({ label: "sprites" });
 
       const tilesLeft = projectWorldXyzToScreenXy({ ...aabb, y: 0 });
       const tilesBottom = projectWorldXyzToScreenXy({ ...aabb, x: 0, y: 0 });
@@ -219,7 +220,8 @@ export const floorAppearance: ItemAppearance<"floor"> =
         const tilesOutline = new Container({ children: [tilesContainer] });
         tilesOutline.filters = outlineFilters.black1pxFilter;
 
-        container.addChild(renderContainerToSprite(pixiRenderer, tilesOutline));
+        spritesRenderContainer.addChild(tilesOutline);
+        //container.addChild(renderContainerToSprite(pixiRenderer, tilesOutline));
       }
 
       {
@@ -271,10 +273,13 @@ export const floorAppearance: ItemAppearance<"floor"> =
           }),
         );
 
-        // caching as texture here breaks rendering in 'none' floor rooms - see #blacktooth30
+        spritesRenderContainer.addChild(floorEdgeContainer);
+
         container.addChild(
-          renderContainerToSprite(pixiRenderer, floorEdgeContainer),
+          renderContainerToSprite(pixiRenderer, spritesRenderContainer),
         );
+
+        spritesRenderContainer.destroy();
 
         if (!colourised) {
           const colourClashContainer = createColourClash({
