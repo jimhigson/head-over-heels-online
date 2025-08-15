@@ -4,6 +4,7 @@ import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
 import { persistor, store } from "../store";
 import { holdPressed, saveGame } from "../slices/gameMenusSlice";
+import { isInPlaytestMode } from "../../game/isInPlaytestMode";
 
 export const useSaveGameOnUnload = (): void => {
   const dispatch = useAppDispatch();
@@ -18,6 +19,11 @@ export const useSaveGameOnUnload = (): void => {
     }
 
     const maybeSave = () => {
+      if (isInPlaytestMode()) {
+        // we don't save while playtesting
+        return;
+      }
+
       dispatch(saveGame(createSavedGame(gameApi.gameState, store.getState())));
       // we might not have long before the page goes away so we can't wait for redux-persist's throttled/debounced
       // updates to write:

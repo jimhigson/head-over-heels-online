@@ -14,6 +14,7 @@ import type { PlayableItem } from "../../../../../physics/itemPredicates";
 import { translateXyz } from "./svgHelpers";
 import type { MapData } from "./MapData";
 import { MapBackground } from "./MapBackground";
+import { ScrollIntoView } from "./ScrollIntoView";
 
 export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
   containerWidth?: number;
@@ -142,6 +143,9 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
                 onPlayableClick={onPlayableClick}
                 onRoomClick={onRoomClick}
               />
+              {curRoomId === roomId ?
+                <ScrollIntoView svg smooth />
+              : null}
             </g>
           );
         })}

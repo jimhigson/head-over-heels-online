@@ -8,9 +8,11 @@ import { useShortTimeDisplay } from "./useShortTimeDisplay";
 const tooltipMarkdown = `
 ## Share
 
+**save first**
+
 copies a link to the clipboard
 
-anyone with the link can play your game
+give anyone the link to your game
 `;
 
 export const ShareCampaignButton = () => {
@@ -43,6 +45,8 @@ export const ShareCampaignButton = () => {
         }}
         tooltipContent={tooltipMarkdown}
       >
-        <span className={`sprite sprite-tinted texture-hud_char_ relative`} />
+        <span
+          className={`sprite sprite-tinted texture-editor_tool_share relative`}
+        />
       </ToolbarButton>;
 };

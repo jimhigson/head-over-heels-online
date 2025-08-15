@@ -22,6 +22,7 @@ export class DispatchingErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, _info: ErrorInfo) {
+    console.error("Error caught in DispatchingErrorBoundary:", error);
     store.dispatch(errorCaught(createSerialisableErrors(error)));
   }
 

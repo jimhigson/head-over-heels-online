@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import type { GameApi } from "../../GameApi";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { characterRoomChange } from "../../../store/slices/gameMenusSlice";
+import { cheatRoomIdFromUrlHash } from "./cheatRoomIdFromUrlHash";
 
 export const useLevelSelectByUrlHash = <RoomId extends string>(
   gameApi: GameApi<RoomId> | undefined,
@@ -11,26 +12,8 @@ export const useLevelSelectByUrlHash = <RoomId extends string>(
       return;
     }
 
-    const parseUrl = (url: Pick<URL, "hash">) => {
-      const maybeRoomId = url.hash.substring(1);
-      if (maybeRoomId === "") return undefined;
-      if (gameApi.campaign.rooms[maybeRoomId as RoomId] === undefined)
-        return undefined;
-      return url.hash.substring(1) as RoomId;
-    };
-
-    if (window.location.hash) {
-      const roomIdFromHash = parseUrl(window.location);
-
-      if (
-        roomIdFromHash !== undefined &&
-        gameApi.currentRoom?.id !== roomIdFromHash
-      )
-        gameApi.changeRoom(roomIdFromHash);
-    }
-
     const onHashChange = (e: HashChangeEvent) => {
-      const roomIdFromHash = parseUrl(new URL(e.newURL));
+      const roomIdFromHash = cheatRoomIdFromUrlHash(gameApi.campaign, e.newURL);
 
       if (
         roomIdFromHash !== undefined &&

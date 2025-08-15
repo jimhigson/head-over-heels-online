@@ -176,7 +176,7 @@ ${sanitizedStack}
             Error message for nerds:
           </BitmapText>
           <pre
-            className={`bg-shadow zx:bg-zxBlack text-white zx:text-zxWhite leading-[1em] [&_a]:text-pastelBlue px-1 w-max`}
+            className={`bg-shadow zx:bg-zxBlack text-white zx:text-zxWhite leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
           >
             <StackTracesWithLinks>{errorsReportText}</StackTracesWithLinks>
           </pre>

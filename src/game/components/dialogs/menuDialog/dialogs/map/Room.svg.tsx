@@ -167,7 +167,7 @@ export const RoomSvg = <RoomId extends string>({
   );
 
   const floors = Object.values(items).filter((item) => item.type === "floor");
-  const noFloor = floors.length === 0;
+  const noFloor = floors.every((floor) => floor.config.floorType === "none");
   const deadlyFloor = floors.some(
     (floor) => floor.config.floorType === "deadly",
   );

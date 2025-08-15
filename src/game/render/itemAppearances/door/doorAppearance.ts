@@ -18,12 +18,13 @@ import {
   perpendicularAxisXy,
 } from "../../../../utils/vectors/vectors";
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import { iterateToContainer } from "../../../iterateToContainer";
+import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import type { ItemAppearance } from "../ItemAppearance";
 import { itemAppearanceRenderOnce } from "../ItemAppearance";
 import type { RoomState } from "../../../../model/RoomState";
 import { selectMaybeCurrentCampaign } from "../../../../store/selectors";
 import { store } from "../../../../store/store";
+import type { Campaign } from "../../../../model/modelTypes";
 
 function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   {
@@ -127,24 +128,20 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           aabb,
         },
         room,
-        general: { gameState },
       },
     }) => {
-      // TODO: put store state on general render context
-      const campaign = selectMaybeCurrentCampaign(store.getState());
+      const campaign =
+        selectMaybeCurrentCampaign(store.getState()) ??
+        (store.getState().levelEditor?.campaignInProgress as
+          | Campaign<string>
+          | undefined);
 
       const axis = doorAlongAxis(direction);
 
       const useColoursFromRoom =
-        gameState === undefined ?
-          // for now, show the doors in the colours of the room they are in, on the level editor
-          // TODO: put the campaign on the top level of the render context, separate from the game state
-          // since the level editor also has a campaign, but not a running game
-          room
-          // in the game, show them properly in the colours of the room they lead to
-        : (campaign?.rooms[toRoom] ??
-          // toRoom might not exist if working in the editor and didn't make it yet
-          room);
+        campaign?.rooms[toRoom] ??
+        // toRoom might not exist if working in the editor and didn't make it yet
+        room;
 
       const doorFrameSprite = createSprite({
         textureId: doorTexture(room, axis, part),

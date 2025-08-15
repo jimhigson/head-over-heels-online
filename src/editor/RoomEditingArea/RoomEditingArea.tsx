@@ -10,12 +10,12 @@ import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplic
 import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
 import { useUpdateUpscaleWhenElementResizes } from "../../store/storeFlow/useUpateUpscaleWhenElementResizes";
 import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
-import { useCenterScrollOnLoad } from "./useCenterScrollOnLoad";
 import { type ResolutionName } from "../../originalGame";
 import { ResolutionControls } from "./ResolutionControls";
 
 import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
+import { useCenterScrollOnLoad } from "./useCenterScrollOnLoad";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 const RoomEditingAreaInner = () => {
@@ -42,24 +42,22 @@ const RoomEditingAreaInner = () => {
   useCenterScrollOnLoad(renderSizingArea, renderArea);
 
   return (
-    <div className={`w-full h-full ${cursorClassname} relative scale-editor`}>
+    <div className="w-full h-full relative">
       <ResolutionControls
         selectedResolution={selectedResolution}
         onResolutionChange={setSelectedResolution}
       />
       <div
-        className={`w-full h-full bg-editor-checkerboard overflow-scroll flex scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue ${cursorClassname}`}
         ref={setRenderSizingArea}
+        className={`w-full h-full ${cursorClassname} scale-editor bg-editor-checkerboard overflow-scroll scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue`}
       >
-        <div className="flex justify-center items-center w-[500dvw] h-[500dvh]">
-          <div
-            style={{
-              transform: useCanvasTransform(),
-              transformOrigin: "center center",
-            }}
-            ref={setRenderArea}
-          />
-        </div>
+        <div
+          style={{
+            transform: useCanvasTransform(),
+            transformOrigin: "center center",
+          }}
+          ref={setRenderArea}
+        />
       </div>
     </div>
   );

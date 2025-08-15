@@ -2,9 +2,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
-import { first } from "iter-tools";
-import { keysIter } from "../../../utils/entries";
+import { first, objectValues } from "iter-tools";
 import type { EditorCampaign } from "../../editorTypes";
+import { iterateRoomJsonItems } from "../../../model/RoomJson";
+import { iterate } from "../../../utils/iterate";
+import { keysIter } from "../../../utils/entries";
 
 export const saveAndLoadReducers = {
   loadCampaign(
@@ -24,11 +26,22 @@ export const saveAndLoadReducers = {
     state.clickableAnnotationHovered = false;
     state.dragInProgress = false;
     state.history = initialLevelEditorSliceState.history;
-    const roomId = first(keysIter(campaign.rooms));
-    if (roomId === undefined) {
+
+    // choose which room to start the editor in.
+    const startingRoom =
+      // First look for head's room as the traditional starting room:
+      iterate(objectValues(campaign.rooms)).find((room) => {
+        return iterateRoomJsonItems(room).some(
+          (item) => item.type === "player" && item.config.which === "head",
+        );
+      })?.id ||
+      // if not that, just find any room
+      first(keysIter(campaign.rooms));
+
+    if (startingRoom === undefined) {
       throw new Error("could not find any rooms in this campaign");
     }
-    state.currentlyEditingRoomId = roomId;
+    state.currentlyEditingRoomId = startingRoom;
   },
 
   setRemoteCampaign(

@@ -8,7 +8,7 @@ import {
 import type { StartingRooms } from "../game/gameState/loadGameState";
 import {
   loadGameState,
-  startingRoomIds,
+  findStartingRoomsInCampaign,
 } from "../game/gameState/loadGameState";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
 import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
@@ -139,7 +139,7 @@ export const mutatorsTestHarness = () => {
     },
     gameState,
     gameOverFn,
-    startingRooms: startingRoomIds(testCampaign) as Required<
+    startingRooms: findStartingRoomsInCampaign(testCampaign) as Required<
       StartingRooms<TestCampaignRoomId>
     >,
     originalRooms: {

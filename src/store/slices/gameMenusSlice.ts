@@ -37,6 +37,7 @@ import type { ScrollConfig } from "../../model/json/ItemConfigMap";
 import { canonicalize } from "json-canonicalize";
 import type { gameMenusSliceWhitelist } from "../persist/gameMenusSliceWhitelist";
 import { pick } from "../../utils/pick";
+import { isInPlaytestMode } from "../../game/isInPlaytestMode";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
@@ -234,21 +235,22 @@ export const initialGameMenuSliceState: GameMenusState = {
     soundSettings: {},
   },
 
-  gameRunning: cheatsOn,
+  gameRunning: false,
   gameInPlay: initialGameInPlayStoreState,
 
   openMenus:
-    cheatsOn ?
-      // if cheats are on we skip menus for debugging:
-      []
-      // normal case: when we first load, show the main menu:
-    : [
-        {
-          menuId: "mainMenu",
-          scrollableSelection: false,
-          menuParam: emptyObject,
-        },
-      ],
+    // this feature is off - ?cheats=1 no longer linked to skipping  menus
+    // maybe a separate flag could be added if we need this later
+    //cheatsOn ? [] :
+
+    // start the app with the main menu showing:
+    [
+      {
+        menuId: "mainMenu",
+        scrollableSelection: false,
+        menuParam: emptyObject,
+      },
+    ],
   assigningInput: undefined,
   cheatsOn,
 
@@ -411,8 +413,13 @@ export const gameMenusSlice = createSlice({
     gameStarted(
       state,
       {
-        payload: { campaignLocator },
-      }: PayloadAction<{ campaignLocator: CampaignLocator }>,
+        payload: { campaignLocator, noShowCrowns },
+      }: PayloadAction<{
+        campaignLocator: CampaignLocator;
+        // set to true to skip the crowns screen on game start -
+        // eg, for playtest mode
+        noShowCrowns?: boolean;
+      }>,
     ) {
       if (state.gameRunning) {
         // resuming an already-running game:
@@ -420,13 +427,16 @@ export const gameMenusSlice = createSlice({
       } else {
         // starting a new game:
         // go to crowns menu page if not already started the game
-        state.openMenus = [
-          {
-            menuId: "crowns",
-            scrollableSelection: false,
-            menuParam: { playMusic: false },
-          },
-        ];
+        state.openMenus =
+          noShowCrowns ?
+            []
+          : [
+              {
+                menuId: "crowns",
+                scrollableSelection: false,
+                menuParam: { playMusic: false },
+              },
+            ];
         state.gameRunning = true;
         state.gameInPlay = {
           ...initialGameInPlayStoreState,
@@ -636,6 +646,10 @@ export const gameMenusSlice = createSlice({
         );
       }
 
+      if (isInPlaytestMode()) {
+        throw new Error("shouldn't be saving in playtest mode");
+      }
+
       // only puts the saved game in the store - it is up to
       // redux-persist to actually save it. The savedGame property should be
       // on its whitelist
@@ -710,6 +724,11 @@ export const gameMenusSlice = createSlice({
     builder.addCase<typeof REHYDRATE, RehydrateAction>(
       REHYDRATE,
       (state, action) => {
+        if (typedURLSearchParams().get("campaignName")?.startsWith("data:")) {
+          // this is a playtest session, we can skip loading any saves
+          return;
+        }
+
         const savedGames = action.payload?.savedGames;
         const lastSavedCampaignLocator = savedGames?.lastSavedCampaignLocator;
 

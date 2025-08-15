@@ -69,19 +69,19 @@ process.stdin.on("end", () => {
             assertIsJsonObject(node.properties.x);
             node.properties.x.multipleOf = 1;
             node.properties.x.minimum = 1;
-            node.properties.x.maximum = 20;
+            node.properties.x.maximum = 99;
           }
           if (node.properties.y) {
             assertIsJsonObject(node.properties.y);
             node.properties.y.multipleOf = 1;
             node.properties.y.minimum = 1;
-            node.properties.y.maximum = 20;
+            node.properties.y.maximum = 99;
           }
           if (node.properties.z) {
             assertIsJsonObject(node.properties.z);
             node.properties.z.multipleOf = 1;
             node.properties.z.minimum = 1;
-            node.properties.z.maximum = 20;
+            node.properties.z.maximum = 99;
           }
         }
 

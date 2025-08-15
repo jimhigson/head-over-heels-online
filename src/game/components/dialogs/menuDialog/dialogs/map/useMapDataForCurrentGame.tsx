@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelectors/selectCurrentRoomState";
-import { startingRoomIds } from "../../../../../gameState/loadGameState";
+import { findStartingRoomsInCampaign } from "../../../../../gameState/loadGameState";
 import { useGameApi } from "../../../../GameApiContext";
 import { findMapBounds } from "./findMapBounds";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
@@ -33,7 +33,7 @@ export const useMapDataForCurrentGame = <
     try {
       const curRoom = selectCurrentRoomState<RoomId, string>(gameState);
       const centreRoomId =
-        curRoom?.roomJson.id ?? startingRoomIds(campaign).head!;
+        curRoom?.roomJson.id ?? findStartingRoomsInCampaign(campaign).head!;
 
       let curSubRoom: string;
 

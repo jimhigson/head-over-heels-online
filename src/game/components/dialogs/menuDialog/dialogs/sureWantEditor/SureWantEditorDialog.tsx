@@ -30,7 +30,7 @@ export const SureWantEditorDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-metallicBlueHalfbrite zx:bg-zxCyan"
+        className="bg-pureBlack zx:bg-zxBlack"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog className="bg-shadowHalfbrite zx:bg-zxBlack px-1">

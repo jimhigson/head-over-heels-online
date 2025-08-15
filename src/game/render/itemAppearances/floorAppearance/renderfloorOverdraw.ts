@@ -7,7 +7,7 @@ import {
   perpendicularAxisXy,
   subXyz,
 } from "../../../../utils/vectors/vectors";
-import { iterateToContainer } from "../../../iterateToContainer";
+import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import type { RoomState } from "../../../../model/RoomState";
 import { iterateRoomItems } from "../../../../model/RoomState";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";

@@ -20,7 +20,7 @@ import { audioCtx } from "../../sound/audioCtx";
 import { dimLut, noFilters } from "./filters/standardFilters";
 import type { SetRequired } from "type-fest";
 import type { RoomRendererType } from "./RoomRendererType";
-import { iterateToContainer } from "../iterateToContainer";
+import { iterateToContainer } from "../../utils/pixi/iterateToContainer";
 import { roomRendererOcclusions } from "./roomRendererOcclusions";
 import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
 import { type ZGraph } from "./sortZ/GraphEdges";

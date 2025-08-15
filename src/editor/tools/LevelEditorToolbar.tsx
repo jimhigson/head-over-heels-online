@@ -64,8 +64,8 @@ export const LevelEditorToolbar = () => {
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Campaign</BitmapText>
         <SaveAndLoadButtons />
-        <ShareCampaignButton />
         <HorizontalGap />
+        <ShareCampaignButton />
         <PlayTestButton />
       </div>
       <div className={buttonGroupClassname}>
