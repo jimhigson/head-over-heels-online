@@ -44,6 +44,7 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
       roomTime: neverTime,
       by: emptyObject as Record<RoomItemId, true>,
     },
+    controlledWithJoystickAtRoomTime: neverTime,
   }) satisfies Partial<FreeItemState<RoomItemId>>;
 
 export const initialState = (jsonItem: JsonItemUnion) => {

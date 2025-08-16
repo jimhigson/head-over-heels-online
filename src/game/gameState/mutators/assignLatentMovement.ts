@@ -13,8 +13,8 @@ import type { FreeItem } from "../../physics/itemPredicates";
 import { originalFramePeriod } from "../../render/animationTimings";
 
 // since the original game pushes items every other frame, the practical latency
-// for standing-on items is two frames
-const latency = 2 * originalFramePeriod;
+// for standing-on items is two frames (80ms)
+const defaultLatency = 2 * originalFramePeriod;
 
 export const assignLatentMovement = <
   RoomId extends string,
@@ -24,6 +24,7 @@ export const assignLatentMovement = <
   room: RoomState<RoomId, RoomItemId>,
   movementDelta: Xyz,
   deltaMS: number,
+  latency = defaultLatency,
 ) => {
   const latentMovementFrame: LatentMovementFrame = {
     endAtRoomTime: room.roomTime + deltaMS + latency,

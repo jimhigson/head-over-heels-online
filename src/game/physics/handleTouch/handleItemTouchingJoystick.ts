@@ -1,24 +1,34 @@
 import { mtv } from "../mtv";
-import { moveSpeedPixPerMs } from "../mechanicsConstants";
+import {
+  maxPushRecursionDepth,
+  moveSpeedPixPerMs,
+} from "../mechanicsConstants";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
-import type { ItemInPlayType, ItemInPlay } from "../../../model/ItemInPlay";
+import type {
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlay";
+import type { Xy } from "../../../utils/vectors/vectors";
 import { unitVector, scaleXyz } from "../../../utils/vectors/vectors";
-import { moveItem } from "../moveItem";
-import type { handleItemsTouchingItems } from "./handleItemsTouchingItems";
+import type { FreeItemTypes } from "../itemPredicates";
+import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
+import { recordActedOnBy } from "../recordActedOnBy";
 
 export const handleItemTouchingJoystick = <
   RoomId extends string,
   RoomItemId extends string,
->(
-  {
-    movingItem,
-    room,
-    touchedItem: joystickItem,
-    deltaMS,
-    gameState,
-  }: ItemTouchEventByItemType<RoomId, RoomItemId, ItemInPlayType, "joystick">,
-  onTouch: typeof handleItemsTouchingItems,
-) => {
+>({
+  movingItem,
+  room,
+  touchedItem: joystickItem,
+  deltaMS,
+  recursionDepth,
+}: ItemTouchEventByItemType<
+  RoomId,
+  RoomItemId,
+  ItemInPlayType,
+  "joystick"
+>) => {
   const {
     config: { controls },
     state: { position: joystickPosition },
@@ -38,12 +48,31 @@ export const handleItemTouchingJoystick = <
 
   const unitM = unitVector(m);
 
+  type CompatibleItem = Extract<
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    {
+      type: FreeItemTypes;
+      state: {
+        facing: Xy;
+        controlledWithJoystickAtRoomTime: number;
+      };
+    }
+  >;
+
   for (const sillyOldFaceId of controls) {
-    const sillyOldFace = room.items[sillyOldFaceId] as ItemInPlay<
-      "charles",
-      RoomId,
-      RoomItemId
-    >;
+    const sillyOldFace = room.items[sillyOldFaceId] as CompatibleItem;
+
+    if (sillyOldFace === undefined) {
+      // it's possible the controlled item could have been removed from the room
+      continue;
+    }
+
+    const { roomTime } = room;
+
+    if (sillyOldFace.state.controlledWithJoystickAtRoomTime === roomTime) {
+      // can only be controlled by one joystick per frame - skip this
+      continue;
+    }
 
     if (sillyOldFaceId === undefined) {
       // it's possible the controlled item could have been moved out of the room
@@ -52,17 +81,23 @@ export const handleItemTouchingJoystick = <
 
     const posDelta = scaleXyz(unitM, -moveSpeedPixPerMs.charles * deltaMS);
     sillyOldFace.state.facing = posDelta;
+    sillyOldFace.state.controlledWithJoystickAtRoomTime = roomTime;
 
-    // unlike the original, there is latency in controlling the charles - this
-    // also avoids a circular dependency moveItem -> handleJoystick ->
-    moveItem({
-      room,
-      subjectItem: sillyOldFace,
-      gameState,
-      pusher: joystickItem,
-      posDelta,
-      deltaMS,
-      onTouch,
-    });
+    if (recursionDepth < maxPushRecursionDepth) {
+      recordActedOnBy(joystickItem, sillyOldFace, room);
+
+      assignLatentMovement(
+        sillyOldFace,
+        room,
+        posDelta,
+        deltaMS,
+        // pushing with slight latency means silly old face can latch onto his own joystick
+        // - eg if two charles are controlled, one can keep pushing it to move the other.
+        // - each frame sets up the next until the chain is broken
+        1,
+      );
+    } else {
+      console.warn("hit recursion depth limit", new Error());
+    }
   }
 };

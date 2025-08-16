@@ -1,9 +1,4 @@
-import {
-  isItemType,
-  isJoystick,
-  isPushable,
-  isSlidingItem,
-} from "./itemPredicates";
+import { isItemType, isPushable, isSlidingItem } from "./itemPredicates";
 import { isFreeItem } from "./itemPredicates";
 import { collision1to1, collision1toMany } from "../collision/aabbCollision";
 import type { GameState } from "../gameState/GameState";
@@ -29,6 +24,7 @@ import { roomItemsIterable, type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 import { veryClose } from "../../utils/epsilon";
+import { recordActedOnBy } from "./recordActedOnBy";
 
 const log = 0;
 
@@ -172,19 +168,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   // strategy is to move to the target position, then back off as needed
   subjectItem.state.position = addXyz(originalPosition, posDelta);
   if (isFreeItem(subjectItem)) {
-    const { actedOnAt } = subjectItem.state;
-    // it isn't clear why subjectItem would ever *not* be a freeItem
-    if (actedOnAt.roomTime === room.roomTime) {
-      if (pusher) {
-        actedOnAt.by[pusher.id] = true;
-      }
-    } else {
-      actedOnAt.by = (pusher ? { [pusher.id]: true } : {}) as Record<
-        RoomItemId,
-        true
-      >;
-      actedOnAt.roomTime = room.roomTime;
-    }
+    recordActedOnBy(pusher, subjectItem, room);
   }
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(
@@ -211,7 +195,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       );
   }
 
-  let touchedJoystick = false;
   for (const collidedWithItem of sortedCollisions) {
     if (!collision1to1(subjectItem, collidedWithItem)) {
       // it is possible there is no longer a collision due to previous sliding - we have
@@ -219,15 +202,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       continue;
     }
 
-    const collisionIsWithJoystick = isJoystick(collidedWithItem);
-
-    if (
-      pusher !== collidedWithItem &&
-      /* each item is only allowed to touch one joystick per frame. Otherwise,
-      in rooms such as #blacktooth47market it is possible to touch two at
-      once and make silly old face go super-quick */
-      !(touchedJoystick && collisionIsWithJoystick)
-    ) {
+    if (pusher !== collidedWithItem) {
       if (onTouch !== undefined) {
         if (log) {
           console.log(
@@ -241,9 +216,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           gameState,
           deltaMS,
           room,
+          recursionDepth: recursionDepth + 1,
         });
-
-        touchedJoystick = touchedJoystick || collisionIsWithJoystick;
       }
     }
 
@@ -273,7 +247,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           `moving ${subjectItem.id}`,
           "either mover or ",
           collidedWithItem.id,
-          "is not solid so not applying mtv",
+          "is not solid so won't calculate/apply mtv",
         );
       continue;
     }
@@ -358,6 +332,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           recursionDepth: recursionDepth + 1,
           onTouch,
         });
+      } else {
+        console.warn("hit recursion depth limit", new Error());
       }
 
       // it is possible we pushed the other item out of the room:

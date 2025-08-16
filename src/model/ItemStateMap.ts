@@ -59,6 +59,12 @@ export type FreeItemState<RoomItemId extends string> = {
   actedOnAt: TimedRelationWithOtherItem<RoomItemId>;
   /** when this item last collided into something, and who did we collide into */
   collidedWith: TimedRelationWithOtherItem<RoomItemId>;
+
+  /**
+   * really for charles bots in the original game, but technically any free item can
+   * be controlled
+   */
+  controlledWithJoystickAtRoomTime: number;
 };
 
 type SlidingItemState<RoomItemId extends string> = FreeItemState<RoomItemId> & {

@@ -145,6 +145,7 @@ const tickItemStandingOn = <
         room,
         movementVector: { x: 0, y: 0, z: -1 },
         deltaMS,
+        recursionDepth: 0,
       });
     }
   }
@@ -197,6 +198,7 @@ export const tickItem = <
         touchedItem: stoodOn,
         deltaMS,
         movementVector: { x: 0, y: 0, z: -1 },
+        recursionDepth: 0,
       });
     }
   }

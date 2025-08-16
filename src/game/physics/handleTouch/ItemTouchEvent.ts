@@ -28,6 +28,8 @@ export type ItemTouchEvent<
   gameState: GameState<RoomId>;
   deltaMS: number;
   room: RoomState<RoomId, RoomItemId>;
+  // how many item movement depths are we? To avoid infinite recursion
+  recursionDepth: number;
 };
 
 /** simplified version of ItemTouchEvent where generics can be completed with just strings: */

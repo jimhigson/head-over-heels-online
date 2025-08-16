@@ -94,6 +94,7 @@ export class MainLoop<RoomId extends string> {
   }
 
   #handleError(thrown: unknown) {
+    console.error(thrown);
     store.dispatch(errorCaught(createSerialisableErrors(thrown)));
   }
 
@@ -117,7 +118,6 @@ export class MainLoop<RoomId extends string> {
       const wrappedError = new Error("Error caught in main loop tick", {
         cause: thrown,
       });
-      console.error(wrappedError);
       this.#handleError(wrappedError);
     }
   };
