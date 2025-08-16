@@ -72,7 +72,10 @@ const getStartingRoomIds = <RoomId extends string>(
   }
 
   let startAs: IndividualCharacterName =
-    typedURLSearchParams().get("playAsHeels") === "1" ? "heels" : "head";
+    typedURLSearchParams().get("playAsHeels") === "1" ? "heels"
+      // default to head (so long as they are in the game)
+    : campaignStartingRoomIds.head !== undefined ? "head"
+    : "heels";
 
   // allow cheats to mutate the start position of either character:
   const cheatRoomId =
