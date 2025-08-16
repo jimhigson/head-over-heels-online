@@ -34,7 +34,12 @@ export const saveAndLoadReducers = {
         return iterateRoomJsonItems(room).some(
           (item) => item.type === "player" && item.config.which === "head",
         );
-      })?.id ||
+      })?.id ??
+      iterate(objectValues(campaign.rooms)).find((room) => {
+        return iterateRoomJsonItems(room).some(
+          (item) => item.type === "player" && item.config.which === "heels",
+        );
+      })?.id ??
       // if not that, just find any room
       first(keysIter(campaign.rooms));
 

@@ -231,11 +231,3 @@ export type ItemConfigMap<
     controls: RoomItemId[];
   };
 };
-
-export type UnknownItemConfigMap = ItemConfigMap<string, string>;
-
-export type AllowedMonsterMovements<
-  Which extends UnknownItemConfigMap["monster"]["which"],
-> = (UnknownItemConfigMap["monster"] & {
-  which: Which;
-})["movement"];
