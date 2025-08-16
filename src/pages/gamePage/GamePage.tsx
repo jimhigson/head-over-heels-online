@@ -77,7 +77,17 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
         if (startedLoading) {
           store.dispatch(manualLoadingFinished());
         }
-        store.dispatch(errorCaught(createSerialisableErrors(thrown)));
+        // also put on console - sometimes stack trace is easier to read there
+        console.error(thrown);
+        store.dispatch(
+          errorCaught(
+            createSerialisableErrors(
+              new Error("error in loading game assets or state", {
+                cause: thrown,
+              }),
+            ),
+          ),
+        );
       }
     };
 

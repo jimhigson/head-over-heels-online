@@ -45,6 +45,11 @@ export const handleItemTouchingJoystick = <
       RoomItemId
     >;
 
+    if (sillyOldFaceId === undefined) {
+      // it's possible the controlled item could have been moved out of the room
+      continue;
+    }
+
     const posDelta = scaleXyz(unitM, -moveSpeedPixPerMs.charles * deltaMS);
     sillyOldFace.state.facing = posDelta;
 
