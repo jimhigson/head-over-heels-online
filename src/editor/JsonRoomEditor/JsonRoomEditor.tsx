@@ -52,6 +52,7 @@ export const JsonRoomEditor = () => {
   //if (monaco !== null) { <- this wait stops json loading properly in vite dev for some reason
   return (
     <Editor
+      className="no-keyboard-shortcuts"
       height="100%"
       width="100%"
       language="json"

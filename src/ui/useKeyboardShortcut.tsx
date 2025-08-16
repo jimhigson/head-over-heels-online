@@ -33,6 +33,7 @@ type SingleShortcut = `${ValidModifiers}${Key}`;
 
 export type ShortcutKeys = SingleShortcut[];
 const shortcutKeyRegex = /^(?<modifiers>[⇧⌘^⌥]*)(?<key>.+)$/;
+
 // Helper to check for duplicate modifiers
 const hasDuplicateModifiers = (modifiers: string): boolean => {
   const seen = new Set<string>();
@@ -46,20 +47,39 @@ export const useKeyboardShortcut = (
   shortcutKeys: ShortcutKeys | undefined,
   disabled: boolean,
   run: (() => void) | undefined,
+  /**
+   * The element to listen to for keyboard events (defaults to window)
+   *
+   * null means 'do not add' (eg, waiting for a value in a ref'
+   * undefined means 'use the window'
+   */
+  element: HTMLElement | Window | null | undefined = undefined,
 ) => {
+  // joining the string will mean the result is stable even if the array
+  // is passed inline (changes on every render)
   const shortcutKeysString = shortcutKeys?.join(" ");
 
   useEffect(() => {
     if (!shortcutKeys || shortcutKeys.length === 0) return;
 
-    const handleKeydown = (event: KeyboardEvent) => {
-      // Check if the event is coming from Monaco editor
-      const target = event.target as HTMLElement;
-      const isMonacoEditor = target.closest(".monaco-editor") !== null;
+    if (element === null) {
+      return;
+    }
 
-      // If Monaco editor has focus, let it handle the event
-      if (isMonacoEditor) {
-        return;
+    const target = element ?? window;
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      // Check if the event is coming from an area where shortcuts are disabled
+      const eventTarget = event.target as HTMLElement;
+
+      // Walk up the DOM tree looking for .no-keyboard-shortcuts
+      // Stop when we reach the element we're listening to (or window)
+      let currentElement: HTMLElement | null = eventTarget;
+      while (currentElement && currentElement !== target) {
+        if (currentElement.classList.contains("no-keyboard-shortcuts")) {
+          return;
+        }
+        currentElement = currentElement.parentElement;
       }
 
       for (const shortcut of shortcutKeys) {
@@ -113,10 +133,11 @@ export const useKeyboardShortcut = (
         }
       }
     };
-    window.addEventListener("keydown", handleKeydown);
+
+    target.addEventListener("keydown", handleKeydown as EventListener);
     return () => {
-      window.removeEventListener("keydown", handleKeydown);
+      target.removeEventListener("keydown", handleKeydown as EventListener);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabled, run, shortcutKeysString]);
+  }, [disabled, run, shortcutKeysString, element]);
 };

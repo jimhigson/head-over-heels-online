@@ -17,7 +17,7 @@ import { SpinnerHead } from "../../../../../../ui/Spinner";
 
 export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
   const { data, error, isLoading, refetch } =
-    useGetAllUsersLatestCampaignsQuery();
+    useGetAllUsersLatestCampaignsQuery({ publishedOnly: true });
 
   useEffect(() => {
     // Force refetch on mount to get latest campaigns

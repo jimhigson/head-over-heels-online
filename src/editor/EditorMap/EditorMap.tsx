@@ -4,7 +4,6 @@ import type { EditorRoomId } from "../editorTypes";
 import { useEditorMapData } from "./useEditorMapData";
 import { changeToRoom } from "../slice/levelEditorSlice";
 import { store } from "../../store/store";
-import { getMapColoursClass } from "../../game/components/dialogs/menuDialog/dialogs/map/mapColours";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 
 export const EditorMap = () => {
@@ -30,11 +29,9 @@ export const EditorMap = () => {
     return null;
   }
 
-  const mapColourClasses = getMapColoursClass(mapData.curRoomScenery);
-
   return (
     <div
-      className={`overflow-y-scroll h-full scrollbar scale-editor scrollbar-w-1 ${mapColourClasses.containerClassName}`}
+      className={`h-full overflow-y-auto scale-editor bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue`}
       ref={mapContainerRef}
     >
       <MapSvg<EditorRoomId>

@@ -4,6 +4,7 @@ import { store } from "../../store";
 import { campaignsApiSlice } from "./campaignsApiSlice";
 import type { CampaignGetLocator } from "../../../db/campaign";
 import { emptyObject } from "../../../utils/empty";
+import type { EditorCampaign } from "../../../editor/editorTypes";
 
 /**
  * a simple loader function using the RTKQuery api slice,
@@ -25,7 +26,7 @@ export const loadCampaignFromApi = async <RoomId extends string>(
 /**
  * Save a campaign using the RTKQuery api slice mutation
  */
-export const saveCampaignViaApi = async (campaign: Campaign<string>) => {
+export const saveCampaignViaApi = async (campaign: EditorCampaign) => {
   const result = await store.dispatch(
     campaignsApiSlice.endpoints.saveCampaign.initiate(campaign),
   );

@@ -28,6 +28,7 @@ import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
 import { changeRoomReducers } from "./reducers/changeRoomReducers";
+import { campaignManagementReducers } from "./reducers/campaignManagementReducers";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
@@ -114,6 +115,7 @@ export const levelEditorSlice = createSlice({
     ...saveAndLoadReducers,
     ...addOrRemoveRoomReducers,
     ...changeRoomReducers,
+    ...campaignManagementReducers,
   },
   selectors: {
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
@@ -144,7 +146,6 @@ export type LevelEditorSliceActionCreator = ValueOf<
 export const {
   addRoom,
   applyItemTool,
-  setRemoteCampaign,
   changeDragInProgress,
   changeGridResolution,
   changeRoomColour,
@@ -161,16 +162,19 @@ export const {
   removeRoom,
   resetPreviewedEdits,
   roomBack,
+  roomForward,
   roomJsonEdited,
   setAutoCoalesce,
+  setCampaignName,
+  setCampaignPublished,
   setClickableAnnotationHovered,
   setHoveredItemInRoom,
+  setRemoteCampaign,
   setRoomAboveOrBelow,
   setSelectedItemsInRoom,
   setTool,
   toggleSelectedItemInRoom,
   undo,
-  roomForward,
 } = levelEditorSlice.actions;
 export const {
   selectCanRedo,

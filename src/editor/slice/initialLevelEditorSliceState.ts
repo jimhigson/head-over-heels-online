@@ -5,9 +5,17 @@ import type { LevelEditorState } from "./levelEditorSlice";
 const initialRoomId = "room_0" as EditorRoomId;
 const initialRoom = { id: initialRoomId, ...starterRoom({ x: 8, y: 8 }) };
 const initialCampaign: EditorCampaign = {
+  meta: {
+    published: false,
+    /**
+     * so that when we come back, we can continue editing the campaign
+     * from where we were
+     */
+    // lastEditedRoom: EditorRoomId;
+  },
   locator: {
     // TODO: support renaming
-    campaignName: "sequel",
+    campaignName: undefined,
     userId: "anon",
     version: 0,
   },
@@ -17,9 +25,8 @@ const initialCampaign: EditorCampaign = {
 };
 export const initialLevelEditorSliceState: LevelEditorState = {
   campaignInProgress: initialCampaign,
-  // technically this hasn't been saved, but want the save button to only be enabled
-  // after the first edit
-  remoteCampaign: initialCampaign,
+  // showing a 'new campaign' placeholder that has never been saved:
+  remoteCampaign: undefined,
   currentlyEditingRoomId: initialRoomId,
   editingRoomIdHistory: {
     back: [],

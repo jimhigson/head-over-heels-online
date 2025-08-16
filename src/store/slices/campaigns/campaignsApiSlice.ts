@@ -12,6 +12,8 @@ import {
 import type { RootState } from "../../store";
 import { importOriginalCampaign } from "../../../_generated/originalCampaign/campaign.import";
 import { decompressObject } from "../../../db/compressObject";
+import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
+import type { EditorCampaign } from "../../../editor/editorTypes";
 
 export const campaignsApiSlice = createApi({
   reducerPath: "campaignsApi",
@@ -42,36 +44,43 @@ export const campaignsApiSlice = createApi({
           return { data: await loadCampaignFromDb(campaignLocator) };
         } catch (e) {
           return {
-            error: new Error(
-              `getCampaign queryFn( ${JSON.stringify(campaignLocator)} ) failed: ${e}`,
+            error: createSerialisableErrors(
+              new Error(
+                `getCampaign queryFn( ${JSON.stringify(campaignLocator)} ) failed: ${e}`,
+              ),
             ),
           };
         }
       },
     }),
-    getAllUsersLatestCampaigns: builder.query<CampaignDirectory, void>({
-      async queryFn() {
+    getAllUsersLatestCampaigns: builder.query<
+      CampaignDirectory,
+      { publishedOnly: boolean }
+    >({
+      async queryFn({ publishedOnly }) {
         try {
-          const campaigns = await getAllUsersLatestCampaigns();
+          const campaigns = await getAllUsersLatestCampaigns({ publishedOnly });
           return { data: campaigns };
         } catch (e) {
           return {
-            error: new Error(
-              `getAllUsersLatestCampaigns queryFn() failed: ${e}`,
+            error: createSerialisableErrors(
+              new Error(`getAllUsersLatestCampaigns queryFn() failed: ${e}`),
             ),
           };
         }
       },
     }),
-    saveCampaign: builder.mutation<number, Campaign<string>>({
+    saveCampaign: builder.mutation<number, EditorCampaign>({
       async queryFn(campaign) {
         try {
           const version = await saveCampaignToDb(campaign);
           return { data: version };
         } catch (e) {
           return {
-            error: new Error(
-              `saveCampaign queryFn( ${JSON.stringify(campaign)} ) failed: ${e}`,
+            error: createSerialisableErrors(
+              new Error(
+                `saveCampaign queryFn( ${JSON.stringify(campaign)} ) failed: ${e}`,
+              ),
             ),
           };
         }

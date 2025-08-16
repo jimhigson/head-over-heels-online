@@ -19,21 +19,27 @@ export type Database = {
           created_at: string;
           created_by: string;
           data: string;
+          id: number;
           name: string;
+          published: boolean;
           version: number;
         };
         Insert: {
           created_at?: string;
           created_by?: string;
           data: string;
+          id?: number;
           name: string;
+          published?: boolean;
           version?: number;
         };
         Update: {
           created_at?: string;
           created_by?: string;
           data?: string;
+          id?: number;
           name?: string;
+          published?: boolean;
           version?: number;
         };
         Relationships: [];
@@ -55,11 +61,23 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      latest_campaigns_view: {
+        Row: {
+          created_at: string | null;
+          created_by: string | null;
+          data_preview: string | null;
+          id: number | null;
+          name: string | null;
+          published: boolean | null;
+          username: string | null;
+          version: number | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
       get_all_users_latest_campaigns: {
-        Args: Record<PropertyKey, never>;
+        Args: Record<PropertyKey, never> | { p_published_only?: boolean };
         Returns: Json;
       };
       get_latest_campaign: {
@@ -72,12 +90,19 @@ export type Database = {
           created_at: string;
           created_by: string;
           data: string;
+          id: number;
           name: string;
+          published: boolean;
           version: number;
         };
       };
       save_campaign_version: {
-        Args: { p_created_by?: string; p_data: string; p_name: string };
+        Args: {
+          p_created_by?: string;
+          p_data: string;
+          p_name: string;
+          p_published?: boolean;
+        };
         Returns: number;
       };
     };

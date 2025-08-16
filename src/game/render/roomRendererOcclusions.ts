@@ -8,6 +8,11 @@ const itemIsWallOrDoorFrame = isItemType("wall", "doorFrame");
 
 const occlusionHeight = 256;
 
+// create a rectangle mask for the floor that cuts off anything past the last
+// wall or door frame on the left/right of the room
+// this only really renders on the floor - it could move onto the floor sprite itself
+// - the right way is to render on the floor but only if wall/doorframe ends at the floor's
+// natural edge
 export function* roomRendererOcclusions<
   RoomId extends string,
   RoomItemId extends string,

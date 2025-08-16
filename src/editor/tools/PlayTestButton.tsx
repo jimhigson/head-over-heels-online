@@ -50,7 +50,7 @@ export const PlayTestButton = () => {
       {[
         <Switch
           key="fromStart"
-          className="w-full"
+          className="w-full px-1 py-half"
           value={fromStart}
           label="from"
           falseLabel="room"
@@ -59,7 +59,7 @@ export const PlayTestButton = () => {
         />,
         <Switch
           key="playAsHeels"
-          className="w-full"
+          className="w-full px-1 py-half"
           value={playAsHeels}
           label="as"
           falseLabel="head"

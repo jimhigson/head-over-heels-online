@@ -27,7 +27,7 @@ export const ResolutionControls = ({
   const { justDone, doneNow } = useShortTimeDisplay();
 
   return (
-    <div className="absolute scale-editor top-0 right-1 z-popups flex gap-0 leading-none text-white">
+    <div className="absolute scale-editor top-0 right-1 z-slightlyAbove flex gap-0 leading-none text-white">
       {justDone > 0 && (
         <BitmapText className="px-1 bg-moss items-center flex">
           {resolutionDisplayNames[selectedResolution]}

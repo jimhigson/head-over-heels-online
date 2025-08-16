@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev:game": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite",
-    "dev:editor": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite --config vite.editor.config.ts --mode development src/editor",
+    "dev:game": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" node --max_http_header_size=128000 node_modules/vite/bin/vite",
+    "dev:editor": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite --config vite.editor.config.ts --mode development",
     "preview:game": "vite preview",
     "preview:editor": "vite --config vite.editor.config.ts preview",
     "build:game": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite build",
-    "build:editor": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite build --config vite.editor.config.ts --emptyOutDir src/editor",
+    "build:editor": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite build --config vite.editor.config.ts --emptyOutDir",
     "build": "pnpm run \"/^build:.*/\"",
     "//check:build": "I don't know any way to check the build will pass other than running it:",
     "check:build:game": "pnpm build:game",
@@ -36,7 +36,7 @@
     "gen:roomSchema:ts": "./scripts/schema/flattenType.ts --file src/model/RoomJson.ts --type AnyRoomJson --output-type RoomJsonSchema | prettier --parser typescript > src/_generated/Room.flat.d.ts",
     "gen:roomSchema:json": "ts-json-schema-generator --path src/_generated/Room.flat.d.ts --type RoomJsonSchema | scripts/schema/postProcessSchema.ts | prettier --parser json > src/_generated/room.schema.json",
     "gen:roomSchema": "pnpm gen:roomSchema:ts; pnpm gen:roomSchema:json",
-    "gen:dbTypes": "supabase gen types typescript --project-id pkswdnpftrundnewgnya > src/_generated/db.d.ts",
+    "gen:dbTypes": "supabase gen types typescript --project-id pkswdnpftrundnewgnya > src/_generated/db.d.ts; prettier --write src/_generated/db.d.ts",
     "dumpDb": "pg_dump-17 -h aws-0-eu-west-2.pooler.supabase.com -p 6543 -d postgres -U postgres.pkswdnpftrundnewgnya --schema=public --no-owner --no-privileges > schema.sql",
     "prepare": "husky"
   },
@@ -66,6 +66,7 @@
     "snarkdown-in-react": "^2.0.2",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar": "^3.1.0",
+    "timeago.js": "^4.0.2",
     "use-immer": "^0.11.0",
     "wouter": "^3.6.0"
   },

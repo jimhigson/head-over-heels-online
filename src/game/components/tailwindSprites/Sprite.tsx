@@ -1,4 +1,4 @@
-import type { MouseEventHandler, ReactElement } from "react";
+import type { AriaRole, MouseEventHandler, ReactElement } from "react";
 import {
   cloneElement,
   isValidElement,
@@ -30,6 +30,7 @@ export interface BitmapTextProps {
   onClick?: MouseEventHandler<HTMLSpanElement>;
   noTint?: boolean;
   TagName?: "span" | "h1";
+  role?: AriaRole;
 }
 
 export const BitmapText = ({
@@ -45,6 +46,7 @@ export const BitmapText = ({
    */
   noTint = false,
   TagName = "span",
+  role,
 }: BitmapTextProps) => {
   const textString =
     // trimming helps for some markdown-rendering:
@@ -88,6 +90,7 @@ export const BitmapText = ({
               }
               const imgSpriteEle = (
                 <span
+                  role={role}
                   key={charIndex}
                   className={`sprite ${
                     isTextureId(textureId) ?

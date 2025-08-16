@@ -32,6 +32,7 @@ export const Button = ({
   ref,
   tooltipContent,
   shortcutKeys,
+  children,
   ...props
 }: ButtonProps) => {
   useKeyboardShortcut(shortcutKeys, disabled, onClick);
@@ -52,7 +53,12 @@ export const Button = ({
       )}
       ref={ref}
       {...props}
-    />
+    >
+      {children}
+      {/* 
+      this might be better but needs testing
+      <MultipleBitmapText>{children}</MultipleBitmapText> */}
+    </button>
   );
 
   const finalTooltipContent =

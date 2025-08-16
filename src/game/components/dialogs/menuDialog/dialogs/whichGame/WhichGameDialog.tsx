@@ -68,7 +68,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               />
               <MenuItem
                 id="remake"
-                label="Sequel (Beta)"
+                label="Sequel"
                 doubleHeightWhenFocussed
                 hintInline
                 onSelect={useDispatchActionCallback(gameStarted, {
@@ -86,7 +86,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
                 hint={
                   <BlockyMarkdown
                     className="text-lightGrey sprites-normal-height"
-                    markdown={`the story continues **38 years later**: All-new levels designed for the remake`}
+                    markdown={`unofficial; **work in progress**\n\nthe story continues **38 years later**: All-new levels designed for the remake`}
                   />
                 }
               />
