@@ -5,24 +5,32 @@ TO RELEASE
 [x] remove .xml levels from project (location outside repo in env var)
 [x] link to editor from home screen
     * with a warning or "in progress" messages
-[3] option to load sequel or community-edited (mark as a work in progress)
+[x] option to load sequel or community-edited (mark as a work in progress)
     [x] don't show on no network
     [x] load community/sequel campaigns
     [x] in-game saves are per-campaign, not universal
-[ ] save against different campaign names in editor
+[x] save against different campaign names in editor
 [ ] sounds - buy/licence/etc
 [ ] final room - something should happen
     - will take people a while to finish
     - could just put a scroll in there
+[ ] root README.md looks ok in github
+    [ ] only before opening repo
 [ ] OSS licence (???)
 [ ] death sound/music?
+[ ] credits page
+    [ ] Jon
+    [ ] Tom
+    [ ] Douglas (xml)
+    [ ] font guy (see email)
+    [ ] tippy etc
 
-[x] plausible.io - just pay; don't self-host for now
-    - or *Umami* has a free tier and is also self-hostable
+[x] open any campaign and save under any name in editor
 
 Nice to have
 ------------
 [ ] Editor autosave
+[ ] Umami events - enter rooms etc
 [x] fix circ render bug(s) w/ masking
 
 
@@ -35,8 +43,7 @@ Nice to have
 [ ] split integration tests up
 
 [x] split hud/world into rendergroups: https://pixijs.com/8.x/guides/concepts/render-groups
-
-[ ] remove size from json/room state
+[x] remove size from json/room state
 
 ### head push bag, heels pushes doughnuts
 [x] check #blacktooth6
@@ -53,6 +60,7 @@ Nice to have
 
 # scrolling 
 [ ] draggable scroll on mobile
+[ ] other analogue stick to look around the room
 [ ] better scrolling in general
 
 ### Big ideas
@@ -71,14 +79,16 @@ Nice to have
     [x] trim the walls
 [x] scenery changer    
 [x] 'selector' tool    
-[ ] fails to add walls if not blacktooth due to scenery not existing
+[x] fails to add walls if not blacktooth due to scenery not existing
 [ ] outline of near-facing walls (new sprite)
-[ ] change wall tiles
+[-] change wall tiles
+    - ish - edit the json is fine
 [ ] floor type toggle
     [ ] needs floor as 1st class type
 [ ] change facing direction on enemies
+    - ish - json editor
 [x] drop-down style sub-select buttons
-[ ] change room size
+[x] change room size
 
 ### menu
 [ ] left-right to move selection sideways
@@ -96,9 +106,6 @@ Nice to have
 [ ] "sea-shanty" music for some items    
     - not already available in doug's remake
 
-### graphical
-use pixi render groups/layers etc to render outline when switching players in 
-front of other items
 
 ### mobile
 [ ] hitting hte joystick with a tap sometimes moves <1px
