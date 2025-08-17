@@ -19,7 +19,7 @@ import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import { collision1to1 } from "../../collision/aabbCollision";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import { store } from "../../../store/store";
-import { gameOver } from "../../../store/slices/gameMenusSlice";
+import { gameOver, lostLife } from "../../../store/slices/gameMenusSlice";
 import { emptyObject } from "../../../utils/empty";
 import {
   addPokeableNumbers,
@@ -309,6 +309,7 @@ export const playableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
   characterLosingLifeItem: PlayableItem<CharacterName, RoomId>,
 ) => {
+  store.dispatch(lostLife({ characterLosingLifeItem }));
   if (characterLosingLifeItem.type === "headOverHeels") {
     combinedPlayableLosesLife(gameState, characterLosingLifeItem);
   } else {

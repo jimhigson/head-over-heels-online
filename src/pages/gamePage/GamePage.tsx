@@ -25,6 +25,7 @@ import { createSerialisableErrors } from "../../utils/redux/createSerialisableEr
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
+import { AddTrackingToStore } from "../../analytics/addTrackingToStore.ts";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
@@ -142,6 +143,7 @@ export const GamePage = () => {
       />
       <GameApiProvider gameApi={gameApi}>
         <DispatchingErrorBoundary>
+          <AddTrackingToStore />
           <ConnectInputToStore />
           <Dialogs />
         </DispatchingErrorBoundary>

@@ -2,15 +2,21 @@ import type { PropsWithChildren } from "react";
 import { createContext, useContext } from "react";
 import type { GameApi } from "../GameApi";
 
-const GameApiContext = createContext<GameApi<string> | null>(null);
-export type GameApiBoundaryProps<RoomId extends string> = PropsWithChildren<{
+const GameApiContext = createContext<
+  | GameApi<string>
+  // null means outside of context
+  | null
+  // undefined means no game in progress
+  | undefined
+>(null);
+export type GameApiProviderProps<RoomId extends string> = PropsWithChildren<{
   gameApi?: GameApi<RoomId>;
 }>;
 
 export const GameApiProvider = <RoomId extends string>({
   gameApi,
   children,
-}: GameApiBoundaryProps<RoomId>) => {
+}: GameApiProviderProps<RoomId>) => {
   return (
     // TODO: callbacks in GameApi are making this terrible cast necessary
     <GameApiContext value={gameApi as unknown as GameApi<string>}>

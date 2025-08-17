@@ -27,11 +27,6 @@ export type CharacterRooms<RoomId extends string> =
   }>;
 
 export type GameState<RoomId extends string> = {
-  /**
-   * TODO: the campaign is non-cyclic, serialisable json that never mutates
-   * - this is being moved to the store
-   */
-  //campaign: Campaign<RoomId>;
   currentCharacterName: CharacterName;
   /** 
     if playing combined, which character was paid immediately before combining?

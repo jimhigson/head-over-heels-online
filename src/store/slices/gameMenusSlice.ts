@@ -38,6 +38,7 @@ import { canonicalize } from "json-canonicalize";
 import type { gameMenusSliceWhitelist } from "../persist/gameMenusSliceWhitelist";
 import { pick } from "../../utils/pick";
 import { isInPlaytestMode } from "../../game/isInPlaytestMode";
+import type { PlayableItem } from "../../game/physics/itemPredicates";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
@@ -702,9 +703,23 @@ export const gameMenusSlice = createSlice({
         pixiContainer: Container;
       }>,
     ) {},
+    /**
+     * @deprecated characterRoomChange is redundant and can be merged with roomExplored
+     * since they do almost the same thing, and are (almost) always fired together
+     */
     characterRoomChange(
       _state,
       _action: PayloadAction<{ characterName: CharacterName; roomId: string }>,
+    ) {
+      // currently a noop for listeners.
+      // Could be used to update the player rooms if this state
+      // is moved into the store
+    },
+    lostLife(
+      _state,
+      _action: PayloadAction<{
+        characterLosingLifeItem: PlayableItem<CharacterName, string>;
+      }>,
     ) {
       // currently a noop for listeners.
       // Could be used to update the player rooms if this state
@@ -776,6 +791,10 @@ export type GameMenusSliceActionCreator = ValueOf<
 export const {
   assignInputStart,
   backToParentMenu,
+  /**
+   * @deprecated characterRoomChange is redundant and can be merged with roomExplored
+   * since they do almost the same thing, and are (almost) always fired together
+   */
   characterRoomChange,
   closeAllMenus,
   crownCollected,
@@ -790,6 +809,7 @@ export const {
   holdPressed,
   inputAddedDuringAssignment,
   keyAssignmentPresetChosen,
+  lostLife,
   mapPressed,
   menuOpenOrExitPressed,
   nextInputDirectionMode,
