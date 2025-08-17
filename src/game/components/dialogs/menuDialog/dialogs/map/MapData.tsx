@@ -1,7 +1,5 @@
-import type {
-  CharacterName,
-  Campaign,
-} from "../../../../../../model/modelTypes";
+import type { MaybeUnnamedCampaign } from "../../../../../../editor/editorTypes";
+import type { CharacterName } from "../../../../../../model/modelTypes";
 import type { SceneryName } from "../../../../../../sprites/planets";
 import type {
   PickupsCollected,
@@ -16,7 +14,7 @@ import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPosition
  * depending on if we are in the editor or in-game
  */
 export type MapData<RoomId extends string> = {
-  campaign: Campaign<RoomId>;
+  campaign: MaybeUnnamedCampaign<RoomId>;
   characterRooms: CharacterRooms<RoomId>;
   currentCharacterName: CharacterName;
   curRoomId: RoomId | undefined;

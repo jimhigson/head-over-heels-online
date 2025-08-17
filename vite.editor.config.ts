@@ -18,8 +18,14 @@ export default defineConfig({
   /* the path the editor webapp is served from after being built */
   base: "/editor/",
 
+  // Set the root to src/editor since that's where index.html is
+  root: path.resolve(__dirname, "src/editor"),
+
   // don't conflict with the game's vite cache
   cacheDir: path.resolve(__dirname, ".vite/editor"),
+
+  // Use the root public directory for static assets
+  publicDir: path.resolve(__dirname, "public"),
 
   plugins: [
     react({

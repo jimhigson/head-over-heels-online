@@ -14,6 +14,9 @@ import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import { wallTimes } from "../../../../model/times";
 
+// the original game had floor tiles that didn't go all the way up to the walls.
+// that was an artifact, but I like it, so I render small rectangular sprites to
+// make the same effect
 export const renderFloorOverdraws = (
   { state: { position: floorPosition } }: ItemInPlay<"floor", string, string>,
   roomState: RoomState<string, string>,

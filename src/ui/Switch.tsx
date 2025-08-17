@@ -6,6 +6,12 @@ import { useKeyboardShortcut, type ShortcutKeys } from "./useKeyboardShortcut";
 import { Tooltip } from "./Tooltip";
 import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
 
+const SwitchLabel = ({ label }: { label: string }) => (
+  <BitmapText className="inline-block mr-1 text-lightGrey py-half" noSlitWords>
+    {label}
+  </BitmapText>
+);
+
 export type SwitchProps = {
   value: boolean;
   className?: string;
@@ -38,16 +44,13 @@ export const Switch = ({
   const element = (
     <span
       onClick={(e) => onChange?.(!value, e)}
-      className={cn("inline-flex justify-between", className)}
+      className={cn("inline-flex justify-between leading-none", className)}
     >
-      {label && (
-        <BitmapText className="inline-block mr-1 text-lightGrey" noSlitWords>
-          {label}
-        </BitmapText>
-      )}
+      {label && <SwitchLabel label={label} />}
       <BitmapText
+        role="switch"
         className={clsx(
-          "inline-block w-min h-min",
+          "inline-block w-min h-min py-half px-half",
           value ?
             "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen"
           : "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
@@ -112,16 +115,13 @@ export const Switch3 = <TValue extends string | number>({
   const element = (
     <span
       onClick={goToNextValue}
-      className={cn("inline-flex justify-between", className)}
+      className={cn("inline-flex justify-between leading-none", className)}
     >
-      {label && (
-        <BitmapText className="inline-block mr-1 text-lightGrey" noSlitWords>
-          {label}
-        </BitmapText>
-      )}
+      {label && <SwitchLabel label={label} />}
       <BitmapText
+        role="switch"
         className={clsx(
-          "inline-block w-min h-min",
+          "inline-block w-min h-min py-half px-half",
           valueIndex === 0 ?
             "bg-redShadowHalfbrite text-highlightBeige zx:bg-zxBlack zx:text-zxGreen"
           : valueIndex === 1 ?

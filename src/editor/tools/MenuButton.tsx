@@ -26,20 +26,22 @@ export const MenuButton = ({
     <Popover open={open} onOpenChange={setOpen}>
       <div
         ref={ref}
-        className={cn(buttonSizeClassNames, "relative", {
+        className={cn(buttonSizeClassNames, "relative group", {
           "drop-shadow-oneBlock z-popups": open,
         })}
       >
         <span className="content">
           {main}
 
-          <PopoverTrigger asChild>
-            <Button className="absolute bottom-0 right-0 bg-metallicBlueHalfbrite">
-              <BitmapText className="pl-oneScaledPix leading-none py-oneScaledPix">
-                {open ? "X" : "⬇"}
-              </BitmapText>
-            </Button>
-          </PopoverTrigger>
+          {children.length > 0 && (
+            <PopoverTrigger asChild>
+              <Button className="absolute right-0 bottom-0 bg-metallicBlueHalfbrite invisible group-hover:visible">
+                <BitmapText className="pl-oneScaledPix leading-none py-oneScaledPix">
+                  {open ? "X" : "⬇"}
+                </BitmapText>
+              </Button>
+            </PopoverTrigger>
+          )}
         </span>
       </div>
       <PopoverContent>

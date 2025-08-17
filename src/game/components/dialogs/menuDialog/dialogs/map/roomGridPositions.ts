@@ -23,7 +23,7 @@ import { jsonItemIsInSubRoom } from "./itemIsInSubRoom";
 type RoomGridPositionsOptions<RoomId extends string> = {
   roomId: RoomId;
   subRoomId?: string;
-  campaign: Campaign<RoomId>;
+  campaign: Pick<Campaign<RoomId>, "rooms">;
   visited?: { [roomId in RoomId]?: { [subRoom in string]: true } };
   vectorFromPrevious?: Xyz;
   previousRoomGridPosition?: Xyz;

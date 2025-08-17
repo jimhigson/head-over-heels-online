@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import naturalCompare from "natural-compare-lite";
 
 export type RoomSelectProps<RoomId extends string> = {
-  campaign: Campaign<RoomId>;
+  campaign: Pick<Campaign<RoomId>, "rooms">;
   headRoomId?: RoomId;
   heelsRoomId?: RoomId;
   value?: RoomId;

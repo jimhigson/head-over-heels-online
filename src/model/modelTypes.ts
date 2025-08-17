@@ -39,6 +39,14 @@ export const originalCampaignLocator: CampaignLocator = {
 export type Campaign<RoomId extends string> = {
   rooms: Record<RoomId, RoomJson<RoomId, string, SceneryName>>;
   locator: CampaignLocator;
+  meta?: {
+    published: boolean;
+    /**
+     * so that when we come back, we can continue editing the campaign
+     * from where we were
+     */
+    //lastEditedRoom: EditorRoomId;
+  };
 };
 
 export type UnknownCampaign = Campaign<string>;

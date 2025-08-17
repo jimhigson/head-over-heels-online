@@ -7,6 +7,7 @@ import { MenuItems } from "../../MenuItems";
 import { gameStarted } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import type { CampaignLocator } from "../../../../../../model/modelTypes";
+import { format } from "timeago.js";
 
 const CampaignMenuItem = ({
   userId,
@@ -58,7 +59,7 @@ export const CampaignListContent = ({
                 <div className="pl-3">
                   <BlockyMarkdown
                     className="text-midGrey"
-                    markdown={` ${new Date(campaign.created_at).toLocaleDateString()} v${campaign.version}`}
+                    markdown={` v.${campaign.version} updated ${format(campaign.created_at)}`}
                   />
                 </div>
               </Fragment>

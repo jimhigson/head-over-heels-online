@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "HeadOverHeels";
+  src: url("/head-over-heels.otf.woff2/head-over-heels.otf.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-head-over-heels {
+  font-family: "HeadOverHeels", monospace;
+}
+
 body {
   /* Prevent touch actions like scroll and pinch-to-zoom: */
   touch-action: none;

@@ -53,6 +53,13 @@ const blockMultiples = {
   23: "calc(var(--block) * 23)",
   24: "calc(var(--block) * 24)",
   25: "calc(var(--block) * 25)",
+  26: "calc(var(--block) * 26)",
+  27: "calc(var(--block) * 27)",
+  28: "calc(var(--block) * 28)",
+  29: "calc(var(--block) * 29)",
+  30: "calc(var(--block) * 30)",
+  31: "calc(var(--block) * 31)",
+  32: "calc(var(--block) * 32)",
   // negative numbers
   m1: "calc(var(--block) * -1)",
   m2: "calc(var(--block) * -2)",
@@ -152,21 +159,28 @@ export default {
     right: blockMultiples,
     bottom: blockMultiples,
     borderWidth: blockMultiples,
+    minWidth: {
+      full: "100%",
+    },
     maxWidth: {
       ...blockMultiples,
       // widest dialog is 50% wider than the zx screen:
       widestDialog: `calc(var(--scale) * ${resolutions.zxSpectrum.x * 1.4}px)`,
+      full: "100%",
     },
     maxHeight: {
       ...blockMultiples,
 
       min: "min-content",
+      full: "100%",
     },
     gridTemplateColumns: {
       // min-content - typically 2 blocks but some menus can have custom leaders
       menuItems: "min-content max-content 1fr",
     },
     zIndex: {
+      // smallest possible bump-up in render order
+      slightlyAbove: "1",
       border: "10",
       dialog: "20",
       topSprite: "30",

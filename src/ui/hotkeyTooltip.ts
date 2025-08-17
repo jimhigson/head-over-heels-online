@@ -12,10 +12,10 @@ const formatShortcutKey = (key: string): string => {
 const generateHotkeyText = (shortcutKeys: ShortcutKeys): string => {
   const formattedKeys = shortcutKeys.map(formatShortcutKey);
   if (formattedKeys.length === 1) {
-    return `\n\nHotkey: **${formattedKeys[0]}**`;
+    return `\n\nkey: **${formattedKeys[0]}**`;
   }
   // Multiple shortcuts
-  return `\n\nHotkeys: ${formattedKeys.map((k) => `**${k}**`).join(" or ")}`;
+  return `\n\nkeys: ${formattedKeys.map((k) => `**${k}**`).join(" or ")}`;
 };
 
 /**
@@ -41,8 +41,5 @@ export const enhanceTooltipWithHotkeys = (
   }
 
   // Create tooltip with just hotkey info
-  const formattedKeys = shortcutKeys.map(formatShortcutKey);
-  return formattedKeys.length === 1 ?
-      `Hotkey: **${formattedKeys[0]}**`
-    : `Hotkeys: ${formattedKeys.map((k) => `**${k}**`).join(" or ")}`;
+  return generateHotkeyText(shortcutKeys);
 };

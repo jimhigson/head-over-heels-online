@@ -2,6 +2,7 @@ import type { SetOptional } from "type-fest";
 import type { Campaign, CampaignLocator } from "../model/modelTypes";
 import { compressObject, decompressObject } from "./compressObject";
 import { supabaseDb } from "./supabaseDb";
+import type { EditorCampaign } from "../editor/editorTypes";
 
 export type CampaignGetLocator = SetOptional<
   CampaignLocator,
@@ -15,10 +16,15 @@ export type CampaignGetLocator = SetOptional<
   | "version"
 >;
 
-export const saveCampaignToDb = async (campaign: Campaign<string>) => {
+export const saveCampaignToDb = async (campaign: EditorCampaign) => {
+  if (campaign.locator.campaignName === undefined) {
+    throw new Error("can not save a campaign without a name");
+  }
+
   const res = await supabaseDb.rpc("save_campaign_version", {
     p_name: campaign.locator.campaignName,
     p_data: await compressObject(campaign),
+    p_published: campaign.meta?.published ?? false,
   });
 
   if (res.error) {
@@ -68,29 +74,37 @@ export const loadCampaignFromDb = async (options: CampaignGetLocator) => {
   return data;
 };
 
+export type CampaignInfoInDirectory = {
+  name: string;
+  version: number;
+  created_at: string;
+};
+
 export type CampaignDirectory = {
   [userId: string]: {
     user: {
       id: string;
       username: string;
+      isCurrentUser: boolean;
     };
     campaigns: {
-      [campaignName: string]: {
-        name: string;
-        version: number;
-        created_at: string;
-      };
+      [campaignName: string]: CampaignInfoInDirectory;
     };
   };
 };
 
-export const getAllUsersLatestCampaigns =
-  async (): Promise<CampaignDirectory> => {
-    const res = await supabaseDb.rpc("get_all_users_latest_campaigns");
+export const getAllUsersLatestCampaigns = async ({
+  publishedOnly,
+}: {
+  publishedOnly: boolean;
+}): Promise<CampaignDirectory> => {
+  const res = await supabaseDb.rpc("get_all_users_latest_campaigns", {
+    p_published_only: publishedOnly,
+  });
 
-    if (res.error) {
-      throw new Error("could not get user campaigns", { cause: res.error });
-    }
+  if (res.error) {
+    throw new Error("could not get user campaigns", { cause: res.error });
+  }
 
-    return res.data as CampaignDirectory;
-  };
+  return res.data as CampaignDirectory;
+};

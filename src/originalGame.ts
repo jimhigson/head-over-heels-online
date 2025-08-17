@@ -50,3 +50,7 @@ export const zxSpectrumColors = {
   zxBlackDimmed: "#000",
   zxWhiteDimmed: "#888",
 };
+
+// don't know exact date but a guess based on the date of this review:
+// https://www.everygamegoing.com/larticle/Head-Over-Heels-000/32831
+export const releaseDateIso8601 = "1987-06-01T00:00:00Z";

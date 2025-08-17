@@ -94,6 +94,13 @@ export const spritesTailwindPlugin = plugin(
       },
       ".bg-editor-checkerboard": {
         background: `repeating-conic-gradient(${spritesheetPalette.pureBlack} 0 25%, ${halfbriteHex(spritesheetPalette.shadow)} 0 50%) 50% / calc(4*var(--block)) calc(4*var(--block))`,
+        backgroundAttachment: "fixed",
+      },
+      ".bg-checkerboard-stifled-alphas": {
+        background: `repeating-conic-gradient(
+          transparent 0 25%, #000 0 50%) 50% / calc(2px*var(--scale)) calc(2px*var(--scale)
+        )`,
+        backgroundAttachment: "fixed",
       },
       ".sprite-in-glyph-margin": {
         "--scale": "0.75",

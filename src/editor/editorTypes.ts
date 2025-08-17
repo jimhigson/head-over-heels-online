@@ -1,4 +1,4 @@
-import type { Tagged } from "type-fest";
+import type { SetOptional, Simplify, Tagged } from "type-fest";
 import type { RoomRenderer } from "../game/render/roomRenderer";
 import type {
   JsonItem,
@@ -12,9 +12,24 @@ import type {
   UnionOfAllItemInPlayTypes,
 } from "../model/ItemInPlay";
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import type { Campaign } from "../model/modelTypes";
+import type { Campaign, CampaignLocator } from "../model/modelTypes";
 
-export type EditorCampaign = Campaign<EditorRoomId>;
+export type NamedEditorCampaign = Campaign<EditorRoomId>;
+
+export type MaybeUnnamedCampaign<RoomId extends string> = Simplify<
+  // make locator.campaignName optional in the editor - the user
+  // might not have given a name yet
+  Omit<Campaign<RoomId>, "locator"> & {
+    locator: SetOptional<CampaignLocator, "campaignName">;
+  }
+>;
+
+export type EditorCampaign = MaybeUnnamedCampaign<EditorRoomId>;
+
+export const campaignIsNamed = (
+  campaign: EditorCampaign,
+): campaign is NamedEditorCampaign =>
+  campaign.locator.campaignName !== undefined;
 
 export type EditorRoomId = Tagged<string, "EditorRoomId">;
 export type EditorRoomItemId<ItemId extends string = string> = Tagged<
