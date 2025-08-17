@@ -313,7 +313,7 @@ plods along in a clockwise pattern`}
 detects a player in a straight line on an axis and rushes towards them`}
         >
           <span
-            className={`sprite texture-headlessBase [button:hover_&]:texture-headlessBase_all ${buttonSpriteRevertColourClasses}`}
+            className={`sprite texture-headlessBase [button:hover_&]:texture-animated-headlessBase_scan ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton

@@ -118,27 +118,33 @@ export const editRoomReducers = {
       changeIdOfCurrentRoomInPlace(state, roomJson.id);
     }
 
-    const previousNonContiguousRelationship =
-      prevRoomJson.meta?.nonContiguousRelationship;
-
-    const nonContiguousRelationship = roomJson.meta?.nonContiguousRelationship;
-    if (nonContiguousRelationship !== undefined) {
-      const otherRoom = rooms[nonContiguousRelationship.with.room];
+    const prevOutboundNCR = prevRoomJson.meta?.nonContiguousRelationship;
+    const nextOutboundNCR = roomJson.meta?.nonContiguousRelationship;
+    if (nextOutboundNCR !== undefined) {
+      // add a link back from the new NCR room:
+      const otherRoom = rooms[nextOutboundNCR.with.room];
       otherRoom.meta = {
         ...otherRoom.meta,
         nonContiguousRelationship: {
           with: { room: roomJson.id },
-          gridOffset: scaleXyz(nonContiguousRelationship.gridOffset, -1),
+          gridOffset: scaleXyz(nextOutboundNCR.gridOffset, -1),
         },
       };
     }
-    if (previousNonContiguousRelationship !== undefined) {
-      // TODO: several more cases - clear out what previousNonContiguousRelationship linked to's link back
-      // if we don't have one any more
-      // TODO: remove this or something:
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const _otherRoom = rooms[previousNonContiguousRelationship.with.room];
-      //otherRoom.meta = omit(otherRoom.meta, "nonContiguousRelationship");
+
+    if (
+      prevOutboundNCR?.with.room !== undefined &&
+      nextOutboundNCR?.with.room !== prevOutboundNCR.with.room
+    ) {
+      // we were linking to a room, but are not linking to that room anymore -
+      // break the inbound link:
+      const prevNcrRoom = rooms[prevOutboundNCR.with.room];
+      if (
+        prevNcrRoom.meta?.nonContiguousRelationship?.with.room ===
+        state.currentlyEditingRoomId
+      ) {
+        delete prevNcrRoom.meta.nonContiguousRelationship;
+      }
     }
   },
 

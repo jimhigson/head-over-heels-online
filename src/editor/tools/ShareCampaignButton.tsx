@@ -1,7 +1,8 @@
 import { supabaseDb } from "../../db/supabaseDb";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import type { TypedURLSearchParams } from "../../options/queryParams";
-import { useSavedIsInSync } from "./SaveAndLoadButtons";
+import { cn } from "../../ui/cn";
+import { useRemoteIsInSync } from "./SaveAndLoadButtons";
 import { ToolbarButton } from "./ToolbarButton";
 import { useShortTimeDisplay } from "./useShortTimeDisplay";
 
@@ -16,7 +17,7 @@ give anyone the link to your game
 `;
 
 export const ShareCampaignButton = () => {
-  const sharedIsInSync = useSavedIsInSync();
+  const remoteIsInSync = useRemoteIsInSync();
   const { doneNow, justDone } = useShortTimeDisplay();
 
   return justDone > 0 ?
@@ -24,7 +25,7 @@ export const ShareCampaignButton = () => {
         <BitmapText className="relative leading-none">OK!</BitmapText>
       </ToolbarButton>
     : <ToolbarButton
-        disabled={!sharedIsInSync}
+        disabled={!remoteIsInSync}
         onClick={async () => {
           const url = new URL(import.meta.env.VITE_GAME_URL);
           const searchParams = url.searchParams as TypedURLSearchParams;
@@ -46,7 +47,9 @@ export const ShareCampaignButton = () => {
         tooltipContent={tooltipMarkdown}
       >
         <span
-          className={`sprite sprite-tinted texture-editor_tool_share relative`}
+          className={cn(`sprite texture-editor_tool_share relative`, {
+            "sprite-revert-to-two-tone-dim": !remoteIsInSync,
+          })}
         />
       </ToolbarButton>;
 };

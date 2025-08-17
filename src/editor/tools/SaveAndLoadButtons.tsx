@@ -44,7 +44,7 @@ const loadTooltipMarkdown = `
 load your saved campaign, or anyone else's
 `;
 
-export const useSavedIsInSync = () => {
+export const useRemoteIsInSync = () => {
   return useAppSelectorWithLevelEditorSlice(
     ({ levelEditor: { remoteCampaign, campaignInProgress } }) =>
       nanoEqual(remoteCampaign, campaignInProgress),
@@ -53,7 +53,7 @@ export const useSavedIsInSync = () => {
 
 export const SaveAndLoadButtons = () => {
   const user = useSupabaseUser();
-  const savedIsInSync = useSavedIsInSync();
+  const savedIsInSync = useRemoteIsInSync();
   const { doneNow, justDone } = useShortTimeDisplay();
   const [saveAsDialogOpen, setSaveAsDialogOpen] = useState(false);
   const [openDialogOpen, setOpenDialogOpen] = useState(false);
