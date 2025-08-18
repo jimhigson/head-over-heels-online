@@ -3219,6 +3219,1806 @@
                                     "rightState"
                                   ],
                                   "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "switch",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "setting": {
+                                          "const": "right",
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "setting": {
+                                          "const": "left",
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "conveyor",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "direction": {
+                                          "enum": [
+                                            "towards",
+                                            "right",
+                                            "away",
+                                            "left"
+                                          ],
+                                          "type": "string"
+                                        },
+                                        "disappearing": {
+                                          "anyOf": [
+                                            {
+                                              "type": "null"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "on": {
+                                                  "const": "stand",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": ["on"],
+                                              "type": "object"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "direction": {
+                                          "enum": [
+                                            "towards",
+                                            "right",
+                                            "away",
+                                            "left"
+                                          ],
+                                          "type": "string"
+                                        },
+                                        "disappearing": {
+                                          "anyOf": [
+                                            {
+                                              "type": "null"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "on": {
+                                                  "const": "stand",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": ["on"],
+                                              "type": "object"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "joystick",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "controls": {
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "controls": {
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "emitter",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "emits": {
+                                          "additionalProperties": false,
+                                          "description": "what does this emitter emit? Could be (potentially) any free item",
+                                          "properties": {
+                                            "config": {
+                                              "anyOf": [
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "gives": {
+                                                      "enum": [
+                                                        "shield",
+                                                        "extra-life",
+                                                        "fast",
+                                                        "jumps",
+                                                        "doughnuts",
+                                                        "bag",
+                                                        "hooter",
+                                                        "reincarnation"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["gives"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "gives": {
+                                                      "const": "scroll",
+                                                      "type": "string"
+                                                    },
+                                                    "page": {
+                                                      "enum": [
+                                                        "blacktooth",
+                                                        "egyptus",
+                                                        "penitentiary",
+                                                        "safari",
+                                                        "doughnuts",
+                                                        "bag",
+                                                        "hooter",
+                                                        "teleportBack",
+                                                        "historyOfTheBlacktoothEmpire",
+                                                        "theGame",
+                                                        "bookWorld",
+                                                        "head",
+                                                        "heels",
+                                                        "reincarnationFish",
+                                                        "cuddlyStuffedWhiteRabbits",
+                                                        "crowns",
+                                                        "teleports",
+                                                        "springs",
+                                                        "switches",
+                                                        "conveyorBelts",
+                                                        "hushPuppies",
+                                                        "theEmperorsGuardian",
+                                                        "swopKey",
+                                                        "hintsAndTips",
+                                                        "credits",
+                                                        "installGuide"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "source": {
+                                                      "const": "manual",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "gives",
+                                                    "source",
+                                                    "page"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "gives": {
+                                                      "const": "scroll",
+                                                      "type": "string"
+                                                    },
+                                                    "markdown": {
+                                                      "type": "string"
+                                                    },
+                                                    "source": {
+                                                      "const": "inline",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "gives",
+                                                    "source",
+                                                    "markdown"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "gives": {
+                                                      "const": "crown",
+                                                      "type": "string"
+                                                    },
+                                                    "planet": {
+                                                      "enum": [
+                                                        "blacktooth",
+                                                        "bookworld",
+                                                        "egyptus",
+                                                        "penitentiary",
+                                                        "safari"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "gives",
+                                                    "planet"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "style": {
+                                                      "enum": [
+                                                        "drum",
+                                                        "sticks",
+                                                        "cube"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["style"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": [
+                                                        "off",
+                                                        "on",
+                                                        "on-stand"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "clockwise",
+                                                        "back-forth",
+                                                        "towards-analogue"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "movement",
+                                                    "activated",
+                                                    "startDirection"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "style": {
+                                                      "const": "deadFish",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["style"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left",
+                                                        "awayRight",
+                                                        "towardsRight",
+                                                        "towardsLeft",
+                                                        "awayLeft"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "enum": [
+                                                        "head",
+                                                        "heels",
+                                                        "headOverHeels"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "startDirection"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "planet": {
+                                                      "enum": [
+                                                        "blacktooth",
+                                                        "bookworld",
+                                                        "egyptus",
+                                                        "penitentiary",
+                                                        "safari"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["planet"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "const": "while-player-near",
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-analogue-unless-planet-crowns",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "emperorsGuardian",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "const": "while-player-near",
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-analogue",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "emperor",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "patrol-randomly-xy4",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "elephant",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "turn-to-player",
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "elephantHead",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "startDirection",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "patrol-randomly-xy4",
+                                                        "towards-on-shortest-axis-xy4"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "monkey",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "towards-on-shortest-axis-xy4",
+                                                        "patrol-randomly-xy4-and-reverse"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "computerBot",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "patrol-randomly-xy8",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "bubbleRobot",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "patrol-randomly-diagonal",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "dalek",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-tripped-on-axis-xy4",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "homingBot",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "patrol-randomly-xy8",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "helicopterBug",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "const": "while-player-near",
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-analogue",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "helicopterBug",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "clockwise",
+                                                        "back-forth"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "turtle",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "startDirection",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": [
+                                                        "off",
+                                                        "on",
+                                                        "after-player-near"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-on-shortest-axis-xy4",
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "cyberman",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "activated",
+                                                    "movement",
+                                                    "startDirection"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "clockwise",
+                                                        "back-forth"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "style": {
+                                                      "enum": [
+                                                        "greenAndPink",
+                                                        "starsAndStripes"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "skiHead",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "activated",
+                                                    "movement",
+                                                    "startDirection",
+                                                    "style"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "style": {
+                                                      "enum": ["book", "puck"],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["style"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "startingPhase": {
+                                                      "enum": [1, 2],
+                                                      "type": "number"
+                                                    },
+                                                    "style": {
+                                                      "const": "spikyBall",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "style",
+                                                    "startingPhase"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "direction": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left",
+                                                        "awayRight",
+                                                        "towardsRight",
+                                                        "towardsLeft",
+                                                        "awayLeft"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              ]
+                                            },
+                                            "type": {
+                                              "enum": [
+                                                "portableBlock",
+                                                "pushableBlock",
+                                                "movingPlatform",
+                                                "moveableDeadly",
+                                                "pickup",
+                                                "spring",
+                                                "sceneryPlayer",
+                                                "sceneryCrown",
+                                                "firedDoughnut",
+                                                "slidingDeadly",
+                                                "slidingBlock",
+                                                "monster",
+                                                "charles",
+                                                "ball"
+                                              ],
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["type", "config"],
+                                          "type": "object"
+                                        },
+                                        "lastEmittedAtRoomTime": {
+                                          "type": "number"
+                                        },
+                                        "maximum": {
+                                          "description": "how many should this emitter emit? Null for no limit",
+                                          "type": ["null", "number"]
+                                        },
+                                        "period": {
+                                          "description": "how long between emissions?",
+                                          "type": "number"
+                                        },
+                                        "quantityEmitted": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "emits": {
+                                          "additionalProperties": false,
+                                          "description": "what does this emitter emit? Could be (potentially) any free item",
+                                          "properties": {
+                                            "config": {
+                                              "anyOf": [
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "gives": {
+                                                      "enum": [
+                                                        "shield",
+                                                        "extra-life",
+                                                        "fast",
+                                                        "jumps",
+                                                        "doughnuts",
+                                                        "bag",
+                                                        "hooter",
+                                                        "reincarnation"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["gives"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "gives": {
+                                                      "const": "scroll",
+                                                      "type": "string"
+                                                    },
+                                                    "page": {
+                                                      "enum": [
+                                                        "blacktooth",
+                                                        "egyptus",
+                                                        "penitentiary",
+                                                        "safari",
+                                                        "doughnuts",
+                                                        "bag",
+                                                        "hooter",
+                                                        "teleportBack",
+                                                        "historyOfTheBlacktoothEmpire",
+                                                        "theGame",
+                                                        "bookWorld",
+                                                        "head",
+                                                        "heels",
+                                                        "reincarnationFish",
+                                                        "cuddlyStuffedWhiteRabbits",
+                                                        "crowns",
+                                                        "teleports",
+                                                        "springs",
+                                                        "switches",
+                                                        "conveyorBelts",
+                                                        "hushPuppies",
+                                                        "theEmperorsGuardian",
+                                                        "swopKey",
+                                                        "hintsAndTips",
+                                                        "credits",
+                                                        "installGuide"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "source": {
+                                                      "const": "manual",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "gives",
+                                                    "source",
+                                                    "page"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "gives": {
+                                                      "const": "scroll",
+                                                      "type": "string"
+                                                    },
+                                                    "markdown": {
+                                                      "type": "string"
+                                                    },
+                                                    "source": {
+                                                      "const": "inline",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "gives",
+                                                    "source",
+                                                    "markdown"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "gives": {
+                                                      "const": "crown",
+                                                      "type": "string"
+                                                    },
+                                                    "planet": {
+                                                      "enum": [
+                                                        "blacktooth",
+                                                        "bookworld",
+                                                        "egyptus",
+                                                        "penitentiary",
+                                                        "safari"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "gives",
+                                                    "planet"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "style": {
+                                                      "enum": [
+                                                        "drum",
+                                                        "sticks",
+                                                        "cube"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["style"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": [
+                                                        "off",
+                                                        "on",
+                                                        "on-stand"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "clockwise",
+                                                        "back-forth",
+                                                        "towards-analogue"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "movement",
+                                                    "activated",
+                                                    "startDirection"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "style": {
+                                                      "const": "deadFish",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["style"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left",
+                                                        "awayRight",
+                                                        "towardsRight",
+                                                        "towardsLeft",
+                                                        "awayLeft"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "enum": [
+                                                        "head",
+                                                        "heels",
+                                                        "headOverHeels"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "startDirection"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "planet": {
+                                                      "enum": [
+                                                        "blacktooth",
+                                                        "bookworld",
+                                                        "egyptus",
+                                                        "penitentiary",
+                                                        "safari"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["planet"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "const": "while-player-near",
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-analogue-unless-planet-crowns",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "emperorsGuardian",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "const": "while-player-near",
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-analogue",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "emperor",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "patrol-randomly-xy4",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "elephant",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "turn-to-player",
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "elephantHead",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "startDirection",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "patrol-randomly-xy4",
+                                                        "towards-on-shortest-axis-xy4"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "monkey",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "towards-on-shortest-axis-xy4",
+                                                        "patrol-randomly-xy4-and-reverse"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "computerBot",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "patrol-randomly-xy8",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "bubbleRobot",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "patrol-randomly-diagonal",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "dalek",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-tripped-on-axis-xy4",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "homingBot",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "patrol-randomly-xy8",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "helicopterBug",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "const": "while-player-near",
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-analogue",
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "helicopterBug",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "clockwise",
+                                                        "back-forth"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "turtle",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "movement",
+                                                    "startDirection",
+                                                    "activated"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": [
+                                                        "off",
+                                                        "on",
+                                                        "after-player-near"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "const": "towards-on-shortest-axis-xy4",
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "cyberman",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "activated",
+                                                    "movement",
+                                                    "startDirection"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": ["off", "on"],
+                                                      "type": "string"
+                                                    },
+                                                    "movement": {
+                                                      "enum": [
+                                                        "clockwise",
+                                                        "back-forth"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "startDirection": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "style": {
+                                                      "enum": [
+                                                        "greenAndPink",
+                                                        "starsAndStripes"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "which": {
+                                                      "const": "skiHead",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "which",
+                                                    "activated",
+                                                    "movement",
+                                                    "startDirection",
+                                                    "style"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "style": {
+                                                      "enum": ["book", "puck"],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["style"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "startingPhase": {
+                                                      "enum": [1, 2],
+                                                      "type": "number"
+                                                    },
+                                                    "style": {
+                                                      "const": "spikyBall",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "style",
+                                                    "startingPhase"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "direction": {
+                                                      "enum": [
+                                                        "towards",
+                                                        "right",
+                                                        "away",
+                                                        "left",
+                                                        "awayRight",
+                                                        "towardsRight",
+                                                        "towardsLeft",
+                                                        "awayLeft"
+                                                      ],
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              ]
+                                            },
+                                            "type": {
+                                              "enum": [
+                                                "portableBlock",
+                                                "pushableBlock",
+                                                "movingPlatform",
+                                                "moveableDeadly",
+                                                "pickup",
+                                                "spring",
+                                                "sceneryPlayer",
+                                                "sceneryCrown",
+                                                "firedDoughnut",
+                                                "slidingDeadly",
+                                                "slidingBlock",
+                                                "monster",
+                                                "charles",
+                                                "ball"
+                                              ],
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": ["type", "config"],
+                                          "type": "object"
+                                        },
+                                        "lastEmittedAtRoomTime": {
+                                          "type": "number"
+                                        },
+                                        "maximum": {
+                                          "description": "how many should this emitter emit? Null for no limit",
+                                          "type": ["null", "number"]
+                                        },
+                                        "period": {
+                                          "description": "how long between emissions?",
+                                          "type": "number"
+                                        },
+                                        "quantityEmitted": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "lift",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "bottom": {
+                                          "type": "number"
+                                        },
+                                        "direction": {
+                                          "enum": ["up", "down"],
+                                          "type": "string"
+                                        },
+                                        "top": {
+                                          "type": "number"
+                                        },
+                                        "vels": {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "lift": {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "x": {
+                                                  "type": "number"
+                                                },
+                                                "y": {
+                                                  "type": "number"
+                                                },
+                                                "z": {
+                                                  "type": "number"
+                                                }
+                                              },
+                                              "required": ["x", "y", "z"],
+                                              "type": "object"
+                                            }
+                                          },
+                                          "required": ["lift"],
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "bottom": {
+                                          "type": "number"
+                                        },
+                                        "direction": {
+                                          "enum": ["up", "down"],
+                                          "type": "string"
+                                        },
+                                        "top": {
+                                          "type": "number"
+                                        },
+                                        "vels": {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "lift": {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "x": {
+                                                  "type": "number"
+                                                },
+                                                "y": {
+                                                  "type": "number"
+                                                },
+                                                "z": {
+                                                  "type": "number"
+                                                }
+                                              },
+                                              "required": ["x", "y", "z"],
+                                              "type": "object"
+                                            }
+                                          },
+                                          "required": ["lift"],
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "teleporter",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "toPosition": {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            },
+                                            "z": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": ["x", "y", "z"],
+                                          "type": "object"
+                                        },
+                                        "toRoom": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": ["toRoom", "toPosition"],
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "toPosition": {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            },
+                                            "z": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": ["x", "y", "z"],
+                                          "type": "object"
+                                        },
+                                        "toRoom": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": ["toRoom", "toPosition"],
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
                                 }
                               ]
                             },

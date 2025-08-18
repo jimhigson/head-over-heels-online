@@ -56,7 +56,7 @@ export const onConveyor: Mechanic<FreeItemTypes> = <
   }
 
   const {
-    config: { direction },
+    state: { direction },
   } = standingOn;
 
   /**

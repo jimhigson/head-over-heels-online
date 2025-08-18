@@ -12,9 +12,12 @@ import { isItemType } from "../itemPredicates";
 import type { Mechanic, MechanicResult } from "../MechanicResult";
 import { unitMechanicalResult } from "../MechanicResult";
 
-export const teleporterIsActive = ({
+export const teleporterIsActive = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
   config: { activatedOnStoreValue },
-}: ItemInPlay<"teleporter", string, string>) => {
+}: ItemInPlay<"teleporter", RoomId, RoomItemId>) => {
   return activatedOnStoreValue === undefined ? true : (
       selectAtPath(store.getState(), activatedOnStoreValue)
     );
@@ -54,7 +57,7 @@ export const teleporting: Mechanic<CharacterName> = <
         stateDelta: {
           teleporting: {
             phase: "out",
-            toRoom: standingOn.config.toRoom,
+            toRoom: standingOn.state.toRoom,
             timeRemaining: fadeInOrOutDuration,
           },
         },

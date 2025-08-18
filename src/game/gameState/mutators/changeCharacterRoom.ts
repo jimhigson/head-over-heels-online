@@ -289,7 +289,7 @@ export const changeCharacterRoom = <
   // character is in the room, now let's update some of their state before the physics starts ticking again:
   if (changeCharacterRoomOptions.changeType === "teleport") {
     const {
-      config: { toPosition: teleporterToBlockPosition },
+      state: { toPosition: teleporterToBlockPosition },
     } = changeCharacterRoomOptions.sourceItem;
 
     playableItem.state.position = addXyz(

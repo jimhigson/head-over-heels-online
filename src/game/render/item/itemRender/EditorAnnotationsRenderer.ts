@@ -112,7 +112,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
   }
 
   #initAnnotations() {
-    const item = this.renderContext.item as EditorItemInPlayUnion<T>;
+    const item = this.renderContext.item as unknown as EditorItemInPlayUnion<T>;
 
     switch (item.type) {
       case "pickup":

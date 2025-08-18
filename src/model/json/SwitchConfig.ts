@@ -1,6 +1,8 @@
 import type { BooleanStatePaths } from "../../store/slices/gameMenusSlice";
 import type { Subset } from "../../utils/subset";
+import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
 import type { ItemState, SwitchSetting } from "../ItemInPlay";
+import type { ItemStateMap } from "../ItemStateMap";
 
 // switches are 'on rails' with a fairly restricted range of things they can change for the sake of avoiding
 // errors in the json but this could be added to as needed. Technically, the engine can change any property
@@ -80,6 +82,85 @@ type SwitchItemModificationUnion<
         Partial<ItemState<"switch", RoomId, RoomItemId>>,
         {
           setting?: "right";
+        }
+      >;
+    }
+  // gangs of switches but opposite-direction
+  | {
+      expectType: "switch";
+      targets: RoomItemId[];
+      leftState: Subset<
+        Partial<ItemState<"switch", RoomId, RoomItemId>>,
+        {
+          setting?: "right";
+        }
+      >;
+      rightState: Subset<
+        Partial<ItemState<"switch", RoomId, RoomItemId>>,
+        {
+          setting?: "left";
+        }
+      >;
+    }
+  | {
+      expectType: "conveyor";
+      targets: RoomItemId[];
+      leftState: Subset<
+        Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
+        {
+          direction?: DirectionXy4;
+          disappearing?: {
+            on: "stand";
+          } | null;
+        }
+      >;
+      rightState: Subset<
+        Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
+        {
+          direction?: DirectionXy4;
+          disappearing?: {
+            on: "stand";
+          } | null;
+        }
+      >;
+    }
+  | {
+      expectType: "joystick";
+      targets: RoomItemId[];
+      leftState: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["joystick"], "controls">
+      >;
+      rightState: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["joystick"], "controls">
+      >;
+    }
+  | {
+      expectType: "emitter";
+      targets: RoomItemId[];
+      leftState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;
+      rightState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;
+    }
+  | {
+      expectType: "lift";
+      targets: RoomItemId[];
+      leftState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
+      rightState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
+    }
+  | {
+      expectType: "teleporter";
+      targets: RoomItemId[];
+      leftState: Subset<
+        Partial<ItemStateMap<RoomId, RoomItemId>["teleporter"]>,
+        {
+          toRoom: RoomId;
+          toPosition: Xyz;
+        }
+      >;
+      rightState: Subset<
+        Partial<ItemStateMap<RoomId, RoomItemId>["teleporter"]>,
+        {
+          toRoom: RoomId;
+          toPosition: Xyz;
         }
       >;
     };
