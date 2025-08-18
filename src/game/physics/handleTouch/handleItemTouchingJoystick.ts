@@ -30,8 +30,11 @@ export const handleItemTouchingJoystick = <
   "joystick"
 >) => {
   const {
-    config: { controls },
-    state: { position: joystickPosition },
+    state: {
+      position: joystickPosition,
+      // use controls from state so it can be changed in-game:
+      controls,
+    },
     aabb: joystickAabb,
   } = joystickItem;
 

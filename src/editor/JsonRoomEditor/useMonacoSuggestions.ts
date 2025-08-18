@@ -70,6 +70,30 @@ const getOtherRoomIds = (
     (roomId) => roomId !== storeState.levelEditor.currentlyEditingRoomId,
   );
 
+const getJoystickControllableItemIds = (
+  storeState: RootStateWithLevelEditorSlice,
+  currentRoomJson: EditorRoomJson,
+  _node: Node,
+  targetsArray: Node,
+) => {
+  const existingTargets =
+    (targetsArray.children &&
+      new Set(
+        iterate(targetsArray.children)
+          ?.map((c) => c.value)
+          .filter((s) => typeof s === "string"),
+      )) ??
+    (emptySet as Set<string>);
+
+  return (
+    iterateRoomJsonItemsWithIds(currentRoomJson.items, "charles")
+      .map(([id]) => id)
+      // only suggest the ids that aren't already in the array (in existingTargets)
+      .filter((id) => !existingTargets.has(id))
+      .toArray()
+  );
+};
+
 /**
  * Patterns for property paths and their corresponding suggestion generators
  */
@@ -85,25 +109,10 @@ const suggestionPatterns: Record<
   roomAbove: getOtherRoomIds,
   roomBelow: getOtherRoomIds,
   "meta.nonContiguousRelationship.with.room": getOtherRoomIds,
-  // joytsticks:
-  ["config.controls.*"](storeState, currentRoomJson, _node, targetsArray) {
-    const existingTargets =
-      (targetsArray.children &&
-        new Set(
-          iterate(targetsArray.children)
-            ?.map((c) => c.value)
-            .filter((s) => typeof s === "string"),
-        )) ??
-      (emptySet as Set<string>);
-
-    return (
-      iterateRoomJsonItemsWithIds(currentRoomJson.items, "charles")
-        .map(([id]) => id)
-        // only suggest the ids that aren't already in the array (in existingTargets)
-        .filter((id) => !existingTargets.has(id))
-        .toArray()
-    );
-  },
+  // joysticks:
+  ["config.controls.*"]: getJoystickControllableItemIds,
+  // switches changing what joysticks control:
+  ["config.modifies.*.*.controls.*"]: getJoystickControllableItemIds,
   // switches:
   ["modifies.*.targets.*"](
     storeState,
@@ -156,8 +165,11 @@ const findMatchingPattern = (path: (string | number)[]): string | null => {
     });
 
     if (matches && pathTail.length === patternParts.length) {
+      console.log(`✅ `, path, "matched", pattern);
       return pattern;
     }
+
+    console.log(`❌ `, path, "did not match", pattern);
   }
   return null;
 };

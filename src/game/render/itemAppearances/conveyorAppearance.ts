@@ -14,6 +14,8 @@ const slowdownTimeMs = 500;
 type ConveyorRenderProps = {
   moving: boolean;
   roomTimeStoppedMoving?: number;
+  // normally won't change, but then there are switches...
+  direction: DirectionXy4;
 };
 
 const conveyorAnimationSpeed =
@@ -72,8 +74,8 @@ const conveyorAppearanceImpl: ItemAppearance<
 > = ({
   renderContext: {
     item: {
-      config: { direction, times },
-      state: { stoodOnBy },
+      config: { times },
+      state: { stoodOnBy, direction },
     },
     room: { roomTime },
   },
@@ -82,16 +84,22 @@ const conveyorAppearanceImpl: ItemAppearance<
   const currentlyRenderedProps = currentRendering?.renderProps;
   const moving = isStoodOn(stoodOnBy);
 
+  // the time when it stopped moving, if ever:
   const roomTimeStoppedMoving =
     (!moving && currentlyRenderedProps?.moving ?
       roomTime
     : currentlyRenderedProps?.roomTimeStoppedMoving) ?? neverTime;
 
-  const rendering =
-    currentRendering?.output ?? createRendering(direction, times);
-
   const periodSinceStopped =
     moving ? 0 : Math.min(roomTime - roomTimeStoppedMoving, slowdownTimeMs);
+
+  const currentOutput = currentRendering?.output;
+  const rerender =
+    !currentOutput || direction !== currentlyRenderedProps?.direction;
+  const rendering =
+    rerender ? createRendering(direction, times) : currentOutput;
+
+  // how fast to play the animation, with slowdown for how long since it stopped moving
   const playSpeedFrac = Math.max(0, 1 - periodSinceStopped / slowdownTimeMs);
 
   for (const c of rendering.children) {
@@ -106,7 +114,7 @@ const conveyorAppearanceImpl: ItemAppearance<
 
   return {
     output: rendering,
-    renderProps: { moving, roomTimeStoppedMoving },
+    renderProps: { moving, roomTimeStoppedMoving, direction },
   };
 };
 

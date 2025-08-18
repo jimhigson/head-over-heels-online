@@ -1,7 +1,9 @@
-import type { EmptyObject } from "type-fest";
+import type { EmptyObject, Simplify } from "type-fest";
 import type { PortableItem } from "../game/physics/itemPredicates";
 import type { Xyz, Xy, DirectionXyz4 } from "../utils/vectors/vectors";
 import type { SwitchSetting } from "./ItemInPlay";
+import type { SceneryName } from "../sprites/planets";
+import type { ItemConfigMap } from "./json/ItemConfigMap";
 
 export type PlayableActionState =
   | "moving"
@@ -242,10 +244,16 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   spring: FreeItemState<RoomItemId> & PortableItemState;
   portableBlock: FreeItemState<RoomItemId> & PortableItemState;
   sceneryPlayer: FreeItemState<RoomItemId> & PortableItemState;
-  emitter: {
-    lastEmittedAtRoomTime: number;
-    quantityEmitted: number;
-  };
+  emitter: Simplify<
+    {
+      lastEmittedAtRoomTime: number;
+      quantityEmitted: number;
+    } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["emitter"]
+  >; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+
+  joystick: ItemConfigMap<RoomId, RoomItemId, SceneryName>["joystick"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+  teleporter: ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+
   pushableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
   movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomItemId>;
@@ -256,13 +264,14 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
 
   monster: MonsterState<RoomItemId>;
   pickup: FreeItemState<RoomItemId>;
-  aliveFish: FreeItemState<RoomItemId>;
-  lift: {
-    direction: "up" | "down";
-    vels: {
-      lift: Xyz;
-    };
-  };
+  lift: Simplify<
+    {
+      direction: "up" | "down";
+      vels: {
+        lift: Xyz;
+      };
+    } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["lift"]
+  >; // copying the config into the state means that these settings are mutable at run-time. eg, by switches;
   firedDoughnut: {
     vels: {
       fired: Xyz;
@@ -270,9 +279,15 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   };
 
   stopAutowalk: EmptyObject;
-  conveyor: {
-    moving: boolean;
-  };
+  conveyor: Simplify<
+    {
+      moving: boolean;
+    } & Omit<
+      ItemConfigMap<RoomId, RoomItemId, SceneryName>["conveyor"],
+      /** omit disappearing since it gets this now from @see BaseItemState.disappearing with a slightly different type */
+      "disappearing"
+    > // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+  >;
   switch: SingleTouch & {
     setting: SwitchSetting;
   };

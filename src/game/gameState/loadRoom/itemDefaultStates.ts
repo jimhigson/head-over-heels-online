@@ -81,6 +81,19 @@ export const initialState = (jsonItem: JsonItemUnion) => {
         },
       } satisfies Partial<FreeItemState<string>>)
     : {}),
+    ...((
+      jsonItem.type === "joystick" ||
+      jsonItem.type === "emitter" ||
+      jsonItem.type === "lift" ||
+      jsonItem.type === "conveyor" ||
+      jsonItem.type === "teleporter"
+    ) ?
+      // these items have their config copied into their state. This allows them to
+      // be changed at run-time by other items such as switches
+      ({
+        ...structuredClone(jsonItem.config),
+      } satisfies StateFragment<typeof jsonItem.type>)
+    : {}),
     ...(jsonItem.type === "monster" ?
       ({
         activated: jsonItem.config.activated === "on",
