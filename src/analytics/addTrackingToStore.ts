@@ -1,7 +1,6 @@
 import { startAppListening } from "../store/listenerMiddleware";
 import { isAnyOf } from "@reduxjs/toolkit";
 import {
-  characterRoomChange,
   crownCollected,
   errorCaught,
   gameOver,
@@ -18,11 +17,13 @@ const isTrackedEvent = isAnyOf(
   reincarnationAccepted,
   // roomExplored is almost the same as characterRoomChange, but has less information
   //roomExplored,
-  characterRoomChange,
   lostLife,
   errorCaught,
   gameStarted,
   crownCollected,
+
+  // burning though the umami.is events allowance too quickly so am disabling this:
+  //characterRoomChange,
 );
 
 const useAddTrackingToStore = () => {
