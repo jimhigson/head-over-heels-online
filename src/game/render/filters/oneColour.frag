@@ -1,5 +1,5 @@
 #version 300 es
-precision lowp float;
+precision mediump float;
 
 in vec2 vTextureCoord;
 out vec4 finalColor;
