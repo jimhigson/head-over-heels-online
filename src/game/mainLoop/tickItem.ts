@@ -76,13 +76,17 @@ function* itemMechanicResultGen<
       RoomItemId
     >;
 
+    // although teleporting involves user controls, it also manages the in/out
+    // phase which need to happen even if the user switched character since activating the
+    // teleporter
+    yield teleporting(item, room, gameState, deltaMS) as MechanicResult<
+      T,
+      RoomId,
+      RoomItemId
+    >;
+
+    // user controls:
     if (item.id === gameState.currentCharacterName) {
-      // user controls:
-      yield teleporting(item, room, gameState, deltaMS) as MechanicResult<
-        T,
-        RoomId,
-        RoomItemId
-      >;
       yield jumping(item, room, gameState, deltaMS) as MechanicResult<
         T,
         RoomId,

@@ -33,12 +33,21 @@ export const teleporting: Mechanic<CharacterName> = <
   deltaMS: number,
 ): MechanicResult<CharacterName, RoomId, RoomItemId> => {
   const {
+    type,
     state: { teleporting, standingOnItemId },
   } = playableItem;
 
   const { inputStateTracker } = gameState;
 
-  const jumpInput: PressStatus = inputStateTracker.currentActionPress("jump");
+  // we need to run the teleporting code for both players (if they're in the room)
+  // since either could be teleporting in/out at any time, but we only care about input for the
+  // current character
+  const isCurrentCharacter = type === gameState.currentCharacterName;
+  const jumpInput: PressStatus =
+    isCurrentCharacter ?
+      inputStateTracker.currentActionPress("jump")
+    : "released";
+
   const standingOn =
     standingOnItemId === null ? null : room.items[standingOnItemId];
 
