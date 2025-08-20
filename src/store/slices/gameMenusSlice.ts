@@ -744,7 +744,58 @@ export const gameMenusSlice = createSlice({
           return;
         }
 
+        const menusAfterRestore: OpenMenu[] = [
+          // after restoring, start paused:
+          {
+            menuId: "hold",
+            scrollableSelection: false,
+            menuParam: emptyObject,
+          },
+        ];
+
+        const paramCampaignLocator: Partial<CampaignLocator> = {
+          userId:
+            typedURLSearchParams().get("campaignAuthorUserId") ?? undefined,
+          campaignName: typedURLSearchParams().get("campaignName") ?? undefined,
+        };
+
         const savedGames = action.payload?.savedGames;
+
+        const isCompleteCampaignLocator = (
+          campaignLocator: Partial<CampaignLocator>,
+        ): campaignLocator is CampaignLocator => {
+          return (
+            campaignLocator.userId !== undefined &&
+            campaignLocator.campaignName !== undefined
+          );
+        };
+
+        if (isCompleteCampaignLocator(paramCampaignLocator)) {
+          state.gameRunning = true;
+          const savedGameForParamCampaign =
+            savedGames?.saves[gameStateLocatorKey(paramCampaignLocator)];
+
+          if (savedGameForParamCampaign) {
+            // have a campaign url and a save for that campaign:
+            state.gameRunning = true;
+            state.gameInPlay =
+              savedGameForParamCampaign.store.gameMenus.gameInPlay;
+            state.openMenus = menusAfterRestore;
+            return;
+          } else {
+            // have a campaign url and no save for this campaign:
+            state.gameRunning = true;
+            state.gameInPlay = {
+              ...initialGameInPlayStoreState,
+              campaignLocator: paramCampaignLocator,
+            };
+            state.openMenus = menusAfterRestore;
+            return;
+          }
+        }
+
+        // no campaign in url params - check what the last campaign the user was playing
+        // is and if they have a save:
         const lastSavedCampaignLocator = savedGames?.lastSavedCampaignLocator;
 
         const inPlaySave =
@@ -755,14 +806,7 @@ export const gameMenusSlice = createSlice({
           // we have just loaded and a game is already in progress from a previous session
           state.gameRunning = true;
           state.gameInPlay = inPlaySave.store.gameMenus.gameInPlay;
-          // start paused:
-          state.openMenus = [
-            {
-              menuId: "hold",
-              scrollableSelection: false,
-              menuParam: emptyObject,
-            },
-          ];
+          state.openMenus = menusAfterRestore;
         }
       },
     );

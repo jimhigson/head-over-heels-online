@@ -4,13 +4,17 @@ import { Border } from "../../ui/Border";
 import { Button } from "../../ui/button";
 import { Dialog } from "../../ui/dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
-import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import {
+  useAppSelectorWithLevelEditorSlice,
+  type RootStateWithLevelEditorSlice,
+} from "../slice/levelEditorSlice";
 import { store } from "../../store/store";
 import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
 import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
 import { Switch } from "../../ui/Switch";
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { cn } from "../../ui/cn";
+import { useSupabaseUser } from "../tools/useSupabaseUser";
 
 export const SaveAsDialog = ({
   /**
@@ -33,6 +37,11 @@ export const SaveAsDialog = ({
         .campaignInProgress.locator.campaignName ?? "",
   );
   const [publish, setPublish] = useState(false);
+  const campaignUserId = useAppSelectorWithLevelEditorSlice(
+    (state) => state.levelEditor.campaignInProgress.locator.userId,
+  );
+  const supabaseUser = useSupabaseUser();
+  const isSomeoneElses = supabaseUser && supabaseUser.id !== campaignUserId;
 
   const disabled = !campaignName.trim();
 
@@ -61,9 +70,14 @@ export const SaveAsDialog = ({
           <BitmapText className="text-white sprites-double-height bg-midRed text-center py-half">
             Save as...
           </BitmapText>
+          {isSomeoneElses && (
+            <BitmapText className={`${multilineTextClass} text-midRed `}>
+              you are saving a fork of another user's campaign under your own
+              account
+            </BitmapText>
+          )}
           <BitmapText className={`${multilineTextClass} text-lightGrey pt-1`}>
-            This is the name the community will see your campaign listed as - if
-            you choose to publish it
+            The community will see your campaign listed under this name
           </BitmapText>
           <input
             ref={inputRef}

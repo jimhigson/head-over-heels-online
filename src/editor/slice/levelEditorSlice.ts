@@ -167,6 +167,7 @@ export const {
   setAutoCoalesce,
   setCampaignName,
   setCampaignPublished,
+  setCampaignUserId,
   setClickableAnnotationHovered,
   setHoveredItemInRoom,
   setRemoteCampaign,

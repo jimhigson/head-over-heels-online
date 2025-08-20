@@ -58,7 +58,10 @@ export const gameMain = async <RoomId extends string>(
   ]);
 
   if (campaignResult.error) {
-    throw new Error("could not load campaign", { cause: campaignResult.error });
+    throw new Error(
+      `could not load campaign ${JSON.stringify(campaignLocator)}`,
+      { cause: campaignResult.error },
+    );
   }
   const campaign = campaignResult.data;
 
