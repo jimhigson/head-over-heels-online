@@ -25,10 +25,14 @@ export const snapInactiveItemsToPixelGrid = <
     }
 
     if (!isExactIntegerXyz(item.state.position)) {
+      const roundedPosition = roundXyz(item.state.position);
       console.log(
         `snapping item ${item.id} to pixel grid (not acted on in tick)`,
+        item.state.position,
+        "->",
+        roundedPosition,
       );
-      item.state.position = roundXyz(item.state.position);
+      item.state.position = roundedPosition;
       movedItems.add(item);
     }
   }

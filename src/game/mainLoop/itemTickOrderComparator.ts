@@ -13,6 +13,7 @@ export const itemTickOrderComparator = (
   b: UnionOfAllItemInPlayTypes,
 ) => {
   const scores: Partial<Record<ItemInPlayType, number>> = {
+    // lower number = processed first
     lift: -4, // <- highest priority
     head: -3,
     heels: -3,

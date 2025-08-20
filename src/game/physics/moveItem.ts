@@ -24,11 +24,14 @@ import { roomItemsIterable, type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 import { veryClose } from "../../utils/epsilon";
-import { recordActedOnBy } from "./recordActedOnBy";
+import { recordActedOnBy, recordCollision } from "./recordActedOnBy";
 
+// turn this on for *very* noisy logging of all the movements/pushes etc.
+// esbuild should remove these if statements at build time
 const log = 0;
 
 type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
+  // not everything that moves is a free item - fired doughnuts and lifts are non-free items that need moving
   subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
   posDelta: Xyz;
   gameState: GameState<RoomId> /**
@@ -53,6 +56,8 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
   recursionDepth?: number;
 
   onTouch?: typeof handleItemsTouchingItems;
+
+  path?: Set<string>;
 };
 
 const backingOffTranslationAfterCollision = <
@@ -138,8 +143,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   pusher,
   deltaMS,
   forceful = isItemType("lift")(subjectItem) && pusher === undefined,
-  recursionDepth = 0,
   onTouch,
+  //recursionDepth = 0,
+  /*
+   * the nodes we previously visited on the path down the tree to get to here.
+   * Set is a little faster than array since we need to look up if strings are present
+   */
+  path = new Set(),
 }: MoveItemOptions<RoomId, RoomItemId>) => {
   if (xyzEqual(posDelta, originXyz)) {
     // applying zero movement - do nothing
@@ -153,6 +163,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   if (log)
     console.group(
       `[${pusher ? `push by ${pusher.id}` : "first cause"} in ${room.id}]`,
+      "on path",
+      [...path.values()],
       `💨 moving ${subjectItem.id} @`,
       subjectItem.state.position,
       `bb:`,
@@ -196,30 +208,62 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   }
 
   for (const collidedWithItem of sortedCollisions) {
-    if (!collision1to1(subjectItem, collidedWithItem)) {
-      // it is possible there is no longer a collision due to previous sliding - we have
-      // been protected from this collision by previous collisions so it no longer applies
+    // avoid a circular pushing - if these are colliding, the parent
+    // calls can handle it. This can avoid:
+    //    A -push-> B --push-> C -push-> A
+    //      -push-> C          ^ here there's no need to handle C pushing A, since A is up
+    //                           the tree and will be handled for us when A pushes C directly
+    //                           when it is done pushing B
+    if (path.has(collidedWithItem.id)) {
+      if (log) {
+        console.log(
+          `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+          `skipping collision handling for ${subjectItem.id} with ${collidedWithItem.id} as it is already on the path`,
+        );
+      }
       continue;
     }
 
-    if (pusher !== collidedWithItem) {
-      if (onTouch !== undefined) {
-        if (log) {
-          console.log(
-            `handling ${subjectItem.id} touching ${collidedWithItem.id}`,
-          );
-        }
-        onTouch({
-          movingItem: subjectItem,
-          touchedItem: collidedWithItem,
-          movementVector: subXyz(subjectItem.state.position, originalPosition),
-          gameState,
-          deltaMS,
-          room,
-          recursionDepth: recursionDepth + 1,
-        });
+    if (!collision1to1(subjectItem, collidedWithItem)) {
+      if (log) {
+        console.log(
+          `${subjectItem.id} @`,
+          subjectItem.state.position,
+          `❌💥 no longer colliding with ${collidedWithItem.id} @`,
+          collidedWithItem.state.position,
+          `after handling previous collisions`,
+        );
+      }
+      // it is possible there is no longer a collision due to previous pushing and backing-off of the subjectItem - we have
+      // been protected from this collision by previous collisions so it no longer applies
+      continue;
+    } else {
+      if (log) {
+        console.log(
+          `${subjectItem.id} @`,
+          subjectItem.state.position,
+          `*is STILL* 💥 with ${collidedWithItem.id} @`,
+          collidedWithItem.state.position,
+          `after handling previous collisions`,
+        );
       }
     }
+
+    if (onTouch !== undefined) {
+      if (log) {
+        console.log(
+          `handling onTouch() callback for ${subjectItem.id} touching ${collidedWithItem.id}`,
+        );
+      }
+    }
+    onTouch?.({
+      movingItem: subjectItem,
+      touchedItem: collidedWithItem,
+      movementVector: subXyz(subjectItem.state.position, originalPosition),
+      gameState,
+      deltaMS,
+      room,
+    });
 
     // the touch handler might have removed either item from the world - in this case we can move on or stop:
     if (room.items[subjectItem.id] === undefined) {
@@ -240,6 +284,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       continue;
     }
 
+    // check for solidness has to be done after onTouch since touching non-solid items can have side-effects
     if (!isSolid(collidedWithItem, subjectItem) || !isSolid(subjectItem)) {
       if (log)
         console.log(
@@ -293,9 +338,15 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       );
 
     // push any pushable items that we intersect:
-    if (collidedWithIsPushable && collidedWithItem !== pusher) {
+    if (collidedWithIsPushable /*&& collidedWithItem !== pusher */) {
       const pushCoefficient =
-        forceful || isSlidingItem(collidedWithItem) ?
+        (
+          // don't slow down if we are forceful
+          forceful ||
+          // don't slow down for an item that's going to slide away anyway:
+          isSlidingItem(collidedWithItem)
+        ) ?
+          // 1 puts our whole movement back in - we don't slow down/back off at all
           // lifts don't slow down when stuff is on them
           -1
           // split the difference - the pushed item moves half as far forward as our intersection
@@ -307,31 +358,43 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       // we are going slower due to pushing so back off, but not completely:
       subjectItem.state.position = addXyz(
         subjectItem.state.position,
-        backingOffMtv,
+        backingOffMtv, // this would back off all the way out of the item
+        // but we keep going some and stay partially inside
         forwardPushVector,
       );
 
       if (log)
         console.log(
           `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
-          `${subjectItem.id} will recursively push ${collidedWithItem.id} by ${forwardPushVector}
-          with push coefficient of ${pushCoefficient}`,
+          `${subjectItem.id} will recursively push ${collidedWithItem.id} by`,
+          forwardPushVector,
+          "with push coefficient of",
+          pushCoefficient,
         );
 
-      if (recursionDepth < maxPushRecursionDepth) {
+      // if (
+      //   subjectItem?.id === "portableBlock" &&
+      //   collidedWithItem.id === "heels"
+      // ) {
+      //   debugger;
+      // }
+
+      if (path.size < maxPushRecursionDepth) {
         // recursively apply push to pushed item
         // (but only if we didn't already recurse down to the maximum depth)
         moveItem({
           subjectItem: collidedWithItem,
           posDelta: forwardPushVector,
-          pusher: subjectItem,
           gameState,
           room,
           deltaMS,
           forceful,
-          recursionDepth: recursionDepth + 1,
+          pusher: subjectItem,
+          path: path.add(subjectItem.id),
           onTouch,
         });
+        // that recursive call is done now, and path is edited in-place to reduce gc
+        path.delete(subjectItem.id);
       } else {
         console.warn("hit recursion depth limit", new Error());
       }
@@ -353,9 +416,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         ),
       );
     } else {
-      // collision was not with a pushable thing
-
-      // back off to slide on the obstacle (we're not pushing it):
+      // collision was not with a pushable thing - just back off
+      // to slide on the obstacle (we're not pushing it):
       subjectItem.state.position = addXyz(
         subjectItem.state.position,
         backingOffMtv,
@@ -412,23 +474,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           subXyz(subjectItem.state.position, originalPosition),
         );
 
-      // record the collision in the subject(colliding items)'s state
-      const { collidedWith } = subjectItem.state;
-
-      if (collidedWith.roomTime === room.roomTime) {
-        // add to the collidedWith since it is recording the same time
-        if (pusher) {
-          collidedWith.by[collidedWithItem.id] = true;
-        }
-      } else {
-        // throw away collided with since it is for an older time which can now be
-        // overwritten
-        collidedWith.by = { [collidedWithItem.id]: true } as Record<
-          RoomItemId,
-          true
-        >;
-        collidedWith.roomTime = room.roomTime;
-      }
+      recordCollision(subjectItem, collidedWithItem, room);
     }
   }
 
