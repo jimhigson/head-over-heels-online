@@ -19,7 +19,7 @@ import {
   detectDeviceType,
   detectIsPwa,
 } from "../../../../../../utils/detectDeviceType";
-import { VersionDebugInfo } from "./VersionDebugInfo";
+import { GitRepoInfo } from "./GitRepoInfo";
 import { useAppSelector } from "../../../../../../store/hooks";
 
 const PlayGameMenuItem = () => {
@@ -135,7 +135,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           <div className="flex flex-row justify-between gap-2 w-24 mx-auto">
             <MenuItems>
               <MenuItem
-                id="modernisationOptions"
+                id="options"
                 label="Options"
                 doubleHeightWhenFocussed
                 onSelect={useDispatchActionCallback(
@@ -171,13 +171,17 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               />
             </MenuItems>
           </div>
-          <MenuItems className="w-24 mx-auto">
-            <QuitGameMenuItem />
-          </MenuItems>
+          {isGameRunning && (
+            // don't even put the MenuItems in when the game isn't running (don't just skip the menuitems)
+            // because even a zero-size element makes a gap in the flex parent container
+            <MenuItems className="w-24 mx-auto">
+              <QuitGameMenuItem />
+            </MenuItems>
+          )}
         </div>
-        {!isGameRunning && <MainMenuFooter />}
+        {!isGameRunning && <MainMenuFooter className="resHandheld:mt-1" />}
       </Dialog>
-      <VersionDebugInfo />
+      <GitRepoInfo />
     </DialogPortal>
   );
 };
