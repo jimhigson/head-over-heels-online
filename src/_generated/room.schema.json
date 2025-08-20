@@ -3266,6 +3266,27 @@
                                   "additionalProperties": false,
                                   "properties": {
                                     "expectType": {
+                                      "const": "switch",
+                                      "type": "string"
+                                    },
+                                    "flip": {
+                                      "enum": ["same", "opposite"],
+                                      "type": "string"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": ["expectType", "targets", "flip"],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
                                       "const": "conveyor",
                                       "type": "string"
                                     },

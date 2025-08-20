@@ -1,5 +1,13 @@
-import type { ItemInPlayType, SwitchSetting } from "../../../model/ItemInPlay";
-import type { SwitchInRoomConfig } from "../../../model/json/SwitchConfig";
+import type {
+  ItemInPlay,
+  ItemInPlayType,
+  SwitchSetting,
+} from "../../../model/ItemInPlay";
+import type {
+  SwitchInRoomConfig,
+  SwitchItemModificationUnion,
+} from "../../../model/json/SwitchConfig";
+import type { RoomState } from "../../../model/RoomState";
 import {
   iterateRoomItems,
   type RoomStateItems,
@@ -8,52 +16,24 @@ import { toggleBoolean } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
-export const handleItemTouchingSwitch = <
-  RoomId extends string,
-  RoomItemId extends string,
->({
-  touchedItem: switchItem,
-  gameState: { progression },
-  room,
-}: ItemTouchEventByItemType<RoomId, RoomItemId, ItemInPlayType, "switch">) => {
-  const {
-    config: switchConfig,
-    state: { setting, touchedOnProgression },
-  } = switchItem;
+const oppositeSetting = (setting: string) => {
+  return setting === "left" ? "right" : "left";
+};
 
-  switchItem.state.touchedOnProgression = progression;
-
-  if (
-    // touched on the last progression
-    progression === touchedOnProgression + 1 ||
-    // touched on this progression (handled touch twice in one frame)
-    progression === touchedOnProgression
-  ) {
-    // switch was already being pressed so skip it:
-    return;
+const getNewState = <RoomId extends string, RoomItemId extends string>(
+  modifiesItem: SwitchItemModificationUnion<RoomId, RoomItemId>,
+  setting: SwitchSetting,
+) => {
+  // controlling other switches has a shorthand syntax:
+  if ("flip" in modifiesItem) {
+    if (modifiesItem.flip === "opposite") {
+      return { setting: oppositeSetting(setting) };
+    } else {
+      return { setting };
+    }
   }
 
-  switch (switchConfig.type) {
-    case "in-room": {
-      const newSetting = (switchItem.state.setting =
-        setting === "left" ? "right" : "left");
-
-      toggleSwitchInRoom<RoomId, RoomItemId>(
-        switchConfig,
-        newSetting,
-        room.items,
-        room.roomTime,
-      );
-      // break for switch
-      break;
-    }
-    case "in-store": {
-      store.dispatch(toggleBoolean(switchConfig.path));
-      break;
-    }
-    default:
-      switchConfig satisfies never;
-  }
+  return modifiesItem[`${setting}State`];
 };
 
 // exported for testing
@@ -66,8 +46,10 @@ export const toggleSwitchInRoom = <
   roomItems: RoomStateItems<RoomId, RoomItemId>,
   roomTime: number,
 ) => {
+  const modifiedList = switchConfig.modifies;
+
   // loop over the top-level of the switch's modification list:
-  for (const modifiesItem of switchConfig.modifies) {
+  for (const modifiesItem of modifiedList) {
     // loop here because there could be multiple items with the same jsonItemId
     for (const roomItem of iterateRoomItems(roomItems)) {
       if (
@@ -97,10 +79,72 @@ export const toggleSwitchInRoom = <
       // loop the states to modify:
       targetItemCast.state = {
         ...roomItem.state,
-        ...modifiesItem[`${newSetting}State`],
+        ...getNewState(modifiesItem, newSetting),
         switchedAtRoomTime: roomTime,
         switchedSetting: newSetting,
       };
     }
   }
+};
+
+const handleSwitchActivation = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  touchedItem: ItemInPlay<"switch", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
+) => {
+  const {
+    config: switchConfig,
+    state: { setting },
+  } = touchedItem;
+
+  switch (switchConfig.type) {
+    case "in-room": {
+      const newSetting = oppositeSetting(setting);
+      touchedItem.state.setting = newSetting;
+
+      toggleSwitchInRoom<RoomId, RoomItemId>(
+        switchConfig,
+        newSetting,
+        room.items,
+        room.roomTime,
+      );
+      // break for switch
+      break;
+    }
+    case "in-store": {
+      store.dispatch(toggleBoolean(switchConfig.path));
+      break;
+    }
+    default:
+      switchConfig satisfies never;
+  }
+};
+
+export const handleItemTouchingSwitch = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
+  touchedItem: switchItem,
+  gameState: { progression },
+  room,
+}: ItemTouchEventByItemType<RoomId, RoomItemId, ItemInPlayType, "switch">) => {
+  const {
+    state: { touchedOnProgression },
+  } = switchItem;
+
+  switchItem.state.touchedOnProgression = progression;
+
+  if (
+    // touched on the last progression
+    progression === touchedOnProgression + 1 ||
+    // touched on this progression (handled touch twice in one frame)
+    progression === touchedOnProgression
+  ) {
+    // switch was already being pressed so skip it:
+    return;
+  }
+
+  handleSwitchActivation(switchItem, room);
 };

@@ -1026,6 +1026,11 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "switch";
+                    targets: string[];
+                    flip: "same" | "opposite";
+                  }
+                | {
                     expectType: "conveyor";
                     targets: string[];
                     leftState: {

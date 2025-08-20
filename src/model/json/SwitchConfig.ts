@@ -7,7 +7,7 @@ import type { ItemStateMap } from "../ItemStateMap";
 // switches are 'on rails' with a fairly restricted range of things they can change for the sake of avoiding
 // errors in the json but this could be added to as needed. Technically, the engine can change any property
 // of an item's state if it ignores these types
-type SwitchItemModificationUnion<
+export type SwitchItemModificationUnion<
   RoomId extends string,
   RoomItemId extends string,
 > =
@@ -101,6 +101,12 @@ type SwitchItemModificationUnion<
           setting?: "left";
         }
       >;
+    }
+  | {
+      expectType: "switch";
+      targets: RoomItemId[];
+      // switches have some shorthand to go together or opposite:
+      flip: "same" | "opposite";
     }
   | {
       expectType: "conveyor";
