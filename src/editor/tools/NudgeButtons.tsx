@@ -82,6 +82,7 @@ export const NudgeButtons = () => {
         roomState,
         jsonItemIds,
         blockPositionDelta: positionDelta,
+        timesDelta: { ...originXyz, ...timesDelta },
       });
 
       if (collides) {

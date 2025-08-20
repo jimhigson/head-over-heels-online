@@ -31,6 +31,9 @@ const collideableForItem = (
   return collideableItemsForThisItem;
 };
 
+/**
+ * return true/false depending on if moving or resizing would cause a collision
+ */
 export const itemMoveOrResizeWouldCollide = ({
   roomState,
   jsonItemIds,
