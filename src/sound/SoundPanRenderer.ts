@@ -11,6 +11,8 @@ import { floorsRenderExtent } from "../game/render/floorsExtent";
 
 // TODO: this doesn't account for scrolling!
 
+const log = 0;
+
 // bounds for how 'high' into the screen the sound is
 // things can go below zero but it is rare, and at this point they are effectively out of the game
 // so set the limit not very low:
@@ -34,6 +36,13 @@ const numberInRangeToMinus1To1Range = (
 
   return rangeBetweenMinusOneAndOne;
 };
+
+/* tone down the extremeness on the x left/right stereo channels - a smaller number
+   makes the panning more subtle */
+const maxXOffsetFromCentre = 0.5;
+/* going into the screen (z-direction) changes the loudness in too extreme ways. Allow
+   to adjust in a more reasonable way */
+const maxZOffsetFromCentre = 0.3;
 
 export class SoundPanRenderer<T extends ItemInPlayType>
   implements ItemSoundRenderer<T>
@@ -69,8 +78,8 @@ export class SoundPanRenderer<T extends ItemInPlayType>
 
     const soundPositionX = numberInRangeToMinus1To1Range(
       projectWorldXyzToScreenX(itemCentrePosition),
-      this.soundPositionMaxX,
       this.soundPositionMinX,
+      this.soundPositionMaxX,
     );
 
     // y in screen-coords, z (altitude) in game-coords
@@ -103,9 +112,17 @@ export class SoundPanRenderer<T extends ItemInPlayType>
       soundPositionMaxZ,
     );
 
-    this.output.positionX.value = soundPositionX;
+    if (log) {
+      console.log(
+        item.id,
+        `x= ${soundPositionX * maxXOffsetFromCentre}/(${this.soundPositionMinX} - ${this.soundPositionMaxX})`,
+        soundPositionY,
+        soundPositionZ,
+      );
+    }
+    this.output.positionX.value = soundPositionX * maxXOffsetFromCentre;
     this.output.positionY.value = soundPositionY;
-    this.output.positionZ.value = soundPositionZ;
+    this.output.positionZ.value = soundPositionZ * maxZOffsetFromCentre;
   }
 
   destroy(): void {

@@ -29,9 +29,9 @@ type PerMonsterBracketedSoundOptions = {
 const collisionSounds: PerMonsterSounds = {
   skiHead: { soundId: "softBump" },
   turtle: { soundId: "softBump" },
-  dalek: { soundId: "metalHit" },
-  homingBot: { soundId: "metalHit" },
-  computerBot: { soundId: "metalHit" },
+  dalek: { soundId: "metalHit", gain: 0.1 }, // <- these collide a lot so tone it down
+  homingBot: { soundId: "metalHit", gain: 0.2 },
+  computerBot: { soundId: "metalHit", gain: 0.2 },
 };
 const turnaroundSounds: PerMonsterSounds = {
   cyberman: { soundId: "jetpackTurnaround", gain: 1.2 },

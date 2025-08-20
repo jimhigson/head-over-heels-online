@@ -12,6 +12,10 @@ import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 import { neverTime } from "../../utils/neverTime";
 
+const walkGain = 0.8;
+const carryGain = 1.2;
+const jumpGain = 0.8;
+
 export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   public readonly output: GainNode = audioCtx.createGain();
 
@@ -69,7 +73,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
 
     if (!noFootsteps) {
       this.#walkChannel = audioCtx.createGain();
-      this.#walkChannel.gain.value = 2;
+      this.#walkChannel.gain.value = walkGain;
       this.#walkChannel.connect(this.output);
       this.#walkBracketedSound = createBracketedSound(
         {
@@ -81,9 +85,9 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       );
     }
 
-    this.#jumpChannel.gain.value = 0.8;
+    this.#jumpChannel.gain.value = jumpGain;
     this.#jumpChannel.connect(this.output);
-    this.#carryChannel.gain.value = 1.2;
+    this.#carryChannel.gain.value = carryGain;
     this.#carryChannel.connect(this.output);
     this.#standingOnChannel.connect(this.output);
 
