@@ -1,8 +1,5 @@
 import { mtv } from "../mtv";
-import {
-  maxPushRecursionDepth,
-  moveSpeedPixPerMs,
-} from "../mechanicsConstants";
+import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import type {
   ItemInPlayType,
@@ -22,7 +19,6 @@ export const handleItemTouchingJoystick = <
   room,
   touchedItem: joystickItem,
   deltaMS,
-  recursionDepth,
 }: ItemTouchEventByItemType<
   RoomId,
   RoomItemId,
@@ -86,21 +82,17 @@ export const handleItemTouchingJoystick = <
     sillyOldFace.state.facing = posDelta;
     sillyOldFace.state.controlledWithJoystickAtRoomTime = roomTime;
 
-    if (recursionDepth < maxPushRecursionDepth) {
-      recordActedOnBy(joystickItem, sillyOldFace, room);
+    recordActedOnBy(joystickItem, sillyOldFace, room);
 
-      assignLatentMovement(
-        sillyOldFace,
-        room,
-        posDelta,
-        deltaMS,
-        // pushing with slight latency means silly old face can latch onto his own joystick
-        // - eg if two charles are controlled, one can keep pushing it to move the other.
-        // - each frame sets up the next until the chain is broken
-        1,
-      );
-    } else {
-      console.warn("hit recursion depth limit", new Error());
-    }
+    assignLatentMovement(
+      sillyOldFace,
+      room,
+      posDelta,
+      deltaMS,
+      // pushing with slight latency means silly old face can latch onto his own joystick
+      // - eg if two charles are controlled, one can keep pushing it to move the other.
+      // - each frame sets up the next until the chain is broken
+      1,
+    );
   }
 };
