@@ -1,138 +1,27 @@
 [![check-all CI](https://github.com/jimhigson/head-over-heels-online/actions/workflows/check.yml/badge.svg)](https://github.com/jimhigson/head-over-heels-online/actions/workflows/check.yml)
 
-# Head over heels remake in js
+Head over heels web-based game remake and level editor.
 
-[see work in progress](https://blockstack.ing/)
+Features mobile and desktop support, support for gamepads, keyboard, and touch interfaces.
 
-Differences from the original
-=============================
+<div align="center">
+  <h2><a href="https://blockstack.ing/">🎮 Play the game at Blockstack.ing</a></h2>
+</div>
 
-Colourisation
--------------
+## Credits
 
-I've kept the sprites as true to the original as was practical,
-and kept their original resolution. All the black pixels have been
-kept from the two-colour graphics, and I've just filled in the
-light pixels:
+- [Jon Ritman](http://ritman.co.uk/) and Bernie Drummond for making the original game.
+- Reference Room data was originally converted to json, from the [xml in Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels/tree/master/gamedata). Now that I have the json, the room data is forked and I'm updating the json in the the level editor.
+- Some HoH audio also forked and re-encoded from [Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels) under the terms of the GPL v3
+- I built [snarkdown-in-react](https://www.npmjs.com/package/snarkdown-in-react) for this project, forked from the original [snarkdown](https://github.com/developit/snarkdown)
+- This repo has a [fork](src/game/render/sortZ/toposort/toposort.ts) built from [toposort](https://github.com/marcelklehr/toposort), adjusted ot be a bit more tolerant of cyclic paths in the graph
+- Recoulourised 16 colour sprites are built from rips [by Tippy on Spriters Resource](https://www.spriters-resource.com/zx_spectrum/headoverheels/) based on original artwork by Bernie Drummand (sadly [no longer with us](https://www.theregister.com/2021/11/17/rip_bernie_drummond/)).
+* Playtesting, ideas, map design, and general support by my brother, Tom Higson
+* Playtesting, moral support, and constant comms by [Jon Albaugh](https://x.com/fextwolf?s=21&t=PEqxJblCn3JB_NH8AOR6Zg)
+* Head over heels [font](https://fontstruct.com/fontstructions/show/996776/head_over_heels)
+recreated by [Patrick H. Lauke](http://splintered.co.uk/) is used in save dialogs for the level editor
 
-![2tone] ![colourised]
-(several examples)
+## License
+This project is licensed under the GNU Affero General Public License v3.0 (only) - see the [LICENSE](LICENSE) file for details. All code is original except where indicated otherwise.
 
-All colourisation is to a 16 colour pallette. I wanted to restrict myself
-to graphics that were plausibly creatable for hardware available in the 
-game's commercial lifetime.
-
-![pallette]
-
-Unlike the original, the sprites are not mirrored, so that I can
-apply lighting from a consistent direction. The sprites come to about 55k in total, as a single 640x512 (Amiga original chipset "Hires") PNG.
-
-All graphics edited on an emulated Amiga 4000 using FS-UAE. Converted from iff to png using ffmpeg.
-
-With that 16 colour graphics, I apply some palette swap tricks (emulated
-with pixel shaders since indexed graphics aren't a thing any more) to
-hint at the zx spectrum's monocrhome per-room colours.
-
-This room is magenta:
-![original magenta]
-
-The same room, with magenta highlights
-![room with magenta highlights]
-
-8-way control
--------------
-![8-way sprites]
-
-New sprites
------------
-
-! Show spiky ball vs jam-jar looking thing (texts w/ Jon 22nd Apr 2025)
-
-Frame Rate
-----------
-
-The original game ran at 12fps, which doesn't work for modern gamers. The remake's frame rate is unbounded, and it runs at 120fps or more on modern hardware (limited only by the monitor refresh rate). However, high frame rates mean a few compromises:
-
-* The game can render sprite *between* the squares on the pixel grid. To make this not too obvious, when items stop moving they get snapped to the grid.
-
-Shadows
--------
-[Amiga extra halfbright](https://amiga.lychesis.net/articles/ExtraHalfBright.html)
-
-As well as looking good, they actually make the rooms easier, since you can see where you are.
-
-Room changes
-------------
-
-Quite a lot of rooms have been changed while keeping the original gameplay intact.
-
-* This is to remove unfair deaths (death possible when entering room for no fault of the player)
-
-![screenshot](before) ![screenshot](after)
-
-#egyptus10 - as an example
-
-Switches
---------
-
-It wasn't always obvious in the original game what a switch does. There's now flashes to make this clearer.
-
-[anim of touching a switch]
-
-switches can also start off (left):
-
-[anim of head solving penitentiary3]
-
-Spikes
-------
-
-In the remake, this item is safe to touch from the sides, but not from the top. Consistent with how they look visually, and otherwise there's several items that
-differ in appearance while working exactly the same. Gives a bit more vocabulary to
-item designers.
-
-![spikes](spikes)
-
-Invincibility
--------------
-
-To avoid infinite death loops (ie, entering a room and dying repeatedly because there's a monster in the doorway), the player gets a few seconds of invincibility after dying. This is shown by a flash in the player sprite.
-
-Map
----
-The original game advised you to make a map. The remake has a map. Press `M` (keyboard) or `L1` (gamepad).
-
-![map](map)
-
-Doorways
---------
-
-The original had a lot of restrictions around doorways - you couldn't change character or pick up
-or drop an item. These restrictions are gone now, but you should still be careful if one character
-pushes another through a door!
-
-Sandwiches and Stools
----------------------
-
-In the original game the sandwich and stepstool sprites were used interchangeably as moving platforms
-or pushable, non-carryable blocks. This made the rooms confusing to edit, so now the metal stools are
-always pushable, and the sandwiches are always moving platforms.
-
-![sandwich](sandwich)
-![stepStool](stepStool)
-
-
-Technology used
-===============
-
-* Pixijs - all in-game rendering
-* React - menus and dialogs
-* Audacity - sound editing, cleanup etc
-
-Credits
-=======
-
-- Reference Room data forked from [Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels/tree/master/gamedata) (I converted xml -> json)
-- Some audio files also from the above
-- [sprite rips from Spriters Resource](https://www.spriters-resource.com/zx_spectrum/headoverheels/) of original artwork by [the late](https://www.theregister.com/2021/11/17/rip_bernie_drummond/) Bernie Drummand.
-- Palette swap effects (this is what puts it back into the original zx-spectrum colour palette when the game starts) ([source][./src/filters]) based on GLSL pixel shader fragments forked from [here](https://github.com/pixijs/filters/blob/main/src/color-replace/ColorReplaceFilter.ts)
-- snarkdown
+©2025 Jim Higson

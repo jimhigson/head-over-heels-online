@@ -15,7 +15,7 @@ On: **Mac**, **Windows**, **Linux**, **Chromebooks**, **iphone**, or **Android**
 To install:
 
 * Go to [blockstack.ing](https://blockstack.ing) if you’re not there already
-* To the right of the address bar, click the **install icon: **
+* To the right of the address bar, click the **install icon: **. It might also look like a 'download' icon.
 * In the dialog, choose *install*
 * **Head over heels** is now installed as an app!
 

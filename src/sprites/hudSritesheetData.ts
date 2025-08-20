@@ -106,6 +106,7 @@ const secondRow = [
   "Menu",
   "*",
   "@",
+  "©",
   chromePwaInstall,
   iosMacShare,
   iosMacAddToDock,
@@ -115,6 +116,7 @@ const secondRow = [
   "^",
   "⌥",
   "⌘",
+  "★",
 ] as const;
 
 export type CharSpriteTextureId<C extends string> =
@@ -153,7 +155,7 @@ const charFrames = <Char extends string>(
 
 export const hudSpritesheetData = {
   frames: {
-    ...charFrames(firstRow, { x: 151, y: 2 }),
-    ...charFrames(secondRow, { x: 151, y: 11 }),
+    ...charFrames(firstRow, { x: 126, y: 1 }),
+    ...charFrames(secondRow, { x: 126, y: 10 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;

@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "license": "AGPL-3.0-only",
   "scripts": {
     "dev:game": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" node --max_http_header_size=128000 node_modules/vite/bin/vite",
     "dev:editor": "GIT_HASH=\"$(git rev-parse --short HEAD)\" BUILD_DATE=\"$(date +%Y-%m-%d)\" vite --config vite.editor.config.ts --mode development",
