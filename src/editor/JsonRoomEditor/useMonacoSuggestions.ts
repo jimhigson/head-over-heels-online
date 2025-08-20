@@ -17,6 +17,8 @@ import type { JsonItemType } from "../../model/json/JsonItem";
 import { iterate } from "../../utils/iterate";
 import type { EditorRoomJson } from "../editorTypes";
 
+const log = 0;
+
 /**
  * Get the value of a property from an object node
  */
@@ -165,11 +167,11 @@ const findMatchingPattern = (path: (string | number)[]): string | null => {
     });
 
     if (matches && pathTail.length === patternParts.length) {
-      console.log(`✅ `, path, "matched", pattern);
+      if (log) console.log(`✅ `, path, "matched", pattern);
       return pattern;
     }
 
-    console.log(`❌ `, path, "did not match", pattern);
+    if (log) console.log(`❌ `, path, "did not match", pattern);
   }
   return null;
 };
