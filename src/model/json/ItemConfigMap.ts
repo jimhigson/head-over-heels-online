@@ -16,7 +16,7 @@ import type {
   MovementsSubset,
   ActivatedWhenSubset,
 } from "./utilityJsonConfigTypes";
-import type { SwitchConfig } from "./SwitchConfig";
+import type { ButtonConfig, SwitchConfig } from "./SwitchConfig";
 import type { ToggleablePaths } from "../../utils/Toggleable";
 import type { GameMenusState } from "../../store/slices/gameMenusSlice";
 import type { FreeItemTypes } from "../../game/physics/itemPredicates";
@@ -222,6 +222,11 @@ export type ItemConfigMap<
     slider?: boolean;
   };
   switch: SwitchConfig<
+    RoomId,
+    /** ids of items in this room */
+    RoomItemId
+  >;
+  button: ButtonConfig<
     RoomId,
     /** ids of items in this room */
     RoomItemId

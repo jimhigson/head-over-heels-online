@@ -27,13 +27,18 @@ export const iterateStoodOnByItems = <
     return standingItem;
   }) as IteratorObject<FreeItem<RoomId, RoomItemId>>; // cast: we know that only free items can stand on something:
 };
-/** utility to get the item object of standing on */
 
+/**
+ * utility to get the item object of standing on
+ * TODO: - really, just gets from room.items - why is this needed/useful?
+ */
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
+  // if standingOnItemId not nullable, result not nullable
   standingOnItemId: RoomItemId,
   room: RoomState<RoomId, RoomItemId>,
 ): UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
+  // if standingOnItemId is nullable, result is nullable
   standingOnItemId: RoomItemId | null,
   room: RoomState<RoomId, RoomItemId>,
 ): UnionOfAllItemInPlayTypes<RoomId, RoomItemId> | null;
@@ -42,7 +47,7 @@ export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
 ) {
   return standingOnItemId === null ?
-      // cast makes compatible with non-nullable overload signature
+      // ugly cast makes compatible with non-nullable overload signature
       (null as unknown as UnionOfAllItemInPlayTypes<RoomId, RoomItemId>)
     : room.items[standingOnItemId];
 }

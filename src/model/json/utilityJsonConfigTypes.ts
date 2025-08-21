@@ -6,6 +6,7 @@ export type JsonMovement =
   | "unmoving"
   | "clockwise"
   | "back-forth"
+  | "forwards"
   | "towards-on-shortest-axis-xy4"
   | "towards-analogue"
   // special case for emperor's guardian - runs away if you have the first 4 crowns

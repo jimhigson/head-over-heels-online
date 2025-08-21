@@ -39,3 +39,9 @@ To install:
 * **Head over heels** is now installed on your mac
 * If you don’t want to keep the game in the Dock, right-click the doc icon and uncheck **Options ➡ keep in doc**. It is still available in Applications
 
+---
+
+## Firefox 
+
+* Firefox doesn't support PWAs out of the box, but there is a [browser extension](https://addons.mozilla.org/en-US/firefox/addon/pwas-for-firefox/).
+* Probably easier to play in the browser until Mozilla adds support

@@ -155,6 +155,13 @@ export const afterDeathInvulnerabilityFlashPeriod = 200;
 export const afterDeathInvulnerabilityFlashPhaseDuration = 0.15;
 
 /**
+ * how long after releasing a button does it act, and render as 'up'?
+ * this is needed because otherwise, instntaneously jumping on and off a button
+ * would make it act for a single sub-frame, and also never render
+ */
+export const buttonStayPressedAfterReleasePeriod = 150;
+
+/**
  * the deepest recursion in the game can go - ie, the longest chain of
  * items pushing items pushing items
  */

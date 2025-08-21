@@ -553,7 +553,7 @@ export type RoomJsonSchema = {
                     }
                   | {
                       which: "turtle";
-                      movement: "clockwise" | "back-forth";
+                      movement: "clockwise" | "back-forth" | "forwards";
                       startDirection: "towards" | "right" | "away" | "left";
                       activated: "off" | "on";
                     }
@@ -566,7 +566,7 @@ export type RoomJsonSchema = {
                   | {
                       which: "skiHead";
                       activated: "off" | "on";
-                      movement: "clockwise" | "back-forth";
+                      movement: "clockwise" | "back-forth" | "forwards";
                       startDirection: "towards" | "right" | "away" | "left";
                       style: "greenAndPink" | "starsAndStripes";
                     };
@@ -851,7 +851,7 @@ export type RoomJsonSchema = {
             }
           | {
               which: "turtle";
-              movement: "clockwise" | "back-forth";
+              movement: "clockwise" | "back-forth" | "forwards";
               startDirection: "towards" | "right" | "away" | "left";
               activated: "off" | "on";
             }
@@ -864,7 +864,7 @@ export type RoomJsonSchema = {
           | {
               which: "skiHead";
               activated: "off" | "on";
-              movement: "clockwise" | "back-forth";
+              movement: "clockwise" | "back-forth" | "forwards";
               startDirection: "towards" | "right" | "away" | "left";
               style: "greenAndPink" | "starsAndStripes";
             };
@@ -974,23 +974,174 @@ export type RoomJsonSchema = {
                 | {
                     expectType: "movingPlatform" | "monster";
                     targets: string[];
-                    leftState: {
-                      activated?: false;
+                    /**
+                     * true is a shorthand for monsters/platforms that are activated by default:
+                     *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
+                     * false is shorthand for monsters/platforms that are deactivated by default:
+                     *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
+                     */
+                    activates?: false | true;
+                    leftState?: {
+                      /**
+                       * if given, the item disappears after the specified interaction.
+                       * This must be null (not undefined) so switches can tell the difference
+                       * between having no setting, and having a setting to change to null
+                       * when they make something not disappearing
+                       */
+                      disappearing?: null | {
+                        on: "touch" | "stand";
+                        /**
+                         * if given, the item will disappear only if stood/touched by items of this type.
+                         * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
+                         * or ['head'] eg for doughnuts that only head can collect
+                         */
+                        byType?: (
+                          | "wall"
+                          | "bubbles"
+                          | "teleporter"
+                          | "barrier"
+                          | "block"
+                          | "deadlyBlock"
+                          | "spikes"
+                          | "portableBlock"
+                          | "pushableBlock"
+                          | "movingPlatform"
+                          | "moveableDeadly"
+                          | "conveyor"
+                          | "pickup"
+                          | "spring"
+                          | "sceneryPlayer"
+                          | "sceneryCrown"
+                          | "emitter"
+                          | "firedDoughnut"
+                          | "slidingDeadly"
+                          | "slidingBlock"
+                          | "monster"
+                          | "lift"
+                          | "joystick"
+                          | "charles"
+                          | "switch"
+                          | "button"
+                          | "hushPuppy"
+                          | "ball"
+                          | "floor"
+                          | "head"
+                          | "heels"
+                          | "headOverHeels"
+                          | "stopAutowalk"
+                          | "blocker"
+                          | "doorFrame"
+                          | "doorLegs"
+                          | "floatingText"
+                          | "particle"
+                          | "portal"
+                        )[];
+                      };
+                      facing?: {
+                        x: number;
+                        y: number;
+                        z: number;
+                      };
+                      /**
+                       * activated for us is a boolean, not the many-states from the json config, ie it is stateful
+                       * on if the item is currently activated (so they can render differently)
+                       */
+                      activated?: false | true;
+                      /**
+                       * if this item has ever been activated, in the lifetime of the room. Charging cybermen will
+                       * have this flag as false so long as they are charging
+                       */
+                      everActivated?: false | true;
+                      /**
+                       * The item will be removed from the room after the room it is in has more than this roomTime.
+                       * To guarantee removal on the next frame (effectively immediately)
+                       * set to -1. Otherwise, can set to the current roomTime + duration of an animation
+                       * that needs to play
+                       *
+                       * If null, the item is not scheduled for removal (the normal case)
+                       */
+                      expires?: null | number;
                     };
-                    rightState: {
-                      activated?: true;
-                      everActivated?: true;
-                    };
-                  }
-                | {
-                    expectType: "movingPlatform" | "monster";
-                    targets: string[];
-                    leftState: {
-                      activated?: true;
-                      everActivated?: true;
-                    };
-                    rightState: {
-                      activated?: false;
+                    rightState?: {
+                      /**
+                       * if given, the item disappears after the specified interaction.
+                       * This must be null (not undefined) so switches can tell the difference
+                       * between having no setting, and having a setting to change to null
+                       * when they make something not disappearing
+                       */
+                      disappearing?: null | {
+                        on: "touch" | "stand";
+                        /**
+                         * if given, the item will disappear only if stood/touched by items of this type.
+                         * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
+                         * or ['head'] eg for doughnuts that only head can collect
+                         */
+                        byType?: (
+                          | "wall"
+                          | "bubbles"
+                          | "teleporter"
+                          | "barrier"
+                          | "block"
+                          | "deadlyBlock"
+                          | "spikes"
+                          | "portableBlock"
+                          | "pushableBlock"
+                          | "movingPlatform"
+                          | "moveableDeadly"
+                          | "conveyor"
+                          | "pickup"
+                          | "spring"
+                          | "sceneryPlayer"
+                          | "sceneryCrown"
+                          | "emitter"
+                          | "firedDoughnut"
+                          | "slidingDeadly"
+                          | "slidingBlock"
+                          | "monster"
+                          | "lift"
+                          | "joystick"
+                          | "charles"
+                          | "switch"
+                          | "button"
+                          | "hushPuppy"
+                          | "ball"
+                          | "floor"
+                          | "head"
+                          | "heels"
+                          | "headOverHeels"
+                          | "stopAutowalk"
+                          | "blocker"
+                          | "doorFrame"
+                          | "doorLegs"
+                          | "floatingText"
+                          | "particle"
+                          | "portal"
+                        )[];
+                      };
+                      facing?: {
+                        x: number;
+                        y: number;
+                        z: number;
+                      };
+                      /**
+                       * activated for us is a boolean, not the many-states from the json config, ie it is stateful
+                       * on if the item is currently activated (so they can render differently)
+                       */
+                      activated?: false | true;
+                      /**
+                       * if this item has ever been activated, in the lifetime of the room. Charging cybermen will
+                       * have this flag as false so long as they are charging
+                       */
+                      everActivated?: false | true;
+                      /**
+                       * The item will be removed from the room after the room it is in has more than this roomTime.
+                       * To guarantee removal on the next frame (effectively immediately)
+                       * set to -1. Otherwise, can set to the current roomTime + duration of an animation
+                       * that needs to play
+                       *
+                       * If null, the item is not scheduled for removal (the normal case)
+                       */
+                      expires?: null | number;
                     };
                   }
                 | {
@@ -1252,7 +1403,7 @@ export type RoomJsonSchema = {
                             }
                           | {
                               which: "turtle";
-                              movement: "clockwise" | "back-forth";
+                              movement: "clockwise" | "back-forth" | "forwards";
                               startDirection:
                                 | "towards"
                                 | "right"
@@ -1273,7 +1424,7 @@ export type RoomJsonSchema = {
                           | {
                               which: "skiHead";
                               activated: "off" | "on";
-                              movement: "clockwise" | "back-forth";
+                              movement: "clockwise" | "back-forth" | "forwards";
                               startDirection:
                                 | "towards"
                                 | "right"
@@ -1493,7 +1644,7 @@ export type RoomJsonSchema = {
                             }
                           | {
                               which: "turtle";
-                              movement: "clockwise" | "back-forth";
+                              movement: "clockwise" | "back-forth" | "forwards";
                               startDirection:
                                 | "towards"
                                 | "right"
@@ -1514,7 +1665,7 @@ export type RoomJsonSchema = {
                           | {
                               which: "skiHead";
                               activated: "off" | "on";
-                              movement: "clockwise" | "back-forth";
+                              movement: "clockwise" | "back-forth" | "forwards";
                               startDirection:
                                 | "towards"
                                 | "right"
@@ -1601,6 +1752,757 @@ export type RoomJsonSchema = {
                   }
               )[];
             };
+      }
+    | {
+        type: "button";
+        position: {
+          x: number;
+          y: number;
+          z: number;
+        };
+        config: {
+          modifies: (
+            | {
+                expectType: "movingPlatform" | "monster";
+                targets: string[];
+                /**
+                 * true is a shorthand for monsters/platforms that are activated by default:
+                 *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
+                 * false is shorthand for monsters/platforms that are deactivated by default:
+                 *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
+                 */
+                activates?: false | true;
+                leftState?: {
+                  /**
+                   * if given, the item disappears after the specified interaction.
+                   * This must be null (not undefined) so switches can tell the difference
+                   * between having no setting, and having a setting to change to null
+                   * when they make something not disappearing
+                   */
+                  disappearing?: null | {
+                    on: "touch" | "stand";
+                    /**
+                     * if given, the item will disappear only if stood/touched by items of this type.
+                     * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
+                     * or ['head'] eg for doughnuts that only head can collect
+                     */
+                    byType?: (
+                      | "wall"
+                      | "bubbles"
+                      | "teleporter"
+                      | "barrier"
+                      | "block"
+                      | "deadlyBlock"
+                      | "spikes"
+                      | "portableBlock"
+                      | "pushableBlock"
+                      | "movingPlatform"
+                      | "moveableDeadly"
+                      | "conveyor"
+                      | "pickup"
+                      | "spring"
+                      | "sceneryPlayer"
+                      | "sceneryCrown"
+                      | "emitter"
+                      | "firedDoughnut"
+                      | "slidingDeadly"
+                      | "slidingBlock"
+                      | "monster"
+                      | "lift"
+                      | "joystick"
+                      | "charles"
+                      | "switch"
+                      | "button"
+                      | "hushPuppy"
+                      | "ball"
+                      | "floor"
+                      | "head"
+                      | "heels"
+                      | "headOverHeels"
+                      | "stopAutowalk"
+                      | "blocker"
+                      | "doorFrame"
+                      | "doorLegs"
+                      | "floatingText"
+                      | "particle"
+                      | "portal"
+                    )[];
+                  };
+                  facing?: {
+                    x: number;
+                    y: number;
+                    z: number;
+                  };
+                  /**
+                   * activated for us is a boolean, not the many-states from the json config, ie it is stateful
+                   * on if the item is currently activated (so they can render differently)
+                   */
+                  activated?: false | true;
+                  /**
+                   * if this item has ever been activated, in the lifetime of the room. Charging cybermen will
+                   * have this flag as false so long as they are charging
+                   */
+                  everActivated?: false | true;
+                  /**
+                   * The item will be removed from the room after the room it is in has more than this roomTime.
+                   * To guarantee removal on the next frame (effectively immediately)
+                   * set to -1. Otherwise, can set to the current roomTime + duration of an animation
+                   * that needs to play
+                   *
+                   * If null, the item is not scheduled for removal (the normal case)
+                   */
+                  expires?: null | number;
+                };
+                rightState?: {
+                  /**
+                   * if given, the item disappears after the specified interaction.
+                   * This must be null (not undefined) so switches can tell the difference
+                   * between having no setting, and having a setting to change to null
+                   * when they make something not disappearing
+                   */
+                  disappearing?: null | {
+                    on: "touch" | "stand";
+                    /**
+                     * if given, the item will disappear only if stood/touched by items of this type.
+                     * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
+                     * or ['head'] eg for doughnuts that only head can collect
+                     */
+                    byType?: (
+                      | "wall"
+                      | "bubbles"
+                      | "teleporter"
+                      | "barrier"
+                      | "block"
+                      | "deadlyBlock"
+                      | "spikes"
+                      | "portableBlock"
+                      | "pushableBlock"
+                      | "movingPlatform"
+                      | "moveableDeadly"
+                      | "conveyor"
+                      | "pickup"
+                      | "spring"
+                      | "sceneryPlayer"
+                      | "sceneryCrown"
+                      | "emitter"
+                      | "firedDoughnut"
+                      | "slidingDeadly"
+                      | "slidingBlock"
+                      | "monster"
+                      | "lift"
+                      | "joystick"
+                      | "charles"
+                      | "switch"
+                      | "button"
+                      | "hushPuppy"
+                      | "ball"
+                      | "floor"
+                      | "head"
+                      | "heels"
+                      | "headOverHeels"
+                      | "stopAutowalk"
+                      | "blocker"
+                      | "doorFrame"
+                      | "doorLegs"
+                      | "floatingText"
+                      | "particle"
+                      | "portal"
+                    )[];
+                  };
+                  facing?: {
+                    x: number;
+                    y: number;
+                    z: number;
+                  };
+                  /**
+                   * activated for us is a boolean, not the many-states from the json config, ie it is stateful
+                   * on if the item is currently activated (so they can render differently)
+                   */
+                  activated?: false | true;
+                  /**
+                   * if this item has ever been activated, in the lifetime of the room. Charging cybermen will
+                   * have this flag as false so long as they are charging
+                   */
+                  everActivated?: false | true;
+                  /**
+                   * The item will be removed from the room after the room it is in has more than this roomTime.
+                   * To guarantee removal on the next frame (effectively immediately)
+                   * set to -1. Otherwise, can set to the current roomTime + duration of an animation
+                   * that needs to play
+                   *
+                   * If null, the item is not scheduled for removal (the normal case)
+                   */
+                  expires?: null | number;
+                };
+              }
+            | {
+                expectType: "block";
+                targets: string[];
+                leftState: {
+                  disappearing?: {
+                    on: "stand";
+                  };
+                };
+                rightState: {
+                  disappearing?: null;
+                };
+              }
+            | {
+                expectType: "block";
+                targets: string[];
+                /**
+                 * if true, equivalent to leftState disappearing on stand, right state not dissapearing
+                 * if false, equivalent to leftState not disappearing, right state disappearing on stand
+                 */
+                makesStable: boolean;
+              }
+            | {
+                expectType: "switch";
+                targets: string[];
+                leftState: {
+                  setting?: "left";
+                };
+                rightState: {
+                  setting?: "right";
+                };
+              }
+            | {
+                expectType: "switch";
+                targets: string[];
+                leftState: {
+                  setting?: "right";
+                };
+                rightState: {
+                  setting?: "left";
+                };
+              }
+            | {
+                expectType: "switch";
+                targets: string[];
+                flip: true;
+              }
+            | {
+                expectType: "conveyor";
+                targets: string[];
+                leftState: {
+                  direction?: "towards" | "right" | "away" | "left";
+                  disappearing?: null | {
+                    on: "stand";
+                  };
+                };
+                rightState: {
+                  direction?: "towards" | "right" | "away" | "left";
+                  disappearing?: null | {
+                    on: "stand";
+                  };
+                };
+              }
+            | {
+                expectType: "joystick";
+                targets: string[];
+                leftState: {
+                  controls?: string[];
+                };
+                rightState: {
+                  controls?: string[];
+                };
+              }
+            | {
+                expectType: "emitter";
+                targets: string[];
+                leftState: {
+                  lastEmittedAtRoomTime?: number;
+                  quantityEmitted?: number;
+                  /**
+                   * what does this emitter emit? Could be (potentially) any free item
+                   */
+                  emits?: {
+                    type:
+                      | "portableBlock"
+                      | "pushableBlock"
+                      | "movingPlatform"
+                      | "moveableDeadly"
+                      | "pickup"
+                      | "spring"
+                      | "sceneryPlayer"
+                      | "sceneryCrown"
+                      | "firedDoughnut"
+                      | "slidingDeadly"
+                      | "slidingBlock"
+                      | "monster"
+                      | "charles"
+                      | "ball";
+                    config:
+                      | {
+                          gives:
+                            | "shield"
+                            | "extra-life"
+                            | "fast"
+                            | "jumps"
+                            | "doughnuts"
+                            | "bag"
+                            | "hooter"
+                            | "reincarnation";
+                        }
+                      | {
+                          gives: "scroll";
+                          source: "manual";
+                          page:
+                            | "blacktooth"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari"
+                            | "doughnuts"
+                            | "bag"
+                            | "hooter"
+                            | "teleportBack"
+                            | "historyOfTheBlacktoothEmpire"
+                            | "theGame"
+                            | "bookWorld"
+                            | "head"
+                            | "heels"
+                            | "reincarnationFish"
+                            | "cuddlyStuffedWhiteRabbits"
+                            | "crowns"
+                            | "teleports"
+                            | "springs"
+                            | "switches"
+                            | "conveyorBelts"
+                            | "hushPuppies"
+                            | "theEmperorsGuardian"
+                            | "swopKey"
+                            | "hintsAndTips"
+                            | "credits"
+                            | "installGuide";
+                        }
+                      | {
+                          gives: "scroll";
+                          source: "inline";
+                          markdown: string;
+                        }
+                      | {
+                          gives: "crown";
+                          planet:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                        }
+                      | Record<string, any>
+                      | {
+                          style: "drum" | "sticks" | "cube";
+                        }
+                      | {
+                          movement:
+                            | "clockwise"
+                            | "back-forth"
+                            | "towards-analogue";
+                          activated: "off" | "on" | "on-stand";
+                          startDirection: "towards" | "right" | "away" | "left";
+                        }
+                      | {
+                          style: "deadFish";
+                        }
+                      | {
+                          which: "head" | "heels" | "headOverHeels";
+                          startDirection:
+                            | "towards"
+                            | "right"
+                            | "away"
+                            | "left"
+                            | "awayRight"
+                            | "towardsRight"
+                            | "towardsLeft"
+                            | "awayLeft";
+                        }
+                      | {
+                          planet:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                        }
+                      | {
+                          which: "emperorsGuardian";
+                          movement: "towards-analogue-unless-planet-crowns";
+                          activated: "while-player-near";
+                        }
+                      | {
+                          which: "emperor";
+                          movement: "towards-analogue";
+                          activated: "while-player-near";
+                        }
+                      | {
+                          which: "elephant";
+                          movement: "patrol-randomly-xy4";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "elephantHead";
+                          movement: "turn-to-player";
+                          startDirection: "towards" | "right" | "away" | "left";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "monkey";
+                          movement:
+                            | "patrol-randomly-xy4"
+                            | "towards-on-shortest-axis-xy4";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "computerBot";
+                          movement:
+                            | "towards-on-shortest-axis-xy4"
+                            | "patrol-randomly-xy4-and-reverse";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "bubbleRobot";
+                          movement: "patrol-randomly-xy8";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "dalek";
+                          movement: "patrol-randomly-diagonal";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "homingBot";
+                          movement: "towards-tripped-on-axis-xy4";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "helicopterBug";
+                          movement: "patrol-randomly-xy8";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "helicopterBug";
+                          movement: "towards-analogue";
+                          activated: "while-player-near";
+                        }
+                      | {
+                          which: "turtle";
+                          movement: "clockwise" | "back-forth" | "forwards";
+                          startDirection: "towards" | "right" | "away" | "left";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "cyberman";
+                          activated: "off" | "on" | "after-player-near";
+                          movement: "towards-on-shortest-axis-xy4";
+                          startDirection: "towards" | "right" | "away" | "left";
+                        }
+                      | {
+                          which: "skiHead";
+                          activated: "off" | "on";
+                          movement: "clockwise" | "back-forth" | "forwards";
+                          startDirection: "towards" | "right" | "away" | "left";
+                          style: "greenAndPink" | "starsAndStripes";
+                        }
+                      | {
+                          style: "book" | "puck";
+                        }
+                      | {
+                          style: "spikyBall";
+                          startingPhase: 1 | 2;
+                        }
+                      | {
+                          direction?:
+                            | "towards"
+                            | "right"
+                            | "away"
+                            | "left"
+                            | "awayRight"
+                            | "towardsRight"
+                            | "towardsLeft"
+                            | "awayLeft";
+                        };
+                  };
+                  /**
+                   * how long between emissions?
+                   */
+                  period?: number;
+                  /**
+                   * how many should this emitter emit? Null for no limit
+                   */
+                  maximum?: null | number;
+                };
+                rightState: {
+                  lastEmittedAtRoomTime?: number;
+                  quantityEmitted?: number;
+                  /**
+                   * what does this emitter emit? Could be (potentially) any free item
+                   */
+                  emits?: {
+                    type:
+                      | "portableBlock"
+                      | "pushableBlock"
+                      | "movingPlatform"
+                      | "moveableDeadly"
+                      | "pickup"
+                      | "spring"
+                      | "sceneryPlayer"
+                      | "sceneryCrown"
+                      | "firedDoughnut"
+                      | "slidingDeadly"
+                      | "slidingBlock"
+                      | "monster"
+                      | "charles"
+                      | "ball";
+                    config:
+                      | {
+                          gives:
+                            | "shield"
+                            | "extra-life"
+                            | "fast"
+                            | "jumps"
+                            | "doughnuts"
+                            | "bag"
+                            | "hooter"
+                            | "reincarnation";
+                        }
+                      | {
+                          gives: "scroll";
+                          source: "manual";
+                          page:
+                            | "blacktooth"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari"
+                            | "doughnuts"
+                            | "bag"
+                            | "hooter"
+                            | "teleportBack"
+                            | "historyOfTheBlacktoothEmpire"
+                            | "theGame"
+                            | "bookWorld"
+                            | "head"
+                            | "heels"
+                            | "reincarnationFish"
+                            | "cuddlyStuffedWhiteRabbits"
+                            | "crowns"
+                            | "teleports"
+                            | "springs"
+                            | "switches"
+                            | "conveyorBelts"
+                            | "hushPuppies"
+                            | "theEmperorsGuardian"
+                            | "swopKey"
+                            | "hintsAndTips"
+                            | "credits"
+                            | "installGuide";
+                        }
+                      | {
+                          gives: "scroll";
+                          source: "inline";
+                          markdown: string;
+                        }
+                      | {
+                          gives: "crown";
+                          planet:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                        }
+                      | Record<string, any>
+                      | {
+                          style: "drum" | "sticks" | "cube";
+                        }
+                      | {
+                          movement:
+                            | "clockwise"
+                            | "back-forth"
+                            | "towards-analogue";
+                          activated: "off" | "on" | "on-stand";
+                          startDirection: "towards" | "right" | "away" | "left";
+                        }
+                      | {
+                          style: "deadFish";
+                        }
+                      | {
+                          which: "head" | "heels" | "headOverHeels";
+                          startDirection:
+                            | "towards"
+                            | "right"
+                            | "away"
+                            | "left"
+                            | "awayRight"
+                            | "towardsRight"
+                            | "towardsLeft"
+                            | "awayLeft";
+                        }
+                      | {
+                          planet:
+                            | "blacktooth"
+                            | "bookworld"
+                            | "egyptus"
+                            | "penitentiary"
+                            | "safari";
+                        }
+                      | {
+                          which: "emperorsGuardian";
+                          movement: "towards-analogue-unless-planet-crowns";
+                          activated: "while-player-near";
+                        }
+                      | {
+                          which: "emperor";
+                          movement: "towards-analogue";
+                          activated: "while-player-near";
+                        }
+                      | {
+                          which: "elephant";
+                          movement: "patrol-randomly-xy4";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "elephantHead";
+                          movement: "turn-to-player";
+                          startDirection: "towards" | "right" | "away" | "left";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "monkey";
+                          movement:
+                            | "patrol-randomly-xy4"
+                            | "towards-on-shortest-axis-xy4";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "computerBot";
+                          movement:
+                            | "towards-on-shortest-axis-xy4"
+                            | "patrol-randomly-xy4-and-reverse";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "bubbleRobot";
+                          movement: "patrol-randomly-xy8";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "dalek";
+                          movement: "patrol-randomly-diagonal";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "homingBot";
+                          movement: "towards-tripped-on-axis-xy4";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "helicopterBug";
+                          movement: "patrol-randomly-xy8";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "helicopterBug";
+                          movement: "towards-analogue";
+                          activated: "while-player-near";
+                        }
+                      | {
+                          which: "turtle";
+                          movement: "clockwise" | "back-forth" | "forwards";
+                          startDirection: "towards" | "right" | "away" | "left";
+                          activated: "off" | "on";
+                        }
+                      | {
+                          which: "cyberman";
+                          activated: "off" | "on" | "after-player-near";
+                          movement: "towards-on-shortest-axis-xy4";
+                          startDirection: "towards" | "right" | "away" | "left";
+                        }
+                      | {
+                          which: "skiHead";
+                          activated: "off" | "on";
+                          movement: "clockwise" | "back-forth" | "forwards";
+                          startDirection: "towards" | "right" | "away" | "left";
+                          style: "greenAndPink" | "starsAndStripes";
+                        }
+                      | {
+                          style: "book" | "puck";
+                        }
+                      | {
+                          style: "spikyBall";
+                          startingPhase: 1 | 2;
+                        }
+                      | {
+                          direction?:
+                            | "towards"
+                            | "right"
+                            | "away"
+                            | "left"
+                            | "awayRight"
+                            | "towardsRight"
+                            | "towardsLeft"
+                            | "awayLeft";
+                        };
+                  };
+                  /**
+                   * how long between emissions?
+                   */
+                  period?: number;
+                  /**
+                   * how many should this emitter emit? Null for no limit
+                   */
+                  maximum?: null | number;
+                };
+              }
+            | {
+                expectType: "lift";
+                targets: string[];
+                leftState: {
+                  direction?: "up" | "down";
+                  vels?: {
+                    lift: {
+                      x: number;
+                      y: number;
+                      z: number;
+                    };
+                  };
+                  top?: number;
+                  bottom?: number;
+                };
+                rightState: {
+                  direction?: "up" | "down";
+                  vels?: {
+                    lift: {
+                      x: number;
+                      y: number;
+                      z: number;
+                    };
+                  };
+                  top?: number;
+                  bottom?: number;
+                };
+              }
+            | {
+                expectType: "teleporter";
+                targets: string[];
+                leftState: {
+                  toRoom: string;
+                  toPosition: {
+                    x: number;
+                    y: number;
+                    z: number;
+                  };
+                };
+                rightState: {
+                  toRoom: string;
+                  toPosition: {
+                    x: number;
+                    y: number;
+                    z: number;
+                  };
+                };
+              }
+          )[];
+        };
       }
     | {
         type: "hushPuppy";

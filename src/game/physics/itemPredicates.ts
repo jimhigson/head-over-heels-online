@@ -11,13 +11,24 @@ import { characterNames } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import type { Xyz } from "../../utils/vectors/vectors";
 
-export const isItemType =
-  <T extends ItemInPlayType>(...types: Array<T>) =>
-  <RoomId extends string, RoomItemId extends string>(
+export const isItemType = <T extends ItemInPlayType>(...types: Array<T>) => {
+  if (types.length === 1) {
+    // optimised version with 1 type - no [].includes needed,
+    // just one string comparison
+    const [type] = types;
+    return <RoomId extends string, RoomItemId extends string>(
+      item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    ): item is ItemTypeUnion<T, RoomId, RoomItemId> => {
+      return item.type === type;
+    };
+  }
+
+  return <RoomId extends string, RoomItemId extends string>(
     item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   ): item is ItemTypeUnion<T, RoomId, RoomItemId> => {
     return (types as Array<string>).includes(item.type);
   };
+};
 
 /** @internal don't use this directly, use isSolid */
 const isNeverSolidItemType = isItemType(
@@ -240,6 +251,7 @@ export const isHead = isItemType("head");
 export const isCarrier = isItemType("heels", "headOverHeels");
 export const isFirer = isItemType("head", "headOverHeels");
 export const isLift = isItemType("lift");
+export const isButton = isItemType("button");
 export const isEmitter = isItemType("emitter");
 export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");

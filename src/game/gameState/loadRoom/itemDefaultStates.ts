@@ -1,8 +1,5 @@
-import type {
-  BaseItemState,
-  ItemInPlayType,
-  ItemState,
-} from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
+import type { BaseItemState, ItemState } from "src/model/ItemState";
 import type { StoodOnBy } from "src/model/StoodOnBy";
 import type { FreeItemState } from "../../../model/ItemStateMap";
 import type { JsonItemUnion, JsonItemType } from "../../../model/json/JsonItem";
@@ -21,6 +18,10 @@ export const defaultBaseState = <RoomItemId extends string>() =>
     disappearing: null,
     switchedAtRoomTime: neverTime,
     stoodOnUntilRoomTime: neverTime,
+    actedOnAt: {
+      roomTime: neverTime,
+      by: emptyObject as Record<RoomItemId, true>,
+    },
   }) satisfies Partial<BaseItemState>;
 
 /* for giving a little type-safety when constructing the item state out of several state object fragments */
@@ -36,10 +37,6 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
       movingFloor: originXyz,
     },
     latentMovement: [],
-    actedOnAt: {
-      roomTime: neverTime,
-      by: emptyObject as Record<RoomItemId, true>,
-    },
     collidedWith: {
       roomTime: neverTime,
       by: emptyObject as Record<RoomItemId, true>,
@@ -71,10 +68,6 @@ export const initialState = (jsonItem: JsonItemUnion) => {
           : {}),
         },
         latentMovement: [],
-        actedOnAt: {
-          roomTime: neverTime,
-          by: emptyObject,
-        },
         collidedWith: {
           roomTime: neverTime,
           by: emptyObject,
@@ -145,6 +138,11 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       ({
         setting: jsonItem.config.initialSetting,
         touchedOnProgression: -1,
+      } satisfies StateFragment<typeof jsonItem.type>)
+    : {}),
+    ...(jsonItem.type === "button" ?
+      ({
+        pressed: false,
       } satisfies StateFragment<typeof jsonItem.type>)
     : {}),
     ...(jsonItem.type === "block" ?

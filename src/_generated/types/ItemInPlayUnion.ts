@@ -8,6 +8,7 @@ type GeneratedTypeUnion =
   | "block"
   | "blocker"
   | "bubbles"
+  | "button"
   | "charles"
   | "conveyor"
   | "deadlyBlock"
@@ -65,6 +66,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "bubbles" ?
       ItemInPlay<"bubbles", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "button" ?
+      ItemInPlay<"button", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "charles" ?
       ItemInPlay<"charles", RoomId, RoomItemId, RoomItemId, ScN>

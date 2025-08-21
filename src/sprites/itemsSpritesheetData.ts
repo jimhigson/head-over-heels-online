@@ -385,6 +385,24 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  buttonInGame: {
+    frame: {
+      ...smallItemGridLocation({ x: 13, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "buttonInGame.pressed": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.buttonInGame": {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
   ...seriesOfNumberedTextures(
     "lift",
     4,

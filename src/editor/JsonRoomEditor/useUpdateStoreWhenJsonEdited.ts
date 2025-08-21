@@ -10,24 +10,13 @@ import Ajv from "ajv";
 import { debounce } from "@github/mini-throttle";
 import { store } from "../../store/store";
 import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
+import { fixJson } from "./fixJson";
 
 const ajvValidate = new Ajv().compile<EditorRoomJson>(roomSchema);
 
 // performance is fine without a debounce, but it can be annoying
 // if the editor changes during typing:
 const debounceMs = 1_000;
-
-/**
- * extremely basic JSON fixup to add quotes and remove trailing commas
- * This is not a full JSON parser, and will break if it detects these
- * features inside strings
- */
-const fixJson = (text: string) =>
-  text
-    // quote unquoted keys
-    .replace(/([{,]\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:/g, '$1"$2":')
-    // remove trailing commas before closing brackets
-    .replace(/,(\s*[}\]])/g, "$1");
 
 const parseJsonWithCorrection = (text: string): object | undefined => {
   let parsedJson;
