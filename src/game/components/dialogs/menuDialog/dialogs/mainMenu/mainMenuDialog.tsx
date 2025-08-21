@@ -103,6 +103,8 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     showScore();
   }, [showCrowns, showScore]);
 
+  const offerInstall = detectIsPwa();
+
   return (
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
@@ -154,7 +156,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               />
             </MenuItems>
             <MenuItems>
-              {detectIsPwa() || <InstallMenuItem />}
+              {offerInstall ? null : <InstallMenuItem />}
 
               <MenuItem
                 id="discord"
@@ -169,6 +171,19 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                   window.open(discordInviteUrl, "_blank");
                 }, [])}
               />
+
+              {offerInstall ?
+                <>
+                  {/* 
+                  when install isn't shown, we need a placeholder to take up the space
+                  to stop the layout jumping around. Since MenuItems is grid layout, we need
+                  three
+                  */}
+                  <div className="h-1" />
+                  <div className="h-1" />
+                  <div className="h-1" />
+                </>
+              : null}
             </MenuItems>
           </div>
           {isGameRunning && (
