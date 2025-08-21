@@ -24,7 +24,10 @@ export const PlayTestButton = () => {
             const campaign = selectCurrentCampaignInProgress(state);
             const encodedCampaign = await compressObject(campaign);
 
-            const url = new URL(import.meta.env.VITE_GAME_URL);
+            const url = new URL(
+              import.meta.env.VITE_GAME_URL,
+              window.location.href,
+            );
             const searchParams = url.searchParams as TypedURLSearchParams;
             searchParams.set("campaignName", `data:${encodedCampaign}`);
             searchParams.set("cheats", "1");
