@@ -39,6 +39,8 @@ export type JsonItemType =
   | "joystick"
   | "charles"
   | "switch"
+  // new one for the remake - like a switch except you have to stay standing on it
+  | "button"
   | "hushPuppy"
   | "ball"
   /**

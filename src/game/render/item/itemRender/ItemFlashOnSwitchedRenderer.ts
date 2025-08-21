@@ -9,12 +9,15 @@ import type {
 import { OneColourFilter } from "../../filters/oneColourFilter";
 import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
 import { noFilters } from "../../filters/standardFilters";
+import { outlineFilters } from "../../filters/outlineFilter";
 
 const recentlySwitchedFiltersRight: Array<Filter> = [
   new OneColourFilter(spritesheetPalette.midRed),
+  outlineFilters.pureBlack,
 ];
 const recentlySwitchedFiltersLeft: Array<Filter> = [
   new OneColourFilter(spritesheetPalette.moss),
+  outlineFilters.pureBlack,
 ];
 
 const flashDurationMs = 75;

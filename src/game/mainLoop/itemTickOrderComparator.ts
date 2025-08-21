@@ -14,13 +14,16 @@ export const itemTickOrderComparator = (
 ) => {
   const scores: Partial<Record<ItemInPlayType, number>> = {
     // lower number = processed first
-    lift: -4, // <- highest priority
+    lift: -4, // <- highest priority - can push anything without slowing down
     head: -3,
     heels: -3,
     monster: -2,
+
     // everything else goes here
     block: 1, // <- lowest priority
     deadlyBlock: 1, // <- lowest priority
+    wall: 1, // <- lowest priority
+    floor: 1, // <- lowest priority
   };
 
   const aScore = scores[a.type] ?? 0;

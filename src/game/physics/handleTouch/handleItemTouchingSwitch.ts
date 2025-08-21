@@ -1,3 +1,4 @@
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type {
   ItemInPlay,
   ItemInPlayType,
@@ -12,6 +13,7 @@ import type { RoomState } from "../../../model/RoomState";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { toggleBoolean } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
+import { emptyArray } from "../../../utils/empty";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 const oppositeSetting = (setting: string) => {
@@ -44,25 +46,19 @@ const getNewState = <RoomId extends string, RoomItemId extends string>(
   return modifiesItem[`${setting}State`];
 };
 
-// exported for testing
-export const toggleSwitchInRoom = <
+export const applyModifiesList = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  switchItem: ItemInPlay<"switch", RoomId, RoomItemId> & {
-    config: SwitchInRoomConfig<RoomId, RoomItemId>;
-  },
+  modifiesList: SwitchItemModificationUnion<RoomId, RoomItemId>[],
+  newSetting: SwitchSetting,
+  instigator: ItemTypeUnion<"switch" | "button", RoomId, RoomItemId>,
   room: Pick<RoomState<RoomId, RoomItemId>, "items" | "roomTime">,
-  chain: Array<ItemInPlay<"switch", RoomId, RoomItemId>>,
+  chain: Array<
+    ItemTypeUnion<"switch" | "button", RoomId, RoomItemId>
+  > = emptyArray,
 ) => {
-  const newSetting = oppositeSetting(switchItem.state.setting);
-
-  switchItem.state.setting = newSetting;
-
-  const modifiedList = switchItem.config.modifies;
-
-  // loop over the top-level of the switch's modification list:
-  for (const modifiesItem of modifiedList) {
+  for (const modifiesItem of modifiesList) {
     // loop here because there could be multiple items with the same jsonItemId
     for (const roomItem of iterateRoomItems(room.items)) {
       if (
@@ -82,7 +78,7 @@ export const toggleSwitchInRoom = <
       if (roomItem.type !== modifiesItem.expectType) {
         throw new Error(
           `item "${roomItem.id}" is of type "${roomItem.type}" - does not match expected type "${modifiesItem.expectType}"
-          from switch config ${JSON.stringify(switchItem.config, null, 2)}`,
+          from switch config ${JSON.stringify(instigator.config, null, 2)}`,
         );
       }
 
@@ -103,10 +99,29 @@ export const toggleSwitchInRoom = <
         // avoid infinite loops:
         !chain.includes(roomItem)
       ) {
-        handleSwitchActivation(roomItem, room, [...chain, switchItem]);
+        // special cases for switches activating other switches, which can then do their activations too:
+        handleSwitchActivation(roomItem, room, [...chain, instigator]);
       }
     }
   }
+};
+
+// exported for testing
+const toggleSwitchInRoom = <RoomId extends string, RoomItemId extends string>(
+  switchItem: ItemInPlay<"switch", RoomId, RoomItemId> & {
+    config: SwitchInRoomConfig<RoomId, RoomItemId>;
+  },
+  room: Pick<RoomState<RoomId, RoomItemId>, "items" | "roomTime">,
+  chain: Array<ItemTypeUnion<"switch" | "button", RoomId, RoomItemId>>,
+) => {
+  const newSetting = oppositeSetting(switchItem.state.setting);
+
+  switchItem.state.setting = newSetting;
+
+  const modifiesList = switchItem.config.modifies;
+
+  // loop over the top-level of the switch's modification list:
+  applyModifiesList(modifiesList, newSetting, switchItem, room, chain);
 };
 
 const isInRoomSwitch = <RoomId extends string, RoomItemId extends string>(
@@ -127,7 +142,7 @@ const handleSwitchActivation = <
    * chain of causation - a list of the switches that flipped to flip this one.
    * needed to avoid infinite loops
    */
-  chain: Array<ItemInPlay<"switch", RoomId, RoomItemId>>,
+  chain: Array<ItemTypeUnion<"switch" | "button", RoomId, RoomItemId>>,
 ) => {
   if (isInRoomSwitch(switchItem)) {
     toggleSwitchInRoom<RoomId, RoomItemId>(switchItem, room, chain);
@@ -166,5 +181,5 @@ export const handleItemTouchingSwitch = <
     return;
   }
 
-  handleSwitchActivation(switchItem, room, []);
+  handleSwitchActivation(switchItem, room, emptyArray);
 };

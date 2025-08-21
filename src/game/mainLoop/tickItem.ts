@@ -1,4 +1,5 @@
 import {
+  isButton,
   isCarrier,
   isCrown,
   isDeadly,
@@ -41,6 +42,7 @@ import { tickActivation } from "../physics/mechanics/activation";
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { emitting } from "../physics/mechanics/emitting";
 import { addParticlesAroundCrown } from "./addParticlesToRoom";
+import { buttonPressAndRelease } from "../physics/mechanics/buttonPressAndRelease";
 
 function* itemMechanicResultGen<
   T extends ItemInPlayType,
@@ -119,6 +121,12 @@ function* itemMechanicResultGen<
     >;
   } else if (isEmitter(item)) {
     emitting(item, room, gameState, deltaMS);
+  } else if (isButton(item)) {
+    yield buttonPressAndRelease(item, room) as MechanicResult<
+      T,
+      RoomId,
+      RoomItemId
+    >;
   }
 }
 

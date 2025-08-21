@@ -19,12 +19,14 @@ import { TeleporterSoundRenderer } from "./itemSoundRenderers/TeleporterSoundRen
 import { FiredDoughnutSoundRenderer } from "./itemSoundRenderers/FiredDoughnutSoundRenderer";
 import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
 import { ToasterSoundRenderer } from "./itemSoundRenderers/ToasterSoundRenderer";
+import { ButtonSoundRenderer } from "./itemSoundRenderers/ButtonSoundRenderer";
 
 const rendererClasses: {
   [T in ItemInPlayType]?: ItemSoundRendererConstructableClass<T>;
 } = {
   lift: LiftSoundRenderer,
   switch: SwitchSoundRenderer,
+  button: ButtonSoundRenderer,
   bubbles: BubblesSoundRenderer,
   head: PlayableSoundRenderer,
   heels: PlayableSoundRenderer,

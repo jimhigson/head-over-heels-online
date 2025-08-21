@@ -85,7 +85,12 @@ export type MonsterJsonConfig =
     }
   | {
       which: "turtle";
-      movement: MovementsSubset<"clockwise" | "back-forth">;
+      movement: MovementsSubset<
+        | "clockwise"
+        | "back-forth"
+        // remake
+        | "forwards"
+      >;
       startDirection: DirectionXy4;
       activated: ActivatedWhenSubset<"on" | "off">;
     }
@@ -95,7 +100,10 @@ export type MonsterJsonConfig =
       activated: ActivatedWhenSubset<"on" | "off">;
       movement: MovementsSubset<
         // #bookworld31
-        "clockwise" | "back-forth"
+        | "clockwise"
+        | "back-forth"
+        // remake
+        | "forwards"
       >;
       startDirection: DirectionXy4;
       style: "greenAndPink" | "starsAndStripes";

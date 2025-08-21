@@ -1,5 +1,6 @@
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlayType, ItemState } from "../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../model/ItemInPlay";
+import type { ItemState } from "src/model/ItemState";
 import type { RoomState } from "../../model/RoomState";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { GameState } from "../gameState/GameState";
@@ -29,16 +30,18 @@ export type MechanicResult<
   RoomItemId extends string,
 > =
   | {
-      // velocity is unchanged by this result
+      // velocity is unchanged by this result - keep moving as you were
       movementType: "steady";
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
     }
   | {
+      // velocity has changed
       movementType: "vel";
       vels: { [mechanic in VelocitiesForItem<T>]?: Xyz };
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
     }
   | {
+      // a position delta
       movementType: "position";
       posDelta: Partial<Xyz>;
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;

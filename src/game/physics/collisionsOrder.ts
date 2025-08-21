@@ -87,6 +87,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   // the game plays better when switches are easier to touch than the blocks they control (eg, pen3)
   switch: 10,
+  button: 10,
 
   // putting doorframe earlier than wall would make doorways easier to walk into
   // (since hitting both a doorframe and wall simultaneously would preferentially

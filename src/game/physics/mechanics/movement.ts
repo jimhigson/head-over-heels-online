@@ -22,6 +22,7 @@ import {
   directionsXy8,
   directionsXy4,
   vectorClosestDirectionXy4,
+  areInSameDirection,
 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import { emptyObject } from "../../../utils/empty";
@@ -370,7 +371,12 @@ export const keepWalkingInSameDirection = <
     return notWalking;
   }
 
-  return xyEqual(walking, originXy) ?
+  return (
+      xyEqual(walking, originXy) ||
+        // walking will usually be in the facing direction, but could have gotten out of
+        // sync if a switch/button changed the facing of this item
+        !areInSameDirection(walking, facing)
+    ) ?
       {
         movementType: "vel",
         vels: {
@@ -519,6 +525,7 @@ export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
       );
 
     case "back-forth":
+    case "forwards":
     case "clockwise": {
       return keepWalkingInSameDirection(
         itemWithMovement,
@@ -588,6 +595,7 @@ export const handleItemWithMovementTouchingItem = <
     case "towards-analogue":
     case "towards-analogue-unless-planet-crowns":
     case "turn-to-player":
+    case "forwards":
       // these don't need anything on touching:
       return;
 

@@ -334,6 +334,8 @@ const textureForItem = (
       return twClass(`texture-bubbles_white_1`);
     case "emitter":
       return twClass("texture-hud_char_?");
+    case "button":
+      return twClass("texture-button");
     default:
       item satisfies never;
       return twClass("texture-hud_char_?");

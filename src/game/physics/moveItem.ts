@@ -179,8 +179,11 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   // strategy is to move to the target position, then back off as needed
   subjectItem.state.position = addXyz(originalPosition, posDelta);
-  if (isFreeItem(subjectItem)) {
-    recordActedOnBy(pusher, subjectItem, room);
+
+  if (pusher === undefined) {
+    // record 'first cause' acting on, directly from the mechanics.
+    // (n>1)-cause are recorded in the collision loop
+    recordActedOnBy(undefined, subjectItem, room);
   }
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(
@@ -248,6 +251,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         );
       }
     }
+
+    // record this acting on:
+    recordActedOnBy(subjectItem, collidedWithItem, room);
 
     if (onTouch !== undefined) {
       if (log) {
@@ -432,11 +438,21 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
 
     // check if we landed on the item we collided with to take over the standingOn slot::
-    if (isFreeItem(subjectItem) && backingOffMtv.z > 0) {
-      // moving vertically down onto the item
-
+    if (
+      isFreeItem(subjectItem) &&
+      // item is pushing us off it vertically - a good sign that we're standing on it
+      backingOffMtv.z > 0 &&
+      // have to be moving downwards to stand on something. It is possible to have a positive
+      // mtv in z while jumping against an item, for the moment when the character is slightly
+      // inside the corner. Eg, springs would record standing on momentarily, and appear compressed
+      // if jumped against (but not on)
+      posDelta.z < 0
+    ) {
       if (
+        // subject not already standing on something
         subjectItem.state.standingOnItemId === null ||
+        // huh? - not colliding with the item we were previously standing on
+        // - guess this means it is ok to take over its slot (?)
         !sortedCollisions.includes(
           stoodOnItem(subjectItem.state.standingOnItemId, room),
         )

@@ -621,10 +621,26 @@ edit the json to choose:
 
 * de/activate monsters
 * turn on/off moving platforms
-* make blocks disappear on touch`}
+* make blocks disappear on touch
+* flip other switches
+* change where teleporters go
+* ... other things!`}
         >
           <span
             className={`sprite texture-switch_left [button:hover_&]:texture-switch_right ${buttonSpriteRevertColourClasses}`}
+          />
+        </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "button",
+            config: {
+              modifies: emptyArray,
+            },
+          }}
+          tooltipContent={`## button`}
+        >
+          <span
+            className={`sprite texture-buttonInGame [button:hover_&]:texture-buttonInGame_pressed ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
       </div>
