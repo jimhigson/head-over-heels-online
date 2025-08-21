@@ -68,6 +68,15 @@ export type SwitchItemModificationUnion<
         }
       >;
     }
+  | {
+      expectType: "block";
+      targets: RoomItemId[];
+      /**
+       * if true, equivalent to leftState disappearing on stand, right state not dissapearing
+       * if false, equivalent to leftState not disappearing, right state disappearing on stand
+       */
+      makesStable: boolean;
+    }
   // gangs of switches (#penitentiary3)
   | {
       expectType: "switch";
@@ -105,8 +114,8 @@ export type SwitchItemModificationUnion<
   | {
       expectType: "switch";
       targets: RoomItemId[];
-      // switches have some shorthand to go together or opposite:
-      flip: "same" | "opposite";
+      // switches have some shorthand to just flip another switch
+      flip: true;
     }
   | {
       expectType: "conveyor";
