@@ -72,7 +72,7 @@ export type SwitchItemModificationUnion<
       expectType: "block";
       targets: RoomItemId[];
       /**
-       * if true, equivalent to leftState disappearing on stand, right state not dissapearing
+       * if true, equivalent to leftState disappearing on stand, right state not disappearing
        * if false, equivalent to leftState not disappearing, right state disappearing on stand
        */
       makesStable: boolean;
