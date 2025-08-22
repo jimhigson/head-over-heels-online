@@ -3,11 +3,11 @@ import { useState } from "react";
 import {
   loadCampaignFromApi,
   saveCampaignViaApi,
-} from "../../store/slices/campaigns/campaignApiHelpers";
-import { store } from "../../store/store";
-import { cn } from "../../ui/cn";
-import { campaignIsNamed, type EditorCampaign } from "../editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
+} from "../../../store/slices/campaigns/campaignApiHelpers";
+import { store } from "../../../store/store";
+import { cn } from "../../../ui/cn";
+import { campaignIsNamed, type EditorCampaign } from "../../editorTypes";
+import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 import {
   setRemoteCampaign,
   loadCampaign,
@@ -16,18 +16,18 @@ import {
   setCampaignName,
   setCampaignPublished,
   setCampaignUserId,
-} from "../slice/levelEditorSlice";
-import { ToolbarButton } from "./ToolbarButton";
-import { useSupabaseUser } from "./useSupabaseUser";
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
-import { useShortTimeDisplay } from "./useShortTimeDisplay";
-import { MenuButton } from "./MenuButton";
-import { Button } from "../../ui/button";
-import { SaveAsDialog } from "../editorDialogs/SaveAsDialog";
-import { OpenCampaignDialog } from "../editorDialogs/OpenCampaignDialog";
-import type { CampaignLocator } from "../../model/modelTypes";
-import { emptyArray } from "../../utils/empty";
-import { supabaseDb } from "../../db/supabaseDb";
+} from "../../slice/levelEditorSlice";
+import { ToolbarButton } from "../ToolbarButton";
+import { useSupabaseUser } from "../useSupabaseUser";
+import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { useShortTimeDisplay } from "../useShortTimeDisplay";
+import { MenuButton } from "../MenuButton";
+import { Button } from "../../../ui/button";
+import { SaveAsDialog } from "../../editorDialogs/SaveAsDialog";
+import { OpenCampaignDialog } from "../../editorDialogs/OpenCampaignDialog";
+import type { CampaignLocator } from "../../../model/modelTypes";
+import { emptyArray } from "../../../utils/empty";
+import { supabaseDb } from "../../../db/supabaseDb";
 
 export const showOkAfterSaveDuration = 2000;
 
@@ -53,54 +53,53 @@ export const useRemoteIsInSync = () => {
   );
 };
 
+const save = async () => {
+  const state = store.getState() as RootStateWithLevelEditorSlice;
+  const campaign = selectCurrentCampaignInProgress(state);
+  if (!campaignIsNamed(campaign)) {
+    throw new Error("Campaign is not named, can't save");
+  }
+
+  const { data, error } = await supabaseDb.auth.getUser();
+  if (error) {
+    throw new Error("Failed to get user:", error);
+  }
+  const userId = data.user.id;
+  if (userId !== campaign.locator.userId) {
+    // if this is someone else's campaign, change the name:
+    store.dispatch(setCampaignUserId(userId));
+  }
+
+  console.info("saving...", campaign);
+  const result = await saveCampaignViaApi(campaign);
+  if (result.data !== undefined) {
+    console.info(`...saved as v${result.data}`);
+    store.dispatch(setRemoteCampaign({ campaign }));
+  } else if (result.error) {
+    console.error("Failed to save:", result.error);
+  }
+};
+
+const load = async (campaignLocator: CampaignLocator) => {
+  const result = await loadCampaignFromApi(campaignLocator, {
+    forceRefetch: true,
+  });
+
+  if (result.data) {
+    const campaign = result.data as EditorCampaign;
+    console.info("loaded", campaign);
+    store.dispatch(loadCampaign({ campaign }));
+  } else if (result.error) {
+    console.error("Failed to load:", result.error);
+  }
+};
+
 export const SaveAndLoadButtons = () => {
   const user = useSupabaseUser();
   const savedIsInSync = useRemoteIsInSync();
   const { doneNow, justDone } = useShortTimeDisplay();
   const [saveAsDialogOpen, setSaveAsDialogOpen] = useState(false);
   const [openDialogOpen, setOpenDialogOpen] = useState(false);
-
-  const save = async () => {
-    const state = store.getState() as RootStateWithLevelEditorSlice;
-    const campaign = selectCurrentCampaignInProgress(state);
-    if (!campaignIsNamed(campaign)) {
-      throw new Error("Campaign is not named, can't save");
-    }
-
-    const { data, error } = await supabaseDb.auth.getUser();
-    if (error) {
-      throw new Error("Failed to get user:", error);
-    }
-    const userId = data.user.id;
-    if (userId !== campaign.locator.userId) {
-      // if this is someone else's campaign, change the name:
-      store.dispatch(setCampaignUserId(userId));
-    }
-
-    console.info("saving...", campaign);
-    const result = await saveCampaignViaApi(campaign);
-    if (result.data !== undefined) {
-      console.info(`...saved as v${result.data}`);
-      store.dispatch(setRemoteCampaign({ campaign }));
-      doneNow();
-    } else if (result.error) {
-      console.error("Failed to save:", result.error);
-    }
-  };
-
-  const load = async (campaignLocator: CampaignLocator) => {
-    const result = await loadCampaignFromApi(campaignLocator, {
-      forceRefetch: true,
-    });
-
-    if (result.data) {
-      const campaign = result.data as EditorCampaign;
-      console.info("loaded", campaign);
-      store.dispatch(loadCampaign({ campaign }));
-    } else if (result.error) {
-      console.error("Failed to load:", result.error);
-    }
-  };
 
   return (
     <>
@@ -113,14 +112,15 @@ export const SaveAndLoadButtons = () => {
           main={
             <ToolbarButton
               disabled={user === null || savedIsInSync}
-              onClick={() => {
+              onClick={async () => {
                 const state = store.getState() as RootStateWithLevelEditorSlice;
                 const campaign = selectCurrentCampaignInProgress(state);
 
                 if (!campaignIsNamed(campaign)) {
                   setSaveAsDialogOpen(true);
                 } else {
-                  save();
+                  await save();
+                  doneNow();
                 }
               }}
               shortcutKeys={["^S", "⌘S"]}

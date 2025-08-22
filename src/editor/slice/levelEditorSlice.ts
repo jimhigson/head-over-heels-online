@@ -93,6 +93,7 @@ export const levelEditorSlice = createSlice({
       // unselect if using an item tool
       if (tool.type === "item") {
         state.selectedJsonItemIds = [];
+        state.hoveredItem = undefined;
       }
 
       state.tool = tool;

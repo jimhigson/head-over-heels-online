@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { showOkAfterSaveDuration } from "./SaveAndLoadButtons";
+import { showOkAfterSaveDuration } from "./saving/SaveAndLoadButtons";
 
 export const useShortTimeDisplay = () => {
   const [justDone, setJustDone] = useState<number>(0);
