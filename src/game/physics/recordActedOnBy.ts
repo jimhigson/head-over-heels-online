@@ -6,13 +6,26 @@ export const recordActedOnBy = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  /** the item pushing or otherwise controlling the other item */
+  /**
+   * the item pushing or otherwise controlling the other item. Undefined for
+   * a 'first cause' directly from a mechanic (ie, not acted on by any other item)
+   */
   actingItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId> | undefined,
-  subjectItem: FreeItem<RoomId, RoomItemId>,
+  subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
 ) => {
-  const { actedOnAt } = subjectItem.state;
-  // it isn't clear why subjectItem would ever *not* be a freeItem
+  // this cannot be undefined by the current types. However, an old save could
+  // not have this for non-free items:
+  const actedOnAt = subjectItem.state.actedOnAt as
+    | typeof subjectItem.state.actedOnAt
+    | undefined;
+
+  if (actedOnAt === undefined) {
+    // TODO: this check can be removed when happy to break back compatibility
+    // from 22ng Aug 2025
+    return;
+  }
+
   if (actedOnAt.roomTime === room.roomTime) {
     if (actingItem) {
       actedOnAt.by[actingItem.id] = true;

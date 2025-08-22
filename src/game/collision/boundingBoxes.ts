@@ -35,6 +35,14 @@ export const boundingBoxForItem = (
         aabb: { ...smallItemAabb, z: smallItemAabb.z },
       };
     }
+    case "button": {
+      return {
+        // match the compressed size, since this is when the
+        // item will be stood on, which is when the z-size most
+        // matters
+        aabb: { x: 15, y: 15, z: 2 },
+      };
+    }
 
     case "pickup":
       return item.config.gives === "scroll" ?

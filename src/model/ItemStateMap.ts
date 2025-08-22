@@ -4,6 +4,7 @@ import type { Xyz, Xy, DirectionXyz4 } from "../utils/vectors/vectors";
 import type { SwitchSetting } from "./ItemInPlay";
 import type { SceneryName } from "../sprites/planets";
 import type { ItemConfigMap } from "./json/ItemConfigMap";
+import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
 
 export type PlayableActionState =
   | "moving"
@@ -23,16 +24,6 @@ export type PlayableTeleportingState =
       phase: "in";
       timeRemaining: number;
     };
-
-type TimedRelationWithOtherItem<RoomItemId extends string> = {
-  /** by recording the time of the event,
-   * we allow rendering to take into account events that happened in sub-ticks since the room's
-   * last render
-   */
-  roomTime: number;
-  /** the ids of the item is related to */
-  by: Record<RoomItemId, true>;
-};
 
 export type LatentMovementFrame = {
   /** the time that the movement is scheduled to start happening */
@@ -57,8 +48,6 @@ export type FreeItemState<RoomItemId extends string> = {
     movingFloor: Xyz;
   };
 
-  /** the roomTime when this item last had a force applied to it, and who did the pushing/acting */
-  actedOnAt: TimedRelationWithOtherItem<RoomItemId>;
   /** when this item last collided into something, and who did we collide into */
   collidedWith: TimedRelationWithOtherItem<RoomItemId>;
 
@@ -290,6 +279,9 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   >;
   switch: SingleTouch & {
     setting: SwitchSetting;
+  };
+  button: {
+    pressed: boolean;
   };
   charles: FreeItemState<RoomItemId> & {
     // others will follow this soon - facing is changing to a vector

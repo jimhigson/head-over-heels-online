@@ -77,6 +77,7 @@ const itemShadowMaskAppearances: {
   ),
   spikes: itemStaticSpriteAppearance("shadowMask.spikes"),
   switch: itemStaticSpriteAppearance("shadowMask.switch"),
+  button: itemStaticSpriteAppearance("shadowMask.buttonInGame"),
   pickup: itemAppearanceShadowMaskFromConfig(({ gives }) => {
     switch (gives) {
       case "scroll":

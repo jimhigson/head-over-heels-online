@@ -1,7 +1,8 @@
 import type { BooleanStatePaths } from "../../store/slices/gameMenusSlice";
 import type { Subset } from "../../utils/subset";
 import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
-import type { ItemState, SwitchSetting } from "../ItemInPlay";
+import type { SwitchSetting } from "../ItemInPlay";
+import type { ItemState } from "../ItemState";
 import type { ItemStateMap } from "../ItemStateMap";
 
 // switches are 'on rails' with a fairly restricted range of things they can change for the sake of avoiding
@@ -11,40 +12,27 @@ export type SwitchItemModificationUnion<
   RoomId extends string,
   RoomItemId extends string,
 > =
-  // Monsters/platforms that are deactivated by default:
   | {
       expectType: "monster" | "movingPlatform";
       targets: RoomItemId[];
-      leftState: Subset<
-        Partial<ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>>,
-        {
-          activated?: false;
-        }
+      /**
+       * true is a shorthand for monsters/platforms that are activated by default:
+       *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
+       * false is shorthand for monsters/platforms that are deactivated by default:
+       *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
+       */
+      activates?: boolean;
+      leftState?: Partial<
+        Pick<
+          ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
+          "activated" | "everActivated" | "disappearing" | "expires" | "facing"
+        >
       >;
-      rightState: Subset<
-        Partial<ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>>,
-        {
-          activated?: true;
-          everActivated?: true;
-        }
-      >;
-    }
-  // Monsters/platforms that are activated by default:
-  | {
-      expectType: "monster" | "movingPlatform";
-      targets: RoomItemId[];
-      leftState: Subset<
-        Partial<ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>>,
-        {
-          activated?: true;
-          everActivated?: true;
-        }
-      >;
-      rightState: Subset<
-        Partial<ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>>,
-        {
-          activated?: false;
-        }
+      rightState?: Partial<
+        Pick<
+          ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
+          "activated" | "everActivated" | "disappearing" | "expires" | "facing"
+        >
       >;
     }
   // turning off disappearing blocks:
@@ -208,3 +196,12 @@ export type SwitchConfig<
       path: BooleanStatePaths;
     }
 );
+
+export type ButtonConfig<
+  RoomId extends string,
+  /** ids of items in this room */
+  RoomItemId extends string,
+> = {
+  // list of all items (de)activated by this button
+  modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
+};

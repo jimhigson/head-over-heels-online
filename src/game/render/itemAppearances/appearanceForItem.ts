@@ -30,6 +30,7 @@ import { switchAppearance } from "./switchAppearance";
 import { blockAppearance } from "./blockAppearance";
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { toasterAppearance } from "./toasterAppearance";
+import { buttonAppearance } from "./buttonAppearance";
 
 const itemAppearancesMap: {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;
@@ -105,6 +106,7 @@ const itemAppearancesMap: {
   block: blockAppearance,
 
   switch: switchAppearance,
+  button: buttonAppearance,
 
   conveyor: conveyorAppearance,
 

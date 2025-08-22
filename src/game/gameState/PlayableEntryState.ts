@@ -1,4 +1,4 @@
-import type { ItemState } from "../../model/ItemInPlay";
+import type { ItemState } from "../../model/ItemState";
 import type { CharacterName } from "../../model/modelTypes";
 import type { PlayableItem } from "../physics/itemPredicates";
 

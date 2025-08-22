@@ -1,4 +1,4 @@
-import { veryClose } from "../epsilon";
+import { epsilon, veryClose } from "../epsilon";
 
 export const directionsXy4 = ["away", "towards", "left", "right"] as const;
 export type DirectionXy4 = (typeof directionsXy4)[number];
@@ -376,3 +376,26 @@ export const absXyz = ({ x, y, z }: Xyz): Xyz => ({
   y: Math.abs(y),
   z: Math.abs(z),
 });
+
+/**
+ * Checks if two vectors are in the same direction (parallel and pointing the same way).
+ * Returns true if v2 is a positive scalar multiple of v1.
+ */
+export const areInSameDirection = (
+  /** First vector */
+  v1: Xyz,
+  /** Second vector */
+  v2: Xyz,
+): boolean => {
+  const dot = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+
+  // Early exit if dot product is negative or zero
+  if (dot <= 0) return false;
+
+  // Check if parallel: |v1 · v2| = |v1| * |v2|
+  const mag1Sq = v1.x * v1.x + v1.y * v1.y + v1.z * v1.z;
+  const mag2Sq = v2.x * v2.x + v2.y * v2.y + v2.z * v2.z;
+
+  // Compare squared values to avoid sqrt
+  return Math.abs(dot * dot - mag1Sq * mag2Sq) < epsilon;
+};
