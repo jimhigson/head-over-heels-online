@@ -1006,6 +1006,15 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "block";
+                    targets: string[];
+                    /**
+                     * if true, equivalent to leftState disappearing on stand, right state not dissapearing
+                     * if false, equivalent to leftState not disappearing, right state disappearing on stand
+                     */
+                    makesStable: boolean;
+                  }
+                | {
                     expectType: "switch";
                     targets: string[];
                     leftState: {
@@ -1024,6 +1033,11 @@ export type RoomJsonSchema = {
                     rightState: {
                       setting?: "left";
                     };
+                  }
+                | {
+                    expectType: "switch";
+                    targets: string[];
+                    flip: true;
                   }
                 | {
                     expectType: "conveyor";

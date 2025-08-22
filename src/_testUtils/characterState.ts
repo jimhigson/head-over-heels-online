@@ -1,6 +1,6 @@
 import { type GameState } from "../game/gameState/GameState";
 import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
-import type { ItemState } from "../model/ItemInPlay";
+import type { ItemInPlayType, ItemState } from "../model/ItemInPlay";
 import { getRoomItem } from "../model/RoomState";
 import type { TestRoomId } from "./basicRoom";
 
@@ -30,6 +30,13 @@ export const currentPlayableState = (gameState: GameState<TestRoomId>) => {
   )!.state;
 };
 
-export const itemState = (gameState: GameState<TestRoomId>, itemId: string) => {
-  return selectCurrentRoomState(gameState)?.items[itemId]?.state;
+export const itemState = <T extends ItemInPlayType>(
+  gameState: GameState<TestRoomId>,
+  itemId: string,
+) => {
+  return selectCurrentRoomState(gameState)?.items[itemId]?.state as ItemState<
+    T,
+    TestRoomId,
+    string
+  >;
 };

@@ -3,44 +3,44 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import type { PlayableItem } from "../physics/itemPredicates";
+import type { PlayableItem } from "../../physics/itemPredicates";
 import {
   defaultRoomHeightBlocks,
   playerJumpHeightPx,
-} from "../physics/mechanicsConstants";
-import { smallItemAabb } from "../collision/boundingBoxes";
+} from "../../physics/mechanicsConstants";
+import { smallItemAabb } from "../../collision/boundingBoxes";
 
 import type {
   TestRoomId,
   BasicGameStateOptions,
-} from "../../_testUtils/basicRoom";
+} from "../../../_testUtils/basicRoom";
 import {
   setUpBasicGame,
   firstRoomId,
   secondRoomId,
-} from "../../_testUtils/basicRoom";
+} from "../../../_testUtils/basicRoom";
 import {
   currentPlayableState,
   headState,
   heelsState,
   itemState,
-} from "../../_testUtils/characterState";
+} from "../../../_testUtils/characterState";
 import {
   playGameThrough,
   stopJumpingAMomentAfterStartingPlay,
   stopAllInputAfter,
-} from "../../_testUtils/playGameThrough";
-import type { ItemInPlay, ItemState } from "../../model/ItemInPlay";
-import { blockSizePx } from "../../sprites/spritePivots";
-import { testFrameRates } from "../../_testUtils/testFrameRates";
-import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import type { CharacterName } from "../../model/modelTypes";
-import { individualCharacterNames } from "../../model/modelTypes";
-import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
-import { store } from "../../store/store";
-import { iterateRoomItems } from "../../model/RoomState";
+} from "../../../_testUtils/playGameThrough";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { testFrameRates } from "../../../_testUtils/testFrameRates";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
+import type { CharacterName } from "../../../model/modelTypes";
+import { individualCharacterNames } from "../../../model/modelTypes";
+import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { store } from "../../../store/store";
+import { iterateRoomItems } from "../../../model/RoomState";
 import { size } from "iter-tools";
-import { resetStore } from "../../_testUtils/initStoreForTests";
+import { resetStore } from "../../../_testUtils/initStoreForTests";
 
 beforeEach(() => {
   resetStore();
@@ -2257,11 +2257,7 @@ describe("joystick", () => {
 
     playGameThrough(gameState, {
       until(gameState) {
-        const switchState = itemState(gameState, "switch") as ItemState<
-          "switch",
-          TestRoomId,
-          string
-        >;
+        const switchState = itemState<"switch">(gameState, "switch");
         // stop when charles has flipped the switch's setting
         return switchState.setting === "right";
       },

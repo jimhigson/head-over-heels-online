@@ -7,7 +7,7 @@ import type { ItemStateMap } from "../ItemStateMap";
 // switches are 'on rails' with a fairly restricted range of things they can change for the sake of avoiding
 // errors in the json but this could be added to as needed. Technically, the engine can change any property
 // of an item's state if it ignores these types
-type SwitchItemModificationUnion<
+export type SwitchItemModificationUnion<
   RoomId extends string,
   RoomItemId extends string,
 > =
@@ -68,6 +68,15 @@ type SwitchItemModificationUnion<
         }
       >;
     }
+  | {
+      expectType: "block";
+      targets: RoomItemId[];
+      /**
+       * if true, equivalent to leftState disappearing on stand, right state not disappearing
+       * if false, equivalent to leftState not disappearing, right state disappearing on stand
+       */
+      makesStable: boolean;
+    }
   // gangs of switches (#penitentiary3)
   | {
       expectType: "switch";
@@ -101,6 +110,12 @@ type SwitchItemModificationUnion<
           setting?: "left";
         }
       >;
+    }
+  | {
+      expectType: "switch";
+      targets: RoomItemId[];
+      // switches have some shorthand to just flip another switch
+      flip: true;
     }
   | {
       expectType: "conveyor";

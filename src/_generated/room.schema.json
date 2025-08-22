@@ -3182,6 +3182,31 @@
                                   "additionalProperties": false,
                                   "properties": {
                                     "expectType": {
+                                      "const": "block",
+                                      "type": "string"
+                                    },
+                                    "makesStable": {
+                                      "description": "if true, equivalent to leftState disappearing on stand, right state not dissapearing if false, equivalent to leftState not disappearing, right state disappearing on stand",
+                                      "type": "boolean"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "targets",
+                                    "makesStable"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
                                       "const": "switch",
                                       "type": "string"
                                     },
@@ -3260,6 +3285,27 @@
                                     "leftState",
                                     "rightState"
                                   ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "switch",
+                                      "type": "string"
+                                    },
+                                    "flip": {
+                                      "const": true,
+                                      "type": "boolean"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": ["expectType", "targets", "flip"],
                                   "type": "object"
                                 },
                                 {
