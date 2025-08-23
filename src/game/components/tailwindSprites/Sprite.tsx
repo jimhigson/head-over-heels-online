@@ -29,7 +29,7 @@ export interface BitmapTextProps {
   noSlitWords?: boolean;
   onClick?: MouseEventHandler<HTMLSpanElement>;
   noTint?: boolean;
-  TagName?: "span" | "h1";
+  TagName?: "span" | "h1" | "h2";
   role?: AriaRole;
 }
 

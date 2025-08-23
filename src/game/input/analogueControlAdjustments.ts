@@ -48,11 +48,13 @@ export const isometricInputVector = (input: Xyz): Xyz => {
   );
 };
 
-export const strictSnapXy4 = (input: Xyz) => {
+type SnapXyFn = (input: Xyz) => Xyz;
+
+export const strictSnapXy4: SnapXyFn = (input) => {
   const direction = vectorClosestDirectionXy4(input);
   return direction === undefined ? originXyz : unitVectors[direction];
 };
-export const strictSnapXy8 = (input: Xyz) => {
+export const strictSnapXy8: SnapXyFn = (input) => {
   const direction = vectorClosestDirectionXy8(input);
   return direction === undefined ? originXyz : unitVectors[direction];
 };
@@ -96,7 +98,7 @@ export const lightlySnapXy4 = (
   return vector;
 };
 
-export const snapXy: Record<InputDirectionMode, (input: Xyz) => Xyz> = {
+export const snapXyFnMap: Record<InputDirectionMode, SnapXyFn> = {
   "4-way": strictSnapXy4,
   "8-way": strictSnapXy8,
   analogue: lightlySnapXy4,

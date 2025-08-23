@@ -246,7 +246,54 @@ export const SelectTheKeysMenuItems = () => {
         label="Pause"
         valueElement={<SelectKeysMenuAssignmentValue action="hold" />}
         onSelect={useDispatchActionCallback(assignInputStart, "hold")}
+        leader={<span className={`${spriteLeaderClasses} texture-drum`} />}
       />
+      <div className="col-span-3">
+        <BitmapText
+          TagName="h2"
+          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1`}
+        >
+          Look controls
+        </BitmapText>
+        <BitmapText
+          TagName="h2"
+          className={`text-midGrey zx:text-zxBlack ${multilineTextClass}`}
+        >
+          useful for seeing more of larger rooms that don't fit on the screen.
+        </BitmapText>
+      </div>
+      <MenuItem
+        id="lookLeft"
+        label={`Look ⬅`}
+        valueElement={<SelectKeysMenuAssignmentValue action="lookLeft" />}
+        onSelect={useDispatchActionCallback(assignInputStart, "lookLeft")}
+      />
+      <MenuItem
+        id="lookRight"
+        label={`Look ➡`}
+        valueElement={<SelectKeysMenuAssignmentValue action="lookRight" />}
+        onSelect={useDispatchActionCallback(assignInputStart, "lookRight")}
+      />
+      <MenuItem
+        id="lookUp"
+        label={`Look ⬆`}
+        valueElement={<SelectKeysMenuAssignmentValue action="lookUp" />}
+        onSelect={useDispatchActionCallback(assignInputStart, "lookUp")}
+      />
+      <MenuItem
+        id="lookDown"
+        label={`Look ⬇`}
+        valueElement={<SelectKeysMenuAssignmentValue action="lookDown" />}
+        onSelect={useDispatchActionCallback(assignInputStart, "lookDown")}
+      />
+      <div className="col-span-3">
+        <BitmapText
+          TagName="h2"
+          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1`}
+        >
+          Remake option toggles
+        </BitmapText>
+      </div>
       <MenuItem
         id="toggleColourisation"
         label={
@@ -260,6 +307,21 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(
           assignInputStart,
           "toggleColourisation",
+        )}
+      />
+      <MenuItem
+        id="cycleRes"
+        label={
+          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+            cycle res- olution
+          </BitmapText>
+        }
+        valueElement={
+          <SelectKeysMenuAssignmentValue action="cycleResolution" />
+        }
+        onSelect={useDispatchActionCallback(
+          assignInputStart,
+          "cycleResolution",
         )}
       />
     </>

@@ -7,10 +7,30 @@ export type ActionInputAssignment = {
   gamepadButtons: number[];
 };
 
+type AxisAssignmentAxes = {
+  /** move head/heels in x (either screen-relative x or world-relative) */
+  x: number[];
+  /** move head/heels in x (either screen-relative x or world-relative) */
+  y: number[];
+  /**
+   * secondary x axis, probably on the right analogue stick,
+   * for looking around larger rooms
+   */
+  xLook: number[];
+  /**
+   * secondary y axis, probably on the right analogue stick,
+   * for looking around larger rooms
+   */
+  yLook: number[];
+};
+
 export type InputAssignment = {
   presses: Record<BooleanAction | DirectionXy4, ActionInputAssignment>;
-  axes: { x: number[]; y: number[] };
+  axes: AxisAssignmentAxes;
 };
+
+/** equivalent of BooleanAction but for axis-assignable things */
+export type AxisAssignableAction = keyof AxisAssignmentAxes;
 
 export type InputAssignmentPreset = {
   inputAssignment: InputAssignment;

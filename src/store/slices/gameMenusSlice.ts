@@ -1,12 +1,12 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import type { EmptyObject, ValueOf } from "type-fest";
 import type { DialogId } from "../../game/components/dialogs/menuDialog/DialogId";
 import type {
   ActionInputAssignment,
   InputAssignment,
   InputPress,
-} from "../../game/input/InputState";
+} from "../../game/input/InputAssignment";
 import type { KeyAssignmentPresetName } from "../../game/input/keyAssignmentPresets";
 import { keyAssignmentPresets } from "../../game/input/keyAssignmentPresets";
 
@@ -600,10 +600,14 @@ export const gameMenusSlice = createSlice({
         state.gameRunning = false;
         delete state.gameInPlay.reincarnationPoint;
         const currentCampaignLocator = state.gameInPlay.campaignLocator;
-        delete state.savedGames.saves[
-          gameStateLocatorKey(currentCampaignLocator!)
-        ];
-        delete state.savedGames.lastSavedCampaignLocator;
+        const locatorKey =
+          currentCampaignLocator && gameStateLocatorKey(currentCampaignLocator);
+        console.log(current(state.savedGames));
+        if (locatorKey) {
+          delete state.savedGames.saves[locatorKey];
+          delete state.savedGames.lastSavedCampaignLocator;
+        }
+        console.log(current(state.savedGames));
         /*
         keep these for the scores dialog
         state.gameInPlay.planetsLiberated = noPlanetsLiberated;

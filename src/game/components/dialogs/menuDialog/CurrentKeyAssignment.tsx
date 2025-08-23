@@ -53,12 +53,10 @@ const friendlyKeyName = (key: Key) => {
       return key;
   }
 };
+
+const axisNames = ["⬅➡", "⬆⬇", "R⬅➡", "R⬆⬇"];
 const friendlyAxisName = (axis: number) => {
-  return (
-    axis === 0 ? "⬅➡"
-    : axis === 1 ? "⬆⬇"
-    : `axis${axis}`
-  );
+  return axisNames[axis] ?? `axis${axis}`;
 };
 
 const friendlyButtonName = (button: number) => {

@@ -1,5 +1,14 @@
 import { directionsXy4, type DirectionXy4 } from "../../utils/vectors/vectors";
 
+export const lookDirectionsXy4 = [
+  "lookUp",
+  "lookDown",
+  "lookLeft",
+  "lookRight",
+] as const;
+
+export type LookDirectionsXy4 = (typeof lookDirectionsXy4)[number];
+
 export const booleanActions = [
   "jump",
   "fire",
@@ -20,9 +29,8 @@ export const booleanActions = [
   "menu_exit",
   "map",
   ...directionsXy4,
+  ...lookDirectionsXy4,
 ] as const;
 export type BooleanAction = (typeof booleanActions)[number];
-export const allActions: (BooleanAction | DirectionXy4)[] = [
-  ...booleanActions,
-  ...directionsXy4,
-];
+// TODO: this is just a copy of booleanActions - probably redundant
+export const allActions: (BooleanAction | DirectionXy4)[] = [...booleanActions];

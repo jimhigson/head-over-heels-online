@@ -151,9 +151,6 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const { onScreenControls } = renderContext;
 
     for (const character of individualCharacterNames) {
-      this.#container.addChild(this.#hudElements[character].sprite);
-      // lives after sprite since it can overlap it with on-screen controls
-      this.#container.addChild(this.#hudElements[character].livesText);
       this.#container.addChild(this.#hudElements[character].shield.container);
       this.#container.addChild(
         this.#hudElements[character].extraSkill.container,
@@ -173,7 +170,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     ];
     this.#hudElements.fps.y = hudCharTextureSize.h;
 
-    this.#initInteractivity();
+    this.#initSwopCharacterInteractivity();
 
     if (onScreenControls) {
       this.#onScreenControls = new OnScreenControls({
@@ -182,9 +179,16 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       });
       this.#container.addChild(this.#onScreenControls.output);
     }
+
+    // these have to come after the on-screen controls, since they are tappable to
+    // change character, and shouldn't be hidden behind the look event catcher
+    for (const character of individualCharacterNames) {
+      this.#container.addChild(this.#hudElements[character].sprite);
+      this.#container.addChild(this.#hudElements[character].livesText);
+    }
   }
 
-  #initInteractivity() {
+  #initSwopCharacterInteractivity() {
     const {
       renderContext: {
         general: {

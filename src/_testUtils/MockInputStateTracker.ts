@@ -1,4 +1,4 @@
-import { type InputPress } from "../game/input/InputState";
+import { type InputPress } from "../game/input/InputAssignment";
 import type {
   InputStateTrackerInterface,
   PressStatus,
@@ -17,6 +17,7 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
   inputTap = vi.fn<() => InputPress | undefined>();
 
   directionVector = originXyz;
+  lookVector = originXyz;
 
   startTicking = vi.fn<() => void>();
   stopTicking = vi.fn<() => void>();
