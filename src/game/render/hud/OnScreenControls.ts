@@ -3,7 +3,7 @@ import { Container } from "pixi.js";
 import type { Xy } from "../../../utils/vectors/vectors";
 
 import { objectValues } from "iter-tools";
-import { OnScreenJoystickRenderer } from "./OnScreenJoystick";
+import { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { spritesheetData } from "../../../sprites/spriteSheetData";
@@ -13,6 +13,7 @@ import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/se
 import type { GeneralRenderContext } from "../RoomRenderContexts";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import type { SetRequired } from "type-fest";
+import { OnScreenLookRenderer } from "./OnScreenLookRenderer";
 
 const mainButtonsSpreadXPx = 30;
 const mainButtonsSpreadYPx = 15;
@@ -99,14 +100,28 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
       joystick: new OnScreenJoystickRenderer({
         inputStateTracker,
         inputDirectionMode,
-        // TODO: event bus making bad casts
+        general,
+      }),
+      look: new OnScreenLookRenderer({
+        inputStateTracker,
         general,
       }),
     };
 
+    this.#hudElements.look.joystickRenderer = this.#hudElements.joystick;
+    this.#hudElements.joystick.lookRenderer = this.#hudElements.look;
+
+    this.#initAddToScene();
+    this.#initInteractivity();
+  }
+
+  #initAddToScene() {
     const { buttons } = this.#hudElements;
 
-    const { mainButtonNest, joystick } = this.#hudElements;
+    const { mainButtonNest, joystick, look } = this.#hudElements;
+
+    // sits behind everything else, so has to be added first
+    this.#container.addChild(look.output);
 
     for (const {
       renderContext: {
@@ -132,7 +147,6 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
     this.#container.addChild(mainButtonNest);
     this.#container.addChild(joystick.output);
-    this.#initInteractivity();
   }
 
   #initInteractivity() {
@@ -195,6 +209,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
       });
     }
     this.#hudElements.joystick.tick();
+    this.#hudElements.look.tick();
   }
 
   get output() {
@@ -204,6 +219,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
   destroy() {
     this.#container.destroy();
     this.#hudElements.joystick.destroy();
+    this.#hudElements.look.destroy();
   }
 }
 export const buttonSpriteSize = spritesheetData.frames.button.frame;

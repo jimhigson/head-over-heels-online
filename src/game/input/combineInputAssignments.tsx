@@ -1,5 +1,5 @@
 import type { PartialDeep } from "type-fest";
-import type { InputAssignment } from "./InputState";
+import type { InputAssignment } from "./InputAssignment";
 import { allActions } from "./actions";
 import { emptyInputAssignment } from "./emptyInputAssignment";
 
@@ -46,6 +46,18 @@ export function combineInputAssignments(
         new Set([
           ...emptyInputAssignment.axes.y,
           ...assignments.map((a) => a.axes?.y ?? []).flat(),
+        ]),
+      ),
+      xLook: Array.from(
+        new Set([
+          ...emptyInputAssignment.axes.xLook,
+          ...assignments.map((a) => a.axes?.xLook ?? []).flat(),
+        ]),
+      ),
+      yLook: Array.from(
+        new Set([
+          ...emptyInputAssignment.axes.yLook,
+          ...assignments.map((a) => a.axes?.yLook ?? []).flat(),
         ]),
       ),
     },

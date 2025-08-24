@@ -30,6 +30,8 @@ import type { EmptyObject } from "type-fest";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
 import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
+import type { OnScreenLookRenderer } from "./OnScreenLookRenderer";
 
 const joystickArrowOffset = 14;
 const sensitivity = 2;
@@ -48,11 +50,13 @@ const snapCosineThreshold = Math.cos(30 * (Math.PI / 180));
 
 const joystickFurthestTouchRadius = 40;
 export class OnScreenJoystickRenderer
-  implements Renderer<JoystickRenderContext, EmptyObject, Container>
+  implements
+    Renderer<JoystickRenderContext, EmptyObject, Container>,
+    PointerGrabbingRender
 {
   output = new Container({ label: "OnScreenJoystick", eventMode: "static" });
 
-  arrowSprites: Partial<Record<DirectionXy8, Container>>;
+  #arrowSprites: Partial<Record<DirectionXy8, Container>>;
 
   #joystickSprite = createSprite({
     textureId: "joystick",
@@ -62,13 +66,15 @@ export class OnScreenJoystickRenderer
 
   #curPointerId: number | undefined;
 
+  #lookRenderer: OnScreenLookRenderer | undefined;
+
   constructor(public readonly renderContext: JoystickRenderContext) {
     const {
       inputDirectionMode,
       general: { colourised },
     } = renderContext;
 
-    this.arrowSprites = {
+    this.#arrowSprites = {
       away: createSprite({
         textureId: "hud.char.↗",
         anchor: { x: 0.5, y: 0.5 },
@@ -134,12 +140,14 @@ export class OnScreenJoystickRenderer
         .circle(0, 0, joystickFurthestTouchRadius)
         .fill("#00000000"),
     );
-    for (const arrowSprite of objectValues(this.arrowSprites)) {
+    for (const arrowSprite of objectValues(this.#arrowSprites)) {
       this.output.addChild(arrowSprite);
     }
 
     this.output.on("pointerenter", this.handlePointerEnter);
-    this.output.on("globalpointermove", this.usePointerLocation);
+    // by using global, we can detect a pointer that started on the joystick
+    // even if it wanders off of it
+
     this.output.on("pointerup", this.stopCurrentPointer);
     this.output.on("pointerupoutside", this.stopCurrentPointer);
 
@@ -153,21 +161,28 @@ export class OnScreenJoystickRenderer
       this.stopCurrentPointer();
     }
 
+    if (this.#lookRenderer!.curPointerId === e.pointerId) {
+      // being handled by the look renderer
+      return;
+    }
+
     // allows tapping without movement:
     this.#curPointerId = e.pointerId;
     this.usePointerLocation(e);
+    this.output.on("globalpointermove", this.usePointerLocation);
   };
 
-  /**
-   * @param e if given, the stopping is conditional on the pointerId matching, otherwise
-   * it is unconditional
-   */
   stopCurrentPointer = () => {
     this.#curPointerId = undefined;
     this.renderContext.inputStateTracker.hudInputState.directionVector =
       originXyz;
+    this.output.off("globalpointermove", this.usePointerLocation);
   };
 
+  /**
+   * get the location from the event (if it is the current pointer,
+   * ie started on the joystick) and send it to the input tracker
+   */
   usePointerLocation = (e: FederatedPointerEvent) => {
     if (e.pointerId !== this.#curPointerId) return;
 
@@ -179,23 +194,21 @@ export class OnScreenJoystickRenderer
     const { width: containerWidth, height: containerHeight } =
       this.output.getLocalBounds();
 
-    const dx = (eventX / scale - containerX) / (containerWidth / 2);
-    const dy = (eventY / scale - containerY) / (containerHeight / 2);
+    // get x/y relative to joystick centre, at joystick's scale:
+    const joyX = (eventX / scale - containerX) / (containerWidth / 2);
+    const joyY = (eventY / scale - containerY) / (containerHeight / 2);
 
     const onScreenDirectionVector = rotateInputVector45({
-      x: -dx,
-      y: -dy,
+      x: -joyX,
+      y: -joyY,
       z: 0,
     });
 
-    const lightlySnapped = lightlySnapXy4(
-      onScreenDirectionVector,
-      snapCosineThreshold,
-    );
-
-    const scaled = scaleXyz(lightlySnapped, sensitivity);
-
-    this.renderContext.inputStateTracker.hudInputState.directionVector = scaled;
+    this.renderContext.inputStateTracker.hudInputState.directionVector =
+      scaleXyz(
+        lightlySnapXy4(onScreenDirectionVector, snapCosineThreshold),
+        sensitivity,
+      );
   };
 
   tick() {
@@ -216,7 +229,9 @@ export class OnScreenJoystickRenderer
         vectorClosestDirectionXy8(directionVector)
       : undefined;
 
-    for (const [directionXy8, sprite] of objectEntriesIter(this.arrowSprites)) {
+    for (const [directionXy8, sprite] of objectEntriesIter(
+      this.#arrowSprites,
+    )) {
       sprite.filters =
         directionXy8 === highlightDirectionXy8 ?
           hudHighlightAndOutlineFilters
@@ -224,10 +239,17 @@ export class OnScreenJoystickRenderer
     }
   }
 
+  get curPointerId() {
+    return this.#curPointerId;
+  }
+
+  set lookRenderer(renderer: OnScreenLookRenderer) {
+    this.#lookRenderer = renderer;
+  }
+
   destroy() {
     this.stopCurrentPointer();
     this.output.off("pointerenter", this.handlePointerEnter);
-    this.output.off("globalpointermove", this.usePointerLocation);
     this.output.off("pointerup", this.stopCurrentPointer);
     this.output.off("pointerupoutside", this.stopCurrentPointer);
     this.output.destroy();

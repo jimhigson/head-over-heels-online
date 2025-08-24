@@ -7,19 +7,19 @@ import {
   lengthXy,
   lengthXyz,
   originXyz,
-  scaleXy,
+  scaleXyz,
   xyzEqual,
 } from "../../utils/vectors/vectors";
-import type { InputPress } from "./InputState";
+import type { AxisAssignableAction, InputPress } from "./InputAssignment";
 import { actionToAxis } from "./actionToAxis";
-import { type BooleanAction } from "./actions";
+import { lookDirectionsXy4, type BooleanAction } from "./actions";
 import type { KeyboardStateMap } from "./keyboardState";
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 import type { Key } from "./keys";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import type { GamepadState } from "./GamepadState";
 import { extractGamepadsState } from "./GamepadState";
-import { rotateInputVector45, snapXy } from "./analogueControlAdjustments";
+import { rotateInputVector45, snapXyFnMap } from "./analogueControlAdjustments";
 import { iterate } from "../../utils/iterate";
 import { emptyArray } from "../../utils/empty";
 import type { HudInputState } from "./hudInputState";
@@ -28,6 +28,7 @@ import {
   selectInputAssignment,
   selectScreenRelativeControl,
 } from "../../store/selectors";
+import { lookUnitVectors } from "./lookUnitVectors";
 
 export const analogueDeadzone = 0.2;
 /* how long to keep buffered input for - this is essentially a sensitivity setting
@@ -154,6 +155,19 @@ const isActionPressed = (
   return false;
 };
 
+/** constrains the vector so that all components are in the range 0..1 */
+const constrainUnitRange = (v: Xyz) => {
+  const vl = lengthXy(v);
+  return vl > 1 ?
+      // TODO: actually not sure why z was explictly zero here - can't see how
+      // input could be giving a z anyway
+      //{ ...
+      scaleXyz(v, 1 / vl)
+      //z: 0,
+      //}
+    : v;
+};
+
 /**
  * read from the given inputState (and anything else) to get the current interpretation
  * of the input, according to the
@@ -166,6 +180,10 @@ export class InputStateTracker {
    */
   #frameInputBuffer: FrameInput[] = [];
   #directionVector: Xyz = originXyz;
+  /**
+   * secondary xy axes for looking around the room
+   */
+  #lookVector: Xyz = originXyz;
 
   /**
    * latches set to true if an action should be ignored until it is released
@@ -180,7 +198,7 @@ export class InputStateTracker {
   ) {}
 
   /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
-  #tickUpdatedDirectionXy4 = () => {
+  #getDirectionXy4ForTick = (): Xyz => {
     let l;
     let r;
     let a;
@@ -225,50 +243,71 @@ export class InputStateTracker {
     return originXyz;
   };
 
+  /**
+   * get the XY(z) vectors for the binary inputs
+   */
+  *#pressVectors<D extends BooleanAction>(
+    input: FrameInput,
+    directions: readonly D[],
+    directionVectors: Record<D, Xyz>,
+  ): Generator<Xyz> {
+    for (const d of directions) {
+      if (isActionPressed(input, d, false)) yield directionVectors[d];
+    }
+  }
+
+  /**
+   * get the x and y input, for each assigned axis for the given axis-
+   * assignable actions, and each gamepad
+   */
+  *#axisVectors(
+    input: FrameInput,
+    xAction: AxisAssignableAction,
+    yAction: AxisAssignableAction,
+    xDirection: -1 | 1,
+    yDirection: -1 | 1,
+  ): Generator<Xyz> {
+    // Generator for look vectors - will yield look direction vectors
+    const axesAssignment = selectInputAssignment(store.getState()).axes;
+
+    const axesX = axesAssignment[xAction];
+    const axesY = axesAssignment[yAction];
+
+    /* loop over all gamepads, yielding their contribution on all registered axes */
+    for (const gp of input.gamepads) {
+      if (gp === null) {
+        continue;
+      }
+
+      let x = 0,
+        y = 0;
+
+      for (const a of axesX) {
+        if (gp.axes.length <= a) continue;
+        x += gp.axes[a] * xDirection;
+      }
+      for (const a of axesY) {
+        if (gp.axes.length <= a) continue;
+        y += gp.axes[a] * yDirection;
+      }
+
+      const v: Xyz = { x, y, z: 0 };
+
+      if (lengthXyz(v) > analogueDeadzone) yield v;
+    }
+  }
+
   /** gets the modernised input direction (including analogue or 8-way) */
-  #tickUpdatedDirectionAnalogueOrXy8() {
+  #getDirectionAnalogueOrXy8ForTick(): Xyz {
     const currentFrameInput = this.#frameInputBuffer.at(0);
 
     if (currentFrameInput === undefined) {
       return originXyz;
     }
 
-    /* vectors for the binary presses - buttons and keys */
-    function* pressVectors(input: FrameInput): Generator<Xyz> {
-      // TODO: consider axes at the extremes (== -1, or 1) as buttons and don't use in axisVectors
-
-      for (const d of directionsXy4) {
-        if (isActionPressed(input, d, false)) yield unitVectors[d];
-      }
-    }
-    function* axisVectors(input: FrameInput): Generator<Xyz> {
-      const {
-        axes: { x: axesX, y: axesY },
-      } = selectInputAssignment(store.getState());
-
-      for (const gp of input.gamepads) {
-        if (gp === null) {
-          continue;
-        }
-
-        let x = 0,
-          y = 0;
-
-        for (const a of axesX) {
-          if (gp.axes.length <= a) continue;
-          x -= gp.axes[a];
-        }
-        for (const a of axesY) {
-          if (gp.axes.length <= a) continue;
-          y -= gp.axes[a];
-        }
-
-        const v: Xyz = { x, y, z: 0 };
-
-        if (lengthXyz(v) > analogueDeadzone) yield v;
-      }
-    }
-    let pressVs = [...pressVectors(currentFrameInput)];
+    let pressVs = [
+      ...this.#pressVectors(currentFrameInput, directionsXy4, unitVectors),
+    ];
     let recentlyReleasedPress: Xyz | undefined = undefined;
 
     if (pressVs.length === 1) {
@@ -277,7 +316,9 @@ export class InputStateTracker {
       const previousFramePressVectors = [
         ...iterate(this.#frameInputBuffer)
           .drop(1)
-          .map((buffer) => [...pressVectors(buffer)]),
+          .map((buffer) => [
+            ...this.#pressVectors(buffer, directionsXy4, unitVectors),
+          ]),
       ];
 
       // if only one input is pressed, check the buffer if another, orthogonal input was only just released,
@@ -291,7 +332,7 @@ export class InputStateTracker {
           // one identical:
           prevFramePressV.some((bp) => xyzEqual(bp, singlePressedNow))
         ) {
-          // and one orthoganal:
+          // and one orthogonal:
           const bufferOrthogonalPress = prevFramePressV.find(
             (bp) => dotProductXyz(bp, singlePressedNow) < 0.001,
           );
@@ -324,7 +365,26 @@ export class InputStateTracker {
     return addXyz(
       recentlyReleasedPress ?? originXyz,
       ...pressVs,
-      ...axisVectors(currentFrameInput),
+      ...this.#axisVectors(currentFrameInput, "x", "y", -1, -1),
+    );
+  }
+
+  #getLookDirectionForTick(): Xyz {
+    const currentFrameInput = this.#frameInputBuffer.at(0);
+
+    if (currentFrameInput === undefined) {
+      return originXyz;
+    }
+
+    return constrainUnitRange(
+      addXyz(
+        ...this.#pressVectors(
+          currentFrameInput,
+          lookDirectionsXy4,
+          lookUnitVectors,
+        ),
+        ...this.#axisVectors(currentFrameInput, "xLook", "yLook", -1, -1),
+      ),
     );
   }
 
@@ -333,26 +393,25 @@ export class InputStateTracker {
     const screenRelativeControl = selectScreenRelativeControl(store.getState());
 
     const shouldRotate = screenRelativeControl && inputDirectionMode;
-    const maybeRotate = shouldRotate ? rotateInputVector45 : (v: Xyz) => v;
+    const maybeRotate45 = shouldRotate ? rotateInputVector45 : (v: Xyz) => v;
 
-    const v = snapXy[inputDirectionMode](
-      addXyz(
-        maybeRotate(
-          inputDirectionMode === "4-way" ?
-            this.#tickUpdatedDirectionXy4()
-          : this.#tickUpdatedDirectionAnalogueOrXy8(),
+    const snapXyFn = snapXyFnMap[inputDirectionMode];
+
+    this.#directionVector = constrainUnitRange(
+      snapXyFn(
+        addXyz(
+          maybeRotate45(
+            inputDirectionMode === "4-way" ?
+              this.#getDirectionXy4ForTick()
+            : this.#getDirectionAnalogueOrXy8ForTick(),
+          ),
+          // hudinput is never rotated
+          this.hudInputState.directionVector,
         ),
-        // hudinput is never rotated
-        this.hudInputState.directionVector,
       ),
     );
 
-    // ensure length is not > 1
-    const vl = lengthXy(v);
-    this.#directionVector = {
-      ...(vl > 1 ? scaleXy(v, 1 / vl) : v),
-      z: 0,
-    };
+    this.#lookVector = this.#getLookDirectionForTick();
 
     // input snapshot to use for the rest of this frame (until the next call to tick)
     const currentFrameInput: FrameInput = {
@@ -486,6 +545,10 @@ export class InputStateTracker {
     return this.#directionVector;
   }
 
+  get lookVector(): Xyz {
+    return this.#lookVector;
+  }
+
   startTicking() {
     // we want this to run at a lower update priority than anything else so that it back-runs
     // the interactions and only updates the last frame's record after everything else has had
@@ -504,6 +567,7 @@ export type InputStateTrackerInterface = Pick<
   | "currentActionPress"
   | "inputTap"
   | "directionVector"
+  | "lookVector"
   | "startTicking"
   | "stopTicking"
   | "hudInputState"

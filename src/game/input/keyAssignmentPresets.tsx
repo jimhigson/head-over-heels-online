@@ -1,4 +1,4 @@
-import { type InputAssignmentPreset } from "./InputState";
+import { type InputAssignmentPreset } from "./InputAssignment";
 import type { MamePlayer } from "./controllers";
 import {
   eightBitDoKeyboard,
@@ -105,6 +105,8 @@ const gamepadAssignment: InputAssignmentPreset = {
     axes: {
       x: [0],
       y: [1],
+      xLook: [2],
+      yLook: [3],
     },
   }),
   description:
@@ -208,6 +210,20 @@ const defaultAssignment: InputAssignmentPreset = {
         },
         map: {
           keys: ["M", "Tab"],
+        },
+        // Looking by default - like WASD but over at IJKL
+        // (find pip on J with right index finger)
+        lookUp: {
+          keys: ["I"],
+        },
+        lookDown: {
+          keys: ["K"],
+        },
+        lookLeft: {
+          keys: ["J"],
+        },
+        lookRight: {
+          keys: ["L"],
         },
       },
     },

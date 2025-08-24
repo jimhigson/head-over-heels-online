@@ -138,6 +138,9 @@ export const GamePage = () => {
         // without tabIndex here, Chrome doesn't allow tab key to be used to open the map
         // (or anything else) because it moves focus to the address bar
         tabIndex={0}
+        // without fixed top-0, sometimes on MacOs Safari, after going to the map and back
+        // the game's area is rendered scrolled up the screen
+        className="fixed top-0"
         style={canvasInlineStyle}
         ref={setRenderArea}
       />

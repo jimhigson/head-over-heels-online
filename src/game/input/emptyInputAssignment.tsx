@@ -1,5 +1,5 @@
 import { fromAllEntries } from "../../utils/entries";
-import type { InputAssignment } from "./InputState";
+import type { InputAssignment } from "./InputAssignment";
 import { allActions } from "./actions";
 
 export const emptyInputAssignment: InputAssignment = {
@@ -9,5 +9,5 @@ export const emptyInputAssignment: InputAssignment = {
       { keys: [], gamepadAxes: [], gamepadButtons: [] },
     ]),
   ),
-  axes: { x: [], y: [] },
+  axes: { x: [], y: [], xLook: [], yLook: [] },
 };

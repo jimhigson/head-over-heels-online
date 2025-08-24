@@ -1,9 +1,16 @@
 import { Container, Graphics } from "pixi.js";
 import { projectWorldXyzToScreenXy } from "./projections";
 import { floorsRenderExtent } from "./floorsExtent";
-import { moveSpeedPixPerMs } from "../physics/mechanicsConstants";
 import type { Xy } from "../../utils/vectors/vectors";
-import { addXyz, subXy, lengthXy } from "../../utils/vectors/vectors";
+import {
+  addXyz,
+  subXy,
+  scaleXyz,
+  addXy,
+  lengthXySquared,
+  scaleXy,
+  subXyz,
+} from "../../utils/vectors/vectors";
 import { detectDeviceType } from "../../utils/detectDeviceType";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type {
@@ -19,15 +26,40 @@ import type {
 import type { SetRequired } from "type-fest";
 import { roundToNearest } from "../../utils/maths/maths";
 import type { RoomState } from "../../model/RoomState";
+import { neverTime } from "../../utils/neverTime";
+import { epsilon } from "../../utils/epsilon";
 
 // a higher value means more scrolling will occur.
 // 0.33 is generally good for original game levels, 0.4 is good for new remake-specific levels
 // with more verticality
 const scrollLimit = 0.4;
-// how much to move the room up (at home position) to bring off the hud
-const worldBottomMargin = detectDeviceType() === "mobile" ? -4 : 16;
 
-const scrollSpeedPxPerMs = moveSpeedPixPerMs.heels;
+/** roughly how long the eased scrolling should aim to catch up with where its
+ *  target position is */
+const scrollCatchupPeriod = 300;
+
+/**
+ * If the scroll delta squared is less than this, don't bother with any scrolling.
+ * Avoids very small scroll steps at the end of easing
+ * Also allows a little bit of movement relative to the screen when 'setting off'
+ * on a motion or turning 180° */
+const smallestScrollSquared = 36; // 6²
+
+/**
+ * pixels per ms with axis=1 (or -1) - stick at the limit or key pressed
+ */
+const controllerOrKeyboardLookSpeed = 0.2; // 200px/second
+
+/**
+ * how long after looking until the scrolling starts to revert?
+ */
+const periodUntilLookRevert = 1_250;
+
+const easeTowards = (vector: Xy, deltaMS: number) => {
+  // move towards at 100% per catchup period (but will back off/ease as
+  // that distance gets smaller):
+  return scaleXy(vector, Math.min(1, deltaMS / scrollCatchupPeriod));
+};
 
 /**
  * put the room on the screen in the right place - either scrolling, or at its home position similar to how
@@ -38,6 +70,12 @@ export class RoomScrollRenderer<
   RoomItemId extends string,
 > implements RoomRendererTypeInGameOnly<RoomId, RoomItemId>
 {
+  /** the current position, not counting looking */
+  #curScroll: Xy = { x: 0, y: 0 };
+  /** the user's input into looking around */
+  #lookOffset: Xy = { x: 0, y: 0 };
+  #lastLookTime: number = neverTime;
+
   #everRendered: boolean = false;
   #scrollableLeft: boolean;
   #scrollableRight: boolean;
@@ -75,15 +113,39 @@ export class RoomScrollRenderer<
 
     const renderingMedianX = (floorsEdgeRightX + floorsEdgeLeftX) / 2;
 
+    const renderingWidth = floorsEdgeRightX - floorsEdgeLeftX;
+    const renderingHeight = floorsBottomEdgeY - allItemsTopEdgeY;
+    const fitsInY = effectiveScreenSize.y >= renderingHeight;
+    const fitsOnScreen = fitsInY && effectiveScreenSize.x >= renderingWidth;
+
+    // how much to move the room up (at home position) to bring off the hud
+    const bottomMargin =
+      fitsInY ?
+        // like the original:
+        16
+        // we don't fit so we're going to not sacrifice vertical y space to the gap
+        // at the bottom:
+      : detectDeviceType() === "mobile" ?
+        // space is super-tight and we don't have the traditional hud to worry about
+        // - allow half a playable block to go off-screen
+        -4
+        // the very bottom standable pixel will be at the bottom of the screen, overlapping the hud
+      : 0;
+
     this.#roomHomePosition = {
       x: effectiveScreenSize.x / 2 - renderingMedianX,
       y:
         effectiveScreenSize.y -
-        worldBottomMargin -
+        bottomMargin -
         floorsBottomEdgeY -
-        /* moving up by half the x offset preserves movement in 2:1 ratio of isometric projection
-       - while also avoiding the hud elements */
-        Math.abs(renderingMedianX / 2),
+        (fitsOnScreen ?
+          /* similar to the original's (non-scrolling) room  positioning on screen: moving up by half
+             the x offset creates movement in the 2:1 isometric projection along the x/y in-game axes;
+             also avoids the hud elements since they are set up at about 2:1 ratio */
+          Math.abs(renderingMedianX / 2)
+          // ignore this adjustment if the room is wider than the screen - it tends to force a
+          // black space below, especially on non-rectangular 'big' rooms and mobile-sized displays, where
+        : 0),
     };
 
     // is there content off the left edge when the room is in its home position?
@@ -122,17 +184,86 @@ export class RoomScrollRenderer<
     this.output = output;
   }
 
+  #updateOutputXy() {
+    const {
+      general: {
+        upscale: { gameEngineUpscale },
+      },
+    } = this.renderContext;
+    const scroll = this.#curScroll;
+    const outputGraphics = this.output.graphics;
+
+    /**
+     * allowing the x/y of the container to be an unrounded fraction often ends up with
+     * it being n + 0.5 (where n is an integer) which causes wobbly artifacts on animated sprites
+     * if the upscale is not divisible by 2 (ie, upscale of 5, offset by half, gives offset of 2.5)
+     * - but rounding to int creates an unsmooth stepping effect when scrolling. Rounding to 1/ scale factor
+     * works - it is as smooth as the pixels, and avoids the wobbly artifacts.
+     */
+    const increment = 1 / gameEngineUpscale;
+
+    const xyPlusLook = addXy(scroll, this.#lookOffset);
+
+    outputGraphics.x = roundToNearest(xyPlusLook.x, increment);
+    outputGraphics.y = roundToNearest(xyPlusLook.y, increment);
+  }
+
+  #tickLookOffset(tickContext: RoomTickContext<RoomId, RoomItemId>) {
+    const {
+      general: { gameState },
+      room: { roomTime },
+    } = this.renderContext;
+    const { deltaMS } = tickContext;
+
+    const {
+      inputStateTracker: {
+        lookVector: controllerOrKeyboardLookVector,
+        hudInputState: { lookVector: hudLookVector },
+      },
+    } = gameState;
+
+    if (
+      lengthXySquared(controllerOrKeyboardLookVector) +
+        lengthXySquared(hudLookVector) <
+      epsilon
+    ) {
+      if (this.#lastLookTime < roomTime - periodUntilLookRevert) {
+        // no looking for a while. start to decay the lookOffset to decay the
+        // looking back to centring on the character
+        this.#lookOffset = subXy(
+          this.#lookOffset,
+          easeTowards(this.#lookOffset, deltaMS),
+        );
+      }
+    } else {
+      this.#lastLookTime = roomTime;
+
+      this.#lookOffset = subXyz(
+        addXyz(
+          this.#lookOffset,
+          scaleXyz(
+            controllerOrKeyboardLookVector,
+            deltaMS * controllerOrKeyboardLookSpeed,
+          ),
+        ),
+        hudLookVector,
+      );
+
+      hudLookVector.x = 0;
+      hudLookVector.y = 0;
+    }
+  }
+
   tick(tickContext: RoomTickContext<RoomId, RoomItemId>) {
     const {
       general: {
-        upscale: {
-          gameEngineScreenSize: effectiveScreenSize,
-          gameEngineUpscale,
-        },
+        upscale: { gameEngineScreenSize: effectiveScreenSize },
         gameState,
       },
     } = this.renderContext;
     const { deltaMS } = tickContext;
+
+    this.#tickLookOffset(tickContext);
 
     const playable = selectCurrentPlayableItem(gameState);
     if (playable === undefined) {
@@ -176,6 +307,7 @@ export class RoomScrollRenderer<
             effectiveScreenSize.x * (1 - scrollLimit) -
               characterProjectionInRoom.x,
           )
+          // not scrolling in x - staying in home position
         : this.#roomHomePosition.x,
       y:
         (
@@ -187,66 +319,30 @@ export class RoomScrollRenderer<
         : this.#roomHomePosition.y,
     };
 
-    const outputGraphics = this.output.graphics;
-
-    /**
-     * allowing the x/y of the container to be an unrounded fraction often ends up with
-     * it being n + 0.5 (where n is an integer) which causes wobbly artifacts on animated sprites
-     * if the upscale is not divisible by 2 (ie, upscale of 5, offset by half, gives offset of 2.5)
-     * - but rounding to int creates an unsmooth stepping effect when scrolling. Rounding to 1/ scale factor
-     * works - it is as smooth as the pixels, and avoids the wobbly artifacts.
-     */
-    const increment = 1 / gameEngineUpscale;
-
     const snapInstantly = !this.#everRendered;
     if (snapInstantly) {
-      // rounding here prevents wobbly artifacts on animated sprites when
-      // the scroll position is a fractional number
-      outputGraphics.x = roundToNearest(
-        targetRoomPositionWithScrolling.x,
-        increment,
-      );
-      outputGraphics.y = roundToNearest(
-        targetRoomPositionWithScrolling.y,
-        increment,
-      );
+      this.#curScroll = targetRoomPositionWithScrolling;
     } else {
       // ease towards from target position:
-      const maxScrollDelta = scrollSpeedPxPerMs * deltaMS;
+
       const targetScrollDelta = subXy(
-        outputGraphics,
+        this.#curScroll,
         targetRoomPositionWithScrolling,
       );
-      const targetScrollDeltaLength = lengthXy(targetScrollDelta);
 
-      if (targetScrollDeltaLength > maxScrollDelta) {
-        const scrollDirectionUnitVector = {
-          x: targetScrollDelta.x / targetScrollDeltaLength,
-          y: targetScrollDelta.y / targetScrollDeltaLength,
+      if (lengthXySquared(targetScrollDelta) > smallestScrollSquared) {
+        // move towards at 100% per catchup period (but will back off/ease as
+        // that distance gets smaller):
+        const targetScrollDeltaFrame = easeTowards(targetScrollDelta, deltaMS);
+
+        this.#curScroll = {
+          x: this.#curScroll.x - targetScrollDeltaFrame.x,
+          y: this.#curScroll.y - targetScrollDeltaFrame.y,
         };
-
-        // allow fractional movements during scrolling for smoothness
-        outputGraphics.x = roundToNearest(
-          outputGraphics.x - scrollDirectionUnitVector.x * maxScrollDelta,
-          increment,
-        );
-        outputGraphics.y = roundToNearest(
-          outputGraphics.y - scrollDirectionUnitVector.y * maxScrollDelta,
-          increment,
-        );
-      } else {
-        // rounding here prevents wobbly artifacts on animated sprites when
-        // the scroll position is a fractional number
-        outputGraphics.x = roundToNearest(
-          targetRoomPositionWithScrolling.x,
-          increment,
-        );
-        outputGraphics.y = roundToNearest(
-          targetRoomPositionWithScrolling.y,
-          increment,
-        );
       }
     }
+
+    this.#updateOutputXy();
     this.#everRendered = true;
 
     this.childRenderer.tick(tickContext);
