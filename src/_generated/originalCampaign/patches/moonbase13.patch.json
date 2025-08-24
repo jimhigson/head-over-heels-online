@@ -31,12 +31,7 @@
           },
           {
             "expectType": "switch",
-            "leftState": {
-              "setting": "left"
-            },
-            "rightState": {
-              "setting": "right"
-            },
+            "flip": true,
             "targets": ["switch2"]
           }
         ],
@@ -75,12 +70,7 @@
           },
           {
             "expectType": "switch",
-            "leftState": {
-              "setting": "left"
-            },
-            "rightState": {
-              "setting": "right"
-            },
+            "flip": true,
             "targets": ["switch"]
           }
         ],

@@ -1160,7 +1160,7 @@ export type RoomJsonSchema = {
                     expectType: "block";
                     targets: string[];
                     /**
-                     * if true, equivalent to leftState disappearing on stand, right state not dissapearing
+                     * if true, equivalent to leftState disappearing on stand, right state not disappearing
                      * if false, equivalent to leftState not disappearing, right state disappearing on stand
                      */
                     makesStable: boolean;
@@ -1168,26 +1168,9 @@ export type RoomJsonSchema = {
                 | {
                     expectType: "switch";
                     targets: string[];
-                    leftState: {
-                      setting?: "left";
-                    };
-                    rightState: {
-                      setting?: "right";
-                    };
-                  }
-                | {
-                    expectType: "switch";
-                    targets: string[];
-                    leftState: {
-                      setting?: "right";
-                    };
-                    rightState: {
-                      setting?: "left";
-                    };
-                  }
-                | {
-                    expectType: "switch";
-                    targets: string[];
+                    /**
+                     * this switch will flip the other switch when it is flipped
+                     */
                     flip: true;
                   }
                 | {
@@ -1951,7 +1934,7 @@ export type RoomJsonSchema = {
                 expectType: "block";
                 targets: string[];
                 /**
-                 * if true, equivalent to leftState disappearing on stand, right state not dissapearing
+                 * if true, equivalent to leftState disappearing on stand, right state not disappearing
                  * if false, equivalent to leftState not disappearing, right state disappearing on stand
                  */
                 makesStable: boolean;
@@ -1959,26 +1942,9 @@ export type RoomJsonSchema = {
             | {
                 expectType: "switch";
                 targets: string[];
-                leftState: {
-                  setting?: "left";
-                };
-                rightState: {
-                  setting?: "right";
-                };
-              }
-            | {
-                expectType: "switch";
-                targets: string[];
-                leftState: {
-                  setting?: "right";
-                };
-                rightState: {
-                  setting?: "left";
-                };
-              }
-            | {
-                expectType: "switch";
-                targets: string[];
+                /**
+                 * this switch will flip the other switch when it is flipped
+                 */
                 flip: true;
               }
             | {
