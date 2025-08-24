@@ -12,6 +12,10 @@ export type SwitchItemModificationUnion<
   RoomId extends string,
   RoomItemId extends string,
 > =
+  // ganged switches:
+  // test on:
+  //    * original/#blacktooth6
+  //    * sequel/turtle_dance
   | {
       expectType: "monster" | "movingPlatform";
       targets: RoomItemId[];
@@ -65,44 +69,15 @@ export type SwitchItemModificationUnion<
        */
       makesStable: boolean;
     }
-  // gangs of switches (#penitentiary3)
+  // ganged switches:
+  // test on:
+  //    * original/#penitentiary3
+  //    * original/#moonbase13
+  //    * sequel/turtle_dance
   | {
       expectType: "switch";
       targets: RoomItemId[];
-      leftState: Subset<
-        Partial<ItemState<"switch", RoomId, RoomItemId>>,
-        {
-          setting?: "left";
-        }
-      >;
-      rightState: Subset<
-        Partial<ItemState<"switch", RoomId, RoomItemId>>,
-        {
-          setting?: "right";
-        }
-      >;
-    }
-  // gangs of switches but opposite-direction
-  | {
-      expectType: "switch";
-      targets: RoomItemId[];
-      leftState: Subset<
-        Partial<ItemState<"switch", RoomId, RoomItemId>>,
-        {
-          setting?: "right";
-        }
-      >;
-      rightState: Subset<
-        Partial<ItemState<"switch", RoomId, RoomItemId>>,
-        {
-          setting?: "left";
-        }
-      >;
-    }
-  | {
-      expectType: "switch";
-      targets: RoomItemId[];
-      // switches have some shorthand to just flip another switch
+      /** this switch will flip the other switch when it is flipped */
       flip: true;
     }
   | {

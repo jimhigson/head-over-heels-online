@@ -4,14 +4,7 @@
     "path": "/items/switch@6,0,1/config/modifies/0",
     "value": {
       "expectType": "block",
-      "leftState": {
-        "disappearing": {
-          "on": "stand"
-        }
-      },
-      "rightState": {
-        "disappearing": null
-      },
+      "makesStable": false,
       "targets": ["block@0,7,0", "block@3,7,0"]
     }
   },
@@ -19,14 +12,8 @@
     "op": "add",
     "path": "/items/switch@6,0,1/config/modifies/1",
     "value": {
+      "activates": true,
       "expectType": "monster",
-      "leftState": {
-        "activated": true,
-        "everActivated": true
-      },
-      "rightState": {
-        "activated": false
-      },
       "targets": [
         "monster@3,0,1",
         "extraMonster",

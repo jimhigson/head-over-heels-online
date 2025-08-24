@@ -3330,7 +3330,7 @@
                                       "type": "string"
                                     },
                                     "makesStable": {
-                                      "description": "if true, equivalent to leftState disappearing on stand, right state not dissapearing if false, equivalent to leftState not disappearing, right state disappearing on stand",
+                                      "description": "if true, equivalent to leftState disappearing on stand, right state not disappearing if false, equivalent to leftState not disappearing, right state disappearing on stand",
                                       "type": "boolean"
                                     },
                                     "targets": {
@@ -3354,92 +3354,9 @@
                                       "const": "switch",
                                       "type": "string"
                                     },
-                                    "leftState": {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "setting": {
-                                          "const": "left",
-                                          "type": "string"
-                                        }
-                                      },
-                                      "type": "object"
-                                    },
-                                    "rightState": {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "setting": {
-                                          "const": "right",
-                                          "type": "string"
-                                        }
-                                      },
-                                      "type": "object"
-                                    },
-                                    "targets": {
-                                      "items": {
-                                        "type": "string"
-                                      },
-                                      "type": "array"
-                                    }
-                                  },
-                                  "required": [
-                                    "expectType",
-                                    "targets",
-                                    "leftState",
-                                    "rightState"
-                                  ],
-                                  "type": "object"
-                                },
-                                {
-                                  "additionalProperties": false,
-                                  "properties": {
-                                    "expectType": {
-                                      "const": "switch",
-                                      "type": "string"
-                                    },
-                                    "leftState": {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "setting": {
-                                          "const": "right",
-                                          "type": "string"
-                                        }
-                                      },
-                                      "type": "object"
-                                    },
-                                    "rightState": {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "setting": {
-                                          "const": "left",
-                                          "type": "string"
-                                        }
-                                      },
-                                      "type": "object"
-                                    },
-                                    "targets": {
-                                      "items": {
-                                        "type": "string"
-                                      },
-                                      "type": "array"
-                                    }
-                                  },
-                                  "required": [
-                                    "expectType",
-                                    "targets",
-                                    "leftState",
-                                    "rightState"
-                                  ],
-                                  "type": "object"
-                                },
-                                {
-                                  "additionalProperties": false,
-                                  "properties": {
-                                    "expectType": {
-                                      "const": "switch",
-                                      "type": "string"
-                                    },
                                     "flip": {
                                       "const": true,
+                                      "description": "this switch will flip the other switch when it is flipped",
                                       "type": "boolean"
                                     },
                                     "targets": {
@@ -5555,7 +5472,7 @@
                                   "type": "string"
                                 },
                                 "makesStable": {
-                                  "description": "if true, equivalent to leftState disappearing on stand, right state not dissapearing if false, equivalent to leftState not disappearing, right state disappearing on stand",
+                                  "description": "if true, equivalent to leftState disappearing on stand, right state not disappearing if false, equivalent to leftState not disappearing, right state disappearing on stand",
                                   "type": "boolean"
                                 },
                                 "targets": {
@@ -5579,92 +5496,9 @@
                                   "const": "switch",
                                   "type": "string"
                                 },
-                                "leftState": {
-                                  "additionalProperties": false,
-                                  "properties": {
-                                    "setting": {
-                                      "const": "left",
-                                      "type": "string"
-                                    }
-                                  },
-                                  "type": "object"
-                                },
-                                "rightState": {
-                                  "additionalProperties": false,
-                                  "properties": {
-                                    "setting": {
-                                      "const": "right",
-                                      "type": "string"
-                                    }
-                                  },
-                                  "type": "object"
-                                },
-                                "targets": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "expectType",
-                                "targets",
-                                "leftState",
-                                "rightState"
-                              ],
-                              "type": "object"
-                            },
-                            {
-                              "additionalProperties": false,
-                              "properties": {
-                                "expectType": {
-                                  "const": "switch",
-                                  "type": "string"
-                                },
-                                "leftState": {
-                                  "additionalProperties": false,
-                                  "properties": {
-                                    "setting": {
-                                      "const": "right",
-                                      "type": "string"
-                                    }
-                                  },
-                                  "type": "object"
-                                },
-                                "rightState": {
-                                  "additionalProperties": false,
-                                  "properties": {
-                                    "setting": {
-                                      "const": "left",
-                                      "type": "string"
-                                    }
-                                  },
-                                  "type": "object"
-                                },
-                                "targets": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "expectType",
-                                "targets",
-                                "leftState",
-                                "rightState"
-                              ],
-                              "type": "object"
-                            },
-                            {
-                              "additionalProperties": false,
-                              "properties": {
-                                "expectType": {
-                                  "const": "switch",
-                                  "type": "string"
-                                },
                                 "flip": {
                                   "const": true,
+                                  "description": "this switch will flip the other switch when it is flipped",
                                   "type": "boolean"
                                 },
                                 "targets": {
