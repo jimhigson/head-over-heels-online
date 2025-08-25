@@ -32,10 +32,7 @@ import {
 } from "../../physics/mechanicsConstants";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { accentColours } from "../../hintColours";
-import {
-  playableHasShield,
-  shieldRemainingForAbilities,
-} from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
@@ -208,16 +205,6 @@ export const isFlashing = (playableItem: PlayableItem): boolean => {
     afterDeathInvulnerabilityFlashPeriod *
       afterDeathInvulnerabilityFlashPhaseDuration
   );
-};
-
-/** should player have the shining effect of invincibility? */
-export const isShining = (playableItem: PlayableItem): boolean => {
-  return playableItem.type === "headOverHeels" ?
-      // in this case, both playables in symbiosis should have the same shield
-      // left, so arbitrarily choose head:
-      shieldRemainingForAbilities(playableItem.state.head) > 0 ||
-        shieldRemainingForAbilities(playableItem.state.heels) > 0
-    : shieldRemainingForAbilities(playableItem.state) > 0;
 };
 
 const addFilterToContainer = (container: Container, newFilter: Filter) => {
