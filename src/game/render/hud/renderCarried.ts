@@ -2,10 +2,10 @@ import type { Container, IRenderLayer } from "pixi.js";
 import { emptyMap, emptySet } from "../../../utils/empty";
 import type { PortableItem } from "../../physics/itemPredicates";
 import { appearanceForItem } from "../itemAppearances/appearanceForItem";
-import type { HudRendererTickContext } from "./hudRendererContexts";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
 import { neverTime } from "../../../utils/neverTime";
 import type { ZGraph } from "../sortZ/GraphEdges";
+import type { RoomState } from "../../../model/RoomState";
 
 type RenderContextSubset<RoomId extends string> = {
   general: GeneralRenderContext<RoomId>;
@@ -17,11 +17,11 @@ export const renderCarriedOnce = <
 >(
   carrying: PortableItem<RoomId, RoomItemId>,
   renderContext: RenderContextSubset<RoomId>,
-  tickContext: HudRendererTickContext<RoomId, RoomItemId>,
+  room?: RoomState<RoomId, RoomItemId>,
 ): Container | undefined => {
   const appearance = appearanceForItem(carrying)!;
 
-  if (!tickContext.room) {
+  if (!room) {
     // only possible in game over state
     return undefined;
   }
@@ -30,7 +30,7 @@ export const renderCarriedOnce = <
     renderContext: {
       general: renderContext.general,
       item: carrying,
-      room: tickContext.room,
+      room,
       // nothing that can be carried ever renders to the uncolourised layer so cheat the types to provide this:
       colourClashLayer: undefined as unknown as IRenderLayer,
       frontLayer: undefined as unknown as IRenderLayer,

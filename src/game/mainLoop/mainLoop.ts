@@ -181,6 +181,7 @@ export class MainLoop<RoomId extends string> {
     this.#hudRenderer.tick({
       screenSize: tickUpscale.gameEngineScreenSize,
       room: tickStartRoom,
+      deltaMS,
     });
 
     // note that progressing the game state can change/reload the room,

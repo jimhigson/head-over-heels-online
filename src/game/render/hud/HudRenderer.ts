@@ -328,7 +328,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       const carriedRendering = renderCarriedOnce<RoomId, RoomItemId>(
         carrying as PortableItem<RoomId, RoomItemId>,
         this.renderContext,
-        tickContext,
+        tickContext.room,
       );
       if (carriedRendering !== undefined) {
         carryingContainer.addChild(carriedRendering);

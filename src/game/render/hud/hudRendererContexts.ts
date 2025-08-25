@@ -19,4 +19,6 @@ export type HudRendererTickContext<
   screenSize: Xy;
   /** can be undefined when game over */
   room: RoomState<RoomId, RoomItemId> | undefined;
+  /** Delta time in milliseconds since last tick */
+  deltaMS: number;
 };
