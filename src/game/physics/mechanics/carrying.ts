@@ -1,5 +1,5 @@
 import type { PlayableItem, PortableItem } from "../itemPredicates";
-import { isPortable, isSolid } from "../itemPredicates";
+import { isDeadly, isPortable, isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
 import { moveItem } from "../moveItem";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
@@ -17,6 +17,8 @@ import {
   roomItemsIterable,
   type RoomState,
 } from "../../../model/RoomState";
+import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { always } from "../../../utils/always";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -141,9 +143,14 @@ export const findItemToPickup = <
   carrier: PlayableItem<"heels" | "headOverHeels", RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
 ) => {
+  const hasShield = playableHasShield(carrier);
+
   return findStandingOnWithHighestPriorityAndMostOverlap(
     carrier,
-    iterateRoomItems(room.items).filter(isPortable),
+    iterateRoomItems(room.items)
+      .filter(isPortable)
+      // can only pick up deadly items if you have a shield:
+      .filter(hasShield ? always : (i) => !isDeadly(i)),
   );
 };
 
