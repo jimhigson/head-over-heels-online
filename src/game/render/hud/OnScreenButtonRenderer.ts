@@ -226,7 +226,11 @@ const buttonAppearances: {
       ) {
         let bgSprite: Container | undefined;
         if (carrying !== null) {
-          bgSprite = renderCarriedOnce(carrying, renderContext, tickContext);
+          bgSprite = renderCarriedOnce(
+            carrying,
+            renderContext,
+            tickContext.room,
+          );
         } else if (hasBag) {
           bgSprite = createSprite({
             textureId: "bag",

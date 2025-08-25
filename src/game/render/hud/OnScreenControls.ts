@@ -209,7 +209,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
       });
     }
     this.#hudElements.joystick.tick();
-    this.#hudElements.look.tick();
+    this.#hudElements.look.tick(tickContext);
   }
 
   get output() {

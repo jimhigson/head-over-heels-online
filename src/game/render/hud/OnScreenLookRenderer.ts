@@ -5,21 +5,29 @@ import type { Xy } from "../../../utils/vectors/vectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { type InputStateTrackerInterface } from "../../input/InputStateTracker";
 import type { Renderer } from "../Renderer";
-import type { EmptyObject } from "type-fest";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
 import { pick } from "../../../utils/pick";
 import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
 import type { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";
 import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import type { HudRendererTickContext } from "./hudRendererContexts";
+import { DragInertia } from "./DragInertia";
 
 type LookRenderContext = {
   inputStateTracker: InputStateTrackerInterface;
   general: GeneralRenderContext<string>;
 };
 
-export class OnScreenLookRenderer
+export class OnScreenLookRenderer<
+    RoomId extends string = string,
+    RoomItemId extends string = string,
+  >
   implements
-    Renderer<LookRenderContext, EmptyObject, Container>,
+    Renderer<
+      LookRenderContext,
+      HudRendererTickContext<RoomId, RoomItemId>,
+      Container
+    >,
     PointerGrabbingRender
 {
   output = new Graphics({ label: "OnScreenLook", eventMode: "static" });
@@ -29,6 +37,9 @@ export class OnScreenLookRenderer
   #curXY: Xy | undefined = undefined;
 
   #joystickRenderer: OnScreenJoystickRenderer | undefined;
+
+  /** Handles all inertia physics */
+  #dragInertia = new DragInertia();
 
   constructor(public readonly renderContext: LookRenderContext) {
     const { x: w, y: h } = renderContext.general.upscale.gameEngineScreenSize;
@@ -55,6 +66,7 @@ export class OnScreenLookRenderer
     // allows tapping without movement:
     this.#curPointerId = e.pointerId;
     this.#curXY = pick(e, "x", "y");
+    this.#dragInertia.startDrag();
     this.usePointerLocation(e);
     this.output.on("globalpointermove", this.usePointerLocation);
   };
@@ -62,6 +74,8 @@ export class OnScreenLookRenderer
   stopCurrentPointer = () => {
     this.#curPointerId = undefined;
     this.#curXY = undefined;
+    this.#dragInertia.stopDrag();
+    // Don't reset directionVector - let inertia handle it
     this.renderContext.inputStateTracker.hudInputState.directionVector =
       originXyz;
     this.output.off("globalpointermove", this.usePointerLocation);
@@ -78,6 +92,9 @@ export class OnScreenLookRenderer
     const dx = (curXy.x - ex) / scale;
     const dy = (curXy.y - ey) / scale;
 
+    // Update velocity tracking
+    this.#dragInertia.updateVelocity({ x: dx, y: dy });
+
     const {
       inputStateTracker: { hudInputState },
     } = this.renderContext;
@@ -91,13 +108,27 @@ export class OnScreenLookRenderer
     curXy.y = ey;
   };
 
-  tick() {
+  tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>) {
     const menusOpen = store.getState().gameMenus.openMenus.length > 0;
 
     if (menusOpen) {
       this.stopCurrentPointer();
+      this.#dragInertia.reset();
       return;
     }
+
+    const { deltaMS } = tickContext;
+    const {
+      inputStateTracker: { hudInputState },
+    } = this.renderContext;
+
+    // Check if dragging but stationary (resets velocity if needed)
+    this.#dragInertia.checkStationaryDrag();
+
+    // Apply inertia and get movement for this frame
+    const inertiaMovement = this.#dragInertia.applyInertia(deltaMS);
+    hudInputState.lookVector.x += inertiaMovement.x;
+    hudInputState.lookVector.y += inertiaMovement.y;
   }
 
   destroy() {
