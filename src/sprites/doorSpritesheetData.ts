@@ -16,7 +16,7 @@ type Frame = {
   pivot: Xy;
 };
 
-const doorFrames = <SN extends SceneryName>(
+export const doorFrames = <SN extends SceneryName>(
   name: SN,
   orientation: AxisXy,
   startPosition: Xy,
@@ -107,9 +107,9 @@ export const doorSpritesheetData = {
   frames: {
     ...doorFrames("generic", "y", { x: 580, y: 415 }),
     ...doorFrames("generic", "x", { x: 582, y: 415 }),
-    ...doorFrames("moonbase", "y", { x: 451, y: 204 }),
-    ...doorFrames("moonbase", "x", { x: 582, y: 204 }),
-    ...doorFrames("moonbase.dark", "y", { x: 451, y: 276 }),
-    ...doorFrames("moonbase.dark", "x", { x: 582, y: 276 }),
+    ...doorFrames("moonbase", "y", { x: 752, y: 232 }),
+    ...doorFrames("moonbase", "x", { x: 915, y: 232 }),
+    ...doorFrames("moonbase.dark", "y", { x: 752, y: 306 }),
+    ...doorFrames("moonbase.dark", "x", { x: 915, y: 306 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;
