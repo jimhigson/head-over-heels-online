@@ -13,12 +13,18 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
   _gameState: GameState<RoomId>,
   _deltaMS: number,
 ): undefined => {
-  const {
-    id: emitterId,
-    state: { lastEmittedAtRoomTime, quantityEmitted, position },
-    config: { emits, period, maximum },
-  } = emitter;
+  const { id: emitterId, state, config } = emitter;
   const { roomTime } = room;
+  const { lastEmittedAtRoomTime, quantityEmitted, position } = state;
+
+  // For these three values, go direct to the config as a fallback. This
+  // helps for old saves from before these values were copied from config to
+  // state for emitter
+  // TODO: this was added 26th Aug 2025 - remove when sure no saves before this exist
+  // and use from state directly
+  const emits = state.emits ?? config.emits;
+  const period = state.period ?? config.period;
+  const maximum = state.maximum ?? config.maximum;
 
   // if maximum is null, this condition will never be satisfied
   if (quantityEmitted === maximum) {
@@ -28,7 +34,9 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
   if (lastEmittedAtRoomTime + period < roomTime) {
     const newlyEmittedItem = first(
       loadItemFromJson(
-        `${emitterId}-${quantityEmitted}`,
+        // by using roomTime, this emitter can be reset by switch/button
+        // and emit another number 1, 2, etc - avoids id clashes
+        `${emitterId}-${quantityEmitted}-${roomTime}`,
         {
           ...emits,
           // temporary position, to be overwritten in item-im-play
