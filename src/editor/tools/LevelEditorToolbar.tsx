@@ -44,6 +44,7 @@ import { NudgeButtons } from "./NudgeButtons";
 import { BackAndForwardRoomButtons } from "./BackAndForwardRoomButtons";
 import { AutoCoalesceSwitch } from "./AutoCoalesceSwitch";
 import { ShareCampaignButton } from "./ShareCampaignButton";
+import { CopyPasteButtons } from "./CopyPasteButtons";
 
 const HorizontalGap = () => <div className="w-[calc(var(--block)-1px)]" />;
 
@@ -93,11 +94,12 @@ export const LevelEditorToolbar = () => {
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full pt-1">Edit</BitmapText>
-        <div className={buttonGroupClassname}>
-          <PointerToolButton />
-          <EyeDropperButton />
-        </div>
+        <PointerToolButton />
+        <EyeDropperButton />
+        <HorizontalGap />
         <UndoRedoButtons />
+        <HorizontalGap />
+        <CopyPasteButtons />
         <HorizontalGap />
         <DeleteItemToolButton />
         <NudgeButtons />
