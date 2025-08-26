@@ -39,66 +39,71 @@ const backgroundFrames = <
 
     const { w, h } = wallTileSize;
     const yStep = w >> 1;
-    const n = walls.length;
 
-    let i = 0;
-    for (; i < walls.length; i++) {
+    for (let i = 0; i < walls.length; i++) {
       yield [
         `${planet}${isDark}.wall.${walls[i]}.left`,
         {
-          frame: { x: startX + w * i, y: startY - yStep * i, ...wallTileSize },
+          frame: {
+            x: startX - w * (i + 1),
+            y: startY + yStep * i,
+            ...wallTileSize,
+          },
         },
       ];
       yield [
         `${planet}${isDark}.wall.${walls[i]}.away`,
         {
           frame: {
-            x: startX + w * ((n << 1) - i - 1),
-            y: startY - yStep * i,
+            x: startX + w * i,
+            y: startY + yStep * i,
             ...wallTileSize,
           },
         },
       ];
     }
 
-    const lastI = i - 1;
     yield [
       `${planet}${isDark}.floor`,
       {
         frame: {
-          x: startX + lastI * w,
-          y: startY - lastI * yStep + h,
+          x: startX - w,
+          y: startY + h,
           ...floorTileSize,
         },
       },
     ];
   }
 
+  type TextureName = BackgroundTextureId<TPlanet, TDark>;
+
   return Object.fromEntries(
     backgroundFramesGenerator(planet, startX, startY),
-  ) as Record<BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData>;
+  ) as Record<TextureName, SpritesheetFrameData>;
 };
 
 const floorEdgeSize = { w: 16, h: 13 };
 const floorEdgeHalfSize = { w: 8, h: 9 };
 
+const yPeriod = 74;
+let y = 53;
 const frames = {
-  ...backgroundFrames("blacktooth", 542, 104, ".dark"), // actually different
-  ...backgroundFrames("blacktooth", 542, 29, ""),
-  ...backgroundFrames("bookworld", 408, 29, ".dark"), // same really
-  ...backgroundFrames("bookworld", 408, 29, ""),
-  ...backgroundFrames("egyptus", 475, 29, ""),
-  ...backgroundFrames("egyptus", 475, 104, ".dark"), // actually different
-  ...backgroundFrames("jail", 440, 104, ".dark"), // same really
-  ...backgroundFrames("jail", 440, 104, ""),
-  ...backgroundFrames("market", 443, 357, ".dark"), // same really
-  ...backgroundFrames("market", 443, 357, ""),
-  ...backgroundFrames("moonbase", 453, 276, ".dark"), // actually different
-  ...backgroundFrames("moonbase", 453, 204, ""),
-  ...backgroundFrames("penitentiary", 376, 357, ".dark"), // same really
-  ...backgroundFrames("penitentiary", 376, 357, ""),
-  ...backgroundFrames("safari", 542, 357, ".dark"), // same really
-  ...backgroundFrames("safari", 542, 357, ""),
+  ...backgroundFrames("egyptus", 834, y, ""),
+  ...backgroundFrames("egyptus", 834, (y += yPeriod), ".dark"), // actually different
+  ...backgroundFrames("moonbase", 834, (y += yPeriod), ""),
+  ...backgroundFrames("moonbase", 834, (y += yPeriod), ".dark"), // actually different
+  ...backgroundFrames("bookworld", 834, (y += yPeriod), ""),
+  ...backgroundFrames("bookworld", 834, y, ".dark"), // same really
+  ...backgroundFrames("jail", 834, (y += yPeriod), ""),
+  ...backgroundFrames("jail", 834, y, ".dark"), // same really
+  ...backgroundFrames("blacktooth", 834, (y += yPeriod), ""),
+  ...backgroundFrames("blacktooth", 834, (y += yPeriod), ".dark"), // actually different
+  ...backgroundFrames("penitentiary", 834, (y += yPeriod), ""),
+  ...backgroundFrames("penitentiary", 834, y, ".dark"), // same really
+  ...backgroundFrames("market", 834, (y += yPeriod), ""),
+  ...backgroundFrames("market", 834, y, ".dark"), // same really
+  ...backgroundFrames("safari", 834, (y += yPeriod), ""),
+  ...backgroundFrames("safari", 834, y, ".dark"), // same really
 
   "floorEdge.right": {
     frame: { x: 418, y: 466, ...floorEdgeSize, pivot: { x: 0, y: 4 } },
@@ -119,10 +124,10 @@ const frames = {
     frame: { x: 432, y: 435, w: 36, h: 16 },
   },
   "generic.floor.deadly": {
-    frame: { x: 407, y: 143, ...floorTileSize },
+    frame: { x: 786, y: 462, ...floorTileSize },
   },
   "generic.dark.floor.deadly": {
-    frame: { x: 407, y: 160, ...floorTileSize },
+    frame: { x: 786, y: 479, ...floorTileSize },
   },
 
   // doors names after the axis they go along: x=towards/away, y=left/right
@@ -203,8 +208,8 @@ const frames = {
     "moonbase.wall.screen.window1.away",
     3,
     {
-      x: 566,
-      y: 196,
+      x: 883,
+      y: 217,
     },
     { w: 10, h: 7 },
   ),
@@ -212,8 +217,8 @@ const frames = {
     "moonbase.wall.screen.window2.away",
     2,
     {
-      x: 550,
-      y: 188,
+      x: 867,
+      y: 209,
     },
     { w: 10, h: 7 },
   ),
@@ -221,8 +226,8 @@ const frames = {
     "moonbase.wall.screen.window3.away",
     4,
     {
-      x: 534,
-      y: 180,
+      x: 851,
+      y: 201,
     },
     { w: 10, h: 7 },
   ),

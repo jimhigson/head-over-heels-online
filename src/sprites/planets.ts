@@ -2,13 +2,13 @@ import type { Subset } from "../utils/subset";
 
 export const wallTiles = {
   jail: ["bars"],
-  blacktooth: ["armour", "shield", "plain"],
-  bookworld: ["cowboy", "book"],
-  egyptus: ["sarcophagus", "hieroglyphics"],
-  market: ["passage", "fruits", "more-fruits"],
-  moonbase: ["window1", "window2", "window3", "coil"],
-  penitentiary: ["loop", "skeleton"],
-  safari: ["window", "shield", "wall"],
+  blacktooth: ["plain", "shield", "armour"],
+  bookworld: ["book", "cowboy"],
+  egyptus: ["hieroglyphics", "sarcophagus"],
+  market: ["more-fruits", "fruits", "passage"],
+  moonbase: ["coil", "window3", "window2", "window1", "window-clear"],
+  penitentiary: ["skeleton", "loop"],
+  safari: ["wall", "shield", "window"],
 } as const satisfies Record<string, string[]>;
 
 export type SceneryName = keyof typeof wallTiles;

@@ -7794,7 +7794,7 @@
                         "tiles": {
                           "type": "array",
                           "items": {
-                            "enum": ["armour", "shield", "plain"]
+                            "enum": ["plain", "shield", "armour"]
                           }
                         }
                       }
@@ -7836,7 +7836,7 @@
                           "tiles": {
                             "type": "array",
                             "items": {
-                              "enum": ["cowboy", "book"]
+                              "enum": ["book", "cowboy"]
                             }
                           }
                         }
@@ -7878,7 +7878,7 @@
                             "tiles": {
                               "type": "array",
                               "items": {
-                                "enum": ["sarcophagus", "hieroglyphics"]
+                                "enum": ["hieroglyphics", "sarcophagus"]
                               }
                             }
                           }
@@ -7920,7 +7920,7 @@
                               "tiles": {
                                 "type": "array",
                                 "items": {
-                                  "enum": ["passage", "fruits", "more-fruits"]
+                                  "enum": ["more-fruits", "fruits", "passage"]
                                 }
                               }
                             }
@@ -7963,10 +7963,11 @@
                                   "type": "array",
                                   "items": {
                                     "enum": [
-                                      "window1",
-                                      "window2",
+                                      "coil",
                                       "window3",
-                                      "coil"
+                                      "window2",
+                                      "window1",
+                                      "window-clear"
                                     ]
                                   }
                                 }
@@ -8009,7 +8010,7 @@
                                   "tiles": {
                                     "type": "array",
                                     "items": {
-                                      "enum": ["loop", "skeleton"]
+                                      "enum": ["skeleton", "loop"]
                                     }
                                   }
                                 }
@@ -8051,7 +8052,7 @@
                                     "tiles": {
                                       "type": "array",
                                       "items": {
-                                        "enum": ["window", "shield", "wall"]
+                                        "enum": ["wall", "shield", "window"]
                                       }
                                     }
                                   }
