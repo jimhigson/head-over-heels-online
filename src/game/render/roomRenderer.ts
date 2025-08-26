@@ -20,8 +20,6 @@ import { audioCtx } from "../../sound/audioCtx";
 import { dimLut, noFilters } from "./filters/standardFilters";
 import type { SetRequired } from "type-fest";
 import type { RoomRendererType } from "./RoomRendererType";
-import { iterateToContainer } from "../../utils/pixi/iterateToContainer";
-import { roomRendererOcclusions } from "./roomRendererOcclusions";
 import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
 import { type ZGraph } from "./sortZ/GraphEdges";
 
@@ -48,14 +46,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     sortableChildren: false,
   });
 
-  /**
-   * container for the cutoff-off for the left and right edge, to prevent
-   * rendering inaccessible corners or rooms
-   */
-  #occlusionContainer: Container = new Container({
-    label: "occlusion",
-  });
-
   public readonly output: SetRequired<SoundAndGraphicsOutput, "graphics">;
   /**
    * the roomTime when the renderer was last rendered - this can be useful when things
@@ -75,7 +65,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       general: { colourised, soundSettings },
-      room,
     } = renderContext;
 
     this.initFilters(colourised, renderContext.room.color);
@@ -84,8 +73,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
     const soundOutput: AudioNode | undefined =
       mute ? undefined : audioCtx.createGain();
-
-    iterateToContainer(roomRendererOcclusions(room), this.#occlusionContainer);
 
     this.output = {
       sound: soundOutput,
@@ -101,7 +88,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       });
       this.output.graphics.addChild(this.#colourClashLayer);
     }
-    this.output.graphics.addChild(this.#occlusionContainer);
     // layer in front of all else - for floating text, etc
     this.output.graphics.addChild(this.#frontLayer);
   }
