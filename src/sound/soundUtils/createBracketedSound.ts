@@ -70,19 +70,34 @@ export const createBracketedSound = <Value = boolean>(
           // stop in case was playing the end sound and is starting up again
           // TODO: this is good for charles, but bad for (eg, the ski heads in the gym trying
           // to play the start sound too often)
-          currentSound?.stop();
+          if (currentSound) {
+            currentSound.onended = null;
+            currentSound.stop();
+          }
+
           currentSound = createAudioNode({ ...start });
           currentGain = connectWithGain(currentSound, start.gain, connectTo);
 
           if (loop !== undefined) {
             if (startAndLoopTogether) {
               // play the loop while the start is already playing, without stopping the start:
+
               currentSound = createAudioNode({ ...loop, loop: true });
               currentGain = connectWithGain(currentSound, loop.gain, connectTo);
             } else {
+              // once the start sound finishes, start the 'loop' sound:
               currentSound.onended = () => {
                 if (!currentValue) {
                   return;
+                }
+                if (currentSound) {
+                  // here, stopping usually isn't needed, but there is an edge case where
+                  // since creating this sound and adding the onended, another loop sound
+                  // has started playing, especially if starting and stopping quickly, which
+                  // leads to an unstoppable loop sound playing forever (unstoppable because no
+                  // reference to it remains)
+                  currentSound.onended = null;
+                  currentSound.stop();
                 }
                 currentSound = createAudioNode({
                   ...loop,
@@ -107,8 +122,8 @@ export const createBracketedSound = <Value = boolean>(
         if (currentSound && currentSound.loop) {
           // we let the start sound play out if it is still playing - only the
           // loop sound is always stopped to make way for the end sound
-          currentSound.stop();
           currentSound.onended = null;
+          currentSound.stop();
         }
         if (stop !== undefined) {
           currentSound = createAudioNode({ ...stop });
