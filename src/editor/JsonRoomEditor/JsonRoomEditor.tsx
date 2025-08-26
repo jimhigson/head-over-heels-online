@@ -13,8 +13,7 @@ import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncSelection
 import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
 
-export const JsonRoomEditor = () => {
-  //const monaco = useLoadMonaco();
+const JsonRoomEditor = () => {
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(
     null,
   );
