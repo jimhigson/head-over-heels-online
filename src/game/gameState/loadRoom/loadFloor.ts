@@ -13,8 +13,6 @@ import { iterate } from "../../../utils/iterate";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 
-// can't take room height blocks times block height, or it is still possible to
-// jump over the wall in some cases in rooms without a ceiling portal.
 // a value of 3 makes items less likely to get pushed through the floor if
 // there are collisions on-load, than if it were just 1.
 export const floorThicknessBlocks = 3;

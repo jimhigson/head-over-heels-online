@@ -2,7 +2,7 @@ import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import type { TypedURLSearchParams } from "../../options/queryParams";
 import { cn } from "../../ui/cn";
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
-import { useRemoteIsInSync } from "./saving/SaveAndLoadButtons";
+import { useRemoteIsInSync } from "./saving/useRemoteIsInSync";
 import { ToolbarButton } from "./ToolbarButton";
 import { useShortTimeDisplay } from "./useShortTimeDisplay";
 

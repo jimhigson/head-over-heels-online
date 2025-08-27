@@ -14,6 +14,59 @@ import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
+const portalThickness = blockSizePx.h;
+/* the z of the top of the portal to below */
+const portalToRoomBelowTop = -blockSizePx.h;
+
+/**
+ * combine all the floors of the room into one big, rectangular footprint to
+ * cover the whole room:
+ */
+const floorsCombinedFootprint = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  roomStateItems: RoomStateItems<RoomId, RoomItemId>,
+) => {
+  const limits = iterateRoomItems(roomStateItems)
+    .filter(isFloor)
+    .reduce(
+      (
+        acc,
+        {
+          config: {
+            naturalFootprint: {
+              position: { x, y },
+              aabb: { x: width, y: depth },
+            },
+          },
+        },
+      ) => {
+        const xEnd = x + width;
+        const yEnd = y + depth;
+
+        return {
+          minX: Math.min(acc.minX, x),
+          maxX: Math.max(acc.maxX, xEnd),
+          minY: Math.min(acc.minY, y),
+          maxY: Math.max(acc.maxY, yEnd),
+        };
+      },
+      {
+        minX: Infinity,
+        maxX: -Infinity,
+        minY: Infinity,
+        maxY: -Infinity,
+      },
+    );
+
+  if (limits.minX > limits.maxY) {
+    // nothing found
+    return undefined;
+  }
+  return limits;
+};
+
 export function* loadPortalsAboveAndBelow<
   RoomId extends string,
   RoomItemId extends string,
@@ -24,89 +77,94 @@ export function* loadPortalsAboveAndBelow<
   | ItemInPlay<"floor", RoomId, RoomItemId>
   | ItemInPlay<"portal", RoomId, RoomItemId>
 > {
+  const floorFootprint = floorsCombinedFootprint(roomStateItems);
+  if (floorFootprint === undefined) {
+    return;
+  }
+
+  const { minX, maxX, minY, maxY } = floorFootprint;
   if (roomJson.roomBelow !== undefined) {
-    // the below portals should come with a floor with floorType='none' - base on the footprint
-    // of these floors:
-    for (const floor of iterateRoomItems(roomStateItems).filter(isFloor)) {
-      const {
-        config: { naturalFootprint },
-      } = floor;
-
-      // yield a portal for going to the room below:
-      yield {
-        ...defaultItemProperties,
-        ...{
-          type: "portal",
-          id: "floor/portal" as RoomItemId,
-          fixedZIndex: nonRenderingItemFixedZIndex,
-          config: {
-            toRoom: roomJson.roomBelow,
-            // floor and ceiling relative points are the middle of the portal, this fixes
-            // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
-            relativePoint: {
-              x: naturalFootprint.aabb.x / 2,
-              y: naturalFootprint.aabb.y / 2,
-              // the relative point is on the top of the aabb - the top edge
-              // of the floor portal is the one we're expecting to interact with
-              z: naturalFootprint.aabb.z,
-            },
-            direction: unitVectors["down"],
+    // yield a portal for going to the room below:
+    yield {
+      ...defaultItemProperties,
+      ...{
+        type: "portal",
+        id: `portal/toRoomBelow` as RoomItemId,
+        fixedZIndex: nonRenderingItemFixedZIndex,
+        config: {
+          toRoom: roomJson.roomBelow,
+          // floor and ceiling relative points are the middle of the portal, this fixes
+          // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
+          relativePoint: {
+            x: (minX + maxX) / 2,
+            y: (minY + maxY) / 2,
+            // relative point one block high - this makes the player spawn on top of blocks when
+            // transitioning to the room above, since a lot of rooms need you to appear *on* something,
+            // and given these rooms usually have 'none' floors it probably isn't the floor
+            z: portalThickness + blockSizePx.h,
           },
-
-          aabb: naturalFootprint.aabb,
-          state: {
-            ...defaultBaseState(),
-            position: naturalFootprint.position,
-          },
-          renders: false,
+          direction: unitVectors["down"],
         },
-      } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
-    }
+
+        aabb: {
+          x: maxX - minX,
+          y: maxY - minY,
+          z: portalThickness,
+        },
+        state: {
+          ...defaultBaseState(),
+          position: {
+            x: minX,
+            y: minY,
+            z: portalToRoomBelowTop - portalThickness,
+          },
+        },
+        renders: false,
+      },
+    } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
   }
 
   if (roomJson.roomAbove !== undefined) {
-    for (const floor of iterateRoomItems(roomStateItems).filter(isFloor)) {
-      const {
-        config: { naturalFootprint },
-      } = floor;
-
-      yield {
-        ...defaultItemProperties,
-        ...{
-          type: "portal",
-          id: `${floor.id}/ceilingPortal` as RoomItemId,
-          fixedZIndex: nonRenderingItemFixedZIndex,
-          config: {
-            toRoom: roomJson.roomAbove,
-            // floor and ceiling relative points are the middle of the portal, this fixes
-            // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
-            relativePoint: {
-              ...(roomJson.ceilingRelativePoint !== undefined ?
-                blockXyzToFineXyz(roomJson.ceilingRelativePoint)
-              : {
-                  x: naturalFootprint.aabb.x / 2,
-                  y: naturalFootprint.aabb.y / 2,
-                }),
-              z: -blockSizePx.h,
-            },
-            direction: unitVectors["up"],
+    yield {
+      ...defaultItemProperties,
+      ...{
+        type: "portal",
+        id: `portal/toRoomAbove` as RoomItemId,
+        fixedZIndex: nonRenderingItemFixedZIndex,
+        config: {
+          toRoom: roomJson.roomAbove,
+          // floor and ceiling relative points are the middle of the portal, this fixes
+          // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
+          relativePoint: {
+            ...(roomJson.ceilingRelativePoint !== undefined ?
+              blockXyzToFineXyz(roomJson.ceilingRelativePoint)
+            : {
+                x: (minX + maxX) / 2,
+                y: (minY + maxY) / 2,
+              }),
+            z: -blockSizePx.h,
           },
-
-          aabb: { ...naturalFootprint.aabb, z: blockSizePx.h },
-          state: {
-            ...defaultBaseState(),
-            position: addXyz(
-              naturalFootprint.position,
-              {
-                z: naturalFootprint.aabb.z,
-              },
-              {
-                z: blockSizePx.h * (roomJson.height ?? defaultRoomHeightBlocks),
-              },
-            ),
-          },
+          direction: unitVectors["up"],
         },
-      } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
-    }
+
+        aabb: {
+          x: maxX - minX,
+          y: maxY - minY,
+          z: portalThickness,
+        },
+        state: {
+          ...defaultBaseState(),
+          position: addXyz(
+            {
+              x: minX,
+              y: minY,
+            },
+            {
+              z: blockSizePx.h * (roomJson.height ?? defaultRoomHeightBlocks),
+            },
+          ),
+        },
+      },
+    } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
   }
 }

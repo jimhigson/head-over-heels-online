@@ -1,4 +1,3 @@
-import nanoEqual from "nano-equal";
 import { useState } from "react";
 import {
   loadCampaignFromApi,
@@ -12,7 +11,6 @@ import {
   setRemoteCampaign,
   loadCampaign,
   selectCurrentCampaignInProgress,
-  useAppSelectorWithLevelEditorSlice,
   setCampaignName,
   setCampaignPublished,
   setCampaignUserId,
@@ -28,6 +26,7 @@ import { OpenCampaignDialog } from "../../editorDialogs/OpenCampaignDialog";
 import type { CampaignLocator } from "../../../model/modelTypes";
 import { emptyArray } from "../../../utils/empty";
 import { supabaseDb } from "../../../db/supabaseDb";
+import { useRemoteIsInSync } from "./useRemoteIsInSync";
 
 export const showOkAfterSaveDuration = 2000;
 
@@ -45,13 +44,6 @@ const loadTooltipMarkdown = `
 
 load your saved campaign, or anyone else's
 `;
-
-export const useRemoteIsInSync = () => {
-  return useAppSelectorWithLevelEditorSlice(
-    ({ levelEditor: { remoteCampaign, campaignInProgress } }) =>
-      nanoEqual(remoteCampaign, campaignInProgress),
-  );
-};
 
 const save = async () => {
   const state = store.getState() as RootStateWithLevelEditorSlice;

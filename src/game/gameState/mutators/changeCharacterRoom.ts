@@ -40,6 +40,8 @@ import { selectCurrentCampaign } from "../../../store/selectors";
 
 export type ChangeType = "teleport" | "portal" | "level-select";
 
+const log = 0;
+
 type ChangeCharacterRoomOptions<
   RoomId extends string,
   RoomItemId extends string,
@@ -304,18 +306,22 @@ export const changeCharacterRoom = <
       changeCharacterRoomOptions,
     );
 
-    console.log(
-      "putting",
-      playableItem.id,
-      "into",
-      toRoomId,
-      "at portal",
-      destinationPortal,
-      "because",
-      changeType,
-      "sourceportal",
-      sourceItem,
-    );
+    if (log) {
+      console.log(
+        "putting",
+        playableItem.id,
+        "into",
+        toRoomId,
+        "at portal",
+        destinationPortal,
+        "because",
+        changeType,
+        "sourceportal id=",
+        sourceItem?.id,
+        "sourceportal=",
+        sourceItem,
+      );
+    }
 
     if (destinationPortal === undefined) {
       if (changeCharacterRoomOptions.changeType === "level-select") {
