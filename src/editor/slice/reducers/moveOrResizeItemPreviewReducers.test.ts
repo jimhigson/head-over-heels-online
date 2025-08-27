@@ -1,24 +1,26 @@
-import { expect, test, describe } from "vitest";
+import { produce } from "immer";
+import { describe, expect, test } from "vitest";
+
+import type { AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+  EditorRoomJson,
+} from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
+
+import { wallTimes } from "../../../model/times";
 import {
-  moveOrResizeItemAsPreview,
   commitCurrentPreviewedEdits,
+  moveOrResizeItemAsPreview,
 } from "../levelEditorSlice";
 import {
+  applyLevelEditorActions,
   editorStateWithOneRoomWithNoItems,
   testRoomId,
-  applyLevelEditorActions,
 } from "./__test__/storeStates";
-import type {
-  EditorRoomItemId,
-  EditorRoomId,
-  EditorRoomJson,
-  EditorJsonItem,
-} from "../../editorTypes";
-import { produce } from "immer";
-import type { LevelEditorState } from "../levelEditorSlice";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import { wallTimes } from "../../../model/times";
-import type { AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
 
 // Custom assertion to check walls and doors are contiguous around floor
 expect.extend({
@@ -43,8 +45,8 @@ expect.extend({
     // Find all walls and doors on this floor's edges
     const edgeItems: Array<{
       id: string;
-      item: EditorJsonItem<"wall"> | EditorJsonItem<"door">;
-      edge: "towards" | "away" | "left" | "right";
+      item: EditorJsonItem<"door"> | EditorJsonItem<"wall">;
+      edge: "away" | "left" | "right" | "towards";
       start: number;
       end: number;
     }> = [];
@@ -54,7 +56,7 @@ expect.extend({
       if (item.position.z !== floor.position.z) continue;
 
       const { config } = item;
-      let edge: "towards" | "away" | "left" | "right" | null = null;
+      let edge: "away" | "left" | "right" | "towards" | null = null;
       let start = 0;
       let end = 0;
 
@@ -119,7 +121,7 @@ expect.extend({
       if (edge) {
         edgeItems.push({
           id,
-          item: item as EditorJsonItem<"wall"> | EditorJsonItem<"door">,
+          item: item as EditorJsonItem<"door"> | EditorJsonItem<"wall">,
           edge,
           start,
           end,

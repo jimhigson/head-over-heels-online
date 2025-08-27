@@ -1,9 +1,11 @@
-import { useRef, useCallback } from "react";
+import { useCallback, useRef } from "react";
+
+import type { DirectionXy4 } from "../../../../../utils/vectors/vectors";
+
+import { hudCharTextureSize } from "../../../../../sprites/textureSizes";
 import { useTotalUpscale } from "../../../../../store/selectors";
 import { unitVectors } from "../../../../../utils/vectors/unitVectors";
-import type { DirectionXy4 } from "../../../../../utils/vectors/vectors";
 import { useActionTap } from "../../useActionTap";
-import { hudCharTextureSize } from "../../../../../sprites/textureSizes";
 
 export const scrollLinesAtOnce = 4;
 export const charHeight = hudCharTextureSize.h;

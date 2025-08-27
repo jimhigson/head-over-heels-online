@@ -1,6 +1,7 @@
-import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import type { Bounds } from "./Map.svg";
 import type { RoomGridPositionSpec } from "./roomGridPositions";
+
+import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { roomWorldPosition } from "./roomWorldPosition";
 
 /**

@@ -1,15 +1,17 @@
-import { spritesheetData, type TextureId } from "../sprites/spriteSheetData";
-import spritesheetUrl from "../../gfx/sprites.png";
+import { useEffect, useRef, useState } from "react";
+
 import type { Xy } from "../utils/vectors/vectors";
+
+import spritesheetUrl from "../../gfx/sprites.png";
 import { CssVariables } from "../game/components/CssVariables";
-import { useState, useRef, useEffect } from "react";
+import { spritesheetData, type TextureId } from "../sprites/spriteSheetData";
 
 declare module "react" {
   interface CSSProperties {
-    "--x"?: string | number;
-    "--y"?: string | number;
-    "--h"?: string | number;
-    "--w"?: string | number;
+    "--x"?: number | string;
+    "--y"?: number | string;
+    "--h"?: number | string;
+    "--w"?: number | string;
   }
 }
 
@@ -38,8 +40,8 @@ const SpriteOverlay = ({
 };
 
 const SpritesheetImage = () => {
-  const [mousePos, setMousePos] = useState<Xy | null>(null);
-  const [spritesheetSize, setSpritesheetSize] = useState<Xy | null>(null);
+  const [mousePos, setMousePos] = useState<null | Xy>(null);
+  const [spritesheetSize, setSpritesheetSize] = useState<null | Xy>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 

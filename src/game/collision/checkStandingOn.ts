@@ -1,12 +1,13 @@
-import type { FreeItem } from "../physics/itemPredicates";
-import { isSolid } from "../physics/itemPredicates";
-import { itemXyOverlapArea } from "./xyRectangleOverlap";
-import { collisionsPriorityComparator } from "../physics/collisionsOrder";
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import type { FreeItem } from "../physics/itemPredicates";
+
+import { epsilon } from "../../utils/epsilon";
 import { iterate } from "../../utils/iterate";
 import { addXyz } from "../../utils/vectors/vectors";
-import { epsilon } from "../../utils/epsilon";
+import { collisionsPriorityComparator } from "../physics/collisionsOrder";
+import { isSolid } from "../physics/itemPredicates";
 import { collision1to1 } from "./aabbCollision";
+import { itemXyOverlapArea } from "./xyRectangleOverlap";
 
 export const spatiallyCheckStandingOn = <
   RoomId extends string,

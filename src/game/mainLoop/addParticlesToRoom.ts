@@ -1,24 +1,25 @@
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlay, ItemInPlayConfig } from "../../model/ItemInPlay";
+import type { Xyz } from "../../utils/vectors/vectors";
+import type { PlayableItem } from "../physics/itemPredicates";
+
+import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
 import { originalGameFrameDuration } from "../../originalGame";
 import { blockSizePx } from "../../sprites/spritePivots";
 import { spritesheetData } from "../../sprites/spriteSheetData";
-import type { Xyz } from "../../utils/vectors/vectors";
+import { epsilon } from "../../utils/epsilon";
+import { randomFromArray } from "../../utils/random/randomFromArray";
 import {
   addXyz,
   axesXyz,
   lengthXyz,
   originXyz,
 } from "../../utils/vectors/vectors";
-import { epsilon } from "../../utils/epsilon";
 import { fastStepsRemaining } from "../gameState/gameStateSelectors/selectPickupAbilities";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
-import type { PlayableItem } from "../physics/itemPredicates";
-import { randomFromArray } from "../../utils/random/randomFromArray";
-import { defaultItemProperties } from "../../model/defaultItemProperties";
 
 const particleLifetimeMs =
   originalGameFrameDuration *

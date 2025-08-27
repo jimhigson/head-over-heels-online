@@ -1,4 +1,5 @@
 import type { AnimationId } from "../../sprites/spriteSheetData";
+
 import { spritesheetData } from "../../sprites/spriteSheetData";
 
 /**

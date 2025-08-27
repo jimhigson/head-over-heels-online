@@ -1,19 +1,22 @@
+import type { Monaco } from "@monaco-editor/react";
 import type { editor } from "monaco-editor";
+
+import { findNodeAtLocation } from "jsonc-parser";
+import { useEffect, useRef } from "react";
+
+import type { SanitisedForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import type { SceneryName } from "../../sprites/planets";
+import type { TextureId } from "../../sprites/spriteSheetData";
+import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
+
+import { keys } from "../../utils/entries";
 import {
   selectCurrentEditingRoomJson,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { useEffect, useRef } from "react";
-import { useLoadMonaco } from "./useLoadMonaco";
-import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
-import { findNodeAtLocation } from "jsonc-parser";
 import { twClass } from "../twClass";
-import type { Monaco } from "@monaco-editor/react";
-import { keys } from "../../utils/entries";
-import type { SceneryName } from "../../sprites/planets";
-import type { TextureId } from "../../sprites/spriteSheetData";
-import type { SanitisedForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { getParsedJsonFromEditor } from "./getParsedJsonFromEditor";
+import { useLoadMonaco } from "./useLoadMonaco";
 
 const textureForItem = (
   item: EditorJsonItemUnion,

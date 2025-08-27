@@ -1,18 +1,20 @@
 import type { Sprite } from "pixi.js";
+
 import type { ItemAppearance } from "../ItemAppearance";
+
+import { blockSizePx } from "../../../../sprites/spritePivots";
 import {
-  vectorClosestDirectionXy4,
   type DirectionXy4,
+  vectorClosestDirectionXy4,
 } from "../../../../utils/vectors/vectors";
 import { createSprite } from "../../createSprite";
-import { blockSizePx } from "../../../../sprites/spritePivots";
 
 type RenderProps = {
   facingXy4: DirectionXy4;
 };
 
 export const directionalShadowMaskAppearance =
-  <ShadowMaskBaseShadowId extends "charles" | "turtle" | "skiHead">(
+  <ShadowMaskBaseShadowId extends "charles" | "skiHead" | "turtle">(
     shadowMaskBaseShadowId: ShadowMaskBaseShadowId,
     heightBlocks: number = 1,
   ): ItemAppearance<"charles" | "monster", RenderProps, Sprite> =>

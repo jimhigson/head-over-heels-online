@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useProvidedPixiApplication } from "./PixiApplicationProvider";
-import { useEditorRoomRenderDimensions } from "../slice/levelEditorSelectors";
+
 import { useAppSelector } from "../../store/hooks";
+import { useEditorRoomRenderDimensions } from "../slice/levelEditorSelectors";
+import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";
 
 export const useResizePixiApplicationToMatchCanvasSize = () => {

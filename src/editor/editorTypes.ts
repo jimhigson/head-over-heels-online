@@ -1,18 +1,19 @@
 import type { SetOptional, Simplify, Tagged } from "type-fest";
+
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { RoomRenderer } from "../game/render/roomRenderer";
+import type {
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../model/ItemInPlay";
 import type {
   JsonItem,
   JsonItemType,
   JsonItemUnion,
 } from "../model/json/JsonItem";
-import type { RoomJsonItems, RoomJson } from "../model/RoomJson";
-import type { RoomState } from "../model/RoomState";
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
-} from "../model/ItemInPlay";
-import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { Campaign, CampaignLocator } from "../model/modelTypes";
+import type { RoomJson, RoomJsonItems } from "../model/RoomJson";
+import type { RoomState } from "../model/RoomState";
 
 export type NamedEditorCampaign = Campaign<EditorRoomId>;
 

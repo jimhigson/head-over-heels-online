@@ -1,5 +1,6 @@
+import type { EditorRoomItemId, EditorRoomJson } from "../../editorTypes";
+
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
-import type { EditorRoomJson, EditorRoomItemId } from "../../editorTypes";
 import { generateWallHealingInPlaceOfDoor } from "./generateWallHealingInPlaceOfDoor";
 
 export const deleteItemInPlace = (

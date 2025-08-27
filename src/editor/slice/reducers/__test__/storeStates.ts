@@ -1,13 +1,15 @@
 import { produce } from "immer";
+
+import type { EditorRoomId, EditorRoomItemId } from "../../../editorTypes";
+import type { Tool } from "../../../Tool";
 import type {
   LevelEditorSliceAction,
   LevelEditorState,
 } from "../../levelEditorSlice";
-import { levelEditorSlice } from "../../levelEditorSlice";
-import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
-import type { EditorRoomId, EditorRoomItemId } from "../../../editorTypes";
-import type { Tool } from "../../../Tool";
+
 import { rotatingSceneryTiles } from "../../createStarterRoom";
+import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
+import { levelEditorSlice } from "../../levelEditorSlice";
 
 export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",
@@ -65,12 +67,9 @@ export const editorStateWithOneRoomWithOneAwayWall: LevelEditorState = produce(
 /** convenience to apply any number of actions in sequence */
 export const applyLevelEditorActions = (
   state: LevelEditorState,
-  ...actions: (
-    | LevelEditorSliceAction
-    /* functional version allows creating a pipelining that bases the action off the
-     * current state, ie finding items in the current room to use in the next action */
-    | ((s: LevelEditorState) => LevelEditorSliceAction)
-  )[]
+  ...actions: /* functional version allows creating a pipelining that bases the action off the
+   * current state, ie finding items in the current room to use in the next action */
+  (((s: LevelEditorState) => LevelEditorSliceAction) | LevelEditorSliceAction)[]
 ): LevelEditorState => {
   return actions.reduce((state, action) => {
     const a = typeof action === "function" ? action(state) : action;

@@ -1,12 +1,14 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
-import { fromAllEntries } from "../utils/entries";
+
 import type { AxisXy } from "../utils/vectors/vectors";
+
+import { fromAllEntries } from "../utils/entries";
 import { addXy, type Xy } from "../utils/vectors/vectors";
 
-type SceneryName = "generic" | "moonbase" | "moonbase.dark";
+type SceneryName = "generic" | "moonbase.dark" | "moonbase";
 
 export type DoorFrameTextureName<Name extends SceneryName = SceneryName> =
-  `door.frame.${Name}.${AxisXy}.${"near" | "far" | "top" | "whole"}`;
+  `door.frame.${Name}.${AxisXy}.${"far" | "near" | "top" | "whole"}`;
 
 type Frame = {
   x: number;

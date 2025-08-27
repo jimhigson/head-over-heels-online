@@ -1,11 +1,14 @@
 import type { ColorSource } from "pixi.js";
-import { Graphics, Container, Text } from "pixi.js";
+
+import { Container, Graphics, Text } from "pixi.js";
+
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { Aabb } from "../../../../utils/vectors/vectors";
-import { isItemType } from "../../../physics/itemPredicates";
-import { projectWorldXyzToScreenXy } from "../../projections";
 import type { ItemRenderContext } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
+
+import { isItemType } from "../../../physics/itemPredicates";
+import { projectWorldXyzToScreenXy } from "../../projections";
 
 const addCuboidPaths = (cuboid: Aabb, graphics: Graphics) => {
   graphics

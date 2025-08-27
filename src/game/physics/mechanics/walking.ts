@@ -1,30 +1,31 @@
+import type { CharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
+import type { PressStatus } from "../../input/InputStateTracker";
+import type { Mechanic } from "../MechanicResult";
+
+import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
+import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
 import {
-  heelsJumpForwardSpeedFraction,
+  lengthXyz,
+  originXy,
+  originXyz,
+  scaleXyz,
+  subXyz,
+  unitVector,
+  xyEqual,
+  xyzEqual,
+} from "../../../utils/vectors/vectors";
+import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { isItemType, type PlayableItem } from "../itemPredicates";
+import { type MechanicResult } from "../MechanicResult";
+import {
   heelsJumpForwardDecel,
+  heelsJumpForwardSpeedFraction,
   moveSpeedPixPerMs,
   playerWalkAcceldPixPerMsSq,
 } from "../mechanicsConstants";
-import { isItemType, type PlayableItem } from "../itemPredicates";
-import type { Mechanic } from "../MechanicResult";
-import { type MechanicResult } from "../MechanicResult";
-import type { CharacterName } from "../../../model/modelTypes";
-import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import {
-  originXyz,
-  lengthXyz,
-  subXyz,
-  scaleXyz,
-  xyEqual,
-  originXy,
-  unitVector,
-  xyzEqual,
-} from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
-import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
-import type { PressStatus } from "../../input/InputStateTracker";
-import type { RoomState } from "../../../model/RoomState";
-import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 
 const stopWalking = {
   movementType: "vel",

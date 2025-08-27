@@ -5,7 +5,7 @@ export const withProps =
     ComponentProps extends Record<string, unknown>,
     CompletedProps extends Partial<ComponentProps>,
   >(
-    Component: (props: ComponentProps) => ReactElement | null,
+    Component: (props: ComponentProps) => null | ReactElement,
     completedProps: CompletedProps,
   ) =>
   (props: Omit<ComponentProps, keyof CompletedProps>) => {

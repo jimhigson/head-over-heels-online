@@ -1,14 +1,16 @@
 import { cycle } from "iter-tools";
+
 import type { GameState } from "../game/gameState/GameState";
-import { progressGameState } from "../game/mainLoop/progressGameState";
-import { progressWithSubTicks } from "../game/mainLoop/progressWithSubTicks";
-import { maxSubTickDeltaMs } from "../game/physics/mechanicsConstants";
 import type { TestRoomId } from "./basicRoom";
 import type {
   GameStateWithMockInput,
   MockInputStateTracker,
 } from "./MockInputStateTracker";
 import type { FrameRateSpec } from "./testFrameRates";
+
+import { progressGameState } from "../game/mainLoop/progressGameState";
+import { progressWithSubTicks } from "../game/mainLoop/progressWithSubTicks";
+import { maxSubTickDeltaMs } from "../game/physics/mechanicsConstants";
 
 type FrameCallback = (
   gameState: GameStateWithMockInput,
@@ -17,12 +19,12 @@ type FrameCallback = (
 
 type PlayGameThroughOptions = {
   frameRate?: FrameRateSpec;
-  until?: number | ((gameState: GameState<TestRoomId>) => boolean);
+  until?: ((gameState: GameState<TestRoomId>) => boolean) | number;
   /**
    * allows us to change the gamestate after certain frames, for example to change the
    * joystick input while the simulation is running
    */
-  frameCallbacks?: FrameCallback | Array<FrameCallback>;
+  frameCallbacks?: Array<FrameCallback> | FrameCallback;
 
   setupInitialInput?: (mockInputStateTracker: MockInputStateTracker) => void;
 };

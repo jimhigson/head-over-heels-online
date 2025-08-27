@@ -1,12 +1,13 @@
-import { componentInDirection } from "./componentInDirection";
 import type { Xyz } from "./vectors";
+
+import { componentInDirection } from "./componentInDirection";
 import {
-  xyzEqual,
-  originXyz,
-  unitVector,
-  scaleXyz,
-  dotProductXyz,
   addXyz,
+  dotProductXyz,
+  originXyz,
+  scaleXyz,
+  unitVector,
+  xyzEqual,
 } from "./vectors";
 
 /*

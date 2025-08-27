@@ -1,5 +1,5 @@
-import type { FreeItem } from "../../physics/itemPredicates";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import type { FreeItem } from "../../physics/itemPredicates";
 
 export const setStandingOn = <
   RoomId extends string,

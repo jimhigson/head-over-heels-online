@@ -1,9 +1,10 @@
-import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
-import { nonZero } from "../../../utils/epsilon";
 import type { Plane } from "../../../utils/vectors/vectors";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import type { Tool } from "../../Tool";
+
+import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
+import { nonZero } from "../../../utils/epsilon";
+import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 
 const edgeTolerancePx = 3;
 const edgeToleranceBetweenFacesPx = 1.5;

@@ -1,11 +1,13 @@
 import type { SetRequired } from "type-fest";
-import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
+
 import type {
-  EditorUnionOfAllItemInPlayTypes,
   EditorRoomItemId,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import type { PointerItemIntersection } from "./pointIntersectsItemAABB";
+
 import { toposort } from "../../../game/render/sortZ/toposort/toposort";
+import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
 
 const isFixedZIndexItem = (
   i: EditorUnionOfAllItemInPlayTypes,

@@ -6,7 +6,7 @@ type ItemConfigMap<RoomId extends string, RoomItemId extends string> = {
   };
   switch: {
     controls: RoomItemId[];
-    type: "local" | "global";
+    type: "global" | "local";
   };
 };
 

@@ -1,6 +1,8 @@
 import type { SpritesheetFrameData } from "pixi.js";
+
 import type { SceneryName, Wall } from "../sprites/planets";
 import type { RoomJson } from "./RoomJson";
+
 import { blockSizePx } from "../sprites/spritePivots";
 
 export const individualCharacterNames = ["head", "heels"] as const;
@@ -59,7 +61,7 @@ export type CampaignRoom<C extends UnknownCampaign> =
 
 export type SpriteFrame = SpritesheetFrameData["frame"];
 export type SpritePosition = Pick<SpriteFrame, "x" | "y">;
-export type SpriteSize = Pick<SpriteFrame, "w" | "h">;
+export type SpriteSize = Pick<SpriteFrame, "h" | "w">;
 
 /**
  * A locator for a specific campaign, identified by user ID and campaign name.

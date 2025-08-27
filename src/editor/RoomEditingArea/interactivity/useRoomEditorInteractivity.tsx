@@ -1,27 +1,27 @@
-import type { Xyz } from "../../../utils/vectors/vectors";
-
+import nanoEqual from "nano-equal";
 import { useEffect, useRef } from "react";
+
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
+import type { Tool } from "../../Tool";
+import type { MaybePointingAtSomething } from "../cursor/PointingAt";
+import type { ToolHandler } from "./tools/ToolHandler";
+
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectUpscale } from "../../../store/slices/upscale/upscaleSlice";
-import {
-  selectEditorRoomState,
-  selectEditorRoomRenderDimensions,
-} from "../../slice/levelEditorSelectors";
-import { useProvidedPixiApplication } from "../PixiApplicationProvider";
-import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
-import type { MaybePointingAtSomething } from "../cursor/PointingAt";
-import { selectTool, changeDragInProgress } from "../../slice/levelEditorSlice";
 import { store } from "../../../store/store";
-
-import nanoEqual from "nano-equal";
-import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { catchErrors } from "../../../utils/errors/errors";
+import {
+  selectEditorRoomRenderDimensions,
+  selectEditorRoomState,
+} from "../../slice/levelEditorSelectors";
+import { changeDragInProgress, selectTool } from "../../slice/levelEditorSlice";
+import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { upscaledMousePosition } from "../cursor/upscaledMouse";
-import { ItemToolHandler } from "./tools/ItemToolHandler";
-import type { ToolHandler } from "./tools/ToolHandler";
-import type { Tool } from "../../Tool";
-import { PointerToolHandler } from "./tools/PointerToolHandler";
+import { useProvidedPixiApplication } from "../PixiApplicationProvider";
 import { EyeDropperToolHandler } from "./tools/EyeDropperToolHandler";
+import { ItemToolHandler } from "./tools/ItemToolHandler";
+import { PointerToolHandler } from "./tools/PointerToolHandler";
 
 const toolHandlers: {
   [T in Tool["type"]]: ToolHandler<Extract<Tool, { type: T }>>;
@@ -43,7 +43,7 @@ export const useRoomEditorInteractivity = (
     undefined,
   );
   /* while dragging to move/resize, set to the current drag vector, otherwise will be undefined */
-  const dragAccVec = useRef<Xyz | undefined>(undefined);
+  const dragAccVec = useRef<undefined | Xyz>(undefined);
 
   useEffect(() => {
     if (renderArea === null) {

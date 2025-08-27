@@ -1,33 +1,36 @@
 import type { Application, Filter, Ticker } from "pixi.js";
-import { Container } from "pixi.js";
-import type { GameState } from "../gameState/GameState";
-import { HudRenderer } from "../render/hud/HudRenderer";
-import { progressGameState } from "./progressGameState";
-import { RoomRenderer } from "../render/roomRenderer";
-import { CRTFilter } from "pixi-filters/crt";
+
 import { AdvancedBloomFilter } from "pixi-filters/advanced-bloom";
-import { emptySet } from "../../utils/empty";
-import { store } from "../../store/store";
+import { CRTFilter } from "pixi-filters/crt";
+import { Container } from "pixi.js";
+
+import type { GameState } from "../gameState/GameState";
+import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
+import type { RoomRendererType } from "../render/RoomRendererType";
+
+import { audioCtx } from "../../sound/audioCtx";
+import { defaultUserSettings } from "../../store/defaultUserSettings";
 import {
   selectInputDirectionMode,
   selectIsPaused,
   selectShouldRenderOnScreenControls,
 } from "../../store/selectors";
-import { defaultUserSettings } from "../../store/defaultUserSettings";
 import {
+  type DisplaySettings,
   errorCaught,
   selectHasError,
-  type DisplaySettings,
 } from "../../store/slices/gameMenusSlice";
-import { audioCtx } from "../../sound/audioCtx";
-import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { progressWithSubTicks } from "./progressWithSubTicks";
-import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
-import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
-import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
-import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
-import type { RoomRendererType } from "../render/RoomRendererType";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
+import { store } from "../../store/store";
+import { emptySet } from "../../utils/empty";
+import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
+import { HudRenderer } from "../render/hud/HudRenderer";
+import { RoomRenderer } from "../render/roomRenderer";
+import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
+import { progressGameState } from "./progressGameState";
+import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const topLevelFilters = (
   { crtFilter }: DisplaySettings,

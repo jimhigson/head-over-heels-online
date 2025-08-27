@@ -1,15 +1,17 @@
 import type { PropsWithChildren, ReactElement } from "react";
+
 import { useState } from "react";
+
 import { CssVariables } from "../../game/components/CssVariables";
-import { Button } from "../../ui/button";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
-import { buttonSizeClassNames } from "./buttonSizeClassNames";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { Button } from "../../ui/button";
 import { cn } from "../../ui/cn";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { buttonSizeClassNames } from "./buttonSizeClassNames";
 
 export interface MenuButtonProps {
   main: ReactElement;
-  children: (ReactElement<PropsWithChildren> | null)[];
+  children: (null | ReactElement<PropsWithChildren>)[];
   closeOnSelect?: boolean;
   ref?: React.RefObject<HTMLDivElement | null>;
 }

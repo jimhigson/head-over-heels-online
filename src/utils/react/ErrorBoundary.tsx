@@ -1,4 +1,4 @@
-import { Component, type ReactNode, type ReactElement } from "react";
+import { Component, type ReactElement, type ReactNode } from "react";
 
 /**
  * Minimal error boundary component that catches JavaScript errors in child components.

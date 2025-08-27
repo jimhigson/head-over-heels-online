@@ -4,7 +4,7 @@ type ConsolidatableConfig = {
 };
 
 type ConveyorConfig = ConsolidatableConfig & {
-  direction: "left" | "right" | "up" | "down";
+  direction: "down" | "left" | "right" | "up";
   disappearing?: { on: "stand" };
 };
 

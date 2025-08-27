@@ -29,17 +29,26 @@ export type SwitchItemModificationUnion<
       leftState?: Partial<
         Pick<
           ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
-          "activated" | "everActivated" | "disappearing" | "expires" | "facing"
+          "activated" | "disappearing" | "everActivated" | "expires" | "facing"
         >
       >;
       rightState?: Partial<
         Pick<
           ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
-          "activated" | "everActivated" | "disappearing" | "expires" | "facing"
+          "activated" | "disappearing" | "everActivated" | "expires" | "facing"
         >
       >;
     }
   // turning off disappearing blocks:
+  | {
+      expectType: "block";
+      targets: RoomItemId[];
+      /**
+       * if true, equivalent to leftState disappearing on stand, right state not disappearing
+       * if false, equivalent to leftState not disappearing, right state disappearing on stand
+       */
+      makesStable: boolean;
+    }
   | {
       expectType: "block";
       targets: RoomItemId[];
@@ -60,26 +69,11 @@ export type SwitchItemModificationUnion<
         }
       >;
     }
-  | {
-      expectType: "block";
-      targets: RoomItemId[];
-      /**
-       * if true, equivalent to leftState disappearing on stand, right state not disappearing
-       * if false, equivalent to leftState not disappearing, right state disappearing on stand
-       */
-      makesStable: boolean;
-    }
   // ganged switches:
   // test on:
   //    * original/#penitentiary3
   //    * original/#moonbase13
   //    * sequel/turtle_dance
-  | {
-      expectType: "switch";
-      targets: RoomItemId[];
-      /** this switch will flip the other switch when it is flipped */
-      flip: true;
-    }
   | {
       expectType: "conveyor";
       targets: RoomItemId[];
@@ -103,6 +97,12 @@ export type SwitchItemModificationUnion<
       >;
     }
   | {
+      expectType: "emitter";
+      targets: RoomItemId[];
+      leftState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;
+      rightState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;
+    }
+  | {
       expectType: "joystick";
       targets: RoomItemId[];
       leftState: Partial<
@@ -113,16 +113,16 @@ export type SwitchItemModificationUnion<
       >;
     }
   | {
-      expectType: "emitter";
-      targets: RoomItemId[];
-      leftState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;
-      rightState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;
-    }
-  | {
       expectType: "lift";
       targets: RoomItemId[];
       leftState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
       rightState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
+    }
+  | {
+      expectType: "switch";
+      targets: RoomItemId[];
+      /** this switch will flip the other switch when it is flipped */
+      flip: true;
     }
   | {
       expectType: "teleporter";
@@ -159,17 +159,17 @@ export type SwitchConfig<
   /** ids of items in this room */
   RoomItemId extends string,
 > = { initialSetting: SwitchSetting } & (
-  | SwitchInRoomConfig<
-      RoomId,
-      /** ids of items in this room */
-      RoomItemId
-    >
   | {
       /** this switch targets the redux store */
       type: "in-store";
       // special case for switches that read from and dispatch to the store:
       path: BooleanStatePaths;
     }
+  | SwitchInRoomConfig<
+      RoomId,
+      /** ids of items in this room */
+      RoomItemId
+    >
 );
 
 export type ButtonConfig<

@@ -5,6 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import prettier from "eslint-plugin-prettier";
 import tseslint from "typescript-eslint";
 import unusedImports from "eslint-plugin-unused-imports";
+import perfectionist from "eslint-plugin-perfectionist";
 
 export default tseslint.config(
   {
@@ -29,6 +30,7 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
       prettier: prettier,
       "unused-imports": unusedImports,
+      perfectionist,
     },
     rules: {
       //    "no-shadow": "error",
@@ -75,6 +77,24 @@ export default tseslint.config(
         },
       ],
       "no-prototype-builtins": "off",
+
+      "perfectionist/sort-imports": [
+        "error",
+        {
+          newlinesBetween: "always",
+          order: "asc",
+          type: "alphabetical",
+        },
+      ],
+
+      "perfectionist/sort-named-imports": ["error", { type: "natural" }],
+
+      "perfectionist/sort-union-types": [
+        "error",
+        {
+          partitionByComment: true,
+        },
+      ],
     },
   },
 );

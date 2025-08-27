@@ -1,10 +1,12 @@
+import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
 import type { Color } from "pixi.js";
+
+import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Filter, GlProgram, Texture } from "pixi.js";
+
+import { objectEntriesIter } from "../../../utils/entries";
 import { vertex } from "./defaults";
 import fragment from "./paletteSwap.frag?raw";
-import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
-import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { objectEntriesIter } from "../../../utils/entries";
 
 export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
 

@@ -1,5 +1,6 @@
 import nanoEqual from "nano-equal";
 import { expect, test } from "vitest";
+
 import { campaign } from "../_generated/originalCampaign/campaign";
 import { compressObject, decompressObject } from "./compressObject";
 

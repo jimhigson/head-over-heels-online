@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+
 import { useAppSelector } from "../../store/hooks";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 

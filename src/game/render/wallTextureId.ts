@@ -4,7 +4,7 @@ import type { WallTextureId } from "../../sprites/scenerySpritesheetData";
 export const wallTextureId = <P extends SceneryName, TDark extends boolean>(
   planet: P,
   wallName: Wall<P>,
-  side: "left" | "away",
+  side: "away" | "left",
   dark: TDark,
 ) =>
   `${planet}${dark ? ".dark" : ""}.wall.${wallName}.${side}` as WallTextureId<

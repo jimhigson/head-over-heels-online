@@ -1,6 +1,7 @@
-import { audioCtx } from "../audioCtx";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../ItemSoundRenderer";
+
+import { audioCtx } from "../audioCtx";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
 export class BallSoundRenderer implements ItemSoundRenderer<"ball"> {

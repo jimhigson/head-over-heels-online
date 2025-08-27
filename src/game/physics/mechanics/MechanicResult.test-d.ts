@@ -1,9 +1,10 @@
 import { expectTypeOf, test } from "vitest";
+
 import type { VelocitiesForItem } from "../MechanicResult";
 
 test("implies velocities on mechanics from allowed velocities on item", () => {
   expectTypeOf<VelocitiesForItem<"head">>().toEqualTypeOf<
-    "gravity" | "walking" | "movingFloor"
+    "gravity" | "movingFloor" | "walking"
   >();
 
   expectTypeOf<VelocitiesForItem<"pickup">>().toEqualTypeOf<

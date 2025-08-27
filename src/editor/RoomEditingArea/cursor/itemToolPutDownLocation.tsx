@@ -1,27 +1,27 @@
-import type { EditorRoomState } from "../../editorTypes";
-import type { PointingAtItem } from "./PointingAt";
-import type { ItemTool } from "../../Tool";
-import { fineXyzToBlockXyz } from "../../../game/render/projections";
-
 import type { Xy } from "../../../utils/vectors/vectors";
-import {
-  addXyz,
-  tangentAxis,
-  perpendicularAxisXy,
-  type Xyz,
-} from "../../../utils/vectors/vectors";
+import type { EditorRoomState } from "../../editorTypes";
+import type { ItemTool } from "../../Tool";
+import type { PointingAtItem } from "./PointingAt";
+
 import {
   doorOverallWidthPx,
   doorPostHeightPx,
 } from "../../../game/gameState/loadRoom/loadDoor";
-import { epsilon } from "../../../utils/epsilon";
+import { fineXyzToBlockXyz } from "../../../game/render/projections";
 import { completeTimesXy, wallTimes } from "../../../model/times";
+import { epsilon } from "../../../utils/epsilon";
+import {
+  addXyz,
+  perpendicularAxisXy,
+  tangentAxis,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
 
 export const itemToolPutDownLocation = (
   pointingAt: PointingAtItem,
   roomState: EditorRoomState,
   itemTool: ItemTool,
-): Xyz | undefined => {
+): undefined | Xyz => {
   const {
     world: {
       onItem: { face: pointingAtFace },

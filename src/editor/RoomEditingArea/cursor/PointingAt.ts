@@ -1,4 +1,5 @@
 import type { Simplify } from "type-fest";
+
 import type { Plane, Xy, Xyz } from "../../../utils/vectors/vectors";
 import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
 

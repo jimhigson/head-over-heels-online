@@ -2,8 +2,8 @@
 export type AllowedQueryParams = {
   cheats: "1" | null;
   playAsHeels: "1" | null;
-  campaignName: string | null;
-  campaignAuthorUserId: string | null;
+  campaignName: null | string;
+  campaignAuthorUserId: null | string;
 };
 
 export type TypedURLSearchParams = {

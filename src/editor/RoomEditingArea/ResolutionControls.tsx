@@ -1,6 +1,6 @@
-import { ToolbarButton } from "../tools/ToolbarButton";
-import { type ResolutionName, resolutionNames } from "../../originalGame";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { type ResolutionName, resolutionNames } from "../../originalGame";
+import { ToolbarButton } from "../tools/ToolbarButton";
 import { useShortTimeDisplay } from "../tools/useShortTimeDisplay";
 
 const resolutionDisplayNames: Record<ResolutionName, string> = {

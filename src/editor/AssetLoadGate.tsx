@@ -1,4 +1,5 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
+
 import { loadSpritesheet } from "../sprites/spriteSheet";
 
 export const AssetLoadGateHoc = (load: () => Promise<unknown>) => {

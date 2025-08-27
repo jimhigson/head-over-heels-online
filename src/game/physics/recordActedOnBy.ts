@@ -1,6 +1,7 @@
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/RoomState";
-import { isFreeItem, type FreeItem } from "./itemPredicates";
+
+import { type FreeItem, isFreeItem } from "./itemPredicates";
 
 export const recordActedOnBy = <
   RoomId extends string,
@@ -10,7 +11,7 @@ export const recordActedOnBy = <
    * the item pushing or otherwise controlling the other item. Undefined for
    * a 'first cause' directly from a mechanic (ie, not acted on by any other item)
    */
-  actingItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId> | undefined,
+  actingItem: undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
 ) => {

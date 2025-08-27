@@ -1,36 +1,37 @@
 import { Container } from "pixi.js";
+
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { CreateSpriteOptions } from "../createSprite";
+import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import { smallItemTextureSize } from "../../../sprites/textureSizes";
 import { createSprite } from "../createSprite";
-import { doorFrameAppearance, doorLegsAppearance } from "./door/doorAppearance";
-import { playableAppearance, shineFilterForHeels } from "./playableAppearance";
-import {
-  itemAppearanceRenderOnce,
-  itemStaticAppearance,
-} from "./ItemAppearance";
-import { floorAppearance } from "./floorAppearance/floorAppearance";
 import {
   bookPaletteSwapFilter,
   mainPaletteSwapFilter,
   noFilters,
 } from "../filters/standardFilters";
-import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { smallItemTextureSize } from "../../../sprites/textureSizes";
-
-import { monsterAppearance } from "./monsterAppearance";
-import { floatingTextAppearance } from "./floatingTextAppearance";
-import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
-import { conveyorAppearance } from "./conveyorAppearance";
-import { teleporterAppearance } from "./teleporterAppearance";
+import { blockAppearance } from "./blockAppearance";
+import { buttonAppearance } from "./buttonAppearance";
 import { charlesAppearance } from "./charlesAppearance";
-import { springAppearance } from "./springAppearance";
+import { conveyorAppearance } from "./conveyorAppearance";
+import { doorFrameAppearance, doorLegsAppearance } from "./door/doorAppearance";
+import { floatingTextAppearance } from "./floatingTextAppearance";
+import { floorAppearance } from "./floorAppearance/floorAppearance";
+import {
+  itemAppearanceRenderOnce,
+  itemStaticAppearance,
+} from "./ItemAppearance";
+import { monsterAppearance } from "./monsterAppearance";
+import { playableAppearance, shineFilterForHeels } from "./playableAppearance";
 import { sceneryPlayerAppearance } from "./sceneryPlayer";
 import { spikyBallAppearance } from "./spikyBallAppearance";
-import { farWallAppearance } from "./wallAppearance";
+import { springAppearance } from "./springAppearance";
 import { switchAppearance } from "./switchAppearance";
-import { blockAppearance } from "./blockAppearance";
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import { teleporterAppearance } from "./teleporterAppearance";
 import { toasterAppearance } from "./toasterAppearance";
-import { buttonAppearance } from "./buttonAppearance";
+import { farWallAppearance } from "./wallAppearance";
 
 const itemAppearancesMap: {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;

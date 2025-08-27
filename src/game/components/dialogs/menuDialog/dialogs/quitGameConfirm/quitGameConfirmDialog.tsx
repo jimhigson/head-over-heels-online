@@ -1,21 +1,22 @@
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import Portal from "@mutabazia/react-portal";
+
+import { useAppSelector } from "../../../../../../store/hooks";
 import {
   backToParentMenu,
   gameOver,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { useGameApi } from "../../../../GameApiContext";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
-import Portal from "@mutabazia/react-portal";
-import { useAppSelector } from "../../../../../../store/hooks";
-import { reincarnateSelected } from "../offerReincarnation/OfferReincarnationDialog";
-import { useGameApi } from "../../../../GameApiContext";
 import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
+import { reincarnateSelected } from "../offerReincarnation/OfferReincarnationDialog";
 
 export const QuitGameConfirmDialog = () => {
   const hasReincarnationPoint = useAppSelector(

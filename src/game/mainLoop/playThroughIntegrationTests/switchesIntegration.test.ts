@@ -1,11 +1,12 @@
-import { test, expect, beforeEach } from "vitest";
+import { beforeEach, expect, test } from "vitest";
 
 import type { TestRoomId } from "../../../_testUtils/basicRoom";
+import type { SwitchConfig } from "../../../model/json/SwitchConfig";
+
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { itemState } from "../../../_testUtils/characterState";
-import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import type { SwitchConfig } from "../../../model/json/SwitchConfig";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
+import { playGameThrough } from "../../../_testUtils/playGameThrough";
 
 beforeEach(() => {
   resetStore();

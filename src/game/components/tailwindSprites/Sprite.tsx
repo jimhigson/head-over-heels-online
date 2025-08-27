@@ -1,4 +1,5 @@
 import type { AriaRole, MouseEventHandler, ReactElement } from "react";
+
 import {
   cloneElement,
   isValidElement,
@@ -7,6 +8,7 @@ import {
 } from "react";
 import "react";
 import { twMerge } from "tailwind-merge";
+
 import { isTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
@@ -20,7 +22,7 @@ export interface CssSpriteProps {
 }
 
 export interface BitmapTextProps {
-  children: number | string | (string | number)[];
+  children: (number | string)[] | number | string;
   /**
    * per-char colour (or any other style) cycling
    */
@@ -29,7 +31,7 @@ export interface BitmapTextProps {
   noSlitWords?: boolean;
   onClick?: MouseEventHandler<HTMLSpanElement>;
   noTint?: boolean;
-  TagName?: "span" | "h1" | "h2";
+  TagName?: "h1" | "h2" | "span";
   role?: AriaRole;
 }
 

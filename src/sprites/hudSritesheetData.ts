@@ -1,9 +1,11 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
-import { hudCharTextureSize } from "./textureSizes";
-import { fromAllEntries } from "../utils/entries";
+
 import type { Xy } from "../utils/vectors/vectors";
 import type { EscapedForTailwind } from "./escapeCharForTailwind";
+
+import { fromAllEntries } from "../utils/entries";
 import { escapeCharForTailwind } from "./escapeCharForTailwind";
+import { hudCharTextureSize } from "./textureSizes";
 
 // this source really needs a nerd font to read it:
 // https://www.nerdfonts.com/cheat-sheet
@@ -123,7 +125,7 @@ export type CharSpriteTextureId<C extends string> =
   `hud.char.${EscapedForTailwind<C>}`;
 
 const charFrames = <Char extends string>(
-  ar: Readonly<(Char | { char: Char; double: true })[]>,
+  ar: Readonly<({ char: Char; double: true } | Char)[]>,
   startPosition: Xy,
 ): Record<CharSpriteTextureId<Char>, SpritesheetFrameData> => {
   function* charFramesGenerator(): Generator<

@@ -1,16 +1,19 @@
-import type { FederatedPointerEvent, Container } from "pixi.js";
+import type { Container, FederatedPointerEvent } from "pixi.js";
+
 import { Graphics } from "pixi.js";
-import { store } from "../../../store/store";
+
 import type { Xy } from "../../../utils/vectors/vectors";
-import { originXyz } from "../../../utils/vectors/vectors";
-import { type InputStateTrackerInterface } from "../../input/InputStateTracker";
 import type { Renderer } from "../Renderer";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
-import { pick } from "../../../utils/pick";
-import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
-import type { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";
-import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import type { HudRendererTickContext } from "./hudRendererContexts";
+import type { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";
+import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
+
+import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import { store } from "../../../store/store";
+import { pick } from "../../../utils/pick";
+import { originXyz } from "../../../utils/vectors/vectors";
+import { type InputStateTrackerInterface } from "../../input/InputStateTracker";
 import { DragInertia } from "./DragInertia";
 
 type LookRenderContext = {
@@ -34,7 +37,7 @@ export class OnScreenLookRenderer<
 
   #curPointerId: number | undefined;
 
-  #curXY: Xy | undefined = undefined;
+  #curXY: undefined | Xy = undefined;
 
   #joystickRenderer: OnScreenJoystickRenderer | undefined;
 

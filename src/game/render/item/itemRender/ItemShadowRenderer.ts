@@ -1,26 +1,29 @@
-import { AlphaFilter, Container, Sprite } from "pixi.js";
-import { projectWorldXyzToScreenXy } from "../../projections";
-import type { Collideable } from "../../../collision/aabbCollision";
-import { collision1to1 } from "../../../collision/aabbCollision";
-import { concat, objectEntries } from "iter-tools";
+import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
 import type { SetRequired } from "type-fest";
+
+import { concat, objectEntries } from "iter-tools";
+import { AlphaFilter, Container, Sprite } from "pixi.js";
+
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
+import type { Collideable } from "../../../collision/aabbCollision";
+import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
-import { iterateRoomItems } from "../../../../model/RoomState";
 import type { ItemPixiRenderer } from "./ItemRenderer";
-import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
+
+import { iterateRoomItems } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
-import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
-import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
-import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { amigaHalfBriteBrightness } from "../../../../utils/colour/halfBrite";
-import { veryHighZ } from "../../../physics/mechanicsConstants";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
+import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
+import { collision1to1 } from "../../../collision/aabbCollision";
+import { veryHighZ } from "../../../physics/mechanicsConstants";
+import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
+import { projectWorldXyzToScreenXy } from "../../projections";
+import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 
 type Cast = {
   /* the sprite of the shadow */
@@ -49,7 +52,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
 
   constructor(
     public readonly renderContext: ItemRenderContext<T>,
-    appearance: ItemShadowAppearanceOutsideView<T> | "no-mask",
+    appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>,
   ) {
     //if (!this.#showShadowMasks) {
     // due to this issue:

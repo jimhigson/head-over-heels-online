@@ -1,6 +1,7 @@
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
+
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
   iterateRoomItems,
   type RoomStateItems,

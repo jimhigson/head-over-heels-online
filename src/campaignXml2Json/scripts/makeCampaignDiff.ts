@@ -1,11 +1,13 @@
 import fastJsonPatch from "fast-json-patch";
+import { canonicalize } from "json-canonicalize";
 import { writeFile } from "node:fs/promises";
-import { campaign } from "../../_generated/originalCampaign/campaign";
+
 import type { OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
+
+import { campaign } from "../../_generated/originalCampaign/campaign";
+import { badJsonCanonicalClone } from "../../utils/badJsonClone";
 import { entries } from "../../utils/entries";
 import { convertCampaign } from "../convertCampaign";
-import { badJsonCanonicalClone } from "../../utils/badJsonClone";
-import { canonicalize } from "json-canonicalize";
 
 const targetDir = "src/_generated/originalCampaign/patches";
 const patchFilename = (roomId: OriginalCampaignRoomId) =>

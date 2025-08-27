@@ -1,7 +1,9 @@
-import { test, expect } from "vitest";
 import seedrandom from "seedrandom";
-import { roomItemPositions } from "./roomItemPositions";
+import { expect, test } from "vitest";
+
 import type { Xy } from "../../../../../../utils/vectors/vectors";
+
+import { roomItemPositions } from "./roomItemPositions";
 
 type Item = { pos: Xy };
 

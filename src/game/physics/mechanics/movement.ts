@@ -1,40 +1,42 @@
-import type { Mechanic } from "../MechanicResult";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
-import { moveSpeedPixPerMs } from "../mechanicsConstants";
-import { mtv } from "../mtv";
-import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
-import { isMonster, isSolid } from "../itemPredicates";
+import { objectValues } from "iter-tools";
+
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { blockSizePx } from "../../../sprites/spritePivots";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
-import {
-  originXyz,
-  xyEqual,
-  originXy,
-  subXy,
-  perpendicularAxisXy,
-  unitVector,
-  scaleXyz,
-  lengthXy,
-  xyzEqual,
-  directionsXyDiagonal,
-  directionsXy8,
-  directionsXy4,
-  vectorClosestDirectionXy4,
-  areInSameDirection,
-} from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
-import { emptyObject } from "../../../utils/empty";
+import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
+import type { Mechanic } from "../MechanicResult";
+import type { TurnStrategy } from "./turnedVector";
+
 import { playablesInRoom, type RoomState } from "../../../model/RoomState";
-import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClosestPlayable";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import { selectHasAllPlanetCrowns } from "../../../store/selectors";
 import { store } from "../../../store/store";
-import { objectValues } from "iter-tools";
-import type { TurnStrategy } from "./turnedVector";
-import { turnedVector } from "./turnedVector";
-import { randomFromArray } from "../../../utils/random/randomFromArray";
+import { emptyObject } from "../../../utils/empty";
 import { nonZero } from "../../../utils/epsilon";
+import { randomFromArray } from "../../../utils/random/randomFromArray";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import {
+  areInSameDirection,
+  directionsXy4,
+  directionsXy8,
+  directionsXyDiagonal,
+  lengthXy,
+  originXy,
+  originXyz,
+  perpendicularAxisXy,
+  scaleXyz,
+  subXy,
+  unitVector,
+  vectorClosestDirectionXy4,
+  xyEqual,
+  xyzEqual,
+} from "../../../utils/vectors/vectors";
+import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClosestPlayable";
+import { isMonster, isSolid } from "../itemPredicates";
+import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import { moveSpeedPixPerMs } from "../mechanicsConstants";
+import { mtv } from "../mtv";
+import { turnedVector } from "./turnedVector";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern

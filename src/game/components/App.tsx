@@ -1,17 +1,17 @@
+import { useEffect } from "react";
+import { Provider } from "react-redux";
 import { Route, Switch } from "wouter";
 
-import { SpritePage } from "../../pages/SpritePage.tsx";
-import { Provider } from "react-redux";
-import { CssVariables } from "./CssVariables.tsx";
+import { typedURLSearchParams } from "../../options/queryParams.ts";
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
+import { SpritePage } from "../../pages/SpritePage.tsx";
+import { useIsUncolourised } from "../../store/selectors.ts";
+import { gameStarted } from "../../store/slices/gameMenusSlice.ts";
 import { store } from "../../store/store.ts";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
-import { useEffect } from "react";
-import { useIsUncolourised } from "../../store/selectors.ts";
-import { WantedEditor404 } from "./WantedEditor404.tsx";
+import { CssVariables } from "./CssVariables.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
-import { gameStarted } from "../../store/slices/gameMenusSlice.ts";
-import { typedURLSearchParams } from "../../options/queryParams.ts";
+import { WantedEditor404 } from "./WantedEditor404.tsx";
 
 const searchParams = typedURLSearchParams();
 const campaignName = searchParams.get("campaignName");

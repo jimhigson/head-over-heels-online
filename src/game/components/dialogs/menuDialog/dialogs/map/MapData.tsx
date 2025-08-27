@@ -2,8 +2,8 @@ import type { MaybeUnnamedCampaign } from "../../../../../../editor/editorTypes"
 import type { CharacterName } from "../../../../../../model/modelTypes";
 import type { SceneryName } from "../../../../../../sprites/planets";
 import type {
-  PickupsCollected,
   CharacterRooms,
+  PickupsCollected,
 } from "../../../../../gameState/GameState";
 import type { Bounds } from "./Map.svg";
 import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";

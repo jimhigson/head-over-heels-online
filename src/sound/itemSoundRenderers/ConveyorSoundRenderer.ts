@@ -1,7 +1,8 @@
-import { audioCtx } from "../audioCtx";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../ItemSoundRenderer";
+
 import { isStoodOn } from "../../model/StoodOnBy";
+import { audioCtx } from "../audioCtx";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
 const playbackRate = 2;

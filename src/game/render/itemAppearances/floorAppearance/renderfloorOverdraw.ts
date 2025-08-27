@@ -1,18 +1,19 @@
 import { Container } from "pixi.js";
-import { createSprite } from "../../createSprite";
-import { projectWorldXyzToScreenXy } from "../../projections";
 
-import {
-  tangentAxis,
-  perpendicularAxisXy,
-  subXyz,
-} from "../../../../utils/vectors/vectors";
-import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
-import type { RoomState } from "../../../../model/RoomState";
-import { iterateRoomItems } from "../../../../model/RoomState";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
+import type { RoomState } from "../../../../model/RoomState";
+
+import { iterateRoomItems } from "../../../../model/RoomState";
 import { wallTimes } from "../../../../model/times";
+import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
+import {
+  perpendicularAxisXy,
+  subXyz,
+  tangentAxis,
+} from "../../../../utils/vectors/vectors";
+import { createSprite } from "../../createSprite";
+import { projectWorldXyzToScreenXy } from "../../projections";
 
 // the original game had floor tiles that didn't go all the way up to the walls.
 // that was an artifact, but I like it, so I render small rectangular sprites to
@@ -22,7 +23,7 @@ export const renderFloorOverdraws = (
   roomState: RoomState<string, string>,
 ): Container => {
   const isOnFarSide = (
-    item: ItemTypeUnion<"wall" | "doorFrame", string, string>,
+    item: ItemTypeUnion<"doorFrame" | "wall", string, string>,
   ): boolean =>
     item.config.direction === "away" || item.config.direction === "left";
 
@@ -31,7 +32,7 @@ export const renderFloorOverdraws = (
       .filter(
         (
           otherItem,
-        ): otherItem is ItemTypeUnion<"wall" | "doorFrame", string, string> => {
+        ): otherItem is ItemTypeUnion<"doorFrame" | "wall", string, string> => {
           return (
             otherItem.type === "wall" ||
             // for heightened doors (with legs), draw a corner the same as for walls:

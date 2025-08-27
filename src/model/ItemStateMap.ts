@@ -1,28 +1,29 @@
 import type { EmptyObject, Simplify } from "type-fest";
+
 import type { PortableItem } from "../game/physics/itemPredicates";
-import type { Xyz, Xy, DirectionXyz4 } from "../utils/vectors/vectors";
-import type { SwitchSetting } from "./ItemInPlay";
 import type { SceneryName } from "../sprites/planets";
+import type { DirectionXyz4, Xy, Xyz } from "../utils/vectors/vectors";
+import type { SwitchSetting } from "./ItemInPlay";
 import type { ItemConfigMap } from "./json/ItemConfigMap";
 import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
 
 export type PlayableActionState =
-  | "moving"
+  | "falling"
   | "idle"
   | "jumping"
-  | "falling"
+  | "moving"
   /** death animation is playing - character will have had expired set  */
   | "death";
 
 export type PlayableTeleportingState =
   | {
+      phase: "in";
+      timeRemaining: number;
+    }
+  | {
       phase: "out";
       timeRemaining: number;
       toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
-    }
-  | {
-      phase: "in";
-      timeRemaining: number;
     };
 
 export type LatentMovementFrame = {
@@ -36,7 +37,7 @@ export type LatentMovementFrame = {
 
 export type FreeItemState<RoomItemId extends string> = {
   /* id of the single item we are considered to be standing on, or null if not standing on anything */
-  standingOnItemId: RoomItemId | null;
+  standingOnItemId: null | RoomItemId;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
   latentMovement: Array<LatentMovementFrame>;
@@ -119,7 +120,7 @@ export type PlayableState<RoomItemId extends string> =
     jumpStartTime: number;
     jumpStartZ: number;
 
-    teleporting: PlayableTeleportingState | null;
+    teleporting: null | PlayableTeleportingState;
   };
 
 // we can't rely on Number.POSITIVE_INFINITY in the state because it's not JSON serializable
@@ -176,7 +177,7 @@ export type HeelsAbilities<RoomId extends string> = CommonAbilities & {
   hasBag: boolean;
   /** how many big jumps we can do (from picking up a bunny) */
   bigJumps: number;
-  carrying: PortableItem<RoomId, string> | null;
+  carrying: null | PortableItem<RoomId, string>;
 };
 
 type ItemWithMovementState = {
@@ -255,7 +256,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   pickup: FreeItemState<RoomItemId>;
   lift: Simplify<
     {
-      direction: "up" | "down";
+      direction: "down" | "up";
       vels: {
         lift: Xyz;
       };

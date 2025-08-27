@@ -1,7 +1,8 @@
 import type { AnyRoomJson } from "../model/RoomJson";
-import { keyItems } from "../utils/keyItems";
+
 import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
-import { map, convertRoomColour } from "./convertCampaign";
+import { keyItems } from "../utils/keyItems";
+import { convertRoomColour, map } from "./convertCampaign";
 import { convertFloor } from "./convertFloor";
 import { convertItemsArray } from "./convertItems";
 import { convertSceneryName } from "./convertPlanetName";

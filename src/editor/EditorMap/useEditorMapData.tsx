@@ -1,18 +1,20 @@
 import { useMemo } from "react";
+
 import type { MapData } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
-import type { EditorRoomId } from "../editorTypes";
-import {
-  selectCurrentEditingRoomJson,
-  useAppSelectorWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
-import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
-import { findMapBounds } from "../../game/components/dialogs/menuDialog/dialogs/map/findMapBounds";
-import { sortRoomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
-import { emptyObject } from "../../utils/empty";
 import type {
   CharacterRooms,
   PickupsCollected,
 } from "../../game/gameState/GameState";
+import type { EditorRoomId } from "../editorTypes";
+
+import { findMapBounds } from "../../game/components/dialogs/menuDialog/dialogs/map/findMapBounds";
+import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
+import { sortRoomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
+import { emptyObject } from "../../utils/empty";
+import {
+  selectCurrentEditingRoomJson,
+  useAppSelectorWithLevelEditorSlice,
+} from "../slice/levelEditorSlice";
 
 export const useEditorMapData = (): MapData<EditorRoomId> | undefined => {
   const campaign = useAppSelectorWithLevelEditorSlice(

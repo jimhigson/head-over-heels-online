@@ -1,32 +1,34 @@
 import { Container } from "pixi.js";
+
 import type {
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
-import { store } from "../../../../store/store";
+import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
 import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
-import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
-import { ItemPositionRenderer } from "./ItemPositionRenderer";
-import { maybeCreateItemShadowRenderer } from "./ItemShadowRenderer";
+import type { ItemPixiRenderer } from "./ItemRenderer";
+
+import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
+import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
+import { defaultUserSettings } from "../../../../store/defaultUserSettings";
 import {
   selectIsUncolourised,
   selectShowBoundingBoxes,
 } from "../../../../store/selectors";
-import type { ItemPixiRenderer } from "./ItemRenderer";
-import { ItemSoundAndGraphicsRenderer } from "./ItemSoundAndGraphicsRenderer";
-import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
-import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
-import { defaultUserSettings } from "../../../../store/defaultUserSettings";
-import { ItemFlashOnSwitchedRenderer } from "./ItemFlashOnSwitchedRenderer";
-import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
-import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
-import { maybeWrapInPortableItemPickUpNextHighlightRenderer } from "./PortableItemPickUpNextHighlightRenderer";
 import { debugItemClicked } from "../../../../store/slices/gameMenusSlice";
+import { store } from "../../../../store/store";
+import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { maybeWrapInEditorSelectedRenderer } from "./EditorAnnotationsRenderer";
+import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
+import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
+import { ItemFlashOnSwitchedRenderer } from "./ItemFlashOnSwitchedRenderer";
+import { ItemPositionRenderer } from "./ItemPositionRenderer";
+import { maybeCreateItemShadowRenderer } from "./ItemShadowRenderer";
+import { ItemSoundAndGraphicsRenderer } from "./ItemSoundAndGraphicsRenderer";
+import { maybeWrapInPortableItemPickUpNextHighlightRenderer } from "./PortableItemPickUpNextHighlightRenderer";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(

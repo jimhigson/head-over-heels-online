@@ -1,7 +1,8 @@
+import type { OutlineFilter } from "../filters/outlineFilter";
+
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { halfbrite } from "../../../utils/colour/halfBrite";
 import { accentColours } from "../../hintColours";
-import type { OutlineFilter } from "../filters/outlineFilter";
 import { outlineFilters } from "../filters/outlineFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 

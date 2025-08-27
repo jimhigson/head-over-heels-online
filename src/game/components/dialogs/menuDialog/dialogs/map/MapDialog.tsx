@@ -1,15 +1,16 @@
+import { useResizeDetector } from "react-resize-detector";
+
+import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
-import { useScrollingFromInput } from "../useScrollingFromInput";
-import { useResizeDetector } from "react-resize-detector";
-import { useAllowCharacterSwopping } from "./useCurrentCharacterName";
-import { useGameApi } from "../../../../GameApiContext";
-import { MapSvg } from "./Map.svg";
 import { swopPlayables } from "../../../../../gameState/mutators/swopCharacters";
-import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
+import { useGameApi } from "../../../../GameApiContext";
+import { useScrollingFromInput } from "../useScrollingFromInput";
+import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
+import { useAllowCharacterSwopping } from "./useCurrentCharacterName";
+import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 
 export const MapDialog = <RoomId extends string>() => {
   const { ref: mapContainerRef, width: mapContainerWidth } =

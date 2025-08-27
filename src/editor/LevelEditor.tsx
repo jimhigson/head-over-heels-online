@@ -1,13 +1,14 @@
-import { LevelEditorToolbar } from "./tools/LevelEditorToolbar";
-import { usePageAsAnApp } from "../pages/gamePage/usePageAsAnApp";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { CssVariables } from "../game/components/CssVariables";
-import { LazyJsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor.lazy";
-import { Suspense } from "react";
 import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
-import { LazyRoomEditingArea } from "./RoomEditingArea/RoomEditingArea.lazy";
-import { EditorMap } from "./EditorMap/EditorMap";
+import { Suspense } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+
+import { CssVariables } from "../game/components/CssVariables";
+import { usePageAsAnApp } from "../pages/gamePage/usePageAsAnApp";
 import { SpinnerHead, SpinnerHeels } from "../ui/Spinner";
+import { EditorMap } from "./EditorMap/EditorMap";
+import { LazyJsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor.lazy";
+import { LazyRoomEditingArea } from "./RoomEditingArea/RoomEditingArea.lazy";
+import { LevelEditorToolbar } from "./tools/LevelEditorToolbar";
 
 const LevelEditor = () => {
   usePageAsAnApp();

@@ -1,15 +1,16 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
+import type { GameState } from "../../gameState/GameState";
+import type { PressStatus } from "../../input/InputStateTracker";
+import type { Mechanic, MechanicResult } from "../MechanicResult";
+
 import { selectAtPath } from "../../../store/selectors";
 import { store } from "../../../store/store";
-import type { GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
-import type { PressStatus } from "../../input/InputStateTracker";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { type PlayableItem } from "../itemPredicates";
 import { isItemType } from "../itemPredicates";
-import type { Mechanic, MechanicResult } from "../MechanicResult";
 import { unitMechanicalResult } from "../MechanicResult";
 
 export const teleporterIsActive = <

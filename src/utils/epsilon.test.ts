@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+
 import { epsilon, nonZero } from "./epsilon";
 
 test("nonZero returns the same number when it's larger than epsilon", () => {

@@ -1,24 +1,26 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { StoodOnBy } from "src/model/StoodOnBy";
+
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { Xyz } from "../../../utils/vectors/vectors";
+
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import {
-  doorAlongAxis,
-  perpendicularAxisXy,
-  originXyz,
-  addXyz,
-  subXyz,
-  scaleXyz,
-} from "../../../utils/vectors/vectors";
-import { blockXyzToFineXyz } from "../../render/projections";
 import { emptyObject } from "../../../utils/empty";
-import { defaultBaseState } from "./itemDefaultStates";
-import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { pick } from "../../../utils/pick";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import {
+  addXyz,
+  doorAlongAxis,
+  originXyz,
+  perpendicularAxisXy,
+  scaleXyz,
+  subXyz,
+} from "../../../utils/vectors/vectors";
 import { veryHighZ } from "../../physics/mechanicsConstants";
+import { blockXyzToFineXyz } from "../../render/projections";
+import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { defaultBaseState } from "./itemDefaultStates";
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
@@ -46,7 +48,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonItemId: RoomItemId,
 ): Generator<
   ItemTypeUnion<
-    "doorFrame" | "doorLegs" | "stopAutowalk" | "portal" | "wall" | "blocker",
+    "blocker" | "doorFrame" | "doorLegs" | "portal" | "stopAutowalk" | "wall",
     RoomId,
     RoomItemId
   >

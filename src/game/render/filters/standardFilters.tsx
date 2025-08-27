@@ -1,21 +1,24 @@
+import type { Color } from "pixi.js";
+
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { spritesheetPaletteDim } from "gfx/spritesheetPaletteDim";
-import type { Color } from "pixi.js";
 import { type Filter } from "pixi.js";
-import type { PaletteSwaps } from "./PaletteSwapFilter";
-import { getPaletteSwapFilter } from "./PaletteSwapFilter";
+
+import type { UnknownRoomState } from "../../../model/RoomState";
 import type { Shades } from "../../hintColours";
+import type { PaletteSwaps } from "./PaletteSwapFilter";
+
+import { halfbrite, zxSpectrumDimmed } from "../../../utils/colour/halfBrite";
+import { emptyArray } from "../../../utils/empty";
 import {
   colorScheme,
   getColorScheme,
   yellowShadesInBasicRooms,
   yellowShadesInDimmedRooms,
 } from "../../hintColours";
-import { emptyArray } from "../../../utils/empty";
-import { RevertColouriseFilter } from "./RevertColouriseFilter";
-import { halfbrite, zxSpectrumDimmed } from "../../../utils/colour/halfBrite";
 import { HalfBriteFilter } from "./HalfBriteFilter";
-import type { UnknownRoomState } from "../../../model/RoomState";
+import { getPaletteSwapFilter } from "./PaletteSwapFilter";
+import { RevertColouriseFilter } from "./RevertColouriseFilter";
 
 /**
  * get the replaceLight/replaceDark swops for the given shade

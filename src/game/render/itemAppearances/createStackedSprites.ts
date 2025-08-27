@@ -1,8 +1,11 @@
 import type { ContainerChild } from "pixi.js";
-import { type Filter, Container } from "pixi.js";
+
+import { Container, type Filter } from "pixi.js";
+
 import type { AnimatedCreateSpriteOptions } from "../createSprite";
-import { type CreateSpriteOptions, createSprite } from "../createSprite";
+
 import { blockSizePx } from "../../../sprites/spritePivots";
+import { createSprite, type CreateSpriteOptions } from "../createSprite";
 
 export const itemRidingOnBubblesSpritesOptions: AnimatedCreateSpriteOptions = {
   animationId: "bubbles.cold",

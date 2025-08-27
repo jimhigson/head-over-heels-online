@@ -20,9 +20,34 @@ export type CybermanConfig = {
 
 export type MonsterJsonConfig =
   | {
-      which: "emperorsGuardian";
-      movement: MovementsSubset<"towards-analogue-unless-planet-crowns">;
-      activated: ActivatedWhenSubset<"while-player-near">;
+      which: "bubbleRobot";
+      movement: MovementsSubset<"patrol-randomly-xy8">;
+      activated: ActivatedWhenSubset<"off" | "on">;
+    }
+  | {
+      which: "computerBot";
+      movement: MovementsSubset<
+        // moonbase16
+        "patrol-randomly-xy4-and-reverse" | "towards-on-shortest-axis-xy4"
+      >;
+      activated: ActivatedWhenSubset<"off" | "on">;
+    }
+  | {
+      which: "dalek";
+      movement: MovementsSubset<"patrol-randomly-diagonal">;
+      activated: ActivatedWhenSubset<"off" | "on">;
+    }
+  | {
+      which: "elephant";
+      movement: MovementsSubset<"patrol-randomly-xy4">;
+      activated: ActivatedWhenSubset<"off" | "on">;
+    }
+  | {
+      which: "elephantHead";
+      movement: MovementsSubset<"turn-to-player">;
+      startDirection: DirectionXy4;
+      // is always unmoving:
+      activated: ActivatedWhenSubset<"off" | "on">;
     }
   | {
       which: "emperor";
@@ -30,52 +55,9 @@ export type MonsterJsonConfig =
       activated: ActivatedWhenSubset<"while-player-near">;
     }
   | {
-      which: "elephant";
-      movement: MovementsSubset<"patrol-randomly-xy4">;
-      activated: ActivatedWhenSubset<"on" | "off">;
-    }
-  | {
-      which: "elephantHead";
-      movement: MovementsSubset<"turn-to-player">;
-      startDirection: DirectionXy4;
-      // is always unmoving:
-      activated: ActivatedWhenSubset<"on" | "off">;
-    }
-  | {
-      which: "monkey";
-      movement: MovementsSubset<
-        // moonbase16
-        "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4"
-      >;
-      activated: ActivatedWhenSubset<"on" | "off">;
-    }
-  | {
-      which: "computerBot";
-      movement: MovementsSubset<
-        // moonbase16
-        "towards-on-shortest-axis-xy4" | "patrol-randomly-xy4-and-reverse"
-      >;
-      activated: ActivatedWhenSubset<"on" | "off">;
-    }
-  | {
-      which: "bubbleRobot";
-      movement: MovementsSubset<"patrol-randomly-xy8">;
-      activated: ActivatedWhenSubset<"on" | "off">;
-    }
-  | {
-      which: "dalek";
-      movement: MovementsSubset<"patrol-randomly-diagonal">;
-      activated: ActivatedWhenSubset<"on" | "off">;
-    }
-  | {
-      which: "homingBot";
-      movement: MovementsSubset<"towards-tripped-on-axis-xy4">;
-      activated: ActivatedWhenSubset<"on" | "off">;
-    }
-  | {
-      which: "helicopterBug";
-      movement: MovementsSubset<"patrol-randomly-xy8">;
-      activated: ActivatedWhenSubset<"on" | "off">;
+      which: "emperorsGuardian";
+      movement: MovementsSubset<"towards-analogue-unless-planet-crowns">;
+      activated: ActivatedWhenSubset<"while-player-near">;
     }
   | {
       which: "helicopterBug";
@@ -84,29 +66,47 @@ export type MonsterJsonConfig =
       activated: ActivatedWhenSubset<"while-player-near">;
     }
   | {
-      which: "turtle";
-      movement: MovementsSubset<
-        | "clockwise"
-        | "back-forth"
-        // remake
-        | "forwards"
-      >;
-      startDirection: DirectionXy4;
-      activated: ActivatedWhenSubset<"on" | "off">;
+      which: "helicopterBug";
+      movement: MovementsSubset<"patrol-randomly-xy8">;
+      activated: ActivatedWhenSubset<"off" | "on">;
     }
-  | CybermanConfig
+  | {
+      which: "homingBot";
+      movement: MovementsSubset<"towards-tripped-on-axis-xy4">;
+      activated: ActivatedWhenSubset<"off" | "on">;
+    }
+  | {
+      which: "monkey";
+      movement: MovementsSubset<
+        // moonbase16
+        "patrol-randomly-xy4" | "towards-on-shortest-axis-xy4"
+      >;
+      activated: ActivatedWhenSubset<"off" | "on">;
+    }
   | {
       which: "skiHead";
-      activated: ActivatedWhenSubset<"on" | "off">;
+      activated: ActivatedWhenSubset<"off" | "on">;
       movement: MovementsSubset<
         // #bookworld31
-        | "clockwise"
         | "back-forth"
+        | "clockwise"
         // remake
         | "forwards"
       >;
       startDirection: DirectionXy4;
       style: "greenAndPink" | "starsAndStripes";
-    };
+    }
+  | {
+      which: "turtle";
+      movement: MovementsSubset<
+        | "back-forth"
+        | "clockwise"
+        // remake
+        | "forwards"
+      >;
+      startDirection: DirectionXy4;
+      activated: ActivatedWhenSubset<"off" | "on">;
+    }
+  | CybermanConfig;
 
 export type MonsterWhich = MonsterJsonConfig["which"];

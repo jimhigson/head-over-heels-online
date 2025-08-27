@@ -1,8 +1,9 @@
-import { Fragment, type ReactElement } from "react";
 import type { JSX } from "react/jsx-runtime";
 
+import { Fragment, type ReactElement } from "react";
+
 export const componentOrElement = <P extends JSX.IntrinsicAttributes>(
-  either: ((props: P) => ReactElement | null) | ReactElement,
+  either: ((props: P) => null | ReactElement) | ReactElement,
   { key, ...props }: P,
 ): ReactElement => {
   if (typeof either === "function") {

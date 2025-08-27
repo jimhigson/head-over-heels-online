@@ -1,7 +1,12 @@
 import type { CSSProperties, FC, ReactNode } from "react";
+
 import { useRef, useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+
 import { CssVariables } from "../game/components/CssVariables";
+import { BitmapText } from "../game/components/tailwindSprites/Sprite";
+import { emptyObject } from "../utils/empty";
+import { Button } from "./button";
+import { cn } from "./cn";
 import {
   Command,
   CommandEmpty,
@@ -10,10 +15,7 @@ import {
   CommandItem,
   CommandList,
 } from "./command";
-import { Button } from "./button";
-import { BitmapText } from "../game/components/tailwindSprites/Sprite";
-import { emptyObject } from "../utils/empty";
-import { cn } from "./cn";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { useMouseWheelOptions } from "./useMouseWheel";
 
 type OptionCommandItemComponent<Value extends string> = FC<{
@@ -23,7 +25,7 @@ type OptionCommandItemComponent<Value extends string> = FC<{
 
 export type SelectProps<Value extends string> = {
   /** undefined if no value is selected */
-  value: Value | undefined;
+  value: undefined | Value;
   values: Readonly<Value[]>;
   OptionCommandItem?: OptionCommandItemComponent<Value>;
   triggerButtonClassName?: string;
@@ -33,11 +35,11 @@ export type SelectProps<Value extends string> = {
   tooltipContent?: ReactNode;
 } & (
   | {
-      disableCommandInput?: undefined | false;
-      placeholder: string;
+      disableCommandInput: true;
     }
   | {
-      disableCommandInput: true;
+      disableCommandInput?: false | undefined;
+      placeholder: string;
     }
 );
 

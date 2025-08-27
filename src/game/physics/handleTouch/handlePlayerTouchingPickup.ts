@@ -1,9 +1,13 @@
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
-import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
+import type { GameState } from "../../gameState/GameState";
+import type { PlayableItem } from "../itemPredicates";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
+
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
+import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   crownCollected,
@@ -12,7 +16,6 @@ import {
 } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   selectHeadAbilities,
@@ -22,8 +25,6 @@ import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { createSavedGame } from "../../gameState/saving/createSavedGame";
 import { floatingTextFixedZIndex } from "../../render/sortZ/fixedZIndexes";
-import type { PlayableItem } from "../itemPredicates";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 /**
  * how long to keep the floating text item in the room?

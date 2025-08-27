@@ -1,10 +1,12 @@
 import type { Sprite } from "pixi.js";
+
 import type { ItemAppearance } from "../ItemAppearance";
-import { teleporterIsActive } from "../../../physics/mechanics/teleporting";
+
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
-import { isPlayableItem } from "../../../physics/itemPredicates";
-import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
+import { isPlayableItem } from "../../../physics/itemPredicates";
+import { teleporterIsActive } from "../../../physics/mechanics/teleporting";
 
 type RenderProps = {
   flashing: boolean;

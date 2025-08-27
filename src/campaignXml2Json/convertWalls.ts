@@ -1,11 +1,12 @@
+import type { JsonItem } from "../model/json/JsonItem";
+import type { AxisXy, Xyz } from "../utils/vectors/vectors";
+import type { Xml2JsonRoom } from "./readToJson";
+
 import { convertX, convertY } from "./convertCampaign";
 import { convertSceneryName } from "./convertPlanetName";
 import { convertRoomDimensions } from "./convertRoomDimensions";
 import { convertWallName } from "./convertWallName";
-import type { Xml2JsonRoom } from "./readToJson";
 import { type SidesWithDoors } from "./xmlRoomSidesWithDoors";
-import type { AxisXy, Xyz } from "../utils/vectors/vectors";
-import type { JsonItem } from "../model/json/JsonItem";
 
 export const convertWalls = (
   xml2JsonRoom: Xml2JsonRoom,

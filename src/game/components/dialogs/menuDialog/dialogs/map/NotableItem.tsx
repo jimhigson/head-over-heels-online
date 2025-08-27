@@ -1,18 +1,20 @@
+import type { MouseEvent } from "react";
+
 import type { JsonItem } from "../../../../../../model/json/JsonItem";
 import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 import type { Xyz } from "../../../../../../utils/vectors/vectors";
+
 import { vectorClosestDirectionXy8 } from "../../../../../../utils/vectors/vectors";
 import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 import { ScrollIntoView } from "./ScrollIntoView";
-import type { MouseEvent } from "react";
 
 /**
  * items that get rendered on the map if they are found in the room's json
  */
 export type NotableItem<RoomId extends string> =
-  | JsonItem<"pickup", RoomId>
   | JsonItem<"hushPuppy", RoomId>
   | JsonItem<"lift", RoomId>
+  | JsonItem<"pickup", RoomId>
   | JsonItem<"teleporter", RoomId>;
 
 export const SpriteInRoom = ({

@@ -1,6 +1,17 @@
-import { useMemo, type ReactElement } from "react";
-import { entries } from "../../../../../../utils/entries";
+import { type ReactElement, useMemo } from "react";
 
+import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
+import type { ConsolidatableConfig } from "../../../../../../model/json/utilityJsonConfigTypes";
+import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
+import type { RoomJson } from "../../../../../../model/RoomJson";
+import type { PlayableItem } from "../../../../../physics/itemPredicates";
+
+import { itemInPlayCentre } from "../../../../../../model/itemInPlayCentre";
+import { timesNotMultiplied } from "../../../../../../model/json/utilityJsonConfigTypes";
+import { blockSizePx } from "../../../../../../sprites/spritePivots";
+import { emptyObject } from "../../../../../../utils/empty";
+import { entries } from "../../../../../../utils/entries";
+import { normalise } from "../../../../../../utils/maths/normalise";
 import {
   addXy,
   elementWiseProductXyz,
@@ -8,25 +19,15 @@ import {
   scaleXyz,
   type Xy,
 } from "../../../../../../utils/vectors/vectors";
+import { roomJsonFloorsExtent } from "../../../../../render/floorsExtent";
 import { roomGridSizeXY } from "./mapConstants";
-import { translateXyz } from "./svgHelpers";
 import {
+  type NotableItem,
   NotableItemSvg,
   PlayableItemInRoom,
-  type NotableItem,
 } from "./NotableItem";
 import { roomItemPositions } from "./roomItemPositions";
-import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
-import type { ConsolidatableConfig } from "../../../../../../model/json/utilityJsonConfigTypes";
-import { timesNotMultiplied } from "../../../../../../model/json/utilityJsonConfigTypes";
-import { emptyObject } from "../../../../../../utils/empty";
-import type { RoomJson } from "../../../../../../model/RoomJson";
-import type { PlayableItem } from "../../../../../physics/itemPredicates";
-import { itemInPlayCentre } from "../../../../../../model/itemInPlayCentre";
-import { blockSizePx } from "../../../../../../sprites/spritePivots";
-import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
-import { roomJsonFloorsExtent } from "../../../../../render/floorsExtent";
-import { normalise } from "../../../../../../utils/maths/normalise";
+import { translateXyz } from "./svgHelpers";
 
 export const ItemsInRoomLayout = <ItemId extends string, Item>({
   items,

@@ -1,3 +1,20 @@
+import { objectValues } from "iter-tools";
+
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type {
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlay";
+import type { RoomState } from "../../model/RoomState";
+import type { GameState } from "../gameState/GameState";
+
+import { stoodOnItem } from "../../model/stoodOnItemsLookup";
+import { iterate } from "../../utils/iterate";
+import { addXyz, scaleXyz } from "../../utils/vectors/vectors";
+import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
+import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
+import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerTouchingDeadly";
+import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerTouchingPickup";
 import {
   isButton,
   isCarrier,
@@ -11,38 +28,23 @@ import {
 } from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
 import { isPlayableItem } from "../physics/itemPredicates";
-import type { GameState } from "../gameState/GameState";
 import { type MechanicResult } from "../physics/MechanicResult";
+import { tickActivation } from "../physics/mechanics/activation";
+import { buttonPressAndRelease } from "../physics/mechanics/buttonPressAndRelease";
+import { carrying } from "../physics/mechanics/carrying";
+import { emitting } from "../physics/mechanics/emitting";
+import { firing } from "../physics/mechanics/firing";
 import { gravity } from "../physics/mechanics/gravity";
 import { jumping } from "../physics/mechanics/jumping";
-import { walking } from "../physics/mechanics/walking";
-import { moveLift } from "../physics/mechanics/moveLift";
-import { moveItem } from "../physics/moveItem";
-import { teleporting } from "../physics/mechanics/teleporting";
-import { onConveyor } from "../physics/mechanics/onConveyor";
-import { tickMovement } from "../physics/mechanics/movement";
-import { carrying } from "../physics/mechanics/carrying";
 import { latentMovement } from "../physics/mechanics/latentMovement";
-import { objectValues } from "iter-tools";
-import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerTouchingDeadly";
-import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
-import { firing } from "../physics/mechanics/firing";
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
-import { iterate } from "../../utils/iterate";
-import { addXyz, scaleXyz } from "../../utils/vectors/vectors";
-import { applyMechanicsResults } from "./applyMechanicsResults";
-import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerTouchingPickup";
-import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
-import type { RoomState } from "../../model/RoomState";
-import { stoodOnItem } from "../../model/stoodOnItemsLookup";
-import { tickActivation } from "../physics/mechanics/activation";
-import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import { emitting } from "../physics/mechanics/emitting";
+import { moveLift } from "../physics/mechanics/moveLift";
+import { tickMovement } from "../physics/mechanics/movement";
+import { onConveyor } from "../physics/mechanics/onConveyor";
+import { teleporting } from "../physics/mechanics/teleporting";
+import { walking } from "../physics/mechanics/walking";
+import { moveItem } from "../physics/moveItem";
 import { addParticlesAroundCrown } from "./addParticlesToRoom";
-import { buttonPressAndRelease } from "../physics/mechanics/buttonPressAndRelease";
+import { applyMechanicsResults } from "./applyMechanicsResults";
 
 function* itemMechanicResultGen<
   T extends ItemInPlayType,

@@ -1,9 +1,10 @@
-import { type GameState } from "../game/gameState/GameState";
-import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
 import type { ItemInPlayType } from "../model/ItemInPlay";
 import type { ItemState } from "../model/ItemState";
-import { getRoomItem } from "../model/RoomState";
 import type { TestRoomId } from "./basicRoom";
+
+import { type GameState } from "../game/gameState/GameState";
+import { selectCurrentRoomState } from "../game/gameState/gameStateSelectors/selectCurrentRoomState";
+import { getRoomItem } from "../model/RoomState";
 
 export const headState = (gameState: GameState<TestRoomId>) => {
   // TODO: cast should be unnecessary with known item ids

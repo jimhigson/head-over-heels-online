@@ -1,12 +1,14 @@
-import { expect, vi, test, beforeEach } from "vitest";
-import { progressWithSubTicks } from "./progressWithSubTicks";
+import { beforeEach, expect, test, vi } from "vitest";
+
 import type { TestRoomId } from "../../_testUtils/basicRoom";
-import { setUpBasicGame } from "../../_testUtils/basicRoom";
-import type { MovedItems, ProgressGameState } from "./progressGameState";
-import type { GameState } from "../gameState/GameState";
 import type { ItemInPlay } from "../../model/ItemInPlay";
 import type { RoomStateItems } from "../../model/RoomState";
+import type { GameState } from "../gameState/GameState";
+import type { MovedItems, ProgressGameState } from "./progressGameState";
+
+import { setUpBasicGame } from "../../_testUtils/basicRoom";
 import { resetStore } from "../../_testUtils/initStoreForTests";
+import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const createGameState = ({
   gameSpeed,

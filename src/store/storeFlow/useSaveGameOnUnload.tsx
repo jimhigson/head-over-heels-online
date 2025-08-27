@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { useAppDispatch } from "../hooks";
-import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
+
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
-import { persistor, store } from "../store";
-import { holdPressed, saveGame } from "../slices/gameMenusSlice";
+import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
 import { isInPlaytestMode } from "../../game/isInPlaytestMode";
+import { useAppDispatch } from "../hooks";
+import { holdPressed, saveGame } from "../slices/gameMenusSlice";
+import { persistor, store } from "../store";
 
 export const useSaveGameOnUnload = (): void => {
   const dispatch = useAppDispatch();

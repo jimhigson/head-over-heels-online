@@ -1,9 +1,10 @@
+import type { SceneryName } from "../sprites/planets";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { JsonItemUnion } from "./json/JsonItem";
 import type { AnyWallJsonConfig, WallJsonConfig } from "./json/WallJsonConfig";
-import type { SceneryName } from "../sprites/planets";
-import { type Xy, type Xyz, unitXyz } from "../utils/vectors/vectors";
+
 import { isMultipliedItem } from "../game/physics/itemPredicates";
+import { unitXyz, type Xy, type Xyz } from "../utils/vectors/vectors";
 
 /**
  * imply the wall times from json wall items based on the number of tiles, or the
@@ -11,7 +12,7 @@ import { isMultipliedItem } from "../game/physics/itemPredicates";
  */
 
 export const wallTimes = (
-  config: WallJsonConfig<SceneryName> | AnyWallJsonConfig,
+  config: AnyWallJsonConfig | WallJsonConfig<SceneryName>,
 ): Partial<Xy> => {
   return {
     x:
@@ -59,7 +60,7 @@ export const getJsonItemTimes = (item: JsonItemUnion): Xyz => {
     item: JsonItemUnion,
   ): item is JsonItemUnion & { config: { times: Partial<Xyz> } } => {
     type ItemConfigMaybeWithMultiplication = {
-      times?: undefined | Partial<Xyz>;
+      times?: Partial<Xyz> | undefined;
     };
 
     return (

@@ -1,7 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import type { HoveredItem, LevelEditorState } from "../levelEditorSlice";
+
 import type { EditorRoomItemId } from "../../editorTypes";
+import type { HoveredItem, LevelEditorState } from "../levelEditorSlice";
+
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const selectionsReducers = {

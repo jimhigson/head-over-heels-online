@@ -1,11 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
-import type { editor } from "monaco-editor";
-import { parseTree, type Node, findNodeAtLocation } from "jsonc-parser";
-import { useLoadMonaco } from "./useLoadMonaco";
-import { twClass } from "../twClass";
-import type { EditorRoomItemId } from "../editorTypes";
 import type { Monaco } from "@monaco-editor/react";
+import type { editor } from "monaco-editor";
+
+import { findNodeAtLocation, type Node, parseTree } from "jsonc-parser";
+import { useEffect, useRef, useState } from "react";
+
+import type { EditorRoomItemId } from "../editorTypes";
+
+import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import { twClass } from "../twClass";
+import { useLoadMonaco } from "./useLoadMonaco";
 
 const useMonacoEditorText = (
   editor: editor.IStandaloneCodeEditor | null,

@@ -1,6 +1,7 @@
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import type { Xyz } from "../../../utils/vectors/vectors";
+
+import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockXyzToFineXyz } from "../../render/projections";

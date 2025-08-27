@@ -1,9 +1,10 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
+
+import { scaleXyz } from "../../../utils/vectors/vectors";
 import { type FreeItemTypes } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
-import { scaleXyz } from "../../../utils/vectors/vectors";
 
 /**
  * Apply scheduled movement frames to items. Movement frames have start and end times,

@@ -1,14 +1,15 @@
-import { mtv } from "../mtv";
-import { moveSpeedPixPerMs } from "../mechanicsConstants";
-import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import type {
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
 import type { Xy } from "../../../utils/vectors/vectors";
-import { unitVector, scaleXyz } from "../../../utils/vectors/vectors";
 import type { FreeItemTypes } from "../itemPredicates";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
+
+import { scaleXyz, unitVector } from "../../../utils/vectors/vectors";
 import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
+import { moveSpeedPixPerMs } from "../mechanicsConstants";
+import { mtv } from "../mtv";
 import { recordActedOnBy } from "../recordActedOnBy";
 
 export const handleItemTouchingJoystick = <

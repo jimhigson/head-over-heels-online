@@ -1,24 +1,25 @@
-import { positionCentredInBlock } from "./positionCentredInBlock";
-import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type {
   CommonAbilities,
   PlayableState,
 } from "../../../model/ItemStateMap";
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { CharacterName } from "../../../model/modelTypes";
-import { emptyObject } from "../../../utils/empty";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { originXyz } from "../../../utils/vectors/vectors";
-import { smallItemAabb } from "../../collision/boundingBoxes";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import { originalGameStartingLives } from "../../physics/mechanicsConstants";
-import { store } from "../../../store/store";
+
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
   selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
 } from "../../../store/selectors";
+import { store } from "../../../store/store";
+import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import { originXyz } from "../../../utils/vectors/vectors";
+import { smallItemAabb } from "../../collision/boundingBoxes";
+import { originalGameStartingLives } from "../../physics/mechanicsConstants";
+import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
+import { positionCentredInBlock } from "./positionCentredInBlock";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,

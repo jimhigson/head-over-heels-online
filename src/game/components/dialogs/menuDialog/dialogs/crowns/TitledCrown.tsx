@@ -1,10 +1,11 @@
 import type { TailwindPalette } from "../../../../../../../tailwind.config";
-import { twClass } from "../../../../../../editor/twClass";
 import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureId } from "../../../../../../sprites/spriteSheetData";
+import type { SanitisedForClassName } from "../../../../tailwindSprites/SanitiseForClassName";
+
+import { twClass } from "../../../../../../editor/twClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/selectors";
-import type { SanitisedForClassName } from "../../../../tailwindSprites/SanitiseForClassName";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 const colourCycle: Record<PlanetName, `text-${TailwindPalette}`[]> = {

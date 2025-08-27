@@ -1,34 +1,37 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
 import type { SetRequired, ValueOf } from "type-fest";
+
+import { createSlice } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
+
+import type { RootState } from "../../store/store";
 import type {
   EditorCampaign,
   EditorRoomJson,
   EditorRoomJsonItems,
 } from "../editorTypes";
-import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
+import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import type { Tool } from "../Tool";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store/store";
-import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
+
+import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
+import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCurrentRoomFromLevelEditorState,
   selectItemInLevelEditorState,
   selectItemIsSelectedInLevelEditorState,
 } from "./levelEditorSelectors";
-import { undoReducers, undoSelectors } from "./reducers/undoReducers";
+import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
+import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
+import { campaignManagementReducers } from "./reducers/campaignManagementReducers";
+import { changeRoomReducers } from "./reducers/changeRoomReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
-import { selectionsReducers } from "./reducers/selectionsReducers";
-import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreviewReducers";
-import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
+import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreviewReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
-import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
-import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
-import { changeRoomReducers } from "./reducers/changeRoomReducers";
-import { campaignManagementReducers } from "./reducers/campaignManagementReducers";
+import { selectionsReducers } from "./reducers/selectionsReducers";
+import { undoReducers, undoSelectors } from "./reducers/undoReducers";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;

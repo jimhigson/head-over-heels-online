@@ -1,9 +1,10 @@
 //# allFunctionsCalledOnLoad
 
 import type { Xyz } from "../../../utils/vectors/vectors";
-import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
-import { veryClose } from "../../../utils/epsilon";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
+
+import { veryClose } from "../../../utils/epsilon";
+import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
 import { projectAabbCorners } from "./projectAabbCorners";
 
 /** to compensate for floating point error, ranges have to be overlapping by this much to consider them to be visually overlapping */
@@ -35,7 +36,7 @@ type ADJACENT_Y = typeof ADJACENT_Y;
 // ACTUALLY, we don't care about z-adjacency yet since it doesn't cause noticeable visual
 // artifacts like x and y
 //type ADJACENT_Z = typeof ADJACENT_Z;
-type VISUALLY_OVERLAPS_RETURN = NO_OVERLAP | OVERLAP | ADJACENT_X | ADJACENT_Y;
+type VISUALLY_OVERLAPS_RETURN = ADJACENT_X | ADJACENT_Y | NO_OVERLAP | OVERLAP;
 //| ADJACENT_Z;
 
 /**

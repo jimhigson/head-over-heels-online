@@ -1,17 +1,18 @@
-import { blockXyzToFineXyz } from "../../render/projections";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import { addXyz, originXyz } from "../../../utils/vectors/vectors";
-import type { JsonItemUnion } from "../../../model/json/JsonItem";
-import { type JsonItem } from "../../../model/json/JsonItem";
-
-import { fullBlockAabb } from "../../collision/boundingBoxes";
-import type { RoomJson } from "../../../model/RoomJson";
-import { defaultBaseState } from "./itemDefaultStates";
 import { objectValues } from "iter-tools";
-import { iterate } from "../../../utils/iterate";
-import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type JsonItem } from "../../../model/json/JsonItem";
+import { iterate } from "../../../utils/iterate";
+import { addXyz, originXyz } from "../../../utils/vectors/vectors";
+import { fullBlockAabb } from "../../collision/boundingBoxes";
+import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+import { blockXyzToFineXyz } from "../../render/projections";
+import { defaultBaseState } from "./itemDefaultStates";
 
 // a value of 3 makes items less likely to get pushed through the floor if
 // there are collisions on-load, than if it were just 1.

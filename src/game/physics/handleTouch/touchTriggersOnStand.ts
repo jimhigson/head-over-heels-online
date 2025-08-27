@@ -1,6 +1,7 @@
+import type { ItemTouchEvent } from "./ItemTouchEvent";
+
 import { spatiallyCheckStandingOn } from "../../collision/checkStandingOn";
 import { isFreeItem } from "../itemPredicates";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
 
 /**
  * check that we're standing on something - for blocks that disappear on stand,

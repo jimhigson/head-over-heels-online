@@ -1,6 +1,7 @@
 import type { RoomState } from "../../../model/RoomState";
-import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import type { FreeItem } from "../../physics/itemPredicates";
+
+import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 
 export const removeStandingOn = <
   RoomId extends string,

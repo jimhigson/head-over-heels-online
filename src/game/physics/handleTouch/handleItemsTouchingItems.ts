@@ -1,21 +1,21 @@
 import { isSolid, slidingItemTypes } from "../itemPredicates";
-import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
 import { handleItemWithMovementTouchingItem } from "../mechanics/movement";
-import { handleItemTouchingSwitch } from "./handleItemTouchingSwitch";
+import { handleFiredDoughnutTouchingMonster } from "./handleFiredDoughnutTouchingMonster";
+import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing";
+import { handleItemTouchingJoystick } from "./handleItemTouchingJoystick";
 import {
   handleItemTouchingSlidingItem,
   handleSlidingItemTouchingAnyItem,
 } from "./handleItemTouchingSlidingItem";
-import { handleItemTouchingJoystick } from "./handleItemTouchingJoystick";
+import { handleItemTouchingSwitch } from "./handleItemTouchingSwitch";
+import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
 import {
+  type ItemTouchEvent,
   movingItemIsPlayable,
   movingItemIsType,
   touchedItemIsPlayable,
   touchedItemIsType,
-  type ItemTouchEvent,
 } from "./ItemTouchEvent";
-import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing";
-import { handleFiredDoughnutTouchingMonster } from "./handleFiredDoughnutTouchingMonster";
 
 /**
  * same old - Morties touching Morties

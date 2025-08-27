@@ -1,4 +1,5 @@
 import type { MarkdownPageName } from "../../../../manual/pages";
+
 import { markdownPages } from "../../../../manual/pages";
 import { keys } from "../../../../utils/entries";
 

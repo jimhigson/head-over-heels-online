@@ -1,8 +1,9 @@
-import path from "path";
 import type { PluginOption } from "vite";
-import { defineConfig } from "vite";
+
 import react from "@vitejs/plugin-react-swc";
+import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;

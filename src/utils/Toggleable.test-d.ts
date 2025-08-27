@@ -1,4 +1,5 @@
 import { expectTypeOf, test } from "vitest";
+
 import type { ToggleablePaths } from "./Toggleable";
 
 test("Toggleable", () => {
@@ -25,8 +26,8 @@ test("Toggleable", () => {
   expectTypeOf<Result>().toMatchTypeOf<
     | "boolean"
     | "maybeBoolean"
-    | "requiredObject" // < - this is wrong!
     | "requiredObject.boolean"
     | "requiredObject.maybeBoolean"
+    | "requiredObject" // < - this is wrong!
   >();
 });

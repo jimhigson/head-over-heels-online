@@ -1,17 +1,18 @@
+import Portal from "@mutabazia/react-portal";
 import { useCallback } from "react";
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
+
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
-import Portal from "@mutabazia/react-portal";
-import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BackMenuItem } from "../../BackMenuItem";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 
 const blurbMarkdown = `##*HoH-ed ➡* The Level editor
 I built an *editor* so I could make the **sequel levels**

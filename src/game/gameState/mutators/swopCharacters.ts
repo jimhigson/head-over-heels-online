@@ -1,16 +1,16 @@
+import type { IndividualCharacterName } from "../../../model/modelTypes";
+
+import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import { type GameState } from "../GameState";
+import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
-
 import { setStandingOn } from "./setStandingOn";
-import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import {
-  uncombinePlayablesFromSymbiosis,
   combinePlayablesInSymbiosis,
+  uncombinePlayablesFromSymbiosis,
 } from "./symbiosis";
-import type { IndividualCharacterName } from "../../../model/modelTypes";
-import { otherIndividualCharacterName } from "../../../model/modelTypes";
 
 export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,

@@ -1,27 +1,30 @@
 import type { IRenderLayer } from "pixi.js";
+import type { SetRequired } from "type-fest";
+
 import { Container, RenderLayer } from "pixi.js";
-import { updateZEdges } from "./sortZ/updateZEdges";
-import { toposort } from "./sortZ/toposort/toposort";
-import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
-import { createItemRenderer } from "./item/itemRender/createItemRenderer";
-import type { ItemTickContext } from "./ItemRenderContexts";
-import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
-import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
-import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
-import { getColorScheme } from "../hintColours";
-import type { ZxSpectrumRoomColour } from "../../originalGame";
-import { defaultUserSettings } from "../../store/defaultUserSettings";
-import { iterateRoomItems } from "../../model/RoomState";
+
 import type {
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import { audioCtx } from "../../sound/audioCtx";
-import { dimLut, noFilters } from "./filters/standardFilters";
-import type { SetRequired } from "type-fest";
+import type { ZxSpectrumRoomColour } from "../../originalGame";
+import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
+import type { ItemTickContext } from "./ItemRenderContexts";
+import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
 import type { RoomRendererType } from "./RoomRendererType";
+import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
+
+import { iterateRoomItems } from "../../model/RoomState";
+import { audioCtx } from "../../sound/audioCtx";
+import { defaultUserSettings } from "../../store/defaultUserSettings";
 import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
+import { getColorScheme } from "../hintColours";
+import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
+import { dimLut, noFilters } from "./filters/standardFilters";
+import { createItemRenderer } from "./item/itemRender/createItemRenderer";
 import { type ZGraph } from "./sortZ/GraphEdges";
+import { toposort } from "./sortZ/toposort/toposort";
+import { updateZEdges } from "./sortZ/updateZEdges";
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>

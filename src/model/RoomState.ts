@@ -1,8 +1,11 @@
 import type { Simplify, ValueOf } from "type-fest";
+
+import { objectEntries, objectValues } from "iter-tools";
+
 import type { SceneryName } from "../sprites/planets";
 import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
-import { objectEntries, objectValues } from "iter-tools";
+
 import { iterate } from "../utils/iterate";
 
 /*type RoomItemIdWithKnownIds = (
@@ -41,14 +44,14 @@ export const getRoomItem = <
 ) => {
   return roomItems?.[id] as
     | (Id extends "head" ?
-        ItemInPlay<"head", RoomId, RoomItemId | "head", "head", ScN>
+        ItemInPlay<"head", RoomId, "head" | RoomItemId, "head", ScN>
       : Id extends "heels" ?
-        ItemInPlay<"heels", RoomId, RoomItemId | "heels", "heels", ScN>
+        ItemInPlay<"heels", RoomId, "heels" | RoomItemId, "heels", ScN>
       : Id extends "headOverHeels" ?
         ItemInPlay<
           "headOverHeels",
           RoomId,
-          RoomItemId | "headOverHeels",
+          "headOverHeels" | RoomItemId,
           "headOverHeels",
           ScN
         >

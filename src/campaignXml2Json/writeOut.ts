@@ -1,13 +1,16 @@
-import { readFile, writeFile } from "node:fs/promises";
-import { canonicalize } from "json-canonicalize";
-import { objectValues } from "iter-tools";
-import { iterate } from "../utils/iterate";
-import { orderBy } from "natural-orderby";
-import type { AnyRoomJson } from "../model/RoomJson";
 import type { Operation } from "fast-json-patch";
-import fastJsonPatch from "fast-json-patch";
+
 import chalk from "chalk";
+import fastJsonPatch from "fast-json-patch";
+import { objectValues } from "iter-tools";
+import { canonicalize } from "json-canonicalize";
+import { orderBy } from "natural-orderby";
+import { readFile, writeFile } from "node:fs/promises";
+
 import type { Campaign } from "../model/modelTypes";
+import type { AnyRoomJson } from "../model/RoomJson";
+
+import { iterate } from "../utils/iterate";
 
 const roomTs = (room: AnyRoomJson): string =>
   `

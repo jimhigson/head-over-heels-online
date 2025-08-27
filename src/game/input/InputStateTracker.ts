@@ -1,5 +1,21 @@
-import { store } from "../../store/store";
+import { Ticker, UPDATE_PRIORITY } from "pixi.js";
+
 import type { Xyz } from "../../utils/vectors/vectors";
+import type { GamepadState } from "./GamepadState";
+import type { HudInputState } from "./hudInputState";
+import type { AxisAssignableAction, InputPress } from "./InputAssignment";
+import type { KeyboardStateMap } from "./keyboardState";
+import type { Key } from "./keys";
+
+import {
+  selectInputAssignment,
+  selectInputDirectionMode,
+  selectScreenRelativeControl,
+} from "../../store/selectors";
+import { store } from "../../store/store";
+import { emptyArray } from "../../utils/empty";
+import { iterate } from "../../utils/iterate";
+import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
   directionsXy4,
@@ -10,24 +26,10 @@ import {
   scaleXyz,
   xyzEqual,
 } from "../../utils/vectors/vectors";
-import type { AxisAssignableAction, InputPress } from "./InputAssignment";
+import { type BooleanAction, lookDirectionsXy4 } from "./actions";
 import { actionToAxis } from "./actionToAxis";
-import { lookDirectionsXy4, type BooleanAction } from "./actions";
-import type { KeyboardStateMap } from "./keyboardState";
-import { Ticker, UPDATE_PRIORITY } from "pixi.js";
-import type { Key } from "./keys";
-import { unitVectors } from "../../utils/vectors/unitVectors";
-import type { GamepadState } from "./GamepadState";
-import { extractGamepadsState } from "./GamepadState";
 import { rotateInputVector45, snapXyFnMap } from "./analogueControlAdjustments";
-import { iterate } from "../../utils/iterate";
-import { emptyArray } from "../../utils/empty";
-import type { HudInputState } from "./hudInputState";
-import {
-  selectInputDirectionMode,
-  selectInputAssignment,
-  selectScreenRelativeControl,
-} from "../../store/selectors";
+import { extractGamepadsState } from "./GamepadState";
 import { lookUnitVectors } from "./lookUnitVectors";
 
 export const analogueDeadzone = 0.2;
@@ -86,7 +88,7 @@ const isGamepadAxisPressed = (
    * if given, will only return true if the axis is moving in that direction. Otherwise,
    * returns true if it is more than the threshold in either direction
    */
-  direction?: 1 | -1,
+  direction?: -1 | 1,
 ) => {
   for (const gp of frameInput.gamepads) {
     if (gp === null || gp.axes.length <= axis) {
@@ -308,7 +310,7 @@ export class InputStateTracker {
     let pressVs = [
       ...this.#pressVectors(currentFrameInput, directionsXy4, unitVectors),
     ];
-    let recentlyReleasedPress: Xyz | undefined = undefined;
+    let recentlyReleasedPress: undefined | Xyz = undefined;
 
     if (pressVs.length === 1) {
       const [singlePressedNow] = pressVs;
@@ -564,12 +566,12 @@ export class InputStateTracker {
 // ont the class type I'm not sure
 export type InputStateTrackerInterface = Pick<
   InputStateTracker,
+  | "actionsHandled"
   | "currentActionPress"
-  | "inputTap"
   | "directionVector"
+  | "hudInputState"
+  | "inputTap"
   | "lookVector"
   | "startTicking"
   | "stopTicking"
-  | "hudInputState"
-  | "actionsHandled"
 >;

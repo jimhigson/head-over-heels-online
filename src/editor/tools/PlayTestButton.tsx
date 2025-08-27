@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { compressObject } from "../../db/compressObject";
+
 import type { TypedURLSearchParams } from "../../options/queryParams";
+
+import { compressObject } from "../../db/compressObject";
 import { store } from "../../store/store";
 import { Switch } from "../../ui/Switch";
 import {
-  selectCurrentCampaignInProgress,
   type RootStateWithLevelEditorSlice,
+  selectCurrentCampaignInProgress,
 } from "../slice/levelEditorSlice";
 import { MenuButton } from "./MenuButton";
 import { ToolbarButton } from "./ToolbarButton";

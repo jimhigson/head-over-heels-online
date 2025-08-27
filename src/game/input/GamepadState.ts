@@ -10,7 +10,7 @@ import type { PickDeep } from "type-fest";
  */
 export type GamepadState = PickDeep<
   Gamepad,
-  `buttons.${number}.pressed` | "axes"
+  "axes" | `buttons.${number}.pressed`
 >;
 export const extractGamepadsState = (
   gp: Array<Gamepad | null>,

@@ -1,7 +1,8 @@
+import type { ItemAppearance } from "./ItemAppearance";
+
 import { emptyObject } from "../../../utils/empty";
 import { createSprite } from "../createSprite";
 import { createStackedSprites } from "./createStackedSprites";
-import type { ItemAppearance } from "./ItemAppearance";
 
 export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
   renderContext: {

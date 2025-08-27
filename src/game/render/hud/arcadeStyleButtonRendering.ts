@@ -1,18 +1,20 @@
 import { Container, type Sprite } from "pixi.js";
+
+import type { Button } from "./OnScreenButtonRenderer";
+
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import { halfbrite } from "../../../utils/colour/halfBrite";
 import { createSprite } from "../createSprite";
+import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
+import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import {
   greyFilter,
   noFilters,
   replaceWithHalfbriteFilter,
 } from "../filters/standardFilters";
 import { buttonColours } from "./buttonColours";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { showTextInContainer } from "./showNumberInContainer";
-import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
-import { halfbrite } from "../../../utils/colour/halfBrite";
-import type { Button } from "./OnScreenButtonRenderer";
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 
 export const surfaceContentSym: unique symbol = Symbol();
 export const buttonSpriteSym: unique symbol = Symbol();

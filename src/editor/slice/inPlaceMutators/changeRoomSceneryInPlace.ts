@@ -1,6 +1,7 @@
 import type { PlanetName } from "../../../sprites/planets";
-import { planets, type SceneryName } from "../../../sprites/planets";
 import type { EditorRoomJson } from "../../editorTypes";
+
+import { planets, type SceneryName } from "../../../sprites/planets";
 import { rotatingSceneryTiles } from "../createStarterRoom";
 
 export const changeRoomSceneryInPlace = (

@@ -1,13 +1,15 @@
 import { objectValues } from "iter-tools";
 import { Ticker } from "pixi.js";
 import { useEffect } from "react";
+
 import type { MovedItems } from "../../game/mainLoop/progressGameState";
 import type {
-  EditorRoomRenderer,
   EditorRoomId,
   EditorRoomItemId,
+  EditorRoomRenderer,
   EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
+
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 

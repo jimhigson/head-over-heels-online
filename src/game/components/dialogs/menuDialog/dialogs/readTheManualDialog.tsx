@@ -1,27 +1,28 @@
-import { Dialog } from "../../../../../ui/dialog";
-import { Border } from "../../../../../ui/Border";
 import type { ManualPageName } from "../../../../../manual/pages";
+import type { DialogId } from "../DialogId";
+
 import { manualPages, pageTitle } from "../../../../../manual/pages";
 import {
   backToParentMenu,
   goToSubmenu,
 } from "../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
-import { keysIter } from "../../../../../utils/entries";
-import { iterate } from "../../../../../utils/iterate";
-import { BitmapText } from "../../../tailwindSprites/Sprite";
-import { MenuItem } from "../MenuItem";
-import { BackMenuItem } from "../BackMenuItem";
-import { MenuItemSeparator } from "../MenuItemSeparator";
-import { MenuItems } from "../MenuItems";
-import { multilineTextClass } from "../multilineTextClass";
-import type { DialogId } from "../DialogId";
+import { Border } from "../../../../../ui/Border";
+import { Dialog } from "../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../ui/DialogPortal";
-import { MobileStyleBackButton } from "./MobileStyleBackButton";
 import {
   detectDeviceType,
   isTouchDevice,
 } from "../../../../../utils/detectDeviceType";
+import { keysIter } from "../../../../../utils/entries";
+import { iterate } from "../../../../../utils/iterate";
+import { BitmapText } from "../../../tailwindSprites/Sprite";
+import { BackMenuItem } from "../BackMenuItem";
+import { MenuItem } from "../MenuItem";
+import { MenuItems } from "../MenuItems";
+import { MenuItemSeparator } from "../MenuItemSeparator";
+import { multilineTextClass } from "../multilineTextClass";
+import { MobileStyleBackButton } from "./MobileStyleBackButton";
 
 const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
   const pageContent = manualPages[pageName];

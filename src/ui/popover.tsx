@@ -1,10 +1,12 @@
-import * as React from "react";
 import type { Content as RadixContent } from "@radix-ui/react-popover";
+
 import {
+  Popover as RadixPopover,
   PopoverContent as RadixPopoverContent,
   Trigger as RadixTrigger,
-  Popover as RadixPopover,
 } from "@radix-ui/react-popover";
+import * as React from "react";
+
 import { cn } from "./cn";
 
 export const Popover = RadixPopover;

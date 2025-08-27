@@ -1,8 +1,10 @@
 import { objectValues } from "iter-tools";
+
 import type { EditorJsonItem, EditorRoomId } from "../../../editor/editorTypes";
 import type { LevelEditorState } from "../../../editor/slice/levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+
 import { iterateRoomJsonItems } from "../../../model/RoomJson";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const changeIdOfCurrentRoomInPlace = (
   state: LevelEditorState,

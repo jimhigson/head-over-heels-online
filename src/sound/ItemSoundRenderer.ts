@@ -1,5 +1,6 @@
-import type { Renderer } from "../game/render/Renderer";
 import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
+
+import type { Renderer } from "../game/render/Renderer";
 import type { ItemInPlayType } from "../model/ItemInPlay";
 import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
 

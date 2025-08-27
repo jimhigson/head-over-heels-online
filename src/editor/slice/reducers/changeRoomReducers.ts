@@ -1,7 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import type { LevelEditorState } from "../levelEditorSlice";
+
 import type { EditorRoomId } from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
+
 import { changeRoomInPlace } from "../inPlaceMutators/changeRoomInPlace";
 
 export const changeRoomReducers = {

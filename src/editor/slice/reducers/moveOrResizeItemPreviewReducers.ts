@@ -1,7 +1,9 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { current, type SliceCaseReducers } from "@reduxjs/toolkit";
-import { type LevelEditorState } from "../levelEditorSlice";
 
+import { current, type SliceCaseReducers } from "@reduxjs/toolkit";
+
+import type { AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
+import type { SceneryName } from "../../../sprites/planets";
 import type {
   EditorJsonItem,
   EditorJsonItemUnion,
@@ -9,31 +11,31 @@ import type {
   EditorRoomItemId,
   EditorRoomJson,
 } from "../../editorTypes";
-import {
-  addXyz,
-  elementWiseProductXyz,
-  lengthXyz,
-  type Xyz,
-  type AxisXy,
-} from "../../../utils/vectors/vectors";
-import {
-  selectCurrentRoomFromLevelEditorState,
-  selectItemInLevelEditorState,
-} from "../levelEditorSelectors";
-import type { SceneryName } from "../../../sprites/planets";
+
+import { getConsolidatableVector } from "../../../consolidateItems/ConsolidatableJsonItem";
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import {
   getJsonItemTimes,
   optimiseTimesXyz,
   wallTimes,
 } from "../../../model/times";
-import { getConsolidatableVector } from "../../../consolidateItems/ConsolidatableJsonItem";
-import { eachAxis } from "../../../utils/vectors/eachAxis";
-import type { AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
 import { iterate } from "../../../utils/iterate";
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { eachAxis } from "../../../utils/vectors/eachAxis";
+import {
+  addXyz,
+  type AxisXy,
+  elementWiseProductXyz,
+  lengthXyz,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
 import { addOrRemoveWallTilesInPlace } from "../inPlaceMutators/addOrRemoveWallTilesInPlace";
-import { generateWallHealingInPlaceOfDoor } from "../inPlaceMutators/generateWallHealingInPlaceOfDoor";
 import { generateHoleInWallsForDoor } from "../inPlaceMutators/cutHoleInWallsForDoorsInPlace";
+import { generateWallHealingInPlaceOfDoor } from "../inPlaceMutators/generateWallHealingInPlaceOfDoor";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectItemInLevelEditorState,
+} from "../levelEditorSelectors";
+import { type LevelEditorState } from "../levelEditorSlice";
 
 // Helper type for wall edge information
 type WallEdgeInfo = {
@@ -51,7 +53,7 @@ type WallEdgeInfo = {
 function getWallEdgeInfo(
   wall: EditorJsonItem<"wall">,
   floor: EditorJsonItem<"floor">,
-): WallEdgeInfo | null {
+): null | WallEdgeInfo {
   const wTimes = wallTimes(wall.config);
   const floorEnd = addXyz(floor.position, floor.config.times);
 

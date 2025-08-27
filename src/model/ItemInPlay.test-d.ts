@@ -1,39 +1,40 @@
 import { expectTypeOf, test } from "vitest";
+
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type {
   ItemInPlay,
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "./ItemInPlay";
-import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 
 type ItemId = "ball" | "bat";
 
 test("portals to lead to room ids", () => {
   type A = ItemInPlay<
     "portal",
-    "livingRoom" | "kitchen",
+    "kitchen" | "livingRoom",
     ItemId
   >["config"]["toRoom"];
 
-  expectTypeOf<A>().toEqualTypeOf<"livingRoom" | "kitchen">();
+  expectTypeOf<A>().toEqualTypeOf<"kitchen" | "livingRoom">();
 });
 
 test("doorframes to lead to room ids", () => {
   type A = ItemInPlay<
     "doorFrame",
-    "livingRoom" | "kitchen",
+    "kitchen" | "livingRoom",
     ItemId
   >["config"]["toRoom"];
 
-  expectTypeOf<A>().toEqualTypeOf<"livingRoom" | "kitchen">();
+  expectTypeOf<A>().toEqualTypeOf<"kitchen" | "livingRoom">();
 });
 
 test("smaller unions are subsets of union of all items types", () => {
-  type RoomId = "livingRoom" | "kitchen";
+  type RoomId = "kitchen" | "livingRoom";
 
   type All = UnionOfAllItemInPlayTypes<RoomId, ItemId>;
   type Some = ItemTypeUnion<
-    "doorFrame" | "portal" | "bubbles" | "ball",
+    "ball" | "bubbles" | "doorFrame" | "portal",
     RoomId,
     ItemId
   >;

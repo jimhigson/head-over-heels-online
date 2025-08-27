@@ -1,13 +1,15 @@
 import { Container } from "pixi.js";
+
 import type { ItemAppearance } from "./ItemAppearance";
+
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
-import { showTextInContainer } from "../hud/showNumberInContainer";
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
-import { blockSizePx } from "../../../sprites/spritePivots";
-import { noFilters } from "../filters/standardFilters";
 import { outlineFilters } from "../filters/outlineFilter";
+import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
+import { noFilters } from "../filters/standardFilters";
+import { showTextInContainer } from "../hud/showNumberInContainer";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;
@@ -97,8 +99,8 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
   for (let i = 0; i < textLines.length; i++) {
     const lineContainer = mainContainer.children[i];
     const [lineColourFilter] = lineContainer.filters as
-      | [RevertColouriseFilter]
-      | [];
+      | []
+      | [RevertColouriseFilter];
 
     const lineHeight = itemRenderHeight + i * -lineHeightPx;
 

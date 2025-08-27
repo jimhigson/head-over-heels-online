@@ -1,9 +1,11 @@
 import { describe, expect, test } from "vitest";
-import { itemMoveOrResizeWouldCollide } from "./editWouldCollide";
-import type { EditorRoomItemId, EditorRoomState } from "../../editorTypes";
+
 import type { AnyRoomJson } from "../../../model/RoomJson";
 import type { Xyz } from "../../../utils/vectors/vectors";
+import type { EditorRoomItemId, EditorRoomState } from "../../editorTypes";
+
 import { loadRoom } from "../../../game/gameState/loadRoom/loadRoom";
+import { itemMoveOrResizeWouldCollide } from "./editWouldCollide";
 
 const xyz = (x: number, y: number, z: number): Xyz => ({ x, y, z });
 

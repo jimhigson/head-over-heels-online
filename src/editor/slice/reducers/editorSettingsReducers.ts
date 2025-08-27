@@ -1,5 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
+
 import type { GridResolution, LevelEditorState } from "../levelEditorSlice";
 
 export const editorSettingsReducers = {

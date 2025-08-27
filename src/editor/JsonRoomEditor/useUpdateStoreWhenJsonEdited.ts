@@ -1,15 +1,18 @@
 import type { OnChange } from "@monaco-editor/react";
-import { useMemo } from "react";
 import type { editor } from "monaco-editor";
+
+import { debounce } from "@github/mini-throttle";
+import Ajv from "ajv";
 import nanoEqual from "nano-equal";
+import { useMemo } from "react";
+
 import type { EditorRoomJson } from "../editorTypes";
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
-import { roomJsonEdited } from "../slice/levelEditorSlice";
+
 import roomSchema from "../../_generated/room.schema.json";
-import Ajv from "ajv";
-import { debounce } from "@github/mini-throttle";
 import { store } from "../../store/store";
 import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
+import { roomJsonEdited } from "../slice/levelEditorSlice";
 import { fixJson } from "./fixJson";
 
 const ajvValidate = new Ajv().compile<EditorRoomJson>(roomSchema);

@@ -1,9 +1,10 @@
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlayType } from "../../model/ItemInPlay";
-import { objectEntriesIter } from "../../utils/entries";
-import { originXyz, addXyz, type Xyz } from "../../utils/vectors/vectors";
-import { isFreeItem, isItemType } from "../physics/itemPredicates";
 import type { MechanicResult } from "../physics/MechanicResult";
+
+import { objectEntriesIter } from "../../utils/entries";
+import { addXyz, originXyz, type Xyz } from "../../utils/vectors/vectors";
+import { isFreeItem, isItemType } from "../physics/itemPredicates";
 
 export const applyMechanicsResults = <
   T extends ItemInPlayType,

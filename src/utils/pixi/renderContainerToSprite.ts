@@ -1,12 +1,14 @@
 import type { Texture } from "pixi.js";
+
 import {
-  type Renderer as PixiRenderer,
   type Container,
-  Sprite,
+  type Renderer as PixiRenderer,
   RenderTexture,
+  Sprite,
 } from "pixi.js";
-import { UniqueTextureSprite } from "./UniqueTextureSprite";
+
 import { pixiContainerToString } from "./pixiContainerToString";
+import { UniqueTextureSprite } from "./UniqueTextureSprite";
 
 /**
  * can be used as a less buggy version of cacheAsTexture - just creates a new sprite from any container,

@@ -1,23 +1,24 @@
 import { produce } from "immer";
-import { entries } from "../../../utils/entries";
-import type { Xyz, Xy, DirectionXy4 } from "../../../utils/vectors/vectors";
-import {
-  subXyz,
-  addXyz,
-  tangentAxis,
-  perpendicularAxisXy,
-} from "../../../utils/vectors/vectors";
-import type {
-  EditorRoomItemId,
-  EditorRoomId,
-  EditorJsonItem,
-} from "../../editorTypes";
 
-import { roomEditTarget } from "./addItemInPlace";
+import type { DirectionXy4, Xy, Xyz } from "../../../utils/vectors/vectors";
+import type {
+  EditorJsonItem,
+  EditorRoomId,
+  EditorRoomItemId,
+} from "../../editorTypes";
 import type { PreviewedRoomItemEdits } from "../levelEditorSlice";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { selectRoomFromLevelEditorState } from "../levelEditorSelectors";
+
 import { completeTimesXy, wallTimes } from "../../../model/times";
+import { entries } from "../../../utils/entries";
+import {
+  addXyz,
+  perpendicularAxisXy,
+  subXyz,
+  tangentAxis,
+} from "../../../utils/vectors/vectors";
+import { selectRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { type LevelEditorState } from "../levelEditorSlice";
+import { roomEditTarget } from "./addItemInPlace";
 
 export function* generateHoleInWallsForDoor(
   items: PreviewedRoomItemEdits,

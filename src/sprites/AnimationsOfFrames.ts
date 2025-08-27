@@ -1,4 +1,5 @@
 import type { SpritesheetFrameData } from "pixi.js";
+
 import type { FramesWithSpeed } from "./spriteSheetData";
 
 /**

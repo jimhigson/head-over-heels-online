@@ -1,14 +1,16 @@
+import { produce } from "immer";
+
+import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
+
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { useAppDispatch } from "../../store/hooks";
 import { store } from "../../store/store";
 import { pick } from "../../utils/pick";
 import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
-import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import {
   roomJsonEdited,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { produce } from "immer";
 import { ToolbarButton } from "./ToolbarButton";
 import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
 

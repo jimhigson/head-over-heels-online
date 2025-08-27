@@ -1,6 +1,7 @@
+import type { ItemState } from "src/model/ItemState";
+
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlayType } from "../../model/ItemInPlay";
-import type { ItemState } from "src/model/ItemState";
 import type { RoomState } from "../../model/RoomState";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { GameState } from "../gameState/GameState";
@@ -15,7 +16,7 @@ export type Mechanic<T extends ItemInPlayType> = <
   deltaMS: number,
 ) => MechanicResult<T, RoomId, RoomItemId>;
 
-export type MechanicsNames = "gravity" | "walking" | "jumping";
+export type MechanicsNames = "gravity" | "jumping" | "walking";
 
 export type VelocitiesForItem<T extends ItemInPlayType> =
   string & ItemState<T, string, string> extends (
@@ -30,8 +31,9 @@ export type MechanicResult<
   RoomItemId extends string,
 > =
   | {
-      // velocity is unchanged by this result - keep moving as you were
-      movementType: "steady";
+      // a position delta
+      movementType: "position";
+      posDelta: Partial<Xyz>;
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
     }
   | {
@@ -41,9 +43,8 @@ export type MechanicResult<
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
     }
   | {
-      // a position delta
-      movementType: "position";
-      posDelta: Partial<Xyz>;
+      // velocity is unchanged by this result - keep moving as you were
+      movementType: "steady";
       stateDelta?: Partial<ItemState<T, RoomId, RoomItemId>>;
     };
 

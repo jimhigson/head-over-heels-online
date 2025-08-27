@@ -1,22 +1,23 @@
-import { blockXyzToFineXyz } from "../../render/projections";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { StoodOnBy } from "../../../model/StoodOnBy";
 import type { Xyz } from "../../../utils/vectors/vectors";
+
+import { type JsonItem } from "../../../model/json/JsonItem";
+import { isWallHidden } from "../../../model/json/WallJsonConfig";
+import { wallTimes } from "../../../model/times";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
   doorAlongAxis,
   originXyz,
   perpendicularAxisXy,
 } from "../../../utils/vectors/vectors";
-import { type JsonItem } from "../../../model/json/JsonItem";
-import { blockSizePx } from "../../../sprites/spritePivots";
+import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { veryHighZ, wallRenderHeight } from "../../physics/mechanicsConstants";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
-import { emptyObject } from "../../../utils/empty";
+import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { isWallHidden } from "../../../model/json/WallJsonConfig";
-import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
-import { wallTimes } from "../../../model/times";
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal.

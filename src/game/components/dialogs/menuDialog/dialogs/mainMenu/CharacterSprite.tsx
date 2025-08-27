@@ -1,11 +1,13 @@
-import { useState, useEffect, useRef } from "react";
-import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+import { useEffect, useRef, useState } from "react";
+
+import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
+
 import {
   type DirectionXy8,
   vectorClosestDirectionXy8,
 } from "../../../../../../utils/vectors/vectors";
-import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { rotateInputVector45 } from "../../../../../input/analogueControlAdjustments";
+import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 
 const getDirectionFromMousePosition = (
   element: HTMLElement,

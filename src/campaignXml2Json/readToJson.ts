@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- the xml2js parse doesn't support great typing, needs any */
-import { xml2js } from "xml-js";
 import { readFile } from "node:fs/promises";
+import { xml2js } from "xml-js";
+
 import type { Xml2JsonItem } from "./Xml2JsonItem";
-import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
+
 import { gamedataMapXmlLocation } from "./gamedataMapXmlLocation";
+import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 
 const readXmlToJson = async (fileName: string) => {
   const xmlText = await readFile(`${gamedataMapXmlLocation}/${fileName}.xml`, {
@@ -14,7 +16,7 @@ const readXmlToJson = async (fileName: string) => {
     ignoreComment: true,
     ignoreDeclaration: true,
     textFn(value, parentElement) {
-      const parentObject = parentElement as Record<string, string | object> & {
+      const parentObject = parentElement as Record<string, object | string> & {
         _parent: Record<string, object | string>;
       };
 
@@ -37,10 +39,10 @@ const readXmlToJson = async (fileName: string) => {
 // compass directions as found in room xml - some unusual notation in there, eg "westsouth" as well as "southwest"
 type CompassDirectionsNS = "north" | "south";
 type CompassDirectionsEW = "east" | "west";
-export type CompassDirectionsNESW = CompassDirectionsNS | CompassDirectionsEW;
+export type CompassDirectionsNESW = CompassDirectionsEW | CompassDirectionsNS;
 export type CompassDirections =
-  | `${CompassDirectionsNS}${CompassDirectionsEW}`
   | `${CompassDirectionsEW}${CompassDirectionsNS}`
+  | `${CompassDirectionsNS}${CompassDirectionsEW}`
   | CompassDirectionsEW
   | CompassDirectionsNS;
 
@@ -59,7 +61,7 @@ export type Xml2JsonWall = {
   picture: string;
 };
 
-export type XmlFloorKind = "plain" | "absent" | "mortal";
+export type XmlFloorKind = "absent" | "mortal" | "plain";
 
 export type Xml2JsonNoFloor = Array<{
   _attributes: {
@@ -77,7 +79,7 @@ export type Xml2JsonRoom = {
   floorKind: XmlFloorKind;
   walls: Array<Xml2JsonWall>;
   items: Array<Xml2JsonItem>;
-  nofloor: Xml2JsonNoFloor | undefined;
+  nofloor: undefined | Xml2JsonNoFloor;
 };
 
 export const readRoomToXmlJson = async (
@@ -101,7 +103,7 @@ export const readRoomToXmlJson = async (
 
 export type MapJsonRoom = Partial<
   Record<
-    CompassDirections | "above" | "below" | "teleport" | "teleport2",
+    "above" | "below" | "teleport" | "teleport2" | CompassDirections,
     string
   >
 >;

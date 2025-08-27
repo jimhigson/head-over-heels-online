@@ -1,5 +1,8 @@
-import { startAppListening } from "../store/listenerMiddleware";
 import { isAnyOf } from "@reduxjs/toolkit";
+import { useEffect } from "react";
+
+import { useMaybeGameApi } from "../game/components/GameApiContext";
+import { startAppListening } from "../store/listenerMiddleware";
 import {
   crownCollected,
   errorCaught,
@@ -8,8 +11,6 @@ import {
   lostLife,
   reincarnationAccepted,
 } from "../store/slices/gameMenusSlice";
-import { useEffect } from "react";
-import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { HookComponent } from "../utils/react/HookComponent";
 
 const isTrackedEvent = isAnyOf(

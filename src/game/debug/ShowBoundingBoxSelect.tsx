@@ -1,6 +1,7 @@
+import type { ShowBoundingBoxes } from "../../store/slices/gameMenusSlice";
+
 import { useAppDispatch } from "../../store/hooks";
 import { useShowBoundingBoxes } from "../../store/selectors";
-import type { ShowBoundingBoxes } from "../../store/slices/gameMenusSlice";
 import {
   setShowBoundingBoxes,
   showBoundingBoxOptions,

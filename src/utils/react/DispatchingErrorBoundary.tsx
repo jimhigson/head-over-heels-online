@@ -1,6 +1,8 @@
 import type { ErrorInfo, PropsWithChildren } from "react";
-import { Component } from "react";
 import type { EmptyObject } from "type-fest";
+
+import { Component } from "react";
+
 import { errorCaught } from "../../store/slices/gameMenusSlice";
 import { store } from "../../store/store";
 import { createSerialisableErrors } from "../redux/createSerialisableErrors";

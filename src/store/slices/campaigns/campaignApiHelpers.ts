@@ -1,10 +1,12 @@
 import type { QueryReturnValue } from "@reduxjs/toolkit/query";
+
+import type { CampaignGetLocator } from "../../../db/campaign";
+import type { EditorCampaign } from "../../../editor/editorTypes";
 import type { Campaign } from "../../../model/modelTypes";
+
+import { emptyObject } from "../../../utils/empty";
 import { store } from "../../store";
 import { campaignsApiSlice } from "./campaignsApiSlice";
-import type { CampaignGetLocator } from "../../../db/campaign";
-import { emptyObject } from "../../../utils/empty";
-import type { EditorCampaign } from "../../../editor/editorTypes";
 
 /**
  * a simple loader function using the RTKQuery api slice,

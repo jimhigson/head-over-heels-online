@@ -1,18 +1,21 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
+
 import { useEffect, useState } from "react";
+
 import type { GeneralRenderContext } from "../../game/render/RoomRenderContexts";
-import { RoomRenderer } from "../../game/render/roomRenderer";
-import { store } from "../../store/store";
+import type { ShowBoundingBoxes } from "../../store/slices/gameMenusSlice";
 import type {
   EditorRoomId,
   EditorRoomRenderer,
   EditorRoomState,
 } from "../editorTypes";
+
+import { RoomRenderer } from "../../game/render/roomRenderer";
+import { useShowBoundingBoxes } from "../../store/selectors";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
+import { store } from "../../store/store";
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
-import type { ShowBoundingBoxes } from "../../store/slices/gameMenusSlice";
-import { useShowBoundingBoxes } from "../../store/selectors";
 
 const editorGeneralRenderContext = (
   pixiRenderer: PixiRenderer,

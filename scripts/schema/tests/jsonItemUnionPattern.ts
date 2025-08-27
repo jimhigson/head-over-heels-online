@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-type ItemTypes = "door" | "wall" | "conveyor";
+type ItemTypes = "conveyor" | "door" | "wall";
 
 type ItemConfigMap = {
   door: { toRoom: string; direction: string };

@@ -1,29 +1,31 @@
 import type { EmptyObject } from "type-fest";
-import { useAppSelector } from "../../../../store/hooks";
-import { ReadTheManualDialog } from "./dialogs/readTheManualDialog";
-import type { DialogId } from "./DialogId";
-import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
+
 import type { MarkdownPageName } from "../../../../manual/pages";
-import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
-import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
-import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirm/quitGameConfirmDialog";
-import { ScoreDialog } from "./dialogs/score/ScoreDialog";
-import { HoldDialog } from "./dialogs/hold/holdDialog";
-import { OptionsDialog } from "./dialogs/options/OptionsDialog";
-import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
+import type { DialogId } from "./DialogId";
+
+import { useAppSelector } from "../../../../store/hooks";
 import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../tailwindSprites/Sprite";
-import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
-import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperorDialog";
+import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
+import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
+import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
 import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
-import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
+import { HoldDialog } from "./dialogs/hold/holdDialog";
+import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
+import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
 import { MapDialog } from "./dialogs/map/MapDialog";
-import { SoundDialog } from "./dialogs/sound/SoundDialog";
+import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
+import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
+import { OptionsDialog } from "./dialogs/options/OptionsDialog";
+import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperorDialog";
+import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirm/quitGameConfirmDialog";
+import { ReadTheManualDialog } from "./dialogs/readTheManualDialog";
 import { ReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog";
+import { ScoreDialog } from "./dialogs/score/ScoreDialog";
+import { SoundDialog } from "./dialogs/sound/SoundDialog";
 import { SureWantEditorDialog } from "./dialogs/sureWantEditor/SureWantEditorDialog";
 import { WhichGameDialog } from "./dialogs/whichGame/WhichGameDialog";
-import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
 
 const isMarkdownPage = <D extends DialogId>(
   menuId: D,

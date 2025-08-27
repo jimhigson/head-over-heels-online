@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EmptyObject } from "type-fest";
 
-type ItemTypes = "door" | "wall" | "floor";
+type ItemTypes = "door" | "floor" | "wall";
 type ItemUnion = {
   [K in ItemTypes]: {
     type: K;

@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+
 import { normalise } from "./normalise";
 
 test("normalizes value at minimum to 0", () => {

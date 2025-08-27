@@ -8,7 +8,7 @@ export interface TrackedTexture {
    * Not an actual error - just used to capture the call stack for debugging.
    */
   callStack: Error;
-  type?: "ItemShadowRenderer" | "PaletteSwapFilter" | "ItemAppearance";
+  type?: "ItemAppearance" | "ItemShadowRenderer" | "PaletteSwapFilter";
 }
 
 // Track all dynamically created textures

@@ -1,69 +1,69 @@
+import type { FreeItemTypes } from "../../game/physics/itemPredicates";
 import type { MarkdownPageName } from "../../manual/pages";
-import type { SceneryName, PlanetName } from "../../sprites/planets";
+import type { PlanetName, SceneryName } from "../../sprites/planets";
+import type { GameMenusState } from "../../store/slices/gameMenusSlice";
+import type { Subset } from "../../utils/subset";
+import type { ToggleablePaths } from "../../utils/Toggleable";
 import type {
-  DirectionXy4,
-  Xyz,
   AxisXy,
+  DirectionXy4,
   DirectionXy8,
   Xy,
+  Xyz,
 } from "../../utils/vectors/vectors";
+import type { Disappear } from "../Disappear";
 import type { CharacterName } from "../modelTypes";
 import type { JsonItemUnion } from "./JsonItem";
 import type { MonsterJsonConfig } from "./MonsterJsonConfig";
-import type {
-  ConsolidatableConfig,
-  BlockStyle,
-  MovementsSubset,
-  ActivatedWhenSubset,
-} from "./utilityJsonConfigTypes";
 import type { ButtonConfig, SwitchConfig } from "./SwitchConfig";
-import type { ToggleablePaths } from "../../utils/Toggleable";
-import type { GameMenusState } from "../../store/slices/gameMenusSlice";
-import type { FreeItemTypes } from "../../game/physics/itemPredicates";
+import type {
+  ActivatedWhenSubset,
+  BlockStyle,
+  ConsolidatableConfig,
+  MovementsSubset,
+} from "./utilityJsonConfigTypes";
 import type { WallJsonConfig } from "./WallJsonConfig";
-import type { Disappear } from "../Disappear";
-import type { Subset } from "../../utils/subset";
 
 export type ScrollConfig =
   | {
       gives: "scroll";
-      source: "manual";
-      page: MarkdownPageName;
+      source: "inline";
+      markdown: string;
     }
   | {
       gives: "scroll";
-      source: "inline";
-      markdown: string;
+      source: "manual";
+      page: MarkdownPageName;
     };
 
 type PickupConfig =
   | {
-      gives:
-        | "extra-life"
-        | "fast"
-        | "jumps"
-        | "shield"
-        | "doughnuts"
-        | "bag"
-        | "hooter"
-        | "reincarnation"; // alive fish are pickups, dead fish are (styled) moveableDeadly
-    }
-  | ScrollConfig
-  | {
       gives: "crown";
       planet: PlanetName;
-    };
+    }
+  | {
+      gives:
+        | "bag"
+        | "doughnuts"
+        | "extra-life"
+        | "fast"
+        | "hooter"
+        | "jumps"
+        | "reincarnation" // alive fish are pickups, dead fish are (styled) moveableDeadly
+        | "shield";
+    }
+  | ScrollConfig;
 
 export type EmittableItemJson = Extract<
   JsonItemUnion,
   {
-    type: FreeItemTypes | "firedDoughnut";
+    type: "firedDoughnut" | FreeItemTypes;
   }
 >;
 
 export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 
-export type PortableBlockStyle = "drum" | "sticks" | "cube";
+export type PortableBlockStyle = "cube" | "drum" | "sticks";
 export type DeadlyBlockStyle = "toaster" | "volcano";
 
 export type FloorType = "deadly" | "none" | "standable";
@@ -93,12 +93,12 @@ export type ItemConfigMap<
 
   floor:
     | {
-        floorType: Subset<FloorType, "deadly">;
+        /** the room has no floor, but it is included to draw the floor edge */
+        floorType: Subset<FloorType, "none">;
         times: Xy;
       }
     | {
-        /** the room has no floor, but it is included to draw the floor edge */
-        floorType: Subset<FloorType, "none">;
+        floorType: Subset<FloorType, "deadly">;
         times: Xy;
       }
     | {
@@ -169,7 +169,7 @@ export type ItemConfigMap<
     /**
      * how many should this emitter emit? Null for no limit
      */
-    maximum: number | null;
+    maximum: null | number;
   };
   firedDoughnut: {
     // if the doughnut is given via json, can be used to give its direction
@@ -190,16 +190,16 @@ export type ItemConfigMap<
      * to play
      */
     was:
-      | { type: "pickup"; gives: PickupConfig["gives"] }
+      | { type: "disappearing" }
       | { type: "hushPuppy" }
-      | { type: "disappearing" };
+      | { type: "pickup"; gives: PickupConfig["gives"] };
   };
   monster: MonsterJsonConfig;
   portableBlock: {
     style: PortableBlockStyle;
   };
   movingPlatform: {
-    movement: MovementsSubset<"clockwise" | "back-forth" | "towards-analogue">;
+    movement: MovementsSubset<"back-forth" | "clockwise" | "towards-analogue">;
     /* if this item starts initially activated */
     activated: ActivatedWhenSubset<
       // off : needs to be turned on by a switch
@@ -214,7 +214,7 @@ export type ItemConfigMap<
   slidingBlock: {
     // non-deadly sliding puck - eg the arrows in the centre of the moonbase
     // in the middle of the teleporter rooms
-    style: "puck" | "book";
+    style: "book" | "puck";
   };
   book: {
     // books are like pushableBlocks, but have orientation and are only sometimes movable.

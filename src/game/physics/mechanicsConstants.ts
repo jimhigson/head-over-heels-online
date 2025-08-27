@@ -1,6 +1,7 @@
 import type { ItemInPlayType } from "../../model/ItemInPlay";
 import type { JsonItemConfig } from "../../model/json/JsonItem";
 import type { CharacterName } from "../../model/modelTypes";
+
 import { zxSpectrumFrameRate } from "../../originalGame";
 import { blockSizePx } from "../../sprites/spritePivots";
 import { wallTileSize } from "../../sprites/textureSizes";

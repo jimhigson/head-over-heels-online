@@ -1,12 +1,14 @@
-import { Button } from "../../ui/button";
-
 import type { ReactNode } from "react";
+
 import { type PropsWithChildren } from "react";
+
+import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
+
+import { Button } from "../../ui/button";
 import {
   buttonSizeClassNames,
   buttonSmallSizeClassNames,
 } from "./buttonSizeClassNames";
-import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
 
 export type ToolbarButtonProps = {
   onClick?: () => void;

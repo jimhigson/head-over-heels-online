@@ -1,13 +1,14 @@
+import type { EditorRoomId } from "../editorTypes";
+
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { useAppDispatch } from "../../store/hooks";
 import { RoomSelect } from "../../ui/RoomSelect";
-import type { EditorRoomId } from "../editorTypes";
+import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import {
   changeToRoom,
   setRoomAboveOrBelow,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { ToolbarButton } from "./ToolbarButton";
 
 const RoomsAboveOrBelowSelectOrCreate = ({

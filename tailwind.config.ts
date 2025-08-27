@@ -1,12 +1,12 @@
 import type { Config } from "tailwindcss";
 
-import spritesheetPalette from "./gfx/spritesheetPalette.json";
-import { zxSpectrumColors, resolutions } from "./src/originalGame";
-import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
-
 import scrollbar from "tailwind-scrollbar";
-import { transformObject } from "./src/utils/entries";
+
+import spritesheetPalette from "./gfx/spritesheetPalette.json";
+import { resolutions, zxSpectrumColors } from "./src/originalGame";
+import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 import { halfbriteHex } from "./src/utils/colour/halfBrite";
+import { transformObject } from "./src/utils/entries";
 
 const colors = {
   ...spritesheetPalette,

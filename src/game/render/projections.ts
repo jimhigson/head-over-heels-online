@@ -1,12 +1,13 @@
 import type { Container } from "pixi.js";
+
 import { blockSizePx } from "../../sprites/spritePivots";
 import {
+  addXyz,
+  orthoPlaneForNormal,
+  subXy,
+  type Xy,
   type XyMaybeZ,
   type Xyz,
-  type Xy,
-  addXyz,
-  subXy,
-  orthoPlaneForNormal,
 } from "../../utils/vectors/vectors";
 
 export const moveContainerToBlockXyz = (

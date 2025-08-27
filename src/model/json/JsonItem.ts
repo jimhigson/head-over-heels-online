@@ -1,15 +1,33 @@
 import type { EmptyObject } from "type-fest";
+
 import type { SceneryName } from "../../sprites/planets";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { ItemConfigMap } from "./ItemConfigMap";
 
 export type JsonItemType =
-  | "door"
-  | "bubbles" // only in-play, never in json, but is created dynamically via loadItemFromJson
-  | "teleporter"
+  | "ball"
   | "barrier"
   | "block"
+  | "bubbles" // only in-play, never in json, but is created dynamically via loadItemFromJson
+  | "charles"
+  | "conveyor"
   | "deadlyBlock"
+  | "door"
+  | "hushPuppy"
+  | "joystick"
+  | "lift"
+  | "monster"
+  | "moveableDeadly"
+  | "pickup"
+  | "player"
+  | "sceneryPlayer"
+  | "slidingBlock"
+  | "slidingDeadly"
+  | "spring"
+  | "switch"
+  | "teleporter"
+  /** something that moves by itself, possibly activated by a switch */
+  | "movingPlatform"
   /** vary from the original game by distinbuishing toasters/volcanos from
    * spikes - spikes are safe to touch from the side/bottom but not stand on
    */
@@ -18,31 +36,14 @@ export type JsonItemType =
   | "portableBlock"
   /** something that can be pushed but not picked up */
   | "pushableBlock"
-  /** something that moves by itself, possibly activated by a switch */
-  | "movingPlatform"
-  | "moveableDeadly"
-  | "conveyor"
-  | "pickup"
-  | "spring"
-  | "sceneryPlayer"
-  // the crowns in the final room - these are for decoration and can't be picked up:
-  | "sceneryCrown"
   // a special item for creating other items - eg, the gun salute in the final room
   | "emitter"
   // only needed as a json type so the emitter in the final room can fire them:
   | "firedDoughnut"
-  | "slidingDeadly"
-  | "slidingBlock"
-  | "player"
-  | "monster"
-  | "lift"
-  | "joystick"
-  | "charles"
-  | "switch"
   // new one for the remake - like a switch except you have to stay standing on it
   | "button"
-  | "hushPuppy"
-  | "ball"
+  // the crowns in the final room - these are for decoration and can't be picked up:
+  | "sceneryCrown"
   /**
    * in the remake, all walls are first-class items - there's no special way to
    * give the walls around the room, they are just normal items

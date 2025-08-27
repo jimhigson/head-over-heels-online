@@ -1,8 +1,9 @@
 import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
 import type { RoomJson } from "../../../../../../model/RoomJson";
+import type { Xy, Xyz } from "../../../../../../utils/vectors/vectors";
+
 import { blockSizePx } from "../../../../../../sprites/spritePivots";
 import { keysIter } from "../../../../../../utils/entries";
-import type { Xy, Xyz } from "../../../../../../utils/vectors/vectors";
 
 export type InPlayItemLocatableInSubRoom = {
   id: string;

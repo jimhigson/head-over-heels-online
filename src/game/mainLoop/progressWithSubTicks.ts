@@ -1,13 +1,15 @@
 import { objectValues } from "iter-tools";
+
+import type { CharacterName } from "../../model/modelTypes";
+import type { GameState } from "../gameState/GameState";
+import type { PlayableItem } from "../physics/itemPredicates";
+import type { MovedItems, ProgressGameState } from "./progressGameState";
+
 import { playablesInRoom, type RoomStateItems } from "../../model/RoomState";
 import { emptyObject } from "../../utils/empty";
-import type { GameState } from "../gameState/GameState";
-import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import type { MovedItems, ProgressGameState } from "./progressGameState";
-import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 import { iterate } from "../../utils/iterate";
-import type { PlayableItem } from "../physics/itemPredicates";
-import type { CharacterName } from "../../model/modelTypes";
+import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 
 const noItems = emptyObject as RoomStateItems<string, string>;
 

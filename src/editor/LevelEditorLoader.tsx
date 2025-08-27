@@ -1,7 +1,8 @@
 import { lazy } from "react";
+
+import { injectSlice, store } from "../store/store";
 import { importOnce } from "../utils/importOnce";
 import { LoadSpritesheetGate } from "./AssetLoadGate";
-import { injectSlice, store } from "../store/store";
 
 const importLevelEditorOnce = importOnce(async () => {
   const [levelEditorModule, levelEditorSliceModule] = await Promise.all([

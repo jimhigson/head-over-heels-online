@@ -1,12 +1,13 @@
+import type { ItemAppearance } from "./ItemAppearance";
+
 import { keysIter } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
 import {
-  vectorClosestDirectionXy4,
   type DirectionXy4,
+  vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
 import { isJoystick } from "../../physics/itemPredicates";
 import { createStackedSprites } from "./createStackedSprites";
-import type { ItemAppearance } from "./ItemAppearance";
 
 type CharlesRenderProps = {
   facingXy4: DirectionXy4;

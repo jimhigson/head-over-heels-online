@@ -17,8 +17,9 @@
  * @returns {Array}
  */
 
-import { emptySet } from "../../../../utils/empty";
 import type { ZGraph } from "../GraphEdges";
+
+import { emptySet } from "../../../../utils/empty";
 
 /**
  * @param edges An array of directed edges describing a graph. An edge looks

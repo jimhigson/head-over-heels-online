@@ -3,8 +3,10 @@ import type {
   ActionCreatorWithoutPayload,
   ActionCreatorWithPayload,
 } from "@reduxjs/toolkit";
-import { useAppDispatch } from "./hooks";
+
 import { useCallback } from "react";
+
+import { useAppDispatch } from "./hooks";
 
 export function useDispatchActionCallback<Payload>(
   actionCreator: ActionCreatorWithPayload<Payload>,
@@ -16,8 +18,8 @@ export function useDispatchActionCallback(
 ): () => void;
 export function useDispatchActionCallback<Payload>(
   actionCreator:
-    | ActionCreatorWithPayload<Payload>
-    | ActionCreatorWithoutPayload,
+    | ActionCreatorWithoutPayload
+    | ActionCreatorWithPayload<Payload>,
   payload: NoInfer<Payload>,
 ) {
   const dispatch = useAppDispatch();

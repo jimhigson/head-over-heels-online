@@ -1,6 +1,7 @@
 import type { Upscale } from "../../../store/slices/upscale/Upscale";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { RenderedRoomDimensions } from "../../slice/levelEditorSelectors";
+
 import { roomEditingAreaMarginPx } from "../roomEditingAreaMarginPx";
 
 export const upscaledMousePosition = (

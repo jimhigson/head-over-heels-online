@@ -1,8 +1,10 @@
 import { Container } from "pixi.js";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import type { EditorRoomRenderer } from "../editorTypes";
-import { useProvidedPixiApplication } from "./PixiApplicationProvider";
+
 import { useEditorRoomRenderDimensions } from "../slice/levelEditorSelectors";
+import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";
 
 export const useAddRoomRendererOutputToApplicationStage = (

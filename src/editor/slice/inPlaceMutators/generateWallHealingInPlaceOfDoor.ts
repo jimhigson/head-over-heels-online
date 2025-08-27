@@ -1,12 +1,13 @@
+import type {
+  EditorJsonItem,
+  EditorRoomItemId,
+  EditorRoomJson,
+} from "../../editorTypes";
+
 import {
   isWallHidden,
   type WallJsonConfig,
 } from "../../../model/json/WallJsonConfig";
-import type {
-  EditorJsonItem,
-  EditorRoomJson,
-  EditorRoomItemId,
-} from "../../editorTypes";
 import { rotatingSceneryTiles } from "../createStarterRoom";
 import { nextItemId } from "./addItemInPlace";
 

@@ -1,18 +1,19 @@
 import type { OriginalCampaignRoomId } from "../../../../../../_generated/originalCampaign/OriginalCampaignRoomId";
+import type { Bounds } from "./Map.svg";
+import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
+
 import { useTotalUpscale } from "../../../../../../store/selectors";
 import {
-  type Xyz,
-  originXyz,
   addXy,
   addXyz,
+  originXyz,
+  type Xyz,
 } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
-import type { Bounds } from "./Map.svg";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
 import { roomWorldPosition } from "./roomWorldPosition";
-import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 import { pathXy } from "./svgHelpers";
 
 /**

@@ -1,7 +1,9 @@
 import type { ColorSource } from "pixi.js";
+
 import { Color, Filter, GlProgram } from "pixi.js";
-import { vertex } from "./defaults";
+
 import fragment from "./colourClash.frag?raw";
+import { vertex } from "./defaults";
 
 /**
  * Filter to use a colour from the backbuffer for non-black pixels

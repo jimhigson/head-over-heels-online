@@ -1,8 +1,10 @@
 import type { Sprite } from "pixi.js";
-import { lengthXy } from "../../../utils/vectors/vectors";
+
 import type { ItemAppearance } from "./ItemAppearance";
+
 import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 import { wallTileSize } from "../../../sprites/textureSizes";
+import { lengthXy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 

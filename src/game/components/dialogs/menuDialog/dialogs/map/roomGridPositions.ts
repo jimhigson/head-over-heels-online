@@ -1,12 +1,17 @@
 import { objectValues } from "iter-tools";
+
+import type { JsonItem } from "../../../../../../model/json/JsonItem";
 import type { Campaign } from "../../../../../../model/modelTypes";
-import { iterate } from "../../../../../../utils/iterate";
-import { unitVectors } from "../../../../../../utils/vectors/unitVectors";
+import type { SubRooms } from "../../../../../../model/RoomJson";
 import type {
   DirectionXy4,
   Xy,
   Xyz,
 } from "../../../../../../utils/vectors/vectors";
+
+import { entries } from "../../../../../../utils/entries";
+import { iterate } from "../../../../../../utils/iterate";
+import { unitVectors } from "../../../../../../utils/vectors/unitVectors";
 import {
   addXyz,
   originXy,
@@ -15,9 +20,6 @@ import {
   subXyz,
   xyEqual,
 } from "../../../../../../utils/vectors/vectors";
-import { entries } from "../../../../../../utils/entries";
-import type { JsonItem } from "../../../../../../model/json/JsonItem";
-import type { SubRooms } from "../../../../../../model/RoomJson";
 import { jsonItemIsInSubRoom } from "./itemIsInSubRoom";
 
 type RoomGridPositionsOptions<RoomId extends string> = {
@@ -30,7 +32,7 @@ type RoomGridPositionsOptions<RoomId extends string> = {
 };
 
 export type Boundaries = {
-  [d in DirectionXy4]: "wall" | "open" | "doorway";
+  [d in DirectionXy4]: "doorway" | "open" | "wall";
 };
 
 export type RoomGridPositionSpec<RoomId extends string> = {
@@ -44,7 +46,7 @@ const getBoundary = (
   direction: DirectionXy4,
   doors: Array<JsonItem<"door">>,
   subRooms: SubRooms | undefined,
-  currentSubRoomPosition: Xy | undefined,
+  currentSubRoomPosition: undefined | Xy,
 ) => {
   return (
     doors.some((d) => d.config.direction === direction) ? "doorway"

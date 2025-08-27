@@ -4,18 +4,20 @@ import type {
   PointData,
   SpritesheetFrameData,
 } from "pixi.js";
+
 import { Container } from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
+
+import { completeTimesXyz } from "../../model/times";
+import { originalGameFrameDuration } from "../../originalGame";
+import { loadedSpriteSheet } from "../../sprites/spriteSheet";
 import {
-  spritesheetData,
   type AnimationId,
+  spritesheetData,
   type TextureId,
 } from "../../sprites/spriteSheetData";
-import { loadedSpriteSheet } from "../../sprites/spriteSheet";
-import { originalGameFrameDuration } from "../../originalGame";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
-import { completeTimesXyz } from "../../model/times";
 
 export type AnimatedCreateSpriteOptions = {
   // animated
@@ -49,7 +51,6 @@ export type AnimatedCreateSpriteOptions = {
 };
 
 export type CreateSpriteOptions =
-  | TextureId
   | ({
       // not animated
       anchor?: PointData;
@@ -73,7 +74,8 @@ export type CreateSpriteOptions =
           textureIdCallback: (x: number, y: number, z: number) => TextureId;
         }
     ))
-  | AnimatedCreateSpriteOptions;
+  | AnimatedCreateSpriteOptions
+  | TextureId;
 
 const bottomMiddleDefaultAnchor = { x: 0.5, y: 1 };
 
@@ -210,7 +212,7 @@ export const createSprite = _createSprite as <O extends CreateSpriteOptions>(
   : AnimatedSprite
 : O extends { times?: Partial<Xyz> } ?
   // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
-  Sprite | Container<Sprite>
+  Container<Sprite> | Sprite
 : Sprite;
 
 function createAnimatedSprite({

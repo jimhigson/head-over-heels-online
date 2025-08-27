@@ -1,7 +1,13 @@
 import type { Container, Sprite } from "pixi.js";
+
+import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { ItemConfigMap } from "../../../model/json/ItemConfigMap";
-import { blockSizePx } from "../../../sprites/spritePivots";
+import type { RoomState } from "../../../model/RoomState";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import type { StackedSpritesContainer } from "./createStackedSprites";
+import type { ItemAppearance } from "./ItemAppearance";
+
+import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   originXy,
   vectorClosestDirectionXy4,
@@ -13,15 +19,11 @@ import {
   greyFilter,
   mainPaletteSwapFilter,
 } from "../filters/standardFilters";
-import type { StackedSpritesContainer } from "./createStackedSprites";
 import {
   createStackedSprites,
   itemRidingOnBubblesSpritesOptions,
   stackedTopSymbol,
 } from "./createStackedSprites";
-import type { ItemAppearance } from "./ItemAppearance";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/RoomState";
 
 const greyWhileDeactivated: Array<
   ItemConfigMap<string, string>["monster"]["which"]

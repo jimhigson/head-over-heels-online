@@ -1,9 +1,9 @@
-import { test, beforeEach, expect } from "vitest";
+import { beforeEach, expect, test } from "vitest";
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { itemState } from "../../../_testUtils/characterState";
-import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
+import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {

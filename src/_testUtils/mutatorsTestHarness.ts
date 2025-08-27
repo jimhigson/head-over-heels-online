@@ -1,42 +1,44 @@
 import { first, objectValues } from "iter-tools";
-import { vi, expect } from "vitest";
-import {
-  selectPlayableItem,
-  selectHeelsAbilities,
-  selectCurrentPlayableItem,
-} from "../game/gameState/gameStateSelectors/selectPlayableItem";
+import { expect, vi } from "vitest";
+
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { StartingRooms } from "../game/gameState/loadGameState";
-import {
-  loadGameState,
-  findStartingRoomsInCampaign,
-} from "../game/gameState/loadGameState";
-import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
-import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
-import { setStandingOn } from "../game/gameState/mutators/setStandingOn";
-import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
+import type { PortableItemType } from "../game/physics/itemPredicates";
 import type { ItemInPlay } from "../model/ItemInPlay";
 import type { PlayableActionState } from "../model/ItemStateMap";
 import type {
   Campaign,
-  IndividualCharacterName,
   CharacterName,
+  IndividualCharacterName,
 } from "../model/modelTypes";
-import { blockSizePx } from "../sprites/spritePivots";
-import { iterate } from "../utils/iterate";
-import { addXyz } from "../utils/vectors/vectors";
-import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
-import { MockInputStateTracker } from "./MockInputStateTracker";
 import type { RoomState } from "../model/RoomState";
+
+import {
+  selectCurrentPlayableItem,
+  selectHeelsAbilities,
+  selectPlayableItem,
+} from "../game/gameState/gameStateSelectors/selectPlayableItem";
+import {
+  findStartingRoomsInCampaign,
+  loadGameState,
+} from "../game/gameState/loadGameState";
 import { loadItemFromJson } from "../game/gameState/loadRoom/loadItemFromJson";
-import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import type { PortableItemType } from "../game/physics/itemPredicates";
+import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
+import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
+import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
+import { setStandingOn } from "../game/gameState/mutators/setStandingOn";
+import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
+import { blockSizePx } from "../sprites/spritePivots";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameOver } from "../store/slices/gameMenusSlice";
+import { iterate } from "../utils/iterate";
+import { addXyz } from "../utils/vectors/vectors";
 import { gameStartedWithCampaign } from "./initStoreForTests";
+import { MockInputStateTracker } from "./MockInputStateTracker";
 
 export type TestCampaignRoomId =
-  | "heelsStartingRoom"
   | "headStartingRoom"
+  | "heelsStartingRoom"
   | "thirdRoom";
 export const roomProperties = {
   color: { hue: "yellow", shade: "basic" },

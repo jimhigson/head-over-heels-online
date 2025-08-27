@@ -1,14 +1,15 @@
-import { type InputAssignmentPreset } from "./InputAssignment";
+import type { PartialInputAssignment } from "./combineInputAssignments";
 import type { MamePlayer } from "./controllers";
+
+import { combineInputAssignments } from "./combineInputAssignments";
 import {
   eightBitDoKeyboard,
   mameButtonsPlayer1,
   mameButtonsPlayer2,
   standardControllerLayout,
 } from "./controllers";
-import type { PartialInputAssignment } from "./combineInputAssignments";
-import { combineInputAssignments } from "./combineInputAssignments";
 import { emptyInputAssignment } from "./emptyInputAssignment";
+import { type InputAssignmentPreset } from "./InputAssignment";
 
 //standard keys that are used in all presets:
 const standardAssignment = {

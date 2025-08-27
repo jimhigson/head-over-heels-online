@@ -1,19 +1,20 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
+import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { store } from "../../store/store";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/button";
+import { cn } from "../../ui/cn";
 import { Dialog } from "../../ui/dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
-import {
-  useAppSelectorWithLevelEditorSlice,
-  type RootStateWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
-import { store } from "../../store/store";
-import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
-import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
 import { Switch } from "../../ui/Switch";
-import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { cn } from "../../ui/cn";
+import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
+import {
+  type RootStateWithLevelEditorSlice,
+  useAppSelectorWithLevelEditorSlice,
+} from "../slice/levelEditorSlice";
 import { useSupabaseUser } from "../tools/useSupabaseUser";
 
 export const SaveAsDialog = ({

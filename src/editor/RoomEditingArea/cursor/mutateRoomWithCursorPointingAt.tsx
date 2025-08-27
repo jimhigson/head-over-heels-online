@@ -1,11 +1,13 @@
+import { produce } from "immer";
 import { isEmpty } from "iter-tools";
+
+import type { EditorRoomItemId } from "../../editorTypes";
+
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
-import type { EditorRoomItemId } from "../../editorTypes";
 import { type EditorRoomState } from "../../editorTypes";
 import { collideableItemsInRoom } from "./collideableItemsInRoom";
-import { produce } from "immer";
 
 /**
  * mutate the room state to move the item with the given jsonItemId

@@ -1,19 +1,21 @@
-import { Dialog } from "../../../../../../ui/dialog";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { Border } from "../../../../../../ui/Border";
-import { MenuItems } from "../../MenuItems";
-import { MenuItem } from "../../MenuItem";
-import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import type { SerialisableError } from "src/utils/redux/createSerialisableErrors";
+
+import { useState } from "react";
+
+import { useAppSelector } from "../../../../../../store/hooks";
 import {
   errorDismissed,
   reincarnationAccepted,
 } from "../../../../../../store/slices/gameMenusSlice";
-import { useAppSelector } from "../../../../../../store/hooks";
-import { multilineTextClass } from "../../multilineTextClass";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { useState } from "react";
+import { MenuItem } from "../../MenuItem";
+import { MenuItems } from "../../MenuItems";
+import { multilineTextClass } from "../../multilineTextClass";
 import { StackTracesWithLinks } from "./StackTraceWithLinks";
 
 /**

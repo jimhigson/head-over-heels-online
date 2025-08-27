@@ -1,33 +1,35 @@
-import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
-import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
-import {
-  roomBack,
-  doorwayGap,
-  roomFront,
-  roomGridSizeXY,
-  roomGridSizeZ,
-} from "./mapConstants";
-import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
-import { roundForSvg, project, translateXyz } from "./svgHelpers";
-import { PlayableItemInRoom } from "./NotableItem";
-import {
-  InPlayItemsInRoomLayout,
-  NotableJsonItemsInRoomLayout,
-} from "./ItemsInRoomLayout";
-import type { RoomJson } from "../../../../../../model/RoomJson";
-import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
-import { roomAccentColourClass } from "./mapColours";
-import { VisitedFootprint } from "./VisitedFootprint";
+import { range } from "iter-tools";
+
 import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
+import type { RoomJson } from "../../../../../../model/RoomJson";
+import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import type { PlayableItem } from "../../../../../physics/itemPredicates";
-import { useNotableItems } from "./useNotableItems";
-import { range } from "iter-tools";
+import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
+
 import { iterate } from "../../../../../../utils/iterate";
-import { roomWorldPosition } from "./roomWorldPosition";
+import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
+import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import {
+  InPlayItemsInRoomLayout,
+  NotableJsonItemsInRoomLayout,
+} from "./ItemsInRoomLayout";
+import { roomAccentColourClass } from "./mapColours";
+import {
+  doorwayGap,
+  roomBack,
+  roomFront,
+  roomGridSizeXY,
+  roomGridSizeZ,
+} from "./mapConstants";
+import { PlayableItemInRoom } from "./NotableItem";
+import { roomWorldPosition } from "./roomWorldPosition";
+import { project, roundForSvg, translateXyz } from "./svgHelpers";
+import { useNotableItems } from "./useNotableItems";
+import { VisitedFootprint } from "./VisitedFootprint";
 
 const strokeWidth = 3;
 

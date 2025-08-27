@@ -1,5 +1,6 @@
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import type { TypedURLSearchParams } from "../../options/queryParams";
+
+import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { cn } from "../../ui/cn";
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useRemoteIsInSync } from "./saving/useRemoteIsInSync";

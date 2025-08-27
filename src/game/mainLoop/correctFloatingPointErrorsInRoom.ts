@@ -1,4 +1,4 @@
-import { type RoomState, iterateRoomItems } from "../../model/RoomState";
+import { iterateRoomItems, type RoomState } from "../../model/RoomState";
 import { xyzSnapIfCloseToIntegers } from "../../utils/vectors/vectors";
 
 /**

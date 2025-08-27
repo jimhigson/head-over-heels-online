@@ -4,23 +4,23 @@
 
 type JsonItemUnion =
   | {
+      type: "block";
+      position: { x: number; y: number; z: number };
+      config: {
+        style: "artificial" | "organic";
+      };
+    }
+  | {
       type: "pickup";
       position: { x: number; y: number; z: number };
       config: {
-        gives: "shield" | "extra-life";
+        gives: "extra-life" | "shield";
       };
     }
   | {
       type: "spring";
       position: { x: number; y: number; z: number };
       config: Record<string, never>;
-    }
-  | {
-      type: "block";
-      position: { x: number; y: number; z: number };
-      config: {
-        style: "organic" | "artificial";
-      };
     }
   | {
       type: "wall";
@@ -31,7 +31,7 @@ type JsonItemUnion =
     };
 
 // Extract free item types
-type FreeItemTypes = "pickup" | "spring" | "block";
+type FreeItemTypes = "block" | "pickup" | "spring";
 
 // EmittableItemJson - items that can be emitted
 type EmittableItemJson = Extract<
@@ -48,7 +48,7 @@ type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 type EmitterConfig = {
   emits: EmittableItemRecipe;
   period: number;
-  maximum: number | null;
+  maximum: null | number;
 };
 
 // Test type

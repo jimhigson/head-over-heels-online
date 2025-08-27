@@ -1,14 +1,16 @@
+import type { Monaco } from "@monaco-editor/react";
+import type { editor } from "monaco-editor";
+
+import { findNodeAtLocation, getLocation, parseTree } from "jsonc-parser";
 import { useEffect, useRef } from "react";
+
+import { store } from "../../store/store";
 import {
-  selectCurrentEditingRoomJson,
   type RootStateWithLevelEditorSlice,
+  selectCurrentEditingRoomJson,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import type { editor } from "monaco-editor";
-import { store } from "../../store/store";
-import { getLocation, parseTree, findNodeAtLocation } from "jsonc-parser";
 import { useLoadMonaco } from "./useLoadMonaco";
-import type { Monaco } from "@monaco-editor/react";
 
 const updateTextNow = (
   editor: editor.IStandaloneCodeEditor,
@@ -47,7 +49,7 @@ const updateTextNow = (
   const currentText = model.getValue();
 
   // If this is the active model, capture cursor position before updating
-  let cursorPath: (string | number)[] = [];
+  let cursorPath: (number | string)[] = [];
   if (isCurrentlyActive) {
     const currentPosition = editor.getPosition();
     if (currentPosition) {

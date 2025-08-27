@@ -1,7 +1,8 @@
-import { type RoomState, iterateRoomItems } from "../../model/RoomState";
+import type { MovedItems } from "./progressGameState";
+
+import { iterateRoomItems, type RoomState } from "../../model/RoomState";
 import { isExactIntegerXyz, roundXyz } from "../../utils/vectors/vectors";
 import { isFreeItem } from "../physics/itemPredicates";
-import type { MovedItems } from "./progressGameState";
 
 /**
  * snap all items that haven't been acted on the pixel grid - sub-pixel

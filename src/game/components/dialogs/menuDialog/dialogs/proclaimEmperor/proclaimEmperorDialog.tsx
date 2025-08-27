@@ -1,11 +1,11 @@
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { MenuItems } from "../../MenuItems";
-import { BackMenuItem } from "../../BackMenuItem";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItems } from "../../MenuItems";
 
 export const ProclaimEmperorDialog = () => {
   return (

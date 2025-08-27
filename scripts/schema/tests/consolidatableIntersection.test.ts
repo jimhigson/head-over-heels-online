@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { flattenFixture } from "./testHelper.js";
 import { timeout } from "./timeout.js";
 
@@ -15,7 +16,7 @@ describe("consolidatableIntersection", () => {
       expect(result).toContain("x?: number");
       expect(result).toContain("y?: number");
       expect(result).toContain("z?: number");
-      expect(result).toContain('direction: "left" | "right" | "up" | "down"');
+      expect(result).toContain('direction: "down" | "left" | "right" | "up"');
     },
   );
 });

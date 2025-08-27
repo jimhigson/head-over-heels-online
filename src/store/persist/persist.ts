@@ -1,8 +1,10 @@
-import persistReducer from "redux-persist/es/persistReducer";
 import type { PersistConfig } from "redux-persist/es/types";
-import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
+
+import persistReducer from "redux-persist/es/persistReducer";
 import storage from "redux-persist/lib/storage";
-import { type GameMenusState, gameMenusSlice } from "../slices/gameMenusSlice";
+
+import { gameMenusSlice, type GameMenusState } from "../slices/gameMenusSlice";
+import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
 import { gameMenusSliceWhitelist } from "./gameMenusSliceWhitelist";
 
 export const storeLatestVersion = 17;

@@ -1,13 +1,13 @@
-import {
-  type Xyz,
-  scaleXyz,
-  dotProductXyz,
-  addXyz,
-  subXyz,
-  perpendicularXyz,
-  lengthXyz,
-} from "./vectors";
 import { componentInDirection } from "./componentInDirection";
+import {
+  addXyz,
+  dotProductXyz,
+  lengthXyz,
+  perpendicularXyz,
+  scaleXyz,
+  subXyz,
+  type Xyz,
+} from "./vectors";
 
 /** accelerates the current velocity towards the given max speed,
  * reaching it if close enough rather than allowing to go over

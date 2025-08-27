@@ -2,14 +2,14 @@
 
 // Test real-world emitter type from the game
 
-type CharacterName = "head" | "heels" | "headOverHeels";
+type CharacterName = "head" | "headOverHeels" | "heels";
 
-type FreeItemTypes = CharacterName | "pickup" | "spring";
+type FreeItemTypes = "pickup" | "spring" | CharacterName;
 
 type EmittableItemJson = Extract<
   JsonItemUnion,
   {
-    type: FreeItemTypes | "firedDoughnut";
+    type: "firedDoughnut" | FreeItemTypes;
   }
 >;
 
@@ -17,12 +17,14 @@ type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 
 type JsonItemUnion =
   | {
-      type: "head";
+      type: "firedDoughnut";
       position: { x: number; y: number; z: number };
-      config: Record<string, never>;
+      config: {
+        direction?: "away" | "left" | "right" | "towards";
+      };
     }
   | {
-      type: "heels";
+      type: "head";
       position: { x: number; y: number; z: number };
       config: Record<string, never>;
     }
@@ -32,23 +34,21 @@ type JsonItemUnion =
       config: Record<string, never>;
     }
   | {
+      type: "heels";
+      position: { x: number; y: number; z: number };
+      config: Record<string, never>;
+    }
+  | {
       type: "pickup";
       position: { x: number; y: number; z: number };
       config: {
-        gives: "shield" | "extra-life" | "fast" | "jumps";
+        gives: "extra-life" | "fast" | "jumps" | "shield";
       };
     }
   | {
       type: "spring";
       position: { x: number; y: number; z: number };
       config: Record<string, never>;
-    }
-  | {
-      type: "firedDoughnut";
-      position: { x: number; y: number; z: number };
-      config: {
-        direction?: "towards" | "right" | "away" | "left";
-      };
     };
 
 // Test type - emitter with emits property
@@ -58,6 +58,6 @@ type TestEmitter = {
   config: {
     emits: EmittableItemRecipe;
     period: number;
-    maximum: number | null;
+    maximum: null | number;
   };
 };

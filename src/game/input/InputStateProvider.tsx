@@ -1,14 +1,17 @@
 import type { PropsWithChildren } from "react";
-import { createContext, useContext, useEffect, useState } from "react";
 import type { EmptyObject } from "type-fest";
+
+import { createContext, useContext, useEffect, useState } from "react";
+
+import type { InputStateTrackerInterface } from "./InputStateTracker";
+
+import { createEmptyHudInputState } from "./hudInputState";
+import { InputStateTracker } from "./InputStateTracker";
 import {
   createEmptyKeyboardState,
-  maintainKeyboardState,
   type KeyboardStateMap,
+  maintainKeyboardState,
 } from "./keyboardState";
-import type { InputStateTrackerInterface } from "./InputStateTracker";
-import { InputStateTracker } from "./InputStateTracker";
-import { createEmptyHudInputState } from "./hudInputState";
 
 const InputStateTrackerContext =
   createContext<InputStateTrackerInterface | null>(null);

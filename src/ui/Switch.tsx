@@ -1,10 +1,11 @@
 import clsx from "clsx";
+import { type MouseEvent, type ReactNode, useCallback } from "react";
+
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
-import { useCallback, type MouseEvent, type ReactNode } from "react";
 import { cn } from "./cn";
-import { useKeyboardShortcut, type ShortcutKeys } from "./useKeyboardShortcut";
-import { Tooltip } from "./Tooltip";
 import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
+import { Tooltip } from "./Tooltip";
+import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
 const SwitchLabel = ({ label }: { label: string }) => (
   <BitmapText className="inline-block mr-1 text-lightGrey py-half" noSlitWords>
@@ -73,7 +74,7 @@ export const Switch = ({
   );
 };
 
-export type Switch3Props<TValue extends string | number> = {
+export type Switch3Props<TValue extends number | string> = {
   value: TValue;
   className?: string;
   onChange?: (newValue: TValue, e?: MouseEvent<HTMLElement>) => void;
@@ -84,7 +85,7 @@ export type Switch3Props<TValue extends string | number> = {
   tooltipContent?: ReactNode;
 };
 
-export const Switch3 = <TValue extends string | number>({
+export const Switch3 = <TValue extends number | string>({
   className,
   value,
   onChange,

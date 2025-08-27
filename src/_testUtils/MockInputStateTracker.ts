@@ -1,16 +1,18 @@
-import { type InputPress } from "../game/input/InputAssignment";
+import { vi } from "vitest";
+
+import type { GameState } from "../game/gameState/GameState";
+import type { BooleanAction } from "../game/input/actions";
+import type { HudInputState } from "../game/input/hudInputState";
 import type {
   InputStateTrackerInterface,
   PressStatus,
 } from "../game/input/InputStateTracker";
-import { vi } from "vitest";
 import type { DirectionXy4 } from "../utils/vectors/vectors";
-import { originXyz } from "../utils/vectors/vectors";
-import type { GameState } from "../game/gameState/GameState";
 import type { TestRoomId } from "./basicRoom";
+
+import { type InputPress } from "../game/input/InputAssignment";
 import { unitVectors } from "../utils/vectors/unitVectors";
-import type { HudInputState } from "../game/input/hudInputState";
-import type { BooleanAction } from "../game/input/actions";
+import { originXyz } from "../utils/vectors/vectors";
 
 export class MockInputStateTracker implements InputStateTrackerInterface {
   /** returns any new taps since the last frame */

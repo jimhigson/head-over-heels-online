@@ -1,14 +1,16 @@
-import { describe, test, expect } from "vitest";
-import { isSolid } from "./itemPredicates";
-import { loadPlayer } from "../gameState/loadRoom/loadPlayer";
 import { first } from "iter-tools";
+import { describe, expect, test } from "vitest";
+
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+
+import { basicEmptyRoom } from "../../_testUtils/basicRoom";
+import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
-import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
-import { basicEmptyRoom } from "../../_testUtils/basicRoom";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import { defaultItemProperties } from "../../model/defaultItemProperties";
+import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
+import { loadPlayer } from "../gameState/loadRoom/loadPlayer";
+import { isSolid } from "./itemPredicates";
 
 const player = loadPlayer({
   type: "player",

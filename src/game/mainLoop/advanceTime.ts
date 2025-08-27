@@ -1,6 +1,7 @@
-import { otherIndividualCharacterName } from "../../model/modelTypes";
 import type { RoomState } from "../../model/RoomState";
 import type { GameState } from "../gameState/GameState";
+
+import { otherIndividualCharacterName } from "../../model/modelTypes";
 import {
   selectCurrentPlayableItem,
   selectPlayableItem,

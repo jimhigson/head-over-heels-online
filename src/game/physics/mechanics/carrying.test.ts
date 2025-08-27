@@ -1,10 +1,12 @@
-import { describe, expect, test } from "vitest";
-import { checkSpaceAvailableToPutDown } from "./carrying";
 import { first } from "iter-tools";
-import type { Xyz } from "../../../utils/vectors/vectors";
+import { describe, expect, test } from "vitest";
+
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
+import type { Xyz } from "../../../utils/vectors/vectors";
+
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
+import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
+import { checkSpaceAvailableToPutDown } from "./carrying";
 
 const makeHeels = (position: Xyz) =>
   first(

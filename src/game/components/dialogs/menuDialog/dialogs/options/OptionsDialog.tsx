@@ -1,35 +1,35 @@
+import { twClass } from "../../../../../../editor/twClass";
+import { useAppSelector } from "../../../../../../store/hooks";
+import {
+  selectIsInfiniteDoughnutsPoke,
+  selectIsInfiniteLivesPoke,
+  selectShowFps,
+  useIsGameRunning,
+  useIsUncolourised,
+} from "../../../../../../store/selectors";
 import {
   backToParentMenu,
   goToSubmenu,
   toggleBoolean,
 } from "../../../../../../store/slices/gameMenusSlice";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { MenuItems } from "../../MenuItems";
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { MenuItem } from "../../MenuItem";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { BackMenuItem } from "../../BackMenuItem";
-import { MenuItemSeparator } from "../../MenuItemSeparator";
-import { useAppSelector } from "../../../../../../store/hooks";
-import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import {
-  selectIsInfiniteDoughnutsPoke,
-  selectIsInfiniteLivesPoke,
-  selectShowFps,
-  useIsUncolourised,
-  useIsGameRunning,
-} from "../../../../../../store/selectors";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch } from "../../../../../../ui/Switch";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItem } from "../../MenuItem";
+import { MenuItems } from "../../MenuItems";
+import { MenuItemSeparator } from "../../MenuItemSeparator";
 import {
   optionsMenuItemColours,
   optionsMenuScrollClasses,
 } from "../controlOptions/optionsMenuColours";
-import { twClass } from "../../../../../../editor/twClass";
 import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
+import { MobileStyleBackButton } from "../MobileStyleBackButton";
 
 const optionsHintMarkdownClassname = twClass(
   "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan text-lightGrey zx:text-zxBlack sprites-normal-height",

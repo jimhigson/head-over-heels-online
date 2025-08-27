@@ -1,12 +1,14 @@
+import { size } from "iter-tools";
 import { Container } from "pixi.js";
+
+import type { PokeableNumber } from "../../../model/ItemStateMap";
+
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
+import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { hudCharTextureSize } from "../../../sprites/textureSizes";
 import { iterateToContainer } from "../../../utils/pixi/iterateToContainer";
 import { createSprite } from "../createSprite";
-import type { PokeableNumber } from "../../../model/ItemStateMap";
 import { hudOutlinedTextFilters, hudTextFilter } from "./hudFilters";
-import { size } from "iter-tools";
-import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 
 function* characterSprites(input: PokeableNumber | string) {
   const str =

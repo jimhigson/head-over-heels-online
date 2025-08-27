@@ -1,44 +1,46 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice, current } from "@reduxjs/toolkit";
+import type { Container } from "pixi.js";
 import type { EmptyObject, ValueOf } from "type-fest";
+
+import { createSlice, current } from "@reduxjs/toolkit";
+import { canonicalize } from "json-canonicalize";
+import { REHYDRATE } from "redux-persist";
+
 import type { DialogId } from "../../game/components/dialogs/menuDialog/DialogId";
+import type { SavedGameState } from "../../game/gameState/saving/SavedGameState";
+import type { BooleanAction } from "../../game/input/actions";
 import type {
   ActionInputAssignment,
   InputAssignment,
   InputPress,
 } from "../../game/input/InputAssignment";
 import type { KeyAssignmentPresetName } from "../../game/input/keyAssignmentPresets";
-import { keyAssignmentPresets } from "../../game/input/keyAssignmentPresets";
-
-import type { ResolutionName } from "../../originalGame";
-import { resolutionNames } from "../../originalGame";
-import { directionsXy4 } from "../../utils/vectors/vectors";
+import type { PlayableItem } from "../../game/physics/itemPredicates";
 import type { MarkdownPageName } from "../../manual/pages";
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import type { ScrollConfig } from "../../model/json/ItemConfigMap";
+import type { CampaignLocator, CharacterName } from "../../model/modelTypes";
+import type { ResolutionName } from "../../originalGame";
 import type { PlanetName } from "../../sprites/planets";
+import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
 import type { ToggleablePaths } from "../../utils/Toggleable";
-import { getAtPath, setAtPath } from "../../utils/getAtPath";
+import type { gameMenusSliceWhitelist } from "../persist/gameMenusSliceWhitelist";
+import type { RootState } from "../store";
+
+import { keyAssignmentPresets } from "../../game/input/keyAssignmentPresets";
+import { isInPlaytestMode } from "../../game/isInPlaytestMode";
+import { typedURLSearchParams } from "../../options/queryParams";
+import { resolutionNames } from "../../originalGame";
 import { detectDeviceType } from "../../utils/detectDeviceType";
+import { emptyObject } from "../../utils/empty";
+import { getAtPath, setAtPath } from "../../utils/getAtPath";
+import { nextInCycle } from "../../utils/nextInCycle";
+import { pick } from "../../utils/pick";
+import { directionsXy4 } from "../../utils/vectors/vectors";
 import {
   selectEmulatedResolutionName,
   selectInputDirectionMode,
 } from "../selectors";
-import type { BooleanAction } from "../../game/input/actions";
-import { nextInCycle } from "../../utils/nextInCycle";
-import type { SavedGameState } from "../../game/gameState/saving/SavedGameState";
-import { REHYDRATE } from "redux-persist";
-import { emptyObject } from "../../utils/empty";
-import type { RootState } from "../store";
-import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { CampaignLocator, CharacterName } from "../../model/modelTypes";
-import { typedURLSearchParams } from "../../options/queryParams";
-import type { Container } from "pixi.js";
-import type { ScrollConfig } from "../../model/json/ItemConfigMap";
-import { canonicalize } from "json-canonicalize";
-import type { gameMenusSliceWhitelist } from "../persist/gameMenusSliceWhitelist";
-import { pick } from "../../utils/pick";
-import { isInPlaytestMode } from "../../game/isInPlaytestMode";
-import type { PlayableItem } from "../../game/physics/itemPredicates";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
@@ -62,14 +64,6 @@ type BaseOpenMenu = {
 };
 export type OpenMenu =
   | (BaseOpenMenu & {
-      menuId: Exclude<DialogId, "crowns" | "errorCaught" | "markdown/inline">;
-
-      /**
-       * menu-specific parameters - for example, the crowns menu can play music
-       */
-      menuParam: EmptyObject;
-    })
-  | (BaseOpenMenu & {
       menuId: "crowns";
       /**
        * menu-specific parameters - for example, the crowns menu can play music
@@ -84,6 +78,14 @@ export type OpenMenu =
       menuId: "markdown/inline";
       // the markdown content
       menuParam: { markdown: string };
+    })
+  | (BaseOpenMenu & {
+      menuId: Exclude<DialogId, "crowns" | "errorCaught" | "markdown/inline">;
+
+      /**
+       * menu-specific parameters - for example, the crowns menu can play music
+       */
+      menuParam: EmptyObject;
     });
 
 export type DisplaySettings = {
@@ -227,7 +229,7 @@ export type GameMenusState = {
  * paths used in switches and teleporters when they reference into the store
  */
 export type BooleanStatePaths = ToggleablePaths<
-  Pick<GameMenusState, "userSettings" | "gameInPlay">
+  Pick<GameMenusState, "gameInPlay" | "userSettings">
 >;
 
 export const initialGameMenuSliceState: GameMenusState = {
@@ -482,7 +484,7 @@ export const gameMenusSlice = createSlice({
     },
     holdPressed(
       state,
-      { payload }: PayloadAction<"hold" | "unhold" | "toggle">,
+      { payload }: PayloadAction<"hold" | "toggle" | "unhold">,
     ) {
       const showingAMenu = state.openMenus.length > 0;
 
@@ -683,7 +685,7 @@ export const gameMenusSlice = createSlice({
     },
     errorDismissed(
       state,
-      { payload: strategy }: PayloadAction<"ignore" | "clearAllData">,
+      { payload: strategy }: PayloadAction<"clearAllData" | "ignore">,
     ) {
       switch (strategy) {
         case "ignore":
