@@ -1,4 +1,4 @@
-import { type Xyz, addXyz } from "../../../utils/vectors/vectors";
+import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
 
 /**

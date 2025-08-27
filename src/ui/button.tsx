@@ -1,18 +1,21 @@
-import { cn } from "./cn";
-import type { Simplify } from "type-fest";
 import type { PropsWithChildren, Ref } from "react";
+import type { ButtonHTMLAttributes, MouseEvent } from "react";
+import type { Simplify } from "type-fest";
+
 import { type ReactNode } from "react";
-import { Tooltip } from "./Tooltip";
+
 import type { ShortcutKeys } from "./useKeyboardShortcut";
-import { useKeyboardShortcut } from "./useKeyboardShortcut";
+
+import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
-import type { MouseEvent, ButtonHTMLAttributes } from "react";
+import { Tooltip } from "./Tooltip";
+import { useKeyboardShortcut } from "./useKeyboardShortcut";
 
 export type ButtonProps = Simplify<
   Pick<
     // support selected html attributes
     ButtonHTMLAttributes<HTMLButtonElement>,
-    "role" | "style" | "disabled" | "className"
+    "className" | "disabled" | "role" | "style"
   > &
     PropsWithChildren<{
       selected?: boolean;

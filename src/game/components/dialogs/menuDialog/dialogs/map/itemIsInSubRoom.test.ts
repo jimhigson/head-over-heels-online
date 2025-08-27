@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { findSubRoomForItem, type MaybeDividedRoom } from "./itemIsInSubRoom";
+
 import { blockSizePx } from "../../../../../../sprites/spritePivots";
+import { findSubRoomForItem, type MaybeDividedRoom } from "./itemIsInSubRoom";
 
 const createFinePosition = (x: number, y: number) => ({
   x: x * blockSizePx.w,

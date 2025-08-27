@@ -1,9 +1,10 @@
 import { useEffect } from "react";
+
 import { resolutions } from "../../originalGame";
 import { useAppSelector } from "../../store/hooks";
 import { useEmulatedResolutionName } from "../../store/selectors";
-import { detectDeviceType } from "../../utils/detectDeviceType";
 import { selectRot90 } from "../../store/slices/upscale/upscaleSlice";
+import { detectDeviceType } from "../../utils/detectDeviceType";
 
 const resClassName = (str: string) =>
   `res${str[0].toUpperCase()}${str.slice(1)}`;

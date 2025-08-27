@@ -1,5 +1,6 @@
 import type { CharacterName } from "../../../model/modelTypes";
 import type { PlayableItem } from "../../physics/itemPredicates";
+
 import { afterDeathInvulnerabilityTime } from "../../physics/mechanicsConstants";
 
 export const playerDiedRecently = (

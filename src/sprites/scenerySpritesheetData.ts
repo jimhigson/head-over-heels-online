@@ -1,29 +1,31 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
+
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import type { SceneryName, Wall } from "./planets";
+
 import { wallTiles } from "./planets";
-import { wallTileSize, floorTileSize } from "./textureSizes";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
+import { floorTileSize, wallTileSize } from "./textureSizes";
 import { withSpeed } from "./withSpeed";
 
 export type WallTextureId<
   PS extends SceneryName,
-  TDark extends "" | ".dark",
+  TDark extends ".dark" | "",
 > = string &
   {
     [P in PS]: {
-      [D in TDark]: `${P}${TDark}.wall.${Wall<P>}.${"left" | "away"}`;
+      [D in TDark]: `${P}${TDark}.wall.${Wall<P>}.${"away" | "left"}`;
     };
   }[PS][TDark];
 
 export type BackgroundTextureId<
   TPlanet extends SceneryName,
-  TDark extends "" | ".dark",
-> = WallTextureId<TPlanet, TDark> | `${TPlanet}${TDark}.floor`;
+  TDark extends ".dark" | "",
+> = `${TPlanet}${TDark}.floor` | WallTextureId<TPlanet, TDark>;
 
 const backgroundFrames = <
   TPlanet extends SceneryName,
-  TDark extends "" | ".dark",
+  TDark extends ".dark" | "",
 >(
   planet: TPlanet,
   startX: number,
@@ -265,5 +267,5 @@ export const scenerySpritesheetData = {
   },
 } as const satisfies Pick<
   SpritesheetData,
-  "frames" | "animations"
+  "animations" | "frames"
 > satisfies AnimationsOfFrames<keyof typeof frames>;

@@ -1,22 +1,25 @@
+import type { ValueOf } from "type-fest";
+
 import { canonicalize } from "json-canonicalize";
-import { type Xyz } from "../utils/vectors/vectors";
-import { omit } from "../utils/pick";
-import type { SceneryName } from "../sprites/planets";
+
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import type {
   RightWallConfig,
   TowardsWallConfig,
   WallJsonConfigWithTiles,
 } from "../model/json/WallJsonConfig";
+import type { SceneryName } from "../sprites/planets";
 import type { ConsolidatableJsonItem } from "./ConsolidatableJsonItem";
-import {
-  isConsolidatable,
-  getConsolidatableVector,
-} from "./ConsolidatableJsonItem";
-import type { JsonItemUnion } from "../model/json/JsonItem";
+
 import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
-import { Grid } from "./grid";
 import { blockSizeXyzPx } from "../sprites/spritePivots";
-import type { ValueOf } from "type-fest";
+import { omit } from "../utils/pick";
+import { type Xyz } from "../utils/vectors/vectors";
+import {
+  getConsolidatableVector,
+  isConsolidatable,
+} from "./ConsolidatableJsonItem";
+import { Grid } from "./grid";
 
 export type ItemWithId = [itemId: string, item: JsonItemUnion];
 export type ConsolidatableItemWithId = [

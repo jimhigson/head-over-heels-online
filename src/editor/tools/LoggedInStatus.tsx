@@ -1,16 +1,18 @@
+import type { Provider } from "@supabase/supabase-js";
+
+import type { Subset } from "../../utils/subset";
+
 import { supabaseDb } from "../../db/supabaseDb";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
-import { cn } from "../../ui/cn";
-import { Button } from "../../ui/button";
-import { useSupabaseUser } from "./useSupabaseUser";
-import type { Provider } from "@supabase/supabase-js";
 import {
   nerdFontDiscordChar,
   nerdFontGithubChar,
 } from "../../sprites/hudSritesheetData";
-import type { Subset } from "../../utils/subset";
+import { Button } from "../../ui/button";
+import { cn } from "../../ui/cn";
+import { useSupabaseUser } from "./useSupabaseUser";
 
-type SupportedProvider = Subset<Provider, "github" | "discord">;
+type SupportedProvider = Subset<Provider, "discord" | "github">;
 
 const providerIcon = (provider: SupportedProvider): string => {
   switch (provider) {

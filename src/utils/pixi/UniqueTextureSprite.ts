@@ -1,5 +1,6 @@
-import { Sprite } from "pixi.js";
 import type { DestroyOptions } from "pixi.js";
+
+import { Sprite } from "pixi.js";
 
 /**
  * A Sprite subclass that automatically destroys its texture when the sprite is destroyed.

@@ -1,9 +1,11 @@
 import { Container } from "pixi.js";
+
+import type { ItemAppearance } from "./ItemAppearance";
+
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { isPlayableItem } from "../../physics/itemPredicates";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { createSprite } from "../createSprite";
-import type { ItemAppearance } from "./ItemAppearance";
 
 type TeleporterRenderProps = {
   flashing: boolean;

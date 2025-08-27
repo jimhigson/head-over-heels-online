@@ -1,9 +1,10 @@
-import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
-import { createSprite } from "./createSprite";
 import { AnimatedSprite } from "pixi.js";
 import { Container } from "pixi.js";
 import { Sprite } from "pixi.js";
+import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
+
 import { loadedSpriteSheet, loadSpritesheet } from "../../sprites/spriteSheet";
+import { createSprite } from "./createSprite";
 
 beforeAll(async () => {
   await loadSpritesheet();
@@ -45,7 +46,7 @@ describe("createSprite return type", () => {
       loadedSpriteSheet().textures["block.artificial"],
     );
     expect(containerSprite.children.length).toBe(2);
-    expectTypeOf(containerSprite).toExtend<Sprite | Container<Sprite>>();
+    expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
   });
   test("creating sprite with {textureIdCallback, times:{x:2}} gives a container of sprites", () => {
     const containerSprite = createSprite({
@@ -64,7 +65,7 @@ describe("createSprite return type", () => {
     expect((containerSprite.children.at(1) as Sprite).texture).toBe(
       loadedSpriteSheet().textures["block.artificial"],
     );
-    expectTypeOf(containerSprite).toExtend<Sprite | Container<Sprite>>();
+    expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
   });
   test("creating sprite with {textureIdCallback, times:{x:1}} gives a container of sprites", () => {
     const containerSprite = createSprite({
@@ -78,7 +79,7 @@ describe("createSprite return type", () => {
     expect((containerSprite as Sprite).texture).toEqual(
       loadedSpriteSheet().textures["block.artificial"],
     );
-    expectTypeOf(containerSprite).toExtend<Sprite | Container<Sprite>>();
+    expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
   });
   test("creating sprite with {textureId, times:{x:1,y:1,z:1}} gives a single Sprite", () => {
     const containerSprite = createSprite({
@@ -86,7 +87,7 @@ describe("createSprite return type", () => {
       times: { x: 1, y: 1, z: 1 },
     });
     expect(containerSprite).toBeInstanceOf(Sprite);
-    expectTypeOf(containerSprite).toExtend<Sprite | Container<Sprite>>();
+    expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
   });
   test("creating sprite with {textureId, times: undefined} gives a Sprite", () => {
     const containerSprite = createSprite({
@@ -94,7 +95,7 @@ describe("createSprite return type", () => {
       times: undefined,
     });
     expect(containerSprite).toBeInstanceOf(Sprite);
-    expectTypeOf(containerSprite).toExtend<Sprite | Container<Sprite>>();
+    expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
   });
 
   test("creating sprite with {animationId}", () => {

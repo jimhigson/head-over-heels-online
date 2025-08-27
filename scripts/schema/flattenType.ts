@@ -1,12 +1,14 @@
 #!/usr/bin/env -S pnpm tsx
 
 import type { Type, TypeChecker } from "ts-morph";
-import { Project } from "ts-morph";
-import * as path from "path";
-import { fileURLToPath } from "url";
+
 import { Command } from "commander";
-import { normalizeTypeOutput } from "./normalizeTypeOutput.js";
+import * as path from "path";
+import { Project } from "ts-morph";
+import { fileURLToPath } from "url";
+
 import { freeItemTypes } from "../../src/game/physics/itemPredicates.js";
+import { normalizeTypeOutput } from "./normalizeTypeOutput.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

@@ -1,28 +1,28 @@
-import {
-  backToParentMenu,
-  toggleBoolean,
-} from "../../../../../../store/slices/gameMenusSlice";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { MenuItems } from "../../MenuItems";
-import { SelectedItemHint } from "../../SelectedItemHint";
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { BackMenuItem } from "../../BackMenuItem";
-import { MenuItemSeparator } from "../../MenuItemSeparator";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
-import {
-  optionsMenuItemColours,
-  optionsMenuScrollClasses,
-} from "../controlOptions/optionsMenuColours";
-import { MenuItem } from "../../MenuItem";
-import { Switch } from "../../../../../../ui/Switch";
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectIsNoFootstepSounds,
   selectIsSoundMuted,
 } from "../../../../../../store/selectors";
+import {
+  backToParentMenu,
+  toggleBoolean,
+} from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { Switch } from "../../../../../../ui/Switch";
+import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItem } from "../../MenuItem";
+import { MenuItems } from "../../MenuItems";
+import { MenuItemSeparator } from "../../MenuItemSeparator";
+import { SelectedItemHint } from "../../SelectedItemHint";
+import {
+  optionsMenuItemColours,
+  optionsMenuScrollClasses,
+} from "../controlOptions/optionsMenuColours";
+import { MobileStyleBackButton } from "../MobileStyleBackButton";
 
 export const SoundDialog = () => {
   const isMuted = useAppSelector(selectIsSoundMuted);

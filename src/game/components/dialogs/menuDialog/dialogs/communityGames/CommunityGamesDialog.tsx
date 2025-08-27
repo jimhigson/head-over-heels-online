@@ -1,19 +1,21 @@
-import { useEffect } from "react";
 import type { EmptyObject } from "type-fest";
+
+import { useEffect } from "react";
+
+import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { MenuItems } from "../../MenuItems";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { Border } from "../../../../../../ui/Border";
-import { BackMenuItem } from "../../BackMenuItem";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
-import { CampaignListContent } from "./CampaignListContent";
 import { NonIdealState } from "../../../../../../ui/NonIdealState";
-import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
 import { SpinnerHead } from "../../../../../../ui/Spinner";
+import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItems } from "../../MenuItems";
+import { MobileStyleBackButton } from "../MobileStyleBackButton";
+import { CampaignListContent } from "./CampaignListContent";
 
 export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
   const { data, error, isLoading, refetch } =

@@ -1,5 +1,6 @@
-import { type Node, parseTree } from "jsonc-parser";
 import type { editor } from "monaco-editor";
+
+import { type Node, parseTree } from "jsonc-parser";
 
 export function getParsedJsonFromEditor(
   editor: editor.IStandaloneCodeEditor | null,

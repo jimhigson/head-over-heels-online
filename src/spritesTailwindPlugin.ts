@@ -1,13 +1,16 @@
-import plugin from "tailwindcss/plugin";
-import type { FramesWithSpeed, TextureId } from "./sprites/spriteSheetData";
-import { spritesheetData } from "./sprites/spriteSheetData";
-import { objectEntriesIter } from "./utils/entries";
 import type { CSSRuleObject } from "tailwindcss/types/config";
+
 import { imageSize } from "image-size";
-import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
+import plugin from "tailwindcss/plugin";
+
+import type { FramesWithSpeed, TextureId } from "./sprites/spriteSheetData";
+
 import spritesheetPalette from "../gfx/spritesheetPalette.json";
-import { halfbriteHex } from "./utils/colour/halfBrite";
 import { sanitiseForClassName } from "./game/components/tailwindSprites/SanitiseForClassName";
+import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
+import { spritesheetData } from "./sprites/spriteSheetData";
+import { halfbriteHex } from "./utils/colour/halfBrite";
+import { objectEntriesIter } from "./utils/entries";
 
 const spritesheetSize = imageSize("gfx/sprites.png");
 

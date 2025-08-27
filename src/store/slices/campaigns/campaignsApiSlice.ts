@@ -1,19 +1,21 @@
-import type { Campaign, CampaignLocator } from "../../../model/modelTypes";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+
 import type {
   CampaignDirectory,
   CampaignGetLocator,
 } from "../../../db/campaign";
+import type { EditorCampaign } from "../../../editor/editorTypes";
+import type { Campaign, CampaignLocator } from "../../../model/modelTypes";
+import type { RootState } from "../../store";
+
+import { importOriginalCampaign } from "../../../_generated/originalCampaign/campaign.import";
 import {
   getAllUsersLatestCampaigns,
   loadCampaignFromDb,
   saveCampaignToDb,
 } from "../../../db/campaign";
-import type { RootState } from "../../store";
-import { importOriginalCampaign } from "../../../_generated/originalCampaign/campaign.import";
 import { decompressObject } from "../../../db/compressObject";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
-import type { EditorCampaign } from "../../../editor/editorTypes";
 
 export const campaignsApiSlice = createApi({
   reducerPath: "campaignsApi",

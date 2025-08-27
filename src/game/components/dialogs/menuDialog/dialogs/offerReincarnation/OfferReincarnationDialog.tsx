@@ -1,18 +1,19 @@
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import type { GameApi } from "../../../../../GameApi";
+
 import {
   gameOver,
   reincarnationAccepted,
 } from "../../../../../../store/slices/gameMenusSlice";
+import { store } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { useGameApi } from "../../../../GameApiContext";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
-import { useGameApi } from "../../../../GameApiContext";
-import { store } from "../../../../../../store/store";
-import type { GameApi } from "../../../../../GameApi";
-import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 
 export const reincarnateSelected = (gameApi: GameApi<string>) => {
   gameApi.reincarnateFrom(

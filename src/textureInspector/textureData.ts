@@ -9,10 +9,10 @@ export interface TrackedTexture {
    */
   callStack: Error;
   type?:
-    | "ItemShadowRenderer"
-    | "PaletteSwapFilter"
+    | "Item/Item Mask"
     | "ItemAppearance"
-    | "Item/Item Mask";
+    | "ItemShadowRenderer"
+    | "PaletteSwapFilter";
 }
 
 // Track all dynamically created textures

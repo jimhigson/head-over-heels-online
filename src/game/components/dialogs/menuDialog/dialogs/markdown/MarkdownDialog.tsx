@@ -1,29 +1,30 @@
-import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { twMerge } from "tailwind-merge";
+
 import {
-  markdownPages,
   type MarkdownPageName,
+  markdownPages,
 } from "../../../../../../manual/pages";
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { MenuItems } from "../../MenuItems";
-import { BackMenuItem } from "../../BackMenuItem";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItems } from "../../MenuItems";
+import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 
 export const MarkdownDialog = (
   props:
     | {
-        source: "manual";
-        pageName: MarkdownPageName;
-      }
-    | {
         source: "inline";
         markdown: string;
+      }
+    | {
+        source: "manual";
+        pageName: MarkdownPageName;
       },
 ) => {
   const markdown =

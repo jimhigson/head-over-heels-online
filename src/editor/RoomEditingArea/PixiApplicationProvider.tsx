@@ -1,8 +1,10 @@
-import { Application } from "pixi.js";
 import type { PropsWithChildren } from "react";
-import { createContext, useContext, useEffect, useState } from "react";
-import { spritesheetPalette } from "../../../gfx/spritesheetPalette";
 import type { EmptyObject } from "type-fest";
+
+import { Application } from "pixi.js";
+import { createContext, useContext, useEffect, useState } from "react";
+
+import { spritesheetPalette } from "../../../gfx/spritesheetPalette";
 import { stopAppAutoRendering } from "../../utils/pixi/stopAppAutoRendering";
 
 const PixiApplicationContext = createContext<Application>(

@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { flattenFixture } from "./testHelper.js";
 import { timeout } from "./timeout.js";
 
@@ -15,6 +16,6 @@ describe("genericConstraints", () => {
     );
     expect(switchResult).toContain("controls:");
     expect(switchResult).toContain('("item1" | "item2")[]');
-    expect(switchResult).toContain('type: "local" | "global"');
+    expect(switchResult).toContain('type: "global" | "local"');
   });
 });

@@ -1,33 +1,36 @@
+import type { SetRequired } from "type-fest";
+
 import { Container, Graphics } from "pixi.js";
-import { projectWorldXyzToScreenXy } from "./projections";
-import { floorsRenderExtent } from "./floorsExtent";
+
+import type { RoomState } from "../../model/RoomState";
 import type { Xy } from "../../utils/vectors/vectors";
-import {
-  addXyz,
-  subXy,
-  scaleXyz,
-  addXy,
-  lengthXySquared,
-  scaleXy,
-  subXyz,
-} from "../../utils/vectors/vectors";
-import { detectDeviceType } from "../../utils/detectDeviceType";
-import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type {
   RoomRenderContextInGame,
   RoomTickContext,
 } from "./RoomRenderContexts";
-import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
-import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import type {
   RoomRendererType,
   RoomRendererTypeInGameOnly,
 } from "./RoomRendererType";
-import type { SetRequired } from "type-fest";
-import { roundToNearest } from "../../utils/maths/maths";
-import type { RoomState } from "../../model/RoomState";
-import { neverTime } from "../../utils/neverTime";
+import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
+
+import { defaultUserSettings } from "../../store/defaultUserSettings";
+import { detectDeviceType } from "../../utils/detectDeviceType";
 import { epsilon } from "../../utils/epsilon";
+import { roundToNearest } from "../../utils/maths/maths";
+import { neverTime } from "../../utils/neverTime";
+import {
+  addXy,
+  addXyz,
+  lengthXySquared,
+  scaleXy,
+  scaleXyz,
+  subXy,
+  subXyz,
+} from "../../utils/vectors/vectors";
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
+import { floorsRenderExtent } from "./floorsExtent";
+import { projectWorldXyzToScreenXy } from "./projections";
 
 // a higher value means more scrolling will occur.
 // 0.33 is generally good for original game levels, 0.4 is good for new remake-specific levels

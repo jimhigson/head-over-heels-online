@@ -1,7 +1,9 @@
-import { describe, expect, test } from "vitest";
-import { consolidateItemsMap } from "./consolidateItems";
-import type { JsonItem, JsonItemUnion } from "../model/json/JsonItem";
 import { readFileSync } from "fs";
+import { describe, expect, test } from "vitest";
+
+import type { JsonItem, JsonItemUnion } from "../model/json/JsonItem";
+
+import { consolidateItemsMap } from "./consolidateItems";
 
 // Custom matcher for testing consolidation results
 declare module "vitest" {
@@ -1908,9 +1910,9 @@ test("consolidateItems does not mutate input", () => {
   const originalItems: Record<
     string,
     | JsonItem<"block">
+    | JsonItem<"monster">
     | JsonItem<"teleporter">
     | JsonItem<"wall">
-    | JsonItem<"monster">
   > = {
     // Blocks that should consolidate
     block1: {

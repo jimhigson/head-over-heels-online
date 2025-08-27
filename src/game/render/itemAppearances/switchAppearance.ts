@@ -1,8 +1,9 @@
 import type { SwitchSetting } from "../../../model/ItemInPlay";
+import type { ItemAppearance } from "./ItemAppearance";
+
 import { selectAtPath } from "../../../store/selectors";
 import { store } from "../../../store/store";
 import { createSprite } from "../createSprite";
-import type { ItemAppearance } from "./ItemAppearance";
 
 type SwitchRenderProps = {
   setting: SwitchSetting;

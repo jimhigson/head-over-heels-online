@@ -1,11 +1,11 @@
 /* eslint-disable no-console -- the point of this file is to log to the console */
+import spritesheetPalette from "../../gfx/spritesheetPalette.json";
 import {
-  patchPixiToTrackTextures,
   getApp,
   getTrackingStartTime,
+  patchPixiToTrackTextures,
 } from "./patchPixi";
-import { getTrackedTextures, getTextureMemory } from "./textureData";
-import spritesheetPalette from "../../gfx/spritesheetPalette.json";
+import { getTextureMemory, getTrackedTextures } from "./textureData";
 
 /**
  * Format duration in "5m 2s 234ms" format

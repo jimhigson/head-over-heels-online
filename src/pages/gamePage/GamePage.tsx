@@ -1,31 +1,32 @@
-import { useEffect, useState, Suspense, lazy } from "react";
-import { type GameApi } from "../../game/GameApi.tsx";
+import { lazy, Suspense, useEffect, useState } from "react";
 
+import type Cheats from "../../game/components/cheats/Cheats.tsx";
+
+import { AddTrackingToStore } from "../../analytics/addTrackingToStore.ts";
+import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
+import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { GameApiProvider } from "../../game/components/GameApiContext.tsx";
-import { useAppSelector } from "../../store/hooks.ts";
-import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
-import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
-import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
-import { useCheatsOn, useIsGameRunning } from "../../store/selectors.ts";
-import type Cheats from "../../game/components/cheats/Cheats.tsx";
-import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
+import { type GameApi } from "../../game/GameApi.tsx";
 import { importGameMain } from "../../game/gameMain.import.ts";
-import { loadSpritesheet } from "../../sprites/spriteSheet.ts";
-import {
-  manualLoadingStarted,
-  manualLoadingFinished,
-} from "../../store/slices/manualLoadingSlice.ts";
-import { importOnce } from "../../utils/importOnce.ts";
+import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import { loadSounds } from "../../sound/soundsLoader.ts";
-import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
-import { store } from "../../store/store.ts";
+import { loadSpritesheet } from "../../sprites/spriteSheet.ts";
+import { useAppSelector } from "../../store/hooks.ts";
+import { useCheatsOn, useIsGameRunning } from "../../store/selectors.ts";
 import { errorCaught } from "../../store/slices/gameMenusSlice.ts";
-import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
-import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
+import {
+  manualLoadingFinished,
+  manualLoadingStarted,
+} from "../../store/slices/manualLoadingSlice.ts";
 import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
+import { store } from "../../store/store.ts";
+import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
+import { importOnce } from "../../utils/importOnce.ts";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
-import { AddTrackingToStore } from "../../analytics/addTrackingToStore.ts";
+import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
+import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
+import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 

@@ -1,37 +1,40 @@
 import type { FederatedPointerEvent } from "pixi.js";
-import { Container, Graphics } from "pixi.js";
-import { createSprite } from "../createSprite";
-import { store } from "../../../store/store";
+import type { EmptyObject } from "type-fest";
+
 import { objectValues } from "iter-tools";
+import { Container, Graphics } from "pixi.js";
+
+import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
+import type { Renderer } from "../Renderer";
+import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { OnScreenLookRenderer } from "./OnScreenLookRenderer";
+import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
+
+import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import { store } from "../../../store/store";
+import { objectEntriesIter } from "../../../utils/entries";
 import {
+  type DirectionXy8,
   lengthXyz,
   originXyz,
   scaleXyz,
   vectorClosestDirectionXy8,
-  type DirectionXy8,
 } from "../../../utils/vectors/vectors";
-import {
-  analogueDeadzone,
-  type InputStateTrackerInterface,
-} from "../../input/InputStateTracker";
 import {
   lightlySnapXy4,
   rotateInputVector45,
 } from "../../input/analogueControlAdjustments";
 import {
+  analogueDeadzone,
+  type InputStateTrackerInterface,
+} from "../../input/InputStateTracker";
+import { createSprite } from "../createSprite";
+import { noFilters } from "../filters/standardFilters";
+import {
   hudHighlightAndOutlineFilters,
   hudLowlightAndOutlineFilters,
   hudLowlightedFilter,
 } from "./hudFilters";
-import { objectEntriesIter } from "../../../utils/entries";
-import { noFilters } from "../filters/standardFilters";
-import type { Renderer } from "../Renderer";
-import type { EmptyObject } from "type-fest";
-import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
-import type { GeneralRenderContext } from "../RoomRenderContexts";
-import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
-import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
-import type { OnScreenLookRenderer } from "./OnScreenLookRenderer";
 
 const joystickArrowOffset = 14;
 const sensitivity = 2;

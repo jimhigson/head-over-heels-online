@@ -1,3 +1,5 @@
+import type { PlayableItem } from "../../physics/itemPredicates";
+
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
@@ -5,7 +7,6 @@ import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { doubleHeightCharacter } from "../../collision/boundingBoxes";
-import type { PlayableItem } from "../../physics/itemPredicates";
 import {
   defaultBaseState,
   defaultFreeItemState,

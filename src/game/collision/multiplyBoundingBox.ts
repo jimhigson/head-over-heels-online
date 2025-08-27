@@ -1,6 +1,6 @@
-import { blockSizeXyzPx } from "../../sprites/spritePivots";
-import { type Xyz, subXyz, productXyz } from "../../utils/vectors/vectors";
 import { completeTimesXyz } from "../../model/times";
+import { blockSizeXyzPx } from "../../sprites/spritePivots";
+import { productXyz, subXyz, type Xyz } from "../../utils/vectors/vectors";
 
 export const multiplyBoundingBox = (
   singleItemBB: Xyz,

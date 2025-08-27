@@ -1,14 +1,16 @@
 import { Color } from "pixi.js";
+
+import type { SpritesheetPaletteColourName } from "../../gfx/spritesheetPalette";
+import type { IndividualCharacterName } from "../model/modelTypes";
+
+import { spritesheetPalette } from "../../gfx/spritesheetPalette";
 import {
-  type ZxSpectrumShade,
+  zxSpectrumColors,
   type ZxSpectrumRoomColour,
   type ZxSpectrumRoomHue,
-  zxSpectrumColors,
+  type ZxSpectrumShade,
 } from "../originalGame";
-import type { SpritesheetPaletteColourName } from "../../gfx/spritesheetPalette";
-import { spritesheetPalette } from "../../gfx/spritesheetPalette";
 import { halfbrite } from "../utils/colour/halfBrite";
-import type { IndividualCharacterName } from "../model/modelTypes";
 
 export type Shades = { basic: Color; dimmed: Color; original: Color };
 export const whiteShades = {

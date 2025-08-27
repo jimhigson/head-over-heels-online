@@ -1,5 +1,6 @@
-import { smallItemAabb } from "../game/collision/boundingBoxes";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
+
+import { smallItemAabb } from "../game/collision/boundingBoxes";
 
 /**
  * to spread over items on instantiation and cut down on typing

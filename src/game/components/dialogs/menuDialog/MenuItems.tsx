@@ -1,15 +1,17 @@
-import { twMerge } from "tailwind-merge";
-import { useIsAssigningKeys } from "../../../../store/selectors";
-import { useActionTap } from "../useActionTap";
 import type { PropsWithChildren, RefObject } from "react";
+
 import { useCallback, useEffect, useRef } from "react";
-import { store } from "../../../../store/store";
-import {
-  menuItemDataAttributeId,
-  menuItemDataAttributeHidden,
-  menuItemDataAttributeDisabled,
-} from "./MenuItem";
+import { twMerge } from "tailwind-merge";
+
+import { useIsAssigningKeys } from "../../../../store/selectors";
 import { setFocussedMenuItemId } from "../../../../store/slices/gameMenusSlice";
+import { store } from "../../../../store/store";
+import { useActionTap } from "../useActionTap";
+import {
+  menuItemDataAttributeDisabled,
+  menuItemDataAttributeHidden,
+  menuItemDataAttributeId,
+} from "./MenuItem";
 
 const findMenuItems = () => {
   const menuItemsDom = document.body.querySelectorAll(
@@ -19,7 +21,7 @@ const findMenuItems = () => {
 };
 
 /** @returns true iff declined to handle */
-const moveFocus = (direction: 1 | -1) => {
+const moveFocus = (direction: -1 | 1) => {
   const {
     gameMenus: {
       openMenus: [{ focussedItemId: curFocusId }],

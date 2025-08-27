@@ -1,12 +1,15 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import { type LevelEditorState } from "../levelEditorSlice";
-import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { first, objectValues } from "iter-tools";
+
 import type { EditorCampaign } from "../../editorTypes";
+
 import { iterateRoomJsonItems } from "../../../model/RoomJson";
-import { iterate } from "../../../utils/iterate";
 import { keysIter } from "../../../utils/entries";
+import { iterate } from "../../../utils/iterate";
+import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
+import { type LevelEditorState } from "../levelEditorSlice";
 
 export const saveAndLoadReducers = {
   loadCampaign(

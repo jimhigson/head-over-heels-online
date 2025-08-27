@@ -12,10 +12,11 @@ import type {
   SwitchItemModificationUnion,
 } from "../../../model/json/SwitchConfig";
 import type { RoomState } from "../../../model/RoomState";
+import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
+
 import { iterateRoomItems } from "../../../model/RoomState";
 import { toggleBoolean } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
-import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 const oppositeSetting = (setting: string) => {
   return setting === "left" ? "right" : "left";
@@ -71,7 +72,7 @@ export const applyModifiesList = <
 >(
   modifiesList: SwitchItemModificationUnion<RoomId, RoomItemId>[],
   newSetting: SwitchSetting,
-  instigator: ItemTypeUnion<"switch" | "button", RoomId, RoomItemId>,
+  instigator: ItemTypeUnion<"button" | "switch", RoomId, RoomItemId>,
   room: Pick<RoomState<RoomId, RoomItemId>, "items" | "roomTime">,
   visited: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>> = new Set(),
 ) => {

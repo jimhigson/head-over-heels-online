@@ -1,14 +1,15 @@
+import type { CharacterName } from "../../../model/modelTypes";
+
+import { isItemType, type PlayableItem } from "../itemPredicates";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
+import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
-import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import {
+  type ItemTouchEvent,
   touchedItemIsDeadly,
   touchedItemIsType,
-  type ItemTouchEvent,
 } from "./ItemTouchEvent";
-import { isItemType, type PlayableItem } from "../itemPredicates";
-import type { CharacterName } from "../../../model/modelTypes";
 
 const doesNotStopAutowalk = isItemType(
   "floor",

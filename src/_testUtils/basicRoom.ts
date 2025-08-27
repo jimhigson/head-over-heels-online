@@ -1,10 +1,11 @@
-import { loadGameState } from "../game/gameState/loadGameState";
 import type { JsonItem } from "../model/json/JsonItem";
 import type { Campaign } from "../model/modelTypes";
 import type { RoomJson } from "../model/RoomJson";
+import type { GameStateWithMockInput } from "./MockInputStateTracker";
+
+import { loadGameState } from "../game/gameState/loadGameState";
 import { addPerimeterWallsToRoom } from "./addPerimeterWallsToRoom";
 import { gameStartedWithCampaign } from "./initStoreForTests";
-import type { GameStateWithMockInput } from "./MockInputStateTracker";
 import { MockInputStateTracker } from "./MockInputStateTracker";
 
 /**

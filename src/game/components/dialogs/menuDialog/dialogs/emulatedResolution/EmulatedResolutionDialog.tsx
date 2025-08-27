@@ -1,23 +1,25 @@
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { keys } from "../../../../../../utils/entries";
-import { MenuItems } from "../../MenuItems";
-import { SelectedItemHint } from "../../SelectedItemHint";
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import Portal from "@mutabazia/react-portal";
-import { BackMenuItem } from "../../BackMenuItem";
+
+import type { ResolutionName } from "../../../../../../originalGame";
+
+import { resolutions } from "../../../../../../originalGame";
+import { useAppSelector } from "../../../../../../store/hooks";
+import { selectEmulatedResolutionName } from "../../../../../../store/selectors";
 import {
   backToParentMenu,
   setEmulatedResolution,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { MenuItemSeparator } from "../../MenuItemSeparator";
-import type { ResolutionName } from "../../../../../../originalGame";
-import { resolutions } from "../../../../../../originalGame";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { keys } from "../../../../../../utils/entries";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItem } from "../../MenuItem";
-import { useAppSelector } from "../../../../../../store/hooks";
-import { selectEmulatedResolutionName } from "../../../../../../store/selectors";
+import { MenuItems } from "../../MenuItems";
+import { MenuItemSeparator } from "../../MenuItemSeparator";
+import { SelectedItemHint } from "../../SelectedItemHint";
 
 const camelCaseToSpaces = (str: string) =>
   str.replace(/([a-z])([A-Z])/g, "$1 $2");

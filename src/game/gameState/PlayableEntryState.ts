@@ -8,7 +8,7 @@ import type { PlayableItem } from "../physics/itemPredicates";
  */
 export type PlayableEntryState = Pick<
   ItemState<CharacterName, string, string>,
-  "position" | "facing" | "autoWalk" | "action" | "vels"
+  "action" | "autoWalk" | "facing" | "position" | "vels"
 >;
 export const entryState = ({
   state: { position, facing, autoWalk, action, vels },

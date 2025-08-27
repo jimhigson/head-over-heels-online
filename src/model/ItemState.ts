@@ -1,6 +1,6 @@
 import type { Xyz } from "../utils/vectors/vectors";
 import type { Disappear } from "./Disappear";
-import type { SwitchSetting, ItemInPlayType } from "./ItemInPlay";
+import type { ItemInPlayType, SwitchSetting } from "./ItemInPlay";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { StoodOnBy } from "./StoodOnBy";
 import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
@@ -16,7 +16,7 @@ export type BaseItemState<RoomItemId extends string = string> = {
    *
    * If null, the item is not scheduled for removal (the normal case)
    */
-  expires: number | null;
+  expires: null | number;
 
   /**
    * ids of items stood on by this item

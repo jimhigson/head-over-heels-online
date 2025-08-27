@@ -1,16 +1,18 @@
-import type { CharacterName } from "../../model/modelTypes";
-import { loadedSounds } from "../soundsLoader";
-import { audioCtx } from "../audioCtx";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
-import {
-  createBracketedSound,
-  type BracketedSound,
-} from "../soundUtils/createBracketedSound";
-import { defaultUserSettings } from "../../store/defaultUserSettings";
 import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
+
+import type { CharacterName } from "../../model/modelTypes";
+import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../ItemSoundRenderer";
+
+import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
+import { defaultUserSettings } from "../../store/defaultUserSettings";
 import { neverTime } from "../../utils/neverTime";
+import { audioCtx } from "../audioCtx";
+import { loadedSounds } from "../soundsLoader";
+import {
+  type BracketedSound,
+  createBracketedSound,
+} from "../soundUtils/createBracketedSound";
 
 const walkGain = 0.8;
 const carryGain = 1.2;

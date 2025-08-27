@@ -1,11 +1,12 @@
-import { movingItemIsPlayable, type ItemTouchEvent } from "./ItemTouchEvent";
-import { jumping } from "../mechanics/jumping";
-import { walking } from "../mechanics/walking";
-import { touchTriggersOnStand } from "./touchTriggersOnStand";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+
 import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
 import { setStandingOn } from "../../gameState/mutators/setStandingOn";
 import { applyMechanicsResults } from "../../mainLoop/applyMechanicsResults";
+import { jumping } from "../mechanics/jumping";
+import { walking } from "../mechanics/walking";
+import { type ItemTouchEvent, movingItemIsPlayable } from "./ItemTouchEvent";
+import { touchTriggersOnStand } from "./touchTriggersOnStand";
 
 export const handleItemTouchingDissapearing = <
   RoomId extends string,

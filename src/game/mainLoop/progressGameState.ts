@@ -1,24 +1,26 @@
+import { objectValues } from "iter-tools";
+
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { GameState } from "../gameState/GameState";
-import { tickItem } from "./tickItem";
+
+import { iterateRoomItemEntries } from "../../model/RoomState";
+import { emptySet } from "../../utils/empty";
+import { iterate } from "../../utils/iterate";
+import { xyzEqual } from "../../utils/vectors/vectors";
+import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
+import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { updateStandingOn } from "../gameState/mutators/updateStandingOn";
-import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";
-import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
-import { objectValues } from "iter-tools";
-import { iterate } from "../../utils/iterate";
-import { xyzEqual } from "../../utils/vectors/vectors";
 import { isPlayableItem } from "../physics/itemPredicates";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import { emptySet } from "../../utils/empty";
-import { iterateRoomItemEntries } from "../../model/RoomState";
-import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { snapInactiveItemsToPixelGrid } from "./snapInactiveItemsToPixelGrid";
-import { itemHasExpired } from "./itemHasExpired";
-import { correctFloatingPointErrorsInRoom } from "./correctFloatingPointErrorsInRoom";
-import { itemTickOrderComparator } from "./itemTickOrderComparator";
-import { advanceTime } from "./advanceTime";
 import { addParticlesForPlayablesInRoom } from "./addParticlesToRoom";
+import { advanceTime } from "./advanceTime";
+import { correctFloatingPointErrorsInRoom } from "./correctFloatingPointErrorsInRoom";
+import { itemHasExpired } from "./itemHasExpired";
+import { itemTickOrderComparator } from "./itemTickOrderComparator";
+import { snapInactiveItemsToPixelGrid } from "./snapInactiveItemsToPixelGrid";
+import { tickItem } from "./tickItem";
 
 /* the items that moved while progressing the game state */
 export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<

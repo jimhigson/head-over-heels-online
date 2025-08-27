@@ -1,15 +1,17 @@
 import type { Sprite } from "pixi.js";
+
+import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { tangentAxis } from "../../../../utils/vectors/vectors";
+import type { MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
 import type { ItemAppearance } from "../ItemAppearance";
+
+import { tangentAxis } from "../../../../utils/vectors/vectors";
 import {
   itemAppearanceShadowMaskFromConfig,
   itemStaticSpriteAppearance,
 } from "../ItemAppearance";
-import { teleporterShadowMaskAppearance } from "./teleporterShadowMaskAppearance";
-import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import { directionalShadowMaskAppearance } from "./directionalShadowMaskAppearance";
-import type { MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
+import { teleporterShadowMaskAppearance } from "./teleporterShadowMaskAppearance";
 
 export type ItemShadowAppearanceOutsideView<T extends ItemInPlayType> =
   ItemAppearance<
@@ -22,7 +24,7 @@ export type ItemShadowAppearanceOutsideView<T extends ItemInPlayType> =
 const itemShadowMaskAppearances: {
   // only sprites can be used as masks in pixi, so these appearances must return a single sprite (no containers etc)
   // monster is a special case, since they all need their own, different masks.
-  [T in ItemInPlayType | `monster.${MonsterJsonConfig["which"]}`]?:
+  [T in `monster.${MonsterJsonConfig["which"]}` | ItemInPlayType]?:
     | ItemShadowAppearanceOutsideView<
         T extends `monster.${string}` ? "monster" : T
       >

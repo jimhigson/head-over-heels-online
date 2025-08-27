@@ -3,17 +3,17 @@
 // Simplified types for testing emitter pattern
 
 type PickupConfig = {
-  gives: "shield" | "extra-life";
+  gives: "extra-life" | "shield";
 };
 
 type SpringConfig = Record<string, never>;
 
 type BlockConfig = {
-  style: "organic" | "artificial";
+  style: "artificial" | "organic";
 };
 
 // Free item types that can be emitted
-type FreeItemType = "pickup" | "spring" | "block";
+type FreeItemType = "block" | "pickup" | "spring";
 
 // Map of configs
 type ItemConfigMap = {
@@ -37,7 +37,7 @@ type FreeItemUnion = {
 type EmitterConfig = {
   emits: FreeItemUnion;
   period: number;
-  maximum: number | null;
+  maximum: null | number;
 };
 
 // Test type

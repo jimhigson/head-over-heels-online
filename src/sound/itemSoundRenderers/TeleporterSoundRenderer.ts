@@ -1,10 +1,11 @@
-import { audioCtx } from "../audioCtx";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../ItemSoundRenderer";
+
 import { isPlayableItem } from "../../game/physics/itemPredicates";
-import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
-import { createBracketedSound } from "../soundUtils/createBracketedSound";
 import { teleporterIsActive } from "../../game/physics/mechanics/teleporting";
+import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
+import { audioCtx } from "../audioCtx";
+import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
 export class TeleporterSoundRenderer
   implements ItemSoundRenderer<"teleporter">

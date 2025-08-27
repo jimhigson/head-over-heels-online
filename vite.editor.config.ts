@@ -1,8 +1,9 @@
-import path from "node:path";
 import type { PluginOption } from "vite";
-import { defineConfig } from "vite";
+
 import react from "@vitejs/plugin-react-swc";
+import path from "node:path";
 import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from "vite";
 
 /**
  * vite config specific to the level editor, which is a separately

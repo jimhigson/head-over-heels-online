@@ -1,23 +1,22 @@
-import { describe, test, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import type { PlayableItem } from "../../physics/itemPredicates";
-import {
-  defaultRoomHeightBlocks,
-  playerJumpHeightPx,
-} from "../../physics/mechanicsConstants";
-import { smallItemAabb } from "../../collision/boundingBoxes";
+import { size } from "iter-tools";
 
 import type {
-  TestRoomId,
   BasicGameStateOptions,
+  TestRoomId,
 } from "../../../_testUtils/basicRoom";
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { CharacterName } from "../../../model/modelTypes";
+import type { PlayableItem } from "../../physics/itemPredicates";
+
 import {
-  setUpBasicGame,
   firstRoomId,
   secondRoomId,
+  setUpBasicGame,
 } from "../../../_testUtils/basicRoom";
 import {
   currentPlayableState,
@@ -25,22 +24,24 @@ import {
   heelsState,
   itemState,
 } from "../../../_testUtils/characterState";
+import { resetStore } from "../../../_testUtils/initStoreForTests";
 import {
   playGameThrough,
-  stopJumpingAMomentAfterStartingPlay,
   stopAllInputAfter,
+  stopJumpingAMomentAfterStartingPlay,
 } from "../../../_testUtils/playGameThrough";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { testFrameRates } from "../../../_testUtils/testFrameRates";
-import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
-import type { CharacterName } from "../../../model/modelTypes";
 import { individualCharacterNames } from "../../../model/modelTypes";
-import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { store } from "../../../store/store";
 import { iterateRoomItems } from "../../../model/RoomState";
-import { size } from "iter-tools";
-import { resetStore } from "../../../_testUtils/initStoreForTests";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { store } from "../../../store/store";
+import { smallItemAabb } from "../../collision/boundingBoxes";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
+import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import {
+  defaultRoomHeightBlocks,
+  playerJumpHeightPx,
+} from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
   resetStore();

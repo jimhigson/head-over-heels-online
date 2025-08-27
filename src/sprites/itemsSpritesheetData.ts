@@ -1,4 +1,5 @@
 import type { SpritesheetData } from "pixi.js";
+
 import {
   fourDirections,
   fourDirectionsOfNumberedTextures,
@@ -779,4 +780,4 @@ export const itemsSpritesheetData = {
       0.5,
     ),
   },
-} as const satisfies Pick<SpritesheetData, "frames" | "animations">;
+} as const satisfies Pick<SpritesheetData, "animations" | "frames">;

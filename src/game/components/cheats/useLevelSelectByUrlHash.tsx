@@ -1,5 +1,7 @@
 import { useEffect } from "react";
+
 import type { GameApi } from "../../GameApi";
+
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { characterRoomChange } from "../../../store/slices/gameMenusSlice";
 import { cheatRoomIdFromUrlHash } from "./cheatRoomIdFromUrlHash";

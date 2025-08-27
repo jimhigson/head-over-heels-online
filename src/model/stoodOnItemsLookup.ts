@@ -1,9 +1,10 @@
 import type { FreeItem } from "../game/physics/itemPredicates";
-import { iterate } from "../utils/iterate";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
-import type { StoodOnBy } from "./StoodOnBy";
 import type { RoomState } from "./RoomState";
+import type { StoodOnBy } from "./StoodOnBy";
+
 import { keysIter } from "../utils/entries";
+import { iterate } from "../utils/iterate";
 
 /**
  * iterate stood on by, while giving the item objects, not the item ids that are stored on the
@@ -39,11 +40,11 @@ export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
 ): UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
   // if standingOnItemId is nullable, result is nullable
-  standingOnItemId: RoomItemId | null,
+  standingOnItemId: null | RoomItemId,
   room: RoomState<RoomId, RoomItemId>,
-): UnionOfAllItemInPlayTypes<RoomId, RoomItemId> | null;
+): null | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
-  standingOnItemId: RoomItemId | null,
+  standingOnItemId: null | RoomItemId,
   room: RoomState<RoomId, RoomItemId>,
 ) {
   return standingOnItemId === null ?

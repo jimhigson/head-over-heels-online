@@ -1,47 +1,47 @@
+import type { PropsWithChildren } from "react";
+import type { EmptyObject } from "type-fest";
+
 import {
   Collapsible,
-  CollapsibleTrigger,
   CollapsibleContent,
+  CollapsibleTrigger,
 } from "@radix-ui/react-collapsible";
 
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type {
+  JsonItemConfig,
+  JsonItemType,
+} from "../../../model/json/JsonItem";
+import type { IndividualCharacterName } from "../../../model/modelTypes";
+import type { GameApi } from "../../GameApi";
+
+import { addPokeableNumbers } from "../../../model/ItemStateMap";
+import {
+  type CharacterName,
+  otherIndividualCharacterName,
+} from "../../../model/modelTypes";
+import { getRoomItem } from "../../../model/RoomState";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { useAppDispatch } from "../../../store/hooks";
+import { useShowShadowMasks } from "../../../store/selectors";
+import { setShowShadowMasks } from "../../../store/slices/gameMenusSlice";
+import { Button } from "../../../ui/button";
+import { Switch } from "../../../ui/Switch";
+import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   selectCurrentPlayableItem,
   selectPlayableItem,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
-
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
-import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
-
-import type { PropsWithChildren } from "react";
-import type { EmptyObject } from "type-fest";
-import { useGameApi } from "../GameApiContext";
-import { Button } from "../../../ui/button";
-import type {
-  JsonItemType,
-  JsonItemConfig,
-} from "../../../model/json/JsonItem";
-import type { IndividualCharacterName } from "../../../model/modelTypes";
-import {
-  otherIndividualCharacterName,
-  type CharacterName,
-} from "../../../model/modelTypes";
-import { blockSizePx } from "../../../sprites/spritePivots";
-import { useAppDispatch } from "../../../store/hooks";
-import type { GameApi } from "../../GameApi";
-import { useDebugClickOnItem } from "./useDebugClickOnItem";
+import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
-import { Switch } from "../../../ui/Switch";
-import { useShowShadowMasks } from "../../../store/selectors";
-import { setShowShadowMasks } from "../../../store/slices/gameMenusSlice";
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import { getRoomItem } from "../../../model/RoomState";
-import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
-import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
-import { BitmapText } from "../tailwindSprites/Sprite";
 import { CssVariables } from "../CssVariables";
+import { useGameApi } from "../GameApiContext";
+import { BitmapText } from "../tailwindSprites/Sprite";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
-import { addPokeableNumbers } from "../../../model/ItemStateMap";
+import { useDebugClickOnItem } from "./useDebugClickOnItem";
+import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
 interface SpeedButtonProps<RoomId extends string> {
   gameApi: GameApi<RoomId>;

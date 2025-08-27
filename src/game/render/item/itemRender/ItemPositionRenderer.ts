@@ -1,16 +1,18 @@
 import { ColorMatrixFilter, Container } from "pixi.js";
+
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import { projectWorldXyzToScreenXy } from "../../projections";
+import type { UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
 import type {
-  ItemTickContext,
   ItemRenderContext,
+  ItemTickContext,
 } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
-import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
-import { subXy } from "../../../../utils/vectors/vectors";
-import type { UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
+
 import { emptySet } from "../../../../utils/empty";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
+import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import { subXy } from "../../../../utils/vectors/vectors";
+import { projectWorldXyzToScreenXy } from "../../projections";
 
 /**
  * pixijs has the quirk that when using a sprite as a mask, it uses the red channel as the alpha channel.

@@ -1,7 +1,8 @@
-import type { ItemTouchEvent } from "./ItemTouchEvent";
-import type { PlayableItem } from "../itemPredicates";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
+import type { PlayableItem } from "../itemPredicates";
+import type { ItemTouchEvent } from "./ItemTouchEvent";
+
 import { dotProductXyz } from "../../../utils/vectors/vectors";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 

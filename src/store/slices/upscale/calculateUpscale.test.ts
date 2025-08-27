@@ -1,10 +1,11 @@
 import { describe, expect, test } from "vitest";
+
 import {
   resolutionNames as emulatableResolutions,
   resolutions,
 } from "../../../originalGame";
-import { calculateUpscale, maximumCanvasUpscale } from "./calculateUpscale";
 import { scaleXy } from "../../../utils/vectors/vectors";
+import { calculateUpscale, maximumCanvasUpscale } from "./calculateUpscale";
 
 describe("descriptive cases", () => {
   const zxSpectrumRes = resolutions.zxSpectrum;

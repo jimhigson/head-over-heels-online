@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
+
 import {
-  Root as TooltipRoot,
-  TooltipTrigger,
   TooltipContent,
   TooltipPortal,
+  Root as TooltipRoot,
+  TooltipTrigger,
 } from "@radix-ui/react-tooltip";
+
 import { BlockyMarkdown } from "../game/components/BlockyMarkdown";
 import { CssVariables } from "../game/components/CssVariables";
 

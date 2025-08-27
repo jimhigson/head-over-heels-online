@@ -1,21 +1,23 @@
-import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import nanoEqual from "nano-equal";
+
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
-import { twClass } from "../twClass";
+
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
+import { xyzEqual } from "../../utils/vectors/vectors";
 import { selectItemInLevelEditorState } from "../slice/levelEditorSelectors";
+import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import { twClass } from "../twClass";
 import {
+  betweenLeftAndTowards,
+  betweenRightAndAway,
+  betweenRightAndDown,
   betweenRightAndTowards,
   betweenRightAndUp,
+  betweenTowardsAndDown,
   betweenTowardsAndUp,
   betweenUpAndAway,
   betweenUpAndLeft,
-  betweenLeftAndTowards,
-  betweenTowardsAndDown,
-  betweenRightAndAway,
-  betweenRightAndDown,
 } from "./cursor/pointerIntersectionEdge";
-import nanoEqual from "nano-equal";
-import { xyzEqual } from "../../utils/vectors/vectors";
 
 export const selectCursor = ({
   levelEditor,

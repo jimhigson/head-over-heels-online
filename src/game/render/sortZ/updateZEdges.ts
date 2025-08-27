@@ -1,9 +1,11 @@
 //# allFunctionsCalledOnLoad
 
-import type { DrawOrderComparable } from "./DrawOrderComparable";
-import { zComparator } from "./zComparator";
 import { objectValues } from "iter-tools";
+
+import type { DrawOrderComparable } from "./DrawOrderComparable";
+
 import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
+import { zComparator } from "./zComparator";
 
 /**
  * returns a list of what is in front of what, ie:

@@ -1,17 +1,17 @@
+import nanoEqual from "nano-equal";
+
+import type { EditorRoomState } from "../../editorTypes";
 import type {
   HoveredItem,
   RootStateWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 import type { MaybePointingAtSomething } from "../cursor/PointingAt";
-import {
-  setHoveredItemInRoom,
-  selectHoveredItem,
-} from "../../slice/levelEditorSlice";
+
 import { store } from "../../../store/store";
-
-import nanoEqual from "nano-equal";
-
-import type { EditorRoomState } from "../../editorTypes";
+import {
+  selectHoveredItem,
+  setHoveredItemInRoom,
+} from "../../slice/levelEditorSlice";
 import { itemsAreLocked } from "./itemsAreLocked";
 
 export const dispatchHoveredOnChangedIfNeeded = (

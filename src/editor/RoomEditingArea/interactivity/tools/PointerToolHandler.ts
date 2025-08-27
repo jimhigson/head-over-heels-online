@@ -1,3 +1,20 @@
+import type { Plane, Xy, Xyz } from "../../../../utils/vectors/vectors";
+import type {
+  EditorJsonItemUnion,
+  EditorRoomItemId,
+  EditorRoomState,
+} from "../../../editorTypes";
+import type { RootStateWithLevelEditorSlice } from "../../../slice/levelEditorSlice";
+import type { Tool } from "../../../Tool";
+import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
+import type {
+  MouseDownParams,
+  MouseLeaveParams,
+  MouseMoveParams,
+  MouseUpParams,
+  ToolHandler,
+} from "./ToolHandler";
+
 import {
   getConsolidatableVector,
   isConsolidatable,
@@ -8,52 +25,35 @@ import {
 } from "../../../../game/render/projections";
 import { store } from "../../../../store/store";
 import { emptyArray } from "../../../../utils/empty";
-import type { Xyz, Plane, Xy } from "../../../../utils/vectors/vectors";
+import { iterate } from "../../../../utils/iterate";
 import {
-  originXyz,
   addXyz,
-  xyzEqual,
   elementWiseProductXyz,
   lengthXy,
   lengthXyz,
+  originXyz,
   subXy,
+  xyzEqual,
 } from "../../../../utils/vectors/vectors";
-import type {
-  EditorJsonItemUnion,
-  EditorRoomItemId,
-  EditorRoomState,
-} from "../../../editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../../../slice/levelEditorSlice";
 import {
+  commitCurrentPreviewedEdits,
+  moveOrResizeItemAsPreview,
   selectItem,
   selectItemIsSelected,
-  setSelectedItemsInRoom,
-  moveOrResizeItemAsPreview,
-  toggleSelectedItemInRoom,
-  commitCurrentPreviewedEdits,
   setHoveredItemInRoom,
+  setSelectedItemsInRoom,
+  toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
-
-import type { Tool } from "../../../Tool";
 import { itemMoveOrResizeWouldCollide } from "../../cursor/editWouldCollide";
-import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
-import { resizeTimesAndPosition } from "../../resizeTimesAndPosition";
-import { jsonItemAndIdForInPlayItemId } from "../jsonItemAndIdForInPlayItemId";
-import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
-import { itemsAreLocked } from "../itemsAreLocked";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
-import { iterate } from "../../../../utils/iterate";
 import {
   upscaledMouseMove,
   upscaledMousePosition,
 } from "../../cursor/upscaledMouse";
-import type {
-  MouseMoveParams,
-  MouseUpParams,
-  MouseDownParams,
-  MouseLeaveParams,
-  ToolHandler,
-} from "./ToolHandler";
+import { resizeTimesAndPosition } from "../../resizeTimesAndPosition";
+import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
+import { itemsAreLocked } from "../itemsAreLocked";
+import { jsonItemAndIdForInPlayItemId } from "../jsonItemAndIdForInPlayItemId";
 
 const dragMinimumDistance = 5; // pixels
 
@@ -122,7 +122,7 @@ const getDragVector = (
   modifierPressed: boolean,
   draggingAlready: boolean,
   jsonItem: Iterable<EditorJsonItemUnion>,
-): Xyz | undefined => {
+): undefined | Xyz => {
   if (mouseDownPointingAt === undefined) {
     return undefined;
   }
@@ -213,7 +213,7 @@ export class PointerToolHandler
      * get the (unrounded) drag delta vector since the last frame
      * (if there is one)
      */
-    const dragDeltaVec: Xyz | undefined =
+    const dragDeltaVec: undefined | Xyz =
       mouseWhenDownInSameRoom ?
         getDragVector(
           mouseDownPointingAtRef.current,
@@ -268,7 +268,7 @@ export class PointerToolHandler
     const blockDragAccVec = fineXyzToBlockXyz(nextDragAccVecRound);
 
     let positionDelta: Xyz;
-    let timesDelta: Xyz | undefined = undefined;
+    let timesDelta: undefined | Xyz = undefined;
 
     if (isResizing) {
       // resizing

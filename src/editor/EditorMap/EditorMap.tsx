@@ -1,10 +1,12 @@
 import { useResizeDetector } from "react-resize-detector";
-import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
+
 import type { EditorRoomId } from "../editorTypes";
-import { useEditorMapData } from "./useEditorMapData";
-import { changeToRoom } from "../slice/levelEditorSlice";
-import { store } from "../../store/store";
+
+import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { store } from "../../store/store";
+import { changeToRoom } from "../slice/levelEditorSlice";
+import { useEditorMapData } from "./useEditorMapData";
 
 export const EditorMap = () => {
   const {

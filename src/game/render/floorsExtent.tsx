@@ -1,7 +1,8 @@
 import type { AnyRoomJson } from "../../model/RoomJson";
+import type { Xyz } from "../../utils/vectors/vectors";
+
 import { iterateRoomJsonItems } from "../../model/RoomJson";
 import { iterateRoomItems, type RoomState } from "../../model/RoomState";
-import type { Xyz } from "../../utils/vectors/vectors";
 import { addXyz, originXyz } from "../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "./projections";
 

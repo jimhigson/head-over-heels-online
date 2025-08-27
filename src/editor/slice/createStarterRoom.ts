@@ -1,13 +1,15 @@
 import { cycle, drop, take } from "iter-tools";
+
 import type { JsonItem } from "../../model/json/JsonItem";
-import { type SceneryName, type Wall } from "../../sprites/planets";
+import type { Xy } from "../../utils/vectors/vectors";
 import type {
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
   EditorRoomJsonItems,
 } from "../editorTypes";
-import type { Xy } from "../../utils/vectors/vectors";
+
+import { type SceneryName, type Wall } from "../../sprites/planets";
 
 /**
  * some standard wall patterns that can be repeated for creating the wall tiles

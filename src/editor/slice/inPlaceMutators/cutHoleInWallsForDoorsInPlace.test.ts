@@ -1,18 +1,20 @@
-import { describe, test, expect } from "vitest";
-import { generateHoleInWallsForDoor } from "./cutHoleInWallsForDoorsInPlace";
-import type { EditorJsonItem, EditorRoomItemId } from "../../editorTypes";
-import type { PreviewedRoomItemEdits } from "../levelEditorSlice";
+import { describe, expect, test } from "vitest";
+
 import type {
   AwayWallConfig,
   TowardsWallConfig,
 } from "../../../model/json/WallJsonConfig";
 import type { SceneryName } from "../../../sprites/planets";
+import type { EditorJsonItem, EditorRoomItemId } from "../../editorTypes";
+import type { PreviewedRoomItemEdits } from "../levelEditorSlice";
+
+import { generateHoleInWallsForDoor } from "./cutHoleInWallsForDoorsInPlace";
 
 describe("generateHoleInWallsForDoor", () => {
   // Helper to create a wall
   const createWall = (
     id: string,
-    direction: "towards" | "away" | "left" | "right",
+    direction: "away" | "left" | "right" | "towards",
     position: { x: number; y: number; z: number },
     length: number = 8,
   ): [EditorRoomItemId, EditorJsonItem<"wall">] => {

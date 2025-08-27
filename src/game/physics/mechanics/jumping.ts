@@ -1,10 +1,12 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import { type CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
+import type { GameState } from "../../gameState/GameState";
+import type { Mechanic } from "../MechanicResult";
+
+import { type CharacterName } from "../../../model/modelTypes";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { originalGameFrameDuration } from "../../../originalGame";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import type { GameState } from "../../gameState/GameState";
 import {
   isPickup,
   isPlayableItem,
@@ -12,8 +14,7 @@ import {
   isTeleporter,
   type PlayableItem,
 } from "../itemPredicates";
-import type { Mechanic } from "../MechanicResult";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
+import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import {
   fallG,
   jumpFudge,
@@ -61,7 +62,7 @@ const getJumpInitialVelocity = (
 };
 
 const isJumpOffable = <RoomItemId extends string>(
-  item: UnionOfAllItemInPlayTypes<RoomItemId> | null,
+  item: null | UnionOfAllItemInPlayTypes<RoomItemId>,
 ): item is NonNullable<typeof item> => {
   if (item === null) {
     return false;

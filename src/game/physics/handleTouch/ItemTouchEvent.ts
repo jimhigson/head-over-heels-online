@@ -8,6 +8,7 @@ import type { RoomState } from "../../../model/RoomState";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
+
 import { isDeadly, isItemType, isPlayableItem } from "../itemPredicates";
 
 export type ItemTouchEvent<

@@ -1,5 +1,6 @@
-import { audioCtx } from "../audioCtx";
 import type { CreateAudioNodeOptionsObject } from "./createAudioNode";
+
+import { audioCtx } from "../audioCtx";
 import { createAudioNode } from "./createAudioNode";
 
 export type BracketedSound<Value = boolean> = ReturnType<

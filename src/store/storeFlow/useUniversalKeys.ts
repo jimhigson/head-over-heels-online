@@ -1,3 +1,8 @@
+import { useCallback, useEffect } from "react";
+
+import { useActionTap } from "../../game/components/dialogs/useActionTap";
+import { isInPlaytestMode } from "../../game/isInPlaytestMode";
+import { useAppSelector } from "../hooks";
 import {
   holdPressed,
   mapPressed,
@@ -5,12 +10,8 @@ import {
   setEmulatedResolution,
   toggleBoolean,
 } from "../slices/gameMenusSlice";
-import { useActionTap } from "../../game/components/dialogs/useActionTap";
-import { useAppSelector } from "../hooks";
-import { useDispatchActionCallback } from "../useDispatchCallback";
-import { useCallback, useEffect } from "react";
 import { store } from "../store";
-import { isInPlaytestMode } from "../../game/isInPlaytestMode";
+import { useDispatchActionCallback } from "../useDispatchCallback";
 
 export const useUniversalKeys = () => {
   const assigningKeys = useAppSelector(

@@ -1,9 +1,10 @@
-import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import type { Xyz } from "../../../utils/vectors/vectors";
-import { scaleXyz, type Xy } from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import type { Tool } from "../../Tool";
+
+import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import { scaleXyz, type Xy } from "../../../utils/vectors/vectors";
 
 const up = { z: 1, x: 0, y: 0 };
 const towards = { z: 0, x: 0, y: -1 };

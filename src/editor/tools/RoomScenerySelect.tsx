@@ -1,12 +1,13 @@
+import type { SceneryName } from "../../sprites/planets";
+
+import { sceneryNames } from "../../sprites/planets";
+import { useAppDispatch } from "../../store/hooks";
+import { Select } from "../../ui/Select";
 import {
   changeRoomScenery,
   selectCurrentEditingRoomScenery,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { useAppDispatch } from "../../store/hooks";
-import { Select } from "../../ui/Select";
-import type { SceneryName } from "../../sprites/planets";
-import { sceneryNames } from "../../sprites/planets";
 
 export function RoomScenerySelect() {
   const dispatch = useAppDispatch();

@@ -1,30 +1,32 @@
 import { Container } from "pixi.js";
-import { createSprite } from "../../createSprite";
-import { doorTexture } from "./doorTexture";
-import {
-  projectBlockXyzToScreenXy,
-  projectWorldXyzToScreenXy,
-} from "../../projections";
+
+import type { ItemInPlay } from "../../../../model/ItemInPlay";
+import type { Campaign } from "../../../../model/modelTypes";
+import type { RoomState } from "../../../../model/RoomState";
+import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
+import type { ItemAppearance } from "../ItemAppearance";
+
 import { blockSizePx } from "../../../../sprites/spritePivots";
+import { selectMaybeCurrentCampaign } from "../../../../store/selectors";
+import { store } from "../../../../store/store";
+import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
+import {
+  addXy,
+  doorAlongAxis,
+  originXy,
+  perpendicularAxisXy,
+} from "../../../../utils/vectors/vectors";
+import { createSprite } from "../../createSprite";
 import {
   edgePaletteSwapFilters,
   mainPaletteSwapFilter,
 } from "../../filters/standardFilters";
-import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import {
-  doorAlongAxis,
-  originXy,
-  addXy,
-  perpendicularAxisXy,
-} from "../../../../utils/vectors/vectors";
-import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
-import type { ItemAppearance } from "../ItemAppearance";
+  projectBlockXyzToScreenXy,
+  projectWorldXyzToScreenXy,
+} from "../../projections";
 import { itemAppearanceRenderOnce } from "../ItemAppearance";
-import type { RoomState } from "../../../../model/RoomState";
-import { selectMaybeCurrentCampaign } from "../../../../store/selectors";
-import { store } from "../../../../store/store";
-import type { Campaign } from "../../../../model/modelTypes";
+import { doorTexture } from "./doorTexture";
 
 function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   {

@@ -1,4 +1,5 @@
 import type { SetRequired } from "type-fest";
+
 import type { RoomState } from "../../../model/RoomState";
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
 import type { Xy } from "../../../utils/vectors/vectors";

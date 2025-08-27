@@ -1,5 +1,6 @@
-import { fromAllEntries } from "../../utils/entries";
 import type { InputAssignment } from "./InputAssignment";
+
+import { fromAllEntries } from "../../utils/entries";
 import { allActions } from "./actions";
 
 export const emptyInputAssignment: InputAssignment = {

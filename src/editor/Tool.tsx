@@ -1,4 +1,4 @@
-import type { JsonItemType, JsonItemConfig } from "../model/json/JsonItem";
+import type { JsonItemConfig, JsonItemType } from "../model/json/JsonItem";
 import type { EditorRoomId, EditorRoomItemId } from "./editorTypes";
 
 export type ItemTool<
@@ -14,6 +14,6 @@ export type ItemTool<
 };
 
 export type Tool =
-  | { type: "item"; item: ItemTool }
   | { type: "eyeDropper" }
+  | { type: "item"; item: ItemTool }
   | { type: "pointer" };

@@ -1,30 +1,31 @@
-import type { PlayableItem, PortableItem } from "../itemPredicates";
-import { isDeadly, isPortable, isSolid } from "../itemPredicates";
-import { isFreeItem } from "../itemPredicates";
-import { moveItem } from "../moveItem";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { HeelsAbilities } from "../../../model/ItemStateMap";
-import { blockSizePx } from "../../../sprites/spritePivots";
-import { addXyz } from "../../../utils/vectors/vectors";
-import { collision1toMany } from "../../collision/aabbCollision";
-import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import type { GameState } from "../../gameState/GameState";
-import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
-import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
-import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
+import type { PlayableItem, PortableItem } from "../itemPredicates";
+
 import {
   iterateRoomItems,
   roomItemsIterable,
   type RoomState,
 } from "../../../model/RoomState";
-import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import { always } from "../../../utils/always";
+import { addXyz } from "../../../utils/vectors/vectors";
+import { collision1toMany } from "../../collision/aabbCollision";
+import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
+import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
+import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
+import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
+import { isDeadly, isPortable, isSolid } from "../itemPredicates";
+import { isFreeItem } from "../itemPredicates";
+import { moveItem } from "../moveItem";
 
 /**
  * walking, but also gliding and changing direction mid-air
  */
 export const carrying = <RoomId extends string, RoomItemId extends string>(
-  carrier: PlayableItem<"heels" | "headOverHeels", RoomId, RoomItemId>,
+  carrier: PlayableItem<"headOverHeels" | "heels", RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
@@ -140,7 +141,7 @@ export const findItemToPickup = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  carrier: PlayableItem<"heels" | "headOverHeels", RoomId, RoomItemId>,
+  carrier: PlayableItem<"headOverHeels" | "heels", RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
 ) => {
   const hasShield = playableHasShield(carrier);

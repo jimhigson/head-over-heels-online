@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+
 import { eachAxis } from "./eachAxis";
 
 test("making a vector from zero vectors", () => {

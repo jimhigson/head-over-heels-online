@@ -1,4 +1,9 @@
 import { expect, test } from "vitest";
+
+import type { EditorJsonItemUnion } from "../../editorTypes";
+
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 import {
   applyItemTool,
   deleteSelected,
@@ -6,15 +11,12 @@ import {
   setTool,
 } from "../levelEditorSlice";
 import {
-  editorStateWithOneRoomWithOneAwayWall,
-  doorItemToolWithAutoAddRooms,
   applyLevelEditorActions,
-  wallItemId,
+  doorItemToolWithAutoAddRooms,
+  editorStateWithOneRoomWithOneAwayWall,
   testRoomId,
+  wallItemId,
 } from "./__test__/storeStates";
-import type { EditorJsonItemUnion } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 
 test('deleting a door "heals" the void where the door once stood by extending and joining existing walls', () => {
   const state0 = editorStateWithOneRoomWithOneAwayWall;

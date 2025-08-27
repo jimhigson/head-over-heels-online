@@ -1,7 +1,8 @@
-import { makeItemFadeOut } from "./makeItemFadeOut";
 import type { GameState } from "../GameState";
-import { isItemType } from "../../physics/itemPredicates";
+
 import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
+import { isItemType } from "../../physics/itemPredicates";
+import { makeItemFadeOut } from "./makeItemFadeOut";
 
 export const removeHushPuppiesFromRoom = <
   RoomId extends string,

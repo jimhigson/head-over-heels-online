@@ -1,17 +1,19 @@
 import { Container } from "pixi.js";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+
+import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
+import type { ItemPixiRenderer } from "./ItemRenderer";
+
 import {
   isPortable,
   type PortableItemType,
 } from "../../../physics/itemPredicates";
 import { outlineFilters } from "../../filters/outlineFilter";
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import { noFilters } from "../../filters/standardFilters";
-import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 
 const makeOutlineFilter = () => outlineFilters.moss;
 

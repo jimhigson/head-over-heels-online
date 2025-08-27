@@ -1,8 +1,9 @@
-import { twClass } from "../../../editor/twClass";
 import type { IndividualCharacterName } from "../../../model/modelTypes";
 import type { AnimationId, TextureId } from "../../../sprites/spriteSheetData";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { SanitisedForClassName } from "./SanitiseForClassName";
+
+import { twClass } from "../../../editor/twClass";
 
 export const playableTailwindSpriteClassname = ({
   facingXy8,
@@ -11,10 +12,10 @@ export const playableTailwindSpriteClassname = ({
 }: {
   character: IndividualCharacterName;
   facingXy8: DirectionXy8;
-  action: "walking" | "idle";
+  action: "idle" | "walking";
 }):
-  | `texture-animated-${SanitisedForClassName<AnimationId>}`
-  | `texture-${SanitisedForClassName<TextureId>}` => {
+  | `texture-${SanitisedForClassName<TextureId>}`
+  | `texture-animated-${SanitisedForClassName<AnimationId>}` => {
   // keep tailwind happy by listing all the classnames
 
   switch (character) {

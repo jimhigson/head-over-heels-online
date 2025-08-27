@@ -5,14 +5,14 @@ import type { EmptyObject } from "type-fest";
 type ItemConfigMap<RoomId extends string> = {
   door: {
     toRoom: RoomId;
-    direction: "left" | "right" | "up" | "down";
+    direction: "down" | "left" | "right" | "up";
   };
   wall: {
-    direction: "left" | "right" | "up" | "down";
+    direction: "down" | "left" | "right" | "up";
     tiles?: string[];
   };
   conveyor: {
-    direction: "left" | "right" | "up" | "down";
+    direction: "down" | "left" | "right" | "up";
     disappearing?: { on: "stand" };
   };
   block: EmptyObject;

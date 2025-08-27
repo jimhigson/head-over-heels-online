@@ -1,15 +1,16 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { LatentMovementFrame } from "../../../model/ItemStateMap";
 import type { RoomState } from "../../../model/RoomState";
-import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import type { Xyz } from "../../../utils/vectors/vectors";
+import type { FreeItem } from "../../physics/itemPredicates";
+
+import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import {
-  subXyz,
-  xyzEqual,
   originXyz,
   scaleXyz,
+  subXyz,
+  xyzEqual,
 } from "../../../utils/vectors/vectors";
-import type { FreeItem } from "../../physics/itemPredicates";
 import { originalFramePeriod } from "../../render/animationTimings";
 
 // since the original game pushes items every other frame, the practical latency
@@ -50,7 +51,7 @@ export const assignLatentMovementFromStandingOn = <
    * ability to walk (the walk mechanic will return a null result) while the lift descends
    */
   for (const moverItem of movedItems) {
-    const previousPosition: Xyz | undefined = startingPositions[moverItem.id];
+    const previousPosition: undefined | Xyz = startingPositions[moverItem.id];
 
     if (previousPosition === undefined) {
       // item was introduced to the world during this tick, can't have latent movement:

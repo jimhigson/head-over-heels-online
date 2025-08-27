@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { useRoomRenderer } from "./useRoomRenderer";
-import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
-import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";
 import { TextureStyle } from "pixi.js";
-import { useTickRoomRenderer } from "./useTickRoomRenderer";
-import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
-import { usePutUpscaleOnAppStage } from "./usePutUpscaleOnAppStage";
-import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplicationToMatchCanvasSize";
-import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
-import { useUpdateUpscaleWhenElementResizes } from "../../store/storeFlow/useUpateUpscaleWhenElementResizes";
-import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
-import { type ResolutionName } from "../../originalGame";
-import { ResolutionControls } from "./ResolutionControls";
+import { useState } from "react";
 
-import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
+import { type ResolutionName } from "../../originalGame";
+import { useUpdateUpscaleWhenElementResizes } from "../../store/storeFlow/useUpateUpscaleWhenElementResizes";
+import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";
+import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
+import { ResolutionControls } from "./ResolutionControls";
+import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
+import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
 import { useCenterScrollOnLoad } from "./useCenterScrollOnLoad";
+import { usePutUpscaleOnAppStage } from "./usePutUpscaleOnAppStage";
+import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
+import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplicationToMatchCanvasSize";
+import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
+import { useRoomRenderer } from "./useRoomRenderer";
+import { useTickRoomRenderer } from "./useTickRoomRenderer";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 const RoomEditingAreaInner = () => {

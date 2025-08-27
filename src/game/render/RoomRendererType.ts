@@ -1,4 +1,5 @@
 import type { SetRequired } from "type-fest";
+
 import type { Renderer } from "./Renderer";
 import type {
   RoomRenderContext,

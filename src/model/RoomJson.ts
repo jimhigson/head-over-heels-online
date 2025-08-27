@@ -1,10 +1,12 @@
 import { objectEntries, objectValues } from "iter-tools";
+
 import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";
+import type { NonEmptyRecord } from "../utils/types/NonEmptyRecord";
 import type { Xy, Xyz } from "../utils/vectors/vectors";
 import type { JsonItemType, JsonItemUnion } from "./json/JsonItem";
+
 import { iterate } from "../utils/iterate";
-import type { NonEmptyRecord } from "../utils/types/NonEmptyRecord";
 
 type SubRoom = {
   /**

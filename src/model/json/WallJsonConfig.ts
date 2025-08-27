@@ -38,8 +38,8 @@ export type RightWallConfig = {
 export type WallJsonConfig<ScN extends SceneryName = SceneryName> =
   | AwayWallConfig<ScN>
   | LeftWallConfig<ScN>
-  | TowardsWallConfig
-  | RightWallConfig;
+  | RightWallConfig
+  | TowardsWallConfig;
 
 export type WallJsonConfigWithTiles<ScN extends SceneryName> = Extract<
   WallJsonConfig<ScN>,

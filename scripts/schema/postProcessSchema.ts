@@ -1,6 +1,7 @@
 #!/usr/bin/env -S pnpm tsx
 
 import type { JsonArray, JsonObject, JsonValue } from "type-fest";
+
 import { wallTiles } from "../../src/sprites/planets.js";
 
 // Read from stdin
@@ -16,7 +17,7 @@ function assertIsJsonObject(val: JsonValue): asserts val is JsonObject {
     throw new Error("Expected a JSON object");
   }
 }
-function isJsonObjectOrArray(val: JsonValue): val is JsonObject | JsonArray {
+function isJsonObjectOrArray(val: JsonValue): val is JsonArray | JsonObject {
   return typeof val === "object" && val !== null;
 }
 function isJsonObject(val: JsonValue): val is JsonObject {
@@ -29,7 +30,7 @@ process.stdin.on("end", () => {
 
     // recursively add validation beyond what the typescript we converted from can handle:
     const addExtraValidation = (
-      node: JsonObject | JsonArray,
+      node: JsonArray | JsonObject,
       path: string[] = [],
     ): void => {
       // Check if we're at a position object with x, y, z properties

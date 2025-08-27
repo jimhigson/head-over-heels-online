@@ -24,7 +24,7 @@ export type AppearanceReturn<
   Output extends Container = Container,
 > =
   // output is optional, to explicitly say not to render anything, and remove any current rendering
-  AppearanceRendering<RenderProps, Output> | "no-update";
+  "no-update" | AppearanceRendering<RenderProps, Output>;
 
 /**
  * the parameters given to an appearance to give it a chance to render, or keep

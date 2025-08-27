@@ -1,17 +1,18 @@
-import { BitmapText } from "../../tailwindSprites/Sprite";
-import { twMerge } from "tailwind-merge";
-import { useAppSelector } from "../../../../store/hooks";
-import { useRef, type ReactElement } from "react";
-import { useActionTap } from "../useActionTap";
-import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
-import { setFocussedMenuItemId } from "../../../../store/slices/gameMenusSlice";
-import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import Portal from "@mutabazia/react-portal";
+import { type ReactElement, useRef } from "react";
+import { twMerge } from "tailwind-merge";
+
+import { useAppSelector } from "../../../../store/hooks";
+import { setFocussedMenuItemId } from "../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
+import { BitmapText } from "../../tailwindSprites/Sprite";
+import { useActionTap } from "../useActionTap";
+import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import { multilineTextClass } from "./multilineTextClass";
 
 export type MenuItemProps = {
   id: string;
-  label: string | ReactElement;
+  label: ReactElement | string;
   valueElement?: ReactElement;
   flipLeader?: boolean;
   doubleHeightWhenFocussed?: boolean;
@@ -20,7 +21,7 @@ export type MenuItemProps = {
   disabled?: boolean;
   onSelect?: () => void;
   className?: string;
-  hint?: string | ReactElement;
+  hint?: ReactElement | string;
   hintInline?: boolean;
 };
 

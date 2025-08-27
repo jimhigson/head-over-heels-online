@@ -1,6 +1,8 @@
-import { objectEntries } from "iter-tools";
 import type { ValueOf } from "type-fest";
-import type { EditorRoomJson, EditorRoomItemId } from "../editorTypes";
+
+import { objectEntries } from "iter-tools";
+
+import type { EditorRoomItemId, EditorRoomJson } from "../editorTypes";
 import type { PreviewedRoomItemEdits } from "./levelEditorSlice";
 
 export const applyPreviewedEditsInPlace = (

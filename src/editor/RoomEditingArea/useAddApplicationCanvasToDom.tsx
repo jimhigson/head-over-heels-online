@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 export const useAddApplicationCanvasToDom = (

@@ -1,21 +1,23 @@
-import { useEffect } from "react";
-import { useLoadMonaco } from "./useLoadMonaco";
 import {
-  getLocation,
-  parseTree,
   findNodeAtOffset,
+  getLocation,
   type Node,
+  parseTree,
 } from "jsonc-parser";
-import {
-  selectCurrentEditingRoomJson,
-  type RootStateWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
-import { store } from "../../store/store";
-import { iterateRoomJsonItemsWithIds } from "../../model/RoomJson";
-import { emptyArray, emptySet } from "../../utils/empty";
+import { useEffect } from "react";
+
 import type { JsonItemType } from "../../model/json/JsonItem";
-import { iterate } from "../../utils/iterate";
 import type { EditorRoomJson } from "../editorTypes";
+
+import { iterateRoomJsonItemsWithIds } from "../../model/RoomJson";
+import { store } from "../../store/store";
+import { emptyArray, emptySet } from "../../utils/empty";
+import { iterate } from "../../utils/iterate";
+import {
+  type RootStateWithLevelEditorSlice,
+  selectCurrentEditingRoomJson,
+} from "../slice/levelEditorSlice";
+import { useLoadMonaco } from "./useLoadMonaco";
 
 const log = 0;
 
@@ -25,7 +27,7 @@ const log = 0;
 const getNodeValue = (
   node: Node,
   propertyName: string,
-): string | number | boolean | null | undefined => {
+): boolean | null | number | string | undefined => {
   if (node.type !== "object" || !node.children) {
     return undefined;
   }
@@ -155,7 +157,7 @@ const suggestionPatterns: Record<
 /**
  * Find a matching pattern for the given JSON path
  */
-const findMatchingPattern = (path: (string | number)[]): string | null => {
+const findMatchingPattern = (path: (number | string)[]): null | string => {
   for (const pattern of Object.keys(suggestionPatterns)) {
     const patternParts = pattern.split(".");
     const pathTail = path.slice(-patternParts.length);

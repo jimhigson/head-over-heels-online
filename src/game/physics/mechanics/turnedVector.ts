@@ -1,4 +1,5 @@
 import type { Xyz } from "../../../utils/vectors/vectors";
+
 import { randomFromArray } from "../../../utils/random/randomFromArray";
 
 export const turnedVector = (
@@ -31,7 +32,7 @@ export const turnedVector = (
   }
 };
 export type TurnStrategy =
-  | "opposite"
-  | "perpendicular"
   | "clockwise"
-  | "perpendicular-or-reverse";
+  | "opposite"
+  | "perpendicular-or-reverse"
+  | "perpendicular";

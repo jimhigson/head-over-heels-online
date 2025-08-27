@@ -1,12 +1,13 @@
 import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import type { TextureId } from "../../../sprites/spriteSheetData";
+import type { ItemAppearance } from "./ItemAppearance";
+
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
 import {
   bookPaletteSwapFilter,
   mainPaletteSwapFilter,
 } from "../filters/standardFilters";
-import type { ItemAppearance } from "./ItemAppearance";
 
 type BlockRenderProps = {
   // flatten disappear down to a single value, since all we care about is if it is on or not

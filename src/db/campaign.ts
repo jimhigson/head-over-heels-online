@@ -1,8 +1,10 @@
 import type { SetOptional } from "type-fest";
+
+import type { EditorCampaign } from "../editor/editorTypes";
 import type { Campaign, CampaignLocator } from "../model/modelTypes";
+
 import { compressObject, decompressObject } from "./compressObject";
 import { supabaseDb } from "./supabaseDb";
-import type { EditorCampaign } from "../editor/editorTypes";
 
 export type CampaignGetLocator = SetOptional<
   CampaignLocator,

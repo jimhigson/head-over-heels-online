@@ -1,13 +1,27 @@
+import type { EmptyObject } from "type-fest";
+
 import { Container } from "pixi.js";
-import { type BooleanAction } from "../../input/actions";
-import { createSprite } from "../createSprite";
-import type { Appearance } from "../appearance/Appearance";
+
+import type { PokeableNumber } from "../../../model/ItemStateMap";
+import type { RoomState } from "../../../model/RoomState";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 import type { PlayableItem, PortableItem } from "../../physics/itemPredicates";
+import type { Appearance } from "../appearance/Appearance";
+import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { ButtonRenderingContainer } from "./arcadeStyleButtonRendering";
+
+import { pokeableToNumber } from "../../../model/ItemStateMap";
+import { emptyObject } from "../../../utils/empty";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import type { ButtonRenderingContainer } from "./arcadeStyleButtonRendering";
+import { type BooleanAction } from "../../input/actions";
+import { findItemToPickup } from "../../physics/mechanics/carrying";
+import { teleporterIsActive } from "../../physics/mechanics/teleporting";
+import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
+import { createSprite } from "../createSprite";
 import {
   arcadeStyleButtonRendering,
   createTextForButtonSurface,
@@ -15,31 +29,20 @@ import {
   setPressed,
   showOnSurface,
 } from "./arcadeStyleButtonRendering";
-import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 import { renderCarriedOnce } from "./renderCarried";
-import { findItemToPickup } from "../../physics/mechanics/carrying";
-import type { PokeableNumber } from "../../../model/ItemStateMap";
-import { pokeableToNumber } from "../../../model/ItemStateMap";
-import type { EmptyObject } from "type-fest";
-import { emptyObject } from "../../../utils/empty";
 import {
   makeTextContainer,
   showTextInContainer,
 } from "./showNumberInContainer";
-import type { RoomState } from "../../../model/RoomState";
-import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
-import { teleporterIsActive } from "../../physics/mechanics/teleporting";
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { GeneralRenderContext } from "../RoomRenderContexts";
 
 export type ButtonType =
-  | "jump"
   | "carry"
-  | "fire"
   | "carryAndJump"
-  | "menu"
-  | "map";
+  | "fire"
+  | "jump"
+  | "map"
+  | "menu";
 
 export type Button<Which extends ButtonType = ButtonType> = {
   id: string;
@@ -58,7 +61,7 @@ type ButtonRenderProps = {
   };
   carry: CommonButtonRenderProps & {
     hasBag: boolean;
-    carrying: PortableItem<string, string> | null;
+    carrying: null | PortableItem<string, string>;
     disabled: boolean;
   };
   fire: CommonButtonRenderProps & {
@@ -90,7 +93,7 @@ type ButtonAppearance<
   ButtonRenderContext<BT, RoomId>,
   ButtonTickContext,
   ButtonRenderProps[BT],
-  BT extends "menu" | "map" ? Container : ButtonRenderingContainer
+  BT extends "map" | "menu" ? Container : ButtonRenderingContainer
 >;
 
 const textYForButtonCentre = -11;
@@ -190,7 +193,7 @@ const buttonAppearances: {
       carrying === null &&
       room !== undefined &&
       findItemToPickup(
-        currentPlayable as PlayableItem<"heels" | "headOverHeels", string>,
+        currentPlayable as PlayableItem<"headOverHeels" | "heels", string>,
         room,
       ) !== undefined;
 
@@ -420,7 +423,7 @@ export class OnScreenButtonRenderer<
   ButtonRenderContext<BT, RoomId>,
   ButtonTickContext,
   ButtonRenderProps[BT],
-  BT extends "menu" | "map" ? Container : ButtonRenderingContainer
+  BT extends "map" | "menu" ? Container : ButtonRenderingContainer
 > {
   constructor(renderContext: ButtonRenderContext<BT, RoomId>) {
     const appearance = buttonAppearances[

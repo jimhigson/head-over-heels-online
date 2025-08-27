@@ -2,7 +2,7 @@ import { epsilon, veryClose } from "../epsilon";
 
 export const directionsXy4 = ["away", "towards", "left", "right"] as const;
 export type DirectionXy4 = (typeof directionsXy4)[number];
-export type DirectionXyz4 = DirectionXy4 | "up" | "down";
+export type DirectionXyz4 = "down" | "up" | DirectionXy4;
 
 export const directionsXyDiagonal = [
   "awayRight",

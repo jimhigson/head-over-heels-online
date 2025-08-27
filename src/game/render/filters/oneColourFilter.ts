@@ -1,5 +1,7 @@
 import type { Color } from "pixi.js";
+
 import { Filter, GlProgram } from "pixi.js";
+
 import { vertex } from "./defaults";
 import fragment from "./oneColour.frag?raw";
 

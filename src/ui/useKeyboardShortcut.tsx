@@ -1,24 +1,25 @@
 import { useEffect } from "react";
+
 import type { Key } from "../game/input/keys";
 
 // Valid modifier combinations (no duplicates allowed)
 type ValidModifiers =
   | "" // no modifiers
   | "^" // just ctrl
-  | "⌘" // just cmd
-  | "⇧" // just shift
-  | "⌥" // just alt/option
   | "^⇧" // ctrl+shift
-  | "⌘⇧" // cmd+shift
-  | "⌥⇧" // alt+shift
-  | "^⌥" // ctrl+alt
-  | "⌘⌥" // cmd+alt
   | "^⌘" // ctrl+cmd (unusual but valid)
-  | "^⌥⇧" // ctrl+alt+shift
-  | "⌘⌥⇧" // cmd+alt+shift
   | "^⌘⇧" // ctrl+cmd+shift (unusual but valid)
   | "^⌘⌥" // ctrl+cmd+alt
-  | "^⌘⌥⇧"; // ctrl+cmd+alt+shift
+  | "^⌘⌥⇧" // ctrl+cmd+alt+shift
+  | "^⌥" // ctrl+alt
+  | "^⌥⇧" // ctrl+alt+shift
+  | "⇧" // just shift
+  | "⌘" // just cmd
+  | "⌘⇧" // cmd+shift
+  | "⌘⌥" // cmd+alt
+  | "⌘⌥⇧" // cmd+alt+shift
+  | "⌥" // just alt/option
+  | "⌥⇧"; // alt+shift
 
 /**
  * A single shortcut key combination
@@ -53,7 +54,7 @@ export const useKeyboardShortcut = (
    * null means 'do not add' (eg, waiting for a value in a ref'
    * undefined means 'use the window'
    */
-  element: HTMLElement | Window | null | undefined = undefined,
+  element: HTMLElement | null | undefined | Window = undefined,
 ) => {
   // joining the string will mean the result is stable even if the array
   // is passed inline (changes on every render)

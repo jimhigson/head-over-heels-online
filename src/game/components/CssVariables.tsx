@@ -1,5 +1,6 @@
 import "react";
 import type { PropsWithChildren } from "react";
+
 import { useTotalUpscale } from "../../store/selectors";
 
 declare module "react" {

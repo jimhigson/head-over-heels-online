@@ -1,4 +1,5 @@
-import { it, expect } from "vitest";
+import { expect, it } from "vitest";
+
 import { flattenFixture } from "./testHelper.js";
 import { timeout } from "./timeout.js";
 

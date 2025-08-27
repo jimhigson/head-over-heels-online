@@ -1,13 +1,14 @@
-import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
-import {
-  type Xy,
-  type Xyz,
-  visibleCornerVectorsXyz,
-  lengthXy,
-  subXy,
-} from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import type { Tool } from "../../Tool";
+
+import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
+import {
+  lengthXy,
+  subXy,
+  visibleCornerVectorsXyz,
+  type Xy,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
 
 export const cornerTolerancePx = 3;
 
@@ -18,7 +19,7 @@ export const pointerIntersectionCorner = (
   item: EditorUnionOfAllItemInPlayTypes,
   { x, y }: Xy,
   _tool: Tool,
-): Xyz | undefined => {
+): undefined | Xyz => {
   // TODO: may also need a special case like this:
   // if (
   //   tool.type === "item" &&

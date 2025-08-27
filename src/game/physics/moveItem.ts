@@ -1,29 +1,30 @@
-import { isItemType, isPushable, isSlidingItem } from "./itemPredicates";
-import { isFreeItem } from "./itemPredicates";
-import { collision1to1, collision1toMany } from "../collision/aabbCollision";
-import type { GameState } from "../gameState/GameState";
-import { isSolid } from "./itemPredicates";
-import { mtv, mtvAlongVector } from "./mtv";
-import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
-import { setStandingOn } from "../gameState/mutators/setStandingOn";
-import { removeStandingOn } from "../gameState/mutators/removeStandingOn";
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { Xyz } from "../../utils/vectors/vectors";
-import {
-  xyzEqual,
-  originXyz,
-  addXyz,
-  subXyz,
-  scaleXyz,
-  lengthXyz,
-  dotProductXyz,
-  lengthXyzSquared,
-} from "../../utils/vectors/vectors";
-import { maxPushRecursionDepth } from "./mechanicsConstants";
+import type { GameState } from "../gameState/GameState";
+import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
+
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { roomItemsIterable, type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
-import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 import { veryClose } from "../../utils/epsilon";
+import {
+  addXyz,
+  dotProductXyz,
+  lengthXyz,
+  lengthXyzSquared,
+  originXyz,
+  scaleXyz,
+  subXyz,
+  xyzEqual,
+} from "../../utils/vectors/vectors";
+import { collision1to1, collision1toMany } from "../collision/aabbCollision";
+import { removeStandingOn } from "../gameState/mutators/removeStandingOn";
+import { setStandingOn } from "../gameState/mutators/setStandingOn";
+import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
+import { isItemType, isPushable, isSlidingItem } from "./itemPredicates";
+import { isFreeItem } from "./itemPredicates";
+import { isSolid } from "./itemPredicates";
+import { maxPushRecursionDepth } from "./mechanicsConstants";
+import { mtv, mtvAlongVector } from "./mtv";
 import { recordActedOnBy, recordCollision } from "./recordActedOnBy";
 
 // turn this on for *very* noisy logging of all the movements/pushes etc.

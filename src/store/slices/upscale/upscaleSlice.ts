@@ -1,12 +1,14 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
 import type { ValueOf } from "type-fest";
 
-import { defaultUserSettings } from "../../defaultUserSettings";
-import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
+import { createSlice } from "@reduxjs/toolkit";
+
 import type { CalculateUpscaleOptions } from "./calculateUpscale";
-import { calculateUpscale } from "./calculateUpscale";
 import type { Upscale } from "./Upscale";
+
+import { defaultUserSettings } from "../../defaultUserSettings";
+import { calculateUpscale } from "./calculateUpscale";
+import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
 
 export type UpscaleState = {
   upscale: Upscale;

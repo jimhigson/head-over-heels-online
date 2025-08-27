@@ -1,22 +1,23 @@
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { MenuItems } from "../../MenuItems";
+import { objectKeys, objectValues, size } from "iter-tools";
+import { Suspense } from "react";
+
 import { useAppSelector } from "../../../../../../store/hooks";
-import { size, objectKeys, objectValues } from "iter-tools";
-import { iterate } from "../../../../../../utils/iterate";
-import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
-import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { BackMenuItem } from "../../BackMenuItem";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import {
   selectPlanetsLiberatedCount,
   useCurrentCampaign,
 } from "../../../../../../store/selectors";
-import { Suspense } from "react";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { iterate } from "../../../../../../utils/iterate";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItems } from "../../MenuItems";
 import { multilineTextClass } from "../../multilineTextClass";
+import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
+import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
 
 const ORIGINAL_GAME_MAX_SCORE = 94_000;
 

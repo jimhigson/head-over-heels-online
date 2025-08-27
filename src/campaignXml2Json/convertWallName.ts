@@ -1,6 +1,7 @@
 import type { AnyWall } from "../model/modelTypes";
 import type { SceneryName } from "../sprites/planets";
 import type { AxisXy } from "../utils/vectors/vectors";
+
 import { wallNumbers } from "./wallNumbers";
 
 // .png must be optional - it is given in <wall> elements in the xml

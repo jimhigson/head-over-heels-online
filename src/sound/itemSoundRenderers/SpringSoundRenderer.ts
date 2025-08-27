@@ -1,9 +1,10 @@
-import { audioCtx } from "../audioCtx";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import { createAudioNode } from "../soundUtils/createAudioNode";
 import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
+import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../ItemSoundRenderer";
+
 import { isStoodOn } from "../../model/StoodOnBy";
+import { audioCtx } from "../audioCtx";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 
 export class SpringSoundRenderer implements ItemSoundRenderer<"spring"> {
   public readonly output: GainNode = audioCtx.createGain();

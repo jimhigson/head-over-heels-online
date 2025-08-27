@@ -1,5 +1,7 @@
 import { expectTypeOf, test } from "vitest";
-import type { NumberedTextureName, FrameNumbers } from "./spriteGenerators";
+
+import type { FrameNumbers, NumberedTextureName } from "./spriteGenerators";
+
 import { seriesOfNumberedTextures } from "./spriteGenerators";
 
 test("generating frame number types", () => {

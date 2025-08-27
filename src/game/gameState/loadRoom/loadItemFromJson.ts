@@ -1,31 +1,33 @@
-import { boundingBoxForItem } from "../../collision/boundingBoxes";
-import { loadDoor } from "./loadDoor";
-import { loadPlayer } from "./loadPlayer";
-import type { RoomPickupsCollected } from "../GameState";
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { produce } from "immer";
+
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
 import type { Xyz } from "../../../utils/vectors/vectors";
+import type { CreateSpriteOptions } from "../../render/createSprite";
+import type { RoomPickupsCollected } from "../GameState";
+
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { getJsonItemTimes } from "../../../model/times";
+import { store } from "../../../store/store";
+import { emptyObject } from "../../../utils/empty";
 import {
   lengthXyz,
   tangentAxis,
   unitXyz,
 } from "../../../utils/vectors/vectors";
-import type { CreateSpriteOptions } from "../../render/createSprite";
-import { initialState } from "./itemDefaultStates";
-import { loadWall } from "./loadWalls";
-import type { RoomJson } from "../../../model/RoomJson";
-import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
-import { store } from "../../../store/store";
-import { emptyObject } from "../../../utils/empty";
-import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
-import { loadFloor } from "./loadFloor";
+import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
-import { getJsonItemTimes } from "../../../model/times";
-import { produce } from "immer";
+import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { initialState } from "./itemDefaultStates";
+import { loadDoor } from "./loadDoor";
+import { loadFloor } from "./loadFloor";
+import { loadPlayer } from "./loadPlayer";
+import { loadWall } from "./loadWalls";
 
 type ItemConfigMaybeWithMultiplication = {
-  times?: undefined | Partial<Xyz>;
+  times?: Partial<Xyz> | undefined;
 };
 
 export function* loadItemFromJson<

@@ -1,17 +1,19 @@
 import { first } from "iter-tools";
+
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type {
-  JsonItemType,
-  JsonItemConfig,
   JsonItem,
+  JsonItemConfig,
+  JsonItemType,
   JsonItemUnion,
 } from "../../../model/json/JsonItem";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import { originXyz } from "../../../utils/vectors/vectors";
-import type { GameState } from "../GameState";
-import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 import type { RoomState } from "../../../model/RoomState";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { GameState } from "../GameState";
+
 import { emptyObject } from "../../../utils/empty";
+import { originXyz } from "../../../utils/vectors/vectors";
+import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 
 let i = 0;
 

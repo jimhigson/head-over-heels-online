@@ -1,9 +1,11 @@
+import { first } from "iter-tools";
 import { expect, test } from "vitest";
+
+import type { FreeItem } from "../physics/itemPredicates";
+
+import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "./checkStandingOn";
-import { first } from "iter-tools";
-import type { FreeItem } from "../physics/itemPredicates";
-import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 
 test("prefers blocks over conveyors even if the conveyor has more overlap", () => {
   const result = findStandingOnWithHighestPriorityAndMostOverlap(

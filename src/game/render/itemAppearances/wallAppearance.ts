@@ -1,17 +1,19 @@
 import { Container } from "pixi.js";
-import { wallTileSize } from "../../../sprites/textureSizes";
+
 import type { Xy } from "../../../utils/vectors/vectors";
+
+import { isAnimationId } from "../../../sprites/assertIsTextureId";
+import { wallTileSize } from "../../../sprites/textureSizes";
+import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
   perpendicularAxisXy,
   tangentAxis,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
+import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { projectBlockXyzToScreenXy } from "../projections";
 import { wallTextureId } from "../wallTextureId";
 import { itemAppearanceRenderOnce } from "./ItemAppearance";
-import { isAnimationId } from "../../../sprites/assertIsTextureId";
-import { mainPaletteSwapFilter } from "../filters/standardFilters";
-import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({

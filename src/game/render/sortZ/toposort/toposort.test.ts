@@ -1,4 +1,5 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+
 import { toposort } from "./toposort";
 
 test("acyclic graphs should be sorted correctly", () => {

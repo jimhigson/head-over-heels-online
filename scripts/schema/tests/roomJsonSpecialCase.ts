@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 // Simplified version of JsonItemType
-type JsonItemType = "door" | "wall" | "conveyor" | "block";
+type JsonItemType = "block" | "conveyor" | "door" | "wall";
 
 // Simplified ItemConfigMap
 type ItemConfigMap = {

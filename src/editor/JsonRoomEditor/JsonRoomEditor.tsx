@@ -1,15 +1,17 @@
-import { useState } from "react";
 import type { Monaco } from "@monaco-editor/react";
-import { Editor } from "@monaco-editor/react";
 import type { editor } from "monaco-editor";
-import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncSelectionWithMonaco";
+
+import { Editor } from "@monaco-editor/react";
+import { useState } from "react";
+
 import roomSchema from "../../_generated/room.schema.json";
-import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
+import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useItemIconDecorations } from "./ItemIconDecorations";
 import { useMonacoSuggestions } from "./useMonacoSuggestions";
-import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
-import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useSyncMonacoCaretToStoreItemSelection } from "./useSyncMonacoCaretToStoreItemSelection";
+import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncSelectionWithMonaco";
+import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
+import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
 
 export const JsonRoomEditor = () => {
   //const monaco = useLoadMonaco();

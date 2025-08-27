@@ -1,7 +1,9 @@
 import type { AnimatedSprite } from "pixi.js";
+
+import type { ItemAppearance } from "./ItemAppearance";
+
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { createSprite } from "../createSprite";
-import type { ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 type SpringRenderProps = {

@@ -1,4 +1,5 @@
 import type { Application } from "pixi.js";
+
 import { useAppSelector } from "../../store/hooks";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 

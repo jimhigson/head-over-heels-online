@@ -1,4 +1,5 @@
 import { objectEntries, objectKeys } from "iter-tools";
+
 import { iterate } from "./iterate";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -42,9 +43,9 @@ export const fromEntries = Object.fromEntries as ObjectFromEntries;
 export const fromAllEntries = Object.fromEntries as ObjectFromAllEntries;
 
 export const transformObject = <
-  KIn extends string | number,
+  KIn extends number | string,
   VIn,
-  KOut extends string | number,
+  KOut extends number | string,
   VOut,
 >(
   object: Partial<Record<KIn, VIn>>,

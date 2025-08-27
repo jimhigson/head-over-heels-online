@@ -1,4 +1,7 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
+import type { Upscale } from "src/store/slices/upscale/Upscale";
+import type { SetRequired } from "type-fest";
+
 import type { RoomState } from "../../model/RoomState";
 import type {
   DisplaySettings,
@@ -6,8 +9,6 @@ import type {
 } from "../../store/slices/gameMenusSlice";
 import type { GameState } from "../gameState/GameState";
 import type { MovedItems } from "../mainLoop/progressGameState";
-import type { SetRequired } from "type-fest";
-import type { Upscale } from "src/store/slices/upscale/Upscale";
 
 /** some context that most renderers need, to be composed into their contexts
  *
@@ -24,7 +25,7 @@ export type GeneralRenderContext<RoomId extends string> = {
    * GameState is undefined if there isn't a current game in progress
    * - this would mean that the rendering is for the level editor
    */
-  gameState?: Omit<GameState<RoomId>, "pickupsCollected" | "events">;
+  gameState?: Omit<GameState<RoomId>, "events" | "pickupsCollected">;
   paused: boolean;
   colourised: boolean;
   upscale: Upscale;

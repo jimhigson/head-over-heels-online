@@ -1,16 +1,19 @@
-import { audioCtx } from "../../audioCtx";
-import type { ItemSoundRenderer } from "../../ItemSoundRenderer";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
+
+import { isEmpty } from "iter-tools";
+
+import type { FreeItemTypes } from "../../../game/physics/itemPredicates";
 import type { ItemSoundRenderContext } from "../../ItemSoundRenderContext";
+import type { ItemSoundRenderer } from "../../ItemSoundRenderer";
 import type {
   BracketedSegmentOptions,
   BracketedSound,
 } from "../../soundUtils/createBracketedSound";
-import { createBracketedSound } from "../../soundUtils/createBracketedSound";
-import type { FreeItemTypes } from "../../../game/physics/itemPredicates";
+
 import { keysIter } from "../../../utils/entries";
-import { isEmpty } from "iter-tools";
-import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 import { neverTime } from "../../../utils/neverTime";
+import { audioCtx } from "../../audioCtx";
+import { createBracketedSound } from "../../soundUtils/createBracketedSound";
 
 export class CollisionSoundRenderer
   implements ItemSoundRenderer<FreeItemTypes>

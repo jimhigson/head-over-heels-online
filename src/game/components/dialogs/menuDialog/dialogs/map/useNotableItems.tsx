@@ -1,10 +1,12 @@
 import { useMemo } from "react";
+
 import type { RoomJson } from "../../../../../../model/RoomJson";
+import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
+import type { NotableItem } from "./NotableItem";
+
 import { entries, fromAllEntries } from "../../../../../../utils/entries";
 import { iterate } from "../../../../../../utils/iterate";
-import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
-import type { NotableItem } from "./NotableItem";
 import { restrictItemsToShowInRoomCount } from "./restrictItemsToShowInRoomCount";
 import { maximumItemsForRoomLayoutOnMap } from "./roomItemPositions";
 

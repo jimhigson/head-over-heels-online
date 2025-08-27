@@ -1,4 +1,5 @@
 import { Filter, GlProgram } from "pixi.js";
+
 import { vertex } from "./defaults";
 import fragment from "./null.frag?raw";
 

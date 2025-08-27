@@ -1,23 +1,25 @@
 import { produce } from "immer";
+
+import type { DoorConfig } from "../../../../model/json/ItemConfigMap";
+import type { EditorItemInPlayUnion, EditorRoomId } from "../../../editorTypes";
+import type { Tool } from "../../../Tool";
+import type {
+  MouseDownParams,
+  MouseLeaveParams,
+  MouseMoveParams,
+  MouseUpParams,
+  ToolHandler,
+} from "./ToolHandler";
+
 import { store } from "../../../../store/store";
 import {
-  resetPreviewedEdits,
   applyItemTool,
+  resetPreviewedEdits,
   setTool,
 } from "../../../slice/levelEditorSlice";
-import type { Tool } from "../../../Tool";
 import { addingItemWouldCollide } from "../../cursor/editWouldCollide";
 import { itemToolPutDownLocation } from "../../cursor/itemToolPutDownLocation";
 import { jsonItemAndIdForInPlayItemId } from "../jsonItemAndIdForInPlayItemId";
-import type {
-  MouseMoveParams,
-  MouseUpParams,
-  MouseDownParams,
-  MouseLeaveParams,
-  ToolHandler,
-} from "./ToolHandler";
-import type { DoorConfig } from "../../../../model/json/ItemConfigMap";
-import type { EditorItemInPlayUnion, EditorRoomId } from "../../../editorTypes";
 
 const { dispatch } = store;
 

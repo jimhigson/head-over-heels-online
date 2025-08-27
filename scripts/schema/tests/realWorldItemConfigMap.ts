@@ -9,7 +9,7 @@ type ConsolidatableConfig = {
   times?: { x?: number; y?: number; z?: number };
 };
 
-type DirectionXy4 = "left" | "right" | "towards" | "away";
+type DirectionXy4 = "away" | "left" | "right" | "towards";
 
 type Subset<T, U extends T> = U;
 type Disappear = { on: "stand" | "touch" };
@@ -33,7 +33,7 @@ type ItemConfigMap<
     tiles?: string[];
   };
   block: ConsolidatableConfig & {
-    style: "artificial" | "organic" | "tower" | "book";
+    style: "artificial" | "book" | "organic" | "tower";
     disappearing?: Subset<Disappear, { on: "stand" }>;
   };
   ball: ConsolidatableConfig;
@@ -43,13 +43,13 @@ type ItemConfigMap<
 
 // JsonItemType
 type JsonItemType =
-  | "door"
-  | "conveyor"
-  | "wall"
-  | "block"
   | "ball"
+  | "block"
+  | "conveyor"
+  | "door"
   | "hushPuppy"
-  | "spikes";
+  | "spikes"
+  | "wall";
 
 // JsonItemConfig following exact pattern
 type JsonItemConfig<

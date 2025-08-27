@@ -1,4 +1,4 @@
-import { type Xyz, dotProductXyz, scaleXyz } from "./vectors";
+import { dotProductXyz, scaleXyz, type Xyz } from "./vectors";
 
 /**
  * returns the component of vector @param v in the direction described by unit

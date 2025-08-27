@@ -1,23 +1,23 @@
 import type { Xyz } from "../../utils/vectors/vectors";
 
-export type BlockStyle = "organic" | "artificial" | "tower" | "book";
+export type BlockStyle = "artificial" | "book" | "organic" | "tower";
 
 export type JsonMovement =
-  | "unmoving"
-  | "clockwise"
   | "back-forth"
+  | "clockwise"
   | "forwards"
-  | "towards-on-shortest-axis-xy4"
-  | "towards-analogue"
-  // special case for emperor's guardian - runs away if you have the first 4 crowns
-  | "towards-analogue-unless-planet-crowns"
-  | "towards-tripped-on-axis-xy4"
   | "patrol-randomly-diagonal"
   | "patrol-randomly-xy4"
+  | "towards-analogue"
+  | "towards-on-shortest-axis-xy4"
+  | "towards-tripped-on-axis-xy4"
+  | "unmoving"
   // same as patrol-randomly-xy4 but sometimes walks backwards - kind of because
   // it is funny really to see the big head computer robots doing this
   | "patrol-randomly-xy4-and-reverse"
   | "patrol-randomly-xy8"
+  // special case for emperor's guardian - runs away if you have the first 4 crowns
+  | "towards-analogue-unless-planet-crowns"
   // turns towards the player while staying still (elephant heads in the remake)
   | "turn-to-player";
 

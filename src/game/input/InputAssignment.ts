@@ -39,10 +39,6 @@ export type InputAssignmentPreset = {
 
 export type InputPress =
   | {
-      type: "key";
-      input: ActionInputAssignment["keys"][number];
-    }
-  | {
       /** for when an axis is used like a button (non-analogue mode) */
       type: "gamepadAxes";
       input: number;
@@ -51,4 +47,8 @@ export type InputPress =
   | {
       type: "gamepadButtons";
       input: ActionInputAssignment["gamepadButtons"][number];
+    }
+  | {
+      type: "key";
+      input: ActionInputAssignment["keys"][number];
     };

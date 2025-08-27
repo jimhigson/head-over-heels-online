@@ -1,13 +1,15 @@
-import { projectWorldXyzToScreenX } from "../game/render/projections";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
+
 import type { ItemInPlayType } from "../model/ItemInPlay";
-import { audioCtx } from "./audioCtx";
 import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "./ItemSoundRenderer";
-import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
-import { blockSizePx } from "../sprites/spritePivots";
+
 import { defaultRoomHeightBlocks } from "../game/physics/mechanicsConstants";
-import { addXyz, scaleXyz } from "../utils/vectors/vectors";
 import { floorsRenderExtent } from "../game/render/floorsExtent";
+import { projectWorldXyzToScreenX } from "../game/render/projections";
+import { blockSizePx } from "../sprites/spritePivots";
+import { addXyz, scaleXyz } from "../utils/vectors/vectors";
+import { audioCtx } from "./audioCtx";
 
 // TODO: this doesn't account for scrolling!
 

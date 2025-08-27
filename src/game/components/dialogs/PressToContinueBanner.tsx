@@ -1,8 +1,10 @@
-import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { twMerge } from "tailwind-merge";
+
 import type { BooleanAction } from "../../input/actions";
+
+import { detectDeviceType } from "../../../utils/detectDeviceType";
 import { BitmapText } from "../tailwindSprites/Sprite";
 import { CurrentKeyAssignments } from "./menuDialog/CurrentKeyAssignment";
-import { twMerge } from "tailwind-merge";
 
 export const PressToContinueBanner = ({
   action,

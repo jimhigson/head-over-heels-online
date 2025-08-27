@@ -1,10 +1,13 @@
-import { describe, it, expect } from "vitest";
-import { latentMovement } from "./latentMovement";
+import type { PartialDeep } from "type-fest";
+
+import { describe, expect, it } from "vitest";
+
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { FreeItemTypes } from "../itemPredicates";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
-import type { PartialDeep } from "type-fest";
+import type { FreeItemTypes } from "../itemPredicates";
+
+import { latentMovement } from "./latentMovement";
 
 type TestItem = ItemInPlay<FreeItemTypes, string, string>;
 type TestRoomState = RoomState<string, string>;

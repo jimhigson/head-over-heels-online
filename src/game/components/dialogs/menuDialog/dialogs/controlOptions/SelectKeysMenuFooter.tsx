@@ -1,7 +1,7 @@
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { multilineTextClass } from "../../multilineTextClass";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignment";
+import { multilineTextClass } from "../../multilineTextClass";
 
 const highlightTextClass = "text-pink zx:text-zxCyan";
 

@@ -1,7 +1,7 @@
-import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
 import { detectDeviceType } from "../../../utils/detectDeviceType";
 import { startAppListening } from "../../listenerMiddleware";
 import { setEmulatedResolution } from "../gameMenusSlice";
+import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
 import { upscaleToWindow } from "./upscaleSlice";
 
 export const updateUpscaleWhenEmulatedResolutionChanges = () => {

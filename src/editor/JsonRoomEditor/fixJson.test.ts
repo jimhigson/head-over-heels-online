@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+
 import { fixJson } from "./fixJson";
 
 test("adds quotes to unquoted keys", () => {

@@ -1,5 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
+
 import type { LevelEditorState } from "../levelEditorSlice";
 
 export const dragToMoveReducers = {

@@ -1,4 +1,4 @@
-export type DeviceType = "mobile" | "tablet" | "desktop" | "server";
+export type DeviceType = "desktop" | "mobile" | "server" | "tablet";
 
 export const isTouchDevice = () => {
   return detectDeviceType() === "mobile" || detectDeviceType() === "tablet";

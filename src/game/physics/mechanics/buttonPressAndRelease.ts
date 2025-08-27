@@ -1,9 +1,11 @@
 import { isEmpty, objectKeys } from "iter-tools";
+
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
-import { unitMechanicalResult, type MechanicResult } from "../MechanicResult";
-import { buttonStayPressedAfterReleasePeriod } from "../mechanicsConstants";
+
 import { applyModifiesList } from "../handleTouch/handleItemTouchingSwitch";
+import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import { buttonStayPressedAfterReleasePeriod } from "../mechanicsConstants";
 
 const pressedMechanicResult: MechanicResult<"button", string, string> = {
   movementType: "steady",

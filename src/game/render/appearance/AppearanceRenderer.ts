@@ -1,4 +1,5 @@
 import { Container } from "pixi.js";
+
 import type { Renderer } from "../Renderer";
 import type { Appearance, AppearanceRendering } from "./Appearance";
 

@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { flattenFixture } from "./testHelper";
 import { timeout } from "./timeout";
 
@@ -11,8 +12,8 @@ describe("emitterType", { timeout }, () => {
     expect(result).toContain('type: "pickup"');
     expect(result).toContain('type: "spring"');
     expect(result).toContain('type: "block"');
-    expect(result).toContain('gives: "shield" | "extra-life"');
-    expect(result).toContain('style: "organic" | "artificial"');
+    expect(result).toContain('gives: "extra-life" | "shield"');
+    expect(result).toContain('style: "artificial" | "organic"');
 
     // Check that the union is structured correctly with type and config in each branch
     expect(result).toMatch(/\|\s*{\s*type:\s*"pickup";\s*config:\s*{/);

@@ -1,17 +1,23 @@
+import type { UnknownAction } from "@reduxjs/toolkit";
+
 import { Container } from "pixi.js";
+
+import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import type {
+  EditorItemInPlayUnion,
+  EditorRoomId,
+} from "../../../../editor/editorTypes";
+import type { RootStateWithLevelEditorSlice } from "../../../../editor/slice/levelEditorSlice";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { JsonMovement } from "../../../../model/json/utilityJsonConfigTypes";
+import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
+import type { ItemPixiRenderer } from "./ItemRenderer";
+
 import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
-import { noFilters } from "../../filters/standardFilters";
-import { outlineFilters } from "../../filters/outlineFilter";
-import { store } from "../../../../store/store";
-import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
-import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import type { RootStateWithLevelEditorSlice } from "../../../../editor/slice/levelEditorSlice";
 import {
   changeToRoom,
   selectHoveredItem,
@@ -19,15 +25,12 @@ import {
   selectTool,
   setClickableAnnotationHovered,
 } from "../../../../editor/slice/levelEditorSlice";
-import { showTextInContainer } from "../../hud/showNumberInContainer";
-import type { UnknownAction } from "@reduxjs/toolkit";
-import type {
-  EditorItemInPlayUnion,
-  EditorRoomId,
-} from "../../../../editor/editorTypes";
 import { iterateRoomItems } from "../../../../model/RoomState";
-import type { JsonMovement } from "../../../../model/json/utilityJsonConfigTypes";
-import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
+import { store } from "../../../../store/store";
+import { outlineFilters } from "../../filters/outlineFilter";
+import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
+import { noFilters } from "../../filters/standardFilters";
+import { showTextInContainer } from "../../hud/showNumberInContainer";
 
 const selectionColour = spritesheetPalette.pastelBlue;
 const pointerHoverFilter = outlineFilters.highlightBeige;

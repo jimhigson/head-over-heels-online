@@ -1,11 +1,12 @@
+import type { IRenderLayer } from "pixi.js";
+
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlayType } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/RoomState";
 import type { MovedItems } from "../mainLoop/progressGameState";
-import type { GeneralRenderContext } from "./RoomRenderContexts";
-import type { IRenderLayer } from "pixi.js";
-import type { ZGraph } from "./sortZ/GraphEdges";
 import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
+import type { GeneralRenderContext } from "./RoomRenderContexts";
+import type { ZGraph } from "./sortZ/GraphEdges";
 
 export type ItemRenderContext<T extends ItemInPlayType> = {
   item: ItemTypeUnion<T, string, string>;

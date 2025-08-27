@@ -1,5 +1,11 @@
 import { useMemo } from "react";
 
+import type { MapData } from "./MapData";
+
+import {
+  useCurrentCampaign,
+  useRoomsExplored,
+} from "../../../../../../store/selectors";
 import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { findStartingRoomsInCampaign } from "../../../../../gameState/loadGameState";
 import { useGameApi } from "../../../../GameApiContext";
@@ -8,11 +14,6 @@ import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
 import { useTickingCurrentCharacterName } from "./useCurrentCharacterName";
-import {
-  useCurrentCampaign,
-  useRoomsExplored,
-} from "../../../../../../store/selectors";
-import type { MapData } from "./MapData";
 
 /**
  * get everything needed to load the map for the current game

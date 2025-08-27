@@ -1,6 +1,6 @@
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { mainMenuCycle } from "./mainMenuCycle";
 import { CharacterSprite } from "./CharacterSprite";
+import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuHeading = ({
   noSubtitle,

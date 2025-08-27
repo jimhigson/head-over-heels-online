@@ -1,15 +1,15 @@
-import { setStandingOn } from "./setStandingOn";
-import { removeStandingOn } from "./removeStandingOn";
-import {
-  spatiallyCheckStandingOn,
-  findStandingOnWithHighestPriorityAndMostOverlap,
-} from "../../collision/checkStandingOn";
 import {
   iterateRoomItems,
   roomItemsIterable,
   type RoomState,
 } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import {
+  findStandingOnWithHighestPriorityAndMostOverlap,
+  spatiallyCheckStandingOn,
+} from "../../collision/checkStandingOn";
+import { removeStandingOn } from "./removeStandingOn";
+import { setStandingOn } from "./setStandingOn";
 
 /**
  * remove the standing on if not still applies, and

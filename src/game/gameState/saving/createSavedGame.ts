@@ -1,12 +1,13 @@
 import type { RootState } from "../../../store/store";
-import { pick } from "../../../utils/pick";
 import type { GameState } from "../GameState";
+
 import { badJsonClone } from "../../../utils/badJsonClone";
+import { pick } from "../../../utils/pick";
+import { deleteItemFromRoom } from "../mutators/deleteItemFromRoom";
 import {
   savedGameGameStateFields,
   type SavedGameState,
 } from "./SavedGameState";
-import { deleteItemFromRoom } from "../mutators/deleteItemFromRoom";
 
 export const createSavedGame = <RoomId extends string>(
   gameState: GameState<RoomId>,

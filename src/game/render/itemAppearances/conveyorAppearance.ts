@@ -1,13 +1,15 @@
 import { AnimatedSprite } from "pixi.js";
 import { Container } from "pixi.js";
-import { isStoodOn } from "../../../model/StoodOnBy";
+
 import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
+import type { ItemAppearance } from "./ItemAppearance";
+
+import { isStoodOn } from "../../../model/StoodOnBy";
+import { spritesheetData } from "../../../sprites/spriteSheetData";
+import { neverTime } from "../../../utils/neverTime";
 import { tangentAxis } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import type { ItemAppearance } from "./ItemAppearance";
-import { spritesheetData } from "../../../sprites/spriteSheetData";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
-import { neverTime } from "../../../utils/neverTime";
 
 const slowdownTimeMs = 500;
 

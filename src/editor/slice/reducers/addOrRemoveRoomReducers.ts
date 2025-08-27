@@ -1,9 +1,11 @@
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import type { LevelEditorState } from "../levelEditorSlice";
-import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { filter, first, objectKeys } from "iter-tools";
+
 import type { EditorRoomId } from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
+
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeRoomInPlace } from "../inPlaceMutators/changeRoomInPlace";
 
 export const addOrRemoveRoomReducers = {

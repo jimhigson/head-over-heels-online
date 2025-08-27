@@ -1,15 +1,17 @@
-import { audioCtx } from "../audioCtx";
+import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
+
+import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type {
   ItemSoundRenderer,
   ItemSoundRendererConstructableClass,
 } from "../ItemSoundRenderer";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import { createBracketedSound } from "../soundUtils/createBracketedSound";
+
 import { isJoystick } from "../../game/physics/itemPredicates";
-import { iterate } from "../../utils/iterate";
 import { keysIter } from "../../utils/entries";
+import { iterate } from "../../utils/iterate";
+import { audioCtx } from "../audioCtx";
+import { createBracketedSound } from "../soundUtils/createBracketedSound";
 import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
-import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
 
 export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
   public readonly output: GainNode = audioCtx.createGain();

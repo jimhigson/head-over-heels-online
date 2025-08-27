@@ -2,7 +2,7 @@ import type { PlanetName, SceneryName } from "../sprites/planets";
 import type { XmlScenery } from "./readToJson";
 
 export const convertSceneryName = (
-  xmlSceneryName: XmlScenery | undefined,
+  xmlSceneryName: undefined | XmlScenery,
 ): SceneryName => {
   switch (xmlSceneryName) {
     case undefined:
@@ -17,7 +17,7 @@ export const convertSceneryName = (
 };
 
 export const convertPlanetName = (
-  xmlSceneryName: XmlScenery | undefined,
+  xmlSceneryName: undefined | XmlScenery,
 ): PlanetName => {
   switch (xmlSceneryName) {
     case undefined: // jail

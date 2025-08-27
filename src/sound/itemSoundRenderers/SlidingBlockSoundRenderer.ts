@@ -1,4 +1,5 @@
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
+
 import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
 
 export class SlidingBlockSoundRenderer extends CollisionSoundRenderer {

@@ -1,12 +1,14 @@
 import { twMerge } from "tailwind-merge";
-import {
-  goToSubmenu,
-  assignInputStart,
-} from "../../../../../../store/slices/gameMenusSlice";
+
+import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectCurrentInputPreset,
   useIsScreenRelativeControl,
 } from "../../../../../../store/selectors";
+import {
+  assignInputStart,
+  goToSubmenu,
+} from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
@@ -14,7 +16,6 @@ import { MenuItem } from "../../MenuItem";
 import { multilineTextClass } from "../../multilineTextClass";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
-import { useAppSelector } from "../../../../../../store/hooks";
 
 export const CurrentPresetValue = ({ className }: { className?: string }) => {
   const currentPresetName = useAppSelector(selectCurrentInputPreset);

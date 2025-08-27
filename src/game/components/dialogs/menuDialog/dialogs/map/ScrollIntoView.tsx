@@ -1,5 +1,6 @@
 import type { RefObject } from "react";
-import { useRef, useLayoutEffect } from "react";
+
+import { useLayoutEffect, useRef } from "react";
 
 /** tiny component that scrolls itself into view, and does nothing else */
 export const ScrollIntoView = ({

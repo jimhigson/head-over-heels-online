@@ -1,4 +1,5 @@
 import { expectTypeOf, test } from "vitest";
+
 import type { EntriesOf } from "./entries";
 
 test("entries of object with known keys", () => {

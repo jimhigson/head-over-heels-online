@@ -1,15 +1,18 @@
 import type { Filter } from "pixi.js";
+
 import { Container } from "pixi.js";
+
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { ItemPixiRenderer } from "./ItemRenderer";
 import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import { OneColourFilter } from "../../filters/oneColourFilter";
+import type { ItemPixiRenderer } from "./ItemRenderer";
+
 import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
-import { noFilters } from "../../filters/standardFilters";
+import { OneColourFilter } from "../../filters/oneColourFilter";
 import { outlineFilters } from "../../filters/outlineFilter";
+import { noFilters } from "../../filters/standardFilters";
 
 const recentlySwitchedFiltersRight: Array<Filter> = [
   new OneColourFilter(spritesheetPalette.midRed),

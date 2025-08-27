@@ -1,6 +1,6 @@
 import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Container, Sprite, Ticker } from "pixi.js";
-import { getColorScheme } from "../../hintColours";
+
 import type {
   HeadAbilities,
   HeelsAbilities,
@@ -9,45 +9,47 @@ import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../model/modelTypes";
-import { individualCharacterNames } from "../../../model/modelTypes";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
 import type { TextureId } from "../../../sprites/spriteSheetData";
-import {
-  hudCharTextureSize,
-  smallItemTextureSize,
-} from "../../../sprites/textureSizes";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
-import {
-  shieldRemainingForAbilities,
-  fastStepsRemaining,
-} from "../../gameState/gameStateSelectors/selectPickupAbilities";
-import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { halfBriteFilter, noFilters } from "../filters/standardFilters";
-import { store } from "../../../store/store";
-import { selectShowFps } from "../../../store/selectors";
-import { OnScreenControls } from "./OnScreenControls";
-import {
-  hudFpsColourFilter,
-  hudIconFilter,
-  hudHighligtedFilter,
-  hudLivesTextFilter,
-  hudOutlineFilter,
-  hudTextFilter,
-  hudLowlightedFilter,
-} from "./hudFilters";
-import { renderCarriedOnce } from "./renderCarried";
+import type { PortableItem } from "../../physics/itemPredicates";
 import type { Renderer } from "../Renderer";
-import {
-  makeTextContainer,
-  showTextInContainer,
-} from "./showNumberInContainer";
 import type {
   HudRenderContext,
   HudRendererTickContext,
 } from "./hudRendererContexts";
-import type { PortableItem } from "../../physics/itemPredicates";
+
+import { individualCharacterNames } from "../../../model/modelTypes";
+import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import {
+  hudCharTextureSize,
+  smallItemTextureSize,
+} from "../../../sprites/textureSizes";
+import { selectShowFps } from "../../../store/selectors";
+import { store } from "../../../store/store";
 import { neverTime } from "../../../utils/neverTime";
+import {
+  fastStepsRemaining,
+  shieldRemainingForAbilities,
+} from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { getColorScheme } from "../../hintColours";
+import { halfBriteFilter, noFilters } from "../filters/standardFilters";
+import {
+  hudFpsColourFilter,
+  hudHighligtedFilter,
+  hudIconFilter,
+  hudLivesTextFilter,
+  hudLowlightedFilter,
+  hudOutlineFilter,
+  hudTextFilter,
+} from "./hudFilters";
+import { OnScreenControls } from "./OnScreenControls";
+import { renderCarriedOnce } from "./renderCarried";
+import {
+  makeTextContainer,
+  showTextInContainer,
+} from "./showNumberInContainer";
 
 const fpsUpdatePeriod = 250;
 
@@ -225,7 +227,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     textureId: TextureId;
     textOnTop?: boolean;
     noText?: boolean;
-    outline?: boolean | "text-only";
+    outline?: "text-only" | boolean;
     label: string;
   }) {
     const container = new Container({ label });

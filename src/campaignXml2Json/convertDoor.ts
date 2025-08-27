@@ -1,13 +1,14 @@
 import type { JsonItemUnion } from "../model/json/JsonItem";
 import type { DirectionXy4 } from "../utils/vectors/vectors";
-import { perpendicularAxisXy, addXy } from "../utils/vectors/vectors";
+
+import { addXy, perpendicularAxisXy } from "../utils/vectors/vectors";
 import { autoZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertRoomId } from "./convertRoomId";
 import {
-  type MapXml2Json,
-  type CompassDirectionsNESW,
   type CompassDirections,
+  type CompassDirectionsNESW,
+  type MapXml2Json,
   type Xml2JsonRoom,
 } from "./readToJson";
 import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";

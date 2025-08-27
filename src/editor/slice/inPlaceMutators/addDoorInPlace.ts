@@ -1,21 +1,22 @@
-import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
-import { iterate } from "../../../utils/iterate";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import {
-  type Xyz,
-  oppositeDirection,
-  xyzEqual,
-} from "../../../utils/vectors/vectors";
 import type { EditorJsonItem, EditorRoomJson } from "../../editorTypes";
 import type { ItemTool } from "../../Tool";
-import { addNewRoomInPlace } from "./addNewRoomInPlace";
 import type { LevelEditorState } from "../levelEditorSlice";
+
+import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
+import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { iterate } from "../../../utils/iterate";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import {
+  oppositeDirection,
+  type Xyz,
+  xyzEqual,
+} from "../../../utils/vectors/vectors";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { addItemInPlace, nextItemId } from "./addItemInPlace";
+import { addNewRoomInPlace } from "./addNewRoomInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
-import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
 
 const getDestinationRoom = ({
   state,

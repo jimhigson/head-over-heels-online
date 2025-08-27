@@ -1,3 +1,5 @@
+import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
+
 import { getConsolidatableVector } from "../../consolidateItems/ConsolidatableJsonItem";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { getJsonItemTimes } from "../../model/times";
@@ -10,15 +12,14 @@ import {
   unitXyz,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { selectEditorRoomState } from "../slice/levelEditorSelectors";
 import { itemMoveOrResizeWouldCollide } from "../RoomEditingArea/cursor/editWouldCollide";
-import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import { selectEditorRoomState } from "../slice/levelEditorSelectors";
+import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const NudgeButtons = () => {

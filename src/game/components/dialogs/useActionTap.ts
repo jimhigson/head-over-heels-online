@@ -1,11 +1,12 @@
-import { useEffect, useMemo } from "react";
-import { useInputStateTracker } from "../../input/InputStateProvider";
-import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import type { InputPress } from "../../input/InputAssignment";
-
 import { Ticker } from "pixi.js";
-import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import { useEffect, useMemo } from "react";
+
+import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { BooleanAction } from "../../input/actions";
+import type { InputPress } from "../../input/InputAssignment";
+import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+
+import { useInputStateTracker } from "../../input/InputStateProvider";
 
 export type UseActionInputProps = {
   /** MUST be cached using useCallback or useMemo, or will re-assign on every render

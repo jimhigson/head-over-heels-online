@@ -1,8 +1,9 @@
-import { Graphics, type Container } from "pixi.js";
+import { type Container, Graphics } from "pixi.js";
+
 import { iterateRoomItems, type RoomState } from "../../model/RoomState";
+import { addXyz, originXyz } from "../../utils/vectors/vectors";
 import { isItemType } from "../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "./projections";
-import { addXyz, originXyz } from "../../utils/vectors/vectors";
 
 const itemIsWallOrDoorFrame = isItemType("wall", "doorFrame");
 

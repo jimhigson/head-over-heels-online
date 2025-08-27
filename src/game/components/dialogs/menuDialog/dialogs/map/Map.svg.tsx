@@ -1,20 +1,22 @@
-import { RoomSvg } from "./Room.svg";
+import type { ValueOf } from "type-fest";
+
 import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
 import type { CharacterRooms } from "../../../../../gameState/GameState";
-import { emptyObject } from "../../../../../../utils/empty";
-import { roomWorldPosition } from "./roomWorldPosition";
-import type { ValueOf } from "type-fest";
-import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
-import { findSubRoomForItem } from "./itemIsInSubRoom";
-import { getRoomItem } from "../../../../../../model/RoomState";
 import type { PlayableItem } from "../../../../../physics/itemPredicates";
-import { translateXyz } from "./svgHelpers";
 import type { MapData } from "./MapData";
+
+import { getRoomItem } from "../../../../../../model/RoomState";
+import { emptyObject } from "../../../../../../utils/empty";
+import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { MapBackground } from "./MapBackground";
+import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
+import { RoomSvg } from "./Room.svg";
+import { roomWorldPosition } from "./roomWorldPosition";
 import { ScrollIntoView } from "./ScrollIntoView";
+import { translateXyz } from "./svgHelpers";
 
 export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
   containerWidth?: number;

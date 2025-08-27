@@ -1,7 +1,9 @@
-import { expect, test, describe } from "vitest";
+import { describe, expect, test } from "vitest";
+
 import type { Collideable } from "./aabbCollision";
-import { collision1to1, collision1toMany } from "./aabbCollision";
+
 import { defaultItemProperties } from "../../model/defaultItemProperties";
+import { collision1to1, collision1toMany } from "./aabbCollision";
 
 describe("collision1to1", () => {
   test("overlapping items in x collide", () => {

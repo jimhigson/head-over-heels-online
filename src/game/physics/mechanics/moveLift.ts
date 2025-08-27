@@ -1,8 +1,9 @@
-import { type ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import type { GameState } from "../../gameState/GameState";
 import type { Mechanic, MechanicResult } from "../MechanicResult";
+
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
 const blockHeight = blockSizePx.h;
@@ -20,7 +21,7 @@ const calculateVelocity = ({
   z: number;
   lowestZ: number;
   highestZ: number;
-  direction: "up" | "down";
+  direction: "down" | "up";
   currentVelocity: number;
   deltaMS: number;
 }): number => {
@@ -103,7 +104,7 @@ export const moveLift: Mechanic<"lift"> = <
 
   if (Number.isNaN(velocity)) throw new Error("velocity is NaN");
 
-  const mewDirection: "up" | "down" =
+  const mewDirection: "down" | "up" =
     z <= lowestZ ? "up"
     : z >= highestZ ? "down"
     : direction;

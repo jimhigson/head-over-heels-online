@@ -1,25 +1,28 @@
+import type { Get, Paths } from "type-fest";
+
+import { objectValues, size } from "iter-tools";
 import nanoEqual from "nano-equal";
-import { useAppSelector } from "./hooks";
-import type { RootState } from "./store";
-import { objectEntriesIter } from "../utils/entries";
-import { iterate } from "../utils/iterate";
+
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
-import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
-import { size, objectValues } from "iter-tools";
+import type { Campaign } from "../model/modelTypes";
+import type { ToggleablePaths } from "../utils/Toggleable";
 import type {
   GameMenusState,
   InputDirectionMode,
   ShowBoundingBoxes,
   UserSettings,
 } from "./slices/gameMenusSlice";
-import { defaultUserSettings } from "./defaultUserSettings";
-import type { Get, Paths } from "type-fest";
-import type { ToggleablePaths } from "../utils/Toggleable";
+import type { RootState } from "./store";
+
+import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
+import { objectEntriesIter } from "../utils/entries";
 import { getAtPath } from "../utils/getAtPath";
-import { selectTotalUpscale } from "./slices/upscale/upscaleSlice";
-import type { Campaign } from "../model/modelTypes";
-import { selectMaybeLoadedCampaignData } from "./slices/campaigns/campaignsApiSlice";
+import { iterate } from "../utils/iterate";
 import { selectorHook } from "../utils/react/selectorHook";
+import { defaultUserSettings } from "./defaultUserSettings";
+import { useAppSelector } from "./hooks";
+import { selectMaybeLoadedCampaignData } from "./slices/campaigns/campaignsApiSlice";
+import { selectTotalUpscale } from "./slices/upscale/upscaleSlice";
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>

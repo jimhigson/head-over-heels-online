@@ -1,4 +1,5 @@
 import type { Campaign } from "../../../model/modelTypes";
+
 import { typedURLSearchParams } from "../../../options/queryParams";
 
 export const cheatsOn = () => typedURLSearchParams().get("cheats") === "1";

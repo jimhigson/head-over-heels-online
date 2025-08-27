@@ -1,8 +1,10 @@
 import { Ticker } from "pixi.js";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import type { CharacterName } from "../../../../../../model/modelTypes";
-import { useGameApi } from "../../../../GameApiContext";
+
 import { swopPlayablesIfInput } from "../../../../../mainLoop/swopPlayablesIfInput";
+import { useGameApi } from "../../../../GameApiContext";
 
 /**
  * Select the current character name from the game state, keep sync'd

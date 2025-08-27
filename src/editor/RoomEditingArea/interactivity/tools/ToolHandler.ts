@@ -1,11 +1,12 @@
 import type { RefObject } from "react";
+
 import type { Upscale } from "../../../../store/slices/upscale/Upscale";
 import type { Xyz } from "../../../../utils/vectors/vectors";
 import type { EditorRoomState } from "../../../editorTypes";
+import type { RenderedRoomDimensions } from "../../../slice/levelEditorSelectors";
 import type { RootStateWithLevelEditorSlice } from "../../../slice/levelEditorSlice";
 import type { Tool } from "../../../Tool";
 import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
-import type { RenderedRoomDimensions } from "../../../slice/levelEditorSelectors";
 
 export interface ToolHandler<T extends Tool> {
   handleMouseMove(params: MouseMoveParams<T>): void;
@@ -31,7 +32,7 @@ export type BasePointingParams<T extends Tool> = BaseMouseParams<T> & {
 export type MouseMoveParams<T extends Tool> = BasePointingParams<T> & {
   pointingAtChanged: boolean;
   mouseDownPointingAtRef: RefObject<MaybePointingAtSomething | undefined>;
-  dragAccVec: RefObject<Xyz | undefined>;
+  dragAccVec: RefObject<undefined | Xyz>;
   roomRenderSize: RenderedRoomDimensions;
 };
 

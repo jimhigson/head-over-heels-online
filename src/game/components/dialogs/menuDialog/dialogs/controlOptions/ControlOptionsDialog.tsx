@@ -1,35 +1,36 @@
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { MenuItems } from "../../MenuItems";
-import { multilineTextClass } from "../../multilineTextClass";
+import { useCallback, useState } from "react";
+
 import {
   selectIsAssigningKeys,
   useInputDirectionMode,
   useIsAssigningKeys,
 } from "../../../../../../store/selectors";
-import { useCallback, useState } from "react";
 import {
   backToParentMenu,
   doneAssigningInput,
   inputAddedDuringAssignment,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { store } from "../../../../../../store/store";
-import { useActionTap, useInputTap } from "../../../useActionTap";
-import { Dialog } from "../../../../../../ui/dialog";
-import { Border } from "../../../../../../ui/Border";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { BackMenuItem } from "../../BackMenuItem";
-import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
+import { Border } from "../../../../../../ui/Border";
+import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { ScreenRelativeControlMenuItem } from "./ScreenRelativeControlSection";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { useActionTap, useInputTap } from "../../../useActionTap";
+import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItems } from "../../MenuItems";
+import { multilineTextClass } from "../../multilineTextClass";
+import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { InputDirectionModeMenuItem } from "./InputDirectionModeMenuItem";
-import { SelectTheKeysMenuItems } from "./SelectTheKeysMenuItems";
 import { OnScreenControlsMenuItem } from "./OnScreenControlsMenuItem";
 import {
   optionsMenuItemColours,
   optionsMenuScrollClasses,
 } from "./optionsMenuColours";
+import { ScreenRelativeControlMenuItem } from "./ScreenRelativeControlSection";
+import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
+import { SelectTheKeysMenuItems } from "./SelectTheKeysMenuItems";
 
 const useKeyAssignmentInput = () => {
   const disabled = !useIsAssigningKeys();

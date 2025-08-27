@@ -1,7 +1,9 @@
 import { bench, describe } from "vitest";
-import { updateZEdges } from "./updateZEdges";
+
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 import type { ZGraph } from "./GraphEdges";
+
+import { updateZEdges } from "./updateZEdges";
 
 const itemCount = 100;
 const movePercentage = 0.2;

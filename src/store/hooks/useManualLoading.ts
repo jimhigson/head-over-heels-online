@@ -1,8 +1,9 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
+
 import {
-  manualLoadingStarted,
   manualLoadingFinished,
+  manualLoadingStarted,
 } from "../slices/manualLoadingSlice";
 
 /**

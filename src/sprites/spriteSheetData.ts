@@ -1,11 +1,13 @@
 import type { SpritesheetData } from "pixi.js";
-import { playableSpritesheetData } from "./playableSpritesheetData";
+
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import { scenerySpritesheetData } from "./scenerySpritesheetData";
-import { hudSpritesheetData } from "./hudSritesheetData";
+
 import { doorSpritesheetData } from "./doorSpritesheetData";
-import { itemsSpritesheetData } from "./itemsSpritesheetData";
 import { editorSpritesheetData } from "./editorSpritesheetData";
+import { hudSpritesheetData } from "./hudSritesheetData";
+import { itemsSpritesheetData } from "./itemsSpritesheetData";
+import { playableSpritesheetData } from "./playableSpritesheetData";
+import { scenerySpritesheetData } from "./scenerySpritesheetData";
 
 const frames = {
   ...itemsSpritesheetData.frames,

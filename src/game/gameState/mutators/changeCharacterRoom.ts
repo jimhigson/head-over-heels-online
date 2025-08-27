@@ -1,44 +1,45 @@
-import type { GameState } from "../GameState";
-import { loadRoom } from "../loadRoom/loadRoom";
-import { entryState } from "../PlayableEntryState";
-import { deleteItemFromRoom } from "./deleteItemFromRoom";
-import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
-import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../model/modelTypes";
-import { otherIndividualCharacterName } from "../../../model/modelTypes";
-import { blockSizePx } from "../../../sprites/spritePivots";
+import type { RoomJson } from "../../../model/RoomJson";
 import type { Xyz } from "../../../utils/vectors/vectors";
-import {
-  xyzEqual,
-  scaleXyz,
-  subXyz,
-  addXyz,
-} from "../../../utils/vectors/vectors";
-import { collision1toMany } from "../../collision/aabbCollision";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import { isPortal } from "../../physics/itemPredicates";
-import { blockXyzToFineXyz } from "../../render/projections";
-import { store } from "../../../store/store";
-import { moveItem } from "../../physics/moveItem";
-import {
-  characterRoomChange,
-  roomExplored,
-} from "../../../store/slices/gameMenusSlice";
+import type { GameState } from "../GameState";
+
+import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import {
   iterateRoomItems,
   roomItemsIterable,
   type RoomState,
 } from "../../../model/RoomState";
-import type { RoomJson } from "../../../model/RoomJson";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { selectCurrentCampaign } from "../../../store/selectors";
+import {
+  characterRoomChange,
+  roomExplored,
+} from "../../../store/slices/gameMenusSlice";
+import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { iterate } from "../../../utils/iterate";
-import { selectCurrentCampaign } from "../../../store/selectors";
+import {
+  addXyz,
+  scaleXyz,
+  subXyz,
+  xyzEqual,
+} from "../../../utils/vectors/vectors";
+import { collision1toMany } from "../../collision/aabbCollision";
+import { isPortal } from "../../physics/itemPredicates";
+import { moveItem } from "../../physics/moveItem";
+import { blockXyzToFineXyz } from "../../render/projections";
+import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
+import { loadRoom } from "../loadRoom/loadRoom";
+import { entryState } from "../PlayableEntryState";
+import { deleteItemFromRoom } from "./deleteItemFromRoom";
+import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 
-export type ChangeType = "teleport" | "portal" | "level-select";
+export type ChangeType = "level-select" | "portal" | "teleport";
 
 const log = 0;
 
@@ -46,6 +47,14 @@ type ChangeCharacterRoomOptions<
   RoomId extends string,
   RoomItemId extends string,
 > =
+  | {
+      changeType: "level-select";
+      gameState: GameState<RoomId>;
+      // infer RoomItemId from the playable item - could take a room parameter too to infer this from
+      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
+      toRoomId: NoInfer<RoomId>;
+      sourceItem?: undefined;
+    }
   | {
       changeType: "portal";
       gameState: GameState<RoomId>;
@@ -66,14 +75,6 @@ type ChangeCharacterRoomOptions<
         NoInfer<RoomId>,
         NoInfer<RoomItemId>
       >;
-    }
-  | {
-      changeType: "level-select";
-      gameState: GameState<RoomId>;
-      // infer RoomItemId from the playable item - could take a room parameter too to infer this from
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
-      toRoomId: NoInfer<RoomId>;
-      sourceItem?: undefined;
     };
 
 const findDestinationPortal = <
@@ -87,7 +88,7 @@ const findDestinationPortal = <
     changeType,
     sourceItem: sourcePortal,
   }: ChangeCharacterRoomOptions<RoomId, RoomItemId> & {
-    changeType: "portal" | "level-select";
+    changeType: "level-select" | "portal";
   },
 ): ItemInPlay<"portal", RoomId, RoomItemId> | undefined => {
   switch (changeType) {

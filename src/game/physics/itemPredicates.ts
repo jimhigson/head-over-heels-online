@@ -1,15 +1,16 @@
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ConsolidatableJsonItemType } from "../../consolidateItems/ConsolidatableJsonItem";
 import type {
-  ItemInPlayType,
   ItemInPlay,
+  ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import type { CharacterName } from "../../model/modelTypes";
-import { characterNames } from "../../model/modelTypes";
 import type { SceneryName } from "../../sprites/planets";
 import type { Xyz } from "../../utils/vectors/vectors";
+
+import { characterNames } from "../../model/modelTypes";
 
 export const isItemType = <T extends ItemInPlayType>(...types: Array<T>) => {
   if (types.length === 1) {
@@ -177,9 +178,9 @@ export type PlayableItem<
   RoomId extends string = string,
   RoomItemId extends string = string,
 > =
+  | (C extends "head" ? ItemInPlay<"head", RoomId, RoomItemId> : never)
   | (C extends "headOverHeels" ? ItemInPlay<"headOverHeels", RoomId, RoomItemId>
     : never)
-  | (C extends "head" ? ItemInPlay<"head", RoomId, RoomItemId> : never)
   | (C extends "heels" ? ItemInPlay<"heels", RoomId, RoomItemId> : never);
 
 export const freeItemTypes = [
@@ -238,7 +239,7 @@ export const isMultipliedItem = <
   item: UnionOfAllItemInPlayTypes<RoomId>,
 ): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId, RoomItemId> => {
   type ItemConfigMaybeWithMultiplication = {
-    times?: undefined | Partial<Xyz>;
+    times?: Partial<Xyz> | undefined;
   };
 
   return (item.config as ItemConfigMaybeWithMultiplication).times !== undefined;

@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { zComparator } from "./zComparator";
+
 import { type DrawOrderComparable } from "./DrawOrderComparable";
+import { zComparator } from "./zComparator";
 const unitCube = { x: 1, y: 1, z: 1 };
 
 expect.extend({

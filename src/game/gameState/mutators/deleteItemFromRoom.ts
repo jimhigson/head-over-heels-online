@@ -1,5 +1,6 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
+
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { isFreeItem } from "../../physics/itemPredicates";
 import { removeStandingOn } from "./removeStandingOn";
@@ -12,7 +13,7 @@ export const deleteItemFromRoom = <
   item: itemParam,
 }: {
   room: RoomState<RoomId, ItemId>;
-  item: UnionOfAllItemInPlayTypes<RoomId, ItemId> | ItemId;
+  item: ItemId | UnionOfAllItemInPlayTypes<RoomId, ItemId>;
 }) => {
   const item =
     typeof itemParam === "string" ? room.items[itemParam] : itemParam;

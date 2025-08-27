@@ -1,5 +1,6 @@
 import type { Xyz } from "../utils/vectors/vectors";
 import type { ConsolidatableItemWithId } from "./consolidateItems";
+
 import { getJsonItemTimes } from "../model/times";
 
 export class Grid<T> {

@@ -1,8 +1,10 @@
 import { describe, expect, test } from "vitest";
+
 import type { DrawOrderComparable } from "./DrawOrderComparable";
-import { updateZEdges } from "./updateZEdges";
-import { toposort } from "./toposort/toposort";
+
 import { collision1toMany } from "../../collision/aabbCollision";
+import { toposort } from "./toposort/toposort";
+import { updateZEdges } from "./updateZEdges";
 
 type TestItems = Record<string, DrawOrderComparable>;
 

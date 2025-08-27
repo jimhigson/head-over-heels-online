@@ -1,10 +1,11 @@
 import { twMerge } from "tailwind-merge";
-import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
+
 import { useIsScreenRelativeControl } from "../../../../../../store/selectors";
+import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { MenuItem } from "../../MenuItem";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { MenuItem } from "../../MenuItem";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const screenRelativeControlOffHintMarkdown =

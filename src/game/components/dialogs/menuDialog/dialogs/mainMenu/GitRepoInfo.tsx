@@ -1,6 +1,7 @@
 import { useReducer } from "react";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+
 import { nerdFontGithubChar } from "../../../../../../sprites/hudSritesheetData";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 const repoLocation = "https://github.com/jimhigson/head-over-heels-online/";
 

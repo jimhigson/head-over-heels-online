@@ -1,17 +1,19 @@
 import type { CSSProperties } from "react";
-import { CommandItem } from "../../ui/command";
+
 import type { ZxSpectrumRoomHue } from "../../originalGame";
+
+import { colorScheme } from "../../game/hintColours";
 import { zxSpectrumRoomHue } from "../../originalGame";
+import { useAppDispatch } from "../../store/hooks";
+import { cn } from "../../ui/cn";
+import { CommandItem } from "../../ui/command";
+import { Select } from "../../ui/Select";
+import { Switch } from "../../ui/Switch";
 import {
   changeRoomColour,
   selectCurrentEditingRoomColour,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { useAppDispatch } from "../../store/hooks";
-import { colorScheme } from "../../game/hintColours";
-import { Select } from "../../ui/Select";
-import { Switch } from "../../ui/Switch";
-import { cn } from "../../ui/cn";
 
 const itemColourCss = (hue: ZxSpectrumRoomHue): CSSProperties => {
   const { main: mainColoursForHue } = colorScheme[hue].basic;

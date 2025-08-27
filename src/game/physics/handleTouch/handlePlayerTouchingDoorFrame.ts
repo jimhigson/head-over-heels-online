@@ -1,6 +1,7 @@
 import type { CharacterName } from "../../../model/modelTypes";
-import { doorAlongAxis, addXyz } from "../../../utils/vectors/vectors";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
+
+import { addXyz, doorAlongAxis } from "../../../utils/vectors/vectors";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character

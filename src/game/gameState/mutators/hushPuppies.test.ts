@@ -1,6 +1,7 @@
-import { describe, test, expect, beforeEach } from "vitest";
-import { mutatorsTestHarness } from "../../../_testUtils/mutatorsTestHarness";
+import { beforeEach, describe, expect, test } from "vitest";
+
 import { resetStore } from "../../../_testUtils/initStoreForTests";
+import { mutatorsTestHarness } from "../../../_testUtils/mutatorsTestHarness";
 
 beforeEach(() => {
   resetStore();

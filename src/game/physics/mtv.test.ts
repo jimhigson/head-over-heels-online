@@ -1,11 +1,13 @@
 import { describe, expect, test } from "vitest";
-import { mtv, mtvAlongVector } from "./mtv";
+
+import type { Xyz } from "../../utils/vectors/vectors";
+
 import {
-  lengthXyz,
   dotProductXyz,
+  lengthXyz,
   unitVector,
 } from "../../utils/vectors/vectors";
-import type { Xyz } from "../../utils/vectors/vectors";
+import { mtv, mtvAlongVector } from "./mtv";
 
 // Custom matcher for testing vector alignment
 declare module "vitest" {

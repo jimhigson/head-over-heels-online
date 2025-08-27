@@ -1,13 +1,13 @@
+import music from "../../../../../../../sounds/rock.mp3";
+import { useIsLoading } from "../../../../../../store/hooks/loadingHooks";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { MenuItems } from "../../MenuItems";
 import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItems } from "../../MenuItems";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
-import { useIsLoading } from "../../../../../../store/hooks/loadingHooks";
-import { Border } from "../../../../../../ui/Border";
-import music from "../../../../../../../sounds/rock.mp3";
 
 export const CrownsDialog = ({
   playMusic = false,

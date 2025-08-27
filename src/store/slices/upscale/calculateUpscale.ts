@@ -1,8 +1,9 @@
-import { resolutions, type ResolutionName } from "../../../originalGame";
 import type { DeviceType } from "../../../utils/detectDeviceType";
+import type { Upscale } from "./Upscale";
+
+import { type ResolutionName, resolutions } from "../../../originalGame";
 import { detectDeviceType } from "../../../utils/detectDeviceType";
 import { scaleXy, type Xy } from "../../../utils/vectors/vectors";
-import type { Upscale } from "./Upscale";
 
 export type CalculateUpscaleOptions = {
   renderAreaSize: Xy;

@@ -1,12 +1,15 @@
 import type { Color, FilterSystem, RenderTexture, Texture } from "pixi.js";
+
 import { Filter, GlProgram } from "pixi.js";
+
+import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
+
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import { store } from "../../../store/store";
+import { transformObject } from "../../../utils/entries";
 import { vertex } from "./defaults";
 import fragment from "./outline.frag?raw";
-import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { store } from "../../../store/store";
-import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
-import { transformObject } from "../../../utils/entries";
 
 export type OutlineFilterOptions = {
   color: Color;
@@ -87,7 +90,7 @@ export class OutlineFilter extends Filter {
   }
 }
 
-type PrebakedFilterName = SpritesheetPaletteColourName | "black1pxFilter";
+type PrebakedFilterName = "black1pxFilter" | SpritesheetPaletteColourName;
 
 /** Pre-baked outline filters for all spritesheet palette colors */
 export const outlineFilters: Record<PrebakedFilterName, OutlineFilter> = {

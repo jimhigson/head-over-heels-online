@@ -1,11 +1,13 @@
 import { first } from "iter-tools";
+
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
+
+import { originXyz, scaleXyz, subXyz } from "../../../utils/vectors/vectors";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
-import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
-import { originXyz, scaleXyz, subXyz } from "../../../utils/vectors/vectors";
 
 export const emitting = <RoomId extends string, RoomItemId extends string>(
   emitter: ItemInPlay<"emitter", RoomId, RoomItemId>,

@@ -1,9 +1,11 @@
 import type { Container } from "pixi.js";
+
+import type { Xy, Xyz } from "../vectors/vectors";
+
 import {
-  type CreateSpriteOptions,
   createSprite,
+  type CreateSpriteOptions,
 } from "../../game/render/createSprite";
-import type { Xyz, Xy } from "../vectors/vectors";
 
 /**
  * render to a sprite, using a base sprite to be repeated in x and y.

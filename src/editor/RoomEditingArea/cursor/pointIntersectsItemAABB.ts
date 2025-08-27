@@ -1,3 +1,6 @@
+import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import type { Tool } from "../../Tool";
+
 import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
 import {
   addXyz,
@@ -5,8 +8,6 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import type { Tool } from "../../Tool";
 
 const itemVisibleBounds = (
   item: EditorUnionOfAllItemInPlayTypes,
@@ -90,8 +91,8 @@ export type PointerItemIntersection =
   | "intersects-rendered"
   | "intersects-unrendered";
 export type PointerItemMaybeIntersection =
-  | PointerItemIntersection
-  | "non-intersecting";
+  | "non-intersecting"
+  | PointerItemIntersection;
 
 export const pointIntersectsItemAABB = (
   pointerXy: Xy,

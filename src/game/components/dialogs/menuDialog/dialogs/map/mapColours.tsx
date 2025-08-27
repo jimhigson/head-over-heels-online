@@ -6,7 +6,7 @@ export type MapClasses = {
   containerClassName: string;
 };
 
-export const mapClasses: Record<SceneryName | "freedom", MapClasses> = {
+export const mapClasses: Record<"freedom" | SceneryName, MapClasses> = {
   blacktooth: {
     bgClassName:
       "fill-redShadow zx:fill-zxGreenDimmed text-lightGrey zx:text-zxWhite",

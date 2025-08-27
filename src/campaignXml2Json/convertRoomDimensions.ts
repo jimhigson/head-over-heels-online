@@ -1,6 +1,6 @@
 import type { Xy } from "../utils/vectors/vectors";
-import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
 import type { Xml2JsonRoom } from "./readToJson";
+import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
 
 export const convertRoomDimensions = (
   { xTiles, yTiles, floorKind, walls }: Xml2JsonRoom,

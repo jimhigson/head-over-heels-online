@@ -1,7 +1,8 @@
-import { Project } from "ts-morph";
-import * as path from "path";
-import { fileURLToPath } from "url";
 import * as fs from "fs";
+import * as path from "path";
+import { Project } from "ts-morph";
+import { fileURLToPath } from "url";
+
 import { flattenTypes } from "../flattenType.js";
 import { normalizeTypeOutput } from "../normalizeTypeOutput.js";
 

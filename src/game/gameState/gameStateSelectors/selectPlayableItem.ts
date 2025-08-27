@@ -7,8 +7,9 @@ import type {
   IndividualCharacterName,
 } from "../../../model/modelTypes";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import { isItemType } from "../../physics/itemPredicates";
 import type { GameState } from "../GameState";
+
+import { isItemType } from "../../physics/itemPredicates";
 
 const isHead = isItemType("head");
 const isHeels = isItemType("heels");
@@ -30,7 +31,7 @@ export const selectPlayableItem = <
  * @returns undefined only if both players have lost all lives
  */
 export const selectCurrentPlayableItem = <RoomId extends string>(
-  gameState: Pick<GameState<RoomId>, "currentCharacterName" | "characterRooms">,
+  gameState: Pick<GameState<RoomId>, "characterRooms" | "currentCharacterName">,
 ): PlayableItem<CharacterName, RoomId> | undefined =>
   // assuming both players haven't lost all their lives, or this is not reliable!
   selectPlayableItem(gameState, gameState.currentCharacterName)!;
@@ -56,7 +57,7 @@ export const selectHeelsAbilities = (
   }
 };
 export const _selectAbilities = <RoomId extends string>(
-  gameState: Pick<GameState<RoomId>, "currentCharacterName" | "characterRooms">,
+  gameState: Pick<GameState<RoomId>, "characterRooms" | "currentCharacterName">,
   individualCharacterName: IndividualCharacterName,
 ):
   | HeadAbilities
@@ -94,7 +95,7 @@ export const selectAbilities = _selectAbilities as <
   RoomId extends string,
   I extends IndividualCharacterName,
 >(
-  gameState: Pick<GameState<RoomId>, "currentCharacterName" | "characterRooms">,
+  gameState: Pick<GameState<RoomId>, "characterRooms" | "currentCharacterName">,
   individualCharacterName: I,
 ) =>
   | (I extends "head" ? HeadAbilities : never)

@@ -1,5 +1,7 @@
 import { produce } from "immer";
-import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
+import { filter, flatMap, isEmpty, map, pipe, some } from "iter-tools";
+
+import type { JsonItemType } from "../../../model/json/JsonItem";
 import type {
   EditorJsonItemUnion,
   EditorJsonItemWithTimes,
@@ -7,15 +9,15 @@ import type {
   EditorRoomState,
   EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
-import { collideableItemsInRoom } from "./collideableItemsInRoom";
-import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
-import { collision1toManyIter } from "../../../game/collision/aabbCollision";
-import { filter, flatMap, isEmpty, map, pipe, some } from "iter-tools";
-import { iterate } from "../../../utils/iterate";
 import type { ItemTool } from "../../Tool";
-import type { JsonItemType } from "../../../model/json/JsonItem";
-import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreviewReducers";
+
+import { collision1toManyIter } from "../../../game/collision/aabbCollision";
+import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { isSolid } from "../../../game/physics/itemPredicates";
+import { iterate } from "../../../utils/iterate";
+import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
+import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreviewReducers";
+import { collideableItemsInRoom } from "./collideableItemsInRoom";
 
 const collideableForItem = (
   roomState: EditorRoomState,

@@ -1,5 +1,31 @@
 import { Container, Graphics, TilingSprite } from "pixi.js";
+
+import type { ItemInPlay } from "../../../../model/ItemInPlay";
+import type { Subset } from "../../../../utils/subset";
+import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
+import type { ItemAppearance } from "../ItemAppearance";
+
+import { iterateRoomItems, type RoomState } from "../../../../model/RoomState";
+import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
+import { blockSizePx } from "../../../../sprites/spritePivots";
+import { loadedSpriteSheet } from "../../../../sprites/spriteSheet";
 import { type TextureId } from "../../../../sprites/spriteSheetData";
+import { frac } from "../../../../utils/maths/maths";
+import { rangesOverlap } from "../../../../utils/maths/numberPairs";
+import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import {
+  addXy,
+  addXyz,
+  type DirectionXy4,
+  originXyz,
+  perpendicularAxisXy,
+  subXy,
+  tangentAxis,
+} from "../../../../utils/vectors/vectors";
+import { isItemType } from "../../../physics/itemPredicates";
+import { createSprite } from "../../createSprite";
+import { ColourClashFilter } from "../../filters/ColourClashFilter";
+import { outlineFilters } from "../../filters/outlineFilter";
 import {
   edgeOriginalGameColour,
   edgePaletteSwapFilters,
@@ -10,34 +36,9 @@ import {
   projectWorldXyzToScreenX,
   projectWorldXyzToScreenXy,
 } from "../../projections";
-
-import type { ItemAppearance } from "../ItemAppearance";
-import { itemAppearanceRenderOnce } from "../ItemAppearance";
-import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
-import {
-  addXy,
-  addXyz,
-  originXyz,
-  perpendicularAxisXy,
-  subXy,
-  tangentAxis,
-  type DirectionXy4,
-} from "../../../../utils/vectors/vectors";
-import { blockSizePx } from "../../../../sprites/spritePivots";
-import { frac } from "../../../../utils/maths/maths";
-import { loadedSpriteSheet } from "../../../../sprites/spriteSheet";
-import { renderFloorOverdraws } from "./renderfloorOverdraw";
-import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
-import type { Subset } from "../../../../utils/subset";
-import { iterateRoomItems, type RoomState } from "../../../../model/RoomState";
-import { createSprite } from "../../createSprite";
-import { outlineFilters } from "../../filters/outlineFilter";
-import { ColourClashFilter } from "../../filters/ColourClashFilter";
-import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
-import { isItemType } from "../../../physics/itemPredicates";
-import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { nonRenderingItemFixedZIndex } from "../../sortZ/fixedZIndexes";
+import { itemAppearanceRenderOnce } from "../ItemAppearance";
+import { renderFloorOverdraws } from "./renderfloorOverdraw";
 
 /**
  * create a rectangle mask for the floor that cuts off anything past the last

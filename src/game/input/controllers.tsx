@@ -1,5 +1,6 @@
-import { transformObject } from "../../utils/entries";
 import type { Key } from "./keys";
+
+import { transformObject } from "../../utils/entries";
 
 // see https://www.w3.org/TR/gamepad/#dfn-standard-gamepad
 export const standardControllerLayout = {
@@ -29,7 +30,7 @@ export const standardControllerButtonNames = transformObject(
 export type MamePlayer = {
   start: Key;
   coin: Key;
-  directions: Record<"up" | "down" | "left" | "right", Key>;
+  directions: Record<"down" | "left" | "right" | "up", Key>;
   buttons: [Key, Key, Key, Key, Key, Key];
 };
 // default mame assignments to allow using arcade control panels made for mame:

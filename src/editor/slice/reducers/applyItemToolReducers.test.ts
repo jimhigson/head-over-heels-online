@@ -1,15 +1,21 @@
+import type { Tool } from "src/editor/Tool";
+import type { AwayWallConfig } from "src/model/json/WallJsonConfig";
+
+import { produce } from "immer";
 import { describe, expect, test } from "vitest";
-import type { ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
+
+import type { AnyRoomJson } from "../../../model/RoomJson";
 import type {
   EditorJsonItemUnion,
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJsonItems,
 } from "../../editorTypes";
-import { produce } from "immer";
-import type { Tool } from "src/editor/Tool";
-import type { AwayWallConfig } from "src/model/json/WallJsonConfig";
+import type { ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
+
+import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
 import { originXyz } from "../../../utils/vectors/vectors";
+import { applyItemTool, setTool } from "../levelEditorSlice";
 import {
   applyLevelEditorActions,
   doorItemToolWithAutoAddRooms,
@@ -19,9 +25,6 @@ import {
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
-import { applyItemTool, setTool } from "../levelEditorSlice";
-import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
-import type { AnyRoomJson } from "../../../model/RoomJson";
 
 describe("applying tools", () => {
   describe("applying items", () => {

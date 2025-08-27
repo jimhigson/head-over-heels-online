@@ -1,10 +1,13 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
+
 import type { LevelEditorState } from "../levelEditorSlice";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+
 import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
-import { pushUndoInPlace } from "./undoReducers";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { pushUndoInPlace } from "./undoReducers";
 
 export const itemPreviewReducers = {
   setAutoCoalesce(_state: LevelEditorState, action: PayloadAction<boolean>) {

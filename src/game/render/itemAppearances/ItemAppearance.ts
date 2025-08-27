@@ -1,26 +1,29 @@
 import type { Container } from "pixi.js";
+import type { EmptyObject } from "type-fest";
+
 import { Sprite } from "pixi.js";
-import type { CreateSpriteOptions } from "../createSprite";
-import { createSprite } from "../createSprite";
+
 import type {
   ItemInPlayConfig,
   ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import { emptyObject } from "../../../utils/empty";
-import { isMultipliedItem } from "../../physics/itemPredicates";
 import type {
   AppearanceOptions,
   AppearanceReturn,
 } from "../appearance/Appearance";
+import type { CreateSpriteOptions } from "../createSprite";
 import type { ItemRenderContext, ItemTickContext } from "../ItemRenderContexts";
-import type { EmptyObject } from "type-fest";
-import { renderMultipliedXy } from "../../../utils/pixi/renderMultpliedXy";
-import { blockSizePx } from "../../../sprites/spritePivots";
+
 import { itemInPlayTimes } from "../../../model/times";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { emptyObject } from "../../../utils/empty";
 import {
   maybeRenderContainerToSprite,
   renderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
+import { renderMultipliedXy } from "../../../utils/pixi/renderMultpliedXy";
+import { isMultipliedItem } from "../../physics/itemPredicates";
+import { createSprite } from "../createSprite";
 
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,

@@ -1,11 +1,11 @@
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { multilineTextClass } from "../../multilineTextClass";
-import { Dialog } from "../../../../../../ui/dialog";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { MenuItems } from "../../MenuItems";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { BackMenuItem } from "../../BackMenuItem";
+import { MenuItems } from "../../MenuItems";
+import { multilineTextClass } from "../../multilineTextClass";
 
 export const ReincarnatedRestartDialog = () => {
   return (

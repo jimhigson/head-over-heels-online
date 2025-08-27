@@ -1,12 +1,14 @@
 import type { JSX, ReactElement } from "react";
-import { type PropsWithChildren } from "react";
-import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
-import type { EmptyObject } from "type-fest";
-import { useTotalUpscale } from "../../store/selectors";
-import { twMerge } from "tailwind-merge";
 import type { CustomComponentsOption } from "snarkdown-in-react";
+import type { EmptyObject } from "type-fest";
+
+import { type PropsWithChildren } from "react";
 import { SnarkdownInReact } from "snarkdown-in-react";
+import { twMerge } from "tailwind-merge";
+
+import { useTotalUpscale } from "../../store/selectors";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
+import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
 
 const markdownComponents: CustomComponentsOption = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {

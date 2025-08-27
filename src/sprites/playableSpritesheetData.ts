@@ -1,4 +1,12 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
+
+import type { CharacterName } from "../model/modelTypes";
+import type { Xy } from "../utils/vectors/vectors";
+import type { AnimationsOfFrames } from "./AnimationsOfFrames";
+import type { FramesWithSpeed } from "./spriteSheetData";
+
+import { zxSpectrumFrameRate } from "../originalGame";
+import { directionsXy8, type DirectionXy8 } from "../utils/vectors/vectors";
 import {
   seriesOfAnimationFrameTextureIds,
   seriesOfNumberedTextures,
@@ -9,12 +17,6 @@ import {
   smallItemGridLocation,
   smallItemTextureSize,
 } from "./textureSizes";
-import type { CharacterName } from "../model/modelTypes";
-import type { Xy } from "../utils/vectors/vectors";
-import { directionsXy8, type DirectionXy8 } from "../utils/vectors/vectors";
-import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import { zxSpectrumFrameRate } from "../originalGame";
-import type { FramesWithSpeed } from "./spriteSheetData";
 import { withSpeed } from "./withSpeed";
 
 type WalkingTextureId<
@@ -22,9 +24,9 @@ type WalkingTextureId<
   D extends DirectionXy8 = DirectionXy8,
 > = `${P}.walking.${D}.${"1" | "2" | "3"}`;
 type PlayableTextureId<P extends CharacterName = CharacterName> =
-  | WalkingTextureId<P>
   | `${P}.blinking.${DirectionXy8}`
-  | `${P}.falling.${DirectionXy8}`;
+  | `${P}.falling.${DirectionXy8}`
+  | WalkingTextureId<P>;
 type WalkingAnimationId<
   P extends CharacterName,
   D extends DirectionXy8 = DirectionXy8,
@@ -319,5 +321,5 @@ export const playableSpritesheetData = {
   },
 } as const satisfies Pick<
   SpritesheetData,
-  "frames" | "animations"
+  "animations" | "frames"
 > satisfies AnimationsOfFrames<keyof typeof frames>;

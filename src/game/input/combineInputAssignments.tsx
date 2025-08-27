@@ -1,5 +1,7 @@
 import type { PartialDeep } from "type-fest";
+
 import type { InputAssignment } from "./InputAssignment";
+
 import { allActions } from "./actions";
 import { emptyInputAssignment } from "./emptyInputAssignment";
 

@@ -1,23 +1,25 @@
 import type { UnknownAction, WithSlice } from "@reduxjs/toolkit";
-import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
-import { debugItemClicked, gameMenusSlice } from "./slices/gameMenusSlice";
+import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import {
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistStore,
   PURGE,
   REGISTER,
-  persistStore,
+  REHYDRATE,
 } from "redux-persist";
-import { listenerMiddleware } from "./listenerMiddleware";
+
 import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
-import { upscaleSlice } from "./slices/upscale/upscaleSlice";
-import { updateUpscaleWhenEmulatedResolutionChanges } from "./slices/upscale/updateUpscaleWhenEmulatedResolutionChanges";
-import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
-import { manualLoadingSlice } from "./slices/manualLoadingSlice";
+
+import { listenerMiddleware } from "./listenerMiddleware";
 import { gameMenusPersistedReducer } from "./persist/persist";
+import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
+import { debugItemClicked, gameMenusSlice } from "./slices/gameMenusSlice";
+import { manualLoadingSlice } from "./slices/manualLoadingSlice";
+import { updateUpscaleWhenEmulatedResolutionChanges } from "./slices/upscale/updateUpscaleWhenEmulatedResolutionChanges";
+import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 
 const appReducer = combineSlices({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,

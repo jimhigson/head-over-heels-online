@@ -1,9 +1,9 @@
+import type { ValueOf } from "type-fest";
+
 import { createSelector } from "@reduxjs/toolkit";
-import { selectorHook } from "../../utils/react/selectorHook";
-import type {
-  LevelEditorState,
-  RootStateWithLevelEditorSlice,
-} from "./levelEditorSlice";
+import { produce } from "immer";
+import { objectEntries } from "iter-tools";
+
 import type {
   EditorJsonItemUnion,
   EditorRoomId,
@@ -11,12 +11,15 @@ import type {
   EditorRoomJson,
   EditorRoomState,
 } from "../editorTypes";
-import { objectEntries } from "iter-tools";
-import { produce } from "immer";
-import type { ValueOf } from "type-fest";
+import type {
+  LevelEditorState,
+  RootStateWithLevelEditorSlice,
+} from "./levelEditorSlice";
+
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
-import { emptyObject } from "../../utils/empty";
 import { floorsRenderExtent } from "../../game/render/floorsExtent";
+import { emptyObject } from "../../utils/empty";
+import { selectorHook } from "../../utils/react/selectorHook";
 
 export const useCurrentEditingRoomJson = selectorHook((state) =>
   selectCurrentRoomFromLevelEditorState(state.levelEditor),

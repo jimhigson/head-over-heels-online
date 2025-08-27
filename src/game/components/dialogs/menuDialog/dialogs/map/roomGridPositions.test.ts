@@ -1,7 +1,8 @@
 import { expect, test } from "vitest";
+
+import { campaign } from "../../../../../../_generated/originalCampaign/campaign";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
-import { campaign } from "../../../../../../_generated/originalCampaign/campaign";
 
 test("starting room finds only two rooms", () => {
   expect(

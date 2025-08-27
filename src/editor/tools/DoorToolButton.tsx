@@ -1,6 +1,11 @@
 import { useState } from "react";
+
 import type { JsonItemConfig } from "../../model/json/JsonItem";
 import type { EditorRoomId, EditorRoomItemId } from "../editorTypes";
+import type { ItemTool } from "../Tool";
+
+import { store } from "../../store/store";
+import { Switch } from "../../ui/Switch";
 import {
   selectCurrentEditingRoomJson,
   setTool,
@@ -10,11 +15,8 @@ import { twClass } from "../twClass";
 import { buttonSpriteRevertColourClasses } from "./buttonSizeClassNames";
 import { ItemToolButton } from "./ItemToolButton";
 import { MenuButton } from "./MenuButton";
-import { Switch } from "../../ui/Switch";
 import { LabelledToolbarIcon } from "./ToolbarButtonContentPatterns";
-import type { ItemTool } from "../Tool";
 import { useIsCurrentItemTool } from "./useIsCurrentItemTool";
-import { store } from "../../store/store";
 
 function doorItemTool(autoAddRoom: boolean): ItemTool {
   return {

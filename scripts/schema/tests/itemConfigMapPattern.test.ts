@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { flattenFixture } from "./testHelper.js";
 import { timeout } from "./timeout.js";
 
@@ -10,7 +11,7 @@ describe("itemConfigMapPattern", { timeout }, () => {
     );
     expect(doorResult).toContain("toRoom: string");
     expect(doorResult).toContain("direction:");
-    expect(doorResult).toContain('"left" | "right" | "up" | "down"');
+    expect(doorResult).toContain('"down" | "left" | "right" | "up"');
 
     const wallResult = await flattenFixture(
       "itemConfigMapPattern",

@@ -1,15 +1,16 @@
-import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
 import type { JsonItem } from "../model/json/JsonItem";
 import type { RoomJsonItems } from "../model/RoomJson";
-import { iterateRoomJsonItems, type RoomJson } from "../model/RoomJson";
 import type { Wall } from "../sprites/planets";
-import { wallTiles, type SceneryName } from "../sprites/planets";
-import { keyItems } from "../utils/keyItems";
 import type { Xy } from "../utils/vectors/vectors";
+
+import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
+import { iterateRoomJsonItems, type RoomJson } from "../model/RoomJson";
+import { type SceneryName, wallTiles } from "../sprites/planets";
+import { keyItems } from "../utils/keyItems";
 import {
-  tangentAxis,
-  perpendicularAxisXy,
   type DirectionXy4,
+  perpendicularAxisXy,
+  tangentAxis,
 } from "../utils/vectors/vectors";
 
 const rotatingScenery = <S extends SceneryName>(

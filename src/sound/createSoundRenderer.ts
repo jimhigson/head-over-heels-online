@@ -4,22 +4,23 @@ import type {
   ItemSoundRenderer,
   ItemSoundRendererConstructableClass,
 } from "./ItemSoundRenderer";
+
 import { BallSoundRenderer } from "./itemSoundRenderers/BallSoundRenderer";
 import { BubblesSoundRenderer } from "./itemSoundRenderers/BubblesSoundRenderer";
+import { ButtonSoundRenderer } from "./itemSoundRenderers/ButtonSoundRenderer";
 import { CharlesSoundRenderer } from "./itemSoundRenderers/CharlesSoundRenderer";
 import { ConveyorSoundRenderer } from "./itemSoundRenderers/ConveyorSoundRenderer";
+import { FiredDoughnutSoundRenderer } from "./itemSoundRenderers/FiredDoughnutSoundRenderer";
 import { LiftSoundRenderer } from "./itemSoundRenderers/LiftSoundRenderer";
 import { MonsterSoundRenderer } from "./itemSoundRenderers/MonsterSoundRenderer";
 import { PlayableSoundRenderer } from "./itemSoundRenderers/PlayableSoundRenderer";
 import { PortableBlockSoundRenderer } from "./itemSoundRenderers/PortableBlockSoundRenderer";
 import { PushableBlockSoundRenderer } from "./itemSoundRenderers/PushableBlockSoundRenderer";
+import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
 import { SpringSoundRenderer } from "./itemSoundRenderers/SpringSoundRenderer";
 import { SwitchSoundRenderer } from "./itemSoundRenderers/SwitchSoundRenderer";
 import { TeleporterSoundRenderer } from "./itemSoundRenderers/TeleporterSoundRenderer";
-import { FiredDoughnutSoundRenderer } from "./itemSoundRenderers/FiredDoughnutSoundRenderer";
-import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
 import { ToasterSoundRenderer } from "./itemSoundRenderers/ToasterSoundRenderer";
-import { ButtonSoundRenderer } from "./itemSoundRenderers/ButtonSoundRenderer";
 
 const rendererClasses: {
   [T in ItemInPlayType]?: ItemSoundRendererConstructableClass<T>;

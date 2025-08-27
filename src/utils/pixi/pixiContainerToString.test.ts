@@ -1,6 +1,8 @@
-import { describe, expect, test } from "vitest";
 import type { Texture } from "pixi.js";
+
 import { Container, Graphics, Sprite, Text } from "pixi.js";
+import { describe, expect, test } from "vitest";
+
 import { pixiContainerToString } from "./pixiContainerToString";
 
 const fakeTexture = (label: string) =>

@@ -1,22 +1,23 @@
 import type { EmptyObject } from "type-fest";
+
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
 import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
+import type { ItemState } from "./ItemState";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CharacterName, IndividualCharacterName } from "./modelTypes";
-import type { ItemState } from "./ItemState";
 
 /** types of items in-game (as opposed to in the json) - there are a few extra types */
 export type ItemInPlayType =
-  | Exclude<JsonItemType, "player" | "door">
   | CharacterName
+  | Exclude<JsonItemType, "door" | "player">
 
   // in-play, doors resolve to these four types instead of the single json "door" type:
   | "doorFrame"
   | "doorLegs"
-  | "stopAutowalk"
   | "portal"
+  | "stopAutowalk"
 
   /** a non-rendering, invisible, general-purpose, collideable blocker */
   | "blocker"
@@ -39,7 +40,7 @@ export type DoorFrameConfig<RoomId extends string> = {
   toRoom: RoomId;
 
   /** is this the near post of the doorframe, or the far one? */
-  part: "near" | "far" | "top";
+  part: "far" | "near" | "top";
 };
 export type DoorLegsConfig = {
   direction: DirectionXy4;
@@ -71,7 +72,7 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
     appearanceRoomTime: number;
   };
   particle: {
-    forCharacter: IndividualCharacterName | "crown";
+    forCharacter: "crown" | IndividualCharacterName;
   };
   stopAutowalk: EmptyObject;
   // disappearing can be turned off (#blacktooth6 aka room with first doughnuts) so it is state, not config

@@ -1,11 +1,13 @@
 import type { User } from "@supabase/supabase-js";
-import { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
+
 import { supabaseDb } from "../../db/supabaseDb";
 
 export const useSupabaseUser = () => {
   // undefined - unknown
   // null - known to be not logged in
-  const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [user, setUser] = useState<null | undefined | User>(undefined);
 
   useEffect(() => {
     // Get initial user

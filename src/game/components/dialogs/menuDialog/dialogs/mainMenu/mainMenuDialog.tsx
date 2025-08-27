@@ -1,26 +1,28 @@
 import type { EmptyObject } from "type-fest";
+
+import { useCallback } from "react";
+
+import { nerdFontDiscordChar } from "../../../../../../sprites/hudSritesheetData";
+import { useAppSelector } from "../../../../../../store/hooks";
+import { useIsGameRunning } from "../../../../../../store/selectors";
 import {
   closeAllMenus,
   goToSubmenu,
 } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
-import { MenuItem } from "../../MenuItem";
-import { MenuItems } from "../../MenuItems";
-import { MainMenuFooter } from "./MainMenuFooter";
-import { MainMenuHeading } from "./MainMenuHeading";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { Dialog } from "../../../../../../ui/dialog";
-import { useIsGameRunning } from "../../../../../../store/selectors";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { useCallback } from "react";
 import { Border } from "../../../../../../ui/Border";
-import { nerdFontDiscordChar } from "../../../../../../sprites/hudSritesheetData";
+import { Dialog } from "../../../../../../ui/dialog";
+import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import {
   detectDeviceType,
   detectIsPwa,
 } from "../../../../../../utils/detectDeviceType";
+import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { MenuItem } from "../../MenuItem";
+import { MenuItems } from "../../MenuItems";
 import { GitRepoInfo } from "./GitRepoInfo";
-import { useAppSelector } from "../../../../../../store/hooks";
+import { MainMenuFooter } from "./MainMenuFooter";
+import { MainMenuHeading } from "./MainMenuHeading";
 
 const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();

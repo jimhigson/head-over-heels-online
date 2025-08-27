@@ -1,32 +1,36 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import type { LevelEditorState } from "../levelEditorSlice";
+
+import type { FloorType } from "../../../model/json/ItemConfigMap";
+import type { JsonItemConfig } from "../../../model/json/JsonItem";
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { SceneryName } from "../../../sprites/planets";
-import { changeRoomSceneryInPlace } from "../inPlaceMutators/changeRoomSceneryInPlace";
-import {
-  selectCurrentRoomFromLevelEditorState,
-  selectRoomFromLevelEditorState,
-} from "../levelEditorSelectors";
-import { pushUndoInPlace } from "./undoReducers";
-import { keysIter } from "../../../utils/entries";
 import type {
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
 } from "../../editorTypes";
-import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
+import type { LevelEditorState } from "../levelEditorSlice";
+
 import { iterateRoomJsonItems } from "../../../model/RoomJson";
-import type { FloorType } from "../../../model/json/ItemConfigMap";
-import type { JsonItemConfig } from "../../../model/json/JsonItem";
-import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
-import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
+import { keysIter } from "../../../utils/entries";
 import { scaleXyz } from "../../../utils/vectors/vectors";
+import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
+import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
+import { changeRoomSceneryInPlace } from "../inPlaceMutators/changeRoomSceneryInPlace";
+import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectRoomFromLevelEditorState,
+} from "../levelEditorSelectors";
+import { pushUndoInPlace } from "./undoReducers";
 
 export type SetRoomAboveOrBelowPayload =
   | {
       direction: "above" | "below";
-      roomId: EditorRoomId;
+      /** to break the link */
+      roomId: undefined;
       createNew: false;
     }
   | {
@@ -35,8 +39,7 @@ export type SetRoomAboveOrBelowPayload =
     }
   | {
       direction: "above" | "below";
-      /** to break the link */
-      roomId: undefined;
+      roomId: EditorRoomId;
       createNew: false;
     };
 

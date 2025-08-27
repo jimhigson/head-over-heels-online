@@ -1,9 +1,12 @@
-import { CommandItem } from "./command";
-import type { Campaign } from "../model/modelTypes";
-import { Select } from "./Select";
-import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 import type { ReactNode } from "react";
+
 import naturalCompare from "natural-compare-lite";
+
+import type { Campaign } from "../model/modelTypes";
+
+import { BitmapText } from "../game/components/tailwindSprites/Sprite";
+import { CommandItem } from "./command";
+import { Select } from "./Select";
 
 export type RoomSelectProps<RoomId extends string> = {
   campaign: Pick<Campaign<RoomId>, "rooms">;

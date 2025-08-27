@@ -1,13 +1,14 @@
-import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import { isChargingCyberman } from "../../physics/itemPredicates";
-import { createSprite } from "../createSprite";
-import type { ItemAppearance } from "./ItemAppearance";
-import type { Xy } from "../../../utils/vectors/vectors";
-import { subXy } from "../../../utils/vectors/vectors";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { ItemAppearance } from "./ItemAppearance";
+
+import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
+import { subXy } from "../../../utils/vectors/vectors";
+import { isChargingCyberman } from "../../physics/itemPredicates";
+import { createSprite } from "../createSprite";
 
 /**
  * a 2d array of the ids of all the cybermen sat on this toaster,

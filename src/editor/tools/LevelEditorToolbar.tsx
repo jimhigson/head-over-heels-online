@@ -1,50 +1,51 @@
+import type { EditorRoomId, EditorRoomItemId } from "../editorTypes";
+
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
 import { useAppDispatch } from "../../store/hooks";
 import { RoomSelect } from "../../ui/RoomSelect";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { originXyz } from "../../utils/vectors/vectors";
-import type { EditorRoomId, EditorRoomItemId } from "../editorTypes";
 import {
   changeToRoom,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 import { twClass } from "../twClass";
+import { AddAndDeleteRoomButtons } from "./AddAndRemoveRoomButtons";
+import { AutoCoalesceSwitch } from "./AutoCoalesceSwitch";
+import { BackAndForwardRoomButtons } from "./BackAndForwardRoomButtons";
 import {
-  buttonSpriteRevertColourClasses,
   buttonGroupClassname,
+  buttonSpriteRevertColourClasses,
 } from "./buttonSizeClassNames";
+import { ClearRoomButton } from "./ClearRoomButton";
+import { CopyPasteButtons } from "./CopyPasteButtons";
 import { DeleteItemToolButton } from "./DeleteItemButton";
+import { DoorToolButton } from "./DoorToolButton";
+import { EyeDropperButton } from "./EyeDropperButton";
 import { HalfGridResolutionSwitch } from "./HalfGridResolutionSwitch";
 import { ItemToolButton } from "./ItemToolButton";
+import { LoggedInStatus } from "./LoggedInStatus";
 import { MultipleToolButtons } from "./MultipleToolButtons";
+import { NudgeButtons } from "./NudgeButtons";
+import { PlayTestButton } from "./PlayTestButton";
 import { PointerToolButton } from "./PointerToolButton";
 import { RoomColourSelect } from "./RoomColourSelect";
-import { RoomScenerySelect } from "./RoomScenerySelect";
-import { UndoRedoButtons } from "./UndoRedoButtons";
-import { WallsFloorsLockedSwitch } from "./WallsFloorsLockedSwitch";
-import { DoorToolButton } from "./DoorToolButton";
-import { WallToolButton } from "./WallToolButton";
-import { ClearRoomButton } from "./ClearRoomButton";
 import {
   RoomAboveSelectOrCreate,
   RoomBelowSelectOrCreate,
 } from "./RoomsAboveOrBelow";
-import { EyeDropperButton } from "./EyeDropperButton";
+import { RoomScenerySelect } from "./RoomScenerySelect";
 import { SaveAndLoadButtons } from "./saving/SaveAndLoadButtons";
+import { ShareCampaignButton } from "./ShareCampaignButton";
 import {
   DissapearingItemToolbarIcon,
   LabelledToolbarIcon,
   StackedToolbarIcons,
 } from "./ToolbarButtonContentPatterns";
-import { PlayTestButton } from "./PlayTestButton";
-import { LoggedInStatus } from "./LoggedInStatus";
-import { AddAndDeleteRoomButtons } from "./AddAndRemoveRoomButtons";
-import { NudgeButtons } from "./NudgeButtons";
-import { BackAndForwardRoomButtons } from "./BackAndForwardRoomButtons";
-import { AutoCoalesceSwitch } from "./AutoCoalesceSwitch";
-import { ShareCampaignButton } from "./ShareCampaignButton";
-import { CopyPasteButtons } from "./CopyPasteButtons";
+import { UndoRedoButtons } from "./UndoRedoButtons";
+import { WallsFloorsLockedSwitch } from "./WallsFloorsLockedSwitch";
+import { WallToolButton } from "./WallToolButton";
 
 const HorizontalGap = () => <div className="w-[calc(var(--block)-1px)]" />;
 

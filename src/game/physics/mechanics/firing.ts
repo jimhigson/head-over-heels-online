@@ -1,23 +1,24 @@
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
-import { blockSizePx } from "../../../sprites/spritePivots";
-import { emptyObject } from "../../../utils/empty";
-import {
-  addXyz,
-  scaleXyz,
-  originXyz,
-  unitVector,
-} from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
-import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
-import { type PlayableItem } from "../itemPredicates";
-import { moveSpeedPixPerMs } from "../mechanicsConstants";
+
+import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
   addPokeableNumbers,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
+import { blockSizePx } from "../../../sprites/spritePivots";
+import { emptyObject } from "../../../utils/empty";
+import {
+  addXyz,
+  originXyz,
+  scaleXyz,
+  unitVector,
+} from "../../../utils/vectors/vectors";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
+import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
+import { type PlayableItem } from "../itemPredicates";
+import { moveSpeedPixPerMs } from "../mechanicsConstants";
 
 /**
  * how far ahead of head the doughnuts start. This has to be enough to clear his bounding box,

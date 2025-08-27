@@ -1,41 +1,44 @@
-import type { CreateSpriteOptions } from "../createSprite";
-import { createSprite } from "../createSprite";
-import type { ItemAppearance } from "./ItemAppearance";
-import type { StackedSpritesContainer } from "./createStackedSprites";
-import {
-  stackedBottomSymbol,
-  stackedTopSymbol,
-  stackSprites,
-} from "./createStackedSprites";
-import { outlineFilters, OutlineFilter } from "../filters/outlineFilter";
-import {
-  type IndividualCharacterName,
-  type CharacterName,
-} from "../../../model/modelTypes";
+import type { Filter } from "pixi.js";
+
+import { Container } from "pixi.js";
+import { AnimatedSprite } from "pixi.js";
+
+import type { PlayableActionState } from "../../../model/ItemStateMap";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
+import type { PlayableItem } from "../../physics/itemPredicates";
+import type { CreateSpriteOptions } from "../createSprite";
+import type { StackedSpritesContainer } from "./createStackedSprites";
+import type { ItemAppearance } from "./ItemAppearance";
+
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import {
+  type CharacterName,
+  type IndividualCharacterName,
+} from "../../../model/modelTypes";
+import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
+import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
 import {
   lengthXyz,
   vectorClosestDirectionXy8,
 } from "../../../utils/vectors/vectors";
-import type { PlayableItem } from "../../physics/itemPredicates";
-import type { Filter } from "pixi.js";
-import { Container } from "pixi.js";
-import { AnimatedSprite } from "pixi.js";
-import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
-import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
-import { noFilters } from "../filters/standardFilters";
-import { OneColourFilter } from "../filters/oneColourFilter";
+import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
+import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { accentColours } from "../../hintColours";
 import {
   afterDeathInvulnerabilityFlashPeriod,
   afterDeathInvulnerabilityFlashPhaseDuration,
   switchCharacterHighlightTime,
 } from "../../physics/mechanicsConstants";
-import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
-import { accentColours } from "../../hintColours";
-import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { createSprite } from "../createSprite";
+import { OneColourFilter } from "../filters/oneColourFilter";
+import { OutlineFilter, outlineFilters } from "../filters/outlineFilter";
 import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import type { PlayableActionState } from "../../../model/ItemStateMap";
+import { noFilters } from "../filters/standardFilters";
+import {
+  stackedBottomSymbol,
+  stackedTopSymbol,
+  stackSprites,
+} from "./createStackedSprites";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 type PlayableRenderProps = {

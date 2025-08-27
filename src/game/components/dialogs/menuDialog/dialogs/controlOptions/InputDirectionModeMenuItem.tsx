@@ -1,5 +1,5 @@
-import { nextInputDirectionMode } from "../../../../../../store/slices/gameMenusSlice";
 import { useInputDirectionMode } from "../../../../../../store/selectors";
+import { nextInputDirectionMode } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
