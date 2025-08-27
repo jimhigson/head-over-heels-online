@@ -11,7 +11,7 @@ import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreC
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useSyncMonacoCaretToStoreItemSelection } from "./useSyncMonacoCaretToStoreItemSelection";
 
-export const JsonRoomEditor = () => {
+const JsonRoomEditor = () => {
   //const monaco = useLoadMonaco();
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(
     null,

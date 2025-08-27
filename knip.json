@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "src/main.tsx",
+    "src/editor/main.tsx",
+    "src/spritesTailwindPlugin.ts",
+    "scripts/**/*.ts"
+  ],
+  "project": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "scripts/**/*.ts"
+  ]
+}
