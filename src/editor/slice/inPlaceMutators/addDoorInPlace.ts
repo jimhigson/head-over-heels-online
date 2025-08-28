@@ -58,7 +58,7 @@ const getDestinationRoom = ({
   }
 
   return autoAddRooms ?
-      addNewRoomInPlace(state, fromRoomJson.planet)
+      addNewRoomInPlace({ state, scenery: fromRoomJson.planet })
       // auto add doors is turned off, we can make a door to nowhere
     : undefined;
 };

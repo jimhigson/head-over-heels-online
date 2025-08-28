@@ -1,20 +1,34 @@
+import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
 import { filter, first, objectKeys } from "iter-tools";
 
+import type { Xy } from "../../../utils/vectors/vectors";
 import type { EditorRoomId } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
-import { changeRoomInPlace } from "../inPlaceMutators/changeRoomInPlace";
+import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const addOrRemoveRoomReducers = {
-  addRoom(state) {
-    const currentRoom =
-      state.campaignInProgress.rooms[state.currentlyEditingRoomId];
-    const newRoom = addNewRoomInPlace(state, currentRoom.planet);
+  addRoom(
+    state,
+    {
+      payload: { roomSize, gridPositions = [{ x: 0, y: 0 }] },
+    }: PayloadAction<{ roomSize?: Xy; gridPositions?: Xy[] }>,
+  ) {
+    const { planet } = selectCurrentRoomFromLevelEditorState(state);
 
-    changeRoomInPlace(state, newRoom.id);
+    const newRoom = addNewRoomInPlace({
+      state,
+      scenery: planet,
+      roomSize,
+      gridPositions,
+    });
+
+    changeCurrentRoomInPlace(state, newRoom.id);
   },
   removeRoom(state) {
     const currentRoom =

@@ -48,7 +48,7 @@ export const MenuButton = ({
       </div>
       <PopoverContent>
         <CssVariables scaleFactor={2}>
-          <div className="flex flex-col gap-oneScaledPix py-oneScaledPix bg-metallicBlueHalfbrite">
+          <div className="flex flex-col gap-oneScaledPix py-oneScaledPix bg-metallicBlueHalfbrite max-h-20 overflow-y-auto scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige">
             {children.map((child, index) => {
               return child === null ? null : (
                   <div
@@ -68,3 +68,21 @@ export const MenuButton = ({
     </Popover>
   );
 };
+
+/**
+ * typical menu item button for menu-style dropdowns off the buttons, for giving as
+ * child of MenuButton
+ */
+export const MenuItemButton = ({
+  onClick,
+  children,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+}) => (
+  <Button className="px-1 py-half w-full justify-between" onClick={onClick}>
+    {typeof children === "string" ?
+      <BitmapText>{children}</BitmapText>
+    : children}
+  </Button>
+);

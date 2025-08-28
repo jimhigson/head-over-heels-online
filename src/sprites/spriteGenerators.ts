@@ -89,6 +89,47 @@ export const seriesOfNumberedTextures = <
   return Object.fromEntries(generator()) as Record<Name, SpritesheetFrameData>;
 };
 
+export const seriesOfNamedTextures = <
+  TName extends string,
+  TPrefix extends string = "",
+>(
+  names: readonly TName[],
+  { x: startX, y: startY }: Xy,
+  textureSize: SpriteSize,
+  rowSize: number = names.length,
+  prefix?: TPrefix,
+): Record<
+  TPrefix extends "" ? TName : `${TPrefix}.${TName}`,
+  SpritesheetFrameData
+> => {
+  type TextureName = TPrefix extends "" ? TName : `${TPrefix}.${TName}`;
+
+  function* generator(): Generator<[TextureName, SpritesheetFrameData]> {
+    for (let i = 0; i < names.length; i++) {
+      const textureName = (
+        prefix ?
+          `${prefix}.${names[i]}`
+        : names[i]) as TextureName;
+
+      yield [
+        textureName,
+        {
+          frame: {
+            x: startX + (i % rowSize) * (textureSize.w + 1),
+            y: startY + Math.floor(i / rowSize) * (textureSize.h + 1),
+            ...textureSize,
+          },
+        },
+      ];
+    }
+  }
+
+  return Object.fromEntries(generator()) as Record<
+    TextureName,
+    SpritesheetFrameData
+  >;
+};
+
 export const fourDirectionsOfNumberedTextures = <
   TName extends string,
   N extends number,

@@ -11,7 +11,7 @@ import {
   toggleBoolean,
 } from "../slices/gameMenusSlice";
 import { store } from "../store";
-import { useDispatchActionCallback } from "../useDispatchCallback";
+import { useDispatchActionCallback } from "../useDispatchActionCallback";
 
 export const useUniversalKeys = () => {
   const assigningKeys = useAppSelector(

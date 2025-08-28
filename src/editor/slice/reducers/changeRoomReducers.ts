@@ -5,7 +5,7 @@ import { type SliceCaseReducers } from "@reduxjs/toolkit";
 import type { EditorRoomId } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
-import { changeRoomInPlace } from "../inPlaceMutators/changeRoomInPlace";
+import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 
 export const changeRoomReducers = {
   changeToRoom(_state, { payload: roomId }: PayloadAction<EditorRoomId>) {
@@ -13,7 +13,7 @@ export const changeRoomReducers = {
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    changeRoomInPlace(state, roomId);
+    changeCurrentRoomInPlace(state, roomId);
   },
 
   roomBack(_state) {
@@ -28,7 +28,7 @@ export const changeRoomReducers = {
       return;
     }
     const previousRoomId = editingRoomIdHistory.back.pop() as EditorRoomId;
-    changeRoomInPlace(state, previousRoomId, true);
+    changeCurrentRoomInPlace(state, previousRoomId, true);
     editingRoomIdHistory.forward.push(state.currentlyEditingRoomId);
   },
 
@@ -44,7 +44,7 @@ export const changeRoomReducers = {
       return;
     }
     const nextRoomId = editingRoomIdHistory.forward.pop() as EditorRoomId;
-    changeRoomInPlace(state, nextRoomId, true);
+    changeCurrentRoomInPlace(state, nextRoomId, true);
     editingRoomIdHistory.back.push(state.currentlyEditingRoomId);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

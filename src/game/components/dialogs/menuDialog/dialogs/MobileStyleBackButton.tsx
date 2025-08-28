@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 import { backToParentMenu } from "../../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../store/useDispatchCallback";
+import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
 import { BitmapText } from "../../../tailwindSprites/Sprite";
 
 /**
