@@ -3,7 +3,7 @@ import type { LevelEditorState } from "../levelEditorSlice";
 
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 
-export const changeRoomInPlace = (
+export const changeCurrentRoomInPlace = (
   state: LevelEditorState,
   roomId: EditorRoomId,
   noPushToHistory = false,

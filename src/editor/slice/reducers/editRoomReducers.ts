@@ -209,8 +209,11 @@ export const editRoomReducers = {
 
     const newLinkedToRoomId =
       payload.createNew ?
-        addNewRoomInPlace(state, currentRoomJson.planet, currentRoomJson.color)
-          .id
+        addNewRoomInPlace({
+          state,
+          scenery: currentRoomJson.planet,
+          maybeColour: currentRoomJson.color,
+        }).id
       : payload.roomId;
 
     const previouslyLinkedRoom =

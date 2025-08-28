@@ -1,6 +1,6 @@
 import { useIsUserPreferenceOnScreenControls } from "../../../../../../store/selectors";
 import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Switch } from "../../../../../../ui/Switch";
 import { MenuItem } from "../../MenuItem";
 

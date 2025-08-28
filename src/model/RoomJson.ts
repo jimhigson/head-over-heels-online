@@ -14,8 +14,8 @@ type SubRoom = {
    */
   gridPosition: Xy;
   /**
-   * where the sub-room actually starts and ends on the map (so we
-   * can work out which sub-room items are in)
+   * where the sub-room actually starts and ends once loaded (so we
+   * can work out which sub-room items are in while the game is in-play)
    */
   physicalPosition: {
     from: Xy;

@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 
 import { useIsScreenRelativeControl } from "../../../../../../store/selectors";
 import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";

@@ -1,5 +1,5 @@
 import { keyAssignmentPresetChosen } from "../../../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import {
   type KeyAssignmentPresetName,
   keyAssignmentPresets,

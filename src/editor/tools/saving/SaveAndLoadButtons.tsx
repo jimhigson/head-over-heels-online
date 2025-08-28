@@ -10,7 +10,6 @@ import {
   saveCampaignViaApi,
 } from "../../../store/slices/campaigns/campaignApiHelpers";
 import { store } from "../../../store/store";
-import { Button } from "../../../ui/button";
 import { cn } from "../../../ui/cn";
 import { emptyArray } from "../../../utils/empty";
 import { OpenCampaignDialog } from "../../editorDialogs/OpenCampaignDialog";
@@ -24,7 +23,7 @@ import {
   setCampaignUserId,
   setRemoteCampaign,
 } from "../../slice/levelEditorSlice";
-import { MenuButton } from "../MenuButton";
+import { MenuButton, MenuItemButton } from "../MenuButton";
 import { ToolbarButton } from "../ToolbarButton";
 import { useShortTimeDisplay } from "../useShortTimeDisplay";
 import { useSupabaseUser } from "../useSupabaseUser";
@@ -138,12 +137,9 @@ export const SaveAndLoadButtons = () => {
         >
           {user ?
             [
-              <Button
-                className="px-1 py-half"
-                onClick={() => setSaveAsDialogOpen(true)}
-              >
-                <BitmapText>Save as...</BitmapText>
-              </Button>,
+              <MenuItemButton onClick={() => setSaveAsDialogOpen(true)}>
+                Save as...
+              </MenuItemButton>,
             ]
           : emptyArray}
         </MenuButton>

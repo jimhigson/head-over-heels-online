@@ -9,7 +9,7 @@ import {
   closeAllMenus,
   goToSubmenu,
 } from "../../../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchCallback";
+import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";

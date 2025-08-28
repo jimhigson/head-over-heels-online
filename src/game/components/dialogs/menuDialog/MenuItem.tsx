@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 import { useAppSelector } from "../../../../store/hooks";
 import { setFocussedMenuItemId } from "../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../store/useDispatchCallback";
+import { useDispatchActionCallback } from "../../../../store/useDispatchActionCallback";
 import { BitmapText } from "../../tailwindSprites/Sprite";
 import { useActionTap } from "../useActionTap";
 import { MenuItemLeader } from "./dialogs/MenuItemLeader";
