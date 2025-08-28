@@ -161,7 +161,7 @@ const floorLeftRightCutOffMask = <
 
   if (right > left) {
     return new Graphics()
-      .rect(left, -9999, right - left, 9999)
+      .rect(left, -500, right - left, 500)
       .fill("rgba(255, 0, 0)");
   }
 };
@@ -413,8 +413,16 @@ export const floorAppearance: ItemAppearance<"floor"> =
 
         const cutoffMask = floorLeftRightCutOffMask(room, floorItem);
         if (cutoffMask !== undefined) {
-          spritesRenderContainer.addChild(cutoffMask);
-          spritesRenderContainer.mask = cutoffMask;
+          // rendering to a sprite first avoid (but doesn't completely fix) an issue in
+          // Firefox where floors are rendered blank. Otherwise, there's no need to do this,
+          // but this is only done once per floor (not every frame) so it isn't too worrysome to
+          // make a texture we immediately throw away
+          const cutoffSprite = renderContainerToSprite(
+            pixiRenderer,
+            cutoffMask,
+          );
+          spritesRenderContainer.addChild(cutoffSprite);
+          spritesRenderContainer.mask = cutoffSprite;
         }
 
         container.addChild(
