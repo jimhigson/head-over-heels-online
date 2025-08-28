@@ -74,6 +74,12 @@ export default defineConfig({
 
   build: {
     target: "esnext",
+    cssTarget: "esnext", // Don't transpile CSS for modern browsers
+    minify: "esbuild", // Use esbuild for faster minification
+    // Optional: adjust module preload for better performance
+    modulePreload: {
+      polyfill: false, // Modern browsers don't need the polyfill
+    },
   },
 
   resolve: {

@@ -1,6 +1,6 @@
 export default {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {},
+    // autoprefixer removed - targeting only modern browsers
   },
 };
