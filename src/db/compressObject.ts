@@ -29,7 +29,8 @@ export const decompressObject = async <ExpectedType extends object>(
     const compressedBinary = toUint8Array(base64);
 
     // Create blob and stream it through decompression
-    const blob = new Blob([compressedBinary]);
+    // Wrap in new Uint8Array to ensure proper ArrayBuffer type for TypeScript 5.9+
+    const blob = new Blob([new Uint8Array(compressedBinary)]);
     const ds = new DecompressionStream(compressionFormat);
     const decompressStream = blob.stream().pipeThrough(ds);
 
