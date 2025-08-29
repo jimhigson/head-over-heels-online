@@ -65,6 +65,14 @@ export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
     xy,
   );
 
+export const addXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
+  for (const xyi of xys) {
+    xy.x += xyi.x ?? 0;
+    xy.y += xyi.y ?? 0;
+  }
+  return xy;
+};
+
 export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
   xys.reduce<Xy>(
     (ac, xyi) => ({
@@ -74,20 +82,50 @@ export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
     xy,
   );
 
+export const subXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
+  for (const xyi of xys) {
+    xy.x -= xyi.x ?? 0;
+    xy.y -= xyi.y ?? 0;
+  }
+  return xy;
+};
+
 export const scaleXy = (xy: Xy, scale: number): Xy => ({
   x: xy.x * scale,
   y: xy.y * scale,
 });
+
+export const scaleXyInPlace = (xy: Xy, scale: number): Xy => {
+  xy.x *= scale;
+  xy.y *= scale;
+  return xy;
+};
+
 export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   x: xy.x * scale,
   y: xy.y * scale,
   z: xy.z * scale,
 });
+
+export const scaleXyzInPlace = (xyz: Xyz, scale: number): Xyz => {
+  xyz.x *= scale;
+  xyz.y *= scale;
+  xyz.z *= scale;
+  return xyz;
+};
+
 export const productXyz = (a: Xyz, b: Xyz): Xyz => ({
   x: a.x * b.x,
   y: a.y * b.y,
   z: a.z * b.z,
 });
+
+export const productXyzInPlace = (xyz: Xyz, other: Xyz): Xyz => {
+  xyz.x *= other.x;
+  xyz.y *= other.y;
+  xyz.z *= other.z;
+  return xyz;
+};
 
 export const lengthXyz = ({ x, y, z }: Xyz) => Math.hypot(x, y, z);
 export const lengthXy = ({ x, y }: Xy) => Math.hypot(x, y);
@@ -100,6 +138,14 @@ export const unitVector = (xyz: Xyz): Xyz => {
     throw new Error("unitVector called with zero length vector");
   }
   return scaleXyz(xyz, 1 / l);
+};
+
+export const unitVectorInPlace = (xyz: Xyz): Xyz => {
+  const l = lengthXyz(xyz);
+  if (l === 0) {
+    throw new Error("unitVectorInPlace called with zero length vector");
+  }
+  return scaleXyzInPlace(xyz, 1 / l);
 };
 
 export const cornerVectorsXyz = [
@@ -132,6 +178,13 @@ export const perpendicularXyz = ({ x, y, z }: Xyz): Xyz => ({
   z,
 });
 
+export const perpendicularXyzInPlace = (xyz: Xyz): Xyz => {
+  const temp = xyz.x;
+  xyz.x = xyz.y;
+  xyz.y = -temp;
+  return xyz;
+};
+
 export const addXyz = (...xyzs: Array<Partial<Xyz>>): Xyz => {
   return xyzs.reduce<Xyz>(
     ({ x: acX, y: acY, z: acZ }, { x: iX = 0, y: iY = 0, z: iZ = 0 }) => ({
@@ -141,6 +194,15 @@ export const addXyz = (...xyzs: Array<Partial<Xyz>>): Xyz => {
     }),
     originXyz,
   );
+};
+
+export const addXyzInPlace = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
+  for (const xyzi of xyzs) {
+    xyz.x += xyzi.x ?? 0;
+    xyz.y += xyzi.y ?? 0;
+    xyz.z += xyzi.z ?? 0;
+  }
+  return xyz;
 };
 
 /**
@@ -157,6 +219,18 @@ export const elementWiseProductXyz = (...xyzs: Array<Xyz>): Xyz => {
   );
 };
 
+export const elementWiseProductXyzInPlace = (
+  xyz: Xyz,
+  ...xyzs: Array<Xyz>
+): Xyz => {
+  for (const other of xyzs) {
+    xyz.x *= other.x;
+    xyz.y *= other.y;
+    xyz.z *= other.z;
+  }
+  return xyz;
+};
+
 export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
   xyzs.reduce<Xyz>(
     (ac, xyi) => ({
@@ -166,6 +240,15 @@ export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
     }),
     xyz,
   );
+
+export const subXyzInPlace = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
+  for (const xyzi of xyzs) {
+    xyz.x -= xyzi.x ?? 0;
+    xyz.y -= xyzi.y ?? 0;
+    xyz.z -= xyzi.z ?? 0;
+  }
+  return xyz;
+};
 
 export const xyzEqual = (
   { x: ax, y: ay, z: az }: Xyz,
@@ -206,6 +289,26 @@ export const xyzSnapIfCloseToIntegers = (input: Xyz): Xyz => {
   }
 };
 
+export const xyzSnapIfCloseToIntegersInPlace = (xyz: Xyz): Xyz => {
+  const { x } = xyz;
+  const xNearest = Math.round(x);
+  const xNeedsCorrect = !Number.isInteger(x) && veryClose(x, xNearest);
+
+  const { y } = xyz;
+  const yNearest = Math.round(y);
+  const yNeedsCorrect = !Number.isInteger(y) && veryClose(y, yNearest);
+
+  const { z } = xyz;
+  const zNearest = Math.round(z);
+  const zNeedsCorrect = !Number.isInteger(z) && veryClose(z, zNearest);
+
+  if (xNeedsCorrect) xyz.x = xNearest;
+  if (yNeedsCorrect) xyz.y = yNearest;
+  if (zNeedsCorrect) xyz.z = zNearest;
+
+  return xyz;
+};
+
 export const isExactIntegerXyz = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>) =>
   Number.isInteger(x) && Number.isInteger(y) && Number.isInteger(z);
 
@@ -214,11 +317,26 @@ export const roundXyz = ({ x, y, z }: Xyz) => ({
   y: Math.round(y),
   z: Math.round(z),
 });
+
+export const roundXyzInPlace = (xyz: Xyz): Xyz => {
+  xyz.x = Math.round(xyz.x);
+  xyz.y = Math.round(xyz.y);
+  xyz.z = Math.round(xyz.z);
+  return xyz;
+};
+
 export const roundXyzToXyHalves = ({ x, y, z }: Xyz) => ({
   x: Math.round(x * 2) / 2,
   y: Math.round(y * 2) / 2,
   z: Math.round(z),
 });
+
+export const roundXyzToXyHalvesInPlace = (xyz: Xyz): Xyz => {
+  xyz.x = Math.round(xyz.x * 2) / 2;
+  xyz.y = Math.round(xyz.y * 2) / 2;
+  xyz.z = Math.round(xyz.z);
+  return xyz;
+};
 
 export const originXy: Xy = Object.freeze({ x: 0, y: 0 });
 export const originXyz: Xyz = Object.freeze({ x: 0, y: 0, z: 0 });
@@ -376,6 +494,13 @@ export const absXyz = ({ x, y, z }: Xyz): Xyz => ({
   y: Math.abs(y),
   z: Math.abs(z),
 });
+
+export const absXyzInPlace = (xyz: Xyz): Xyz => {
+  xyz.x = Math.abs(xyz.x);
+  xyz.y = Math.abs(xyz.y);
+  xyz.z = Math.abs(xyz.z);
+  return xyz;
+};
 
 /**
  * Checks if two vectors are in the same direction (parallel and pointing the same way).

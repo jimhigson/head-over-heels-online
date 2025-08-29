@@ -6,6 +6,15 @@ import type { StoodOnBy } from "./StoodOnBy";
 import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
 
 export type BaseItemState<RoomItemId extends string = string> = {
+  /**
+   * this is owned by the item itself, which it can modify in-place if it
+   * wishes to avoid gc. Nothing else should keep a reference to this, since
+   * it can change at any time.
+   *
+   * However, because doing so is likely to create hard-to-find bugs, we also
+   * should not mutate this in-place, unless we are absolutely certain nobody else
+   * has a reference to it (like, we just created the vector object)
+   */
   position: Readonly<Xyz>;
 
   /**

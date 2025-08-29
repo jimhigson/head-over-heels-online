@@ -7,7 +7,7 @@ import {
   lengthXyz,
   originXyz,
   scaleXyz,
-  unitVector,
+  unitVectorInPlace,
   vectorClosestDirectionXy4,
   vectorClosestDirectionXy8,
   type Xyz,
@@ -28,8 +28,8 @@ export const rotateInputVector45 = (vector: Xyz): Xyz => {
   };
 };
 
-const isometricX: Xyz = unitVector({ x: 1, y: 2, z: 0 });
-const isometricY: Xyz = unitVector({ x: -1, y: 2, z: 0 });
+const isometricX: Xyz = unitVectorInPlace({ x: 1, y: 2, z: 0 });
+const isometricY: Xyz = unitVectorInPlace({ x: -1, y: 2, z: 0 });
 export const isometricInputVector = (input: Xyz): Xyz => {
   const inputMagnitude = lengthXyz(input);
 

@@ -249,6 +249,7 @@ export const isPortal = isItemType("portal");
 export const isTeleporter = isItemType("teleporter");
 export const isHeels = isItemType("heels");
 export const isHead = isItemType("head");
+export const isHeadOverHeels = isItemType("headOverHeels");
 export const isCarrier = isItemType("heels", "headOverHeels");
 export const isFirer = isItemType("head", "headOverHeels");
 export const isLift = isItemType("lift");
@@ -266,6 +267,10 @@ export const isCrown = <RoomId extends string, RoomItemId extends string>(
 
 export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
+export const isConveyor = isItemType("conveyor");
+export const isHushPuppy = isItemType("hushPuppy");
+export const isFiredDoughnut = isItemType("firedDoughnut");
+export const isWallOrDoorFrame = isItemType("wall", "doorFrame");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("monster", "movingPlatform");
 

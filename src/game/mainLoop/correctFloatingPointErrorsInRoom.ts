@@ -13,7 +13,6 @@ export const correctFloatingPointErrorsInRoom = <
   room: RoomState<RoomId, RoomItemId>,
 ) => {
   for (const item of iterateRoomItems(room.items)) {
-    const originalPosition = item.state.position;
-    item.state.position = xyzSnapIfCloseToIntegers(originalPosition);
+    item.state.position = xyzSnapIfCloseToIntegers(item.state.position);
   }
 };

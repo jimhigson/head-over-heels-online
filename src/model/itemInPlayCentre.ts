@@ -1,7 +1,7 @@
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 
-import { addXyz, scaleXyz } from "../utils/vectors/vectors";
+import { addXyzInPlace, scaleXyz } from "../utils/vectors/vectors";
 
 export const itemInPlayCentre = (item: UnionOfAllItemInPlayTypes) => {
-  return addXyz(item.state.position, scaleXyz(item.aabb, 0.5));
+  return addXyzInPlace(scaleXyz(item.aabb, 0.5), item.state.position);
 };

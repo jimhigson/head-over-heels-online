@@ -9,11 +9,7 @@ import type {
 import type { PlayableItem } from "../../physics/itemPredicates";
 import type { GameState } from "../GameState";
 
-import { isItemType } from "../../physics/itemPredicates";
-
-const isHead = isItemType("head");
-const isHeels = isItemType("heels");
-const isHeadOverHeels = isItemType("headOverHeels");
+import { isHead, isHeadOverHeels, isHeels } from "../../physics/itemPredicates";
 
 export const selectPlayableItem = <
   C extends CharacterName = CharacterName,

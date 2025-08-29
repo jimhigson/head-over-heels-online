@@ -1,6 +1,5 @@
 import { componentInDirection } from "./componentInDirection";
 import {
-  addXyz,
   dotProductXyz,
   lengthXyz,
   perpendicularXyz,

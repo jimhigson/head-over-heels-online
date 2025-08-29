@@ -18,7 +18,7 @@ import {
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
-import { isItemType, type PlayableItem } from "../itemPredicates";
+import { isSpring, type PlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import {
   heelsJumpForwardDecel,
@@ -182,7 +182,7 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
         const jumpDirectionXy = unitVector(
           xyEqual(walkVector, originXy) ? facing : walkVector,
         );
-        const isStandingOnSpring = isItemType("spring")(
+        const isStandingOnSpring = isSpring(
           stoodOnItem(standingOnItemId, room),
         );
         const walkJumpFraction =
