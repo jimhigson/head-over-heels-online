@@ -11,6 +11,7 @@ import {
   scaleXyz,
   subXyz,
 } from "../../../utils/vectors/vectors";
+import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
@@ -42,7 +43,13 @@ export const makeItemFadeOut = <
     : touchedItem.type === "hushPuppy" ? { type: "hushPuppy" as const }
     : { type: "disappearing" as const };
 
-  const touchedItemHalfAabb = scaleXyz(touchedItem.aabb, 0.5);
+  // need the bounding box from before it was multiplied 'times' was applied.
+  // simple division doesn't work here because the multiplied takes into account
+  // gaps between items
+  const touchedItemHalfAabb = scaleXyz(
+    boundingBoxForItem(touchedItem).aabb,
+    0.5,
+  );
 
   // Create bubbles for each segment (will be just one bubble for regular items)
   for (let x = 0; x < times.x; x++) {
@@ -82,7 +89,7 @@ export const makeItemFadeOut = <
 
         // remove bubbles after a time with random variation
         bubblesItem.state.expires =
-          room.roomTime + fadeInOrOutDuration * randomBetween(0.5, 1.5);
+          room.roomTime + fadeInOrOutDuration * randomBetween(0.75, 1.25);
       }
     }
   }
