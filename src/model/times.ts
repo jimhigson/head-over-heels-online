@@ -75,6 +75,34 @@ export const getJsonItemTimes = (item: JsonItemUnion): Xyz => {
   );
 };
 
+/**
+ * for an in-play item, get the times in terms of a complete xyz vector,
+ * no matter what type it is - this is a complete function that handles
+ * all items
+ */
+export const getItemInPlayTimes = (item: UnionOfAllItemInPlayTypes): Xyz => {
+  const isMultipliedItemInPlay = (
+    item: UnionOfAllItemInPlayTypes,
+  ): item is UnionOfAllItemInPlayTypes & {
+    config: { times: Partial<Xyz> };
+  } => {
+    type ItemConfigMaybeWithMultiplication = {
+      times?: Partial<Xyz> | undefined;
+    };
+
+    return (
+      (item.config as ItemConfigMaybeWithMultiplication).times !== undefined
+    );
+  };
+
+  return (
+    item.type === "wall" ?
+      completeTimesXyz(wallTimes(item.config as WallJsonConfig<SceneryName>))
+    : isMultipliedItemInPlay(item) ? completeTimesXyz(item.config.times)
+    : unitXyz
+  );
+};
+
 // convert a times vector to its most efficient format, particularly for the json encoding
 // = remove any 1 properties, and returning undefined if all are 1
 export const optimiseTimesXyz = (xyz: Xyz): Partial<Xyz> | undefined => {
