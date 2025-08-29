@@ -17,9 +17,10 @@ const smallPrime = 31;
 const filterCache = new Map<string, PaletteSwapFilter>();
 
 function hashColor(color: Color): number {
-  const ri = Math.floor(color.red * 255);
-  const gi = Math.floor(color.green * 255);
-  const bi = Math.floor(color.blue * 255);
+  // Match the shader's rounding behavior
+  const ri = Math.floor(color.red * 255 + 0.5);
+  const gi = Math.floor(color.green * 255 + 0.5);
+  const bi = Math.floor(color.blue * 255 + 0.5);
 
   return (ri + gi * smallPrime + bi * smallPrime * smallPrime) % lutSize;
 }
@@ -59,6 +60,7 @@ function createLut(swops: PaletteSwaps): Texture {
     width: lutSize,
     height: 1,
     scaleMode: "nearest",
+    antialias: false,
   });
 
   return texture;
