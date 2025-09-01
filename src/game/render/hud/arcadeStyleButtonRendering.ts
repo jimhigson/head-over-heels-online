@@ -14,7 +14,7 @@ import {
   replaceWithHalfbriteFilter,
 } from "../filters/standardFilters";
 import { buttonColours } from "./buttonColours";
-import { showTextInContainer } from "./showNumberInContainer";
+import { showTextInContainer } from "./showTextInContainer";
 
 export const surfaceContentSym: unique symbol = Symbol();
 export const buttonSpriteSym: unique symbol = Symbol();

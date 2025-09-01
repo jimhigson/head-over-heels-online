@@ -46,10 +46,7 @@ import {
 } from "./hudFilters";
 import { OnScreenControls } from "./OnScreenControls";
 import { renderCarriedOnce } from "./renderCarried";
-import {
-  makeTextContainer,
-  showTextInContainer,
-} from "./showNumberInContainer";
+import { makeTextContainer, showTextInContainer } from "./showTextInContainer";
 
 const fpsUpdatePeriod = 250;
 
