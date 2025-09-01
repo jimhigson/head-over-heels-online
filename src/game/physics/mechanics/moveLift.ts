@@ -4,11 +4,19 @@ import type { Mechanic, MechanicResult } from "../MechanicResult";
 
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { blockSizePx } from "../../../sprites/spritePivots";
+import { veryClose } from "../../../utils/epsilon";
+import { originXyz } from "../../../utils/vectors/vectors";
 import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
 const blockHeight = blockSizePx.h;
 
 const epsilonVelocity = 0.001;
+
+/** for when the lift isn't moving at all */
+const liftStationary = {
+  movementType: "vel",
+  vels: { lift: originXyz },
+} as const satisfies MechanicResult<"lift", string, string>;
 
 const calculateVelocity = ({
   z,
@@ -92,6 +100,13 @@ export const moveLift: Mechanic<"lift"> = <
 ): MechanicResult<"lift", RoomId, RoomItemId> => {
   const lowestZ = bottom * blockHeight;
   const highestZ = top * blockHeight;
+
+  if (lowestZ === highestZ && veryClose(z, lowestZ)) {
+    // lift lowest can equal highest, for example if there is a button
+    // or switch that sets the lift to 'no movement'
+    return liftStationary;
+  }
+
   const currentVelocity = vels?.lift?.z ?? 0;
   const velocity = calculateVelocity({
     z,
