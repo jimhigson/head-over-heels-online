@@ -62,13 +62,7 @@ export const room = inferRoomJson({
     "switch@0,7,0": {
       config: {
         initialSetting: "left",
-        modifies: [
-          {
-            activates: true,
-            expectType: "monster",
-            targets: ["monster@0,5,0", "monster@2,4,0", "monster@3,3,0"],
-          },
-        ],
+        modifies: [{ activates: true, expectType: "monster" }],
         type: "in-room",
       },
       position: { x: 0, y: 7, z: 0 },

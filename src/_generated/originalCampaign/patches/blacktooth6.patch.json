@@ -13,13 +13,7 @@
     "path": "/items/switch@6,0,1/config/modifies/1",
     "value": {
       "activates": true,
-      "expectType": "monster",
-      "targets": [
-        "monster@3,0,1",
-        "extraMonster",
-        "extraMonster2",
-        "extraMonster3"
-      ]
+      "expectType": "monster"
     }
   },
   {

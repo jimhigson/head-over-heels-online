@@ -429,7 +429,10 @@ export const floorAppearance: ItemAppearance<"floor"> =
           renderContainerToSprite(pixiRenderer, spritesRenderContainer),
         );
 
-        spritesRenderContainer.destroy();
+        spritesRenderContainer.destroy({
+          // destroying children is needed to free mem used for intermediate textures
+          children: true,
+        });
 
         if (!colourised) {
           const colourClashContainer = createColourClash({

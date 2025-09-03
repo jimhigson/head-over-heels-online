@@ -99,6 +99,9 @@ const inPlayItemDistanceToSubRoom = (
 
 export const findSubRoomForItem = (
   position: Xy,
+  /**
+   * are we searching using fine positions (json), or fine (in-game)?
+   */
   positionType: "block" | "fine",
   room: MaybeDividedRoom,
 ): string => {

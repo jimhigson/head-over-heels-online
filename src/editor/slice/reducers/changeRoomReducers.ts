@@ -27,9 +27,10 @@ export const changeRoomReducers = {
       // no back history available
       return;
     }
+
     const previousRoomId = editingRoomIdHistory.back.pop() as EditorRoomId;
-    changeCurrentRoomInPlace(state, previousRoomId, true);
     editingRoomIdHistory.forward.push(state.currentlyEditingRoomId);
+    changeCurrentRoomInPlace(state, previousRoomId, true);
   },
 
   roomForward(_state) {
@@ -43,8 +44,9 @@ export const changeRoomReducers = {
       // no forward history available
       return;
     }
+
     const nextRoomId = editingRoomIdHistory.forward.pop() as EditorRoomId;
-    changeCurrentRoomInPlace(state, nextRoomId, true);
     editingRoomIdHistory.back.push(state.currentlyEditingRoomId);
+    changeCurrentRoomInPlace(state, nextRoomId, true);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

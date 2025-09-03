@@ -57,6 +57,9 @@ export const LevelEditorToolbar = () => {
     (state) => state.levelEditor.currentlyEditingRoomId,
   );
   const dispatch = useAppDispatch();
+  const campaignName = useAppSelectorWithLevelEditorSlice(
+    (state) => state.levelEditor.campaignInProgress.locator.campaignName,
+  );
 
   return (
     <div className="scale-editor flex w-full h-full text-white bg-metallicBlueHalfbrite pb-1 gap-1 flex-wrap justify-start overflow-auto">
@@ -64,7 +67,14 @@ export const LevelEditorToolbar = () => {
         <LoggedInStatus className="w-full mb-1" />
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">Campaign</BitmapText>
+        <div className="w-full flex flex-wrap gap-x-1">
+          <BitmapText className="">Campaign</BitmapText>
+          {campaignName ?
+            <BitmapText className="text-highlightBeige">
+              {`‘${campaignName}’`}
+            </BitmapText>
+          : <BitmapText className="text-midRed">{`(untitled)`}</BitmapText>}
+        </div>
         <SaveAndLoadButtons />
         <HorizontalGap />
         <ShareCampaignButton />

@@ -111,16 +111,7 @@ export const room = inferRoomJson({
             makesStable: false,
             targets: ["block@0,7,0", "block@3,7,0"],
           },
-          {
-            activates: true,
-            expectType: "monster",
-            targets: [
-              "monster@3,0,1",
-              "extraMonster",
-              "extraMonster2",
-              "extraMonster3",
-            ],
-          },
+          { activates: true, expectType: "monster" },
         ],
         type: "in-room",
       },

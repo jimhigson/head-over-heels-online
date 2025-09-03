@@ -17,6 +17,8 @@ import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { toggleBoolean } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import { scaleXyz } from "../../../utils/vectors/vectors";
 
 const oppositeSetting = (setting: string) => {
   return setting === "left" ? "right" : "left";
@@ -49,7 +51,11 @@ const getNewState = <RoomId extends string, RoomItemId extends string>(
         }) satisfies Partial<ItemState<"block", RoomId, RoomItemId>>;
   }
 
-  if (modifiesItem.expectType === "monster" && "activates" in modifiesItem) {
+  if (
+    (modifiesItem.expectType === "monster" ||
+      modifiesItem.expectType === "movingPlatform") &&
+    "activates" in modifiesItem
+  ) {
     const { activates } = modifiesItem;
     return (
       setting === (activates ? "left" : "right") ?
@@ -60,6 +66,20 @@ const getNewState = <RoomId extends string, RoomItemId extends string>(
       : {
           activated: false,
         }) satisfies Partial<ItemState<"monster", RoomId, RoomItemId>>;
+  }
+
+  if (
+    modifiesItem.expectType === "monster" &&
+    "switchedDirection" in modifiesItem &&
+    modifiesItem.switchedDirection !== undefined
+  ) {
+    const { switchedDirection } = modifiesItem;
+    const directionVector = unitVectors[switchedDirection];
+    const facing =
+      setting === "left" ? directionVector : scaleXyz(directionVector, -1);
+    return { facing } satisfies Partial<
+      ItemState<"monster", RoomId, RoomItemId>
+    >;
   }
 
   return modifiesItem[`${setting}State`];
@@ -82,9 +102,17 @@ export const applyModifiesList = <
   for (const modifiesItem of modifiesList) {
     // loop here because there could be multiple items with the same jsonItemId
     for (const roomItem of iterateRoomItems(room.items)) {
+      const { targets } = modifiesItem;
+
+      if (roomItem.type !== modifiesItem.expectType) {
+        continue;
+      }
+
       if (
         !roomItem.jsonItemId ||
-        !modifiesItem.targets.includes(roomItem.jsonItemId)
+        // it is ok for targets to be undefined, in which case all items of the expected
+        // type are impacted by the switch.
+        (targets !== undefined && !targets.includes(roomItem.jsonItemId))
       ) {
         // skip items that are not targeted by this switch
         continue;
@@ -98,13 +126,6 @@ export const applyModifiesList = <
 
       if (visited.has(roomItem)) {
         continue;
-      }
-
-      if (roomItem.type !== modifiesItem.expectType) {
-        throw new Error(
-          `item "${roomItem.id}" is of type "${roomItem.type}" - does not match expected type "${modifiesItem.expectType}"
-          from switch config ${JSON.stringify(instigator.config, null, 2)}`,
-        );
       }
 
       const targetItemCast = roomItem as Omit<typeof roomItem, "state"> & {

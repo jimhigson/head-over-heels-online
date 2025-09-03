@@ -7,7 +7,7 @@ import { useState } from "react";
 import roomSchema from "../../_generated/room.schema.json";
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useItemIconDecorations } from "./ItemIconDecorations";
-import { useMonacoSuggestions } from "./useMonacoSuggestions";
+import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";
 import { useSyncMonacoCaretToStoreItemSelection } from "./useSyncMonacoCaretToStoreItemSelection";
 import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncSelectionWithMonaco";
 import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";

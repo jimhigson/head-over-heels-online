@@ -13,9 +13,13 @@ import type {
 } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
-import { iterateRoomJsonItems } from "../../../model/RoomJson";
+import {
+  iterateRoomJsonItems,
+  iterateRoomJsonItemsWithIds,
+} from "../../../model/RoomJson";
 import { keysIter } from "../../../utils/entries";
-import { scaleXyz } from "../../../utils/vectors/vectors";
+import { oppositeDirection, scaleXyz } from "../../../utils/vectors/vectors";
+import { addReturnDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
 import { changeRoomSceneryInPlace } from "../inPlaceMutators/changeRoomSceneryInPlace";
@@ -93,7 +97,10 @@ export const editRoomReducers = {
    * general callback for making arbitrary changes to the room json
    * (eg, editing from monaco)
    */
-  roomJsonEdited(_state, { payload: roomJson }: PayloadAction<EditorRoomJson>) {
+  roomJsonEdited(
+    _state,
+    { payload: newRoomJson }: PayloadAction<EditorRoomJson>,
+  ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
@@ -101,11 +108,11 @@ export const editRoomReducers = {
     pushUndoInPlace(state);
     const { rooms } = state.campaignInProgress;
     const prevRoomJson = rooms[state.currentlyEditingRoomId];
-    rooms[state.currentlyEditingRoomId] = roomJson;
+    rooms[state.currentlyEditingRoomId] = newRoomJson;
 
     // selected items may no longer exist in the room after reloading - remove these selections:
     const selectedJsonItemIdsThatStillExist = state.selectedJsonItemIds.filter(
-      (id) => roomJson.items[id] !== undefined,
+      (id) => newRoomJson.items[id] !== undefined,
     );
     if (
       // check first for removals, since state.foo = state.foo.filter() creates a state change even
@@ -117,19 +124,65 @@ export const editRoomReducers = {
       state.selectedJsonItemIds = selectedJsonItemIdsThatStillExist;
     }
 
-    if (roomJson.id !== state.currentlyEditingRoomId) {
-      changeIdOfCurrentRoomInPlace(state, roomJson.id);
+    if (newRoomJson.id !== state.currentlyEditingRoomId) {
+      changeIdOfCurrentRoomInPlace(state, newRoomJson.id);
     }
 
+    iterateRoomJsonItemsWithIds(newRoomJson.items, "door")
+      // was already a door in in the room before this edit:
+      .filter(([id, _doorItem]) => prevRoomJson.items[id]?.type === "door")
+      // points to a room that exists:
+      .filter(([, doorItem]) => rooms[doorItem.config.toRoom] !== undefined)
+      .forEach(([doorItemId, doorItem]) => {
+        const otherRoom = rooms[doorItem.config.toRoom] as EditorRoomJson;
+        const otherRoomDoorDirection = oppositeDirection(
+          doorItem.config.direction,
+        );
+
+        // in the other room, check if there is exactly one opposite-direction door:
+        const matchingDoors = iterateRoomJsonItemsWithIds(
+          otherRoom.items,
+          "door",
+        )
+          .filter(
+            ([, otherRoomDoor]) =>
+              otherRoomDoor.config.direction === otherRoomDoorDirection,
+          )
+          .toArray();
+
+        // need to find exactly 1 for mutating existing doors to find an unambiguous target to modify:
+        switch (matchingDoors.length) {
+          case 0:
+            // No matching doors found; add one
+            addReturnDoorInPlace({
+              state,
+              outgoingDoorEntry: [doorItemId, doorItem],
+              fromRoomJson: newRoomJson,
+              toRoomJson: otherRoom,
+            });
+            break;
+          case 1: {
+            // Exactly one matching door found; update it to point back to us:
+            const [[, doorToChange]] = matchingDoors;
+            doorToChange.config.toRoom = newRoomJson.id;
+            doorToChange.config.toDoor = doorItemId;
+            break;
+          }
+          default:
+            // More than one matching door found; ambiguous, do nothing
+            break;
+        }
+      });
+
     const prevOutboundNCR = prevRoomJson.meta?.nonContiguousRelationship;
-    const nextOutboundNCR = roomJson.meta?.nonContiguousRelationship;
+    const nextOutboundNCR = newRoomJson.meta?.nonContiguousRelationship;
     if (nextOutboundNCR !== undefined) {
       // add a link back from the new NCR room:
       const otherRoom = rooms[nextOutboundNCR.with.room];
       otherRoom.meta = {
         ...otherRoom.meta,
         nonContiguousRelationship: {
-          with: { room: roomJson.id },
+          with: { room: newRoomJson.id },
           gridOffset: scaleXyz(nextOutboundNCR.gridOffset, -1),
         },
       };

@@ -1988,6 +1988,16 @@
                                       },
                                       "type": "object"
                                     },
+                                    "switchedDirection": {
+                                      "description": "shortcut - gives this direction for left state and opposite direction for right state",
+                                      "enum": [
+                                        "right",
+                                        "towards",
+                                        "away",
+                                        "left"
+                                      ],
+                                      "type": "string"
+                                    },
                                     "targets": {
                                       "items": {
                                         "type": "string"
@@ -1995,7 +2005,7 @@
                                       "type": "array"
                                     }
                                   },
-                                  "required": ["expectType", "targets"],
+                                  "required": ["expectType"],
                                   "type": "object"
                                 },
                                 {
@@ -2016,11 +2026,7 @@
                                       "type": "array"
                                     }
                                   },
-                                  "required": [
-                                    "expectType",
-                                    "targets",
-                                    "makesStable"
-                                  ],
+                                  "required": ["expectType", "makesStable"],
                                   "type": "object"
                                 },
                                 {
@@ -2065,7 +2071,6 @@
                                   },
                                   "required": [
                                     "expectType",
-                                    "targets",
                                     "leftState",
                                     "rightState"
                                   ],
@@ -2153,7 +2158,6 @@
                                   },
                                   "required": [
                                     "expectType",
-                                    "targets",
                                     "leftState",
                                     "rightState"
                                   ],
@@ -3607,7 +3611,6 @@
                                   },
                                   "required": [
                                     "expectType",
-                                    "targets",
                                     "leftState",
                                     "rightState"
                                   ],
@@ -3653,7 +3656,6 @@
                                   },
                                   "required": [
                                     "expectType",
-                                    "targets",
                                     "leftState",
                                     "rightState"
                                   ],
@@ -3753,7 +3755,6 @@
                                   },
                                   "required": [
                                     "expectType",
-                                    "targets",
                                     "leftState",
                                     "rightState"
                                   ],
@@ -3778,7 +3779,7 @@
                                       "type": "array"
                                     }
                                   },
-                                  "required": ["expectType", "targets", "flip"],
+                                  "required": ["expectType", "flip"],
                                   "type": "object"
                                 },
                                 {
@@ -3849,7 +3850,6 @@
                                   },
                                   "required": [
                                     "expectType",
-                                    "targets",
                                     "leftState",
                                     "rightState"
                                   ],
@@ -5461,6 +5461,11 @@
                                   },
                                   "type": "object"
                                 },
+                                "switchedDirection": {
+                                  "description": "shortcut - gives this direction for left state and opposite direction for right state",
+                                  "enum": ["right", "towards", "away", "left"],
+                                  "type": "string"
+                                },
                                 "targets": {
                                   "items": {
                                     "type": "string"
@@ -5468,7 +5473,7 @@
                                   "type": "array"
                                 }
                               },
-                              "required": ["expectType", "targets"],
+                              "required": ["expectType"],
                               "type": "object"
                             },
                             {
@@ -5489,11 +5494,7 @@
                                   "type": "array"
                                 }
                               },
-                              "required": [
-                                "expectType",
-                                "targets",
-                                "makesStable"
-                              ],
+                              "required": ["expectType", "makesStable"],
                               "type": "object"
                             },
                             {
@@ -5538,7 +5539,6 @@
                               },
                               "required": [
                                 "expectType",
-                                "targets",
                                 "leftState",
                                 "rightState"
                               ],
@@ -5626,7 +5626,6 @@
                               },
                               "required": [
                                 "expectType",
-                                "targets",
                                 "leftState",
                                 "rightState"
                               ],
@@ -7074,7 +7073,6 @@
                               },
                               "required": [
                                 "expectType",
-                                "targets",
                                 "leftState",
                                 "rightState"
                               ],
@@ -7120,7 +7118,6 @@
                               },
                               "required": [
                                 "expectType",
-                                "targets",
                                 "leftState",
                                 "rightState"
                               ],
@@ -7220,7 +7217,6 @@
                               },
                               "required": [
                                 "expectType",
-                                "targets",
                                 "leftState",
                                 "rightState"
                               ],
@@ -7245,7 +7241,7 @@
                                   "type": "array"
                                 }
                               },
-                              "required": ["expectType", "targets", "flip"],
+                              "required": ["expectType", "flip"],
                               "type": "object"
                             },
                             {
@@ -7316,7 +7312,6 @@
                               },
                               "required": [
                                 "expectType",
-                                "targets",
                                 "leftState",
                                 "rightState"
                               ],
@@ -7650,7 +7645,7 @@
                   },
                   "physicalPosition": {
                     "additionalProperties": false,
-                    "description": "where the sub-room actually starts and ends on the map (so we can work out which sub-room items are in)",
+                    "description": "where the sub-room actually starts and ends once loaded (so we can work out which sub-room items are in while the game is in-play)",
                     "properties": {
                       "from": {
                         "additionalProperties": false,

@@ -95,6 +95,8 @@ export default tseslint.config(
           partitionByComment: true,
         },
       ],
+
+      "@typescript-eslint/prefer-as-const": ["off"],
     },
   },
 );

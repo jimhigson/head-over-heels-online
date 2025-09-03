@@ -69,7 +69,11 @@ export const OpenCampaignDialog = ({
             <Button onClick={onClose} className="px-1 py-half bg-moss">
               <BitmapText>Create New</BitmapText>
             </Button>
-            <Button onClick={onClose} className="px-1 py-half">
+            <Button
+              onClick={onClose}
+              className="px-1 py-half"
+              shortcutKeys={["Escape"]}
+            >
               <BitmapText>Cancel</BitmapText>
             </Button>
           </div>
