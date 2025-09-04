@@ -132,14 +132,6 @@ export const applyModifiesList = <
         state: Record<string, unknown>;
       };
 
-      console.log(
-        "applying modifies item",
-        modifiesItem,
-        getNewState(modifiesItem, newSetting),
-        "to",
-        targetItemCast.id,
-      );
-
       // loop the states to modify:
       targetItemCast.state = {
         ...roomItem.state,
