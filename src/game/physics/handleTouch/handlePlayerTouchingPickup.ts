@@ -77,7 +77,7 @@ export const handlePlayerTouchingPickup = <
 
   const addFloatingText = (
     textLines: string[],
-    addToRoom: Pick<RoomState<RoomId, RoomItemId>, "items"> = roomWithPickup,
+    addToRoom: RoomState<RoomId, RoomItemId> = roomWithPickup,
   ) => {
     const pickupCentre = itemInPlayCentre(touchedItem);
     const floatingTextItem: ItemInPlay<"floatingText"> = {

@@ -3,20 +3,26 @@ import type { RoomJson } from "../../model/RoomJson";
 import type { RoomState } from "../../model/RoomState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import type { GameState, PickupsCollected } from "./GameState";
-import type { SavedGameState } from "./saving/SavedGameState";
+import type { SavedCharacterRooms, SavedGame } from "./saving/SavedGameState";
 
 import {
   type Campaign,
   type IndividualCharacterName,
 } from "../../model/modelTypes";
-import { getRoomItem } from "../../model/RoomState";
+import {
+  getRoomItem,
+  iterateRoomItems,
+  roomSpatialIndexKey,
+} from "../../model/RoomState";
 import { typedURLSearchParams } from "../../options/queryParams";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { emptyObject } from "../../utils/empty";
+import { transformObject } from "../../utils/entries";
 import {
   cheatRoomIdFromUrlHash,
   cheatsOn,
 } from "../components/cheats/cheatRoomIdFromUrlHash";
+import { GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
 import { loadRoom } from "./loadRoom/loadRoom";
 import { changeCharacterRoom } from "./mutators/changeCharacterRoom";
 import { entryState } from "./PlayableEntryState";
@@ -105,8 +111,27 @@ const getStartingRoomIds = <RoomId extends string>(
 type LoadGameStateOptions<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   inputStateTracker: InputStateTrackerInterface;
-  savedGame?: SavedGameState<RoomId>;
+  savedGame?: SavedGame<RoomId>;
   writeInto?: Partial<GameState<RoomId>>;
+};
+
+/** spatial indexes are not saved - re-create them on load */
+const indexSavedCharacterRooms = <RoomId extends string>(
+  loadedCharacterRooms: SavedCharacterRooms<RoomId>,
+) => {
+  return transformObject(
+    loadedCharacterRooms,
+    ([characterName, loadedRoom]) => {
+      const indexedRoom = {
+        ...loadedRoom,
+        [roomSpatialIndexKey]: new GridSpatialIndex(
+          iterateRoomItems(loadedRoom.items),
+        ),
+      };
+
+      return [characterName, indexedRoom];
+    },
+  );
 };
 
 const _loadGameState = <RoomId extends string>({
@@ -117,23 +142,27 @@ const _loadGameState = <RoomId extends string>({
 }: LoadGameStateOptions<RoomId>): GameState<RoomId> => {
   if (savedGame) {
     const savedGameCharacterRooms = savedGame.gameState.characterRooms;
-    const characterRooms = badJsonClone(savedGameCharacterRooms);
+    const loadedCharacterRooms = badJsonClone(savedGameCharacterRooms);
 
     if (
       savedGameCharacterRooms.head !== undefined &&
       savedGameCharacterRooms.head?.id === savedGameCharacterRooms.heels?.id
     ) {
       // we loaded two copies of the same room - reduce to one:
-      characterRooms.heels = characterRooms.head;
+      loadedCharacterRooms.heels = loadedCharacterRooms.head;
     }
 
-    return Object.assign(writeInto, {
+    Object.assign(writeInto, {
       inputStateTracker,
       gameSpeed: 1,
       // saved game can override any of the above
       ...badJsonClone(savedGame.gameState),
-      characterRooms,
     });
+
+    writeInto.characterRooms = indexSavedCharacterRooms(loadedCharacterRooms);
+
+    // cast here asserts that we have now added all the missing properties:
+    return writeInto as GameState<RoomId>;
   }
 
   const {

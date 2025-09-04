@@ -24,9 +24,15 @@ export const moveContainerToBlockXyz = (
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
 export const projectWorldXyzToScreenX = ({
-  x = 0,
-  y = 0,
-}: Partial<Xyz>): number => y - x;
+  x: xw = 0,
+  y: yw = 0,
+}: Partial<Xyz>): number => yw - xw;
+
+export const projectWorldXyzToScreenY = ({
+  x: xw = 0,
+  y: yw = 0,
+  z: zw = 0,
+}: Partial<Xyz>): number => -(xw + yw) / 2 - zw;
 
 export const projectWorldXyzToScreenXy = ({
   x: xw = 0,

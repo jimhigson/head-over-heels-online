@@ -1,7 +1,8 @@
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { Xyz } from "../../utils/vectors/vectors";
+import type { GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
 
-import { iterate } from "../../utils/iterate";
+import { always } from "../../utils/always";
 
 export type Collideable = Pick<UnionOfAllItemInPlayTypes, "aabb" | "id"> & {
   state: { position: Xyz };
@@ -33,32 +34,39 @@ export const collision1to1 = (
 };
 
 /**
- * check for collisions between a single item and multiple others
- */
-export const collision1toMany = <C extends Collideable>(
-  subject: Collideable,
-  items: Iterable<C>,
-): Array<C> => {
-  return [
-    ...iterate(items).filter(
-      (candidateItem) =>
-        // prevent self- collision
-        subject.id !== candidateItem.id &&
-        collision1to1(subject, candidateItem),
-    ),
-  ];
-};
-
-/**
  * Check for collisions between a single item and multiple others.
  *
  * Like collision1toMany but an iterator
+ *
+ * @deprecated - does not use the spatial index
  */
 export function* collision1toManyIter<C extends Collideable>(
   subject: Collideable,
   items: Iterable<C>,
 ): Generator<C> {
   for (const candidateItem of items) {
+    if (
+      // prevent self- collision
+      subject.id !== candidateItem.id &&
+      collision1to1(subject, candidateItem)
+    ) {
+      yield candidateItem;
+    }
+  }
+}
+
+/**
+ * Check for collisions between a single item and multiple others, using the spatial index
+ * so that the function scales well as number of items grows
+ */
+export function* collisionItemWithIndex<C extends Collideable>(
+  subject: Collideable,
+  index: GridSpatialIndex<string, string, C>,
+  considerItem: (item: C) => boolean = always,
+): Generator<C> {
+  for (const candidateItem of index
+    .iterateItemCuboidNeighbourhood(subject)
+    .filter(considerItem)) {
     if (
       // prevent self- collision
       subject.id !== candidateItem.id &&

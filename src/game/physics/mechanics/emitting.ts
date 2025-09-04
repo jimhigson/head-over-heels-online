@@ -50,11 +50,11 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
     if (newlyEmittedItem === undefined) {
       throw new Error("emitter failed to create a new item");
     }
-    newlyEmittedItem.state.position = subXyz(
-      position,
-      scaleXyz(newlyEmittedItem.aabb, 0.5),
-    );
-    addItemToRoom({ room, item: newlyEmittedItem });
+    addItemToRoom({
+      room,
+      item: newlyEmittedItem,
+      atPosition: subXyz(position, scaleXyz(newlyEmittedItem.aabb, 0.5)),
+    });
     emitter.state.lastEmittedAtRoomTime = room.roomTime + period;
     emitter.state.quantityEmitted++;
   }

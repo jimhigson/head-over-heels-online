@@ -1,8 +1,10 @@
+import { objectValues } from "iter-tools";
 import { describe, expect, test } from "vitest";
 
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 
-import { collision1toMany } from "../../collision/aabbCollision";
+import { collisionItemWithIndex } from "../../collision/aabbCollision";
+import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { toposort } from "./toposort/toposort";
 import { updateZEdges } from "./updateZEdges";
 
@@ -381,7 +383,8 @@ describe("cyclic dependencies", () => {
 
     // verify that the items aren't illegally colliding (which would make this test maybe invalid)
     for (const i of Object.values(items)) {
-      expect(collision1toMany(i, Object.values(items))).toEqual([]);
+      const index = new GridSpatialIndex(objectValues(items));
+      expect(collisionItemWithIndex(i, index).toArray()).toEqual([]);
     }
 
     const relations = updateZEdges(items);

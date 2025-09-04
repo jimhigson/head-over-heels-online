@@ -14,7 +14,7 @@ import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
 import type { RoomRendererType } from "./RoomRendererType";
 import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
-import { iterateRoomItems } from "../../model/RoomState";
+import { iterateRoomItems, roomSpatialIndexKey } from "../../model/RoomState";
 import { audioCtx } from "../../sound/audioCtx";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
@@ -35,7 +35,12 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
    * renders all items *except* the room edge, since the floor edge is the only
    * item that is colourised differently when colourisation is turned off
    */
-  #itemsContainer: Container = new Container({ label: "items" });
+  #itemsContainer: Container = new Container({
+    label: "items",
+    // items can be skipped if not visible - gives a small performance boost
+    // on scenes with lots of items and scrolling
+    cullableChildren: true,
+  });
   /**
    * render into this layer to simulate zxs colour clash; only needed
    * when not colourised
@@ -283,12 +288,16 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         }
       );
 
+    const {
+      renderContext: { room },
+    } = this;
+
     // it it important that we sort before rendering. This is because sorting updates
     // this.#brokenLinks, which will be used in this.#tickItems to update the rendering,
     // which can be influenced by the broken links (by showing masking)
-
     updateZEdges<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>, RoomItemId>(
-      this.renderContext.room.items,
+      room.items,
+      room[roomSpatialIndexKey],
       tickContext.movedItems,
       // this.#incrementalZEdges will be updated in-place by the zEdges function to match
       // the current ordering state of the room, starting from the previous ordering state

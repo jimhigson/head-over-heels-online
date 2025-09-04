@@ -176,6 +176,6 @@ export const wallHeightPx = wallTileSize.h - wallTileSize.w / 2;
 // extra pixels:
 export const wallRenderHeight = wallHeightPx + 2;
 
-// walls, shadows, etc essentially go up forever so nothing can get on top of them
-// - about 800 blocks high!
-export const veryHighZ = 9999;
+// the practical limit of how high an item can go in a room. Above this height it is
+// possible to get 'over' the walls and go out of bounds.
+export const veryHighZ = blockSizePx.h * 16;

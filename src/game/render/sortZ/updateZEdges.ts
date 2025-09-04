@@ -2,6 +2,7 @@
 
 import { objectValues } from "iter-tools";
 
+import type { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 
 import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
@@ -22,6 +23,7 @@ export const updateZEdges = <
   Tid extends string,
 >(
   items: Record<Tid, TItem>,
+  spatialIndex: GridSpatialIndex<string, Tid, TItem>,
   /**
    * the nodes that have moved - nodes that did not move are not considered
    *  - if not given, wil consider all
@@ -49,8 +51,6 @@ export const updateZEdges = <
     }
   }
 
-  // ⚠⚠ WARNING QUADRATIC LOOPING! ⚠⚠
-  // ⚠⚠ compares every item pair, where one of the pair has moved ⚠⚠
   for (const itemI of moved) {
     if (itemI.fixedZIndex !== undefined) {
       continue;
@@ -60,7 +60,7 @@ export const updateZEdges = <
     // - only unmoved/unmoved pairs can be skipped since they
     // are known not to have changed
     // ie - every moved node is compared again against every other node
-    for (const itemJ of objectValues(items) as Iterable<TItem>) {
+    for (const itemJ of spatialIndex.iterateItemRectNeighbourhood(itemI)) {
       if (
         itemJ.fixedZIndex !== undefined ||
         // already compared the other way:

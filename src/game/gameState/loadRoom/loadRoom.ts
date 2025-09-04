@@ -5,14 +5,15 @@ import type { RoomPickupsCollected } from "../GameState";
 
 import {
   iterateRoomItems,
-  roomItemsIterable,
+  roomSpatialIndexKey,
   type RoomState,
   type RoomStateItems,
 } from "../../../model/RoomState";
 import { entries } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
-import { collision1toMany } from "../../collision/aabbCollision";
+import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
+import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { isFreeItem, isSolid } from "../../physics/itemPredicates";
 import { setStandingOn } from "../mutators/setStandingOn";
 import { loadItemFromJson } from "./loadItemFromJson";
@@ -79,10 +80,11 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     ...roomItems,
   };
 
-  // the physics will go nuts if things are overlapping, so check and reject
-  // if they are:
+  const spatialIndex = new GridSpatialIndex(iterateRoomItems(items));
+
+  // warn if anything is overlapping in the room
   for (const i of iterateRoomItems(items)) {
-    const collisions = collision1toMany(i, roomItemsIterable(items));
+    const collisions = collisionItemWithIndex(i, spatialIndex);
     const solidCol = collisions.find(
       (col) =>
         isSolid(i) &&
@@ -115,6 +117,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     roomJson,
     items,
     roomTime: 0,
+    [roomSpatialIndexKey]: spatialIndex,
   };
 
   return roomState;

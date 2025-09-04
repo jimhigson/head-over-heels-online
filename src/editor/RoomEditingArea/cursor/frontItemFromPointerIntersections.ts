@@ -2,12 +2,14 @@ import type { SetRequired } from "type-fest";
 
 import type {
   EditorRoomItemId,
+  EditorRoomState,
   EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import type { PointerItemIntersection } from "./pointIntersectsItemAABB";
 
 import { toposort } from "../../../game/render/sortZ/toposort/toposort";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
+import { roomSpatialIndexKey } from "../../../model/RoomState";
 
 const isFixedZIndexItem = (
   i: EditorUnionOfAllItemInPlayTypes,
@@ -18,6 +20,7 @@ export const frontItemFromPointerIntersections = (
   intersections: Array<
     [EditorUnionOfAllItemInPlayTypes, PointerItemIntersection]
   >,
+  room: EditorRoomState,
 ): EditorUnionOfAllItemInPlayTypes | undefined => {
   const someIntersectRendered = intersections.some(
     ([, int]) => int === "intersects-rendered",
@@ -60,7 +63,10 @@ export const frontItemFromPointerIntersections = (
   /**
    * note: zEdges will not include ids of items with fixed z order
    */
-  const ze = updateZEdges(topographicallySortableItemsMap);
+  const ze = updateZEdges(
+    topographicallySortableItemsMap,
+    room[roomSpatialIndexKey],
+  );
   const order = toposort(ze);
 
   // items are sorted back-to-front, so we need the last one:

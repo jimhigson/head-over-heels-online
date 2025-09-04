@@ -1,14 +1,11 @@
-import { Container } from "pixi.js";
+import type { Container } from "pixi.js";
 
 import type {
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-} from "../../ItemRenderContexts";
+import type { ItemRenderContext } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
@@ -21,6 +18,7 @@ import {
 import { debugItemClicked } from "../../../../store/slices/gameMenusSlice";
 import { store } from "../../../../store/store";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
+import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
 import { maybeWrapInEditorSelectedRenderer } from "./EditorAnnotationsRenderer";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
@@ -157,32 +155,3 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     itemAppearanceRenderer,
   };
 };
-
-class CompositeItemGraphicsRenderer<T extends ItemInPlayType>
-  implements ItemPixiRenderer<T>
-{
-  #componentRenderers: ItemPixiRenderer<T>[];
-  #container: Container = new Container({ label: "CompositeRenderer" });
-  constructor(
-    componentRenderers: ItemPixiRenderer<T>[],
-    /* the composite renderer doesn't actually use the render context, but it's needed 
-       to implement the interface */
-    public readonly renderContext: ItemRenderContext<T>,
-  ) {
-    this.#componentRenderers = componentRenderers;
-    this.#container.addChild(...componentRenderers.map((r) => r.output));
-  }
-  tick(tickContext: ItemTickContext) {
-    for (const componentRenderer of this.#componentRenderers) {
-      componentRenderer.tick(tickContext);
-    }
-  }
-  destroy() {
-    for (const componentRenderer of this.#componentRenderers) {
-      componentRenderer.destroy();
-    }
-  }
-  get output() {
-    return this.#container;
-  }
-}
