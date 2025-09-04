@@ -165,20 +165,14 @@
   },
   {
     "op": "add",
-    "path": "/items/mosnterSwitch",
+    "path": "/items/monsterSwitch",
     "value": {
       "config": {
         "initialSetting": "left",
         "modifies": [
           {
             "activates": true,
-            "expectType": "monster",
-            "targets": [
-              "extraMonster",
-              "extraMonster2",
-              "extraMonster3",
-              "extraMonster4"
-            ]
+            "expectType": "monster"
           }
         ],
         "type": "in-room"

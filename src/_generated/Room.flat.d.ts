@@ -577,7 +577,7 @@ export type RoomJsonSchema = {
               modifies: (
                 | {
                     expectType: "monster" | "movingPlatform";
-                    targets: string[];
+                    targets?: string[];
                     /**
                      * true is a shorthand for monsters/platforms that are activated by default:
                      *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
@@ -585,6 +585,10 @@ export type RoomJsonSchema = {
                      *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
                      */
                     activates?: false | true;
+                    /**
+                     * shortcut - gives this direction for left state and opposite direction for right state
+                     */
+                    switchedDirection?: "right" | "towards" | "away" | "left";
                     leftState?: {
                       /**
                        * if given, the item disappears after the specified interaction.
@@ -750,7 +754,7 @@ export type RoomJsonSchema = {
                   }
                 | {
                     expectType: "block";
-                    targets: string[];
+                    targets?: string[];
                     /**
                      * if true, equivalent to leftState disappearing on stand, right state not disappearing
                      * if false, equivalent to leftState not disappearing, right state disappearing on stand
@@ -759,7 +763,7 @@ export type RoomJsonSchema = {
                   }
                 | {
                     expectType: "block";
-                    targets: string[];
+                    targets?: string[];
                     leftState: {
                       disappearing?: {
                         on: "stand";
@@ -771,7 +775,7 @@ export type RoomJsonSchema = {
                   }
                 | {
                     expectType: "conveyor";
-                    targets: string[];
+                    targets?: string[];
                     leftState: {
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
@@ -787,7 +791,7 @@ export type RoomJsonSchema = {
                   }
                 | {
                     expectType: "emitter";
-                    targets: string[];
+                    targets?: string[];
                     leftState: {
                       lastEmittedAtRoomTime?: number;
                       quantityEmitted?: number;
@@ -1273,7 +1277,7 @@ export type RoomJsonSchema = {
                   }
                 | {
                     expectType: "joystick";
-                    targets: string[];
+                    targets?: string[];
                     leftState: {
                       controls?: string[];
                     };
@@ -1283,7 +1287,7 @@ export type RoomJsonSchema = {
                   }
                 | {
                     expectType: "lift";
-                    targets: string[];
+                    targets?: string[];
                     leftState: {
                       direction?: "down" | "up";
                       vels?: {
@@ -1311,7 +1315,7 @@ export type RoomJsonSchema = {
                   }
                 | {
                     expectType: "switch";
-                    targets: string[];
+                    targets?: string[];
                     /**
                      * this switch will flip the other switch when it is flipped
                      */
@@ -1319,7 +1323,7 @@ export type RoomJsonSchema = {
                   }
                 | {
                     expectType: "teleporter";
-                    targets: string[];
+                    targets?: string[];
                     leftState: {
                       toRoom: string;
                       toPosition: {
@@ -1755,7 +1759,7 @@ export type RoomJsonSchema = {
           modifies: (
             | {
                 expectType: "monster" | "movingPlatform";
-                targets: string[];
+                targets?: string[];
                 /**
                  * true is a shorthand for monsters/platforms that are activated by default:
                  *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
@@ -1763,6 +1767,10 @@ export type RoomJsonSchema = {
                  *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
                  */
                 activates?: false | true;
+                /**
+                 * shortcut - gives this direction for left state and opposite direction for right state
+                 */
+                switchedDirection?: "right" | "towards" | "away" | "left";
                 leftState?: {
                   /**
                    * if given, the item disappears after the specified interaction.
@@ -1928,7 +1936,7 @@ export type RoomJsonSchema = {
               }
             | {
                 expectType: "block";
-                targets: string[];
+                targets?: string[];
                 /**
                  * if true, equivalent to leftState disappearing on stand, right state not disappearing
                  * if false, equivalent to leftState not disappearing, right state disappearing on stand
@@ -1937,7 +1945,7 @@ export type RoomJsonSchema = {
               }
             | {
                 expectType: "block";
-                targets: string[];
+                targets?: string[];
                 leftState: {
                   disappearing?: {
                     on: "stand";
@@ -1949,7 +1957,7 @@ export type RoomJsonSchema = {
               }
             | {
                 expectType: "conveyor";
-                targets: string[];
+                targets?: string[];
                 leftState: {
                   direction?: "right" | "towards" | "away" | "left";
                   disappearing?: null | {
@@ -1965,7 +1973,7 @@ export type RoomJsonSchema = {
               }
             | {
                 expectType: "emitter";
-                targets: string[];
+                targets?: string[];
                 leftState: {
                   lastEmittedAtRoomTime?: number;
                   quantityEmitted?: number;
@@ -2411,7 +2419,7 @@ export type RoomJsonSchema = {
               }
             | {
                 expectType: "joystick";
-                targets: string[];
+                targets?: string[];
                 leftState: {
                   controls?: string[];
                 };
@@ -2421,7 +2429,7 @@ export type RoomJsonSchema = {
               }
             | {
                 expectType: "lift";
-                targets: string[];
+                targets?: string[];
                 leftState: {
                   direction?: "down" | "up";
                   vels?: {
@@ -2449,7 +2457,7 @@ export type RoomJsonSchema = {
               }
             | {
                 expectType: "switch";
-                targets: string[];
+                targets?: string[];
                 /**
                  * this switch will flip the other switch when it is flipped
                  */
@@ -2457,7 +2465,7 @@ export type RoomJsonSchema = {
               }
             | {
                 expectType: "teleporter";
-                targets: string[];
+                targets?: string[];
                 leftState: {
                   toRoom: string;
                   toPosition: {
@@ -2553,8 +2561,8 @@ export type RoomJsonSchema = {
           y: number;
         };
         /**
-         * where the sub-room actually starts and ends on the map (so we
-         * can work out which sub-room items are in)
+         * where the sub-room actually starts and ends once loaded (so we
+         * can work out which sub-room items are in while the game is in-play)
          */
         physicalPosition: {
           from: {

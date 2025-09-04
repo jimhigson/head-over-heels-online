@@ -18,7 +18,7 @@ export type SwitchItemModificationUnion<
   //    * sequel/turtle_dance
   | {
       expectType: "monster" | "movingPlatform";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       /**
        * true is a shorthand for monsters/platforms that are activated by default:
        *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
@@ -26,6 +26,10 @@ export type SwitchItemModificationUnion<
        *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
        */
       activates?: boolean;
+
+      /** shortcut - gives this direction for left state and opposite direction for right state */
+      switchedDirection?: DirectionXy4;
+
       leftState?: Partial<
         Pick<
           ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
@@ -42,7 +46,7 @@ export type SwitchItemModificationUnion<
   // turning off disappearing blocks:
   | {
       expectType: "block";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       /**
        * if true, equivalent to leftState disappearing on stand, right state not disappearing
        * if false, equivalent to leftState not disappearing, right state disappearing on stand
@@ -51,7 +55,7 @@ export type SwitchItemModificationUnion<
     }
   | {
       expectType: "block";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       leftState: Subset<
         Partial<ItemState<"block", RoomId, RoomItemId>>,
         {
@@ -76,7 +80,7 @@ export type SwitchItemModificationUnion<
   //    * sequel/turtle_dance
   | {
       expectType: "conveyor";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       leftState: Subset<
         Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
         {
@@ -98,13 +102,13 @@ export type SwitchItemModificationUnion<
     }
   | {
       expectType: "emitter";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       leftState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;
       rightState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;
     }
   | {
       expectType: "joystick";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       leftState: Partial<
         Pick<ItemStateMap<RoomId, RoomItemId>["joystick"], "controls">
       >;
@@ -114,19 +118,19 @@ export type SwitchItemModificationUnion<
     }
   | {
       expectType: "lift";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       leftState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
       rightState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
     }
   | {
       expectType: "switch";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       /** this switch will flip the other switch when it is flipped */
       flip: true;
     }
   | {
       expectType: "teleporter";
-      targets: RoomItemId[];
+      targets?: RoomItemId[];
       leftState: Subset<
         Partial<ItemStateMap<RoomId, RoomItemId>["teleporter"]>,
         {

@@ -6,9 +6,15 @@ import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion
 import type {
   EditorItemInPlayUnion,
   EditorRoomId,
+  EditorRoomItemId,
 } from "../../../../editor/editorTypes";
 import type { RootStateWithLevelEditorSlice } from "../../../../editor/slice/levelEditorSlice";
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type {
+  ItemInPlay,
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../../../model/ItemInPlay";
+import type { SwitchItemModificationUnion } from "../../../../model/json/SwitchConfig";
 import type { JsonMovement } from "../../../../model/json/utilityJsonConfigTypes";
 import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
 import type {
@@ -35,7 +41,7 @@ import { showTextInContainer } from "../../hud/showNumberInContainer";
 const selectionColour = spritesheetPalette.pastelBlue;
 const pointerHoverFilter = outlineFilters.highlightBeige;
 const eyeDropperHoverFilter = outlineFilters.midRed;
-const connectedToSwitchFilter = outlineFilters.white;
+const controlHighlightFilter = outlineFilters.white;
 const selectedFilter = new RevertColouriseFilter(selectionColour);
 
 const directionArrows = {
@@ -43,6 +49,23 @@ const directionArrows = {
   away: `↗`,
   right: `↘`,
   towards: `↙`,
+};
+
+const isItemThatControlsOtherItems = (
+  item: UnionOfAllItemInPlayTypes<string, string>,
+): item is
+  | ItemInPlay<"button">
+  | (ItemInPlay<"switch"> & {
+      config: {
+        modifies: Array<
+          SwitchItemModificationUnion<EditorRoomId, EditorRoomItemId>
+        >;
+      };
+    }) => {
+  return (
+    (item.type === "switch" && item.config.type === "in-room") ||
+    item.type === "button"
+  );
 };
 
 const movementPatternAnnotationText = (
@@ -361,27 +384,36 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     const isSelected =
       jsonItemId && (selectedJsonItemIds as string[]).includes(jsonItemId);
 
-    const isConnectedToSwitch = () =>
+    const showControlHighlight = () =>
       jsonItemId !== undefined &&
-      // highlight the connected item with the switch is hovered:
+      // when switch is hovered, highlight the items it controls:
       (iterateRoomItems(room.items).some((otherItem) => {
         return (
           otherItem.jsonItemId === hoveredJsonItem?.jsonItemId &&
-          otherItem.type === "switch" &&
-          otherItem.config.type === "in-room" &&
-          otherItem.config.modifies.some((m) => m.targets.includes(jsonItemId))
+          isItemThatControlsOtherItems(otherItem) &&
+          otherItem.config.modifies.some((m) => {
+            return (
+              m.expectType === item.type &&
+              (m.targets === undefined || m.targets.includes(jsonItemId))
+            );
+          })
         );
       }) ||
         // highlight the switch when the item it is connected to is hovered
-        (item.type === "switch" &&
+        (isItemThatControlsOtherItems(item) &&
           iterateRoomItems(room.items).some(
-            ({ jsonItemId: otherItemJsonItemId }) => {
+            ({
+              jsonItemId: maybeSwitchedItemJsonItemId,
+              type: maybeSwitchedItemType,
+            }) => {
               return (
-                otherItemJsonItemId !== undefined &&
-                otherItemJsonItemId === hoveredJsonItem?.jsonItemId &&
-                item.config.type === "in-room" &&
-                item.config.modifies.some((m) =>
-                  m.targets.includes(otherItemJsonItemId),
+                maybeSwitchedItemJsonItemId !== undefined &&
+                maybeSwitchedItemJsonItemId === hoveredJsonItem?.jsonItemId &&
+                item.config.modifies.some(
+                  (m) =>
+                    m.expectType === maybeSwitchedItemType &&
+                    (m.targets === undefined ||
+                      m.targets.includes(maybeSwitchedItemJsonItemId)),
                 )
               );
             },
@@ -412,7 +444,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           eyeDropperHoverFilter
         : pointerHoverFilter
       : isSelected ? selectedFilter
-      : isConnectedToSwitch() ? connectedToSwitchFilter
+      : showControlHighlight() ? controlHighlightFilter
       : noFilters;
   }
 

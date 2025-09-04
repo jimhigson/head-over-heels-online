@@ -1,5 +1,9 @@
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import type { EditorJsonItem, EditorRoomJson } from "../../editorTypes";
+import type {
+  EditorJsonItem,
+  EditorRoomItemId,
+  EditorRoomJson,
+} from "../../editorTypes";
 import type { ItemTool } from "../../Tool";
 import type { LevelEditorState } from "../levelEditorSlice";
 
@@ -96,6 +100,72 @@ const roomFloorMaxX = (roomJson: EditorRoomJson): number =>
     Number.NEGATIVE_INFINITY,
   );
 
+export const addReturnDoorInPlace = ({
+  state,
+  fromRoomJson,
+  toRoomJson,
+  outgoingDoorEntry: [outgoingDoorId, outgoingDoor],
+}: {
+  state: LevelEditorState;
+  fromRoomJson: EditorRoomJson;
+  toRoomJson: EditorRoomJson;
+  outgoingDoorEntry: [EditorRoomItemId, EditorJsonItem<"door">];
+}) => {
+  const outgoingDirection = outgoingDoor.config.direction;
+  const outgoingPosition = outgoingDoor.position;
+  const fromDoorSubroom = findSubRoomForItem(
+    outgoingDoor.position,
+    "block",
+    fromRoomJson,
+  );
+
+  const returnDoorId = nextItemId(toRoomJson, "door");
+
+  const returnDoorPosition: Xyz = {
+    x:
+      outgoingDirection === "left" ? roomFloorMinX(toRoomJson)
+      : outgoingDirection === "right" ? roomFloorMaxX(toRoomJson)
+        // line up to match the door we just added (this assumes the room going to is big enough)
+      : outgoingPosition.x,
+    y:
+      outgoingDirection === "away" ? roomFloorMinY(toRoomJson)
+      : outgoingDirection === "towards" ? roomFloorMaxY(toRoomJson)
+        // line up to match the door we just added (this assumes the room going to is big enough)
+      : outgoingPosition.y,
+    z: outgoingPosition.z,
+  };
+
+  const returnDoorDirection = oppositeDirection(outgoingDirection);
+
+  const returnDoorItemJson: EditorJsonItem<"door"> = {
+    type: "door",
+    config: {
+      toRoom: fromRoomJson.id,
+      direction: returnDoorDirection,
+      meta:
+        fromDoorSubroom === "*" ? undefined : (
+          {
+            toSubRoom: fromDoorSubroom,
+          }
+        ),
+    },
+    position: returnDoorPosition,
+  };
+
+  toRoomJson.items[returnDoorId] = returnDoorItemJson;
+
+  returnDoorItemJson.config.toDoor = outgoingDoorId;
+  outgoingDoor.config.toDoor = returnDoorId;
+
+  cutHoleInWallsForDoorsInPlace(
+    state,
+    toRoomJson.id,
+    returnDoorDirection,
+    returnDoorPosition,
+    false,
+  );
+};
+
 export const addDoorInPlace = (
   state: LevelEditorState,
   blockPosition: Xyz,
@@ -151,50 +221,11 @@ export const addDoorInPlace = (
   );
 
   if (!isPreview && toRoomJson) {
-    const returnDoorId = nextItemId(toRoomJson, toolItem, isPreview);
-
-    const returnDoorPosition: Xyz = {
-      x:
-        doorDirection === "left" ? roomFloorMinX(toRoomJson)
-        : doorDirection === "right" ? roomFloorMaxX(toRoomJson)
-          // line up to match the door we just added (this assumes the room going to is big enough)
-        : blockPosition.x,
-      y:
-        doorDirection === "away" ? roomFloorMinY(toRoomJson)
-        : doorDirection === "towards" ? roomFloorMaxY(toRoomJson)
-          // line up to match the door we just added (this assumes the room going to is big enough)
-        : blockPosition.y,
-      z: blockPosition.z,
-    };
-
-    const returnDoorDirection = oppositeDirection(doorDirection);
-
-    const returnDoorItemJson: EditorJsonItem<"door"> = {
-      type: "door",
-      config: {
-        toRoom: fromRoomJson.id,
-        direction: returnDoorDirection,
-        meta:
-          fromDoorSubroom === "*" ? undefined : (
-            {
-              toSubRoom: fromDoorSubroom,
-            }
-          ),
-      },
-      position: returnDoorPosition,
-    };
-
-    toRoomJson.items[returnDoorId] = returnDoorItemJson;
-
-    returnDoorItemJson.config.toDoor = doorId;
-    doorJsonItem.config.toDoor = returnDoorId;
-
-    cutHoleInWallsForDoorsInPlace(
+    addReturnDoorInPlace({
       state,
-      toRoomJson.id,
-      returnDoorDirection,
-      returnDoorPosition,
-      false,
-    );
+      fromRoomJson,
+      toRoomJson,
+      outgoingDoorEntry: [doorId, doorJsonItem],
+    });
   }
 };

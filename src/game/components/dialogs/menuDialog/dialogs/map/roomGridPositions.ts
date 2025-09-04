@@ -20,7 +20,7 @@ import {
   subXyz,
   xyEqual,
 } from "../../../../../../utils/vectors/vectors";
-import { jsonItemIsInSubRoom } from "./itemIsInSubRoom";
+import { findSubRoomForItem } from "./itemIsInSubRoom";
 
 type RoomGridPositionsOptions<RoomId extends string> = {
   roomId: RoomId;
@@ -118,7 +118,11 @@ function* _roomGridPositions<RoomId extends string>({
   const doors = [
     ...iterate(objectValues(room.items))
       .filter((item) => item.type === "door")
-      .filter((door) => jsonItemIsInSubRoom(door, subRoomId, room)),
+      // DOORS ARE NOT DETECTED AS IN THE SUB_ROOM - use closest instead!!
+      .filter(
+        (door) =>
+          findSubRoomForItem(door.position, "block", room) === subRoomId,
+      ),
   ];
 
   const gridPosition: Xyz = addXyz(

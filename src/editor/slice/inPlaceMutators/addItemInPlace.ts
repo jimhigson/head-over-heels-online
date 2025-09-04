@@ -20,7 +20,21 @@ import type {
 
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
-export const nextItemId = <T extends JsonItemType = JsonItemType>(
+export const nextItemId = (
+  targetRoomJson: EditorRoomJson,
+  baseName: string,
+): EditorRoomItemId => {
+  // eslint-disable-next-line no-constant-condition -- while(true) is ok; this will terminate
+  for (let i = 1; true; i++) {
+    const itemId = (
+      i === 1 ? baseName : `${baseName}_${i}`) as EditorRoomItemId;
+    if (!targetRoomJson.items[itemId]) {
+      return itemId;
+    }
+  }
+};
+
+export const nextItemIdForItemTool = <T extends JsonItemType = JsonItemType>(
   targetRoomJson: EditorRoomJson,
   itemTool: ItemTool<T>,
   isPreview: boolean,
@@ -45,14 +59,7 @@ export const nextItemId = <T extends JsonItemType = JsonItemType>(
       (itemTool.config as MonsterJsonConfig).which
     : itemTool.type;
 
-  // eslint-disable-next-line no-constant-condition -- while(true) is ok; this will terminate
-  for (let i = 1; true; i++) {
-    const itemId = (
-      i === 1 ? baseName : `${baseName}_${i}`) as EditorRoomItemId;
-    if (!targetRoomJson.items[itemId]) {
-      return itemId;
-    }
-  }
+  return nextItemId(targetRoomJson, baseName);
 };
 
 export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
@@ -62,7 +69,7 @@ export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   isPreview: boolean,
 ): [EditorRoomItemId, EditorJsonItem<T>] => {
   const room = selectCurrentRoomFromLevelEditorState(state);
-  const id = nextItemId(room, itemTool, isPreview);
+  const id = nextItemIdForItemTool(room, itemTool, isPreview);
 
   const target = roomEditTarget(state, isPreview);
 

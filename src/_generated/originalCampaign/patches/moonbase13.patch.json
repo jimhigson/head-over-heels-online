@@ -14,25 +14,12 @@
         "initialSetting": "right",
         "modifies": [
           {
-            "expectType": "monster",
-            "leftState": {
-              "activated": true,
-              "everActivated": true
-            },
-            "rightState": {
-              "activated": false
-            },
-            "targets": [
-              "monster@0,2,1",
-              "monster@0,3,1",
-              "monster@0,4,1",
-              "monster@0,5,1"
-            ]
+            "activates": true,
+            "expectType": "monster"
           },
           {
             "expectType": "switch",
-            "flip": true,
-            "targets": ["switch2"]
+            "flip": true
           }
         ],
         "type": "in-room"
@@ -53,25 +40,8 @@
         "initialSetting": "right",
         "modifies": [
           {
-            "expectType": "monster",
-            "leftState": {
-              "activated": true,
-              "everActivated": true
-            },
-            "rightState": {
-              "activated": false
-            },
-            "targets": [
-              "monster@0,2,1",
-              "monster@0,3,1",
-              "monster@0,4,1",
-              "monster@0,5,1"
-            ]
-          },
-          {
             "expectType": "switch",
-            "flip": true,
-            "targets": ["switch"]
+            "flip": true
           }
         ],
         "type": "in-room"

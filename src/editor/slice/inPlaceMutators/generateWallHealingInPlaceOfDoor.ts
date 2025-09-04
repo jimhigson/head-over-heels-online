@@ -9,7 +9,7 @@ import {
   type WallJsonConfig,
 } from "../../../model/json/WallJsonConfig";
 import { rotatingSceneryTiles } from "../createStarterRoom";
-import { nextItemId } from "./addItemInPlace";
+import { nextItemIdForItemTool } from "./addItemInPlace";
 
 export function* generateWallHealingInPlaceOfDoor(
   item: EditorJsonItem<"door">,
@@ -43,7 +43,7 @@ export function* generateWallHealingInPlaceOfDoor(
 
   // deleting a door - replace with the equivalent wall, and then consolidate to
   // join the new wall with adjacent walls:
-  const nextWallId = nextItemId(roomJson, replacementWall, false);
+  const nextWallId = nextItemIdForItemTool(roomJson, replacementWall, false);
 
   yield [nextWallId, replacementWall];
 }
