@@ -81,6 +81,7 @@ const gamepadAssignment: InputAssignmentPreset = {
       },
       fire: { gamepadButtons: [standardControllerLayout.b] },
       swop: { gamepadButtons: [standardControllerLayout.rb] },
+      lookShift: { gamepadButtons: [standardControllerLayout.rt] },
       ["swop.head"]: {
         gamepadButtons: [standardControllerLayout.l3],
       },
@@ -225,6 +226,9 @@ const defaultAssignment: InputAssignmentPreset = {
         },
         lookRight: {
           keys: ["L"],
+        },
+        lookShift: {
+          keys: ["C"],
         },
       },
     },

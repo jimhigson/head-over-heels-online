@@ -29,6 +29,9 @@ export const booleanActions = [
   "menu_exit",
   "map",
   ...directionsXy4,
+
+  // hold to use the main direction inputs to look around:
+  "lookShift",
   ...lookDirectionsXy4,
 ] as const;
 export type BooleanAction = (typeof booleanActions)[number];

@@ -201,6 +201,16 @@ export class InputStateTracker {
 
   /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
   #getDirectionXy4ForTick = (): Xyz => {
+    const currentFrameInput = this.#frameInputBuffer.at(0);
+
+    if (
+      currentFrameInput === undefined ||
+      // look-shift means none of the directional input goes into the main (character movement etc) input:
+      isActionPressed(currentFrameInput, "lookShift", false)
+    ) {
+      return originXyz;
+    }
+
     let l;
     let r;
     let a;
@@ -246,7 +256,7 @@ export class InputStateTracker {
   };
 
   /**
-   * get the XY(z) vectors for the binary inputs
+   * get XY(z) vectors for binary inputs
    */
   *#pressVectors<D extends BooleanAction>(
     input: FrameInput,
@@ -303,7 +313,11 @@ export class InputStateTracker {
   #getDirectionAnalogueOrXy8ForTick(): Xyz {
     const currentFrameInput = this.#frameInputBuffer.at(0);
 
-    if (currentFrameInput === undefined) {
+    if (
+      currentFrameInput === undefined ||
+      // look-shift means none of the directional input goes into the main (character movement etc) input:
+      isActionPressed(currentFrameInput, "lookShift", false)
+    ) {
       return originXyz;
     }
 
@@ -378,6 +392,8 @@ export class InputStateTracker {
       return originXyz;
     }
 
+    const lookShift = isActionPressed(currentFrameInput, "lookShift", false);
+
     return constrainUnitRange(
       addXyz(
         ...this.#pressVectors(
@@ -386,6 +402,12 @@ export class InputStateTracker {
           lookUnitVectors,
         ),
         ...this.#axisVectors(currentFrameInput, "xLook", "yLook", -1, -1),
+        ...(lookShift ?
+          this.#pressVectors(currentFrameInput, directionsXy4, unitVectors)
+        : emptyArray),
+        ...(lookShift ?
+          this.#axisVectors(currentFrameInput, "x", "y", -1, -1)
+        : emptyArray),
       ),
     );
   }
@@ -407,7 +429,7 @@ export class InputStateTracker {
               this.#getDirectionXy4ForTick()
             : this.#getDirectionAnalogueOrXy8ForTick(),
           ),
-          // hudinput is never rotated
+          // hudinput is never rotated or look-shifted
           this.hudInputState.directionVector,
         ),
       ),

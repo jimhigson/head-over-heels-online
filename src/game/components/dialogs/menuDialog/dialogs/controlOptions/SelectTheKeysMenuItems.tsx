@@ -264,6 +264,19 @@ export const SelectTheKeysMenuItems = () => {
         </BitmapText>
       </div>
       <MenuItem
+        id="lookShift"
+        label={`Look`}
+        valueElement={<SelectKeysMenuAssignmentValue action="lookShift" />}
+        onSelect={useDispatchActionCallback(assignInputStart, "lookShift")}
+        hint={
+          <BlockyMarkdown
+            className="text-midGrey zx:text-zxBlack"
+            markdown={`Hold the look key and press a direction to look around the room`}
+          />
+        }
+        hintInline
+      />
+      <MenuItem
         id="lookLeft"
         label={`Look ⬅`}
         valueElement={<SelectKeysMenuAssignmentValue action="lookLeft" />}
