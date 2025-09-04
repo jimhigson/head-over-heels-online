@@ -1,7 +1,5 @@
 import type { Application, Filter, Ticker } from "pixi.js";
 
-import { AdvancedBloomFilter } from "pixi-filters/advanced-bloom";
-import { CRTFilter } from "pixi-filters/crt";
 import { Container } from "pixi.js";
 
 import type { GameState } from "../gameState/GameState";
@@ -26,34 +24,21 @@ import { emptySet } from "../../utils/empty";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
+import { noFilters } from "../render/filters/standardFilters";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { RoomRenderer } from "../render/roomRenderer";
 import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
+import { getTimingStats } from "./FrameTimingStats";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const topLevelFilters = (
-  { crtFilter }: DisplaySettings,
-  paused: boolean,
+  _displaySettings: DisplaySettings,
+  _paused: boolean,
 ): Filter[] => {
-  return [
-    crtFilter ?
-      new CRTFilter({
-        // this is only really being used for the vignette now, and could be
-        // rewritten into a simpler filter:
-        lineContrast: paused ? 0.3 : 0,
-        vignetting: paused ? 0.4 : 0.2,
-      })
-    : undefined,
-    crtFilter ?
-      new AdvancedBloomFilter({
-        threshold: 0.7,
-        brightness: 0.9,
-        bloomScale: 0.6,
-        blur: 10,
-      })
-    : undefined,
-  ].filter((f) => f !== undefined);
+  // TODO: crt filter here if displaySettings allows it, but the old one
+  // looked bad so disabled it for now
+  return noFilters;
 };
 
 export class MainLoop<RoomId extends string> {
@@ -126,6 +111,7 @@ export class MainLoop<RoomId extends string> {
   };
 
   private tick = ({ deltaMS }: Ticker): void => {
+    const timingStats = getTimingStats();
     const tickState = store.getState();
 
     if (selectHasError(tickState)) {
@@ -153,6 +139,8 @@ export class MainLoop<RoomId extends string> {
         defaultUserSettings.displaySettings.uncolourised
       );
 
+    // render hud start
+    timingStats?.startHudUpdate();
     const tickOnScreenControls = selectShouldRenderOnScreenControls(tickState);
     const tickInputDirectionMode = selectInputDirectionMode(tickState);
     if (
@@ -186,12 +174,17 @@ export class MainLoop<RoomId extends string> {
       room: tickStartRoom,
       deltaMS,
     });
+    // render hud end
+    timingStats?.endHudUpdate();
 
     // note that progressing the game state can change/reload the room,
-    // so we need to do this before considering recreating the room renderer
+    // so we need to tick physics considering recreating the room renderer
+    timingStats?.startPhysics();
     const movedItems =
       isPaused ? emptySet : this.#physicsTicker(this.gameState, deltaMS);
+    timingStats?.endPhysics();
 
+    timingStats?.startUpdateSceneGraph();
     // the tick could end on a different room than it started on:
     const tickEndRoom = selectCurrentRoomState(this.gameState);
 
@@ -238,6 +231,7 @@ export class MainLoop<RoomId extends string> {
 
     // the room renderer runs even while paused - it is its responsibility to
     // exit quickly when nothing has changed
+
     this.#roomRenderer?.tick({
       progression: this.gameState.progression,
       movedItems,
@@ -249,12 +243,17 @@ export class MainLoop<RoomId extends string> {
     } else {
       this.app.stage.filters = this.#filtersWhenPaused;
     }
+    timingStats?.endUpdateSceneGraph();
 
     try {
+      timingStats?.startPixiRender();
       this.app.render();
+      timingStats?.endPixiRender();
     } catch (e) {
-      throw new Error("Error in Pixi.js render", { cause: e });
+      throw new Error("Error in Pixi.js app.render()", { cause: e });
     }
+
+    timingStats?.tickDone();
   };
 
   start() {
