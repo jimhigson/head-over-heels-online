@@ -9,7 +9,7 @@ import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
 import { outlineFilters } from "../filters/outlineFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { noFilters } from "../filters/standardFilters";
-import { showTextInContainer } from "../hud/showNumberInContainer";
+import { showTextInContainer } from "../hud/showTextInContainer";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;

@@ -9,8 +9,7 @@ import { selectAtPath } from "../../../store/selectors";
 import { store } from "../../../store/store";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
-import { type PlayableItem } from "../itemPredicates";
-import { isItemType } from "../itemPredicates";
+import { isTeleporter, type PlayableItem } from "../itemPredicates";
 import { unitMechanicalResult } from "../MechanicResult";
 
 export const teleporterIsActive = <
@@ -54,7 +53,7 @@ export const teleporting: Mechanic<CharacterName> = <
 
   const standingOnActivatedTeleporter =
     standingOn !== null &&
-    isItemType("teleporter")(standingOn) &&
+    isTeleporter(standingOn) &&
     teleporterIsActive(standingOn);
 
   if (teleporting === null) {

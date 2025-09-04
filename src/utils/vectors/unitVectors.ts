@@ -1,6 +1,6 @@
 import type { Direction8Xyz, Xyz } from "./vectors";
 
-import { addXyz, unitVector } from "./vectors";
+import { addXyz, unitVectorInPlace } from "./vectors";
 
 const l = { x: 1, y: 0, z: 0 };
 const r = { x: -1, y: 0, z: 0 };
@@ -14,8 +14,8 @@ export const unitVectors: Record<Direction8Xyz, Xyz> = {
   towards: t,
   down: { x: 0, y: 0, z: -1 },
   up: { x: 0, y: 0, z: 1 },
-  awayRight: unitVector(addXyz(a, r)),
-  towardsRight: unitVector(addXyz(t, r)),
-  towardsLeft: unitVector(addXyz(t, l)),
-  awayLeft: unitVector(addXyz(a, l)),
+  awayRight: unitVectorInPlace(addXyz(a, r)),
+  towardsRight: unitVectorInPlace(addXyz(t, r)),
+  towardsLeft: unitVectorInPlace(addXyz(t, l)),
+  awayLeft: unitVectorInPlace(addXyz(a, l)),
 };

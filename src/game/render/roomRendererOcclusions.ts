@@ -2,10 +2,8 @@ import { type Container, Graphics } from "pixi.js";
 
 import { iterateRoomItems, type RoomState } from "../../model/RoomState";
 import { addXyz, originXyz } from "../../utils/vectors/vectors";
-import { isItemType } from "../physics/itemPredicates";
+import { isWallOrDoorFrame } from "../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "./projections";
-
-const itemIsWallOrDoorFrame = isItemType("wall", "doorFrame");
 
 const occlusionHeight = 256;
 
@@ -19,7 +17,7 @@ export function* roomRendererOcclusions<
   RoomItemId extends string,
 >(room: RoomState<RoomId, RoomItemId>): Generator<Container> {
   const { left, right } = iterateRoomItems(room.items)
-    .filter(itemIsWallOrDoorFrame)
+    .filter(isWallOrDoorFrame)
     .reduce(
       (acc, { aabb, renderAabb, renderAabbOffset, state: { position } }) => {
         const useAabb = renderAabb ?? aabb;

@@ -22,7 +22,7 @@ import {
   subXy,
   tangentAxis,
 } from "../../../../utils/vectors/vectors";
-import { isItemType } from "../../../physics/itemPredicates";
+import { isWallOrDoorFrame } from "../../../physics/itemPredicates";
 import { createSprite } from "../../createSprite";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
 import { outlineFilters } from "../../filters/outlineFilter";
@@ -54,8 +54,6 @@ const floorLeftRightCutOffMask = <
   room: RoomState<RoomId, RoomItemId>,
   floorItem: ItemInPlay<"floor", RoomId, RoomItemId>,
 ): Graphics | undefined => {
-  const itemIsWallOrDoorFrame = isItemType("wall", "doorFrame");
-
   const {
     config: {
       naturalFootprint: {
@@ -73,7 +71,7 @@ const floorLeftRightCutOffMask = <
   const offsetX = projectWorldXyzToScreenX(subXy(originXyz, floorPosition));
 
   const { left, right } = iterateRoomItems(room.items)
-    .filter(itemIsWallOrDoorFrame)
+    .filter(isWallOrDoorFrame)
     .filter((item) => {
       const {
         state: { position },

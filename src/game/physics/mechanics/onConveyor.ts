@@ -11,9 +11,12 @@ import {
   scaleXyz,
   vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
-import { type FreeItemTypes } from "../itemPredicates";
-import { isItemType } from "../itemPredicates";
-import { isPlayableItem } from "../itemPredicates";
+import {
+  type FreeItemTypes,
+  isConveyor,
+  isHeels,
+  isPlayableItem,
+} from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import {
   conveyorSpeedPixPerMs,
@@ -52,7 +55,7 @@ export const onConveyor: Mechanic<FreeItemTypes> = <
 
   const standingOn = stoodOnItem(standingOnItemId, room);
 
-  if (standingOn === null || !isItemType("conveyor")(standingOn)) {
+  if (standingOn === null || !isConveyor(standingOn)) {
     return resetConveyorStateForItem;
   }
 
@@ -67,7 +70,7 @@ export const onConveyor: Mechanic<FreeItemTypes> = <
    */
 
   const heelsWalkingAgainst =
-    isItemType("heels")(item) &&
+    isHeels(item) &&
     item.state.action === "moving" &&
     vectorClosestDirectionXy4(item.state.facing) ===
       oppositeDirection(direction);

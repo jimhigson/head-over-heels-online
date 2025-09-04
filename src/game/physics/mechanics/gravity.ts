@@ -5,9 +5,7 @@ import type { Mechanic } from "../MechanicResult";
 
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { type FreeItemTypes } from "../itemPredicates";
-import { isItemType } from "../itemPredicates";
-import { isSolid } from "../itemPredicates";
+import { type FreeItemTypes, isLift, isSolid } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
 
@@ -55,13 +53,15 @@ export const gravity: Mechanic<FreeItemTypes> = <
 
   if (standingOnItemId !== null) {
     const standingOn = stoodOnItem(standingOnItemId, room);
-    // standing on something - no gravity will be applied
-    if (isItemType("lift")(standingOn)) {
+    // standing on something - usually no gravity will be applied
+    if (isLift(standingOn)) {
       const liftVelZ = standingOn.state.vels.lift.z;
 
       if (liftVelZ < 0) {
-        // NOTE: special case for descending lifts: we need some gravity to keep us
-        // on the lift as it falls - go slightly faster than the lift's downwards speed
+        // NOTE: special case for descending lifts to avoid skipping on them - items stick
+        // to them by some kind of magic even if faster than the terminal falling velocity of the item:
+        // we need some gravity to keep us on the lift as it falls - go slightly faster than the lift's
+        // downwards speed
         return {
           movementType: "vel",
           vels: {

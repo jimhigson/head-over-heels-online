@@ -36,7 +36,7 @@ import { store } from "../../../../store/store";
 import { outlineFilters } from "../../filters/outlineFilter";
 import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
 import { noFilters } from "../../filters/standardFilters";
-import { showTextInContainer } from "../../hud/showNumberInContainer";
+import { showTextInContainer } from "../../hud/showTextInContainer";
 
 const selectionColour = spritesheetPalette.pastelBlue;
 const pointerHoverFilter = outlineFilters.highlightBeige;

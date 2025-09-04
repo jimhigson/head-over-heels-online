@@ -21,8 +21,8 @@ import {
   isCrown,
   isDeadly,
   isEmitter,
+  isFiredDoughnut,
   isFirer,
-  isItemType,
   isLift,
   isMoving,
 } from "../physics/itemPredicates";
@@ -203,7 +203,7 @@ export const tickItem = <
     if (isDeadly(stoodOn) || stoodOn.type === "spikes") {
       // the player has a shield that has only just expired - if they are standing on a deadly
       // item, it should kill them. This would normally have already killed them, but it is possible
-      // they had a shield that has just expired.
+      // they had a shield when they walked onto the deadly thing
       handlePlayerTouchingDeadly({
         gameState,
         room,
@@ -232,13 +232,11 @@ export const tickItem = <
 
   let accumulatedPosDelta = applyMechanicsResults(item, mechanicsResults);
 
+  const isMovableThing =
+    isFreeItem(item) || isLift(item) || isFiredDoughnut(item);
   // velocities for this item have now been updated - get the aggregate movement, including vels
   // that stood from previous frames (did not change)
-  if (
-    isFreeItem(item) ||
-    isItemType("lift")(item) ||
-    isItemType("firedDoughnut")(item)
-  ) {
+  if (isMovableThing) {
     accumulatedPosDelta = addXyz(
       accumulatedPosDelta,
       ...iterate(objectValues(item.state.vels)).map((val) =>

@@ -2,7 +2,7 @@ import type { Xyz } from "./vectors";
 
 import { componentInDirection } from "./componentInDirection";
 import {
-  addXyz,
+  addXyzInPlace,
   dotProductXyz,
   originXyz,
   scaleXyz,
@@ -39,12 +39,10 @@ export const fadeSpeedInDirection = ({
     travelDirectionUnit,
   );
 
-  return (
-      dotProductXyz(
-        travelDirectionUnit,
-        addXyz(vel, scaleXyz(decelerationVector, deltaMS)),
-      ) < 0
-    ) ?
+  const tempVector = scaleXyz(decelerationVector, deltaMS);
+  addXyzInPlace(tempVector, vel);
+
+  return dotProductXyz(travelDirectionUnit, tempVector) < 0 ?
       // applying full deceleration would go past zero and start moving in the opposite direction
       // vel here is wrong - should be the component of vel in the direction of deceleration!
       scaleXyz(velocityComponentInDirection, -1 / deltaMS)

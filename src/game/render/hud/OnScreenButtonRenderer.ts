@@ -31,10 +31,7 @@ import {
 } from "./arcadeStyleButtonRendering";
 import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
 import { renderCarriedOnce } from "./renderCarried";
-import {
-  makeTextContainer,
-  showTextInContainer,
-} from "./showNumberInContainer";
+import { makeTextContainer, showTextInContainer } from "./showTextInContainer";
 
 export type ButtonType =
   | "carry"
