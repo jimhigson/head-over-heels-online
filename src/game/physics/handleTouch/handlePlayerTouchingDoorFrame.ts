@@ -2,6 +2,7 @@ import type { CharacterName } from "../../../model/modelTypes";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 import { addXyz, doorAlongAxis } from "../../../utils/vectors/vectors";
+import { updateItemPosition } from "../../gameState/mutators/updateItemPosition";
 
 /*
  * colliding with doors is a special case - since they are so narrow, the playable character
@@ -14,6 +15,7 @@ export const handlePlayerTouchingDoorFrame = <
   movingItem: player,
   movementVector,
   touchedItem: doorFrame,
+  room,
 }: ItemTouchEventByItemType<
   RoomId,
   RoomItemId,
@@ -53,5 +55,5 @@ export const handlePlayerTouchingDoorFrame = <
         z: 0,
       };
 
-  player.state.position = addXyz(player.state.position, slideVector);
+  updateItemPosition(room, player, addXyz(player.state.position, slideVector));
 };

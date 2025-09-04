@@ -2,6 +2,7 @@
 
 import { objectValues } from "iter-tools";
 
+import type { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 
 import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
@@ -18,10 +19,11 @@ import { zComparator } from "./zComparator";
  * ```
  */
 export const updateZEdges = <
-  TItem extends DrawOrderComparable,
+  TItem extends DrawOrderComparable & { id: Tid },
   Tid extends string,
 >(
   items: Record<Tid, TItem>,
+  spatialIndex: GridSpatialIndex<string, Tid, TItem>,
   /**
    * the nodes that have moved - nodes that did not move are not considered
    *  - if not given, wil consider all
@@ -49,24 +51,40 @@ export const updateZEdges = <
     }
   }
 
-  // ⚠⚠ WARNING QUADRATIC LOOPING! ⚠⚠
-  // ⚠⚠ compares every item pair, where one of the pair has moved ⚠⚠
   for (const itemI of moved) {
     if (itemI.fixedZIndex !== undefined) {
       continue;
     }
 
-    // moved nodes are compared against all nodes (moving or not):
+    const projectionNeighbourhood = new Set(
+      spatialIndex.iterateItemRectNeighbourhood(itemI),
+    );
+
+    {
+      // remove all edges (either way) with items not in this items
+      // projectionNeighbourhood:
+      const outgoing = zEdges.get(itemI.id);
+      outgoing?.forEach((_edgeData, front) => {
+        if (!projectionNeighbourhood.has(items[front])) {
+          outgoing.delete(front);
+        }
+      });
+      zEdges.forEach((fronts, behind) => {
+        if (!projectionNeighbourhood.has(items[behind])) {
+          deleteEdge(zEdges, behind, itemI.id);
+        }
+      });
+    }
+
+    // moved nodes are compared against all nodes in its neighbourhood (moving or not):
     // - only unmoved/unmoved pairs can be skipped since they
     // are known not to have changed
     // ie - every moved node is compared again against every other node
-    for (const itemJ of objectValues(items) as Iterable<TItem>) {
+    for (const itemJ of projectionNeighbourhood) {
       if (
         itemJ.fixedZIndex !== undefined ||
         // already compared the other way:
-        comparisonsDone.get(itemJ)?.has(itemI) ||
-        // no point comparing to self:
-        itemI === itemJ
+        comparisonsDone.get(itemJ)?.has(itemI)
       ) {
         continue;
       }

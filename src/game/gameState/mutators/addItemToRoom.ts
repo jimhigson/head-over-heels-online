@@ -7,15 +7,16 @@ import type {
   JsonItemType,
   JsonItemUnion,
 } from "../../../model/json/JsonItem";
-import type { RoomState } from "../../../model/RoomState";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../GameState";
 
+import { roomSpatialIndexKey } from "../../../model/RoomState";
+import { type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 
-let i = 0;
+let universalAddIndex = 0;
 
 export const addItemFromJsonToRoom = <
   T extends JsonItemType,
@@ -32,7 +33,9 @@ export const addItemFromJsonToRoom = <
   room: RoomState<RoomId, RoomItemId>;
   itemType: T;
   config: JsonItemConfig<T, RoomId, RoomItemId>;
-  /* the position for the new object to occupy */
+  /**
+   * the (fine) position for the new object to occupy
+   */
   position: Xyz;
 }) => {
   const itemJson: JsonItem<T, RoomId, RoomItemId> = {
@@ -44,7 +47,7 @@ export const addItemFromJsonToRoom = <
   // this simple incrementing int isn't going to work for adding pickups, since they can be stored
   // as having been collected in the room and decline to generate from the json.
   // TODO: move next itemId onto gamestate/store and serialise with the saves
-  const itemId = `${itemType}/${i++}`;
+  const itemId = `${itemType}/${universalAddIndex++}`;
   const item = first(
     loadItemFromJson(
       itemId,
@@ -57,9 +60,8 @@ export const addItemFromJsonToRoom = <
     console.error("failed to generate any items for json", itemId, itemJson);
     throw new Error("failed to generate any items");
   }
-  item.state.position = position;
 
-  addItemToRoom({ room, item });
+  addItemToRoom({ room, item, atPosition: position });
   return item;
 };
 
@@ -69,10 +71,25 @@ export const addItemToRoom = <
 >({
   room,
   item,
+  atPosition,
 }: {
-  room: Pick<RoomState<RoomId, RoomItemId>, "items">;
+  room: RoomState<RoomId, RoomItemId>;
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+  /**
+   * optional extra argument, since items are often added while stating their position.
+   * if not given, the position already in the item will be used. If given, the item's position
+   * will be updated immediately before being added
+   */
+  atPosition?: Xyz;
 }) => {
   room.items[item.id] = item;
+
+  if (atPosition !== undefined) {
+    item.state.position = atPosition;
+  }
+
+  const spatialIndex = room[roomSpatialIndexKey];
+  spatialIndex.addItem(item);
+
   return item;
 };

@@ -237,16 +237,16 @@ export const zComparator = (
     return 0;
   }
 
-  const aBb = a.renderAabb || a.aabb;
-  const bBb = b.renderAabb || b.aabb;
   const aPos =
     a.renderAabbOffset ?
       addXyz(a.state.position, a.renderAabbOffset)
     : a.state.position;
+  const aBb = a.renderAabb || a.aabb;
   const bPos =
     b.renderAabbOffset ?
       addXyz(b.state.position, b.renderAabbOffset)
     : b.state.position;
+  const bBb = b.renderAabb || b.aabb;
 
   const visualOverlap = visuallyOverlaps(aPos, aBb, bPos, bBb);
 

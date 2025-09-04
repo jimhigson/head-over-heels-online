@@ -1,17 +1,20 @@
+import { produce } from "immer";
+
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { HeelsAbilities } from "../../../model/ItemStateMap";
 import type { GameState } from "../../gameState/GameState";
+import type { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
 import type { PlayableItem, PortableItem } from "../itemPredicates";
 
 import {
   iterateRoomItems,
-  roomItemsIterable,
+  roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { always } from "../../../utils/always";
 import { addXyz } from "../../../utils/vectors/vectors";
-import { collision1toMany } from "../../collision/aabbCollision";
+import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
@@ -87,16 +90,14 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
       // check if there is space above heels (and any items standing on heels):
       // really the ideal here would be do the move and roll back if ti can't be done.
       // that would need a stateless/reducer based approach to updating the world
-      if (
-        !checkSpaceAvailableToPutDown(carrier, roomItemsIterable(room.items))
-      ) {
+      if (!checkSpaceAvailableToPutDown(carrier, room[roomSpatialIndexKey])) {
         return;
       }
 
-      carrying.state.position = carrierPosition;
       addItemToRoom({
         room,
         item: carrying,
+        atPosition: carrierPosition,
       });
 
       // move the player up on top of the item they just put down:
@@ -159,26 +160,20 @@ export const checkSpaceAvailableToPutDown = <
   T extends UnionOfAllItemInPlayTypes,
 >(
   item: T,
-  roomItems: Iterable<T>,
+  roomSpatialIndex: GridSpatialIndex,
 ) => {
-  const positionNeedingToMoveInto = {
-    position: addXyz(item.state.position, { z: blockSizePx.h }),
-  };
+  const itemCopyInProposedLocation = produce(item, () => {
+    item.state.position = addXyz(item.state.position, { z: blockSizePx.h });
+  });
 
-  const collisions = collision1toMany(
-    {
-      id: item.id,
-      aabb: item.aabb,
-      state: positionNeedingToMoveInto,
-    },
-    roomItems,
+  const collisions = collisionItemWithIndex(
+    itemCopyInProposedLocation,
+    roomSpatialIndex,
+    // only check for collisions with solid items
+    (otherItem) => isSolid(otherItem, item),
   );
 
   for (const collision of collisions) {
-    if (!isSolid(collision, item)) {
-      continue;
-    }
-
     if (!isFreeItem(collision)) {
       console.log(
         "carrying: cannot put down due to collision: item:",
@@ -189,7 +184,7 @@ export const checkSpaceAvailableToPutDown = <
       return false;
     }
 
-    if (!checkSpaceAvailableToPutDown(collision, roomItems)) {
+    if (!checkSpaceAvailableToPutDown(collision, roomSpatialIndex)) {
       console.log(
         "carrying: cannot put down due to collision: item:",
         item,

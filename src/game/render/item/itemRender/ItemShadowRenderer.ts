@@ -13,13 +13,13 @@ import type {
 } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
-import { iterateRoomItems } from "../../../../model/RoomState";
+import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
 import { amigaHalfBriteBrightness } from "../../../../utils/colour/halfBrite";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
-import { collision1to1 } from "../../../collision/aabbCollision";
+import { collisionItemWithIndex } from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
 import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { projectWorldXyzToScreenXy } from "../../projections";
@@ -154,16 +154,30 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     const surfaceMoved = movedItems.has(item);
     const itemTop = item.state.position.z + item.aabb.z;
 
-    const shadowCastersIter = iterateRoomItems(room.items).filter(
-      function castsAShadow(
-        c,
-      ): c is SetRequired<typeof c, "shadowCastTexture"> {
-        return c.shadowCastTexture !== undefined;
+    const spaceAboveSurfacePseudoItem: Collideable = {
+      id: item.id,
+      state: {
+        position: {
+          ...item.state.position,
+          z: itemTop,
+        },
       },
+      aabb: {
+        ...item.aabb,
+        z: veryHighZ,
+      },
+    };
+
+    const itemsAbove = collisionItemWithIndex(
+      spaceAboveSurfacePseudoItem,
+      room[roomSpatialIndexKey],
+      // only consider items that can cast a shadow:
+      (i): i is SetRequired<typeof i, "shadowCastTexture"> =>
+        i.shadowCastTexture !== undefined,
     );
 
     // collide up from this item to find which of the shadow casters is above it:
-    const bins = Object.groupBy(shadowCastersIter, (caster) => {
+    const bins = Object.groupBy(itemsAbove, (caster) => {
       const previouslyHadShadow = this.#casts[caster.id] !== undefined;
       const casterMoved = movedItems.has(caster);
       if (!surfaceMoved && !casterMoved) {
@@ -181,29 +195,15 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         caster.state.position.z > item.state.position.z + item.aabb.z
       ) {
         // check if the caster intersects the space above the item:
-        const spaceAboveSurface: Collideable = {
-          id: item.id,
-          state: {
-            position: {
-              ...item.state.position,
-              z: itemTop,
-            },
-          },
-          aabb: {
-            ...item.aabb,
-            z: veryHighZ,
-          },
-        };
-
-        if (collision1to1(spaceAboveSurface, caster)) {
-          if (previouslyHadShadow) {
-            return "update";
-          } else {
-            return "create";
-          }
+        //if (collision1to1(spaceAboveSurfacePseudoItem, caster)) {
+        if (previouslyHadShadow) {
+          return "update";
+        } else {
+          return "create";
         }
+        //}
       }
-      // no collision with the space above the surface, so no shadow:
+      // standing directly on something, and with the optimisation to skip in that case:
       return "noShadow";
     });
 

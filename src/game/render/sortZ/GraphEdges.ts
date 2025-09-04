@@ -1,4 +1,4 @@
-export type Graph<NodeId, Edge> = Map<NodeId, Map<NodeId, Edge>>;
+export type Graph<Node, Edge> = Map<Node, Map<Node, Edge>>;
 
 export type ZGraph<NodeId> = Graph<
   NodeId,

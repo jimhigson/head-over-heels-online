@@ -20,7 +20,7 @@ import {
   type CharacterName,
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
-import { getRoomItem } from "../../../model/RoomState";
+import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { useAppDispatch } from "../../../store/hooks";
 import { useShowShadowMasks } from "../../../store/selectors";
@@ -675,8 +675,16 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   if (gameApi) {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     (window as any).room = gameApi.currentRoom;
-                    console.log(gameApi.currentRoom);
-                    console.log("currentRoom on window.room");
+                    if (gameApi.currentRoom) {
+                      console.log(gameApi.currentRoom);
+                      console.log(
+                        "spatial index is",
+                        gameApi.currentRoom[
+                          roomSpatialIndexKey
+                        ].debugToString(),
+                      );
+                      console.log("currentRoom on window.room");
+                    }
                   }
                   e?.currentTarget.blur();
                 }}

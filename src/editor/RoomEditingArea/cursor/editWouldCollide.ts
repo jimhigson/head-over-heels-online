@@ -14,10 +14,20 @@ import type { ItemTool } from "../../Tool";
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { isSolid } from "../../../game/physics/itemPredicates";
+import { iterateRoomItems } from "../../../model/RoomState";
 import { iterate } from "../../../utils/iterate";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreviewReducers";
-import { collideableItemsInRoom } from "./collideableItemsInRoom";
+
+/**
+ * find items that items being (added to/moved in/resized in) a room would
+ * need to care about colliding with, when they are added/moved
+ */
+export const collideableItemsInRoom = (
+  roomState: EditorRoomState,
+): Iterable<EditorUnionOfAllItemInPlayTypes> => {
+  return iterateRoomItems(roomState.items).filter((item) => isSolid(item));
+};
 
 const collideableForItem = (
   roomState: EditorRoomState,

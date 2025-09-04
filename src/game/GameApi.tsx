@@ -2,7 +2,7 @@ import type { Campaign } from "../model/modelTypes";
 import type { RoomState } from "../model/RoomState";
 import type { Xy } from "../utils/vectors/vectors";
 import type { GameState } from "./gameState/GameState";
-import type { SavedGameState } from "./gameState/saving/SavedGameState";
+import type { SavedGame } from "./gameState/saving/SavedGameState";
 
 export type GameApi<RoomId extends string> = {
   campaign: Campaign<RoomId>;
@@ -17,5 +17,5 @@ export type GameApi<RoomId extends string> = {
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
   stop: () => void;
-  reincarnateFrom: (gameState: SavedGameState<RoomId>) => void;
+  reincarnateFrom: (gameState: SavedGame<RoomId>) => void;
 };

@@ -28,6 +28,7 @@ import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
 import { setStandingOn } from "../game/gameState/mutators/setStandingOn";
 import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
+import { updateItemPosition } from "../game/gameState/mutators/updateItemPosition";
 import { blockSizePx } from "../sprites/spritePivots";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameOver } from "../store/slices/gameMenusSlice";
@@ -211,10 +212,21 @@ export const mutatorsTestHarness = () => {
       }
       // before walking to the door, move the player to next to it so the before/after
       // position once walked through is predictable
-      playableItem.state.position = addXyz(
-        sourcePortal.state.position,
-        sourcePortal.config.relativePoint,
+      const room = gameState.characterRooms[playableName];
+      if (room === undefined) {
+        throw new Error(
+          `${playableName} does not have an entry in gameState.characterRooms`,
+        );
+      }
+
+      // before changing their room, move them to the relative point of the portal - this is
+      // more realistic than being into any random position since you need to be touching a portal to use it
+      updateItemPosition(
+        room,
+        playableItem,
+        addXyz(sourcePortal.state.position, sourcePortal.config.relativePoint),
       );
+
       changeCharacterRoom({
         playableItem,
         gameState,
@@ -227,6 +239,8 @@ export const mutatorsTestHarness = () => {
       const headRoom = this.selectRoomOfPlayable("head");
       const heelsRoom = this.selectRoomOfPlayable("heels");
       // can only go into symbiosis if in the same room:
+      expect(headRoom).toBeDefined();
+      expect(heelsRoom).toBeDefined();
       expect(headRoom).toBe(heelsRoom);
 
       const headPlayable = selectPlayableItem(gameState, "head")!;
@@ -234,9 +248,13 @@ export const mutatorsTestHarness = () => {
 
       // get ready for symbiosis: positioned on top of each other,
       // standing on, and in an idle state
-      headPlayable.state.position = addXyz(heelsPlayable.state.position, {
-        z: blockSizePx.h,
-      });
+      updateItemPosition(
+        headRoom!,
+        headPlayable,
+        addXyz(heelsPlayable.state.position, {
+          z: blockSizePx.h,
+        }),
+      );
       setStandingOn({ above: headPlayable, below: heelsPlayable });
       headPlayable.state.action = "idle";
       heelsPlayable.state.action = "idle";

@@ -1,3 +1,5 @@
+import { first } from "iter-tools";
+
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type {
   CharacterName,
@@ -11,7 +13,7 @@ import type { GameState } from "../GameState";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import {
   iterateRoomItems,
-  roomItemsIterable,
+  roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
@@ -22,22 +24,23 @@ import {
 } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
-import { iterate } from "../../../utils/iterate";
 import {
   addXyz,
   scaleXyz,
   subXyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import { collision1toMany } from "../../collision/aabbCollision";
+import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { isPortal } from "../../physics/itemPredicates";
 import { moveItem } from "../../physics/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { entryState } from "../PlayableEntryState";
+import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
+import { updateItemPosition } from "./updateItemPosition";
 
 export type ChangeType = "level-select" | "portal" | "teleport";
 
@@ -144,6 +147,14 @@ const findDestinationPortal = <
   }
 };
 
+/**
+ * when entering a room, there could be obstructions in the way. Move out of the room, and incrementally
+ * back to the intended position over a series of frames to allow pushing by several small amounts, which
+ * is more accurate than spawning already inside an item, and needing a large mtv to 'pop' out of it.
+ *
+ * Without this, it'd probably try to put on top of the item. With it, the item gets pushed in the direction
+ * of travel into the room
+ */
 const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   portalDirectionXy: Xyz,
@@ -152,9 +163,13 @@ const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
 ) => {
   // back off one square, and push progressively into the room:
   const backOffAndPushLength = 1 * blockSizePx.w;
-  playableItem.state.position = addXyz(
-    playableItem.state.position,
-    scaleXyz(portalDirectionXy, backOffAndPushLength),
+  updateItemPosition(
+    toRoom,
+    playableItem,
+    addXyz(
+      playableItem.state.position,
+      scaleXyz(portalDirectionXy, backOffAndPushLength),
+    ),
   );
   // push in increments of 1px
   for (let i = 0; i < backOffAndPushLength; i++) {
@@ -280,10 +295,12 @@ export const changeCharacterRoom = <
   // remove the character from the new room if they're already there - this only really happens
   // if the room is their starting room (so they're in it twice since they appear in the starting room
   // by default):
-  deleteItemFromRoom({ room: toRoom, item: playableItem });
+  if (toRoom.items[playableItem.id] !== undefined) {
+    deleteItemFromRoom({ room: toRoom, item: playableItem });
+  }
 
-  // but the character into the (probably newly loaded) room:
-  (toRoom.items[playableItem.id] as typeof playableItem) = playableItem;
+  // put the character into the (probably newly loaded) room:
+  addItemToRoom({ room: toRoom, item: playableItem });
 
   // update game state to know which room this character is now in:
   /** TODO: @knownRoomIds - remove casts */
@@ -295,9 +312,13 @@ export const changeCharacterRoom = <
       state: { toPosition: teleporterToBlockPosition },
     } = changeCharacterRoomOptions.sourceItem;
 
-    playableItem.state.position = addXyz(
-      blockXyzToFineXyz(teleporterToBlockPosition),
-      positionRelativeToSourcePortal,
+    updateItemPosition(
+      toRoom,
+      playableItem,
+      addXyz(
+        blockXyzToFineXyz(teleporterToBlockPosition),
+        positionRelativeToSourcePortal,
+      ),
     );
   } else {
     // find the door (etc) in the new room to enter in:
@@ -326,10 +347,15 @@ export const changeCharacterRoom = <
 
     if (destinationPortal === undefined) {
       if (changeCharacterRoomOptions.changeType === "level-select") {
-        // you're probably level selecting into the final room, but could also in theory be a room with only teleporters
-        // to access - don't think there are any in the original game though:
-        // choose a random spot that's likely to not collide:
-        playableItem.state.position = blockXyzToFineXyz({ x: 1, y: 1, z: 8 });
+        // level selecting (cheating) into a room with no portals.
+        // Could be the final room, but could also in theory be a room with only teleporters
+        // to access (don't think there are any in the original game though)
+        // not much to go off so choose a random spot that's likely to not collide:
+        updateItemPosition(
+          toRoom,
+          playableItem,
+          blockXyzToFineXyz({ x: 1, y: 1, z: 8 }),
+        );
       } else {
         // we're not level selecting, there is really a bug in the campaign topology
         throw new Error(
@@ -337,7 +363,7 @@ export const changeCharacterRoom = <
         );
       }
     } else {
-      playableItem.state.position = addXyz(
+      const newPosition = addXyz(
         destinationPortal.state.position,
         destinationPortal.config.relativePoint,
         positionRelativeToSourcePortal,
@@ -356,6 +382,7 @@ export const changeCharacterRoom = <
           }
         : {},
       );
+      updateItemPosition(toRoom, playableItem, newPosition);
 
       const {
         config: { direction: portalDirection },
@@ -383,14 +410,14 @@ export const changeCharacterRoom = <
     }
   }
 
-  const collisionsInDestinationRoom = collision1toMany(
-    playableItem,
-    iterate(roomItemsIterable(toRoom.items))
-      // colliding with the portal is normal - only warn for other collisions
-      // on room enter:
-      .filter((item) => item.type !== "portal"),
+  const collisionInDestinationRoom = first(
+    collisionItemWithIndex(
+      playableItem,
+      toRoom[roomSpatialIndexKey],
+      (item) => !isPortal(item),
+    ),
   );
-  if (collisionsInDestinationRoom.length > 0) {
+  if (collisionInDestinationRoom !== undefined) {
     console.warn(
       "on entering room",
       toRoomId,
@@ -398,8 +425,8 @@ export const changeCharacterRoom = <
       playableItem.id,
       "at",
       playableItem.state.position,
-      "collides with",
-      collisionsInDestinationRoom,
+      "collides with (at least one; only first is shown) non-portal item:",
+      collisionInDestinationRoom,
     );
   }
 
