@@ -86,12 +86,13 @@ export function* collisionItemWithIndex<
   index: GridSpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean = alwaysUseForCollision,
 ): Generator<C | GuardedType> {
-  for (const candidateItem of index
-    .iterateItemCuboidNeighbourhood(subject)
-    .filter(considerItem)) {
+  const neighbours = index.getItemCuboidNeighbourhood(subject);
+  for (const candidateItem of neighbours) {
     if (
-      // prevent self- collision
-      subject.id !== candidateItem.id &&
+      considerItem(candidateItem) &&
+      // preventing  self- collision not needed because the neighbourhood
+      // knows not to return the item itself
+      //subject.id !== candidateItem.id &&
       collision1to1(subject, candidateItem)
     ) {
       yield candidateItem as GuardedType & C;

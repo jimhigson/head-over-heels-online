@@ -14,5 +14,5 @@ export const updateItemPosition = <
   const spatialIndex = room[roomSpatialIndexKey];
 
   item.state.position = newPosition;
-  spatialIndex.updateItem(item);
+  spatialIndex.updateItemSpatialIndex(item);
 };

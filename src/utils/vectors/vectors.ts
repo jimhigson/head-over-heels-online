@@ -57,14 +57,19 @@ export type Xy = {
 export const perpendicularAxisXy = (axis: AxisXy): AxisXy =>
   axis === "x" ? "y" : "x";
 
-export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
-  xys.reduce<Xy>(
-    (ac, xyi) => ({
-      x: ac.x + (xyi.x ?? 0),
-      y: ac.y + (xyi.y ?? 0),
-    }),
-    xy,
-  );
+export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
+  const result = {
+    x: xy.x,
+    y: xy.y,
+  };
+
+  for (const xyToAdd of xys) {
+    result.x += xyToAdd.x ?? 0;
+    result.y += xyToAdd.y ?? 0;
+  }
+
+  return result;
+};
 
 export const addXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   for (const xyi of xys) {
@@ -74,14 +79,19 @@ export const addXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   return xy;
 };
 
-export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
-  xys.reduce<Xy>(
-    (ac, xyi) => ({
-      x: ac.x - (xyi.x ?? 0),
-      y: ac.y - (xyi.y ?? 0),
-    }),
-    xy,
-  );
+export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
+  const result = {
+    x: xy.x,
+    y: xy.y,
+  };
+
+  for (const xyToSub of xys) {
+    result.x -= xyToSub.x ?? 0;
+    result.y -= xyToSub.y ?? 0;
+  }
+
+  return result;
+};
 
 export const subXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   for (const xyi of xys) {
@@ -187,14 +197,24 @@ export const perpendicularXyzInPlace = (xyz: Xyz): Xyz => {
 };
 
 export const addXyz = (...xyzs: Array<Partial<Xyz>>): Xyz => {
-  return xyzs.reduce<Xyz>(
-    ({ x: acX, y: acY, z: acZ }, { x: iX = 0, y: iY = 0, z: iZ = 0 }) => ({
-      x: acX + iX,
-      y: acY + iY,
-      z: acZ + iZ,
-    }),
-    originXyz,
-  );
+  if (xyzs.length === 0) {
+    return { x: 0, y: 0, z: 0 };
+  }
+
+  const [first, ...rest] = xyzs;
+  const result = {
+    x: first.x ?? 0,
+    y: first.y ?? 0,
+    z: first.z ?? 0,
+  };
+
+  for (const xyz of rest) {
+    result.x += xyz.x ?? 0;
+    result.y += xyz.y ?? 0;
+    result.z += xyz.z ?? 0;
+  }
+
+  return result;
 };
 
 export const addXyzInPlace = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
@@ -232,15 +252,21 @@ export const elementWiseProductXyzInPlace = (
   return xyz;
 };
 
-export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
-  xyzs.reduce<Xyz>(
-    (ac, xyi) => ({
-      x: ac.x - (xyi.x ?? 0),
-      y: ac.y - (xyi.y ?? 0),
-      z: ac.z - (xyi.z ?? 0),
-    }),
-    xyz,
-  );
+export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
+  const result = {
+    x: xyz.x,
+    y: xyz.y,
+    z: xyz.z,
+  };
+
+  for (const xyzToSub of xyzs) {
+    result.x -= xyzToSub.x ?? 0;
+    result.y -= xyzToSub.y ?? 0;
+    result.z -= xyzToSub.z ?? 0;
+  }
+
+  return result;
+};
 
 export const subXyzInPlace = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
   for (const xyzi of xyzs) {

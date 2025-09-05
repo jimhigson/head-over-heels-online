@@ -288,8 +288,6 @@ test("incremental updates requiring both removal and addition of edges", () => {
   items[1].state.position.x = 40;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
   items[2].state.position.z = 100;
-  spatialIndex.updateItem(items[1]);
-  spatialIndex.updateItem(items[2]);
 
   updateZEdges(items, spatialIndex, new Set([items[1], items[2]]), edges);
 
@@ -349,7 +347,6 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
   // to b
   items.b.state.position.z = 200;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
-  spatialIndex.updateItem(items.b);
 
   updateZEdges(items, spatialIndex, new Set([items.b]), edges);
 
@@ -405,7 +402,6 @@ test("incremental updates can completely empty the graph", () => {
   // to b
   items.b.state.position.z = 200;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
-  spatialIndex.updateItem(items.b);
 
   updateZEdges(items, spatialIndex, new Set([items.b]), edges);
 

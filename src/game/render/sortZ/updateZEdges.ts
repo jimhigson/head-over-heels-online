@@ -51,14 +51,21 @@ export const updateZEdges = <
     }
   }
 
+  // we are the only code that uses the projected index, and we know what
+  // moved on this frame - it is our responsibility to update the index
+  // for the moved items. this way, multiple physics sub-ticks can run, each moving
+  // the items multiple times, but we wil just do this once per rendering
+  for (const item of moved) {
+    spatialIndex.updateItemProjectedIndex(item);
+  }
+
   for (const itemI of moved) {
     if (itemI.fixedZIndex !== undefined) {
       continue;
     }
 
-    const projectionNeighbourhood = new Set(
-      spatialIndex.iterateItemRectNeighbourhood(itemI),
-    );
+    const projectionNeighbourhood =
+      spatialIndex.getItemProjectedNeighbourhood(itemI);
 
     {
       // remove all edges (either way) with items not in this items
@@ -80,7 +87,14 @@ export const updateZEdges = <
     // - only unmoved/unmoved pairs can be skipped since they
     // are known not to have changed
     // ie - every moved node is compared again against every other node
+    // console.log(
+    //   itemI.id,
+    //   "'s projection neighbourhood size is",
+    //   projectionNeighbourhood.size,
+    // );
     for (const itemJ of projectionNeighbourhood) {
+      //console.log(itemI.id, "'s projection neighbourhood includes", itemJ.id);
+
       if (
         itemJ.fixedZIndex !== undefined ||
         // already compared the other way:

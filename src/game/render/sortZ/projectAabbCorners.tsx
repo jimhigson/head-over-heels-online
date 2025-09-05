@@ -5,6 +5,15 @@ import {
   projectWorldXyzToScreenY,
 } from "../projections";
 
+export type ProjectionOnAxes = {
+  xAxisProjectionMin: number;
+  xAxisProjectionMax: number;
+  yAxisProjectionMin: number;
+  yAxisProjectionMax: number;
+  zAxisProjectionMin: number;
+  zAxisProjectionMax: number;
+};
+
 /**
  * of the six visible corners of the projected cuboid aabb, we need to find three to describe
  * the bounds of the rendered shape
@@ -71,6 +80,7 @@ export const projectAabbCorners = (position: Xyz, aabb: Xyz) => {
     get top() {
       return projectWorldXyzToScreenY(addXyz(position, aabb));
     },
+
     projectCorner(cornerVector: Xyz) {
       return projectWorldXyzToScreenXy(
         addXyz(position, {
@@ -79,6 +89,35 @@ export const projectAabbCorners = (position: Xyz, aabb: Xyz) => {
           z: cornerVector.z * aabb.z,
         }),
       );
+    },
+
+    get allAxesProjections(): ProjectionOnAxes {
+      const { topLeft, topRight, bottomCentre } = this;
+
+      return {
+        /** get the C of the sloped line a line running along the x-axis would project to
+         * a (projected) line along the (world) x axis of the projected is described by:
+         *  [y = x/2 - c]
+         *  = [c = y + x/2]
+         * a greater c means projected higher on the screen -ie, a higher value in y and/or z (world-x is orthogonal)
+         */
+        xAxisProjectionMin: topLeft.y + topLeft.x / 2,
+        xAxisProjectionMax: bottomCentre.y + bottomCentre.x / 2,
+
+        /** get the C of the sloped line a line running along the y-axis would project to
+         * a (projected) line along the (world) y axis of the projected is described by:
+         *  [y = x/2 - c]
+         *  [c = y - x/2]
+         * a greater c means projected higher on the screen -ie, a higher value in y and/or z (world-x is orthogonal)
+         */
+        yAxisProjectionMin: topRight.y - topRight.x / 2,
+        yAxisProjectionMax: bottomCentre.y - bottomCentre.x / 2,
+
+        // get the x of the vertical line a line running along the z-axis would project to
+        // (this is equivalent to .left and .right)
+        zAxisProjectionMin: topLeft.x,
+        zAxisProjectionMax: topRight.x,
+      };
     },
   };
 };

@@ -1,5 +1,6 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { Xy, Xyz } from "../../../utils/vectors/vectors";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { ProjectionOnAxes } from "../../render/sortZ/projectAabbCorners";
 
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
@@ -14,11 +15,14 @@ const cellDepth = blockSizePx.w * 2;
 const cellWidth = blockSizePx.w * 2;
 const cellHeight = blockSizePx.h * 4;
 
-const rectGridWidth = cellWidth * 2;
-const rectGridHeight = cellHeight;
+// like above, the multipliers are a balance between each item being in
+// more cells (because smaller cells) and having to do more of the fine
+// comparisons (because cells are big and have a lot of items in them)
+const projCellDepth = blockSizePx.w * 2;
+const projCellWidth = blockSizePx.w * 2;
+const projCellHeight = blockSizePx.h * 2;
 
 type CellKey = `${number},${number},${number}`;
-type RectKey = `${number},${number}`;
 
 type MinimumRequiredItem = {
   id: string;
@@ -51,11 +55,11 @@ export class GridSpatialIndex<
   #cells = new Map<CellKey, Bin>();
 
   /**
-   * Map from cell coordinates (as "x,y" string) to Sets of items projected to that
-   * rectangle on screen.
+   * Map from cell coordinates (as "x,y,z" string) to Sets of items projected to that
+   * hexagon on screen.
    * Provides true sparse storage - only cells with items exist
    */
-  #rects = new Map<RectKey, Bin>();
+  #projectedCells = new Map<CellKey, Bin>();
 
   /**
    * Map from each item to the set of cell keys it currently occupies.
@@ -68,13 +72,15 @@ export class GridSpatialIndex<
   #itemToCellKeys = new Map<Item, Set<CellKey>>();
 
   /**
-   * Map from each item to the set of rect keys it currently occupies.
-   * This reverse mapping is essential for O(1) operations in 2D space:
-   * - When updating: know which old rects to remove the item from
-   * - When removing: know exactly which rects contain the item
-   * Without this, we'd have to search the entire 2D grid for these operations.
+   * Map from each item to the set of projected cell keys it currently occupies.
+   * This reverse mapping is essential for O(1) operations in projection space:
+   * - When updating: know which old projected cells to remove the item from
+   * - When removing: know exactly which projected cells contain the item
+   * Without this, we'd have to search the entire projection grid for these operations.
    */
-  #itemToRectKeys = new Map<Item, Set<RectKey>>();
+  #itemToProjectedCellKeys = new Map<Item, Set<CellKey>>();
+
+  #itemToProjectionAxesMap = new Map<Item, ProjectionOnAxes>();
 
   constructor(
     /** Optional iterable of items to initially populate the grid */
@@ -88,51 +94,107 @@ export class GridSpatialIndex<
   }
 
   /**
-   * Add an item to the 3D cuboid index.
+   * Generic helper to add an item to an index.
    */
-  #addItemCuboid(
-    /** The item to add */
+  #addToIndex(
     item: Item,
+    cellIterator: Generator<CellKey>,
+    cellMap: Map<CellKey, Bin>,
+    itemToCellsMap: Map<Item, Set<CellKey>>,
+    ensureCell: (cellKey: CellKey) => Bin,
   ): void {
     const occupiedCells = new Set<CellKey>();
 
-    for (const cellKey of this.#iterateCuboidCellKeys(
-      item.state.position,
-      item.aabb,
-    )) {
-      const cell = this.#ensureCell(cellKey);
-      // Add item to this cell
+    for (const cellKey of cellIterator) {
+      const cell = ensureCell(cellKey);
       cell.add(item);
-
-      // Track that this item occupies this cell
       occupiedCells.add(cellKey);
     }
 
-    // Store which cells this item occupies
-    this.#itemToCellKeys.set(item, occupiedCells);
+    itemToCellsMap.set(item, occupiedCells);
   }
 
   /**
-   * Add an item to the 2D rect index.
+   * Generic helper to remove an item from an index.
    */
-  #addItemRect(
-    /** The item to add */
+  #removeFromIndex(
     item: Item,
+    cellMap: Map<CellKey, Bin>,
+    itemToCellsMap: Map<Item, Set<CellKey>>,
   ): void {
-    const occupiedRects = new Set<RectKey>();
-    const [topLeft, bottomRight] = this.#itemRectangle(item);
-
-    for (const rectKey of this.#iterateRectCellKeys(topLeft, bottomRight)) {
-      const rect = this.#ensureRect(rectKey);
-      // Add item to this rect
-      rect.add(item);
-
-      // Track that this item occupies this rect
-      occupiedRects.add(rectKey);
+    const occupiedCells = itemToCellsMap.get(item);
+    if (!occupiedCells) {
+      return;
     }
 
-    // Store which rects this item occupies
-    this.#itemToRectKeys.set(item, occupiedRects);
+    for (const cellKey of occupiedCells) {
+      const cell = cellMap.get(cellKey);
+      if (cell) {
+        cell.delete(item);
+        if (cell.size === 0) {
+          cellMap.delete(cellKey);
+        }
+      }
+    }
+
+    itemToCellsMap.delete(item);
+  }
+
+  /**
+   * Generic helper to update an item's position in an index.
+   */
+  #updateInIndex(
+    item: Item,
+    cellIterator: Generator<CellKey>,
+    cellMap: Map<CellKey, Bin>,
+    itemToCellsMap: Map<Item, Set<CellKey>>,
+    ensureCell: (cellKey: CellKey) => Bin,
+  ): void {
+    const oldCellKeys = itemToCellsMap.get(item);
+    if (!oldCellKeys) {
+      throw new Error("Item not in index");
+    }
+
+    const newCellKeys = new Set<CellKey>(cellIterator);
+    let deleted = false;
+    let added = false;
+
+    // Remove from old cells that are not in new cells
+    for (const cellKey of oldCellKeys) {
+      if (!newCellKeys.has(cellKey)) {
+        const cell = cellMap.get(cellKey);
+        if (cell) {
+          deleted = true;
+          cell.delete(item);
+        }
+      }
+    }
+
+    // Add to new cells that were not in old cells
+    for (const cellKey of newCellKeys) {
+      if (!oldCellKeys.has(cellKey)) {
+        const cell = ensureCell(cellKey);
+        cell.add(item);
+        added = true;
+      }
+    }
+
+    // Clean up empty cells
+    if (deleted) {
+      for (const cellKey of oldCellKeys) {
+        const cell = cellMap.get(cellKey);
+        if (cell && cell.size === 0) {
+          cellMap.delete(cellKey);
+        }
+      }
+    }
+
+    // Update tracking
+    if (deleted || added) {
+      itemToCellsMap.set(item, newCellKeys);
+    } else {
+      newCellKeys.clear();
+    }
   }
 
   /**
@@ -147,8 +209,24 @@ export class GridSpatialIndex<
       throw new Error("Item is already in the spatial index");
     }
 
-    this.#addItemCuboid(item);
-    this.#addItemRect(item);
+    // Add to cuboid index
+    this.#addToIndex(
+      item,
+      this.#iterateCuboidCellKeys(item.state.position, item.aabb),
+      this.#cells,
+      this.#itemToCellKeys,
+      (cellKey) => this.#ensureCell(cellKey),
+    );
+
+    // Add to projected cell index
+    this.#upsertAxesProjections(item);
+    this.#addToIndex(
+      item,
+      this.#iterateProjectionCellKeys(item),
+      this.#projectedCells,
+      this.#itemToProjectedCellKeys,
+      (cellKey) => this.#ensureProjectedCell(cellKey),
+    );
   }
 
   /**
@@ -156,13 +234,6 @@ export class GridSpatialIndex<
    */
   #makeCellKey(x: number, y: number, z: number): CellKey {
     return `${x},${y},${z}`;
-  }
-
-  /**
-   * Create a string key from rect coordinates
-   */
-  #makeRectKey(x: number, y: number): RectKey {
-    return `${x},${y}`;
   }
 
   /**
@@ -178,15 +249,15 @@ export class GridSpatialIndex<
   }
 
   /**
-   * Ensure a rect exists, creating it if necessary
+   * Ensure a projected cell exists, creating it if necessary
    */
-  #ensureRect(rectKey: RectKey): Bin {
-    let rect = this.#rects.get(rectKey);
-    if (!rect) {
-      rect = new Set() as Bin;
-      this.#rects.set(rectKey, rect);
+  #ensureProjectedCell(cellKey: CellKey): Bin {
+    let cell = this.#projectedCells.get(cellKey);
+    if (!cell) {
+      cell = new Set() as Bin;
+      this.#projectedCells.set(cellKey, cell);
     }
-    return rect;
+    return cell;
   }
 
   *#iterateCuboidCellKeys(
@@ -198,7 +269,7 @@ export class GridSpatialIndex<
     const minCorner = position;
     const maxCorner = addXyz(position, size);
 
-    // Calculate which cells this cuboid occupies (cells are 16x16x12 units)
+    // Calculate which cells this cuboid occupies
     const minCellX = Math.floor(minCorner.x / cellWidth);
     const minCellY = Math.floor(minCorner.y / cellDepth);
     const minCellZ = Math.floor(minCorner.z / cellHeight);
@@ -216,84 +287,62 @@ export class GridSpatialIndex<
     }
   }
 
-  *#iterateRectCellKeys(
-    /** Top-left corner of the rectangle */
-    topLeft: Xy,
-    /** Bottom-right corner of the rectangle */
-    bottomRight: Xy,
-  ): Generator<RectKey> {
-    // Calculate which rect cells this rectangle occupies (cells are 32x12 units)
-    const minRectX = Math.floor(topLeft.x / rectGridWidth);
-    const minRectY = Math.floor(topLeft.y / rectGridHeight);
-    const maxRectX = Math.floor(bottomRight.x / rectGridWidth);
-    const maxRectY = Math.floor(bottomRight.y / rectGridHeight);
+  #upsertAxesProjections(i: Item): ProjectionOnAxes {
+    const pos =
+      i.renderAabbOffset ?
+        addXyz(i.state.position, i.renderAabbOffset)
+      : i.state.position;
+    const bb = i.renderAabb || i.aabb;
 
-    // Yield all rect keys the item occupies
-    for (let x = minRectX; x <= maxRectX; x++) {
-      for (let y = minRectY; y <= maxRectY; y++) {
-        yield this.#makeRectKey(x, y);
-      }
-    }
+    const { allAxesProjections } = projectAabbCorners(pos, bb);
+
+    this.#itemToProjectionAxesMap.set(i, allAxesProjections);
+
+    return allAxesProjections;
   }
 
   /**
-   * Remove an item from the 3D cuboid index.
+   * project an item to a hexagon, but treat that hexagon as an object 3-dimensional
+   * space. Where the projections of the aabb on the three world axes, onto the
+   * screen axes, are taken as the ordinals.
+   *
+   * The hexagons we render to, with a fixed camera angle, are always using the
+   * same slope/angle of their lines (z is vertical, x and y are 2:1 diagonal lines).
+   * Therefore, any two hexagons overlap if they overlap on all three of these axes.
+   * So, it is like a 3d overlapping problem, but for the 2d projections of the 3d axes.
    */
-  #removeItemCuboid(
-    /** The item to remove */
-    item: Item,
-  ): void {
-    // Get the cells this item currently occupies
-    const occupiedCells = this.#itemToCellKeys.get(item);
-    if (!occupiedCells) {
-      return;
+  *#iterateProjectionCellKeys(i: Item): Generator<CellKey> {
+    const projectionAxes = this.#itemToProjectionAxesMap.get(i);
+
+    if (projectionAxes === undefined) {
+      throw new Error("projectionAxes not calculated for " + i.id);
     }
 
-    // Remove from all occupied 3D cells
-    for (const cellKey of occupiedCells) {
-      const cell = this.#cells.get(cellKey);
-      if (cell) {
-        cell.delete(item);
+    const {
+      xAxisProjectionMin,
+      xAxisProjectionMax,
+      yAxisProjectionMin,
+      yAxisProjectionMax,
+      zAxisProjectionMin,
+      zAxisProjectionMax,
+    } = projectionAxes;
 
-        // If cell is now empty, remove it from the map
-        if (cell.size === 0) {
-          this.#cells.delete(cellKey);
+    // Calculate which cells this cuboid occupies
+    const minCellX = Math.floor(xAxisProjectionMin / projCellWidth);
+    const minCellY = Math.floor(yAxisProjectionMin / projCellDepth);
+    const minCellZ = Math.floor(zAxisProjectionMin / projCellHeight);
+    const maxCellX = Math.floor(xAxisProjectionMax / projCellWidth);
+    const maxCellY = Math.floor(yAxisProjectionMax / projCellDepth);
+    const maxCellZ = Math.floor(zAxisProjectionMax / projCellHeight);
+
+    // Yield all cell keys the projection occupies
+    for (let x = minCellX; x <= maxCellX; x++) {
+      for (let y = minCellY; y <= maxCellY; y++) {
+        for (let z = minCellZ; z <= maxCellZ; z++) {
+          yield this.#makeCellKey(x, y, z);
         }
       }
     }
-
-    // Remove item from 3D tracking
-    this.#itemToCellKeys.delete(item);
-  }
-
-  /**
-   * Remove an item from the 2D rect index.
-   */
-  #removeItemRect(
-    /** The item to remove */
-    item: Item,
-  ): void {
-    // Get the rects this item currently occupies
-    const occupiedRects = this.#itemToRectKeys.get(item);
-    if (!occupiedRects) {
-      return;
-    }
-
-    // Remove from all occupied 2D rects
-    for (const rectKey of occupiedRects) {
-      const rect = this.#rects.get(rectKey);
-      if (rect) {
-        rect.delete(item);
-
-        // If rect is now empty, remove it from the map
-        if (rect.size === 0) {
-          this.#rects.delete(rectKey);
-        }
-      }
-    }
-
-    // Remove item from 2D tracking
-    this.#itemToRectKeys.delete(item);
   }
 
   /**
@@ -309,252 +358,140 @@ export class GridSpatialIndex<
       throw new Error(`Item ${item.id} is not in the spatial index`);
     }
 
-    this.#removeItemCuboid(item);
-    this.#removeItemRect(item);
+    // Remove from cuboid index
+    this.#removeFromIndex(item, this.#cells, this.#itemToCellKeys);
+
+    // Remove from projected cell index
+    this.#removeFromIndex(
+      item,
+      this.#projectedCells,
+      this.#itemToProjectedCellKeys,
+    );
   }
 
   /**
-   * project an item to a rectangle that will contain its rendering on the
-   * screen
+   * Update an item's position in the spatial index. After this,
+   * collision detection should work
    */
-  #itemRectangle(i: Item): [Xy, Xy] {
-    const pos =
-      i.renderAabbOffset ?
-        addXyz(i.state.position, i.renderAabbOffset)
-      : i.state.position;
-    const bb = i.renderAabb || i.aabb;
-
-    const { left, right, top, bottom } = projectAabbCorners(pos, bb);
-    return [
-      { x: left, y: top },
-      { x: right, y: bottom },
-    ];
-  }
-
-  /**
-   * Update an item's position in the grid.
-   */
-  #updateItemCuboid(
+  updateItemSpatialIndex(
     /** The item to update */
     item: Item,
   ): void {
-    // Get current cells
-    const oldCellKeys = this.#itemToCellKeys.get(item);
-    if (!oldCellKeys) {
-      throw new Error("Item not in grid");
-    }
-
-    const newCellKeys = new Set<CellKey>(
+    // Update in cuboid index
+    this.#updateInIndex(
+      item,
       this.#iterateCuboidCellKeys(item.state.position, item.aabb),
+      this.#cells,
+      this.#itemToCellKeys,
+      (cellKey) => this.#ensureCell(cellKey),
     );
-
-    // Track if has deleted from any cell. Large majority of updates will not.
-    let deleted = false;
-    let added = false;
-
-    // Remove from all old cells
-    for (const cellKey of oldCellKeys) {
-      const cell = this.#cells.get(cellKey);
-      if (cell && !newCellKeys.has(cellKey)) {
-        deleted = true;
-        cell.delete(item);
-      }
-    }
-
-    // Add to all new cells
-    for (const cellKey of newCellKeys) {
-      if (oldCellKeys.has(cellKey)) {
-        // already have it, no need to add
-        continue;
-      }
-
-      const cell = this.#ensureCell(cellKey);
-      cell.add(item);
-      added = true;
-    }
-
-    // Clean up any empty cells from the old position
-    if (deleted) {
-      for (const cellKey of oldCellKeys) {
-        const cell = this.#cells.get(cellKey);
-        if (cell && cell.size === 0) {
-          this.#cells.delete(cellKey);
-        }
-      }
-    }
-
-    // Update tracking only if there was a change - this prevents new-generation
-    // object newCellKeys from transitioning to old-generation unnecessarily
-    if (deleted || added) {
-      this.#itemToCellKeys.set(item, newCellKeys);
-    } else {
-      // help gc by emptying set that will never be used again:
-      newCellKeys.clear();
-    }
   }
-
   /**
-   * Update an item's position in the 2D rect grid.
+   * Update an item's position in the grid. After this, z-edge graph
+   * updates should work.
    */
-  #updateItemRect(
+  updateItemProjectedIndex(
     /** The item to update */
     item: Item,
   ): void {
-    // Get current rects
-    const oldRectKeys = this.#itemToRectKeys.get(item);
-    if (!oldRectKeys) {
-      throw new Error("Item not in rect grid");
-    }
-
-    const [topLeft, bottomRight] = this.#itemRectangle(item);
-    const newRectKeys = new Set<RectKey>(
-      this.#iterateRectCellKeys(topLeft, bottomRight),
+    // Update in projected cell index
+    this.#upsertAxesProjections(item);
+    this.#updateInIndex(
+      item,
+      this.#iterateProjectionCellKeys(item),
+      this.#projectedCells,
+      this.#itemToProjectedCellKeys,
+      (cellKey) => this.#ensureProjectedCell(cellKey),
     );
-
-    // Track if has deleted from any rect. Large majority of updates will not.
-    let deleted = false;
-    let added = false;
-
-    // Remove from all old rects
-    for (const rectKey of oldRectKeys) {
-      const rect = this.#rects.get(rectKey);
-      if (rect && !newRectKeys.has(rectKey)) {
-        deleted = true;
-        rect.delete(item);
-      }
-    }
-
-    // Add to all new rects
-    for (const rectKey of newRectKeys) {
-      if (oldRectKeys.has(rectKey)) {
-        // already have it, no need to add
-        continue;
-      }
-
-      const rect = this.#ensureRect(rectKey);
-      rect.add(item);
-      added = true;
-    }
-
-    // Clean up any empty rects from the old position
-    if (deleted) {
-      for (const rectKey of oldRectKeys) {
-        const rect = this.#rects.get(rectKey);
-        if (rect && rect.size === 0) {
-          this.#rects.delete(rectKey);
-        }
-      }
-    }
-
-    // Update tracking only if there was a change
-    if (deleted || added) {
-      this.#itemToRectKeys.set(item, newRectKeys);
-    } else {
-      // help gc by emptying set that will never be used again:
-      newRectKeys.clear();
-    }
   }
 
   /**
-   * Update an item's position in the grid.
+   * Get all items that occupy cells within the given cuboid region.
+   * Each item appears only once in the returned set.
    */
-  updateItem(
-    /** The item to update */
-    item: Item,
-  ): void {
-    this.#updateItemCuboid(item);
-    this.#updateItemRect(item);
-  }
-
-  /**
-   * Iterate over all items that occupy cells within the given cuboid region.
-   * Each item is yielded only once, even if it shares multiple cells.
-   */
-  *iterateCuboidNeighbourhood(
+  getCuboidNeighbourhood(
     /** The position of the cuboid to check */
     position: Xyz,
     /** The size of the cuboid to check */
     size: Xyz,
     /** Optional item to exclude from results (usually the querying item) */
     excludeItem?: MinimumRequiredItem,
-  ): Generator<Item> {
-    // Track items we've already yielded to avoid duplicates
-    const yielded = new Set<Item>();
+  ): Set<Item> {
+    const neighbours = new Set<Item>();
 
     for (const cellKey of this.#iterateCuboidCellKeys(position, size)) {
       const cell = this.#cells.get(cellKey);
       if (cell) {
-        // Yield each item in this cell (once only)
         for (const neighbour of cell) {
-          if (neighbour !== excludeItem && !yielded.has(neighbour)) {
-            yielded.add(neighbour);
-            yield neighbour;
+          if (neighbour !== excludeItem) {
+            neighbours.add(neighbour);
           }
         }
       }
     }
 
-    // Clear to aid garbage collection
-    yielded.clear();
+    return neighbours;
   }
 
   /**
-   * Iterate over all items that occupy rect cells within the given rectangle region.
-   * Each item is yielded only once, even if it shares multiple cells.
+   * Get all items that occupy projected cells overlapping with the given item.
+   * Each item appears only once in the returned set.
+   *
+   * The item *must* be in the index
    */
-  *iterateRectNeighbourhood(
-    /** Top-left corner of the rectangle to check */
-    topLeft: Xy,
-    /** Bottom-right corner of the rectangle to check */
-    bottomRight: Xy,
+  getProjectedNeighbourhood(
+    /** The item whose projection neighbourhood to check */
+    item: Item,
     /** Optional item to exclude from results (usually the querying item) */
     excludeItem?: Item,
-  ): Generator<Item> {
-    // Track items we've already yielded to avoid duplicates
-    const yielded = new Set<Item>();
+  ): Set<Item> {
+    const neighbours = new Set<Item>();
 
-    for (const rectKey of this.#iterateRectCellKeys(topLeft, bottomRight)) {
-      const rect = this.#rects.get(rectKey);
-      if (rect) {
-        // Yield each item in this rect (once only)
-        for (const neighbour of rect) {
-          if (neighbour !== excludeItem && !yielded.has(neighbour)) {
-            yielded.add(neighbour);
-            yield neighbour;
+    // note we don't call this:
+    // this.#upsertAxesProjections(item);
+    // so it is required the item be in the index, and be up to date
+    for (const cellKey of this.#iterateProjectionCellKeys(item)) {
+      const cell = this.#projectedCells.get(cellKey);
+      if (cell) {
+        for (const neighbour of cell) {
+          if (neighbour !== excludeItem) {
+            neighbours.add(neighbour);
           }
         }
       }
     }
 
-    // Clear to aid garbage collection
-    yielded.clear();
+    return neighbours;
   }
 
   /**
-   * Iterate over all items that share at least one cell with the given item.
-   * Each item is yielded only once, even if it shares multiple cells.
+   * Get all items that share at least one cell with the given item.
+   * Each item appears only once in the returned set.
    */
-  iterateItemCuboidNeighbourhood(
+  getItemCuboidNeighbourhood(
     /**
      * NOTE: - there is no requirement for this item to actually be in the index itself
      */
     item: MinimumRequiredItem,
-  ): Generator<Item> {
-    return this.iterateCuboidNeighbourhood(
-      item.state.position,
-      item.aabb,
-      item,
-    );
+  ): Set<Item> {
+    return this.getCuboidNeighbourhood(item.state.position, item.aabb, item);
   }
 
-  iterateItemRectNeighbourhood(
+  getItemProjectedNeighbourhood(
     /**
      * NOTE: - there is no requirement for this item to actually be in the index itself
      */
     item: Item,
-  ): Generator<Item> {
-    const [topLeft, bottomRight] = this.#itemRectangle(item);
-    return this.iterateRectNeighbourhood(topLeft, bottomRight, item);
+  ): Set<Item> {
+    return this.getProjectedNeighbourhood(item, item);
+  }
+
+  /**
+   * Get the cached axes projections for an item in the index.
+   * Returns undefined if the item is not in the index.
+   */
+  getItemAxesProjections(item: Item): ProjectionOnAxes | undefined {
+    return this.#itemToProjectionAxesMap.get(item);
   }
 
   /**
@@ -572,20 +509,22 @@ export class GridSpatialIndex<
       return `  (${cellKey}) => [${itemIds.join(", ")}]`;
     });
 
-    // Sort rect keys for consistent output
-    const sortedRectKeys = Array.from(this.#rects.keys()).sort();
+    // Sort projected cell keys for consistent output
+    const sortedProjectedCellKeys = Array.from(
+      this.#projectedCells.keys(),
+    ).sort();
 
-    const rectEntries = sortedRectKeys.map((rectKey) => {
-      const rect = this.#rects.get(rectKey)!;
-      const itemIds = Array.from(rect).map((item) => item.id);
-      return `  (${rectKey}) => [${itemIds.join(", ")}]`;
+    const projectedCellEntries = sortedProjectedCellKeys.map((cellKey) => {
+      const cell = this.#projectedCells.get(cellKey)!;
+      const itemIds = Array.from(cell).map((item) => item.id);
+      return `  (${cellKey}) => [${itemIds.join(", ")}]`;
     });
 
-    return `GridSpatialIndex (${this.#cells.size} 3D cells, ${this.#rects.size} 2D rects, ${this.#itemToCellKeys.size} items) {
+    return `GridSpatialIndex (${this.#cells.size} 3D cells, ${this.#projectedCells.size} projected cells, ${this.#itemToCellKeys.size} items) {
   3D Cells:
 ${cellEntries.join(",\n")}
-  2D Rects:
-${rectEntries.join(",\n")}
+  Projected Cells:
+${projectedCellEntries.join(",\n")}
 }`;
   }
 }

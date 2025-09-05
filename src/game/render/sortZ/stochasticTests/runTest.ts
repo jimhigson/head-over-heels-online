@@ -1,6 +1,7 @@
 import type { DrawOrderComparable } from "../DrawOrderComparable";
 import type { ZGraph } from "../GraphEdges";
 
+import { GridSpatialIndex } from "../../../physics/gridSpace/GridSpatialIndex";
 import { updateZEdges } from "../updateZEdges";
 
 export const itemCount = 100;
@@ -42,12 +43,13 @@ export const runTest = () => {
   const items = generateItems(itemCount);
 
   // first call with all items to build initial graph
-  const zEdgesGraph: ZGraph<string> = updateZEdges(items);
+  const itemArray = Object.values(items);
+  const spatialIndex = new GridSpatialIndex(itemArray);
+  const zEdgesGraph: ZGraph<string> = updateZEdges(items, spatialIndex);
 
   // simulate frames:
   for (let f = 0; f < frameCount; f++) {
     // select items to move
-    const itemArray = Object.values(items);
     const movedItems = new Set<TestItem>();
 
     // deterministically select items to move based on movePercentage
@@ -61,7 +63,7 @@ export const runTest = () => {
     }
 
     // benchmark the incremental update
-    updateZEdges(items, movedItems, zEdgesGraph);
+    updateZEdges(items, spatialIndex, movedItems, zEdgesGraph);
   }
   return zEdgesGraph;
 };
