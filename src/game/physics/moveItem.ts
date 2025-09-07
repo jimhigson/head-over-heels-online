@@ -119,6 +119,10 @@ const backingOffTranslationAfterCollision = <
       dotProductXyz(backingOffMtv, subjectTravelReverseVector) /
       travelRevDistSquared;
 
+    // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
+    // normal aabb mtvs
+    subjectTravelReverseVector.z = 0;
+
     // a little bit wider than 45° (which would be 0.5 here)
     if (backingOffProjectedOnMovementVector > 0.44) {
       return mtvAlongVector(
@@ -128,7 +132,7 @@ const backingOffTranslationAfterCollision = <
         collidedWithItem.aabb,
         // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
         // normal aabb mtvs
-        { ...subjectTravelReverseVector, z: 0 },
+        subjectTravelReverseVector,
       );
     }
   }

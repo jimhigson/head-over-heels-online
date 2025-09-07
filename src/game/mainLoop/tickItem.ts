@@ -6,11 +6,15 @@ import type {
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/RoomState";
+import type { Xyz } from "../../utils/vectors/vectors";
 import type { GameState } from "../gameState/GameState";
 
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
-import { iterate } from "../../utils/iterate";
-import { addXyz, scaleXyz } from "../../utils/vectors/vectors";
+import {
+  addXyzInPlace,
+  originXyz,
+  scaleXyzWriteInto,
+} from "../../utils/vectors/vectors";
 import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
 import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerTouchingDeadly";
@@ -182,6 +186,12 @@ const tickItemStandingOn = <
   }
 };
 
+// since only one item can tick at once, a buffer to write their position change into,
+// to avoid malloc:
+const tickItemPosDeltaAccumulationBuffer: Xyz = { x: 0, y: 0, z: 0 };
+// a buffer to write into while scaling vels down to pos tick pos deltas
+const scaleVelBuffer: Xyz = { x: 0, y: 0, z: 0 };
+
 /**
  * ticks all items THAT CAN DO THINGS in the world
  * - this may also cause movements in other items (eg pushing)
@@ -230,19 +240,24 @@ export const tickItem = <
 
   // continue even if there are no mechanicsResults, since item still may be moving (ie, a fired doughnut)
 
-  let accumulatedPosDelta = applyMechanicsResults(item, mechanicsResults);
+  applyMechanicsResults(
+    // writeInto:
+    tickItemPosDeltaAccumulationBuffer,
+    item,
+    mechanicsResults,
+  );
 
   const isMovableThing =
     isFreeItem(item) || isLift(item) || isFiredDoughnut(item);
   // velocities for this item have now been updated - get the aggregate movement, including vels
   // that stood from previous frames (did not change)
   if (isMovableThing) {
-    accumulatedPosDelta = addXyz(
-      accumulatedPosDelta,
-      ...iterate(objectValues(item.state.vels)).map((val) =>
-        scaleXyz(val, deltaMS),
-      ),
-    );
+    for (const vel of objectValues(item.state.vels)) {
+      addXyzInPlace(
+        tickItemPosDeltaAccumulationBuffer,
+        scaleXyzWriteInto(scaleVelBuffer, { ...originXyz, ...vel }, deltaMS),
+      );
+    }
   }
 
   if (isCrown(item)) {
@@ -251,7 +266,7 @@ export const tickItem = <
 
   moveItem({
     subjectItem: item as UnionOfAllItemInPlayTypes<RoomId>,
-    posDelta: accumulatedPosDelta,
+    posDelta: tickItemPosDeltaAccumulationBuffer,
     gameState,
     room,
     deltaMS,
