@@ -21,7 +21,9 @@ export type TestRoomJson = RoomJson<TestRoomId, string, "blacktooth">;
 export type ItemsInTestRoomJson = TestRoomJson["items"];
 
 const basicRoomSize = { x: 8, y: 8 };
-export const basicEmptyRoom = (id: TestRoomId): TestRoomJson => ({
+export const basicEmptyRoom = <RoomId extends string>(
+  id: RoomId,
+): RoomJson<RoomId, string, "blacktooth"> => ({
   id,
   planet: "blacktooth",
   color: { hue: "cyan", shade: "basic" },
@@ -60,6 +62,19 @@ const basicEmptyRoomWithItems = (
   ...gameState,
   inputStateTracker: { ...gameState.inputStateTracker, ...inputState },
 });*/
+
+export const setupGameForCampaign = <RoomId extends string>(
+  campaign: Campaign<RoomId>,
+) => {
+  gameStartedWithCampaign(campaign);
+
+  const gameState = loadGameState<RoomId>({
+    campaign,
+    inputStateTracker: new MockInputStateTracker(),
+  }) as GameStateWithMockInput;
+
+  return gameState;
+};
 
 export type BasicGameStateOptions = {
   firstRoomItems: ItemsInTestRoomJson;
@@ -118,12 +133,5 @@ export const setUpBasicGame = ({
     };
   }
 
-  gameStartedWithCampaign(campaign);
-
-  const gameState = loadGameState<TestRoomId>({
-    campaign,
-    inputStateTracker: new MockInputStateTracker(),
-  }) as GameStateWithMockInput;
-
-  return gameState;
+  return setupGameForCampaign(campaign);
 };
