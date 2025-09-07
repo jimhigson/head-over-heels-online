@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 
 import type { EditorJsonItem, EditorRoomId } from "../../../editor/editorTypes";
 import type { LevelEditorState } from "../../../editor/slice/levelEditorSlice";

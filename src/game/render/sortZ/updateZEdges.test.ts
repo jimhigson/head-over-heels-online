@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 import { describe, expect, test } from "vitest";
 
 import type { DrawOrderComparable } from "./DrawOrderComparable";

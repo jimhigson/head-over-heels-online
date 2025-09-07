@@ -1,4 +1,4 @@
-import { size } from "iter-tools";
+import { size } from "iter-tools-es";
 
 import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
 import type { ItemInPlay } from "../../model/ItemInPlay";

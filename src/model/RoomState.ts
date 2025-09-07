@@ -1,6 +1,6 @@
 import type { Simplify, ValueOf } from "type-fest";
 
-import { objectEntries, objectValues } from "iter-tools";
+import { objectEntries, objectValues } from "iter-tools-es";
 
 import type { SceneryName } from "../sprites/planets";
 import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";

@@ -1,4 +1,4 @@
-import { first, objectValues } from "iter-tools";
+import { first, objectValues } from "iter-tools-es";
 import { expect, vi } from "vitest";
 
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";

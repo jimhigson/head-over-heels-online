@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import { first, objectValues } from "iter-tools";
+import { first, objectValues } from "iter-tools-es";
 
 import type { EditorCampaign } from "../../editorTypes";
 

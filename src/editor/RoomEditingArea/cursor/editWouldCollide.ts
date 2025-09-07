@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { filter, flatMap, isEmpty, map, pipe, some } from "iter-tools";
+import { filter, flatMap, isEmpty, map, pipe, some } from "iter-tools-es";
 
 import type { JsonItemType } from "../../../model/json/JsonItem";
 import type {

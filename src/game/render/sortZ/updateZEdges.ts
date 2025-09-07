@@ -1,6 +1,6 @@
 //# allFunctionsCalledOnLoad
 
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 
 import type { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import type { DrawOrderComparable } from "./DrawOrderComparable";

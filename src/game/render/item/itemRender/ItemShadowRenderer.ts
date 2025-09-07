@@ -1,7 +1,7 @@
 import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
 import type { SetRequired } from "type-fest";
 
-import { concat, objectEntries } from "iter-tools";
+import { concat, objectEntries } from "iter-tools-es";
 import { AlphaFilter, Container, Sprite } from "pixi.js";
 
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";

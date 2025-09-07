@@ -1,4 +1,4 @@
-import { first } from "iter-tools";
+import { first } from "iter-tools-es";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type {

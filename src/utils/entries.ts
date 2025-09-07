@@ -1,4 +1,4 @@
-import { objectEntries, objectKeys } from "iter-tools";
+import { objectEntries, objectKeys } from "iter-tools-es";
 
 import { iterate } from "./iterate";
 

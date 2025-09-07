@@ -1,6 +1,6 @@
 import type { Sprite } from "pixi.js";
 
-import { size } from "iter-tools";
+import { size } from "iter-tools-es";
 import { Container } from "pixi.js";
 
 import type { PokeableNumber } from "../../../model/ItemStateMap";

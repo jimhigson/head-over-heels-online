@@ -2,7 +2,7 @@ import type { ValueOf } from "type-fest";
 
 import { createSelector } from "@reduxjs/toolkit";
 import { produce } from "immer";
-import { objectEntries } from "iter-tools";
+import { objectEntries } from "iter-tools-es";
 
 import type {
   EditorJsonItemUnion,

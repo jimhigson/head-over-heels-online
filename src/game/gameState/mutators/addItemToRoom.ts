@@ -1,4 +1,4 @@
-import { first } from "iter-tools";
+import { first } from "iter-tools-es";
 
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type {

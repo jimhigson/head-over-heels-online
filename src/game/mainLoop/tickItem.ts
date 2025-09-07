@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type {

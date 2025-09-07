@@ -1,6 +1,6 @@
 import type { ValueOf } from "type-fest";
 
-import { objectEntries } from "iter-tools";
+import { objectEntries } from "iter-tools-es";
 
 import type { EditorRoomItemId, EditorRoomJson } from "../editorTypes";
 import type { PreviewedRoomItemEdits } from "./levelEditorSlice";

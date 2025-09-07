@@ -3,7 +3,7 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import { size } from "iter-tools";
+import { size } from "iter-tools-es";
 
 import type { BasicGameStateOptions } from "../../../_testUtils/basicRoom";
 import type { ItemInPlay } from "../../../model/ItemInPlay";

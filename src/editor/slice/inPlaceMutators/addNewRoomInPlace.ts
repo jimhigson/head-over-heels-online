@@ -1,4 +1,4 @@
-import { range } from "iter-tools";
+import { range } from "iter-tools-es";
 
 import type { SceneryName } from "../../../sprites/planets";
 import type { Xy } from "../../../utils/vectors/vectors";

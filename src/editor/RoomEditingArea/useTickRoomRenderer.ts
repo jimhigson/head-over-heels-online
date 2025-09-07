@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 import { Ticker } from "pixi.js";
 import { useEffect } from "react";
 

@@ -1,4 +1,4 @@
-import { objectKeys, objectValues, size } from "iter-tools";
+import { objectKeys, objectValues, size } from "iter-tools-es";
 import { Suspense } from "react";
 
 import { useAppSelector } from "../../../../../../store/hooks";

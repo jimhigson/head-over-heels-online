@@ -1,7 +1,7 @@
 import type { FederatedPointerEvent } from "pixi.js";
 import type { EmptyObject } from "type-fest";
 
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 import { Container, Graphics } from "pixi.js";
 
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";

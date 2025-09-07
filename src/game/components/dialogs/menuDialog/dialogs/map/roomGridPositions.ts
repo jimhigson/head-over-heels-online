@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 
 import type { JsonItem } from "../../../../../../model/json/JsonItem";
 import type { Campaign } from "../../../../../../model/modelTypes";

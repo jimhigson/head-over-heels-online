@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { isEmpty } from "iter-tools";
+import { isEmpty } from "iter-tools-es";
 
 import type { EditorRoomItemId } from "../../editorTypes";
 
