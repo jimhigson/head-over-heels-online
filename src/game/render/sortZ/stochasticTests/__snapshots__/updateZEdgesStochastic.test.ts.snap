@@ -1,0 +1,131 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`updateZEdges correctness 1`] = `
+Map {
+  "item-22" => Map {
+    "item-11" => false,
+  },
+  "item-12" => Map {
+    "item-1" => false,
+  },
+  "item-23" => Map {
+    "item-1" => false,
+    "item-12" => false,
+  },
+  "item-13" => Map {
+    "item-2" => false,
+  },
+  "item-24" => Map {
+    "item-2" => false,
+    "item-13" => false,
+  },
+  "item-14" => Map {
+    "item-3" => false,
+  },
+  "item-36" => Map {
+    "item-14" => false,
+  },
+  "item-37" => Map {
+    "item-26" => false,
+    "item-15" => false,
+  },
+  "item-48" => Map {
+    "item-26" => false,
+    "item-37" => false,
+    "item-15" => false,
+  },
+  "item-38" => Map {
+    "item-27" => false,
+  },
+  "item-49" => Map {
+    "item-27" => false,
+    "item-38" => false,
+  },
+  "item-39" => Map {
+    "item-28" => false,
+  },
+  "item-47" => Map {
+    "item-36" => false,
+  },
+  "item-62" => Map {
+    "item-51" => false,
+    "item-40" => false,
+  },
+  "item-73" => Map {
+    "item-51" => false,
+    "item-62" => false,
+    "item-40" => false,
+  },
+  "item-52" => Map {
+    "item-41" => false,
+  },
+  "item-63" => Map {
+    "item-52" => false,
+  },
+  "item-74" => Map {
+    "item-52" => false,
+    "item-63" => false,
+  },
+  "item-64" => Map {
+    "item-53" => false,
+  },
+  "item-86" => Map {
+    "item-53" => false,
+    "item-64" => false,
+  },
+  "item-72" => Map {
+    "item-61" => false,
+  },
+  "item-87" => Map {
+    "item-76" => false,
+    "item-65" => false,
+  },
+  "item-98" => Map {
+    "item-76" => false,
+    "item-87" => false,
+    "item-65" => false,
+  },
+  "item-77" => Map {
+    "item-66" => false,
+  },
+  "item-88" => Map {
+    "item-77" => false,
+  },
+  "item-99" => Map {
+    "item-77" => false,
+    "item-88" => false,
+  },
+  "item-89" => Map {
+    "item-78" => false,
+  },
+  "item-25" => Map {
+    "item-3" => false,
+    "item-14" => false,
+  },
+  "item-75" => Map {
+    "item-53" => false,
+    "item-42" => false,
+  },
+  "item-51" => Map {
+    "item-40" => false,
+  },
+  "item-26" => Map {
+    "item-15" => false,
+  },
+  "item-76" => Map {
+    "item-65" => false,
+  },
+  "item-21" => Map {
+    "item-10" => false,
+  },
+  "item-46" => Map {
+    "item-35" => false,
+  },
+  "item-55" => Map {
+    "item-44" => false,
+  },
+  "item-96" => Map {
+    "item-85" => false,
+  },
+}
+`;
