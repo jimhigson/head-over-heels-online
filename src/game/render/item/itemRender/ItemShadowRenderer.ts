@@ -195,13 +195,11 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         caster.state.position.z > item.state.position.z + item.aabb.z
       ) {
         // check if the caster intersects the space above the item:
-        //if (collision1to1(spaceAboveSurfacePseudoItem, caster)) {
         if (previouslyHadShadow) {
           return "update";
         } else {
           return "create";
         }
-        //}
       }
       // standing directly on something, and with the optimisation to skip in that case:
       return "noShadow";

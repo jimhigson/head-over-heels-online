@@ -106,6 +106,17 @@ export const scaleXy = (xy: Xy, scale: number): Xy => ({
   y: xy.y * scale,
 });
 
+export const scaleXyWriteInto = (
+  writeInto: object,
+  xy: Xy,
+  scale: number,
+): Xy => {
+  const writeIntoTyped = writeInto as Xy;
+  writeIntoTyped.x = xy.x * scale;
+  writeIntoTyped.y = xy.y * scale;
+  return writeIntoTyped;
+};
+
 export const scaleXyInPlace = (xy: Xy, scale: number): Xy => {
   xy.x *= scale;
   xy.y *= scale;
@@ -117,6 +128,18 @@ export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   y: xy.y * scale,
   z: xy.z * scale,
 });
+
+export const scaleXyzWriteInto = (
+  writeInto: object,
+  xyz: Xyz,
+  scale: number,
+): Xyz => {
+  const writeIntoTyped = writeInto as Xyz;
+  writeIntoTyped.x = xyz.x * scale;
+  writeIntoTyped.y = xyz.y * scale;
+  writeIntoTyped.z = xyz.z * scale;
+  return writeIntoTyped;
+};
 
 export const scaleXyzInPlace = (xyz: Xyz, scale: number): Xyz => {
   xyz.x *= scale;
@@ -215,6 +238,32 @@ export const addXyz = (...xyzs: Array<Partial<Xyz>>): Xyz => {
   }
 
   return result;
+};
+
+export const addXyzWriteInto = (
+  writeInto: object,
+  ...xyzs: Array<Partial<Xyz>>
+): Xyz => {
+  const writeIntoTyped = writeInto as Xyz;
+
+  if (xyzs.length === 0) {
+    writeIntoTyped.x = 0;
+    writeIntoTyped.y = 0;
+    writeIntoTyped.z = 0;
+    return writeIntoTyped;
+  }
+
+  writeIntoTyped.x = xyzs[0].x ?? 0;
+  writeIntoTyped.y = xyzs[0].y ?? 0;
+  writeIntoTyped.z = xyzs[0].z ?? 0;
+
+  for (let i = 1; i < xyzs.length; i++) {
+    writeIntoTyped.x += xyzs[i].x ?? 0;
+    writeIntoTyped.y += xyzs[i].y ?? 0;
+    writeIntoTyped.z += xyzs[i].z ?? 0;
+  }
+
+  return writeIntoTyped;
 };
 
 export const addXyzInPlace = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
@@ -550,4 +599,10 @@ export const areInSameDirection = (
 
   // Compare squared values to avoid sqrt
   return Math.abs(dot * dot - mag1Sq * mag2Sq) < epsilon;
+};
+
+export const resetXyzInPlace = (xyz: Xyz) => {
+  xyz.x = 0;
+  xyz.y = 0;
+  xyz.z = 0;
 };

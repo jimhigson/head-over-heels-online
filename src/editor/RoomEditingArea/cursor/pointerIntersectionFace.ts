@@ -2,7 +2,11 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import type { Tool } from "../../Tool";
 
-import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
+import {
+  projectBottomCentre,
+  projectTopLeft,
+  projectTopRight,
+} from "../../../game/render/sortZ/projectAabbCorners";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { scaleXyz, type Xy } from "../../../utils/vectors/vectors";
 
@@ -53,11 +57,13 @@ export const pointerIntersectionFace = (
    *            V
    *           [bc]
    */
-  const { bottomCentre, topLeft, topRight } = projectAabbCorners(
-    item.state.position,
-    // using aabb, not renderAabb, so doors can be placed on walls above where they render
-    item.aabb,
-  );
+  // using aabb, not renderAabb, so doors can be placed on walls above where they render
+  const { position } = item.state;
+  const { aabb } = item;
+
+  const bottomCentre = projectBottomCentre(position);
+  const topLeft = projectTopLeft(position, aabb);
+  const topRight = projectTopRight(position, aabb);
 
   const aboveXLine = y < topLeft.y - (topLeft.x - x) / 2;
 

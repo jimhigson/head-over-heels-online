@@ -103,7 +103,7 @@ export const updateZEdges = <
         continue;
       }
 
-      const comparison = zComparator(itemI, itemJ);
+      const comparison = zComparator(itemI, itemJ, spatialIndex);
 
       if (!comparisonsDone.has(itemI)) {
         comparisonsDone.set(itemI, new Set());

@@ -1,7 +1,11 @@
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import type { Tool } from "../../Tool";
 
-import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
+import {
+  projectBottomCentre,
+  projectTopLeft,
+  projectTopRight,
+} from "../../../game/render/sortZ/projectAabbCorners";
 import {
   addXyz,
   originXyz,
@@ -41,10 +45,9 @@ export const pointIntersectsAABB = (
   // using aabb, not renderAabb, so doors can be placed on walls above where they render
   aabb: Xyz,
 ) => {
-  const { bottomCentre, topLeft, topRight } = projectAabbCorners(
-    position,
-    aabb,
-  );
+  const bottomCentre = projectBottomCentre(position);
+  const topLeft = projectTopLeft(position, aabb);
+  const topRight = projectTopRight(position, aabb);
 
   /*
    * check against each of 6 lines based on 3 [corners]:

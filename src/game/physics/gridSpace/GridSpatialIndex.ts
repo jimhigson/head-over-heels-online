@@ -4,7 +4,7 @@ import type { ProjectionOnAxes } from "../../render/sortZ/projectAabbCorners";
 
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
-import { projectAabbCorners } from "../../render/sortZ/projectAabbCorners";
+import { projectAabbAxes } from "../../render/sortZ/projectAabbCorners";
 
 // these multiplications empirically give good performance in larger rooms.
 // if the cells are too fine, the search for shadow-casters has to visit a
@@ -294,11 +294,18 @@ export class GridSpatialIndex<
       : i.state.position;
     const bb = i.renderAabb || i.aabb;
 
-    const { allAxesProjections } = projectAabbCorners(pos, bb);
+    const existing = this.#itemToProjectionAxesMap.get(i);
 
-    this.#itemToProjectionAxesMap.set(i, allAxesProjections);
-
-    return allAxesProjections;
+    if (existing !== undefined) {
+      // write into the existing object to avoid malloc
+      projectAabbAxes(existing, pos, bb);
+      return existing;
+    } else {
+      // don't already have in the cache so will have to create a new object
+      const allAxesProjections = projectAabbAxes({}, pos, bb);
+      this.#itemToProjectionAxesMap.set(i, allAxesProjections);
+      return allAxesProjections;
+    }
   }
 
   /**
