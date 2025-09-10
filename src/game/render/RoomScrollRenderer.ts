@@ -17,8 +17,8 @@ import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 import { defaultUserSettings } from "../../store/defaultUserSettings";
 import { detectDeviceType } from "../../utils/detectDeviceType";
 import { epsilon } from "../../utils/epsilon";
-import { roundToNearest } from "../../utils/maths/maths";
 import { neverTime } from "../../utils/neverTime";
+import { assignRoundedXy } from "../../utils/pixi/assignRoundedXy";
 import {
   addXy,
   addXyz,
@@ -196,19 +196,14 @@ export class RoomScrollRenderer<
     const scroll = this.#curScroll;
     const outputGraphics = this.output.graphics;
 
-    /**
-     * allowing the x/y of the container to be an unrounded fraction often ends up with
-     * it being n + 0.5 (where n is an integer) which causes wobbly artifacts on animated sprites
-     * if the upscale is not divisible by 2 (ie, upscale of 5, offset by half, gives offset of 2.5)
-     * - but rounding to int creates an unsmooth stepping effect when scrolling. Rounding to 1/ scale factor
-     * works - it is as smooth as the pixels, and avoids the wobbly artifacts.
-     */
-    const increment = 1 / gameEngineUpscale;
-
     const xyPlusLook = addXy(scroll, this.#lookOffset);
 
-    outputGraphics.x = roundToNearest(xyPlusLook.x, increment);
-    outputGraphics.y = roundToNearest(xyPlusLook.y, increment);
+    assignRoundedXy(
+      outputGraphics,
+      xyPlusLook.x,
+      xyPlusLook.y,
+      gameEngineUpscale,
+    );
   }
 
   #tickLookOffset(tickContext: RoomTickContext<RoomId, RoomItemId>) {

@@ -1,3 +1,4 @@
+//# allFunctionsCalledOnLoad
 import { epsilon, veryClose } from "../epsilon";
 
 export const directionsXy4 = ["away", "towards", "left", "right"] as const;

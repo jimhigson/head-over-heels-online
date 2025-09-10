@@ -24,6 +24,7 @@ export const CrownsDialog = ({
       <Dialog
         className="bg-pureBlack w-zx h-full block p-0"
         onClick={isLoading ? undefined : closeDialog}
+        dialogId="crowns"
       >
         {playMusic && <audio src={music} autoPlay loop />}
         <FiveCrownsDisplay />

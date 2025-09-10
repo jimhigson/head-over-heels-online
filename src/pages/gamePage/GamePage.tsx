@@ -30,6 +30,13 @@ import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
+declare global {
+  interface Window {
+    // put the gameApi on the window for e2e tests to use
+    _e2e_gamePageGameAi?: GameApi<string>;
+  }
+}
+
 const loadGameAssets = importOnce(() => {
   return Promise.all([importGameMain(), loadSpritesheet(), loadSounds()]);
 });
@@ -45,6 +52,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
   useEffect(() => {
     if (!isGameRunning) {
       setGameApi(undefined);
+      window._e2e_gamePageGameAi = undefined;
       // the game isn't running, but we will pre-load the assets.
       // they can't load twice so this is safe to call any time
       loadGameAssets();
@@ -74,6 +82,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
             inputState,
           );
           setGameApi(thisEffectGameApi);
+          window._e2e_gamePageGameAi = thisEffectGameApi;
         }
       } catch (thrown) {
         if (startedLoading) {

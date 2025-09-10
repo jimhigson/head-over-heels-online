@@ -30,7 +30,7 @@ const springAppearanceImpl: ItemAppearance<
     item: {
       state: { stoodOnBy, stoodOnUntilRoomTime },
     },
-    general: { paused },
+    general: { paused, gameState },
   },
   tickContext: { lastRenderRoomTime },
   currentRendering,
@@ -44,6 +44,8 @@ const springAppearanceImpl: ItemAppearance<
   } else {
     rendering = createSprite({
       animationId: "spring.bounce",
+      gameSpeed: gameState?.gameSpeed,
+      paused,
     });
     rendering.loop = false;
     rendering.gotoAndStop(0);

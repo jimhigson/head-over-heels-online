@@ -235,7 +235,11 @@ export type BooleanStatePaths = ToggleablePaths<
 export const initialGameMenuSliceState: GameMenusState = {
   userSettings: {
     displaySettings: {},
-    soundSettings: {},
+    soundSettings:
+      navigator.webdriver ?
+        // avoid playing sounds while running visual integration tests:
+        { mute: true }
+      : {},
   },
 
   gameRunning: false,

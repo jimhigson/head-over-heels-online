@@ -7,7 +7,10 @@ import type { AnimatedCreateSpriteOptions } from "../createSprite";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 
-export const itemRidingOnBubblesSpritesOptions: AnimatedCreateSpriteOptions = {
+export const itemRidingOnBubblesSpritesOptions: Omit<
+  AnimatedCreateSpriteOptions,
+  "gameSpeed"
+> = {
   animationId: "bubbles.cold",
 };
 export const createStackedSprites = ({

@@ -20,6 +20,7 @@ export type DialogProps = {
   /** click (or tap) handler for anywhere on the div; usually for closing the dialog */
   onClick?: (e: MouseEvent) => void;
   ref?: Ref<HTMLDialogElement>;
+  dialogId?: string; // for testing purposes
 };
 
 const getDialogClassName = (
@@ -64,12 +65,14 @@ export const Dialog = ({
   fullScreen = false,
   small = false,
   ref,
+  dialogId,
 }: DialogProps) => {
   return (
     <dialog
       ref={ref}
       className={getDialogClassName(tall, wide, fullScreen, small, className)}
       onClick={onClick}
+      data-dialog-id={dialogId}
     >
       {children}
     </dialog>

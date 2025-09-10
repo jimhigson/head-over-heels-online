@@ -26,6 +26,7 @@
     "check:test": "vitest run",
     "watch:test": "vitest watch",
     "bench": "pnpm vitest bench",
+    "screenshot": "playwright test",
     "json": "tsx src/campaignXml2Json/scripts/xml2json.ts && prettier src/_generated/originalCampaign --write",
     "jsonpatch": "tsx src/campaignXml2Json/scripts/makeCampaignDiff.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
     "predeploy": "pnpm run check && pnpm run build && echo blockstack.ing > dist/CNAME && cp dist/index.html dist/404.html",
@@ -75,6 +76,7 @@
   "devDependencies": {
     "@dyljhd/use-effect-debugger": "^1.2.1",
     "@eslint/js": "^9.22.0",
+    "@playwright/test": "^1.55.0",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@supabase/supabase-js": "^2.51.0",
     "@types/node": "^22.13.10",

@@ -8,6 +8,7 @@ import type { StackedSpritesContainer } from "./createStackedSprites";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { blockSizePx } from "../../../sprites/spritePivots";
+import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
 import {
   originXy,
   vectorClosestDirectionXy4,
@@ -44,21 +45,10 @@ type MonsterRenderProps = {
   busyLickingDoughnutsOffFace: boolean;
 };
 
-const bobTimeOffset = (str: string): number => {
-  let h = 0x811c9dc5; // seed
-  const len = str.length;
-  for (let i = Math.max(0, len - 9); i < len; i++) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 0x5bd1e995);
-    h ^= h >>> 15;
-  }
-  return (h >>> 0) / 0xffffffff;
-};
-
 const bobPeriod = 200;
 const bobAmplitude = 1;
 const floatingVerticalBob = (roomTime: number, itemId: string) => {
-  const itemsNameHash = bobTimeOffset(itemId);
+  const itemsNameHash = hashStringToNumber0to1(itemId);
   return (
     Math.sin((roomTime + itemsNameHash * 20_000) / bobPeriod) * bobAmplitude
   );
@@ -86,7 +76,7 @@ export const monsterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused },
+    general: { paused, gameState },
   },
   currentRendering,
 }) => {
@@ -162,6 +152,7 @@ export const monsterAppearance: ItemAppearance<
                   animationId: `${config.which}.${facingXy4}`,
                   filter,
                   paused,
+                  gameSpeed: gameState?.gameSpeed,
                 })
               : createSprite({
                   textureId: `${config.which}.${facingXy4}.1`,
@@ -180,7 +171,11 @@ export const monsterAppearance: ItemAppearance<
                     textureId: `${config.which}.${facingXy4}`,
                     filter: filter || mainPaletteSwapFilter(room),
                   },
-                  bottom: { ...itemRidingOnBubblesSpritesOptions, paused },
+                  bottom: {
+                    ...itemRidingOnBubblesSpritesOptions,
+                    paused,
+                    gameSpeed: gameState?.gameSpeed,
+                  },
                 })
                 // charging on a toaster
               : createSprite({
@@ -201,6 +196,7 @@ export const monsterAppearance: ItemAppearance<
                 // by playing once, the enemy's base flashes only when it has
                 // just changed direction etc
                 playOnce: "and-stop",
+                gameSpeed: gameState?.gameSpeed,
               },
               filter,
             }),
@@ -235,10 +231,12 @@ export const monsterAppearance: ItemAppearance<
             {
               animationId: walking ? "headlessBase.flash" : "headlessBase.scan",
               filter,
+              gameSpeed: gameState?.gameSpeed,
             }
           : {
               textureId: `headlessBase`,
               filter,
+              gameSpeed: gameState?.gameSpeed,
             },
         ),
         renderProps: {
@@ -285,6 +283,7 @@ export const monsterAppearance: ItemAppearance<
                   animationId: config.which,
                   filter,
                   paused,
+                  gameSpeed: gameState?.gameSpeed,
                 }
               : { textureId: `${config.which}.1`, filter },
             ),
@@ -296,7 +295,11 @@ export const monsterAppearance: ItemAppearance<
           //not directional, animated, stacked (base):
           return {
             output: createStackedSprites({
-              top: { ...itemRidingOnBubblesSpritesOptions, paused },
+              top: {
+                ...itemRidingOnBubblesSpritesOptions,
+                paused,
+                gameSpeed: gameState?.gameSpeed,
+              },
               filter,
             }),
             renderProps,
@@ -307,7 +310,11 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createStackedSprites({
               top: `ball`,
-              bottom: { ...itemRidingOnBubblesSpritesOptions, paused },
+              bottom: {
+                ...itemRidingOnBubblesSpritesOptions,
+                paused,
+                gameSpeed: gameState?.gameSpeed,
+              },
               filter,
             }),
             renderProps,
@@ -319,6 +326,7 @@ export const monsterAppearance: ItemAppearance<
               animationId: "bubbles.cold",
               filter,
               paused,
+              gameSpeed: gameState?.gameSpeed,
             }),
             renderProps,
           };

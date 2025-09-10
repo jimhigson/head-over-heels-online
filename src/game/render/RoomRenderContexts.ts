@@ -25,7 +25,7 @@ export type GeneralRenderContext<RoomId extends string> = {
    * GameState is undefined if there isn't a current game in progress
    * - this would mean that the rendering is for the level editor
    */
-  gameState?: Omit<GameState<RoomId>, "events" | "pickupsCollected">;
+  gameState?: Omit<GameState<RoomId>, "pickupsCollected">;
   paused: boolean;
   colourised: boolean;
   upscale: Upscale;

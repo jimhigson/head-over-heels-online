@@ -1,0 +1,71 @@
+name: Visual Regression Tests
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  visual-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser:
+          - chromium-desktop
+          # firefox can't do webgl on github action runners
+          # so this will have to be tested local-only, when updating
+          # the images
+          #- firefox-desktop
+          - webkit-desktop
+          - mobile-chrome
+          - mobile-safari
+    name: Visual tests - ${{ matrix.browser }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install Playwright browsers
+        run: |
+          if [[ "${{ matrix.browser }}" == *"chromium"* ]] || [[ "${{ matrix.browser }}" == *"chrome"* ]]; then
+            pnpm playwright install chromium
+          elif [[ "${{ matrix.browser }}" == *"firefox"* ]]; then
+            pnpm playwright install firefox
+          elif [[ "${{ matrix.browser }}" == *"webkit"* ]] || [[ "${{ matrix.browser }}" == *"safari"* ]]; then
+            pnpm playwright install webkit
+          fi
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+
+      - name: Install Playwright system dependencies
+        run: pnpm playwright install-deps
+
+      - name: Run Playwright tests
+        run: pnpm playwright test --project=${{ matrix.browser }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

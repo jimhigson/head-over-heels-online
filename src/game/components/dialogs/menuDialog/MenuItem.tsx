@@ -109,6 +109,7 @@ export const MenuItem = ({
           }
           isFirstRender.current = false;
         }}
+        role="menuitem"
         className={twMerge(
           // if there is no value to show, take up the third column too:
           valueElement === undefined ? "col-span-2" : "",
