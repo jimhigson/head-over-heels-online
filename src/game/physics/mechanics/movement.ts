@@ -316,7 +316,7 @@ const randomlyChangeDirection = <
 >(
   itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
   _room: RoomState<RoomId, RoomItemId>,
-  _gameState: GameState<RoomId>,
+  { gameSpeed }: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
@@ -332,7 +332,14 @@ const randomlyChangeDirection = <
   }
 
   const produceNewWalk =
-    xyzEqual(walking, originXyz) || Math.random() < deltaMS / 1000;
+    xyzEqual(walking, originXyz) ?
+      // standing on something but not walking - start walking (unless game speed is zero
+      // since this needs to be deterministic for the visual regression tests (and no time
+      // to turn around)
+      gameSpeed !== 0
+      // change direction probabilistically, about once per second
+      // of game time on average
+    : Math.random() < (deltaMS / 1000) * gameSpeed;
 
   if (!produceNewWalk) {
     return unitMechanicalResult;

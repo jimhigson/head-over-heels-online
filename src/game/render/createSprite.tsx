@@ -16,6 +16,7 @@ import {
   spritesheetData,
   type TextureId,
 } from "../../sprites/spriteSheetData";
+import { hashStringToNumber0to1 } from "../../utils/maths/hashStringToNumber0to1";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 
@@ -27,7 +28,11 @@ export type AnimatedCreateSpriteOptions = {
   textureId?: undefined;
   textureIdCallback?: undefined;
   animationId: AnimationId;
-  randomiseStartFrame?: boolean;
+  /**
+   * if given, the animation will start at a psuedo-random frame
+   * based off of hashing this string
+   */
+  randomiseStartFrame?: string;
   /*
    * if true, animation will run backwards
    */
@@ -48,6 +53,12 @@ export type AnimatedCreateSpriteOptions = {
   /** if the game is paused, nothing should animate - this will automatically create just
       a sprite with the first frame of the animation */
   paused?: boolean;
+
+  /**
+   * the gameSpeed changes how fast animated sprites play, so they play in proportion to
+   * how fast the game is running. If not given, 1 will be used (normal speed)
+   */
+  gameSpeed?: number;
 };
 
 export type CreateSpriteOptions =
@@ -111,13 +122,19 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
         for (let { x } = completeTimes; x >= 1; x--) {
           for (let { y } = completeTimes; y >= 1; y--) {
             for (let z = 1; z <= completeTimes.z; z++) {
+              const textureId =
+                options.textureId ??
+                options.textureIdCallback?.(x - 1, y - 1, z - 1);
               const subSpriteOptions = {
                 ...options,
-                textureId:
-                  options.textureId ??
-                  options.textureIdCallback?.(x - 1, y - 1, z - 1),
+                textureId,
                 label: `(${x},${y},${z})`,
               };
+              if ("randomiseStartFrame" in subSpriteOptions) {
+                // if randomising the start frame, we don't want all the sub-sprites to get the same randomisation
+                // so the sub-position of the child sprite onto the randomiseStartFrame string:
+                subSpriteOptions.randomiseStartFrame = `${subSpriteOptions.randomiseStartFrame}${x},${y},${z}`;
+              }
               delete subSpriteOptions.times;
               const component = _createSprite(
                 subSpriteOptions as CreateSpriteOptions,
@@ -221,14 +238,17 @@ function createAnimatedSprite({
   playOnce,
   paused,
   randomiseStartFrame,
+  gameSpeed = 1,
 }: AnimatedCreateSpriteOptions): AnimatedSprite {
   const animationFrames = loadedSpriteSheet().animations[animationId];
-  const frames = paused ? [animationFrames[0]] : animationFrames;
+  //const frames = paused ? [animationFrames[0]] : animationFrames;
 
-  const animatedSpriteFrames: AnimatedSpriteFrames = frames.map((frame) => ({
-    texture: frame,
-    time: originalGameFrameDuration,
-  }));
+  const animatedSpriteFrames: AnimatedSpriteFrames = animationFrames.map(
+    (frame) => ({
+      texture: frame,
+      time: originalGameFrameDuration,
+    }),
+  );
 
   if (reverse) {
     animatedSpriteFrames.reverse();
@@ -236,12 +256,18 @@ function createAnimatedSprite({
 
   const animatedSprite = new AnimatedSprite(animatedSpriteFrames);
 
+  const animationSpeedModifier = paused ? 0 : gameSpeed;
+
   animatedSprite.animationSpeed =
-    spritesheetData.animations[animationId].animationSpeed;
+    spritesheetData.animations[animationId].animationSpeed *
+    animationSpeedModifier;
 
   animatedSprite.gotoAndPlay(
-    randomiseStartFrame ?
-      Math.floor(Math.random() * animatedSpriteFrames.length)
+    randomiseStartFrame !== undefined ?
+      Math.floor(
+        hashStringToNumber0to1(randomiseStartFrame) *
+          animatedSpriteFrames.length,
+      )
     : 0,
   );
 

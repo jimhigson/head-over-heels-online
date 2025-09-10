@@ -1,4 +1,4 @@
-import { ColorMatrixFilter, Container } from "pixi.js";
+import { Container } from "pixi.js";
 
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
@@ -9,27 +9,12 @@ import type {
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
 import { emptySet } from "../../../../utils/empty";
+import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { subXy } from "../../../../utils/vectors/vectors";
+import { redAsAlphaFilter } from "../../filters/redAsAlphaFilter";
 import { projectWorldXyzToScreenXy } from "../../projections";
-
-/**
- * pixijs has the quirk that when using a sprite as a mask, it uses the red channel as the alpha channel.
- * This filter copies the alpha values to the red channel so it can work normally
- */
-const useRedAsAlphaFilter = new ColorMatrixFilter();
-// prettier-ignore
-useRedAsAlphaFilter.matrix = [
-  // R = get alpha value
-  0, 0, 0,   1, 0,  
-  // G (unused for masking) = 0 - not used for making but let some through to make easier to recognise item while debugging
-  0, 0.3, 0, 0, 0,  
-  // B (unused for masking) = 0 - not used for making but let some through to make easier to recognise item while debugging
-  0, 0, 0.3, 0, 0,  
-  // A (unused for masking) = copy unchanged but make partially transparent so if shown for debugging can see item below
-  0, 0, 0,   1, 0,  
-];
 
 /** specialisation of Container that always contains a thing to be masked, and the (sprite) mask */
 interface MaskingContainer extends Container {
@@ -58,12 +43,22 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
   }
 
   #updatePosition() {
+    const {
+      general: {
+        upscale: { gameEngineUpscale },
+      },
+    } = this.renderContext;
+
     const projectionXy = projectWorldXyzToScreenXy(
       this.renderContext.item.state.position,
     );
 
-    this.output.x = projectionXy.x;
-    this.output.y = projectionXy.y;
+    assignRoundedXy(
+      this.output,
+      projectionXy.x,
+      projectionXy.y,
+      gameEngineUpscale,
+    );
   }
 
   tick(tickContext: ItemTickContext) {
@@ -178,7 +173,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
       }
 
       const previousFilters = frontRenderingForMask.filters;
-      frontRenderingForMask.filters = useRedAsAlphaFilter;
+      frontRenderingForMask.filters = redAsAlphaFilter;
 
       const curMaskingSprite = renderContainerToSprite(
         pixiRenderer,

@@ -21,6 +21,7 @@ import { floatingTextAppearance } from "./floatingTextAppearance";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
 import {
   itemAppearanceRenderOnce,
+  itemStaticAnimatedAppearance,
   itemStaticAppearance,
 } from "./ItemAppearance";
 import { monsterAppearance } from "./monsterAppearance";
@@ -64,8 +65,9 @@ const itemAppearancesMap: {
   deadlyBlock: itemAppearanceRenderOnce(
     ({
       renderContext: {
-        item: { config },
+        item: { config, id },
         room,
+        general: { paused, gameState },
       },
     }) => {
       switch (config.style) {
@@ -74,7 +76,9 @@ const itemAppearancesMap: {
             animationId: "volcano",
             filter: mainPaletteSwapFilter(room),
             times: config.times,
-            randomiseStartFrame: true,
+            randomiseStartFrame: id,
+            paused,
+            gameSpeed: gameState?.gameSpeed,
           });
         case "toaster":
           throw new Error("use the special toaster appearance instead");
@@ -114,7 +118,7 @@ const itemAppearancesMap: {
   lift: itemAppearanceRenderOnce(
     ({
       renderContext: {
-        general: { paused },
+        general: { paused, gameState },
       },
     }) => {
       const rendering = new Container();
@@ -128,6 +132,7 @@ const itemAppearancesMap: {
           animationId: "lift",
           pivot,
           paused,
+          gameSpeed: gameState?.gameSpeed,
         }),
       );
 
@@ -158,7 +163,7 @@ const itemAppearancesMap: {
       renderContext: {
         item: { config },
         room,
-        general: { paused },
+        general: { paused, gameState },
       },
     }) => {
       if (config.gives === "crown") {
@@ -182,6 +187,7 @@ const itemAppearancesMap: {
         reincarnation: {
           animationId: "fish",
           paused,
+          gameSpeed: gameState?.gameSpeed,
         },
       };
       const createSpriteOptions = pickupSpriteOptions[config.gives];
@@ -222,16 +228,17 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { paused },
+        general: { paused, gameState },
       },
     }) => {
       return createSprite({
         animationId: `bubbles.${style}`,
         paused,
+        gameSpeed: gameState?.gameSpeed,
       });
     },
   ),
-  firedDoughnut: itemStaticAppearance({
+  firedDoughnut: itemStaticAnimatedAppearance({
     animationId: "bubbles.doughnut",
   }),
 
@@ -245,12 +252,15 @@ const itemAppearancesMap: {
         item: {
           config: { forCharacter },
         },
+        general: { paused, gameState },
       },
     }) => {
       return createSprite({
         animationId: "particle.fade",
         anchor: { x: 0.5, y: 0.5 },
         filter: forCharacter === "heels" ? shineFilterForHeels : noFilters,
+        paused,
+        gameSpeed: gameState?.gameSpeed,
       });
     },
   ),

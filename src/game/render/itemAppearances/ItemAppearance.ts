@@ -11,7 +11,10 @@ import type {
   AppearanceOptions,
   AppearanceReturn,
 } from "../appearance/Appearance";
-import type { CreateSpriteOptions } from "../createSprite";
+import type {
+  AnimatedCreateSpriteOptions,
+  CreateSpriteOptions,
+} from "../createSprite";
 import type { ItemRenderContext, ItemTickContext } from "../ItemRenderContexts";
 
 import { itemInPlayTimes } from "../../../model/times";
@@ -64,6 +67,36 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
       return createSprite(createSpriteOptions);
     }
   });
+
+export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
+  createSpriteOptions: Omit<
+    AnimatedCreateSpriteOptions,
+    "gameSpeed" | "paused"
+  >,
+): ItemAppearance<T> =>
+  itemAppearanceRenderOnce(
+    ({
+      renderContext: {
+        item: subject,
+        general: { gameState, paused },
+      },
+    }) => {
+      if (isMultipliedItem(subject)) {
+        return createSprite({
+          ...createSpriteOptions,
+          times: itemInPlayTimes(subject),
+          paused,
+          gameSpeed: gameState?.gameSpeed,
+        });
+      } else {
+        return createSprite({
+          ...createSpriteOptions,
+          paused,
+          gameSpeed: gameState?.gameSpeed,
+        });
+      }
+    },
+  );
 
 /**
  * A static appearance, but renders only to Sprite, via rendertextures

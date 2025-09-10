@@ -56,6 +56,7 @@ const SpeedButton = <RoomId extends string>({
 }: SpeedButtonProps<RoomId>) => {
   return (
     <Button
+      data-test-id={"cheats-speed-" + speed}
       className={className}
       onClick={(e) => {
         gameApi.gameState.gameSpeed = speed;
@@ -241,14 +242,18 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   return (
     <Collapsible>
       <CollapsibleTrigger
+        data-test-id="cheats-open-button"
         className="absolute bottom-0 right-1 flex flex-col z-cheats text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
         <span className="sprite texture-helicopterBug_1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <CssVariables scaleFactor={2}>
-          <div className="absolute bottom-[48px] max-h-[calc(100vh-48px)] right-1 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats text-white">
+        <div
+          data-test-id="cheats-menu"
+          className="absolute bottom-3 max-h-[calc(100vh-var(--block)*3)] right-0 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats text-white"
+        >
+          <CssVariables scaleFactor={2}>
             <Heading>room select:</Heading>
             <GameApiConnectedRoomSelect />
             <div className="flex flex-row items-center">
@@ -511,6 +516,11 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             <div className="flex flex-row items-center">
               <SpeedButton
                 className={cheatsButtonClasses}
+                speed={0}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
                 speed={0.05}
                 gameApi={gameApi}
               />
@@ -527,6 +537,11 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               <SpeedButton
                 className={cheatsButtonClasses}
                 speed={1}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
+                speed={1.5}
                 gameApi={gameApi}
               />
               <SpeedButton
@@ -708,8 +723,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 <span className="sprite texture-heels_walking_right_2" />
               </Button>
             </div>
-          </div>
-        </CssVariables>
+          </CssVariables>
+        </div>
       </CollapsibleContent>
     </Collapsible>
   );

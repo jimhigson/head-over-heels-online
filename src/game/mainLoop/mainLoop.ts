@@ -185,19 +185,22 @@ export class MainLoop<RoomId extends string> {
     timingStats?.endPhysics();
 
     timingStats?.startUpdateSceneGraph();
-    // the tick could end on a different room than it started on:
+    // the tick could end on a different room than it started on, eg if ticking
+    // the physics caused the player to go through a door:
     const tickEndRoom = selectCurrentRoomState(this.gameState);
 
-    if (
-      // for several things that change infrequently, we don't bother to try to adjust the room scene
-      // graph if it changes - we simply destroy and recreate it entirely:
+    const createNewRoomRenderer =
       this.#roomRenderer?.renderContext.room !== tickEndRoom ||
       this.#roomRenderer?.renderContext.general.upscale !== tickUpscale ||
       this.#roomRenderer?.renderContext.general.displaySettings !==
         tickDisplaySettings ||
       this.#roomRenderer?.renderContext.general.soundSettings !==
         tickSoundSettings ||
-      this.#roomRenderer?.renderContext.general.paused !== isPaused
+      this.#roomRenderer?.renderContext.general.paused !== isPaused;
+    if (
+      // for several things that change infrequently, we don't bother to try to adjust the room scene
+      // graph if it changes - we simply destroy and recreate it entirely:
+      createNewRoomRenderer
     ) {
       this.#roomRenderer?.destroy();
 
@@ -249,6 +252,13 @@ export class MainLoop<RoomId extends string> {
       timingStats?.startPixiRender();
       this.app.render();
       timingStats?.endPixiRender();
+      if (createNewRoomRenderer && tickEndRoom) {
+        const event = new CustomEvent("firstRenderOfRoom", {
+          detail: { roomId: tickEndRoom.id },
+        });
+        // for playwright:
+        window.dispatchEvent(event);
+      }
     } catch (e) {
       throw new Error("Error in Pixi.js app.render()", { cause: e });
     }

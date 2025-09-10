@@ -339,10 +339,18 @@ export const floorAppearance: ItemAppearance<"floor"> =
           // left
           .lineTo(tilesLeft.x, tilesLeft.y + 3)
           .lineTo(tilesLeft.x, tilesLeft.y)
-          .fill({ color: 0xff0000, alpha: 0.5 });
+          .fill({ color: 0xff0000, alpha: 1 });
 
-        tilesContainer.addChild(tilesMask);
-        tilesContainer.mask = tilesMask;
+        // firefox is fussy about using graphics as sprites, so pre-render to a sprite+texture
+        // first:
+        const tilesMaskSprite = renderContainerToSprite(
+          pixiRenderer,
+          tilesMask,
+        );
+        tilesMask.destroy();
+
+        tilesContainer.addChild(tilesMaskSprite);
+        tilesContainer.mask = tilesMaskSprite;
 
         tilesContainer.filters = [floorPaletteSwapFilter(room)];
 
@@ -355,7 +363,6 @@ export const floorAppearance: ItemAppearance<"floor"> =
         tilesOutline.filters = outlineFilters.black1pxFilter;
 
         spritesRenderContainer.addChild(tilesOutline);
-        //container.addChild(renderContainerToSprite(pixiRenderer, tilesOutline));
       }
 
       {
@@ -421,6 +428,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
           );
           spritesRenderContainer.addChild(cutoffSprite);
           spritesRenderContainer.mask = cutoffSprite;
+          cutoffMask.destroy();
         }
 
         container.addChild(

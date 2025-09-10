@@ -18,7 +18,7 @@ import { itemAppearanceRenderOnce } from "./ItemAppearance";
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
-      general: { pixiRenderer },
+      general: { pixiRenderer, gameState },
       item: { id, config },
       room,
     },
@@ -65,10 +65,11 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
           wallAnimationsContainer.addChild(
             createSprite({
               animationId,
-              randomiseStartFrame: true,
+              randomiseStartFrame: `${id}${i}`,
               flipX: direction === "left",
               x: tileRenderPosition.x + (direction === "away" ? -8 : 8),
               y: tileRenderPosition.y - 23,
+              gameSpeed: gameState?.gameSpeed,
             }),
           );
         }
