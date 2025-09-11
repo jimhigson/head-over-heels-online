@@ -39,8 +39,13 @@ import { pick } from "../../utils/pick";
 import { directionsXy4 } from "../../utils/vectors/vectors";
 import {
   selectEmulatedResolutionName,
+  selectGameSpeed,
   selectInputDirectionMode,
 } from "../selectors";
+import {
+  selectableGameSpeeds,
+  type SelectableGameSpeeds,
+} from "./selectableGameSpeeds";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
@@ -114,6 +119,7 @@ export type UserSettings = {
   inputDirectionMode?: InputDirectionMode;
   screenRelativeControl?: boolean;
   onScreenControls?: boolean;
+  gameSpeed?: SelectableGameSpeeds;
 
   // sound options
   soundSettings: SoundSettings;
@@ -292,6 +298,22 @@ export const gameMenusSlice = createSlice({
 
       state.userSettings.displaySettings.emulatedResolution =
         emulatedResolution;
+    },
+    setGameSpeed(
+      state,
+      { payload }: PayloadAction<SelectableGameSpeeds | undefined>,
+    ) {
+      let gameSpeed: SelectableGameSpeeds;
+      if (payload === undefined) {
+        gameSpeed = nextInCycle(
+          selectableGameSpeeds,
+          selectGameSpeed({ gameMenus: state } as RootState),
+        );
+      } else {
+        gameSpeed = payload;
+      }
+
+      state.userSettings.gameSpeed = gameSpeed;
     },
     scrollRead(state, { payload: scrollConfig }: PayloadAction<ScrollConfig>) {
       if (scrollConfig.source === "manual") {
@@ -874,6 +896,7 @@ export const {
   scrollRead,
   setEmulatedResolution,
   setFocussedMenuItemId,
+  setGameSpeed,
   setShowBoundingBoxes,
   setShowShadowMasks,
   toggleBoolean,

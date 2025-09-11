@@ -74,6 +74,7 @@ export const selectShowFps = selectUserSetting("showFps");
 export const selectEmulatedResolutionName = selectUserSetting(
   "displaySettings.emulatedResolution",
 );
+export const selectGameSpeed = selectUserSetting("gameSpeed");
 export const useEmulatedResolutionName = () =>
   useAppSelector(selectEmulatedResolutionName);
 

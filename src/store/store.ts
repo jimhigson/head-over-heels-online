@@ -21,6 +21,13 @@ import { manualLoadingSlice } from "./slices/manualLoadingSlice";
 import { updateUpscaleWhenEmulatedResolutionChanges } from "./slices/upscale/updateUpscaleWhenEmulatedResolutionChanges";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 
+declare global {
+  interface Window {
+    // put the store on the window for e2e tests to use
+    _e2e_store?: AppStore;
+  }
+}
+
 const appReducer = combineSlices({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,
@@ -66,6 +73,10 @@ export const store = configureStore({
       .prepend(listenerMiddleware.middleware)
       .concat(campaignsApiSlice.middleware),
 });
+
+if (typeof window !== "undefined") {
+  window._e2e_store = store;
+}
 
 updateUpscaleWhenEmulatedResolutionChanges();
 

@@ -19,6 +19,7 @@ export const defaultUserSettings: RequiredDeep<UserSettings> = {
       detectDeviceType() === "mobile" ? "handheld" : "zxSpectrum",
   },
 
+  gameSpeed: 1.2,
   showFps: false,
   onScreenControls:
     detectDeviceType() === "mobile" || detectDeviceType() === "tablet",

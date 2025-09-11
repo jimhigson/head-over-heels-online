@@ -3,9 +3,11 @@ import { BitmapText } from "../../../tailwindSprites/Sprite";
 export const MenuItemLeader = ({
   flip = false,
   focussed = false,
+  verticalAlignItemsCentre = false,
 }: {
   flip?: boolean;
   focussed?: boolean;
+  verticalAlignItemsCentre?: boolean;
 }) => {
   return (
     <BitmapText
@@ -14,7 +16,8 @@ export const MenuItemLeader = ({
         `inline-block col-start-1 ` +
         // min width and mx-auto centers, in case is sharing a menu with wider, custom leaders:
         `w-min mx-auto ` +
-        (flip ? "scale-[-1] relative bottom-oneScaledPix" : "")
+        (flip ? "scale-[-1] relative bottom-oneScaledPix" : "") +
+        (verticalAlignItemsCentre === true ? "flex items-center" : "")
       }
     >
       {focussed ? "⏩⏩" : "⁌⁍"}

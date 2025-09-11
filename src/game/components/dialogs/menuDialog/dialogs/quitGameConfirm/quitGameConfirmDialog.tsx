@@ -44,6 +44,7 @@ export const QuitGameConfirmDialog = () => {
                 }
                 onSelect={useDispatchActionCallback(backToParentMenu)}
                 hint="Back to the game"
+                verticalAlignItemsCentre
               />
               {hasReincarnationPoint && (
                 <MenuItem
@@ -57,6 +58,7 @@ export const QuitGameConfirmDialog = () => {
                   }
                   onSelect={() => reincarnateSelected(gameApi)}
                   hint="Go back and continue from the last reincarnation fish you ate"
+                  verticalAlignItemsCentre
                 />
               )}
               <MenuItem
@@ -77,6 +79,7 @@ export const QuitGameConfirmDialog = () => {
                     markdown="**Warning!** This game will end!"
                   />
                 }
+                verticalAlignItemsCentre
               />
             </MenuItems>
             <SelectedItemHint className="text-midGrey zx:text-zxWhite resHandheld:hidden" />
