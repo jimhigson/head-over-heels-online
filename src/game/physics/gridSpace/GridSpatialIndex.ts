@@ -7,22 +7,20 @@ import { addXyz } from "../../../utils/vectors/vectors";
 import { projectAabbAxes } from "../../render/sortZ/projectAabbCorners";
 
 // these multiplications empirically give good performance in larger rooms.
-// if the cells are too fine, the search for shadow-casters has to visit a
-// n^3 number of cells - best to keep this small. Nothing else seems to mind
+// if the cells are too fine, the search for shadow-casters has to visit
+// many cells - best to keep this small. Nothing else seems to mind
 // the multiplication very much perf-wise, since the number of items in any
 // given cell remains very small
 const cellDepth = blockSizePx.w * 2;
 const cellWidth = blockSizePx.w * 2;
-const cellHeight = blockSizePx.h * 4;
 
 // like above, the multipliers are a balance between each item being in
 // more cells (because smaller cells) and having to do more of the fine
 // comparisons (because cells are big and have a lot of items in them)
 const projCellDepth = blockSizePx.w * 2;
 const projCellWidth = blockSizePx.w * 2;
-const projCellHeight = blockSizePx.h * 2;
 
-type CellKey = `${number},${number},${number}`;
+type XyCellKey = `${number},${number}`;
 
 type MinimumRequiredItem = {
   id: string;
@@ -35,9 +33,15 @@ type MinimumRequiredItem = {
 };
 
 /**
- * Spatial indexing system that divides the game world into a 3D grid of cells.
- * Each cell contains a Set of items that occupy that space.
+ * Spatial indexing system that divides the game world into a 2D grid of cells.
+ * Each cell contains a Set of items that occupy that space (infinite vertical columns).
  * Uses a sparse Map structure to efficiently handle any coordinate range.
+ *
+ * Indexing in x,y only is based on the assumption that there will be lots of items
+ * overlapping in x and y, but few vertically above or below. The trade off
+ * is a simpler index, for considering more cells for collisions. This also allows us to
+ * make 'infinitely high' (or just very high) walls since they still don't need to occupy
+ * a huge number of 3d cells extending vertically
  */
 export class GridSpatialIndex<
   RoomId extends string = string,
@@ -49,17 +53,17 @@ export class GridSpatialIndex<
   Bin extends Set<Item> = Set<Item>,
 > {
   /**
-   * Map from cell coordinates (as "x,y,z" string) to Sets of items in that cell
-   * Provides true sparse storage - only cells with items exist
+   * Map from cell coordinates (as "x,y" string) to Sets of items in that space
+   * Sparse storage - only cells with items exist
    */
-  #cells = new Map<CellKey, Bin>();
+  #spatialCells = new Map<XyCellKey, Bin>();
 
   /**
-   * Map from cell coordinates (as "x,y,z" string) to Sets of items projected to that
+   * Map from cell coordinates (as "x,y" string) to Sets of items projected to that
    * hexagon on screen.
-   * Provides true sparse storage - only cells with items exist
+   * Sparse storage - only cells with items exist
    */
-  #projectedCells = new Map<CellKey, Bin>();
+  #projectedCells = new Map<XyCellKey, Bin>();
 
   /**
    * Map from each item to the set of cell keys it currently occupies.
@@ -69,7 +73,7 @@ export class GridSpatialIndex<
    * - For existence checks: quickly verify if an item is in the index
    * Without this, we'd have to search the entire grid for these operations.
    */
-  #itemToCellKeys = new Map<Item, Set<CellKey>>();
+  #itemToCellKeys = new Map<Item, Set<XyCellKey>>();
 
   /**
    * Map from each item to the set of projected cell keys it currently occupies.
@@ -78,7 +82,7 @@ export class GridSpatialIndex<
    * - When removing: know exactly which projected cells contain the item
    * Without this, we'd have to search the entire projection grid for these operations.
    */
-  #itemToProjectedCellKeys = new Map<Item, Set<CellKey>>();
+  #itemToProjectedCellKeys = new Map<Item, Set<XyCellKey>>();
 
   #itemToProjectionAxesMap = new Map<Item, ProjectionOnAxes>();
 
@@ -98,12 +102,11 @@ export class GridSpatialIndex<
    */
   #addToIndex(
     item: Item,
-    cellIterator: Generator<CellKey>,
-    cellMap: Map<CellKey, Bin>,
-    itemToCellsMap: Map<Item, Set<CellKey>>,
-    ensureCell: (cellKey: CellKey) => Bin,
+    cellIterator: Generator<XyCellKey>,
+    itemToCellsMap: Map<Item, Set<XyCellKey>>,
+    ensureCell: (cellKey: XyCellKey) => Bin,
   ): void {
-    const occupiedCells = new Set<CellKey>();
+    const occupiedCells = new Set<XyCellKey>();
 
     for (const cellKey of cellIterator) {
       const cell = ensureCell(cellKey);
@@ -119,8 +122,8 @@ export class GridSpatialIndex<
    */
   #removeFromIndex(
     item: Item,
-    cellMap: Map<CellKey, Bin>,
-    itemToCellsMap: Map<Item, Set<CellKey>>,
+    cellMap: Map<XyCellKey, Bin>,
+    itemToCellsMap: Map<Item, Set<XyCellKey>>,
   ): void {
     const occupiedCells = itemToCellsMap.get(item);
     if (!occupiedCells) {
@@ -145,17 +148,17 @@ export class GridSpatialIndex<
    */
   #updateInIndex(
     item: Item,
-    cellIterator: Generator<CellKey>,
-    cellMap: Map<CellKey, Bin>,
-    itemToCellsMap: Map<Item, Set<CellKey>>,
-    ensureCell: (cellKey: CellKey) => Bin,
+    cellIterator: Generator<XyCellKey>,
+    cellMap: Map<XyCellKey, Bin>,
+    itemToCellsMap: Map<Item, Set<XyCellKey>>,
+    ensureCell: (cellKey: XyCellKey) => Bin,
   ): void {
     const oldCellKeys = itemToCellsMap.get(item);
     if (!oldCellKeys) {
       throw new Error("Item not in index");
     }
 
-    const newCellKeys = new Set<CellKey>(cellIterator);
+    const newCellKeys = new Set<XyCellKey>(cellIterator);
     let deleted = false;
     let added = false;
 
@@ -213,7 +216,6 @@ export class GridSpatialIndex<
     this.#addToIndex(
       item,
       this.#iterateCuboidCellKeys(item.state.position, item.aabb),
-      this.#cells,
       this.#itemToCellKeys,
       (cellKey) => this.#ensureCell(cellKey),
     );
@@ -223,7 +225,6 @@ export class GridSpatialIndex<
     this.#addToIndex(
       item,
       this.#iterateProjectionCellKeys(item),
-      this.#projectedCells,
       this.#itemToProjectedCellKeys,
       (cellKey) => this.#ensureProjectedCell(cellKey),
     );
@@ -232,18 +233,18 @@ export class GridSpatialIndex<
   /**
    * Create a string key from cell coordinates
    */
-  #makeCellKey(x: number, y: number, z: number): CellKey {
-    return `${x},${y},${z}`;
+  #makeCellKey(x: number, y: number): XyCellKey {
+    return `${x},${y}`;
   }
 
   /**
    * Ensure a cell exists, creating it if necessary
    */
-  #ensureCell(cellKey: CellKey): Bin {
-    let cell = this.#cells.get(cellKey);
+  #ensureCell(cellKey: XyCellKey): Bin {
+    let cell = this.#spatialCells.get(cellKey);
     if (!cell) {
       cell = new Set() as Bin;
-      this.#cells.set(cellKey, cell);
+      this.#spatialCells.set(cellKey, cell);
     }
     return cell;
   }
@@ -251,7 +252,7 @@ export class GridSpatialIndex<
   /**
    * Ensure a projected cell exists, creating it if necessary
    */
-  #ensureProjectedCell(cellKey: CellKey): Bin {
+  #ensureProjectedCell(cellKey: XyCellKey): Bin {
     let cell = this.#projectedCells.get(cellKey);
     if (!cell) {
       cell = new Set() as Bin;
@@ -265,24 +266,20 @@ export class GridSpatialIndex<
     position: Xyz,
     /** The size of the cuboid */
     size: Xyz,
-  ): Generator<CellKey> {
+  ): Generator<XyCellKey> {
     const minCorner = position;
     const maxCorner = addXyz(position, size);
 
-    // Calculate which cells this cuboid occupies
+    // Calculate which cells this cuboid occupies (only x,y)
     const minCellX = Math.floor(minCorner.x / cellWidth);
     const minCellY = Math.floor(minCorner.y / cellDepth);
-    const minCellZ = Math.floor(minCorner.z / cellHeight);
     const maxCellX = Math.floor(maxCorner.x / cellWidth);
     const maxCellY = Math.floor(maxCorner.y / cellDepth);
-    const maxCellZ = Math.floor(maxCorner.z / cellHeight);
 
-    // Yield all cell keys the item occupies
+    // Yield all cell keys the item occupies (2D only)
     for (let x = minCellX; x <= maxCellX; x++) {
       for (let y = minCellY; y <= maxCellY; y++) {
-        for (let z = minCellZ; z <= maxCellZ; z++) {
-          yield this.#makeCellKey(x, y, z);
-        }
+        yield this.#makeCellKey(x, y);
       }
     }
   }
@@ -310,7 +307,8 @@ export class GridSpatialIndex<
 
   /**
    * project an item to a hexagon, but treat that hexagon as an object 3-dimensional
-   * space. Where the projections of the aabb on the three world axes, onto the
+   * space, then use 2 of those dimensions to index by (two sets of opposites sides of the hexagon)
+   * Where the projections of the aabb on the three world axes, onto the
    * screen axes, are taken as the ordinals.
    *
    * The hexagons we render to, with a fixed camera angle, are always using the
@@ -318,7 +316,7 @@ export class GridSpatialIndex<
    * Therefore, any two hexagons overlap if they overlap on all three of these axes.
    * So, it is like a 3d overlapping problem, but for the 2d projections of the 3d axes.
    */
-  *#iterateProjectionCellKeys(i: Item): Generator<CellKey> {
+  *#iterateProjectionCellKeys(i: Item): Generator<XyCellKey> {
     const projectionAxes = this.#itemToProjectionAxesMap.get(i);
 
     if (projectionAxes === undefined) {
@@ -330,24 +328,18 @@ export class GridSpatialIndex<
       xAxisProjectionMax,
       yAxisProjectionMin,
       yAxisProjectionMax,
-      zAxisProjectionMin,
-      zAxisProjectionMax,
     } = projectionAxes;
 
-    // Calculate which cells this cuboid occupies
+    // Calculate which cells this projection occupies (only x,y)
     const minCellX = Math.floor(xAxisProjectionMin / projCellWidth);
     const minCellY = Math.floor(yAxisProjectionMin / projCellDepth);
-    const minCellZ = Math.floor(zAxisProjectionMin / projCellHeight);
     const maxCellX = Math.floor(xAxisProjectionMax / projCellWidth);
     const maxCellY = Math.floor(yAxisProjectionMax / projCellDepth);
-    const maxCellZ = Math.floor(zAxisProjectionMax / projCellHeight);
 
-    // Yield all cell keys the projection occupies
+    // Yield all cell keys the projection occupies (2D only)
     for (let x = minCellX; x <= maxCellX; x++) {
       for (let y = minCellY; y <= maxCellY; y++) {
-        for (let z = minCellZ; z <= maxCellZ; z++) {
-          yield this.#makeCellKey(x, y, z);
-        }
+        yield this.#makeCellKey(x, y);
       }
     }
   }
@@ -366,7 +358,7 @@ export class GridSpatialIndex<
     }
 
     // Remove from cuboid index
-    this.#removeFromIndex(item, this.#cells, this.#itemToCellKeys);
+    this.#removeFromIndex(item, this.#spatialCells, this.#itemToCellKeys);
 
     // Remove from projected cell index
     this.#removeFromIndex(
@@ -388,7 +380,7 @@ export class GridSpatialIndex<
     this.#updateInIndex(
       item,
       this.#iterateCuboidCellKeys(item.state.position, item.aabb),
-      this.#cells,
+      this.#spatialCells,
       this.#itemToCellKeys,
       (cellKey) => this.#ensureCell(cellKey),
     );
@@ -427,7 +419,7 @@ export class GridSpatialIndex<
     const neighbours = new Set<Item>();
 
     for (const cellKey of this.#iterateCuboidCellKeys(position, size)) {
-      const cell = this.#cells.get(cellKey);
+      const cell = this.#spatialCells.get(cellKey);
       if (cell) {
         for (const neighbour of cell) {
           if (neighbour !== excludeItem) {
@@ -502,16 +494,16 @@ export class GridSpatialIndex<
   }
 
   /**
-   * return the item id for every item in every well in a Map-like notation
+   * return the item id for every item in every column in a Map-like notation
    *  eg:
-   *     { (0,0,0) => [item1, item2, item3], (0,0,1) => ... }
+   *     { (0,0) => [item1, item2, item3], (0,1) => ... }
    */
   debugToString(): string {
     // Sort cell keys for consistent output
-    const sortedCellKeys = Array.from(this.#cells.keys()).sort();
+    const sortedCellKeys = Array.from(this.#spatialCells.keys()).sort();
 
     const cellEntries = sortedCellKeys.map((cellKey) => {
-      const cell = this.#cells.get(cellKey)!;
+      const cell = this.#spatialCells.get(cellKey)!;
       const itemIds = Array.from(cell).map((item) => item.id);
       return `  (${cellKey}) => [${itemIds.join(", ")}]`;
     });
@@ -527,8 +519,8 @@ export class GridSpatialIndex<
       return `  (${cellKey}) => [${itemIds.join(", ")}]`;
     });
 
-    return `GridSpatialIndex (${this.#cells.size} 3D cells, ${this.#projectedCells.size} projected cells, ${this.#itemToCellKeys.size} items) {
-  3D Cells:
+    return `GridSpatialIndex (${this.#spatialCells.size} 2D cells, ${this.#projectedCells.size} projected cells, ${this.#itemToCellKeys.size} items) {
+  2D Cells:
 ${cellEntries.join(",\n")}
   Projected Cells:
 ${projectedCellEntries.join(",\n")}

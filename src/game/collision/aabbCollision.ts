@@ -14,16 +14,6 @@ export const collision1to1 = (
   { aabb: bbA, state: { position: posA } }: Collideable,
   { aabb: bbB, state: { position: posB } }: Collideable,
 ) => {
-  // more elegant, but slower (and this is a bottleneck for scripting)
-  // for (const axis of axesXyz) {
-  //   if (
-  //     posA[axis] + bbA[axis] <= posB[axis] ||
-  //     posA[axis] >= posB[axis] + bbB[axis]
-  //   ) {
-  //     return false;
-  //   }
-  // }
-
   return (
     !(posA.x + bbA.x <= posB.x || posA.x >= posB.x + bbB.x) &&
     !(posA.y + bbA.y <= posB.y || posA.y >= posB.y + bbB.y) &&

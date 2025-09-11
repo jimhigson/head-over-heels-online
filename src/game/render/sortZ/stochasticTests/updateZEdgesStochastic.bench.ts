@@ -15,6 +15,10 @@ with indexing (10/9/2025):
  src/game/render/sortZ/stochasticTests/updateZEdgesStochastic.bench.ts 928ms
    name                                         hz      min      max     mean      p75      p99     p995     p999     rme  samples
  · 20% items moved (100 items) 100 frames  40.5003  23.6659  25.7261  24.6912  25.2506  25.7261  25.7261  25.7261  ±0.87%       30
+
+ changing the index to be only x,y (not z) gives ~25Hz (11/9/2025) but the game overall is slightly faster,
+ because in the real engine, the items aren't as densely packed as in this artificial benchmark. This is still
+ ~8x faster than unindexed
 */
 bench(
   `${movePercentage * 100}% items moved (${itemCount} items) ${frameCount} frames`,
