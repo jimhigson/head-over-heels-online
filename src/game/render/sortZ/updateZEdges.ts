@@ -2,9 +2,9 @@
 
 import { objectValues } from "iter-tools-es";
 
-import type { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 
+import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
 import { zComparator } from "./zComparator";
 
@@ -23,7 +23,12 @@ export const updateZEdges = <
   Tid extends string,
 >(
   items: Record<Tid, TItem>,
-  spatialIndex: GridSpatialIndex<string, Tid, TItem>,
+  // if no spatial index is given, make one for the items we are concerned with.
+  // this should not be done in-game, since the index can be kept between frames
+  // and minimally updated
+  spatialIndex: GridSpatialIndex<string, Tid, TItem> = new GridSpatialIndex(
+    objectValues(items),
+  ),
   /**
    * the nodes that have moved - nodes that did not move are not considered
    *  - if not given, wil consider all

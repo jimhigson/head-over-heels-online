@@ -5,7 +5,7 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 import type { Tool } from "../../Tool";
 import type { MaybePointingAtSomething } from "../cursor/PointingAt";
-import type { ToolHandler } from "./tools/ToolHandler";
+import type { ToolHandler } from "./toolHandlers/ToolHandler";
 
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectUpscale } from "../../../store/slices/upscale/upscaleSlice";
@@ -19,9 +19,9 @@ import { changeDragInProgress, selectTool } from "../../slice/levelEditorSlice";
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { upscaledMousePosition } from "../cursor/upscaledMouse";
 import { useProvidedPixiApplication } from "../PixiApplicationProvider";
-import { EyeDropperToolHandler } from "./tools/EyeDropperToolHandler";
-import { ItemToolHandler } from "./tools/ItemToolHandler";
-import { PointerToolHandler } from "./tools/PointerToolHandler";
+import { EyeDropperToolHandler } from "./toolHandlers/EyeDropperToolHandler";
+import { ItemToolHandler } from "./toolHandlers/ItemToolHandler";
+import { PointerToolHandler } from "./toolHandlers/PointerToolHandler";
 
 const toolHandlers: {
   [T in Tool["type"]]: ToolHandler<Extract<Tool, { type: T }>>;
