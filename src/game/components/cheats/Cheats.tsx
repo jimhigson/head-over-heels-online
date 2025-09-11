@@ -541,6 +541,11 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               />
               <SpeedButton
                 className={cheatsButtonClasses}
+                speed={1.2}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
                 speed={1.5}
                 gameApi={gameApi}
               />

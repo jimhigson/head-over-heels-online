@@ -237,6 +237,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
 
     if (!collision1to1(subjectItem, collidedWithItem)) {
+      // it is possible there is no longer a collision due to previous pushing and backing-off of the subjectItem - we have
+      // been protected from this collision by previous collisions so it no longer applies
       if (log) {
         console.log(
           `${subjectItem.id} @`,
@@ -246,8 +248,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           `after handling previous collisions`,
         );
       }
-      // it is possible there is no longer a collision due to previous pushing and backing-off of the subjectItem - we have
-      // been protected from this collision by previous collisions so it no longer applies
       continue;
     } else {
       if (log) {
