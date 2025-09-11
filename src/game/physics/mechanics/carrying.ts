@@ -1,7 +1,6 @@
-import { produce } from "immer";
-
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { HeelsAbilities } from "../../../model/ItemStateMap";
+import type { Collideable } from "../../collision/aabbCollision";
 import type { GameState } from "../../gameState/GameState";
 import type { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
 import type { PlayableItem, PortableItem } from "../itemPredicates";
@@ -162,12 +161,16 @@ export const checkSpaceAvailableToPutDown = <
   item: T,
   roomSpatialIndex: GridSpatialIndex,
 ) => {
-  const itemCopyInProposedLocation = produce(item, () => {
-    item.state.position = addXyz(item.state.position, { z: blockSizePx.h });
-  });
+  const proposedNewLocation: Collideable = {
+    state: {
+      position: addXyz(item.state.position, { z: blockSizePx.h }),
+    },
+    aabb: item.aabb,
+    id: `item.id-proposedPutdownLocation`,
+  };
 
   const collisions = collisionItemWithIndex(
-    itemCopyInProposedLocation,
+    proposedNewLocation,
     roomSpatialIndex,
     // only check for collisions with solid items
     (otherItem) => isSolid(otherItem, item),
@@ -184,6 +187,7 @@ export const checkSpaceAvailableToPutDown = <
       return false;
     }
 
+    // if there is a collision, check if it can be moved up too:
     if (!checkSpaceAvailableToPutDown(collision, roomSpatialIndex)) {
       console.log(
         "carrying: cannot put down due to collision: item:",
