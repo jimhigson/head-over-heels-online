@@ -1,5 +1,5 @@
 import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
-import type { SetRequired } from "type-fest";
+import type { SetRequired, WritableDeep } from "type-fest";
 
 import { AlphaFilter, Container, Sprite } from "pixi.js";
 
@@ -33,6 +33,24 @@ const itemCastsShadow = (
   caster.shadowCastTexture !== undefined;
 
 const halfOpacity = new AlphaFilter({ alpha: 1 - amigaHalfBriteBrightness });
+
+// Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
+const spaceAboveSurfaceBuffer: WritableDeep<Collideable> = {
+  id: "spaceAbove",
+  state: {
+    position: {
+      x: 0,
+      y: 0,
+      z: 0,
+    },
+  },
+  aabb: {
+    x: 0,
+    y: 0,
+    z: veryHighZ,
+  },
+};
+
 class ItemShadowRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
@@ -152,23 +170,17 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     const surfaceMoved = movedItems.has(item);
     const itemTop = item.state.position.z + item.aabb.z;
 
-    const spaceAboveSurfacePseudoItem: Collideable = {
-      id: item.id,
-      state: {
-        position: {
-          ...item.state.position,
-          z: itemTop,
-        },
-      },
-      aabb: {
-        ...item.aabb,
-        z: veryHighZ,
-      },
-    };
+    // Values are copied into the buffer to avoid malloc/gc:
+    spaceAboveSurfaceBuffer.state.position.x = item.state.position.x;
+    spaceAboveSurfaceBuffer.state.position.y = item.state.position.y;
+    spaceAboveSurfaceBuffer.state.position.z = itemTop;
+    spaceAboveSurfaceBuffer.aabb.x = item.aabb.x;
+    spaceAboveSurfaceBuffer.aabb.y = item.aabb.y;
+    // z remains veryHighZ as set in the buffer initialization
 
     const castersSet = new Set(
       collisionItemWithIndex(
-        spaceAboveSurfacePseudoItem,
+        spaceAboveSurfaceBuffer,
         room[roomSpatialIndexKey],
         (
           maybeCaster,
@@ -176,6 +188,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           typeof maybeCaster,
           "shadowCastTexture"
         > =>
+          maybeCaster !== item &&
           itemCastsShadow(maybeCaster) &&
           // ignore items above that are standing on and don't cast a shadow while they are:
           (maybeCaster.castsShadowWhileStoodOn ||

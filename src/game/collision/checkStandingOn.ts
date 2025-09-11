@@ -1,13 +1,50 @@
+import type { WritableDeep } from "type-fest";
+
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { FreeItem } from "../physics/itemPredicates";
+import type { Collideable } from "./aabbCollision";
 
 import { epsilon } from "../../utils/epsilon";
 import { iterate } from "../../utils/iterate";
-import { addXyz } from "../../utils/vectors/vectors";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
 import { isSolid } from "../physics/itemPredicates";
 import { collision1to1 } from "./aabbCollision";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
+
+// avoid allocating memory by keeping two buffers to copy values into
+// to run through the collision detection for standing on
+const itemAboveBuffer: WritableDeep<Collideable> = {
+  state: {
+    position: {
+      x: 0,
+      y: 0,
+      z: 0,
+    },
+  },
+  aabb: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+  id: "itemMaybeStanding",
+};
+
+// just the zero-volume top of itemMaybeBeingStoodOn:
+const itemBelowBuffer: WritableDeep<Collideable> = {
+  state: {
+    position: {
+      x: 0,
+      y: 0,
+      z: 0,
+    },
+  },
+  aabb: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+  id: "itemMaybeBeingStoodOn",
+};
 
 export const spatiallyCheckStandingOn = <
   RoomId extends string,
@@ -46,48 +83,28 @@ export const spatiallyCheckStandingOn = <
     return false;
   }
 
+  // copy values into the above buffer to make an object representing just hte very bottom
+  // of the item above (epsilon tall):
+  itemAboveBuffer.state.position.x = itemMaybeStanding.state.position.x;
+  itemAboveBuffer.state.position.y = itemMaybeStanding.state.position.y;
+  itemAboveBuffer.state.position.z =
+    itemMaybeStanding.state.position.z - epsilon;
+  itemAboveBuffer.aabb.x = itemMaybeStanding.aabb.x;
+  itemAboveBuffer.aabb.y = itemMaybeStanding.aabb.y;
+  itemAboveBuffer.aabb.z = itemMaybeStanding.aabb.z + zOverlapAllowed + epsilon;
+
+  // zero-volume top of the below item:
+  itemBelowBuffer.state.position.x = itemMaybeBeingStoodOn.state.position.x;
+  itemBelowBuffer.state.position.y = itemMaybeBeingStoodOn.state.position.y;
+  itemBelowBuffer.state.position.z =
+    itemMaybeBeingStoodOn.state.position.z + itemMaybeBeingStoodOn.aabb.z;
+  itemBelowBuffer.aabb.x = itemMaybeBeingStoodOn.aabb.x;
+  itemBelowBuffer.aabb.y = itemMaybeBeingStoodOn.aabb.y;
+  itemBelowBuffer.aabb.z = 0; // zero volume
+
   // check for collisions of a box representing just the top of one item
   // and just the bottom of the other
-  return collision1to1(
-    // just the bottom of item:
-    {
-      state: {
-        position: addXyz(itemMaybeStanding.state.position, {
-          x: 0,
-          y: 0,
-          z: -epsilon,
-        }),
-      },
-      aabb: { ...itemMaybeStanding.aabb, z: zOverlapAllowed + epsilon },
-      id: itemMaybeStanding.id,
-    },
-
-    // just the zero-volume top of itemMaybeBeingStoodOn:
-    {
-      state: {
-        position: addXyz(itemMaybeBeingStoodOn.state.position, {
-          x: 0,
-          y: 0,
-          z: itemMaybeBeingStoodOn.aabb.z,
-        }),
-      },
-      aabb: { ...itemMaybeBeingStoodOn.aabb, z: 0 },
-      id: itemMaybeBeingStoodOn.id,
-    },
-  );
-
-  /*
-  might need to check the mtv?
-  const potentiallyPickupable = collisions.filter(
-    (col) =>
-      mtv(
-        positionSlightlyBelowHeels,
-        heelsItem.aabb,
-        col.state.position,
-        col.aabb,
-      ).z > 0,
-  );
-  */
+  return collision1to1(itemAboveBuffer, itemBelowBuffer);
 };
 
 /**
