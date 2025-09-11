@@ -69,42 +69,42 @@ export const room = inferRoomJson({
     },
     extraBarrier: {
       config: { axis: "y", times: { y: 6 } },
-      position: { x: 2.5, y: 8, z: 1 },
+      position: { x: 2.375, y: 8, z: 1 },
       type: "barrier",
     },
     extraBarrier2: {
       config: { axis: "y", times: { y: 6 } },
-      position: { x: 4.5, y: 8, z: 1 },
+      position: { x: 4.625, y: 8, z: 1 },
       type: "barrier",
     },
     extraBarrier3: {
       config: { axis: "y", times: { y: 2 } },
-      position: { x: 4.5, y: 13, z: 2 },
+      position: { x: 4.625, y: 13, z: 2 },
       type: "barrier",
     },
     extraBarrier4: {
       config: { axis: "y", times: { y: 2 } },
-      position: { x: 4.5, y: 14, z: 3 },
+      position: { x: 4.625, y: 14, z: 3 },
       type: "barrier",
     },
     extraBarrier5: {
       config: { axis: "y", times: { y: 2 } },
-      position: { x: 2.5, y: 13, z: 2 },
+      position: { x: 2.375, y: 13, z: 2 },
       type: "barrier",
     },
     extraBarrier6: {
       config: { axis: "y", times: { y: 2 } },
-      position: { x: 2.5, y: 14, z: 3 },
+      position: { x: 2.375, y: 14, z: 3 },
       type: "barrier",
     },
     extraBarrier7: {
       config: { axis: "x", times: { x: 3 } },
-      position: { x: 0, y: 7.5, z: 1 },
+      position: { x: 0, y: 7.375, z: 1 },
       type: "barrier",
     },
     extraBarrier8: {
       config: { axis: "x", times: { x: 3 } },
-      position: { x: 5, y: 7.5, z: 1 },
+      position: { x: 5, y: 7.375, z: 1 },
       type: "barrier",
     },
     extraStep: {
@@ -134,7 +134,7 @@ export const room = inferRoomJson({
         startDirection: "towards",
         which: "turtle",
       },
-      position: { x: 0, y: 7, z: 1 },
+      position: { x: 0, y: 6.875, z: 1 },
       type: "monster",
     },
     "floor@0,0,0": {
