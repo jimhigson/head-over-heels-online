@@ -38,6 +38,9 @@ type ADJACENT_Y = typeof ADJACENT_Y;
 // artifacts like x and y
 //type ADJACENT_Z = typeof ADJACENT_Z;
 type VISUALLY_OVERLAPS_RETURN = ADJACENT_X | ADJACENT_Y | NO_OVERLAP | OVERLAP;
+// tracking adj_z could help in #bookworld14,where the barrier just slightly overlaps the
+// wall behind - this currently is slightly wrong because the wall slightly over-renders the
+// barrier. They are detected as not overlapping.
 //| ADJACENT_Z;
 
 /**

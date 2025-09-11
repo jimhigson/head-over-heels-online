@@ -2,11 +2,11 @@ import type { Simplify, ValueOf } from "type-fest";
 
 import { objectEntries, objectValues } from "iter-tools-es";
 
+import type { GridSpatialIndex } from "../game/physics/gridSpace/GridSpatialIndex";
 import type { SceneryName } from "../sprites/planets";
 import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
 
-import type { GridSpatialIndex } from "../game/physics/gridSpace/GridSpatialIndex";
 import { iterate } from "../utils/iterate";
 
 /*type RoomItemIdWithKnownIds = (

@@ -1746,7 +1746,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 32,
         "y": 24,
-        "z": 119988,
+        "z": 192,
       },
       "castsShadowWhileStoodOn": false,
       "config": {},
@@ -2066,7 +2066,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 32,
         "y": 24,
-        "z": 119988,
+        "z": 192,
       },
       "castsShadowWhileStoodOn": false,
       "config": {},
@@ -6493,7 +6493,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 16,
         "y": 224,
-        "z": 9999,
+        "z": 192,
       },
       "castsShadowWhileStoodOn": true,
       "config": {
@@ -6535,7 +6535,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 80,
         "y": 16,
-        "z": 9999,
+        "z": 192,
       },
       "castsShadowWhileStoodOn": true,
       "config": {
@@ -6580,7 +6580,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 80,
         "y": 16,
-        "z": 9999,
+        "z": 192,
       },
       "castsShadowWhileStoodOn": false,
       "config": {
@@ -6627,7 +6627,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 16,
         "y": 224,
-        "z": 9999,
+        "z": 192,
       },
       "castsShadowWhileStoodOn": false,
       "config": {
@@ -6680,7 +6680,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 176,
         "y": 16,
-        "z": 9999,
+        "z": 192,
       },
       "castsShadowWhileStoodOn": true,
       "config": {
@@ -6723,7 +6723,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 176,
         "y": 16,
-        "z": 9999,
+        "z": 192,
       },
       "castsShadowWhileStoodOn": false,
       "config": {
