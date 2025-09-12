@@ -24,3 +24,5 @@ supabase/.temp
 # Playwright
 playwright-report/
 test-results/
+
+build-stats*.html
