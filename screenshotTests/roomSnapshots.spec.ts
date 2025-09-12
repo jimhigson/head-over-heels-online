@@ -4,6 +4,8 @@ import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
 import type { OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
+import type { setGameSpeed } from "../src/store/slices/gameMenusSlice";
+import type { SelectableGameSpeeds } from "../src/store/slices/selectableGameSpeeds";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";
@@ -141,8 +143,13 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
     async action() {
       // Set game speed directly via gameApi
       const gameApiFound = await page.evaluate(() => {
-        if (window._e2e_gamePageGameAi) {
+        if (window._e2e_gamePageGameAi && window._e2e_store) {
           window._e2e_gamePageGameAi.gameState.gameSpeed = 0;
+          window._e2e_store.dispatch({
+            type: "gameMenus/setGameSpeed",
+            // we need to fake a zero speed, since this wouldn't normally be in the selectable options:
+            payload: 0 as SelectableGameSpeeds,
+          } satisfies ReturnType<typeof setGameSpeed>);
           return true;
         }
         return false;
@@ -234,7 +241,7 @@ const sleep = (ms: number): Promise<void> =>
 const retryWithRecovery = async <T>({
   action,
   recovery,
-  maxAttempts = 3,
+  maxAttempts = 5,
   logHeader,
   actionDescription,
   page,
@@ -284,6 +291,7 @@ const retryWithRecovery = async <T>({
       }
 
       if (attempt < maxAttempts - 1 && recovery) {
+        await sleep(1_000); // brief pause before attempting recovery
         await recovery(attempt);
       } else if (attempt === maxAttempts - 1) {
         throw new Error(

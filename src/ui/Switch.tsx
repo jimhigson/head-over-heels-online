@@ -1,8 +1,10 @@
 import clsx from "clsx";
 import { type MouseEvent, type ReactNode, useCallback } from "react";
 
+import { twClass } from "../editor/twClass";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 import { cn } from "./cn";
+import { getSwitchPaddedLabels } from "./getSwitchPaddedLabels";
 import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
 import { Tooltip } from "./Tooltip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
@@ -74,44 +76,51 @@ export const Switch = ({
   );
 };
 
-export type Switch3Props<TValue extends number | string> = {
+export type SwitchNProps<TValue extends number | string> = {
   value: TValue;
   className?: string;
   onChange?: (newValue: TValue, e?: MouseEvent<HTMLElement>) => void;
-  values: Readonly<[TValue, TValue, TValue]>;
-  valueLabels?: Readonly<[string, string, string]>;
+  values: readonly TValue[];
+  valueLabels?: readonly string[];
   label?: string;
   shortcutKeys?: ShortcutKeys | undefined;
   tooltipContent?: ReactNode;
 };
 
-export const Switch3 = <TValue extends number | string>({
+const switchNColours = twClass([
+  "bg-redShadowHalfbrite text-highlightBeige zx:bg-zxBlack zx:text-zxGreen",
+  "bg-metallicBlueHalfbrite text-pastelBlue zx:bg-zxBlack zx:text-zxBlue",
+  "bg-pinkHalfbrite text-pink zx:bg-zxBlack zx:text-zxYellow",
+  "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
+]);
+
+export const SwitchN = <TValue extends number | string>({
   className,
   value,
   onChange,
   values,
-  valueLabels = [`${values[0]}`, `${values[1]}`, `${values[2]}`],
+  valueLabels = values.map((v) => `${v}`),
   label,
   shortcutKeys,
   tooltipContent,
-}: Switch3Props<TValue>) => {
+}: SwitchNProps<TValue>) => {
   const valueIndex = values.indexOf(value);
-
-  const labelLength =
-    Math.max(
-      valueLabels[0].length,
-      valueLabels[1].length + 2,
-      valueLabels[2].length,
-    ) + 1;
+  const numValues = values.length;
 
   const goToNextValue = useCallback(() => {
-    const nextIndex = (valueIndex + 1) % 3;
+    const nextIndex = (valueIndex + 1) % numValues;
     onChange?.(values[nextIndex], undefined);
-  }, [onChange, valueIndex, values]);
+  }, [onChange, valueIndex, values, numValues]);
 
   useKeyboardShortcut(shortcutKeys, false, () => {
     goToNextValue();
   });
+
+  // Get all padded labels
+  const paddedLabels = getSwitchPaddedLabels(valueLabels);
+
+  // Cycle through colors for 4+ options
+  const colorIndex = numValues > 4 ? valueIndex % 4 : valueIndex;
 
   const element = (
     <span
@@ -123,21 +132,11 @@ export const Switch3 = <TValue extends number | string>({
         role="switch"
         className={clsx(
           "inline-block w-min h-min py-half px-half",
-          valueIndex === 0 ?
-            "bg-redShadowHalfbrite text-highlightBeige zx:bg-zxBlack zx:text-zxGreen"
-          : valueIndex === 1 ?
-            "bg-metallicBlueHalfbrite text-pastelBlue zx:bg-zxBlack zx:text-zxBlue"
-          : "bg-pinkHalfbrite text-pink zx:bg-zxBlack zx:text-zxRed",
+          switchNColours[colorIndex] ?? switchNColours[0],
         )}
         noSlitWords
       >
-        {valueIndex === 0 ?
-          valueLabels[0].padEnd(labelLength, " ")
-        : valueIndex === 1 ?
-          valueLabels[1]
-            .padStart(Math.ceil((labelLength + valueLabels[1].length) / 2), " ")
-            .padEnd(labelLength, " ")
-        : valueLabels[2].padStart(labelLength, " ")}
+        {paddedLabels[valueIndex]}
       </BitmapText>
     </span>
   );
@@ -152,3 +151,19 @@ export const Switch3 = <TValue extends number | string>({
     <Tooltip triggerContent={element} tooltipContent={finalTooltipContent} />
   );
 };
+
+// Backwards compatibility: Switch3 as a wrapper around SwitchN
+export type Switch3Props<TValue extends number | string> = {
+  value: TValue;
+  className?: string;
+  onChange?: (newValue: TValue, e?: MouseEvent<HTMLElement>) => void;
+  values: Readonly<[TValue, TValue, TValue]>;
+  valueLabels?: Readonly<[string, string, string]>;
+  label?: string;
+  shortcutKeys?: ShortcutKeys | undefined;
+  tooltipContent?: ReactNode;
+};
+
+export const Switch3 = <TValue extends number | string>(
+  props: Switch3Props<TValue>,
+) => <SwitchN {...props} />;

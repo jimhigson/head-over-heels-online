@@ -23,6 +23,7 @@ export type MenuItemProps = {
   className?: string;
   hint?: ReactElement | string;
   hintInline?: boolean;
+  verticalAlignItemsCentre?: boolean;
 };
 
 // having swop in here marks the swop key as handled, so the game can't immediately
@@ -48,6 +49,7 @@ export const MenuItem = ({
   className,
   hint,
   leader,
+  verticalAlignItemsCentre = false,
 }: MenuItemProps) => {
   //useUnchanging(onSelect, "onSelect"); <- commented out, breaks HMR
   const isFirstRender = useRef<boolean>(true);
@@ -90,7 +92,13 @@ export const MenuItem = ({
       onClick={disabled ? undefined : onSelect}
     >
       {/* first column content (leader/icon thing)... */}
-      {leader || <MenuItemLeader flip={flipLeader} focussed={focussed} />}
+      {leader || (
+        <MenuItemLeader
+          verticalAlignItemsCentre={verticalAlignItemsCentre}
+          flip={flipLeader}
+          focussed={focussed}
+        />
+      )}
 
       {/* second column content (main label)... */}
       <div
@@ -113,6 +121,8 @@ export const MenuItem = ({
         className={twMerge(
           // if there is no value to show, take up the third column too:
           valueElement === undefined ? "col-span-2" : "",
+
+          verticalAlignItemsCentre === true ? "flex items-center" : "",
 
           // back buttons are usually at the bottom so set them away
           // from the normal menu items:

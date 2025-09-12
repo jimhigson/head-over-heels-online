@@ -22,6 +22,7 @@ import {
 import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
+import { SetSpeedOnGameApiFromStore } from "../../store/storeFlow/useSetSpeedOnGameApiFromStore.tsx";
 import { importOnce } from "../../utils/importOnce.ts";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
@@ -158,6 +159,7 @@ export const GamePage = () => {
         <DispatchingErrorBoundary>
           <AddTrackingToStore />
           <ConnectInputToStore />
+          <SetSpeedOnGameApiFromStore />
           <Dialogs />
         </DispatchingErrorBoundary>
         {gameApi && cheatsOn && (
