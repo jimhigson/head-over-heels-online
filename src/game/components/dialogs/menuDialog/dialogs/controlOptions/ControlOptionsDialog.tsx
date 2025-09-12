@@ -13,12 +13,12 @@ import {
 import { store } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
+import { Button } from "../../../../../../ui/button";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { useActionTap, useInputTap } from "../../../useActionTap";
-import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 import { multilineTextClass } from "../../multilineTextClass";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
@@ -73,23 +73,22 @@ const ExpandToShowAll = ({ showAll }: { showAll: () => void }) => {
         desktop/laptops, but you can use them on phones/tablets if you have a
         keyboard or gamepad connected
       </BitmapText>
-      <BitmapText
-        className={`block mb-1 text-midRed zx:text-zxRed ${multilineTextClass} mb-1`}
+      <Button
+        className={`block w-full mb-2 text-white p-1 bg-midRed zx:text-zxRed ${multilineTextClass}`}
         onClick={showAll}
       >
-        Tap here to show all settings
-      </BitmapText>
+        <BitmapText>Tap here to show all settings</BitmapText>
+      </Button>
     </div>
   );
 };
 
 const controlOptionsMenuItemsClass =
-  optionsMenuItemColours +
   " " +
   // a lot of these menu items run multi-line, so always have a block gap between:
-  "!gap-y-1 " +
-  // on mobile, override the double-height of menu items (put in to give a bitter hit area) since they're big enough already
-  "!sprites-normal-height";
+  "!gap-y-1 "; // +
+// on mobile, override the double-height of menu items (put in to give a bitter hit area) since they're big enough already
+//"!sprites-normal-height";
 
 export const ControlOptionsDialog = () => {
   useKeyAssignmentInput();
@@ -103,7 +102,11 @@ export const ControlOptionsDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog tall wide className="bg-white zx:bg-zxWhite pr-0 pl-1">
+      <Dialog
+        tall
+        wide
+        className={`bg-white zx:bg-zxWhite pl-1 pr-1 ${optionsMenuItemColours}`}
+      >
         <div
           className={
             "flex flex-col gap-y-1 " +
@@ -112,15 +115,15 @@ export const ControlOptionsDialog = () => {
             optionsMenuScrollClasses
           }
         >
-          {isTouchDevice() && <MobileStyleBackButton className="mb-1" />}
+          <MobileStyleBackButton />
           <BitmapText
             TagName="h1"
-            className="text-midRed zx:text-zxBlue sprites-double-height block"
+            className="text-midRed zx:text-zxBlue sprites-double-height block ml-4"
           >
             control options
           </BitmapText>
 
-          <MenuItems className={controlOptionsMenuItemsClass}>
+          <MenuItems className={`${controlOptionsMenuItemsClass} w-full`}>
             <InputDirectionModeMenuItem />
             <OnScreenControlsMenuItem />
             {inputDirectionMode !== "4-way" && showAll && (
@@ -136,9 +139,13 @@ export const ControlOptionsDialog = () => {
               >
                 Select the keys
               </BitmapText>
-              <MenuItems className={controlOptionsMenuItemsClass}>
+              <MenuItems
+                // normally on mobile, menu items are double-height, but select the keys
+                // is dense and won't be commonly seen on mobile, so to keep it under control
+                // it is forced to single height for now
+                className={`${controlOptionsMenuItemsClass} !sprites-normal-height`}
+              >
                 <SelectTheKeysMenuItems />
-                {isTouchDevice() || <BackMenuItem />}
               </MenuItems>
             </>
           : <>
