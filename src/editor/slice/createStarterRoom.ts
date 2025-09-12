@@ -1,4 +1,4 @@
-import { cycle, drop, take } from "iter-tools";
+import { cycle, drop, take } from "iter-tools-es";
 
 import type { JsonItem } from "../../model/json/JsonItem";
 import type { Xy } from "../../utils/vectors/vectors";

@@ -2,7 +2,14 @@ import type { Plane } from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import type { Tool } from "../../Tool";
 
-import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
+import {
+  projectBottomCentre,
+  projectC010,
+  projectC100,
+  projectC111,
+  projectTopLeft,
+  projectTopRight,
+} from "../../../game/render/sortZ/projectAabbCorners";
 import { nonZero } from "../../../utils/epsilon";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 
@@ -81,11 +88,9 @@ export const pointerIntersectionEdge = (
   face: Xyz,
   _tool: Tool,
 ): Plane | undefined => {
-  const cornerProjections = projectAabbCorners(
-    item.state.position,
-    // using aabb, not renderAabb, so doors can be placed on walls above where they render
-    item.aabb,
-  );
+  const { position } = item.state;
+  // using aabb, not renderAabb, so doors can be placed on walls above where they render
+  const { aabb } = item;
 
   /*
    * find any of 7 visible (edges)
@@ -116,7 +121,7 @@ export const pointerIntersectionEdge = (
   if (isRight || isTowards) {
     // edge (1)
     // faces that share a vertical edge:
-    const d = distancePointToLine2D(pointerXy, cornerProjections.bottomCentre, {
+    const d = distancePointToLine2D(pointerXy, projectBottomCentre(position), {
       x: 0,
       y: -1,
     });
@@ -126,10 +131,14 @@ export const pointerIntersectionEdge = (
   }
   if (isRight || isUp) {
     // edge (2)
-    const d = distancePointToLine2D(pointerXy, cornerProjections.topRight, {
-      x: 2,
-      y: -1,
-    });
+    const d = distancePointToLine2D(
+      pointerXy,
+      projectTopRight(position, aabb),
+      {
+        x: 2,
+        y: -1,
+      },
+    );
 
     // faces that share an edge:
     if (d < edgeToleranceBetweenFacesPx) {
@@ -139,7 +148,7 @@ export const pointerIntersectionEdge = (
   if (isTowards || isUp) {
     // edge (3)
     // faces that share an edge:
-    const d = distancePointToLine2D(pointerXy, cornerProjections.topLeft, {
+    const d = distancePointToLine2D(pointerXy, projectTopLeft(position, aabb), {
       x: 2,
       y: 1,
     });
@@ -150,7 +159,7 @@ export const pointerIntersectionEdge = (
 
   switch (true) {
     case isUp: {
-      const corner = cornerProjections.c111;
+      const corner = projectC111(position, aabb);
       // edge (4)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 2,
@@ -171,7 +180,7 @@ export const pointerIntersectionEdge = (
     }
 
     case isTowards: {
-      const corner = cornerProjections.c100;
+      const corner = projectC100(position, aabb);
       // edge (6)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 0,
@@ -192,7 +201,7 @@ export const pointerIntersectionEdge = (
     }
 
     case isRight: {
-      const corner = cornerProjections.c010;
+      const corner = projectC010(position, aabb);
       // edge (8)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 0,

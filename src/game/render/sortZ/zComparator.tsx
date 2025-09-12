@@ -1,11 +1,12 @@
 //# allFunctionsCalledOnLoad
 
 import type { Xyz } from "../../../utils/vectors/vectors";
+import type { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import type { DrawOrderComparable } from "./DrawOrderComparable";
+import type { ProjectionOnAxes } from "./projectAabbCorners";
 
 import { veryClose } from "../../../utils/epsilon";
 import { addXyz, axesXyz } from "../../../utils/vectors/vectors";
-import { projectAabbCorners } from "./projectAabbCorners";
 
 /** to compensate for floating point error, ranges have to be overlapping by this much to consider them to be visually overlapping */
 const visuallyOverlapsMinimumOverlap = 0.000_01;
@@ -37,6 +38,9 @@ type ADJACENT_Y = typeof ADJACENT_Y;
 // artifacts like x and y
 //type ADJACENT_Z = typeof ADJACENT_Z;
 type VISUALLY_OVERLAPS_RETURN = ADJACENT_X | ADJACENT_Y | NO_OVERLAP | OVERLAP;
+// tracking adj_z could help in #bookworld14,where the barrier just slightly overlaps the
+// wall behind - this currently is slightly wrong because the wall slightly over-renders the
+// barrier. They are detected as not overlapping.
 //| ADJACENT_Z;
 
 /**
@@ -44,87 +48,30 @@ type VISUALLY_OVERLAPS_RETURN = ADJACENT_X | ADJACENT_Y | NO_OVERLAP | OVERLAP;
  * screen-space
  */
 const visuallyOverlaps = (
-  aPos: Xyz,
-  aBb: Xyz,
-  bPos: Xyz,
-  bBb: Xyz,
+  a: ProjectionOnAxes,
+  b: ProjectionOnAxes,
 ): VISUALLY_OVERLAPS_RETURN => {
-  const {
-    topLeft: topLeftA,
-    topRight: topRightA,
-    bottomCentre: bottomCentreA,
-    //c111: topCentreA,
-  } = projectAabbCorners(aPos, aBb);
-  const {
-    topLeft: topLeftB,
-    topRight: topRightB,
-    bottomCentre: bottomCentreB,
-    //c111: topCentreB,
-  } = projectAabbCorners(bPos, bBb);
-
-  // xmin/xmax defines the (z-axis) vertical lines at the left and right of the projected hexagon
-  const aXMin = topLeftA.x;
-  const aXMax = topRightA.x;
-
-  const bXMin = topLeftB.x;
-  const bXMax = topRightB.x;
-
   const zAxisOverlap = rangeOverlap(
-    aXMin,
-    aXMax,
-    bXMin,
-    bXMax,
+    a.zAxisProjectionMin,
+    a.zAxisProjectionMax,
+    b.zAxisProjectionMin,
+    b.zAxisProjectionMax,
     visuallyOverlapsMinimumOverlap,
   );
-  // if (!zAxisOverlap) {
-  //   //disabled: this makes little/no difference in benchmarks:
-  //   // early exit since no other conditions can be met below without z-axis overlap
-  //   return NO_OVERLAP;
-  // }
-
-  // const yScreenOverlap = rangeOverlap(
-  //   topCentreA.y,
-  //   bottomCentreA.y,
-  //   topCentreB.y,
-  //   bottomCentreB.y,
-  //   visuallyOverlapsMinimumOverlap,
-  // );
-  // if (!yScreenOverlap) {
-  //   //disabled: this makes little/no difference in benchmarks:
-  //   // early exit since no other conditions can be met below without z-axis overlap
-  //   return NO_OVERLAP;
-  // }
-
-  // a (projected) line along the (world) x axis of the projected is described by:
-  //  [y = x/2 - c]
-  //  = [c = y + x/2]
-  // a greater c means projected higher on the screen -ie, a higher value in y and/or z (world-x is orthogonal)
-  const aXAxisSlopeMinC = topRightA.y - topRightA.x / 2;
-  const aXAxisSlopeMaxC = bottomCentreA.y - bottomCentreA.x / 2;
-
-  const bXAxisSlopeMinC = topRightB.y - topRightB.x / 2;
-  const bXAxisSlopeMaxC = bottomCentreB.y - bottomCentreB.x / 2;
 
   const xAxisOverlap = rangeOverlap(
-    aXAxisSlopeMinC,
-    aXAxisSlopeMaxC,
-    bXAxisSlopeMinC,
-    bXAxisSlopeMaxC,
+    a.xAxisProjectionMin,
+    a.xAxisProjectionMax,
+    b.xAxisProjectionMin,
+    b.xAxisProjectionMax,
     visuallyOverlapsMinimumOverlap,
   );
 
-  // now projected lines along the y axis: [y = x/2 - c] = [c = y-x/2]
-  const aYAxisSlopeMinC = topLeftA.y + topLeftA.x / 2;
-  const aYAxisSlopeMaxC = bottomCentreA.y + bottomCentreA.x / 2;
-
-  const bYAxisSlopeMinC = topLeftB.y + topLeftB.x / 2;
-  const bYAxisSlopeMaxC = bottomCentreB.y + bottomCentreB.x / 2;
-
   const yAxisOverlap = rangeOverlap(
-    aYAxisSlopeMinC,
-    aYAxisSlopeMaxC,
-    bYAxisSlopeMinC,
-    bYAxisSlopeMaxC,
+    a.yAxisProjectionMin,
+    a.yAxisProjectionMax,
+    b.yAxisProjectionMin,
+    b.yAxisProjectionMax,
     visuallyOverlapsMinimumOverlap,
   );
 
@@ -137,10 +84,10 @@ const visuallyOverlaps = (
     zAxisOverlap &&
     // x adjacent:
     rangeOverlap(
-      aXAxisSlopeMinC,
-      aXAxisSlopeMaxC,
-      bXAxisSlopeMinC,
-      bXAxisSlopeMaxC,
+      a.xAxisProjectionMin,
+      a.xAxisProjectionMax,
+      b.xAxisProjectionMin,
+      b.xAxisProjectionMax,
       visuallyAdjacentMinimumOverlap,
     )
   ) {
@@ -152,10 +99,10 @@ const visuallyOverlaps = (
     zAxisOverlap &&
     // y adjacent:
     rangeOverlap(
-      aYAxisSlopeMinC,
-      aYAxisSlopeMaxC,
-      bYAxisSlopeMinC,
-      bYAxisSlopeMaxC,
+      a.yAxisProjectionMin,
+      a.yAxisProjectionMax,
+      b.yAxisProjectionMin,
+      b.yAxisProjectionMax,
       visuallyAdjacentMinimumOverlap,
     )
   ) {
@@ -227,6 +174,7 @@ export const zComparatorOfVisuallyOverlapping = (
 export const zComparator = (
   a: DrawOrderComparable,
   b: DrawOrderComparable,
+  spatialIndex: GridSpatialIndex<string, string, DrawOrderComparable>,
 ): number => {
   if (
     // zero-volume (render) bb items don't participate in z-ordering - this is THE one way
@@ -237,18 +185,21 @@ export const zComparator = (
     return 0;
   }
 
-  const aBb = a.renderAabb || a.aabb;
-  const bBb = b.renderAabb || b.aabb;
   const aPos =
     a.renderAabbOffset ?
       addXyz(a.state.position, a.renderAabbOffset)
     : a.state.position;
+  const aBb = a.renderAabb || a.aabb;
   const bPos =
     b.renderAabbOffset ?
       addXyz(b.state.position, b.renderAabbOffset)
     : b.state.position;
+  const bBb = b.renderAabb || b.aabb;
 
-  const visualOverlap = visuallyOverlaps(aPos, aBb, bPos, bBb);
+  const visualOverlap = visuallyOverlaps(
+    spatialIndex.getItemAxesProjections(a)!,
+    spatialIndex.getItemAxesProjections(b)!,
+  );
 
   switch (visualOverlap) {
     case OVERLAP: {

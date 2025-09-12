@@ -1,4 +1,4 @@
-import { cycle } from "iter-tools";
+import { cycle } from "iter-tools-es";
 
 import type { GameState } from "../game/gameState/GameState";
 import type { TestRoomId } from "./basicRoom";

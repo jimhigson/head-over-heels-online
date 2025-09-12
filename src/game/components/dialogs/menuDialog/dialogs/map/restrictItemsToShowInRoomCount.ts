@@ -1,4 +1,4 @@
-import { objectValues, roundRobin, take } from "iter-tools";
+import { objectValues, roundRobin, take } from "iter-tools-es";
 
 /**
  * the room layout can't show an infinite number of item

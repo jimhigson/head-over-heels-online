@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { GameState } from "../gameState/GameState";

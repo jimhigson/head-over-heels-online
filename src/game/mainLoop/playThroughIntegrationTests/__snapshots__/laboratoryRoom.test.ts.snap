@@ -1746,7 +1746,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 32,
         "y": 24,
-        "z": 119988,
+        "z": 9999,
       },
       "castsShadowWhileStoodOn": false,
       "config": {},
@@ -2066,7 +2066,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "aabb": {
         "x": 32,
         "y": 24,
-        "z": 119988,
+        "z": 9999,
       },
       "castsShadowWhileStoodOn": false,
       "config": {},

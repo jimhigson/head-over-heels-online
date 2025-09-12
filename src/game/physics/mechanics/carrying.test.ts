@@ -1,4 +1,4 @@
-import { first } from "iter-tools";
+import { first } from "iter-tools-es";
 import { describe, expect, test } from "vitest";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
@@ -6,6 +6,7 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
+import { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
 import { checkSpaceAvailableToPutDown } from "./carrying";
 
 const makeHeels = (position: Xyz) =>
@@ -54,14 +55,18 @@ describe("checkSpaceAvailableToPutDown", () => {
   test("if is the only item in the room, can put down", () => {
     const heels = makeHeels({ x: 0, y: 0, z: 0 });
 
-    expect(checkSpaceAvailableToPutDown(heels, [heels])).toBe(true);
+    expect(
+      checkSpaceAvailableToPutDown(heels, new GridSpatialIndex([heels])),
+    ).toBe(true);
   });
 
   test("there is not space if a block directly above heels", () => {
     const heels = makeHeels({ x: 0, y: 0, z: 0 });
     const block = makeBlock({ x: 0, y: 0, z: 1 });
 
-    expect(checkSpaceAvailableToPutDown(heels, [heels, block])).toBe(false);
+    expect(
+      checkSpaceAvailableToPutDown(heels, new GridSpatialIndex([heels, block])),
+    ).toBe(false);
   });
 
   describe("with portable blocks on top of heels", () => {
@@ -69,9 +74,12 @@ describe("checkSpaceAvailableToPutDown", () => {
       const portableBlock = makePortableBlock({ x: 0, y: 0, z: 1 });
       const heels = makeHeels({ x: 0, y: 0, z: 0 });
 
-      expect(checkSpaceAvailableToPutDown(heels, [heels, portableBlock])).toBe(
-        true,
-      );
+      expect(
+        checkSpaceAvailableToPutDown(
+          heels,
+          new GridSpatialIndex([heels, portableBlock]),
+        ),
+      ).toBe(true);
     });
     test("can put down if the portable block goes alongside but doesn't collide with immovable blocks", () => {
       const heels = makeHeels({ x: 1, y: 0, z: 0 });
@@ -79,7 +87,10 @@ describe("checkSpaceAvailableToPutDown", () => {
       const block = makeBlock({ x: 0.5, y: 0, z: 2 });
 
       expect(
-        checkSpaceAvailableToPutDown(heels, [heels, portableBlock, block]),
+        checkSpaceAvailableToPutDown(
+          heels,
+          new GridSpatialIndex([heels, portableBlock, block]),
+        ),
       ).toBe(true);
     });
     test("can not put down if a portable block one up and a normal block two up from heels", () => {
@@ -88,7 +99,10 @@ describe("checkSpaceAvailableToPutDown", () => {
       const heels = makeHeels({ x: 0, y: 0, z: 0 });
 
       expect(
-        checkSpaceAvailableToPutDown(heels, [heels, portableBlock, block]),
+        checkSpaceAvailableToPutDown(
+          heels,
+          new GridSpatialIndex([heels, portableBlock, block]),
+        ),
       ).toBe(false);
     });
   });

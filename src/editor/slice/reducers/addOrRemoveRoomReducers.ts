@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import { filter, first, objectKeys } from "iter-tools";
+import { filter, first, objectKeys } from "iter-tools-es";
 
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { EditorRoomId } from "../../editorTypes";

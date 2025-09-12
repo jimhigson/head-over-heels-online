@@ -59,13 +59,15 @@ export const gravity: Mechanic<FreeItemTypes> = <
 
       if (liftVelZ < 0) {
         // NOTE: special case for descending lifts to avoid skipping on them - items stick
-        // to them by some kind of magic even if faster than the terminal falling velocity of the item:
-        // we need some gravity to keep us on the lift as it falls - go slightly faster than the lift's
-        // downwards speed
+        // to them by some kind of magic, up to their terminal velocity, even if they normally
+        // wouldn't accelerate that quickly downwards. Keeps Heels on a descending lift but not
+        // Head (lower terminal velocity)
         return {
           movementType: "vel",
           vels: {
             gravity: {
+              x: 0,
+              y: 0,
               z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
             },
           },
@@ -80,6 +82,8 @@ export const gravity: Mechanic<FreeItemTypes> = <
       movementType: "vel",
       vels: {
         gravity: {
+          x: 0,
+          y: 0,
           z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
         },
       },

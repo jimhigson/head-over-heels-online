@@ -8,6 +8,9 @@ import { walking } from "../mechanics/walking";
 import { type ItemTouchEvent, movingItemIsPlayable } from "./ItemTouchEvent";
 import { touchTriggersOnStand } from "./touchTriggersOnStand";
 
+// buffer for writing into when we don't need the result
+const unusedBuffer = { x: 0, y: 0, z: 0 };
+
 export const handleItemTouchingDissapearing = <
   RoomId extends string,
   RoomItemId extends string,
@@ -54,7 +57,11 @@ export const handleItemTouchingDissapearing = <
         // start of a jump or she will come to a stop after a few jumps:
         walking(e.movingItem, e.room, e.gameState, e.deltaMS),
       ];
-      applyMechanicsResults(e.movingItem, controlMechanicalResults);
+      applyMechanicsResults(
+        unusedBuffer,
+        e.movingItem,
+        controlMechanicalResults,
+      );
     }
 
     makeItemFadeOut(e);

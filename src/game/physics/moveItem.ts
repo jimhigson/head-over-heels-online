@@ -3,7 +3,7 @@ import type { GameState } from "../gameState/GameState";
 import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
 
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import { roomItemsIterable, type RoomState } from "../../model/RoomState";
+import { roomSpatialIndexKey, type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import { veryClose } from "../../utils/epsilon";
 import {
@@ -16,9 +16,13 @@ import {
   subXyz,
   xyzEqual,
 } from "../../utils/vectors/vectors";
-import { collision1to1, collision1toMany } from "../collision/aabbCollision";
+import {
+  collision1to1,
+  collisionItemWithIndex,
+} from "../collision/aabbCollision";
 import { removeStandingOn } from "../gameState/mutators/removeStandingOn";
 import { setStandingOn } from "../gameState/mutators/setStandingOn";
+import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
 import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
 import { isItemType, isPushable, isSlidingItem } from "./itemPredicates";
 import { isFreeItem } from "./itemPredicates";
@@ -115,6 +119,10 @@ const backingOffTranslationAfterCollision = <
       dotProductXyz(backingOffMtv, subjectTravelReverseVector) /
       travelRevDistSquared;
 
+    // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
+    // normal aabb mtvs
+    subjectTravelReverseVector.z = 0;
+
     // a little bit wider than 45° (which would be 0.5 here)
     if (backingOffProjectedOnMovementVector > 0.44) {
       return mtvAlongVector(
@@ -124,7 +132,7 @@ const backingOffTranslationAfterCollision = <
         collidedWithItem.aabb,
         // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
         // normal aabb mtvs
-        { ...subjectTravelReverseVector, z: 0 },
+        subjectTravelReverseVector,
       );
     }
   }
@@ -179,7 +187,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     );
 
   // strategy is to move to the target position, then back off as needed
-  subjectItem.state.position = addXyz(originalPosition, posDelta);
+  updateItemPosition(room, subjectItem, addXyz(originalPosition, posDelta));
 
   if (pusher === undefined) {
     // record 'first cause' acting on, directly from the mechanics.
@@ -189,7 +197,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(
     posDelta,
-    collision1toMany(subjectItem, roomItemsIterable(room.items)),
+    collisionItemWithIndex(subjectItem, room[roomSpatialIndexKey]).toArray(),
   );
 
   if (log) {
@@ -229,6 +237,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
 
     if (!collision1to1(subjectItem, collidedWithItem)) {
+      // it is possible there is no longer a collision due to previous pushing and backing-off of the subjectItem - we have
+      // been protected from this collision by previous collisions so it no longer applies
       if (log) {
         console.log(
           `${subjectItem.id} @`,
@@ -238,8 +248,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           `after handling previous collisions`,
         );
       }
-      // it is possible there is no longer a collision due to previous pushing and backing-off of the subjectItem - we have
-      // been protected from this collision by previous collisions so it no longer applies
       continue;
     } else {
       if (log) {
@@ -363,11 +371,15 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       const forwardPushVector = scaleXyz(backingOffMtv, pushCoefficient);
 
       // we are going slower due to pushing so back off, but not completely:
-      subjectItem.state.position = addXyz(
-        subjectItem.state.position,
-        backingOffMtv, // this would back off all the way out of the item
-        // but we keep going some and stay partially inside
-        forwardPushVector,
+      updateItemPosition(
+        room,
+        subjectItem,
+        addXyz(
+          subjectItem.state.position,
+          backingOffMtv, // this would back off all the way out of the item
+          // but we keep going some and stay partially inside
+          forwardPushVector,
+        ),
       );
 
       if (log)
@@ -406,28 +418,34 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         console.warn("hit recursion depth limit", new Error());
       }
 
-      // it is possible we pushed the other item out of the room:
+      // it is possible we pushed the other item out of the room (if it is a playable character),
+      // or into non-existence in some other way
       if (room.items[collidedWithItem.id] === undefined) {
         continue;
       }
 
       // recalculate the subject's mtv given the new pushee position. This will make the pusher
       // go more slowly, since the pushee will move a bit less than the subject originally wanted to
-      subjectItem.state.position = addXyz(
-        subjectItem.state.position,
-        mtv(
+      updateItemPosition(
+        room,
+        subjectItem,
+        addXyz(
           subjectItem.state.position,
-          subjectItem.aabb,
-          collidedWithItem.state.position,
-          collidedWithItem.aabb,
+          mtv(
+            subjectItem.state.position,
+            subjectItem.aabb,
+            collidedWithItem.state.position,
+            collidedWithItem.aabb,
+          ),
         ),
       );
     } else {
       // collision was not with a pushable thing - just back off
       // to slide on the obstacle (we're not pushing it):
-      subjectItem.state.position = addXyz(
-        subjectItem.state.position,
-        backingOffMtv,
+      updateItemPosition(
+        room,
+        subjectItem,
+        addXyz(subjectItem.state.position, backingOffMtv),
       );
 
       if (log)

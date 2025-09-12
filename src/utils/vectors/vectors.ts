@@ -57,14 +57,19 @@ export type Xy = {
 export const perpendicularAxisXy = (axis: AxisXy): AxisXy =>
   axis === "x" ? "y" : "x";
 
-export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
-  xys.reduce<Xy>(
-    (ac, xyi) => ({
-      x: ac.x + (xyi.x ?? 0),
-      y: ac.y + (xyi.y ?? 0),
-    }),
-    xy,
-  );
+export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
+  const result = {
+    x: xy.x,
+    y: xy.y,
+  };
+
+  for (const xyToAdd of xys) {
+    result.x += xyToAdd.x ?? 0;
+    result.y += xyToAdd.y ?? 0;
+  }
+
+  return result;
+};
 
 export const addXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   for (const xyi of xys) {
@@ -74,14 +79,19 @@ export const addXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   return xy;
 };
 
-export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy =>
-  xys.reduce<Xy>(
-    (ac, xyi) => ({
-      x: ac.x - (xyi.x ?? 0),
-      y: ac.y - (xyi.y ?? 0),
-    }),
-    xy,
-  );
+export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
+  const result = {
+    x: xy.x,
+    y: xy.y,
+  };
+
+  for (const xyToSub of xys) {
+    result.x -= xyToSub.x ?? 0;
+    result.y -= xyToSub.y ?? 0;
+  }
+
+  return result;
+};
 
 export const subXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   for (const xyi of xys) {
@@ -96,6 +106,17 @@ export const scaleXy = (xy: Xy, scale: number): Xy => ({
   y: xy.y * scale,
 });
 
+export const scaleXyWriteInto = (
+  writeInto: object,
+  xy: Xy,
+  scale: number,
+): Xy => {
+  const writeIntoTyped = writeInto as Xy;
+  writeIntoTyped.x = xy.x * scale;
+  writeIntoTyped.y = xy.y * scale;
+  return writeIntoTyped;
+};
+
 export const scaleXyInPlace = (xy: Xy, scale: number): Xy => {
   xy.x *= scale;
   xy.y *= scale;
@@ -107,6 +128,18 @@ export const scaleXyz = (xy: Xyz, scale: number): Xyz => ({
   y: xy.y * scale,
   z: xy.z * scale,
 });
+
+export const scaleXyzWriteInto = (
+  writeInto: object,
+  xyz: Xyz,
+  scale: number,
+): Xyz => {
+  const writeIntoTyped = writeInto as Xyz;
+  writeIntoTyped.x = xyz.x * scale;
+  writeIntoTyped.y = xyz.y * scale;
+  writeIntoTyped.z = xyz.z * scale;
+  return writeIntoTyped;
+};
 
 export const scaleXyzInPlace = (xyz: Xyz, scale: number): Xyz => {
   xyz.x *= scale;
@@ -187,14 +220,50 @@ export const perpendicularXyzInPlace = (xyz: Xyz): Xyz => {
 };
 
 export const addXyz = (...xyzs: Array<Partial<Xyz>>): Xyz => {
-  return xyzs.reduce<Xyz>(
-    ({ x: acX, y: acY, z: acZ }, { x: iX = 0, y: iY = 0, z: iZ = 0 }) => ({
-      x: acX + iX,
-      y: acY + iY,
-      z: acZ + iZ,
-    }),
-    originXyz,
-  );
+  if (xyzs.length === 0) {
+    return { x: 0, y: 0, z: 0 };
+  }
+
+  const [first, ...rest] = xyzs;
+  const result = {
+    x: first.x ?? 0,
+    y: first.y ?? 0,
+    z: first.z ?? 0,
+  };
+
+  for (const xyz of rest) {
+    result.x += xyz.x ?? 0;
+    result.y += xyz.y ?? 0;
+    result.z += xyz.z ?? 0;
+  }
+
+  return result;
+};
+
+export const addXyzWriteInto = (
+  writeInto: object,
+  ...xyzs: Array<Partial<Xyz>>
+): Xyz => {
+  const writeIntoTyped = writeInto as Xyz;
+
+  if (xyzs.length === 0) {
+    writeIntoTyped.x = 0;
+    writeIntoTyped.y = 0;
+    writeIntoTyped.z = 0;
+    return writeIntoTyped;
+  }
+
+  writeIntoTyped.x = xyzs[0].x ?? 0;
+  writeIntoTyped.y = xyzs[0].y ?? 0;
+  writeIntoTyped.z = xyzs[0].z ?? 0;
+
+  for (let i = 1; i < xyzs.length; i++) {
+    writeIntoTyped.x += xyzs[i].x ?? 0;
+    writeIntoTyped.y += xyzs[i].y ?? 0;
+    writeIntoTyped.z += xyzs[i].z ?? 0;
+  }
+
+  return writeIntoTyped;
 };
 
 export const addXyzInPlace = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
@@ -232,15 +301,21 @@ export const elementWiseProductXyzInPlace = (
   return xyz;
 };
 
-export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz =>
-  xyzs.reduce<Xyz>(
-    (ac, xyi) => ({
-      x: ac.x - (xyi.x ?? 0),
-      y: ac.y - (xyi.y ?? 0),
-      z: ac.z - (xyi.z ?? 0),
-    }),
-    xyz,
-  );
+export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
+  const result = {
+    x: xyz.x,
+    y: xyz.y,
+    z: xyz.z,
+  };
+
+  for (const xyzToSub of xyzs) {
+    result.x -= xyzToSub.x ?? 0;
+    result.y -= xyzToSub.y ?? 0;
+    result.z -= xyzToSub.z ?? 0;
+  }
+
+  return result;
+};
 
 export const subXyzInPlace = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
   for (const xyzi of xyzs) {
@@ -524,4 +599,10 @@ export const areInSameDirection = (
 
   // Compare squared values to avoid sqrt
   return Math.abs(dot * dot - mag1Sq * mag2Sq) < epsilon;
+};
+
+export const resetXyzInPlace = (xyz: Xyz) => {
+  xyz.x = 0;
+  xyz.y = 0;
+  xyz.z = 0;
 };

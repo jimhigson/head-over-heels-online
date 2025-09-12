@@ -1,4 +1,4 @@
-import { isEmpty, objectKeys } from "iter-tools";
+import { isEmpty, objectKeys } from "iter-tools-es";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";

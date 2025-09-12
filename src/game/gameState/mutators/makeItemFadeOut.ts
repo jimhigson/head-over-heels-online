@@ -15,6 +15,7 @@ import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
+import { updateItemPosition } from "./updateItemPosition";
 
 /**
  * remove an item (with bubbles)
@@ -61,7 +62,7 @@ export const makeItemFadeOut = <
             style: "white",
             was,
           },
-          // give any placeholder position:
+          // give any placeholder position during loading:
           position: originXyz,
           room,
           gameState,
@@ -81,10 +82,15 @@ export const makeItemFadeOut = <
           touchedItemHalfAabb,
         );
 
-        // TODO: use subXyzInPlace once it is merged
-        bubblesItem.state.position = subXyz(
-          segmentCentre,
-          scaleXyz(bubblesItem.aabb, 0.5),
+        // and then give the true position:
+        updateItemPosition(
+          room,
+          bubblesItem,
+          subXyz(
+            segmentCentre,
+            // TODO: use subXyzInPlace once it is merged
+            scaleXyz(bubblesItem.aabb, 0.5),
+          ),
         );
 
         // remove bubbles after a time with random variation

@@ -1,6 +1,6 @@
 import type { SpritesheetFrameData } from "pixi.js";
 
-import { range } from "iter-tools";
+import { range } from "iter-tools-es";
 
 import type { SpriteSize } from "../model/modelTypes";
 

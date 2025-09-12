@@ -1,5 +1,5 @@
-import type { RoomState } from "../../../model/RoomState";
 import type { FreeItem } from "../../physics/itemPredicates";
+import type { UnindexedRoomState } from "../saving/SavedGameState";
 
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 
@@ -8,7 +8,7 @@ export const removeStandingOn = <
   RoomItemId extends string,
 >(
   aboveItem: FreeItem<RoomId, RoomItemId>,
-  room: RoomState<RoomId, RoomItemId>,
+  room: UnindexedRoomState<RoomId, RoomItemId>,
 ) => {
   if (aboveItem.state.standingOnItemId !== null) {
     const belowItem = stoodOnItem(aboveItem.state.standingOnItemId, room);

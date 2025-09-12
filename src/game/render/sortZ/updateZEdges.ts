@@ -1,9 +1,10 @@
 //# allFunctionsCalledOnLoad
 
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 
+import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
 import { zComparator } from "./zComparator";
 
@@ -18,10 +19,16 @@ import { zComparator } from "./zComparator";
  * ```
  */
 export const updateZEdges = <
-  TItem extends DrawOrderComparable,
+  TItem extends DrawOrderComparable & { id: Tid },
   Tid extends string,
 >(
   items: Record<Tid, TItem>,
+  // if no spatial index is given, make one for the items we are concerned with.
+  // this should not be done in-game, since the index can be kept between frames
+  // and minimally updated
+  spatialIndex: GridSpatialIndex<string, Tid, TItem> = new GridSpatialIndex(
+    objectValues(items),
+  ),
   /**
    * the nodes that have moved - nodes that did not move are not considered
    *  - if not given, wil consider all
@@ -49,29 +56,59 @@ export const updateZEdges = <
     }
   }
 
-  // ⚠⚠ WARNING QUADRATIC LOOPING! ⚠⚠
-  // ⚠⚠ compares every item pair, where one of the pair has moved ⚠⚠
+  // we are the only code that uses the projected index, and we know what
+  // moved on this frame - it is our responsibility to update the index
+  // for the moved items. this way, multiple physics sub-ticks can run, each moving
+  // the items multiple times, but we wil just do this once per rendering
+  for (const item of moved) {
+    spatialIndex.updateItemProjectedIndex(item);
+  }
+
   for (const itemI of moved) {
     if (itemI.fixedZIndex !== undefined) {
       continue;
     }
 
-    // moved nodes are compared against all nodes (moving or not):
+    const projectionNeighbourhood =
+      spatialIndex.getItemProjectedNeighbourhood(itemI);
+
+    {
+      // remove all edges (either way) with items not in this items
+      // projectionNeighbourhood:
+      const outgoing = zEdges.get(itemI.id);
+      outgoing?.forEach((_edgeData, front) => {
+        if (!projectionNeighbourhood.has(items[front])) {
+          outgoing.delete(front);
+        }
+      });
+      zEdges.forEach((fronts, behind) => {
+        if (!projectionNeighbourhood.has(items[behind])) {
+          deleteEdge(zEdges, behind, itemI.id);
+        }
+      });
+    }
+
+    // moved nodes are compared against all nodes in its neighbourhood (moving or not):
     // - only unmoved/unmoved pairs can be skipped since they
     // are known not to have changed
     // ie - every moved node is compared again against every other node
-    for (const itemJ of objectValues(items) as Iterable<TItem>) {
+    // console.log(
+    //   itemI.id,
+    //   "'s projection neighbourhood size is",
+    //   projectionNeighbourhood.size,
+    // );
+    for (const itemJ of projectionNeighbourhood) {
+      //console.log(itemI.id, "'s projection neighbourhood includes", itemJ.id);
+
       if (
         itemJ.fixedZIndex !== undefined ||
         // already compared the other way:
-        comparisonsDone.get(itemJ)?.has(itemI) ||
-        // no point comparing to self:
-        itemI === itemJ
+        comparisonsDone.get(itemJ)?.has(itemI)
       ) {
         continue;
       }
 
-      const comparison = zComparator(itemI, itemJ);
+      const comparison = zComparator(itemI, itemJ, spatialIndex);
 
       if (!comparisonsDone.has(itemI)) {
         comparisonsDone.set(itemI, new Set());

@@ -259,6 +259,20 @@ export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");
 export const isPickup = isItemType("pickup");
 
+// an item that can modify other items:
+export const isModifier = <RoomId extends string, RoomItemId extends string>(
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+): item is
+  | ItemInPlay<"button", RoomId, RoomItemId>
+  | (ItemInPlay<"switch", RoomId, RoomItemId> & {
+      config: { type: "in-room" };
+    }) => {
+  return (
+    item.type === "button" ||
+    (item.type === "switch" && item.config.type === "in-room")
+  );
+};
+
 export const isCrown = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 ): item is ItemInPlay<"pickup", RoomId, RoomItemId> & {

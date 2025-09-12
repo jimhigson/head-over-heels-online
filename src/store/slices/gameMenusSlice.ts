@@ -7,7 +7,7 @@ import { canonicalize } from "json-canonicalize";
 import { REHYDRATE } from "redux-persist";
 
 import type { DialogId } from "../../game/components/dialogs/menuDialog/DialogId";
-import type { SavedGameState } from "../../game/gameState/saving/SavedGameState";
+import type { SavedGame } from "../../game/gameState/saving/SavedGameState";
 import type { BooleanAction } from "../../game/input/actions";
 import type {
   ActionInputAssignment,
@@ -156,7 +156,7 @@ export type GameInPlayStoreState = {
    * creates a linked-list of saves. This is how multiple saves are handled from
    * a single property.
    */
-  reincarnationPoint?: SavedGameState;
+  reincarnationPoint?: SavedGame;
   /**
    * the userid/name of the campaign being played, or undefined if none
    */
@@ -212,7 +212,7 @@ export type GameMenusState = {
    * to another tab
    */
   savedGames: {
-    saves: { [campaignLocatorFlat: string]: SavedGameState };
+    saves: { [campaignLocatorFlat: string]: SavedGame };
     /**
      * location of the campaign that was most recently saved. This is the one the
      * app will automatically restore from on reloading - must exist as
@@ -634,7 +634,7 @@ export const gameMenusSlice = createSlice({
         ];
       }
     },
-    reincarnationFishEaten(state, { payload }: PayloadAction<SavedGameState>) {
+    reincarnationFishEaten(state, { payload }: PayloadAction<SavedGame>) {
       state.gameInPlay.reincarnationPoint = payload;
     },
     reincarnationAccepted(state) {
@@ -648,7 +648,7 @@ export const gameMenusSlice = createSlice({
         },
       ];
     },
-    saveGame(state, { payload }: PayloadAction<SavedGameState>) {
+    saveGame(state, { payload }: PayloadAction<SavedGame>) {
       const currentCampaignLocator = state.gameInPlay.campaignLocator;
 
       if (currentCampaignLocator === undefined) {
@@ -886,6 +886,6 @@ export const selectSaveForCampaign = gameMenusSlice.selectors
   .selectSaveForCampaign as <RoomId extends string>(
   state: { gameMenus: GameMenusState },
   campaignLocator: CampaignLocator,
-) => SavedGameState<RoomId>;
+) => SavedGame<RoomId>;
 
 export const gameMenusSliceActions = gameMenusSlice.actions;

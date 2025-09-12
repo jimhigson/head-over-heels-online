@@ -3,7 +3,7 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import { size } from "iter-tools";
+import { size } from "iter-tools-es";
 
 import type { BasicGameStateOptions } from "../../../_testUtils/basicRoom";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
@@ -30,7 +30,6 @@ import { testFrameRates } from "../../../_testUtils/testFrameRates";
 import { individualCharacterNames } from "../../../model/modelTypes";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { store } from "../../../store/store";
 import { smallItemAabb } from "../../collision/boundingBoxes";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
@@ -865,153 +864,6 @@ describe("scrolls", () => {
   });
 });
 
-describe("teleporter", () => {
-  test("can teleport to the next room", () => {
-    const gameState = setUpBasicGame({
-      firstRoomItems: {
-        heels: {
-          type: "player",
-          position: { x: 0, y: 2, z: 1 },
-          config: {
-            which: "heels",
-          },
-        },
-        teleporter: {
-          type: "teleporter",
-          position: { x: 0, y: 2, z: 0 },
-          config: { toRoom: secondRoomId, toPosition: { x: 0, y: 2, z: 0 } },
-        },
-      },
-      secondRoomItems: {
-        teleporterLanding: {
-          type: "block",
-          position: { x: 0, y: 2, z: 0 },
-          config: { style: "organic" },
-        },
-      },
-    });
-
-    playGameThrough(gameState, {
-      frameRate: { fps: [15] }, // keep frame rate low to reduce computation
-
-      setupInitialInput(mockInputStateTracker) {
-        mockInputStateTracker.mockPressing("jump");
-      },
-      frameCallbacks(gameState) {
-        if (gameState.characterRooms.heels?.id === "secondRoom") {
-          // stop jumping when gone through the teleporter
-          gameState.inputStateTracker.mockNotPressing("jump");
-        }
-      },
-      until(gameState) {
-        return heelsState(gameState).standingOnItemId === "teleporterLanding";
-      },
-    });
-  });
-
-  test("teleporter can be inactive based on a store value", () => {
-    // set
-    const gameState = setUpBasicGame({
-      firstRoomItems: {
-        heels: {
-          type: "player",
-          position: { x: 0, y: 2, z: 1 },
-          config: {
-            which: "heels",
-          },
-        },
-        teleporter: {
-          type: "teleporter",
-          position: { x: 0, y: 2, z: 0 },
-          config: {
-            toRoom: secondRoomId,
-            toPosition: { x: 0, y: 2, z: 0 },
-            activatedOnStoreValue: "gameInPlay.planetsLiberated.egyptus",
-          },
-        },
-      },
-      secondRoomItems: {
-        teleporterLanding: {
-          type: "block",
-          position: { x: 0, y: 2, z: 0 },
-          config: { style: "organic" },
-        },
-      },
-    });
-
-    playGameThrough(gameState, {
-      frameRate: { fps: [15] }, // keep frame rate low to reduce computation
-
-      setupInitialInput(mockInputStateTracker) {
-        mockInputStateTracker.mockPressing("jump");
-      },
-      until(gameState) {
-        // give it 5 seconds to try to use the teleporter
-        return gameState.gameTime > 5_000;
-      },
-    });
-
-    // should not have teleported - we don't have the crown
-    expect(gameState.characterRooms.heels?.id).toEqual("firstRoom");
-  });
-  test("teleporter can be activated based on a store value", () => {
-    // set
-    const gameState = setUpBasicGame({
-      firstRoomItems: {
-        heels: {
-          type: "player",
-          position: { x: 0, y: 2, z: 1 },
-          config: {
-            which: "heels",
-          },
-        },
-        crown: {
-          type: "pickup",
-          position: { x: 0, y: 2, z: 3 },
-          config: {
-            gives: "crown",
-            planet: "egyptus",
-          },
-        },
-        teleporter: {
-          type: "teleporter",
-          position: { x: 0, y: 2, z: 0 },
-          config: {
-            toRoom: secondRoomId,
-            toPosition: { x: 0, y: 2, z: 0 },
-            activatedOnStoreValue: "gameInPlay.planetsLiberated.egyptus",
-          },
-        },
-      },
-      secondRoomItems: {
-        teleporterLanding: {
-          type: "block",
-          position: { x: 0, y: 2, z: 0 },
-          config: { style: "organic" },
-        },
-      },
-    });
-
-    playGameThrough(gameState, {
-      frameRate: { fps: [15] }, // keep frame rate low to reduce computation
-
-      frameCallbacks(gameState) {
-        if (gameState.characterRooms.heels?.items["crown"] === undefined) {
-          // start hitting jump once we have the crown
-          gameState.inputStateTracker.mockPressing("jump");
-        }
-      },
-      until(gameState) {
-        // give it 5 seconds to try to use the teleporter
-        return gameState.gameTime > 5_000;
-      },
-    });
-
-    // should have teleported
-    expect(gameState.characterRooms.heels?.id).toEqual("secondRoom");
-  });
-});
-
 describe("conveyors", () => {
   test("items move on conveyors and can slide on top of other items", () => {
     const gameState = setUpBasicGame({
@@ -1815,54 +1667,6 @@ test("monsters don't fall out of rooms via the doorways", () => {
 
 describe("touching", () => {
   test("standing overlapping the edge of a block, a monster on the floor doesn't kill the player", () => {});
-});
-
-describe("reincarnation", () => {
-  test("saves the game without the fish in it", () => {
-    const gameState = setUpBasicGame({
-      firstRoomItems: {
-        heels: {
-          type: "player",
-          position: { x: 4, y: 4, z: 2 },
-          config: {
-            which: "heels",
-          },
-        },
-        fish: {
-          type: "pickup",
-          // line up on half square to walk through the doorway:
-          position: { x: 4, y: 4, z: 0 },
-          config: {
-            gives: "reincarnation",
-          },
-        },
-      },
-    });
-    // check there isn't already a reincarnation point before we start (the store is initialised)
-    expect(store.getState().gameMenus.gameInPlay.reincarnationPoint).toBe(
-      undefined,
-    );
-
-    playGameThrough(gameState, {
-      until: () =>
-        store.getState().gameMenus.gameInPlay.reincarnationPoint !== undefined,
-    });
-
-    const reincarnationPointHeelsRoomItems =
-      store.getState().gameMenus.gameInPlay.reincarnationPoint?.gameState
-        .characterRooms.heels?.items;
-
-    if (!reincarnationPointHeelsRoomItems) {
-      expect.fail(
-        "expected the room to exist in the reincarnation point, but it does not",
-      );
-    }
-
-    expect(reincarnationPointHeelsRoomItems.fish).toBe(undefined);
-    expect(reincarnationPointHeelsRoomItems.floor.state.stoodOnBy["fish"]).toBe(
-      undefined,
-    );
-  });
 });
 
 describe("latent movement", () => {

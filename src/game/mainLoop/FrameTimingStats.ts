@@ -83,7 +83,7 @@ class FrameTimingStats {
 
   /**
    * Called at the end of each frame.
-   * Reports averages every 2 seconds and resets counters.
+   * Reports averages every report interval and resets counters.
    */
   tickDone() {
     const now = performance.now();
@@ -155,12 +155,14 @@ class FrameTimingStats {
     });
 
     // Reset stats
-    this.#stats = {
-      physics: { totalMs: 0, count: 0 },
-      hudUpdate: { totalMs: 0, count: 0 },
-      updateSceneGraph: { totalMs: 0, count: 0 },
-      pixiRender: { totalMs: 0, count: 0 },
-    };
+    this.#stats.physics.totalMs = 0;
+    this.#stats.physics.count = 0;
+    this.#stats.hudUpdate.totalMs = 0;
+    this.#stats.hudUpdate.count = 0;
+    this.#stats.updateSceneGraph.totalMs = 0;
+    this.#stats.updateSceneGraph.count = 0;
+    this.#stats.pixiRender.totalMs = 0;
+    this.#stats.pixiRender.count = 0;
     this.#lastReportTime = now;
   }
 }

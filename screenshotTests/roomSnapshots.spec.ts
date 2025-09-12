@@ -30,8 +30,12 @@ const timeoutPerRoom = process.env.CI ? 10_000 : 3_000;
 const maximumWaitForStep = 15_000;
 const maxTriesToLoadRoom = 3;
 
-// Example room URLs - replace with your actual room URLs
-const roomIds = keys(campaign.rooms).slice(0, roomLimit);
+// Override to run for just one room by setting the ROOMS envar, eg:
+// ROOMS=bookworld13,bookworld14 pnpm screenshot --update-snapshots
+const roomIds =
+  process.env.ROOMS ?
+    (process.env.ROOMS.split(",") as OriginalCampaignRoomId[])
+  : keys(campaign.rooms).slice(0, roomLimit);
 
 // Selectors for menu navigation
 const playGameSelector = "[data-menuitem_id=playGame] [role=menuitem]";
@@ -295,7 +299,7 @@ const retryWithRecovery = async <T>({
 
 test.describe("Room Visual Snapshots", () => {
   test("Snapshot all rooms", async ({ page }, testInfo) => {
-    test.setTimeout(roomIds.length * timeoutPerRoom);
+    test.setTimeout(roomIds.length * timeoutPerRoom + 10_000);
     const icon = getProjectIcon(testInfo.project.name);
     const formattedName = formatProjectName(testInfo.project.name);
     console.log(`Running on project: ${icon} ${formattedName}`);

@@ -140,10 +140,10 @@ export const findPointerPointingAt = (
         tup[1] !== "non-intersecting",
     );
 
+  const intersectionsArray = Array.from(intersections);
+
   // find the item(s) that the mouse is over:
-  const itemPointingTo = frontItemFromPointerIntersections(
-    Array.from(intersections),
-  );
+  const itemPointingTo = frontItemFromPointerIntersections(intersectionsArray);
 
   const roomId = room.id;
 

@@ -3,7 +3,7 @@
  * saving the game state to the redux store
  */
 
-import { objectKeys, size } from "iter-tools";
+import { objectKeys, size } from "iter-tools-es";
 
 export type StoodOnBy<RoomItemId extends string = string> = {
   [r in RoomItemId]: true;

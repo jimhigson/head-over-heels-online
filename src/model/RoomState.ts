@@ -1,7 +1,8 @@
 import type { Simplify, ValueOf } from "type-fest";
 
-import { objectEntries, objectValues } from "iter-tools";
+import { objectEntries, objectValues } from "iter-tools-es";
 
+import type { GridSpatialIndex } from "../game/physics/gridSpace/GridSpatialIndex";
 import type { SceneryName } from "../sprites/planets";
 import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
@@ -117,6 +118,12 @@ export const playablesInRoom = <
 };
 
 /**
+ * symbol for storing the optimised cache of the room's space, for O(1) lookup
+ * of neighbouring items
+ */
+export const roomSpatialIndexKey = Symbol("roomSpatialIndexKey");
+
+/**
  * Representation of a room in-play. This is in memory only for the current
  * one or two rooms (that head and heels are in, but they could be in the same
  * room)
@@ -135,6 +142,11 @@ export type RoomState<
      * is the current room
      */
     roomTime: number;
+    /**
+     * since this is stored under a symbol, it will not be written to JSON when the room
+     * state is saved
+     */
+    [roomSpatialIndexKey]: GridSpatialIndex<RoomId, RoomItemId>;
   }
 >;
 export type UnknownRoomState = RoomState<string, string, SceneryName>;

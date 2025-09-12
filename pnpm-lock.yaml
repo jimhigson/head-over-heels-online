@@ -47,6 +47,9 @@ importers:
       husky:
         specifier: ^9.1.7
         version: 9.1.7
+      iter-tools-es:
+        specifier: ^7.5.4
+        version: 7.5.4
       monaco-editor:
         specifier: ^0.52.2
         version: 0.52.2
@@ -186,9 +189,6 @@ importers:
       immer:
         specifier: ^10.1.1
         version: 10.1.1
-      iter-tools:
-        specifier: ^7.5.3
-        version: 7.5.3
       js-base64:
         specifier: ^3.7.7
         version: 3.7.7
@@ -753,10 +753,6 @@ packages:
     resolution: {integrity: sha512-HrcgcIESLm9aIR842yhJ5RWan/gebQUJ6E/E5+rf0y9o6oj7w0Br+sWuL6kEQ/o/AdfvR1Je9jG18/gnpwjEyA==}
     peerDependencies:
       '@babel/core': ^7.0.0-0 || ^8.0.0-0 <8.0.0
-
-  '@babel/runtime@7.26.10':
-    resolution: {integrity: sha512-2WJMeRQPHKSPemqk/awGrAiuFfzBmOIPXKizAsVhWH9YJqLZ0H+HS4c8loHGgW6utJ3E/ejXQUsiGaQy2NZ9Fw==}
-    engines: {node: '>=6.9.0'}
 
   '@babel/runtime@7.28.3':
     resolution: {integrity: sha512-9uIQ10o0WGdpP6GDhXcdOJPJuDgFtIDtN/9+ArJQ2NAfAmiuhTQdzkaTGR33v43GYS2UrSA0eX2pPPHoFVvpxA==}
@@ -3229,8 +3225,8 @@ packages:
     peerDependencies:
       ws: '*'
 
-  iter-tools@7.5.3:
-    resolution: {integrity: sha512-iEcHpgM9cn6tsI5MewqxyEega9KPbIDytQTEnu6c0MtlQQhQFofssYuRqxCarZgUdzliepRZPwwwflE4wAIjaA==}
+  iter-tools-es@7.5.4:
+    resolution: {integrity: sha512-Of+EJp3cTuxdYmt/bidzODOuhH/MbHBJf9nK21dqlO6hyPjKYzhw0lnZlDYfOzZ2baL5NwnsICC6mccV+CNRPg==}
 
   iterator.prototype@1.1.5:
     resolution: {integrity: sha512-H0dkQoCa3b2VEeKQBOxFph+JAbcrQdE7KC0UkqwpLmv2EC4P41QXP+rqo9wYodACiG5/WM5s9oDApTU8utwj9g==}
@@ -3874,9 +3870,6 @@ packages:
 
   regenerate@1.4.2:
     resolution: {integrity: sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==}
-
-  regenerator-runtime@0.14.1:
-    resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
 
   regexp.prototype.flags@1.5.4:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
@@ -5328,10 +5321,6 @@ snapshots:
       '@babel/helper-plugin-utils': 7.27.1
       '@babel/types': 7.28.2
       esutils: 2.0.3
-
-  '@babel/runtime@7.26.10':
-    dependencies:
-      regenerator-runtime: 0.14.1
 
   '@babel/runtime@7.28.3': {}
 
@@ -7742,9 +7731,7 @@ snapshots:
     dependencies:
       ws: 8.18.3
 
-  iter-tools@7.5.3:
-    dependencies:
-      '@babel/runtime': 7.26.10
+  iter-tools-es@7.5.4: {}
 
   iterator.prototype@1.1.5:
     dependencies:
@@ -8331,8 +8318,6 @@ snapshots:
       regenerate: 1.4.2
 
   regenerate@1.4.2: {}
-
-  regenerator-runtime@0.14.1: {}
 
   regexp.prototype.flags@1.5.4:
     dependencies:

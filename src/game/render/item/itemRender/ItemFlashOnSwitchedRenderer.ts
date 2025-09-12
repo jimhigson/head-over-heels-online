@@ -10,6 +10,8 @@ import type {
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
 import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
+import { iterateRoomItems } from "../../../../model/RoomState";
+import { isModifier } from "../../../physics/itemPredicates";
 import { OneColourFilter } from "../../filters/oneColourFilter";
 import { outlineFilters } from "../../filters/outlineFilter";
 import { noFilters } from "../../filters/standardFilters";
@@ -62,3 +64,27 @@ export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
     this.childRenderer.destroy();
   }
 }
+
+export const maybeWrapInFlashOnSwitchedRenderer = <T extends ItemInPlayType>(
+  itemRenderContext: ItemRenderContext<T>,
+  childRenderer: ItemPixiRenderer<T>,
+): ItemPixiRenderer<T> => {
+  const {
+    item,
+    room: { items },
+  } = itemRenderContext;
+
+  const isModifiedItem = iterateRoomItems(items)
+    .filter(isModifier)
+    .some(({ config: { modifies } }) => {
+      return modifies.some((m) =>
+        m.targets === undefined ?
+          m.expectType === item.type
+        : m.targets.includes(item.id),
+      );
+    });
+
+  if (isModifiedItem) {
+    return new ItemFlashOnSwitchedRenderer(itemRenderContext, childRenderer);
+  } else return childRenderer;
+};

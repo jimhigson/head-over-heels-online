@@ -2,7 +2,7 @@ import type { Operation } from "fast-json-patch";
 
 import chalk from "chalk";
 import fastJsonPatch from "fast-json-patch";
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 import { canonicalize } from "json-canonicalize";
 import { orderBy } from "natural-orderby";
 import { readFile, writeFile } from "node:fs/promises";

@@ -1,3 +1,6 @@
+## 2025-09-11
+* user can choose game speed from the menu (1x, 1.2x, 1.5x, 2x)
+* 1.2x is now the default game speed
 ## 2025-09-03
 
 ### Look shift

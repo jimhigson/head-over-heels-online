@@ -1,7 +1,7 @@
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import type { Tool } from "../../Tool";
 
-import { projectAabbCorners } from "../../../game/render/sortZ/projectAabbCorners";
+import { projectCorner } from "../../../game/render/sortZ/projectAabbCorners";
 import {
   lengthXy,
   subXy,
@@ -51,14 +51,13 @@ export const pointerIntersectionCorner = (
    *            V
    *           [0,0,0]
    */
-  const projections = projectAabbCorners(
-    item.state.position,
-    // using aabb, not renderAabb, so doors can be placed on walls above where they render
-    item.aabb,
-  );
-
   return visibleCornerVectorsXyz.find((cornerVector) => {
-    const projectedCorner = projections.projectCorner(cornerVector);
+    const projectedCorner = projectCorner(
+      item.state.position,
+      // using aabb, not renderAabb, so doors can be placed on walls above where they render
+      item.aabb,
+      cornerVector,
+    );
     const distanceToProjectedCorner = lengthXy(
       subXy(projectedCorner, { x, y }),
     );

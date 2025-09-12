@@ -2,6 +2,7 @@ import type { MovedItems } from "./progressGameState";
 
 import { iterateRoomItems, type RoomState } from "../../model/RoomState";
 import { isExactIntegerXyz, roundXyz } from "../../utils/vectors/vectors";
+import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
 import { isFreeItem } from "../physics/itemPredicates";
 
 /**
@@ -26,13 +27,14 @@ export const snapInactiveItemsToPixelGrid = <
     }
 
     if (!isExactIntegerXyz(item.state.position)) {
+      const roundedPosition = roundXyz(item.state.position);
       // console.log(
       //   `snapping item ${item.id} to pixel grid (not acted on in tick)`,
       //   item.state.position,
       //   "->",
       //   roundXyz(item.state.position),
       // );
-      item.state.position = roundXyz(item.state.position);
+      updateItemPosition(room, item, roundedPosition);
       movedItems.add(item);
     }
   }

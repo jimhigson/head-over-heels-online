@@ -3,7 +3,11 @@ import type { ItemInPlayType } from "../../model/ItemInPlay";
 import type { MechanicResult } from "../physics/MechanicResult";
 
 import { objectEntriesIter } from "../../utils/entries";
-import { addXyz, originXyz, type Xyz } from "../../utils/vectors/vectors";
+import {
+  addXyzInPlace,
+  resetXyzInPlace,
+  type Xyz,
+} from "../../utils/vectors/vectors";
 import { isFreeItem, isItemType } from "../physics/itemPredicates";
 
 export const applyMechanicsResults = <
@@ -11,17 +15,15 @@ export const applyMechanicsResults = <
   RoomId extends string,
   RoomItemId extends string,
 >(
+  writePosDataInto: Xyz,
   item: ItemTypeUnion<T, RoomId, RoomItemId>,
   mechanicsResults: Array<MechanicResult<T, RoomId, RoomItemId>>,
 ) => {
-  let accumulatedPosDelta = originXyz;
+  resetXyzInPlace(writePosDataInto);
 
   for (const mechanicResult of mechanicsResults) {
     if (mechanicResult.movementType === "position") {
-      accumulatedPosDelta = addXyz(
-        accumulatedPosDelta,
-        mechanicResult.posDelta,
-      );
+      addXyzInPlace(writePosDataInto, mechanicResult.posDelta);
     }
 
     // update item.state.vels
@@ -29,21 +31,17 @@ export const applyMechanicsResults = <
       mechanicResult.movementType === "vel" &&
       (isFreeItem(item) || isItemType("lift")(item))
     ) {
-      for (const [mechanic, velPartial] of objectEntriesIter(
-        mechanicResult.vels,
-      )) {
-        const vel: Xyz = { ...originXyz, ...velPartial };
-
-        (item.state.vels as Record<string, Xyz>)[mechanic as string] = vel;
+      for (const [velType, vel] of objectEntriesIter(mechanicResult.vels)) {
+        (item.state.vels as Record<string, Xyz>)[velType as string] = vel;
       }
     }
 
-    // update item.state.*
+    // update item.state.* (anything in stateDelta of the MR)
     const mrStateDelta = mechanicResult.stateDelta;
     if (mrStateDelta !== undefined) {
-      item.state = { ...item.state, ...mrStateDelta };
+      Object.assign(item.state, mrStateDelta);
     }
   }
 
-  return accumulatedPosDelta;
+  return writePosDataInto;
 };

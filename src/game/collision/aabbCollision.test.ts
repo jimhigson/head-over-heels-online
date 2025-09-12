@@ -3,7 +3,8 @@ import { describe, expect, test } from "vitest";
 import type { Collideable } from "./aabbCollision";
 
 import { defaultItemProperties } from "../../model/defaultItemProperties";
-import { collision1to1, collision1toMany } from "./aabbCollision";
+import { GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
+import { collision1to1, collisionItemWithIndex } from "./aabbCollision";
 
 describe("collision1to1", () => {
   test("overlapping items in x collide", () => {
@@ -58,10 +59,8 @@ describe("collision1to1", () => {
   });
 });
 
-describe("collision1toMany", () => {
-  console.log(process.version);
-
-  test("finds the collision items", () => {
+describe("collisionItemWithIndex", () => {
+  test("finds the collision items using spatial index", () => {
     const subject: Collideable = {
       ...defaultItemProperties,
       id: "subject",
@@ -96,7 +95,8 @@ describe("collision1toMany", () => {
       aabb: { x: 2, y: 1, z: 1 },
     };
 
-    const actual = collision1toMany(subject, [
+    // Build a real spatial index for the test
+    const index = new GridSpatialIndex<string, string, Collideable>([
       subject,
       colliding1,
       colliding2,
@@ -104,6 +104,48 @@ describe("collision1toMany", () => {
       nonColliding2,
     ]);
 
-    expect([...actual].map((i) => i.id)).toEqual(["colliding1", "colliding2"]);
+    const actual = collisionItemWithIndex(subject, index);
+
+    expect(actual.map((i) => i.id).toArray()).toEqual([
+      "colliding1",
+      "colliding2",
+    ]);
+  });
+
+  test("respects considerItem filter", () => {
+    const subject: Collideable = {
+      ...defaultItemProperties,
+      id: "subject",
+      state: { position: { x: 0, y: 0, z: 0 } },
+      aabb: { x: 2, y: 1, z: 1 },
+    };
+
+    const colliding1: Collideable = {
+      ...defaultItemProperties,
+      id: "colliding1",
+      state: { position: { x: 1.9, y: 0, z: 0 } },
+      aabb: { x: 1, y: 1, z: 1 },
+    };
+    const colliding2: Collideable = {
+      ...defaultItemProperties,
+      id: "colliding2",
+      state: { position: { x: 0, y: 0.9, z: 0 } },
+      aabb: { x: 2, y: 1, z: 1 },
+    };
+
+    const index = new GridSpatialIndex<string, string, Collideable>([
+      subject,
+      colliding1,
+      colliding2,
+    ]);
+
+    // Filter out colliding1
+    const actual = collisionItemWithIndex(
+      subject,
+      index,
+      (item) => item.id !== "colliding1",
+    );
+
+    expect(actual.map((i) => i.id).toArray()).toEqual(["colliding2"]);
   });
 });

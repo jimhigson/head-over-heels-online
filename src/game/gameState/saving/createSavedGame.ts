@@ -3,11 +3,8 @@ import type { GameState } from "../GameState";
 
 import { badJsonClone } from "../../../utils/badJsonClone";
 import { pick } from "../../../utils/pick";
-import { deleteItemFromRoom } from "../mutators/deleteItemFromRoom";
-import {
-  savedGameGameStateFields,
-  type SavedGameState,
-} from "./SavedGameState";
+import { deleteItemFromUnindexedRoom } from "../mutators/deleteItemFromRoom";
+import { type SavedGame, savedGameStateFields } from "./SavedGameState";
 
 export const createSavedGame = <RoomId extends string>(
   gameState: GameState<RoomId>,
@@ -18,17 +15,17 @@ export const createSavedGame = <RoomId extends string>(
    * the saved game
    */
   pickupId?: string,
-): SavedGameState => {
-  const reincarnationPoint: SavedGameState = badJsonClone({
+): SavedGame => {
+  const reincarnationPoint: SavedGame = badJsonClone({
     saveTime: Date.now(),
-    gameState: pick(gameState, ...savedGameGameStateFields),
+    gameState: pick(gameState, ...savedGameStateFields),
     store:
       // a deep-pick of just one object from the store - none others are needed
       // currently but could potentially be added later:
       {
         gameMenus: { gameInPlay: storeState.gameMenus.gameInPlay },
       },
-  } satisfies SavedGameState);
+  } satisfies SavedGame);
 
   if (pickupId !== undefined) {
     // TODO1: add test for case of removing properly
@@ -42,7 +39,7 @@ export const createSavedGame = <RoomId extends string>(
         "how are we saving from a pickup if there is no current room?",
       );
     }
-    deleteItemFromRoom({
+    deleteItemFromUnindexedRoom({
       room: savedCurrentRoom,
       item: savedCurrentRoom.items[pickupId],
     });

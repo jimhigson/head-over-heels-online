@@ -1,10 +1,12 @@
 import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
-import type { SetRequired } from "type-fest";
+import type { SetRequired, WritableDeep } from "type-fest";
 
-import { concat, objectEntries } from "iter-tools";
 import { AlphaFilter, Container, Sprite } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
+import type {
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../../../model/ItemInPlay";
 import type { Collideable } from "../../../collision/aabbCollision";
 import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import type {
@@ -13,26 +15,42 @@ import type {
 } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
-import { iterateRoomItems } from "../../../../model/RoomState";
+import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
 import { amigaHalfBriteBrightness } from "../../../../utils/colour/halfBrite";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
-import { collision1to1 } from "../../../collision/aabbCollision";
+import { collisionItemWithIndex } from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
 import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 
-type Cast = {
-  /* the sprite of the shadow */
-  sprite: Container;
-  /* used for tracking the shadows that have been used in this frame (ie, don't have to be removed) */
-  renderedOnProgression: number;
-};
+const itemCastsShadow = (
+  caster: UnionOfAllItemInPlayTypes<string, string>,
+): caster is SetRequired<typeof caster, "shadowCastTexture"> =>
+  caster.shadowCastTexture !== undefined;
 
 const halfOpacity = new AlphaFilter({ alpha: 1 - amigaHalfBriteBrightness });
+
+// Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
+const spaceAboveSurfaceBuffer: WritableDeep<Collideable> = {
+  id: "spaceAbove",
+  state: {
+    position: {
+      x: 0,
+      y: 0,
+      z: 0,
+    },
+  },
+  aabb: {
+    x: 0,
+    y: 0,
+    z: veryHighZ,
+  },
+};
+
 class ItemShadowRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
@@ -48,7 +66,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
    * record all the shadows currently being cast, to maintain some state between frames so we ca
    * cut out unnecessary extra work
    */
-  #casts = {} as Record<string, Cast>;
+  #shadowSprites = new Map() as Map<
+    SetRequired<UnionOfAllItemInPlayTypes<string, string>, "shadowCastTexture">,
+    Sprite
+  >;
 
   constructor(
     public readonly renderContext: ItemRenderContext<T>,
@@ -129,7 +150,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
   destroy() {
     this.#container.destroy(true);
     this.#shadowMaskRenderer?.destroy();
-    for (const c of Object.values(this.#casts)) {
+    for (const c of Object.values(this.#shadowSprites)) {
       // destroy all sprites, and destroy texture too if it was uniquely created for this cast
       c.sprite.destroy();
     }
@@ -138,12 +159,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
    * @returns true iff the item needs z-order resorting for the room
    */
   tick(itemTickContext: ItemTickContext) {
-    // TODO: remove this check when all good - just for debugging
-    if (this.#shadowsContainer.parent === null) {
-      throw new Error("shadow container not in scene graph");
-    }
-
-    const { movedItems, progression } = itemTickContext;
+    const { movedItems } = itemTickContext;
 
     const {
       item,
@@ -154,123 +170,86 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     const surfaceMoved = movedItems.has(item);
     const itemTop = item.state.position.z + item.aabb.z;
 
-    const shadowCastersIter = iterateRoomItems(room.items).filter(
-      function castsAShadow(
-        c,
-      ): c is SetRequired<typeof c, "shadowCastTexture"> {
-        return c.shadowCastTexture !== undefined;
-      },
+    // Values are copied into the buffer to avoid malloc/gc:
+    spaceAboveSurfaceBuffer.state.position.x = item.state.position.x;
+    spaceAboveSurfaceBuffer.state.position.y = item.state.position.y;
+    spaceAboveSurfaceBuffer.state.position.z = itemTop;
+    spaceAboveSurfaceBuffer.aabb.x = item.aabb.x;
+    spaceAboveSurfaceBuffer.aabb.y = item.aabb.y;
+    // z remains veryHighZ as set in the buffer initialization
+
+    const castersSet = new Set(
+      collisionItemWithIndex(
+        spaceAboveSurfaceBuffer,
+        room[roomSpatialIndexKey],
+        (
+          maybeCaster,
+        ): maybeCaster is SetRequired<
+          typeof maybeCaster,
+          "shadowCastTexture"
+        > =>
+          maybeCaster !== item &&
+          itemCastsShadow(maybeCaster) &&
+          // ignore items above that are standing on and don't cast a shadow while they are:
+          (maybeCaster.castsShadowWhileStoodOn ||
+            maybeCaster.state.position.z > item.state.position.z + item.aabb.z),
+      ),
     );
 
-    // collide up from this item to find which of the shadow casters is above it:
-    const bins = Object.groupBy(shadowCastersIter, (caster) => {
-      const previouslyHadShadow = this.#casts[caster.id] !== undefined;
-      const casterMoved = movedItems.has(caster);
-      if (!surfaceMoved && !casterMoved) {
-        // neither the surface being cast onto, nor the item casting the shadow have moved - keep as-is:
-        if (previouslyHadShadow) {
-          return "keepUnchanged";
-        } else {
-          return "noShadow";
-        }
-      }
-      if (
-        // as an optimisation, if the caster is sat on top of this item, shadows can usually be
-        // skipped since most casters completely cover up their own shadow
-        caster.castsShadowWhileStoodOn ||
-        caster.state.position.z > item.state.position.z + item.aabb.z
-      ) {
-        // check if the caster intersects the space above the item:
-        const spaceAboveSurface: Collideable = {
-          id: item.id,
-          state: {
-            position: {
-              ...item.state.position,
-              z: itemTop,
-            },
-          },
-          aabb: {
-            ...item.aabb,
-            z: veryHighZ,
-          },
-        };
+    let hasAnyShadows = false;
 
-        if (collision1to1(spaceAboveSurface, caster)) {
-          if (previouslyHadShadow) {
-            return "update";
-          } else {
-            return "create";
-          }
-        }
+    for (const [previousCaster, shadowSprite] of this.#shadowSprites) {
+      if (!castersSet.has(previousCaster)) {
+        // no longer casting a shadow on this item - remove the shadow sprite:
+        this.#shadowsContainer.removeChild(shadowSprite);
+        shadowSprite.destroy();
+        this.#shadowSprites.delete(previousCaster);
       }
-      // no collision with the space above the surface, so no shadow:
-      return "noShadow";
-    });
-
-    // record that these are going through this generation:
-    for (const casterItem of concat(bins.keepUnchanged, bins.update)) {
-      this.#casts[casterItem.id].renderedOnProgression = progression;
     }
 
-    if (bins.create)
-      for (const casterItem of bins.create) {
+    for (const casterItem of castersSet) {
+      hasAnyShadows = true;
+
+      let shadowSprite = this.#shadowSprites.get(casterItem);
+      let isNew = false;
+
+      if (!shadowSprite) {
+        // wasn't casting a shadow before - create a new one:
         const { times } = casterItem.config as ConsolidatableConfig;
 
-        const newShadowSprite: Sprite = maybeRenderContainerToSprite(
+        shadowSprite = maybeRenderContainerToSprite(
           pixiRenderer,
           renderMultipliedXy(casterItem.shadowCastTexture, times),
         );
-        newShadowSprite.label = casterItem.id;
+        shadowSprite.label = casterItem.id;
         //newShadowSprite.filters = [new BlurFilter()];
-        this.#shadowsContainer.addChild(newShadowSprite);
-        this.#casts[casterItem.id] = {
-          sprite: newShadowSprite,
-          renderedOnProgression: progression,
-        };
+        this.#shadowsContainer.addChild(shadowSprite);
+        this.#shadowSprites.set(casterItem, shadowSprite);
+        isNew = true;
       }
 
-    for (const casterItem of concat(bins.create, bins.update)) {
-      const { sprite } = this.#casts[casterItem.id];
-
-      const screenXy = projectWorldXyzToScreenXy({
-        ...addXy(
-          subXy(casterItem.state.position, item.state.position),
-          // use just the xy part of the shadow offset to position the shadow on the surface:
-          casterItem.shadowOffset ?? originXy,
-        ),
-        // on the top of the item:
-        z: item.aabb.z,
-      });
-      // this fails for composite sprites, since they get their x,y set in the sprite they are rendered to
-      sprite.x = screenXy.x;
-      sprite.y = screenXy.y;
-
-      //const heightDifference = casterItem.state.position.z - itemTop;
-      //const [blurFilter] = shadow.container.filters as BlurFilter[];
-      //blurFilter.strength = 0.5 + (8 * heightDifference) / 36;
-    }
-
-    // clean out casts that have not been updated to be marked as used on this frame:
-    for (const [
-      id,
-      { sprite, renderedOnProgression: currentAsOfProgression },
-    ] of objectEntries(this.#casts)) {
-      if (currentAsOfProgression !== progression) {
-        sprite.destroy();
-        delete this.#casts[id];
+      if (isNew || surfaceMoved || movedItems.has(casterItem)) {
+        // shadow needs (re) positioning
+        const screenXy = projectWorldXyzToScreenXy({
+          ...addXy(
+            subXy(casterItem.state.position, item.state.position),
+            // use just the xy part of the shadow offset to position the shadow on the surface:
+            casterItem.shadowOffset ?? originXy,
+          ),
+          // on the top of the item:
+          z: item.aabb.z,
+        });
+        // this fails for composite sprites, since they get their x,y set in the sprite they are rendered to
+        shadowSprite.x = screenXy.x;
+        shadowSprite.y = screenXy.y;
       }
     }
 
     // for efficiency, hide all shadow rendering if nothing is casting on this item:
-    const hasAnyShadowsCastOn =
-      (bins.keepUnchanged?.length ?? 0) +
-        (bins.update?.length ?? 0) +
-        (bins.create?.length ?? 0) >
-      0;
-    this.#container.visible = hasAnyShadowsCastOn;
+    this.#container.visible = hasAnyShadows;
 
     // for efficiency, only tick the shadow mask if this renderer is showing something
-    if (hasAnyShadowsCastOn) {
+    if (hasAnyShadows) {
       this.#tickShadowMask(itemTickContext);
     }
   }

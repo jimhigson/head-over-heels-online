@@ -1,4 +1,4 @@
-import { objectEntries, objectValues } from "iter-tools";
+import { objectEntries, objectValues } from "iter-tools-es";
 
 import type { ZxSpectrumRoomColour } from "../originalGame";
 import type { SceneryName } from "../sprites/planets";

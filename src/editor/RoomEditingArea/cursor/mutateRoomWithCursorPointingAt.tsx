@@ -1,13 +1,16 @@
 import { produce } from "immer";
-import { isEmpty } from "iter-tools";
+import { isEmpty } from "iter-tools-es";
 
 import type { EditorRoomItemId } from "../../editorTypes";
 
-import { collision1toManyIter } from "../../../game/collision/aabbCollision";
-import { iterateRoomItems } from "../../../model/RoomState";
+import { collisionItemWithIndex } from "../../../game/collision/aabbCollision";
+import { updateItemPosition } from "../../../game/gameState/mutators/updateItemPosition";
+import {
+  iterateRoomItems,
+  roomSpatialIndexKey,
+} from "../../../model/RoomState";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { type EditorRoomState } from "../../editorTypes";
-import { collideableItemsInRoom } from "./collideableItemsInRoom";
 
 /**
  * mutate the room state to move the item with the given jsonItemId
@@ -32,9 +35,10 @@ export const mutateRoomMoveItemForDrag = (
   );
 
   // check for collisions:
-  const collideableItems = Array.from(collideableItemsInRoom(roomState));
-
   const hasCollisions = itemsToDrag.some((itemToDrag) => {
+    // temporary copy item at a new position
+    // NOTE: this temp copy doesn't actually have to be *in* the spatial index itself to check it's
+    // cuboid *collides* with whatever is in the index
     const itemCopyAtNewLocation = produce(itemToDrag, (draftItem) => {
       draftItem.state.position = addXyz(
         itemToDrag.state.position,
@@ -42,9 +46,9 @@ export const mutateRoomMoveItemForDrag = (
       );
     });
     // item won't collide with the unmodified version of itself because they have the same id:
-    const collisions = collision1toManyIter(
+    const collisions = collisionItemWithIndex(
       itemCopyAtNewLocation,
-      collideableItems,
+      roomState[roomSpatialIndexKey],
     );
 
     return !isEmpty(collisions);
@@ -52,9 +56,10 @@ export const mutateRoomMoveItemForDrag = (
 
   if (!hasCollisions) {
     for (const itemToDrag of itemsToDrag) {
-      itemToDrag.state.position = addXyz(
-        itemToDrag.state.position,
-        positionDelta,
+      updateItemPosition(
+        roomState,
+        itemToDrag,
+        addXyz(itemToDrag.state.position, positionDelta),
       );
     }
   }

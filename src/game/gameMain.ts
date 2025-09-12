@@ -4,7 +4,7 @@ import { TextureStyle } from "pixi.js";
 import type { CampaignLocator } from "../model/modelTypes";
 import type { Xy } from "../utils/vectors/vectors";
 import type { GameApi } from "./GameApi";
-import type { SavedGameState } from "./gameState/saving/SavedGameState";
+import type { SavedGame } from "./gameState/saving/SavedGameState";
 import type { InputStateTrackerInterface } from "./input/InputStateTracker";
 
 import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
@@ -125,7 +125,7 @@ export const gameMain = async <RoomId extends string>(
     get gameState() {
       return gameState;
     },
-    reincarnateFrom(savedGame: SavedGameState<RoomId>) {
+    reincarnateFrom(savedGame: SavedGame<RoomId>) {
       loadGameState({
         campaign,
         inputStateTracker,

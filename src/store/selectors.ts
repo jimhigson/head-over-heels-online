@@ -1,6 +1,6 @@
 import type { Get, Paths } from "type-fest";
 
-import { objectValues, size } from "iter-tools";
+import { objectValues, size } from "iter-tools-es";
 import nanoEqual from "nano-equal";
 
 import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";

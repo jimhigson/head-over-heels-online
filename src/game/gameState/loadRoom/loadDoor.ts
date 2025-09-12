@@ -226,9 +226,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         blockXyzToFineXyz({
           [alongWallAxis]: 2,
           [throughDoorAxis]: doorTunnelLengthBlocks,
-          z: veryHighZ,
         }),
-        { [throughDoorAxis]: postWidthInThroughDoorAxis },
+        { [throughDoorAxis]: postWidthInThroughDoorAxis, z: veryHighZ },
       ),
       // helps the editor to know not to consider a hover on this:
       renderAabb: originXyz,

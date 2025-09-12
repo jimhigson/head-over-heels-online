@@ -57,11 +57,7 @@ export const frontItemFromPointerIntersections = (
     topographicallySortableItems.map((i) => [i.id, i]),
   ) as Record<EditorRoomItemId, EditorUnionOfAllItemInPlayTypes>;
 
-  /**
-   * note: zEdges will not include ids of items with fixed z order
-   */
-  const ze = updateZEdges(topographicallySortableItemsMap);
-  const order = toposort(ze);
+  const order = toposort(updateZEdges(topographicallySortableItemsMap));
 
   // items are sorted back-to-front, so we need the last one:
   return topographicallySortableItemsMap[order.at(-1)!];

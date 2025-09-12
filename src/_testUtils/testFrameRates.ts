@@ -1,4 +1,4 @@
-import { cycle, join, take } from "iter-tools";
+import { cycle, join, take } from "iter-tools-es";
 
 export type FrameRateSpec = { fps: Array<number> };
 

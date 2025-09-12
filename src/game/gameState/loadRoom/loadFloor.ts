@@ -1,4 +1,4 @@
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";

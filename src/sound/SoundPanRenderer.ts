@@ -8,7 +8,7 @@ import { defaultRoomHeightBlocks } from "../game/physics/mechanicsConstants";
 import { floorsRenderExtent } from "../game/render/floorsExtent";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
 import { blockSizePx } from "../sprites/spritePivots";
-import { addXyz, scaleXyz } from "../utils/vectors/vectors";
+import { addXyzInPlace, scaleXyzWriteInto } from "../utils/vectors/vectors";
 import { audioCtx } from "./audioCtx";
 
 // TODO: this doesn't account for scrolling!
@@ -26,6 +26,10 @@ const soundPositionMinZ = 0;
 // x+y blocks away from the listener - a typical large room is 8, so
 // max depth would be 8+8 = 16
 const soundPositionMaxZ = blockSizePx.w * 16;
+
+// a buffer to use while calculating positions - avoids creating new objects,
+// is safe to use because no two SoundPanRenderer can be ticking at the same time
+const positionBuffer = { x: 0, y: 0, z: 0 };
 
 const numberInRangeToMinus1To1Range = (
   value: number,
@@ -73,9 +77,9 @@ export class SoundPanRenderer<T extends ItemInPlayType>
 
     const { item } = this.renderContext;
     const itemState = item.state;
-    const itemCentrePosition = addXyz(
+    const itemCentrePosition = addXyzInPlace(
+      scaleXyzWriteInto(positionBuffer, item.aabb, 0.5),
       itemState.position,
-      scaleXyz(item.aabb, 0.5),
     );
 
     const soundPositionX = numberInRangeToMinus1To1Range(

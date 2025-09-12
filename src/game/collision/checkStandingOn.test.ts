@@ -1,4 +1,4 @@
-import { first } from "iter-tools";
+import { first } from "iter-tools-es";
 import { expect, test } from "vitest";
 
 import type { FreeItem } from "../physics/itemPredicates";

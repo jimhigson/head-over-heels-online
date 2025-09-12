@@ -2,6 +2,7 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
+import type { UnindexedRoomState } from "../../gameState/saving/SavedGameState";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
@@ -77,10 +78,11 @@ export const handlePlayerTouchingPickup = <
 
   const addFloatingText = (
     textLines: string[],
-    addToRoom: Pick<RoomState<RoomId, RoomItemId>, "items"> = roomWithPickup,
+    addToRoom: RoomState<RoomId, RoomItemId> = roomWithPickup,
+    toSavedRoom: boolean = false,
   ) => {
     const pickupCentre = itemInPlayCentre(touchedItem);
-    const floatingTextItem: ItemInPlay<"floatingText"> = {
+    const floatingTextItem: ItemInPlay<"floatingText", RoomId, RoomItemId> = {
       type: "floatingText",
       id: `floatingText-${pickupId}` as RoomItemId,
       ...defaultItemProperties,
@@ -96,7 +98,15 @@ export const handlePlayerTouchingPickup = <
         appearanceRoomTime: roomTime,
       },
     };
-    addItemToRoom({ room: addToRoom, item: floatingTextItem });
+    if (toSavedRoom) {
+      // saved games are unindexed - we can't add them in the normal way to an in-play room
+      // so instead just put in the items object directly:
+      (addToRoom as UnindexedRoomState<RoomId, RoomItemId>).items[
+        floatingTextItem.id
+      ] = floatingTextItem;
+    } else {
+      addItemToRoom({ room: addToRoom, item: floatingTextItem });
+    }
   };
 
   switch (pickupConfig.gives) {
@@ -206,6 +216,7 @@ export const handlePlayerTouchingPickup = <
       addFloatingText(
         ["reincarnation", "point", "restored"],
         currentRoomInSavedGame,
+        true,
       );
 
       store.dispatch(reincarnationFishEaten(savedGame));

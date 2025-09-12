@@ -1,6 +1,6 @@
 import type { SetRequired } from "type-fest";
 
-import { objectValues } from "iter-tools";
+import { objectValues } from "iter-tools-es";
 import { Container } from "pixi.js";
 
 import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";

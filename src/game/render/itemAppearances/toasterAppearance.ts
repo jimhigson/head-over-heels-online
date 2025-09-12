@@ -6,6 +6,7 @@ import type { ItemAppearance } from "./ItemAppearance";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
+import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { subXy } from "../../../utils/vectors/vectors";
 import { isChargingCyberman } from "../../physics/itemPredicates";
 import { createSprite } from "../createSprite";
@@ -86,7 +87,14 @@ const makeCybermanActivationBitmask = (
 export const toasterAppearance: ItemAppearance<
   "deadlyBlock",
   ToasterRenderProps
-> = ({ renderContext: { item, room }, currentRendering }) => {
+> = ({
+  renderContext: {
+    item,
+    room,
+    general: { pixiRenderer },
+  },
+  currentRendering,
+}) => {
   const {
     config: { times },
   } = item;
@@ -111,20 +119,28 @@ export const toasterAppearance: ItemAppearance<
     return "no-update";
   }
 
+  const outputContainer = createSprite({
+    textureIdCallback(x, y) {
+      const cyberManId = chargePositions[x][y];
+      if (cyberManId === undefined) {
+        return "toaster.off";
+      }
+      const cyberman = room.items[cyberManId] as
+        | ItemInPlay<"monster">
+        | undefined;
+      return cyberman?.state.everActivated ? "toaster.off" : "toaster.on";
+    },
+    times: times ?? emptyObject,
+  });
+
+  // that container potentially contains many sprites - reduce to a single sprite
+  const outputSprite = maybeRenderContainerToSprite(
+    pixiRenderer,
+    outputContainer,
+  );
+
   return {
-    output: createSprite({
-      textureIdCallback(x, y) {
-        const cyberManId = chargePositions[x][y];
-        if (cyberManId === undefined) {
-          return "toaster.off";
-        }
-        const cyberman = room.items[cyberManId] as
-          | ItemInPlay<"monster">
-          | undefined;
-        return cyberman?.state.everActivated ? "toaster.off" : "toaster.on";
-      },
-      times: times ?? emptyObject,
-    }),
+    output: outputSprite,
     renderProps: {
       chargePositions,
       cybermanActivationBitmask,

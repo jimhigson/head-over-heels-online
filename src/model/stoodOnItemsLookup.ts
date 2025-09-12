@@ -1,6 +1,6 @@
+import type { UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
 import type { FreeItem } from "../game/physics/itemPredicates";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
-import type { RoomState } from "./RoomState";
 import type { StoodOnBy } from "./StoodOnBy";
 
 import { keysIter } from "../utils/entries";
@@ -16,7 +16,7 @@ export const iterateStoodOnByItems = <
   RoomItemId extends string,
 >(
   stoodOnBy: StoodOnBy<RoomItemId>,
-  room: RoomState<RoomId, RoomItemId>,
+  room: UnindexedRoomState<RoomId, RoomItemId>,
 ) => {
   return iterate(keysIter(stoodOnBy)).map((stoodOnByItemId) => {
     const standingItem = room.items[stoodOnByItemId];
@@ -36,16 +36,16 @@ export const iterateStoodOnByItems = <
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
   // if standingOnItemId not nullable, result not nullable
   standingOnItemId: RoomItemId,
-  room: RoomState<RoomId, RoomItemId>,
+  room: UnindexedRoomState<RoomId, RoomItemId>,
 ): UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
   // if standingOnItemId is nullable, result is nullable
   standingOnItemId: null | RoomItemId,
-  room: RoomState<RoomId, RoomItemId>,
+  room: UnindexedRoomState<RoomId, RoomItemId>,
 ): null | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
   standingOnItemId: null | RoomItemId,
-  room: RoomState<RoomId, RoomItemId>,
+  room: UnindexedRoomState<RoomId, RoomItemId>,
 ) {
   return standingOnItemId === null ?
       // ugly cast makes compatible with non-nullable overload signature
