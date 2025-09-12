@@ -11,13 +11,10 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { Switch } from "../../../../../../ui/Switch";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
-import { SelectedItemHint } from "../../SelectedItemHint";
 import {
   optionsMenuItemColours,
   optionsMenuScrollClasses,
@@ -33,7 +30,10 @@ export const SoundDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite pb-0 pl-1">
+      <Dialog
+        fullScreen
+        className={`bg-white zx:bg-zxWhite py-0 pl-1 ${optionsMenuItemColours}`}
+      >
         <div
           className={
             "flex flex-col gap-1 " +
@@ -42,21 +42,20 @@ export const SoundDialog = () => {
             optionsMenuScrollClasses
           }
         >
-          {isTouchDevice() && (
-            <MobileStyleBackButton className="text-highlightBeige" />
-          )}
+          <MobileStyleBackButton className="pt-half" />
           <BitmapText
             TagName="h1"
             className="ml-3 text-midRed zx:text-zxBlue sprites-double-height block"
           >
             Sound Options
           </BitmapText>
-          <MenuItems className={optionsMenuItemColours}>
+          <MenuItems>
             <MenuItem
               doubleHeightWhenFocussed
               id="mute"
               label="Mute"
               valueElement={<Switch value={isMuted} />}
+              verticalAlignItemsCentre
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
                 "userSettings.soundSettings.mute",
@@ -78,6 +77,7 @@ export const SoundDialog = () => {
               id="footsteps"
               label="Footstep sounds"
               valueElement={<Switch value={!isMuted && !isNoFootstepSounds} />}
+              verticalAlignItemsCentre
               onSelect={useDispatchActionCallback(
                 toggleBoolean,
                 "userSettings.soundSettings.noFootsteps",
@@ -85,11 +85,7 @@ export const SoundDialog = () => {
               disabled={isMuted}
             />
             <MenuItemSeparator />
-            {isTouchDevice() || <BackMenuItem />}
           </MenuItems>
-          {isTouchDevice() || (
-            <SelectedItemHint className="text-moss zx:text-zxGreen" />
-          )}
         </div>
       </Dialog>
     </>

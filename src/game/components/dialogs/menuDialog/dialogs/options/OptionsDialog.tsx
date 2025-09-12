@@ -1,4 +1,3 @@
-import { twClass } from "../../../../../../editor/twClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectGameSpeed,
@@ -20,10 +19,8 @@ import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch, SwitchN } from "../../../../../../ui/Switch";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
@@ -33,10 +30,7 @@ import {
 } from "../controlOptions/optionsMenuColours";
 import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
-
-const optionsHintMarkdownClassname = twClass(
-  "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan text-lightGrey zx:text-zxBlack sprites-normal-height",
-);
+import { optionsHintMarkdownClassname } from "./optionsHintMarkdownClassname";
 
 const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**off**: Original *two-tone* spectrum graphics
 
@@ -66,29 +60,30 @@ export const OptionsDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog tall wide className="bg-white zx:bg-zxWhite pl-1">
+      <Dialog
+        fullScreen
+        className={`bg-white zx:bg-zxWhite pl-1 py-0 ${optionsMenuItemColours}`}
+      >
         <div
           className={
             "flex flex-col gap-1 " +
-            "overflow-y-scroll scrollbar scrollbar-w-1 " +
+            "overflow-y-scroll scrollbar scrollbar-w-1 pr-1 " +
             "min-h-full " +
             optionsMenuScrollClasses
           }
         >
-          {isTouchDevice() && (
-            <MobileStyleBackButton className="text-highlightBeige" />
-          )}
+          <MobileStyleBackButton className="pt-half" />
           <BitmapText
             TagName="h1"
             className="ml-4 text-midRed zx:text-zxBlue sprites-double-height block"
           >
             Options
           </BitmapText>
-          <MenuItems className={`${optionsMenuItemColours} gap-y-half`}>
+          <MenuItems className={`gap-y-half`}>
             <MenuItem
               hintInline
               id="controlOptions"
-              label="Control options"
+              label="Controls"
               verticalAlignItemsCentre
               doubleHeightWhenFocussed
               onSelect={useDispatchActionCallback(
@@ -112,6 +107,7 @@ export const OptionsDialog = () => {
               id="sound"
               label="Sound options"
               doubleHeightWhenFocussed
+              verticalAlignItemsCentre
               onSelect={useDispatchActionCallback(goToSubmenu, "sound")}
               hint={
                 <BlockyMarkdown
@@ -127,8 +123,9 @@ export const OptionsDialog = () => {
               doubleHeightWhenFocussed
               valueElement={
                 <SwitchN
+                  className="ml-auto"
                   values={selectableGameSpeeds}
-                  valueLabels={selectableGameSpeeds.map((n) => `${n}x`)}
+                  valueLabels={selectableGameSpeeds.map((n) => `${n}`)}
                   value={useAppSelector(selectGameSpeed)}
                 />
               }
@@ -259,6 +256,7 @@ export const OptionsDialog = () => {
                 goToSubmenu,
                 "emulatedResolution",
               )}
+              verticalAlignItemsCentre
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
@@ -267,7 +265,6 @@ export const OptionsDialog = () => {
               }
             />
             <MenuItemSeparator />
-            {isTouchDevice() || <BackMenuItem />}
           </MenuItems>
         </div>
       </Dialog>

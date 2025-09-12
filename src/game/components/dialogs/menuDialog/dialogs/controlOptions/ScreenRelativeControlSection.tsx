@@ -1,12 +1,10 @@
-import { twMerge } from "tailwind-merge";
-
 import { useIsScreenRelativeControl } from "../../../../../../store/selectors";
 import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
+import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
-import { multilineTextClass } from "../../multilineTextClass";
+import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const screenRelativeControlOffHintMarkdown =
@@ -14,30 +12,17 @@ const screenRelativeControlOffHintMarkdown =
 
 const screenRelativeControlOnHintMarkdown = `**screen**: Control is relative to the screen.
 
-More intuitive if you find directions confusing in isometric games, but requires inputting diagonals a lot`;
+More intuitive if you find directions confusing in isometric games, but means hitting diagonals a lot`;
 
-const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
+const ScreenRelativeControlValue = () => {
+  const isScreenRelativeControl = useIsScreenRelativeControl();
+
   return (
-    <span className={multilineTextClass}>
-      <BitmapText
-        className={twMerge(
-          `text-nowrap me-1`,
-          "text-pinkHalfbrite zx:text-zxRed selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed",
-          className,
-        )}
-      >
-        {useIsScreenRelativeControl() ? "screen" : "world"}
-      </BitmapText>
-      <BitmapText
-        className={twMerge(
-          `text-nowrap`,
-          "text-mossHalfbrite zx:text-zxBlue selectedMenuItem:text-moss zx:selectedMenuItem:text-zxBlue",
-          className,
-        )}
-      >
-        {useIsScreenRelativeControl() ? "⬅ ➡ ⬆ ⬇" : "↖ ↘ ↗ ↙"}
-      </BitmapText>
-    </span>
+    <SwitchN
+      className="ml-auto"
+      values={["world", "screen"]}
+      value={isScreenRelativeControl ? "screen" : "world"}
+    />
   );
 };
 
@@ -49,7 +34,7 @@ export const ScreenRelativeControlMenuItem = () => {
       label="input axes"
       leader={
         <span
-          className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_screenDirections" : "texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_worldDirections"}`}
+          className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_screenDirections" : "texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_worldDirections sprites-normal-height"} `}
         />
       }
       valueElement={<ScreenRelativeControlValue />}
@@ -58,9 +43,11 @@ export const ScreenRelativeControlMenuItem = () => {
         "userSettings.screenRelativeControl",
       )}
       hintInline
+      verticalAlignItemsCentre
+      doubleHeightWhenFocussed
       hint={
         <BlockyMarkdown
-          className="text-midGrey zx:text-zxBlack"
+          className={optionsHintMarkdownClassname}
           markdown={
             isScreenRelativeControl ?
               screenRelativeControlOnHintMarkdown
