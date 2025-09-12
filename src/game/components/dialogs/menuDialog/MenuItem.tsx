@@ -78,6 +78,7 @@ export const MenuItem = ({
         [menuItemDataAttributeDisabled]: disabled,
       }}
       tabIndex={0}
+      role="menuitem"
       className={twMerge(
         "contents",
         hidden ? "hidden" : "",

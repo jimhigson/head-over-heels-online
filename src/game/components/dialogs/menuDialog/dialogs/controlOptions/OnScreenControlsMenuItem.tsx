@@ -14,6 +14,7 @@ export const OnScreenControlsMenuItem = () => {
         toggleBoolean,
         "userSettings.onScreenControls",
       )}
+      verticalAlignItemsCentre
     />
   );
 };

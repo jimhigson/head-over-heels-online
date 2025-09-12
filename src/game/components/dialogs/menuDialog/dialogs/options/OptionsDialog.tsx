@@ -38,7 +38,7 @@ const optionsHintMarkdownClassname = twClass(
   "[&_.em]:text-lightBeige zx:[&_.em]:text-zxCyan text-lightGrey zx:text-zxBlack sprites-normal-height",
 );
 
-const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right)**off**: Original *two-tone* spectrum graphics
+const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**off**: Original *two-tone* spectrum graphics
 
 **on**: *16-colour* palette with colourised sprites`;
 
@@ -66,7 +66,7 @@ export const OptionsDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-white zx:bg-zxWhite pb-0 pl-1">
+      <Dialog tall wide className="bg-white zx:bg-zxWhite pl-1">
         <div
           className={
             "flex flex-col gap-1 " +
@@ -113,6 +113,12 @@ export const OptionsDialog = () => {
               label="Sound options"
               doubleHeightWhenFocussed
               onSelect={useDispatchActionCallback(goToSubmenu, "sound")}
+              hint={
+                <BlockyMarkdown
+                  className={optionsHintMarkdownClassname}
+                  markdown="footsteps getting annoying?"
+                />
+              }
             />
             <MenuItem
               hintInline

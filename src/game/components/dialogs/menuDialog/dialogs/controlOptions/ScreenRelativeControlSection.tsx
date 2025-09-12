@@ -6,6 +6,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
+import { multilineTextClass } from "../../multilineTextClass";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const screenRelativeControlOffHintMarkdown =
@@ -17,7 +18,7 @@ More intuitive if you find directions confusing in isometric games, but requires
 
 const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
   return (
-    <span>
+    <span className={multilineTextClass}>
       <BitmapText
         className={twMerge(
           `text-nowrap me-1`,
@@ -30,7 +31,7 @@ const ScreenRelativeControlValue = ({ className }: { className?: string }) => {
       <BitmapText
         className={twMerge(
           `text-nowrap`,
-          "text-moss zx:text-zxBlue selectedMenuItem:text-mossHalfbrite zx:selectedMenuItem:text-zxBlue",
+          "text-mossHalfbrite zx:text-zxBlue selectedMenuItem:text-moss zx:selectedMenuItem:text-zxBlue",
           className,
         )}
       >
