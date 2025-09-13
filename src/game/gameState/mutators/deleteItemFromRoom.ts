@@ -19,7 +19,6 @@ export const deleteItemFromRoom = <
   // same as removing from an unindexed room, except we also remove from the index
   const item = deleteItemFromUnindexedRoom({ room, item: itemParam });
   const spatialIndex = room[roomSpatialIndexKey];
-
   spatialIndex.removeItem(item);
 };
 
@@ -54,5 +53,6 @@ export const deleteItemFromUnindexedRoom = <
     type K = keyof typeof room.items;
     delete room.items[item.id as K];
   }
+
   return item;
 };

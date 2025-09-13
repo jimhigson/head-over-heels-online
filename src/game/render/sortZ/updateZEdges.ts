@@ -42,7 +42,7 @@ export const updateZEdges = <
   // track items that have already been compared to cut out duplicate comparisons:
   const comparisonsDone: Map<TItem, Set<TItem>> = new Map();
 
-  // sanitise the given behindEdges for nodes that no longer exist - this
+  // sanitise the given zEdges for nodes that no longer exist - this
   // is important for incremental updates:
   for (const [behind, fronts] of zEdges) {
     if (!items[behind]) {
