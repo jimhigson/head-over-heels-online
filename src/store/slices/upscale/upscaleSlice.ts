@@ -6,7 +6,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { CalculateUpscaleOptions } from "./calculateUpscale";
 import type { Upscale } from "./Upscale";
 
-import { defaultUserSettings } from "../../defaultUserSettings";
+import { defaultUserSettings } from "../gameMenus/defaultUserSettings";
 import { calculateUpscale } from "./calculateUpscale";
 import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
 
@@ -19,6 +19,7 @@ export const initialUpscaleSliceState: UpscaleState = {
     upscaleOptionsForCurrentDevice(
       // use the default for initial upscale:
       defaultUserSettings.displaySettings.emulatedResolution,
+      defaultUserSettings.displaySettings,
     ),
   ),
 };

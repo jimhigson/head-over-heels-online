@@ -5,7 +5,7 @@ import {
   resolutions,
 } from "../../../originalGame";
 import { scaleXy } from "../../../utils/vectors/vectors";
-import { calculateUpscale, maximumCanvasUpscale } from "./calculateUpscale";
+import { calculateUpscale } from "./calculateUpscale";
 
 describe("descriptive cases", () => {
   const zxSpectrumRes = resolutions.zxSpectrum;
@@ -17,6 +17,7 @@ describe("descriptive cases", () => {
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 1,
       deviceType: "desktop",
+      maximumCanvasUpscale: 8,
     });
 
     // upscale is basically a noop:
@@ -35,6 +36,7 @@ describe("descriptive cases", () => {
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 1,
       deviceType: "desktop",
+      maximumCanvasUpscale: 8,
     });
 
     expect(result).toMatchObject({
@@ -55,6 +57,7 @@ describe("descriptive cases", () => {
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 1,
       deviceType: "desktop",
+      maximumCanvasUpscale: 8,
     });
 
     expect(result).toMatchObject({
@@ -74,6 +77,7 @@ describe("descriptive cases", () => {
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 1,
       deviceType: "desktop",
+      maximumCanvasUpscale: 8,
     });
 
     expect(result).toMatchObject({
@@ -92,6 +96,7 @@ describe("descriptive cases", () => {
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 2,
       deviceType: "desktop",
+      maximumCanvasUpscale: 8,
     });
 
     expect(result).toMatchObject({
@@ -116,6 +121,7 @@ describe("descriptive cases", () => {
       // devicePixelRatio means the screen is actually 1600x1200
       devicePixelRatio: 2,
       deviceType: "desktop",
+      maximumCanvasUpscale: 8,
     });
 
     // note that the total upscale is 1600/256 = 6.25,
@@ -228,17 +234,20 @@ describe("invariants hold over a huge number of cases", () => {
     ({ renderAreaSize, emulatedResolutionName, devicePixelRatio }) => {
       const longSide = Math.max(renderAreaSize.x, renderAreaSize.y);
       const shortSide = Math.min(renderAreaSize.x, renderAreaSize.y);
+      const maximumCanvasUpscale = 8;
 
       const landscapeResult = calculateUpscale({
         renderAreaSize: { x: longSide, y: shortSide },
         emulatedResolutionName,
         devicePixelRatio,
+        maximumCanvasUpscale,
       });
       const portraitResult = calculateUpscale({
         renderAreaSize: { x: shortSide, y: longSide },
         emulatedResolutionName,
         devicePixelRatio,
         deviceType: "mobile",
+        maximumCanvasUpscale,
       });
 
       // TODO: add to these invariants as understanding of the requirements improves

@@ -4,12 +4,16 @@ import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
 import type { OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
-import type { setGameSpeed } from "../src/store/slices/gameMenusSlice";
-import type { SelectableGameSpeeds } from "../src/store/slices/selectableGameSpeeds";
+import type {
+  setGameSpeed,
+  toggleUserSetting,
+} from "../src/store/slices/gameMenus/gameMenusSlice";
+import type { SelectableGameSpeeds } from "../src/store/slices/gameMenus/selectableGameSpeeds";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";
 import { formatProjectName, getProjectIcon, logHeader } from "./projectName";
+import { sleep } from "./sleep";
 
 declare global {
   interface Window {
@@ -145,11 +149,20 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
       const gameApiFound = await page.evaluate(() => {
         if (window._e2e_gamePageGameAi && window._e2e_store) {
           window._e2e_gamePageGameAi.gameState.gameSpeed = 0;
+          type SetGameSpeedAction = ReturnType<typeof setGameSpeed>;
+          type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
+
           window._e2e_store.dispatch({
             type: "gameMenus/setGameSpeed",
             // we need to fake a zero speed, since this wouldn't normally be in the selectable options:
             payload: 0 as SelectableGameSpeeds,
-          } satisfies ReturnType<typeof setGameSpeed>);
+          } satisfies SetGameSpeedAction);
+          window._e2e_store.dispatch({
+            type: "gameMenus/toggleUserSetting",
+            // turn off the crt filter (on by default)
+            payload: { path: "displaySettings.crtFilter" },
+          } satisfies ToggleUserSettingAction);
+
           return true;
         }
         return false;
@@ -234,9 +247,6 @@ const exitCrownsDialog = async (page: Page, projectName: string) => {
     screenshotPrefix: `crowns-${projectName}`,
   });
 };
-
-const sleep = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 const retryWithRecovery = async <T>({
   action,

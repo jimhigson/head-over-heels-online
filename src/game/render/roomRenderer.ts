@@ -16,7 +16,7 @@ import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
 import { iterateRoomItems, roomSpatialIndexKey } from "../../model/RoomState";
 import { audioCtx } from "../../sound/audioCtx";
-import { defaultUserSettings } from "../../store/defaultUserSettings";
+import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
 import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
 import { getColorScheme } from "../hintColours";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";

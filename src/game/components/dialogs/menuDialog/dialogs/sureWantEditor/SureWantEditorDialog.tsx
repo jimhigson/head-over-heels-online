@@ -1,7 +1,7 @@
 import Portal from "@mutabazia/react-portal";
 import { useCallback } from "react";
 
-import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";

@@ -14,7 +14,7 @@ import type {
 } from "./RoomRendererType";
 import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
-import { defaultUserSettings } from "../../store/defaultUserSettings";
+import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
 import { detectDeviceType } from "../../utils/detectDeviceType";
 import { epsilon } from "../../utils/epsilon";
 import { neverTime } from "../../utils/neverTime";

@@ -6,42 +6,43 @@ import { createSlice, current } from "@reduxjs/toolkit";
 import { canonicalize } from "json-canonicalize";
 import { REHYDRATE } from "redux-persist";
 
-import type { DialogId } from "../../game/components/dialogs/menuDialog/DialogId";
-import type { SavedGame } from "../../game/gameState/saving/SavedGameState";
-import type { BooleanAction } from "../../game/input/actions";
+import type { DialogId } from "../../../game/components/dialogs/menuDialog/DialogId";
+import type { SavedGame } from "../../../game/gameState/saving/SavedGameState";
+import type { BooleanAction } from "../../../game/input/actions";
 import type {
   ActionInputAssignment,
   InputAssignment,
   InputPress,
-} from "../../game/input/InputAssignment";
-import type { KeyAssignmentPresetName } from "../../game/input/keyAssignmentPresets";
-import type { PlayableItem } from "../../game/physics/itemPredicates";
-import type { MarkdownPageName } from "../../manual/pages";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { ScrollConfig } from "../../model/json/ItemConfigMap";
-import type { CampaignLocator, CharacterName } from "../../model/modelTypes";
-import type { ResolutionName } from "../../originalGame";
-import type { PlanetName } from "../../sprites/planets";
-import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
-import type { ToggleablePaths } from "../../utils/Toggleable";
-import type { gameMenusSliceWhitelist } from "../persist/gameMenusSliceWhitelist";
-import type { RootState } from "../store";
+} from "../../../game/input/InputAssignment";
+import type { KeyAssignmentPresetName } from "../../../game/input/keyAssignmentPresets";
+import type { PlayableItem } from "../../../game/physics/itemPredicates";
+import type { MarkdownPageName } from "../../../manual/pages";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
+import type { CampaignLocator, CharacterName } from "../../../model/modelTypes";
+import type { ResolutionName } from "../../../originalGame";
+import type { PlanetName } from "../../../sprites/planets";
+import type { SerialisableError } from "../../../utils/redux/createSerialisableErrors";
+import type { ToggleablePaths } from "../../../utils/Toggleable";
+import type { gameMenusSliceWhitelist } from "../../persist/gameMenusSliceWhitelist";
+import type { RootState } from "../../store";
 
-import { keyAssignmentPresets } from "../../game/input/keyAssignmentPresets";
-import { isInPlaytestMode } from "../../game/isInPlaytestMode";
-import { typedURLSearchParams } from "../../options/queryParams";
-import { resolutionNames } from "../../originalGame";
-import { detectDeviceType } from "../../utils/detectDeviceType";
-import { emptyObject } from "../../utils/empty";
-import { getAtPath, setAtPath } from "../../utils/getAtPath";
-import { nextInCycle } from "../../utils/nextInCycle";
-import { pick } from "../../utils/pick";
-import { directionsXy4 } from "../../utils/vectors/vectors";
+import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
+import { isInPlaytestMode } from "../../../game/isInPlaytestMode";
+import { typedURLSearchParams } from "../../../options/queryParams";
+import { resolutionNames } from "../../../originalGame";
+import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { emptyObject } from "../../../utils/empty";
+import { setAtPath } from "../../../utils/getAtPath";
+import { nextInCycle } from "../../../utils/nextInCycle";
+import { pick } from "../../../utils/pick";
+import { directionsXy4 } from "../../../utils/vectors/vectors";
 import {
+  selectBooleanUserSetting,
   selectEmulatedResolutionName,
   selectGameSpeed,
   selectInputDirectionMode,
-} from "../selectors";
+} from "./gameMenusSelectors";
 import {
   selectableGameSpeeds,
   type SelectableGameSpeeds,
@@ -232,10 +233,17 @@ export type GameMenusState = {
 };
 
 /**
- * paths used in switches and teleporters when they reference into the store
+ * paths used in in-game store-switches and settings menus for getting/setting
+ * user setting values
  */
-export type BooleanStatePaths = ToggleablePaths<
-  Pick<GameMenusState, "gameInPlay" | "userSettings">
+export type UserSettingsBooleanPaths = ToggleablePaths<
+  GameMenusState["userSettings"]
+>;
+/**
+ * paths used in in-game for deciding if a teleporter should be on or not
+ */
+export type GameInPlayBooleanPaths = ToggleablePaths<
+  GameMenusState["gameInPlay"]
 >;
 
 export const initialGameMenuSliceState: GameMenusState = {
@@ -569,8 +577,17 @@ export const gameMenusSlice = createSlice({
       state.userSettings.displaySettings.showShadowMasks = showShadowMasks;
     },
 
-    toggleBoolean(state, { payload }: PayloadAction<BooleanStatePaths>) {
-      setAtPath(state, payload, !getAtPath(state, payload));
+    toggleUserSetting(
+      state,
+      {
+        payload: { path },
+      }: PayloadAction<{
+        path: UserSettingsBooleanPaths;
+      }>,
+    ) {
+      const currentValue = selectBooleanUserSetting(state, path);
+
+      setAtPath(state.userSettings, path, !currentValue);
     },
 
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
@@ -899,7 +916,7 @@ export const {
   setGameSpeed,
   setShowBoundingBoxes,
   setShowShadowMasks,
-  toggleBoolean,
+  toggleUserSetting,
 } = gameMenusSlice.actions;
 
 export const { selectHasError } = gameMenusSlice.selectors;

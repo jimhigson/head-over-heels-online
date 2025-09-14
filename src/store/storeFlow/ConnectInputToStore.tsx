@@ -1,6 +1,6 @@
+import { useUpdateUpscaleWhenElementResizes } from "../slices/upscale/useUpdateUpscaleWhenElementResizes";
 import { useSaveGameOnUnload } from "./useSaveGameOnUnload";
 import { useUniversalKeys } from "./useUniversalKeys";
-import { useUpdateUpscaleWhenElementResizes } from "./useUpateUpscaleWhenElementResizes";
 
 export const ConnectInputToStore = () => {
   useUpdateUpscaleWhenElementResizes();

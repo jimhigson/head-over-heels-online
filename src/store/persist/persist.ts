@@ -3,7 +3,10 @@ import type { PersistConfig } from "redux-persist/es/types";
 import persistReducer from "redux-persist/es/persistReducer";
 import storage from "redux-persist/lib/storage";
 
-import { gameMenusSlice, type GameMenusState } from "../slices/gameMenusSlice";
+import {
+  gameMenusSlice,
+  type GameMenusState,
+} from "../slices/gameMenus/gameMenusSlice";
 import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
 import { gameMenusSliceWhitelist } from "./gameMenusSliceWhitelist";
 

@@ -17,11 +17,11 @@ import {
   type RoomState,
 } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { selectCurrentCampaign } from "../../../store/selectors";
+import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   characterRoomChange,
   roomExplored,
-} from "../../../store/slices/gameMenusSlice";
+} from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import {

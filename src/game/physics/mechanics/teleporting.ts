@@ -5,8 +5,8 @@ import type { GameState } from "../../gameState/GameState";
 import type { PressStatus } from "../../input/InputStateTracker";
 import type { Mechanic, MechanicResult } from "../MechanicResult";
 
-import { selectAtPath } from "../../../store/selectors";
 import { store } from "../../../store/store";
+import { getAtPath } from "../../../utils/getAtPath";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { isTeleporter, type PlayableItem } from "../itemPredicates";
@@ -17,9 +17,9 @@ export const teleporterIsActive = <
   RoomItemId extends string,
 >({
   config: { activatedOnStoreValue },
-}: ItemInPlay<"teleporter", RoomId, RoomItemId>) => {
+}: ItemInPlay<"teleporter", RoomId, RoomItemId>): boolean => {
   return activatedOnStoreValue === undefined ? true : (
-      selectAtPath(store.getState(), activatedOnStoreValue)
+      !!getAtPath(store.getState().gameMenus.gameInPlay, activatedOnStoreValue)
     );
 };
 

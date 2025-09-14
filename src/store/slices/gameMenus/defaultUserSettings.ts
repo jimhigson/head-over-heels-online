@@ -1,9 +1,9 @@
 import type { RequiredDeep } from "type-fest";
 
-import type { UserSettings } from "./slices/gameMenusSlice";
+import type { UserSettings } from "./gameMenusSlice";
 
-import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
-import { detectDeviceType } from "../utils/detectDeviceType";
+import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
+import { detectDeviceType } from "../../../utils/detectDeviceType";
 
 export const defaultUserSettings: RequiredDeep<UserSettings> = {
   inputAssignment: keyAssignmentPresets.default.inputAssignment,
@@ -13,7 +13,9 @@ export const defaultUserSettings: RequiredDeep<UserSettings> = {
   displaySettings: {
     showBoundingBoxes: "none",
     showShadowMasks: false,
-    crtFilter: false,
+    // crt filters are distinctive look for the game,
+    // but also maybe slow it down on older devices
+    crtFilter: true,
     uncolourised: false,
     emulatedResolution:
       detectDeviceType() === "mobile" ? "handheld" : "zxSpectrum",

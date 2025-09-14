@@ -43,6 +43,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@blockstacking/jims-shaders": "^0.2.0",
     "@github/mini-throttle": "^2.1.1",
     "@monaco-editor/react": "^4.7.0",
     "@mutabazia/react-portal": "^1.0.7",

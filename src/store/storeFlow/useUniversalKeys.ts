@@ -8,8 +8,8 @@ import {
   mapPressed,
   menuOpenOrExitPressed,
   setEmulatedResolution,
-  toggleBoolean,
-} from "../slices/gameMenusSlice";
+  toggleUserSetting,
+} from "../slices/gameMenus/gameMenusSlice";
 import { store } from "../store";
 import { useDispatchActionCallback } from "../useDispatchActionCallback";
 
@@ -41,7 +41,9 @@ export const useUniversalKeys = () => {
 
   useActionTap({
     action: "toggleShowFps",
-    handler: useDispatchActionCallback(toggleBoolean, "userSettings.showFps"),
+    handler: useDispatchActionCallback(toggleUserSetting, {
+      path: "showFps",
+    }),
     disabled: menuOpen,
   });
 
@@ -69,10 +71,17 @@ export const useUniversalKeys = () => {
 
   useActionTap({
     action: "toggleColourisation",
-    handler: useDispatchActionCallback(
-      toggleBoolean,
-      "userSettings.displaySettings.uncolourised",
-    ),
+    handler: useDispatchActionCallback(toggleUserSetting, {
+      path: "displaySettings.uncolourised",
+    }),
+    disabled: assigningKeys,
+  });
+
+  useActionTap({
+    action: "toggleCrtFilter",
+    handler: useDispatchActionCallback(toggleUserSetting, {
+      path: "displaySettings.crtFilter",
+    }),
     disabled: assigningKeys,
   });
 

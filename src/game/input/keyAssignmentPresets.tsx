@@ -46,8 +46,9 @@ const standardAssignment = {
     // f8 in chrome pauses script execution (if devtools open)
     // f11 clashes with macos defaults, and browser fullscreen!
     // f12 is taken in chrome/firefox - opens dev tools
-    toggleColourisation: { keys: ["F10"] },
+    toggleCrtFilter: { keys: ["F2", "T"] },
     toggleShowFps: { keys: ["F9"] },
+    toggleColourisation: { keys: ["F10"] },
     cycleResolution: { keys: ["0"] },
   },
 } as const satisfies PartialInputAssignment;

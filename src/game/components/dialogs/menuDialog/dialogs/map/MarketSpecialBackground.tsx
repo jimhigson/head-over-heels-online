@@ -2,7 +2,7 @@ import type { OriginalCampaignRoomId } from "../../../../../../_generated/origin
 import type { Bounds } from "./Map.svg";
 import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 
-import { useTotalUpscale } from "../../../../../../store/selectors";
+import { useTotalUpscale } from "../../../../../../store/slices/upscale/upscaleSelectors";
 import {
   addXy,
   addXyz,
