@@ -126,10 +126,10 @@ const frames = {
     frame: { x: 432, y: 435, w: 36, h: 16 },
   },
   "generic.floor.deadly": {
-    frame: { x: 786, y: 462, ...floorTileSize },
+    frame: { x: 785, y: 462, ...floorTileSize },
   },
   "generic.dark.floor.deadly": {
-    frame: { x: 786, y: 479, ...floorTileSize },
+    frame: { x: 785, y: 479, ...floorTileSize },
   },
 
   // doors names after the axis they go along: x=towards/away, y=left/right
