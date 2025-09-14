@@ -1,7 +1,8 @@
 import type { Application, Filter, Ticker } from "pixi.js";
 
-import { Container } from "pixi.js";
+import { Container, Rectangle } from "pixi.js";
 
+import type { Upscale } from "../../store/slices/upscale/Upscale";
 import type { GameState } from "../gameState/GameState";
 import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
 import type { RoomRendererType } from "../render/RoomRendererType";
@@ -24,7 +25,7 @@ import { emptySet } from "../../utils/empty";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
-import { noFilters } from "../render/filters/standardFilters";
+import { CRTFilter } from "../render/filters/CRTFilter";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { RoomRenderer } from "../render/roomRenderer";
 import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
@@ -34,11 +35,37 @@ import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const topLevelFilters = (
   _displaySettings: DisplaySettings,
+  upscale: Upscale,
   _paused: boolean,
-): Filter[] => {
-  // TODO: crt filter here if displaySettings allows it, but the old one
-  // looked bad so disabled it for now
-  return noFilters;
+): CRTFilter[] => {
+  const { gameEngineScreenSize } = upscale;
+
+  const crt = new CRTFilter(
+    {
+      curvature: true,
+
+      scanlines: true,
+      multisample: true,
+      maskType: "trinitron",
+      gamma: true,
+    },
+    {
+      // Uniforms
+      scanlineGapBrightness: 0.1,
+      curvatureX: 0.15,
+      curvatureY: 0.15,
+      bloomFactor: 1.5,
+      maskBrightness: 1,
+      scanlineWeight: 7,
+      emulatedResolution: [
+        gameEngineScreenSize.x,
+        // doubling the resolution before adding the scanlines makes them more subtle
+        // or less harsh - like a high-end crt screen
+        gameEngineScreenSize.y * 2,
+      ],
+    },
+  );
+  return [crt];
 };
 
 export class MainLoop<RoomId extends string> {
@@ -91,10 +118,15 @@ export class MainLoop<RoomId extends string> {
       gameMenus: {
         userSettings: { displaySettings },
       },
+      upscale: { upscale },
     } = store.getState();
 
-    this.#filtersWhenPaused = topLevelFilters(displaySettings, true);
-    this.#filtersWhenUnpaused = topLevelFilters(displaySettings, false);
+    this.#filtersWhenPaused = topLevelFilters(displaySettings, upscale, true);
+    this.#filtersWhenUnpaused = topLevelFilters(
+      displaySettings,
+      upscale,
+      false,
+    );
   }
 
   private tickAndCatch = (
@@ -131,6 +163,13 @@ export class MainLoop<RoomId extends string> {
       },
       upscale: { upscale: tickUpscale },
     } = store.getState();
+
+    this.app.stage.boundsArea = new Rectangle(
+      0,
+      0,
+      tickUpscale.gameEngineScreenSize.x,
+      tickUpscale.gameEngineScreenSize.y,
+    );
 
     const tickColourise =
       !isPaused &&
