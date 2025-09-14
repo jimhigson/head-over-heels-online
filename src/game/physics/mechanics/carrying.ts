@@ -173,7 +173,11 @@ export const checkSpaceAvailableToPutDown = <
     proposedNewLocation,
     roomSpatialIndex,
     // only check for collisions with solid items
-    (otherItem) => isSolid(otherItem, item),
+    (otherItem) =>
+      isSolid(otherItem, item) &&
+      // while in symbiosis, a proposed space one block higher can collide
+      // the the character doing the proposing - skip that:
+      otherItem !== item,
   );
 
   for (const collision of collisions) {

@@ -169,7 +169,7 @@ export type GameInPlayStoreState = {
   campaignLocator?: CampaignLocator;
 };
 
-const noPlanetsLiberated = {
+export const noPlanetsLiberated = {
   blacktooth: false,
   bookworld: false,
   egyptus: false,

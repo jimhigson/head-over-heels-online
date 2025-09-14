@@ -22,7 +22,7 @@ export const iterateStoodOnByItems = <
     const standingItem = room.items[stoodOnByItemId];
     if (standingItem === undefined) {
       throw new Error(
-        `item in stoodOnBy "${stoodOnByItemId}" is not in the room`,
+        `item ${stoodOnByItemId} in stoodOnBy is not in the room`,
       );
     }
     return standingItem;

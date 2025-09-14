@@ -49,6 +49,10 @@ export type SavedGame<RoomId extends string = string> = {
   saveTime: number;
   gameState: SavedGameState<RoomId>;
   store: {
+    /**
+     * gameInPlay is everything in the store that stores crowns collected,
+     * scrolls read etc @see {GameInPlayStoreState}
+     */
     [gameMenusSlice.reducerPath]: Pick<GameMenusState, "gameInPlay">;
   };
 };

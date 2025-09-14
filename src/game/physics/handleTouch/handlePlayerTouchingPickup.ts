@@ -1,8 +1,5 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../../gameState/GameState";
-import type { UnindexedRoomState } from "../../gameState/saving/SavedGameState";
 import type { PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
@@ -17,7 +14,6 @@ import {
 } from "../../../store/slices/gameMenusSlice";
 import { store } from "../../../store/store";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
-import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
@@ -76,11 +72,7 @@ export const handlePlayerTouchingPickup = <
     }
   };
 
-  const addFloatingText = (
-    textLines: string[],
-    addToRoom: RoomState<RoomId, RoomItemId> = roomWithPickup,
-    toSavedRoom: boolean = false,
-  ) => {
+  const loadFloatingText = (textLines: string[]) => {
     const pickupCentre = itemInPlayCentre(touchedItem);
     const floatingTextItem: ItemInPlay<"floatingText", RoomId, RoomItemId> = {
       type: "floatingText",
@@ -98,15 +90,7 @@ export const handlePlayerTouchingPickup = <
         appearanceRoomTime: roomTime,
       },
     };
-    if (toSavedRoom) {
-      // saved games are unindexed - we can't add them in the normal way to an in-play room
-      // so instead just put in the items object directly:
-      (addToRoom as UnindexedRoomState<RoomId, RoomItemId>).items[
-        floatingTextItem.id
-      ] = floatingTextItem;
-    } else {
-      addItemToRoom({ room: addToRoom, item: floatingTextItem });
-    }
+    return floatingTextItem;
   };
 
   switch (pickupConfig.gives) {
@@ -116,7 +100,10 @@ export const handlePlayerTouchingPickup = <
         return;
       }
       toModify.hasHooter = true;
-      addFloatingText(["hooter", "collected"]);
+      addItemToRoom({
+        room: roomWithPickup,
+        item: loadFloatingText(["hooter", "collected"]),
+      });
       markAsCollected();
       break;
     }
@@ -127,7 +114,10 @@ export const handlePlayerTouchingPickup = <
         return;
       }
       toModify.doughnuts = addPokeableNumbers(toModify.doughnuts, 6);
-      addFloatingText(["+6", "doughnuts"]);
+      addItemToRoom({
+        room: roomWithPickup,
+        item: loadFloatingText(["+6", "doughnuts"]),
+      });
       markAsCollected();
       break;
     }
@@ -138,7 +128,10 @@ export const handlePlayerTouchingPickup = <
         return;
       }
       toModify.hasBag = true;
-      addFloatingText(["bag", "collected"]);
+      addItemToRoom({
+        room: roomWithPickup,
+        item: loadFloatingText(["bag", "collected"]),
+      });
       markAsCollected();
       break;
     }
@@ -150,7 +143,10 @@ export const handlePlayerTouchingPickup = <
       } else {
         player.state.shieldCollectedAt = player.state.gameTime;
       }
-      addFloatingText(["🛡", "shield"]);
+      addItemToRoom({
+        room: roomWithPickup,
+        item: loadFloatingText(["🛡", "shield"]),
+      });
       markAsCollected();
       break;
     }
@@ -161,7 +157,10 @@ export const handlePlayerTouchingPickup = <
         return;
       }
       toModify.fastStepsStartedAtDistance = toModify.gameWalkDistance;
-      addFloatingText(["⚡", "fast steps"]);
+      addItemToRoom({
+        room: roomWithPickup,
+        item: loadFloatingText(["⚡", "fast steps"]),
+      });
       markAsCollected();
       break;
     }
@@ -172,7 +171,10 @@ export const handlePlayerTouchingPickup = <
         return;
       }
       toModify.bigJumps += 10;
-      addFloatingText(["♨", "10", "big jumps"]);
+      addItemToRoom({
+        room: roomWithPickup,
+        item: loadFloatingText(["♨", "10", "big jumps"]),
+      });
       markAsCollected();
       break;
     }
@@ -187,10 +189,16 @@ export const handlePlayerTouchingPickup = <
           player.state.heels.lives,
           2,
         );
-        addFloatingText(["+2", "lives", "each"]);
+        addItemToRoom({
+          room: roomWithPickup,
+          item: loadFloatingText(["+2", "lives", "each"]),
+        });
       } else {
         player.state.lives = addPokeableNumbers(player.state.lives, 2);
-        addFloatingText(["+2", "lives"]);
+        addItemToRoom({
+          room: roomWithPickup,
+          item: loadFloatingText(["+2", "lives"]),
+        });
       }
       markAsCollected();
       break;
@@ -202,27 +210,35 @@ export const handlePlayerTouchingPickup = <
       break;
 
     case "reincarnation": {
-      const savedGame = createSavedGame(gameState, store.getState(), pickupId);
+      const savedGame = createSavedGame(gameState, store.getState(), {
+        characterPickingUp: player.type,
+        pickupId,
+      });
 
-      const currentRoomInSavedGame = selectCurrentRoomState<RoomId, RoomItemId>(
-        savedGame.gameState as GameState<RoomId>,
-      );
-      if (!currentRoomInSavedGame) {
-        throw new Error(
-          "how are we saving from a pickup if there is no current room?",
-        );
-      }
       // add text into the saved version of the room for when it is restored:
-      addFloatingText(
-        ["reincarnation", "point", "restored"],
-        currentRoomInSavedGame,
-        true,
-      );
+      // note there could be multiple copies of the room in the saved game:
+      for (const savedRoom of Object.values(
+        savedGame.gameState.characterRooms,
+      )) {
+        if (savedRoom.id === roomWithPickup.id) {
+          const floatingText = loadFloatingText([
+            "reincarnation",
+            "point",
+            "restored",
+          ]);
+          // saved games are unindexed, so add the 'restored' version directly
+          // to the room:
+          savedRoom.items[floatingText.id] = floatingText;
+        }
+      }
 
       store.dispatch(reincarnationFishEaten(savedGame));
       // adding the floating text after saving the reincarnation point means the text won't be
       // in the reloaded room
-      addFloatingText(["reincarnation", "point", "saved"]);
+      addItemToRoom({
+        room: roomWithPickup,
+        item: loadFloatingText(["reincarnation", "point", "saved"]),
+      });
       markAsCollected();
       break;
     }
@@ -231,7 +247,10 @@ export const handlePlayerTouchingPickup = <
       // a little experiment- let's go straight to the store, even though
       // we're in the game engine:
       store.dispatch(crownCollected(pickupConfig.planet));
-      addFloatingText([pickupConfig.planet, "liberated!"]);
+      addItemToRoom({
+        room: roomWithPickup,
+        item: loadFloatingText([pickupConfig.planet, "liberated!"]),
+      });
       markAsCollected();
       break;
     }

@@ -2,10 +2,11 @@ import { first } from "iter-tools-es";
 import { describe, expect, test } from "vitest";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { Xyz } from "../../../utils/vectors/vectors";
 
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
+import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
+import { combinePlayablesInSymbiosis } from "../../gameState/mutators/symbiosis";
 import { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
 import { checkSpaceAvailableToPutDown } from "./carrying";
 
@@ -22,6 +23,35 @@ const makeHeels = (position: Xyz) =>
       {},
     ),
   ) as ItemInPlay<"heels">;
+
+const makeHeadOverHeels = (position: Xyz) => {
+  const heels = first(
+    loadItemFromJson(
+      "heels",
+      {
+        type: "player",
+        position,
+        config: { which: "heels" },
+      },
+      basicEmptyRoom("firstRoom"),
+      {},
+    ),
+  ) as ItemInPlay<"heels">;
+  const head = first(
+    loadItemFromJson(
+      "heels",
+      {
+        type: "player",
+        position: addXyz(position, { z: 1 }),
+        config: { which: "head" },
+      },
+      basicEmptyRoom("firstRoom"),
+      {},
+    ),
+  ) as ItemInPlay<"head">;
+
+  return combinePlayablesInSymbiosis({ head, heels });
+};
 
 const makeBlock = (position: Xyz) =>
   first(
@@ -52,11 +82,22 @@ const makePortableBlock = (position: Xyz) =>
   ) as ItemInPlay<"block">;
 
 describe("checkSpaceAvailableToPutDown", () => {
-  test("if is the only item in the room, can put down", () => {
+  test("if heels is the only item in the room, can put down", () => {
     const heels = makeHeels({ x: 0, y: 0, z: 0 });
 
     expect(
       checkSpaceAvailableToPutDown(heels, new GridSpatialIndex([heels])),
+    ).toBe(true);
+  });
+
+  test("if headOverHeels is the only item in the room, can put down", () => {
+    const headOverHeels = makeHeadOverHeels({ x: 0, y: 0, z: 0 });
+
+    expect(
+      checkSpaceAvailableToPutDown(
+        headOverHeels,
+        new GridSpatialIndex([headOverHeels]),
+      ),
     ).toBe(true);
   });
 

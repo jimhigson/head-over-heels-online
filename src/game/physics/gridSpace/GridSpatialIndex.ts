@@ -6,6 +6,11 @@ import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { projectAabbAxes } from "../../render/sortZ/projectAabbCorners";
 
+// Enable debug logging and verification for spatial index operations
+const DEBUG_SPATIAL_INDEX = false;
+// Only log operations for these specific item IDs
+const DEBUG_ITEM_IDS = ["head", "heels"];
+
 // these multiplications empirically give good performance in larger rooms.
 // if the cells are too fine, the search for shadow-casters has to visit
 // many cells - best to keep this small. Nothing else seems to mind
@@ -22,7 +27,7 @@ const projCellWidth = blockSizePx.w * 2;
 
 type XyCellKey = `${number},${number}`;
 
-type MinimumRequiredItem = {
+export type Indexable = {
   id: string;
   state: {
     position: Xyz;
@@ -46,10 +51,7 @@ type MinimumRequiredItem = {
 export class GridSpatialIndex<
   RoomId extends string = string,
   RoomItemId extends string = string,
-  Item extends MinimumRequiredItem = UnionOfAllItemInPlayTypes<
-    RoomId,
-    RoomItemId
-  >,
+  Item extends Indexable = UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   Bin extends Set<Item> = Set<Item>,
 > {
   /**
@@ -84,6 +86,10 @@ export class GridSpatialIndex<
    */
   #itemToProjectedCellKeys = new Map<Item, Set<XyCellKey>>();
 
+  /**
+   * cache of where items project to on on-screen
+   * axes (x,y,z)(min,max)
+   */
   #itemToProjectionAxesMap = new Map<Item, ProjectionOnAxes>();
 
   constructor(
@@ -126,6 +132,15 @@ export class GridSpatialIndex<
     itemToCellsMap: Map<Item, Set<XyCellKey>>,
   ): void {
     const occupiedCells = itemToCellsMap.get(item);
+    itemToCellsMap.delete(item);
+
+    if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
+      console.log(
+        `[GridSpatialIndex] removing item ${item.id} from occupied cells`,
+        occupiedCells,
+      );
+    }
+
     if (!occupiedCells) {
       return;
     }
@@ -139,8 +154,6 @@ export class GridSpatialIndex<
         }
       }
     }
-
-    itemToCellsMap.delete(item);
   }
 
   /**
@@ -155,7 +168,7 @@ export class GridSpatialIndex<
   ): void {
     const oldCellKeys = itemToCellsMap.get(item);
     if (!oldCellKeys) {
-      throw new Error("Item not in index");
+      throw new Error(`Item ${item.id} not in index`);
     }
 
     const newCellKeys = new Set<XyCellKey>(cellIterator);
@@ -209,7 +222,10 @@ export class GridSpatialIndex<
   ): void {
     // Check if item is already in the grid
     if (this.#itemToCellKeys.has(item)) {
-      throw new Error("Item is already in the spatial index");
+      const cellKeysEntry = this.#itemToCellKeys.get(item)!;
+      throw new Error(
+        `Item ${item.id} is already in the spatial index at ${[...cellKeysEntry].join(" ")}`,
+      );
     }
 
     // Add to cuboid index
@@ -228,6 +244,22 @@ export class GridSpatialIndex<
       this.#itemToProjectedCellKeys,
       (cellKey) => this.#ensureProjectedCell(cellKey),
     );
+
+    if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
+      const spatialCells = Array.from(this.#itemToCellKeys.get(item) || []);
+      const projectedCells = Array.from(
+        this.#itemToProjectedCellKeys.get(item) || [],
+      );
+      console.log(
+        `[GridSpatialIndex] Added item ${item.id}:\n` +
+          `  Position: (${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})\n` +
+          `  AABB: (${item.aabb.x}, ${item.aabb.y}, ${item.aabb.z})\n` +
+          `  RenderAABB: ${item.renderAabb ? `(${item.renderAabb.x}, ${item.renderAabb.y}, ${item.renderAabb.z})` : "undefined"}\n` +
+          `  RenderAABBOffset: ${item.renderAabbOffset ? `(${item.renderAabbOffset.x}, ${item.renderAabbOffset.y}, ${item.renderAabbOffset.z})` : "undefined"}\n` +
+          `  Spatial cells: [${spatialCells.join(", ")}]\n` +
+          `  Projected cells: [${projectedCells.join(", ")}]`,
+      );
+    }
   }
 
   /**
@@ -357,6 +389,18 @@ export class GridSpatialIndex<
       throw new Error(`Item ${item.id} is not in the spatial index`);
     }
 
+    if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
+      const spatialCells = Array.from(this.#itemToCellKeys.get(item) || []);
+      const projectedCells = Array.from(
+        this.#itemToProjectedCellKeys.get(item) || [],
+      );
+      console.log(
+        `[GridSpatialIndex] Removing item ${item.id} from:\n` +
+          `  Spatial cells: [${spatialCells.join(", ")}]\n` +
+          `  Projected cells: [${projectedCells.join(", ")}]`,
+      );
+    }
+
     // Remove from cuboid index
     this.#removeFromIndex(item, this.#spatialCells, this.#itemToCellKeys);
 
@@ -366,6 +410,54 @@ export class GridSpatialIndex<
       this.#projectedCells,
       this.#itemToProjectedCellKeys,
     );
+
+    // Remove from projection axes map
+    this.#itemToProjectionAxesMap.delete(item);
+
+    if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
+      // Thorough verification that item is completely removed
+      // Check all spatial cells
+      for (const [cellKey, cell] of this.#spatialCells) {
+        if (cell.has(item)) {
+          throw new Error(
+            `Item ${item.id} still found in spatial cell ${cellKey} after removal`,
+          );
+        }
+      }
+
+      // Check all projected cells
+      for (const [cellKey, cell] of this.#projectedCells) {
+        if (cell.has(item)) {
+          throw new Error(
+            `Item ${item.id} still found in projected cell ${cellKey} after removal`,
+          );
+        }
+      }
+
+      // Check reverse mappings
+      if (this.#itemToCellKeys.has(item)) {
+        throw new Error(
+          `Item ${item.id} still in itemToCellKeys map after removal`,
+        );
+      }
+
+      if (this.#itemToProjectedCellKeys.has(item)) {
+        throw new Error(
+          `Item ${item.id} still in itemToProjectedCellKeys map after removal`,
+        );
+      }
+
+      // Check projection axes map
+      if (this.#itemToProjectionAxesMap.has(item)) {
+        throw new Error(
+          `Item ${item.id} still in itemToProjectionAxesMap after removal`,
+        );
+      }
+
+      console.log(
+        `[GridSpatialIndex] Successfully removed item ${item.id} from all indexes`,
+      );
+    }
   }
 
   /**
@@ -376,6 +468,13 @@ export class GridSpatialIndex<
     /** The item to update */
     item: Item,
   ): void {
+    if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
+      const oldCells = Array.from(this.#itemToCellKeys.get(item) || []);
+      console.log(
+        `[GridSpatialIndex] Updating spatial index for item ${item.id} from cells: [${oldCells.join(", ")}]`,
+      );
+    }
+
     // Update in cuboid index
     this.#updateInIndex(
       item,
@@ -384,6 +483,14 @@ export class GridSpatialIndex<
       this.#itemToCellKeys,
       (cellKey) => this.#ensureCell(cellKey),
     );
+
+    if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
+      const newCells = Array.from(this.#itemToCellKeys.get(item) || []);
+      console.log(
+        `[GridSpatialIndex] Updated item ${item.id} to position (${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z}):\n` +
+          `  Now in spatial cells: [${newCells.join(", ")}]`,
+      );
+    }
   }
   /**
    * Update an item's position in the grid. After this, z-edge graph
@@ -393,6 +500,15 @@ export class GridSpatialIndex<
     /** The item to update */
     item: Item,
   ): void {
+    if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
+      const oldCells = Array.from(
+        this.#itemToProjectedCellKeys.get(item) || [],
+      );
+      console.log(
+        `[GridSpatialIndex] Updating projected index for item ${item.id} from cells: [${oldCells.join(", ")}]`,
+      );
+    }
+
     // Update in projected cell index
     this.#upsertAxesProjections(item);
     this.#updateInIndex(
@@ -402,6 +518,16 @@ export class GridSpatialIndex<
       this.#itemToProjectedCellKeys,
       (cellKey) => this.#ensureProjectedCell(cellKey),
     );
+
+    if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
+      const newCells = Array.from(
+        this.#itemToProjectedCellKeys.get(item) || [],
+      );
+      console.log(
+        `[GridSpatialIndex] Updated item ${item.id} projected index:\n` +
+          `  Now in projected cells: [${newCells.join(", ")}]`,
+      );
+    }
   }
 
   /**
@@ -414,7 +540,7 @@ export class GridSpatialIndex<
     /** The size of the cuboid to check */
     size: Xyz,
     /** Optional item to exclude from results (usually the querying item) */
-    excludeItem?: MinimumRequiredItem,
+    excludeItem?: Indexable,
   ): Set<Item> {
     const neighbours = new Set<Item>();
 
@@ -471,7 +597,7 @@ export class GridSpatialIndex<
     /**
      * NOTE: - there is no requirement for this item to actually be in the index itself
      */
-    item: MinimumRequiredItem,
+    item: Indexable,
   ): Set<Item> {
     return this.getCuboidNeighbourhood(item.state.position, item.aabb, item);
   }

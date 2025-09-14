@@ -1,8 +1,10 @@
+import { objectValues } from "iter-tools-es";
+
 import type { CharacterName } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
 import type { RoomState } from "../../model/RoomState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
-import type { GameState, PickupsCollected } from "./GameState";
+import type { CharacterRooms, GameState, PickupsCollected } from "./GameState";
 import type { SavedCharacterRooms, SavedGame } from "./saving/SavedGameState";
 
 import {
@@ -17,7 +19,6 @@ import {
 import { typedURLSearchParams } from "../../options/queryParams";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { emptyObject } from "../../utils/empty";
-import { transformObject } from "../../utils/entries";
 import {
   cheatRoomIdFromUrlHash,
   cheatsOn,
@@ -115,23 +116,29 @@ type LoadGameStateOptions<RoomId extends string> = {
   writeInto?: Partial<GameState<RoomId>>;
 };
 
-/** spatial indexes are not saved - re-create them on load */
-const indexSavedCharacterRooms = <RoomId extends string>(
+/** spatial indexes are not saved - re-create them on load
+ * @param loadedCharacterRooms the rooms loaded from the saved game. Mutated in-place.
+ */
+const addIndexToIndexSavedCharacterRooms = <RoomId extends string>(
   loadedCharacterRooms: SavedCharacterRooms<RoomId>,
-) => {
-  return transformObject(
-    loadedCharacterRooms,
-    ([characterName, loadedRoom]) => {
-      const indexedRoom = {
-        ...loadedRoom,
-        [roomSpatialIndexKey]: new GridSpatialIndex(
-          iterateRoomItems(loadedRoom.items),
-        ),
-      };
+): CharacterRooms<RoomId> => {
+  // THIS IS MAKING TWO COPIES AGAIN IF IN THE SAME ROOM!
 
-      return [characterName, indexedRoom];
-    },
-  );
+  for (const loadedRoomState of objectValues(loadedCharacterRooms)) {
+    const asIndexed = loadedRoomState as RoomState<RoomId, string>;
+
+    if (asIndexed[roomSpatialIndexKey] !== undefined) {
+      // already indexed this room - this can happen if multiple characters are in
+      // the same room since the same object will appear as multiple values in loadedCharacterRooms
+      continue;
+    }
+
+    asIndexed[roomSpatialIndexKey] = new GridSpatialIndex(
+      iterateRoomItems(loadedRoomState.items),
+    );
+  }
+
+  return loadedCharacterRooms as CharacterRooms<RoomId>;
 };
 
 const _loadGameState = <RoomId extends string>({
@@ -146,7 +153,7 @@ const _loadGameState = <RoomId extends string>({
 
     if (
       savedGameCharacterRooms.head !== undefined &&
-      savedGameCharacterRooms.head?.id === savedGameCharacterRooms.heels?.id
+      savedGameCharacterRooms.head.id === savedGameCharacterRooms.heels?.id
     ) {
       // we loaded two copies of the same room - reduce to one:
       loadedCharacterRooms.heels = loadedCharacterRooms.head;
@@ -154,12 +161,14 @@ const _loadGameState = <RoomId extends string>({
 
     Object.assign(writeInto, {
       inputStateTracker,
+      // TODO: there's really no reason for this to be in the game state - this just highlights
+      // why it's a bad idea to have it duplicated, when it could stay in (only) the store
       gameSpeed: 1,
-      // saved game can override any of the above
       ...badJsonClone(savedGame.gameState),
     });
 
-    writeInto.characterRooms = indexSavedCharacterRooms(loadedCharacterRooms);
+    writeInto.characterRooms =
+      addIndexToIndexSavedCharacterRooms(loadedCharacterRooms);
 
     // cast here asserts that we have now added all the missing properties:
     return writeInto as GameState<RoomId>;
