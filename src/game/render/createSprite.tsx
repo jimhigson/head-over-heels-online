@@ -256,7 +256,15 @@ function createAnimatedSprite({
 
   const animatedSprite = new AnimatedSprite(animatedSpriteFrames);
 
-  const animationSpeedModifier = paused ? 0 : gameSpeed;
+  const animationSpeedModifier =
+    paused ? 0
+      // the original animations don't hold up too well sped up a lot, so while
+      // they get faster the faster the game goes, it increases slower than linear and
+      // sqrt is about right:
+      //   2x gameSpeed gets ~1.4x faster animations
+      //   1.2x (remake default) gets ~1.1x animation speed
+      //   1x original gameSpeed stays at the original animation speed
+    : Math.sqrt(gameSpeed);
 
   animatedSprite.animationSpeed =
     spritesheetData.animations[animationId].animationSpeed *
