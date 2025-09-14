@@ -4,7 +4,7 @@ import {
   type MarkdownPageName,
   markdownPages,
 } from "../../../../../../manual/pages";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";

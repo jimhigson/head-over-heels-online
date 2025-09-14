@@ -1,7 +1,16 @@
 import type { Application, Filter, Ticker } from "pixi.js";
 
-import { Container } from "pixi.js";
+import {
+  BloomFilter,
+  ColorAdjustmentFilter,
+  CurvatureFilter,
+  PhosphorMaskFilter,
+  ScanlinesFilter,
+  VignetteFilter,
+} from "@blockstacking/jims-shaders";
+import { Container, Rectangle } from "pixi.js";
 
+import type { Upscale } from "../../store/slices/upscale/Upscale";
 import type { GameState } from "../gameState/GameState";
 import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
 import type { RoomRendererType } from "../render/RoomRendererType";
@@ -12,12 +21,12 @@ import {
   selectInputDirectionMode,
   selectIsPaused,
   selectShouldRenderOnScreenControls,
-} from "../../store/selectors";
+} from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   type DisplaySettings,
   errorCaught,
   selectHasError,
-} from "../../store/slices/gameMenusSlice";
+} from "../../store/slices/gameMenus/gameMenusSlice";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
@@ -33,12 +42,59 @@ import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const topLevelFilters = (
-  _displaySettings: DisplaySettings,
-  _paused: boolean,
+  { crtFilter: crtFilterDisplaySetting }: DisplaySettings,
+  upscale: Upscale,
 ): Filter[] => {
-  // TODO: crt filter here if displaySettings allows it, but the old one
-  // looked bad so disabled it for now
-  return noFilters;
+  const inPipelineBrightness = 0.8;
+
+  if (crtFilterDisplaySetting === false) {
+    return noFilters;
+  }
+
+  return [
+    new ColorAdjustmentFilter({
+      brightness: inPipelineBrightness,
+    }),
+
+    // Scanlines and phosphor mask first (applied to flat image)
+    new ScanlinesFilter({
+      pixelHeight: upscale.gameEngineUpscale,
+      gapBrightness: 0.66,
+    }),
+
+    new PhosphorMaskFilter({
+      pixelWidth: upscale.gameEngineUpscale * 1.1,
+      maskBrightness: 0.5,
+      numSamples: 2,
+      transitionWidth: 0.2,
+    }),
+
+    // selectively blur just fairly light items on a small, intense radius:
+    new BloomFilter({
+      radius: upscale.gameEngineUpscale / 3,
+      intensity: 0.4,
+      cutoff: 0.1,
+      edgeBlur: 1,
+    }),
+
+    // Then curvature (curves everything including scanlines)
+    new CurvatureFilter({
+      curvatureX: 0.15,
+      curvatureY: 0.15,
+      multisampling: false,
+    }),
+    // Finally vignette and color adjustment
+    new VignetteFilter({
+      intensity: 0.5,
+      radius: 0.7,
+      softness: 1,
+    }),
+    new ColorAdjustmentFilter({
+      gamma: 1.2,
+      saturation: 1.7,
+      brightness: 1 / inPipelineBrightness,
+    }),
+  ];
 };
 
 export class MainLoop<RoomId extends string> {
@@ -91,10 +147,11 @@ export class MainLoop<RoomId extends string> {
       gameMenus: {
         userSettings: { displaySettings },
       },
+      upscale: { upscale },
     } = store.getState();
 
-    this.#filtersWhenPaused = topLevelFilters(displaySettings, true);
-    this.#filtersWhenUnpaused = topLevelFilters(displaySettings, false);
+    this.#filtersWhenPaused = topLevelFilters(displaySettings, upscale);
+    this.#filtersWhenUnpaused = topLevelFilters(displaySettings, upscale);
   }
 
   private tickAndCatch = (
@@ -131,6 +188,13 @@ export class MainLoop<RoomId extends string> {
       },
       upscale: { upscale: tickUpscale },
     } = store.getState();
+
+    this.app.stage.boundsArea = new Rectangle(
+      0,
+      0,
+      tickUpscale.gameEngineScreenSize.x,
+      tickUpscale.gameEngineScreenSize.y,
+    );
 
     const tickColourise =
       !isPaused &&

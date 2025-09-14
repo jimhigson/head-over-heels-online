@@ -1,12 +1,12 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
-import type { Upscale } from "src/store/slices/upscale/Upscale";
 import type { SetRequired } from "type-fest";
 
 import type { RoomState } from "../../model/RoomState";
 import type {
   DisplaySettings,
   SoundSettings,
-} from "../../store/slices/gameMenusSlice";
+} from "../../store/slices/gameMenus/gameMenusSlice";
+import type { Upscale } from "../../store/slices/upscale/Upscale";
 import type { GameState } from "../gameState/GameState";
 import type { MovedItems } from "../mainLoop/progressGameState";
 

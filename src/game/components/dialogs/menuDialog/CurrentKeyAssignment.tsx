@@ -4,7 +4,7 @@ import type { BooleanAction } from "../../../input/actions";
 import type { Key } from "../../../input/keys";
 
 import { useAppSelector } from "../../../../store/hooks";
-import { selectInputAssignment } from "../../../../store/selectors";
+import { selectInputAssignment } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { emptyArray } from "../../../../utils/empty";
 import { actionToAxis } from "../../../input/actionToAxis";
 import { standardControllerButtonNames } from "../../../input/controllers";

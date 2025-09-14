@@ -122,8 +122,6 @@ type LoadGameStateOptions<RoomId extends string> = {
 const addIndexToIndexSavedCharacterRooms = <RoomId extends string>(
   loadedCharacterRooms: SavedCharacterRooms<RoomId>,
 ): CharacterRooms<RoomId> => {
-  // THIS IS MAKING TWO COPIES AGAIN IF IN THE SAME ROOM!
-
   for (const loadedRoomState of objectValues(loadedCharacterRooms)) {
     const asIndexed = loadedRoomState as RoomState<RoomId, string>;
 

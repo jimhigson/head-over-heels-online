@@ -10,22 +10,22 @@ export type CalculateUpscaleOptions = {
   emulatedResolutionName: ResolutionName;
   devicePixelRatio: number;
   deviceType?: DeviceType;
+
+  maximumCanvasUpscale: number;
 };
-
-/**
- * The maximum upscale that the game engine will do.
- * Past this upscale, the upscale will be done on the canvas via css
- * This is because on large screens (ie, 4k), the filters in the game can be
- * slow. rendering in third/quarter-pixels is fine.
- */
-
-export const maximumCanvasUpscale = 8;
 
 export const calculateUpscale = ({
   renderAreaSize,
   emulatedResolutionName,
   devicePixelRatio,
   deviceType = detectDeviceType(),
+  /**
+   * The maximum upscale that the game engine will do.
+   * Past this upscale, the upscale will be done on the canvas via css
+   * This is because on large screens (ie, 4k), the filters in the game can be
+   * slow. rendering in third/quarter-pixels is fine.
+   */
+  maximumCanvasUpscale,
 }: CalculateUpscaleOptions): Upscale => {
   const emulatedResolution = resolutions[emulatedResolutionName];
 

@@ -1,7 +1,7 @@
 import type { Campaign } from "../model/modelTypes";
 
 import { campaignsApiSlice } from "../store/slices/campaigns/campaignsApiSlice";
-import { gameStarted } from "../store/slices/gameMenusSlice";
+import { gameStarted } from "../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../store/store";
 
 export const resetStore = () => {

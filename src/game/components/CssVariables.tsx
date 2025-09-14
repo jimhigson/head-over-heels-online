@@ -1,7 +1,7 @@
 import "react";
 import type { PropsWithChildren } from "react";
 
-import { useTotalUpscale } from "../../store/selectors";
+import { useTotalUpscale } from "../../store/slices/upscale/upscaleSelectors";
 
 declare module "react" {
   interface CSSProperties {

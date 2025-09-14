@@ -4,7 +4,7 @@ import { useMaybeGameApi } from "../../game/components/GameApiContext";
 import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
 import { isInPlaytestMode } from "../../game/isInPlaytestMode";
 import { useAppDispatch } from "../hooks";
-import { holdPressed, saveGame } from "../slices/gameMenusSlice";
+import { holdPressed, saveGame } from "../slices/gameMenus/gameMenusSlice";
 import { persistor, store } from "../store";
 
 export const useSaveGameOnUnload = (): void => {

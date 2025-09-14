@@ -5,7 +5,7 @@ import type { GameState } from "../../gameState/GameState";
 import type { PressStatus } from "../../input/InputStateTracker";
 import type { Mechanic, MechanicResult } from "../MechanicResult";
 
-import { selectAtPath } from "../../../store/selectors";
+import { selectAtPath } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { fadeInOrOutDuration } from "../../render/animationTimings";

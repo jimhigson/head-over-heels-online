@@ -4,11 +4,11 @@ import type { ResolutionName } from "../../../../../../originalGame";
 
 import { resolutions } from "../../../../../../originalGame";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { selectEmulatedResolutionName } from "../../../../../../store/selectors";
+import { selectEmulatedResolutionName } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   backToParentMenu,
   setEmulatedResolution,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";

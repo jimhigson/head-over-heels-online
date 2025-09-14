@@ -1,6 +1,6 @@
 import { detectDeviceType } from "../../../utils/detectDeviceType";
 import { startAppListening } from "../../listenerMiddleware";
-import { setEmulatedResolution } from "../gameMenusSlice";
+import { setEmulatedResolution } from "../gameMenus/gameMenusSlice";
 import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
 import { upscaleToWindow } from "./upscaleSlice";
 
@@ -16,7 +16,12 @@ export const updateUpscaleWhenEmulatedResolutionChanges = () => {
 
         if (emulatedResolution !== undefined) {
           dispatch(
-            upscaleToWindow(upscaleOptionsForCurrentDevice(emulatedResolution)),
+            upscaleToWindow(
+              upscaleOptionsForCurrentDevice(
+                emulatedResolution,
+                getState().gameMenus.userSettings.displaySettings,
+              ),
+            ),
           );
         }
       },

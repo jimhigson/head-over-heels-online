@@ -11,7 +11,7 @@ import {
   selectInputAssignment,
   selectInputDirectionMode,
   selectScreenRelativeControl,
-} from "../../store/selectors";
+} from "../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
 import { iterate } from "../../utils/iterate";

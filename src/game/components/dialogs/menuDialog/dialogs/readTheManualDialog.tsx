@@ -5,7 +5,7 @@ import { manualPages, pageTitle } from "../../../../../manual/pages";
 import {
   backToParentMenu,
   goToSubmenu,
-} from "../../../../../store/slices/gameMenusSlice";
+} from "../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../ui/Border";
 import { Dialog } from "../../../../../ui/dialog";

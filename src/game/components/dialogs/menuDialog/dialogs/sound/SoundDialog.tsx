@@ -2,11 +2,11 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectIsNoFootstepSounds,
   selectIsSoundMuted,
-} from "../../../../../../store/selectors";
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   backToParentMenu,
   toggleBoolean,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";

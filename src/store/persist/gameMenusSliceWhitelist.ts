@@ -1,4 +1,4 @@
-import type { GameMenusState } from "../slices/gameMenusSlice";
+import type { GameMenusState } from "../slices/gameMenus/gameMenusSlice";
 
 export const gameMenusSliceWhitelist = [
   `userSettings`,

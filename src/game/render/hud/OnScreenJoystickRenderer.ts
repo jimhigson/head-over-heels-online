@@ -4,7 +4,7 @@ import type { EmptyObject } from "type-fest";
 import { objectValues } from "iter-tools-es";
 import { Container, Graphics } from "pixi.js";
 
-import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
+import type { InputDirectionMode } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Renderer } from "../Renderer";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
 import type { OnScreenLookRenderer } from "./OnScreenLookRenderer";

@@ -1,12 +1,12 @@
-import type { SerialisableError } from "src/utils/redux/createSerialisableErrors";
-
 import { useState } from "react";
+
+import type { SerialisableError } from "../../../../../../utils/redux/createSerialisableErrors";
 
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   errorDismissed,
   reincarnationAccepted,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";

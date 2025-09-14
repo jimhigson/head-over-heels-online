@@ -4,7 +4,7 @@ import { format } from "timeago.js";
 import type { CampaignDirectory } from "../../../../../../db/campaign";
 import type { CampaignLocator } from "../../../../../../model/modelTypes";
 
-import { gameStarted } from "../../../../../../store/slices/gameMenusSlice";
+import { gameStarted } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";

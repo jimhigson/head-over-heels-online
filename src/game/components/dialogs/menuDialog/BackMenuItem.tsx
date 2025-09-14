@@ -1,4 +1,4 @@
-import { backToParentMenu } from "../../../../store/slices/gameMenusSlice";
+import { backToParentMenu } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../store/useDispatchActionCallback";
 import { MenuItem } from "./MenuItem";
 

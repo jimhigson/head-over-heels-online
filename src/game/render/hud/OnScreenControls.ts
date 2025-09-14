@@ -3,7 +3,7 @@ import type { SetRequired } from "type-fest";
 import { objectValues } from "iter-tools-es";
 import { Container } from "pixi.js";
 
-import type { InputDirectionMode } from "../../../store/slices/gameMenusSlice";
+import type { InputDirectionMode } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { Renderer } from "../Renderer";
 import type { GeneralRenderContext } from "../RoomRenderContexts";

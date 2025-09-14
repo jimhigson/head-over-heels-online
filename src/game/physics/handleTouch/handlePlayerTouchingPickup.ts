@@ -11,7 +11,7 @@ import {
   crownCollected,
   reincarnationFishEaten,
   scrollRead,
-} from "../../../store/slices/gameMenusSlice";
+} from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
 import {

@@ -9,7 +9,7 @@ import {
   menuOpenOrExitPressed,
   setEmulatedResolution,
   toggleBoolean,
-} from "../slices/gameMenusSlice";
+} from "../slices/gameMenus/gameMenusSlice";
 import { store } from "../store";
 import { useDispatchActionCallback } from "../useDispatchActionCallback";
 
@@ -72,6 +72,15 @@ export const useUniversalKeys = () => {
     handler: useDispatchActionCallback(
       toggleBoolean,
       "userSettings.displaySettings.uncolourised",
+    ),
+    disabled: assigningKeys,
+  });
+
+  useActionTap({
+    action: "toggleCrtFilter",
+    handler: useDispatchActionCallback(
+      toggleBoolean,
+      "userSettings.displaySettings.crtFilter",
     ),
     disabled: assigningKeys,
   });

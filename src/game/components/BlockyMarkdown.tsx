@@ -6,7 +6,7 @@ import { type PropsWithChildren } from "react";
 import { SnarkdownInReact } from "snarkdown-in-react";
 import { twMerge } from "tailwind-merge";
 
-import { useTotalUpscale } from "../../store/selectors";
+import { useTotalUpscale } from "../../store/slices/upscale/upscaleSelectors";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
 

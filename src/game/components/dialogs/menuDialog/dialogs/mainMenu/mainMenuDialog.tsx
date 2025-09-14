@@ -4,11 +4,11 @@ import { useCallback } from "react";
 
 import { nerdFontDiscordChar } from "../../../../../../sprites/hudSritesheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
-import { useIsGameRunning } from "../../../../../../store/selectors";
+import { useIsGameRunning } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   closeAllMenus,
   goToSubmenu,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
