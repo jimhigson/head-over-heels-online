@@ -1,5 +1,5 @@
-import { useIsUserPreferenceOnScreenControls } from "../../../../../../store/selectors";
-import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
+import { useIsUserPreferenceOnScreenControls } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { toggleBoolean } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";

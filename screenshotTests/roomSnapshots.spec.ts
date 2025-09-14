@@ -4,8 +4,8 @@ import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
 import type { OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
-import type { setGameSpeed } from "../src/store/slices/gameMenusSlice";
-import type { SelectableGameSpeeds } from "../src/store/slices/selectableGameSpeeds";
+import type { setGameSpeed } from "../src/store/slices/gameMenus/gameMenusSlice";
+import type { SelectableGameSpeeds } from "../src/store/slices/gameMenus/selectableGameSpeeds";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";

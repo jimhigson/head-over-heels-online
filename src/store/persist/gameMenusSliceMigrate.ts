@@ -2,7 +2,7 @@ import type { PersistedState, PersistMigrate } from "redux-persist";
 
 import { createMigrate } from "redux-persist";
 
-import { initialGameMenuSliceState } from "../slices/gameMenusSlice";
+import { initialGameMenuSliceState } from "../slices/gameMenus/gameMenusSlice";
 
 /**
  * A non-migration migration - just throws the user's config away and reverts to

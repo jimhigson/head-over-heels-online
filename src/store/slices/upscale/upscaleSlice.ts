@@ -19,6 +19,7 @@ export const initialUpscaleSliceState: UpscaleState = {
     upscaleOptionsForCurrentDevice(
       // use the default for initial upscale:
       defaultUserSettings.displaySettings.emulatedResolution,
+      defaultUserSettings.displaySettings,
     ),
   ),
 };

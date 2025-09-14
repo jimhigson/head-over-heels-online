@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import {
   backToParentMenu,
   gameOver,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";

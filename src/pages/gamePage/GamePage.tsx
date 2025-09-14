@@ -13,8 +13,11 @@ import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import { loadSounds } from "../../sound/soundsLoader.ts";
 import { loadSpritesheet } from "../../sprites/spriteSheet.ts";
 import { useAppSelector } from "../../store/hooks.ts";
-import { useCheatsOn, useIsGameRunning } from "../../store/selectors.ts";
-import { errorCaught } from "../../store/slices/gameMenusSlice.ts";
+import {
+  useCheatsOn,
+  useIsGameRunning,
+} from "../../store/slices/gameMenus/gameMenusSelectors.ts";
+import { errorCaught } from "../../store/slices/gameMenus/gameMenusSlice.ts";
 import {
   manualLoadingFinished,
   manualLoadingStarted,

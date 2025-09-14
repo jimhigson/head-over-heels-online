@@ -3,34 +3,31 @@ import type { Get, Paths } from "type-fest";
 import { objectValues, size } from "iter-tools-es";
 import nanoEqual from "nano-equal";
 
-import type { KeyAssignmentPresetName } from "../game/input/keyAssignmentPresets";
-import type { Campaign } from "../model/modelTypes";
-import type { ToggleablePaths } from "../utils/Toggleable";
+import type { KeyAssignmentPresetName } from "../../../game/input/keyAssignmentPresets";
+import type { Campaign } from "../../../model/modelTypes";
+import type { ToggleablePaths } from "../../../utils/Toggleable";
+import type { RootState } from "../../store";
 import type {
   GameMenusState,
   InputDirectionMode,
   ShowBoundingBoxes,
   UserSettings,
-} from "./slices/gameMenusSlice";
-import type { RootState } from "./store";
+} from "./gameMenusSlice";
 
-import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
-import { objectEntriesIter } from "../utils/entries";
-import { getAtPath } from "../utils/getAtPath";
-import { iterate } from "../utils/iterate";
-import { selectorHook } from "../utils/react/selectorHook";
-import { defaultUserSettings } from "./defaultUserSettings";
-import { useAppSelector } from "./hooks";
-import { selectMaybeLoadedCampaignData } from "./slices/campaigns/campaignsApiSlice";
-import { selectTotalUpscale } from "./slices/upscale/upscaleSlice";
+import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
+import { objectEntriesIter } from "../../../utils/entries";
+import { getAtPath } from "../../../utils/getAtPath";
+import { iterate } from "../../../utils/iterate";
+import { selectorHook } from "../../../utils/react/selectorHook";
+import { defaultUserSettings } from "../../defaultUserSettings";
+import { useAppSelector } from "../../hooks";
+import { selectMaybeLoadedCampaignData } from "../campaigns/campaignsApiSlice";
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>
   (state: RootState): NonNullable<Get<UserSettings, Path>> =>
     getAtPath(state.gameMenus.userSettings, path) ??
     getAtPath(defaultUserSettings, path);
-
-export const useTotalUpscale = () => useAppSelector(selectTotalUpscale);
 
 export const selectInputAssignment = selectUserSetting("inputAssignment");
 

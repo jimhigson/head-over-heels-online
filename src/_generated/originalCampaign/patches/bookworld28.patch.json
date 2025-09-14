@@ -31,21 +31,6 @@
   },
   {
     "op": "add",
-    "path": "/items/jumpingOff",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 0,
-        "y": 3,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/afterJumpingOFf",
     "value": {
       "config": {
@@ -58,58 +43,6 @@
         "x": 0,
         "y": 4,
         "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/jumpingOff2",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 3,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraStep2",
-    "value": {
-      "config": {
-        "style": "organic",
-        "times": {
-          "x": 2
-        }
-      },
-      "position": {
-        "x": 3,
-        "y": 14,
-        "z": 1
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraStep",
-    "value": {
-      "config": {
-        "style": "organic",
-        "times": {
-          "x": 2,
-          "z": 2
-        }
-      },
-      "position": {
-        "x": 3,
-        "y": 15,
-        "z": 1
       },
       "type": "block"
     }
@@ -146,42 +79,6 @@
         "x": 2.375,
         "y": 8,
         "z": 1
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier5",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 2
-        }
-      },
-      "position": {
-        "x": 2.375,
-        "y": 13,
-        "z": 2
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier6",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 2
-        }
-      },
-      "position": {
-        "x": 2.375,
-        "y": 14,
-        "z": 3
       },
       "type": "barrier"
     }
@@ -242,6 +139,42 @@
   },
   {
     "op": "add",
+    "path": "/items/extraBarrier5",
+    "value": {
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 2.375,
+        "y": 13,
+        "z": 2
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraBarrier6",
+    "value": {
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 2.375,
+        "y": 14,
+        "z": 3
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/extraBarrier7",
     "value": {
       "config": {
@@ -278,6 +211,43 @@
   },
   {
     "op": "add",
+    "path": "/items/extraStep",
+    "value": {
+      "config": {
+        "style": "organic",
+        "times": {
+          "x": 2,
+          "z": 2
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 15,
+        "z": 1
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraStep2",
+    "value": {
+      "config": {
+        "style": "organic",
+        "times": {
+          "x": 2
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 14,
+        "z": 1
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/extraTurtle1",
     "value": {
       "config": {
@@ -310,6 +280,36 @@
         "z": 1
       },
       "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/jumpingOff",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 0,
+        "y": 3,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/jumpingOff2",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "type": "block"
     }
   },
   {

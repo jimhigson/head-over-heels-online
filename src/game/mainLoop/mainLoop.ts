@@ -1,7 +1,16 @@
 import type { Application, Filter, Ticker } from "pixi.js";
 
-import { Container } from "pixi.js";
+import {
+  BloomFilter,
+  ColorAdjustmentFilter,
+  CurvatureFilter,
+  PhosphorMaskFilter,
+  ScanlinesFilter,
+  VignetteFilter,
+} from "@blockstacking/jims-shaders";
+import { Container, Rectangle } from "pixi.js";
 
+import type { Upscale } from "../../store/slices/upscale/Upscale";
 import type { GameState } from "../gameState/GameState";
 import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
 import type { RoomRendererType } from "../render/RoomRendererType";
@@ -12,12 +21,12 @@ import {
   selectInputDirectionMode,
   selectIsPaused,
   selectShouldRenderOnScreenControls,
-} from "../../store/selectors";
+} from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   type DisplaySettings,
   errorCaught,
   selectHasError,
-} from "../../store/slices/gameMenusSlice";
+} from "../../store/slices/gameMenus/gameMenusSlice";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
@@ -33,17 +42,63 @@ import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const topLevelFilters = (
-  _displaySettings: DisplaySettings,
-  _paused: boolean,
+  { crtFilter: crtFilterDisplaySetting }: DisplaySettings,
+  upscale: Upscale,
 ): Filter[] => {
-  // TODO: crt filter here if displaySettings allows it, but the old one
-  // looked bad so disabled it for now
-  return noFilters;
+  const inPipelineBrightness = 0.8;
+
+  if (crtFilterDisplaySetting !== true) {
+    // this settings as false or undefined means no CRT filter
+    return noFilters;
+  }
+
+  return [
+    new ColorAdjustmentFilter({
+      brightness: inPipelineBrightness,
+    }),
+
+    // Scanlines and phosphor mask first (applied to flat image)
+    new ScanlinesFilter({
+      pixelHeight: upscale.gameEngineUpscale,
+      gapBrightness: 0.66,
+    }),
+
+    new PhosphorMaskFilter({
+      pixelWidth: upscale.gameEngineUpscale * 1.1,
+      maskBrightness: 0.5,
+      numSamples: 2,
+      transitionWidth: 0.2,
+    }),
+
+    // selectively blur just fairly light items on a small, intense radius:
+    new BloomFilter({
+      radius: upscale.gameEngineUpscale / 3,
+      intensity: 0.4,
+      cutoff: 0.1,
+      edgeBlur: 1,
+    }),
+
+    // Then curvature (curves everything including scanlines)
+    new CurvatureFilter({
+      curvatureX: 0.15,
+      curvatureY: 0.15,
+      multisampling: false,
+    }),
+    // Finally vignette and color adjustment
+    new VignetteFilter({
+      intensity: 0.5,
+      radius: 0.7,
+      softness: 1,
+    }),
+    new ColorAdjustmentFilter({
+      gamma: 1.2,
+      saturation: 1.7,
+      brightness: 1 / inPipelineBrightness,
+    }),
+  ];
 };
 
 export class MainLoop<RoomId extends string> {
-  #filtersWhenPaused!: Filter[];
-  #filtersWhenUnpaused!: Filter[];
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
   /**
    * room renderer can only be undefined if there is no current room - both
@@ -74,7 +129,7 @@ export class MainLoop<RoomId extends string> {
         throw new Error("main loop with no starting room");
       }
 
-      this.#initFilters();
+      this.#initTopLevelFilters();
     } catch (e) {
       this.#handleError(e);
       return;
@@ -86,15 +141,15 @@ export class MainLoop<RoomId extends string> {
     store.dispatch(errorCaught(createSerialisableErrors(thrown)));
   }
 
-  #initFilters() {
+  #initTopLevelFilters() {
     const {
       gameMenus: {
         userSettings: { displaySettings },
       },
+      upscale: { upscale },
     } = store.getState();
 
-    this.#filtersWhenPaused = topLevelFilters(displaySettings, true);
-    this.#filtersWhenUnpaused = topLevelFilters(displaySettings, false);
+    this.app.stage.filters = topLevelFilters(displaySettings, upscale);
   }
 
   private tickAndCatch = (
@@ -229,7 +284,17 @@ export class MainLoop<RoomId extends string> {
       }
 
       this.app.stage.scale = tickUpscale.gameEngineUpscale;
-      this.#initFilters();
+      this.#initTopLevelFilters();
+
+      // setting static boundsArea helps if a filter is put over the whole output container, since the bounds of the
+      // container won't change. Eg, a lift going vertically up into a screen y-coord where previously nothing was
+      // rendered does not stretch the container upwards
+      this.app.stage.boundsArea = new Rectangle(
+        0,
+        0,
+        tickUpscale.gameEngineScreenSize.x,
+        tickUpscale.gameEngineScreenSize.y,
+      );
     }
 
     // the room renderer runs even while paused - it is its responsibility to
@@ -241,11 +306,6 @@ export class MainLoop<RoomId extends string> {
       deltaMS,
     });
 
-    if (!isPaused) {
-      this.app.stage.filters = this.#filtersWhenUnpaused;
-    } else {
-      this.app.stage.filters = this.#filtersWhenPaused;
-    }
     timingStats?.endUpdateSceneGraph();
 
     try {

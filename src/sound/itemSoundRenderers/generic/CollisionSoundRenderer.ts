@@ -1,8 +1,7 @@
-import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
-
 import { isEmpty } from "iter-tools-es";
 
 import type { FreeItemTypes } from "../../../game/physics/itemPredicates";
+import type { ItemTickContext } from "../../../game/render/ItemRenderContexts";
 import type { ItemSoundRenderContext } from "../../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../../ItemSoundRenderer";
 import type {

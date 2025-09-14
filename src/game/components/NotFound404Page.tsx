@@ -15,7 +15,7 @@ export const NotFound404Page = () => {
           {directionsXy8.map((d) => (
             <span
               key={d}
-              className={`sprite ${playableTailwindSpriteClassname({ action: "walking", character: "head", facingXy8: d })}`}
+              className={`sprite zx:sprite-revert-to-white ${playableTailwindSpriteClassname({ action: "walking", character: "head", facingXy8: d })}`}
             />
           ))}
         </div>
@@ -24,7 +24,7 @@ export const NotFound404Page = () => {
             404 Not found
           </BitmapText>
           <BitmapText
-            className={`${multilineTextClass} p-1 pt-2 text-metallicBlue`}
+            className={`${multilineTextClass} p-1 pt-2 text-metallicBlue zx:text-zxYellow`}
           >
             whatever you’re looking for, it ain’t here
           </BitmapText>
@@ -33,7 +33,7 @@ export const NotFound404Page = () => {
           {directionsXy8.toReversed().map((d) => (
             <span
               key={d}
-              className={`sprite ${playableTailwindSpriteClassname({ action: "walking", character: "heels", facingXy8: d })}`}
+              className={`sprite zx:sprite-revert-to-white ${playableTailwindSpriteClassname({ action: "walking", character: "heels", facingXy8: d })}`}
             />
           ))}
         </div>

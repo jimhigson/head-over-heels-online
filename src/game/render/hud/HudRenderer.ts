@@ -25,7 +25,7 @@ import {
   hudCharTextureSize,
   smallItemTextureSize,
 } from "../../../sprites/textureSizes";
-import { selectShowFps } from "../../../store/selectors";
+import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { neverTime } from "../../../utils/neverTime";
 import {
@@ -163,10 +163,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     }
 
     this.#container.addChild(this.#hudElements.fps);
-    this.#hudElements.fps.filters = [
-      hudFpsColourFilter,
-      //this.#outlineFilter,
-    ];
+    this.#hudElements.fps.filters = [hudFpsColourFilter, hudOutlineFilter];
     this.#hudElements.fps.y = hudCharTextureSize.h;
 
     this.#initSwopCharacterInteractivity();

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { resolutions } from "../../originalGame";
 import { useAppSelector } from "../../store/hooks";
-import { useEmulatedResolutionName } from "../../store/selectors";
+import { useEmulatedResolutionName } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectRot90 } from "../../store/slices/upscale/upscaleSlice";
 import { detectDeviceType } from "../../utils/detectDeviceType";
 

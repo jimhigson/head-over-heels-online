@@ -9,7 +9,7 @@ import type { TurnStrategy } from "./turnedVector";
 
 import { playablesInRoom, type RoomState } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { selectHasAllPlanetCrowns } from "../../../store/selectors";
+import { selectHasAllPlanetCrowns } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { nonZero } from "../../../utils/epsilon";

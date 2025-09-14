@@ -5,7 +5,7 @@ import type { MapData } from "./MapData";
 import {
   useCurrentCampaign,
   useRoomsExplored,
-} from "../../../../../../store/selectors";
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { findStartingRoomsInCampaign } from "../../../../../gameState/loadGameState";
 import { useGameApi } from "../../../../GameApiContext";

@@ -1,6 +1,5 @@
-import type { StoodOnBy } from "src/model/StoodOnBy";
-
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { StoodOnBy } from "../../../model/StoodOnBy";
 import type { Xyz } from "../../../utils/vectors/vectors";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";

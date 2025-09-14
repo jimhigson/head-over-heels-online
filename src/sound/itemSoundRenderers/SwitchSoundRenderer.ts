@@ -2,7 +2,7 @@ import type { SwitchSetting } from "../../model/ItemInPlay";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
-import { selectAtPath } from "../../store/selectors";
+import { selectAtPath } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../store/store";
 import { audioCtx } from "../audioCtx";
 import { createAudioNode } from "../soundUtils/createAudioNode";

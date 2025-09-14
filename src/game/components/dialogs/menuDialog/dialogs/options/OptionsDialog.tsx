@@ -1,19 +1,20 @@
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectGameSpeed,
+  selectIsCrtFilter,
   selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
   selectShowFps,
   useIsGameRunning,
   useIsUncolourised,
-} from "../../../../../../store/selectors";
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   backToParentMenu,
   goToSubmenu,
   setGameSpeed,
   toggleBoolean,
-} from "../../../../../../store/slices/gameMenusSlice";
-import { selectableGameSpeeds } from "../../../../../../store/slices/selectableGameSpeeds";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { selectableGameSpeeds } from "../../../../../../store/slices/gameMenus/selectableGameSpeeds";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
@@ -35,6 +36,10 @@ import { optionsHintMarkdownClassname } from "./optionsHintMarkdownClassname";
 const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**off**: Original *two-tone* spectrum graphics
 
 **on**: *16-colour* palette with colourised sprites`;
+
+const crtEffectMarkdown = `Here for the nostalgia?
+
+Make your fancy new screen look like it’s 1987 again`;
 
 const gameSpeedMarkdown = `Play at the original **1x** speed, **1.2x (default)** or faster **1.5x** or **2x** speeds`;
 
@@ -161,6 +166,40 @@ export const OptionsDialog = () => {
             <MenuItem
               hintInline
               doubleHeightWhenFocussed
+              id="crtFilter"
+              verticalAlignItemsCentre
+              label={
+                <>
+                  <span className="bg-pureBlack inline-block">
+                    <BitmapText className="text-midRed">C</BitmapText>
+                    <BitmapText className="text-moss">R</BitmapText>
+                    <BitmapText className="text-metallicBlue">T</BitmapText>
+                  </span>
+                  <BitmapText className="text-metallicBlue">
+                    {" TV effect"}
+                  </BitmapText>
+                </>
+              }
+              valueElement={
+                <Switch
+                  className="ml-auto"
+                  value={useAppSelector(selectIsCrtFilter)}
+                />
+              }
+              onSelect={useDispatchActionCallback(
+                toggleBoolean,
+                "userSettings.displaySettings.crtFilter",
+              )}
+              hint={
+                <BlockyMarkdown
+                  className={optionsHintMarkdownClassname}
+                  markdown={crtEffectMarkdown}
+                />
+              }
+            />
+            <MenuItem
+              hintInline
+              doubleHeightWhenFocussed
               id="livesModel"
               verticalAlignItemsCentre
               label="∞ Lives poke"
@@ -233,20 +272,6 @@ export const OptionsDialog = () => {
                 />
               }
             />
-            {/* <MenuItem
-                hintInline
-                doubleHeightWhenFocussed
-                id="crtFilter"
-                label="CRT TV effect"
-                valueElement={
-                  <Switch value={useAppSelector(selectIsCrtFilter)} />
-                }
-                onSelect={useDispatchActionCallback(
-                  toggleBoolean,
-                  "userSettings.displaySettings.crtFilter",
-                )}
-                hint="Subtle screen glow a bit like an old tv"
-              /> */}
             <MenuItem
               hintInline
               doubleHeightWhenFocussed

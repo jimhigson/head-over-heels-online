@@ -3,7 +3,7 @@ import type { EmptyObject } from "type-fest";
 import { useEffect } from "react";
 
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";

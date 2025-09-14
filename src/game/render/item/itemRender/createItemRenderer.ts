@@ -14,8 +14,8 @@ import { defaultUserSettings } from "../../../../store/defaultUserSettings";
 import {
   selectIsUncolourised,
   selectShowBoundingBoxes,
-} from "../../../../store/selectors";
-import { debugItemClicked } from "../../../../store/slices/gameMenusSlice";
+} from "../../../../store/slices/gameMenus/gameMenusSelectors";
+import { debugItemClicked } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../../store/store";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
