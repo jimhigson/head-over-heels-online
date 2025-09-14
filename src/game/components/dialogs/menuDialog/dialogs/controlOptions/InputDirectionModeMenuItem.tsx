@@ -1,10 +1,13 @@
 import { useInputDirectionMode } from "../../../../../../store/selectors";
-import { nextInputDirectionMode } from "../../../../../../store/slices/gameMenusSlice";
+import {
+  inputDirectionModes,
+  nextInputDirectionMode,
+} from "../../../../../../store/slices/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
+import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
-import { controlMenuValueClass } from "./controlMenuValueClass";
+import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const directions4HintMarkdown =
@@ -19,17 +22,26 @@ export const InputDirectionModeMenuItem = () => {
     <MenuItem
       id="analogueControl"
       label="Directions"
-      leader={<span className={`${spriteLeaderClasses} texture-joystick`} />}
+      leader={
+        <span
+          className={`${spriteLeaderClasses} texture-joystick sprites-normal-height`}
+        />
+      }
       valueElement={
-        <BitmapText className={controlMenuValueClass}>
-          {inputDirectionMode}
-        </BitmapText>
+        <SwitchN
+          className="ml-auto"
+          values={inputDirectionModes}
+          valueLabels={["4w", "8w", "al"]}
+          value={inputDirectionMode}
+        />
       }
       onSelect={useDispatchActionCallback(nextInputDirectionMode)}
+      verticalAlignItemsCentre
+      doubleHeightWhenFocussed
       hintInline
       hint={
         <BlockyMarkdown
-          className="text-midGrey zx:text-zxBlack"
+          className={optionsHintMarkdownClassname}
           markdown={
             inputDirectionMode === "analogue" ? analogueDirectionsHintMarkdown
             : inputDirectionMode === "8-way" ?

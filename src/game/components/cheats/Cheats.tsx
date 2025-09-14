@@ -516,6 +516,11 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             <div className="flex flex-row items-center">
               <SpeedButton
                 className={cheatsButtonClasses}
+                speed={-1}
+                gameApi={gameApi}
+              />
+              <SpeedButton
+                className={cheatsButtonClasses}
                 speed={0}
                 gameApi={gameApi}
               />

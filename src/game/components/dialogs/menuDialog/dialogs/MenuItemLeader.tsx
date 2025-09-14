@@ -17,7 +17,7 @@ export const MenuItemLeader = ({
         // min width and mx-auto centers, in case is sharing a menu with wider, custom leaders:
         `w-min mx-auto ` +
         (flip ? "scale-[-1] relative bottom-oneScaledPix" : "") +
-        (verticalAlignItemsCentre === true ? "flex items-center" : "")
+        (verticalAlignItemsCentre === true ? "flex items-center h-3" : "")
       }
     >
       {focussed ? "⏩⏩" : "⁌⁍"}

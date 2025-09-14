@@ -1,13 +1,11 @@
 import Portal from "@mutabazia/react-portal";
-import { type ReactElement, useRef } from "react";
+import { type ReactElement } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { useAppSelector } from "../../../../store/hooks";
-import { setFocussedMenuItemId } from "../../../../store/slices/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../store/useDispatchActionCallback";
 import { BitmapText } from "../../tailwindSprites/Sprite";
 import { useActionTap } from "../useActionTap";
 import { MenuItemLeader } from "./dialogs/MenuItemLeader";
+import { useMenuItem } from "./dialogs/menus/useMenuItem";
 import { multilineTextClass } from "./multilineTextClass";
 
 export type MenuItemProps = {
@@ -30,10 +28,6 @@ export type MenuItemProps = {
 // swap chars on loading
 const menuSelectOrJump = ["menu_select", "swop", "jump"] as const;
 
-export const menuItemDataAttributeId = "data-menuitem_id";
-export const menuItemDataAttributeHidden = "data-menuitem_hidden";
-export const menuItemDataAttributeDisabled = "data-menuitem_disabled";
-
 const noop = () => {};
 
 export const MenuItem = ({
@@ -51,16 +45,12 @@ export const MenuItem = ({
   leader,
   verticalAlignItemsCentre = false,
 }: MenuItemProps) => {
-  //useUnchanging(onSelect, "onSelect"); <- commented out, breaks HMR
-  const isFirstRender = useRef<boolean>(true);
-
-  const scrollIntoView = useAppSelector((state) => {
-    return state.gameMenus.openMenus.at(0)?.scrollableSelection ?? false;
+  const { menuItemProps, ref, focussed } = useMenuItem({
+    id,
+    hidden,
+    disabled,
+    onSelect,
   });
-
-  const focussed = useAppSelector(
-    (state) => state.gameMenus.openMenus.at(0)?.focussedItemId === id,
-  );
 
   useActionTap({
     action: menuSelectOrJump,
@@ -71,13 +61,7 @@ export const MenuItem = ({
   const menuItem = (
     // contents div puts children into the grid layout:
     <li
-      {...{
-        // data attributes required for MenuItems to this this MenuItem in the dom:
-        [menuItemDataAttributeId]: id,
-        [menuItemDataAttributeHidden]: hidden,
-        [menuItemDataAttributeDisabled]: disabled,
-      }}
-      tabIndex={0}
+      {...menuItemProps}
       className={twMerge(
         "contents",
         hidden ? "hidden" : "",
@@ -85,11 +69,6 @@ export const MenuItem = ({
         focussed ? "selectedMenuItem" : "",
         className,
       )}
-      onMouseMove={useDispatchActionCallback(setFocussedMenuItemId, {
-        focussedItemId: id,
-        scrollableSelection: false,
-      })}
-      onClick={disabled ? undefined : onSelect}
     >
       {/* first column content (leader/icon thing)... */}
       {leader || (
@@ -102,22 +81,7 @@ export const MenuItem = ({
 
       {/* second column content (main label)... */}
       <div
-        ref={(ele) => {
-          if (focussed && scrollIntoView) {
-            ele?.scrollIntoView({
-              behavior:
-                isFirstRender.current ?
-                  // instant: ie, if coming back to a menu from a child menu with an item half-way down
-                  // already selected (ie, reading the manual and going back up to manual index)
-                  //  - in this case we don't want to smoothly scroll
-                  "instant"
-                : "smooth",
-              block: "center",
-            });
-          }
-          isFirstRender.current = false;
-        }}
-        role="menuitem"
+        ref={ref}
         className={twMerge(
           // if there is no value to show, take up the third column too:
           valueElement === undefined ? "col-span-2" : "",
@@ -138,7 +102,13 @@ export const MenuItem = ({
       </div>
 
       {/* third column content (values etc) */}
-      {valueElement !== undefined && valueElement}
+      {valueElement && (
+        <div
+          className={`flex ${verticalAlignItemsCentre === true ? "items-center" : ""}`}
+        >
+          {valueElement}
+        </div>
+      )}
       {!focussed || hint === undefined || hintInline ? null : (
         <Portal>
           {typeof hint === "string" ?
@@ -153,7 +123,7 @@ export const MenuItem = ({
     return (
       <>
         {menuItem}
-        <div className="col-span-2 col-start-2 mb-2">{hint}</div>
+        <div className="col-span-2 col-start-2 mb-1">{hint}</div>
       </>
     );
   } else {

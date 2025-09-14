@@ -10,14 +10,10 @@ import { useDispatchActionCallback } from "../../../../../store/useDispatchActio
 import { Border } from "../../../../../ui/Border";
 import { Dialog } from "../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../ui/DialogPortal";
-import {
-  detectDeviceType,
-  isTouchDevice,
-} from "../../../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../../../utils/detectDeviceType";
 import { keysIter } from "../../../../../utils/entries";
 import { iterate } from "../../../../../utils/iterate";
 import { BitmapText } from "../../../tailwindSprites/Sprite";
-import { BackMenuItem } from "../BackMenuItem";
 import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";
 import { MenuItemSeparator } from "../MenuItemSeparator";
@@ -64,7 +60,7 @@ export const ReadTheManualDialog = () => {
             "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed "
           }
         >
-          {isTouchDevice() && <MobileStyleBackButton className="mb-1" />}
+          <MobileStyleBackButton className="mb-1" />
           <h1
             className={
               "text-moss zx:text-zxBlack mx-auto flex flex-row justify-center items-center w-full" +
@@ -85,7 +81,6 @@ export const ReadTheManualDialog = () => {
             ]}
 
             <MenuItemSeparator />
-            {isTouchDevice() || <BackMenuItem />}
           </MenuItems>
         </div>
       </Dialog>

@@ -11,7 +11,7 @@ import {
   menuItemDataAttributeDisabled,
   menuItemDataAttributeHidden,
   menuItemDataAttributeId,
-} from "./MenuItem";
+} from "./dialogs/menus/menuItemDataAttributes";
 
 const findMenuItems = () => {
   const menuItemsDom = document.body.querySelectorAll(
@@ -114,9 +114,18 @@ export const MenuItems = ({
 
     const menuItemsDom = findMenuItems();
 
+    const firstMenuItemId = menuItemsDom[0].getAttribute(
+      menuItemDataAttributeId,
+    );
+    const initialFocussedMenuId =
+      // don't initially focus the back button - go to the 2nd item (unless there's only back)
+      firstMenuItemId === "back" && menuItemsDom.length > 1 ?
+        menuItemsDom[1].getAttribute(menuItemDataAttributeId)
+      : firstMenuItemId;
+
     store.dispatch(
       setFocussedMenuItemId({
-        focussedItemId: menuItemsDom[0].getAttribute(menuItemDataAttributeId)!,
+        focussedItemId: initialFocussedMenuId!,
         scrollableSelection: true,
       }),
     );

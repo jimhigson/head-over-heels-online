@@ -252,7 +252,7 @@ export const SelectTheKeysMenuItems = () => {
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
-          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1`}
+          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1 sprites-double-height pb-1`}
         >
           Look controls
         </BitmapText>
@@ -303,7 +303,7 @@ export const SelectTheKeysMenuItems = () => {
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
-          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1`}
+          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
         >
           Remake option toggles
         </BitmapText>

@@ -40,8 +40,8 @@ const roomIds =
   : keys(campaign.rooms).slice(0, roomLimit);
 
 // Selectors for menu navigation
-const playGameSelector = "[data-menuitem_id=playGame] [role=menuitem]";
-const originalGameSelector = "[data-menuitem_id=originalGame] [role=menuitem]";
+const playGameMenuItemSelector = "[data-menuitem_id=playGame]";
+const originalGameSelector = "[data-menuitem_id=originalGame]";
 const crownsDialogSelector = "[data-dialog-id=crowns]";
 
 const logSelectorExistence = async (
@@ -110,8 +110,8 @@ const startOriginalGame = async (page: Page, projectName: string) => {
 
       // start a game:
       console.log(`${logHeader}: clicking Play The Game...`);
-      await logSelectorExistence(page, playGameSelector, logHeader);
-      await page.click(playGameSelector);
+      await logSelectorExistence(page, playGameMenuItemSelector, logHeader);
+      await page.click(playGameMenuItemSelector);
 
       // select original campaign:
       console.log(`${logHeader}: choosing original campaign...`);
