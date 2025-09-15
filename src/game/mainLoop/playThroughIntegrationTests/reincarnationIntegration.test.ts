@@ -5,7 +5,7 @@ vi.mock("../../sprites/samplePalette", () => ({
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
+import { firstRoomId, setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { store } from "../../../store/store";
@@ -45,9 +45,13 @@ describe("reincarnation", () => {
         store.getState().gameMenus.gameInPlay.reincarnationPoint !== undefined,
     });
 
+    const {
+      gameMenus: {
+        gameInPlay: { reincarnationPoint },
+      },
+    } = store.getState();
     const reincarnationPointHeelsRoomItems =
-      store.getState().gameMenus.gameInPlay.reincarnationPoint?.gameState
-        .characterRooms.heels?.items;
+      reincarnationPoint?.gameState.characterRooms.heels?.items;
 
     if (!reincarnationPointHeelsRoomItems) {
       expect.fail(
@@ -70,6 +74,11 @@ describe("reincarnation", () => {
         "restored",
       ]
     `);
+
+    // the fish should be marked as collected in the reincarnation point it created:
+    expect(
+      reincarnationPoint.gameState.pickupsCollected[firstRoomId]!["fish"],
+    ).toBe(true);
   });
 
   test("saves the game without the fish in it if both players are in the same room, in both saved versions of the room", () => {
@@ -120,12 +129,15 @@ describe("reincarnation", () => {
         store.getState().gameMenus.gameInPlay.reincarnationPoint !== undefined,
     });
 
+    const {
+      gameMenus: {
+        gameInPlay: { reincarnationPoint },
+      },
+    } = store.getState();
     const headRoomItemsInReincarnationPoint =
-      store.getState().gameMenus.gameInPlay.reincarnationPoint?.gameState
-        .characterRooms.head?.items;
+      reincarnationPoint?.gameState.characterRooms.head?.items;
     const heelsRoomItemsInReincarnationPoint =
-      store.getState().gameMenus.gameInPlay.reincarnationPoint?.gameState
-        .characterRooms.heels?.items;
+      reincarnationPoint?.gameState.characterRooms.heels?.items;
 
     if (!headRoomItemsInReincarnationPoint) {
       expect.fail(
