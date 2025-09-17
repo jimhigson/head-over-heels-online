@@ -210,6 +210,9 @@ export const handlePlayerTouchingPickup = <
       break;
 
     case "reincarnation": {
+      // mark as collected before creating the save, so it is also collected in the saved game
+      markAsCollected();
+
       const savedGame = createSavedGame(gameState, store.getState(), {
         characterPickingUp: player.type,
         pickupId,
@@ -239,7 +242,7 @@ export const handlePlayerTouchingPickup = <
         room: roomWithPickup,
         item: loadFloatingText(["reincarnation", "point", "saved"]),
       });
-      markAsCollected();
+
       break;
     }
 
