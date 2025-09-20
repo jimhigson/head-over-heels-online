@@ -2,7 +2,7 @@ import type { roomSpatialIndexKey, RoomState } from "../../../model/RoomState";
 import type {
   gameMenusSlice,
   GameMenusState,
-} from "../../../store/slices/gameMenusSlice";
+} from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { CharacterRooms, GameState } from "../GameState";
 
 /**

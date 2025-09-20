@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 
 import { startAppListening } from "../../../store/listenerMiddleware";
-import { debugItemClicked } from "../../../store/slices/gameMenusSlice";
+import { debugItemClicked } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { pixiContainerToString } from "../../../utils/pixi/pixiContainerToString";
 import { isFreeItem, isItemType } from "../../physics/itemPredicates";
 import { useGameApi } from "../GameApiContext";

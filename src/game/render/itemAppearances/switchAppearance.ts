@@ -1,7 +1,7 @@
 import type { SwitchSetting } from "../../../model/ItemInPlay";
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { selectAtPath } from "../../../store/selectors";
+import { selectAtPath } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { createSprite } from "../createSprite";
 

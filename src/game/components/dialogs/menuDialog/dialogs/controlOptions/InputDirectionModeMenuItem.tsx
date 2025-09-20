@@ -1,8 +1,8 @@
-import { useInputDirectionMode } from "../../../../../../store/selectors";
+import { useInputDirectionMode } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   inputDirectionModes,
   nextInputDirectionMode,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";

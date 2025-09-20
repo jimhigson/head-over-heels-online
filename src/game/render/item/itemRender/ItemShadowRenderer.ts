@@ -1,4 +1,3 @@
-import type { ConsolidatableConfig } from "src/model/json/utilityJsonConfigTypes";
 import type { SetRequired, WritableDeep } from "type-fest";
 
 import { AlphaFilter, Container, Sprite } from "pixi.js";
@@ -7,6 +6,7 @@ import type {
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
+import type { ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import type { Collideable } from "../../../collision/aabbCollision";
 import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import type {

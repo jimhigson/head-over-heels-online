@@ -1,4 +1,4 @@
-import type { BooleanStatePaths } from "../../store/slices/gameMenusSlice";
+import type { BooleanStatePaths } from "../../store/slices/gameMenus/gameMenusSlice";
 import type { Subset } from "../../utils/subset";
 import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
 import type { SwitchSetting } from "../ItemInPlay";

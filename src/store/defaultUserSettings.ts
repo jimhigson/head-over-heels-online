@@ -1,6 +1,6 @@
 import type { RequiredDeep } from "type-fest";
 
-import type { UserSettings } from "./slices/gameMenusSlice";
+import type { UserSettings } from "./slices/gameMenus/gameMenusSlice";
 
 import { keyAssignmentPresets } from "../game/input/keyAssignmentPresets";
 import { detectDeviceType } from "../utils/detectDeviceType";

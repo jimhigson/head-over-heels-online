@@ -3,7 +3,7 @@ import { useCallback, useRef } from "react";
 import type { DirectionXy4 } from "../../../../../utils/vectors/vectors";
 
 import { hudCharTextureSize } from "../../../../../sprites/textureSizes";
-import { useTotalUpscale } from "../../../../../store/selectors";
+import { useTotalUpscale } from "../../../../../store/slices/upscale/upscaleSelectors";
 import { unitVectors } from "../../../../../utils/vectors/unitVectors";
 import { useActionTap } from "../../useActionTap";
 

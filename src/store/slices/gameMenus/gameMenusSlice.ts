@@ -6,42 +6,42 @@ import { createSlice, current } from "@reduxjs/toolkit";
 import { canonicalize } from "json-canonicalize";
 import { REHYDRATE } from "redux-persist";
 
-import type { DialogId } from "../../game/components/dialogs/menuDialog/DialogId";
-import type { SavedGame } from "../../game/gameState/saving/SavedGameState";
-import type { BooleanAction } from "../../game/input/actions";
+import type { DialogId } from "../../../game/components/dialogs/menuDialog/DialogId";
+import type { SavedGame } from "../../../game/gameState/saving/SavedGameState";
+import type { BooleanAction } from "../../../game/input/actions";
 import type {
   ActionInputAssignment,
   InputAssignment,
   InputPress,
-} from "../../game/input/InputAssignment";
-import type { KeyAssignmentPresetName } from "../../game/input/keyAssignmentPresets";
-import type { PlayableItem } from "../../game/physics/itemPredicates";
-import type { MarkdownPageName } from "../../manual/pages";
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { ScrollConfig } from "../../model/json/ItemConfigMap";
-import type { CampaignLocator, CharacterName } from "../../model/modelTypes";
-import type { ResolutionName } from "../../originalGame";
-import type { PlanetName } from "../../sprites/planets";
-import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
-import type { ToggleablePaths } from "../../utils/Toggleable";
-import type { gameMenusSliceWhitelist } from "../persist/gameMenusSliceWhitelist";
-import type { RootState } from "../store";
+} from "../../../game/input/InputAssignment";
+import type { KeyAssignmentPresetName } from "../../../game/input/keyAssignmentPresets";
+import type { PlayableItem } from "../../../game/physics/itemPredicates";
+import type { MarkdownPageName } from "../../../manual/pages";
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
+import type { CampaignLocator, CharacterName } from "../../../model/modelTypes";
+import type { ResolutionName } from "../../../originalGame";
+import type { PlanetName } from "../../../sprites/planets";
+import type { SerialisableError } from "../../../utils/redux/createSerialisableErrors";
+import type { ToggleablePaths } from "../../../utils/Toggleable";
+import type { gameMenusSliceWhitelist } from "../../persist/gameMenusSliceWhitelist";
+import type { RootState } from "../../store";
 
-import { keyAssignmentPresets } from "../../game/input/keyAssignmentPresets";
-import { isInPlaytestMode } from "../../game/isInPlaytestMode";
-import { typedURLSearchParams } from "../../options/queryParams";
-import { resolutionNames } from "../../originalGame";
-import { detectDeviceType } from "../../utils/detectDeviceType";
-import { emptyObject } from "../../utils/empty";
-import { getAtPath, setAtPath } from "../../utils/getAtPath";
-import { nextInCycle } from "../../utils/nextInCycle";
-import { pick } from "../../utils/pick";
-import { directionsXy4 } from "../../utils/vectors/vectors";
+import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
+import { isInPlaytestMode } from "../../../game/isInPlaytestMode";
+import { typedURLSearchParams } from "../../../options/queryParams";
+import { resolutionNames } from "../../../originalGame";
+import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { emptyObject } from "../../../utils/empty";
+import { getAtPath, setAtPath } from "../../../utils/getAtPath";
+import { nextInCycle } from "../../../utils/nextInCycle";
+import { pick } from "../../../utils/pick";
+import { directionsXy4 } from "../../../utils/vectors/vectors";
 import {
   selectEmulatedResolutionName,
   selectGameSpeed,
   selectInputDirectionMode,
-} from "../selectors";
+} from "./gameMenusSelectors";
 import {
   selectableGameSpeeds,
   type SelectableGameSpeeds,

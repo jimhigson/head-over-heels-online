@@ -10,7 +10,7 @@ import {
   gameStarted,
   lostLife,
   reincarnationAccepted,
-} from "../store/slices/gameMenusSlice";
+} from "../store/slices/gameMenus/gameMenusSlice";
 import { HookComponent } from "../utils/react/HookComponent";
 
 const isTrackedEvent = isAnyOf(

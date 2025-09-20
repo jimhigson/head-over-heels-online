@@ -3,7 +3,7 @@ import type { EmptyObject } from "type-fest";
 
 import { Component } from "react";
 
-import { errorCaught } from "../../store/slices/gameMenusSlice";
+import { errorCaught } from "../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../store/store";
 import { createSerialisableErrors } from "../redux/createSerialisableErrors";
 

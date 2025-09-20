@@ -6,7 +6,7 @@ import type { UnindexedRoomState } from "./saving/SavedGameState";
 
 import { campaign } from "../../_generated/originalCampaign/campaign";
 import { roomSpatialIndexKey } from "../../model/RoomState";
-import { noPlanetsLiberated } from "../../store/slices/gameMenusSlice";
+import { noPlanetsLiberated } from "../../store/slices/gameMenus/gameMenusSlice";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { InputStateTracker } from "../input/InputStateTracker";
 import { loadGameState } from "./loadGameState";

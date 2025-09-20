@@ -4,12 +4,12 @@ import {
   selectIsAssigningKeys,
   useInputDirectionMode,
   useIsAssigningKeys,
-} from "../../../../../../store/selectors";
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   backToParentMenu,
   doneAssigningInput,
   inputAddedDuringAssignment,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";

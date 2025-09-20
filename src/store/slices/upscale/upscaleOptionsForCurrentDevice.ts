@@ -1,4 +1,5 @@
 import type { Xy } from "../../../utils/vectors/vectors";
+import type { DisplaySettings } from "../gameMenus/gameMenusSlice";
 import type { CalculateUpscaleOptions } from "./calculateUpscale";
 
 import { type ResolutionName, resolutions } from "../../../originalGame";
@@ -23,6 +24,7 @@ const gameRenderAreaSize = (targetElement?: HTMLElement): Xy => {
  */
 export const upscaleOptionsForCurrentDevice = (
   emulatedResolution: ResolutionName,
+  displaySettings: DisplaySettings,
   targetElement?: HTMLElement,
 ): CalculateUpscaleOptions => {
   const deviceType = detectDeviceType();
@@ -32,5 +34,9 @@ export const upscaleOptionsForCurrentDevice = (
     renderAreaSize,
     emulatedResolutionName: emulatedResolution,
     devicePixelRatio: deviceType === "server" ? 1 : window.devicePixelRatio,
+    maximumCanvasUpscale:
+      // 8 without crt emulation (sharp, square pixels), or 6 with making the upscale smaller when crt emulation
+      // is on compensates for the extra processing it requires
+      displaySettings.crtFilter ? 6 : 8,
   };
 };

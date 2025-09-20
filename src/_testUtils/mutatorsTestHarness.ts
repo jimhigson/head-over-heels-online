@@ -31,7 +31,7 @@ import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
 import { updateItemPosition } from "../game/gameState/mutators/updateItemPosition";
 import { blockSizePx } from "../sprites/spritePivots";
 import { startAppListening } from "../store/listenerMiddleware";
-import { gameOver } from "../store/slices/gameMenusSlice";
+import { gameOver } from "../store/slices/gameMenus/gameMenusSlice";
 import { iterate } from "../utils/iterate";
 import { addXyz } from "../utils/vectors/vectors";
 import { gameStartedWithCampaign } from "./initStoreForTests";

@@ -1,6 +1,6 @@
 import { useResizeDetector } from "react-resize-detector";
 
-import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";

@@ -16,7 +16,10 @@ import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
 import { listenerMiddleware } from "./listenerMiddleware";
 import { gameMenusPersistedReducer } from "./persist/persist";
 import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
-import { debugItemClicked, gameMenusSlice } from "./slices/gameMenusSlice";
+import {
+  debugItemClicked,
+  gameMenusSlice,
+} from "./slices/gameMenus/gameMenusSlice";
 import { manualLoadingSlice } from "./slices/manualLoadingSlice";
 import { updateUpscaleWhenEmulatedResolutionChanges } from "./slices/upscale/updateUpscaleWhenEmulatedResolutionChanges";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";

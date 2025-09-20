@@ -3,7 +3,7 @@ import { useLayoutEffect } from "react";
 import type { ResolutionName } from "../../originalGame";
 
 import { useAppDispatch } from "../hooks";
-import { selectEmulatedResolutionName } from "../selectors";
+import { selectEmulatedResolutionName } from "../slices/gameMenus/gameMenusSelectors";
 import { upscaleOptionsForCurrentDevice } from "../slices/upscale/upscaleOptionsForCurrentDevice";
 import { upscaleToWindow } from "../slices/upscale/upscaleSlice";
 import { store } from "../store";
@@ -17,6 +17,7 @@ const updateUpscaleNow = (
       upscaleOptionsForCurrentDevice(
         fixedEmulatedResolution ??
           selectEmulatedResolutionName(store.getState()),
+        store.getState().gameMenus.userSettings.displaySettings,
         targetElement,
       ),
     ),

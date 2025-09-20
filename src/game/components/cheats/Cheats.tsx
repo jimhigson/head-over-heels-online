@@ -23,8 +23,8 @@ import {
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import { useAppDispatch } from "../../../store/hooks";
-import { useShowShadowMasks } from "../../../store/selectors";
-import { setShowShadowMasks } from "../../../store/slices/gameMenusSlice";
+import { useShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { setShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { Button } from "../../../ui/button";
 import { Switch } from "../../../ui/Switch";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";

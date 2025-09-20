@@ -3,7 +3,7 @@ import type { GameApi } from "../../../../../GameApi";
 import {
   gameOver,
   reincarnationAccepted,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
