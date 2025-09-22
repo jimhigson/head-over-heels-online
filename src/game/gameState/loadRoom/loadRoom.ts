@@ -15,7 +15,7 @@ import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { isFreeItem, isSolid } from "../../physics/itemPredicates";
-import { setStandingOn } from "../mutators/setStandingOn";
+import { setStandingOn } from "../mutators/standingOn/setStandingOn";
 import { loadItemFromJson } from "./loadItemFromJson";
 import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";
 

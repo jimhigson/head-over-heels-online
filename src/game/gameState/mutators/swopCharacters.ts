@@ -6,7 +6,7 @@ import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
-import { setStandingOn } from "./setStandingOn";
+import { setStandingOn } from "./standingOn/setStandingOn";
 import {
   combinePlayablesInSymbiosis,
   uncombinePlayablesFromSymbiosis,

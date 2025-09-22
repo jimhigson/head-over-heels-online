@@ -1,5 +1,5 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { FreeItem } from "../../physics/itemPredicates";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlay";
+import type { FreeItem } from "../../../physics/itemPredicates";
 
 export const setStandingOn = <
   RoomId extends string,
@@ -12,6 +12,13 @@ export const setStandingOn = <
   below: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 }) => {
   const belowStoodOnBy = below.state.stoodOnBy;
+
+  console.log(
+    "⭐️ setStandingOn :: setting standing on; above=",
+    above.id,
+    "; below=",
+    below.id,
+  );
 
   // TODO: this kind of protection could be hidden behind a macro etc
   if (!Object.isExtensible(belowStoodOnBy)) {

@@ -12,7 +12,7 @@ import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selec
 import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
-import { updateStandingOn } from "../gameState/mutators/updateStandingOn";
+import { updateStandingOn } from "../gameState/mutators/standingOn/updateStandingOn";
 import { isPlayableItem } from "../physics/itemPredicates";
 import { addParticlesForPlayablesInRoom } from "./addParticlesToRoom";
 import { advanceTime } from "./advanceTime";

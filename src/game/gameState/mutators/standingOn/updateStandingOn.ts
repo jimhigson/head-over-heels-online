@@ -2,12 +2,12 @@ import {
   iterateRoomItems,
   roomItemsIterable,
   type RoomState,
-} from "../../../model/RoomState";
-import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+} from "../../../../model/RoomState";
+import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
 import {
   findStandingOnWithHighestPriorityAndMostOverlap,
   spatiallyCheckStandingOn,
-} from "../../collision/checkStandingOn";
+} from "../../../collision/checkStandingOn";
 import { removeStandingOn } from "./removeStandingOn";
 import { setStandingOn } from "./setStandingOn";
 

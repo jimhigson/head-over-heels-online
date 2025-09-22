@@ -1,7 +1,7 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 
 import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
-import { setStandingOn } from "../../gameState/mutators/setStandingOn";
+import { setStandingOn } from "../../gameState/mutators/standingOn/setStandingOn";
 import { applyMechanicsResults } from "../../mainLoop/applyMechanicsResults";
 import { jumping } from "../mechanics/jumping";
 import { walking } from "../mechanics/walking";
