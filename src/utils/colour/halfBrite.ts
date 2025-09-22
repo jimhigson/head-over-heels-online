@@ -1,10 +1,7 @@
 import { Color } from "pixi.js";
 
 /**
- * make the black shadow at half opacity, crating an effect similar to Amiga OCS's EHB
- * - in practice, 0.5 is to feint, so 0.66 make it easier to see the shadow.
- * Since pixi uses the red channel for alpha in shadow masks, this is only
- * the correct brightness for shadows if the mask is pure red (or white etc)
+ * how dark to make the shadows in range 0..1 to emulate Amiga EHB (lower is darker)
  */
 export const amigaHalfBriteBrightness = 0.4;
 
