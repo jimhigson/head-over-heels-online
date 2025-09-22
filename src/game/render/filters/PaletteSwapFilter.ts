@@ -13,7 +13,8 @@ export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
 
 // higher values make collisions less likely, and on modern hardware this is a very small texture
 // for all reasonable values of lutSize
-const lutW = 1024;
+const lutW = 64;
+const lutSize = lutW * lutW;
 const smallPrime = 17;
 
 /**
@@ -30,12 +31,12 @@ function hashColor(r: number, g: number, b: number): number {
   const gi = Math.floor(g * 255 + 0.5);
   const bi = Math.floor(b * 255 + 0.5);
 
-  return (ri + gi * smallPrime + bi * smallPrime * smallPrime) % lutW;
+  return (ri + gi * smallPrime + bi * smallPrime * smallPrime) % lutSize;
 }
 
 function createLut(swops: PaletteSwaps): Texture {
   // Create RGBA texture data (4 bytes per pixel)
-  const data = new Float32Array(lutW * 4);
+  const data = new Float32Array(lutSize * 4);
 
   // we also put the shadow-ed version of the colour in the LUT:
   for (const bright of brightnessLevels) {
@@ -73,8 +74,8 @@ function createLut(swops: PaletteSwaps): Texture {
   }
 
   // Convert Float32Array to Uint8Array for standard RGBA texture
-  const uint8Data = new Uint8Array(lutW * 4);
-  for (let i = 0; i < lutW * 4; i++) {
+  const uint8Data = new Uint8Array(lutSize * 4);
+  for (let i = 0; i < lutSize * 4; i++) {
     uint8Data[i] = Math.floor(data[i] * 255);
   }
 
@@ -82,7 +83,7 @@ function createLut(swops: PaletteSwaps): Texture {
   const texture = Texture.from({
     resource: uint8Data,
     width: lutW,
-    height: 1,
+    height: lutW,
     scaleMode: "nearest",
     antialias: false,
   });
