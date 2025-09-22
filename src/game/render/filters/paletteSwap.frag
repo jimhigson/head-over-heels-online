@@ -7,8 +7,8 @@ in vec2 vTextureCoord;
 out vec4 finalColor;
 
 // these must match the typescript
-const float lutSize = 256.0;
-const float smallPrime = 31.0;
+const float lutW = 1024.0;
+const float smallPrime = 17.0;
 
 uniform sampler2D uTexture;
 uniform sampler2D uLut;
@@ -22,7 +22,7 @@ float hashInputColour(vec3 color) {
     
     float hash = mod(
         c255.r + c255.g * smallPrime + c255.b * smallPrime * smallPrime, 
-        lutSize
+        lutW
     );
     return hash;
 }
@@ -38,7 +38,7 @@ void main(void) {
         uLut, 
         vec2(
             // normalise h to [0, 1] range, sampling from texel center
-            (h + 0.5) / lutSize, 
+            (h + 0.5) / lutW, 
             0.5
         )
     );
