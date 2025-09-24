@@ -226,6 +226,7 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: {
+          id,
           config: { style },
         },
         general: { paused, gameState },
@@ -235,6 +236,7 @@ const itemAppearancesMap: {
         animationId: `bubbles.${style}`,
         paused,
         gameSpeed: gameState?.gameSpeed,
+        randomiseStartFrame: id,
       });
     },
   ),
