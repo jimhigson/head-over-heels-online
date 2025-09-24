@@ -4,6 +4,7 @@ import { Route, Switch } from "wouter";
 
 import { typedURLSearchParams } from "../../options/queryParams.ts";
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
+import { LutPage } from "../../pages/LutPage.tsx";
 import { SpritePage } from "../../pages/SpritePage.tsx";
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import { gameStarted } from "../../store/slices/gameMenus/gameMenusSlice.ts";
@@ -53,6 +54,9 @@ const AppInner = () => {
       </Route>
       <Route path="/sprites">
         <SpritePage />
+      </Route>
+      <Route path="/lut">
+        <LutPage />
       </Route>
       <Route path="/editor">
         <CssVariables>

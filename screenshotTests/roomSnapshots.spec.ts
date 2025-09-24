@@ -407,6 +407,13 @@ test.describe("Room Visual Snapshots", () => {
           .soft(page)
           .toHaveScreenshot(`${roomId}.png`, {
             fullPage: false,
+            // default is 0.2, which is very permissive to palette changes.
+            // Whereas 0 makes builds fail with invisible differences between
+            // the OS running the test, at least in webkit/safari.
+            // keep a much smaller threshold than normal, but not zero:
+            threshold: 0.02,
+            scale: "device",
+            maxDiffPixels: 0,
           });
         console.log(
           `${header} ...screenshot took`,

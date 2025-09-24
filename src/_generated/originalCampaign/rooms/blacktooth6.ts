@@ -73,6 +73,24 @@ export const room = inferRoomJson({
       position: { x: 6, y: 7, z: 2 },
       type: "monster",
     },
+    extraMonster4: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 7, y: 3, z: 2 },
+      type: "monster",
+    },
+    extraMonster5: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 7, y: 4, z: 2 },
+      type: "monster",
+    },
     "floor@0,0,0": {
       config: { floorType: "deadly", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },

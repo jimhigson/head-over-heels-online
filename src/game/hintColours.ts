@@ -21,7 +21,7 @@ export const whiteShades = {
 export const yellowShadesInBasicRooms = {
   original: new Color(zxSpectrumColors.zxYellow),
   basic: new Color(0xeedd66),
-  dimmed: halfbrite(new Color(0xeedd66), 0.5),
+  dimmed: halfbrite(new Color(0xeedd66)),
 };
 export const yellowShadesInDimmedRooms = {
   original: new Color(zxSpectrumColors.zxYellow),
@@ -31,18 +31,19 @@ export const yellowShadesInDimmedRooms = {
 export const magentaShades = {
   original: new Color(zxSpectrumColors.zxMagenta),
   basic: spritesheetPalette.pink,
-  dimmed: halfbrite(spritesheetPalette.pink, 0.5),
+  // by using halfbrite from the original palette, it should be found by a the LUT
+  // palette swap filter when it indexes also the halfbrite versions of the input colours
+  dimmed: halfbrite(spritesheetPalette.pink),
 };
 export const cyanShades = {
   original: new Color(zxSpectrumColors.zxCyan),
   basic: spritesheetPalette.pastelBlue,
-  //dimmed: spritesheetPalette.shadow,
-  dimmed: halfbrite(spritesheetPalette.pastelBlue, 0.5), // trying to be halfway between basic and spritesheet shadow
+  dimmed: halfbrite(spritesheetPalette.pastelBlue),
 };
 export const greenShades = {
   original: new Color(zxSpectrumColors.zxGreen),
   basic: spritesheetPalette.moss,
-  dimmed: halfbrite(spritesheetPalette.moss, 0.5),
+  dimmed: halfbrite(spritesheetPalette.moss),
 };
 
 export type ColorScheme = {

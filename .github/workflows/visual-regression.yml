@@ -10,16 +10,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        test:
+          - lutSnapshot
+          - roomSnapshots
         browser:
           - chromium-desktop
-          # firefox can't do webgl on github action runners
-          # so this will have to be tested local-only, when updating
-          # the images
-          #- firefox-desktop
           - webkit-desktop
           - mobile-chrome
           - mobile-safari
-    name: Visual tests - ${{ matrix.browser }}
+    name: Visual tests - ${{ matrix.test }} - ${{ matrix.browser }}
 
     steps:
       - uses: actions/checkout@v4
@@ -58,7 +57,7 @@ jobs:
         run: pnpm playwright install-deps
 
       - name: Run Playwright tests
-        run: pnpm playwright test --project=${{ matrix.browser }}
+        run: pnpm playwright test ${{ matrix.test }} --project=${{ matrix.browser }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

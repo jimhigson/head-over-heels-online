@@ -71,9 +71,11 @@ const logTextures = async (): Promise<void> => {
          border: 1px solid ${spritesheetPalette.pink};`,
         `\n ${texture.width}x${texture.height} ${format} (${memoryKB} KB) ${item.type ?? "unknown type"} ${createdTime}`,
       );
-      console.log("stack", item.callStack);
-      console.groupEnd();
 
+      // Log clickable data URL
+      console.log(base64);
+
+      console.log("stack", item.callStack);
       console.groupEnd();
     } catch (error) {
       console.warn(`Failed to extract texture:`, error);
