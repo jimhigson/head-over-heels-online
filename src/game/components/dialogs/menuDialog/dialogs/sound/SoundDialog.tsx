@@ -2,11 +2,11 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectIsNoFootstepSounds,
   selectIsSoundMuted,
-} from "../../../../../../store/selectors";
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   backToParentMenu,
-  toggleBoolean,
-} from "../../../../../../store/slices/gameMenusSlice";
+  toggleUserSetting,
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
@@ -56,10 +56,9 @@ export const SoundDialog = () => {
               label="Mute"
               valueElement={<Switch value={isMuted} />}
               verticalAlignItemsCentre
-              onSelect={useDispatchActionCallback(
-                toggleBoolean,
-                "userSettings.soundSettings.mute",
-              )}
+              onSelect={useDispatchActionCallback(toggleUserSetting, {
+                path: "soundSettings.mute",
+              })}
             />
             {/* <MenuItem
               doubleHeightWhenFocussed
@@ -78,10 +77,9 @@ export const SoundDialog = () => {
               label="Footstep sounds"
               valueElement={<Switch value={!isMuted && !isNoFootstepSounds} />}
               verticalAlignItemsCentre
-              onSelect={useDispatchActionCallback(
-                toggleBoolean,
-                "userSettings.soundSettings.noFootsteps",
-              )}
+              onSelect={useDispatchActionCallback(toggleUserSetting, {
+                path: "soundSettings.noFootsteps",
+              })}
               disabled={isMuted}
             />
             <MenuItemSeparator />

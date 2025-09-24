@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 import { useAppSelector } from "../../../../../../store/hooks";
-import { setFocussedMenuItemId } from "../../../../../../store/slices/gameMenusSlice";
+import { setFocussedMenuItemId } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { useActionTap } from "../../../useActionTap";
 import {

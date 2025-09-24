@@ -2,7 +2,7 @@
   {
     "op": "add",
     "path": "/items/teleporter@0,3,0/config/activatedOnStoreValue",
-    "value": "gameInPlay.planetsLiberated.penitentiary"
+    "value": "planetsLiberated.penitentiary"
   },
   {
     "op": "add",

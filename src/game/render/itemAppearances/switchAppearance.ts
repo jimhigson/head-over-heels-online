@@ -1,7 +1,7 @@
 import type { SwitchSetting } from "../../../model/ItemInPlay";
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { selectAtPath } from "../../../store/selectors";
+import { selectBooleanUserSetting } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { createSprite } from "../createSprite";
 
@@ -23,7 +23,8 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
   // for store switches, ignore the switch's own state and read from the store:
   const setting =
     switchConfig.type === "in-store" ?
-      selectAtPath(store.getState(), switchConfig.path) ? "right"
+      selectBooleanUserSetting(store.getState().gameMenus, switchConfig.path) ?
+        "right"
       : "left"
     : stateSetting;
 

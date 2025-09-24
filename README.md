@@ -8,6 +8,10 @@ Features mobile and desktop support, support for gamepads, keyboard, and touch i
   <h2><a href="https://blockstack.ing/">🎮 Play the game at Blockstack.ing</a></h2>
 </div>
 
+## Shaders
+
+- CRT shaders made for this project spun out into their own repo here: [jims_shaders](https://github.com/jimhigson/jims_shaders).
+
 ## Credits
 
 - [Jon Ritman](http://ritman.co.uk/) and Bernie Drummond for making the original game.

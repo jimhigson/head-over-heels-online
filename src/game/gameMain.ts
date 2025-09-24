@@ -12,7 +12,7 @@ import {
   gameRestoreFromSave,
   roomExplored,
   selectSaveForCampaign,
-} from "../store/slices/gameMenusSlice";
+} from "../store/slices/gameMenus/gameMenusSlice";
 
 import "pixi.js/advanced-blend-modes";
 

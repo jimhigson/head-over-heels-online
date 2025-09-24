@@ -26,10 +26,19 @@ export const room = inferRoomJson({
       position: { x: 5, y: 0, z: 6 },
       type: "barrier",
     },
+    crtSwitch: {
+      config: {
+        initialSetting: "left",
+        path: "displaySettings.crtFilter",
+        type: "in-store",
+      },
+      position: { x: 5, y: 4, z: 0 },
+      type: "switch",
+    },
     colouriseSwitch: {
       config: {
         initialSetting: "left",
-        path: "userSettings.displaySettings.uncolourised",
+        path: "displaySettings.uncolourised",
         type: "in-store",
       },
       position: { x: 5, y: 3, z: 0 },

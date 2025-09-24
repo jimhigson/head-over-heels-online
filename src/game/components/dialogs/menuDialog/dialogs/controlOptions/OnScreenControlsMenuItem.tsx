@@ -1,5 +1,5 @@
-import { useIsUserPreferenceOnScreenControls } from "../../../../../../store/selectors";
-import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
+import { useIsUserPreferenceOnScreenControls } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
@@ -27,10 +27,9 @@ You can turn this off for phones paired with joypads/keyboards`;
           value={useIsUserPreferenceOnScreenControls()}
         />
       }
-      onSelect={useDispatchActionCallback(
-        toggleBoolean,
-        "userSettings.onScreenControls",
-      )}
+      onSelect={useDispatchActionCallback(toggleUserSetting, {
+        path: "onScreenControls",
+      })}
       verticalAlignItemsCentre
       hintInline
       hint={

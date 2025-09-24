@@ -1,5 +1,5 @@
-import { useIsScreenRelativeControl } from "../../../../../../store/selectors";
-import { toggleBoolean } from "../../../../../../store/slices/gameMenusSlice";
+import { useIsScreenRelativeControl } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
@@ -38,10 +38,9 @@ export const ScreenRelativeControlMenuItem = () => {
         />
       }
       valueElement={<ScreenRelativeControlValue />}
-      onSelect={useDispatchActionCallback(
-        toggleBoolean,
-        "userSettings.screenRelativeControl",
-      )}
+      onSelect={useDispatchActionCallback(toggleUserSetting, {
+        path: "screenRelativeControl",
+      })}
       hintInline
       verticalAlignItemsCentre
       doubleHeightWhenFocussed

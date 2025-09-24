@@ -28,7 +28,7 @@ export const room = inferRoomJson({
     },
     "teleporter@7,3,0": {
       config: {
-        activatedOnStoreValue: "gameInPlay.planetsLiberated.bookworld",
+        activatedOnStoreValue: "planetsLiberated.bookworld",
         times: { y: 2 },
         toPosition: { x: 7, y: 3, z: 0 },
         toRoom: "bookworld1",

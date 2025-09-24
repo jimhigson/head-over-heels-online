@@ -10,7 +10,7 @@ import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
   selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
-} from "../../../store/selectors";
+} from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";

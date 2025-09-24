@@ -3,7 +3,7 @@ import { produce } from "immer";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { RoomJson } from "../../../model/RoomJson";
-import type { ScrollsRead } from "../../../store/slices/gameMenusSlice";
+import type { ScrollsRead } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 import type { RoomPickupsCollected } from "../GameState";

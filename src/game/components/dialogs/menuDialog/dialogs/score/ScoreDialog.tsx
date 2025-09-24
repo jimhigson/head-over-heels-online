@@ -5,8 +5,8 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectPlanetsLiberatedCount,
   useCurrentCampaign,
-} from "../../../../../../store/selectors";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";

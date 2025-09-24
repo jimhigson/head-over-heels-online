@@ -3,8 +3,8 @@ import type { PropsWithChildren, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { useIsAssigningKeys } from "../../../../store/selectors";
-import { setFocussedMenuItemId } from "../../../../store/slices/gameMenusSlice";
+import { useIsAssigningKeys } from "../../../../store/slices/gameMenus/gameMenusSelectors";
+import { setFocussedMenuItemId } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../../store/store";
 import { useActionTap } from "../useActionTap";
 import {

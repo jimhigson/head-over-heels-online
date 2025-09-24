@@ -2,7 +2,7 @@ import type { SwitchSetting } from "../../model/ItemInPlay";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
-import { selectAtPath } from "../../store/selectors";
+import { selectBooleanUserSetting } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../store/store";
 import { audioCtx } from "../audioCtx";
 import { createAudioNode } from "../soundUtils/createAudioNode";
@@ -32,7 +32,13 @@ export class SwitchSoundRenderer implements ItemSoundRenderer<"switch"> {
     // TODO: this is the same in the pixi renderer appearance, could be shared
     const setting =
       switchConfig.type === "in-store" ?
-        selectAtPath(store.getState(), switchConfig.path) ? "right"
+        (
+          selectBooleanUserSetting(
+            store.getState().gameMenus,
+            switchConfig.path,
+          )
+        ) ?
+          "right"
         : "left"
       : stateSetting;
 

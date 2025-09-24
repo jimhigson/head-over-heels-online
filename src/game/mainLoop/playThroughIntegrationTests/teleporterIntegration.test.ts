@@ -73,7 +73,7 @@ describe("teleporter", () => {
           config: {
             toRoom: secondRoomId,
             toPosition: { x: 0, y: 2, z: 0 },
-            activatedOnStoreValue: "gameInPlay.planetsLiberated.egyptus",
+            activatedOnStoreValue: "planetsLiberated.egyptus",
           },
         },
       },
@@ -126,7 +126,7 @@ describe("teleporter", () => {
           config: {
             toRoom: secondRoomId,
             toPosition: { x: 0, y: 2, z: 0 },
-            activatedOnStoreValue: "gameInPlay.planetsLiberated.egyptus",
+            activatedOnStoreValue: "planetsLiberated.egyptus",
           },
         },
       },

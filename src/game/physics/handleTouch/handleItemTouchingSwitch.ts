@@ -15,7 +15,7 @@ import type { RoomState } from "../../../model/RoomState";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 import { iterateRoomItems } from "../../../model/RoomState";
-import { toggleBoolean } from "../../../store/slices/gameMenusSlice";
+import { toggleUserSetting } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { scaleXyz } from "../../../utils/vectors/vectors";
@@ -195,7 +195,11 @@ const handleSwitchActivation = <
       SwitchConfig<RoomId, RoomItemId>,
       SwitchInRoomConfig<RoomId, RoomItemId>
     >;
-    store.dispatch(toggleBoolean(config.path));
+    store.dispatch(
+      toggleUserSetting({
+        path: config.path,
+      }),
+    );
   }
 };
 

@@ -10,8 +10,11 @@ import {
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
-import { selectCurrentCampaign } from "../../../store/selectors";
-import { gameOver, lostLife } from "../../../store/slices/gameMenusSlice";
+import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import {
+  gameOver,
+  lostLife,
+} from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { collision1to1 } from "../../collision/aabbCollision";

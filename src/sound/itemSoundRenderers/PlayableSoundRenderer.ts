@@ -1,11 +1,10 @@
-import type { ItemTickContext } from "src/game/render/ItemRenderContexts";
-
+import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
 import type { CharacterName } from "../../model/modelTypes";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
 import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
-import { defaultUserSettings } from "../../store/defaultUserSettings";
+import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
 import { neverTime } from "../../utils/neverTime";
 import { audioCtx } from "../audioCtx";
 import { loadedSounds } from "../soundsLoader";

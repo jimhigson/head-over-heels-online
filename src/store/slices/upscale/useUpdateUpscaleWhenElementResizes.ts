@@ -1,27 +1,10 @@
 import { useLayoutEffect } from "react";
 
-import type { ResolutionName } from "../../originalGame";
+import type { ResolutionName } from "../../../originalGame";
 
-import { useAppDispatch } from "../hooks";
-import { selectEmulatedResolutionName } from "../selectors";
-import { upscaleOptionsForCurrentDevice } from "../slices/upscale/upscaleOptionsForCurrentDevice";
-import { upscaleToWindow } from "../slices/upscale/upscaleSlice";
-import { store } from "../store";
-
-const updateUpscaleNow = (
-  fixedEmulatedResolution?: ResolutionName,
-  targetElement?: HTMLElement,
-) => {
-  store.dispatch(
-    upscaleToWindow(
-      upscaleOptionsForCurrentDevice(
-        fixedEmulatedResolution ??
-          selectEmulatedResolutionName(store.getState()),
-        targetElement,
-      ),
-    ),
-  );
-};
+import { useAppDispatch } from "../../hooks";
+import { store } from "../../store";
+import { updateUpscaleNow } from "./updateUpscaleNow";
 
 export const useUpdateUpscaleWhenElementResizes = (
   /**
@@ -31,18 +14,31 @@ export const useUpdateUpscaleWhenElementResizes = (
    * will be used
    */
   fixedEmulatedResolution?: ResolutionName,
+  /**
+   * the element to track the size of - if not given, the window size will be used
+   */
   targetElement?: HTMLElement,
 ): void => {
   const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
     // on first load, put the correct size in the store:
-    updateUpscaleNow();
-  }, []);
+    updateUpscaleNow(
+      store.dispatch,
+      store.getState,
+      fixedEmulatedResolution,
+      targetElement,
+    );
+  }, [fixedEmulatedResolution, targetElement]);
 
   useLayoutEffect(() => {
     const handler = () =>
-      updateUpscaleNow(fixedEmulatedResolution, targetElement);
+      updateUpscaleNow(
+        store.dispatch,
+        store.getState,
+        fixedEmulatedResolution,
+        targetElement,
+      );
     // if an element is given, use its size instead of the window size:
     if (targetElement) {
       const resizeObserver = new ResizeObserver(handler);

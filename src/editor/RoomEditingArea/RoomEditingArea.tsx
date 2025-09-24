@@ -2,7 +2,7 @@ import { TextureStyle } from "pixi.js";
 import { useState } from "react";
 
 import { type ResolutionName } from "../../originalGame";
-import { useUpdateUpscaleWhenElementResizes } from "../../store/storeFlow/useUpateUpscaleWhenElementResizes";
+import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes";
 import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";
 import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";

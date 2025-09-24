@@ -7,7 +7,7 @@ import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
 import { blockSizePx } from "../../../../sprites/spritePivots";
-import { selectMaybeCurrentCampaign } from "../../../../store/selectors";
+import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import {

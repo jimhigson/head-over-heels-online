@@ -4,11 +4,11 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectCurrentInputPreset,
   useIsScreenRelativeControl,
-} from "../../../../../../store/selectors";
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   assignInputStart,
   goToSubmenu,
-} from "../../../../../../store/slices/gameMenusSlice";
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";

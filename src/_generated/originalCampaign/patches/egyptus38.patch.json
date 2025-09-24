@@ -2,7 +2,7 @@
   {
     "op": "add",
     "path": "/items/teleporter@3,3,0/config/activatedOnStoreValue",
-    "value": "gameInPlay.planetsLiberated.egyptus"
+    "value": "planetsLiberated.egyptus"
   },
   {
     "op": "add",
