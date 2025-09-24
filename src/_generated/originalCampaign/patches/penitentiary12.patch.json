@@ -20,16 +20,6 @@
     "value": "loop"
   },
   {
-    "op": "add",
-    "path": "/items/wall@5,8,0/config/tiles/5",
-    "value": "skeleton"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@5,8,0/config/tiles/6",
-    "value": "loop"
-  },
-  {
     "op": "remove",
     "path": "/items/wall@0,8,0/config/tiles/2"
   },

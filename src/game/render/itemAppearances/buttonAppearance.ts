@@ -1,7 +1,6 @@
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { createSprite } from "../createSprite";
-import { mainPaletteSwapFilter } from "../filters/standardFilters";
 
 type ButtonRenderProps = {
   pressed: boolean;
@@ -12,7 +11,6 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
     item: {
       state: { pressed },
     },
-    room,
   },
   currentRendering,
 }) => {
@@ -29,7 +27,6 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
   return {
     output: createSprite({
       textureId: pressed ? `buttonInGame.pressed` : "buttonInGame",
-      filter: mainPaletteSwapFilter(room),
     }),
     renderProps: { pressed },
   };

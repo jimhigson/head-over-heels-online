@@ -7,9 +7,11 @@ import { Container, Graphics } from "pixi.js";
 import type { InputDirectionMode } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Renderer } from "../Renderer";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { OutlineAndColouriseFilter } from "./hudFilters";
 import type { OnScreenLookRenderer } from "./OnScreenLookRenderer";
 import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
 
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
@@ -29,11 +31,13 @@ import {
   type InputStateTrackerInterface,
 } from "../../input/InputStateTracker";
 import { createSprite } from "../createSprite";
+import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import { noFilters } from "../filters/standardFilters";
 import {
-  hudHighlightAndOutlineFilters,
   hudLowlightAndOutlineFilters,
   hudLowlightedFilter,
+  hudOutlinedTextFilters,
+  hudOutlineFilter,
 } from "./hudFilters";
 
 const joystickArrowOffset = 14;
@@ -45,6 +49,12 @@ type JoystickRenderContext = {
   general: GeneralRenderContext<string>;
 };
 
+// pressed arrows are always white:
+const arrowPressedFilter = [
+  hudOutlineFilter,
+  new RevertColouriseFilter(spritesheetPalette.white),
+] as OutlineAndColouriseFilter;
+
 /**
  * how much to snap by for the sake of biasing to make the cardinal directions
  * easier to hit
@@ -52,6 +62,7 @@ type JoystickRenderContext = {
 const snapCosineThreshold = Math.cos(30 * (Math.PI / 180));
 
 const joystickFurthestTouchRadius = 40;
+const fullyTransparentHex = "#00000000";
 export class OnScreenJoystickRenderer
   implements
     Renderer<JoystickRenderContext, EmptyObject, Container>,
@@ -141,7 +152,7 @@ export class OnScreenJoystickRenderer
     this.output.addChild(
       new Graphics()
         .circle(0, 0, joystickFurthestTouchRadius)
-        .fill("#00000000"),
+        .fill(fullyTransparentHex),
     );
     for (const arrowSprite of objectValues(this.#arrowSprites)) {
       this.output.addChild(arrowSprite);
@@ -236,9 +247,9 @@ export class OnScreenJoystickRenderer
       this.#arrowSprites,
     )) {
       sprite.filters =
-        directionXy8 === highlightDirectionXy8 ?
-          hudHighlightAndOutlineFilters
-        : hudLowlightAndOutlineFilters;
+        directionXy8 === highlightDirectionXy8 ? arrowPressedFilter : (
+          hudOutlinedTextFilters
+        );
     }
   }
 

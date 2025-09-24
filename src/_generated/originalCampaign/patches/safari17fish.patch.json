@@ -44,7 +44,7 @@
   {
     "op": "replace",
     "path": "/items/wall@5,0,0/config/times/x",
-    "value": 6
+    "value": 5
   },
   {
     "op": "replace",

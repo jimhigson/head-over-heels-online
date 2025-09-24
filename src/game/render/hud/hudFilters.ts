@@ -1,7 +1,6 @@
 import type { OutlineFilter } from "../filters/outlineFilter";
 
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { halfbrite } from "../../../utils/colour/halfBrite";
 import { accentColours } from "../../hintColours";
 import { outlineFilters } from "../filters/outlineFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
@@ -53,9 +52,7 @@ export const hudLivesTextFilter = {
       ] as OutlineAndColouriseFilter,
       inactive: [
         hudOutlineFilter,
-        new RevertColouriseFilter(
-          halfbrite(spritesheetPalette[accentColours.head]),
-        ),
+        new RevertColouriseFilter(spritesheetPalette.midGrey),
       ] as OutlineAndColouriseFilter,
     },
     heels: {
@@ -65,9 +62,7 @@ export const hudLivesTextFilter = {
       ] as OutlineAndColouriseFilter,
       inactive: [
         hudOutlineFilter,
-        new RevertColouriseFilter(
-          halfbrite(spritesheetPalette[accentColours.heels]),
-        ),
+        new RevertColouriseFilter(spritesheetPalette.midGrey),
       ] as OutlineAndColouriseFilter,
     },
   },

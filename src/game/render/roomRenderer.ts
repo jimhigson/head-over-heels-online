@@ -7,7 +7,6 @@ import type {
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import type { ZxSpectrumRoomColour } from "../../originalGame";
 import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import type { ItemTickContext } from "./ItemRenderContexts";
 import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
@@ -17,10 +16,7 @@ import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 import { iterateRoomItems, roomSpatialIndexKey } from "../../model/RoomState";
 import { audioCtx } from "../../sound/audioCtx";
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
-import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
-import { getColorScheme } from "../hintColours";
-import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
-import { dimLut, noFilters } from "./filters/standardFilters";
+import { colourisedRoomFilter } from "./filters/standardFilters";
 import { createItemRenderer } from "./item/itemRender/createItemRenderer";
 import { type ZGraph } from "./sortZ/GraphEdges";
 import { toposort } from "./sortZ/toposort/toposort";
@@ -75,7 +71,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       general: { colourised, soundSettings },
     } = renderContext;
 
-    this.initFilters(colourised, renderContext.room.color);
+    this.initFilters();
 
     const mute = soundSettings.mute ?? defaultUserSettings.soundSettings.mute;
 
@@ -104,17 +100,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
    * set the top-level filters for the room - either to revert colourisation or leave it in
    * modern-mode
    */
-  initFilters(colourise: boolean, colour: ZxSpectrumRoomColour) {
-    this.#itemsContainer.filters =
-      colourise ?
-        colour.shade === "dimmed" ?
-          dimLut
-        : noFilters
-      : new RevertColouriseFilter(
-          colour.shade === "dimmed" ?
-            zxSpectrumDimmed(getColorScheme(colour).main.original)
-          : getColorScheme(colour).main.original,
-        );
+  initFilters() {
+    const {
+      general: { colourised },
+      room,
+    } = this.renderContext;
+
+    this.#itemsContainer.filters = colourisedRoomFilter(colourised, room);
   }
 
   #getItemRenderPipeline = (itemId: string) => {

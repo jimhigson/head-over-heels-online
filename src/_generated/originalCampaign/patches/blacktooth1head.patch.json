@@ -1,23 +1,6 @@
 [
   {
     "op": "add",
-    "path": "/items/crtSwitch",
-    "value": {
-      "config": {
-        "initialSetting": "left",
-        "path": "displaySettings.crtFilter",
-        "type": "in-store"
-      },
-      "position": {
-        "x": 5,
-        "y": 4,
-        "z": 0
-      },
-      "type": "switch"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/colouriseSwitch",
     "value": {
       "config": {
@@ -28,6 +11,23 @@
       "position": {
         "x": 5,
         "y": 3,
+        "z": 0
+      },
+      "type": "switch"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/crtSwitch",
+    "value": {
+      "config": {
+        "initialSetting": "left",
+        "path": "displaySettings.crtFilter",
+        "type": "in-store"
+      },
+      "position": {
+        "x": 5,
+        "y": 4,
         "z": 0
       },
       "type": "switch"

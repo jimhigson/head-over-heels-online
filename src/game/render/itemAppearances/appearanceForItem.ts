@@ -9,11 +9,7 @@ import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/textureSizes";
 import { createSprite } from "../createSprite";
 import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
-import {
-  bookPaletteSwapFilter,
-  mainPaletteSwapFilter,
-  noFilters,
-} from "../filters/standardFilters";
+import { bookPaletteSwapFilter, noFilters } from "../filters/standardFilters";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
 import { charlesAppearance } from "./charlesAppearance";
@@ -74,7 +70,6 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config, id },
-        room,
         general: { paused, gameState },
       },
     }) => {
@@ -82,7 +77,6 @@ const itemAppearancesMap: {
         case "volcano":
           return createSprite({
             animationId: "volcano",
-            filter: mainPaletteSwapFilter(room),
             times: config.times,
             randomiseStartFrame: id,
             paused,
@@ -170,7 +164,6 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config },
-        room,
         general: { paused, gameState },
       },
     }) => {
@@ -191,7 +184,7 @@ const itemAppearancesMap: {
         bag: "bag",
         doughnuts: "doughnuts",
         hooter: "hooter",
-        scroll: { textureId: "scroll", filter: mainPaletteSwapFilter(room!) },
+        scroll: { textureId: "scroll" },
         reincarnation: {
           animationId: "fish",
           paused,
@@ -241,7 +234,7 @@ const itemAppearancesMap: {
       },
     }) => {
       return createSprite({
-        animationId: `bubbles.${style}`,
+        animationId: `bubbles.bounce.${style}`,
         paused,
         gameSpeed: gameState?.gameSpeed,
         randomiseStartFrame: id,

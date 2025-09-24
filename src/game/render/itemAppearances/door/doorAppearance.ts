@@ -19,7 +19,7 @@ import {
 import { createSprite } from "../../createSprite";
 import {
   edgePaletteSwapFilters,
-  mainPaletteSwapFilter,
+  replacePlaceholderColoursPaletteSwapFilter,
 } from "../../filters/standardFilters";
 import {
   projectBlockXyzToScreenXy,
@@ -115,7 +115,6 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
     return iterateToContainer(
       doorLegsGenerator(item, room),
       new Container({
-        filters: mainPaletteSwapFilter(room),
         ...xyToTranslateToInsideOfRoom(item.config.direction, item.aabb),
       }),
     );
@@ -147,7 +146,8 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
 
       const doorFrameSprite = createSprite({
         textureId: doorTexture(room, axis, part),
-        filter: mainPaletteSwapFilter(useColoursFromRoom),
+        // needs a special filter since this may not be going to the same room:
+        filter: replacePlaceholderColoursPaletteSwapFilter(useColoursFromRoom),
         ...xyToTranslateToInsideOfRoom(direction, aabb),
       });
 

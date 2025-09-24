@@ -22,3 +22,11 @@
     @apply text-white zx:text-zxWhite bg-metallicBlue hover:bg-white hover:text-metallicBlue zx:bg-zxBlue zx:hover:bg-zxWhite zx:hover:text-zxBlue inline-block pl-oneScaledPix pt-oneScaledPix;
   }
 }
+
+canvas {
+  /* Prevents blurriness on scaled up pixel art */
+  /* Chrome, Safari: */
+  image-rendering: pixelated;
+  /* Firefox: */
+  image-rendering: crisp-edges;
+}

@@ -10,7 +10,6 @@ import {
   tangentAxis,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import { mainPaletteSwapFilter } from "../filters/standardFilters";
 import { projectBlockXyzToScreenXy } from "../projections";
 import { wallTextureId } from "../wallTextureId";
 import { itemAppearanceRenderOnce } from "./ItemAppearance";
@@ -87,7 +86,6 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
       mainContainer.addChild(wallAnimationsContainer);
     }
 
-    mainContainer.filters = mainPaletteSwapFilter(room);
     return mainContainer;
   },
 );

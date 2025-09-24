@@ -29,7 +29,7 @@ import {
   setPressed,
   showOnSurface,
 } from "./arcadeStyleButtonRendering";
-import { hudLowlightAndOutlineFilters, hudOutlineFilter } from "./hudFilters";
+import { hudOutlineFilter, hudTextFilter } from "./hudFilters";
 import { renderCarriedOnce } from "./renderCarried";
 import { makeTextContainer, showTextInContainer } from "./showTextInContainer";
 
@@ -392,7 +392,7 @@ const buttonAppearances: {
 
     const sprite = createSprite("hud.char.Menu");
     sprite.scale = 2;
-    sprite.filters = hudLowlightAndOutlineFilters;
+    sprite.filters = hudTextFilter;
 
     return {
       output: sprite,
