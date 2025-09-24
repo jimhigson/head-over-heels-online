@@ -81,6 +81,7 @@ export const combinePlayablesInSymbiosis = <
     type: "headOverHeels",
     ...defaultItemProperties,
     shadowCastTexture: heels.shadowCastTexture,
+    castsShadowWhileStoodOn: heels.castsShadowWhileStoodOn,
     config: emptyObject,
     aabb: doubleHeightCharacter,
     state: {
