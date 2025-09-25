@@ -4,9 +4,11 @@ import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { CreateSpriteOptions } from "../createSprite";
 import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
+import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/textureSizes";
 import { createSprite } from "../createSprite";
+import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import {
   bookPaletteSwapFilter,
   mainPaletteSwapFilter,
@@ -34,6 +36,11 @@ import { teleporterAppearance } from "./teleporterAppearance";
 import { toasterAppearance } from "./toasterAppearance";
 import { farWallAppearance } from "./wallAppearance";
 
+const disappearingBarrierFilter = getPaletteSwapFilter({
+  white: spritesheetPalette.lightBeige,
+  highlightBeige: spritesheetPalette.lightBeige,
+  midRed: spritesheetPalette.redShadow,
+});
 const itemAppearancesMap: {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;
 } = {
@@ -51,13 +58,14 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: {
-          config: { axis, times },
+          config: { axis, times, disappearing },
         },
       },
     }) => {
       return createSprite({
         textureId: `barrier.${axis}`,
         times,
+        filter: disappearing ? disappearingBarrierFilter : undefined,
       });
     },
   ),

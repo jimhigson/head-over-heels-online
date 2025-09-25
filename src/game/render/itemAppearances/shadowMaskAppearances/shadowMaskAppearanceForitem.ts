@@ -57,6 +57,8 @@ const itemShadowMaskAppearances: {
   barrier: itemAppearanceShadowMaskFromConfig(({ axis }) => ({
     textureId: "shadowMask.barrier.y",
     flipX: axis === "x",
+    // needs this to line up with the sprite - not sure why
+    y: -1,
   })),
 
   spring: itemStaticSpriteAppearance("shadowMask.smallRound"),
