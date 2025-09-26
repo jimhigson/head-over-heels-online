@@ -1,13 +1,14 @@
 import type { IRenderLayer } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
-import { Container, RenderLayer } from "pixi.js";
+import { Color, Container, RenderLayer } from "pixi.js";
 
 import type {
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
+import type { SceneryName } from "../../sprites/planets";
 import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import type { ItemTickContext } from "./ItemRenderContexts";
 import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
@@ -19,12 +20,22 @@ import { audioCtx } from "../../sound/audioCtx";
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
 import { zxSpectrumDimmed } from "../../utils/colour/halfBrite";
 import { getColorScheme } from "../hintColours";
+import { getPaletteSwapFilter } from "./filters/PaletteSwapFilter";
 import { RevertColouriseFilter } from "./filters/RevertColouriseFilter";
 import { dimLut, noFilters } from "./filters/standardFilters";
 import { createItemRenderer } from "./item/itemRender/createItemRenderer";
 import { type ZGraph } from "./sortZ/GraphEdges";
 import { toposort } from "./sortZ/toposort/toposort";
 import { updateZEdges } from "./sortZ/updateZEdges";
+
+const greyBlueShadowsFilter = getPaletteSwapFilter({
+  // roughly the original shadow colour, but a bit less teal/green in hue:
+  shadow: new Color("#424249"),
+});
+const brownishShadowsFilter = getPaletteSwapFilter({
+  // roughly the original shadow colour, but a bit less teal/green in hue, brightness reduced by 50%:
+  shadow: new Color("#494908"),
+});
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>
@@ -75,7 +86,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       general: { colourised, soundSettings },
     } = renderContext;
 
-    this.initFilters(colourised, renderContext.room.color);
+    this.initFilters(
+      colourised,
+      renderContext.room.color,
+      renderContext.room.planet,
+    );
 
     const mute = soundSettings.mute ?? defaultUserSettings.soundSettings.mute;
 
@@ -104,11 +119,17 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
    * set the top-level filters for the room - either to revert colourisation or leave it in
    * modern-mode
    */
-  initFilters(colourise: boolean, colour: ZxSpectrumRoomColour) {
+  initFilters(
+    colourise: boolean,
+    colour: ZxSpectrumRoomColour,
+    scenery: SceneryName,
+  ) {
     this.#itemsContainer.filters =
       colourise ?
-        colour.shade === "dimmed" ?
-          dimLut
+        colour.shade === "dimmed" ? dimLut
+        : scenery === "moonbase" || colour.hue === "white" ?
+          greyBlueShadowsFilter
+        : colour.hue === "yellow" ? brownishShadowsFilter
         : noFilters
       : new RevertColouriseFilter(
           colour.shade === "dimmed" ?

@@ -69,6 +69,40 @@
   },
   {
     "op": "add",
+    "path": "/items/extraMonster4",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "patrol-randomly-diagonal",
+        "which": "dalek"
+      },
+      "position": {
+        "x": 7,
+        "y": 3,
+        "z": 2
+      },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraMonster5",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "patrol-randomly-diagonal",
+        "which": "dalek"
+      },
+      "position": {
+        "x": 7,
+        "y": 4,
+        "z": 2
+      },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/scroll",
     "value": {
       "config": {

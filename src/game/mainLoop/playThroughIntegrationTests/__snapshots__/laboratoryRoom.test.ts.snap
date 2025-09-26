@@ -2427,7 +2427,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 12,
         "z": 24,
       },
-      "castsShadowWhileStoodOn": false,
+      "castsShadowWhileStoodOn": true,
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
@@ -3448,7 +3448,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 12,
         "z": 24,
       },
-      "castsShadowWhileStoodOn": false,
+      "castsShadowWhileStoodOn": true,
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",

@@ -80,7 +80,7 @@ export const monsterAppearance: ItemAppearance<
   },
   currentRendering,
 }) => {
-  const { config, state } = item;
+  const { config, state, id } = item;
   const currentlyRenderedProps = currentRendering?.renderProps;
 
   const { activated, busyLickingDoughnutsOffFace } = state;
@@ -153,6 +153,7 @@ export const monsterAppearance: ItemAppearance<
                   filter,
                   paused,
                   gameSpeed: gameState?.gameSpeed,
+                  randomiseStartFrame: id,
                 })
               : createSprite({
                   textureId: `${config.which}.${facingXy4}.1`,
@@ -284,6 +285,7 @@ export const monsterAppearance: ItemAppearance<
                   filter,
                   paused,
                   gameSpeed: gameState?.gameSpeed,
+                  randomiseStartFrame: id,
                 }
               : { textureId: `${config.which}.1`, filter },
             ),
@@ -297,6 +299,7 @@ export const monsterAppearance: ItemAppearance<
             output: createStackedSprites({
               top: {
                 ...itemRidingOnBubblesSpritesOptions,
+                randomiseStartFrame: id,
                 paused,
                 gameSpeed: gameState?.gameSpeed,
               },
