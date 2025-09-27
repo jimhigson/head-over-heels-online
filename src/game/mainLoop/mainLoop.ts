@@ -4,6 +4,7 @@ import {
   BloomFilter,
   ColorAdjustmentFilter,
   CurvatureFilter,
+  NoiseFilter,
   PhosphorMaskFilter,
   ScanlinesFilter,
   VignetteFilter,
@@ -62,6 +63,8 @@ const topLevelFilters = (
     new ColorAdjustmentFilter({
       brightness: inPipelineBrightness,
     }),
+
+    new NoiseFilter({ intensity: 0.015, fps: 29.97, scale: 5 }),
 
     // Scanlines and phosphor mask first (applied to flat image)
     new ScanlinesFilter({
