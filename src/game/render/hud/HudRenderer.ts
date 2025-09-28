@@ -34,7 +34,11 @@ import {
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { getColorScheme } from "../../hintColours";
-import { halfBriteFilter, noFilters } from "../filters/standardFilters";
+import {
+  greyFilter,
+  heelsGreyFilter,
+  noFilters,
+} from "../filters/standardFilters";
 import {
   hudFpsColourFilter,
   hudHighligtedFilter,
@@ -295,7 +299,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       highlighted ?
         colourise ? noFilters
         : hudHighligtedFilter
-      : colourise ? halfBriteFilter
+      : colourise ? greyFilter
       : hudLowlightedFilter
     );
   }
@@ -441,7 +445,11 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       characterSprite.filters = colourised ? noFilters : hudHighligtedFilter;
     } else {
       characterSprite.filters =
-        colourised ? halfBriteFilter : hudLowlightedFilter;
+        colourised ?
+          characterName === "heels" ?
+            heelsGreyFilter
+          : greyFilter
+        : hudLowlightedFilter;
     }
 
     characterSprite.x =

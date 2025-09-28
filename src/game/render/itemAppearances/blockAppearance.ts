@@ -4,10 +4,7 @@ import type { ItemAppearance } from "./ItemAppearance";
 
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
-import {
-  bookPaletteSwapFilter,
-  mainPaletteSwapFilter,
-} from "../filters/standardFilters";
+import { bookPaletteSwapFilter } from "../filters/standardFilters";
 
 type BlockRenderProps = {
   // flatten disappear down to a single value, since all we care about is if it is on or not
@@ -63,9 +60,8 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           isDissapearing,
         ),
         filter:
-          style === "organic" ? mainPaletteSwapFilter(room)
-          : style === "book" ? bookPaletteSwapFilter(room)
-          : undefined,
+          // books have special colourisation:
+          style === "book" ? bookPaletteSwapFilter(room) : undefined,
         times,
       }),
     ),

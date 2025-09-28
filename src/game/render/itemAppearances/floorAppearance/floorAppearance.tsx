@@ -30,6 +30,7 @@ import {
   edgeOriginalGameColour,
   edgePaletteSwapFilters,
   floorPaletteSwapFilter,
+  noFilters,
 } from "../../filters/standardFilters";
 import {
   projectBlockXyzToScreenXy,
@@ -237,6 +238,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         item: floorItem,
         general: { colourised, pixiRenderer },
         colourClashLayer,
+        frontLayer,
       },
     }) => {
       const {
@@ -352,7 +354,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         tilesContainer.addChild(tilesMaskSprite);
         tilesContainer.mask = tilesMaskSprite;
 
-        tilesContainer.filters = [floorPaletteSwapFilter(room)];
+        tilesContainer.filters = floorPaletteSwapFilter(room) ?? noFilters;
 
         // outline the tiles. This helps where floors are floating in the room (in remake only) - otherwise they are
         // the only item without a black outline. Also fills the gap between the tiles and the floor edge in with some
@@ -371,24 +373,31 @@ export const floorAppearance: ItemAppearance<"floor"> =
         });
 
         if (floorType === "none") {
-          // cover up anything that falls below the floor (ie, monsters, blocks that get pushed or walk out)
-          floorEdgeContainer.addChild(
-            new Graphics()
-              // right
-              .moveTo(tilesRight.x, tilesRight.y + 8)
-              // right below:
-              .lineTo(tilesRight.x, tilesRight.y + 100)
+          const overDrawFallenItemsGraphic = new Graphics()
+            // right
+            .moveTo(tilesRight.x, tilesRight.y + 10)
+            // right below:
+            .lineTo(tilesRight.x, tilesRight.y + 100)
 
-              // left below
-              .lineTo(tilesLeft.x, tilesLeft.y + 100)
+            // left below
+            .lineTo(tilesLeft.x, tilesLeft.y + 100)
 
-              // left
-              .lineTo(tilesLeft.x, tilesLeft.y + 8)
+            // left
+            .lineTo(tilesLeft.x, tilesLeft.y + 10)
 
-              // bottom
-              .lineTo(tilesBottom.x, tilesBottom.y + 8)
-              .fill(0x000000),
+            // bottom
+            .lineTo(tilesBottom.x, tilesBottom.y + 10)
+            .fill(0x000000);
+          const overDrawFallenItemsGraphicSprite = renderContainerToSprite(
+            pixiRenderer,
+            overDrawFallenItemsGraphic,
           );
+          // cover up anything that falls below the floor (ie, monsters, blocks that get pushed or walk out)
+          // but put this on the front layer so it doesn't get the room palette swap filter, which would change
+          // it from pure black, whereas it needs to appear as if it were in the black background
+          container.addChild(overDrawFallenItemsGraphicSprite);
+          frontLayer.attach(overDrawFallenItemsGraphicSprite);
+          overDrawFallenItemsGraphic.destroy();
         }
 
         const edgeTilesY = Math.ceil(aabb.y / blockSizePx.w);

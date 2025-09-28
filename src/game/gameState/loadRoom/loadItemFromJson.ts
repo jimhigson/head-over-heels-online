@@ -160,6 +160,7 @@ export function* loadItemFromJson<
           (jsonItem.type === "monster" &&
             (jsonItem.config.which === "emperor" ||
               jsonItem.config.which === "emperorsGuardian" ||
+              jsonItem.config.which === "cyberman" ||
               jsonItem.config.which === "turtle" ||
               jsonItem.config.which === "helicopterBug")) ||
           jsonItem.type === "pickup" ||

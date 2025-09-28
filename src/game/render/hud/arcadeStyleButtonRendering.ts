@@ -9,7 +9,7 @@ import { createSprite } from "../createSprite";
 import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
 import {
-  greyFilter,
+  greyFilterPlusPlaceholderReplacements,
   noFilters,
   replaceWithHalfbriteFilter,
 } from "../filters/standardFilters";
@@ -105,7 +105,8 @@ export const setDisabled = (
 ) => {
   if (colourise) {
     // the whole button doesn't get grey'd out, just the surface details:
-    button[surfaceContentSym].filters = disabled ? greyFilter() : noFilters;
+    button[surfaceContentSym].filters =
+      disabled ? greyFilterPlusPlaceholderReplacements() : noFilters;
   }
 };
 
