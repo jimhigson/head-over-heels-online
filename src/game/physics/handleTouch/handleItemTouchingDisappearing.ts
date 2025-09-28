@@ -1,7 +1,8 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 
 import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
-import { setStandingOn } from "../../gameState/mutators/setStandingOn";
+import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOn";
 import { applyMechanicsResults } from "../../mainLoop/applyMechanicsResults";
 import { jumping } from "../mechanics/jumping";
 import { walking } from "../mechanics/walking";
@@ -44,10 +45,18 @@ export const handleItemTouchingDissapearing = <
       (disappear.on === "stand" && touchTriggersOnStand(e)));
 
   if (shouldDisappear) {
-    if (touchTriggersOnStand(e) && movingItemIsPlayable(e)) {
-      //give one last chance to jump off this item as it disappears - 'stand' on it
-      //(but it will be removed very soon and this property will be gone):
-      setStandingOn({
+    if (
+      touchTriggersOnStand(e) &&
+      movingItemIsPlayable(e) &&
+      // an approx test for if we are landing on top - could
+      // jumping off it. Shouldn't be able to jump off something that's not
+      // below us
+      e.movementVector.z < 0
+    ) {
+      // before setting standing on, we need to remove any existing standing on
+      // to avoid broken two-way linking:
+      removeStandingOn(e.movingItem, e.room);
+      setStandingOnWithoutRemovingOldFirst({
         above: e.movingItem,
         below: e.touchedItem as UnionOfAllItemInPlayTypes<RoomId>,
       });

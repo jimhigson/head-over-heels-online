@@ -20,8 +20,8 @@ import {
   collision1to1,
   collisionItemWithIndex,
 } from "../collision/aabbCollision";
-import { removeStandingOn } from "../gameState/mutators/removeStandingOn";
-import { setStandingOn } from "../gameState/mutators/setStandingOn";
+import { removeStandingOn } from "../gameState/mutators/standingOn/removeStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "../gameState/mutators/standingOn/setStandingOn";
 import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
 import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
 import { isItemType, isPushable, isSlidingItem } from "./itemPredicates";
@@ -486,7 +486,10 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
         // not colliding with the thing we were stood on before - take over the slot:
         removeStandingOn(subjectItem, room);
-        setStandingOn({ above: subjectItem, below: collidedWithItem });
+        setStandingOnWithoutRemovingOldFirst({
+          above: subjectItem,
+          below: collidedWithItem,
+        });
       }
     }
 

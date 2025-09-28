@@ -18,6 +18,7 @@ import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
+import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 import { isDeadly, isPortable, isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
@@ -99,7 +100,9 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
         atPosition: carrierPosition,
       });
 
-      // move the player up on top of the item they just put down:
+      // ⬇ player isn't standing on whatever they were standing on before
+      removeStandingOn(carrier, room);
+
       moveItem({
         subjectItem: carrier,
         gameState,
@@ -109,7 +112,8 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
           y: 0,
           z: carrying.aabb.z,
         },
-        pusher: carrier,
+        // conceptually, has been pushed by the item they put down:
+        pusher: carrying,
         forceful: true,
         deltaMS,
         onTouch: handleItemsTouchingItems,
@@ -118,7 +122,6 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
       // don't set heels as standing on the put-down item - normal gravity and movement
       // will sort that out from the main loop
 
-      // put down
       heelsAbilities.carrying = null;
 
       inputStateTracker.actionsHandled.add("carry");

@@ -15,7 +15,7 @@ import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { isFreeItem, isSolid } from "../../physics/itemPredicates";
-import { setStandingOn } from "../mutators/setStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOn";
 import { loadItemFromJson } from "./loadItemFromJson";
 import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";
 
@@ -108,7 +108,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
       iterateRoomItems(items).filter((j) => j.id !== i.id),
     );
     if (newStandingOn !== undefined) {
-      setStandingOn({ above: i, below: newStandingOn });
+      setStandingOnWithoutRemovingOldFirst({ above: i, below: newStandingOn });
     }
   }
 

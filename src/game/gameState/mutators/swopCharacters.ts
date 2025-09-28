@@ -6,7 +6,7 @@ import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
-import { setStandingOn } from "./setStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "./standingOn/setStandingOn";
 import {
   combinePlayablesInSymbiosis,
   uncombinePlayablesFromSymbiosis,
@@ -50,7 +50,7 @@ const swopFromCombinedToUncombinedPlayables = <RoomId extends string>(
   deleteItemFromRoom({ room, item: "headOverHeels" });
   addItemToRoom({ room, item: head });
   addItemToRoom({ room, item: heels });
-  setStandingOn({ above: head, below: heels });
+  setStandingOnWithoutRemovingOldFirst({ above: head, below: heels });
   gameState.currentCharacterName = switchingToCharacter;
   gameState.previousPlayable = undefined;
   gameState.characterRooms = {

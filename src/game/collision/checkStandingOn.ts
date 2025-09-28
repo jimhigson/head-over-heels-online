@@ -91,7 +91,7 @@ export const spatiallyCheckStandingOn = <
     itemMaybeStanding.state.position.z - epsilon;
   itemAboveBuffer.aabb.x = itemMaybeStanding.aabb.x;
   itemAboveBuffer.aabb.y = itemMaybeStanding.aabb.y;
-  itemAboveBuffer.aabb.z = itemMaybeStanding.aabb.z + zOverlapAllowed + epsilon;
+  itemAboveBuffer.aabb.z = zOverlapAllowed + epsilon;
 
   // zero-volume top of the below item:
   itemBelowBuffer.state.position.x = itemMaybeBeingStoodOn.state.position.x;

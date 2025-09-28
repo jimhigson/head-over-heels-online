@@ -12,7 +12,8 @@ import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selec
 import { assignLatentMovementFromStandingOn } from "../gameState/mutators/assignLatentMovement";
 import { playableLosesLife } from "../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
-import { updateStandingOn } from "../gameState/mutators/updateStandingOn";
+import { updateStandingOn } from "../gameState/mutators/standingOn/updateStandingOn";
+import { validateStandingOn } from "../gameState/mutators/standingOn/validateStandingOn";
 import { isPlayableItem } from "../physics/itemPredicates";
 import { addParticlesForPlayablesInRoom } from "./addParticlesToRoom";
 import { advanceTime } from "./advanceTime";
@@ -21,6 +22,9 @@ import { itemHasExpired } from "./itemHasExpired";
 import { itemTickOrderComparator } from "./itemTickOrderComparator";
 import { snapInactiveItemsToPixelGrid } from "./snapInactiveItemsToPixelGrid";
 import { tickItem } from "./tickItem";
+
+// set to 1 to check for inconsistencies in the model for every subtick
+const extraDebugChecks = 0;
 
 /* the items that moved while progressing the game state */
 export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<
@@ -102,6 +106,9 @@ export const progressGameState = <
 
   addParticlesForPlayablesInRoom(room, deltaMS);
 
+  if (extraDebugChecks) {
+    validateStandingOn(room);
+  }
   updateStandingOn(room);
 
   // floating point correction must be done before looking for moved items:
