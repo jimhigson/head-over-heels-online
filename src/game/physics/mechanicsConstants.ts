@@ -5,6 +5,7 @@ import type { CharacterName } from "../../model/modelTypes";
 import { zxSpectrumFrameRate } from "../../originalGame";
 import { blockSizePx } from "../../sprites/spritePivots";
 import { wallTileSize } from "../../sprites/textureSizes";
+import { transformObject } from "../../utils/entries";
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 
@@ -49,8 +50,12 @@ export const terminalVelocityPixPerMs = {
   others: (blockSizePx.h * 6) / 1000,
 };
 
-export const maxLiftAcc = fallG * 0.35;
-export const maxLiftSpeed = terminalVelocityPixPerMs.others * 0.5;
+// the lift moves much faster than the original game, but also slows down much
+// more to let player on or off at the top or bottom of its movement. This makes
+// the game play though faster, while also not making it harder to get on or off
+// the lift
+export const maxLiftAcc = fallG * 0.13;
+export const maxLiftSpeed = terminalVelocityPixPerMs.others * 0.85;
 
 /**
  * when heels jumps forwards, instantly gets this fraction of her max speed forward,
@@ -68,37 +73,38 @@ export const walkMinSpeedPixPerMs = {
   heels: 0.25 * onePxPerFrameInOriginalGamePxPerMs,
 };
 
-// original game timed at 5s to move 8 blocks
-export const moveSpeedPixPerMs = {
-  head: onePxPerFrameInOriginalGamePxPerMs, //
-  heels: 2 * onePxPerFrameInOriginalGamePxPerMs,
-  charles: onePxPerFrameInOriginalGamePxPerMs,
+const originalMoveSpeedMultiples = {
+  // original game timed at 5s to move 8 blocks
+  head: 1,
+  heels: 2,
+  charles: 1,
   // moved diagonally in a (1, 1) vector in original - that gives us √2 px per frame
-  dalek: Math.SQRT2 * onePxPerFrameInOriginalGamePxPerMs,
+  dalek: Math.SQRT2,
   // moved at different speeds in original depending on direction:
   //    * orthogonally eg (0,1)
   //    * diagonally in a (1, 1) vector  -
-  //    that gives us 1 or √2 px per frame - take the average:
-  bubbleRobot: ((Math.SQRT2 + 1) / 2) * onePxPerFrameInOriginalGamePxPerMs,
-  cyberman: 1 * onePxPerFrameInOriginalGamePxPerMs,
-  skiHead: onePxPerFrameInOriginalGamePxPerMs,
-  helicopterBug: onePxPerFrameInOriginalGamePxPerMs,
-  homingBot: 2 * onePxPerFrameInOriginalGamePxPerMs,
-  monkey: onePxPerFrameInOriginalGamePxPerMs,
-  elephant: onePxPerFrameInOriginalGamePxPerMs,
+  //    that gives us 1 or √2 px per frame - take the average
+  //    (about 1.2, or a mid-speed item)
+  bubbleRobot: (Math.SQRT2 + 1) / 2,
+  cyberman: 1,
+  skiHead: 1,
+  helicopterBug: 1,
+  homingBot: 2,
+  monkey: 1,
+  elephant: 1,
   elephantHead: 0,
-  emperor: onePxPerFrameInOriginalGamePxPerMs,
+  emperor: 1,
   // needs to be quite fast, or he is possible to run around using
   // analogue control. This seems to be fast enough.
-  emperorsGuardian: Math.SQRT2 * onePxPerFrameInOriginalGamePxPerMs,
+  emperorsGuardian: Math.SQRT2,
 
-  computerBot: onePxPerFrameInOriginalGamePxPerMs,
-  turtle: onePxPerFrameInOriginalGamePxPerMs,
-  ball: 2 * onePxPerFrameInOriginalGamePxPerMs,
-  firedDoughnut: 2 * onePxPerFrameInOriginalGamePxPerMs,
-  movingPlatform: onePxPerFrameInOriginalGamePxPerMs,
-  floatingText: onePxPerFrameInOriginalGamePxPerMs,
-} satisfies Partial<
+  computerBot: 1,
+  turtle: 1,
+  ball: 2,
+  firedDoughnut: 2,
+  movingPlatform: 1,
+  floatingText: 1,
+} as const satisfies Partial<
   Record<
     | CharacterName
     | ItemInPlayType
@@ -106,6 +112,27 @@ export const moveSpeedPixPerMs = {
     number
   >
 >;
+
+export const originalMoveSpeedPixPerMs = transformObject(
+  originalMoveSpeedMultiples,
+  ([name, multiple]) => [name, multiple * onePxPerFrameInOriginalGamePxPerMs],
+);
+
+// the above documents the speed in the original game, but let's speed the slower items up while
+// keeping the faster ones the same
+export const moveSpeedPixPerMs = transformObject(
+  originalMoveSpeedMultiples,
+  // linearly adjust to make slower items faster, but keep faster ones the same,
+  // to not make them harder to control. The original game had to have integer
+  // speeds, but this makes the slower items too slow
+  //    1 -> 1.2
+  //    2 -> 2    (still 1.666x the 1 speed items)
+  ([name, s]) => [
+    name,
+    //s * onePxPerFrameInOriginalGamePxPerMs,
+    (s * 0.8 + 0.4) * onePxPerFrameInOriginalGamePxPerMs,
+  ],
+);
 
 // n px per frame in original game;
 const pxPerFrameSpeed = (pxPerFrame: number = 1) =>
@@ -130,7 +157,9 @@ export const jumpFudge = 1.1;
 export const playerJumpHeightPx = {
   // head can jump almost 3 blocks high
   head: blockSizePx.h * 2.6 + jumpFudge,
-  heels: blockSizePx.h + jumpFudge,
+  // needs to allow to bridge 2-block gaps for #blacktooth83tofreedom,
+  // including at high frame rates:
+  heels: blockSizePx.h + 1 + jumpFudge,
 };
 
 // original game lift speed was 1px per frame

@@ -24,6 +24,7 @@ import {
   heelsJumpForwardDecel,
   heelsJumpForwardSpeedFraction,
   moveSpeedPixPerMs,
+  originalMoveSpeedPixPerMs,
   playerWalkAcceldPixPerMsSq,
 } from "../mechanicsConstants";
 
@@ -136,7 +137,13 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
 
   const walkVector = autoWalk ? facing : directionInput;
 
-  const maxWalkSpeed = moveSpeedPixPerMs[useSpeedOfCharacter];
+  const maxWalkSpeed = (
+    standingOnItemId === null ?
+      // to keep jump distances consistent, move at the original game's speed
+      // while jumping - this is needed to keep original game rooms playing
+      // like the original
+      originalMoveSpeedPixPerMs
+    : moveSpeedPixPerMs)[useSpeedOfCharacter];
 
   if (teleporting !== null || action === "death") {
     // do not walk while teleporting or showing dying animation:

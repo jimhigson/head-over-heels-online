@@ -791,7 +791,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "monster@4,2,0": true,
           },
-          "roomTime": 766.6666666666673,
+          "roomTime": 708.3333333333337,
         },
         "disappearing": null,
         "expires": null,
@@ -1182,7 +1182,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "facing": {
           "x": -0,
-          "y": -0.20833333333333337,
+          "y": -0.25000000000000006,
           "z": -0,
         },
         "latentMovement": [
@@ -1191,7 +1191,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "startAtRoomTime": 992.6666666666683,
             "velocity": {
               "x": -0,
-              "y": -0.025000000000000005,
+              "y": -0.030000000000000006,
               "z": -0,
             },
           },
@@ -1200,14 +1200,14 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "startAtRoomTime": 1001.0000000000017,
             "velocity": {
               "x": -0,
-              "y": -0.025000000000000005,
+              "y": -0.030000000000000006,
               "z": -0,
             },
           },
         ],
         "position": {
           "x": 50,
-          "y": 49.191666666666656,
+          "y": 47.53,
           "z": 108,
         },
         "standingOnItemId": "block@3,3,8",
@@ -1372,7 +1372,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "monster@2,8,0": true,
           },
-          "roomTime": 558.333333333333,
+          "roomTime": 491.66666666666623,
         },
         "direction": "away",
         "disappearing": null,
@@ -2781,7 +2781,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "position": {
           "x": 2,
           "y": 66,
-          "z": 62.892361111110944,
+          "z": 49.10833333333335,
         },
         "stoodOnBy": {
           "pickup@0,4,9": true,
@@ -2793,7 +2793,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "lift": {
             "x": 0,
             "y": 0,
-            "z": 0.036,
+            "z": 0.02600000000000004,
           },
         },
       },
@@ -2821,7 +2821,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": "shadow.smallBlock",
       "state": {
         "actedOnAt": {
-          "by": {},
+          "by": {
+            "pickup@1,4,9": true,
+          },
           "roomTime": 1000.0000000000017,
         },
         "bottom": 0,
@@ -2831,7 +2833,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "position": {
           "x": 18,
           "y": 66,
-          "z": 50.89236111111092,
+          "z": 37.10833333333335,
         },
         "stoodOnBy": {
           "pickup@1,4,9": true,
@@ -2843,7 +2845,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "lift": {
             "x": 0,
             "y": 0,
-            "z": 0.036,
+            "z": 0.02600000000000004,
           },
         },
       },
@@ -2881,7 +2883,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "position": {
           "x": 210,
           "y": 98,
-          "z": 22.522918959137716,
+          "z": 22.593684804611772,
         },
         "stoodOnBy": {},
         "stoodOnUntilRoomTime": -9007199254740991,
@@ -2891,7 +2893,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "lift": {
             "x": 0,
             "y": 0,
-            "z": -0.014166666666666664,
+            "z": -0.02368832093909188,
           },
         },
       },
@@ -2929,7 +2931,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "position": {
           "x": 34,
           "y": 66,
-          "z": 38.892361111111065,
+          "z": 25.108333333333352,
         },
         "stoodOnBy": {},
         "stoodOnUntilRoomTime": -9007199254740991,
@@ -2939,7 +2941,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "lift": {
             "x": 0,
             "y": 0,
-            "z": 0.036,
+            "z": 0.02600000000000004,
           },
         },
       },
@@ -2977,7 +2979,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "position": {
           "x": 50,
           "y": 66,
-          "z": 26.892361111111143,
+          "z": 13.108333333333352,
         },
         "stoodOnBy": {},
         "stoodOnUntilRoomTime": -9007199254740991,
@@ -2987,7 +2989,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "lift": {
             "x": 0,
             "y": 0,
-            "z": 0.036,
+            "z": 0.02600000000000004,
           },
         },
       },
@@ -3039,7 +3041,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "latentMovement": [],
         "position": {
-          "x": 18.249999999999993,
+          "x": 21.5,
           "y": 66,
           "z": 0,
         },
@@ -3060,7 +3062,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "z": 0,
           },
           "walking": {
-            "x": 0.025,
+            "x": 0.030000000000000006,
             "y": 0,
             "z": 0,
           },
@@ -3101,7 +3103,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "wall(right)@0,0,0": true,
           },
-          "roomTime": 725.0000000000005,
+          "roomTime": 599.9999999999999,
         },
         "disappearing": null,
         "durationOfTouch": 0,
@@ -3114,7 +3116,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "latentMovement": [],
         "position": {
-          "x": 6.874999999999997,
+          "x": 12,
           "y": 114,
           "z": 0,
         },
@@ -3135,7 +3137,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "z": 0,
           },
           "walking": {
-            "x": 0.025,
+            "x": 0.030000000000000006,
             "y": 0,
             "z": 0,
           },
@@ -3173,10 +3175,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "collidedWith": {
-          "by": {
-            "monster@2,8,0": true,
-          },
-          "roomTime": 166.66666666666669,
+          "by": {},
+          "roomTime": -9007199254740991,
         },
         "disappearing": null,
         "everActivated": true,
@@ -3188,8 +3188,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "latentMovement": [],
         "position": {
-          "x": 17.916666666666664,
-          "y": 155,
+          "x": 17.875,
+          "y": 160,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
@@ -3210,7 +3210,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "walking": {
             "x": 0,
-            "y": 0.025,
+            "y": 0.030000000000000006,
             "z": 0,
           },
         },
@@ -3250,7 +3250,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "conveyor@3,6,0": true,
           },
-          "roomTime": 416.6666666666664,
+          "roomTime": 349.9999999999999,
         },
         "disappearing": null,
         "durationOfTouch": 0,
@@ -3263,7 +3263,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "latentMovement": [],
         "position": {
-          "x": 24.95833333333334,
+          "x": 20.75,
           "y": 130,
           "z": 0,
         },
@@ -3284,7 +3284,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "z": 0,
           },
           "walking": {
-            "x": -0.025,
+            "x": -0.030000000000000006,
             "y": 0,
             "z": 0,
           },
@@ -3325,10 +3325,10 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "wall(towards)@0,0,0": true,
           },
-          "roomTime": 324.99999999999994,
+          "roomTime": 900.0000000000013,
         },
         "disappearing": null,
-        "durationOfTouch": 0,
+        "durationOfTouch": 108.33333333333331,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -3339,7 +3339,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "latentMovement": [],
         "position": {
           "x": 66,
-          "y": 0.4166666666666655,
+          "y": 0,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
@@ -3360,7 +3360,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "walking": {
             "x": 0,
-            "y": -0.025,
+            "y": -0.030000000000000006,
             "z": 0,
           },
         },
@@ -3397,13 +3397,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "activated": true,
         "collidedWith": {
-          "by": {
-            "joystick@4,1,0": true,
-          },
-          "roomTime": 966.6666666666682,
+          "by": {},
+          "roomTime": -9007199254740991,
         },
         "disappearing": null,
-        "durationOfTouch": 41.66666666666667,
+        "durationOfTouch": 124.99999999999997,
         "everActivated": true,
         "expires": null,
         "facing": {
@@ -3435,7 +3433,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "walking": {
             "x": 0,
-            "y": -0.025,
+            "y": -0.030000000000000006,
             "z": 0,
           },
         },
@@ -3543,7 +3541,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "lift@0,4,3": true,
           },
-          "roomTime": 758.3333333333339,
+          "roomTime": 875.0000000000011,
         },
         "disappearing": {
           "byType": [
@@ -3557,7 +3555,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "position": {
           "x": 2,
           "y": 66,
-          "z": 74.89236111111094,
+          "z": 61.10833333333335,
         },
         "standingOnItemId": "lift@0,4,3",
         "stoodOnBy": {},
@@ -3599,14 +3597,14 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": "shadow.smallRound",
       "state": {
         "actedOnAt": {
+          "by": {},
+          "roomTime": 1000.0000000000017,
+        },
+        "collidedWith": {
           "by": {
             "lift@1,4,2": true,
           },
           "roomTime": 1000.0000000000017,
-        },
-        "collidedWith": {
-          "by": {},
-          "roomTime": -9007199254740991,
         },
         "disappearing": {
           "byType": [
@@ -3620,7 +3618,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "position": {
           "x": 18,
           "y": 66,
-          "z": 62.89236111111092,
+          "z": 49.10833333333335,
         },
         "standingOnItemId": "lift@1,4,2",
         "stoodOnBy": {},
@@ -3630,7 +3628,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "gravity": {
             "x": 0,
             "y": 0,
-            "z": 0,
+            "z": -0.072,
           },
           "movingFloor": {
             "x": 0,
@@ -6342,7 +6340,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "latentMovement": [],
         "position": {
           "x": 258,
-          "y": 193.74999999999994,
+          "y": 190.5,
           "z": 0,
         },
         "standingOnItemId": "floor@0,0,0",
@@ -6363,7 +6361,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "walking": {
             "x": 0,
-            "y": -0.025,
+            "y": -0.030000000000000006,
             "z": 0,
           },
         },
@@ -6412,7 +6410,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "latentMovement": [],
         "position": {
-          "x": 219,
+          "x": 224,
           "y": 194,
           "z": 0,
         },
@@ -6433,7 +6431,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "z": 0,
           },
           "walking": {
-            "x": 0.025,
+            "x": 0.030000000000000006,
             "y": 0,
             "z": 0,
           },
@@ -6516,7 +6514,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "monster@1,7,0": true,
           },
-          "roomTime": 725.0000000000005,
+          "roomTime": 599.9999999999999,
         },
         "disappearing": null,
         "expires": null,
@@ -6561,7 +6559,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {
             "monster@4,0,0": true,
           },
-          "roomTime": 466.6666666666663,
+          "roomTime": 1000.0000000000017,
         },
         "disappearing": null,
         "expires": null,
