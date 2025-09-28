@@ -1,6 +1,11 @@
 [
   {
     "op": "replace",
+    "path": "/items/monster@0,6,0/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
     "path": "/items/lift@0,7,7/config/top",
     "value": 11
   }

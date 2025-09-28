@@ -32,7 +32,7 @@ export const room = inferRoomJson({
         startDirection: "towards",
         which: "cyberman",
       },
-      position: { x: 0, y: 6, z: 0 },
+      position: { x: 5, y: 6, z: 0 },
       type: "monster",
     },
     "wall(right)@0,0,0": {
