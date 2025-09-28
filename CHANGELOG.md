@@ -11,6 +11,9 @@
 * slower characters (ie, Head, slow monsters) in game run faster by an extra 20% (separate from the 1.2x default speed-up, so 1.44x total if kept at default)
 * fast characters stay the same speed (ie, Heels, fast monsters)
 
+## 2025-09-28
+* bookworld22 room - portable sticks item not hidden behind the door on entry; makes it less visually confusing
+
 ## 2025-09-27
 
 The game got pretty weird if one character (Head or Heels) lost all their lives. What is the other one supposed to do?
