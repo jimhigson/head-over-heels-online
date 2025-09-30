@@ -1,3 +1,6 @@
+## 2025-09-30
+* update to version 0.3.3 of [the crt shaders](https://github.com/jimhigson/jims_shaders.git)
+
 ## 2025-09-11
 * user can choose game speed from the menu (1x, 1.2x, 1.5x, 2x)
 * 1.2x is now the default game speed

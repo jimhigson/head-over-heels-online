@@ -64,7 +64,7 @@ const topLevelFilters = (
       brightness: inPipelineBrightness,
     }),
 
-    new NoiseFilter({ intensity: 0.015, fps: 29.97, scale: 5 }),
+    new NoiseFilter({ intensity: 0.03, fps: 29.97, scale: 5 }),
 
     // Scanlines and phosphor mask first (applied to flat image)
     new ScanlinesFilter({
@@ -81,16 +81,16 @@ const topLevelFilters = (
 
     // selectively blur just fairly light items on a small, intense radius:
     new BloomFilter({
-      radius: upscale.gameEngineUpscale / 3,
-      intensity: 0.4,
+      radius: upscale.gameEngineUpscale / 4,
+      intensity: 0.15,
       cutoff: 0.8,
       edgeBlur: 1,
     }),
 
     // Then curvature (curves everything including scanlines)
     new CurvatureFilter({
-      curvatureX: 0.15,
-      curvatureY: 0.15,
+      curvatureX: 0.12,
+      curvatureY: 0.12,
       multisampling: true,
     }),
     // Finally vignette and color adjustment
