@@ -57,7 +57,7 @@ export const room = inferRoomJson({
     },
     "portableBlock@0,5,0": {
       config: { style: "sticks" },
-      position: { x: 0, y: 5, z: 0 },
+      position: { x: 0, y: 6.5, z: 0 },
       type: "portableBlock",
     },
     "wall(right)@0,0,0": {
