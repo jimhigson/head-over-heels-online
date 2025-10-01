@@ -3,6 +3,7 @@ import type { Filter } from "pixi.js";
 import { Container } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
 
+import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
@@ -242,20 +243,30 @@ const removeFilterFromContainer = (
     Array.isArray(container.filters) ?
       container.filters.filter((f): f is Filter => !(f instanceof filterClass))
     : container.filters instanceof filterClass ? noFilters
-    : [...container.filters];
+    : container.filters;
 };
 
 const applyFilters = (
   name: IndividualCharacterName,
-  { highlighted, flashing }: PlayableRenderProps,
+  { highlighted, flashing, shining }: PlayableRenderProps,
   currentlyRenderedProps: PlayableRenderProps | undefined,
   container: Container,
 ) => {
-  const currentlyHighlighted = currentlyRenderedProps?.highlighted ?? false;
-  if (highlighted && !currentlyHighlighted) {
-    addFilterToContainer(container, outlineFilters[accentColours[name]]);
-  } else if (!highlighted && currentlyHighlighted) {
+  const highlightColour: null | SpritesheetPaletteColourName =
+    highlighted ? accentColours[name]
+    : shining ? "midRed"
+    : null;
+
+  const currentHighlightColour: null | SpritesheetPaletteColourName =
+    currentlyRenderedProps?.highlighted ? accentColours[name]
+    : currentlyRenderedProps?.shining ? "midRed"
+    : null;
+
+  if (highlightColour !== currentHighlightColour) {
     removeFilterFromContainer(container, OutlineFilter);
+    if (highlightColour !== null) {
+      addFilterToContainer(container, outlineFilters[highlightColour]);
+    }
   }
 
   const currentlyFlashing = currentlyRenderedProps?.flashing ?? false;
