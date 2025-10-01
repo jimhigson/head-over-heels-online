@@ -21,11 +21,9 @@ import { type PlayableItem } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 
 /**
- * how far ahead of head the doughnuts start. This has to be enough to clear his bounding box,
- * even when shooting them diagonally, and even when in symiosis and running towards
- * the doughnut
+ * how far ahead of head the doughnuts start.
  */
-const aheadStart = blockSizePx.w * 1.2;
+const aheadStart = blockSizePx.w * 0.75;
 
 export const firing = <RoomId extends string, RoomItemId extends string>(
   firer: PlayableItem<"head" | "headOverHeels", RoomId, RoomItemId>,

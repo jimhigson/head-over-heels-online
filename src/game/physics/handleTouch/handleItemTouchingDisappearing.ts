@@ -21,7 +21,9 @@ export const handleItemTouchingDissapearing = <
   if (
     // TODO: this could probably be replaced with a more generic 'notByType' like 'byType'
     e.touchedItem.type === "firedDoughnut" &&
-    (e.movingItem.type === "head" || e.movingItem.type === "firedDoughnut")
+    (e.movingItem.type === "head" ||
+      e.movingItem.type === "headOverHeels" ||
+      e.movingItem.type === "firedDoughnut")
   ) {
     // special case - head can't collide with his own doughnuts as he fires them,
     // and the previous doughnut can't collide with the next one
