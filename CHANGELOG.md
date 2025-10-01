@@ -16,12 +16,18 @@
 
 ## 2025-09-27
 
+### Retrospec lives model
+
 The game got pretty weird if one character (Head or Heels) lost all their lives. What is the other one supposed to do?
-Adopted the Retrospect remake model:
+Adopted the Retrospec remake model:
 
 * If one character loses all lives, and other has >2, other sacrifices 2, to give 1 to the character who lost
 * If one character loses all lives, and other has exactly 2, other sacrifices 1, to give 1 to the character who lost (continue with 1 each)
 * If other has 1, character goes to zero and is out of the game
+
+### room edits
+
+* Deliberately modified room `blacktooth29` from original game to prevent players from getting into an unwinnable lives-lost loop when jumping from the room above  
 
 ## 2025-09-11
 * user can choose game speed from the menu (1x, 1.2x, 1.5x, 2x)
