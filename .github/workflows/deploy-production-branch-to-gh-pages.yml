@@ -1,8 +1,6 @@
-name: deploy main to gh-pages
-
 on:
   push:
-    branches: ["main"]
+    branches: ["production"]
 
 jobs:
   deploy:
@@ -14,7 +12,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          ref: production
       - name: Install pnpm
         uses: pnpm/action-setup@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -22,11 +22,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install
-      - name: Deploy
-        run: pnpm run predeploy
-      - name: Deploy
+      - run: pnpm install
+      - run: pnpm run predeploy
+      - name: publish to gh pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

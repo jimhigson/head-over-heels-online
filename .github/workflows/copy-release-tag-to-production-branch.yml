@@ -1,0 +1,20 @@
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.release.author.login == 'github-actions[bot]'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.release.tag_name }} # Use the release tag!
+          fetch-depth: 0
+
+      - name: Push tagged commit to production branch
+        run: |
+          git push origin ${{ github.event.release.tag_name }}:production --force
