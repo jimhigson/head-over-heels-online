@@ -192,14 +192,8 @@ export const changeCharacterRoom = <
 >(
   changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId, RoomItemId>,
 ) => {
-  const {
-    playableItem,
-    gameState,
-    toRoomId,
-    //positionRelativeToSourcePortal: maybePositionRelativeToSourcePortal,
-    changeType,
-    sourceItem,
-  } = changeCharacterRoomOptions;
+  const { playableItem, gameState, toRoomId, changeType, sourceItem } =
+    changeCharacterRoomOptions;
 
   /** TODO: @knownRoomIds - remove casts */
   const leavingRoom = gameState.characterRooms[

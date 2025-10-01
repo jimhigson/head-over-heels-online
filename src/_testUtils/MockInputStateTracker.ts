@@ -32,6 +32,13 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
 
   mockTick = () => {
     this.mockActionsPressedLastFrame = { ...this.mockActionsPressed };
+
+    // clear the latches for input that was handled, but now no longer is being input:
+    for (const action of this.actionsHandled) {
+      if (!this.mockActionsPressed[action]) {
+        this.actionsHandled.delete(action);
+      }
+    }
   };
 
   set mockDirectionPressed(direction: DirectionXy4 | undefined) {
@@ -64,11 +71,15 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
   currentActionPress = vi
     .fn<(action: BooleanAction) => PressStatus>()
     .mockImplementation((action) => {
+      if (this.actionsHandled.has(action)) {
+        return "released"; // treat as released if was already handled
+      }
+
       if (this.mockActionsPressed[action]) {
         if (!this.mockActionsPressedLastFrame[action]) {
           return "tap";
         }
-        return "hold"; // TODO: support tap as needed - if needed
+        return "hold";
       }
 
       return "released";

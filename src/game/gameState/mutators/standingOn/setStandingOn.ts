@@ -1,7 +1,12 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { FreeItem } from "../../physics/itemPredicates";
+import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlay";
+import type { FreeItem } from "../../../physics/itemPredicates";
 
-export const setStandingOn = <
+/**
+ * WARN: calling this could cause inconsistent state if the item
+ * above was already standing on something - if this is possible,
+ * it must be removed first
+ */
+export const setStandingOnWithoutRemovingOldFirst = <
   RoomId extends string,
   RoomItemId extends string,
 >({
@@ -13,7 +18,6 @@ export const setStandingOn = <
 }) => {
   const belowStoodOnBy = below.state.stoodOnBy;
 
-  // TODO: this kind of protection could be hidden behind a macro etc
   if (!Object.isExtensible(belowStoodOnBy)) {
     throw new Error(
       `${above.id} can't stand on ${below.id} - its standingOn is not extensible`,

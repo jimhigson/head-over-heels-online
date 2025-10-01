@@ -4,7 +4,7 @@ import type { UnindexedRoomState } from "../saving/SavedGameState";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { isFreeItem } from "../../physics/itemPredicates";
-import { removeStandingOn } from "./removeStandingOn";
+import { removeStandingOn } from "./standingOn/removeStandingOn";
 
 export const deleteItemFromRoom = <
   RoomId extends string,

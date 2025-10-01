@@ -26,7 +26,8 @@ import { loadItemFromJson } from "../game/gameState/loadRoom/loadItemFromJson";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
 import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
-import { setStandingOn } from "../game/gameState/mutators/setStandingOn";
+import { removeStandingOn } from "../game/gameState/mutators/standingOn/removeStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOn";
 import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
 import { updateItemPosition } from "../game/gameState/mutators/updateItemPosition";
 import { blockSizePx } from "../sprites/spritePivots";
@@ -255,7 +256,11 @@ export const mutatorsTestHarness = () => {
           z: blockSizePx.h,
         }),
       );
-      setStandingOn({ above: headPlayable, below: heelsPlayable });
+      removeStandingOn(headPlayable, headRoom!);
+      setStandingOnWithoutRemovingOldFirst({
+        above: headPlayable,
+        below: heelsPlayable,
+      });
       headPlayable.state.action = "idle";
       heelsPlayable.state.action = "idle";
 

@@ -491,12 +491,11 @@ export class InputStateTracker {
       // we are before the first frame
       return "released";
     }
-
-    const pressedNow = isActionPressed(currentFrameInput, action);
-
     if (this.actionsHandled.has(action)) {
       return "released"; // treat as released if was already handled
     }
+
+    const pressedNow = isActionPressed(currentFrameInput, action);
 
     if (pressedNow) {
       const previousFrameInput = this.#frameInputBuffer.at(1);
