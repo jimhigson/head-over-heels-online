@@ -6,6 +6,10 @@
 
 ## 2025-09-30
 * update to version 0.3.3 of [the crt shaders](https://github.com/jimhigson/jims_shaders.git)
+## 2025-09-28
+
+* slower characters (ie, Head, slow monsters) in game run faster by an extra 20% (separate from the 1.2x default speed-up, so 1.44x total if kept at default)
+* fast characters stay the same speed (ie, Heels, fast monsters)
 
 ## 2025-09-27
 
