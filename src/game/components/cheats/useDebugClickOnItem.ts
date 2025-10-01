@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 
+import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { debugItemClicked } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { pixiContainerToString } from "../../../utils/pixi/pixiContainerToString";
@@ -19,6 +20,9 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
 
         if (isItemType("teleporter", "doorFrame")(item)) {
           const { toRoom } = item.config;
+          if (toRoom === exitGameRoomId) {
+            return;
+          }
           gameApi.changeRoom(toRoom);
         }
         if (item.type === "lift") {

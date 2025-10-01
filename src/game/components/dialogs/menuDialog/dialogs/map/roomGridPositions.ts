@@ -9,6 +9,7 @@ import type {
   Xyz,
 } from "../../../../../../utils/vectors/vectors";
 
+import { exitGameRoomId } from "../../../../../../model/json/ItemConfigMap";
 import { entries } from "../../../../../../utils/entries";
 import { iterate } from "../../../../../../utils/iterate";
 import { unitVectors } from "../../../../../../utils/vectors/unitVectors";
@@ -224,6 +225,11 @@ function* _roomGridPositions<RoomId extends string>({
   // branch via doors:
   for (const doorItem of doors) {
     const { toRoom } = doorItem.config;
+
+    if (toRoom === exitGameRoomId) {
+      // door out of the game at the end - nothing to traverse into
+      continue;
+    }
     try {
       yield* roomGridPositions({
         roomId: toRoom,

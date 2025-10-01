@@ -263,8 +263,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               >
                 Starting room
               </GoToRoomButton>
-              <GoToRoomButton gameApi={gameApi} roomId={"laboratory" as RoomId}>
-                To the lab!
+              <GoToRoomButton gameApi={gameApi} roomId={"finalroom" as RoomId}>
+                Final room
               </GoToRoomButton>
             </div>
             <div className="flex flex-row items-center">

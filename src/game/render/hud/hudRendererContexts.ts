@@ -1,7 +1,10 @@
 import type { SetRequired } from "type-fest";
 
 import type { RoomState } from "../../../model/RoomState";
-import type { InputDirectionMode } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type {
+  FreeCharacters,
+  InputDirectionMode,
+} from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GeneralRenderContext } from "../RoomRenderContexts";
 
@@ -22,4 +25,6 @@ export type HudRendererTickContext<
   room: RoomState<RoomId, RoomItemId> | undefined;
   /** Delta time in milliseconds since last tick */
   deltaMS: number;
+
+  freeCharacters: FreeCharacters;
 };

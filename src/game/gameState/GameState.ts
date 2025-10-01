@@ -37,6 +37,7 @@ export type GameState<RoomId extends string> = {
   inputStateTracker: InputStateTrackerInterface;
 
   characterRooms: CharacterRooms<RoomId>;
+
   /**
    * Some of the state describing how their current room was entered for each character.
    * this could include characters that are not currently in play; for example, if headOverHeels

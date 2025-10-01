@@ -31,6 +31,7 @@ import {
   selectTool,
   setClickableAnnotationHovered,
 } from "../../../../editor/slice/levelEditorSlice";
+import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
 import { iterateRoomItems } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
 import { outlineFilters } from "../../filters/outlineFilter";
@@ -194,25 +195,27 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
             config: { toRoom, direction },
           } = item;
 
-          const toRoomExists = !!rooms[toRoom];
+          if (toRoom !== exitGameRoomId) {
+            const toRoomExists = !!rooms[toRoom];
 
-          const toRoomUpper = toRoom.toUpperCase();
+            const toRoomUpper = toRoom.toUpperCase();
 
-          const arrow = directionArrows[direction];
-          const text =
-            direction === "away" || direction === "right" ?
-              `${toRoomUpper}${arrow}`
-            : `${arrow}${toRoomUpper}`;
+            const arrow = directionArrows[direction];
+            const text =
+              direction === "away" || direction === "right" ?
+                `${toRoomUpper}${arrow}`
+              : `${arrow}${toRoomUpper}`;
 
-          this.#addTextAnnotation({
-            annotationText: text,
-            yAdj: direction === "left" || direction === "away" ? -48 : 0,
-            error: !toRoomExists,
-            clickDispatch:
-              toRoomExists ?
-                () => changeToRoom(toRoom as EditorRoomId)
-              : undefined,
-          });
+            this.#addTextAnnotation({
+              annotationText: text,
+              yAdj: direction === "left" || direction === "away" ? -48 : 0,
+              error: !toRoomExists,
+              clickDispatch:
+                toRoomExists ?
+                  () => changeToRoom(toRoom as EditorRoomId)
+                : undefined,
+            });
+          }
         }
         break;
 

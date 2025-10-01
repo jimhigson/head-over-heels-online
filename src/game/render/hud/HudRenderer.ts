@@ -461,7 +461,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
   #updateLivesText(
     characterName: IndividualCharacterName,
-    { screenSize }: HudRendererTickContext<RoomId, RoomItemId>,
+    { screenSize, freeCharacters }: HudRendererTickContext<RoomId, RoomItemId>,
   ) {
     const {
       renderContext: {
@@ -470,8 +470,10 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       },
     } = this;
 
-    const abilities = selectAbilities(gameState, characterName);
-    const lives = abilities?.lives ?? 0;
+    const isFree = freeCharacters[characterName] ?? false;
+
+    const livesText =
+      isFree ? "FREE" : (selectAbilities(gameState, characterName)?.lives ?? 0);
 
     const livesTextContainer = this.#hudElements[characterName].livesText;
     livesTextContainer.x =
@@ -479,7 +481,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       sideMultiplier(characterName) * livesTextFromCentre(onScreenControls);
     livesTextContainer.y = screenSize.y;
 
-    showTextInContainer(livesTextContainer, lives ?? 0);
+    showTextInContainer(livesTextContainer, livesText);
   }
 
   #updateColours(tickContext: HudRendererTickContext<RoomId, RoomItemId>) {

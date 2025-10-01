@@ -1,5 +1,8 @@
+import { createSelector } from "@reduxjs/toolkit";
 import { objectKeys, objectValues, size } from "iter-tools-es";
 import { Suspense } from "react";
+
+import type { RootState } from "../../../../../../store/store";
 
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
@@ -24,9 +27,14 @@ const ORIGINAL_GAME_MAX_SCORE = 94_000;
 const calculateScore = (
   roomsExploredCount: number,
   planetsLiberatedCount: number,
+  playersFree: number,
 ) => {
   // source: https://github.com/dougmencken/HeadOverHeels/blob/0babd055e91dee980bedce403ef53a35c8c526ef/source/guiactions/CreateGameOverSlide.cpp#L74
-  return roomsExploredCount * 160 + planetsLiberatedCount * 10_000;
+  return (
+    roomsExploredCount * 160 +
+    planetsLiberatedCount * 10_000 +
+    playersFree * 10_000
+  );
 };
 
 type ScoreThreshold = {
@@ -56,6 +64,16 @@ const getScoreLabel = (score: number, maxScore: number): string => {
   return "completionist";
 };
 
+const selectFreeCharacters = createSelector(
+  ({
+    gameMenus: {
+      gameInPlay: { freeCharacters },
+    },
+  }: RootState) => freeCharacters,
+  (freeCharacters) =>
+    Object.keys(freeCharacters) as Array<keyof typeof freeCharacters>,
+);
+
 const ScoreDialogContents = () => {
   const campaign = useCurrentCampaign();
 
@@ -68,10 +86,16 @@ const ScoreDialogContents = () => {
     }) => size(iterate(objectValues(roomsExplored))),
   );
 
-  const score = calculateScore(roomsExploredCount, planetsLiberatedCount);
+  const freeCharacters = useAppSelector(selectFreeCharacters);
+
+  const score = calculateScore(
+    roomsExploredCount,
+    planetsLiberatedCount,
+    freeCharacters.length,
+  );
 
   const roomCount = size(objectKeys(campaign.rooms));
-  const maxScore = calculateScore(roomCount, 5);
+  const maxScore = calculateScore(roomCount, 5, 2);
 
   const scoreLabel = getScoreLabel(score, maxScore);
 
@@ -80,19 +104,41 @@ const ScoreDialogContents = () => {
       <MainMenuHeading noSubtitle className="resHandheld:hidden" />
       <BitmapText
         classnameCycle={mainMenuCycle}
-        className="mt-2 resHandheld:mt-3 block text-center mx-auto sprites-double-height"
+        className="mt-1 resHandheld:mt-3 block text-center mx-auto sprites-double-height"
       >
         {scoreLabel}
       </BitmapText>
       <div className={`contents ${multilineTextClass}`}>
-        <BitmapText className="mt-2 resHandheld:mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
+        <BitmapText className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
           Score {score.toLocaleString()}
         </BitmapText>
-        <BitmapText className="mt-2 resHandheld:mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
+        <div className="mt-1">
+          {freeCharacters.map((fc) => {
+            return (
+              <span
+                key={fc}
+                className="block text-center mx-auto text-lightGrey zx:text-zxYellow"
+              >
+                <BitmapText
+                  className={
+                    fc === "head" ?
+                      "text-metallicBlue zx:text-zxBlue"
+                    : "text-pink zx:text-zxWhite"
+                  }
+                >
+                  {fc}
+                </BitmapText>
+                <BitmapText> is</BitmapText>
+                <BitmapText classnameCycle={mainMenuCycle}> free</BitmapText>
+              </span>
+            );
+          })}
+        </div>
+        <BitmapText className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
           Explored {roomsExploredCount} / {roomCount} rooms{" "}
           {`(${((100 * roomsExploredCount) / roomCount).toFixed(1)}%)`}
         </BitmapText>
-        <BitmapText className="mt-2 resHandheld:mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
+        <BitmapText className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
           Liberated {planetsLiberatedCount} planets
         </BitmapText>
         <MenuItems className="hidden">

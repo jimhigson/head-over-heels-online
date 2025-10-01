@@ -1,7 +1,9 @@
+import type { SetOptional } from "type-fest";
+
 import type { roomSpatialIndexKey, RoomState } from "../../../model/RoomState";
 import type {
+  GameInPlayStoreState,
   gameMenusSlice,
-  GameMenusState,
 } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { CharacterRooms, GameState } from "../GameState";
 
@@ -17,7 +19,7 @@ export const savedGameStateFields = [
   "progression",
   "pickupsCollected",
   "previousPlayable",
-] as const;
+] as const satisfies readonly (keyof GameState<string>)[];
 
 /** when RoomState is serialised, it does not have an index */
 export type UnindexedRoomState<
@@ -38,12 +40,17 @@ type SavedGameStateFields = (typeof savedGameStateFields)[number];
 
 type SavedGameState<RoomId extends string> = Pick<
   GameState<RoomId>,
-  // WRONG but fewer errors:
-  //SavedGameStateFields
   Exclude<SavedGameStateFields, "characterRooms">
 > & {
   characterRooms: SavedCharacterRooms<RoomId>;
 };
+
+export type SavedStoreGameInPlay = SetOptional<
+  GameInPlayStoreState,
+  // freeCharacters marked as optional since it won't be in games saved before
+  // as of late Sept/early Oct 2025
+  "freeCharacters"
+>;
 
 export type SavedGame<RoomId extends string = string> = {
   saveTime: number;
@@ -53,6 +60,8 @@ export type SavedGame<RoomId extends string = string> = {
      * gameInPlay is everything in the store that stores crowns collected,
      * scrolls read etc @see {GameInPlayStoreState}
      */
-    [gameMenusSlice.reducerPath]: Pick<GameMenusState, "gameInPlay">;
+    [gameMenusSlice.reducerPath]: {
+      gameInPlay: SavedStoreGameInPlay;
+    };
   };
 };

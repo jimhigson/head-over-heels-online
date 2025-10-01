@@ -5,6 +5,7 @@ import type { CreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
 import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
 import type { ItemState } from "./ItemState";
+import type { ExitGameRoomId } from "./json/ItemConfigMap";
 import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
 import type { CharacterName, IndividualCharacterName } from "./modelTypes";
 
@@ -37,7 +38,7 @@ export type SwitchSetting = "left" | "right";
 export type DoorFrameConfig<RoomId extends string> = {
   direction: DirectionXy4;
   inHiddenWall: boolean;
-  toRoom: RoomId;
+  toRoom: ExitGameRoomId | RoomId;
 
   /** is this the near post of the doorframe, or the far one? */
   part: "far" | "near" | "top";
@@ -51,7 +52,7 @@ export type DoorLegsConfig = {
 
 type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   portal: {
-    toRoom: RoomId;
+    toRoom: ExitGameRoomId | RoomId;
     /**
      * if the portal is created for a door, and the door has the optional property
      * giving the corresponding door in the destination room, this is that door's id

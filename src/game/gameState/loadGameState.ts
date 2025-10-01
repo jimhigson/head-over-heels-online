@@ -215,11 +215,10 @@ const _loadGameState = <RoomId extends string>({
     );
 
   // gather what we know so far:
-  const gameState = Object.assign(writeInto, {
+  const gameState: GameState<RoomId> = Object.assign(writeInto, {
     inputStateTracker,
     gameSpeed: 1,
 
-    // if head isn't in the campaign (unusual!), start with heels
     currentCharacterName: startAs,
     entryState: {
       head: headItem === undefined ? undefined : entryState(headItem),
@@ -230,6 +229,7 @@ const _loadGameState = <RoomId extends string>({
     pickupsCollected: {} as PickupsCollected<RoomId>,
     gameTime: 0,
     progression: 0,
+    freeCharacters: {},
 
     characterRooms: {
       head: headRoom,

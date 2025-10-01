@@ -2,17 +2,21 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
 
-import type { FloorType } from "../../../model/json/ItemConfigMap";
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { SceneryName } from "../../../sprites/planets";
 import type {
+  EditorJsonItem,
   EditorRoomId,
   EditorRoomItemId,
   EditorRoomJson,
 } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
+import {
+  exitGameRoomId,
+  type FloorType,
+} from "../../../model/json/ItemConfigMap";
 import {
   iterateRoomJsonItems,
   iterateRoomJsonItemsWithIds,
@@ -132,7 +136,21 @@ export const editRoomReducers = {
       // was already a door in in the room before this edit:
       .filter(([id, _doorItem]) => prevRoomJson.items[id]?.type === "door")
       // points to a room that exists:
-      .filter(([, doorItem]) => rooms[doorItem.config.toRoom] !== undefined)
+      .filter(
+        (
+          entry,
+        ): entry is [
+          EditorRoomItemId,
+          // predicate discriminates to door not being to out of the game (not "$$final")
+          EditorJsonItem<"door"> & { config: { toRoom: EditorRoomId } },
+        ] => {
+          const [, doorItem] = entry;
+          return (
+            doorItem.config.toRoom !== exitGameRoomId &&
+            rooms[doorItem.config.toRoom] !== undefined
+          );
+        },
+      )
       .forEach(([doorItemId, doorItem]) => {
         const otherRoom = rooms[doorItem.config.toRoom] as EditorRoomJson;
         const otherRoomDoorDirection = oppositeDirection(

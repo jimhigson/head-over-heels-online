@@ -191,6 +191,7 @@ export class MainLoop<RoomId extends string> {
           displaySettings: tickDisplaySettings,
           soundSettings: tickSoundSettings,
         },
+        gameInPlay: { freeCharacters: tickFreeCharacters },
       },
       upscale: { upscale: tickUpscale },
     } = store.getState();
@@ -236,6 +237,7 @@ export class MainLoop<RoomId extends string> {
       screenSize: tickUpscale.gameEngineScreenSize,
       room: tickStartRoom,
       deltaMS,
+      freeCharacters: tickFreeCharacters,
     });
     // render hud end
     timingStats?.endHudUpdate();
