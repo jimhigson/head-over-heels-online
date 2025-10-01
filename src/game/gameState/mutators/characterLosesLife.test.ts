@@ -20,27 +20,64 @@ describe("while not in symbiosis", () => {
       const otherName = otherIndividualCharacterName(playableLosingLifeName);
 
       describe(`and it is ${playableLosingLifeName}'s last life`, () => {
-        test(`but ${otherName} still has some left`, () => {
+        test(`but ${otherName} has >2 lives left - Retrospec model applies`, () => {
           const h = mutatorsTestHarness();
 
-          h.playableLosesLife(
+          h.swopToPlayer(playableLosingLifeName);
+          h.playableLosesLives(
             playableLosingLifeName,
             originalGameStartingLives,
           );
-          expect(h.selectPlayable(playableLosingLifeName)).toBeUndefined();
-          expect(h.gameState.currentCharacterName).toEqual(otherName);
+          // player who lost lives is still in the game:
+          expect(h.selectPlayable(playableLosingLifeName)).not.toBeUndefined();
+          // they got one back from the other player:
+          expect(h.selectPlayable(playableLosingLifeName)?.state.lives).toEqual(
+            1,
+          );
+          // to do this the other sacrificed 2:
+          expect(h.selectPlayable(otherName)?.state.lives).toEqual(6);
+
+          // we are still on the same character:
+          expect(h.gameState.currentCharacterName).toEqual(
+            playableLosingLifeName,
+          );
           h.expectGameContinues();
           h.teardown();
         });
-        test(`and ${otherName} also has zero lives`, () => {
+        test(`but ${otherName} has exactly 2 lives left - the 2 are shared for one last try at doing the game`, () => {
+          const h = mutatorsTestHarness();
+
+          // other player loses all but 2:
+          h.playableLosesLives(otherName, originalGameStartingLives - 2);
+
+          h.swopToPlayer(playableLosingLifeName);
+          h.playableLosesLives(
+            playableLosingLifeName,
+            originalGameStartingLives,
+          );
+          // player who lost lives is still in the game:
+          expect(h.selectPlayable(playableLosingLifeName)).not.toBeUndefined();
+          // they got one back from the other player:
+          expect(h.selectPlayable(playableLosingLifeName)?.state.lives).toEqual(
+            1,
+          );
+          // to do this the other sacrificed 1 (since they only had 2):
+          expect(h.selectPlayable(otherName)?.state.lives).toEqual(1);
+          expect(h.gameState.currentCharacterName).toEqual(
+            playableLosingLifeName,
+          );
+          h.expectGameContinues();
+          h.teardown();
+        });
+        test(`and ${otherName} already out of the game`, () => {
           const h = mutatorsTestHarness();
 
           // other player loses all their lives:
-          h.playableLosesLife(otherName, originalGameStartingLives);
-          expect(h.selectPlayable(otherName)).toBeUndefined();
+          h.playableNotInTheGame(otherName);
+          h.expectPlayableToBeOutOfTheGame(otherName);
 
           expect(h.selectPlayable(playableLosingLifeName)).not.toBeUndefined();
-          h.playableLosesLife(
+          h.playableLosesLives(
             playableLosingLifeName,
             originalGameStartingLives,
           );
@@ -55,11 +92,11 @@ describe("while not in symbiosis", () => {
           h.carryItemIfHeels(playableLosingLifeName);
 
           // other player loses all their lives:
-          h.playableLosesLife(otherName, originalGameStartingLives);
+          h.playableNotInTheGame(otherName);
           expect(h.selectPlayable(otherName)).toBeUndefined();
 
           // now we lose just one life:
-          h.playableLosesLife(playableLosingLifeName, 1);
+          h.playableLosesLives(playableLosingLifeName, 1);
           expect(h.selectPlayable(playableLosingLifeName)).not.toBeUndefined();
           h.expectLifeCount({
             playableName: playableLosingLifeName,
@@ -76,7 +113,7 @@ describe("while not in symbiosis", () => {
 
             h.carryItemIfHeels(playableLosingLifeName);
 
-            h.playableLosesLife(playableLosingLifeName);
+            h.playableLosesLives(playableLosingLifeName);
 
             h.expectGameContinues();
 
@@ -106,7 +143,7 @@ describe("while not in symbiosis", () => {
 
               const roomBeforeLosingLife = h.selectRoomOfPlayable("head")!;
 
-              h.playableLosesLife(playableLosingLifeName);
+              h.playableLosesLives(playableLosingLifeName);
 
               expect(h.selectPlayable("head")).toBeUndefined();
               expect(h.selectPlayable("heels")).toBeUndefined();
@@ -131,7 +168,7 @@ describe("while not in symbiosis", () => {
 
               h.carryItemIfHeels(playableLosingLifeName);
 
-              h.playableLosesLife(playableLosingLifeName);
+              h.playableLosesLives(playableLosingLifeName);
 
               h.expectGameContinues();
 
@@ -168,7 +205,7 @@ describe("while not in symbiosis", () => {
 
               h.carryItemIfHeels(playableLosingLifeName);
 
-              h.playableLosesLife(playableLosingLifeName);
+              h.playableLosesLives(playableLosingLifeName);
 
               h.expectGameContinues();
 
@@ -202,13 +239,13 @@ describe("while in symbiosis", () => {
       h.putIntoSymbiosis();
       h.selectPlayable("headOverHeels")!.state.head.lives = 1;
       h.selectPlayable("headOverHeels")!.state.heels.lives = 1;
-      h.playableLosesLife("headOverHeels");
+      h.playableLosesLives("headOverHeels");
       h.expectGameOver();
       h.teardown();
     });
   });
   describe.each(individualCharacterNames)(
-    "after losing lives, only %s has lives left",
+    "after losing lives, only %s has > 1 life",
     (individualWithLivesLeft) => {
       test("having entered the room in symbiosis", () => {
         const h = mutatorsTestHarness();
@@ -223,18 +260,27 @@ describe("while in symbiosis", () => {
         ].lives = 1;
 
         const roomBeforeLosingLife = h.selectRoomOfPlayable("headOverHeels")!;
-        h.playableLosesLife("headOverHeels");
+        h.playableLosesLives("headOverHeels");
 
         h.expectRoomToBeNonIdenticalCopy({
-          thisRoom: h.selectRoomOfPlayable(individualWithLivesLeft),
+          thisRoom: h.selectRoomOfPlayable("headOverHeels"),
           shouldBeACopyOf: roomBeforeLosingLife,
         });
 
-        h.expectPlayableToBeOutOfTheGame("headOverHeels");
-        h.expectPlayableToBeOutOfTheGame(
-          otherIndividualCharacterName(individualWithLivesLeft),
-        );
-        h.expectPlayableToBeInGame(individualWithLivesLeft);
+        h.expectPlayableToBeInGame("headOverHeels");
+
+        expect(
+          h.selectPlayable("headOverHeels")!.state[individualWithLivesLeft]
+            .lives,
+          // started with 8, lost 1, and transferred 2 to save the other:
+        ).toEqual(5);
+        expect(
+          h.selectPlayable("headOverHeels")!.state[
+            otherIndividualCharacterName(individualWithLivesLeft)
+          ].lives,
+          // had 1 life, lost it, and had one transferred in from the other player to get back to 1:
+        ).toEqual(1);
+
         h.teardown();
       });
       test("having entered the room individually", () => {
@@ -250,17 +296,73 @@ describe("while in symbiosis", () => {
         ].lives = 1;
 
         const roomBeforeLosingLife = h.selectRoomOfPlayable("headOverHeels")!;
-        h.playableLosesLife("headOverHeels");
+        h.playableLosesLives("headOverHeels");
 
         h.expectRoomToBeNonIdenticalCopy({
-          thisRoom: h.selectRoomOfPlayable(individualWithLivesLeft),
+          thisRoom: h.selectRoomOfPlayable("head"),
           shouldBeACopyOf: roomBeforeLosingLife,
         });
-        h.expectPlayableToBeInGame(individualWithLivesLeft);
+        h.expectRoomToBeNonIdenticalCopy({
+          thisRoom: h.selectRoomOfPlayable("heels"),
+          shouldBeACopyOf: roomBeforeLosingLife,
+        });
+
         h.expectPlayableToBeOutOfTheGame("headOverHeels");
-        h.expectPlayableToBeOutOfTheGame(
-          otherIndividualCharacterName(individualWithLivesLeft),
-        );
+        h.expectPlayableToBeInGame("head");
+        h.expectPlayableToBeInGame("heels");
+
+        expect(
+          h.selectPlayable(individualWithLivesLeft)!.state.lives,
+          // started with 8, lost 1, and transferred 2 to save the other:
+        ).toEqual(5);
+        expect(
+          h.selectPlayable(
+            otherIndividualCharacterName(individualWithLivesLeft),
+          )!.state.lives,
+          // had 1 life, lost it, and had one transferred in from the other player to get back to 1:
+        ).toEqual(1);
+        h.teardown();
+      });
+    },
+  );
+  describe.each(individualCharacterNames)(
+    "both only have 1 life left (can't apply Retrospec model)",
+    (individualWithLivesLeft) => {
+      test("having entered the room in symbiosis", () => {
+        const h = mutatorsTestHarness();
+        h.playableWalksToRoom("head", "heelsStartingRoom");
+        h.putIntoSymbiosis();
+        h.playableWalksToRoom("headOverHeels", "thirdRoom");
+
+        // now: we have walked into the third room as headOverHeels, having joined in heelsStartingRoom
+        h.selectPlayable("headOverHeels")!.state[
+          otherIndividualCharacterName(individualWithLivesLeft)
+        ].lives = 1;
+        h.selectPlayable("headOverHeels")!.state[
+          individualWithLivesLeft
+        ].lives = 1;
+
+        h.playableLosesLives("headOverHeels");
+        h.expectGameOver();
+        h.teardown();
+      });
+      test("having entered the room individually", () => {
+        const h = mutatorsTestHarness();
+        h.playableWalksToRoom("head", "thirdRoom");
+        h.playableWalksToRoom("heels", "thirdRoom");
+
+        h.putIntoSymbiosis();
+
+        // now: we have walked into the third room as headOverHeels, having joined in heelsStartingRoom
+        h.selectPlayable("headOverHeels")!.state[
+          otherIndividualCharacterName(individualWithLivesLeft)
+        ].lives = 1;
+        h.selectPlayable("headOverHeels")!.state[
+          individualWithLivesLeft
+        ].lives = 1;
+
+        h.playableLosesLives("headOverHeels");
+        h.expectGameOver();
         h.teardown();
       });
     },
@@ -278,7 +380,7 @@ describe("while in symbiosis", () => {
       // now: we have walked into the third room in symbiosis from heel's starting room:
 
       const roomBeforeLosingLife = h.selectRoomOfPlayable("headOverHeels")!;
-      h.playableLosesLife("headOverHeels");
+      h.playableLosesLives("headOverHeels");
 
       h.expectRoomToBeNonIdenticalCopy({
         thisRoom: h.selectRoomOfPlayable("headOverHeels"),
@@ -314,7 +416,7 @@ describe("while in symbiosis", () => {
         expect(selectAbilities(h.gameState, "heels")!.carrying).not.toBeNull();
 
         const roomBeforeLosingLife = h.selectRoomOfPlayable("headOverHeels")!;
-        h.playableLosesLife("headOverHeels");
+        h.playableLosesLives("headOverHeels");
 
         // now: we entered as individuals, joined, and died. We need to re-enter the room in symbiosis
         // to avoid colliding at the entry door:
@@ -346,7 +448,7 @@ describe("while in symbiosis", () => {
         h.putIntoSymbiosis();
 
         const roomBeforeLosingLife = h.selectRoomOfPlayable("headOverHeels")!;
-        h.playableLosesLife("headOverHeels");
+        h.playableLosesLives("headOverHeels");
 
         // now: we entered as individuals, joined, and died. We need to re-enter the room in symbiosis
         // to avoid colliding at the entry door:

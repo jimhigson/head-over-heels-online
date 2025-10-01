@@ -6,11 +6,6 @@ import type { StartingRooms } from "../game/gameState/loadGameState";
 import type { PortableItemType } from "../game/physics/itemPredicates";
 import type { ItemInPlay } from "../model/ItemInPlay";
 import type { PlayableActionState } from "../model/ItemStateMap";
-import type {
-  Campaign,
-  CharacterName,
-  IndividualCharacterName,
-} from "../model/modelTypes";
 import type { RoomState } from "../model/RoomState";
 
 import {
@@ -30,6 +25,12 @@ import { removeStandingOn } from "../game/gameState/mutators/standingOn/removeSt
 import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOn";
 import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
 import { updateItemPosition } from "../game/gameState/mutators/updateItemPosition";
+import {
+  type Campaign,
+  type CharacterName,
+  type IndividualCharacterName,
+  otherIndividualCharacterName,
+} from "../model/modelTypes";
 import { blockSizePx } from "../sprites/spritePivots";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameOver } from "../store/slices/gameMenus/gameMenusSlice";
@@ -296,7 +297,10 @@ export const mutatorsTestHarness = () => {
       shouldBeACopyOf: RoomState<TestCampaignRoomId, string>;
       thisRoom: RoomState<TestCampaignRoomId, string> | undefined;
     }) {
-      expect(thisRoom).toBeDefined();
+      expect(
+        thisRoom,
+        "was expecting thisRoom to be a non-identical copy, but is not defined at all",
+      ).toBeDefined();
       expect(thisRoom?.id).toEqual(shouldBeACopyOf.id);
       expect(thisRoom).not.toBe(shouldBeACopyOf);
     },
@@ -326,12 +330,28 @@ export const mutatorsTestHarness = () => {
       expect(currentRoom).toBe(room);
     },
     expectPlayableToBeInGame(playableName: CharacterName) {
-      expect(this.selectPlayable(playableName)).toBeDefined();
+      expect(
+        this.selectPlayable(playableName),
+        `expected ${playableName} to be in the game, but selecting them give undefined`,
+      ).toBeDefined();
     },
     expectPlayableToBeOutOfTheGame(playableName: CharacterName) {
-      expect(this.selectPlayable(playableName)).not.toBeDefined();
+      expect(
+        this.selectPlayable(playableName),
+        `expected ${playableName} to be out of the game, but selecting them did not give undefined`,
+      ).not.toBeDefined();
     },
-    playableLosesLife(playableName: CharacterName, count: number = 1) {
+    playableNotInTheGame(playableName: IndividualCharacterName) {
+      const room = this.selectRoomOfPlayable(playableName);
+      if (room === undefined) {
+        throw new Error("seems to not be in the game already (in no room)");
+      }
+      delete room.items[playableName];
+      gameState.currentCharacterName =
+        otherIndividualCharacterName(playableName);
+      delete gameState.characterRooms[playableName];
+    },
+    playableLosesLives(playableName: CharacterName, count: number = 1) {
       for (let i = 0; i < count; i++) {
         const playable = selectPlayableItem(gameState, playableName);
 

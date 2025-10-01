@@ -1,3 +1,4 @@
+import type { PokeableNumber } from "../../../model/ItemStateMap";
 import type {
   CharacterName,
   IndividualCharacterName,
@@ -31,19 +32,61 @@ import {
   uncombinePlayablesFromSymbiosis,
 } from "./symbiosis";
 
+/**
+ * copy the invoation from Retrospec to avoid an unwinnable game when one
+ * character loses all their lives but the other is still playing while still
+ * making getting down to zero lives a problem
+ * */
+const loseLifeWithRetrospecModelLivesTransfer = (
+  characterLosingLifeState: { lives: PokeableNumber },
+  otherCharacterState?: { lives: PokeableNumber },
+) => {
+  characterLosingLifeState.lives = addPokeableNumbers(
+    characterLosingLifeState.lives,
+    -1,
+  );
+
+  // allow the other player to send one of their lives over - this is the Retrospec revised lives model
+  // and avoids an unwinnable situation where one player has lost all their lives but the other continues playing
+  // an unwinnable game:
+  if (
+    characterLosingLifeState.lives === 0 &&
+    otherCharacterState !== undefined
+  ) {
+    const otherCharacterLives = pokeableToNumber(otherCharacterState.lives);
+
+    if (otherCharacterLives >= 2) {
+      characterLosingLifeState.lives = addPokeableNumbers(
+        characterLosingLifeState.lives,
+        1,
+      );
+      otherCharacterState.lives = addPokeableNumbers(
+        otherCharacterState.lives,
+        otherCharacterLives > 2 ?
+          // sacrifice two to continue with one:
+          -2
+          // make an exception if the other character has exactly 2 lives left -
+          // they can give one life but keep one so they can continue playing:
+        : -1,
+      );
+    }
+  }
+};
+
 const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
   headOverHeels: PlayableItem<"headOverHeels", RoomId>,
 ) => {
   const room = gameState.characterRooms["headOverHeels"]!;
 
-  headOverHeels.state.head.lives = addPokeableNumbers(
-    headOverHeels.state.head.lives,
-    -1,
+  loseLifeWithRetrospecModelLivesTransfer(
+    headOverHeels.state.head,
+    headOverHeels.state.heels,
   );
-  headOverHeels.state.heels.lives = addPokeableNumbers(
-    headOverHeels.state.heels.lives,
-    -1,
+
+  loseLifeWithRetrospecModelLivesTransfer(
+    headOverHeels.state.heels,
+    headOverHeels.state.head,
   );
 
   headOverHeels.state.head.lastDiedAt = headOverHeels.state.head.gameTime;
@@ -209,18 +252,18 @@ const individualPlayableLosesLife = <
     otherIndividualCharacterName(characterLosingLife.type),
   );
 
-  if (characterLosingLife.state.lives !== "infinite") {
-    characterLosingLife.state.lives--;
-  }
   characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
 
   if (characterLosingLife.type === "heels") {
     characterLosingLife.state.carrying = null;
   }
 
+  loseLifeWithRetrospecModelLivesTransfer(
+    characterLosingLife.state,
+    otherCharacter?.state,
+  );
+
   if (characterLosingLife.state.lives === 0) {
-    // TODO: this cast was unnessessary when the ids of items could be baked into the types -
-    /** TODO: @knownRoomIds - remove casts */
     delete gameState.characterRooms[characterLosingLife.id as CharacterName];
 
     const otherCharacterHasLives = otherCharacter !== undefined;

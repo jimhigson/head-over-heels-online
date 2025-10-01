@@ -23,7 +23,7 @@ describe("hush puppies integration", () => {
   test("vanish again when head loses life and room is reloaded", () => {
     const h = mutatorsTestHarness();
     h.playableWalksToRoom("head", "thirdRoom");
-    h.playableLosesLife("head");
+    h.playableLosesLives("head");
     expect(h.selectRoomOfPlayable("head")?.items.hushPuppy).toBeUndefined();
     h.teardown();
   });
