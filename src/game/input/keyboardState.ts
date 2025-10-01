@@ -19,7 +19,15 @@ const stdKeyFromKeyboardEvent = ({
 
   const standardCase = key.length === 1 ? key.toUpperCase() : key;
   const withLocation =
-    location === DOM_KEY_LOCATION_NUMPAD ?
+    (
+      location === DOM_KEY_LOCATION_NUMPAD &&
+      // Safari from MacOS 26 started reporting the cursor keys with
+      // location=3 (numpad) - no other browser does this and they are
+      // not numpad keys. I'm not sure if numpad arrow keys even exist,
+      // or how you would press them. Some numpads have arrows printed
+      // on them 🤷‍♂️
+      !standardCase.startsWith("Arrow")
+    ) ?
       `Numpad${standardCase}`
     : standardCase;
 
