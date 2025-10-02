@@ -1,5 +1,23 @@
 [
   {
+    "op": "add",
+    "path": "/items/secondTurtle",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "clockwise",
+        "startDirection": "left",
+        "which": "turtle"
+      },
+      "position": {
+        "x": 0,
+        "y": 3,
+        "z": 0
+      },
+      "type": "monster"
+    }
+  },
+  {
     "op": "replace",
     "path": "/color/hue",
     "value": "cyan"
