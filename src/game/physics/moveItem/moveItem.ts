@@ -1,35 +1,35 @@
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { GameState } from "../gameState/GameState";
-import type { handleItemsTouchingItems } from "./handleTouch/handleItemsTouchingItems";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
+import type { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import { roomSpatialIndexKey, type RoomState } from "../../model/RoomState";
-import { stoodOnItem } from "../../model/stoodOnItemsLookup";
-import { veryClose } from "../../utils/epsilon";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
+import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
+import { veryClose } from "../../../utils/epsilon";
 import {
   addXyz,
-  dotProductXyz,
   lengthXyz,
-  lengthXyzSquared,
   originXyz,
   scaleXyz,
   subXyz,
   xyzEqual,
-} from "../../utils/vectors/vectors";
+} from "../../../utils/vectors/vectors";
 import {
   collision1to1,
   collisionItemWithIndex,
-} from "../collision/aabbCollision";
-import { removeStandingOn } from "../gameState/mutators/standingOn/removeStandingOn";
-import { setStandingOnWithoutRemovingOldFirst } from "../gameState/mutators/standingOn/setStandingOn";
-import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
-import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
-import { isItemType, isPushable, isSlidingItem } from "./itemPredicates";
-import { isFreeItem } from "./itemPredicates";
-import { isSolid } from "./itemPredicates";
-import { maxPushRecursionDepth } from "./mechanicsConstants";
-import { mtv, mtvAlongVector } from "./mtv";
-import { recordActedOnBy, recordCollision } from "./recordActedOnBy";
+} from "../../collision/aabbCollision";
+import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOn";
+import { updateItemPosition } from "../../gameState/mutators/updateItemPosition";
+import { sortObstaclesAboutPriorityAndVector } from "../collisionsOrder";
+import { isLift, isPushable, isSlidingItem } from "../itemPredicates";
+import { isFreeItem } from "../itemPredicates";
+import { isSolid } from "../itemPredicates";
+import { maxPushRecursionDepth } from "../mechanicsConstants";
+import { mtv } from "../mtv";
+import { recordActedOnBy, recordCollision } from "../recordActedOnBy";
+import { backingOffTranslationAfterCollision } from "./backingOffTranslationAfterCollision";
+import { helpfulMovementVector } from "./helpfulMovementVector";
 
 // turn this on for *very* noisy logging of all the movements/pushes etc.
 // esbuild should remove these if statements at build time
@@ -44,7 +44,7 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
    * against infinite loops where two items get stuck pushing each other
    */;
   room: RoomState<RoomId, RoomItemId>;
-  pusher?: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+
   deltaMS: number;
   /**
    * if true, anything this movement tries to push will get moved the total amount.
@@ -62,82 +62,17 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
 
   onTouch?: typeof handleItemsTouchingItems;
 
-  path?: Set<string>;
-};
+  /**
+   * the nodes we previously visited on the path down the tree to get to here.
+   * Set is a little faster than array since we need to look up if strings are present.
+   *
+   * The size of the path is also checked for maximum recursion depth
+   */
+  path?: Set<RoomItemId>;
 
-const backingOffTranslationAfterCollision = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
-  subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  collidedWithItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  forceful: boolean,
-  // the starting position of the subject, before collisions - can be used to get the
-  // direction they're heading in by the time they get to this collision. If a single collision (or the first of
-  // multiple) this will be equal to the initial position
-  originalPosition: Xyz,
-): Xyz => {
-  const collidedWithIsPushable = isPushable(
-    subjectItem,
-    collidedWithItem,
-    forceful,
-  );
-
-  const backingOffMtv = mtv(
-    subjectItem.state.position,
-    subjectItem.aabb,
-    collidedWithItem.state.position,
-    collidedWithItem.aabb,
-  );
-
-  // disable this branch to make pushing much more like the original game (only in four directions
-  // and having to move 'behind' items in those 4 directions to push them) - it isn't totally clear
-  // what the right interpretation of pushing 4-sided AABBs is in an 8-way or analgoue world, but this
-  // does make positioning blocks by pushing them easier (and less annoying) and also removes a mechanic
-  // where a block can be stuck in a corner, not able to be pushed out
-  if (
-    collidedWithIsPushable &&
-    // vertical pushing (ie, from lifts) doesn't get the special treatment - this is always
-    // using the normal backing off mtv
-    backingOffMtv.z === 0
-  ) {
-    // vector that would put the subject back where they started - this is easier than
-    // their forward travel since it keeps the projection with their mtv positive
-    const subjectTravelReverseVector = subXyz(
-      originalPosition,
-      subjectItem.state.position,
-    );
-
-    const travelRevDistSquared = lengthXyzSquared(subjectTravelReverseVector);
-    // find the projection along the distance we've moved so far of the backing off mtv.
-    // basically, this tells us if the backing off is in a similar enough direction to the opposite
-    // of our direction of travel that we can modify it only back off in the direction we are travelling.
-    // modifying the mtv to be in the direction of travel allows items to be pushed diagonally for
-    // example, even though for aabbs, the mtv is always axis aligned. Dividing by the distance would give
-    // the projection - / by dist² gives projection as fraction of the travel distance
-    const backingOffProjectedOnMovementVector =
-      dotProductXyz(backingOffMtv, subjectTravelReverseVector) /
-      travelRevDistSquared;
-
-    // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
-    // normal aabb mtvs
-    subjectTravelReverseVector.z = 0;
-
-    // a little bit wider than 45° (which would be 0.5 here)
-    if (backingOffProjectedOnMovementVector > 0.44) {
-      return mtvAlongVector(
-        subjectItem.state.position,
-        subjectItem.aabb,
-        collidedWithItem.state.position,
-        collidedWithItem.aabb,
-        // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
-        // normal aabb mtvs
-        subjectTravelReverseVector,
-      );
-    }
-  }
-
-  return backingOffMtv;
+  // is this a recursive call from a helpful movement vector? If so, no further helpful movement
+  // can also be applied
+  isHelpful?: boolean;
 };
 
 /**
@@ -149,16 +84,11 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   posDelta,
   gameState,
   room,
-  pusher,
   deltaMS,
-  forceful = isItemType("lift")(subjectItem) && pusher === undefined,
   onTouch,
-  //recursionDepth = 0,
-  /*
-   * the nodes we previously visited on the path down the tree to get to here.
-   * Set is a little faster than array since we need to look up if strings are present
-   */
   path = new Set(),
+  forceful = isLift(subjectItem) && path.size === 0,
+  isHelpful,
 }: MoveItemOptions<RoomId, RoomItemId>) => {
   if (xyzEqual(posDelta, originXyz)) {
     // applying zero movement - do nothing
@@ -171,7 +101,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   if (log)
     console.group(
-      `[${pusher ? `push by ${pusher.id}` : "first cause"} in ${room.id}]`,
+      `[${path.size === 0 ? `first cause` : "pushed"} in ${room.id}]`,
       "on path",
       [...path.values()],
       `💨 moving ${subjectItem.id} @`,
@@ -180,16 +110,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       subjectItem.aabb,
       ` by `,
       posDelta,
-      pusher ? ""
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is just for logging
-      : (subjectItem.state as any).vels,
       onTouch ? "with touch handling callback" : "skipping touch handling",
     );
 
   // strategy is to move to the target position, then back off as needed
   updateItemPosition(room, subjectItem, addXyz(originalPosition, posDelta));
 
-  if (pusher === undefined) {
+  if (path.size === 0) {
     // record 'first cause' acting on, directly from the mechanics.
     // (n>1)-cause are recorded in the collision loop
     recordActedOnBy(undefined, subjectItem, room);
@@ -203,13 +130,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   if (log) {
     if (sortedCollisions.length === 0) {
       console.log(
-        `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+        `[${path.size === 0 ? `first cause` : "pushed"}]`,
         subjectItem.id,
         "💥👎 'did not collide with anything",
       );
     } else
       console.log(
-        `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+        `[${path.size === 0 ? `first cause` : "pushed"}]`,
         subjectItem.id,
         "💥 collided with item(s):",
         `[${sortedCollisions.map((c) => c.id).join(", ")}]`,
@@ -229,7 +156,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     if (path.has(collidedWithItem.id)) {
       if (log) {
         console.log(
-          `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `skipping collision handling for ${subjectItem.id} with ${collidedWithItem.id} as it is already on the path`,
         );
       }
@@ -303,7 +230,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     if (!isSolid(collidedWithItem, subjectItem) || !isSolid(subjectItem)) {
       if (log)
         console.log(
-          `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `moving ${subjectItem.id}`,
           "either mover or ",
           collidedWithItem.id,
@@ -347,13 +274,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
     if (log)
       console.log(
-        `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+        `[${path.size === 0 ? `first cause` : "pushed"}]`,
         `${subjectItem.id} collided 💥 with ${collidedWithItem.id} to give backing-off mtv`,
         backingOffMtv,
       );
 
     // push any pushable items that we intersect:
-    if (collidedWithIsPushable /*&& collidedWithItem !== pusher */) {
+    if (collidedWithIsPushable) {
       const pushCoefficient =
         (
           // don't slow down if we are forceful
@@ -384,19 +311,12 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
       if (log)
         console.log(
-          `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `${subjectItem.id} will recursively push ${collidedWithItem.id} by`,
           forwardPushVector,
           "with push coefficient of",
           pushCoefficient,
         );
-
-      // if (
-      //   subjectItem?.id === "portableBlock" &&
-      //   collidedWithItem.id === "heels"
-      // ) {
-      //   debugger;
-      // }
 
       if (path.size < maxPushRecursionDepth) {
         // recursively apply push to pushed item
@@ -408,7 +328,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           room,
           deltaMS,
           forceful,
-          pusher: subjectItem,
           path: path.add(subjectItem.id),
           onTouch,
         });
@@ -450,7 +369,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
       if (log)
         console.log(
-          `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `${subjectItem.id} can't push ${collidedWithItem.id} so simply backed off to`,
           subjectItem.state.position,
         );
@@ -478,7 +397,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       ) {
         if (log)
           console.log(
-            `[${pusher ? `push by ${pusher.id}` : "first cause"}]`,
+            `[${path.size === 0 ? `first cause` : "pushed"}]`,
             `${subjectItem.id} is a free item and collided vertically with ${collidedWithItem.id}`,
             collidedWithItem,
             `so will set ${subjectItem.id} as standing on ${collidedWithItem.id}`,
@@ -494,7 +413,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
 
     if (
-      // it isn't clear why a non-free item would be colliding with anything(?)
+      // TODO: it isn't clear why a non-free item would be colliding with anything(?)
       isFreeItem(subjectItem) &&
       // checking not already touching prevents 'scraping' from rendering/sounding like a collision
       // however - maybe if we want scraping sounds this could be useful
@@ -513,6 +432,34 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         );
 
       recordCollision(subjectItem, collidedWithItem, room);
+    }
+  }
+
+  if (
+    // TODO: it isn't clear why a non-free item would be moving - tighten up moveItem input params
+    // and remove this check
+    isFreeItem(subjectItem) &&
+    !isHelpful
+  ) {
+    const hmv = helpfulMovementVector(
+      subjectItem,
+      originalPosition,
+      posDelta,
+      deltaMS,
+      room,
+      sortedCollisions,
+    );
+    if (hmv) {
+      moveItem({
+        subjectItem,
+        posDelta: hmv,
+        gameState,
+        room,
+        deltaMS,
+        forceful: false,
+        onTouch,
+        isHelpful: true,
+      });
     }
   }
 

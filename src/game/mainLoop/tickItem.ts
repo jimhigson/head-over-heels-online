@@ -46,7 +46,7 @@ import { tickMovement } from "../physics/mechanics/movement";
 import { onConveyor } from "../physics/mechanics/onConveyor";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
-import { moveItem } from "../physics/moveItem";
+import { moveItem } from "../physics/moveItem/moveItem";
 import { addParticlesAroundCrown } from "./addParticlesToRoom";
 import { applyMechanicsResults } from "./applyMechanicsResults";
 

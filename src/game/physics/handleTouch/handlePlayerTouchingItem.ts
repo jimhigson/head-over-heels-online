@@ -2,7 +2,6 @@ import type { CharacterName } from "../../../model/modelTypes";
 
 import { isItemType, type PlayableItem } from "../itemPredicates";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
-import { handlePlayerTouchingDoorFrame } from "./handlePlayerTouchingDoorFrame";
 import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";
 import { handlePlayerTouchingPortal } from "./handlePlayerTouchingPortal";
 import {
@@ -43,10 +42,6 @@ export const handlePlayerTouchingItem = <
 
     case touchedItemIsType(e, "pickup"):
       handlePlayerTouchingPickup(e);
-      break;
-
-    case touchedItemIsType(e, "doorFrame"):
-      handlePlayerTouchingDoorFrame(e);
       break;
   }
 

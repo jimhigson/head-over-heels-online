@@ -36,7 +36,9 @@ export type LatentMovementFrame = {
 };
 
 export type FreeItemState<RoomItemId extends string> = {
-  /* id of the single item we are considered to be standing on, or null if not standing on anything */
+  /**
+   * id of the single item we are considered to be standing on, or null if not standing on anything
+   */
   standingOnItemId: null | RoomItemId;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
