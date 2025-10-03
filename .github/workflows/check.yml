@@ -1,4 +1,4 @@
-name: checks - test lint formatting etc
+name: Check- tests, lint, formatting
 
 on:
   pull_request:
