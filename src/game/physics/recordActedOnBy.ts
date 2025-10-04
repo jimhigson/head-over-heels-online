@@ -23,7 +23,7 @@ export const recordActedOnBy = <
 
   if (actedOnAt === undefined) {
     // TODO: this check can be removed when happy to break back compatibility
-    // from 22ng Aug 2025
+    // from 22nd Aug 2025. This used to be optional, not now.
     return;
   }
 

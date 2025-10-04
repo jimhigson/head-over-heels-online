@@ -22,7 +22,7 @@ import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStan
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 import { isDeadly, isPortable, isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
-import { moveItem } from "../moveItem";
+import { moveItem } from "../moveItem/moveItem";
 
 /**
  * walking, but also gliding and changing direction mid-air
@@ -112,11 +112,10 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
           y: 0,
           z: carrying.aabb.z,
         },
-        // conceptually, has been pushed by the item they put down:
-        pusher: carrying,
         forceful: true,
         deltaMS,
         onTouch: handleItemsTouchingItems,
+        path: new Set([carrier.id]),
       });
 
       // don't set heels as standing on the put-down item - normal gravity and movement

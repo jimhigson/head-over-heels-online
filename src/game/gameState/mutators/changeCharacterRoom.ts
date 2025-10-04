@@ -33,7 +33,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { isPortal } from "../../physics/itemPredicates";
-import { moveItem } from "../../physics/moveItem";
+import { moveItem } from "../../physics/moveItem/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
