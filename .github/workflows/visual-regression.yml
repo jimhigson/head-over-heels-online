@@ -3,6 +3,12 @@ name: Visual Regression
 on:
   pull_request:
     branches: [main]
+    paths:
+      - "src/**"
+      - "screenshotTests/**"
+      - "gfx/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/visual-regression.yml"
 
 jobs:
   visual-tests:
