@@ -6,6 +6,7 @@ import {
   CurvatureFilter,
   NoiseFilter,
   PhosphorMaskFilter,
+  RaiseBlackPointFilter,
   ScanlinesFilter,
   VignetteFilter,
 } from "@blockstacking/jims-shaders";
@@ -87,21 +88,25 @@ const topLevelFilters = (
       edgeBlur: 1,
     }),
 
-    // Then curvature (curves everything including scanlines)
-    new CurvatureFilter({
-      curvatureX: 0.12,
-      curvatureY: 0.12,
-      multisampling: true,
-    }),
-    // Finally vignette and color adjustment
     new VignetteFilter({
       intensity: 0.4,
       radius: 0.7,
     }),
+
+    // Then curvature (curves everything including scanlines)
+    new CurvatureFilter({
+      curvatureX: 0.13,
+      curvatureY: 0.12,
+      multisampling: true,
+    }),
+
+    new RaiseBlackPointFilter({ blackPoint: 0.05 }),
+
     new ColorAdjustmentFilter({
-      gamma: 1.2,
-      saturation: 1.3,
+      gamma: 1.1,
+      saturation: 1.35,
       brightness: 1 / inPipelineBrightness,
+      brightnessBottom: -0.1,
     }),
   ];
 };
