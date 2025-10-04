@@ -1,3 +1,5 @@
+name: Deploy Production branch to Github Pages
+
 on:
   push:
     branches: ["production"]

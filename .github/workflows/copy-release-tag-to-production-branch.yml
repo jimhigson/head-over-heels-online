@@ -1,3 +1,5 @@
+name: Copy Release Tag to Production Branch
+
 on:
   release:
     types: [published]
