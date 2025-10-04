@@ -30,19 +30,23 @@ type StateFragment<T extends ItemInPlayType> = Partial<
   ItemState<T, string, string>
 >;
 
+export const defaultFreeItemStateVels = () => ({
+  gravity: originXyz,
+  movingFloor: originXyz,
+});
+
 export const defaultFreeItemState = <RoomItemId extends string>() =>
   ({
-    standingOnItemId: null,
-    vels: {
-      gravity: originXyz,
-      movingFloor: originXyz,
-    },
+    vels: defaultFreeItemStateVels(),
     latentMovement: [],
     collidedWith: {
       roomTime: neverTime,
       by: emptyObject as Record<RoomItemId, true>,
     },
     controlledWithJoystickAtRoomTime: neverTime,
+    standingOnItemId: null,
+    standingOnUntilRoomTime: neverTime,
+    previousStandingOnItemId: null,
   }) satisfies Partial<FreeItemState<RoomItemId>>;
 
 export const initialState = (jsonItem: JsonItemUnion) => {
@@ -53,10 +57,9 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     position: positionCentredInBlock(jsonItem as JsonItemUnion),
     ...(isFree ?
       ({
-        standingOnItemId: null,
+        ...defaultFreeItemState(),
         vels: {
-          gravity: originXyz,
-          movingFloor: originXyz,
+          ...defaultFreeItemStateVels(),
           ...((slidingItemTypes as string[]).includes(jsonItem.type) ?
             { sliding: originXyz }
           : {}),
@@ -67,11 +70,6 @@ export const initialState = (jsonItem: JsonItemUnion) => {
               walking: originXyz,
             }
           : {}),
-        },
-        latentMovement: [],
-        collidedWith: {
-          roomTime: neverTime,
-          by: emptyObject,
         },
       } satisfies Partial<FreeItemState<string>>)
     : {}),

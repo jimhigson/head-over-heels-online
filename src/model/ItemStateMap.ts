@@ -53,6 +53,18 @@ export type FreeItemState<RoomItemId extends string> = {
   collidedWith: TimedRelationWithOtherItem<RoomItemId>;
 
   /**
+   * the item we were standing on before the current one. Can be used to test if the item we
+   * just stepped off offers jumping grace (a few more frames to make the jump)
+   */
+  previousStandingOnItemId: null | RoomItemId;
+
+  /**
+   * if not standing on anything, the gameTime when the standing on ended
+   * (not room time, since this is on the playable and they can transfer between rooms)
+   */
+  standingOnUntilRoomTime: number;
+
+  /**
    * really for charles bots in the original game, but technically any free item can
    * be controlled
    */

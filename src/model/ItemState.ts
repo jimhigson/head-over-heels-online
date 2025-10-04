@@ -54,7 +54,8 @@ export type BaseItemState<RoomItemId extends string = string> = {
 
   /**
    * when this item last stopped being stood on. This is used to render items
-   * (the spring) that renders differently when it has been stepped off
+   * (the spring) that renders differently for a time when it has been stepped
+   * off
    *
    * TODO: could this only be for springs, since that is all that uses it?
    */

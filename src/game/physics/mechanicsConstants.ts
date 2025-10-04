@@ -207,3 +207,17 @@ export const wallRenderHeight = wallHeightPx + 2;
 
 // the practical limit of how high an item can go in a room. Considered to be unreachable
 export const veryHighZ = 9999;
+
+/**
+ * provide a 'grace' period after jumping where if the player hasn't started to rise due to
+ * collision with an item above them, they still get the whole jump velocity when they are free
+ * - this makes head's laders easier to climb at higher frame rates where it's much harder to press
+ * on the exact frame
+ */
+export const jumpDelayGrace = 1000 / 12;
+
+/**
+ * give a few more frames where the player can still jump after walking off (or otherwise leaving)
+ * a surface
+ */
+export const coyoteTime = 1000 / 12;

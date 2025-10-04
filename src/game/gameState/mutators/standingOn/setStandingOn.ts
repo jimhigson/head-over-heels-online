@@ -24,6 +24,7 @@ export const setStandingOnWithoutRemovingOldFirst = <
     );
   }
 
+  above.state.previousStandingOnItemId = above.state.standingOnItemId;
   above.state.standingOnItemId = below.id;
   belowStoodOnBy[above.id] = true;
 };

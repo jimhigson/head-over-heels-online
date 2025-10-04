@@ -5,7 +5,10 @@ import type { GameState } from "../../gameState/GameState";
 import type { PressStatus } from "../../input/InputStateTracker";
 import type { Mechanic } from "../MechanicResult";
 
-import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
+import {
+  getEffectivelyStandingOnItemIdForPlayable,
+  stoodOnItem,
+} from "../../../model/stoodOnItemsLookup";
 import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
 import {
   lengthXyz,
@@ -98,7 +101,6 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
     state: {
       action,
       autoWalk,
-      standingOnItemId,
       facing,
       teleporting,
       walkDistance,
@@ -106,6 +108,11 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
       vels: { walking: previousWalkingVel, gravity: gravityVel },
     },
   } = playableItem;
+
+  const effectivelyStandingOnItemId = getEffectivelyStandingOnItemIdForPlayable(
+    room,
+    playableItem.state,
+  );
 
   const isCurrentCharacter = currentCharacterName === playableItem.id;
   // we allow autowalking when character isn't current, so the walking should still be run,
@@ -117,11 +124,11 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
   const directionInput: Xyz =
     isCurrentCharacter ? inputStateTracker.directionVector : originXyz;
 
-  const isFalling = standingOnItemId === null && gravityVel.z < 0;
+  const isFalling = effectivelyStandingOnItemId === null && gravityVel.z < 0;
   const hasFastSteps =
     type === "head" &&
     fastStepsRemaining(playableItem.state) > 0 &&
-    standingOnItemId !== null;
+    effectivelyStandingOnItemId !== null;
 
   const useSpeedOfCharacter =
     type === "headOverHeels" ?
@@ -138,7 +145,7 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
   const walkVector = autoWalk ? facing : directionInput;
 
   const maxWalkSpeed = (
-    standingOnItemId === null ?
+    effectivelyStandingOnItemId === null ?
       // to keep jump distances consistent, move at the original game's speed
       // while jumping - this is needed to keep original game rooms playing
       // like the original
@@ -152,7 +159,7 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
 
   // handle 'walking' while ascending/falling:
   if (type === "heels") {
-    if (standingOnItemId === null) {
+    if (effectivelyStandingOnItemId === null) {
       // heels is not standing on anything
       if (playableItem.state.jumped) {
         // heels jumped - mandatory forward motion while jumping, but decelerates:
@@ -190,8 +197,11 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
           xyEqual(walkVector, originXy) ? facing : walkVector,
         );
         const isStandingOnSpring = isSpring(
-          stoodOnItem(standingOnItemId, room),
+          stoodOnItem(effectivelyStandingOnItemId, room),
         );
+
+        // what fraction of maximum walking speed to apply forwards
+        // while making this jump:
         const walkJumpFraction =
           isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
         return {

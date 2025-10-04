@@ -1,8 +1,11 @@
 import type { UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
 import type { FreeItem } from "../game/physics/itemPredicates";
 import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
+import type { PlayableState } from "./ItemStateMap";
+import type { RoomState } from "./RoomState";
 import type { StoodOnBy } from "./StoodOnBy";
 
+import { coyoteTime } from "../game/physics/mechanicsConstants";
 import { keysIter } from "../utils/entries";
 import { iterate } from "../utils/iterate";
 
@@ -32,6 +35,7 @@ export const iterateStoodOnByItems = <
 /**
  * utility to get the item object of standing on
  * TODO: - really, just gets from room.items - why is this needed/useful?
+ * this is more like a nullable getter
  */
 export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
   // if standingOnItemId not nullable, result not nullable
@@ -52,3 +56,35 @@ export function stoodOnItem<RoomId extends string, RoomItemId extends string>(
       (null as unknown as UnionOfAllItemInPlayTypes<RoomId, RoomItemId>)
     : room.items[standingOnItemId];
 }
+
+/**
+ * get the id of what the player is effectively stood on for the sake of allowing a few
+ * frames of grace after stepping off something
+ */
+export const getEffectivelyStandingOnItemIdForPlayable = <
+  RoomItemId extends string,
+>(
+  room: RoomState<string, RoomItemId>,
+  {
+    standingOnItemId,
+    standingOnUntilRoomTime,
+    previousStandingOnItemId,
+    jumped,
+  }: PlayableState<RoomItemId>,
+): null | RoomItemId => {
+  return (
+    standingOnItemId !== null ?
+      // simple case - standing on something now
+      standingOnItemId
+    : (
+      !jumped &&
+      standingOnUntilRoomTime + coyoteTime > room.roomTime &&
+      // the item has to still be in the room (ie, not a disappearing block we're jumping off of)
+      room.items[previousStandingOnItemId!]
+    ) ?
+      // grace applies - consider to still be standing on the item we just left for a few frames:
+      previousStandingOnItemId
+      // not standing on anything and didn't stop standing on within grace period:
+    : null
+  );
+};
