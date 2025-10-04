@@ -1,6 +1,13 @@
 # Changelog
 
 # Changes pre-1.0.0 release:
+## 1.0.0 (2025-10-04)
+
+
+### Miscellaneous Chores
+
+* initial release managed by release-please ([#504](https://github.com/jimhigson/head-over-heels-online/issues/504)) ([992b9c0](https://github.com/jimhigson/head-over-heels-online/commit/992b9c0eab3bff42dc70250b1847001f4f4a1a9a))
+
 ## 2025-10-02
 * Final room has a door that lets player end the game
 * Getting to freedom contributes to final score
