@@ -146,22 +146,6 @@
   },
   {
     "op": "add",
-    "path": "/items/exitDoor",
-    "value": {
-      "config": {
-        "direction": "away",
-        "toRoom": "$$final"
-      },
-      "position": {
-        "x": 10,
-        "y": 8,
-        "z": 0
-      },
-      "type": "door"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/endGameInstructions",
     "value": {
       "config": {
@@ -175,6 +159,22 @@
         "z": 1.5
       },
       "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/exitDoor",
+    "value": {
+      "config": {
+        "direction": "away",
+        "toRoom": "$$final"
+      },
+      "position": {
+        "x": 10,
+        "y": 8,
+        "z": 0
+      },
+      "type": "door"
     }
   },
   {
