@@ -1,3 +1,6 @@
+# Changelog
+
+# Changes pre-1.0.0 release:
 ## 2025-10-02
 * Final room has a door that lets player end the game
 * Getting to freedom contributes to final score
