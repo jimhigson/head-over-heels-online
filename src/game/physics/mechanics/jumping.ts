@@ -4,7 +4,7 @@ import type { GameState } from "../../gameState/GameState";
 import type { Mechanic } from "../MechanicResult";
 
 import { type CharacterName } from "../../../model/modelTypes";
-import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
+import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { originalGameFrameDuration } from "../../../originalGame";
 import { blockSizePx } from "../../../sprites/spritePivots";
 import {
@@ -17,13 +17,12 @@ import {
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import {
   fallG,
+  jumpDelayGrace,
   jumpFudge,
   originalGameJumpPxPerFrame,
   playerJumpHeightPx,
 } from "../mechanicsConstants";
 import { teleporterIsActive } from "./teleporting";
-
-const jumpDelayGrace = 1000 / 12;
 
 const jumpInitialVelocity = (apexZ: number) => {
   const fudgedApexZ = apexZ - jumpFudge;
@@ -115,8 +114,14 @@ export const jumping: Mechanic<CharacterName> = <
   } = playableItem;
   const { inputStateTracker } = gameState;
 
-  const standingOn = stoodOnItem(standingOnItemId, room);
-
+  const effectivelyStandingOnItemId = getEffectivelyStandingOnItemIdForPlayable(
+    room,
+    playableItem.state,
+  );
+  const effectivelyStandingOn =
+    effectivelyStandingOnItemId === null ? null : (
+      room.items[effectivelyStandingOnItemId]
+    );
   if (eligibleForJumpStartGrace(playableItem)) {
     console.info("jump grace");
     // provide a 'grace' period after jumping where if the player hasn't started to ride due to
@@ -141,14 +146,19 @@ export const jumping: Mechanic<CharacterName> = <
     // player cannot jump during death animation:
     playableItem.state.action !== "death" &&
     inputStateTracker.currentActionPress("jump") !== "released" &&
-    isJumpOffable(standingOn);
+    isJumpOffable(effectivelyStandingOn);
+
+  if (!standingOnItemId && startingAJump) {
+    console.log("coyote jump");
+  }
 
   if (!startingAJump) {
     if (standingOnItemId !== null) {
       return {
         movementType: "steady",
         stateDelta: {
-          // clear our jumped flag(s):
+          // clear our jumped flag(s) - heels has two, one of which is just
+          // for the particles:
           jumped: false,
           ...(playableItem.type === "heels" ? { isBigJump: false } : {}),
         },
@@ -160,7 +170,7 @@ export const jumping: Mechanic<CharacterName> = <
   const isBigJump =
     playableItem.type === "heels" && playableItem.state.bigJumps > 0;
 
-  const standingOnSpring = isSpring(standingOn);
+  const standingOnSpring = isSpring(effectivelyStandingOn);
 
   const velZ = getJumpInitialVelocity(
     playableItem,

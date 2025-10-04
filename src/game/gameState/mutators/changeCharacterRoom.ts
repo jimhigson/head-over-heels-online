@@ -24,6 +24,7 @@ import {
 } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
+import { neverTime } from "../../../utils/neverTime";
 import {
   addXyz,
   scaleXyz,
@@ -280,6 +281,9 @@ export const changeCharacterRoom = <
   }
   // latent movement does not apply outside of the room it was given in:
   playableItem.state.latentMovement = [];
+  // previous standing on (from the old room) no longer applies:
+  playableItem.state.previousStandingOnItemId = null;
+  playableItem.state.standingOnUntilRoomTime = neverTime;
 
   // hush puppies vanish the moment head enters:
   if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
