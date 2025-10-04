@@ -36,7 +36,8 @@ import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayab
 import { getColorScheme } from "../../hintColours";
 import {
   greyFilter,
-  heelsGreyFilter,
+  greyFilterExceptBlue,
+  greyFilterExceptPink,
   noFilters,
 } from "../filters/standardFilters";
 import {
@@ -447,8 +448,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       characterSprite.filters =
         colourised ?
           characterName === "heels" ?
-            heelsGreyFilter
-          : greyFilter
+            greyFilterExceptPink
+          : greyFilterExceptBlue
         : hudLowlightedFilter;
     }
 

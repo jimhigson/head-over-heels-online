@@ -17,7 +17,7 @@ import {
 import { createSprite } from "../createSprite";
 import {
   doughnuttedFilter,
-  greyFilterPlusPlaceholderReplacements,
+  greyFilterExceptBlue,
 } from "../filters/standardFilters";
 import {
   createStackedSprites,
@@ -88,7 +88,7 @@ export const monsterAppearance: ItemAppearance<
     busyLickingDoughnutsOffFace ? doughnuttedFilter
     : !activated ?
       greyWhileDeactivated.includes(config.which) ?
-        greyFilterPlusPlaceholderReplacements(room!)
+        greyFilterExceptBlue
       : undefined
     : undefined;
 

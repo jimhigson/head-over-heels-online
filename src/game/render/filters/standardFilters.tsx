@@ -69,34 +69,24 @@ export const greySwaps: PaletteSwaps = {
   moss: spritesheetPalette.lightGrey,
   midRed: spritesheetPalette.midGrey,
   highlightBeige: spritesheetPalette.lightGrey,
+  pastelBlue: spritesheetPalette.lightGrey,
+  metallicBlue: spritesheetPalette.midGrey,
+  replaceLight: spritesheetPalette.lightGrey,
+  replaceDark: spritesheetPalette.midGrey,
 };
 
 export const greyFilter = getPaletteSwapFilter(greySwaps);
 
-/**
- * like the normal grey filter, but discards the blue that is usually preserved, and
- * preserves pink since that is Heel's highlight colour */
-export const heelsGreyFilter = getPaletteSwapFilter(
-  omit(
-    {
-      ...greySwaps,
-      metallicBlue: spritesheetPalette.midGrey,
-    },
-    "pink",
-  ),
+export const greyFilterExceptBlue = getPaletteSwapFilter(
+  omit(greySwaps, "metallicBlue", "pastelBlue"),
 );
 
 /**
- * if given, will do colour replace - eg, deactivated cyber men
- * still have their backpacks in room colour
- */
-export const greyFilterPlusPlaceholderReplacements = (
-  room?: Pick<UnknownRoomState, "color" | "planet">,
-) =>
-  getPaletteSwapFilter({
-    ...greySwaps,
-    ...(room && replacePlaceholderColoursMapForRoom(room)),
-  });
+ * like the normal grey filter, but discards the blue that is usually preserved, and
+ * preserves pink since that is Heel's highlight colour */
+export const greyFilterExceptPink = getPaletteSwapFilter(
+  omit(greySwaps, "pink"),
+);
 
 export const doughnuttedFilter = getPaletteSwapFilter({
   midGrey: spritesheetPalette.midRed,
