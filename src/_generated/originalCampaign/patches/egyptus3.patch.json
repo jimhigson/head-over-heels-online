@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "op": "replace",
+    "path": "/items/spring@4,1,0/position/y",
+    "value": 0.5
+  }
+]

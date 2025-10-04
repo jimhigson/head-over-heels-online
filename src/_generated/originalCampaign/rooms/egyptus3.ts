@@ -27,7 +27,7 @@ export const room = inferRoomJson({
     },
     "spring@4,1,0": {
       config: {},
-      position: { x: 4, y: 1, z: 0 },
+      position: { x: 4, y: 0.5, z: 0 },
       type: "spring",
     },
     "wall@0,0,0": {
