@@ -4,6 +4,13 @@
 * Getting to freedom shown on final score dialog
 * Palette swop on scenery players (citizens of Freedom in the final room) to make them look different from players
 
+## 1.0.0 (2025-10-04)
+
+
+### Miscellaneous Chores
+
+* initial release managed by release-please ([#504](https://github.com/jimhigson/head-over-heels-online/issues/504)) ([992b9c0](https://github.com/jimhigson/head-over-heels-online/commit/992b9c0eab3bff42dc70250b1847001f4f4a1a9a))
+
 ## 2025-09-30
 * update to version 0.3.3 of [the crt shaders](https://github.com/jimhigson/jims_shaders.git)
 ## 2025-09-28
