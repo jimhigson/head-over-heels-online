@@ -1,5 +1,6 @@
 import { useReducer } from "react";
 
+import { version } from "../../../../../../../package.json";
 import { nerdFontGithubChar } from "../../../../../../sprites/hudSritesheetData";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
@@ -28,9 +29,9 @@ export const GitRepoInfo = () => {
       <div className="flex absolute bottom-oneScaledPix right-oneScaledPix z-dialog">
         <div
           onClick={toggleOpen}
-          className="text-metallicBlue zx:text-zxMagenta"
+          className="text-pastelBlueHalfbrite zx:text-zxMagenta"
         >
-          {!open && <BitmapText>v</BitmapText>}
+          {!open && <BitmapText>{version}</BitmapText>}
           {open && (
             <BitmapText className="bg-metallicBlueHalfbrite block">
               {__gitHash__ || ""}
