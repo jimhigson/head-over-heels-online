@@ -24,7 +24,7 @@ export const standardControllerLayout = {
 
 export const standardControllerButtonNames = transformObject(
   standardControllerLayout,
-  ([k, v]) => [v, k],
+  ([name, number]) => [number, name],
 );
 
 export type MamePlayer = {
