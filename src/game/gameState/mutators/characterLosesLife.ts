@@ -18,6 +18,7 @@ import {
 } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
+import { neverTime } from "../../../utils/neverTime";
 import { collision1to1 } from "../../collision/aabbCollision";
 import {
   selectCurrentPlayableItem,
@@ -236,6 +237,17 @@ const resetPlayableToEntryState = <RoomId extends string>(
   };
 };
 
+const removeNonTransferableState = (
+  characterLosingLife: PlayableItem<IndividualCharacterName>,
+) => {
+  if (characterLosingLife.type === "heels") {
+    characterLosingLife.state.carrying = null;
+  }
+  characterLosingLife.state.standingOnItemId = null;
+  characterLosingLife.state.previousStandingOnItemId = null;
+  characterLosingLife.state.standingOnUntilRoomTime = neverTime;
+};
+
 const individualPlayableLosesLife = <
   RoomId extends string,
   RoomItemId extends string,
@@ -254,9 +266,7 @@ const individualPlayableLosesLife = <
 
   characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
 
-  if (characterLosingLife.type === "heels") {
-    characterLosingLife.state.carrying = null;
-  }
+  removeNonTransferableState(characterLosingLife);
 
   loseLifeWithRetrospecModelLivesTransfer(
     characterLosingLife.state,
