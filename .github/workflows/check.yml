@@ -3,6 +3,7 @@ name: Check- tests, lint, formatting
 on:
   pull_request:
     branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   check:
