@@ -10,7 +10,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.release.author.login == 'github-actions[bot]'
     steps:
       - uses: actions/checkout@v5
         with:
