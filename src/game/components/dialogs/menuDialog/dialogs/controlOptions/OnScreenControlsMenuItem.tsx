@@ -14,7 +14,7 @@ export const OnScreenControlsMenuItem = () => {
 You can turn this off for phones paired with joypads/keyboards`;
   return (
     <MenuItem
-      doubleHeightWhenFocussed
+      className="sprites-double-height"
       id="onScreenControls"
       label={
         <BitmapText className={`${multilineTextClass} mobile:w-max`}>

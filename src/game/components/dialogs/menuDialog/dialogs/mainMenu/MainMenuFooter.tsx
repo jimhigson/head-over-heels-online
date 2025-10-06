@@ -12,7 +12,7 @@ export const MainMenuFooter = ({ className }: { className?: string }) => (
       <div className="flex gap-1">
         <address className="flex flex-col items-center relative bottom-oneScaledPix">
           <BitmapText
-            className="relative left-[calc(6px*var(--scale))]"
+            className="relative left-[calc(6.5px*var(--scale))]"
             classnameCycle={mainMenuCycle}
           >
             Jon
@@ -40,7 +40,7 @@ export const MainMenuFooter = ({ className }: { className?: string }) => (
       <address className="flex relative bottom-oneScaledPix">
         <div className="flex flex-col items-center">
           <BitmapText
-            className="relative left-[calc(2px*var(--scale))]"
+            className="relative left-[calc(1.5px*var(--scale))]"
             classnameCycle={mainMenuCycle}
           >
             Jim

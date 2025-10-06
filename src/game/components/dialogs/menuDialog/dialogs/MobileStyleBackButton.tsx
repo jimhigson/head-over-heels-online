@@ -24,8 +24,7 @@ export const MobileStyleBackButton = ({
     <div
       {...menuItemProps}
       className={twMerge(
-        ` ` +
-          ` sprites-double-height flex flex-row gap-1 ` +
+        "sprites-double-height flex flex-row gap-1 cursor-pointer " +
           (focussed ? "selectedMenuItem" : ""),
         className,
       )}

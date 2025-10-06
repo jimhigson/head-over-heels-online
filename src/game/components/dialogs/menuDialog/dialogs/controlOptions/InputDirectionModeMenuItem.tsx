@@ -37,7 +37,7 @@ export const InputDirectionModeMenuItem = () => {
       }
       onSelect={useDispatchActionCallback(nextInputDirectionMode)}
       verticalAlignItemsCentre
-      doubleHeightWhenFocussed
+      className="sprites-double-height"
       hintInline
       hint={
         <BlockyMarkdown

@@ -3,7 +3,6 @@ name: Visual Regression
 on:
   pull_request:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
   # since github has no way to require that all workflows that run must be successful other than marking them as required,
@@ -21,8 +20,11 @@ jobs:
           filters: |
             visual-regression-trigger-files:
               - 'src/**'
+              - '!src/editor/**'
+              - '!src/game/components/dialogs/**'
               - 'screenshotTests/**'
               - 'gfx/**'
+              - '!gfx/screenshots/**'
               - 'pnpm-lock.yaml'
               - '.github/workflows/visual-regression.yml'
 

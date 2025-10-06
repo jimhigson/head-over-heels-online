@@ -47,11 +47,11 @@ export const SoundDialog = () => {
             TagName="h1"
             className="ml-3 text-midRed zx:text-zxBlue sprites-double-height block"
           >
-            Sound Options
+            Options ➡ Sounds
           </BitmapText>
           <MenuItems>
             <MenuItem
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               id="mute"
               label="Mute"
               valueElement={<Switch value={isMuted} />}
@@ -72,7 +72,7 @@ export const SoundDialog = () => {
               disabled={isMuted}
             /> */}
             <MenuItem
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               id="footsteps"
               label="Footstep sounds"
               valueElement={<Switch value={!isMuted && !isNoFootstepSounds} />}

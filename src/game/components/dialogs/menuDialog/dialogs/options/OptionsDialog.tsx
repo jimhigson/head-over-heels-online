@@ -83,7 +83,7 @@ export const OptionsDialog = () => {
               id="controlOptions"
               label="Controls"
               verticalAlignItemsCentre
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               onSelect={useDispatchActionCallback(
                 goToSubmenu,
                 "controlOptions",
@@ -103,8 +103,8 @@ export const OptionsDialog = () => {
             <MenuItem
               hintInline
               id="sound"
-              label="Sound Options"
-              doubleHeightWhenFocussed
+              label="Sounds"
+              className="sprites-double-height"
               verticalAlignItemsCentre
               onSelect={useDispatchActionCallback(goToSubmenu, "sound")}
               hint={
@@ -118,7 +118,7 @@ export const OptionsDialog = () => {
               hintInline
               id="gameSpeed"
               label="Game Speed"
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               valueElement={
                 <SwitchN
                   className="ml-auto"
@@ -138,7 +138,7 @@ export const OptionsDialog = () => {
             />
             <MenuItem
               hintInline
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               id="colourise"
               label="Colourise"
               valueElement={
@@ -157,7 +157,7 @@ export const OptionsDialog = () => {
             />
             <MenuItem
               hintInline
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               id="crtFilter"
               verticalAlignItemsCentre
               label={
@@ -194,7 +194,7 @@ export const OptionsDialog = () => {
             />
             <MenuItem
               hintInline
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               id="livesModel"
               verticalAlignItemsCentre
               label="∞ Lives Poke"
@@ -227,7 +227,7 @@ export const OptionsDialog = () => {
                   className={`${spriteLeaderClasses} sprite texture-doughnuts sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               verticalAlignItemsCentre
               id="infiniteDoughnutsPoke"
               label="∞ Doughnuts Poke"
@@ -244,7 +244,7 @@ export const OptionsDialog = () => {
             />
             <MenuItem
               hintInline
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               verticalAlignItemsCentre
               id="showFps"
               label="Show FPS"
@@ -266,7 +266,7 @@ export const OptionsDialog = () => {
             />
             <MenuItem
               hintInline
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               id="emulatedResolution"
               label="Emulated Resolution"
               onSelect={useDispatchActionCallback(
