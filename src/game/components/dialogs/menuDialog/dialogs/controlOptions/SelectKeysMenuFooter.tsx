@@ -22,9 +22,10 @@ export const SelectKeysMenuFooter = () => {
 
         ${multilineTextClass} inline-block absolute inset-x-0 bottom-0 h-min pt-1 px-1`}
     >
-      <BitmapText>Press </BitmapText>
+      <BitmapText>Press: </BitmapText>
       <CurrentKeyAssignments
-        className={`inline ${highlightTextClass}`}
+        inline
+        className={`${highlightTextClass}`}
         action="menu_openOrExit"
         keyClassName="me-1"
       />
