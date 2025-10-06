@@ -9,6 +9,7 @@ import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import type { PlayableItem } from "../../../../../physics/itemPredicates";
 import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
 
+import { hudLowercaseCharTextureSize } from "../../../../../../sprites/textureSizes";
 import { iterate } from "../../../../../../utils/iterate";
 import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
@@ -381,7 +382,7 @@ z
         >
           <foreignObject
             width={label.text.length * 16}
-            height={16}
+            height={hudLowercaseCharTextureSize.h * 2}
             y={-8}
             x={label.align === "left" ? 0 : label.text.length * -16}
           >

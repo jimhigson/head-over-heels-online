@@ -115,7 +115,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           noSubtitle={isGameRunning}
           className={isGameRunning ? "resHandheld:hidden" : ""}
         />
-        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1">
+        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1 sprites-uppercase">
           <MenuItems className="w-24 mx-auto">
             <PlayGameMenuItem />
             {!isGameRunning && detectDeviceType() === "desktop" && (

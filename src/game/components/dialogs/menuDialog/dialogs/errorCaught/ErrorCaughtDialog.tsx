@@ -82,10 +82,10 @@ const parseErrorForDisplay = (
 const markdown = `##The game crashed!
 You could:
 
-* open an [issue on github](https://github.com/jimhigson/head-over-heels-online/issues)
-* email [jim@blockstack.ing](mailto:jim@blockstack.ing)
-* rant on the [discord server](https://discord.gg/XmV9QNWY)
-* play [the msx remake](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;
+* Open an [issue on Github](https://github.com/jimhigson/head-over-heels-online/issues)
+* Email [jim@blockstack.ing](mailto:jim@blockstack.ing)
+* Rant on the [Discord server](https://discord.gg/XmV9QNWY)
+* Play [the MSX remake](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;
 
 export const ErrorCaughtDialog = ({
   errors,

@@ -11,11 +11,11 @@ import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClas
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const directions4HintMarkdown =
-  "**4-way**: true to the 1987 original - move in x directions only";
+  "**4-way**: True to the 1987 original - move in x directions only";
 const directions8HintMarkdown =
-  "**8-way**: the original with *4-way* movement, plus *diagonals*";
+  "**8-way**: The original with *4-way* movement, plus *diagonals*";
 const analogueDirectionsHintMarkdown =
-  "**analogue**: move in *any* direction with analogue stick";
+  "**Analogue**: Move in *any* direction with analogue stick";
 export const InputDirectionModeMenuItem = () => {
   const inputDirectionMode = useInputDirectionMode();
   return (
@@ -31,7 +31,7 @@ export const InputDirectionModeMenuItem = () => {
         <SwitchN
           className="ml-auto"
           values={inputDirectionModes}
-          valueLabels={["4w", "8w", "al"]}
+          valueLabels={["4-way", "8-way", "anlg"]}
           value={inputDirectionMode}
         />
       }

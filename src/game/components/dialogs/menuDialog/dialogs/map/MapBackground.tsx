@@ -7,14 +7,14 @@ import { getMapColoursClass } from "./mapColours";
 import { OriginalCampaignMainMapBackground } from "./OriginalCampaignMainMapBackground";
 
 const sceneryToMapTitle: Record<SceneryName, string> = {
-  blacktooth: "blacktooth",
-  bookworld: "bookworld",
-  jail: "blacktooth",
-  egyptus: "egyptus",
-  moonbase: "moonbase",
-  market: "market",
-  penitentiary: "penitentiary",
-  safari: "safari",
+  blacktooth: "Blacktooth",
+  bookworld: "Bookworld",
+  jail: "Blacktooth",
+  egyptus: "Egyptus",
+  moonbase: "Moonbase",
+  market: "Market",
+  penitentiary: "Penitentiary",
+  safari: "Safari",
 };
 
 export type MapBackgroundProps<RoomId extends string> = MapData<RoomId> & {

@@ -63,7 +63,7 @@ export const MenuItem = ({
     <li
       {...menuItemProps}
       className={twMerge(
-        "contents",
+        "contents cursor-pointer",
         hidden ? "hidden" : "",
         doubleHeightWhenFocussed && focussed ? "sprites-double-height" : "",
         focussed ? "selectedMenuItem" : "",

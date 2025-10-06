@@ -1,4 +1,4 @@
-## REINCARNATION FISH
+## Reincarnation Fish
 
 ![](texture-animated-fish)The strangest animal in the known universe! This fish likes to be eaten! There
 have been cases of it jumping onto plates!
@@ -20,4 +20,4 @@ turns so poisonous that a single lick can kill.**
 
 Even living reincarnation fish taste horrible!
 
-> Head Over Heels Manual
+> Section adapted from the original Head over Heels manual

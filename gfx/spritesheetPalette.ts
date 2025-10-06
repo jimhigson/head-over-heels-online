@@ -14,7 +14,7 @@ export const spritesheetPalette = {
   midRed: new Color("#EA684F"),
   lightBeige: new Color("#EE9F7F"),
   highlightBeige: new Color("#FCC274"),
-  alpha: new Color("#019588"),
+  alpha: new Color("#7486FF"),
   replaceLight: new Color("#00B894"),
   replaceDark: new Color("#005130"),
 } as const;

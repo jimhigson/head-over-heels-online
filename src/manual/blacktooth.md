@@ -1,4 +1,4 @@
-## BLACKTOOTH
+## Blacktooth
 
 ![](texture-blacktooth_wall_armour_left?bg-pureBlack)![](texture-blacktooth_wall_shield_away?bg-pureBlack&float-right)This planet has a large moon with three lunar space stations on it, the larger
 of these, *Moon Station HQ*, is the main teleport center for the empire, with a
@@ -16,4 +16,4 @@ used it as his headquarters. The castle is surrounded by a small market, and
 then a range of impassable mountains. The only way to leave is via teleport to
 one of the three lunar space stations.
 
-> Head Over Heels Manual
+> Section adapted from the original Head over Heels manual

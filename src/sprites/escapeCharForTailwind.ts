@@ -2,14 +2,31 @@
 // get escapes, and then it gets messy calling them since the escaping you need to do in
 // the html is different from the escaping in the stylesheet). To keep things simple,
 // some chars are escaped by a lookup:
-const charReplacements = {
+export const charReplacements = {
   " ": "space",
-  "'": "singleQuote",
+  ",": "comma",
+  ";": "scolon",
   ":": "colon",
+  ".": "dot",
+  "'": "sQuote",
+  "‘": "lQuote",
+  "’": "rQuote",
+  "`": "backtick",
   "<": "lt",
   ">": "gt",
-  "`": "backtick",
+  "?": "questMk",
+  "!": "exclMk",
 } as const;
+
+export const uppercaseCharReplacement = <
+  C extends keyof typeof charReplacements,
+>(
+  c: C,
+) => {
+  return charReplacements[c].toUpperCase() as Uppercase<
+    (typeof charReplacements)[C]
+  >;
+};
 
 type ReplacedChar = keyof typeof charReplacements;
 

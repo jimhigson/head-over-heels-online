@@ -33,30 +33,23 @@ import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
 import { optionsHintMarkdownClassname } from "./optionsHintMarkdownClassname";
 
-const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**off**: Original *two-tone* spectrum graphics
+const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**Off**: Original *two-tone* spectrum graphics
 
-**on**: *16-colour* palette with colourised sprites`;
+**On**: *16-colour* palette with colourised sprites`;
 
 const crtEffectMarkdown = `Here for the nostalgia?
 
-Make your fancy new screen look like it’s 1987 again`;
+Make your fancy new screen look like it’s 1987 again.`;
 
 const gameSpeedMarkdown = `Play at the original **1x** speed, **1.2x (default)** or faster **1.5x** or **2x** speeds`;
 
-const infiniteLivesMarkdown = `pokes can’t be set mid-game
+const infiniteLivesMarkdown = `Pokes can’t be set mid-game.
 
-**off**: *8* lives to start; extra life rabbits spread thinly through the game
+**Off**: *8* lives to start; extra life rabbits spread thinly through the game.
 
-*A true hero leaves this* **off**`;
+*A true hero leaves this* **off**.`;
 
-const controlOptionsMarkdown = `everything to *select the keys* and other input settings`;
-
-/*
-const extraItemsMarkdown = `**off**: *faithful* to the original rooms
-
-**on**: *extra items* slightly modernisess the gameplay.
-none of these fundamentally change how the rooms play.`;
-*/
+const controlOptionsMarkdown = `*Select the keys* and other input settings`;
 
 export const OptionsDialog = () => {
   return (
@@ -110,21 +103,21 @@ export const OptionsDialog = () => {
             <MenuItem
               hintInline
               id="sound"
-              label="Sound options"
+              label="Sound Options"
               doubleHeightWhenFocussed
               verticalAlignItemsCentre
               onSelect={useDispatchActionCallback(goToSubmenu, "sound")}
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
-                  markdown="footsteps getting annoying?"
+                  markdown="Footsteps getting annoying?"
                 />
               }
             />
             <MenuItem
               hintInline
               id="gameSpeed"
-              label="Game speed"
+              label="Game Speed"
               doubleHeightWhenFocussed
               valueElement={
                 <SwitchN
@@ -168,22 +161,20 @@ export const OptionsDialog = () => {
               id="crtFilter"
               verticalAlignItemsCentre
               label={
-                <>
-                  <span className="bg-pureBlack inline-block">
+                <span className="align-top">
+                  <span className="bg-shadow zx:bg-pureBlack inline-block">
                     <BitmapText className="text-midRed zx:text-zxRed">
                       C
                     </BitmapText>
                     <BitmapText className="text-moss zx:text-zxGreen">
                       R
                     </BitmapText>
-                    <BitmapText className="text-metallicBlue zx:text-zxBlue">
+                    <BitmapText className="text-pastelBlue zx:text-zxBlue">
                       T
                     </BitmapText>
                   </span>
-                  <BitmapText className="text-metallicBlue">
-                    {" TV effect"}
-                  </BitmapText>
-                </>
+                  <BitmapText>{" TV Effect"}</BitmapText>
+                </span>
               }
               valueElement={
                 <Switch
@@ -206,7 +197,7 @@ export const OptionsDialog = () => {
               doubleHeightWhenFocussed
               id="livesModel"
               verticalAlignItemsCentre
-              label="∞ Lives poke"
+              label="∞ Lives Poke"
               leader={
                 <span
                   className={`${spriteLeaderClasses} sprite texture-whiteRabbit sprites-normal-height zx:sprite-revert-to-white`}
@@ -239,7 +230,7 @@ export const OptionsDialog = () => {
               doubleHeightWhenFocussed
               verticalAlignItemsCentre
               id="infiniteDoughnutsPoke"
-              label="∞ doughnuts poke"
+              label="∞ Doughnuts Poke"
               valueElement={
                 <Switch
                   className="ml-auto"
@@ -269,7 +260,7 @@ export const OptionsDialog = () => {
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
-                  markdown={`frames-per-second shown during gameplay`}
+                  markdown={`Frames per second shown during gameplay.`}
                 />
               }
             />
@@ -277,7 +268,7 @@ export const OptionsDialog = () => {
               hintInline
               doubleHeightWhenFocussed
               id="emulatedResolution"
-              label="Emulated resolution"
+              label="Emulated Resolution"
               onSelect={useDispatchActionCallback(
                 goToSubmenu,
                 "emulatedResolution",
@@ -286,7 +277,7 @@ export const OptionsDialog = () => {
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
-                  markdown={`see more of the room by choosing a higher resolution to emulate`}
+                  markdown={`See more of the room by choosing a higher resolution to emulate.`}
                 />
               }
             />

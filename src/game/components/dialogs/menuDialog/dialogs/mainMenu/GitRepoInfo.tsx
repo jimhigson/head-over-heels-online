@@ -21,7 +21,7 @@ export const GitRepoInfo = () => {
           <span className="text-lightGrey zx:text-whiteHalfbrite">
             <BitmapText className="resHandheld:hidden"> on</BitmapText>
             <BitmapText>{nerdFontGithubChar}</BitmapText>
-            <BitmapText className="resHandheld:hidden">github</BitmapText>
+            <BitmapText className="resHandheld:hidden">Github</BitmapText>
           </span>
         </a>
       </div>

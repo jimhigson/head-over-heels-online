@@ -8,9 +8,9 @@ import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClas
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const screenRelativeControlOffHintMarkdown =
-  "**world**: Control is relative to directions in the isometric world";
+  "**World**: Control is relative to directions in the isometric world";
 
-const screenRelativeControlOnHintMarkdown = `**screen**: Control is relative to the screen.
+const screenRelativeControlOnHintMarkdown = `**Screen**: Control is relative to the screen.
 
 More intuitive if you find directions confusing in isometric games, but means hitting diagonals a lot`;
 
@@ -31,7 +31,7 @@ export const ScreenRelativeControlMenuItem = () => {
   return (
     <MenuItem
       id="screenRelativeControl"
-      label="input axes"
+      label="Input axes"
       leader={
         <span
           className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_screenDirections" : "texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_worldDirections sprites-normal-height"} `}

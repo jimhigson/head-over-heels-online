@@ -104,7 +104,7 @@ const ScoreDialogContents = () => {
       <MainMenuHeading noSubtitle className="resHandheld:hidden" />
       <BitmapText
         classnameCycle={mainMenuCycle}
-        className="mt-1 resHandheld:mt-3 block text-center mx-auto sprites-double-height"
+        className="mt-1 resHandheld:mt-3 block text-center mx-auto sprites-double-height sprites-uppercase"
       >
         {scoreLabel}
       </BitmapText>

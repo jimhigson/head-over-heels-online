@@ -9,7 +9,7 @@ import { multilineTextClass } from "../../multilineTextClass";
 import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 
 export const OnScreenControlsMenuItem = () => {
-  const hintMarkdown = `enables on-screen controls: for mobile, tablet, or any device with a touch-screen.
+  const hintMarkdown = `Enables on-screen controls: for mobile, tablet, or any device with a touch-screen.
 
 You can turn this off for phones paired with joypads/keyboards`;
   return (
@@ -18,7 +18,7 @@ You can turn this off for phones paired with joypads/keyboards`;
       id="onScreenControls"
       label={
         <BitmapText className={`${multilineTextClass} mobile:w-max`}>
-          touch controls
+          Touch controls
         </BitmapText>
       }
       valueElement={

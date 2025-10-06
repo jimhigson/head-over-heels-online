@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { spritesheetPaletteDim } from "../../gfx/spritesheetPaletteDim";
 import { getPaletteSwapFilter } from "../game/render/filters/PaletteSwapFilter";
+import { omit } from "../utils/pick";
 
 const lutDisplaySize = 512;
 
@@ -14,7 +15,15 @@ export const LutPage = () => {
 
   useEffect(() => {
     // Create the palette swap filter with dim palette replacements
-    const filter = getPaletteSwapFilter(spritesheetPaletteDim);
+    const filter = getPaletteSwapFilter(
+      omit(
+        spritesheetPaletteDim,
+        // keep the replace colours out - these should be free to change any time
+        // since they don't impact the game, and shouldn't need snapshots regenerating
+        "replaceLight",
+        "replaceDark",
+      ),
+    );
 
     let unmounted = false;
 

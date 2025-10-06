@@ -8,6 +8,7 @@ import type { FramesWithSpeed, TextureId } from "./sprites/spriteSheetData";
 import spritesheetPalette from "../gfx/spritesheetPalette.json";
 import { sanitiseForClassName } from "./game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
+import { isTextureId } from "./sprites/assertIsTextureId";
 import { spritesheetData } from "./sprites/spriteSheetData";
 import { halfbriteHex } from "./utils/colour/halfBrite";
 import { objectEntriesIter } from "./utils/entries";
@@ -19,7 +20,7 @@ export const spritesTailwindPlugin = plugin(
   ({ addUtilities, addBase, addVariant, e }) => {
     const sanitiseId = (id: string) => e(sanitiseForClassName(id));
 
-    const animations: CSSRuleObject = {};
+    const base: CSSRuleObject = {};
 
     const spriteStyles = (type: "background" | "mask") => ({
       [`${type}Image`]: `var(--spritesheetUrl)`,
@@ -117,6 +118,10 @@ export const spritesTailwindPlugin = plugin(
           0                                                         
         )`,
       },
+
+      "sprites-uppercase": {
+        // blank - left in for suggestions
+      },
     };
 
     utilities[".loading-border"] = {
@@ -137,7 +142,7 @@ export const spritesTailwindPlugin = plugin(
       "--c1": zxSpectrumColors.zxRed,
       "--c2": zxSpectrumColors.zxCyan,
     };
-    animations["@keyframes spectrum-load"] = {
+    base["@keyframes spectrum-load"] = {
       from: {
         backgroundPosition: "0 0",
       },
@@ -158,6 +163,29 @@ export const spritesTailwindPlugin = plugin(
         "--x": `${x}px`,
         "--y": `${y}px`,
       };
+
+      // allow sprites-uppercase class to work as an equivalent to
+      // text-transform: upper
+      const hudCharMatch = textureId.match(/^hud\.char\.(?<char>.+)$/);
+      if (hudCharMatch) {
+        const { char } = hudCharMatch.groups!;
+        const uppercaseTextureId = `hud.char.${char.toUpperCase()}`;
+        if (isTextureId(uppercaseTextureId)) {
+          const upperCaseFrame = spritesheetData.frames[uppercaseTextureId];
+          if (upperCaseFrame) {
+            const {
+              frame: { h: hUpper, w: wUpper, x: xUpper, y: yUpper },
+            } = upperCaseFrame;
+            // this is a char and there is also an upper-case version available:
+            base[`.sprites-uppercase .texture-${sanitiseId(textureId)}`] = {
+              "--w": `${wUpper}px`,
+              "--h": `${hUpper}px`,
+              "--x": `${xUpper}px`,
+              "--y": `${yUpper}px`,
+            };
+          }
+        }
+      }
     }
 
     for (const [animationName, frames] of objectEntriesIter(
@@ -185,7 +213,7 @@ export const spritesTailwindPlugin = plugin(
         animation: `sprite-animation-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) 1`,
       };
 
-      animations[`@keyframes sprite-animation-${sanitiseId(animationName)}`] =
+      base[`@keyframes sprite-animation-${sanitiseId(animationName)}`] =
         Object.fromEntries(
           frames.map((frame, i) => [
             `${(i * 100) / (frames.length - 1)}%`,
@@ -203,7 +231,7 @@ export const spritesTailwindPlugin = plugin(
         animation: `sprite-animation-reversed-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) infinite`,
       };
 
-      animations[
+      base[
         `@keyframes sprite-animation-reversed-${sanitiseId(animationName)}`
       ] = Object.fromEntries(
         reversedFrames.map((frame, i) => [
@@ -217,7 +245,7 @@ export const spritesTailwindPlugin = plugin(
     }
 
     addUtilities(utilities);
-    addBase(animations);
+    addBase(base);
     // add a variant for zx-spectrum-colour palette
     // this can be done differently in tw4: https://tailwindcss.com/docs/adding-custom-styles#adding-custom-variants
     addVariant("zx", ".zx &");
@@ -256,6 +284,11 @@ export const spritesTailwindPlugin = plugin(
       ".portrait-rot&",
       // descendants:
       ".portrait-rot &",
+    ]);
+
+    addVariant("sprites-uppercase", [
+      ".sprites-uppercase&",
+      ".sprites-uppercase &",
     ]);
   },
 );

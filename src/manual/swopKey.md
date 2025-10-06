@@ -1,4 +1,4 @@
-## SWOP KEY
+## Swop Key
 
 If Head is sitting on Heels, the swop key will, on each push, give you control
 of:
@@ -16,4 +16,4 @@ If Head is not on Heels, the swop key will, on each push, give you control of:
 At all times, the character(s) whose icon is lit is under player control. When
 Head and Heels are joined together, all their abilities are combined.
 
-> Head Over Heels Manual
+> Section adapted from the original Head over Heels manual

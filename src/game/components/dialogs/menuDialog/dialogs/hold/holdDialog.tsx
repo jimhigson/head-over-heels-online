@@ -16,8 +16,8 @@ export const HoldDialog = () => {
         // isn't possible to leave it on devices with no keyboard/gamepad:
         onClick={useDispatchActionCallback(backToParentMenu)}
       >
-        <BitmapText className="block w-min mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix">
-          hold
+        <BitmapText className="block w-min mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix sprites-uppercase">
+          Hold
         </BitmapText>
         <span className="zx">
           <PressToContinueBanner
