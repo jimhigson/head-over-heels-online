@@ -79,7 +79,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
           mapBounds.t +
           mapSvgMarginY
         }
-        mapTitle={"moonbase"}
+        mapTitle={"Moonbase"}
         className={mapClasses.moonbase.bgClassName}
       />
       <MapBackgroundSection

@@ -58,10 +58,7 @@ export const BitmapText = ({
   if (textString.length === 0) {
     return null;
   }
-  const words =
-    noSlitWords ?
-      [textString.toUpperCase()]
-    : textString.toUpperCase().split(/\s+/);
+  const words = noSlitWords ? [textString] : textString.split(/\s+/);
 
   return (
     <TagName className={className} onClick={onClick}>
@@ -72,8 +69,12 @@ export const BitmapText = ({
           <span
             className={twMerge(
               // inline-block only needed for Firefox, no-wrap is enough in Chrome/Safari
-              `text-nowrap inline-block`,
-              wordIndex === words.length - 1 ? "" : "me-1",
+              `text-nowrap inline-block [&>*]:align-top`,
+              wordIndex === words.length - 1 ?
+                ""
+                // when forcing all-caps, keep strictly on the grid; otherwise,
+                // use 3/4 of a grid space for the spaces between words:
+              : "me-threeQuarters sprites-uppercase:me-1",
             )}
             key={wordIndex}
           >

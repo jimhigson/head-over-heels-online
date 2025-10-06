@@ -1,6 +1,6 @@
-## HISTORY OF THE BLACKTOOTH EMPIRE
+## History of the Empire
 
-![](texture-crown_blacktooth)Far, far away from our star Sol lies the Blacktooth empire, an evil empire, four
+![](texture-crown_blacktooth)Far, far away from our star Sol lies **The Blacktooth empire**, an evil empire, four
 worlds enslaved by the planet Blacktooth.
 
 ![](texture-animated-dalek?float-right)All of the slave worlds bubble with
@@ -17,7 +17,7 @@ crowns lost when Blacktooth took over.
 
 ![](texture-heels_walking_right_2)The creatures of *Freedom* are very strange in that they are formed from a pair of
 *symbiotic animals* that have adapted to operate either independently or, to their
-mutual advantage, join together as one - Head saddled on Heels, and indeed these
-ARE their names and both are highly trained spies.
+mutual advantage, join together as one - **Head** saddled on **Heels**, and indeed these
+*are* their names and both are highly trained spies.
 
-> Head Over Heels Manual
+> Section adapted from the original Head over Heels manual

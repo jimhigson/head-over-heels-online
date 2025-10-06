@@ -125,7 +125,10 @@ export const SwitchN = <TValue extends number | string>({
   const element = (
     <span
       onClick={goToNextValue}
-      className={cn("inline-flex justify-between leading-none", className)}
+      className={cn(
+        "inline-flex justify-between leading-none sprites-uppercase",
+        className,
+      )}
     >
       {label && <SwitchLabel label={label} />}
       <BitmapText

@@ -1,4 +1,4 @@
-## THE GAME
+## The Game
 
 ![](texture-animated-heels_idle_right)![](texture-animated-head_idle_towards?float-right)Head and Heels have been captured, separated and imprisoned in the castle
 headquarters of Blacktooth. Their cells contain ‘keep fit’ equipment, including
@@ -21,4 +21,4 @@ that they would have to see all four of the slave planets revolt before the
 Blacktooth crown could cause an uprising. ![](texture-animated-turtle_right)This of course would be the ultimate
 accolade, and unfortunately, almost certain suicide.
 
-> Head Over Heels Manual
+> Section adapted from the original Head over Heels manual

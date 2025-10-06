@@ -9,6 +9,7 @@ export const largeItemTextureSize = { w: 32, h: 28 };
 export const smallItemTextureSize = { w: 24, h: 24 };
 export const smallItemOutlineTextureSize = { w: 26, h: 26 };
 export const hudCharTextureSize = { w: 8, h: 8 };
+export const hudLowercaseCharTextureSize = { w: 8, h: 10 };
 
 export const smallItemGridLocation = (gridPos: Xy) => {
   return {

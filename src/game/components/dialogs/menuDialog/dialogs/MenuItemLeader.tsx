@@ -16,7 +16,7 @@ export const MenuItemLeader = ({
         `inline-block col-start-1 ` +
         // min width and mx-auto centers, in case is sharing a menu with wider, custom leaders:
         `w-min mx-auto ` +
-        (flip ? "scale-[-1] relative bottom-oneScaledPix" : "") +
+        (flip ? "scale-x-[-1] relative bottom-oneScaledPix" : "") +
         (verticalAlignItemsCentre === true ? "flex items-center h-3" : "")
       }
     >

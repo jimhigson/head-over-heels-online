@@ -27,6 +27,7 @@ const blockMultiples = {
   // cheating, but fitting everything on small screens is hard!
   quarter: "calc(var(--block) / 4)",
   half: "calc(var(--block) / 2)",
+  threeQuarters: "calc(var(--block) * 0.75)",
   oneScaledPix: "calc(var(--scale) * 1px)",
   1: "calc(var(--block) * 1)",
   2: "calc(var(--block) * 2)",

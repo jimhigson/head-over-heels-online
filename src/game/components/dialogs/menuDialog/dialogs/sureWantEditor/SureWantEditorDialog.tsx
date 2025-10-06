@@ -14,14 +14,14 @@ import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
 import { MobileStyleBackButton } from "../MobileStyleBackButton";
 
-const blurbMarkdown = `##*HoH-ed ➡* The Level editor
+const blurbMarkdown = `##*HohEd ➡* the Level Editor
 I built an *editor* so I could make the **sequel levels**
 
 ![](texture-headlessBase?float-left)**Make puzzles**!
 
 *Challenge* others to **solve them**!
 
-**in beta**; expect occasional crashes and *frequent confusion*`;
+**In beta**; expect *crashes* and *confusion*!`;
 
 export const SureWantEditorDialog = () => {
   const goToEditor = useCallback(() => {
@@ -34,7 +34,7 @@ export const SureWantEditorDialog = () => {
         className="bg-pureBlack zx:bg-zxBlack"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-shadowHalfbrite zx:bg-zxBlack px-1">
+      <Dialog className="bg-shadowHalfbrite zx:bg-zxBlack px-1 py-0">
         <Portal.Provider>
           <div className="flex flex-col gap-y-2 mt-1 h-full">
             {isTouchDevice() && (

@@ -336,12 +336,12 @@ const textureForItem = (
     case "bubbles":
       return twClass(`texture-bubbles_white_1`);
     case "emitter":
-      return twClass("texture-hud_char_?");
+      return twClass("texture-hud_char_questMk");
     case "button":
       return twClass("texture-button");
     default:
       item satisfies never;
-      return twClass("texture-hud_char_?");
+      return twClass("texture-hud_char_questMk");
   }
   throw new Error("by the types, this shouldn't be possible");
 };

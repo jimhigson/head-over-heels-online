@@ -1,4 +1,4 @@
-## HUSH PUPPIES
+## Hush Puppies
 
 ![](texture-hushPuppy?float-right)These are a very strange type of beast; they are incredibly 
 sleepy. In fact, they never wake up and it is quite normal for them to sleep for 
@@ -14,4 +14,4 @@ themselves away.
 the instant they see any of Head’s race, they disappear and won’t return until they are sure the coast is
 clear.
 
-> Head Over Heels Manual
+> Section adapted from the original Head over Heels manual

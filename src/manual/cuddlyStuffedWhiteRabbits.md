@@ -1,4 +1,4 @@
-## CUDDLY STUFFED WHITE RABBITS
+## Cuddly Stuffed White Rabbits
 
 ![](texture-whiteRabbit?float-right)The *cute toy bunnies* magically enhance your powers. The status display at the
 bottom of the screen will keep you informed as to which powers are temporarily
@@ -10,17 +10,17 @@ they will both get the enhanced power.
 There are four types:
 
 ## Two extra lives
-if you pick them up while head and heels are joined, they get *two each*
+If you pick them up while head and heels are joined, they get *two each*
 
-## Iron pills ![](texture-hud_shield?sprite-tinted&text-metallicBlue&sprites-normal-height)
+## 🛡 Iron Pills
 
-![](texture-animated-shine?text-metallicBlue&float-left)to make you invulnerable
+![](texture-animated-shine?text-metallicBlue&float-left)To make you invulnerable
 
-## ![](texture-hud_bigJumps?sprite-tinted&text-metallicBlue&sprites-normal-height)♨ Jump higher bunny ♨
+## ♨ Jump higher bunny
 
-![](texture-animated-heels_idle_right?text-metallicBlue&float-left)only works on Heels
+![](texture-animated-heels_idle_right?text-metallicBlue&float-left)Only works on Heels
 
-## ![](texture-hud_fastSteps?sprite-tinted&text-metallicBlue&sprites-normal-height)⚡ Go faster bunny ⚡
-![](texture-animated-head_idle_right?text-metallicBlue&float-left)only works on slow-moving Head
+## ⚡ Go faster bunny
+![](texture-animated-head_idle_right?text-metallicBlue&float-left)Only works on slow-moving Head
 
-> Head Over Heels Manual
+> Section adapted from the original Head over Heels manual

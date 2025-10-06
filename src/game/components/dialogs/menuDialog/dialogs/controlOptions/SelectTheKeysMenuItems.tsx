@@ -42,12 +42,20 @@ export const SelectTheKeysMenuItems = () => {
         id="preset"
         label={
           <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-            key/ button preset
+            Key/ button preset
           </BitmapText>
         }
         valueElement={<CurrentPresetValue />}
         onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
       />
+      <div className="col-span-3">
+        <BitmapText
+          TagName="h2"
+          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+        >
+          Movement
+        </BitmapText>
+      </div>
       <MenuItem
         id="left"
         label={`Left ${isScreenRelativeControl ? "⬅" : "↖"}`}
@@ -108,15 +116,6 @@ export const SelectTheKeysMenuItems = () => {
         valueElement={<SelectKeysMenuAssignmentValue action="towards" />}
         onSelect={useDispatchActionCallback(assignInputStart, "towards")}
       />
-      <div className={`${multilineTextClass} col-span-3`}>
-        <BitmapText className="text-midRed bg-pureBlack inline-block zx:text-zxRed zx:bg-zxYellow me-1">
-          Note:
-        </BitmapText>
-        <BitmapText className="text-midGrey zx:text-zxBlack">
-          some puzzles require you to jump and pick up simultaneously - assign a
-          key for both jump and carry
-        </BitmapText>
-      </div>
       <MenuItem
         id="jump"
         label="Jump"
@@ -128,6 +127,23 @@ export const SelectTheKeysMenuItems = () => {
         valueElement={<SelectKeysMenuAssignmentValue action="jump" />}
         onSelect={useDispatchActionCallback(assignInputStart, "jump")}
       />
+      <div className="col-span-3">
+        <BitmapText
+          TagName="h2"
+          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+        >
+          Character-specific Abilities
+        </BitmapText>
+      </div>
+      <div className={`${multilineTextClass} col-span-3`}>
+        <BitmapText className="text-midRed bg-pureBlack inline-block zx:text-zxRed zx:bg-zxYellow me-1">
+          Note:
+        </BitmapText>
+        <BitmapText className="text-midGrey zx:text-zxBlack">
+          Some puzzles require Heels to jump and pick up simultaneously - assign
+          a key to both jump and carry
+        </BitmapText>
+      </div>
       <MenuItem
         id="carry"
         label="Carry"
@@ -137,7 +153,7 @@ export const SelectTheKeysMenuItems = () => {
         hint={
           <BlockyMarkdown
             className="text-midGrey zx:text-zxBlack"
-            markdown={`**carrying is heels only**. requires the bag`}
+            markdown={`Carrying is **Heels only** and requires the bag`}
           />
         }
         hintInline
@@ -146,20 +162,28 @@ export const SelectTheKeysMenuItems = () => {
         id="fire"
         label={
           <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-            fire dough- nuts
+            Fire dough- nuts
           </BitmapText>
         }
         leader={<span className={`${spriteLeaderClasses} texture-doughnuts`} />}
         hint={
           <BlockyMarkdown
             className="text-midGrey zx:text-zxBlack"
-            markdown={`**firing doughnuts is head only**. requires the hooter`}
+            markdown={`Firing doughnuts is **Head only** and requires the hooter`}
           />
         }
         hintInline
         valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
         onSelect={useDispatchActionCallback(assignInputStart, "fire")}
       />
+      <div className="col-span-3">
+        <BitmapText
+          TagName="h2"
+          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+        >
+          Character Swopping
+        </BitmapText>
+      </div>
       <MenuItem
         id="swop"
         label="Swop"
@@ -168,7 +192,7 @@ export const SelectTheKeysMenuItems = () => {
         hint={
           <BlockyMarkdown
             className="text-midGrey zx:text-zxBlack"
-            markdown={`Like the swop key from the original game; *cycles through* the characters, Moves *in and out of symbiosis* if head is on top of heels`}
+            markdown={`Works like the original game. *Cycles through* the characters, Moves *in and out of symbiosis* if head is on top of heels`}
           />
         }
         hintInline
@@ -197,7 +221,7 @@ export const SelectTheKeysMenuItems = () => {
         hint={
           <BlockyMarkdown
             className="text-midGrey zx:text-zxBlack"
-            markdown={`**shortcut**: go *directly* to *head*, avoiding cycling if in symbiosis`}
+            markdown={`Go *directly* to *Head*, avoiding cycling if in symbiosis`}
           />
         }
         hintInline
@@ -224,7 +248,7 @@ export const SelectTheKeysMenuItems = () => {
         hint={
           <BlockyMarkdown
             className="text-midGrey zx:text-zxBlack"
-            markdown={`**shortcut**: go *directly* to *heels*, avoiding cycling if in symbiosis`}
+            markdown={`Go *directly* to *Heels*, avoiding cycling if in symbiosis`}
           />
         }
         hintInline
@@ -234,6 +258,14 @@ export const SelectTheKeysMenuItems = () => {
           />
         }
       />
+      <div className="col-span-3">
+        <BitmapText
+          TagName="h2"
+          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+        >
+          Stopping the Game
+        </BitmapText>
+      </div>
       <MenuItem
         id="map"
         label="Map"
@@ -249,6 +281,18 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "hold")}
         leader={<span className={`${spriteLeaderClasses} texture-drum`} />}
       />
+      <MenuItem
+        id="menu"
+        // changed from hold to pause - "hold" is mistakable for carry
+        label="Menu"
+        valueElement={
+          <SelectKeysMenuAssignmentValue action="menu_openOrExit" />
+        }
+        onSelect={useDispatchActionCallback(
+          assignInputStart,
+          "menu_openOrExit",
+        )}
+      />
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
@@ -260,7 +304,8 @@ export const SelectTheKeysMenuItems = () => {
           TagName="h2"
           className={`text-midGrey zx:text-zxBlack ${multilineTextClass}`}
         >
-          useful for seeing more of larger rooms that don't fit on the screen.
+          Look controls are useful for seeing more of larger rooms that don’t
+          fit on the screen.
         </BitmapText>
       </div>
       <MenuItem
@@ -305,14 +350,14 @@ export const SelectTheKeysMenuItems = () => {
           TagName="h2"
           className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
         >
-          Remake option toggles
+          Remake Option Toggles
         </BitmapText>
       </div>
       <MenuItem
         id="toggleColourisation"
         label={
           <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-            toggle colour- isation
+            Toggle colour- isation
           </BitmapText>
         }
         valueElement={
@@ -327,7 +372,7 @@ export const SelectTheKeysMenuItems = () => {
         id="cycleRes"
         label={
           <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-            cycle res- olution
+            Cycle res- olution
           </BitmapText>
         }
         valueElement={
@@ -336,6 +381,21 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(
           assignInputStart,
           "cycleResolution",
+        )}
+      />
+      <MenuItem
+        id="toggleCrt"
+        label={
+          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+            Toggle CRT effect
+          </BitmapText>
+        }
+        valueElement={
+          <SelectKeysMenuAssignmentValue action="toggleCrtFilter" />
+        }
+        onSelect={useDispatchActionCallback(
+          assignInputStart,
+          "toggleCrtFilter",
         )}
       />
     </>

@@ -1,5 +1,7 @@
 tricky/puzzle rooms
 
+* as simple as - http://localhost:5200/?cheats=1#moonbase28 but have to drop on right side to avoid baddie (and go under stairs)
+
 * room where need to exploit the carried items belonging to rooms by leaving and coming back via another door higher up later (requires original carrying-owned-by-room-state model)
 
 * room to shoot switch (with doughnuts) - give doughnuts in the room as a clue

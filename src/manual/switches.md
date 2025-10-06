@@ -1,4 +1,4 @@
-## SWITCHES
+## Switches
 
 ![](texture-animated-switch)Simply push the switch to switch things off and on!
 
@@ -6,4 +6,4 @@ Switching a deadly monster off will make them no longer deadly to touch. Push th
 
 This varies from the original Head over Heels game, where disabled enemies remained deadly.
 
-> Head Over Heels Manual, revised for remake
+> Section adapted from the original Head over Heels manual, revised for remake

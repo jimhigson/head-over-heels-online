@@ -119,7 +119,7 @@ export const ControlOptionsDialog = () => {
             TagName="h1"
             className="text-midRed zx:text-zxBlue sprites-double-height block ml-4"
           >
-            control options
+            Control Options
           </BitmapText>
 
           <MenuItems className={`${controlOptionsMenuItemsClass} w-full`}>
@@ -136,7 +136,7 @@ export const ControlOptionsDialog = () => {
                 TagName="h1"
                 className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3"
               >
-                Select the keys
+                Select the Keys
               </BitmapText>
               <MenuItems
                 // normally on mobile, menu items are double-height, but select the keys

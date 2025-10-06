@@ -31,7 +31,7 @@ export const MobileStyleBackButton = ({
       )}
       ref={ref}
     >
-      <BitmapText className="inline-block scale-[-1]">{"⏩⏩"}</BitmapText>
+      <BitmapText className="inline-block scale-x-[-1]">{"⏩⏩"}</BitmapText>
       <BitmapText className="inline-block">{"Back"}</BitmapText>
     </div>
   );

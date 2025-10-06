@@ -1,4 +1,4 @@
-## CREDITS
+## Credits
 
 ### Original credits
 

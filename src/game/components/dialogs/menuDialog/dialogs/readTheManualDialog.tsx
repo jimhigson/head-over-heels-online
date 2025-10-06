@@ -17,7 +17,6 @@ import { BitmapText } from "../../../tailwindSprites/Sprite";
 import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";
 import { MenuItemSeparator } from "../MenuItemSeparator";
-import { multilineTextClass } from "../multilineTextClass";
 import { MobileStyleBackButton } from "./MobileStyleBackButton";
 
 const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
@@ -52,7 +51,7 @@ export const ReadTheManualDialog = () => {
       >
         <div
           className={
-            `text-redShadow zx:text-zxWhite ${multilineTextClass} !gap-y-0 ` +
+            `text-redShadow zx:text-zxWhite !gap-y-0 ` +
             "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack " +
             // set up scrolling and the scroll bar:
             "overflow-y-scroll scrollbar scrollbar-w-1 pl-1 " +
