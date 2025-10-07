@@ -20,7 +20,16 @@ import {
   moveOrResizeItemAsPreview,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
+import { twClass } from "../twClass";
 import { ToolbarButton } from "./ToolbarButton";
+
+const lineContainerClassName = twClass(
+  "flex flex-row flex-wrap gap-x-0 gap-y-oneScaledPix items-center mt-1 w-full",
+);
+
+const lineTitleHeaderClassName = twClass(
+  "inline-block mr-1 text-lightGrey leading-none pr-oneScaledPix min-w-6",
+);
 
 export const NudgeButtons = () => {
   const dispatch = useAppDispatch();
@@ -102,13 +111,11 @@ export const NudgeButtons = () => {
     };
 
   return (
-    <div className="flex flex-row flex-wrap gap-x-0 gap-y-oneScaledPix items-center mt-1">
-      <BitmapText
-        className="inline-block mr-1 text-lightGrey leading-none pr-oneScaledPix"
-        noSlitWords
-      >
-        {"move  "}
+    <div className={lineContainerClassName}>
+      <BitmapText className={lineTitleHeaderClassName} noSlitWords>
+        {"Move:"}
       </BitmapText>
+      <div className="flex-grow" />
       <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
         <ToolbarButton
           small
@@ -160,13 +167,11 @@ export const NudgeButtons = () => {
         </ToolbarButton>
       </div>
 
-      <div className="flex flex-row flex-wrap gap-x-0 gap-y-oneScaledPix items-center">
-        <BitmapText
-          className="inline-block mr-1 text-lightGrey leading-none pr-oneScaledPix"
-          noSlitWords
-        >
-          {"grow  "}
+      <div className={lineContainerClassName}>
+        <BitmapText className={lineTitleHeaderClassName} noSlitWords>
+          {"Grow:"}
         </BitmapText>
+        <div className="flex-grow" />
         <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
           <ToolbarButton
             small
@@ -219,13 +224,11 @@ export const NudgeButtons = () => {
         </div>
       </div>
 
-      <div className="flex flex-row flex-wrap gap-x-0 gap-y-oneScaledPix items-center">
-        <BitmapText
-          className="inline-block mr-1 text-lightGrey leading-none pr-oneScaledPix"
-          noSlitWords
-        >
-          shrink
+      <div className={lineContainerClassName}>
+        <BitmapText className={lineTitleHeaderClassName} noSlitWords>
+          Shrink:
         </BitmapText>
+        <div className="flex-grow" />
         <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
           <ToolbarButton
             small

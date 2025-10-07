@@ -15,7 +15,7 @@ export const WallsFloorsLockedSwitch = ({
   return (
     <Switch
       className={className}
-      label="scenery"
+      label="Scenery"
       value={useAppSelectorWithLevelEditorSlice(
         (state) => state.levelEditor.wallsFloorsLocked,
       )}

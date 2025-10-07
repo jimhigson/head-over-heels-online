@@ -73,7 +73,7 @@ export const SaveAsDialog = ({
           </BitmapText>
           {isSomeoneElses && (
             <BitmapText className={`${multilineTextClass} text-midRed `}>
-              you are saving a fork of another user's campaign under your own
+              You are saving a fork of another user's campaign under your own
               account
             </BitmapText>
           )}
@@ -92,7 +92,7 @@ export const SaveAsDialog = ({
             <BlockyMarkdown
               className="text-lightGrey"
               markdown={`If you *publish*, your campaign will be listed under ‘community contributed’ on blockstack.ing              
-**unlisted** campaigns can still be shared privately using the share button`}
+**Unlisted** campaigns can still be shared privately using the share button`}
             ></BlockyMarkdown>
           </div>
 

@@ -53,7 +53,7 @@ export const Switch = ({
       <BitmapText
         role="switch"
         className={clsx(
-          "inline-block w-min h-min py-half px-half",
+          "inline-block w-min h-min py-half px-half sprites-uppercase",
           value ?
             "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen"
           : "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
@@ -125,16 +125,13 @@ export const SwitchN = <TValue extends number | string>({
   const element = (
     <span
       onClick={goToNextValue}
-      className={cn(
-        "inline-flex justify-between leading-none sprites-uppercase",
-        className,
-      )}
+      className={cn("inline-flex justify-between leading-none", className)}
     >
       {label && <SwitchLabel label={label} />}
       <BitmapText
         role="switch"
         className={clsx(
-          "inline-block w-min h-min py-half px-half",
+          "inline-block w-min h-min py-half px-half sprites-uppercase",
           switchNColours[colorIndex] ?? switchNColours[0],
         )}
         noSlitWords

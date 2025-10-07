@@ -161,6 +161,7 @@ export default {
     bottom: blockMultiples,
     borderWidth: blockMultiples,
     minWidth: {
+      ...blockMultiples,
       full: "100%",
     },
     maxWidth: {

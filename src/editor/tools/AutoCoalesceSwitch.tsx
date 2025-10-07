@@ -11,7 +11,7 @@ export const AutoCoalesceSwitch = ({ className }: { className?: string }) => {
   return (
     <Switch
       className={className}
-      label="coalesce"
+      label="Coalesce"
       value={useAppSelectorWithLevelEditorSlice(
         (state) => state.levelEditor.autoCoalesce,
       )}
