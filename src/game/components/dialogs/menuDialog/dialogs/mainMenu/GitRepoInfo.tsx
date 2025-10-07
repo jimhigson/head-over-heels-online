@@ -29,15 +29,19 @@ export const GitRepoInfo = () => {
       <div className="flex absolute bottom-oneScaledPix right-oneScaledPix z-dialog">
         <div
           onClick={toggleOpen}
-          className="text-pastelBlueHalfbrite zx:text-zxMagenta"
+          className="text-pastelBlueHalfbrite zx:text-zxMagenta flex flex-row gap-x-1"
         >
-          {!open && <BitmapText>{version}</BitmapText>}
           {open && (
-            <BitmapText className="bg-metallicBlueHalfbrite block">
-              {__gitHash__ || ""}
-              {__buildDate__ || ""}
-            </BitmapText>
+            <>
+              <a
+                href={`${repoLocation}releases/tag/v${version}`}
+                className="bitmap-text-link zx:bg-zxBlack"
+              >
+                <BitmapText className=" block">tag</BitmapText>
+              </a>
+            </>
           )}
+          <BitmapText>{`${open ? __gitHash__ : ""} ${open ? __buildDate__ : ""} v${version}`}</BitmapText>
         </div>
       </div>
     </>

@@ -367,6 +367,11 @@ export const SelectTheKeysMenuItems = () => {
           assignInputStart,
           "toggleColourisation",
         )}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} texture-switch_left sprites-normal-height`}
+          />
+        }
       />
       <MenuItem
         id="cycleRes"
@@ -382,6 +387,11 @@ export const SelectTheKeysMenuItems = () => {
           assignInputStart,
           "cycleResolution",
         )}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} texture-switch_left sprites-normal-height`}
+          />
+        }
       />
       <MenuItem
         id="toggleCrt"
@@ -397,6 +407,11 @@ export const SelectTheKeysMenuItems = () => {
           assignInputStart,
           "toggleCrtFilter",
         )}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} texture-switch_left sprites-normal-height`}
+          />
+        }
       />
     </>
   );

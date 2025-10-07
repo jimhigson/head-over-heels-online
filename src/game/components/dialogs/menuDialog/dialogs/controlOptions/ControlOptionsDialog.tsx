@@ -119,7 +119,7 @@ export const ControlOptionsDialog = () => {
             TagName="h1"
             className="text-midRed zx:text-zxBlue sprites-double-height block ml-4"
           >
-            Control Options
+            Options ➡ Controls
           </BitmapText>
 
           <MenuItems className={`${controlOptionsMenuItemsClass} w-full`}>

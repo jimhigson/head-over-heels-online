@@ -43,7 +43,7 @@ export const ScreenRelativeControlMenuItem = () => {
       })}
       hintInline
       verticalAlignItemsCentre
-      doubleHeightWhenFocussed
+      className="sprites-double-height"
       hint={
         <BlockyMarkdown
           className={optionsHintMarkdownClassname}

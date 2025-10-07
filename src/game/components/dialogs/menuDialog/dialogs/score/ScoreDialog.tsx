@@ -119,15 +119,14 @@ const ScoreDialogContents = () => {
                 key={fc}
                 className="block text-center mx-auto text-lightGrey zx:text-zxYellow"
               >
-                <BitmapText
-                  className={
-                    fc === "head" ?
-                      "text-metallicBlue zx:text-zxBlue"
-                    : "text-pink zx:text-zxWhite"
-                  }
-                >
-                  {fc}
-                </BitmapText>
+                {fc === "head" ?
+                  <BitmapText className="text-metallicBlue zx:text-zxBlue">
+                    Head
+                  </BitmapText>
+                : <BitmapText className="text-pink zx:text-zxWhite">
+                    Heels
+                  </BitmapText>
+                }
                 <BitmapText> is</BitmapText>
                 <BitmapText classnameCycle={mainMenuCycle}> free</BitmapText>
               </span>

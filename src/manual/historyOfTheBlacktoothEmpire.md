@@ -1,4 +1,4 @@
-## History of the Empire
+## The Blacktooth Empire
 
 ![](texture-crown_blacktooth)Far, far away from our star Sol lies **The Blacktooth empire**, an evil empire, four
 worlds enslaved by the planet Blacktooth.

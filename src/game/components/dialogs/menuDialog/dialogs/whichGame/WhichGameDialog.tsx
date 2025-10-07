@@ -40,9 +40,9 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
         <div className="zx:text-zxCyan resHandheld:mt-half flex flex-col gap-1">
           <MenuItems className="gap-y-1">
             <MenuItem
+              className="sprites-double-height"
               id="originalGame"
               label="Original Remastered"
-              doubleHeightWhenFocussed
               hintInline
               onSelect={useDispatchActionCallback(gameStarted, {
                 campaignLocator: originalCampaignLocator,
@@ -62,7 +62,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
             <MenuItem
               id="remake"
               label="38 Years Later"
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               hintInline
               onSelect={useDispatchActionCallback(gameStarted, {
                 campaignLocator: {
@@ -86,7 +86,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
             <MenuItem
               id="community"
               label="Community contributed"
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               hintInline
               onSelect={useDispatchActionCallback(
                 goToSubmenu,
