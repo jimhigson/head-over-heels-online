@@ -13,8 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.release.tag_name }} # Use the release tag!
-          fetch-depth: 0
+          ref: ${{ github.event.release.tag_name }}
+          # check out as me so the push is also as me - this is needed so the push can trigger knock-on actions to deploy the production branch
+          token: ${{ secrets.COPY_TAG_TO_PRODUCTION_BRANCH }}
 
       - name: Push tagged commit to production branch
         run: |
