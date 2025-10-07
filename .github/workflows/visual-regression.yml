@@ -21,11 +21,8 @@ jobs:
           filters: |
             visual-regression-trigger-files:
               - 'src/**'
-              - '!src/editor/**'
-              - '!src/game/components/dialogs/**'
               - 'screenshotTests/**'
               - 'gfx/**'
-              - '!gfx/screenshots/**'
               - 'pnpm-lock.yaml'
               - '.github/workflows/visual-regression.yml'
 
