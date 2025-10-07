@@ -17,6 +17,7 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          list-files: "shell"
           filters: |
             visual-regression-trigger-files:
               - 'src/**'
