@@ -66,7 +66,7 @@ const UserCampaigns = ({
         }
       >
         {userEntry.user.isCurrentUser ?
-          "your campaigns"
+          "Your Campaigns"
         : userEntry.user.username}
       </BitmapText>
       {campaignsList.map((campaign) => (
@@ -105,7 +105,7 @@ export const CampaignListForEditor = ({
             {shouldShowCommunityHeading && (
               <>
                 <BitmapText className="text-midRed mt-2 sprites-double-height">
-                  community campaigns
+                  Community Campaigns
                 </BitmapText>
                 <div>
                   <BlockyMarkdown
@@ -120,7 +120,7 @@ export const CampaignListForEditor = ({
         );
       })}
       <BitmapText className="text-midRed mt-2 sprites-double-height">
-        original remastered
+        Original Remastered
       </BitmapText>
       <div>
         <BlockyMarkdown

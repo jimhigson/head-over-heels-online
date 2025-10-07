@@ -533,7 +533,7 @@ head's doughnut firing hooter`}
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">deadly</BitmapText>
+        <BitmapText className="w-full">Deadly</BitmapText>
         <MultipleToolButtons>
           <ItemToolButton
             itemTool={{ type: "deadlyBlock", config: { style: "volcano" } }}
@@ -594,7 +594,7 @@ turns so poisonous that a single lick can kill`}
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">control</BitmapText>
+        <BitmapText className="w-full">Control</BitmapText>
         <ItemToolButton itemTool={{ type: "charles", config: emptyObject }}>
           <StackedToolbarIcons topClasses="texture-charles_towards [button:hover_&]:texture-charles_right" />
         </ItemToolButton>
@@ -658,7 +658,7 @@ edit the json to choose:
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">movable</BitmapText>
+        <BitmapText className="w-full">Movable</BitmapText>
         <ItemToolButton
           itemTool={{
             type: "spring",
@@ -730,7 +730,7 @@ Why are the books slippery?`}
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full">misc.</BitmapText>
+        <BitmapText className="w-full">Misc.</BitmapText>
         <ItemToolButton
           itemTool={{ type: "lift", config: { top: 11, bottom: 0 } }}
           className="inline relative"
@@ -921,7 +921,7 @@ stand around not doing much`}
         </ItemToolButton>
       </div>
       <div className={buttonGroupClassname}>
-        <BitmapText className="w-full pt-2">debug</BitmapText>
+        <BitmapText className="w-full pt-2">Debug</BitmapText>
         <ShowBoundingBoxSelect />
       </div>
     </div>

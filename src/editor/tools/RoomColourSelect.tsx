@@ -61,7 +61,7 @@ export function RoomColourSelect() {
       />
       <Switch
         className=""
-        label="shade"
+        label="Shade"
         value={currentRoomColour.shade === "basic"}
         onChange={(value) => {
           dispatch(

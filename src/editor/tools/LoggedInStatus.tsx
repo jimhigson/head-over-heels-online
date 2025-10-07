@@ -68,7 +68,7 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
             className="overflow-hidden"
           >{`${providerIcon(user.app_metadata.provider as SupportedProvider)}${user.email}`}</BitmapText>
           <Button className="px-1 w-full" onClick={handleLogout}>
-            <BitmapText>Logout</BitmapText>
+            <BitmapText className="sprites-uppercase">Logout</BitmapText>
           </Button>
         </div>
       : <div className="px-1 bg-midRed">

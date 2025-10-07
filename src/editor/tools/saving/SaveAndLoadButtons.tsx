@@ -34,16 +34,14 @@ export const showOkAfterSaveDuration = 2000;
 const saveTooltipMarkdown = `
 ## Save
 
-put your campaign on cassette tape, or even floppy disk!
-
-to be shared or worked on later
+Put your campaign on cassette tape, or even floppy disk! - to be shared or worked on later
 
 (really, saves to a cloud database)
 `;
 const loadTooltipMarkdown = `
 ## Open
 
-load your saved campaign, or anyone else's
+Load your saved campaign, or anyone else's for editing
 `;
 
 const save = async () => {

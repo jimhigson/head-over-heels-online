@@ -10,11 +10,11 @@ import { useShortTimeDisplay } from "./useShortTimeDisplay";
 const tooltipMarkdown = `
 ## Share
 
-**save first**
+**Save first!**
 
-copies a link to the clipboard
+Copies a link to the clipboard
 
-give anyone the link to your game
+Give anyone the link to your game
 `;
 
 export const ShareCampaignButton = () => {

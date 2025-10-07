@@ -18,7 +18,7 @@ export const HalfGridResolutionSwitch = ({
   return (
     <Switch3
       className={className}
-      label="snap"
+      label="Snap"
       values={gridResolutions}
       value={useAppSelectorWithLevelEditorSlice(
         (state) => state.levelEditor.gridResolution,
