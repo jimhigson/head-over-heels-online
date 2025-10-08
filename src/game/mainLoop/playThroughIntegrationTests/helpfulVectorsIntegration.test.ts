@@ -126,3 +126,43 @@ test("block pushed by player gets a helpful vector around an obstruction", () =>
     startY,
   );
 });
+
+test("player can move around a fixed block, into a pushable one", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 6, y: 4.5, z: 0 },
+        config: {
+          which: "heels",
+        },
+      },
+      // heels will eventually collide with the block and portable block
+      // simultaneously, and should slide towards the portable block
+      portableBlock: {
+        type: "portableBlock",
+        position: { x: 5, y: 4.5, z: 0 },
+        config: {
+          style: "drum",
+        },
+      },
+      block: {
+        type: "block",
+        position: { x: 4, y: 4, z: 0 },
+        config: {
+          style: "organic",
+        },
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "right";
+    },
+    until() {
+      // pushed item reached the right wall, even though there was a block in the way:
+      return itemState(gameState, "portableBlock").position.x === 0;
+    },
+  });
+});

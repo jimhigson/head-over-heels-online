@@ -1,7 +1,5 @@
 import type { WritableDeep } from "type-fest";
 
-import { isEmpty } from "iter-tools-es";
-
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { Collideable } from "../../collision/aabbCollision";
 import type { FreeItem } from "../itemPredicates";
@@ -15,7 +13,7 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
-import { isSolid } from "../itemPredicates";
+import { isPushable, isSolid } from "../itemPredicates";
 
 /** a preallocated buffer to write sensors into, to avoid gc */
 const sensorBuffer: WritableDeep<Collideable> = {
@@ -39,6 +37,10 @@ const sensorWidthWhileJumping = 1;
 // helping for doorways
 const sensorWidthWhenCollidingWithDoorFrame = 1 / 12;
 
+const collisionNone = 0;
+const collisionWithPushable = 1;
+const collisionWithUnpushable = 2;
+
 /**
  * Not standard mtv-based sliding collision: work out items we collided with but probably
  * wanted to move past (for eligible moving items). This only applies if we have zero
@@ -61,9 +63,9 @@ export const helpfulMovementVector = <
 
   const updatedPosition = subjectItem.state.position;
 
-  const stillInX = veryClose(originalPosDelta.x, 0);
-  const stillInY = veryClose(originalPosDelta.y, 0);
-  if (stillInX === stillInY) {
+  const unmovingInX = veryClose(originalPosDelta.x, 0);
+  const unmovingInY = veryClose(originalPosDelta.y, 0);
+  if (unmovingInX === unmovingInY) {
     // if not originally travelling on a cardinal axis, this does not apply.
     // No tolerance for analogue stick players since they have snapping to axes
     // so should be hitting cardinals or getting normal sliding collision
@@ -87,7 +89,7 @@ export const helpfulMovementVector = <
   sensorBuffer.state.position.z = updatedPosition.z;
   sensorBuffer.aabb.z = subjectItem.aabb.z;
 
-  const movementAxis = stillInX ? "y" : "x";
+  const movementAxis = unmovingInX ? "y" : "x";
 
   const collidesWithDoorFrame = collisions.some((i) => i.type === "doorFrame");
 
@@ -116,11 +118,25 @@ export const helpfulMovementVector = <
   sensorBuffer.state.position[crossAxis] =
     subjectItem.state.position[crossAxis];
 
-  const collidesNeg = !isEmpty(
-    collisionItemWithIndex(sensorBuffer, room[roomSpatialIndexKey]).filter(
-      (c) => c !== subjectItem && isSolid(c),
-    ),
-  );
+  // collisions with each sensor get a score:
+  //  0: nothing there (hmv goes towards if other is non-zero)
+  //  1: something there, but is pushable (hmv goes towards if other is not pushable)
+  //  2: something there, not pushable
+  const accumulateCollisionScore = (
+    ac: number,
+    c: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ): number => {
+    const score: number =
+      c === subjectItem || !isSolid(c) ? collisionNone
+      : isPushable(subjectItem, c) ? collisionWithPushable
+      : collisionWithUnpushable;
+
+    return Math.max(ac, score);
+  };
+  const collidesNegSide: number = collisionItemWithIndex(
+    sensorBuffer,
+    room[roomSpatialIndexKey],
+  ).reduce(accumulateCollisionScore, 0);
 
   // test positive direction in cross axis:
   sensorBuffer.state.position[crossAxis] =
@@ -128,27 +144,26 @@ export const helpfulMovementVector = <
     subjectItem.aabb[crossAxis] -
     sensorWidthPx;
 
-  const collidesPos = !isEmpty(
-    collisionItemWithIndex(sensorBuffer, room[roomSpatialIndexKey]).filter(
-      (c) => c !== subjectItem && isSolid(c),
-    ),
-  );
+  const collidesPosSide: number = collisionItemWithIndex(
+    sensorBuffer,
+    room[roomSpatialIndexKey],
+  ).reduce(accumulateCollisionScore, 0);
 
-  if (collidesNeg === collidesPos) {
+  if (collidesNegSide === collidesPosSide) {
     return;
   }
 
   return {
     x:
-      stillInX ?
+      unmovingInX ?
         originalPosDelta.y *
-        (collidesNeg ? 1 : -1) *
+        (collidesNegSide > collidesPosSide ? 1 : -1) *
         (originalPosDelta.y > 0 ? 1 : -1)
       : 0,
     y:
-      stillInY ?
+      unmovingInY ?
         originalPosDelta.x *
-        (collidesNeg ? 1 : -1) *
+        (collidesNegSide > collidesPosSide ? 1 : -1) *
         (originalPosDelta.x > 0 ? 1 : -1)
       : 0,
     z: 0,
