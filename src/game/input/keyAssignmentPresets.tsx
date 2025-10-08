@@ -46,7 +46,7 @@ const standardAssignment = {
     // f8 in chrome pauses script execution (if devtools open)
     // f11 clashes with macos defaults, and browser fullscreen!
     // f12 is taken in chrome/firefox - opens dev tools
-    toggleCrtFilter: { keys: ["F2", "T"] },
+    toggleCrtFilter: { keys: ["F8", "T"] },
     toggleShowFps: { keys: ["F9"] },
     toggleColourisation: { keys: ["F10"] },
     cycleResolution: { keys: ["0"] },
