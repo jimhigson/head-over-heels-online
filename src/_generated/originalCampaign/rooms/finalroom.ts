@@ -64,7 +64,7 @@ export const room = inferRoomJson({
       config: {
         gives: "scroll",
         markdown:
-          "## Congratulations!\n\nYou have returned to *freedom*.\n\nExit this room to **finish the game**.\n\nFor a **100%** score:\n\n* Collect **all the crowns**\n\n* Explore **all rooms**\n\n* Both players must be free\n\nMaybe try the **sequel game** next",
+          "## Congratulations!\n\nYou have returned to *freedom*!\n\nExit this room to **finish the game**.\n\nFor a **100%** score:\n\n* Collect **all the crowns**\n\n* Explore **all rooms**\n\n* Both players must be free\n\nMaybe try **‘38 years later’** next",
         source: "inline",
       },
       position: { x: 5, y: 1, z: 1.5 },
