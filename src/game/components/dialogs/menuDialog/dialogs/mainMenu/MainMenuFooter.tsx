@@ -37,7 +37,7 @@ export const MainMenuFooter = ({ className }: { className?: string }) => (
     </div>
     <div className="flex flex-col items-center">
       <BitmapText className="text-pink zx:text-zxBlack">2025 Remake</BitmapText>
-      <address className="flex relative bottom-oneScaledPix">
+      <address className="flex relative left-[calc(0.5px*var(--scale))] bottom-oneScaledPix">
         <div className="flex flex-col items-center">
           <BitmapText
             className="relative left-[calc(1.5px*var(--scale))]"
