@@ -198,13 +198,11 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           if (toRoom !== exitGameRoomId) {
             const toRoomExists = !!rooms[toRoom];
 
-            const toRoomUpper = toRoom.toUpperCase();
-
             const arrow = directionArrows[direction];
             const text =
               direction === "away" || direction === "right" ?
-                `${toRoomUpper}${arrow}`
-              : `${arrow}${toRoomUpper}`;
+                `${toRoom}${arrow}`
+              : `${arrow}${toRoom}`;
 
             this.#addTextAnnotation({
               annotationText: text,
@@ -231,7 +229,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           const toRoomExists = !!rooms[toRoom];
 
           this.#addTextAnnotation({
-            annotationText: `➡${toRoom.toUpperCase()}`,
+            annotationText: `➡${toRoom}`,
             yAdj: -12,
             error: !toRoomExists,
             clickDispatch:
