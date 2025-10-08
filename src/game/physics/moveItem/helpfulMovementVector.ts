@@ -13,7 +13,7 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
-import { isPushable, isSolid } from "../itemPredicates";
+import { isJoystick, isPushable, isSolid } from "../itemPredicates";
 
 /** a preallocated buffer to write sensors into, to avoid gc */
 const sensorBuffer: WritableDeep<Collideable> = {
@@ -40,6 +40,9 @@ const sensorWidthWhenCollidingWithDoorFrame = 1 / 12;
 const collisionNone = 0;
 const collisionWithPushable = 1;
 const collisionWithUnpushable = 2;
+const collisionWithNonSliding = 3;
+
+const slideSpeedCoef = 0.75;
 
 /**
  * Not standard mtv-based sliding collision: work out items we collided with but probably
@@ -129,6 +132,8 @@ export const helpfulMovementVector = <
     const score: number =
       c === subjectItem || !isSolid(c) ? collisionNone
       : isPushable(subjectItem, c) ? collisionWithPushable
+        // we don't apply hmv when colliding with joysticks since you want to snag on them to keep pushing:
+      : isJoystick(c) ? collisionWithNonSliding
       : collisionWithUnpushable;
 
     return Math.max(ac, score);
@@ -137,6 +142,10 @@ export const helpfulMovementVector = <
     sensorBuffer,
     room[roomSpatialIndexKey],
   ).reduce(accumulateCollisionScore, 0);
+
+  if (collidesNegSide === collisionWithNonSliding) {
+    return;
+  }
 
   // test positive direction in cross axis:
   sensorBuffer.state.position[crossAxis] =
@@ -149,6 +158,10 @@ export const helpfulMovementVector = <
     room[roomSpatialIndexKey],
   ).reduce(accumulateCollisionScore, 0);
 
+  if (collidesPosSide === collisionWithNonSliding) {
+    return;
+  }
+
   if (collidesNegSide === collidesPosSide) {
     return;
   }
@@ -158,13 +171,15 @@ export const helpfulMovementVector = <
       unmovingInX ?
         originalPosDelta.y *
         (collidesNegSide > collidesPosSide ? 1 : -1) *
-        (originalPosDelta.y > 0 ? 1 : -1)
+        (originalPosDelta.y > 0 ? 1 : -1) *
+        slideSpeedCoef
       : 0,
     y:
       unmovingInY ?
         originalPosDelta.x *
         (collidesNegSide > collidesPosSide ? 1 : -1) *
-        (originalPosDelta.x > 0 ? 1 : -1)
+        (originalPosDelta.x > 0 ? 1 : -1) *
+        slideSpeedCoef
       : 0,
     z: 0,
   };
