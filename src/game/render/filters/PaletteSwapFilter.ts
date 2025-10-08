@@ -8,7 +8,7 @@ import {
   blockEncodeRgbBitDepth,
   getBlockNeighborhood,
 } from "../../../utils/colour/blockEncode";
-import { amigaHalfBriteBrightness } from "../../../utils/colour/halfBrite";
+import { standardBrightnessLevels } from "../../../utils/colour/halfBrite";
 import { objectEntriesIter } from "../../../utils/entries";
 import { vertex } from "./defaults";
 import fragment from "./paletteSwap.frag?raw";
@@ -20,11 +20,6 @@ export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
 const lutW = (2 ** blockEncodeRgbBitDepth) ** (3 / 2); // 64^1.5 = 512
 const lutSize = lutW * lutW;
 
-/**
- * for every colour that we put in the lut, also add the halfbrite version
- */
-const brightnessLevels = [1, amigaHalfBriteBrightness];
-
 // Cache for PaletteSwapFilter instances
 const filterCache = new Map<string, PaletteSwapFilter>();
 
@@ -33,7 +28,7 @@ const createLut = (swops: PaletteSwaps): Texture => {
   const data = new Uint8Array(lutSize * 4);
 
   // we also put the shadow-ed version of the colour in the LUT:
-  for (const bright of brightnessLevels) {
+  for (const bright of standardBrightnessLevels) {
     for (const [original, target] of objectEntriesIter(swops)) {
       const originalColor = spritesheetPalette[original];
 

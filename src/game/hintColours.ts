@@ -10,7 +10,10 @@ import {
   type ZxSpectrumRoomHue,
   type ZxSpectrumShade,
 } from "../originalGame";
-import { halfbrite } from "../utils/colour/halfBrite";
+import {
+  halfbrite,
+  slightlyBrighterReducedBrightness,
+} from "../utils/colour/halfBrite";
 
 export type Shades = { basic: Color; dimmed: Color; original: Color };
 export const whiteShades = {
@@ -38,7 +41,10 @@ export const magentaShades = {
 export const cyanShades = {
   original: new Color(zxSpectrumColors.zxCyan),
   basic: spritesheetPalette.pastelBlue,
-  dimmed: halfbrite(spritesheetPalette.pastelBlue),
+  dimmed: halfbrite(
+    spritesheetPalette.pastelBlue,
+    slightlyBrighterReducedBrightness,
+  ),
 };
 export const greenShades = {
   original: new Color(zxSpectrumColors.zxGreen),
