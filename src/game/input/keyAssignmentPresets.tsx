@@ -177,30 +177,32 @@ const defaultAssignment: InputAssignmentPreset = {
     gamepadAssignment.inputAssignment,
     {
       presses: {
+        // Note - the spectrum default (QAOP) is replaced by modern WASD:
         right: {
-          keys: ["P", "Numpad6"],
+          keys: ["D"],
         },
         towards: {
-          keys: ["A", "Numpad5"],
+          keys: ["S"],
         },
         left: {
-          keys: ["O", "Numpad8"],
+          keys: ["A"],
         },
         away: {
-          keys: ["Q", "Numpad9"],
+          keys: ["W"],
         },
         jump: {
           // ` or z for jump-carry - these keys are next to shift on most keybaords
-          keys: [" ", "`", "Z", "\\", "Numpad0", "Numpad-"],
+          keys: [" ", "`", "Z", "\\"],
         },
         carry: {
-          keys: ["Shift", "`", "Z", "\\", "Numpad1", "Numpad-"],
+          keys: ["Shift", "`", "Z", "\\"],
         },
         fire: {
-          keys: ["D", "NumpadEnter"],
+          keys: ["E", "X"],
         },
         swop: {
-          keys: ["Enter", "S", "Numpad+"],
+          // Spectrum default S is used for WASD, we have enter instead:
+          keys: ["Enter"],
         },
         "swop.head": {
           keys: ["["],
@@ -209,7 +211,8 @@ const defaultAssignment: InputAssignmentPreset = {
           keys: ["]"],
         },
         hold: {
-          keys: ["F8", "H", "Numpad."],
+          // Spectrum default 'H' is replaced with more recognisable/modern 'P' for pause
+          keys: ["P"],
         },
         map: {
           keys: ["M", "Tab"],

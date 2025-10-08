@@ -17,13 +17,10 @@ export const HoldDialog = () => {
         onClick={useDispatchActionCallback(backToParentMenu)}
       >
         <BitmapText className="block w-min mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix sprites-uppercase">
-          Hold
+          PAUSED
         </BitmapText>
         <span className="zx">
-          <PressToContinueBanner
-            className={`${multilineTextClass} px-1`}
-            action="hold"
-          />
+          <PressToContinueBanner className={`${multilineTextClass} px-1`} />
         </span>
       </Dialog>
     </DialogPortal>
