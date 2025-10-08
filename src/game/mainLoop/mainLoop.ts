@@ -1,18 +1,7 @@
-import type { Application, Filter, Ticker } from "pixi.js";
+import type { Application, Ticker } from "pixi.js";
 
-import {
-  BloomFilter,
-  ColorAdjustmentFilter,
-  CurvatureFilter,
-  NoiseFilter,
-  PhosphorMaskFilter,
-  RaiseBlackPointFilter,
-  ScanlinesFilter,
-  VignetteFilter,
-} from "@blockstacking/jims-shaders";
 import { Container, Rectangle } from "pixi.js";
 
-import type { Upscale } from "../../store/slices/upscale/Upscale";
 import type { GameState } from "../gameState/GameState";
 import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
 import type { RoomRendererType } from "../render/RoomRendererType";
@@ -25,7 +14,6 @@ import {
   selectShouldRenderOnScreenControls,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
-  type DisplaySettings,
   errorCaught,
   selectHasError,
 } from "../../store/slices/gameMenus/gameMenusSlice";
@@ -35,81 +23,13 @@ import { emptySet } from "../../utils/empty";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
-import { noFilters } from "../render/filters/standardFilters";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { RoomRenderer } from "../render/roomRenderer";
 import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
 import { getTimingStats } from "./FrameTimingStats";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
-
-const topLevelFilters = (
-  { crtFilter: crtFilterDisplaySetting }: DisplaySettings,
-  upscale: Upscale,
-): Filter[] => {
-  // darken initially, then re-lighten at the end. This helps some detail
-  // to be added into very light areas by compressing the dynamic range initially,
-  // giving the pipeline some headroom to go into
-  const inPipelineBrightness = 0.8;
-
-  const crtFilterEnabled =
-    crtFilterDisplaySetting ?? defaultUserSettings.displaySettings.crtFilter;
-
-  if (!crtFilterEnabled) {
-    // this settings as false or undefined means no CRT filter
-    return noFilters;
-  }
-
-  return [
-    new ColorAdjustmentFilter({
-      brightness: inPipelineBrightness,
-    }),
-
-    new NoiseFilter({ intensity: 0.03, fps: 29.97, scale: 5 }),
-
-    // Scanlines and phosphor mask first (applied to flat image)
-    new ScanlinesFilter({
-      pixelHeight: upscale.gameEngineUpscale,
-      gapBrightness: 0.66,
-    }),
-
-    new PhosphorMaskFilter({
-      pixelWidth: upscale.gameEngineUpscale * 1.1,
-      maskBrightness: 0.6,
-      numSamples: 2,
-      transitionWidth: 0.2,
-    }),
-
-    // selectively blur just fairly light items on a small, intense radius:
-    new BloomFilter({
-      radius: upscale.gameEngineUpscale / 4,
-      intensity: 0.15,
-      cutoff: 0.8,
-      edgeBlur: 1,
-    }),
-
-    new VignetteFilter({
-      intensity: 0.4,
-      radius: 0.7,
-    }),
-
-    // Then curvature (curves everything including scanlines)
-    new CurvatureFilter({
-      curvatureX: 0.13,
-      curvatureY: 0.12,
-      multisampling: true,
-    }),
-
-    new RaiseBlackPointFilter({ blackPoint: 0.05 }),
-
-    new ColorAdjustmentFilter({
-      gamma: 1.1,
-      saturation: 1.35,
-      brightness: 1 / inPipelineBrightness,
-      brightnessBottom: -0.1,
-    }),
-  ];
-};
+import { topLevelFilters } from "./topLevelFilters";
 
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
