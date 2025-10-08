@@ -16,6 +16,7 @@ export const charReplacements = {
   ">": "gt",
   "?": "questMk",
   "!": "exclMk",
+  "-": "hyph",
 } as const;
 
 export const uppercaseCharReplacement = <
