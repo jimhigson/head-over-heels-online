@@ -2,8 +2,8 @@ import { Color } from "pixi.js";
 // this file is generated from the spritesheet by iff2png.sh, do not edit directly
 export const spritesheetPalette = {
   pureBlack: new Color("#000000"),
-  shadow: new Color("#2A554B"),
-  midGrey: new Color("#837573"),
+  shadow: new Color("#264136"),
+  midGrey: new Color("#7C6E6C"),
   lightGrey: new Color("#C0AFA9"),
   white: new Color("#FBFEFB"),
   pastelBlue: new Color("#5EAEFF"),

@@ -4,6 +4,17 @@ import { Color } from "pixi.js";
  * how dark to make the shadows in range 0..1 to emulate Amiga EHB (lower is darker)
  */
 export const amigaHalfBriteBrightness = 0.4;
+/**
+ * an alternative brightness level for when calculating replacements for placeholder
+ * colours that can be used if halfbright looks too dark
+ */
+export const slightlyBrighterReducedBrightness = 0.5;
+
+export const standardBrightnessLevels = [
+  1,
+  slightlyBrighterReducedBrightness,
+  amigaHalfBriteBrightness,
+];
 
 export const zxSpectrumDimmed = (c: Color) => {
   const [r, g, b] = c.toUint8RgbArray();

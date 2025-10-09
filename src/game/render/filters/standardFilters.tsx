@@ -13,7 +13,11 @@ import type { SceneryName } from "../../../sprites/planets";
 import type { Shades } from "../../hintColours";
 import type { PaletteSwaps } from "./PaletteSwapFilter";
 
-import { halfbrite, zxSpectrumDimmed } from "../../../utils/colour/halfBrite";
+import {
+  halfbrite,
+  standardBrightnessLevels,
+  zxSpectrumDimmed,
+} from "../../../utils/colour/halfBrite";
 import { emptyArray, emptyObject } from "../../../utils/empty";
 import { transformObject } from "../../../utils/entries";
 import { omit } from "../../../utils/pick";
@@ -119,6 +123,8 @@ export const edgeOriginalGameColour = (
 const greyishBlueShadows = new Color("#424249");
 const brownishShadows = new Color("#494908");
 const magentaShadows = new Color("#554055");
+const bluishShadows = new Color("#404055");
+
 export const sceneryColourReplacements: Partial<
   Record<SceneryName, PaletteSwaps>
 > = {
@@ -143,6 +149,7 @@ export const hueColourReplacements: Partial<
   yellow: { shadow: brownishShadows },
   white: { shadow: greyishBlueShadows },
   magenta: { shadow: magentaShadows },
+  cyan: { shadow: bluishShadows },
 };
 
 export const colourisedRoomFilter = (
@@ -169,19 +176,18 @@ export const colourisedRoomFilter = (
           ] of objectEntries(spritesheetPalette) as Iterable<
             [SpritesheetPaletteColourName, Color]
           >) {
-            if (spritesheetColour === lightRoomReplacementColour) {
-              return [key, spritesheetPaletteDim[spritesheetColourName]];
-            }
-            // also test if it is a dimming of a standard colour, in which case, replace with a dimmed version
-            // of that colour put through the lut: - test on the darker replacement blues in #safari4
-            if (
-              halfbrite(spritesheetColour).toHex() ===
-              lightRoomReplacementColour.toHex()
-            ) {
-              return [
-                key,
-                halfbrite(spritesheetPaletteDim[spritesheetColourName]),
-              ];
+            for (const l of standardBrightnessLevels) {
+              // also test if it is a dimming of a standard colour, in which case, replace with a dimmed version
+              // of that colour put through the lut: - test on the darker replacement blues in #safari4
+              if (
+                halfbrite(spritesheetColour, l).toHex() ===
+                lightRoomReplacementColour.toHex()
+              ) {
+                return [
+                  key,
+                  halfbrite(spritesheetPaletteDim[spritesheetColourName], l),
+                ];
+              }
             }
           }
 
