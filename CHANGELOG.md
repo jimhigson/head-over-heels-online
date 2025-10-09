@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.1.1...v1.2.0) (2025-10-08)
+
+
+### Features
+
+* helpful sliding vectors now discriminate pushable/static obstructions ([#528](https://github.com/jimhigson/head-over-heels-online/issues/528)) ([a521721](https://github.com/jimhigson/head-over-heels-online/commit/a52172154cd2c6cf7aab49b314e3088d131a9846))
+* hyphens in docs are narrower ([#529](https://github.com/jimhigson/head-over-heels-online/issues/529)) ([9d7106d](https://github.com/jimhigson/head-over-heels-online/commit/9d7106d6650436df1cd47b61843500ae131e3389))
+* use F8, F9, F10 to change display settings in default keybindings ([#535](https://github.com/jimhigson/head-over-heels-online/issues/535)) ([99a9a38](https://github.com/jimhigson/head-over-heels-online/commit/99a9a3819018689ddc67b633f670d81711799376))
+
+
+### Bug Fixes
+
+* better (but not perfect) fullscreen in PWAs under iOS26 ([#533](https://github.com/jimhigson/head-over-heels-online/issues/533)) ([337f6a2](https://github.com/jimhigson/head-over-heels-online/commit/337f6a22efb59e3d5aa1c00b81881f67a5268d70))
+* do not apply sliding to help walk around joystick items, since we want to keep pushing these ([#536](https://github.com/jimhigson/head-over-heels-online/issues/536)) ([9f1f03d](https://github.com/jimhigson/head-over-heels-online/commit/9f1f03d9b1a45cfe4741d3b0ca634854cb8fe4c9))
+* minor footer allignment ([#530](https://github.com/jimhigson/head-over-heels-online/issues/530)) ([a4e928b](https://github.com/jimhigson/head-over-heels-online/commit/a4e928b68f62c016303b1145dab0d2c74636c8f3))
+* more modern default keys, hold dialog minor formatting (now called PAUSE, not "Hold") ([#531](https://github.com/jimhigson/head-over-heels-online/issues/531)) ([b82f6bc](https://github.com/jimhigson/head-over-heels-online/commit/b82f6bcda1c0747dfc6e12109179d4f2c8ad6712))
+
 ## [1.1.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.1.0...v1.1.1) (2025-10-08)
 
 
