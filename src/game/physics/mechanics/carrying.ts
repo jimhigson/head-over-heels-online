@@ -10,8 +10,8 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
+import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { always } from "../../../utils/always";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
@@ -148,13 +148,38 @@ export const findItemToPickup = <
 ) => {
   const hasShield = playableHasShield(carrier);
 
-  return findStandingOnWithHighestPriorityAndMostOverlap(
-    carrier,
-    iterateRoomItems(room.items)
-      .filter(isPortable)
-      // can only pick up deadly items if you have a shield:
-      .filter(hasShield ? always : (i) => !isDeadly(i)),
+  const itemIsPortableForCarrier = (
+    i: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  ): i is PortableItem<RoomId, RoomItemId> =>
+    isPortable(i) &&
+    // can only pick up deadly items if you have a shield:
+    (hasShield || !isDeadly(i));
+
+  const portableItemsIter = iterateRoomItems(room.items).filter(
+    itemIsPortableForCarrier,
   );
+
+  const straightStoodOn = findStandingOnWithHighestPriorityAndMostOverlap(
+    carrier,
+    portableItemsIter,
+  );
+
+  if (straightStoodOn) {
+    return straightStoodOn;
+  }
+
+  // nothing straight-up stood on, let's check if we're standing on by coyote time:
+  const coyoteStoodOnItemId = getEffectivelyStandingOnItemIdForPlayable(
+    room,
+    carrier.state,
+  );
+  const coyoteStoodOn = coyoteStoodOnItemId && room.items[coyoteStoodOnItemId];
+
+  if (coyoteStoodOn && itemIsPortableForCarrier(coyoteStoodOn)) {
+    return coyoteStoodOn;
+  }
+
+  return undefined;
 };
 
 export const checkSpaceAvailableToPutDown = <
