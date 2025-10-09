@@ -41,7 +41,7 @@ const turnaroundSounds: PerMonsterSounds = {
 const ambientSounds: PerMonsterSounds = {
   cyberman: { soundId: "jetpackLoop", gain: 0.7 },
   emperorsGuardian: { soundId: "jetpackLoop" },
-  dalek: { soundId: "mojoLoop" },
+  dalek: { soundId: "mojoLoop", gain: 0.2 },
   bubbleRobot: { soundId: "bubbleRobotLoop" },
   helicopterBug: { soundId: "helicopter" },
 };
