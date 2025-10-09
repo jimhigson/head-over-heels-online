@@ -13,7 +13,7 @@ import { hudCharTextureSize } from "../../../sprites/textureSizes";
 import { createSprite } from "../createSprite";
 import { hudOutlinedTextFilters, hudTextFilter } from "./hudFilters";
 
-function characterSpriteTextureId(char: string): TextureId {
+const characterSpriteTextureId = (char: string): TextureId => {
   const textureId = `hud.char.${escapeCharForTailwind(char)}`;
 
   try {
@@ -28,7 +28,7 @@ function characterSpriteTextureId(char: string): TextureId {
   }
 
   return textureId;
-}
+};
 
 const characterSpriteCentreAlignX = (i: number, l: number): number => {
   return (i + 0.5 - l / 2) * hudCharTextureSize.w;
