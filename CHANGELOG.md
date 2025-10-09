@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.3.0...v1.4.0) (2025-10-09)
+
+
+### Features
+
+* cyan rooms get blue/grey shadows; generally darker mid/dark tones in most rooms ([#542](https://github.com/jimhigson/head-over-heels-online/issues/542)) ([dfe61cd](https://github.com/jimhigson/head-over-heels-online/commit/dfe61cda9b5ba2186d8eabfaf309fde59b718eaa))
+* lower-case text in editor room annotations ([#543](https://github.com/jimhigson/head-over-heels-online/issues/543)) ([83b7cdb](https://github.com/jimhigson/head-over-heels-online/commit/83b7cdba71edc1020a61ea22efd12452d4783112))
+
+
+### Bug Fixes
+
+* picking items up also gets coyote time, for running and jumping and picking up items, to pick up for a short time after leaving the item ([#544](https://github.com/jimhigson/head-over-heels-online/issues/544)) ([07f39dc](https://github.com/jimhigson/head-over-heels-online/commit/07f39dcce017c69f682d7ddd9145fb95654daed8))
+
 ## [1.3.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.2.0...v1.3.0) (2025-10-09)
 
 
