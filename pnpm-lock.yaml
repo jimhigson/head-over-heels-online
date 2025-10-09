@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@blockstacking/jims-shaders':
-        specifier: ^0.4.2
-        version: 0.4.2(pixi.js@8.8.1)
+        specifier: ^0.4.3
+        version: 0.4.3(pixi.js@8.8.1)
       '@github/mini-throttle':
         specifier: ^2.1.1
         version: 2.1.1
@@ -773,8 +773,8 @@ packages:
     resolution: {integrity: sha512-ruv7Ae4J5dUYULmeXw1gmb7rYRz57OWCPM57pHojnLq/3Z1CK2lNSLTCVjxVk1F/TZHwOZZrOWi0ur95BbLxNQ==}
     engines: {node: '>=6.9.0'}
 
-  '@blockstacking/jims-shaders@0.4.2':
-    resolution: {integrity: sha512-XwgvOaB3rifo1ixwJR5x76rpRSk9utfjwYpK6eMXr4+nd8tBnR5daOzNlQ8PV7JW3Z7braW5pkO04NhRVys4kQ==}
+  '@blockstacking/jims-shaders@0.4.3':
+    resolution: {integrity: sha512-86R9PSpp4HpfNZH1WkJtGt4UBQLraoNxHQqo1lxbWgQ/zs2Jcm/IxQcokxTFrr9HQCGkixGBh/cmNwpTNtZOcw==}
     peerDependencies:
       pixi.js: ^8.0.0
 
@@ -5355,7 +5355,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@blockstacking/jims-shaders@0.4.2(pixi.js@8.8.1)':
+  '@blockstacking/jims-shaders@0.4.3(pixi.js@8.8.1)':
     dependencies:
       pixi.js: 8.8.1
 
