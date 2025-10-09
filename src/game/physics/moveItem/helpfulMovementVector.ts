@@ -38,9 +38,10 @@ const sensorWidthWhileJumping = 1;
 const sensorWidthWhenCollidingWithDoorFrame = 1 / 12;
 
 const collisionNone = 0;
-const collisionWithPushable = 1;
-const collisionWithUnpushable = 2;
-const collisionWithNonSliding = 3;
+const collisionWithDoorFrame = 1;
+const collisionWithPushable = 2;
+const collisionWithUnpushable = 3;
+const collisionWithNonSliding = 4;
 
 const slideSpeedCoef = 0.75;
 
@@ -131,6 +132,7 @@ export const helpfulMovementVector = <
   ): number => {
     const score: number =
       c === subjectItem || !isSolid(c) ? collisionNone
+      : c.type === "doorFrame" ? collisionWithDoorFrame
       : isPushable(subjectItem, c) ? collisionWithPushable
         // we don't apply hmv when colliding with joysticks since you want to snag on them to keep pushing:
       : isJoystick(c) ? collisionWithNonSliding
