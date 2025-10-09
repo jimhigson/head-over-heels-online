@@ -17,15 +17,17 @@ import type { Upscale } from "../../store/slices/upscale/Upscale";
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
 import { noFilters } from "../render/filters/standardFilters";
 
+// darken initially, then re-lighten at the end. This helps some detail
+// to be added into very light areas by compressing the dynamic range initially,
+// giving the pipeline some headroom to go into
+const inPipelineBrightness = 0.8;
+// overall boost to brightness to come a the end:
+const brightnessIncrease = 1.2;
+
 export const topLevelFilters = (
   { crtFilter: crtFilterDisplaySetting }: DisplaySettings,
   upscale: Upscale,
 ): Filter[] => {
-  // darken initially, then re-lighten at the end. This helps some detail
-  // to be added into very light areas by compressing the dynamic range initially,
-  // giving the pipeline some headroom to go into
-  const inPipelineBrightness = 0.8;
-
   const crtFilterEnabled =
     crtFilterDisplaySetting ?? defaultUserSettings.displaySettings.crtFilter;
 
@@ -79,7 +81,7 @@ export const topLevelFilters = (
     new ColorAdjustmentFilter({
       gamma: 1.1,
       saturation: 1.35,
-      brightness: 1 / inPipelineBrightness,
+      brightness: (1 / inPipelineBrightness) * brightnessIncrease,
       brightnessBottom: -0.1,
     }),
   ];
