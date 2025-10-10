@@ -9,14 +9,12 @@ import {
   useIsUncolourised,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
-  backToParentMenu,
   goToSubmenu,
   setGameSpeed,
   toggleUserSetting,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { selectableGameSpeeds } from "../../../../../../store/slices/gameMenus/selectableGameSpeeds";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch, SwitchN } from "../../../../../../ui/Switch";
@@ -25,13 +23,14 @@ import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
-import {
-  optionsMenuItemColours,
-  optionsMenuScrollClasses,
-} from "../controlOptions/optionsMenuColours";
 import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
+import { DialogTitleBar } from "../DialogTitleBar";
 import { optionsHintMarkdownClassname } from "./optionsHintMarkdownClassname";
+import {
+  optionsDialogClasses,
+  optionsMenuScrollClasses,
+  titleBarClasses,
+} from "./optionsMenuColours";
 
 const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**Off**: Original *two-tone* spectrum graphics
 
@@ -54,29 +53,9 @@ const controlOptionsMarkdown = `*Select the keys* and other input settings`;
 export const OptionsDialog = () => {
   return (
     <DialogPortal>
-      <Border
-        className="bg-lightGrey zx:bg-zxRedDimmed"
-        onClick={useDispatchActionCallback(backToParentMenu)}
-      />
-      <Dialog
-        fullScreen
-        className={`bg-white zx:bg-zxWhite pl-1 py-0 ${optionsMenuItemColours}`}
-      >
-        <div
-          className={
-            "flex flex-col gap-1 " +
-            "overflow-y-scroll scrollbar scrollbar-w-1 pr-1 " +
-            "min-h-full " +
-            optionsMenuScrollClasses
-          }
-        >
-          <MobileStyleBackButton className="pt-half" />
-          <BitmapText
-            TagName="h1"
-            className="ml-4 text-midRed zx:text-zxBlue sprites-double-height block"
-          >
-            Options
-          </BitmapText>
+      <Dialog fullScreen className={optionsDialogClasses}>
+        <DialogTitleBar path={["Options"]} className={titleBarClasses} />
+        <div className={optionsMenuScrollClasses}>
           <MenuItems className={`gap-y-half`}>
             <MenuItem
               hintInline

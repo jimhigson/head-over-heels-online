@@ -1,53 +1,19 @@
-import { twMerge } from "tailwind-merge";
-
-import { useAppSelector } from "../../../../../../store/hooks";
-import {
-  selectCurrentInputPreset,
-  useIsScreenRelativeControl,
-} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import {
-  assignInputStart,
-  goToSubmenu,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { useIsScreenRelativeControl } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { assignInputStart } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { multilineTextClass } from "../../multilineTextClass";
+import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
-
-export const CurrentPresetValue = ({ className }: { className?: string }) => {
-  const currentPresetName = useAppSelector(selectCurrentInputPreset);
-
-  return (
-    <BitmapText
-      className={twMerge(
-        `text-nowrap`,
-        "text-pinkHalfbrite zx:text-zxRed selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed",
-        className,
-      )}
-    >
-      {currentPresetName ?? "custom"}
-    </BitmapText>
-  );
-};
 
 export const SelectTheKeysMenuItems = () => {
   const isScreenRelativeControl = useIsScreenRelativeControl();
 
   return (
     <>
-      <MenuItem
-        id="preset"
-        label={
-          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-            Key/ button preset
-          </BitmapText>
-        }
-        valueElement={<CurrentPresetValue />}
-        onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
-      />
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
@@ -136,13 +102,11 @@ export const SelectTheKeysMenuItems = () => {
         </BitmapText>
       </div>
       <div className={`${multilineTextClass} col-span-3`}>
-        <BitmapText className="text-midRed bg-pureBlack inline-block zx:text-zxRed zx:bg-zxYellow me-1">
-          Note:
-        </BitmapText>
-        <BitmapText className="text-midGrey zx:text-zxBlack">
-          Some puzzles require Heels to jump and pick up simultaneously - assign
-          a key to both jump and carry
-        </BitmapText>
+        <BlockyMarkdown
+          markdown={`**NOTE:** Some puzzles require Heels to jump and pick up/down simultaneously - assign a key to *both jump and carry*
+          `}
+          className={optionsHintMarkdownClassname}
+        />
       </div>
       <MenuItem
         id="carry"
@@ -152,7 +116,7 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "carry")}
         hint={
           <BlockyMarkdown
-            className="text-midGrey zx:text-zxBlack"
+            className={optionsHintMarkdownClassname}
             markdown={`Carrying is **Heels only** and requires the bag`}
           />
         }
@@ -168,7 +132,7 @@ export const SelectTheKeysMenuItems = () => {
         leader={<span className={`${spriteLeaderClasses} texture-doughnuts`} />}
         hint={
           <BlockyMarkdown
-            className="text-midGrey zx:text-zxBlack"
+            className={optionsHintMarkdownClassname}
             markdown={`Firing doughnuts is **Head only** and requires the hooter`}
           />
         }
@@ -191,7 +155,7 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "swop")}
         hint={
           <BlockyMarkdown
-            className="text-midGrey zx:text-zxBlack"
+            className={optionsHintMarkdownClassname}
             markdown={`Works like the original game. *Cycles through* the characters, Moves *in and out of symbiosis* if head is on top of heels`}
           />
         }
@@ -220,7 +184,7 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "swop.head")}
         hint={
           <BlockyMarkdown
-            className="text-midGrey zx:text-zxBlack"
+            className={optionsHintMarkdownClassname}
             markdown={`Go *directly* to *Head*, avoiding cycling if in symbiosis`}
           />
         }
@@ -247,7 +211,7 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "swop.heels")}
         hint={
           <BlockyMarkdown
-            className="text-midGrey zx:text-zxBlack"
+            className={optionsHintMarkdownClassname}
             markdown={`Go *directly* to *Heels*, avoiding cycling if in symbiosis`}
           />
         }
@@ -300,13 +264,10 @@ export const SelectTheKeysMenuItems = () => {
         >
           Look controls
         </BitmapText>
-        <BitmapText
-          TagName="h2"
-          className={`text-midGrey zx:text-zxBlack ${multilineTextClass}`}
-        >
-          Look controls are useful for seeing more of larger rooms that don’t
-          fit on the screen.
-        </BitmapText>
+        <BlockyMarkdown
+          markdown={`Look controls are useful for seeing more of larger rooms that don’t fit on the screen.`}
+          className={optionsHintMarkdownClassname}
+        />
       </div>
       <MenuItem
         id="lookShift"
@@ -315,7 +276,7 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "lookShift")}
         hint={
           <BlockyMarkdown
-            className="text-midGrey zx:text-zxBlack"
+            className={optionsHintMarkdownClassname}
             markdown={`Hold the look key and press a direction to look around the room`}
           />
         }

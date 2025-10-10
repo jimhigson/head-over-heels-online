@@ -3,52 +3,31 @@ import {
   selectIsNoFootstepSounds,
   selectIsSoundMuted,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import {
-  backToParentMenu,
-  toggleUserSetting,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { Switch } from "../../../../../../ui/Switch";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
+import { DialogTitleBar } from "../DialogTitleBar";
 import {
-  optionsMenuItemColours,
+  optionsDialogClasses,
   optionsMenuScrollClasses,
-} from "../controlOptions/optionsMenuColours";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
+  titleBarClasses,
+} from "../options/optionsMenuColours";
 
 export const SoundDialog = () => {
   const isMuted = useAppSelector(selectIsSoundMuted);
   const isNoFootstepSounds = useAppSelector(selectIsNoFootstepSounds);
   return (
     <>
-      <Border
-        className="bg-lightGrey zx:bg-zxRedDimmed"
-        onClick={useDispatchActionCallback(backToParentMenu)}
-      />
-      <Dialog
-        fullScreen
-        className={`bg-white zx:bg-zxWhite py-0 pl-1 ${optionsMenuItemColours}`}
-      >
-        <div
-          className={
-            "flex flex-col gap-1 " +
-            "overflow-y-scroll scrollbar scrollbar-w-1 " +
-            "min-h-full " +
-            optionsMenuScrollClasses
-          }
-        >
-          <MobileStyleBackButton className="pt-half" />
-          <BitmapText
-            TagName="h1"
-            className="ml-3 text-midRed zx:text-zxBlue sprites-double-height block"
-          >
-            Options ➡ Sounds
-          </BitmapText>
+      <Dialog fullScreen className={optionsDialogClasses}>
+        <DialogTitleBar
+          path={["Options", "Sounds"]}
+          className={titleBarClasses}
+        />
+        <div className={optionsMenuScrollClasses}>
           <MenuItems>
             <MenuItem
               className="sprites-double-height"

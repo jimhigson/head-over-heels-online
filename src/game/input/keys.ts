@@ -1,3 +1,6 @@
+/**
+ * keys, as reported by KeyboardEvent.key
+ */
 const keys = [
   "A",
   "B",
@@ -85,6 +88,8 @@ const keys = [
   "ArrowRight",
   "PageUp",
   "PageDown",
+  "Home",
+  "End",
   "Numpad0",
   "Numpad1",
   "Numpad2",

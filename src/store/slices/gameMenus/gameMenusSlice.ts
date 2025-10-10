@@ -411,7 +411,7 @@ export const gameMenusSlice = createSlice({
         state.userSettings.inputAssignment === undefined ?
           // user didn't previously have any keys set - copy the defaults in
           (state.userSettings.inputAssignment = structuredClone(
-            keyAssignmentPresets.default.inputAssignment,
+            keyAssignmentPresets.Default.inputAssignment,
           ))
         : state.userSettings.inputAssignment;
 

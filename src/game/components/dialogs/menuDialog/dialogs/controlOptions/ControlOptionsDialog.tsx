@@ -21,13 +21,15 @@ import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { useActionTap, useInputTap } from "../../../useActionTap";
 import { MenuItems } from "../../MenuItems";
 import { multilineTextClass } from "../../multilineTextClass";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
+import { DialogTitleBar } from "../DialogTitleBar";
+import {
+  optionsDialogClasses,
+  optionsMenuScrollClasses,
+  titleBarClasses,
+} from "../options/optionsMenuColours";
 import { InputDirectionModeMenuItem } from "./InputDirectionModeMenuItem";
 import { OnScreenControlsMenuItem } from "./OnScreenControlsMenuItem";
-import {
-  optionsMenuItemColours,
-  optionsMenuScrollClasses,
-} from "./optionsMenuColours";
+import { PresetMenuItem } from "./PresetMenuItem";
 import { ScreenRelativeControlMenuItem } from "./ScreenRelativeControlSection";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
 import { SelectTheKeysMenuItems } from "./SelectTheKeysMenuItems";
@@ -102,42 +104,33 @@ export const ControlOptionsDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog
-        fullScreen
-        className={`bg-white zx:bg-zxWhite pl-1 py-0 ${optionsMenuItemColours}`}
-      >
-        <div
-          className={
-            "flex flex-col gap-y-1 pr-1 " +
-            "overflow-y-scroll " +
-            "scrollbar  scrollbar-w-1 " +
-            optionsMenuScrollClasses
-          }
-        >
-          <MobileStyleBackButton className="pt-half" />
-          <BitmapText
-            TagName="h1"
-            className="text-midRed zx:text-zxBlue sprites-double-height block ml-4"
-          >
-            Options ➡ Controls
-          </BitmapText>
-
+      <Dialog fullScreen className={optionsDialogClasses}>
+        <DialogTitleBar
+          path={["Options", "Controls"]}
+          className={titleBarClasses}
+        />
+        <div className={optionsMenuScrollClasses}>
           <MenuItems className={`${controlOptionsMenuItemsClass} w-full`}>
             <InputDirectionModeMenuItem />
             <OnScreenControlsMenuItem />
             {inputDirectionMode !== "4-way" && showAll && (
               <ScreenRelativeControlMenuItem />
             )}
+            {showAll && (
+              <>
+                <PresetMenuItem />
+                <BitmapText
+                  TagName="h1"
+                  className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3 text-center sprites-uppercase"
+                >
+                  Select the Keys
+                </BitmapText>
+              </>
+            )}
           </MenuItems>
 
           {showAll ?
             <>
-              <BitmapText
-                TagName="h1"
-                className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3"
-              >
-                Select the Keys
-              </BitmapText>
               <MenuItems
                 // normally on mobile, menu items are double-height, but select the keys
                 // is dense and won't be commonly seen on mobile, so to keep it under control

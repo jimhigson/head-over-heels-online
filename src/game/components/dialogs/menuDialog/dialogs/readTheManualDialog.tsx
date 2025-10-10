@@ -17,7 +17,7 @@ import { BitmapText } from "../../../tailwindSprites/Sprite";
 import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";
 import { MenuItemSeparator } from "../MenuItemSeparator";
-import { MobileStyleBackButton } from "./MobileStyleBackButton";
+import { DialogTitleBar } from "./DialogTitleBar";
 
 const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
   const pageContent = manualPages[pageName];
@@ -47,19 +47,21 @@ export const ReadTheManualDialog = () => {
       />
       <Dialog
         tall
-        className="bg-highlightBeige zx:bg-zxCyanDimmed max-h-[calc(var(--block)*40)]"
+        className={
+          "bg-highlightBeige zx:bg-zxCyanDimmed max-h-[calc(var(--block)*40)] " +
+          `text-redShadow zx:text-zxWhite !gap-y-0 py-0 ` +
+          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack "
+        }
       >
+        <DialogTitleBar className="pl-1" />
         <div
           className={
-            `text-redShadow zx:text-zxWhite !gap-y-0 ` +
-            "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack " +
             // set up scrolling and the scroll bar:
             "overflow-y-scroll scrollbar scrollbar-w-1 pl-1 " +
             "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
             "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed "
           }
         >
-          <MobileStyleBackButton className="mb-1" />
           <h1
             className={
               "text-moss zx:text-zxBlack mx-auto flex flex-row justify-center items-center w-full" +

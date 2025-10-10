@@ -33,11 +33,6 @@ export const useActionTap = ({
 
   const inputStateTracker = useInputStateTracker();
 
-  // correct but breaks HMR:
-  // useUnchanging(actionOrActions);
-  // useUnchanging(handler);
-  // useUnchanging(inputStateTracker);
-
   useEffect(() => {
     if (disabled) {
       return;
@@ -77,9 +72,6 @@ export const useInputTap = ({
   handler,
   disabled = false,
 }: UseInputPressesProps) => {
-  // correct but breaks HMR:
-  //useUnchanging(handler);
-
   const inputStateTracker = useInputStateTracker();
 
   useEffect(() => {

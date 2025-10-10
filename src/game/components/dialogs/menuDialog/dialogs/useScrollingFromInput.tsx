@@ -10,6 +10,11 @@ import { useActionTap } from "../../useActionTap";
 export const scrollLinesAtOnce = 4;
 export const charHeight = hudCharTextureSize.h;
 
+/**
+ * for long text pages such as scrolls and the manual
+ * - allow the controller/keyboard eto be used to
+ * scroll up or down
+ */
 export const useScrollingFromInput = () => {
   const scaleFactor = useTotalUpscale();
   const contentRef = useRef<HTMLDivElement>(null);

@@ -50,6 +50,11 @@ const standardAssignment = {
     toggleShowFps: { keys: ["F9"] },
     toggleColourisation: { keys: ["F10"] },
     cycleResolution: { keys: ["0"] },
+
+    pageDown: { keys: ["PageDown"] },
+    pageUp: { keys: ["PageUp"] },
+    home: { keys: ["Home"] },
+    end: { keys: ["End"] },
   },
 } as const satisfies PartialInputAssignment;
 
@@ -147,7 +152,7 @@ const zxSpectrumKeyAssignment: InputAssignmentPreset = {
       },
     },
   ),
-  description: "closely matches zx spectrum keys",
+  description: "Closely matches the ZX Spectrum original game's keys",
 };
 
 const amigaKeyAssignment: InputAssignmentPreset = {
@@ -168,7 +173,7 @@ const amigaKeyAssignment: InputAssignmentPreset = {
       },
     },
   ),
-  description: "closely matches Amiga version keys - heavy on the F-keys",
+  description: "Closely matches Amiga version keys - heavy on the F-keys",
 };
 
 const defaultAssignment: InputAssignmentPreset = {
@@ -238,7 +243,7 @@ const defaultAssignment: InputAssignmentPreset = {
     },
   ),
   description:
-    "Default combined key and joystick/gamepad assignment, should work on most setups",
+    "Combined key and joystick/gamepad assignment, should work on most setups",
 };
 
 // left hand on wasd, right hand (optionally) on IOP
@@ -317,18 +322,18 @@ const mamePreset: InputAssignmentPreset = {
     mameToHoh(mameButtonsPlayer1),
     mameToHoh(mameButtonsPlayer2),
   ),
-  description: "MAME key mappings. For arcade-style control panels",
+  description: "Arcade-style control panels",
 };
 
 export const keyAssignmentPresets = {
-  default: defaultAssignment,
-  "zx spectrum": zxSpectrumKeyAssignment,
-  amiga: amigaKeyAssignment,
+  Default: defaultAssignment,
+  "ZX Spectrum": zxSpectrumKeyAssignment,
+  Amiga: amigaKeyAssignment,
   /** allow playing on mame control panels with p1 or p2's joysticks/buttons */
-  mame: mamePreset,
-  wasd: wasdKeyAssignments,
+  "MAME bindings": mamePreset,
+  "WASD purist": wasdKeyAssignments,
   "🕹 8bitdo keyboard mode": keyboardMode8BitDo,
-  "🕹 joystick": gamepadAssignment,
+  "🕹 Joystick": gamepadAssignment,
 } satisfies Record<string, InputAssignmentPreset>;
 
 export type KeyAssignmentPresetName = keyof typeof keyAssignmentPresets;
