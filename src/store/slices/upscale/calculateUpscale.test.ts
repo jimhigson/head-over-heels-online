@@ -8,12 +8,12 @@ import { scaleXy } from "../../../utils/vectors/vectors";
 import { calculateUpscale } from "./calculateUpscale";
 
 describe("descriptive cases", () => {
-  const zxSpectrumRes = resolutions.zxSpectrum;
+  const zxSpectrumRes = resolutions.zxSpectrum.size;
 
   test("output size matches the emulated size", () => {
     const result = calculateUpscale({
       // playing on something with the same resolution as the zx spectrum:
-      renderAreaSize: resolutions.zxSpectrum,
+      renderAreaSize: resolutions.zxSpectrum.size,
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 1,
       deviceType: "desktop",
@@ -32,7 +32,7 @@ describe("descriptive cases", () => {
 
   test("double the emulated resolution size - game engine scales up", () => {
     const result = calculateUpscale({
-      renderAreaSize: scaleXy(resolutions.zxSpectrum, 2),
+      renderAreaSize: scaleXy(resolutions.zxSpectrum.size, 2),
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 1,
       deviceType: "desktop",
@@ -40,7 +40,7 @@ describe("descriptive cases", () => {
     });
 
     expect(result).toMatchObject({
-      canvasSize: scaleXy(resolutions.zxSpectrum, 2),
+      canvasSize: scaleXy(resolutions.zxSpectrum.size, 2),
       // this is the size after scaling via app.stage.scale, so keep rendering to the same size:
       gameEngineScreenSize: zxSpectrumRes,
       // no css upscale, the output is not big enough:
@@ -53,7 +53,7 @@ describe("descriptive cases", () => {
 
   test("screen 4x the emulated resolution size and honest pixels - game engine scales up 4x", () => {
     const result = calculateUpscale({
-      renderAreaSize: scaleXy(resolutions.zxSpectrum, 4),
+      renderAreaSize: scaleXy(resolutions.zxSpectrum.size, 4),
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 1,
       deviceType: "desktop",
@@ -61,7 +61,7 @@ describe("descriptive cases", () => {
     });
 
     expect(result).toMatchObject({
-      canvasSize: scaleXy(resolutions.zxSpectrum, 4),
+      canvasSize: scaleXy(resolutions.zxSpectrum.size, 4),
       gameEngineScreenSize: zxSpectrumRes,
       // no css upscale, the output is not big enough:
       cssUpscale: 1,
@@ -73,7 +73,7 @@ describe("descriptive cases", () => {
 
   test("screen 8x the emulated resolution and honest pixels - game engine scales up 8x, with nothing extra from css", () => {
     const result = calculateUpscale({
-      renderAreaSize: scaleXy(resolutions.zxSpectrum, 8),
+      renderAreaSize: scaleXy(resolutions.zxSpectrum.size, 8),
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 1,
       deviceType: "desktop",
@@ -81,7 +81,7 @@ describe("descriptive cases", () => {
     });
 
     expect(result).toMatchObject({
-      canvasSize: scaleXy(resolutions.zxSpectrum, 8),
+      canvasSize: scaleXy(resolutions.zxSpectrum.size, 8),
       gameEngineScreenSize: zxSpectrumRes,
       cssUpscale: 1,
       // render at quad-size in the game engine:
@@ -92,7 +92,7 @@ describe("descriptive cases", () => {
 
   test("screen 4x the emulated resolution size and pixel ratio doubling (so really 8x)", () => {
     const result = calculateUpscale({
-      renderAreaSize: scaleXy(resolutions.zxSpectrum, 4),
+      renderAreaSize: scaleXy(resolutions.zxSpectrum.size, 4),
       emulatedResolutionName: "zxSpectrum",
       devicePixelRatio: 2,
       deviceType: "desktop",
@@ -100,7 +100,7 @@ describe("descriptive cases", () => {
     });
 
     expect(result).toMatchObject({
-      canvasSize: scaleXy(resolutions.zxSpectrum, 8),
+      canvasSize: scaleXy(resolutions.zxSpectrum.size, 8),
       gameEngineScreenSize: zxSpectrumRes,
       // get down to hardware pixels:
       cssUpscale: 0.5,

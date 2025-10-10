@@ -27,9 +27,9 @@ const CampaignItem = ({
   onSelect: (locator: CampaignLocator) => void;
 }) => {
   return (
-    <>
+    <div className="mt-half flex flex-col">
       <Button
-        className="px-1 py-half text-left ml-2 w-min"
+        className="px-1 py-half text-left ml-2 w-min mb-oneScaledPix"
         onClick={() =>
           onSelect({
             userId,
@@ -43,7 +43,7 @@ const CampaignItem = ({
       <BitmapText className="text-lightGrey ml-2">
         {`v.${campaign.version} updated ${format(campaign.created_at)}`}
       </BitmapText>
-    </>
+    </div>
   );
 };
 

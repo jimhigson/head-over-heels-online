@@ -6,7 +6,7 @@ import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import { detectDeviceType } from "../../../utils/detectDeviceType";
 
 export const defaultUserSettings: RequiredDeep<UserSettings> = {
-  inputAssignment: keyAssignmentPresets.default.inputAssignment,
+  inputAssignment: keyAssignmentPresets.Default.inputAssignment,
   infiniteLivesPoke: false,
   infiniteDoughnutsPoke: false,
 

@@ -11,11 +11,11 @@ import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
+import { DialogTitleBar } from "../DialogTitleBar";
+import { selectGameHintMarkdownClassName } from "./selectGameHintMarkdownClassName";
 
 // this uuid is the user id of jim@blockstack.ing on github for supabase
 const jimAtBlockstackingUserId = "2924c962-99f1-4dd2-9b9c-fef832dc991b";
@@ -28,16 +28,21 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
-        tall
-        className="bg-metallicBlueHalfbrite text-highlightBeige selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 overflow-y-scroll"
+        fullScreen
+        className="bg-metallicBlueHalfbrite zx:text-zxCyan text-highlightBeige selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1"
       >
-        <div className="flex flex-col gap-2">
-          <MobileStyleBackButton className="text-highlightBeige " />
-          <BitmapText className="text-midRed zx:text-zxYellow sprites-double-height pl-4">
-            Select which game
-          </BitmapText>
-        </div>
-        <div className="zx:text-zxCyan resHandheld:mt-half flex flex-col gap-1">
+        <DialogTitleBar path={["Select which game"]} className="mobile:px-4" />
+        <div
+          className={
+            "flex flex-col gap-1 p-1 " +
+            //"min-h-full " +
+            "overflow-y-scroll scrollbar scrollbar-w-1 " +
+            "scrollbar-thumb-lightGrey scrollbar-track-metallicBlueHalfbrite " +
+            "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite " +
+            // bring away from any 'notch' on mobile devices:
+            "mobile:px-3 "
+          }
+        >
           <MenuItems className="gap-y-1">
             <MenuItem
               className="sprites-double-height"
@@ -54,8 +59,8 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               }
               hint={
                 <BlockyMarkdown
-                  className="text-lightGrey sprites-normal-height"
-                  markdown={`Remaster of the **300-some** rooms from the original game, lightly updated for modern play`}
+                  className={selectGameHintMarkdownClassName}
+                  markdown={`*Remaster* of the **300-some** rooms from the original game, lightly updated for modern play`}
                 />
               }
             />
@@ -78,8 +83,8 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               }
               hint={
                 <BlockyMarkdown
-                  className="text-lightGrey sprites-normal-height"
-                  markdown={`Unofficial sequel - the empire is back! All-new levels designed for the remake. **work in progress**`}
+                  className={selectGameHintMarkdownClassName}
+                  markdown={`*Unofficial sequel* - the empire is back! All-new levels designed for the remake. **Work in progress!**`}
                 />
               }
             />
@@ -99,7 +104,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               }
               hint={
                 <BlockyMarkdown
-                  className="text-lightGrey sprites-normal-height"
+                  className={selectGameHintMarkdownClassName}
                   markdown={`Check out what people have made in the editor`}
                 />
               }

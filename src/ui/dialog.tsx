@@ -50,9 +50,7 @@ const getDialogClassName = (
       "resHandheld:h-full portrait-rot:resHandheld:h-fullScrW resHandheld:w-full portrait-rot:resHandheld:w-fullScrH resHandheld:py-0 " +
       "portrait-rot:rotate-90 " +
       "leading-none flex flex-col gap-y-1 " +
-      // bring away from a 'notch on mobile devices:
-      "mobile:pl-2",
-    className,
+      className,
   );
 };
 

@@ -10,11 +10,19 @@ import { useActionTap } from "../../useActionTap";
 export const scrollLinesAtOnce = 4;
 export const charHeight = hudCharTextureSize.h;
 
+/**
+ * for long text pages such as scrolls and the manual
+ * - allow the controller/keyboard eto be used to
+ * scroll up or down
+ */
 export const useScrollingFromInput = () => {
   const scaleFactor = useTotalUpscale();
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollContent = useCallback(
-    (direction: DirectionXy4) => {
+    (
+      direction: DirectionXy4,
+      distance: "all" | "lines" | "pages" = "lines",
+    ) => {
       // this component is slow to render, so don't cause any state changes or it would render again!
       if (contentRef.current === null) return;
 
@@ -23,8 +31,19 @@ export const useScrollingFromInput = () => {
       const scrollUnitVector = unitVectors[direction];
 
       const newScrollTop =
-        scrollTop +
-        scaleFactor * scrollLinesAtOnce * -scrollUnitVector.y * charHeight;
+        distance === "all" ?
+          scrollUnitVector.y < 0 ?
+            9999
+          : 0
+        : distance === "lines" ?
+          scrollTop +
+          scaleFactor * scrollLinesAtOnce * -scrollUnitVector.y * charHeight
+          // page:
+        : scrollTop +
+          -scrollUnitVector.y *
+            (contentRef.current?.getBoundingClientRect().height -
+              // leave a bit of overlap:
+              scaleFactor * charHeight * scrollLinesAtOnce);
 
       const newScrollLeft =
         scrollLeft +
@@ -33,7 +52,7 @@ export const useScrollingFromInput = () => {
       contentRef.current.scrollTo({
         left: newScrollLeft,
         top: newScrollTop,
-        behavior: "instant",
+        behavior: "smooth",
       });
     },
     [scaleFactor],
@@ -50,6 +69,30 @@ export const useScrollingFromInput = () => {
       scrollContent("away");
     }, [scrollContent]),
     action: "away",
+  });
+  useActionTap({
+    handler: useCallback(() => {
+      scrollContent("towards", "pages");
+    }, [scrollContent]),
+    action: "pageDown",
+  });
+  useActionTap({
+    handler: useCallback(() => {
+      scrollContent("away", "pages");
+    }, [scrollContent]),
+    action: "pageUp",
+  });
+  useActionTap({
+    handler: useCallback(() => {
+      scrollContent("towards", "all");
+    }, [scrollContent]),
+    action: "end",
+  });
+  useActionTap({
+    handler: useCallback(() => {
+      scrollContent("away", "all");
+    }, [scrollContent]),
+    action: "home",
   });
   useActionTap({
     handler: useCallback(() => {
