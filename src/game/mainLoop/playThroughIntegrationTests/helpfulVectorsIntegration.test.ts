@@ -4,7 +4,11 @@ vi.mock("../../sprites/samplePalette", () => ({
 }));
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
-import { heelsState, itemState } from "../../../_testUtils/characterState";
+import {
+  headState,
+  heelsState,
+  itemState,
+} from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 
@@ -199,3 +203,75 @@ test("player can move around a fixed block, into a pushable one", () => {
     },
   });
 });
+
+test.each([3.5, 3, 2.5])(
+  "head can drift through a small gap in a barrier he is only half aligned with (head starting at %f)",
+  (headY) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: { x: 3, y: headY, z: 6 },
+          config: {
+            which: "head",
+          },
+        },
+
+        lowerBarrier: {
+          type: "barrier",
+          position: { x: 2, y: 0, z: 0 },
+          config: {
+            axis: "y",
+            times: {
+              y: 8,
+              z: 2,
+            },
+          },
+        },
+        towardsWallBarrier: {
+          type: "barrier",
+          position: { x: 2, y: 0, z: 2 },
+          config: {
+            axis: "y",
+            times: {
+              y: 3,
+              z: 1,
+            },
+          },
+        },
+        awayWallBarrier: {
+          type: "barrier",
+          position: { x: 2, y: 4, z: 2 },
+          config: {
+            axis: "y",
+            times: {
+              y: 2,
+              z: 1,
+            },
+          },
+        },
+        topBarrier: {
+          type: "barrier",
+          position: { x: 2, y: 0, z: 3 },
+          config: {
+            axis: "y",
+            times: {
+              y: 8,
+              z: 4,
+            },
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "right";
+      },
+      until() {
+        // pushed item reached the right wall, even though there was a block in the way:
+        return headState(gameState).position.x === 0;
+      },
+    });
+  },
+);
