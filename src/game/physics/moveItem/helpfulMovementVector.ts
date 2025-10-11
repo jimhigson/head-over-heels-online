@@ -5,7 +5,7 @@ import type { Collideable } from "../../collision/aabbCollision";
 import type { FreeItem } from "../itemPredicates";
 
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
-import { veryClose } from "../../../utils/epsilon";
+import { epsilon, veryClose } from "../../../utils/epsilon";
 import {
   lengthXySquared,
   perpendicularAxisXy,
@@ -85,13 +85,21 @@ export const helpfulMovementVector = <
     return;
   }
 
+  const standingOnNothing = subjectItem.state.standingOnItemId === null;
+
   // let's add sensors around the AABB to see where they are colliding
   // 3 sensors, taking up the full height of the item, at left, centre, right
   // positions in the xy plane:
 
   // z is easy - sensors are always full-height matching the item:
   sensorBuffer.state.position.z = updatedPosition.z;
-  sensorBuffer.aabb.z = subjectItem.aabb.z;
+  sensorBuffer.aabb.z =
+    standingOnNothing ?
+      // setting a very small sensor height while falling allows drifting into
+      // smaller gaps when there's a barrier above and below. Eg, head jumping
+      // through the disappeared barrier in #blacktooth14
+      epsilon
+    : subjectItem.aabb.z;
 
   const movementAxis = unmovingInX ? "y" : "x";
 
@@ -99,7 +107,7 @@ export const helpfulMovementVector = <
 
   const sensorWidth =
     collidesWithDoorFrame ? sensorWidthWhenCollidingWithDoorFrame
-    : subjectItem.state.standingOnItemId === null ?
+    : standingOnNothing ?
       subjectItem.state.vels.gravity.z < 0 ?
         sensorWidthWhileFalling
       : sensorWidthWhileJumping
