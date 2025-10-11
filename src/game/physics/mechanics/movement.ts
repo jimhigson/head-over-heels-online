@@ -36,13 +36,17 @@ import { isMonster, isSolid } from "../itemPredicates";
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv } from "../mtv";
+import { speedForItem } from "./speedForItem";
 import { turnedVector } from "./turnedVector";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern
 const turnAroundTime = 150;
 
-type ItemWithMovement<RoomId extends string, RoomItemId extends string> =
+export type ItemWithMovement<
+  RoomId extends string,
+  RoomItemId extends string,
+> =
   | ItemInPlay<"monster", RoomId, RoomItemId>
   | ItemInPlay<"movingPlatform", RoomId, RoomItemId>;
 
@@ -54,14 +58,6 @@ const notWalking = Object.freeze({
   string,
   string
 > satisfies MechanicResult<"movingPlatform", string, string>);
-
-const speedForItem = (itemWithMovement: ItemWithMovement<string, string>) => {
-  if (isMonster(itemWithMovement)) {
-    return moveSpeedPixPerMs[itemWithMovement.config.which];
-  } else {
-    return moveSpeedPixPerMs[itemWithMovement.type];
-  }
-};
 
 const rushTripThreshold = blockSizePx.w / 2;
 const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
