@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.4.0...v1.5.0) (2025-10-12)
+
+
+### Features
+
+* game mechanics now constrain item movement to 1.5x its normal speed. Prevents extremely fast movement when an item is on top of another item, especially if there is a stack of items which are all moving ([#548](https://github.com/jimhigson/head-over-heels-online/issues/548)) ([f80febb](https://github.com/jimhigson/head-over-heels-online/commit/f80febb9b1ae8dff4b7bea9db25da211b0b9ef9e))
+* make easier for head to fall into some small gaps while drifting downwards by applying more sliding vectors ([#547](https://github.com/jimhigson/head-over-heels-online/issues/547)) ([c0dc2cb](https://github.com/jimhigson/head-over-heels-online/commit/c0dc2cb74cfe997c6c782d9137910f26d1e7930b))
+* standardise the options menus ([#546](https://github.com/jimhigson/head-over-heels-online/issues/546)) ([a36ba72](https://github.com/jimhigson/head-over-heels-online/commit/a36ba72d3232b8de60cc2190c5a67cd9f81b271d))
+
 ## [1.4.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.3.0...v1.4.0) (2025-10-09)
 
 
