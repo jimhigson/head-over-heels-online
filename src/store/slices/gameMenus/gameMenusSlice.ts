@@ -460,6 +460,10 @@ export const gameMenusSlice = createSlice({
     closeAllMenus(state) {
       state.openMenus = [];
     },
+    /** for restoring menu state from browser forward/back buttons */
+    restoreMenusFromHistory(state, { payload }: PayloadAction<OpenMenu[]>) {
+      state.openMenus = payload;
+    },
     gameStarted(
       state,
       {
@@ -942,6 +946,7 @@ export const {
   nextInputDirectionMode,
   reincarnationAccepted,
   reincarnationFishEaten,
+  restoreMenusFromHistory,
   roomExplored,
   saveGame,
   scrollRead,
