@@ -118,7 +118,7 @@ export const originalMoveSpeedPixPerMs = transformObject(
   ([name, multiple]) => [name, multiple * onePxPerFrameInOriginalGamePxPerMs],
 );
 
-// the above documents the speed in the original game, but let's speed the slower items up while
+// originalMoveSpeedPixPerMs gives the speed in the original game, but let's speed the slower items up while
 // keeping the faster ones the same
 export const moveSpeedPixPerMs = transformObject(
   originalMoveSpeedMultiples,
@@ -133,6 +133,15 @@ export const moveSpeedPixPerMs = transformObject(
     (s * 0.8 + 0.4) * onePxPerFrameInOriginalGamePxPerMs,
   ],
 );
+
+/**
+ * how much faster than its normal walking speed is an item allowed to go?
+ * This prevents extremely fast travel if an item is on a moving platform
+ * and also walking in the direction of the platform they are on.
+ * True, this could be called less realistic, but the very fast movement
+ * in this case looks weird. Maybe its just air resistance anyway 🤷‍♂️
+ */
+export const maximumSpeedCoefficient = 1.5;
 
 // n px per frame in original game;
 const pxPerFrameSpeed = (pxPerFrame: number = 1) =>

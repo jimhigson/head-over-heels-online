@@ -49,6 +49,7 @@ import { walking } from "../physics/mechanics/walking";
 import { moveItem } from "../physics/moveItem/moveItem";
 import { addParticlesAroundCrown } from "./addParticlesToRoom";
 import { applyMechanicsResults } from "./applyMechanicsResults";
+import { constrainToMaximumSpeedInPlace } from "./constrainToMaximumSpeed";
 
 function* itemMechanicResultGen<
   T extends ItemInPlayType,
@@ -263,6 +264,12 @@ export const tickItem = <
   if (isCrown(item)) {
     addParticlesAroundCrown(room, item, deltaMS);
   }
+
+  constrainToMaximumSpeedInPlace(
+    item,
+    tickItemPosDeltaAccumulationBuffer,
+    deltaMS,
+  );
 
   moveItem({
     subjectItem: item as UnionOfAllItemInPlayTypes<RoomId>,
