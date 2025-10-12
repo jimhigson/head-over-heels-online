@@ -34,6 +34,13 @@ export const booleanActions = [
   // hold to use the main direction inputs to look around:
   "lookShift",
   ...lookDirectionsXy4,
+
+  // for while in menus - these actions are never used in game, but in menus
+  // can be used to jump around more quickly
+  "pageUp",
+  "pageDown",
+  "home",
+  "end",
 ] as const;
 export type BooleanAction = (typeof booleanActions)[number];
 // TODO: this is just a copy of booleanActions - probably redundant

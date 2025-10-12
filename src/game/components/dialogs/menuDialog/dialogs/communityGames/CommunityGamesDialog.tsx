@@ -3,18 +3,11 @@ import type { EmptyObject } from "type-fest";
 import { useEffect } from "react";
 
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { NonIdealState } from "../../../../../../ui/NonIdealState";
 import { SpinnerHead } from "../../../../../../ui/Spinner";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { BackMenuItem } from "../../BackMenuItem";
-import { MenuItems } from "../../MenuItems";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
+import { DialogTitleBar } from "../DialogTitleBar";
 import { CampaignListContent } from "./CampaignListContent";
 
 export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
@@ -28,36 +21,36 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
 
   return (
     <DialogPortal>
-      <Border
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed"
-        onClick={useDispatchActionCallback(backToParentMenu)}
-      />
       <Dialog
-        tall
-        className="bg-metallicBlueHalfbrite selectedMenuItem:text-white text-highlightBeige zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 overflow-y-scroll"
+        fullScreen
+        className="bg-metallicBlueHalfbrite text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1"
       >
-        <div className="flex flex-col gap-2">
-          {isTouchDevice() && (
-            <MobileStyleBackButton className="text-highlightBeige" />
-          )}
-          <BitmapText className="text-midRed zx:text-zxYellow sprites-double-height pl-3">
-            Community Contributed
-          </BitmapText>
+        <DialogTitleBar
+          path={["Play", "Community contrib."]}
+          className="mobile:px-4"
+        />
+        <div
+          className={
+            "flex flex-col gap-1 p-1 " +
+            //"min-h-full " +
+            "overflow-y-scroll scrollbar scrollbar-w-1 " +
+            "scrollbar-thumb-lightGrey scrollbar-track-metallicBlueHalfbrite " +
+            "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite " +
+            // bring away from any 'notch' on mobile devices:
+            "mobile:px-3 " +
+            "[--leader-col-width:theme(width.3)] "
+          }
+        >
+          {error !== undefined ?
+            <NonIdealState text="Failed to load campaigns" />
+          : null}
+          {isLoading ?
+            <SpinnerHead />
+          : null}
+          {data !== undefined ?
+            <CampaignListContent campaigns={data} />
+          : null}
         </div>
-        {error !== undefined ?
-          <NonIdealState text="Failed to load campaigns" />
-        : null}
-        {isLoading ?
-          <SpinnerHead />
-        : null}
-        {data !== undefined ?
-          <CampaignListContent campaigns={data} />
-        : null}
-        {isTouchDevice() || (
-          <MenuItems>
-            <BackMenuItem />
-          </MenuItems>
-        )}
       </Dialog>
     </DialogPortal>
   );

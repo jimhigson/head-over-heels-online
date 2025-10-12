@@ -45,8 +45,8 @@ export const calculateUpscale = ({
   const totalUpscale = Math.max(
     Math.floor(
       Math.min(
-        hardwarePixels.x / emulatedResolution.x,
-        hardwarePixels.y / emulatedResolution.y,
+        hardwarePixels.x / emulatedResolution.size.x,
+        hardwarePixels.y / emulatedResolution.size.y,
       ),
     ),
     1,

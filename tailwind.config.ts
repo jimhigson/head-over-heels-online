@@ -133,7 +133,7 @@ export default {
     },
     width: {
       ...blockMultiples,
-      zx: `calc(var(--scale) * ${resolutions.zxSpectrum.x}px)`,
+      zx: `calc(var(--scale) * ${resolutions.zxSpectrum.size.x}px)`,
       wideDialog: "calc(100dvw - 2 * var(--block))",
       // using h for the w - for transverse views
       tallDialog: "calc(100dvh - 2 * var(--block))",
@@ -144,7 +144,7 @@ export default {
       fullScrH: "100dvh",
     },
     height: {
-      zx: `calc(var(--scale) * ${resolutions.zxSpectrum.y}px)`,
+      zx: `calc(var(--scale) * ${resolutions.zxSpectrum.size.y}px)`,
       tallDialog: "calc(100dvh - 2 * var(--block))",
       // using w for the h - for transverse views
       wideDialog: "calc(100dvw - 2 * var(--block))",
@@ -167,7 +167,7 @@ export default {
     maxWidth: {
       ...blockMultiples,
       // widest dialog is 50% wider than the zx screen:
-      widestDialog: `calc(var(--scale) * ${resolutions.zxSpectrum.x * 1.4}px)`,
+      widestDialog: `calc(var(--scale) * ${resolutions.zxSpectrum.size.x * 1.4}px)`,
       full: "100%",
     },
     maxHeight: {
@@ -178,7 +178,9 @@ export default {
     },
     gridTemplateColumns: {
       // min-content - typically 2 blocks but some menus can have custom leaders
-      menuItems: "min-content max-content 1fr",
+      // can also be given explicitly to a different width (ie, number of blocks)
+      // using a css variables
+      menuItems: "var(--leader-col-width, min-content) max-content 1fr",
     },
     zIndex: {
       // smallest possible bump-up in render order

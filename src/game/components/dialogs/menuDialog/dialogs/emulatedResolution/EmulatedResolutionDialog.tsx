@@ -1,28 +1,23 @@
-import Portal from "@mutabazia/react-portal";
-
 import type { ResolutionName } from "../../../../../../originalGame";
 
 import { resolutions } from "../../../../../../originalGame";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { selectEmulatedResolutionName } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import {
-  backToParentMenu,
-  setEmulatedResolution,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { setEmulatedResolution } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { keys } from "../../../../../../utils/entries";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
-import { MenuItemSeparator } from "../../MenuItemSeparator";
-import { SelectedItemHint } from "../../SelectedItemHint";
-
-const camelCaseToSpaces = (str: string) =>
-  str.replace(/([a-z])([A-Z])/g, "$1 $2");
+import { DialogTitleBar } from "../DialogTitleBar";
+import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
+import {
+  optionsDialogClasses,
+  optionsMenuScrollClasses,
+  titleBarClasses,
+} from "../options/optionsMenuColours";
 
 export const ResolutionMenuItem = ({
   resolutionName,
@@ -35,9 +30,14 @@ export const ResolutionMenuItem = ({
     <MenuItem
       id={resolutionName}
       key={resolutionName}
-      label={`${currentResolutionName === resolutionName ? "* " : ""}${camelCaseToSpaces(resolutionName)}`}
+      label={`${currentResolutionName === resolutionName ? "* " : ""}${resolution.name}`}
       doubleHeightWhenFocussed
-      hint={`${resolution.x} x ${resolution.y}`}
+      hintInline
+      hint={
+        <BitmapText className={optionsHintMarkdownClassname}>
+          {resolution.size.x} x {resolution.size.y}
+        </BitmapText>
+      }
       onSelect={useDispatchActionCallback(
         setEmulatedResolution,
         resolutionName,
@@ -49,27 +49,21 @@ export const ResolutionMenuItem = ({
 export const EmulatedResolutionDialog = () => {
   return (
     <DialogPortal>
-      <Border
-        className="bg-midGrey zx:bg-zxWhiteDimmed"
-        onClick={useDispatchActionCallback(backToParentMenu)}
-      />
-      <Dialog className="bg-white pl-1">
-        <Portal.Provider>
-          <BitmapText
-            TagName="h1"
-            className="text-midRed zx:text-zxRed sprites-double-height ml-3"
-          >
-            Emulated resolution
-          </BitmapText>
-          <MenuItems className="text-metallicBlue zx:text-zxBlue selectedMenuItem:text-moss zx:selectedMenuItem:text-zxMagenta">
+      <Dialog fullScreen className={optionsDialogClasses}>
+        <DialogTitleBar
+          path={["Options", "Emulated Res."]}
+          className={titleBarClasses}
+        />
+        <div className={optionsMenuScrollClasses}>
+          <MenuItems>
             {keys(resolutions).map((resolutionName) => (
-              <ResolutionMenuItem resolutionName={resolutionName} />
+              <ResolutionMenuItem
+                key={resolutionName}
+                resolutionName={resolutionName}
+              />
             ))}
-            <MenuItemSeparator />
-            <BackMenuItem />
           </MenuItems>
-          <SelectedItemHint className="text-midGrey zx:text-zxMagenta" />
-        </Portal.Provider>
+        </div>
       </Dialog>
     </DialogPortal>
   );

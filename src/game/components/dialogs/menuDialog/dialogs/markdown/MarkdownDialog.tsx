@@ -4,16 +4,14 @@ import {
   type MarkdownPageName,
   markdownPages,
 } from "../../../../../../manual/pages";
+import { useAppSelector } from "../../../../../../store/hooks";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BackMenuItem } from "../../BackMenuItem";
-import { MenuItems } from "../../MenuItems";
-import { MobileStyleBackButton } from "../MobileStyleBackButton";
+import { DialogTitleBar } from "../DialogTitleBar";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 
 export const MarkdownDialog = (
@@ -30,6 +28,10 @@ export const MarkdownDialog = (
   const markdown =
     props.source === "manual" ? markdownPages[props.pageName] : props.markdown;
   const contentRef = useScrollingFromInput();
+  const isSubmenuFromManual = useAppSelector((state) => {
+    const { openMenus } = state.gameMenus;
+    return openMenus.some((menu) => menu.menuId === "readTheManual");
+  });
 
   return (
     <DialogPortal>
@@ -39,25 +41,30 @@ export const MarkdownDialog = (
       />
       <Dialog
         tall
-        className="bg-highlightBeige zx:bg-zxCyan text-shadow zx:text-zxBlack"
-        // although we have a back button, you can actually click/tap anywhere to exit
-        onClick={useDispatchActionCallback(backToParentMenu)}
+        className={
+          "bg-highlightBeige zx:bg-zxCyanDimmed " +
+          `text-shadow zx:text-zxWhite !gap-y-0 py-0 ` +
+          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack "
+        }
       >
+        <DialogTitleBar
+          className="pl-1 mobile:px-3 "
+          path={isSubmenuFromManual ? ["Manual"] : []}
+        />
         <div
           className={twMerge(
             "overflow-y-scroll h-full " +
-              "scrollbar scrollbar-w-1 pl-1 " +
+              "scrollbar scrollbar-w-1 pl-1 pt-1 " +
               "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
-              "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan",
+              "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan " +
+              "mobile:px-3",
           )}
           ref={contentRef}
+          // although we have a back button, you can actually click/tap anywhere to exit
+          onClick={useDispatchActionCallback(backToParentMenu)}
         >
-          {isTouchDevice() && <MobileStyleBackButton className="pb-1" />}
           <BlockyMarkdown markdown={markdown} />
         </div>
-        <MenuItems className="hidden">
-          <BackMenuItem />
-        </MenuItems>
       </Dialog>
     </DialogPortal>
   );

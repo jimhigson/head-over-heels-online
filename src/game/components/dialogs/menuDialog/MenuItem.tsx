@@ -13,6 +13,7 @@ export type MenuItemProps = {
   label: ReactElement | string;
   valueElement?: ReactElement;
   flipLeader?: boolean;
+  doubleHeight?: boolean;
   doubleHeightWhenFocussed?: boolean;
   leader?: ReactElement;
   hidden?: boolean;
@@ -35,6 +36,7 @@ export const MenuItem = ({
   label,
   valueElement,
   flipLeader = false,
+  doubleHeight = false,
   doubleHeightWhenFocussed,
   onSelect = noop,
   hidden = false,
@@ -65,7 +67,9 @@ export const MenuItem = ({
       className={twMerge(
         "contents cursor-pointer",
         hidden ? "hidden" : "",
-        doubleHeightWhenFocussed && focussed ? "sprites-double-height" : "",
+        doubleHeight || (doubleHeightWhenFocussed && focussed) ?
+          "sprites-double-height"
+        : "",
         focussed ? "selectedMenuItem" : "",
         className,
       )}

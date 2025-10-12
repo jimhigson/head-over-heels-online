@@ -8,7 +8,7 @@ import { detectDeviceType } from "../../../utils/detectDeviceType";
 const gameRenderAreaSize = (targetElement?: HTMLElement): Xy => {
   const deviceType = detectDeviceType();
   return (
-    deviceType === "server" ? resolutions.zxSpectrum
+    deviceType === "server" ? resolutions.zxSpectrum.size
       // see also: window.visualViewport
       //: window.screen ? { x: window.screen.width, y: window.screen.height }
     : targetElement ?

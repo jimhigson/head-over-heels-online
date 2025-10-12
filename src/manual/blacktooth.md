@@ -1,4 +1,4 @@
-## Blacktooth
+## Planet Blacktooth
 
 ![](texture-blacktooth_wall_armour_left?bg-pureBlack)![](texture-blacktooth_wall_shield_away?bg-pureBlack&float-right)This planet has a large moon with three lunar space stations on it, the larger
 of these, *Moon Station HQ*, is the main teleport center for the empire, with a

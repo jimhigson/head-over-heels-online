@@ -18,15 +18,15 @@ export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
 export const resolutions = {
   // Amiga hires: in game, too many pixels, game doesn't fill enough of the screen
   // but, in the level editor is quite useful
-  amigaHiResPal: { x: 640, y: 512 },
+  amigaHiResPal: { name: "Amiga Hi-Res PAL", size: { x: 640, y: 512 } },
   // didn't have a HoH port, but is nicely between Amiga hires and low res
-  classicMac: { x: 512, y: 384 },
-  amigaLowResPal: { x: 320, y: 256 },
-  zxSpectrum: { x: 256, y: 192 },
+  classicMac: { name: "Classic Mac", size: { x: 512, y: 384 } },
+  amigaLowResPal: { name: "Amiga Lo-Res PAL", size: { x: 320, y: 256 } },
+  zxSpectrum: { name: "ZX Spectrum", size: { x: 256, y: 192 } },
   // there was never really a handheld port, and this is a bit big for period-correct
   // handhelds (gameboy was 160x120), but this is the smallest I can go to be playable
   // on modern phones and not be too small
-  handheld: { x: 256, y: 135 },
+  handheld: { name: "Handheld", size: { x: 256, y: 135 } },
 };
 export type ResolutionName = keyof typeof resolutions;
 export const resolutionNames = Object.keys(resolutions) as ResolutionName[];
