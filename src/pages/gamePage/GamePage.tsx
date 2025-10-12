@@ -34,13 +34,6 @@ import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
-declare global {
-  interface Window {
-    // put the gameApi on the window for e2e tests to use
-    _e2e_gamePageGameAi?: GameApi<string>;
-  }
-}
-
 const loadGameAssets = importOnce(() => {
   return Promise.all([importGameMain(), loadSpritesheet(), loadSounds()]);
 });

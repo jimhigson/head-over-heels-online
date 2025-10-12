@@ -4,7 +4,7 @@ import type { GameState } from "../GameState";
 
 import { getItemInPlayTimes } from "../../../model/times";
 import { blockSizeXyzPx } from "../../../sprites/spritePivots";
-import { randomBetween } from "../../../utils/random/randomFromArray";
+import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
 import {
   addXyz,
   originXyz,
@@ -56,6 +56,9 @@ export const makeItemFadeOut = <
   for (let x = 0; x < times.x; x++) {
     for (let y = 0; y < times.y; y++) {
       for (let z = 0; z < times.z; z++) {
+        // this must be deterministic for room snapshots, since the starting animation frame
+        // of the bubbles is calculated based off this:
+        const partUniqueId = `${touchedItem.id}/${x},${y},${z}`;
         const bubblesItem = addItemFromJsonToRoom({
           itemType: "bubbles",
           config: {
@@ -66,6 +69,7 @@ export const makeItemFadeOut = <
           position: originXyz,
           room,
           gameState,
+          additionalIdPart: partUniqueId,
         });
 
         // Calculate position for this segment's bubble
@@ -93,9 +97,15 @@ export const makeItemFadeOut = <
           ),
         );
 
+        // number in range 0.75...1.25
+        const pseudoRandomFactor =
+          hashStringToNumber0to1(partUniqueId) * 0.5 + 0.75;
+
         // remove bubbles after a time with random variation
         bubblesItem.state.expires =
-          room.roomTime + fadeInOrOutDuration * randomBetween(0.75, 1.25);
+          room.roomTime +
+          // fade out after a pseudo-random, deterministic (hashed) duration:
+          fadeInOrOutDuration * pseudoRandomFactor;
       }
     }
   }

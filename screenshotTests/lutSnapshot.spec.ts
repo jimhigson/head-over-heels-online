@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-import { logHeader } from "./projectName";
+import { progressLogHeader } from "./projectName";
 
 test.describe("LUT Texture Visualization", () => {
   test("LUT texture snapshot", async ({ page }, testInfo) => {
-    const header = logHeader(testInfo.project.name, 100);
+    const header = progressLogHeader(testInfo.project.name, 100);
     console.log(`${header} Taking snapshot of LUT texture`);
 
     // Navigate to the LUT debug page

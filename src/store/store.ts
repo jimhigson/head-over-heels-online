@@ -27,13 +27,6 @@ import {
 } from "./slices/upscale/updateUpscaleOnStoreChanges";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 
-declare global {
-  interface Window {
-    // put the store on the window for e2e tests to use
-    _e2e_store?: AppStore;
-  }
-}
-
 const appReducer = combineSlices({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,

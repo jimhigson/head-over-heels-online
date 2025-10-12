@@ -73,6 +73,10 @@ export const gameMain = async <RoomId extends string>(
   stopAppAutoRendering(app);
   app.ticker.maxFPS = maxFps;
 
+  // only put on window after initialised and maxFPS set - this ensures it can also be
+  // overwritten
+  window._e2e_pixiApplication = app;
+
   const savedGameToContinueFrom = selectSaveForCampaign<RoomId>(
     store.getState(),
     campaignLocator,
