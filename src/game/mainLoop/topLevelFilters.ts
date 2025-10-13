@@ -58,8 +58,8 @@ export const topLevelFilters = (
 
     // selectively blur just fairly light items on a small, intense radius:
     new BloomFilter({
-      radius: upscale.gameEngineUpscale / 4,
-      intensity: 0.15,
+      radius: upscale.gameEngineUpscale / 6,
+      intensity: 0.1,
       cutoff: 0.8,
       edgeBlur: 1,
     }),
@@ -76,13 +76,13 @@ export const topLevelFilters = (
       multisampling: true,
     }),
 
-    new RaiseBlackPointFilter({ blackPoint: 0.05 }),
+    new RaiseBlackPointFilter({ blackPoint: 0.03 }),
 
     new ColorAdjustmentFilter({
       gamma: 1.1,
       saturation: 1.35,
       brightness: (1 / inPipelineBrightness) * brightnessIncrease,
-      brightnessBottom: -0.1,
+      brightnessBottom: -0.15,
     }),
   ];
 };
