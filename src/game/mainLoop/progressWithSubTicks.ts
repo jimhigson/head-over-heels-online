@@ -52,11 +52,15 @@ export const progressWithSubTicks =
       }
     }
 
-    const timeProgressionDelta = deltaMS * gameState.gameSpeed;
-    const numberOfSubTicks = Math.max(
-      1,
-      Math.ceil(timeProgressionDelta / maxStepDeltaMs),
-    );
+    const { gameSpeed } = gameState;
+    const timeProgressionDelta = deltaMS * gameSpeed;
+    const numberOfSubTicks =
+      // snapshot tests run at a gamespeed of 0 - in any case, at this speed nothing is happening
+      // so one tick is enough. Otherwise, it would run progressing at steps of the maxStepDeltaMs
+      // which at the reduced frame rate for snapshot tests is a lot of frames
+      gameSpeed === 0 ? 1 : (
+        Math.max(1, Math.ceil(timeProgressionDelta / maxStepDeltaMs))
+      );
 
     // don't worry about this special case - it is ok (and simpler) to have a loop of one
     // iteration

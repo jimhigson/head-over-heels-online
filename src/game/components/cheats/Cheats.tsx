@@ -201,6 +201,8 @@ const Heading = ({ children }: { children: string }) => {
   return <h4 className="bg-redShadow zx:bg-zxMagenta pl-1">{children}</h4>;
 };
 
+let summonedItemNumber = 0;
+
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   const gameApi = useGameApi<RoomId>();
 
@@ -236,6 +238,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         ...playable.state.position,
         z: playable.state.position.z + blockSizePx.h * 2,
       },
+      additionalIdPart: `${summonedItemNumber++}`,
     });
   };
 

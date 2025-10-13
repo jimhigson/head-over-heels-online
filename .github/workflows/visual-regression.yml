@@ -26,8 +26,40 @@ jobs:
               - 'pnpm-lock.yaml'
               - '.github/workflows/visual-regression.yml'
 
-  visual-tests:
+  build-game:
     needs: check-changes
+    if: needs.check-changes.outputs.should-run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache game build
+        uses: actions/cache@v4
+        id: game-build-cache
+        with:
+          path: dist/
+          key: game-build-${{ runner.os }}-${{ hashFiles('src/**', 'gfx/**', 'pnpm-lock.yaml', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json') }}
+
+      - name: Install pnpm
+        if: steps.game-build-cache.outputs.cache-hit != 'true'
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js
+        if: steps.game-build-cache.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: "pnpm"
+
+      - run: pnpm install
+        if: steps.game-build-cache.outputs.cache-hit != 'true'
+
+      - name: Build game
+        if: steps.game-build-cache.outputs.cache-hit != 'true'
+        run: pnpm build:game
+
+  visual-tests:
+    needs: [check-changes, build-game]
     if: needs.check-changes.outputs.should-run == 'true'
     runs-on: ubuntu-latest
     strategy:
@@ -42,6 +74,15 @@ jobs:
           - webkit-desktop
           - mobile-chrome
           - mobile-safari
+        include:
+          - browser: chromium-desktop
+            batch_count: 1
+          - browser: webkit-desktop
+            batch_count: 2
+          - browser: mobile-chrome
+            batch_count: 1
+          - browser: mobile-safari
+            batch_count: 2
     name: Visual tests - ${{ matrix.test }} - ${{ matrix.browser }}
 
     steps:
@@ -57,6 +98,12 @@ jobs:
           cache: "pnpm"
 
       - run: pnpm install
+
+      - name: Restore game build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: dist/
+          key: game-build-${{ runner.os }}-${{ hashFiles('src/**', 'gfx/**', 'pnpm-lock.yaml', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json') }}
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -77,9 +124,12 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Install Playwright system dependencies
+        if: matrix.browser == 'webkit-desktop' || matrix.browser == 'mobile-safari' || matrix.browser == 'firefox-desktop'
         run: pnpm playwright install-deps
 
       - name: Run Playwright tests
+        env:
+          BATCH_COUNT: ${{ matrix.batch_count }}
         run: pnpm playwright test ${{ matrix.test }} --project=${{ matrix.browser }}
 
       - name: Upload test results

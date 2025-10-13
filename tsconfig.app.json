@@ -20,5 +20,5 @@
     "noFallthroughCasesInSwitch": false,
     "baseUrl": "."
   },
-  "include": ["src"]
+  "include": ["src", "e2eAugmentations.d.ts"]
 }

@@ -16,8 +16,6 @@ import { emptyObject } from "../../../utils/empty";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 
-let universalAddIndex = 0;
-
 export const addItemFromJsonToRoom = <
   T extends JsonItemType,
   RoomId extends string,
@@ -28,15 +26,17 @@ export const addItemFromJsonToRoom = <
   itemType,
   config,
   position,
+  additionalIdPart,
 }: {
   gameState: GameState<RoomId>;
   room: RoomState<RoomId, RoomItemId>;
   itemType: T;
   config: JsonItemConfig<T, RoomId, RoomItemId>;
   /**
-   * the (fine) position for the new object to occupy
+   * the (fine, in-play) position for the new object to occupy
    */
   position: Xyz;
+  additionalIdPart: string;
 }) => {
   const itemJson: JsonItem<T, RoomId, RoomItemId> = {
     type: itemType,
@@ -44,10 +44,7 @@ export const addItemFromJsonToRoom = <
     position: originXyz,
   };
 
-  // this simple incrementing int isn't going to work for adding pickups, since they can be stored
-  // as having been collected in the room and decline to generate from the json.
-  // TODO: move next itemId onto gamestate/store and serialise with the saves
-  const itemId = `${itemType}/${universalAddIndex++}`;
+  const itemId = `${itemType}/${additionalIdPart}`;
   const item = first(
     loadItemFromJson(
       itemId,

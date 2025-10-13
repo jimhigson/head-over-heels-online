@@ -12,19 +12,8 @@ import type { SelectableGameSpeeds } from "../src/store/slices/gameMenus/selecta
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";
-import { formatProjectName, getProjectIcon, logHeader } from "./projectName";
+import { formatProjectName, progressLogHeader } from "./projectName";
 import { sleep } from "./sleep";
-
-declare global {
-  interface Window {
-    eventQueue: OriginalCampaignRoomId[];
-    _e2e_gamePageGameAi?: {
-      gameState: {
-        gameSpeed: number;
-      };
-    };
-  }
-}
 
 // set to limit the number of rooms we test in one run - useful when
 // developing the test to avoid having to do the whole run each time
@@ -32,7 +21,7 @@ declare global {
 const roomLimit = undefined;
 
 // CI is slower, needs more time
-const timeoutPerRoom = process.env.CI ? 10_000 : 3_000;
+const timeoutPerRoom = process.env.CI ? 20_000 : 2_000;
 const maximumWaitForStep = 15_000;
 const maxTriesToLoadRoom = 3;
 
@@ -42,6 +31,19 @@ const roomIds =
   process.env.ROOMS ?
     (process.env.ROOMS.split(",") as OriginalCampaignRoomId[])
   : keys(campaign.rooms).slice(0, roomLimit);
+
+// locally: 3 is fastest in webkit, 2 is fastest in Chromium, but since Chromium is slower overall
+// going to boost the slower one preferentially:
+// remote: > 1 is unreliable for Chromium on github runners
+const batchCount =
+  process.env.BATCH_COUNT ? Number.parseInt(process.env.BATCH_COUNT) : 2;
+
+const batchSize = Math.ceil(roomIds.length / batchCount);
+const batches = Array.from({ length: batchCount }, (_, index) => {
+  const start = index * batchSize;
+  const end = start + batchSize;
+  return roomIds.slice(start, end);
+});
 
 // Selectors for menu navigation
 const playGameMenuItemSelector = "[data-menuitem_id=playGame]";
@@ -103,9 +105,7 @@ const waitForRoomRenderEvent = async (
 const startOriginalGame = async (page: Page, projectName: string) => {
   await Promise.race([
     (async () => {
-      const icon = getProjectIcon(projectName);
       const formattedName = formatProjectName(projectName);
-      const logHeader = `${icon} ${formattedName}`;
 
       // Navigate to the page with cheats on; starting in the final room ensures that
       // when the room loop tries to go to the first room, there is an actual navigation
@@ -113,13 +113,13 @@ const startOriginalGame = async (page: Page, projectName: string) => {
       await page.goto(`/?cheats=1#finalroom`);
 
       // start a game:
-      console.log(`${logHeader}: clicking Play The Game...`);
-      await logSelectorExistence(page, playGameMenuItemSelector, logHeader);
+      console.log(`${formattedName}: clicking Play The Game...`);
+      await logSelectorExistence(page, playGameMenuItemSelector, formattedName);
       await page.click(playGameMenuItemSelector);
 
       // select original campaign:
-      console.log(`${logHeader}: choosing original campaign...`);
-      await logSelectorExistence(page, originalGameSelector, logHeader);
+      console.log(`${formattedName}: choosing original campaign...`);
+      await logSelectorExistence(page, originalGameSelector, formattedName);
       await page.click(originalGameSelector);
     })(),
     new Promise<never>((_, reject) =>
@@ -139,29 +139,36 @@ const startOriginalGame = async (page: Page, projectName: string) => {
 /** running the game at zero speed means we don't need to worry about taking the
  * screenshot on the absolute first frame since nothing in the room will change */
 const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
-  const icon = getProjectIcon(projectName);
   const formattedName = formatProjectName(projectName);
-  const logHeader = `${icon} ${formattedName}`;
 
   await retryWithRecovery({
     async action() {
       // Set game speed directly via gameApi
       const gameApiFound = await page.evaluate(() => {
-        if (window._e2e_gamePageGameAi && window._e2e_store) {
+        if (
+          window._e2e_gamePageGameAi &&
+          window._e2e_store &&
+          window._e2e_pixiApplication
+        ) {
           window._e2e_gamePageGameAi.gameState.gameSpeed = 0;
           type SetGameSpeedAction = ReturnType<typeof setGameSpeed>;
           type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
 
+          // we need to fake a zero speed, since this isn't in the menu as a selectable option
+          // this freezes the game to make the screenshots deterministic
           window._e2e_store.dispatch({
             type: "gameMenus/setGameSpeed",
-            // we need to fake a zero speed, since this wouldn't normally be in the selectable options:
             payload: 0 as SelectableGameSpeeds,
           } satisfies SetGameSpeedAction);
+
+          // turn off the crt filter (on by default)
           window._e2e_store.dispatch({
             type: "gameMenus/toggleUserSetting",
-            // turn off the crt filter (on by default)
             payload: { path: "displaySettings.crtFilter" },
           } satisfies ToggleUserSettingAction);
+
+          // set the frame rate very low - this reduces how much cpu the tests need to run
+          window._e2e_pixiApplication.ticker.maxFPS = 5;
 
           return true;
         }
@@ -169,7 +176,7 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
       });
 
       if (gameApiFound) {
-        console.log(`${logHeader}: Set game speed to 0 via gameApi`);
+        console.log(`${formattedName}: Set game speed to 0 via gameApi`);
       } else {
         throw new Error(`gameApi not found on window`);
       }
@@ -178,7 +185,7 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
       // Wait a bit for the game to initialize
       await sleep(500);
     },
-    logHeader,
+    logHeader: formattedName,
     actionDescription: "set game speed to zero",
     page,
     screenshotPrefix: `speed-${projectName}`,
@@ -186,9 +193,7 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
 };
 
 const exitCrownsDialog = async (page: Page, projectName: string) => {
-  const icon = getProjectIcon(projectName);
   const formattedName = formatProjectName(projectName);
-  const logHeader = `${icon} ${formattedName}`;
 
   await retryWithRecovery({
     async action(attempt) {
@@ -209,7 +214,7 @@ const exitCrownsDialog = async (page: Page, projectName: string) => {
             .catch(() => false);
 
           if (crownsDialogVisible) {
-            console.log(`${logHeader}: exiting crowns dialog...`);
+            console.log(`${formattedName}: exiting crowns dialog...`);
 
             // Screenshot before clicking dialog
             await page
@@ -220,12 +225,18 @@ const exitCrownsDialog = async (page: Page, projectName: string) => {
               .catch(() => {});
 
             // Log selector existence before clicking
-            await logSelectorExistence(page, crownsDialogSelector, logHeader);
+            await logSelectorExistence(
+              page,
+              crownsDialogSelector,
+              formattedName,
+            );
 
             await page.click(crownsDialogSelector);
-            console.log(`${logHeader}: crowns dialog closed`);
+            console.log(`${formattedName}: crowns dialog closed`);
           } else {
-            console.log(`${logHeader}: crowns dialog not shown, continuing...`);
+            console.log(
+              `${formattedName}: crowns dialog not shown, continuing...`,
+            );
           }
         })(),
         new Promise<never>((_, reject) =>
@@ -241,7 +252,7 @@ const exitCrownsDialog = async (page: Page, projectName: string) => {
         ),
       ]);
     },
-    logHeader,
+    logHeader: formattedName,
     actionDescription: "exit crowns dialog",
     page,
     screenshotPrefix: `crowns-${projectName}`,
@@ -315,112 +326,126 @@ const retryWithRecovery = async <T>({
   throw new Error(`Failed ${actionDescription} after ${maxAttempts} attempts`);
 };
 
+test.describe.configure({ mode: "parallel" });
+
 test.describe("Room Visual Snapshots", () => {
-  test("Snapshot all rooms", async ({ page }, testInfo) => {
-    test.setTimeout(roomIds.length * timeoutPerRoom + 10_000);
-    const icon = getProjectIcon(testInfo.project.name);
-    const formattedName = formatProjectName(testInfo.project.name);
-    console.log(`Running on project: ${icon} ${formattedName}`);
+  for (const [batchIndex, batch] of batches.entries()) {
+    const firstRoom = batch.at(0);
+    const lastRoom = batch.at(-1);
+    const batchDescription = `${batchIndex + 1}/${batchCount}: ${`${firstRoom}...${lastRoom}`}`;
+    test(`Snapshot rooms batch ${batchDescription}`, async ({
+      page,
+    }, testInfo) => {
+      test.setTimeout(batch.length * timeoutPerRoom + 10_000);
+      const formattedName = `${formatProjectName(testInfo.project.name)} (${batchIndex})`;
+      console.log(`${formattedName} starting batch ${batchDescription} `);
 
-    try {
-      await test.step(`starting the game`, async () => {
-        await startOriginalGame(page, testInfo.project.name);
-      });
-    } catch (error) {
-      console.error(`${formattedName}: Failed to start game - ${error}`);
-      await page.screenshot({
-        path: `test-results/startup-failure-${testInfo.project.name}.png`,
-        fullPage: false,
-      });
-      throw error;
-    }
-
-    try {
-      await test.step(`slowing game to zero speed`, async () => {
-        await gameRunsAtZeroSpeed(page, testInfo.project.name);
-      });
-    } catch (error) {
-      console.error(`${formattedName}: Failed to set game speed - ${error}`);
-      await page.screenshot({
-        path: `test-results/speed-failure-${testInfo.project.name}.png`,
-        fullPage: false,
-      });
-      throw error;
-    }
-
-    try {
-      await test.step(`leaving crowns dialog`, async () => {
-        await exitCrownsDialog(page, testInfo.project.name);
-      });
-    } catch (error) {
-      console.error(
-        `${formattedName}: Failed to exit crowns dialog - ${error}`,
-      );
-      await page.screenshot({
-        path: `test-results/crowns-failure-${testInfo.project.name}.png`,
-        fullPage: false,
-      });
-      throw error;
-    }
-
-    for (const [index, roomId] of roomIds.entries()) {
-      await test.step(`room: ${roomId}`, async () => {
-        const progress = Math.round(((index + 1) / roomIds.length) * 100);
-        const header = logHeader(testInfo.project.name, progress);
-
-        await retryWithRecovery({
-          async action(attempt) {
-            console.log(`${header} Navigating to room: ${chalk.cyan(roomId)}`);
-
-            // Screenshot before navigation
-            await page
-              .screenshot({
-                path: `test-results/room-${testInfo.project.name}-${roomId}-attempt-${attempt}-before-nav.png`,
-                fullPage: false,
-              })
-              .catch(() => {});
-
-            const renderEventPromise = waitForRoomRenderEvent(page, roomId);
-            await page.goto(`/?cheats=1#${roomId}`);
-            await renderEventPromise;
-          },
-          async recovery() {
-            // Navigate somewhere else so we can come back again and have another chance
-            // to catch the event:
-            await page.goto(`/?cheats=1#finalroom`);
-            await sleep(500);
-          },
-          maxAttempts: maxTriesToLoadRoom,
-          logHeader: header,
-          actionDescription: `load room ${chalk.cyan(roomId)}`,
-          page,
-          screenshotPrefix: `room-${testInfo.project.name}-${roomId}`,
+      try {
+        await test.step(`starting the game`, async () => {
+          await startOriginalGame(page, testInfo.project.name);
         });
+      } catch (error) {
+        console.error(`${formattedName}: Failed to start game - ${error}`);
+        await page.screenshot({
+          path: `test-results/startup-failure-${testInfo.project.name}.png`,
+          fullPage: false,
+        });
+        throw error;
+      }
 
-        console.log(
-          `${header} Taking screenshot for room: ${chalk.cyan(roomId)}`,
+      try {
+        await test.step(`slowing game to zero speed`, async () => {
+          await gameRunsAtZeroSpeed(page, testInfo.project.name);
+        });
+      } catch (error) {
+        console.error(`${formattedName}: Failed to set game speed - ${error}`);
+        await page.screenshot({
+          path: `test-results/speed-failure-${testInfo.project.name}.png`,
+          fullPage: false,
+        });
+        throw error;
+      }
+
+      try {
+        await test.step(`leaving crowns dialog`, async () => {
+          await exitCrownsDialog(page, testInfo.project.name);
+        });
+      } catch (error) {
+        console.error(
+          `${formattedName}: Failed to exit crowns dialog - ${error}`,
         );
-        const screenshotStart = performance.now();
-        await expect
-          // github free runners are slow:
-          .configure({ timeout: 10_000 })
-          .soft(page)
-          .toHaveScreenshot(`${roomId}.png`, {
-            fullPage: false,
-            // default is 0.2, which is very permissive to palette changes.
-            // Whereas 0 makes builds fail with invisible differences between
-            // the OS running the test, at least in webkit/safari.
-            // keep a much smaller threshold than normal, but not zero:
-            threshold: 0.02,
-            scale: "device",
-            maxDiffPixels: 0,
+        await page.screenshot({
+          path: `test-results/crowns-failure-${testInfo.project.name}.png`,
+          fullPage: false,
+        });
+        throw error;
+      }
+
+      for (const [index, roomId] of batch.entries()) {
+        await test.step(`room: ${roomId}`, async () => {
+          const progress = Math.round(((index + 1) / batch.length) * 100);
+          const header = progressLogHeader(
+            testInfo.project.name,
+            progress,
+            batchIndex,
+          );
+
+          await retryWithRecovery({
+            async action(attempt) {
+              console.log(
+                `${header} Navigating to room: ${chalk.cyan(roomId)}`,
+              );
+
+              // Screenshot before navigation
+              await page
+                .screenshot({
+                  path: `test-results/room-${testInfo.project.name}-${roomId}-attempt-${attempt}-before-nav.png`,
+                  fullPage: false,
+                })
+                .catch(() => {});
+
+              const renderEventPromise = waitForRoomRenderEvent(page, roomId);
+              await page.goto(`/?cheats=1#${roomId}`);
+              await renderEventPromise;
+            },
+            async recovery() {
+              // Navigate somewhere else so we can come back again and have another chance
+              // to catch the event:
+              await page.goto(`/?cheats=1#finalroom`);
+              await sleep(500);
+            },
+            maxAttempts: maxTriesToLoadRoom,
+            logHeader: header,
+            actionDescription: `load room ${chalk.cyan(roomId)}`,
+            page,
+            screenshotPrefix: `room-${testInfo.project.name}-${roomId}`,
           });
-        console.log(
-          `${header} ...screenshot took`,
-          chalk.yellow((performance.now() - screenshotStart).toFixed(0)),
-          "ms",
-        );
-      });
-    }
-  });
+
+          console.log(
+            `${header} Taking screenshot for room: ${chalk.cyan(roomId)}`,
+          );
+          const screenshotStart = performance.now();
+          await expect
+            // github free runners are slow:
+            .configure({ timeout: 15_000 })
+            .soft(page)
+            .toHaveScreenshot(`${roomId}.png`, {
+              fullPage: false,
+              // default is 0.2, which is very permissive to palette changes.
+              // Whereas 0 makes builds fail with invisible differences between
+              // the OS running the test, at least in webkit/safari.
+              // keep a much smaller threshold than normal, but not zero:
+              threshold: 0.02,
+              scale: "device",
+              maxDiffPixels: 0,
+            });
+          console.log(
+            `${header} ...screenshot took`,
+            chalk.yellow((performance.now() - screenshotStart).toFixed(0)),
+            "ms",
+          );
+        });
+      }
+    });
+  }
 });

@@ -190,17 +190,6 @@ export const getProjectColour = (projectName: string): ChalkInstance => {
   return isMobile ? colour.bgGray : colour;
 };
 
-export const getProjectIcon = (projectName: string): string => {
-  const icons: Record<string, string> = {
-    "chromium-desktop": "",
-    "firefox-desktop": "",
-    "webkit-desktop": "", // Safari
-    "mobile-chrome": "",
-    "mobile-safari": "",
-  };
-  return icons[projectName] ?? "🌐";
-};
-
 export const formatProjectName = (projectName: string): string => {
   // Use pre-calculated colored names if available
   if (coloredBrowserNames[projectName]) {
@@ -211,8 +200,11 @@ export const formatProjectName = (projectName: string): string => {
   return getProjectColour(projectName)(projectName);
 };
 
-export const logHeader = (projectName: string, progress: number): string => {
-  const icon = getProjectIcon(projectName);
+export const progressLogHeader = (
+  projectName: string,
+  progress: number,
+  batchIndex?: number,
+): string => {
   const formattedName = formatProjectName(projectName);
-  return `${chalk.gray("[")}${icon} ${formattedName} ${progress}%${chalk.gray("]")}`;
+  return `${chalk.gray("[")} ${formattedName} batch=${batchIndex ?? 0} ${progress}%${chalk.gray("]")}`;
 };

@@ -66,7 +66,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "pnpm build:game && pnpm preview:game",
+    command: "pnpm preview:game",
     url: "http://localhost:5201",
     reuseExistingServer: !process.env.CI,
   },

@@ -26,7 +26,7 @@
     "check:test": "vitest run",
     "watch:test": "vitest watch",
     "bench": "pnpm vitest bench",
-    "screenshot": "playwright test",
+    "build-and-playwright": "pnpm build:game && playwright test",
     "json": "tsx src/campaignXml2Json/scripts/xml2json.ts && prettier src/_generated/originalCampaign --write",
     "jsonpatch": "tsx src/campaignXml2Json/scripts/makeCampaignDiff.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
     "predeploy": "pnpm run check && pnpm run build && echo blockstack.ing > dist/CNAME && cp dist/index.html dist/404.html",
