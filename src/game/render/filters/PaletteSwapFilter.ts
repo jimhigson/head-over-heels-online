@@ -1,7 +1,7 @@
 import type { SpritesheetPaletteColourName } from "gfx/spritesheetPalette";
-import type { Color } from "pixi.js";
 
 import { spritesheetPalette } from "gfx/spritesheetPalette";
+import { Color } from "pixi.js";
 import { Filter, GlProgram, Texture } from "pixi.js";
 
 import {
@@ -23,9 +23,13 @@ const lutSize = lutW * lutW;
 // Cache for PaletteSwapFilter instances
 const filterCache = new Map<string, PaletteSwapFilter>();
 
+const black = new Color(0x000000);
+
 const createLut = (swops: PaletteSwaps): Texture => {
   // Create RGBA texture data (4 bytes per pixel)
   const data = new Uint8Array(lutSize * 4);
+
+  const blackSwopsTo = swops.pureBlack ?? black;
 
   // we also put the shadow-ed version of the colour in the LUT:
   for (const bright of standardBrightnessLevels) {
@@ -58,9 +62,18 @@ const createLut = (swops: PaletteSwaps): Texture => {
         // - This distance is closer than what's already there (higher alpha)
         if (existingAlpha === 0 || closenessAlpha > existingAlpha) {
           // Set the replacement color in the LUT
-          data[index * 4 + 0] = Math.floor(target.red * bright * 255);
-          data[index * 4 + 1] = Math.floor(target.green * bright * 255);
-          data[index * 4 + 2] = Math.floor(target.blue * bright * 255);
+          data[index * 4 + 0] = Math.floor(
+            // but nothing can be brighter than what black is swopping to.
+            // ie, nothing can end up darker after the swop by being lighter than black
+            // this helps with shadows on worlds like egyptus that lift the black colour
+            Math.max(target.red, blackSwopsTo.red) * bright * 255,
+          );
+          data[index * 4 + 1] = Math.floor(
+            Math.max(target.green, blackSwopsTo.green) * bright * 255,
+          );
+          data[index * 4 + 2] = Math.floor(
+            Math.max(target.blue, blackSwopsTo.blue) * bright * 255,
+          );
           data[index * 4 + 3] = closenessAlpha; // Store closeness in alpha
         }
       }
