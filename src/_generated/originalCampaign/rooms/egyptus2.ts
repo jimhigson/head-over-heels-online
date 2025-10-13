@@ -70,7 +70,7 @@ export const room = inferRoomJson({
     },
     "spring@6,3,4": {
       config: {},
-      position: { x: 6, y: 3, z: 4 },
+      position: { x: 6, y: 3.5, z: 4 },
       type: "spring",
     },
     "wall(right)@0,0,0": {

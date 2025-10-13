@@ -1,6 +1,11 @@
 [
   {
     "op": "replace",
+    "path": "/items/spring@6,3,4/position/y",
+    "value": 3.5
+  },
+  {
+    "op": "replace",
     "path": "/items/hushPuppy@5,4,2/position/y",
     "value": 3
   },
