@@ -7,6 +7,7 @@ import type {
   EditorItemInPlayUnion,
   EditorRoomId,
   EditorRoomItemId,
+  EditorUnionOfAllItemInPlayTypes,
 } from "../../../../editor/editorTypes";
 import type { RootStateWithLevelEditorSlice } from "../../../../editor/slice/levelEditorSlice";
 import type {
@@ -41,9 +42,22 @@ import { showTextInContainer } from "../../hud/showTextInContainer";
 
 const selectionColour = spritesheetPalette.pastelBlue;
 const pointerHoverFilter = outlineFilters.highlightBeige;
+const monsterWakesFilter = outlineFilters.lightBeige;
 const eyeDropperHoverFilter = outlineFilters.midRed;
 const controlHighlightFilter = outlineFilters.white;
 const selectedFilter = new RevertColouriseFilter(selectionColour);
+const textAnnotationFilterNormal = new RevertColouriseFilter(
+  spritesheetPalette.white,
+);
+const textAnnotationFilterError = new RevertColouriseFilter(
+  spritesheetPalette.midRed,
+);
+const wakingMonsterFilter = new RevertColouriseFilter(
+  spritesheetPalette.lightBeige,
+);
+const textClickableAnnotationFilterHover = new RevertColouriseFilter(
+  spritesheetPalette.pastelBlue,
+);
 
 const directionArrows = {
   left: `↖`,
@@ -129,6 +143,12 @@ const movementPatternAnnotationText = (
   return "";
 };
 
+const isWakingMonster = (item: EditorUnionOfAllItemInPlayTypes) => {
+  return (
+    item.type === "monster" && item.config.activated === "after-player-near"
+  );
+};
+
 /** adds annotations on top of the normal item renderer, for items
  *
  * that get extra rendering in the editor:
@@ -207,7 +227,10 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
             this.#addTextAnnotation({
               annotationText: text,
               yAdj: direction === "left" || direction === "away" ? -48 : 0,
-              error: !toRoomExists,
+              filter:
+                toRoomExists ?
+                  textAnnotationFilterNormal
+                : textAnnotationFilterError,
               clickDispatch:
                 toRoomExists ?
                   () => changeToRoom(toRoom as EditorRoomId)
@@ -231,7 +254,10 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           this.#addTextAnnotation({
             annotationText: `➡${toRoom}`,
             yAdj: -12,
-            error: !toRoomExists,
+            filter:
+              toRoomExists ?
+                textAnnotationFilterNormal
+              : textAnnotationFilterError,
             clickDispatch:
               toRoomExists ?
                 () => changeToRoom(toRoom as EditorRoomId)
@@ -272,14 +298,25 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         {
           const { config } = item;
 
-          if (config.which === "turtle" || config.which === "skiHead") {
-            this.#addTextAnnotation({
-              annotationText: movementPatternAnnotationText(
-                config.movement,
-                config.startDirection,
-              ),
-              yAdj: -12,
-            });
+          switch (true) {
+            case config.which === "cyberman" &&
+              config.activated === "after-player-near":
+              this.#addTextAnnotation({
+                annotationText: "wake",
+                filter: wakingMonsterFilter,
+                yAdj: -12,
+              });
+              break;
+
+            case config.which === "turtle" || config.which === "skiHead":
+              this.#addTextAnnotation({
+                annotationText: movementPatternAnnotationText(
+                  config.movement,
+                  config.startDirection,
+                ),
+                yAdj: -12,
+              });
+              break;
           }
         }
         break;
@@ -289,12 +326,12 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
   #addTextAnnotation({
     annotationText,
     yAdj = 0,
-    error = false,
+    filter = textAnnotationFilterNormal,
     clickDispatch,
   }: {
     annotationText: string;
     yAdj?: number;
-    error?: boolean;
+    filter?: RevertColouriseFilter;
     clickDispatch?: () => UnknownAction;
   }) {
     // this needs pixi 8.10, but that had some regressions when I tried it:
@@ -313,13 +350,10 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
       renderContext: { frontLayer },
     } = this;
 
-    const colourFilter = new RevertColouriseFilter(
-      error ? spritesheetPalette.midRed : spritesheetPalette.white,
-    );
     const annotationContainer = showTextInContainer(
       new Container({
         label: "EditorAnnotationTextContainer",
-        filters: [colourFilter, outlineFilters.pureBlack],
+        filters: [filter, outlineFilters.pureBlack],
       }),
       annotationText,
     );
@@ -343,11 +377,14 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         // TODO: this is over-dispatching - need some way to
         // prevent firing when enter/leave children
         store.dispatch(setClickableAnnotationHovered(true));
-        colourFilter.targetColor = spritesheetPalette.pastelBlue;
+        annotationContainer.filters = [
+          textClickableAnnotationFilterHover,
+          outlineFilters.pureBlack,
+        ];
       });
       annotationContainer.on("mouseout", () => {
         store.dispatch(setClickableAnnotationHovered(false));
-        colourFilter.targetColor = spritesheetPalette.white;
+        annotationContainer.filters = [filter, outlineFilters.pureBlack];
       });
       annotationContainer.cursor = "pointer";
     }
@@ -364,8 +401,9 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
   #updateSelectedAndHovered() {
     const {
-      renderContext: { item, room },
+      renderContext: { room },
     } = this;
+    const item = this.renderContext.item as unknown as EditorItemInPlayUnion<T>;
 
     const { clickableAnnotationHovered } = (
       store.getState() as RootStateWithLevelEditorSlice
@@ -414,7 +452,9 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
                   (m) =>
                     m.expectType === maybeSwitchedItemType &&
                     (m.targets === undefined ||
-                      m.targets.includes(maybeSwitchedItemJsonItemId)),
+                      m.targets.includes(
+                        maybeSwitchedItemJsonItemId as EditorRoomItemId,
+                      )),
                 )
               );
             },
@@ -446,6 +486,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         : pointerHoverFilter
       : isSelected ? selectedFilter
       : showControlHighlight() ? controlHighlightFilter
+      : isWakingMonster(item) ? monsterWakesFilter
       : noFilters;
   }
 
