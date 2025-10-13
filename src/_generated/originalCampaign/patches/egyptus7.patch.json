@@ -1,90 +1,100 @@
 [
   {
+    "op": "remove",
+    "path": "/items/wall@8,5,0"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@8,0,0"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@5,0,0"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall(towards)@0,0,0"
+  },
+  {
     "op": "replace",
     "path": "/items/door@8,3,5/position/z",
     "value": 4
   },
   {
+    "op": "replace",
+    "path": "/items/door@8,3,5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@3,0,4/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,7,3/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,7,3/position/x",
+    "value": 6
+  },
+  {
     "op": "add",
-    "path": "/items/barrierForAnalogue",
+    "path": "/items/block@7,7,3/config/times",
     "value": {
-      "config": {
-        "axis": "x",
-        "times": {
-          "x": 2,
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 3,
-        "y": 0.5,
-        "z": 4
-      },
-      "type": "barrier"
+      "x": 2,
+      "y": 2
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,3,3/position/y",
+    "value": 0
+  },
+  {
+    "op": "remove",
+    "path": "/items/block@3,0,3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/block@2,7,3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/block@0,7,3"
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@0,5,3/position/y",
+    "value": 6
+  },
+  {
+    "op": "add",
+    "path": "/items/block@0,5,3/config/times",
+    "value": {
+      "x": 2,
+      "y": 2
     }
   },
   {
     "op": "add",
-    "path": "/items/barrierForAnalogue2",
+    "path": "/items/block@0,0,3/config/times",
     "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 4.5,
-        "y": 0,
-        "z": 4
-      },
-      "type": "barrier"
+      "x": 2,
+      "y": 2
     }
   },
   {
     "op": "add",
-    "path": "/items/barrierForAnalogue3",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 2,
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 6.5,
-        "y": 3,
-        "z": 4
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/barrierForAnalogue4",
-    "value": {
-      "config": {
-        "axis": "x",
-        "times": {
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 7,
-        "y": 2.5,
-        "z": 4
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@0,0,3",
+    "path": "/items/block",
     "value": {
       "config": {
         "style": "tower",
         "times": {
+          "x": 2,
+          "y": 2,
           "z": 3
         }
       },
@@ -103,84 +113,14 @@
       "config": {
         "style": "tower",
         "times": {
+          "x": 2,
+          "y": 2,
           "z": 3
         }
       },
       "position": {
         "x": 0,
-        "y": 5,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@0,7,3",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 0,
-        "y": 7,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@2,7,3",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 2,
-        "y": 7,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@3,0,3",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 3,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@4,0,3",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 4,
-        "y": 0,
+        "y": 6,
         "z": 0
       },
       "type": "block"
@@ -193,30 +133,13 @@
       "config": {
         "style": "tower",
         "times": {
+          "y": 2,
           "z": 3
         }
       },
       "position": {
         "x": 7,
-        "y": 3,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@7,4,3",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 7,
-        "y": 4,
+        "y": 0,
         "z": 0
       },
       "type": "block"
@@ -229,15 +152,58 @@
       "config": {
         "style": "tower",
         "times": {
+          "x": 2,
+          "y": 2,
           "z": 3
         }
       },
       "position": {
-        "x": 7,
-        "y": 7,
+        "x": 6,
+        "y": 6,
         "z": 0
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/wall_2",
+    "value": {
+      "config": {
+        "direction": "towards",
+        "times": {
+          "x": 6
+        }
+      },
+      "position": {
+        "x": 2,
+        "y": 0,
+        "z": 0
+      },
+      "type": "wall"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/wall_3",
+    "value": {
+      "config": {
+        "direction": "left",
+        "tiles": [
+          "hieroglyphics",
+          "sarcophagus",
+          "sarcophagus",
+          "hieroglyphics",
+          "sarcophagus",
+          "hieroglyphics"
+        ]
+      },
+      "position": {
+        "x": 8,
+        "y": 2,
+        "z": 0
+      },
+      "type": "wall"
     }
   }
 ]
