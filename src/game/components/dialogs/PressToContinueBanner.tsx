@@ -15,7 +15,7 @@ export const PressToContinueBanner = ({
     <div className={`${className} bg-zxBlack py-oneScaledPix`}>
       {detectDeviceType() === "desktop" ?
         <>
-          <BitmapText className="me-1">Press to continue:</BitmapText>
+          <BitmapText>Press to continue:</BitmapText>
           <div className="flex flex-row gap-1 w-min mx-auto">
             <CurrentKeyAssignments
               className="flex flex-row gap-1"
