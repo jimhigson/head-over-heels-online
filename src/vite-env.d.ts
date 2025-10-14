@@ -10,9 +10,6 @@ declare module "*.vert" {
   export default content;
 }
 
-declare const __gitHash__: string;
-declare const __buildDate__: string;
-
 declare module "virtual:pwa-register" {
   import type { RegisterSWOptions } from "vite-plugin-pwa/types";
   export function registerSW(
