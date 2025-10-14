@@ -76,13 +76,13 @@ jobs:
           - mobile-safari
         include:
           - browser: chromium-desktop
-            batch_count: 1
+            batch_count: 3
           - browser: webkit-desktop
-            batch_count: 2
+            batch_count: 3
           - browser: mobile-chrome
-            batch_count: 1
+            batch_count: 3
           - browser: mobile-safari
-            batch_count: 2
+            batch_count: 3
     name: Visual tests - ${{ matrix.test }} - ${{ matrix.browser }}
 
     steps:
@@ -110,7 +110,7 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Install Playwright browsers
         run: |

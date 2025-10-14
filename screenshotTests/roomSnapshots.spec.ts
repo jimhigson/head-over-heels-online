@@ -38,6 +38,10 @@ const roomIds =
 const batchCount =
   process.env.BATCH_COUNT ? Number.parseInt(process.env.BATCH_COUNT) : 2;
 
+console.log(
+  `running tests in ${batchCount} batches based on envar of ${process.env.BATCH_COUNT}`,
+);
+
 const batchSize = Math.ceil(roomIds.length / batchCount);
 const batches = Array.from({ length: batchCount }, (_, index) => {
   const start = index * batchSize;
