@@ -32,21 +32,40 @@ const roomIds =
     (process.env.ROOMS.split(",") as OriginalCampaignRoomId[])
   : keys(campaign.rooms).slice(0, roomLimit);
 
-// locally: 3 is fastest in webkit, 2 is fastest in Chromium, but since Chromium is slower overall
-// going to boost the slower one preferentially:
-// remote: > 1 is unreliable for Chromium on github runners
+// How many parallel runners are processing rooms (splits work across GitHub Actions runners)
 const batchCount =
-  process.env.BATCH_COUNT ? Number.parseInt(process.env.BATCH_COUNT) : 2;
+  process.env.BATCH_COUNT ? Number.parseInt(process.env.BATCH_COUNT) : 1;
+
+// Which batch number (0-indexed) this runner should process
+const batchNumber =
+  process.env.BATCH_NUMBER !== undefined ?
+    Number.parseInt(process.env.BATCH_NUMBER)
+  : 0;
+
+// How many parallel tests to create within this runner (for progress visibility)
+const parallelTests =
+  process.env.PARALLEL_TESTS ? Number.parseInt(process.env.PARALLEL_TESTS) : 2;
 
 console.log(
-  `running tests in ${batchCount} batches based on envar of ${process.env.BATCH_COUNT}`,
+  `🏃 runner will process batch ${batchNumber} of ${batchCount} total batches`,
+);
+console.log(
+  `🏃 splitting this runner's rooms into ${parallelTests} parallel tests`,
 );
 
-const batchSize = Math.ceil(roomIds.length / batchCount);
-const batches = Array.from({ length: batchCount }, (_, index) => {
-  const start = index * batchSize;
-  const end = start + batchSize;
-  return roomIds.slice(start, end);
+// First, determine which rooms this runner is responsible for
+const totalRoomCount = roomIds.length;
+const roomsPerBatch = Math.ceil(totalRoomCount / batchCount);
+const batchStart = batchNumber * roomsPerBatch;
+const batchEnd = Math.min(batchStart + roomsPerBatch, totalRoomCount);
+const myRooms = roomIds.slice(batchStart, batchEnd);
+
+// Then split this runner's rooms into parallel tests
+const roomsPerTest = Math.ceil(myRooms.length / parallelTests);
+const perTestRooms = Array.from({ length: parallelTests }, (_, index) => {
+  const start = index * roomsPerTest;
+  const end = start + roomsPerTest;
+  return myRooms.slice(start, end);
 });
 
 // Selectors for menu navigation
@@ -333,16 +352,16 @@ const retryWithRecovery = async <T>({
 test.describe.configure({ mode: "parallel" });
 
 test.describe("Room Visual Snapshots", () => {
-  for (const [batchIndex, batch] of batches.entries()) {
-    const firstRoom = batch.at(0);
-    const lastRoom = batch.at(-1);
-    const batchDescription = `${batchIndex + 1}/${batchCount}: ${`${firstRoom}...${lastRoom}`}`;
-    test(`Snapshot rooms batch ${batchDescription}`, async ({
+  for (const [testIndex, testRooms] of perTestRooms.entries()) {
+    const firstRoom = testRooms.at(0);
+    const lastRoom = testRooms.at(-1);
+    const testDescription = `${testIndex + 1}/${parallelTests}: ${`${firstRoom}...${lastRoom}`}`;
+    test(`Snapshot rooms test ${testDescription}`, async ({
       page,
     }, testInfo) => {
-      test.setTimeout(batch.length * timeoutPerRoom + 10_000);
-      const formattedName = `${formatProjectName(testInfo.project.name)} (${batchIndex})`;
-      console.log(`${formattedName} starting batch ${batchDescription} `);
+      test.setTimeout(testRooms.length * timeoutPerRoom + 10_000);
+      const formattedName = `${formatProjectName(testInfo.project.name)} (${testIndex})`;
+      console.log(`${formattedName} starting test ${testDescription} `);
 
       try {
         await test.step(`starting the game`, async () => {
@@ -385,48 +404,77 @@ test.describe("Room Visual Snapshots", () => {
         throw error;
       }
 
-      for (const [index, roomId] of batch.entries()) {
+      const navigateToRoom = async (
+        logHeader: string,
+        roomId: OriginalCampaignRoomId,
+      ) => {
+        await retryWithRecovery({
+          async action(attempt) {
+            console.log(
+              `${logHeader} Navigating to room: ${chalk.cyan(roomId)}`,
+            );
+
+            // Screenshot before navigation
+            await page
+              .screenshot({
+                path: `test-results/room-${testInfo.project.name}-${roomId}-attempt-${attempt}-before-nav.png`,
+                fullPage: false,
+              })
+              .catch(() => {});
+
+            const renderEventPromise = waitForRoomRenderEvent(page, roomId);
+            await page.goto(`/?cheats=1#${roomId}`);
+            await renderEventPromise;
+          },
+          async recovery() {
+            // Navigate somewhere else so we can come back again and have another chance
+            // to catch the event:
+            await page.goto(`/?cheats=1#finalroom`);
+            await sleep(500);
+          },
+          maxAttempts: maxTriesToLoadRoom,
+          logHeader,
+          actionDescription: `load room ${chalk.cyan(roomId)}`,
+          page,
+          screenshotPrefix: `room-${testInfo.project.name}-${roomId}`,
+        });
+      };
+
+      if (testIndex !== 0) {
+        const previousTestIndex = testIndex - 1;
+        const previousLastRoom = perTestRooms[previousTestIndex].at(-1)!;
+        // first, navigate to the last room of the previous test.
+        // this means that we start this test with the same location
+        // as if we had done one continuous run. This can impact which
+        // door the character starts at when they enter the room
+        // TODO: should really also look to the previous batch too if testIndex is 0,
+        // although for now it seems like by luck this isn't causing any failures
+        console.log(
+          `testIndex=${testIndex} - will preload rooms at ${previousLastRoom}, the last room of testIndex ${previousTestIndex}`,
+        );
+        const logHeader = progressLogHeader(
+          testInfo.project.name,
+          -1,
+          testIndex,
+        );
+        await navigateToRoom(logHeader, previousLastRoom);
+      }
+
+      for (const [roomIndex, roomId] of testRooms.entries()) {
         await test.step(`room: ${roomId}`, async () => {
-          const progress = Math.round(((index + 1) / batch.length) * 100);
-          const header = progressLogHeader(
+          const progress = Math.round(
+            ((roomIndex + 1) / testRooms.length) * 100,
+          );
+          const logHeader = progressLogHeader(
             testInfo.project.name,
             progress,
-            batchIndex,
+            testIndex,
           );
 
-          await retryWithRecovery({
-            async action(attempt) {
-              console.log(
-                `${header} Navigating to room: ${chalk.cyan(roomId)}`,
-              );
-
-              // Screenshot before navigation
-              await page
-                .screenshot({
-                  path: `test-results/room-${testInfo.project.name}-${roomId}-attempt-${attempt}-before-nav.png`,
-                  fullPage: false,
-                })
-                .catch(() => {});
-
-              const renderEventPromise = waitForRoomRenderEvent(page, roomId);
-              await page.goto(`/?cheats=1#${roomId}`);
-              await renderEventPromise;
-            },
-            async recovery() {
-              // Navigate somewhere else so we can come back again and have another chance
-              // to catch the event:
-              await page.goto(`/?cheats=1#finalroom`);
-              await sleep(500);
-            },
-            maxAttempts: maxTriesToLoadRoom,
-            logHeader: header,
-            actionDescription: `load room ${chalk.cyan(roomId)}`,
-            page,
-            screenshotPrefix: `room-${testInfo.project.name}-${roomId}`,
-          });
+          await navigateToRoom(logHeader, roomId);
 
           console.log(
-            `${header} Taking screenshot for room: ${chalk.cyan(roomId)}`,
+            `${logHeader} Taking screenshot for room: ${chalk.cyan(roomId)}`,
           );
           const screenshotStart = performance.now();
           await expect
@@ -444,7 +492,7 @@ test.describe("Room Visual Snapshots", () => {
               maxDiffPixels: 0,
             });
           console.log(
-            `${header} ...screenshot took`,
+            `${logHeader} ...screenshot took`,
             chalk.yellow((performance.now() - screenshotStart).toFixed(0)),
             "ms",
           );

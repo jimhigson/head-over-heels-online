@@ -74,16 +74,15 @@ jobs:
           - webkit-desktop
           - mobile-chrome
           - mobile-safari
-        include:
-          - browser: chromium-desktop
-            batch_count: 3
-          - browser: webkit-desktop
-            batch_count: 3
-          - browser: mobile-chrome
-            batch_count: 3
-          - browser: mobile-safari
-            batch_count: 3
-    name: Visual tests - ${{ matrix.test }} - ${{ matrix.browser }}
+        batch_number: [0, 1, 2]
+        batch_count: [3]
+        parallel_tests: [2]
+        exclude:
+          - test: lutSnapshot
+            batch_number: 1
+          - test: lutSnapshot
+            batch_number: 2
+    name: Visual tests - ${{ matrix.test }} - ${{ matrix.browser }}${{ matrix.test == 'roomSnapshots' && format(' - batch {0}', matrix.batch_number) || '' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -130,6 +129,8 @@ jobs:
       - name: Run Playwright tests
         env:
           BATCH_COUNT: ${{ matrix.batch_count }}
+          BATCH_NUMBER: ${{ matrix.batch_number }}
+          PARALLEL_TESTS: ${{ matrix.parallel_tests }}
         run: pnpm playwright test ${{ matrix.test }} --project=${{ matrix.browser }}
 
       - name: Upload test results

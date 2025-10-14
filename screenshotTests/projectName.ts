@@ -203,8 +203,8 @@ export const formatProjectName = (projectName: string): string => {
 export const progressLogHeader = (
   projectName: string,
   progress: number,
-  batchIndex?: number,
+  textIndex?: number,
 ): string => {
   const formattedName = formatProjectName(projectName);
-  return `${chalk.gray("[")} ${formattedName} batch=${batchIndex ?? 0} ${progress}%${chalk.gray("]")}`;
+  return `${chalk.gray("[")} ${formattedName} testIndex=${textIndex ?? 0} ${progress}%${chalk.gray("]")}`;
 };
