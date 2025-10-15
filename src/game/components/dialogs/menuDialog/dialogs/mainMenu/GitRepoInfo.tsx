@@ -1,5 +1,3 @@
-import { useReducer } from "react";
-
 import { version } from "../../../../../../../package.json";
 import { nerdFontGithubChar } from "../../../../../../sprites/hudSritesheetData";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
@@ -7,8 +5,6 @@ import { BitmapText } from "../../../../tailwindSprites/Sprite";
 const repoLocation = "https://github.com/jimhigson/head-over-heels-online/";
 
 export const GitRepoInfo = () => {
-  const [open, toggleOpen] = useReducer((o: boolean) => !o, false);
-
   return (
     <>
       <div className="flex absolute top-oneScaledPix right-1 z-dialog">
@@ -26,23 +22,17 @@ export const GitRepoInfo = () => {
           </span>
         </a>
       </div>
-      <div className="flex absolute bottom-oneScaledPix right-oneScaledPix z-dialog">
-        <div
-          onClick={toggleOpen}
-          className="text-pastelBlueHalfbrite zx:text-zxMagenta flex flex-row gap-x-1"
+      <div className="flex absolute bottom-0 right-0 z-dialog">
+        <a
+          href={`${repoLocation}releases`}
+          target="_blank"
+          className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack"
         >
-          {open && (
-            <>
-              <a
-                href={`${repoLocation}releases/tag/v${version}`}
-                className="bitmap-text-link zx:bg-zxBlack"
-              >
-                <BitmapText className=" block">tag</BitmapText>
-              </a>
-            </>
-          )}
-          <BitmapText>{`${open ? __gitHash__ : ""} ${open ? __buildDate__ : ""} v${version}`}</BitmapText>
-        </div>
+          <BitmapText>
+            {/* extra space pulls away from rounded corners of phone screens and app windows */}
+            {`v${version} `}
+          </BitmapText>
+        </a>
       </div>
     </>
   );

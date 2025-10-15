@@ -99,9 +99,4 @@ export default defineConfig({
   preview: {
     port: 5201,
   },
-
-  define: {
-    __gitHash__: JSON.stringify(process.env.GIT_HASH),
-    __buildDate__: JSON.stringify(process.env.BUILD_DATE),
-  },
 });
