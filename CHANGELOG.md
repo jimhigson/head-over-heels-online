@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.6.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.5.0...v1.6.0) (2025-10-15)
+
+
+### Features
+
+* editor annotations tell user which monsters will wake when the player goes near ([#552](https://github.com/jimhigson/head-over-heels-online/issues/552)) ([7dba80b](https://github.com/jimhigson/head-over-heels-online/commit/7dba80be1e395871f6811000b8749adb496a2b0c))
+* make crt effect more subtle ([#556](https://github.com/jimhigson/head-over-heels-online/issues/556)) ([4080e85](https://github.com/jimhigson/head-over-heels-online/commit/4080e853d09efdc3a0e99f11facc4781a011df15))
+* make dimmed rooms appear more vibrant ([#559](https://github.com/jimhigson/head-over-heels-online/issues/559)) ([8ddcfed](https://github.com/jimhigson/head-over-heels-online/commit/8ddcfedada7bbba4d1122f342371ad603642ea79))
+* market scenery improved colourisation on the bricks above the stalls ([#562](https://github.com/jimhigson/head-over-heels-online/issues/562)) ([9f562c5](https://github.com/jimhigson/head-over-heels-online/commit/9f562c5f087da725d825c774011814f18e3fa663))
+* more solid-looking egyptus floors ([#553](https://github.com/jimhigson/head-over-heels-online/issues/553)) ([2754e9f](https://github.com/jimhigson/head-over-heels-online/commit/2754e9fafef955e7ba09d3095c1b961db460042f))
+* small changes in egyptus7 ([#551](https://github.com/jimhigson/head-over-heels-online/issues/551)) ([d9e0973](https://github.com/jimhigson/head-over-heels-online/commit/d9e097312f62b1ed9bd9593ce3a3acfbcc27e9e3))
+* update snapshot tests to run in parellel batches; make items dissapearing on room entry render the bubbles deterministicly so that tests do not depend on room order ([#549](https://github.com/jimhigson/head-over-heels-online/issues/549)) ([2ac95a0](https://github.com/jimhigson/head-over-heels-online/commit/2ac95a07edf15c2397c976e31bc4f675cce5dcff))
+* workflows now run on arm64 (not amd64) architecture ([#560](https://github.com/jimhigson/head-over-heels-online/issues/560)) ([6815d1c](https://github.com/jimhigson/head-over-heels-online/commit/6815d1cf67b1474219f13af13bb7abf084a432e4))
+
+
+### Bug Fixes
+
+* pause/hold banner had unequal spacing on each side ([#557](https://github.com/jimhigson/head-over-heels-online/issues/557)) ([cb673ff](https://github.com/jimhigson/head-over-heels-online/commit/cb673ff620232599eeed78483d6fc44b04a4038c))
+
 ## [1.5.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.4.0...v1.5.0) (2025-10-12)
 
 
