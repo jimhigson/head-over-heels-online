@@ -1,7 +1,7 @@
-import type { TailwindColourName } from "../../../../../../../tailwind.config";
+import type { TailwindTextColourClassname } from "../../../../../../tailwind/tailwindColours";
 
 export const mainMenuCycle = [
   "text-midRed zx:text-zxCyan",
   "text-highlightBeige zx:text-zxYellow",
   "text-moss zx:text-zxWhite",
-] satisfies Array<`text-${TailwindColourName} zx:text-${TailwindColourName}`>;
+] satisfies Array<TailwindTextColourClassname>;

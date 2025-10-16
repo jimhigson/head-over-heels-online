@@ -2,12 +2,10 @@ import type { EmptyObject } from "type-fest";
 
 import { originalCampaignLocator } from "../../../../../../model/modelTypes";
 import {
-  backToParentMenu,
   gameStarted,
   goToSubmenu,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
@@ -23,13 +21,9 @@ const jimAtBlockstackingUserId = "2924c962-99f1-4dd2-9b9c-fef832dc991b";
 export const WhichGameDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
-      <Border
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed"
-        onClick={useDispatchActionCallback(backToParentMenu)}
-      />
       <Dialog
         fullScreen
-        className="bg-metallicBlueHalfbrite zx:text-zxCyan text-highlightBeige selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1"
+        className="bg-metallicBlueHalfbrite zx:text-zxCyan text-highlightBeige selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 py-0 gap-y-0"
         dialogId="whichGame"
       >
         <DialogTitleBar path={["Select which game"]} className="mobile:px-4" />

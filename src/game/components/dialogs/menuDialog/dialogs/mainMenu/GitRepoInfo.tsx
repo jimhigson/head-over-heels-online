@@ -2,6 +2,7 @@ import { version } from "../../../../../../../package.json";
 import { repository } from "../../../../../../../package.json";
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
+import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 export const GitRepoInfo = () => {
@@ -16,6 +17,8 @@ export const GitRepoInfo = () => {
       <div className="flex absolute top-oneScaledPix right-1 z-dialog">
         <a
           href={repository.url}
+          onClick={linkOpenExternalClickHandler}
+          target="_blank"
           className="bitmap-text-link bg-transparent zx:bg-zxBlack"
         >
           <BitmapText className="text-highlightBeige zx:text-zxYellow">
@@ -35,6 +38,7 @@ export const GitRepoInfo = () => {
       >
         <a
           href={`${repository.url}/releases`}
+          onClick={linkOpenExternalClickHandler}
           target="_blank"
           className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack"
           data-screenshot-mask
