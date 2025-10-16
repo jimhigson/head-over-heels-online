@@ -8,6 +8,7 @@ const manualDialogIds = keys(markdownPages).map(
 ) as `markdown/${MarkdownPageName}`[];
 
 export const dialogIds = [
+  "about",
   "communityGames",
   "controlOptions",
   "crowns",

@@ -16,6 +16,7 @@ export default tseslint.config(
       "vite.config.ts.*",
       "dev-dist",
       ".vite",
+      "src-tauri/target",
     ],
   },
   {

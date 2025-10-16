@@ -3,7 +3,7 @@ import type { RequiredDeep } from "type-fest";
 import type { UserSettings } from "./gameMenusSlice";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
-import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 
 export const defaultUserSettings: RequiredDeep<UserSettings> = {
   inputAssignment: keyAssignmentPresets.Default.inputAssignment,

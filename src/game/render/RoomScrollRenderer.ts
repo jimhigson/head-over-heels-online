@@ -15,7 +15,7 @@ import type {
 import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
-import { detectDeviceType } from "../../utils/detectDeviceType";
+import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 import { epsilon } from "../../utils/epsilon";
 import { neverTime } from "../../utils/neverTime";
 import { assignRoundedXy } from "../../utils/pixi/assignRoundedXy";

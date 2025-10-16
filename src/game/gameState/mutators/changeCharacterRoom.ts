@@ -38,6 +38,7 @@ import { blockXyzToFineXyz } from "../../render/projections";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { entryState } from "../PlayableEntryState";
+import { dispatchSaveGame } from "../saving/dispatchSaveGame";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
@@ -460,4 +461,5 @@ export const changeCharacterRoom = <
   store.dispatch(
     characterRoomChange({ characterName: playableItem.type, roomId: toRoomId }),
   );
+  dispatchSaveGame(gameState, store);
 };

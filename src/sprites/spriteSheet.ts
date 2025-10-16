@@ -1,6 +1,7 @@
-import { Assets, Spritesheet, Texture } from "pixi.js";
+import { Spritesheet, Texture } from "pixi.js";
 
 import spritesheetUrl from "../../gfx/sprites.png";
+import { detectDeviceType } from "../utils/detectEnv/detectDeviceType";
 import { spritesheetData } from "./spriteSheetData";
 
 type AppSpritesheet = Spritesheet<typeof spritesheetData>;
@@ -14,15 +15,31 @@ export const loadSpritesheet = async () => {
 
   let spritesTexture: Texture;
   try {
-    spritesTexture = await Assets.load<Texture>(spritesheetUrl);
-  } catch (_e) {
-    console.warn(
-      "did not load textures - hopefully this is running on a server!",
-    );
-    // allows the game to run in vitest without using @pixi/node to load the
-    // sprites in node. This could be dangerous in an actual browser where
-    // we want an error if the sprites don't load
-    spritesTexture = Texture.EMPTY;
+    // Assets.load is the simplest way, but unfortunately Tauri's createImageBitmap()
+    // implementation is buggy and chokes on many valid PNG files
+    // spritesTexture = await Assets.load<Texture>(spritesheetUrl);
+    const img = new Image();
+    img.src = spritesheetUrl;
+    await img.decode();
+    spritesTexture = Texture.from(img);
+  } catch (e) {
+    if (detectDeviceType() === "server") {
+      // allows the game to run in vitest without using @pixi/node to load the
+      // sprites in node. This could be dangerous in an actual browser where
+      // we want an error if the sprites don't load
+      spritesTexture = Texture.EMPTY;
+    } else {
+      // analyse what exactly happened. This can fail to decode rather than fail to download
+      // so check if the file actually exists by trying to download it:
+      const fetchResponse = await fetch(spritesheetUrl);
+
+      throw new Error(
+        `failed to load spritesheet from ${spritesheetUrl}, status with fetch: ${fetchResponse.status}`,
+        {
+          cause: e,
+        },
+      );
+    }
   }
 
   const spriteSheet = new Spritesheet(spritesTexture, spritesheetData);

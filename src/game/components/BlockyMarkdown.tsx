@@ -7,6 +7,7 @@ import { SnarkdownInReact } from "snarkdown-in-react";
 import { twMerge } from "tailwind-merge";
 
 import { useTotalUpscale } from "../../store/slices/upscale/upscaleSelectors";
+import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
 
@@ -53,6 +54,7 @@ const markdownComponents: CustomComponentsOption = {
       <a
         className="bitmap-text-link"
         href={href}
+        onClick={linkOpenExternalClickHandler}
         target="_blank"
         rel="noopener noreferrer"
       >

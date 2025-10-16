@@ -131,7 +131,18 @@ cp $TMP_DIR/* $OUT_DIR
 rm public/icon*.png
 cp $TMP_DIR_ICONS/*.png public
 
-echo "🤖 deleting the temp dir"
+# produce rgba version for tauri:
+echo "🤖 creating RGBA icons for tauri"
+magick public/icon.png \( +clone -channel A -evaluate multiply 0.999 \) -compose over -composite -define png:color-type=6 PNG32:src-tauri/icons/icon.png
+magick public/icon.png -resize 32x32 -define png:color-type=6 PNG32:src-tauri/icons/32x32.png
+magick public/icon.png -filter point -resize 128x128 -define png:color-type=6 PNG32:src-tauri/icons/128x128.png
+magick public/icon.png -filter point -resize 256x256 -define png:color-type=6 PNG32:src-tauri/icons/128x128@2x.png
+magick public/icon-512.png -define png:color-type=6 PNG32:src-tauri/icons/icon-512.png
+
+echo "🤖 creating .ico for Windows (in tauri build)"
+magick public/icon.png -filter point -resize 256x256 -define icon:auto-resize=256,128,64,48,32,16 src-tauri/icons/icon.ico
+
+echo "🤖 deleting the temp dirs"
 rm -fR $TMP_DIR
 rm -fR $TMP_DIR_ICONS
 

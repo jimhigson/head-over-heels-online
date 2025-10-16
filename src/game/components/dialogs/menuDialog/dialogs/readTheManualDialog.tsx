@@ -10,7 +10,7 @@ import { useDispatchActionCallback } from "../../../../../store/useDispatchActio
 import { Border } from "../../../../../ui/Border";
 import { Dialog } from "../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../ui/DialogPortal";
-import { detectDeviceType } from "../../../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../../../utils/detectEnv/detectDeviceType";
 import { BitmapText } from "../../../tailwindSprites/Sprite";
 import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";

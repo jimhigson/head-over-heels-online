@@ -6,6 +6,7 @@ import type { DialogId } from "./DialogId";
 import { useAppSelector } from "../../../../store/hooks";
 import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../tailwindSprites/Sprite";
+import { AboutDialog } from "./dialogs/about/AboutDialog";
 import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
 import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
 import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
@@ -64,6 +65,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
   }
 
   switch (topOpenMenu.menuId) {
+    case "about":
+      return <AboutDialog />;
     case "communityGames":
       return <CommunityGamesDialog />;
     case "controlOptions":

@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { BitmapText } from "../tailwindSprites/Sprite";
 import { CurrentKeyAssignments } from "./menuDialog/CurrentKeyAssignment";
 
