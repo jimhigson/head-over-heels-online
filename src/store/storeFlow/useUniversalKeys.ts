@@ -1,3 +1,5 @@
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { register, unregister } from "@tauri-apps/plugin-global-shortcut";
 import { useCallback, useEffect } from "react";
 
 import { useActionTap } from "../../game/components/dialogs/useActionTap";
@@ -93,4 +95,21 @@ export const useUniversalKeys = () => {
     ),
     disabled: assigningKeys,
   });
+
+  if (import.meta.env.TAURI_ENV_PLATFORM) {
+    // can disable rule of hooks safely here - predicate will always be true or false depending on the
+    // runtime and the if will be compiled out so this is not a conditional at run-time
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      register(["F11", "Alt+Enter"], async () => {
+        const window = getCurrentWindow();
+        const isFullscreen = await window.isFullscreen();
+        window.setFullscreen(!isFullscreen);
+      });
+
+      return () => {
+        unregister(["F11", "Alt+Enter"]);
+      };
+    });
+  }
 };

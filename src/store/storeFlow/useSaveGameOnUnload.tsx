@@ -1,48 +1,72 @@
 import { useEffect } from "react";
 
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
-import { createSavedGame } from "../../game/gameState/saving/createSavedGame";
+import { dispatchSaveGame } from "../../game/gameState/saving/dispatchSaveGame";
 import { isInPlaytestMode } from "../../game/isInPlaytestMode";
-import { useAppDispatch } from "../hooks";
-import { holdPressed, saveGame } from "../slices/gameMenus/gameMenusSlice";
-import { persistor, store } from "../store";
+import { importTauriWindow } from "../../utils/tauri/dynamicLoad";
+import { useAppStore } from "../hooks";
+import { persistor } from "../store";
+
+/**
+ * Registers a callback to run before the window closes.
+ * In Tauri, prevents window close until callback completes.
+ * In browser, runs on beforeunload (best effort, won't wait for async).
+ * @returns an unlisten function.
+ */
+type ListenForUnload = (
+  /** callback to run before unload */
+  callback: () => Promise<void>,
+) => Promise<() => void>;
+
+const addUnloadListener: ListenForUnload =
+  import.meta.env.TAURI_ENV_PLATFORM ?
+    async (callback) => {
+      const { getCurrentWindow } = await importTauriWindow();
+
+      return getCurrentWindow().onCloseRequested(async (event) => {
+        event.preventDefault();
+        await callback();
+        getCurrentWindow().destroy();
+      });
+    }
+  : async (callback) => {
+      window.addEventListener("beforeunload", callback);
+      return () => window.removeEventListener("beforeunload", callback);
+    };
 
 export const useSaveGameOnUnload = (): void => {
-  const dispatch = useAppDispatch();
+  const store = useAppStore();
   const gameApi = useMaybeGameApi();
 
-  // any time the page hides, we save to the store, which should be picked up by redux-persist
   useEffect(() => {
     if (gameApi === undefined) {
-      // if there is no game, there is nothing to save. Ie, page unloads from main menu without
-      // starting a game
+      return;
+    }
+    if (isInPlaytestMode()) {
+      // play-test mode never saves
       return;
     }
 
-    const maybeSave = () => {
-      if (isInPlaytestMode()) {
-        // we don't save while playtesting
-        return;
-      }
+    const saveAndFlush = async () => {
+      dispatchSaveGame(gameApi.gameState, store);
+      await persistor.flush();
+    };
 
-      dispatch(saveGame(createSavedGame(gameApi.gameState, store.getState())));
-      // we might not have long before the page goes away so we can't wait for redux-persist's throttled/debounced
-      // updates to write:
-      persistor.flush();
-    };
-    const hold = () => {
-      if (document.visibilityState === "hidden") {
-        dispatch(holdPressed("hold"));
-        // this is also a good time to save since the user might not come back:
-        maybeSave();
+    let unloadUnsub: (() => void) | undefined;
+    let effectUnmounted: boolean = false;
+
+    const addListeners = async () => {
+      unloadUnsub = await addUnloadListener(saveAndFlush);
+      if (effectUnmounted) {
+        unloadUnsub();
       }
     };
-    document.addEventListener("visibilitychange", hold);
-    window.addEventListener("beforeunload", maybeSave);
+
+    addListeners();
 
     return () => {
-      document.removeEventListener("visibilitychange", hold);
-      window.removeEventListener("beforeunload", maybeSave);
+      unloadUnsub?.();
+      effectUnmounted = true;
     };
-  }, [dispatch, gameApi]);
+  }, [gameApi, store]);
 };
