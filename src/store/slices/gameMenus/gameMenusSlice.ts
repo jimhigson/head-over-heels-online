@@ -39,7 +39,7 @@ import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import { isInPlaytestMode } from "../../../game/isInPlaytestMode";
 import { typedURLSearchParams } from "../../../options/queryParams";
 import { resolutionNames } from "../../../originalGame";
-import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { emptyObject } from "../../../utils/empty";
 import { setAtPath } from "../../../utils/getAtPath";
 import { nextInCycle } from "../../../utils/nextInCycle";
