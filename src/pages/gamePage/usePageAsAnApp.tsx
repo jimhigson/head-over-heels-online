@@ -4,7 +4,7 @@ import { resolutions } from "../../originalGame";
 import { useAppSelector } from "../../store/hooks";
 import { useEmulatedResolutionName } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectRot90 } from "../../store/slices/upscale/upscaleSlice";
-import { detectDeviceType } from "../../utils/detectDeviceType";
+import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 
 const resClassName = (str: string) =>
   `res${str[0].toUpperCase()}${str.slice(1)}`;

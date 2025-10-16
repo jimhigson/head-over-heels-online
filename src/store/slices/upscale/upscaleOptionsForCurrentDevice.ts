@@ -3,7 +3,7 @@ import type { DisplaySettings } from "../gameMenus/gameMenusSlice";
 import type { CalculateUpscaleOptions } from "./calculateUpscale";
 
 import { type ResolutionName, resolutions } from "../../../originalGame";
-import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 
 const gameRenderAreaSize = (targetElement?: HTMLElement): Xy => {
   const deviceType = detectDeviceType();

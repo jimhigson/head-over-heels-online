@@ -14,6 +14,10 @@ export default defineConfig(({ mode }) => ({
   // don't conflict with the editor's vite cache
   cacheDir: ".vite/game",
 
+  clearScreen: false,
+
+  envPrefix: ["VITE_", "TAURI_"],
+
   plugins: [
     react({
       // during development, use the same build target as builds - ie,
@@ -103,6 +107,9 @@ export default defineConfig(({ mode }) => ({
     allowedHosts: [".local"],
     // consistent port number for this project (not vite default)
     port: 5200,
+    // don't try other ports - this causes issues in `tauri dev` if the port is
+    // different form what Tauri expects
+    strictPort: true,
   },
   preview: {
     port: 5201,

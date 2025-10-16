@@ -40,9 +40,9 @@ export const MainMenuHeading = ({
     </h1>
     {noSubtitle || (
       <h2 className="mt-1 w-max resHandheld:hidden">
-        <BitmapText className="text-midRed zx:text-zxCyan">block</BitmapText>
+        <BitmapText className="text-midRed zx:text-zxCyan">Block</BitmapText>
         <BitmapText className="text-highlightBeige zx:text-zxYellow">
-          stack
+          Stack
         </BitmapText>
         <BitmapText className="text-metallicBlue zx:text-zxBlack">.</BitmapText>
         <BitmapText className="text-moss zx:text-zxWhite">ing</BitmapText>

@@ -9,7 +9,6 @@ export const optionsDialogClasses =
 
 export const optionsMenuScrollClasses =
   "flex flex-col gap-1 p-1 " +
-  //"min-h-full " +
   "overflow-y-scroll scrollbar scrollbar-w-1 " +
   "scrollbar-thumb-midGrey scrollbar-track-white " +
   "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite " +

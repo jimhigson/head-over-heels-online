@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import { Fragment } from "react";
 
+import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
+
 type StackTracesWithLinksProps = {
   children: string;
 };
@@ -39,7 +41,12 @@ export const StackTracesWithLinks = ({
         const vscodeHref = `vscode://file${fullPath}${lineSuffix}`;
 
         result.push(
-          <a key={index} href={vscodeHref} target="_blank">
+          <a
+            key={index}
+            onClick={linkOpenExternalClickHandler}
+            href={vscodeHref}
+            target="_blank"
+          >
             {url.pathname}
           </a>,
         );

@@ -11,3 +11,4 @@ build-stats-editor.html
 hohjs.code-workspace
 .claude
 screenshotTests/*-snapshots
+src-tauri/target

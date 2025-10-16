@@ -1,8 +1,8 @@
-import type { DeviceType } from "../../../utils/detectDeviceType";
+import type { DeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import type { Upscale } from "./Upscale";
 
 import { type ResolutionName, resolutions } from "../../../originalGame";
-import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { scaleXy, type Xy } from "../../../utils/vectors/vectors";
 
 // increases the number of steps available. Value of 1 means integer scaling only, giving fewer scaling

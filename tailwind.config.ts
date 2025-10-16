@@ -2,14 +2,10 @@ import type { Config } from "tailwindcss";
 
 import scrollbar from "tailwind-scrollbar";
 
-import type { colorsSrgb } from "./src/tailwind/tailwindColours";
-
 import { resolutions } from "./src/originalGame";
 import { fallbackColourVariables } from "./src/tailwind/plugins/fallbackColourVariables";
 import { spritesTailwindPlugin } from "./src/tailwind/plugins/spritesTailwindPlugin";
 import { coloursCssVariables } from "./src/tailwind/tailwindColours";
-
-export type TailwindColourName = keyof typeof colorsSrgb;
 
 const blockMultiples = {
   0: "0px",

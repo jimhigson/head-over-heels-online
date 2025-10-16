@@ -2,7 +2,6 @@ import type { EmptyObject } from "type-fest";
 
 import { useCallback } from "react";
 
-import { nerdFontDiscordChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
 import { useIsGameRunning } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
@@ -14,14 +13,13 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
-import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { GitRepoInfo } from "./GitRepoInfo";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
+import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
 
 const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
@@ -53,14 +51,14 @@ const PlayGameMenuItem = () => {
   );
 };
 
-const InstallMenuItem = () => {
+const DownloadOrInstallMenuItem = () => {
   return (
     <MenuItem
       id="installGuide"
-      label="Install"
+      className="text-moss"
+      label="⬇ Download / Install"
       doubleHeightWhenFocussed
-      onSelect={useDispatchActionCallback(goToSubmenu, "markdown/installGuide")}
-      opensSubMenu={true}
+      onSelect={useDispatchActionCallback(goToSubmenu, "installGuide")}
     />
   );
 };
@@ -86,7 +84,7 @@ const QuitGameMenuItem = () => {
   return (
     <MenuItem
       id="quitGame"
-      label={hasReincarnationPoint ? "quit / reincarnate" : "quit the game"}
+      label={hasReincarnationPoint ? "Quit / reincarnate" : "Quit the game"}
       className="text-midRed zx:text-zxYellow"
       onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
       doubleHeightWhenFocussed
@@ -96,7 +94,8 @@ const QuitGameMenuItem = () => {
   );
 };
 
-const discordInviteUrl = "https://discord.gg/Se5Jznc2jm";
+export const MenuSeparator = () => <div className="h-half col-span-3" />;
+
 export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   /* 
     preload the community campaigns for when/if the user goes to that menu.
@@ -119,7 +118,8 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     showScore();
   }, [showCrowns, showScore]);
 
-  const offerInstall = detectDeploymentType() === "pwa";
+  const deploymentType = detectDeploymentType();
+  const offerDownloadOrInstall = deploymentType === "browser";
 
   return (
     <DialogPortal>
@@ -132,15 +132,17 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           noSubtitle={isGameRunning}
           className={isGameRunning ? "resHandheld:hidden" : ""}
         />
-        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1 sprites-uppercase">
-          <MenuItems className="w-24 mx-auto">
+        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1">
+          <MenuItems className="mx-auto">
             <PlayGameMenuItem />
+            <MenuSeparator />
             {!isGameRunning && detectDeviceType() === "desktop" && (
               <LevelEditorMenuItem />
             )}
+
             <MenuItem
               id="map"
-              label="use the Map"
+              label="Use the Map"
               onSelect={useDispatchActionCallback(goToSubmenu, "map")}
               doubleHeightWhenFocussed
               hidden={!isGameRunning}
@@ -154,68 +156,32 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               hidden={!isGameRunning}
               opensSubMenu={true}
             />
+            <MenuItem
+              id="options"
+              label="Options"
+              doubleHeightWhenFocussed
+              onSelect={useDispatchActionCallback(
+                goToSubmenu,
+                "modernisationOptions",
+              )}
+              opensSubMenu={true}
+            />
+            <MenuItem
+              id="about"
+              label="About / Links"
+              doubleHeightWhenFocussed
+              onSelect={useDispatchActionCallback(goToSubmenu, "about")}
+              opensSubMenu={true}
+            />
+            {offerDownloadOrInstall && <DownloadOrInstallMenuItem />}
+
+            {isGameRunning ?
+              <>
+                <MenuSeparator />
+                <QuitGameMenuItem />
+              </>
+            : null}
           </MenuItems>
-          <div className="flex flex-row justify-between gap-2 w-24 mx-auto">
-            <MenuItems>
-              <MenuItem
-                id="options"
-                label="Options"
-                doubleHeightWhenFocussed
-                onSelect={useDispatchActionCallback(
-                  goToSubmenu,
-                  "modernisationOptions",
-                )}
-                opensSubMenu={true}
-              />
-              <MenuItem
-                id="readTheManual"
-                label="Manual"
-                doubleHeightWhenFocussed
-                onSelect={useDispatchActionCallback(
-                  goToSubmenu,
-                  "readTheManual",
-                )}
-                opensSubMenu={true}
-              />
-            </MenuItems>
-            <MenuItems>
-              {offerInstall ? null : <InstallMenuItem />}
-
-              <MenuItem
-                id="discord"
-                leader={<BitmapText>{nerdFontDiscordChar}</BitmapText>}
-                label={
-                  <a href={discordInviteUrl} target="_blank">
-                    <BitmapText>{`Discord`}</BitmapText>
-                  </a>
-                }
-                doubleHeightWhenFocussed
-                onSelect={useCallback(() => {
-                  window.open(discordInviteUrl, "_blank");
-                }, [])}
-              />
-
-              {offerInstall ?
-                <>
-                  {/* 
-                  when install isn't shown, we need a placeholder to take up the space
-                  to stop the layout jumping around. Since MenuItems is grid layout, we need
-                  three
-                  */}
-                  <div className="h-1" />
-                  <div className="h-1" />
-                  <div className="h-1" />
-                </>
-              : null}
-            </MenuItems>
-          </div>
-          {isGameRunning && (
-            // don't even put the MenuItems in when the game isn't running (don't just skip the menuitems)
-            // because even a zero-size element makes a gap in the flex parent container
-            <MenuItems className="w-24 mx-auto">
-              <QuitGameMenuItem />
-            </MenuItems>
-          )}
         </div>
         {!isGameRunning && <MainMenuFooter className="resHandheld:mt-1" />}
       </Dialog>

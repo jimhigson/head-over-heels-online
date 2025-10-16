@@ -1,4 +1,4 @@
-import { typedURLSearchParams } from "../options/queryParams";
+import { typedURLSearchParams } from "../../options/queryParams";
 
 export type DeviceType = "desktop" | "mobile" | "server" | "tablet";
 
