@@ -6,7 +6,8 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
+import { openExternal } from "../../../../../../utils/tauri/openExternalLink";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItem } from "../../MenuItem";
@@ -25,7 +26,7 @@ I built an *editor* so I could make the **sequel levels**
 
 export const SureWantEditorDialog = () => {
   const goToEditor = useCallback(() => {
-    window.location.href = import.meta.env.VITE_EDITOR_URL;
+    openExternal(import.meta.env.VITE_EDITOR_URL);
   }, []);
 
   return (

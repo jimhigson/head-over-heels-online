@@ -4,7 +4,7 @@ import type { Xy } from "../utils/vectors/vectors";
 import type { GameState } from "./gameState/GameState";
 import type { SavedGame } from "./gameState/saving/SavedGameState";
 
-export type GameApi<RoomId extends string> = {
+export type GameApi<RoomId extends string = string> = {
   campaign: Campaign<RoomId>;
   /** Instantly move to a different room. Mostly for testing, debugging etc */
   changeRoom: (newRoom: RoomId) => void;
