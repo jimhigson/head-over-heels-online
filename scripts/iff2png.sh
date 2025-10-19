@@ -28,6 +28,23 @@ TMP_DIR="gfx_temp"
 TMP_DIR_ICONS="icon_temp"
 colorNames=(pureBlack shadow midGrey lightGrey white pastelBlue metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
 
+# call like : print_with_bg_color message hexColor 
+print_with_bg_color() {
+    local message=$1
+    local hex=$2
+    local r=$((0x${hex:1:2}))
+    local g=$((0x${hex:3:2}))
+    local b=$((0x${hex:5:2}))
+    local mean=$(((r + g + b) / 3))
+    local fg_color
+    if [ $mean -gt 127 ]; then
+        fg_color="30"  # black foreground
+    else
+        fg_color="97"  # bright white foreground
+    fi
+    printf "\e[${fg_color};48;2;$(printf '%d;%d;%d' $r $g $b)m $message \e[0m\n"
+}
+
 # call like : write_palette(sourcePng, destinationName)
 write_palette() {
     echo "🤖 sampling 🎨 palette from $1 -> $2{json, ts}"
@@ -38,8 +55,9 @@ write_palette() {
 
     for i in $(seq 0 15);
     do
-        color=$(magick $1 -format "#%[hex:u.p{$i,0}]" info:);
-        echo ${colorNames[$i]} $color
+        # taking the first 7 chars strips off the alpha, ie '#AABBCCFF' -> '#AABBCC'
+        color=$(magick $1 -format "#%[hex:u.p{$i,0}]" info: | cut -c1-7);
+        print_with_bg_color "$(printf '%-16s' "${colorNames[$i]}") $color" "$color"
         echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> "$TMP_DIR/$2.ts"
         echo "  \"${colorNames[$i]}\": \"$color\"" >> "$TMP_DIR/$2.json"
 
@@ -61,16 +79,12 @@ echo "🤖 creating temp dir at $TMP_DIR"
 mkdir $TMP_DIR
 mkdir $TMP_DIR_ICONS
 
-# curves are trying to approximate the iff colour space transition to png:
-# https://chatgpt.com/share/6720c751-1dfc-8007-815f-6b1d156962ef
-curveFilter="curves=r='0.00/0.00 0.25/0.22 0.50/0.50 0.75/0.80 1.00/1.00':g='0.00/0.00 0.25/0.25 0.50/0.50 0.75/0.75 1.00/1.00':b='0.00/0.00 0.25/0.23 0.50/0.50 0.75/0.75 1.00/1.00', eq=saturation=1.9, eq=gamma=0.9"
-
 cd gfx;
 for iffFile in *.iff; do
     echo
     echo
     echo "🤖 converting iff: $iffFile -> " ../$TMP_DIR/${iffFile%.iff}.png ...
-    yes | ffmpeg -hide_banner -i $iffFile -vf "$curveFilter" -update 1 -frames:v 1 ../$TMP_DIR/${iffFile%.iff}.png
+    yes | ffmpeg -hide_banner -i $iffFile -update 1 -frames:v 1 ../$TMP_DIR/${iffFile%.iff}.png
 done
 cd ..
 
@@ -103,7 +117,7 @@ magick $TMP_DIR/sprites.png -crop $ICON_FRAME +repage $TMP_DIR_ICONS/icon.png
 magick $TMP_DIR_ICONS/icon.png -trim -gravity center -background transparent -extent 24x24 $TMP_DIR_ICONS/icon.png
 # remove transparency and put in fixed background:
 ICON_BG=`jq -r '.moss' gfx/spritesheetPalette.json`
-printf "\e[48;2;$(printf '%d;%d;%d' 0x${ICON_BG:1:2} 0x${ICON_BG:3:2} 0x${ICON_BG:5:2})m ICON_BACKGROUND \e[0m\n"
+print_with_bg_color "ICON_BACKGROUND" "$ICON_BG"
 magick $TMP_DIR_ICONS/icon.png -background $ICON_BG -alpha remove $TMP_DIR_ICONS/icon.png
 # scale with nearest neighbour up so it remains pixelated after phone/tablet/etc scales it up:
 magick $TMP_DIR_ICONS/icon.png -filter point -resize 192x192 $TMP_DIR_ICONS/icon-192.png
