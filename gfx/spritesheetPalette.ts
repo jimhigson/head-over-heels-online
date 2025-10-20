@@ -5,7 +5,7 @@ export const spritesheetPalette = {
   shadow: new Color("#264136"),
   midGrey: new Color("#7C6E6C"),
   lightGrey: new Color("#C0AFA9"),
-  white: new Color("#FBFEFB"),
+  white: new Color("#FFFFFF"),
   pastelBlue: new Color("#5EAEFF"),
   metallicBlue: new Color("#226FD0"),
   pink: new Color("#EE7EE6"),
@@ -14,8 +14,8 @@ export const spritesheetPalette = {
   midRed: new Color("#EA684F"),
   lightBeige: new Color("#EE9F7F"),
   highlightBeige: new Color("#FCC274"),
-  alpha: new Color("#7486FF"),
-  replaceLight: new Color("#00B894"),
-  replaceDark: new Color("#005130"),
+  alpha: new Color("#BBB7E5"),
+  replaceLight: new Color("#0DA188"),
+  replaceDark: new Color("#0E4E3B"),
 } as const;
 export type SpritesheetPaletteColourName = keyof typeof spritesheetPalette;

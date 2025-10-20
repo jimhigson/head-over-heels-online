@@ -1,0 +1,61 @@
+name: Check IFF to PNG conversion is up-to-date
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  check-iff2png:
+    # not using arm because mfinelli/setup-imagemagick@v7 seems not to have
+    # ARM binaries to download
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - run: pnpm install
+      - name: Setup ImageMagick 7
+        uses: mfinelli/setup-imagemagick@v7
+      - name: Install image processing tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pngquant ffmpeg jq
+      - name: Save original PNG files before regeneration
+        run: |
+          PNG_FILES=(gfx/sprites.png gfx/sprites.borders.png)
+          for png in "${PNG_FILES[@]}"; do
+            cp "$png" "/tmp/$(basename $png).original"
+          done
+      - run: pnpm iff2png
+      - name: Check image processing scripts are a no-op
+        run: |
+          NON_IMAGE_FILES="
+            gfx/spritesheetPalette.json
+            gfx/spritesheetPalette.ts
+            gfx/spritesheetPaletteDim.json
+            gfx/spritesheetPaletteDim.ts
+          "
+          git diff --exit-code -- $NON_IMAGE_FILES || (echo "Files were modified by 'pnpm iff2png'. Please run 'pnpm iff2png' locally and commit the changes." && exit 1)
+
+          # For PNG files, compare pixels only (ignore metadata)
+          PNG_FILES=(gfx/sprites.png gfx/sprites.borders.png)
+          for png in "${PNG_FILES[@]}"; do
+            diff_pixels=$(magick compare -metric AE "$png" "/tmp/$(basename $png).original" null: 2>&1 || true)
+            # magick compare outputs format "N (normalized)" where N is pixel count
+            # Extract just the first number (pixel count) from output like "0 (0)"
+            diff_count=$(echo "$diff_pixels" | awk '{print $1}')
+            if [ "$diff_count" != "0" ]; then
+              echo "PNG file $png has pixel differences: $diff_pixels pixels differ"
+              echo "Please run 'pnpm iff2png' locally and commit the changes."
+              exit 1
+            fi
+          done
