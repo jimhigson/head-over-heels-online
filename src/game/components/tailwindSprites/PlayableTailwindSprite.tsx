@@ -98,13 +98,13 @@ export const playableTailwindSpriteClassname = ({
         case "idle": {
           switch (facingXy8) {
             case "towards":
-              return twClass("texture-heels_walking_towards_2");
+              return twClass("texture-animated-heels_idle_towards");
             case "right":
-              return twClass("texture-heels_walking_right_2");
+              return twClass("texture-animated-heels_idle_right");
             case "awayRight":
               return twClass("texture-heels_walking_awayRight_2");
             case "towardsRight":
-              return twClass("texture-heels_walking_towardsRight_2");
+              return twClass("texture-animated-heels_idle_towardsRight");
             case "towardsLeft":
               return twClass("texture-heels_walking_towardsLeft_2");
             case "away":
