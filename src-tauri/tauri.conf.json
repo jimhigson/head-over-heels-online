@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "hohjs",
+  "productName": "BlockStack Head over Heels",
   "version": "1.6.0",
   "identifier": "com.blockstacking.head-over-heels",
   "build": {
