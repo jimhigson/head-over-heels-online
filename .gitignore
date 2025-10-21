@@ -26,3 +26,5 @@ playwright-report/
 test-results/
 
 build-stats*.html
+
+src-tauri/gen
