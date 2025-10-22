@@ -1,5 +1,10 @@
-import { useIsScreenRelativeControl } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { twClass } from "../../../../../../editor/twClass";
+import {
+  type DirectionsRelativeToMode,
+  directionsRelativeToModes,
+} from "../../../../../../store/slices/gameMenus/directionsRelativeToModes";
+import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { nextDirectionRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
@@ -7,51 +12,59 @@ import { MenuItem } from "../../MenuItem";
 import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
-const screenRelativeControlOffHintMarkdown =
-  "**World**: Control is relative to directions in the isometric world";
+const markdown: Record<DirectionsRelativeToMode, string> = {
+  screen: `**Screen**: Control is relative to the *screen*.
+More intuitive if you find directions confusing in isometric games, but means hitting diagonals a lot`,
+  world:
+    "**World**: Control is relative to directions in the *isometric world* - like the original",
+  mixed:
+    "**Mixed (default)**: *Analogue sticks* move relative to the *screen*, digital inputs like *keys* and *d-pad* move relative to the *world*",
+};
 
-const screenRelativeControlOnHintMarkdown = `**Screen**: Control is relative to the screen.
-
-More intuitive if you find directions confusing in isometric games, but means hitting diagonals a lot`;
+const leaderClass: Record<DirectionsRelativeToMode, string> = {
+  screen: twClass(
+    "texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_screenDirections",
+  ),
+  world: twClass(
+    "texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_worldDirections sprites-normal-height",
+  ),
+  mixed: twClass(
+    "texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_mixedDirections sprites-normal-height",
+  ),
+};
 
 const ScreenRelativeControlValue = () => {
-  const isScreenRelativeControl = useIsScreenRelativeControl();
+  const isScreenRelativeControl = useDirectionsRelativeTo();
 
   return (
     <SwitchN
       className="ml-auto"
-      values={["world", "screen"]}
-      value={isScreenRelativeControl ? "screen" : "world"}
+      values={directionsRelativeToModes}
+      value={isScreenRelativeControl}
     />
   );
 };
 
 export const ScreenRelativeControlMenuItem = () => {
-  const isScreenRelativeControl = useIsScreenRelativeControl();
+  const directionsRelativeTo = useDirectionsRelativeTo();
   return (
     <MenuItem
       id="screenRelativeControl"
       label="Input axes"
       leader={
         <span
-          className={`${spriteLeaderClasses} ${isScreenRelativeControl ? "texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_screenDirections" : "texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_worldDirections sprites-normal-height"} `}
+          className={`${spriteLeaderClasses} ${leaderClass[directionsRelativeTo]}`}
         />
       }
       valueElement={<ScreenRelativeControlValue />}
-      onSelect={useDispatchActionCallback(toggleUserSetting, {
-        path: "screenRelativeControl",
-      })}
+      onSelect={useDispatchActionCallback(nextDirectionRelativeTo)}
       hintInline
       verticalAlignItemsCentre
       className="sprites-double-height"
       hint={
         <BlockyMarkdown
           className={optionsHintMarkdownClassname}
-          markdown={
-            isScreenRelativeControl ?
-              screenRelativeControlOnHintMarkdown
-            : screenRelativeControlOffHintMarkdown
-          }
+          markdown={markdown[directionsRelativeTo]}
         />
       }
     />

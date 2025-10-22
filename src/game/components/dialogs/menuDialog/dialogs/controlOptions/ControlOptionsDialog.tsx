@@ -112,10 +112,11 @@ export const ControlOptionsDialog = () => {
         <div className={optionsMenuScrollClasses}>
           <MenuItems className={`${controlOptionsMenuItemsClass} w-full`}>
             <InputDirectionModeMenuItem />
-            <OnScreenControlsMenuItem />
             {inputDirectionMode !== "4-way" && showAll && (
               <ScreenRelativeControlMenuItem />
             )}
+            <OnScreenControlsMenuItem />
+
             {showAll && (
               <>
                 <PresetMenuItem />

@@ -26,7 +26,7 @@ export const defaultUserSettings: RequiredDeep<UserSettings> = {
   onScreenControls:
     detectDeviceType() === "mobile" || detectDeviceType() === "tablet",
   inputDirectionMode: "8-way",
-  screenRelativeControl: false,
+  directionsRelativeTo: "mixed",
 
   soundSettings: {
     mute: false,
