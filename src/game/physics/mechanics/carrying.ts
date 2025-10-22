@@ -103,6 +103,12 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
       // ⬇ player isn't standing on whatever they were standing on before
       removeStandingOn(carrier, room);
 
+      // not carrying it any more
+      heelsAbilities.carrying = null;
+
+      // moveItem could cause collision with a reincarnation fish, so it must be called only
+      // once the room is back into a good state (eg, carrying was set to null) or the
+      // item being put down could be duplicated
       moveItem({
         subjectItem: carrier,
         gameState,
@@ -120,9 +126,6 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
 
       // don't set heels as standing on the put-down item - normal gravity and movement
       // will sort that out from the main loop
-
-      heelsAbilities.carrying = null;
-
       inputStateTracker.actionsHandled.add("carry");
     }
   }
