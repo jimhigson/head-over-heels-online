@@ -1,5 +1,6 @@
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 
+import type { DirectionsRelativeToMode } from "../../store/slices/gameMenus/directionsRelativeToModes";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { GamepadState } from "./GamepadState";
 import type { HudInputState } from "./hudInputState";
@@ -8,9 +9,9 @@ import type { KeyboardStateMap } from "./keyboardState";
 import type { Key } from "./keys";
 
 import {
+  selectDirectionsRelativeTo,
   selectInputAssignment,
   selectInputDirectionMode,
-  selectScreenRelativeControl,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
@@ -28,7 +29,10 @@ import {
 } from "../../utils/vectors/vectors";
 import { type BooleanAction, lookDirectionsXy4 } from "./actions";
 import { actionToAxis } from "./actionToAxis";
-import { rotateInputVector45, snapXyFnMap } from "./analogueControlAdjustments";
+import {
+  rotateInputVector45InPlace,
+  snapXyFnMap,
+} from "./analogueControlAdjustments";
 import { extractGamepadsState } from "./GamepadState";
 import { lookUnitVectors } from "./lookUnitVectors";
 
@@ -170,6 +174,9 @@ const constrainUnitRange = (v: Xyz) => {
     : v;
 };
 
+const maybeRotate45InPlace = (shouldRotate: boolean, v: Xyz) =>
+  shouldRotate ? rotateInputVector45InPlace(v) : v;
+
 /**
  * read from the given inputState (and anything else) to get the current interpretation
  * of the input, according to the
@@ -310,7 +317,9 @@ export class InputStateTracker {
   }
 
   /** gets the modernised input direction (including analogue or 8-way) */
-  #getDirectionAnalogueOrXy8ForTick(): Xyz {
+  #getDirectionAnalogueOrXy8ForTick(
+    directionsRelativeToMode: DirectionsRelativeToMode,
+  ): Xyz {
     const currentFrameInput = this.#frameInputBuffer.at(0);
 
     if (
@@ -375,13 +384,28 @@ export class InputStateTracker {
       console.log(
         "🕹️ applying a recently released press of",
         recentlyReleasedPress,
-      );
-    }*/
+        );
+        }*/
+
+    const rotatePresses = directionsRelativeToMode === "screen";
+    const rotateAxes =
+      directionsRelativeToMode === "screen" ||
+      directionsRelativeToMode === "mixed";
+
+    const compositePressVs = maybeRotate45InPlace(
+      rotatePresses,
+      addXyz(...pressVs),
+    );
+
+    const compositeAxisVs = maybeRotate45InPlace(
+      rotateAxes,
+      addXyz(...this.#axisVectors(currentFrameInput, "x", "y", -1, -1)),
+    );
 
     return addXyz(
       recentlyReleasedPress ?? originXyz,
-      ...pressVs,
-      ...this.#axisVectors(currentFrameInput, "x", "y", -1, -1),
+      compositePressVs,
+      compositeAxisVs,
     );
   }
 
@@ -414,22 +438,17 @@ export class InputStateTracker {
 
   #tick = ({ lastTime: atTime }: Ticker) => {
     const inputDirectionMode = selectInputDirectionMode(store.getState());
-    const screenRelativeControl = selectScreenRelativeControl(store.getState());
-
-    const shouldRotate = screenRelativeControl && inputDirectionMode;
-    const maybeRotate45 = shouldRotate ? rotateInputVector45 : (v: Xyz) => v;
 
     const snapXyFn = snapXyFnMap[inputDirectionMode];
 
     this.#directionVector = constrainUnitRange(
       snapXyFn(
         addXyz(
-          maybeRotate45(
-            inputDirectionMode === "4-way" ?
-              this.#getDirectionXy4ForTick()
-            : this.#getDirectionAnalogueOrXy8ForTick(),
-          ),
-          // hudinput is never rotated or look-shifted
+          inputDirectionMode === "4-way" ?
+            this.#getDirectionXy4ForTick()
+          : this.#getDirectionAnalogueOrXy8ForTick(
+              selectDirectionsRelativeTo(store.getState()),
+            ),
           this.hudInputState.directionVector,
         ),
       ),
@@ -492,7 +511,7 @@ export class InputStateTracker {
       return "released";
     }
     if (this.actionsHandled.has(action)) {
-      return "released"; // treat as released if was already handled
+      return "released"; // has been handled - report as if was already released
     }
 
     const pressedNow = isActionPressed(currentFrameInput, action);

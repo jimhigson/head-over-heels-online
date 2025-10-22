@@ -1,4 +1,4 @@
-import { useIsScreenRelativeControl } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { assignInputStart } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
@@ -10,7 +10,7 @@ import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
 import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 export const SelectTheKeysMenuItems = () => {
-  const isScreenRelativeControl = useIsScreenRelativeControl();
+  const isScreenRelativeControl = useDirectionsRelativeTo() === "screen";
 
   return (
     <>

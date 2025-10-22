@@ -28,6 +28,17 @@ export const rotateInputVector45 = (vector: Xyz): Xyz => {
   };
 };
 
+export const rotateInputVector45InPlace = (vector: Xyz): Xyz => {
+  const cos = Math.cos(rad);
+  const sin = Math.sin(rad);
+  const originalX = vector.x;
+
+  vector.x = originalX * cos - vector.y * sin;
+  vector.y = originalX * sin + vector.y * cos;
+
+  return vector;
+};
+
 const isometricX: Xyz = unitVectorInPlace({ x: 1, y: 2, z: 0 });
 const isometricY: Xyz = unitVectorInPlace({ x: -1, y: 2, z: 0 });
 export const isometricInputVector = (input: Xyz): Xyz => {

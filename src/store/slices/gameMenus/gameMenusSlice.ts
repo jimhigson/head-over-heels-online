@@ -33,6 +33,7 @@ import type { SerialisableError } from "../../../utils/redux/createSerialisableE
 import type { ToggleablePaths } from "../../../utils/Toggleable";
 import type { gameMenusSliceWhitelist } from "../../persist/gameMenusSliceWhitelist";
 import type { RootState } from "../../store";
+import type { DirectionsRelativeToMode } from "./directionsRelativeToModes";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import { isInPlaytestMode } from "../../../game/isInPlaytestMode";
@@ -44,8 +45,10 @@ import { setAtPath } from "../../../utils/getAtPath";
 import { nextInCycle } from "../../../utils/nextInCycle";
 import { pick } from "../../../utils/pick";
 import { directionsXy4 } from "../../../utils/vectors/vectors";
+import { directionsRelativeToModes } from "./directionsRelativeToModes";
 import {
   selectBooleanUserSetting,
+  selectDirectionsRelativeTo,
   selectEmulatedResolutionName,
   selectGameSpeed,
   selectInputDirectionMode,
@@ -125,7 +128,7 @@ export type UserSettings = {
   infiniteDoughnutsPoke?: boolean;
   showFps?: boolean;
   inputDirectionMode?: InputDirectionMode;
-  screenRelativeControl?: boolean;
+  directionsRelativeTo?: DirectionsRelativeToMode;
   onScreenControls?: boolean;
   gameSpeed?: SelectableGameSpeeds;
 
@@ -360,6 +363,12 @@ export const gameMenusSlice = createSlice({
       state.userSettings.inputDirectionMode = nextInCycle(
         inputDirectionModes,
         selectInputDirectionMode({ gameMenus: state } as RootState),
+      );
+    },
+    nextDirectionRelativeTo(state) {
+      state.userSettings.directionsRelativeTo = nextInCycle(
+        directionsRelativeToModes,
+        selectDirectionsRelativeTo({ gameMenus: state } as RootState),
       );
     },
     /** adds another input to the currently being assigned action */
@@ -939,6 +948,7 @@ export const {
   lostLife,
   mapPressed,
   menuOpenOrExitPressed,
+  nextDirectionRelativeTo,
   nextInputDirectionMode,
   reincarnationAccepted,
   reincarnationFishEaten,

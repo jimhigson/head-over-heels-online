@@ -95,8 +95,12 @@ export const selectHasAllPlanetCrowns = (state: RootState) => {
   );
 };
 
-export const useIsScreenRelativeControl = () =>
-  useAppSelector((state) => state.gameMenus.userSettings.screenRelativeControl);
+export const selectDirectionsRelativeTo = selectUserSetting(
+  "directionsRelativeTo",
+);
+
+export const useDirectionsRelativeTo = () =>
+  useAppSelector(selectDirectionsRelativeTo);
 
 export const selectInputDirectionMode = selectUserSetting("inputDirectionMode");
 
@@ -124,10 +128,6 @@ export const selectShowShadowMasks = selectUserSetting(
 export const useShowShadowMasks = (): boolean => {
   return useAppSelector(selectShowShadowMasks);
 };
-
-export const selectScreenRelativeControl = selectUserSetting(
-  "screenRelativeControl",
-);
 
 export const selectUserPreferenceOnScreenControls =
   selectUserSetting("onScreenControls");
