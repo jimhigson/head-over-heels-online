@@ -3,7 +3,6 @@ import { type ReactElement } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { BitmapText } from "../../tailwindSprites/Sprite";
-import { useActionTap } from "../useActionTap";
 import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
 import { multilineTextClass } from "./multilineTextClass";
@@ -26,10 +25,6 @@ export type MenuItemProps = {
   opensSubMenu?: boolean;
   toParentMenu?: boolean;
 };
-
-// having swop in here marks the swop key as handled, so the game can't immediately
-// swap chars on loading
-const menuSelectOrJump = ["menu_select", "swop", "jump"] as const;
 
 const noop = () => {};
 
@@ -56,12 +51,6 @@ export const MenuItem = ({
     hidden,
     disabled,
     onSelect,
-  });
-
-  useActionTap({
-    action: menuSelectOrJump,
-    handler: onSelect,
-    disabled: !focussed || hidden || disabled,
   });
 
   const menuItem = (
