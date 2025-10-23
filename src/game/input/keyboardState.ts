@@ -1,3 +1,4 @@
+import { onFullscreenChange } from "../../utils/tauri/fullscreen";
 import { isKey, type Key } from "./keys";
 import { nextOrder } from "./order";
 
@@ -71,17 +72,30 @@ export const maintainKeyboardState = (state: KeyboardStateMap) => {
     state.delete(stdKey);
   };
 
-  const handleWindowBlur = (): void => {
+  const clearNow = (): void => {
     // if the window blurs, nothing is pressed:
     state.clear();
   };
 
+  /**
+   * when in Tauri, after going fullscreen we don't get the keyup event
+   * for the key-press that put into fullscreen (if via the menu, not
+   * Tauri's global keyboard shortcuts). So, clear it anyway - it's not
+   * important to keep currently pressed key state while fullscreen is
+   * changing.
+   */
+  const tauriFullscreenUnsub =
+    import.meta.env.TAURI_ENV_PLATFORM ?
+      onFullscreenChange(clearNow)
+    : undefined;
+
   window.addEventListener("keydown", keyDownHandler, false);
   window.addEventListener("keyup", keyUpHandler, false);
-  window.addEventListener("blur", handleWindowBlur, false);
+  window.addEventListener("blur", clearNow, false);
   return () => {
     window.removeEventListener("keydown", keyDownHandler, false);
     window.removeEventListener("keyup", keyUpHandler, false);
-    window.removeEventListener("blur", handleWindowBlur, false);
+    window.removeEventListener("blur", clearNow, false);
+    tauriFullscreenUnsub?.();
   };
 };

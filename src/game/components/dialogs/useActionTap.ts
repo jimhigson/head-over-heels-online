@@ -38,7 +38,7 @@ export const useActionTap = ({
       return;
     }
 
-    const check = () => {
+    const callHandlerIfActionTapped = () => {
       for (const a of actions) {
         const pressStatus = inputStateTracker.currentActionPress(a);
         if (pressStatus === "tap") {
@@ -55,9 +55,9 @@ export const useActionTap = ({
       }
     };
 
-    Ticker.shared.add(check);
+    Ticker.shared.add(callHandlerIfActionTapped);
     return () => {
-      Ticker.shared.remove(check);
+      Ticker.shared.remove(callHandlerIfActionTapped);
     };
   }, [actions, disabled, inputStateTracker, handler]);
 };

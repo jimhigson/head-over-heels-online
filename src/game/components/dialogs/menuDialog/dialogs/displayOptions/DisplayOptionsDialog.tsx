@@ -23,6 +23,7 @@ import {
   optionsMenuScrollClasses,
   titleBarClasses,
 } from "../options/optionsMenuColours";
+import { FullscreenMenuItem } from "./FullscreenMenuItem";
 
 const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**Off**: Original *two-tone* spectrum graphics
 
@@ -45,6 +46,10 @@ export const DisplayOptionsDialog = () => {
       />
       <div className={optionsMenuScrollClasses}>
         <MenuItems>
+          {
+            // keep inline (not deploymentType()) to allow tree-shaking
+            import.meta.env.TAURI_ENV_PLATFORM && <FullscreenMenuItem />
+          }
           <MenuItem
             hintInline
             className="sprites-double-height"
