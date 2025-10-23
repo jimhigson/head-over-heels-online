@@ -25,6 +25,7 @@ export const dialogIds = [
   "readTheManual",
   "reincarnatedRestart",
   "score",
+  "displayOptions",
   "sound",
   "sureWantEditor",
   "whichGame",
