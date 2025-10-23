@@ -46,10 +46,17 @@ export const selectIsAssigningKeys = (state: RootState): boolean =>
 export const useIsAssigningKeys = (): boolean =>
   useAppSelector(selectIsAssigningKeys);
 
-/** selects the name of the current key assignment preset (if any is being used) */
+/**
+ * selects the name of the current key assignment preset (if any is being used)
+ */
 export const selectCurrentInputPreset = (
   state: RootState,
 ): KeyAssignmentPresetName | undefined => {
+  if (state.gameMenus.userSettings.inputAssignment === undefined) {
+    // having no settings is the same as having the default preset:
+    return "Default";
+  }
+
   for (const [name, preset] of iterate(
     objectEntriesIter(keyAssignmentPresets),
   )) {
@@ -62,6 +69,8 @@ export const selectCurrentInputPreset = (
       return name;
     }
   }
+
+  // is set, but not to any of the presets:
   return undefined;
 };
 
