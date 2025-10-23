@@ -6,7 +6,7 @@ import type { Key } from "../../../input/keys";
 import { useAppSelector } from "../../../../store/hooks";
 import { selectInputAssignment } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { emptyArray } from "../../../../utils/empty";
-import { actionToAxis } from "../../../input/actionToAxis";
+import { actionToAxisAndDirection } from "../../../input/actionToAxis";
 import { standardControllerButtonNames } from "../../../input/controllers";
 import { MultipleBitmapText } from "../../tailwindSprites/Sprite";
 
@@ -159,7 +159,7 @@ export const CurrentKeyAssignments = ({
   );
 
   const axisAssignments = useAppSelector((state) => {
-    const axisForAction = actionToAxis(action);
+    const axisForAction = actionToAxisAndDirection(action);
     if (axisForAction === undefined) {
       return emptyArray;
     }

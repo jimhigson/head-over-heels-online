@@ -11,4 +11,5 @@ export const emptyInputAssignment: InputAssignment = {
     ]),
   ),
   axes: { x: [], y: [], xLook: [], yLook: [] },
+  radialAxes: { xy: [] },
 };

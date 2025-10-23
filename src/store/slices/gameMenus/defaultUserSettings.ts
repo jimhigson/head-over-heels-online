@@ -1,11 +1,17 @@
-import type { RequiredDeep } from "type-fest";
+import type { RequiredDeep, Simplify } from "type-fest";
 
 import type { UserSettings } from "./gameMenusSlice";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import { detectDeviceType } from "../../../utils/detectDeviceType";
 
-export const defaultUserSettings: RequiredDeep<UserSettings> = {
+// like UserSettings but with less optionality:
+type DefaultUserSettings = Simplify<
+  Required<UserSettings> &
+    RequiredDeep<Pick<UserSettings, "displaySettings" | "soundSettings">>
+>;
+
+export const defaultUserSettings: DefaultUserSettings = {
   inputAssignment: keyAssignmentPresets.Default.inputAssignment,
   infiniteLivesPoke: false,
   infiniteDoughnutsPoke: false,
