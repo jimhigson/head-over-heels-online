@@ -21,25 +21,24 @@ export const SoundDialog = () => {
   const isMuted = useAppSelector(selectIsSoundMuted);
   const isNoFootstepSounds = useAppSelector(selectIsNoFootstepSounds);
   return (
-    <>
-      <Dialog fullScreen className={optionsDialogClasses}>
-        <DialogTitleBar
-          path={["Options", "Sounds"]}
-          className={titleBarClasses}
-        />
-        <div className={optionsMenuScrollClasses}>
-          <MenuItems>
-            <MenuItem
-              className="sprites-double-height"
-              id="mute"
-              label="Mute"
-              valueElement={<Switch value={isMuted} />}
-              verticalAlignItemsCentre
-              onSelect={useDispatchActionCallback(toggleUserSetting, {
-                path: "soundSettings.mute",
-              })}
-            />
-            {/* <MenuItem
+    <Dialog fullScreen className={optionsDialogClasses}>
+      <DialogTitleBar
+        path={["Options", "Sounds"]}
+        className={titleBarClasses}
+      />
+      <div className={optionsMenuScrollClasses}>
+        <MenuItems>
+          <MenuItem
+            className="sprites-double-height"
+            id="mute"
+            label="Mute"
+            valueElement={<Switch value={isMuted} />}
+            verticalAlignItemsCentre
+            onSelect={useDispatchActionCallback(toggleUserSetting, {
+              path: "soundSettings.mute",
+            })}
+          />
+          {/* <MenuItem
               doubleHeightWhenFocussed
               id="roomEntry"
               label="Room entry tunes"
@@ -50,21 +49,20 @@ export const SoundDialog = () => {
               )}
               disabled={isMuted}
             /> */}
-            <MenuItem
-              className="sprites-double-height"
-              id="footsteps"
-              label="Footstep sounds"
-              valueElement={<Switch value={!isMuted && !isNoFootstepSounds} />}
-              verticalAlignItemsCentre
-              onSelect={useDispatchActionCallback(toggleUserSetting, {
-                path: "soundSettings.noFootsteps",
-              })}
-              disabled={isMuted}
-            />
-            <MenuItemSeparator />
-          </MenuItems>
-        </div>
-      </Dialog>
-    </>
+          <MenuItem
+            className="sprites-double-height"
+            id="footsteps"
+            label="Footstep sounds"
+            valueElement={<Switch value={!isMuted && !isNoFootstepSounds} />}
+            verticalAlignItemsCentre
+            onSelect={useDispatchActionCallback(toggleUserSetting, {
+              path: "soundSettings.noFootsteps",
+            })}
+            disabled={isMuted}
+          />
+          <MenuItemSeparator />
+        </MenuItems>
+      </div>
+    </Dialog>
   );
 };

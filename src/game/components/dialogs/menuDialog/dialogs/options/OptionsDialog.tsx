@@ -1,12 +1,9 @@
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectGameSpeed,
-  selectIsCrtFilter,
   selectIsInfiniteDoughnutsPoke,
   selectIsInfiniteLivesPoke,
-  selectShowFps,
   useIsGameRunning,
-  useIsUncolourised,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   goToSubmenu,
@@ -19,7 +16,6 @@ import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch, SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
@@ -32,25 +28,25 @@ import {
   titleBarClasses,
 } from "./optionsMenuColours";
 
-const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**Off**: Original *two-tone* spectrum graphics
-
-**On**: *16-colour* palette with colourised sprites`;
-
-const crtEffectMarkdown = `Here for the nostalgia?
-
-Make your fancy new screen look like it’s 1987 again.`;
-
 const gameSpeedMarkdown = `Play at the original **1x** speed, **1.2x (default)** or faster **1.5x** or **2x** speeds`;
 
-const infiniteLivesMarkdown = `Pokes can’t be set mid-game.
+const infiniteLivesOffMarkdown = `**Off**: Start with *8 lives*
 
-**Off**: *8* lives to start; extra life rabbits spread thinly through the game.
+Extra life rabbits spread thinly through the game`;
+const infiniteLivesOnMarkdown = `**On**: *Live forever*
 
-*A true hero leaves this* **off**.`;
+Extra life rabbits have no effect`;
 
 const controlOptionsMarkdown = `*Select the keys* and other input settings`;
 
+const pokesMarkdown = `##Cheats
+
+Magazines used to print memory locations to ‘*poke*’ values into so that readers could modify their games; usually to cheat.
+                  
+A true hero leaves these **off**! Then again, do modern gamers even know what lives are?`;
+
 export const OptionsDialog = () => {
+  const infiniteLivesPokeOn = useAppSelector(selectIsInfiniteLivesPoke);
   return (
     <DialogPortal>
       <Dialog fullScreen className={optionsDialogClasses}>
@@ -95,6 +91,23 @@ export const OptionsDialog = () => {
             />
             <MenuItem
               hintInline
+              id="display"
+              label="Display"
+              className="sprites-double-height"
+              verticalAlignItemsCentre
+              onSelect={useDispatchActionCallback(
+                goToSubmenu,
+                "displayOptions",
+              )}
+              hint={
+                <BlockyMarkdown
+                  className={optionsHintMarkdownClassname}
+                  markdown="Change how the game looks"
+                />
+              }
+            />
+            <MenuItem
+              hintInline
               id="gameSpeed"
               label="Game Speed"
               className="sprites-double-height"
@@ -115,62 +128,13 @@ export const OptionsDialog = () => {
               }
               verticalAlignItemsCentre
             />
-            <MenuItem
-              hintInline
-              className="sprites-double-height"
-              id="colourise"
-              label="Colourise"
-              valueElement={
-                <Switch className="ml-auto" value={!useIsUncolourised()} />
-              }
-              onSelect={useDispatchActionCallback(toggleUserSetting, {
-                path: "displaySettings.uncolourised",
-              })}
-              hint={
-                <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
-                  markdown={colouriseMarkdown}
-                />
-              }
-              verticalAlignItemsCentre
-            />
-            <MenuItem
-              hintInline
-              className="sprites-double-height"
-              id="crtFilter"
-              verticalAlignItemsCentre
-              label={
-                <span className="align-top">
-                  <span className="bg-shadow zx:bg-pureBlack inline-block">
-                    <BitmapText className="text-midRed zx:text-zxRed">
-                      C
-                    </BitmapText>
-                    <BitmapText className="text-moss zx:text-zxGreen">
-                      R
-                    </BitmapText>
-                    <BitmapText className="text-pastelBlue zx:text-zxBlue">
-                      T
-                    </BitmapText>
-                  </span>
-                  <BitmapText>{" TV Effect"}</BitmapText>
-                </span>
-              }
-              valueElement={
-                <Switch
-                  className="ml-auto"
-                  value={useAppSelector(selectIsCrtFilter)}
-                />
-              }
-              onSelect={useDispatchActionCallback(toggleUserSetting, {
-                path: "displaySettings.crtFilter",
-              })}
-              hint={
-                <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
-                  markdown={crtEffectMarkdown}
-                />
-              }
-            />
+
+            <div className="col-span-3 pb-1">
+              <BlockyMarkdown
+                markdown={pokesMarkdown}
+                className={optionsHintMarkdownClassname}
+              />
+            </div>
             <MenuItem
               hintInline
               className="sprites-double-height"
@@ -185,14 +149,15 @@ export const OptionsDialog = () => {
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
-                  markdown={infiniteLivesMarkdown}
+                  markdown={
+                    infiniteLivesPokeOn ?
+                      infiniteLivesOnMarkdown
+                    : infiniteLivesOffMarkdown
+                  }
                 />
               }
               valueElement={
-                <Switch
-                  className="ml-auto"
-                  value={useAppSelector(selectIsInfiniteLivesPoke)}
-                />
+                <Switch className="ml-auto" value={infiniteLivesPokeOn} />
               }
               onSelect={useDispatchActionCallback(toggleUserSetting, {
                 path: "infiniteLivesPoke",
@@ -220,45 +185,6 @@ export const OptionsDialog = () => {
                 path: "infiniteDoughnutsPoke",
               })}
               disabled={useIsGameRunning()}
-            />
-            <MenuItem
-              hintInline
-              className="sprites-double-height"
-              verticalAlignItemsCentre
-              id="showFps"
-              label="Show FPS"
-              valueElement={
-                <Switch
-                  className="ml-auto"
-                  value={useAppSelector(selectShowFps)}
-                />
-              }
-              onSelect={useDispatchActionCallback(toggleUserSetting, {
-                path: "showFps",
-              })}
-              hint={
-                <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
-                  markdown={`Frames per second shown during gameplay.`}
-                />
-              }
-            />
-            <MenuItem
-              hintInline
-              className="sprites-double-height"
-              id="emulatedResolution"
-              label="Emulated Resolution"
-              onSelect={useDispatchActionCallback(
-                goToSubmenu,
-                "emulatedResolution",
-              )}
-              verticalAlignItemsCentre
-              hint={
-                <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
-                  markdown={`See more of the room by choosing a higher resolution to emulate.`}
-                />
-              }
             />
             <MenuItemSeparator />
           </MenuItems>

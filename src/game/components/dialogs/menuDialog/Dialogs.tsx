@@ -9,6 +9,7 @@ import { BitmapText } from "../../tailwindSprites/Sprite";
 import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
 import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
 import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
+import { DisplayOptionsDialog } from "./dialogs/displayOptions/DisplayOptionsDialog";
 import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 import { HoldDialog } from "./dialogs/hold/holdDialog";
@@ -98,6 +99,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <ReincarnatedRestartDialog />;
     case "score":
       return <ScoreDialog />;
+    case "displayOptions":
+      return <DisplayOptionsDialog />;
     case "sound":
       return <SoundDialog />;
     case "sureWantEditor":

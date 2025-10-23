@@ -51,7 +51,7 @@ export const EmulatedResolutionDialog = () => {
     <DialogPortal>
       <Dialog fullScreen className={optionsDialogClasses}>
         <DialogTitleBar
-          path={["Options", "Emulated Res."]}
+          path={["Options", "Display", "Res."]}
           className={titleBarClasses}
         />
         <div className={optionsMenuScrollClasses}>
