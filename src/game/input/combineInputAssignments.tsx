@@ -63,5 +63,13 @@ export function combineInputAssignments(
         ]),
       ),
     },
+    radialAxes: {
+      xy: Array.from(
+        new Set([
+          ...(emptyInputAssignment.radialAxes?.xy ?? []),
+          ...assignments.map((a) => a.radialAxes?.xy ?? []).flat(),
+        ]),
+      ),
+    },
   };
 }

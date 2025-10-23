@@ -28,13 +28,14 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { type BooleanAction, lookDirectionsXy4 } from "./actions";
-import { actionToAxis } from "./actionToAxis";
+import { actionToAxisAndDirection } from "./actionToAxis";
 import {
   rotateInputVector45InPlace,
   snapXyFnMap,
 } from "./analogueControlAdjustments";
 import { extractGamepadsState } from "./GamepadState";
 import { lookUnitVectors } from "./lookUnitVectors";
+import { radialAxisToXy } from "./radialAxisToXy";
 
 export const analogueDeadzone = 0.2;
 /* how long to keep buffered input for - this is essentially a sensitivity setting
@@ -120,7 +121,7 @@ const isActionPressed = (
 ): boolean => {
   const inputAssignment = selectInputAssignment(store.getState());
 
-  const inputAssignmentForAction = inputAssignment.presses[action];
+  const inputAssignmentPressesForAction = inputAssignment.presses[action];
 
   if (frameInput.hudInputState[action]) {
     // frame input is very simple since it doesn't have any mappings
@@ -128,15 +129,37 @@ const isActionPressed = (
     return true;
   }
 
-  for (const key of inputAssignmentForAction.keys) {
+  for (const key of inputAssignmentPressesForAction.keys) {
     if (isKeyPressed(frameInput, key)) {
       return true;
     }
   }
 
-  for (const button of inputAssignmentForAction.gamepadButtons) {
+  for (const button of inputAssignmentPressesForAction.gamepadButtons) {
     if (isGamepadButtonPressed(frameInput, button)) {
       return true;
+    }
+  }
+
+  const inputAssignmentRadialAssignmentXy =
+    inputAssignment.radialAxes?.xy ?? emptyArray;
+  for (const axis of inputAssignmentRadialAssignmentXy) {
+    // d-pads presented as radial axes
+    const actionAsAxis = actionToAxisAndDirection(action);
+    if (actionAsAxis !== undefined && actionAsAxis.plane === "xy") {
+      for (const gp of frameInput.gamepads) {
+        if (gp === null || gp.axes.length <= axis) {
+          continue;
+        }
+        const axisValue = gp.axes[axis];
+        const radialAxisAsXy = radialAxisToXy(axisValue);
+        if (
+          radialAxisAsXy[actionAsAxis.axis] * actionAsAxis.direction >
+          axisPressThreshold
+        ) {
+          return true;
+        }
+      }
     }
   }
 
@@ -144,7 +167,7 @@ const isActionPressed = (
     // axis that are faking being buttons. Eg, lots of gamepads without analogue sticks use axes even for
     // binary input (dpads), rather than follow the w3c 'standard' layout of representing
     // dpads as buttons
-    const actionAsAxis = actionToAxis(action);
+    const actionAsAxis = actionToAxisAndDirection(action);
     if (actionAsAxis !== undefined) {
       const gamepadAxes = inputAssignment.axes[actionAsAxis.axis];
 
@@ -161,17 +184,13 @@ const isActionPressed = (
   return false;
 };
 
-/** constrains the vector so that all components are in the range 0..1 */
+/**
+ * constrains the vector so that the length is in the range 0..1; which also ensures that
+ * all components are in the range -1..1
+ */
 const constrainUnitRange = (v: Xyz) => {
   const vl = lengthXy(v);
-  return vl > 1 ?
-      // TODO: actually not sure why z was explictly zero here - can't see how
-      // input could be giving a z anyway
-      //{ ...
-      scaleXyz(v, 1 / vl)
-      //z: 0,
-      //}
-    : v;
+  return vl > 1 ? scaleXyz(v, 1 / vl) : v;
 };
 
 const maybeRotate45InPlace = (shouldRotate: boolean, v: Xyz) =>
@@ -206,7 +225,9 @@ export class InputStateTracker {
     public readonly hudInputState: HudInputState,
   ) {}
 
-  /** gets the non-analogue input (buttons and d-pad/stick treated like buttons) */
+  /**
+   * Classic original-game-like handling of 4-way D-pad input
+   */
   #getDirectionXy4ForTick = (): Xyz => {
     const currentFrameInput = this.#frameInputBuffer.at(0);
 
@@ -218,12 +239,9 @@ export class InputStateTracker {
       return originXyz;
     }
 
-    let l;
-    let r;
-    let a;
-    let t;
+    let l, r, a, t;
 
-    // any new direction automatically wins
+    // any new direction (= 'tap') automatically wins, grab references while checking
     switch ("tap") {
       case (l = this.currentActionPress("left")):
         return unitVectors.left;
@@ -539,7 +557,13 @@ export class InputStateTracker {
     return "released";
   }
 
-  /** returns one or zero new taps since the last frame (the first one we find) */
+  /**
+   * returns one or zero new taps since the last frame (the first one we find)
+   *  - taps can be keys, axes, or buttons
+   *
+   * currently only used by the useInputTap hook for key assignment - ie,
+   * seeing what the user taps (axis, button, etc) to assign that key
+   */
   inputTap(): InputPress | undefined {
     const currentFrameInput = this.#frameInputBuffer.at(0);
     const previousFrameInput = this.#frameInputBuffer.at(1);
@@ -583,6 +607,9 @@ export class InputStateTracker {
     }
   }
 
+  /**
+   * gets the current direction vector
+   */
   get directionVector(): Xyz {
     return this.#directionVector;
   }
