@@ -6,7 +6,7 @@ export const MainMenuFooter = ({ className }: { className?: string }) => (
     className={`flex justify-center gap-2 resHandheld:gap-1 leading-none ${className ?? ""}`}
   >
     <div className="flex flex-col items-center">
-      <BitmapText className="text-pastelBlue zx:text-zxBlack">
+      <BitmapText className="text-pastelBlue zx:text-zxBlack relative left-oneScaledPix">
         1987 Original
       </BitmapText>
       <div className="flex gap-1">

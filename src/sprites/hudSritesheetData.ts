@@ -48,7 +48,7 @@ const row1 = [
   { char: "o", width: 8 },
   { char: "p", width: 8 },
   { char: "q", width: 8 },
-  { char: "r", width: 6 },
+  { char: "r", width: 5 },
   { char: "s", width: 6 },
   { char: "t", width: 6 },
   { char: "u", width: 8 },
