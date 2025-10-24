@@ -1,9 +1,9 @@
 import { type Container, Graphics } from "pixi.js";
 
-import { iterateRoomItems, type RoomState } from "../../model/RoomState";
-import { addXyz, originXyz } from "../../utils/vectors/vectors";
-import { isWallOrDoorFrame } from "../physics/itemPredicates";
-import { projectWorldXyzToScreenXy } from "./projections";
+import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
+import { addXyz, originXyz } from "../../../utils/vectors/vectors";
+import { isWallOrDoorFrame } from "../../physics/itemPredicates";
+import { projectWorldXyzToScreenXy } from "../projections";
 
 const occlusionHeight = 256;
 

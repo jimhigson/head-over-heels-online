@@ -2,7 +2,7 @@ import type { ColorSource } from "pixi.js";
 
 import { Color, Filter, GlProgram } from "pixi.js";
 
-import fragment from "./colourClash.frag?raw";
+import fragment from "./colourClash.frag";
 import { vertex } from "./defaults";
 
 /**

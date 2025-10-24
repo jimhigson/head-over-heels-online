@@ -6,7 +6,7 @@ import type {
   InputDirectionMode,
 } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Xy } from "../../../utils/vectors/vectors";
-import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 
 export type HudRenderContext<RoomId extends string> = {
   onScreenControls: boolean;

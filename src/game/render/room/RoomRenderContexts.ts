@@ -1,14 +1,14 @@
 import type { Renderer as PixiRenderer } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
-import type { RoomState } from "../../model/RoomState";
+import type { RoomState } from "../../../model/RoomState";
 import type {
   DisplaySettings,
   SoundSettings,
-} from "../../store/slices/gameMenus/gameMenusSlice";
-import type { Upscale } from "../../store/slices/upscale/Upscale";
-import type { GameState } from "../gameState/GameState";
-import type { MovedItems } from "../mainLoop/progressGameState";
+} from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { Upscale } from "../../../store/slices/upscale/Upscale";
+import type { GameState } from "../../gameState/GameState";
+import type { MovedItems } from "../../mainLoop/progressGameState";
 
 /** some context that most renderers need, to be composed into their contexts
  *

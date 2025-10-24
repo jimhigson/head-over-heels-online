@@ -1,7 +1,7 @@
 import type { SetOptional, Simplify, Tagged } from "type-fest";
 
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import type { RoomRenderer } from "../game/render/roomRenderer";
+import type { RoomRenderer } from "../game/render/room/roomRenderer";
 import type {
   ItemInPlay,
   ItemInPlayType,

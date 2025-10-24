@@ -4,7 +4,7 @@ import { Graphics } from "pixi.js";
 
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { Renderer } from "../Renderer";
-import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 import type { HudRendererTickContext } from "./hudRendererContexts";
 import type { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";
 import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";

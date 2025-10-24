@@ -6,7 +6,7 @@ import { Container } from "pixi.js";
 import type { InputDirectionMode } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { Renderer } from "../Renderer";
-import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 import type { HudRendererTickContext } from "./hudRendererContexts";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 
