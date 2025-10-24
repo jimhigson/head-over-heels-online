@@ -1,3 +1,3 @@
-import vertex from "./default.vert?raw";
+import vertex from "./default.vert";
 
 export { vertex };

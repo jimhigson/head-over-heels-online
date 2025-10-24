@@ -1,5 +1,3 @@
-import type { Filter } from "pixi.js";
-
 import {
   BloomFilter,
   ColorAdjustmentFilter,
@@ -10,6 +8,7 @@ import {
   ScanlinesFilter,
   VignetteFilter,
 } from "@blockstacking/jims-shaders";
+import { type Filter } from "pixi.js";
 
 import type { DisplaySettings } from "../../store/slices/gameMenus/gameMenusSlice";
 import type { Upscale } from "../../store/slices/upscale/Upscale";

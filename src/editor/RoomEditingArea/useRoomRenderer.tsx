@@ -2,7 +2,7 @@ import type { Renderer as PixiRenderer } from "pixi.js";
 
 import { useEffect, useState } from "react";
 
-import type { GeneralRenderContext } from "../../game/render/RoomRenderContexts";
+import type { GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import type { ShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSlice";
 import type {
   EditorRoomId,
@@ -10,7 +10,7 @@ import type {
   EditorRoomState,
 } from "../editorTypes";
 
-import { RoomRenderer } from "../../game/render/roomRenderer";
+import { RoomRenderer } from "../../game/render/room/roomRenderer";
 import { useShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";

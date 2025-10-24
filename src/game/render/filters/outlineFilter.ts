@@ -9,7 +9,7 @@ import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSl
 import { store } from "../../../store/store";
 import { transformObject } from "../../../utils/entries";
 import { vertex } from "./defaults";
-import fragment from "./outline.frag?raw";
+import fragment from "./outline.frag";
 
 export type OutlineFilterOptions = {
   color: Color;

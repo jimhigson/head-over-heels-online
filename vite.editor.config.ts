@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "node:path";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
+import glsl from "vite-plugin-glsl";
 
 /**
  * vite config specific to the level editor, which is a separately
@@ -40,6 +41,9 @@ export default defineConfig({
       template: "treemap",
       filename: "build-stats-editor.html",
     }) as PluginOption,
+    glsl({
+      minify: true,
+    }),
   ],
 
   build: {

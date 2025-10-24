@@ -5,7 +5,7 @@ import type { ItemInPlayType } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/RoomState";
 import type { MovedItems } from "../mainLoop/progressGameState";
 import type { ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
-import type { GeneralRenderContext } from "./RoomRenderContexts";
+import type { GeneralRenderContext } from "./room/RoomRenderContexts";
 import type { ZGraph } from "./sortZ/GraphEdges";
 
 export type ItemRenderContext<T extends ItemInPlayType> = {

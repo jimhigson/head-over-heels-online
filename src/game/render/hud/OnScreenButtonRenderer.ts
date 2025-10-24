@@ -8,7 +8,7 @@ import type { Xy } from "../../../utils/vectors/vectors";
 import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
 import type { PlayableItem, PortableItem } from "../../physics/itemPredicates";
 import type { Appearance } from "../appearance/Appearance";
-import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 import type { ButtonRenderingContainer } from "./arcadeStyleButtonRendering";
 
 import { pokeableToNumber } from "../../../model/ItemStateMap";

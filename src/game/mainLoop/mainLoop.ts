@@ -3,8 +3,8 @@ import type { Application, Ticker } from "pixi.js";
 import { Container, Rectangle } from "pixi.js";
 
 import type { GameState } from "../gameState/GameState";
-import type { RoomRenderContextInGame } from "../render/RoomRenderContexts";
-import type { RoomRendererType } from "../render/RoomRendererType";
+import type { RoomRenderContextInGame } from "../render/room/RoomRenderContexts";
+import type { RoomRendererType } from "../render/room/RoomRendererType";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
@@ -24,8 +24,9 @@ import { createSerialisableErrors } from "../../utils/redux/createSerialisableEr
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { HudRenderer } from "../render/hud/HudRenderer";
-import { RoomRenderer } from "../render/roomRenderer";
-import { RoomScrollRenderer } from "../render/RoomScrollRenderer";
+import { RoomRenderer } from "../render/room/roomRenderer";
+import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
+import { TeleportEffectRenderer } from "../render/TeleportEffectRenderer";
 import { getTimingStats } from "./FrameTimingStats";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
@@ -210,7 +211,10 @@ export class MainLoop<RoomId extends string> {
         };
         this.#roomRenderer = new RoomScrollRenderer(
           roomRenderContext,
-          new RoomRenderer(roomRenderContext),
+          new TeleportEffectRenderer(
+            roomRenderContext,
+            new RoomRenderer(roomRenderContext),
+          ),
         );
         this.#worldGraphics.addChild(this.#roomRenderer.output.graphics);
         this.#roomRenderer.output.sound?.connect(this.#worldSound);
