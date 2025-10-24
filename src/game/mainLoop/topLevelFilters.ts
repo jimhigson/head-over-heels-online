@@ -46,7 +46,7 @@ export const topLevelFilters = (
     // Scanlines and phosphor mask first (applied to flat image)
     new ScanlinesFilter({
       pixelHeight: upscale.gameEngineUpscale,
-      gapBrightness: 0.66,
+      gapBrightness: 0.5,
     }),
 
     new PhosphorMaskFilter({

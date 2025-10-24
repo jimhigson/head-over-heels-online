@@ -21,6 +21,7 @@ import {
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { createSavedGame } from "../../gameState/saving/createSavedGame";
+import { dispatchSaveGame } from "../../gameState/saving/dispatchSaveGame";
 import { floatingTextFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 
 /**
@@ -63,13 +64,16 @@ export const handlePlayerTouchingPickup = <
   // mark the item as picked up, but only if it is in the room's original list of items Eg,
   // if the item is injected at play-time (by cheats or some other mechanic), there's no point
   // marking it as collected or when it generates again it won't be possible to pick up
-  const markAsCollected = () => {
+  const pickupWasCollected = () => {
     if (roomJsonItems[pickupId]) {
       if (pickupsCollected[roomId] === undefined) {
         pickupsCollected[roomId] = {};
       }
       pickupsCollected[roomId][pickupId] = true;
     }
+
+    // probably a good time to save the game:
+    dispatchSaveGame(gameState, store);
   };
 
   const loadFloatingText = (textLines: string[]) => {
@@ -104,7 +108,7 @@ export const handlePlayerTouchingPickup = <
         room: roomWithPickup,
         item: loadFloatingText(["hooter", "collected"]),
       });
-      markAsCollected();
+      pickupWasCollected();
       break;
     }
 
@@ -118,7 +122,7 @@ export const handlePlayerTouchingPickup = <
         room: roomWithPickup,
         item: loadFloatingText(["+6", "doughnuts"]),
       });
-      markAsCollected();
+      pickupWasCollected();
       break;
     }
 
@@ -132,7 +136,7 @@ export const handlePlayerTouchingPickup = <
         room: roomWithPickup,
         item: loadFloatingText(["bag", "collected"]),
       });
-      markAsCollected();
+      pickupWasCollected();
       break;
     }
 
@@ -147,7 +151,7 @@ export const handlePlayerTouchingPickup = <
         room: roomWithPickup,
         item: loadFloatingText(["🛡", "shield"]),
       });
-      markAsCollected();
+      pickupWasCollected();
       break;
     }
 
@@ -161,7 +165,7 @@ export const handlePlayerTouchingPickup = <
         room: roomWithPickup,
         item: loadFloatingText(["⚡", "fast steps"]),
       });
-      markAsCollected();
+      pickupWasCollected();
       break;
     }
 
@@ -175,7 +179,7 @@ export const handlePlayerTouchingPickup = <
         room: roomWithPickup,
         item: loadFloatingText(["♨", "10", "big jumps"]),
       });
-      markAsCollected();
+      pickupWasCollected();
       break;
     }
 
@@ -200,18 +204,18 @@ export const handlePlayerTouchingPickup = <
           item: loadFloatingText(["+2", "lives"]),
         });
       }
-      markAsCollected();
+      pickupWasCollected();
       break;
 
     case "scroll":
       // avoid the scroll being closed right away if the player already has jump held:
       store.dispatch(scrollRead(pickupConfig));
-      markAsCollected();
+      pickupWasCollected();
       break;
 
     case "reincarnation": {
       // mark as collected before creating the save, so it is also collected in the saved game
-      markAsCollected();
+      pickupWasCollected();
 
       const savedGame = createSavedGame(gameState, store.getState(), {
         characterPickingUp: player.type,
@@ -254,7 +258,7 @@ export const handlePlayerTouchingPickup = <
         room: roomWithPickup,
         item: loadFloatingText([pickupConfig.planet, "liberated!"]),
       });
-      markAsCollected();
+      pickupWasCollected();
       break;
     }
 

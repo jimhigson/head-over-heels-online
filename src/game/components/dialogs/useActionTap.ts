@@ -38,13 +38,15 @@ export const useActionTap = ({
       return;
     }
 
-    const check = () => {
+    const callHandlerIfActionTapped = () => {
       for (const a of actions) {
         const pressStatus = inputStateTracker.currentActionPress(a);
         if (pressStatus === "tap") {
           const declinedToHandle = handler(a);
           if (!declinedToHandle) {
-            for (const a2 of actions) inputStateTracker.actionsHandled.add(a2);
+            for (const a2 of actions) {
+              inputStateTracker.actionsHandled.add(a2);
+            }
           }
 
           break; // if we are looking for multiple actions, don't let them
@@ -53,9 +55,9 @@ export const useActionTap = ({
       }
     };
 
-    Ticker.shared.add(check);
+    Ticker.shared.add(callHandlerIfActionTapped);
     return () => {
-      Ticker.shared.remove(check);
+      Ticker.shared.remove(callHandlerIfActionTapped);
     };
   }, [actions, disabled, inputStateTracker, handler]);
 };
