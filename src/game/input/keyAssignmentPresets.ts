@@ -36,17 +36,17 @@ const standardKeyAssignment = {
       keys: ["Shift", "`", "Z", "\\"],
     },
     fire: {
-      keys: ["E", "X"],
+      keys: ["D"],
     },
     swop: {
       // Spectrum default S is used for WASD, we have enter instead:
       keys: ["Enter"],
     },
     "swop.head": {
-      keys: ["["],
+      keys: ["[", "A"],
     },
     "swop.heels": {
-      keys: ["]"],
+      keys: ["]", "S"],
     },
     hold: {
       // Spectrum default 'H' is replaced with more recognisable/modern 'P' for pause
@@ -109,15 +109,14 @@ const gamepadAssignmentForLayout = ({
         gamepadButtons: [buttons.x, buttons.y].filter(isDefined),
       },
       fire: { gamepadButtons: [buttons.b].filter(isDefined) },
-      swop: { gamepadButtons: [buttons.rb].filter(isDefined) },
       lookShift: {
-        gamepadButtons: [buttons.rt].filter(isDefined),
+        gamepadButtons: [buttons.rb].filter(isDefined),
       },
       ["swop.head"]: {
-        gamepadButtons: [buttons.lPress, buttons.l3].filter(isDefined),
+        gamepadButtons: [buttons.lt].filter(isDefined),
       },
       ["swop.heels"]: {
-        gamepadButtons: [buttons.rPress, buttons.r3].filter(isDefined),
+        gamepadButtons: [buttons.rt].filter(isDefined),
       },
       hold: {
         gamepadButtons: [buttons.start].filter(isDefined),
@@ -139,8 +138,11 @@ const gamepadAssignmentForLayout = ({
       map: {
         gamepadButtons: [buttons.lb].filter(isDefined),
       },
-      toggleColourisation: {
-        gamepadButtons: [buttons.lt].filter(isDefined),
+      toggleCrtFilter: {
+        gamepadButtons: [buttons.l3].filter(isDefined),
+      },
+      toggleShowFps: {
+        gamepadButtons: [buttons.r3].filter(isDefined),
       },
     },
     axes: {
@@ -219,19 +221,6 @@ const defaultAssignment: InputAssignmentPreset = {
     gamepadAssignmentForLayout(standardControllerLayout),
     {
       presses: {
-        // Note - the spectrum default (QAOP) is replaced by modern WASD:
-        right: {
-          keys: ["D"],
-        },
-        towards: {
-          keys: ["S"],
-        },
-        left: {
-          keys: ["A"],
-        },
-        away: {
-          keys: ["W"],
-        },
         // Looking by default - like WASD but over at IJKL
         // (find pip on J with right index finger)
         lookUp: {
@@ -279,7 +268,6 @@ const wasdKeyAssignments: InputAssignmentPreset = {
   description: "Modern, minimalist WASD key layout",
 };
 
-// left hand on wasd, right hand (optionally) on IOP
 const keyboardMode8BitDo: InputAssignmentPreset = {
   inputAssignment: combineInputAssignments(
     standardKeyAssignment,
@@ -330,6 +318,7 @@ const mameToHoh = (mamePlayer: MamePlayer): PartialInputAssignment => ({
     swop: { keys: [mamePlayer.start] },
     hold: { keys: [mamePlayer.coin] },
     menu_openOrExit: { keys: [mamePlayer.buttons[4]] },
+    lookShift: { keys: [mamePlayer.buttons[5]] },
   },
 });
 
@@ -340,7 +329,19 @@ const mamePreset: InputAssignmentPreset = {
     standardKeyAssignment,
     { presses: { menu_openOrExit: { keys: ["`", "Tab"] } } },
     mameToHoh(mameButtonsPlayer1),
-    mameToHoh(mameButtonsPlayer2),
+    {
+      presses: {
+        // player 2 joystick for look:
+        lookDown: { keys: [mameButtonsPlayer2.directions.down] },
+        lookLeft: { keys: [mameButtonsPlayer2.directions.left] },
+        lookRight: { keys: [mameButtonsPlayer2.directions.right] },
+        lookUp: { keys: [mameButtonsPlayer2.directions.up] },
+
+        // player 2's buttons for direct swop to head/heels:
+        ["swop.head"]: { keys: [mameButtonsPlayer2.buttons[0]] },
+        ["swop.heels"]: { keys: [mameButtonsPlayer2.buttons[1]] },
+      },
+    },
   ),
   description: "Arcade-style control panels",
 };

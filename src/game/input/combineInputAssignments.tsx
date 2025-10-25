@@ -1,6 +1,7 @@
 import type { PartialDeep } from "type-fest";
 
 import type { InputAssignment } from "./InputAssignment";
+import type { Key } from "./keys";
 
 import { allActions } from "./actions";
 import { emptyInputAssignment } from "./emptyInputAssignment";
@@ -12,64 +13,95 @@ const combineWithoutDuplicates = <T,>(
 
 export type PartialInputAssignment = PartialDeep<InputAssignment>;
 
+/**
+ * later assignments override earlier ones if they define the same keys, buttons, axes
+ */
 export function combineInputAssignments(
   ...assignments: PartialInputAssignment[]
 ): InputAssignment {
-  return {
-    presses: assignments.reduce(
-      (
-        ac: InputAssignment["presses"],
-        curAssignment,
-      ): InputAssignment["presses"] => {
-        for (const action of allActions) {
-          ac[action] = {
-            keys: combineWithoutDuplicates(
-              ac[action]?.keys,
-              curAssignment?.presses?.[action]?.keys,
-            ),
-            gamepadButtons: combineWithoutDuplicates(
-              ac[action]?.gamepadButtons,
-              curAssignment?.presses?.[action]?.gamepadButtons,
-            ),
-          };
+  // Track which inputs have been claimed by later assignments
+  const claimedKeys = new Set<Key>();
+  const claimedButtons = new Set<number>();
+  const claimedAxes = new Set<number>();
+  const claimedRadialAxes = new Set<number>();
+
+  // Process assignments in reverse order so later ones take precedence
+  return assignments.reduceRight(
+    (ac: InputAssignment, curAssignment): InputAssignment => {
+      const alreadyClaimedKeys = new Set<Key>(claimedKeys);
+      const alreadyClaimedButtons = new Set<number>(claimedButtons);
+      const alreadyClaimedAxes = new Set<number>(claimedAxes);
+      const alreadyClaimedRadialAxes = new Set<number>(claimedRadialAxes);
+
+      // Process presses
+      for (const action of allActions) {
+        const currentKeys = curAssignment?.presses?.[action]?.keys ?? [];
+        const currentButtons =
+          curAssignment?.presses?.[action]?.gamepadButtons ?? [];
+
+        // Filter out keys and buttons that have been claimed by later assignments
+        const unclaimedKeys = currentKeys.filter(
+          (key) => !alreadyClaimedKeys.has(key),
+        );
+        const unclaimedButtons = currentButtons.filter(
+          (button) => !alreadyClaimedButtons.has(button),
+        );
+
+        // Add unclaimed inputs to this action
+        ac.presses[action] = {
+          keys: combineWithoutDuplicates(
+            ac.presses[action]?.keys,
+            unclaimedKeys,
+          ),
+          gamepadButtons: combineWithoutDuplicates(
+            ac.presses[action]?.gamepadButtons,
+            unclaimedButtons,
+          ),
+        };
+
+        // Mark these inputs as claimed
+        for (const key of currentKeys) {
+          claimedKeys.add(key);
         }
-        return ac;
-      },
-      structuredClone(emptyInputAssignment.presses),
-    ),
-    axes: {
-      x: Array.from(
-        new Set([
-          ...emptyInputAssignment.axes.x,
-          ...assignments.map((a) => a.axes?.x ?? []).flat(),
-        ]),
-      ),
-      y: Array.from(
-        new Set([
-          ...emptyInputAssignment.axes.y,
-          ...assignments.map((a) => a.axes?.y ?? []).flat(),
-        ]),
-      ),
-      xLook: Array.from(
-        new Set([
-          ...emptyInputAssignment.axes.xLook,
-          ...assignments.map((a) => a.axes?.xLook ?? []).flat(),
-        ]),
-      ),
-      yLook: Array.from(
-        new Set([
-          ...emptyInputAssignment.axes.yLook,
-          ...assignments.map((a) => a.axes?.yLook ?? []).flat(),
-        ]),
-      ),
+        for (const button of currentButtons) {
+          claimedButtons.add(button);
+        }
+      }
+
+      // Process axes
+      for (const axisType of ["x", "y", "xLook", "yLook"] as const) {
+        const currentAxes = curAssignment.axes?.[axisType] ?? [];
+        const unclaimedAxes = currentAxes.filter(
+          (axis) => !alreadyClaimedAxes.has(axis),
+        );
+        ac.axes[axisType] = combineWithoutDuplicates(
+          ac.axes[axisType],
+          unclaimedAxes,
+        );
+        // Mark these axes as claimed
+        for (const axis of currentAxes) {
+          claimedAxes.add(axis);
+        }
+      }
+
+      // Process radial axes
+      const currentRadialAxes = curAssignment.radialAxes?.xy ?? [];
+      const unclaimedRadialAxes = currentRadialAxes.filter(
+        (axis) => !alreadyClaimedRadialAxes.has(axis),
+      );
+      if (ac.radialAxes) {
+        ac.radialAxes.xy = combineWithoutDuplicates(
+          ac.radialAxes.xy,
+          unclaimedRadialAxes,
+        );
+      }
+      // Mark these radial axes as claimed
+      for (const axis of currentRadialAxes) {
+        claimedRadialAxes.add(axis);
+      }
+
+      return ac;
     },
-    radialAxes: {
-      xy: Array.from(
-        new Set([
-          ...(emptyInputAssignment.radialAxes?.xy ?? []),
-          ...assignments.map((a) => a.radialAxes?.xy ?? []).flat(),
-        ]),
-      ),
-    },
-  };
+    structuredClone(emptyInputAssignment),
+  );
 }
