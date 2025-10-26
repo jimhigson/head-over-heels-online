@@ -42,30 +42,33 @@ const batchNumber =
     Number.parseInt(process.env.BATCH_NUMBER)
   : 0;
 
+// First, determine which batch of rooms this runner is responsible for
+const totalRoomCount = roomIds.length;
+const roomsPerBatch = Math.ceil(totalRoomCount / batchCount);
+const batchStart = batchNumber * roomsPerBatch;
+const batchEnd = Math.min(batchStart + roomsPerBatch, totalRoomCount);
+const batchRoomIds = roomIds.slice(batchStart, batchEnd);
+
 // How many parallel tests to create within this runner (for progress visibility)
-const parallelTests =
-  process.env.PARALLEL_TESTS ? Number.parseInt(process.env.PARALLEL_TESTS) : 2;
+const parallelTestsCount =
+  // a single test for small batches:
+  roomsPerBatch < 10 ? 1
+  : process.env.PARALLEL_TESTS ? Number.parseInt(process.env.PARALLEL_TESTS)
+  : 2;
 
 console.log(
   `🏃 runner will process batch ${batchNumber} of ${batchCount} total batches`,
 );
 console.log(
-  `🏃 splitting this runner's rooms into ${parallelTests} parallel tests`,
+  `🏃 splitting this runner's rooms into ${parallelTestsCount} parallel tests`,
 );
 
-// First, determine which rooms this runner is responsible for
-const totalRoomCount = roomIds.length;
-const roomsPerBatch = Math.ceil(totalRoomCount / batchCount);
-const batchStart = batchNumber * roomsPerBatch;
-const batchEnd = Math.min(batchStart + roomsPerBatch, totalRoomCount);
-const myRooms = roomIds.slice(batchStart, batchEnd);
-
 // Then split this runner's rooms into parallel tests
-const roomsPerTest = Math.ceil(myRooms.length / parallelTests);
-const perTestRooms = Array.from({ length: parallelTests }, (_, index) => {
+const roomsPerTest = Math.ceil(batchRoomIds.length / parallelTestsCount);
+const perTestRooms = Array.from({ length: parallelTestsCount }, (_, index) => {
   const start = index * roomsPerTest;
   const end = start + roomsPerTest;
-  return myRooms.slice(start, end);
+  return batchRoomIds.slice(start, end);
 });
 
 // Selectors for menu navigation
@@ -355,7 +358,7 @@ test.describe("Room Visual Snapshots", () => {
   for (const [testIndex, testRooms] of perTestRooms.entries()) {
     const firstRoom = testRooms.at(0);
     const lastRoom = testRooms.at(-1);
-    const testDescription = `${testIndex + 1}/${parallelTests}: ${`${firstRoom}...${lastRoom}`}`;
+    const testDescription = `${testIndex + 1}/${parallelTestsCount}: ${`${firstRoom}...${lastRoom}`}`;
     test(`Snapshot rooms test ${testDescription}`, async ({
       page,
     }, testInfo) => {
