@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.7.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.6.0...v1.7.0) (2025-10-26)
+
+
+### Features
+
+* add "mixed" as a new default input mode suitable for gamepads with both analogue and digital control ([#569](https://github.com/jimhigson/head-over-heels-online/issues/569)) ([d70ba62](https://github.com/jimhigson/head-over-heels-online/commit/d70ba62abecd69550789bdd50c82cc59051b97b6))
+* allow radial d-pads to be used, specifically the 8bitdo ultimate 2c wired ([#572](https://github.com/jimhigson/head-over-heels-online/issues/572)) ([bb2f2a1](https://github.com/jimhigson/head-over-heels-online/commit/bb2f2a1591fef2673148f40c380216cac9319a74))
+* improved some input presets ([#575](https://github.com/jimhigson/head-over-heels-online/issues/575)) ([ad18306](https://github.com/jimhigson/head-over-heels-online/commit/ad183069e79b17787876c575b7fee8f2a5290e9b))
+* move display options into their own sub-menu ([#571](https://github.com/jimhigson/head-over-heels-online/issues/571)) ([8de6169](https://github.com/jimhigson/head-over-heels-online/commit/8de61696a6544f5eef15902326ff714ef9aa442e))
+* narrower lowercase 'r' in bitmap font ([#573](https://github.com/jimhigson/head-over-heels-online/issues/573)) ([6ea0079](https://github.com/jimhigson/head-over-heels-online/commit/6ea007951e4caebdc72d64384f3e3e2db6196c8e))
+
+
+### Bug Fixes
+
+* don't show as 'custom' input preset when no input has been mapped ([#574](https://github.com/jimhigson/head-over-heels-online/issues/574)) ([6bd0363](https://github.com/jimhigson/head-over-heels-online/commit/6bd0363e14dbe74ac95231986f92f9d34b125433))
+* heels blinks like head on main menu screen ([#564](https://github.com/jimhigson/head-over-heels-online/issues/564)) ([e2b6a65](https://github.com/jimhigson/head-over-heels-online/commit/e2b6a658c6efbf17d57119c3b001410a33c9a005))
+* if putting down a carried item causes Heels to touch a reincarnation fish, don't create a bugged save with a duplicate of the item put down (both in the bag and in the room) - this would cause crashed on reloading the reincarnation point ([#570](https://github.com/jimhigson/head-over-heels-online/issues/570)) ([58994cf](https://github.com/jimhigson/head-over-heels-online/commit/58994cf6040b3f1ca6e835dfc9fae712a03315e7))
+
 ## [1.6.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.5.0...v1.6.0) (2025-10-15)
 
 
