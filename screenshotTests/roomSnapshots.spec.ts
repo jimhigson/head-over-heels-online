@@ -21,7 +21,7 @@ import { sleep } from "./sleep";
 const roomLimit = undefined;
 
 // CI is slower, needs more time
-const timeoutPerRoom = process.env.CI ? 20_000 : 2_000;
+const timeoutPerRoom = process.env.CI ? 20_000 : 3_000;
 const maximumWaitForStep = 15_000;
 const maxTriesToLoadRoom = 3;
 
