@@ -2718,6 +2718,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
         "disappearing": null,
         "expires": null,
+        "lastPushDirection": "towards",
         "position": {
           "x": 65,
           "y": 17,

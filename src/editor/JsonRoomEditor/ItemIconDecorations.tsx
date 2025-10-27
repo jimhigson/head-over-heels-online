@@ -209,7 +209,7 @@ const textureForItem = (
     case "hushPuppy":
       return twClass(`texture-hushPuppy`);
     case "joystick":
-      return twClass(`texture-joystick`);
+      return twClass(`texture-joystick_ball`);
     case "switch":
       return twClass(`texture-switch_left`);
     case "conveyor":

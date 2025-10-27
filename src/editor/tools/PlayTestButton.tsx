@@ -47,7 +47,7 @@ export const PlayTestButton = () => {
           <IconWithTwoLineHoverText
             topText="pl"
             bottomText="ay"
-            icon={<span className="sprite texture-joystick mt-half" />}
+            icon={<span className="sprite texture-joystick_whole mt-half" />}
           />
         </ToolbarButton>
       }

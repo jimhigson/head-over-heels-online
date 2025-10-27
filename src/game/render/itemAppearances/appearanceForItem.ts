@@ -22,6 +22,7 @@ import {
   itemStaticAnimatedAppearance,
   itemStaticAppearance,
 } from "./ItemAppearance";
+import { joystickAppearance } from "./joystickAppearance";
 import { monsterAppearance } from "./monsterAppearance";
 import { playableAppearance, shineFilterForHeels } from "./playableAppearance";
 import { sceneryPlayerAppearance } from "./sceneryPlayerAppearance";
@@ -202,7 +203,7 @@ const itemAppearancesMap: {
 
   charles: charlesAppearance,
 
-  joystick: itemStaticAppearance("joystick"),
+  joystick: joystickAppearance,
 
   movingPlatform: itemStaticAppearance("sandwich"),
   pushableBlock: itemStaticAppearance("stepStool"),

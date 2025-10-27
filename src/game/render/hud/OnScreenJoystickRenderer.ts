@@ -73,7 +73,7 @@ export class OnScreenJoystickRenderer
   #arrowSprites: Partial<Record<DirectionXy8, Container>>;
 
   #joystickSprite = createSprite({
-    textureId: "joystick",
+    textureId: "joystick.whole",
     anchor: { x: 0.5, y: 0.5 },
     y: 1,
   });

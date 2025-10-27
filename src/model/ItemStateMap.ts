@@ -2,7 +2,12 @@ import type { EmptyObject, Simplify } from "type-fest";
 
 import type { PortableItem } from "../game/physics/itemPredicates";
 import type { SceneryName } from "../sprites/planets";
-import type { DirectionXyz4, Xy, Xyz } from "../utils/vectors/vectors";
+import type {
+  DirectionXy4,
+  DirectionXyz4,
+  Xy,
+  Xyz,
+} from "../utils/vectors/vectors";
 import type { SwitchSetting } from "./ItemInPlay";
 import type { ItemConfigMap } from "./json/ItemConfigMap";
 import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
@@ -68,7 +73,10 @@ export type FreeItemState<RoomItemId extends string> = {
 
   /**
    * really for charles bots in the original game, but technically any free item can
-   * be controlled
+   * be controlled.
+   *
+   * Used to dedupe so that each item can only be controlled by one joystick per-frame -
+   * first one to the processed wins
    */
   controlledWithJoystickAtRoomTime: number;
 };
@@ -255,7 +263,10 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["emitter"]
   >; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
 
-  joystick: ItemConfigMap<RoomId, RoomItemId, SceneryName>["joystick"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+  joystick: {
+    // the direction this joystick was pushed most recently:
+    lastPushDirection: DirectionXy4 | undefined;
+  } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["joystick"]; // copying the config into the state means that these settings are mutable at run-time. eg, changing what the joystick controls using switches
   teleporter: ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
 
   pushableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;

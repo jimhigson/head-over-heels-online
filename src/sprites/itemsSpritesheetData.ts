@@ -142,15 +142,27 @@ const frames = {
     },
   },
 
-  joystick: {
+  "joystick.stick": {
     frame: {
       ...smallItemGridLocation({ x: 13, y: 2 }),
       ...smallItemTextureSize,
     },
   },
-  "shadowMask.joystick": {
+  "joystick.ball": {
     frame: {
       ...smallItemGridLocation({ x: 14, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "joystick.whole": {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.joystick": {
+    frame: {
+      ...smallItemGridLocation({ x: 16, y: 2 }),
       ...smallItemTextureSize,
     },
   },
