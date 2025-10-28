@@ -24,7 +24,7 @@ export const InputDirectionModeMenuItem = () => {
       label="Directions"
       leader={
         <span
-          className={`${spriteLeaderClasses} texture-joystick sprites-normal-height`}
+          className={`${spriteLeaderClasses} texture-joystick_whole sprites-normal-height`}
         />
       }
       valueElement={

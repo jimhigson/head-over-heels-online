@@ -6,7 +6,12 @@ import type { Xy } from "../../../utils/vectors/vectors";
 import type { FreeItemTypes } from "../itemPredicates";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
-import { scaleXyz, unitVector } from "../../../utils/vectors/vectors";
+import {
+  scaleXy,
+  scaleXyz,
+  unitVector,
+  vectorClosestDirectionXy4,
+} from "../../../utils/vectors/vectors";
 import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv } from "../mtv";
@@ -43,10 +48,15 @@ export const handleItemTouchingJoystick = <
   );
 
   if (m.x === 0 && m.y === 0) {
+    joystickItem.state.lastPushDirection = undefined;
     return;
   }
 
   const unitM = unitVector(m);
+
+  joystickItem.state.lastPushDirection = vectorClosestDirectionXy4(
+    scaleXy(unitM, -1),
+  );
 
   type CompatibleItem = Extract<
     UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,

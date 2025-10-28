@@ -71,7 +71,7 @@ export const OptionsDialog = () => {
               }
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite texture-joystick sprites-normal-height zx:sprite-revert-to-white`}
+                  className={`${spriteLeaderClasses} sprite texture-joystick_whole sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
             />

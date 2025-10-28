@@ -615,7 +615,7 @@ Controls one or more Charles bots
 Change *which* Charles in the json`}
         >
           <span
-            className={`sprite texture-joystick ${buttonSpriteRevertColourClasses}`}
+            className={`sprite texture-joystick_whole ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
