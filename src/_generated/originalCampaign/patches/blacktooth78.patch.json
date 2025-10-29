@@ -1,5 +1,13 @@
 [
   {
+    "op": "remove",
+    "path": "/items/wall@8,5,0"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@8,0,0"
+  },
+  {
     "op": "replace",
     "path": "/items/movingPlatform@1,1,1/config/activated",
     "value": "on"
@@ -10,91 +18,37 @@
     "value": 11
   },
   {
+    "op": "replace",
+    "path": "/items/door@8,3,5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,3,2/position/y",
+    "value": 0
+  },
+  {
+    "op": "add",
+    "path": "/items/block@7,3,2/config/times",
+    "value": {
+      "y": 2
+    }
+  },
+  {
     "op": "add",
     "path": "/items/block@3,7,0",
     "value": {
       "config": {
-        "style": "tower"
+        "style": "tower",
+        "times": {
+          "x": 2,
+          "z": 3
+        }
       },
       "position": {
         "x": 3,
         "y": 7,
         "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@3,7,1",
-    "value": {
-      "config": {
-        "style": "tower"
-      },
-      "position": {
-        "x": 3,
-        "y": 7,
-        "z": 1
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@3,7,2",
-    "value": {
-      "config": {
-        "style": "tower"
-      },
-      "position": {
-        "x": 3,
-        "y": 7,
-        "z": 2
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@4,7,0",
-    "value": {
-      "config": {
-        "style": "tower"
-      },
-      "position": {
-        "x": 4,
-        "y": 7,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@4,7,1",
-    "value": {
-      "config": {
-        "style": "tower"
-      },
-      "position": {
-        "x": 4,
-        "y": 7,
-        "z": 1
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@4,7,2",
-    "value": {
-      "config": {
-        "style": "tower"
-      },
-      "position": {
-        "x": 4,
-        "y": 7,
-        "z": 2
       },
       "type": "block"
     }
@@ -104,11 +58,15 @@
     "path": "/items/block@7,3,0",
     "value": {
       "config": {
-        "style": "tower"
+        "style": "tower",
+        "times": {
+          "y": 2,
+          "z": 2
+        }
       },
       "position": {
         "x": 7,
-        "y": 3,
+        "y": 0,
         "z": 0
       },
       "type": "block"
@@ -116,17 +74,18 @@
   },
   {
     "op": "add",
-    "path": "/items/block@7,3,1",
+    "path": "/items/wall",
     "value": {
       "config": {
-        "style": "tower"
+        "direction": "left",
+        "tiles": ["armour", "plain", "shield", "shield", "plain", "armour"]
       },
       "position": {
-        "x": 7,
-        "y": 3,
-        "z": 1
+        "x": 8,
+        "y": 2,
+        "z": 0
       },
-      "type": "block"
+      "type": "wall"
     }
   }
 ]
