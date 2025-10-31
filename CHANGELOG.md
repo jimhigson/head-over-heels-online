@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.7.0...v1.8.0) (2025-10-29)
+
+
+### Features
+
+* joysticks animated when pressed ([#578](https://github.com/jimhigson/head-over-heels-online/issues/578)) ([b40b67f](https://github.com/jimhigson/head-over-heels-online/commit/b40b67fb62d09144c6c4d0563798cb94b2a0dda5))
+
+
+### Bug Fixes
+
+* avoid skip in blacktooth78 by jumping diagonally from the entrance door threshold ([#580](https://github.com/jimhigson/head-over-heels-online/issues/580)) ([dcbc7db](https://github.com/jimhigson/head-over-heels-online/commit/dcbc7db1c33444993bc6645485e76fb9b3e7f9c7))
+
 ## [1.7.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.6.0...v1.7.0) (2025-10-26)
 
 
