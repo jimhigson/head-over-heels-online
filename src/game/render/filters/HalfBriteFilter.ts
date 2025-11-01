@@ -1,7 +1,7 @@
 import { Filter, GlProgram } from "pixi.js";
 
 import { vertex } from "./defaults";
-import fragment from "./halfBrite.frag?raw";
+import fragment from "./halfBrite.frag";
 
 /**
  * Filter to put graphics back to how they looked on the spectrum!

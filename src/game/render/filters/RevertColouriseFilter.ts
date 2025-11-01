@@ -3,7 +3,7 @@ import type { ColorSource } from "pixi.js";
 import { Color, Filter, GlProgram } from "pixi.js";
 
 import { vertex } from "./defaults";
-import fragment from "./revertColourise.frag?raw";
+import fragment from "./revertColourise.frag";
 
 /**
  * Filter to put graphics back to how they looked on the spectrum!

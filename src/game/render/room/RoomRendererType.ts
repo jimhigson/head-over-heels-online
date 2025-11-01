@@ -1,12 +1,12 @@
 import type { SetRequired } from "type-fest";
 
-import type { Renderer } from "./Renderer";
+import type { Renderer } from "../Renderer";
+import type { SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import type {
   RoomRenderContext,
   RoomRenderContextInGame,
   RoomTickContext,
 } from "./RoomRenderContexts";
-import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
 /**
  * the type that RoomRenderer implements;
@@ -21,7 +21,11 @@ export type RoomRendererType<
   SetRequired<SoundAndGraphicsOutput, "graphics">
 >;
 
-/** type of room renderers that don't support the level editor */
+/**
+ * type of room renderers that don't support the level editor
+ *
+ * - difference being that the render context is RoomRenderContextInGame
+ */
 export type RoomRendererTypeInGameOnly<
   RoomId extends string,
   RoomItemId extends string,

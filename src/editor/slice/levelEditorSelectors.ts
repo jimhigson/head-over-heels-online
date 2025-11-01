@@ -17,7 +17,7 @@ import type {
 } from "./levelEditorSlice";
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
-import { floorsRenderExtent } from "../../game/render/floorsExtent";
+import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
 import { emptyObject } from "../../utils/empty";
 import { selectorHook } from "../../utils/react/selectorHook";
 
