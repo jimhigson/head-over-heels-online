@@ -12,6 +12,8 @@ import type { SelectableGameSpeeds } from "../src/store/slices/gameMenus/selecta
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";
+import { formatDuration } from "./formatDuration";
+import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
 import { formatProjectName, progressLogHeader } from "./projectName";
 import { sleep } from "./sleep";
 
@@ -20,9 +22,11 @@ import { sleep } from "./sleep";
 // but should be undefined in e2e to say "no limit"
 const roomLimit = undefined;
 
-// CI is slower, needs more time
-const timeoutPerRoom = process.env.CI ? 20_000 : 3_000;
-const maximumWaitForStep = 15_000;
+// CI is slower, needs more time, even on arm64 runners (fastest on github).
+// Windows is even slower (on the Github runners at least).
+const osSlowness = process.platform === "win32" ? 4 : 1;
+const timeoutPerRoom = (process.env.CI ? 20_000 : 3_000) * osSlowness;
+const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
 // Override to run for just one room by setting the ROOMS envar, eg:
@@ -115,7 +119,7 @@ const waitForRoomRenderEvent = async (
         () =>
           reject(
             new Error(
-              `Timeout waiting for firstRenderOfRoom event ${expectedRoomId} after 5000ms`,
+              `Timeout waiting for firstRenderOfRoom event ${expectedRoomId} after ${formatDuration(maximumWaitForStep)}`,
             ),
           ),
         maximumWaitForStep,
@@ -129,6 +133,10 @@ const waitForRoomRenderEvent = async (
 };
 
 const startOriginalGame = async (page: Page, projectName: string) => {
+  // we can't stop the losing branch completely from finishing its operation, but
+  // we can stop it from doing its next step:
+  let cancelled = false;
+
   await Promise.race([
     (async () => {
       const formattedName = formatProjectName(projectName);
@@ -136,28 +144,53 @@ const startOriginalGame = async (page: Page, projectName: string) => {
       // Navigate to the page with cheats on; starting in the final room ensures that
       // when the room loop tries to go to the first room, there is an actual navigation
       // into there
+      let stepStart = performance.now();
       await page.goto(`/?cheats=1#finalroom`);
+      console.log(
+        `${formattedName}: goto took ${formatDuration(performance.now() - stepStart)}`,
+      );
+      if (cancelled) return;
 
       // start a game:
       console.log(`${formattedName}: clicking Play The Game...`);
+      stepStart = performance.now();
       await logSelectorExistence(page, playGameMenuItemSelector, formattedName);
+      console.log(
+        `${formattedName}: logSelectorExistence (playGame) took ${formatDuration(performance.now() - stepStart)}`,
+      );
+      if (cancelled) return;
+
+      stepStart = performance.now();
       await page.click(playGameMenuItemSelector);
+      console.log(
+        `${formattedName}: click (playGame) took ${formatDuration(performance.now() - stepStart)}`,
+      );
+      if (cancelled) return;
 
       // select original campaign:
       console.log(`${formattedName}: choosing original campaign...`);
+      stepStart = performance.now();
       await logSelectorExistence(page, originalGameSelector, formattedName);
+      console.log(
+        `${formattedName}: logSelectorExistence (originalGame) took ${formatDuration(performance.now() - stepStart)}`,
+      );
+      if (cancelled) return;
+
+      stepStart = performance.now();
       await page.click(originalGameSelector);
+      console.log(
+        `${formattedName}: click (originalGame) took ${formatDuration(performance.now() - stepStart)}`,
+      );
     })(),
     new Promise<never>((_, reject) =>
-      setTimeout(
-        () =>
-          reject(
-            new Error(
-              `Timeout starting original game after ${maximumWaitForStep}ms`,
-            ),
+      setTimeout(() => {
+        cancelled = true;
+        return reject(
+          new Error(
+            `Timeout starting original game after ${formatDuration(maximumWaitForStep)}`,
           ),
-        maximumWaitForStep,
-      ),
+        );
+      }, maximumWaitForStep),
     ),
   ]);
 };
@@ -223,58 +256,98 @@ const exitCrownsDialog = async (page: Page, projectName: string) => {
 
   await retryWithRecovery({
     async action(attempt) {
+      // we can't stop the losing branch completely from finishing its operation, but
+      // we can stop it from doing its next step:
+      let cancelled = false;
+
       await Promise.race([
         (async () => {
           // Screenshot before checking dialog
+          let stepStart = performance.now();
           await page
             .screenshot({
               path: `test-results/crowns-${projectName}-attempt-${attempt}-before-check.png`,
               fullPage: false,
             })
             .catch(() => {});
+          console.log(
+            `${formattedName}: screenshot (before-check) took ${formatDuration(performance.now() - stepStart)}`,
+          );
+          if (cancelled) return;
 
           // Check if the crowns dialog is visible
+          stepStart = performance.now();
           const crownsDialogVisible = await page
             .locator(crownsDialogSelector)
             .isVisible()
             .catch(() => false);
+          console.log(
+            `${formattedName}: isVisible check took ${formatDuration(performance.now() - stepStart)}`,
+          );
+          if (cancelled) return;
 
           if (crownsDialogVisible) {
             console.log(`${formattedName}: exiting crowns dialog...`);
 
             // Screenshot before clicking dialog
+            stepStart = performance.now();
             await page
               .screenshot({
                 path: `test-results/crowns-${projectName}-attempt-${attempt}-before-click.png`,
                 fullPage: false,
               })
               .catch(() => {});
+            console.log(
+              `${formattedName}: screenshot (before-click) took ${formatDuration(performance.now() - stepStart)}`,
+            );
+            if (cancelled) return;
 
             // Log selector existence before clicking
+            stepStart = performance.now();
             await logSelectorExistence(
               page,
               crownsDialogSelector,
               formattedName,
             );
+            console.log(
+              `${formattedName}: logSelectorExistence took ${formatDuration(performance.now() - stepStart)}`,
+            );
+            if (cancelled) return;
 
+            stepStart = performance.now();
             await page.click(crownsDialogSelector);
+            console.log(
+              `${formattedName}: click (crowns) took ${formatDuration(performance.now() - stepStart)}`,
+            );
             console.log(`${formattedName}: crowns dialog closed`);
           } else {
+            // Screenshot before clicking dialog
+            stepStart = performance.now();
+            await page
+              .screenshot({
+                path: `test-results/crowns-${projectName}-attempt-${attempt}-already-closed.png`,
+                fullPage: false,
+              })
+              .catch(() => {});
+            console.log(
+              `${formattedName}: screenshot (already-closed) took ${formatDuration(performance.now() - stepStart)}`,
+            );
+            if (cancelled) return;
+
             console.log(
               `${formattedName}: crowns dialog not shown, continuing...`,
             );
           }
         })(),
         new Promise<never>((_, reject) =>
-          setTimeout(
-            () =>
-              reject(
-                new Error(
-                  `Timeout exiting crowns dialog after ${maximumWaitForStep}ms`,
-                ),
+          setTimeout(() => {
+            cancelled = true;
+            return reject(
+              new Error(
+                `Timeout exiting crowns dialog after ${formatDuration(maximumWaitForStep)}`,
               ),
-            maximumWaitForStep,
-          ),
+            );
+          }, maximumWaitForStep),
         ),
       ]);
     },
@@ -312,8 +385,7 @@ const retryWithRecovery = async <T>({
       const result = await action(attempt);
       console.log(
         `${logHeader} ... succeeded after`,
-        chalk.yellow((performance.now() - startTime).toFixed(0)),
-        "ms",
+        chalk.yellow(formatDuration(performance.now() - startTime)),
       );
       return result;
     } catch (error) {
@@ -364,7 +436,10 @@ test.describe("Room Visual Snapshots", () => {
     }, testInfo) => {
       test.setTimeout(testRooms.length * timeoutPerRoom + 10_000);
       const formattedName = `${formatProjectName(testInfo.project.name)} (${testIndex})`;
-      console.log(`${formattedName} starting test ${testDescription} `);
+
+      forwardBrowserConsoleToNodeConsole(page, formattedName);
+
+      console.log(`${formattedName} starting test ${formattedName} `);
 
       try {
         await test.step(`starting the game`, async () => {
@@ -443,24 +518,25 @@ test.describe("Room Visual Snapshots", () => {
         });
       };
 
-      if (testIndex !== 0) {
-        const previousTestIndex = testIndex - 1;
-        const previousLastRoom = perTestRooms[previousTestIndex].at(-1)!;
-        // first, navigate to the last room of the previous test.
-        // this means that we start this test with the same location
-        // as if we had done one continuous run. This can impact which
-        // door the character starts at when they enter the room
-        // TODO: should really also look to the previous batch too if testIndex is 0,
-        // although for now it seems like by luck this isn't causing any failures
-        console.log(
-          `testIndex=${testIndex} - will preload rooms at ${previousLastRoom}, the last room of testIndex ${previousTestIndex}`,
-        );
+      // first, navigate to the last room of the previous batch or test.
+      // this means that we start this test with the same location
+      // as if we had done one continuous run. This can impact which
+      // door the character starts at when they enter the room
+      const roomIdIndex = roomIds.indexOf(testRooms[0]);
+      if (roomIdIndex > 0) {
         const logHeader = progressLogHeader(
           testInfo.project.name,
           -1,
           testIndex,
         );
-        await navigateToRoom(logHeader, previousLastRoom);
+
+        const previousRoomId = roomIds[roomIdIndex - 1];
+
+        console.log(
+          `${logHeader} will pre-load previous room: ${previousRoomId} to set correct entry point to my first room: ${testRooms[0]}`,
+        );
+
+        await navigateToRoom(logHeader, previousRoomId);
       }
 
       for (const [roomIndex, roomId] of testRooms.entries()) {
@@ -482,7 +558,7 @@ test.describe("Room Visual Snapshots", () => {
           const screenshotStart = performance.now();
           await expect
             // github free runners are slow:
-            .configure({ timeout: 15_000 })
+            .configure({ timeout: 15_000 * osSlowness })
             .soft(page)
             .toHaveScreenshot(`${roomId}.png`, {
               fullPage: false,
@@ -496,8 +572,7 @@ test.describe("Room Visual Snapshots", () => {
             });
           console.log(
             `${logHeader} ...screenshot took`,
-            chalk.yellow((performance.now() - screenshotStart).toFixed(0)),
-            "ms",
+            chalk.yellow(formatDuration(performance.now() - screenshotStart)),
           );
         });
       }
