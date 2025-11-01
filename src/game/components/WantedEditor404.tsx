@@ -1,6 +1,7 @@
 import { Border } from "../../ui/Border";
 import { Dialog } from "../../ui/dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
+import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 import { directionsXy8 } from "../../utils/vectors/vectors";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 import { playableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
@@ -33,7 +34,11 @@ export const WantedEditor404 = () => {
             </p>
             <p className="pt-1">
               You could try going to:{" "}
-              <a href="/editor/" className="bitmap-text-link">
+              <a
+                href="/editor/"
+                onClick={linkOpenExternalClickHandler}
+                className="bitmap-text-link"
+              >
                 /editor/
               </a>{" "}
               (with a slash on the end)
