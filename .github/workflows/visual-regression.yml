@@ -26,6 +26,8 @@ jobs:
               - 'pnpm-lock.yaml'
               - '.github/workflows/visual-regression.yml'
 
+  # job builds once, and then the built, cached asset of the game (not inc editor) is used for all playwright
+  # jobs - meaning that each playwright runner does not have to do its own build
   build-game:
     needs: check-changes
     if: needs.check-changes.outputs.should-run == 'true'
@@ -38,7 +40,12 @@ jobs:
         id: game-build-cache
         with:
           path: dist/
-          key: game-build-${{ runner.os }}-${{ hashFiles('src/**', 'gfx/**', 'pnpm-lock.yaml', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json') }}
+          # hashing with hash-files is unreliable cross-platform (gives different results on unix/win) so use the
+          # git sha instead. This would means a new build for every new commit, which could otherwise have been skipped,
+          # but the build does only happen after check-changes has passed, so this shouldn't cause too many builds
+          key: game-build-${{ github.sha }}
+          # share caches with Windows even though building on Unix:
+          enableCrossOsArchive: true
 
       - name: Install pnpm
         if: steps.game-build-cache.outputs.cache-hit != 'true'
@@ -61,10 +68,13 @@ jobs:
   visual-tests:
     needs: [check-changes, build-game]
     if: needs.check-changes.outputs.should-run == 'true'
-    runs-on: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-24.04-arm
+          - windows-latest
         node-version: [22.x]
         test:
           - lutSnapshot
@@ -77,12 +87,18 @@ jobs:
         batch_number: [0, 1, 2]
         batch_count: [3]
         parallel_tests: [2]
+        # lut doesn't need batches, so exclude batch 1 and 2
+        # webkit/safari only available on Linux/macOS, not Windows
         exclude:
           - test: lutSnapshot
             batch_number: 1
           - test: lutSnapshot
             batch_number: 2
-    name: Visual tests - ${{ matrix.test }} - ${{ matrix.browser }}${{ matrix.test == 'roomSnapshots' && format(' - batch {0}', matrix.batch_number) || '' }}
+          - os: windows-latest
+            browser: webkit-desktop
+          - os: windows-latest
+            browser: mobile-safari
+    name: Visual tests - ${{ matrix.test }} - ${{ matrix.browser }} - ${{ matrix.os }}${{ matrix.test == 'roomSnapshots' && format(' - batch {0}', matrix.batch_number) || '' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -102,16 +118,18 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: dist/
-          key: game-build-${{ runner.os }}-${{ hashFiles('src/**', 'gfx/**', 'pnpm-lock.yaml', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json') }}
+          key: game-build-${{ github.sha }}
+          enableCrossOsArchive: true
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         id: playwright-cache
         with:
-          path: ~/.cache/ms-playwright
+          path: ${{ runner.os == 'Windows' && '~/AppData/Local/ms-playwright' || '~/.cache/ms-playwright' }}
           key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Install Playwright browsers
+        shell: bash
         run: |
           if [[ "${{ matrix.browser }}" == *"chromium"* ]] || [[ "${{ matrix.browser }}" == *"chrome"* ]]; then
             pnpm playwright install chromium
@@ -123,7 +141,7 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Install Playwright system dependencies
-        if: matrix.browser == 'webkit-desktop' || matrix.browser == 'mobile-safari' || matrix.browser == 'firefox-desktop'
+        if: (matrix.browser == 'webkit-desktop' || matrix.browser == 'mobile-safari' || matrix.browser == 'firefox-desktop') && runner.os == 'Linux'
         run: pnpm playwright install-deps
 
       - name: Run Playwright tests
