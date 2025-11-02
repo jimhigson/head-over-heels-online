@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.8.0...v1.9.0) (2025-11-02)
+
+
+### Features
+
+* colour clash effect while teleporting ([#577](https://github.com/jimhigson/head-over-heels-online/issues/577)) ([27e4ee3](https://github.com/jimhigson/head-over-heels-online/commit/27e4ee340486a733bb5232b022a713d767bb23c7))
+
 ## [1.8.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.7.0...v1.8.0) (2025-10-29)
 
 
