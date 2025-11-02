@@ -2,8 +2,9 @@ import type { SetRequired } from "type-fest";
 
 import { Container, Graphics } from "pixi.js";
 
-import type { RoomState } from "../../model/RoomState";
-import type { Xy } from "../../utils/vectors/vectors";
+import type { RoomState } from "../../../model/RoomState";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import type {
   RoomRenderContextInGame,
   RoomTickContext,
@@ -12,13 +13,12 @@ import type {
   RoomRendererType,
   RoomRendererTypeInGameOnly,
 } from "./RoomRendererType";
-import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
-import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
-import { detectDeviceType } from "../../utils/detectDeviceType";
-import { epsilon } from "../../utils/epsilon";
-import { neverTime } from "../../utils/neverTime";
-import { assignRoundedXy } from "../../utils/pixi/assignRoundedXy";
+import { defaultUserSettings } from "../../../store/slices/gameMenus/defaultUserSettings";
+import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { epsilon } from "../../../utils/epsilon";
+import { neverTime } from "../../../utils/neverTime";
+import { assignRoundedXy } from "../../../utils/pixi/assignRoundedXy";
 import {
   addXy,
   addXyz,
@@ -27,10 +27,10 @@ import {
   scaleXyz,
   subXy,
   subXyz,
-} from "../../utils/vectors/vectors";
-import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
+} from "../../../utils/vectors/vectors";
+import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { projectWorldXyzToScreenXy } from "../projections";
 import { floorsRenderExtent } from "./floorsExtent";
-import { projectWorldXyzToScreenXy } from "./projections";
 
 // a higher value means more scrolling will occur.
 // 0.33 is generally good for original game levels, 0.4 is good for new remake-specific levels

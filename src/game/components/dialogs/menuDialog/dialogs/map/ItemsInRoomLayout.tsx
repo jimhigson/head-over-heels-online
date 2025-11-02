@@ -19,7 +19,7 @@ import {
   scaleXyz,
   type Xy,
 } from "../../../../../../utils/vectors/vectors";
-import { roomJsonFloorsExtent } from "../../../../../render/floorsExtent";
+import { roomJsonFloorsExtent } from "../../../../../render/room/floorsExtent";
 import { roomGridSizeXY } from "./mapConstants";
 import {
   type NotableItem,

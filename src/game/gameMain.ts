@@ -76,6 +76,9 @@ export const gameMain = async <RoomId extends string>(
   // only put on window after initialised and maxFPS set - this ensures it can also be
   // overwritten
   window._e2e_pixiApplication = app;
+  // add for pixi dev tools:
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (globalThis as any).__PIXI_APP__ = app;
 
   const savedGameToContinueFrom = selectSaveForCampaign<RoomId>(
     store.getState(),

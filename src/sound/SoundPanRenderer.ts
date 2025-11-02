@@ -4,8 +4,8 @@ import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "./ItemSoundRenderer";
 
 import { defaultRoomHeightBlocks } from "../game/physics/mechanicsConstants";
-import { floorsRenderExtent } from "../game/render/floorsExtent";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
+import { floorsRenderExtent } from "../game/render/room/floorsExtent";
 import { blockSizePx } from "../sprites/spritePivots";
 import { addXyzInPlace, scaleXyzWriteInto } from "../utils/vectors/vectors";
 import { audioCtx } from "./audioCtx";

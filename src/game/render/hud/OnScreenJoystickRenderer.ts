@@ -6,7 +6,7 @@ import { Container, Graphics } from "pixi.js";
 
 import type { InputDirectionMode } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Renderer } from "../Renderer";
-import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 import type { OutlineAndColouriseFilter } from "./hudFilters";
 import type { OnScreenLookRenderer } from "./OnScreenLookRenderer";
 import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";

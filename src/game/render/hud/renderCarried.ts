@@ -2,7 +2,7 @@ import type { Container, IRenderLayer } from "pixi.js";
 
 import type { RoomState } from "../../../model/RoomState";
 import type { PortableItem } from "../../physics/itemPredicates";
-import type { GeneralRenderContext } from "../RoomRenderContexts";
+import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 import type { ZGraph } from "../sortZ/GraphEdges";
 
 import { emptyMap, emptySet } from "../../../utils/empty";
