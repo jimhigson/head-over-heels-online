@@ -1,6 +1,7 @@
 import drumSoundUrl from "../../sounds/bongo.mp3";
 import bonusSoundUrl from "../../sounds/bonus.mp3";
 import bubbleRobotLoopSoundUrl from "../../sounds/bubblesLoop.mp3";
+import carrySoundUrl from "../../sounds/carry.mp3";
 import conveyorLoopSoundUrl from "../../sounds/conveyorLoop.mp3";
 import conveyorStartSoundUrl from "../../sounds/conveyorStart.mp3";
 import conveyorEndSoundUrl from "../../sounds/conveyorStop.mp3";
@@ -30,7 +31,6 @@ import servoLoopUrl from "../../sounds/servosLoop.mp3";
 import servoStartUrl from "../../sounds/servosStart.mp3";
 import servoStoptUrl from "../../sounds/servosStop.mp3";
 import softBumpSoundUrl from "../../sounds/softBump.mp3";
-import carrySoundUrl from "../../sounds/sources/wind-swoosh-short-289744.mp3";
 import springBoingSoundUrl from "../../sounds/spring.mp3";
 import switchClickSoundUrl from "../../sounds/switch-shorter.mp3";
 import teleportInSoundUrl from "../../sounds/teleportIn.mp3";
