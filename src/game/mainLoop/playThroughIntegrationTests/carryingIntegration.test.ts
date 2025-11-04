@@ -3,7 +3,11 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
+import {
+  firstRoomId,
+  secondRoomId,
+  setUpBasicGame,
+} from "../../../_testUtils/basicRoom";
 import {
   heelsState,
   item,
@@ -11,6 +15,7 @@ import {
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
   resetStore();
@@ -237,4 +242,118 @@ test("heels can jump-pick up a cube by holding jump and carry while falling onto
       gameState.inputStateTracker.mockPressing("jump");
     },
   });
+});
+
+test("carrying an item through a door drops it in the room", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: {
+          x: 1,
+          // at this y heels is pefectly aligned to get through the door without colliding with the doorframe
+          y: 2.5,
+          z: 5,
+        },
+        config: {
+          which: "heels",
+        },
+      },
+      bag: {
+        type: "pickup",
+        position: { x: 1, y: 2.5, z: 1 },
+        config: {
+          gives: "bag",
+        },
+      },
+      portable: {
+        type: "portableBlock",
+        position: { x: 1, y: 2.5, z: 0 },
+        config: {
+          style: "cube",
+        },
+      },
+      // head will keep the first room loaded when heels leaves it
+      head: {
+        type: "player",
+        position: {
+          x: 0,
+          y: 0,
+          z: 0,
+        },
+        config: {
+          which: "head",
+        },
+      },
+      doorToSecondRoom: {
+        type: "door",
+        position: { x: 0, y: 2, z: 0 },
+        config: { direction: "right", toRoom: secondRoomId },
+      },
+    },
+    secondRoomItems: {
+      doorToFirstRoom: {
+        type: "door",
+        position: { x: 8, y: 2, z: 0 },
+        config: { direction: "left", toRoom: firstRoomId },
+      },
+    },
+  });
+
+  // head starts so switch to heels:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("swop");
+    },
+    until() {
+      return gameState.currentCharacterName === "heels";
+    },
+  });
+
+  // land on the portable block to pick it up:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockNotPressing("swop");
+    },
+    until() {
+      return heelsState(gameState).standingOnItemId === "portable";
+    },
+  });
+
+  // pick up the portable block:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("carry");
+    },
+    until() {
+      return heelsState(gameState).carrying?.type === "portableBlock";
+    },
+  });
+
+  // leave the room:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockNotPressing("carry");
+      mockInputStateTracker.mockDirectionPressed = "right";
+    },
+    until() {
+      // wait until heels is in the next room:
+      return selectCurrentRoomState(gameState)?.id === "secondRoom";
+    },
+  });
+
+  // switch back to head:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("swop");
+    },
+    until() {
+      return gameState.currentCharacterName === "head";
+    },
+  });
+
+  // the portable block should now be in head's room
+  expect(selectCurrentRoomState(gameState)?.items?.portable).toBeDefined();
+  // heels should no longer be carrying it:
+  expect(heelsState(gameState).carrying).toBeNull();
 });
