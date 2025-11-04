@@ -1,5 +1,49 @@
 [
   {
+    "op": "remove",
+    "path": "/items/block@0,6,4"
+  },
+  {
+    "op": "remove",
+    "path": "/items/block@0,5,6"
+  },
+  {
+    "op": "add",
+    "path": "/items/extra3",
+    "value": {
+      "config": {
+        "style": "artificial",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 4,
+        "z": 6
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra2",
+    "value": {
+      "config": {
+        "style": "artificial",
+        "times": {
+          "y": 3
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 5,
+        "z": 4
+      },
+      "type": "block"
+    }
+  },
+  {
     "op": "add",
     "path": "/items/extra1",
     "value": {
@@ -16,30 +60,18 @@
   },
   {
     "op": "add",
-    "path": "/items/extra2",
+    "path": "/items/block",
     "value": {
       "config": {
-        "style": "artificial"
+        "style": "artificial",
+        "times": {
+          "z": 4
+        }
       },
       "position": {
         "x": 0,
-        "y": 5,
-        "z": 4
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra3",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 0,
-        "y": 4,
-        "z": 6
+        "y": 7,
+        "z": 0
       },
       "type": "block"
     }

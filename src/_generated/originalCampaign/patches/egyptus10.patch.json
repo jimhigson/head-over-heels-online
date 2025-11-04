@@ -168,25 +168,6 @@
   },
   {
     "op": "add",
-    "path": "/items/barrier",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 3,
-          "z": 4
-        }
-      },
-      "position": {
-        "x": 7.5,
-        "y": 1,
-        "z": 7
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/barrier2",
     "value": {
       "config": {
@@ -199,24 +180,6 @@
         "x": 7.5,
         "y": 1,
         "z": 0
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/barrier3",
-    "value": {
-      "config": {
-        "axis": "x",
-        "times": {
-          "z": 4
-        }
-      },
-      "position": {
-        "x": 8,
-        "y": 3.5,
-        "z": 7
       },
       "type": "barrier"
     }
