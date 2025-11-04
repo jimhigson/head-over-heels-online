@@ -8,9 +8,9 @@ import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { veryClose } from "../../../utils/epsilon";
 import {
   addXyz,
+  elementWiseProductXyz,
   lengthXyz,
   originXyz,
-  scaleXyz,
   subXyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
@@ -74,6 +74,17 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
   // can also be applied
   isHelpful?: boolean;
 };
+
+// from an mtv, multiplying by these vectors gives the push vector to apply to the pushed item
+// - they are negative since the push is in the opposite direction to the mtv. They are smaller
+// in z (unless forceful) since a upward push should be harder than pushing in x,y plane
+// and if downwards pushing, the item is probably already falling anyway so probably doesn't need
+// a push.
+// the z can't be less than about 0.4 or #safari19triple from original campaign is not possible
+// to stack the spring on the drum to get the rabbit
+const pushVectorMultiplierForceful = { x: -1, y: -1, z: -1 };
+const pushVectorMultiplierNormal = { x: -0.6, y: -0.6, z: -0.4 };
+const pushVectorMultiplierWithSliding = { x: -1, y: -1, z: -0.4 };
 
 /**
  * @param subjectItem the item that is wanting to move
@@ -281,21 +292,16 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
     // push any pushable items that we intersect:
     if (collidedWithIsPushable) {
-      const pushCoefficient =
-        (
-          // don't slow down if we are forceful
-          forceful ||
-          // don't slow down for an item that's going to slide away anyway:
-          isSlidingItem(collidedWithItem)
-        ) ?
-          // 1 puts our whole movement back in - we don't slow down/back off at all
-          // lifts don't slow down when stuff is on them
-          -1
-          // split the difference - the pushed item moves half as far forward as our intersection
-        : -0.5;
+      const pushMultiplier =
+        forceful ? pushVectorMultiplierForceful
+        : isSlidingItem(collidedWithItem) ? pushVectorMultiplierWithSliding
+        : pushVectorMultiplierNormal;
 
-      // the vector in the direction of the push:
-      const forwardPushVector = scaleXyz(backingOffMtv, pushCoefficient);
+      // the vector in the direction of the push (opposite direction to the mtv)
+      const forwardPushVector = elementWiseProductXyz(
+        backingOffMtv,
+        pushMultiplier,
+      );
 
       // we are going slower due to pushing so back off, but not completely:
       updateItemPosition(
@@ -315,7 +321,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           `${subjectItem.id} will recursively push ${collidedWithItem.id} by`,
           forwardPushVector,
           "with push coefficient of",
-          pushCoefficient,
+          pushMultiplier,
         );
 
       if (path.size < maxPushRecursionDepth) {
