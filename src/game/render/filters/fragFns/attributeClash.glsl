@@ -128,8 +128,8 @@ vec4 attributeClash(
         isDimThresh03,
         avgColorLum03
     );
-    float isAboveDim50_01 = step(isDimThresh03 * 0.5, avgColorLum03);
-    float isAboveDim25_01 = step(isDimThresh03 * 0.01, avgColorLum03);
+    float thresholdForUnsatToBeBlue = step(isDimThresh03 * 0.3, avgColorLum03);
+    float thresholdForSaturatedToBeBlue = step(isDimThresh03 * 0.03, avgColorLum03);
 
     vec4 unsatOrQuantisedColor = mix(
         // mix for desaturated colours:
@@ -139,10 +139,10 @@ vec4 attributeClash(
             pureBlueColour, 
             // use white (for most of the lum range)
             pureWhiteColour, 
-            isAboveDim50_01
+            thresholdForUnsatToBeBlue
         ), 
         // is saturated - use the quantised colour:
-        mix(pureBlueColour, quantisedColor, isAboveDim25_01),
+        mix(pureBlueColour, quantisedColor, thresholdForSaturatedToBeBlue),
         isSaturated01
     );
     
