@@ -6,6 +6,11 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "blacktooth68",
   items: {
+    block: {
+      config: { style: "organic", times: { z: 2 } },
+      position: { x: 2, y: 0, z: 0 },
+      type: "block",
+    },
     "block@0,0,0": {
       config: {
         disappearing: { on: "stand" },
@@ -34,7 +39,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@3,0,3": {
-      config: { style: "organic", times: { x: 2, z: 4 } },
+      config: { style: "organic", times: { x: 2 } },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
@@ -54,18 +59,13 @@ export const room = inferRoomJson({
     },
     "door@3,0,5": {
       config: { direction: "towards", toRoom: "blacktooth66" },
-      position: { x: 3, y: 0, z: 5 },
+      position: { x: 3, y: 0, z: 1 },
       type: "door",
     },
     "door@8,3,5": {
       config: { direction: "left", toRoom: "blacktooth76" },
       position: { x: 8, y: 3, z: 5 },
       type: "door",
-    },
-    extraBarrier: {
-      config: { axis: "x", times: { x: 3, z: 8 } },
-      position: { x: 4, y: 0.6, z: 0 },
-      type: "barrier",
     },
     "floor@0,0,0": {
       config: { floorType: "deadly", times: { x: 8, y: 8 } },
