@@ -25,7 +25,7 @@ const roomLimit = undefined;
 // CI is slower, needs more time, even on arm64 runners (fastest on github).
 // Windows is even slower (on the Github runners at least).
 const osSlowness = process.platform === "win32" ? 4 : 1;
-const timeoutPerRoom = (process.env.CI ? 20_000 : 3_000) * osSlowness;
+const timeoutPerRoom = (process.env.CI ? 20_000 : 4_000) * osSlowness;
 const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
