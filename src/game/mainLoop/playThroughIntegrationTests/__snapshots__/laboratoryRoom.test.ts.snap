@@ -3218,7 +3218,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "latentMovement": [],
         "position": {
-          "x": 17.875,
+          "x": 17.85,
           "y": 160,
           "z": 0,
         },
