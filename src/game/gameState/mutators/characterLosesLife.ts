@@ -3,6 +3,7 @@ import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import type { GameState } from "../GameState";
 
@@ -22,6 +23,7 @@ import { neverTime } from "../../../utils/neverTime";
 import { collision1to1 } from "../../collision/aabbCollision";
 import {
   selectCurrentPlayableItem,
+  selectHeelsAbilities,
   selectPlayableItem,
 } from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
@@ -74,6 +76,34 @@ const loseLifeWithRetrospecModelLivesTransfer = (
   }
 };
 
+const dropCarriedItemIfAny = <RoomId extends string>(
+  room: RoomState<RoomId, string>,
+  playableItem: PlayableItem<CharacterName, RoomId>,
+) => {
+  const heelsAbilities = selectHeelsAbilities(playableItem);
+
+  if (heelsAbilities === undefined) {
+    // not heels
+    return;
+  }
+
+  const { carrying } = heelsAbilities;
+  if (carrying !== null) {
+    // heels was carrying something - drop it
+    // this usually doesn't matter since the room is about to be unloaded from memory
+    // anyway, but it could matter if the other character is in the room, keeping
+    // it from being unloaded. We don't worry about if there is space for the item
+    // since it will replace the space the player is in when they are deleted
+    // from the room:
+    addItemToRoom({
+      room,
+      item: carrying,
+      atPosition: playableItem.state.position,
+    });
+    heelsAbilities.carrying = null;
+  }
+};
+
 const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
   headOverHeels: PlayableItem<"headOverHeels", RoomId>,
@@ -105,7 +135,7 @@ const combinedPlayableLosesLife = <RoomId extends string>(
   const heelsHasLives = pokeableToNumber(headOverHeels.state.heels.lives) > 0;
 
   //whatever else we're doing, heels can't keep her item:
-  headOverHeels.state.heels.carrying = null;
+  dropCarriedItemIfAny(room, headOverHeels);
 
   const continuingWithOneCharacter =
     (headHasLives && !heelsHasLives) || (!headHasLives && heelsHasLives);
@@ -240,9 +270,6 @@ const resetPlayableToEntryState = <RoomId extends string>(
 const removeNonTransferableState = (
   characterLosingLife: PlayableItem<IndividualCharacterName>,
 ) => {
-  if (characterLosingLife.type === "heels") {
-    characterLosingLife.state.carrying = null;
-  }
   characterLosingLife.state.standingOnItemId = null;
   characterLosingLife.state.previousStandingOnItemId = null;
   characterLosingLife.state.standingOnUntilRoomTime = neverTime;
@@ -266,6 +293,10 @@ const individualPlayableLosesLife = <
 
   characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
 
+  const roomWithCharacterLosingLife =
+    gameState.characterRooms[characterLosingLife.type]!;
+
+  dropCarriedItemIfAny(roomWithCharacterLosingLife, characterLosingLife);
   removeNonTransferableState(characterLosingLife);
 
   loseLifeWithRetrospecModelLivesTransfer(
@@ -286,8 +317,6 @@ const individualPlayableLosesLife = <
     return;
   } else {
     // character losing the life still has lives left
-    const roomWithCharacterLosingLife =
-      gameState.characterRooms[characterLosingLife.type]!;
 
     resetPlayableToEntryState(gameState, characterLosingLife);
 
