@@ -25,6 +25,11 @@ import { moveSpeedPixPerMs } from "../mechanicsConstants";
  */
 const aheadStart = blockSizePx.w * 0.75;
 
+/**
+ * if fire is press and held, how long until we next fire?
+ */
+const autofireRate = 500;
+
 export const firing = <RoomId extends string, RoomItemId extends string>(
   firer: PlayableItem<"head" | "headOverHeels", RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
@@ -43,13 +48,10 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
   const direction = unitVector(facing);
 
   if (
-    inputStateTracker.currentActionPress("fire") === "tap" &&
+    inputStateTracker.currentActionPress("fire") !== "released" &&
     hasHooter &&
     pokeableToNumber(doughnuts) > 0
   ) {
-    // TODO: this would be less duplicative if it loaded from json - when firing
-    // was originally added to the game, loading fired doughnuts from json
-    // wasn't supported
     const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
       type: "firedDoughnut",
       ...defaultItemProperties,
@@ -76,6 +78,6 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
     });
 
     headAbilities.doughnuts = addPokeableNumbers(headAbilities.doughnuts, -1);
-    inputStateTracker.actionsHandled.add("fire");
+    inputStateTracker.inputWasHandled("fire", autofireRate);
   }
 };

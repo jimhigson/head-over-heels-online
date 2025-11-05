@@ -25,6 +25,13 @@ import { isFreeItem } from "../itemPredicates";
 import { moveItem } from "../moveItem/moveItem";
 
 /**
+ * After pressing handling carry being pressed, how long until the action repeats?
+ * This allows actions such as jump+carry to pick an item up, holding that button,
+ * and immediately jump+carrying again on landing
+ */
+const inputLatchDuration = 350;
+
+/**
  * walking, but also gliding and changing direction mid-air
  */
 export const carrying = <RoomId extends string, RoomItemId extends string>(
@@ -58,14 +65,7 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
   if (itemToPickup !== undefined) itemToPickup.state.wouldPickUpNext = true;
 
   const currentCarryPress = inputStateTracker.currentActionPress("carry");
-  const hasCarryInput =
-    // usually we don't want to handle carrying on hold, otherwise heels picks up one frame
-    // and puts down the next.
-    currentCarryPress === "tap" ||
-    // however, while pressing jump and carry is the exception - you can land on a block,
-    // pick it up an jump off all at once:
-    (inputStateTracker.currentActionPress("jump") === "hold" &&
-      currentCarryPress === "hold");
+  const hasCarryInput = currentCarryPress !== "released";
 
   if (hasCarryInput) {
     if (carrying === null) {
@@ -79,7 +79,7 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
 
       // won't carry again until key is released and re-pressed - prevents
       // multiple pickup/putdown in one tick with multiple sub-ticks
-      inputStateTracker.actionsHandled.add("carry");
+      inputStateTracker.inputWasHandled("carry", inputLatchDuration);
     } else {
       // trying to put down
       if (carrier.state.standingOnItemId === null) {
@@ -126,7 +126,7 @@ export const carrying = <RoomId extends string, RoomItemId extends string>(
 
       // don't set heels as standing on the put-down item - normal gravity and movement
       // will sort that out from the main loop
-      inputStateTracker.actionsHandled.add("carry");
+      inputStateTracker.inputWasHandled("carry", inputLatchDuration);
     }
   }
 };
