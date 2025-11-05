@@ -28,15 +28,15 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
   mockActionsPressed: { [a in BooleanAction]?: true } = {};
   mockActionsPressedLastFrame: { [a in BooleanAction]?: true } = {};
 
-  actionsHandled: Set<BooleanAction> = new Set();
+  #actionsHandled: Set<BooleanAction> = new Set();
 
   mockTick = () => {
     this.mockActionsPressedLastFrame = { ...this.mockActionsPressed };
 
     // clear the latches for input that was handled, but now no longer is being input:
-    for (const action of this.actionsHandled) {
+    for (const action of this.#actionsHandled) {
       if (!this.mockActionsPressed[action]) {
-        this.actionsHandled.delete(action);
+        this.#actionsHandled.delete(action);
       }
     }
   };
@@ -68,10 +68,18 @@ export class MockInputStateTracker implements InputStateTrackerInterface {
     }
   }
 
+  inputWasHandled(action: BooleanAction): void;
+  inputWasHandled(action: BooleanAction, keepFor: number): void;
+  inputWasHandled(action: BooleanAction, _keepFor?: number): void {
+    // we don't do timing in this mock, we just clear after every tick
+    // so keepFor is ignored completely
+    this.#actionsHandled.add(action);
+  }
+
   currentActionPress = vi
     .fn<(action: BooleanAction) => PressStatus>()
     .mockImplementation((action) => {
-      if (this.actionsHandled.has(action)) {
+      if (this.#actionsHandled.has(action)) {
         return "released"; // treat as released if was already handled
       }
 

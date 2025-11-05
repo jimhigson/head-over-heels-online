@@ -214,11 +214,19 @@ export class InputStateTracker {
   #lookVector: Xyz = originXyz;
 
   /**
-   * latches set to true if an action should be ignored until it is released
-   * and inputted again. Ie, pressing jump to leave a scroll shouldn't make the character
-   * jump when the scroll is closed because it was handled
+   * Latches set to a number if an action should be ignored until it is released
+   * and inputted again. The number says the gameTime when the latch will be cleared,
+   * relative to performance.now() or it will be cleared sooner if the input is released.
+   *
+   * For a latch that doesn't auto-clear, the number should be Infinity.
+   *
+   * Since performance.now() is used, this isn't sensitive to the game speed, and all timings
+   * are in real ms.
+   *
+   * Ie, pressing jump to leave a scroll shouldn't make the character
+   * jump when the scroll is closed because it was handled.
    */
-  actionsHandled: Set<BooleanAction> = new Set();
+  #actionsHandled: Map<BooleanAction, number> = new Map();
 
   constructor(
     private keyboardStateMap: KeyboardStateMap,
@@ -514,9 +522,24 @@ export class InputStateTracker {
     */
 
     // clear the latches for input that was handled, but now no longer is being input:
-    for (const action of this.actionsHandled) {
-      if (!isActionPressed(currentFrameInput, action)) {
-        this.actionsHandled.delete(action);
+    if (this.#actionsHandled.size > 0) {
+      const now = performance.now();
+      for (const [action, releaseTime] of this.#actionsHandled) {
+        if (
+          // key was released:
+          !isActionPressed(currentFrameInput, action) ||
+          // latch has expired:
+          now >= releaseTime
+        ) {
+          if (now >= releaseTime) {
+            console.log("clearing input latch for", action, "after timeout");
+          }
+          if (!isActionPressed(currentFrameInput, action)) {
+            console.log("clearing input latch for", action, "after release");
+          }
+
+          this.#actionsHandled.delete(action);
+        }
       }
     }
   };
@@ -528,7 +551,7 @@ export class InputStateTracker {
       // we are before the first frame
       return "released";
     }
-    if (this.actionsHandled.has(action)) {
+    if (this.#actionsHandled.has(action)) {
       return "released"; // has been handled - report as if was already released
     }
 
@@ -607,6 +630,12 @@ export class InputStateTracker {
     }
   }
 
+  inputWasHandled(action: BooleanAction): void;
+  inputWasHandled(action: BooleanAction, keepFor: number): void;
+  inputWasHandled(action: BooleanAction, keepFor: number = Infinity) {
+    this.#actionsHandled.set(action, performance.now() + keepFor);
+  }
+
   /**
    * gets the current direction vector
    */
@@ -633,11 +662,11 @@ export class InputStateTracker {
 // ont the class type I'm not sure
 export type InputStateTrackerInterface = Pick<
   InputStateTracker,
-  | "actionsHandled"
   | "currentActionPress"
   | "directionVector"
   | "hudInputState"
   | "inputTap"
+  | "inputWasHandled"
   | "lookVector"
   | "startTicking"
   | "stopTicking"
