@@ -251,7 +251,7 @@ test("carrying an item through a door drops it in the room", () => {
         type: "player",
         position: {
           x: 1,
-          // at this y heels is pefectly aligned to get through the door without colliding with the doorframe
+          // at this y heels is perfectly aligned to get through the door without colliding with the doorframe
           y: 2.5,
           z: 5,
         },
@@ -356,4 +356,129 @@ test("carrying an item through a door drops it in the room", () => {
   expect(selectCurrentRoomState(gameState)?.items?.portable).toBeDefined();
   // heels should no longer be carrying it:
   expect(heelsState(gameState).carrying).toBeNull();
+});
+
+test("if Heels loses life while carrying, the carried item is dropped", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: {
+          x: 1,
+          // at this y heels is perfectly aligned to get through the door without colliding with the doorframe
+          y: 2.5,
+          z: 5,
+        },
+        config: {
+          which: "heels",
+        },
+      },
+      bag: {
+        type: "pickup",
+        position: { x: 1, y: 2.5, z: 1 },
+        config: {
+          gives: "bag",
+        },
+      },
+      door: {
+        type: "door",
+        position: { x: 0, y: 2, z: 0 },
+        config: { direction: "right", toRoom: secondRoomId },
+      },
+    },
+    secondRoomItems: {
+      // head will keep the first room loaded when heels leaves it
+      head: {
+        type: "player",
+        position: {
+          x: 0,
+          y: 0,
+          z: 0,
+        },
+        config: {
+          which: "head",
+        },
+      },
+      door: {
+        type: "door",
+        position: { x: 8, y: 2, z: 2 },
+        config: { direction: "left", toRoom: firstRoomId },
+      },
+      // on coming through the door, heels should walk onto this portable block:
+      portable: {
+        type: "portableBlock",
+        position: { x: 7, y: 2.5, z: 0 },
+        config: {
+          style: "cube",
+        },
+      },
+      deadlyBlock: {
+        type: "deadlyBlock",
+        position: { x: 4, y: 2.5, z: 0 },
+        config: {
+          style: "volcano",
+        },
+      },
+    },
+  });
+
+  const portableBlockOriginalPosition =
+    gameState.characterRooms.head?.items.portable.state.position;
+
+  // head starts so switch to heels:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("swop");
+    },
+    until() {
+      return gameState.currentCharacterName === "heels";
+    },
+  });
+
+  // walk though the door:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "right";
+    },
+    until() {
+      return gameState.characterRooms.heels?.id === "secondRoom";
+    },
+  });
+
+  // stand on the portable block:
+  playGameThrough(gameState, {
+    until() {
+      return heelsState(gameState).standingOnItemId === "portable";
+    },
+  });
+
+  // pick up the portable block:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("carry");
+    },
+    until() {
+      return heelsState(gameState).carrying?.type === "portableBlock";
+    },
+  });
+
+  // continue right onto the volcano:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockNotPressing("carry");
+      mockInputStateTracker.mockDirectionPressed = "right";
+    },
+    until(gameState) {
+      // wait until heels is in the next room:
+      return heelsState(gameState).lives === 7;
+    },
+  });
+
+  // the portable block should still be in head's room
+  expect(selectCurrentRoomState(gameState)?.items?.portable).toBeDefined();
+
+  // should not be in its original loading position (should be where heels died)
+  expect(
+    gameState.characterRooms.head?.items.portable.state.position,
+  ).not.toEqual(portableBlockOriginalPosition);
 });
