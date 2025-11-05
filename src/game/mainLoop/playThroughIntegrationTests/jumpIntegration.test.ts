@@ -7,6 +7,7 @@ import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import {
   currentPlayableState,
   headState,
+  itemState,
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import {
@@ -319,90 +320,134 @@ describe("jumping", () => {
     });
   });
 
+  describe("springs", () => {
+    test.each(testFrameRates)(
+      "head can get onto a 4-high tower by jumping from a spring (%j)",
+      (frameRate) => {
+        // similar to safari9triple (except that needs more blocks under the spring)
+        const gameState = setUpBasicGame({
+          firstRoomItems: {
+            head: {
+              type: "player",
+              position: { x: 1, y: 0, z: 1 },
+              config: {
+                which: "head",
+              },
+            },
+            spring: {
+              type: "spring",
+              position: { x: 1, y: 0, z: 0 },
+              config: {},
+            },
+            tower: {
+              type: "block",
+              position: { x: 0, y: 0, z: 0 },
+              config: { style: "tower", times: { z: 4 } },
+            },
+          },
+        });
+
+        playGameThrough(gameState, {
+          frameRate,
+          until: 3_000,
+          setupInitialInput(mockInputStateTracker) {
+            mockInputStateTracker.mockDirectionPressed = "right";
+            mockInputStateTracker.mockPressing("jump");
+          },
+          frameCallbacks(gameState, mockInputStateTracker) {
+            if (headState(gameState).jumped) {
+              // stop pressing jump once we are jumping:
+              mockInputStateTracker.mockNotPressing("jump");
+            }
+          },
+        });
+        expect(headState(gameState).standingOnItemId).toEqual("tower");
+      },
+    );
+    test.each(testFrameRates)(
+      "head can't get onto a 5-high tower by jumping from a spring (%j)",
+      (frameRate) => {
+        // similar to safari9triple (except that needs more blocks under the spring)
+        const gameState = setUpBasicGame({
+          firstRoomItems: {
+            head: {
+              type: "player",
+              position: { x: 1, y: 0, z: 1 },
+              config: {
+                which: "head",
+              },
+            },
+            spring: {
+              type: "spring",
+              position: { x: 1, y: 0, z: 0 },
+              config: {},
+            },
+            tower: {
+              type: "block",
+              position: { x: 0, y: 0, z: 0 },
+              config: { style: "tower", times: { z: 5 } },
+            },
+          },
+        });
+
+        playGameThrough(gameState, {
+          frameRate,
+          until: 3_000,
+          setupInitialInput(mockInputStateTracker) {
+            mockInputStateTracker.mockDirectionPressed = "right";
+            mockInputStateTracker.mockPressing("jump");
+          },
+          frameCallbacks(gameState, mockInputStateTracker) {
+            if (headState(gameState).jumped) {
+              // stop pressing jump once we are jumping:
+              mockInputStateTracker.mockNotPressing("jump");
+            }
+          },
+        });
+        expect(headState(gameState).standingOnItemId).not.toEqual("tower");
+      },
+    );
+  });
+
   test.each(testFrameRates)(
-    "head can get onto a 4-high tower by jumping from a spring (%j)",
+    "head can lift a block on top of him about 1 block higher by jumping while under it (%j)",
     (frameRate) => {
-      // similar to safari9triple (except that needs more blocks under the spring)
       const gameState = setUpBasicGame({
         firstRoomItems: {
           head: {
             type: "player",
-            position: { x: 1, y: 0, z: 1 },
+            position: { x: 0, y: 0, z: 0 },
             config: {
               which: "head",
             },
           },
           spring: {
-            type: "spring",
-            position: { x: 1, y: 0, z: 0 },
-            config: {},
-          },
-          tower: {
-            type: "block",
-            position: { x: 0, y: 0, z: 0 },
-            config: { style: "tower", times: { z: 4 } },
-          },
-        },
-      });
-
-      playGameThrough(gameState, {
-        frameRate,
-        until: 3_000,
-        setupInitialInput(mockInputStateTracker) {
-          mockInputStateTracker.mockDirectionPressed = "right";
-          mockInputStateTracker.mockPressing("jump");
-        },
-        frameCallbacks(gameState, mockInputStateTracker) {
-          if (headState(gameState).jumped) {
-            // stop pressing jump once we are jumping:
-            mockInputStateTracker.mockNotPressing("jump");
-          }
-        },
-      });
-      expect(headState(gameState).standingOnItemId).toEqual("tower");
-    },
-  );
-  test.each(testFrameRates)(
-    "head can't get onto a 5-high tower by jumping from a spring (%j)",
-    (frameRate) => {
-      // similar to safari9triple (except that needs more blocks under the spring)
-      const gameState = setUpBasicGame({
-        firstRoomItems: {
-          head: {
-            type: "player",
-            position: { x: 1, y: 0, z: 1 },
+            type: "portableBlock",
+            position: { x: 0, y: 0, z: 1 },
             config: {
-              which: "head",
+              style: "drum",
             },
           },
-          spring: {
-            type: "spring",
-            position: { x: 1, y: 0, z: 0 },
-            config: {},
-          },
-          tower: {
-            type: "block",
-            position: { x: 0, y: 0, z: 0 },
-            config: { style: "tower", times: { z: 5 } },
-          },
         },
       });
 
+      let highestItemZ = Number.NEGATIVE_INFINITY;
+
       playGameThrough(gameState, {
-        frameRate,
         until: 3_000,
+        frameRate,
         setupInitialInput(mockInputStateTracker) {
-          mockInputStateTracker.mockDirectionPressed = "right";
           mockInputStateTracker.mockPressing("jump");
         },
-        frameCallbacks(gameState, mockInputStateTracker) {
-          if (headState(gameState).jumped) {
-            // stop pressing jump once we are jumping:
-            mockInputStateTracker.mockNotPressing("jump");
-          }
+        frameCallbacks(gameState) {
+          const newZ = itemState(gameState, "spring").position.z;
+          highestItemZ = Math.max(highestItemZ, newZ);
         },
       });
-      expect(headState(gameState).standingOnItemId).not.toEqual("tower");
+
+      // needs to be comfortably enough to get on top of another block, but not excessively so:
+      expect(highestItemZ).toBeGreaterThan(2 * blockSizePx.h + 1);
+      expect(highestItemZ).toBeLessThan(2.25 * blockSizePx.h);
     },
   );
 });
