@@ -75,7 +75,7 @@ export const monsterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused, gameState },
+    general: { paused },
   },
   currentRendering,
 }) => {
@@ -151,7 +151,6 @@ export const monsterAppearance: ItemAppearance<
                   animationId: `${config.which}.${facingXy4}`,
                   filter,
                   paused,
-                  gameSpeed: gameState?.gameSpeed,
                   randomiseStartFrame: id,
                 })
               : createSprite({
@@ -174,7 +173,6 @@ export const monsterAppearance: ItemAppearance<
                   bottom: {
                     ...itemRidingOnBubblesSpritesOptions,
                     paused,
-                    gameSpeed: gameState?.gameSpeed,
                   },
                 })
                 // charging on a toaster
@@ -196,7 +194,6 @@ export const monsterAppearance: ItemAppearance<
                 // by playing once, the enemy's base flashes only when it has
                 // just changed direction etc
                 playOnce: "and-stop",
-                gameSpeed: gameState?.gameSpeed,
               },
               filter,
             }),
@@ -231,12 +228,10 @@ export const monsterAppearance: ItemAppearance<
             {
               animationId: walking ? "headlessBase.flash" : "headlessBase.scan",
               filter,
-              gameSpeed: gameState?.gameSpeed,
             }
           : {
               textureId: `headlessBase`,
               filter,
-              gameSpeed: gameState?.gameSpeed,
             },
         ),
         renderProps: {
@@ -283,7 +278,6 @@ export const monsterAppearance: ItemAppearance<
                   animationId: config.which,
                   filter,
                   paused,
-                  gameSpeed: gameState?.gameSpeed,
                   randomiseStartFrame: id,
                 }
               : { textureId: `${config.which}.1`, filter },
@@ -300,7 +294,6 @@ export const monsterAppearance: ItemAppearance<
                 ...itemRidingOnBubblesSpritesOptions,
                 randomiseStartFrame: id,
                 paused,
-                gameSpeed: gameState?.gameSpeed,
               },
               filter,
             }),
@@ -315,7 +308,6 @@ export const monsterAppearance: ItemAppearance<
               bottom: {
                 ...itemRidingOnBubblesSpritesOptions,
                 paused,
-                gameSpeed: gameState?.gameSpeed,
               },
               filter,
             }),
@@ -328,7 +320,6 @@ export const monsterAppearance: ItemAppearance<
               animationId: "bubbles.cold",
               filter,
               paused,
-              gameSpeed: gameState?.gameSpeed,
             }),
             renderProps,
           };

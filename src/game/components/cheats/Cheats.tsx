@@ -13,6 +13,7 @@ import type {
   JsonItemType,
 } from "../../../model/json/JsonItem";
 import type { IndividualCharacterName } from "../../../model/modelTypes";
+import type { SelectableGameSpeeds } from "../../../store/slices/gameMenus/selectableGameSpeeds";
 import type { GameApi } from "../../GameApi";
 
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
@@ -22,9 +23,12 @@ import {
 } from "../../../model/modelTypes";
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSelectors";
-import { setShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSlice";
+import {
+  setGameSpeed,
+  setShowShadowMasks,
+} from "../../../store/slices/gameMenus/gameMenusSlice";
 import { Button } from "../../../ui/button";
 import { Switch } from "../../../ui/Switch";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
@@ -43,23 +47,28 @@ import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
-interface SpeedButtonProps<RoomId extends string> {
-  gameApi: GameApi<RoomId>;
+interface SpeedButtonProps {
   speed: number;
-  className: string;
 }
 
-const SpeedButton = <RoomId extends string>({
-  gameApi,
-  speed,
-  className,
-}: SpeedButtonProps<RoomId>) => {
+const SpeedButton = ({ speed }: SpeedButtonProps) => {
+  const dispatch = useAppDispatch();
+  const currentSpeed = useAppSelector(
+    (state) => state.gameMenus.userSettings.gameSpeed,
+  );
+
   return (
     <Button
       data-test-id={"cheats-speed-" + speed}
-      className={className}
+      className={`${cheatsButtonClasses} ${speed === currentSpeed ? "bg-midRed text-white" : ""}`}
       onClick={(e) => {
-        gameApi.gameState.gameSpeed = speed;
+        dispatch(
+          setGameSpeed(
+            // since we're cheating, illegally pass in the wrong number while casting
+            // to the legal numbers:
+            speed as SelectableGameSpeeds,
+          ),
+        );
         e?.currentTarget.blur();
       }}
     >
@@ -517,71 +526,19 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
 
             <Heading>game speed x:</Heading>
             <div className="flex flex-row items-center">
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={-1}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={0}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={0.05}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={0.2}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={0.5}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={1}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={1.2}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={1.5}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={2}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={5}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={10}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={25}
-                gameApi={gameApi}
-              />
-              <SpeedButton
-                className={cheatsButtonClasses}
-                speed={100}
-                gameApi={gameApi}
-              />
+              <SpeedButton speed={-1} />
+              <SpeedButton speed={0} />
+              <SpeedButton speed={0.05} />
+              <SpeedButton speed={0.2} />
+              <SpeedButton speed={0.5} />
+              <SpeedButton speed={1} />
+              <SpeedButton speed={1.2} />
+              <SpeedButton speed={1.5} />
+              <SpeedButton speed={2} />
+              <SpeedButton speed={5} />
+              <SpeedButton speed={10} />
+              <SpeedButton speed={25} />
+              <SpeedButton speed={100} />
             </div>
 
             <Heading>pokes:</Heading>

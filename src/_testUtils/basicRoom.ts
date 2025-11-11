@@ -81,7 +81,6 @@ export type BasicGameStateOptions = {
   firstRoomProps?: Partial<TestRoomJson>;
   secondRoomItems?: ItemsInTestRoomJson;
   secondRoomProps?: Partial<TestRoomJson>;
-  //inputState?: Partial<InputState>;
   firstRoomDeadlyFloor?: boolean;
   secondRoomDeadlyFloor?: boolean;
 };

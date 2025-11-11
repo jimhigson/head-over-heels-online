@@ -159,9 +159,6 @@ const _loadGameState = <RoomId extends string>({
 
     Object.assign(writeInto, {
       inputStateTracker,
-      // TODO: there's really no reason for this to be in the game state - this just highlights
-      // why it's a bad idea to have it duplicated, when it could stay in (only) the store
-      gameSpeed: 1,
       ...badJsonClone(savedGame.gameState),
     });
 
@@ -217,8 +214,6 @@ const _loadGameState = <RoomId extends string>({
   // gather what we know so far:
   const gameState: GameState<RoomId> = Object.assign(writeInto, {
     inputStateTracker,
-    gameSpeed: 1,
-
     currentCharacterName: startAs,
     entryState: {
       head: headItem === undefined ? undefined : entryState(headItem),

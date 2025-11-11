@@ -68,17 +68,14 @@ const playableCreateSpriteOptions = ({
   teleportingPhase,
   gravityZ,
   paused,
-  gameSpeed,
 }: PlayableRenderProps & {
   name: IndividualCharacterName;
   paused: boolean;
-  gameSpeed?: number;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      gameSpeed,
     };
   }
 
@@ -86,7 +83,6 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      gameSpeed,
     };
   }
 
@@ -94,7 +90,6 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      gameSpeed,
     };
   }
 
@@ -102,7 +97,6 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.walking.${facingXy8}`,
       paused,
-      gameSpeed,
     };
   }
 
@@ -128,7 +122,6 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: idleAnimationId,
       paused,
-      gameSpeed,
     };
   }
   return { textureId: `${name}.walking.${facingXy8}.2` };
@@ -146,7 +139,6 @@ const updateIndividualPlayableSprite = (
   renderPropsWithNameAndPause: PlayableRenderProps & {
     name: IndividualCharacterName;
     paused: boolean;
-    gameSpeed?: number;
   },
 ) => {
   container[playableSpriteContainerSymbol].removeChildren();
@@ -164,7 +156,6 @@ const createOutputContainer = (
   name: IndividualCharacterName,
   inSymbio: boolean,
   paused: boolean,
-  gameSpeed: number | undefined,
 ): IndividualPlayableRenderingContainer => {
   const container = new Container() as IndividualPlayableRenderingContainer;
   const playableSpriteContainer = new Container();
@@ -175,7 +166,6 @@ const createOutputContainer = (
     paused,
     filter: name === "heels" ? shineFilterForHeels : noFilters,
     flipX: name === "heels",
-    gameSpeed: gameSpeed ?? 1,
   }) as AnimatedSprite;
   container[shineSpriteSymbol] = shineSprite;
   return container;
@@ -298,14 +288,12 @@ const updateIndividualsRendering = (
   refreshSprites: boolean,
   renderProps: PlayableRenderProps,
   paused: boolean,
-  gameSpeed?: number,
   currentlyRenderedProps?: PlayableRenderProps,
 ) => {
   if (refreshSprites) {
     updateIndividualPlayableSprite(individualContainer, {
       name: individualCharacterName,
       ...renderProps,
-      gameSpeed,
       paused,
     });
   }
@@ -402,13 +390,8 @@ const playableAppearanceImpl: ItemAppearance<
     outputContainer =
       previousRendering ??
       stackSprites({
-        top: createOutputContainer("head", true, paused, gameState?.gameSpeed),
-        bottom: createOutputContainer(
-          "heels",
-          true,
-          paused,
-          gameState?.gameSpeed,
-        ),
+        top: createOutputContainer("head", true, paused),
+        bottom: createOutputContainer("heels", true, paused),
       });
 
     const stackedContainer =
@@ -420,7 +403,6 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      gameState?.gameSpeed,
       currentlyRenderedProps,
     );
     updateIndividualsRendering(
@@ -429,13 +411,11 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      gameState?.gameSpeed,
       currentlyRenderedProps,
     );
   } else {
     outputContainer =
-      previousRendering ??
-      createOutputContainer(type, false, paused, gameState?.gameSpeed);
+      previousRendering ?? createOutputContainer(type, false, paused);
 
     updateIndividualsRendering(
       type,
@@ -443,7 +423,6 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      gameState?.gameSpeed,
       currentlyRenderedProps,
     );
   }
