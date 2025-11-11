@@ -99,7 +99,7 @@ describe("createSprite return type", () => {
   });
 
   test("creating sprite with {animationId}", () => {
-    const animatedSprite = createSprite({ animationId: "dalek", gameSpeed: 1 });
+    const animatedSprite = createSprite({ animationId: "dalek" });
     expect(animatedSprite).toBeInstanceOf(AnimatedSprite);
     expectTypeOf(animatedSprite).toExtend<AnimatedSprite>();
   });
@@ -107,7 +107,6 @@ describe("createSprite return type", () => {
     const containerAnimatedSprite = createSprite({
       animationId: "conveyor.x",
       times: { x: 2 },
-      gameSpeed: 1,
     });
 
     expect(containerAnimatedSprite).toBeInstanceOf(Container);
@@ -122,7 +121,6 @@ describe("createSprite return type", () => {
     const containerAnimatedSprite = createSprite({
       animationId: "conveyor.x",
       times: { x: 1, y: 1, z: 1 },
-      gameSpeed: 1,
     });
 
     expect(containerAnimatedSprite).toBeInstanceOf(AnimatedSprite);
@@ -134,7 +132,6 @@ describe("createSprite return type", () => {
     const containerAnimatedSprite = createSprite({
       animationId: "conveyor.x",
       times: undefined,
-      gameSpeed: 1,
     });
 
     expect(containerAnimatedSprite).toBeInstanceOf(AnimatedSprite);

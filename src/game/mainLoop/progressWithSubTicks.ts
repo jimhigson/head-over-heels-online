@@ -1,4 +1,5 @@
 import { objectValues } from "iter-tools-es";
+import { Ticker } from "pixi.js";
 
 import type { CharacterName } from "../../model/modelTypes";
 import type { GameState } from "../gameState/GameState";
@@ -52,15 +53,12 @@ export const progressWithSubTicks =
       }
     }
 
-    const { gameSpeed } = gameState;
-    const timeProgressionDelta = deltaMS * gameSpeed;
+    const tickerSpeed = Ticker.shared.speed;
     const numberOfSubTicks =
       // snapshot tests run at a gamespeed of 0 - in any case, at this speed nothing is happening
       // so one tick is enough. Otherwise, it would run progressing at steps of the maxStepDeltaMs
       // which at the reduced frame rate for snapshot tests is a lot of frames
-      gameSpeed === 0 ? 1 : (
-        Math.max(1, Math.ceil(timeProgressionDelta / maxStepDeltaMs))
-      );
+      tickerSpeed === 0 ? 1 : Math.max(1, Math.ceil(deltaMS / maxStepDeltaMs));
 
     // don't worry about this special case - it is ok (and simpler) to have a loop of one
     // iteration
@@ -69,7 +67,7 @@ export const progressWithSubTicks =
     //   return progress(gameState, timeProgressionDelta);
     // }
 
-    const stepDeltaMs = timeProgressionDelta / numberOfSubTicks;
+    const stepDeltaMs = deltaMS / numberOfSubTicks;
 
     for (let i = 0; i < numberOfSubTicks; i++) {
       const subtickMoves = progress(gameState, stepDeltaMs);

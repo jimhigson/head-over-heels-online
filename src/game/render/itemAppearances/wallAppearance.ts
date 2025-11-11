@@ -17,7 +17,7 @@ import { itemAppearanceRenderOnce } from "./ItemAppearance";
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
-      general: { pixiRenderer, gameState },
+      general: { pixiRenderer },
       item: { id, config },
       room,
     },
@@ -68,7 +68,6 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
               flipX: direction === "left",
               x: tileRenderPosition.x + (direction === "away" ? -8 : 8),
               y: tileRenderPosition.y - 23,
-              gameSpeed: gameState?.gameSpeed,
             }),
           );
         }
