@@ -1,4 +1,4 @@
-import type { IRenderLayer } from "pixi.js";
+import type { RenderLayer } from "pixi.js";
 
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlayType } from "../../model/ItemInPlay";
@@ -18,8 +18,8 @@ export type ItemRenderContext<T extends ItemInPlayType> = {
    *
    * https://pixijs.com/8.x/guides/concepts/render-layers
    */
-  colourClashLayer?: IRenderLayer;
-  frontLayer: IRenderLayer;
+  colourClashLayer?: RenderLayer;
+  frontLayer: RenderLayer;
   /**
    * the (mutated in place) record of which items is in front of which,
    * including what can't be applied due to cyclic dependencies

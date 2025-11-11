@@ -1,6 +1,6 @@
 import type { SetRequired, WritableDeep } from "type-fest";
 
-import { AlphaFilter, Container, Sprite } from "pixi.js";
+import { Container, Sprite } from "pixi.js";
 
 import type {
   ItemInPlayType,
@@ -17,22 +17,43 @@ import type { ItemPixiRenderer } from "./ItemRenderer";
 
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
-import { amigaHalfBriteBrightness } from "../../../../utils/colour/halfBrite";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
+import { shadowFilter } from "../../filters/shadowFilter";
 import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
+import "pixi.js/advanced-blend-modes";
+
+/**
+ *
+ *  this.#shadowMaskRenderer - renders shadow mask
+ *
+ *  pixi.js container tree:
+ *
+ *  this.#filterApplier
+ *    this.#shadowsAndMasks
+ *        (.mask =
+ *            undefined:                                if appearance === 'no-mask'
+ *            this.#shadowMaskRenderer.output(sprite)   otherwise
+ *        )
+ *
+ *      this.#shadowMaskOffset
+ *        (here if appearance !== 'no-mask')
+ *        this.#shadowMaskRenderer.output
+ *          (single sprite) <-- this.#container.mask
+ *
+ *      this.#shadowsContainer
+ *        (several shadows)
+ */
 
 const itemCastsShadow = (
   caster: UnionOfAllItemInPlayTypes<string, string>,
 ): caster is SetRequired<typeof caster, "shadowCastTexture"> =>
   caster.shadowCastTexture !== undefined;
-
-const halfOpacity = new AlphaFilter({ alpha: 1 - amigaHalfBriteBrightness });
 
 // Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
 const spaceAboveSurfaceBuffer: WritableDeep<Collideable> = {
@@ -54,7 +75,10 @@ const spaceAboveSurfaceBuffer: WritableDeep<Collideable> = {
 class ItemShadowRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
-  #container: Container = new Container({
+  #filterApplier: Container = new Container({
+    label: "ItemShadowRenderer.#filterApplier",
+  });
+  #shadowsAndMasks: Container = new Container({
     label: "ItemShadowRenderer",
   });
   #shadowsContainer: Container = new Container({
@@ -75,13 +99,6 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     public readonly renderContext: ItemRenderContext<T>,
     appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>,
   ) {
-    //if (!this.#showShadowMasks) {
-    // due to this issue:
-    // https://github.com/pixijs/pixijs/issues/4334
-    // using alpha fitler (not .alpha) to set alpha here:
-    // https://pixijs.download/dev/docs/filters.AlphaFilter.html
-    this.#container.filters = halfOpacity;
-
     // 'no-mask' means will accept any shadows without masking them - eg, on floors
     if (appearance !== "no-mask") {
       this.#shadowMaskRenderer = new ItemAppearancePixiRenderer(
@@ -92,19 +109,24 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       // add the whole shadow mask renderer output as a child of the top-level, even though
       // the sprite will be plucked out of its output and used directly as a mask
       if (renderContext.item.shadowOffset === undefined) {
-        this.#container.addChild(this.#shadowMaskRenderer.output);
+        this.#shadowsAndMasks.addChild(this.#shadowMaskRenderer.output);
       } else {
         // create a new container to offset the shadow mask:
         const shadowMaskOffset = new Container({
           label: "shadowMaskOffset",
-          ...projectWorldXyzToScreenXy(renderContext.item.shadowOffset),
           children: [this.#shadowMaskRenderer.output],
+          ...projectWorldXyzToScreenXy(renderContext.item.shadowOffset),
         });
-        this.#container.addChild(shadowMaskOffset);
+        this.#shadowsAndMasks.addChild(shadowMaskOffset);
       }
     }
 
-    this.#container.addChild(this.#shadowsContainer);
+    this.#shadowsAndMasks.addChild(this.#shadowsContainer);
+    this.#filterApplier.addChild(this.#shadowsAndMasks);
+    if (!this.#showShadowMasks) {
+      this.#filterApplier.filters = shadowFilter;
+      this.#filterApplier.blendMode = "darken";
+    }
   }
 
   /** convenience for getting the shadow mask setting from the store */
@@ -127,28 +149,31 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     // This means the renderers for shadow masks must always return a container with a single sprite
     const previousSprite = this.#shadowMaskRenderer.output.children.at(0);
     this.#shadowMaskRenderer.tick(itemTickContext);
-    const newSprite = this.#shadowMaskRenderer.output.children.at(0);
+    const newShadowMaskSprite = this.#shadowMaskRenderer.output.children.at(0);
 
-    if (newSprite === undefined || !(newSprite instanceof Sprite)) {
+    if (
+      newShadowMaskSprite === undefined ||
+      !(newShadowMaskSprite instanceof Sprite)
+    ) {
       const { item } = this.renderContext;
       throw new Error(
-        `ItemShadowRenderer: this.#shadowMaskRenderer didn't create a sprite for item "${item.id}" of type "${item.type}". Have got ${newSprite}`,
+        `ItemShadowRenderer: this.#shadowMaskRenderer didn't create a sprite for item "${item.id}" of type "${item.type}". Have got ${newShadowMaskSprite}`,
       );
     }
 
-    if (previousSprite !== newSprite) {
+    if (previousSprite !== newShadowMaskSprite) {
       if (!this.#showShadowMasks) {
         // not debugging: use shadow mask sprite normally
-        this.#container.mask = newSprite;
+        this.#shadowsAndMasks.mask = newShadowMaskSprite;
       } else {
         // for debugging: put the shadow mask in front of everything:
-        this.renderContext.frontLayer.attach(newSprite);
+        this.renderContext.frontLayer.attach(newShadowMaskSprite);
       }
     }
   }
 
   destroy() {
-    this.#container.destroy(true);
+    this.#shadowsAndMasks.destroy(true);
     this.#shadowMaskRenderer?.destroy();
     for (const c of Object.values(this.#shadowSprites)) {
       // destroy all sprites, and destroy texture too if it was uniquely created for this cast
@@ -221,8 +246,13 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           pixiRenderer,
           renderMultipliedXy(casterItem.shadowCastTexture, times),
         );
+        // shadows can only darken - this prevents shadows with lighter parts
+        // in the spritesheet (less shadow is applied) from lightening over the
+        // top of other shadows. However, we apply shadows in reverse since the
+        // container we are rendering on starts at 0,0,0,0 so darken doesn't work
+        // - the shader will flip them
+        shadowSprite.blendMode = "lighten";
         shadowSprite.label = casterItem.id;
-        //newShadowSprite.filters = [new BlurFilter()];
         this.#shadowsContainer.addChild(shadowSprite);
         this.#shadowSprites.set(casterItem, shadowSprite);
         isNew = true;
@@ -239,6 +269,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           // on the top of the item:
           z: item.aabb.z,
         });
+        //const zToCaster = casterItem.state.position.z - itemTop;
+        //shadowSprite.alpha = 1 - zToCaster / (blockSizePx.h * 8);
+        // (shadowSprite.filters as [BlurFilter])[0].strength =
+        //   zToCaster * blurPerZToCaster;
         // this fails for composite sprites, since they get their x,y set in the sprite they are rendered to
         shadowSprite.x = screenXy.x;
         shadowSprite.y = screenXy.y;
@@ -246,7 +280,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     }
 
     // for efficiency, hide all shadow rendering if nothing is casting on this item:
-    this.#container.visible = hasAnyShadows;
+    this.#shadowsAndMasks.visible = hasAnyShadows;
 
     // for efficiency, only tick the shadow mask if this renderer is showing something
     if (hasAnyShadows) {
@@ -255,7 +289,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
   }
 
   get output() {
-    return this.#container;
+    return this.#filterApplier;
   }
 }
 

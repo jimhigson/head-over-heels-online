@@ -1,25 +1,19 @@
-import { type Color, Texture } from "pixi.js";
+import type { Color } from "pixi.js";
+
+import { Texture } from "pixi.js";
 
 import {
   spritesheetPalette,
   type SpritesheetPaletteColourName,
 } from "../../../../../gfx/spritesheetPalette";
-import {
-  blockEncodeRgbBitDepth,
-  getBlockNeighborhood,
-} from "../../../../utils/colour/blockEncode";
 import { standardBrightnessLevels } from "../../../../utils/colour/halfBrite";
 import { objectEntriesIter } from "../../../../utils/entries";
-
-// Using block encoding with 6 bits per channel, we need 512x512 texture
-// 8x8 blocks of 64x64 pixels each
-const lutW = (2 ** blockEncodeRgbBitDepth) ** (3 / 2); // 64^1.5 = 512
-
-const lutSize = lutW * lutW;
+import { getBlockNeighborhood } from "./blockEncode";
+import { lutSize, lutW } from "./lutSize";
 
 export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
 
-export const createPaletteSwopLut = (swops: PaletteSwaps): Texture => {
+export const sparseLut = (swops: PaletteSwaps): Texture => {
   // Create RGBA texture data (4 bytes per pixel)
   const data = new Uint8Array(lutSize * 4);
 

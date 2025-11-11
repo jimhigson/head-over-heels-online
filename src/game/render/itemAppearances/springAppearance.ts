@@ -1,6 +1,7 @@
 import type { AnimatedSprite } from "pixi.js";
 
 import type { ItemAppearance } from "./ItemAppearance";
+import type { ItemShadowAppearanceOutsideView } from "./shadowMaskAppearances/shadowMaskAppearanceForitem";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { createSprite } from "../createSprite";
@@ -21,55 +22,70 @@ type SpringRenderProps = {
  *    !stood on      stood on                                          go to 2nd frame of anim (compressed)
  */
 
-const springAppearanceImpl: ItemAppearance<
-  "spring",
-  SpringRenderProps,
-  AnimatedSprite
-> = ({
-  renderContext: {
-    item: {
-      state: { stoodOnBy, stoodOnUntilRoomTime },
+const springAppearanceImpl: (
+  isShadowMask: boolean,
+) => ItemAppearance<"spring", SpringRenderProps, AnimatedSprite> =
+  (isShadowMask: boolean) =>
+  ({
+    renderContext: {
+      item: {
+        state: { stoodOnBy, stoodOnUntilRoomTime },
+      },
+      general: { paused },
     },
-    general: { paused },
-  },
-  tickContext: { lastRenderRoomTime },
-  currentRendering,
-}) => {
-  const currentlyRenderedProps = currentRendering?.renderProps;
-  const compressed = isStoodOn(stoodOnBy);
+    tickContext: { lastRenderRoomTime },
+    currentRendering,
+  }) => {
+    const currentlyRenderedProps = currentRendering?.renderProps;
+    const compressed = isStoodOn(stoodOnBy);
 
-  let rendering: AnimatedSprite;
-  if (currentRendering?.output) {
-    rendering = currentRendering?.output;
-  } else {
-    rendering = createSprite({
-      animationId: "spring.bounce",
-      paused,
-    });
-    rendering.loop = false;
-    rendering.gotoAndStop(0);
-  }
-
-  const boing =
-    lastRenderRoomTime !== undefined &&
-    stoodOnUntilRoomTime > lastRenderRoomTime &&
-    // it could have stopped being stood on, but immediately been stood on again:
-    !compressed;
-
-  if (boing && !paused) {
-    rendering.gotoAndPlay(0);
-  } else {
-    if (compressed && !(currentlyRenderedProps?.compressed ?? false)) {
-      rendering.gotoAndStop(1);
+    let rendering: AnimatedSprite;
+    if (currentRendering?.output) {
+      rendering = currentRendering?.output;
+    } else {
+      rendering = createSprite({
+        animationId:
+          isShadowMask ? "shadowMask.spring.bounce" : "spring.bounce",
+        paused,
+      });
+      rendering.loop = false;
+      rendering.gotoAndStop(0);
     }
-    // no need to handle the released case - this will be handled by the animation staying on the lsat frame,
-    // which is the released spring
-  }
 
-  return {
-    output: rendering,
-    renderProps: { compressed },
+    const boing =
+      lastRenderRoomTime !== undefined &&
+      stoodOnUntilRoomTime > lastRenderRoomTime &&
+      // spring could have stopped being stood on, but immediately been stood on again:
+      !compressed;
+
+    if (boing && !paused) {
+      rendering.gotoAndPlay(0);
+    } else {
+      const missmatch =
+        compressed !== (currentlyRenderedProps?.compressed ?? false);
+
+      if (missmatch) {
+        if (compressed) {
+          rendering.gotoAndStop(1);
+        } else {
+          // released case - this isn't technically needed for the item renderer, since
+          // the animation will naturally get to the last frame and stop. However, for the
+          // shadow mask this is necessary if the shadow goes away before the animation
+          // finishes and then comes back onto the spring again later
+          rendering.gotoAndStop(0);
+        }
+      }
+    }
+
+    return {
+      output: rendering,
+      renderProps: { compressed },
+    };
   };
-};
 
-export const springAppearance = itemAppearanceOutsideView(springAppearanceImpl);
+export const springAppearance = itemAppearanceOutsideView(
+  springAppearanceImpl(false),
+);
+export const springShadowMaskAppearance = itemAppearanceOutsideView(
+  springAppearanceImpl(true),
+) as ItemShadowAppearanceOutsideView<"spring">;

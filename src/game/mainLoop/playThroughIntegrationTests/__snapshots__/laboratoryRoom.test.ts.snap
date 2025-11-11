@@ -2612,7 +2612,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {},
       "id": "heels",
       "jsonItemId": "heels",
-      "shadowCastTexture": "shadow.smallRound",
+      "shadowCastTexture": "shadow.playable",
       "state": {
         "actedOnAt": {
           "by": {},

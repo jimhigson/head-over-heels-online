@@ -1,3 +1,5 @@
+import type { Filter } from "pixi.js";
+
 import { Container } from "pixi.js";
 
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
@@ -119,7 +121,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
     maskingContainer: MaskingContainer,
   ) {
     const [maskingSprite, contents] = maskingContainer.children;
-    const localParent = maskingContainer.parent;
+    const localParent = maskingContainer.parent!;
 
     localParent.removeChild(maskingContainer);
     localParent.addChild(contents);
@@ -173,6 +175,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
       }
 
       const previousFilters = frontRenderingForMask.filters;
+      // temporarily swop in a filter for rendering this container
       frontRenderingForMask.filters = redAsAlphaFilter;
 
       const curMaskingSprite = renderContainerToSprite(
@@ -185,7 +188,10 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
         `red mask: ${frontItemId}`,
       );
 
-      frontRenderingForMask.filters = previousFilters;
+      // pixi's .filter property is readonly when read, and mutable when set, so we
+      // need to cast even just to give a container back its old filters
+      // TODO: remove after this PR merged/released in pixi: https://github.com/pixijs/pixijs/pull/11757
+      frontRenderingForMask.filters = previousFilters as Filter[];
 
       if (preExistingMaskingContainer === undefined)
         this.#addMaskingContainer(frontItemId, curMaskingSprite);

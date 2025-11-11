@@ -1,12 +1,12 @@
 import { Color, type Texture } from "pixi.js";
 
-import { createPaletteSwopLut } from "./createPaletteSwopLut";
+import { sparseLut } from "../sparseLut";
 
 /**
  * Maps some of the palette's colours to their closest on the Spectrum.
  * This gives the colour clash simulation effect an easier target to aim for
  */
-export const spectrumisePaletteSwopLut: Texture = createPaletteSwopLut({
+export const spectrumLut: Texture = sparseLut({
   // although moss is our green, it isn't actually *that* green- help the shader to find it:
   moss: new Color(0x00ff00),
   pink: new Color(0xff00ff),

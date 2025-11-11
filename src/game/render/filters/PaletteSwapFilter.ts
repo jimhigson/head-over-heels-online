@@ -2,10 +2,11 @@ import type { Texture } from "pixi.js";
 
 import { Filter, GlProgram } from "pixi.js";
 
-import type { PaletteSwaps } from "./lutTexture/createPaletteSwopLut";
+import type { PaletteSwaps } from "./lutTexture/sparseLut";
 
 import { vertex } from "./defaults";
-import { createPaletteSwopLut } from "./lutTexture/createPaletteSwopLut";
+import { sparseLut } from "./lutTexture/sparseLut";
+import { voronoiLut } from "./lutTexture/voronoiLut";
 import fragment from "./paletteSwap.frag";
 
 // Cache for PaletteSwapFilter instances
@@ -20,18 +21,16 @@ class PaletteSwapFilter extends Filter {
   /**
    * @param options - Options for the PaletteSwapFilter constructor.
    */
-  constructor(swops: PaletteSwaps) {
+  constructor(swops: PaletteSwaps, lutType: "sparse" | "voronoi") {
     const glProgram = GlProgram.from({
       vertex,
       fragment,
       name: "palette-swop-filter",
     });
 
-    const lutTexture = createPaletteSwopLut(swops);
+    const lutTexture = (lutType === "voronoi" ? voronoiLut : sparseLut)(swops);
 
     super({
-      //gpuProgram, the (more modern!) gpuProgram has been removed for the simple palette swop effects in head-over-heels-online
-      // - this could be ported back later if support is good enough, but our demands are extremely low and glsl is fine
       glProgram,
       resources: {
         colorReplaceUniforms: {},
@@ -40,10 +39,6 @@ class PaletteSwapFilter extends Filter {
     });
 
     this.#lutTexture = lutTexture;
-  }
-
-  get lut(): Texture {
-    return this.#lutTexture;
   }
 
   /**
@@ -77,12 +72,13 @@ const hashSwops = (swops: PaletteSwaps): string => {
  */
 export const getPaletteSwapFilter = (
   swops: PaletteSwaps,
+  lutType: "sparse" | "voronoi" = "sparse",
 ): PaletteSwapFilter => {
-  const key = hashSwops(swops);
+  const key = `${lutType}|${hashSwops(swops)}`;
 
   let filter = filterCache.get(key);
   if (!filter) {
-    filter = new PaletteSwapFilter(swops);
+    filter = new PaletteSwapFilter(swops, lutType);
     filterCache.set(key, filter);
   }
 
