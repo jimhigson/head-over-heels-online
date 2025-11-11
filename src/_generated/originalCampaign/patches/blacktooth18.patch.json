@@ -5,5 +5,20 @@
     "value": {
       "toSubRoom": "right"
     }
+  },
+  {
+    "op": "add",
+    "path": "/items/extraPortableBlock",
+    "value": {
+      "config": {
+        "style": "cube"
+      },
+      "position": {
+        "x": 3,
+        "y": 2,
+        "z": 0
+      },
+      "type": "portableBlock"
+    }
   }
 ]
