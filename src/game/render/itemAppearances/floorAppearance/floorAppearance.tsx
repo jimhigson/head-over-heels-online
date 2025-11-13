@@ -24,7 +24,7 @@ import {
 } from "../../../../utils/vectors/vectors";
 import { isWallOrDoorFrame } from "../../../physics/itemPredicates";
 import { createSprite } from "../../createSprite";
-import { ColourClashFilter } from "../../filters/ColourClashFilter";
+import { colourClashFilter } from "../../filters/ColourClashFilter";
 import { outlineFilters } from "../../filters/outlineFilter";
 import {
   edgeOriginalGameColour,
@@ -205,6 +205,7 @@ const createColourClash = ({
 }) => {
   const container = new Container({
     label: "floorColourClash",
+    filters: [colourClashFilter],
   });
 
   const rightColour = edgeOriginalGameColour(room, "right");
@@ -213,7 +214,6 @@ const createColourClash = ({
     const g = new Graphics()
       .rect(screenXy.x - (i === 0 ? 0 : 8), screenXy.y, 8 * 3, 8)
       .fill(rightColour);
-    g.filters = new ColourClashFilter(rightColour);
     container.addChild(g);
   }
 
@@ -223,7 +223,6 @@ const createColourClash = ({
     const g = new Graphics()
       .rect(screenXy.x - 16, screenXy.y, 8 * (i === 0 ? 2 : 3), 8)
       .fill(towardsColour);
-    g.filters = new ColourClashFilter(towardsColour);
     container.addChild(g);
   }
   container.y = y;

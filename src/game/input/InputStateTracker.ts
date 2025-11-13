@@ -531,13 +531,6 @@ export class InputStateTracker {
           // latch has expired:
           now >= releaseTime
         ) {
-          if (now >= releaseTime) {
-            console.log("clearing input latch for", action, "after timeout");
-          }
-          if (!isActionPressed(currentFrameInput, action)) {
-            console.log("clearing input latch for", action, "after release");
-          }
-
           this.#actionsHandled.delete(action);
         }
       }

@@ -1,9 +1,6 @@
-import type { Filter } from "pixi.js";
-
 import { Container } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
 
-import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
@@ -32,7 +29,7 @@ import {
 } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { OneColourFilter } from "../filters/oneColourFilter";
-import { OutlineFilter, outlineFilters } from "../filters/outlineFilter";
+import { OutlineFilter } from "../filters/outlineFilter";
 import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { noFilters } from "../filters/standardFilters";
 import {
@@ -41,6 +38,14 @@ import {
   stackSprites,
 } from "./createStackedSprites";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+
+// playables keep their full set of available filter, they just get enabled
+// and disabled as needed
+type PlayableFilters = [
+  switchedToHighlightOutline: OutlineFilter,
+  invulnerableOutline: OutlineFilter,
+  invulnerableFlashAfterDeathFilter: OneColourFilter,
+];
 
 type PlayableRenderProps = {
   facingXy8: DirectionXy8;
@@ -132,6 +137,7 @@ const shineSpriteSymbol: unique symbol = Symbol();
 type IndividualPlayableRenderingContainer = Container & {
   [playableSpriteContainerSymbol]: Container;
   [shineSpriteSymbol]: AnimatedSprite;
+  filters: PlayableFilters;
 };
 
 const updateIndividualPlayableSprite = (
@@ -168,6 +174,20 @@ const createOutputContainer = (
     flipX: name === "heels",
   }) as AnimatedSprite;
   container[shineSpriteSymbol] = shineSprite;
+  container.filters = [
+    //switchedToHighlightOutline: OutlineFilter,
+    // don't use the singleton per-colour outline filters since we set .enabled on these
+    // and would change the enabled status for all containers that are using it
+    new OutlineFilter({ color: spritesheetPalette[accentColours[name]] }),
+    //invulnerableOutline: OutlineFilter,
+    new OutlineFilter({ color: spritesheetPalette.midRed }),
+    //invulnerableFlashAfterDeathFilter: OneColourFilter,
+    new OneColourFilter(spritesheetPalette[accentColours[name]]),
+  ];
+  for (const f of container.filters) {
+    f.enabled = false;
+  }
+
   return container;
 };
 
@@ -211,63 +231,19 @@ export const isFlashing = (playableItem: PlayableItem): boolean => {
   );
 };
 
-const addFilterToContainer = (container: Container, newFilter: Filter) => {
-  if (!container.filters) {
-    // If no filters exist, assign the new filter directly
-    container.filters = newFilter;
-  } else if (Array.isArray(container.filters)) {
-    // If filters exist as an array, append the new filter
-    container.filters = [...container.filters, newFilter];
-  } else {
-    // If a single filter exists, convert to an array and append
-    container.filters = [container.filters, newFilter].flat();
-  }
-};
-
-const removeFilterFromContainer = (
-  container: Container,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filterClass: new (...args: any[]) => Filter,
-): void => {
-  container.filters =
-    Array.isArray(container.filters) ?
-      container.filters.filter((f): f is Filter => !(f instanceof filterClass))
-    : container.filters instanceof filterClass ? noFilters
-    : container.filters;
-};
-
 const applyFilters = (
-  name: IndividualCharacterName,
   { highlighted, flashing, shining }: PlayableRenderProps,
-  currentlyRenderedProps: PlayableRenderProps | undefined,
-  container: Container,
+  container: IndividualPlayableRenderingContainer,
 ) => {
-  const highlightColour: null | SpritesheetPaletteColourName =
-    highlighted ? accentColours[name]
-    : shining ? "midRed"
-    : null;
+  const [
+    switchedToHighlightOutline,
+    invulnerableOutline,
+    invulnerableFlashAfterDeathFilter,
+  ] = container.filters;
 
-  const currentHighlightColour: null | SpritesheetPaletteColourName =
-    currentlyRenderedProps?.highlighted ? accentColours[name]
-    : currentlyRenderedProps?.shining ? "midRed"
-    : null;
-
-  if (highlightColour !== currentHighlightColour) {
-    removeFilterFromContainer(container, OutlineFilter);
-    if (highlightColour !== null) {
-      addFilterToContainer(container, outlineFilters[highlightColour]);
-    }
-  }
-
-  const currentlyFlashing = currentlyRenderedProps?.flashing ?? false;
-  if (flashing && !currentlyFlashing) {
-    addFilterToContainer(
-      container,
-      new OneColourFilter(spritesheetPalette[accentColours[name]]),
-    );
-  } else if (!flashing && currentlyFlashing) {
-    removeFilterFromContainer(container, OneColourFilter);
-  }
+  switchedToHighlightOutline.enabled = highlighted;
+  invulnerableOutline.enabled = !highlighted && shining;
+  invulnerableFlashAfterDeathFilter.enabled = flashing;
 };
 
 const applyShine = (
@@ -297,12 +273,7 @@ const updateIndividualsRendering = (
       paused,
     });
   }
-  applyFilters(
-    individualCharacterName,
-    renderProps,
-    currentlyRenderedProps,
-    individualContainer,
-  );
+  applyFilters(renderProps, individualContainer);
   applyShine(
     individualContainer,
     renderProps.shining,

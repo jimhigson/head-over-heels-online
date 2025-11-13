@@ -1,7 +1,7 @@
 import { Filter, GlProgram } from "pixi.js";
 
 import { vertex } from "./defaults";
-import { spectrumisePaletteSwopLut } from "./lutTexture/spectrumisePaletteSwopLut";
+import { spectrumLut } from "./lutTexture/stdLuts/spectrumLut";
 import fragment from "./teleportingEffect.frag";
 
 type TeleportingEffectOptions = {
@@ -64,16 +64,13 @@ export class TeleportingEffectFilter extends Filter {
             type: "f32",
           },
         },
-        uLut: spectrumisePaletteSwopLut.source,
+        uLut: spectrumLut.source,
       },
     });
 
     this.uniforms = this.resources.attributeBlockUniforms.uniforms;
   }
 
-  set blockSize(value: number) {
-    this.resources.attributeBlockUniforms.uniforms.uBlockSize = value;
-  }
   set progress(value: number) {
     this.resources.attributeBlockUniforms.uniforms.uProgress = value;
   }

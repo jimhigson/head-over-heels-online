@@ -38,6 +38,7 @@
     "jims",
     "lookupable",
     "Lowlighted",
+    "luts",
     "magick",
     "mame",
     "moonbase",
@@ -98,6 +99,7 @@
     "unsolid",
     "upscaler",
     "vels",
+    "Voronoi",
     "wasd",
     "xyzs",
     "zeroable"

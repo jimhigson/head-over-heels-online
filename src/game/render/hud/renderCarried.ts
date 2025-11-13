@@ -1,4 +1,4 @@
-import type { Container, IRenderLayer } from "pixi.js";
+import type { Container, RenderLayer } from "pixi.js";
 
 import type { RoomState } from "../../../model/RoomState";
 import type { PortableItem } from "../../physics/itemPredicates";
@@ -34,8 +34,8 @@ export const renderCarriedOnce = <
       item: carrying,
       room,
       // nothing that can be carried ever renders to the uncolourised layer so cheat the types to provide this:
-      colourClashLayer: undefined as unknown as IRenderLayer,
-      frontLayer: undefined as unknown as IRenderLayer,
+      colourClashLayer: undefined as unknown as RenderLayer,
+      frontLayer: undefined as unknown as RenderLayer,
       zEdges: emptyMap as unknown as ZGraph<RoomItemId>,
       getItemRenderPipeline() {
         throw new Error(

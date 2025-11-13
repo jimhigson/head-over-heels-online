@@ -219,6 +219,13 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+
+  "shadow.playable": {
+    frame: {
+      ...smallItemGridLocation({ x: 4, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
 } as const satisfies SpritesheetData["frames"];
 
 export const playableSpritesheetData = {

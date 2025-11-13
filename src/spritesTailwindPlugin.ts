@@ -69,6 +69,12 @@ export const spritesTailwindPlugin = plugin(
         mixBlendMode: "normal",
       },
 
+      // shadows are white on the spritesheet - let them be inverted to black:
+      ".sprite-shadow": {
+        filter: "invert(1)",
+        mixBlendMode: "darken",
+      },
+
       /**
        * sets the (unchanging during run time) vars to describe the spritesheet
        */

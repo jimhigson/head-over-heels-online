@@ -191,7 +191,7 @@ export const afterDeathInvulnerabilityTime = 1_500;
 /** how quickly to flash after dying? */
 export const afterDeathInvulnerabilityFlashPeriod = 200;
 /** how long to flash for, as a fraction of the flash period */
-export const afterDeathInvulnerabilityFlashPhaseDuration = 0.15;
+export const afterDeathInvulnerabilityFlashPhaseDuration = 0.25;
 
 /**
  * how long after releasing a button does it act, and render as 'up'?

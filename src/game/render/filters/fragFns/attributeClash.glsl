@@ -35,7 +35,6 @@ vec2 attributeBlockPos(
     float blockSize,
     vec2 textureCoord  
 ) {
-    // Calculate which block this pixel belongs to
     vec2 pixelPos = textureCoord * texSize;
     
     return (floor(pixelPos / blockSize) * blockSize)/texSize;
@@ -50,10 +49,10 @@ vec4 attributeClash(
     float inputDim,
     vec2 textureCoord) {
     // Get texture dimensions
-    vec2 texSize = vec2(textureSize(inputTexture, 0));
+    vec2 textureSize = vec2(textureSize(inputTexture, 0));
 
     vec2 blockPos = attributeBlockPos(
-        texSize, 
+        textureSize, 
         blockSize, 
         textureCoord
     );
@@ -65,7 +64,7 @@ vec4 attributeClash(
     float colouredSamplesCount = 0.001;
 
     // Sample points evenly spread across the block, `/ texSize` converts to 0..1 space:
-    vec2 stepSize01 = vec2(blockSize / float(sampleCount)) / texSize;
+    vec2 stepSize01 = vec2(blockSize / float(sampleCount)) / textureSize;
     vec2 samplePos01 = blockPos;
     for (int y = 0; y < sampleCount; y++) {
         samplePos01.y += stepSize01.y;

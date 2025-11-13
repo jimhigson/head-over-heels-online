@@ -1,4 +1,3 @@
-import type { IRenderLayer } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
 import { Container, RenderLayer } from "pixi.js";
@@ -44,12 +43,12 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
    * render into this layer to simulate zxs colour clash; only needed
    * when not colourised
    */
-  #colourClashLayer: IRenderLayer | undefined;
+  #colourClashLayer: RenderLayer | undefined;
 
   /**
    * render into this layer to appear over everything, event the room occlusion
    */
-  #frontLayer: IRenderLayer = new RenderLayer({
+  #frontLayer: RenderLayer = new RenderLayer({
     sortableChildren: false,
   });
 

@@ -10,10 +10,13 @@ export const amigaHalfBriteBrightness = 0.4;
  */
 export const slightlyBrighterReducedBrightness = 0.5;
 
+export const shadowAliasingBrightness = 0.7;
+
 export const standardBrightnessLevels = [
   1,
   slightlyBrighterReducedBrightness,
   amigaHalfBriteBrightness,
+  shadowAliasingBrightness,
 ];
 
 export const zxSpectrumDimmed = (c: Color) => {

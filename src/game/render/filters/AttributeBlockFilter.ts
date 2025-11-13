@@ -2,7 +2,7 @@ import { Filter, GlProgram } from "pixi.js";
 
 import fragment from "./attributeBlock.frag";
 import { vertex } from "./defaults";
-import { spectrumisePaletteSwopLut } from "./lutTexture/spectrumisePaletteSwopLut";
+import { spectrumLut } from "./lutTexture/stdLuts/spectrumLut";
 
 /**
  * Filter that divides the screen into blocks where each block
@@ -44,7 +44,7 @@ export class AttributeBlockFilter extends Filter {
             type: "f32",
           },
         },
-        uLut: spectrumisePaletteSwopLut.source,
+        uLut: spectrumLut.source,
       },
     });
   }
