@@ -1,4 +1,4 @@
-import { beforeEach, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
@@ -275,3 +275,189 @@ test.each([3.5, 3, 2.5])(
     });
   },
 );
+
+describe("hmv blocked by falling or deadly", () => {
+  test.each(
+    // test for head overhanging the lower stair in both direcitons
+    [
+      { headY: 2.75, directionPressed: "left" as const },
+      { headY: 1.25, directionPressed: "left" as const },
+      { headY: 2.75, directionPressed: "right" as const },
+      { headY: 1.25, directionPressed: "right" as const },
+    ],
+  )(
+    "player does not slide around an item if sliding would make them fall (eg, stairs) walking in x",
+    ({ headY, directionPressed }) => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 2, y: headY, z: 1 },
+            config: {
+              which: "head",
+            },
+          },
+
+          lowerStair: {
+            type: "block",
+            position: { x: 2, y: 2, z: 0 },
+            config: {
+              style: "organic",
+            },
+          },
+          upperStairLeft: {
+            type: "block",
+            position: { x: 3, y: 2, z: 1 },
+            config: {
+              style: "organic",
+            },
+          },
+          upperStairRight: {
+            type: "block",
+            position: { x: 1, y: 2, z: 1 },
+            config: {
+              style: "organic",
+            },
+          },
+        },
+      });
+
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = directionPressed;
+        },
+        until: 3_000,
+      });
+
+      expect(headState(gameState).standingOnItemId).toEqual("lowerStair");
+    },
+  );
+  test.each(
+    // test for head overhanging the lower stair in both direcitons
+    [
+      { headX: 2.75, directionPressed: "away" as const },
+      { headX: 1.25, directionPressed: "away" as const },
+      { headX: 2.75, directionPressed: "towards" as const },
+      { headX: 1.25, directionPressed: "towards" as const },
+    ],
+  )(
+    "player does not slide around an item if sliding would make them fall (eg, stairs) walking in x",
+    ({ headX, directionPressed }) => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: headX, y: 2, z: 1 },
+            config: {
+              which: "head",
+            },
+          },
+
+          lowerStair: {
+            type: "block",
+            position: { x: 2, y: 2, z: 0 },
+            config: {
+              style: "organic",
+            },
+          },
+          upperStairAway: {
+            type: "block",
+            position: { x: 2, y: 3, z: 1 },
+            config: {
+              style: "organic",
+            },
+          },
+          upperStairTowards: {
+            type: "block",
+            position: { x: 2, y: 1, z: 1 },
+            config: {
+              style: "organic",
+            },
+          },
+        },
+      });
+
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = directionPressed;
+        },
+        until: 3_000,
+      });
+
+      expect(headState(gameState).standingOnItemId).toEqual("lowerStair");
+    },
+  );
+
+  test.each([
+    { wouldWalkOnto: "deadly" as const },
+    { wouldWalkOnto: "safe" as const },
+  ])(
+    "player does not slide around an item if would slide to stand on a deadly item",
+    ({ wouldWalkOnto }) => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 2, y: 2.75, z: 1 },
+            config: {
+              which: "head",
+            },
+          },
+
+          lowerStair: {
+            type: "block",
+            position: { x: 2, y: 2, z: 0 },
+            config: {
+              style: "organic",
+            },
+          },
+          upperStairLeft: {
+            type: "block",
+            position: { x: 3, y: 2, z: 1 },
+            config: {
+              style: "organic",
+            },
+          },
+          upperStairRight: {
+            type: "block",
+            position: { x: 1, y: 2, z: 1 },
+            config: {
+              style: "organic",
+            },
+          },
+          deadlyOrNormal:
+            wouldWalkOnto === "deadly" ?
+              {
+                type: "deadlyBlock",
+                position: { x: 3, y: 3, z: 0 },
+                config: {
+                  style: "volcano",
+                },
+              }
+            : {
+                type: "block",
+                position: { x: 3, y: 3, z: 0 },
+                config: {
+                  style: "organic",
+                },
+              },
+        },
+      });
+
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "left";
+        },
+        until: 1_000,
+      });
+
+      expect(headState(gameState).standingOnItemId).toEqual(
+        wouldWalkOnto === "deadly" ?
+          // blocked from sliding onto a deadly item - stayed on the lower stair
+          "lowerStair"
+          // not blocked from sliding onto a normal item - moved onto it
+        : "deadlyOrNormal",
+      );
+    },
+  );
+});
