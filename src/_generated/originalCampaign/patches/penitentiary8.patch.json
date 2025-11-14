@@ -9,18 +9,33 @@
   },
   {
     "op": "add",
-    "path": "/items/extra3",
+    "path": "/items/block",
     "value": {
       "config": {
         "style": "artificial",
         "times": {
-          "y": 2
+          "z": 4
         }
       },
       "position": {
         "x": 0,
-        "y": 4,
-        "z": 6
+        "y": 7,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/extra1",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 0,
+        "y": 5,
+        "z": 5
       },
       "type": "block"
     }
@@ -45,33 +60,18 @@
   },
   {
     "op": "add",
-    "path": "/items/extra1",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 0,
-        "y": 5,
-        "z": 5
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block",
+    "path": "/items/extra3",
     "value": {
       "config": {
         "style": "artificial",
         "times": {
-          "z": 4
+          "y": 2
         }
       },
       "position": {
         "x": 0,
-        "y": 7,
-        "z": 0
+        "y": 4,
+        "z": 6
       },
       "type": "block"
     }

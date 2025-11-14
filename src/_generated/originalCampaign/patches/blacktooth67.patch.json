@@ -1,6 +1,18 @@
 [
   {
     "op": "remove",
+    "path": "/items/wall@8,5,0"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@8,0,0/config/tiles/2"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@8,0,0/config/tiles/1"
+  },
+  {
+    "op": "remove",
     "path": "/items/wall@5,8,0"
   },
   {
@@ -25,8 +37,33 @@
   },
   {
     "op": "replace",
+    "path": "/items/door@8,3,4/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
     "path": "/items/door@3,8,4/position/x",
     "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,4,2/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,4,0/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@7,3,1/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/block@6,3,0/position/y",
+    "value": 1
   },
   {
     "op": "add",
@@ -62,6 +99,22 @@
         "z": 0
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/wall_2",
+    "value": {
+      "config": {
+        "direction": "left",
+        "tiles": ["shield", "shield", "plain", "shield", "plain"]
+      },
+      "position": {
+        "x": 8,
+        "y": 3,
+        "z": 0
+      },
+      "type": "wall"
     }
   }
 ]
