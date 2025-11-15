@@ -201,7 +201,7 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
   const formattedName = formatProjectName(projectName);
 
   await retryWithRecovery({
-    async action() {
+    async action(attempt) {
       // Set game speed directly via gameApi
       const gameApiFound = await page.evaluate(() => {
         if (
@@ -237,12 +237,18 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
       if (gameApiFound) {
         console.log(`${formattedName}: Set game speed to 0 via gameApi`);
       } else {
+        await page
+          .screenshot({
+            path: `test-results/game-runs-zero-speed-${projectName}-attempt-${attempt}-no-game-api-found.png`,
+            fullPage: true,
+          })
+          .catch(() => {});
         throw new Error(`gameApi not found on window`);
       }
     },
     async recovery() {
       // Wait a bit for the game to initialize
-      await sleep(500);
+      await sleep(2_000);
     },
     logHeader: formattedName,
     actionDescription: "set game speed to zero",

@@ -7,6 +7,7 @@ import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import {
   currentPlayableState,
   headState,
+  heelsState,
   itemState,
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
@@ -407,6 +408,71 @@ describe("jumping", () => {
         expect(headState(gameState).standingOnItemId).not.toEqual("tower");
       },
     );
+
+    test("heels jump-putting-down a spring", () => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            position: { x: 0, y: 0, z: 2 },
+            config: {
+              which: "heels",
+            },
+          },
+          bag: {
+            type: "pickup",
+            position: { x: 0, y: 0, z: 1 },
+            config: {
+              gives: "bag",
+            },
+          },
+          spring: {
+            type: "spring",
+            position: { x: 0, y: 0, z: 0 },
+            config: {},
+          },
+          books: {
+            type: "block",
+            position: { x: 1, y: 0, z: 0 },
+            // 3 blocks high is higher than heels could normally reach jumping off an
+            // item (needs the extra jump from the spring)
+            config: { style: "book", times: { x: 3, z: 3 } },
+          },
+        },
+      });
+
+      // press carry until heels is carrying the spring
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockPressing("carry");
+        },
+        until() {
+          return heelsState(gameState).carrying?.type === "spring";
+        },
+      });
+
+      // wait until heels is on the floor again:
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockNotPressing("carry");
+        },
+        until() {
+          return heelsState(gameState).standingOnItemId === "floor";
+        },
+      });
+
+      // drop-jump the spring:
+      playGameThrough(gameState, {
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockDirectionPressed = "left";
+          mockInputStateTracker.mockPressing("carry");
+          mockInputStateTracker.mockPressing("jump");
+        },
+        until() {
+          return heelsState(gameState).standingOnItemId === "books";
+        },
+      });
+    });
   });
 
   test.each(testFrameRates)(
