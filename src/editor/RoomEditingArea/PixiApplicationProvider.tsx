@@ -28,6 +28,9 @@ export const PixiApplicationProvider = ({
         background: spritesheetPalette.pureBlack,
         // the room editor ticks like any other pixi app, it doesn't just react to changes:
         sharedTicker: true,
+
+        // the shadows filter requires a backbuffer
+        useBackBuffer: true,
       })
       .then(() => {
         // don't ever destroy the app - this is forever once it is made
