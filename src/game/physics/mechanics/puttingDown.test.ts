@@ -8,7 +8,7 @@ import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { combinePlayablesInSymbiosis } from "../../gameState/mutators/symbiosis";
 import { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
-import { checkSpaceAvailableToPutDown } from "./carrying";
+import { checkSpaceAvailableToPutDown } from "./puttingDown";
 
 const makeHeels = (position: Xyz) =>
   first(

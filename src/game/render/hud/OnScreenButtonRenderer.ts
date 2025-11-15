@@ -18,7 +18,7 @@ import {
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { type BooleanAction } from "../../input/actions";
-import { findItemToPickup } from "../../physics/mechanics/carrying";
+import { findItemToPickup } from "../../physics/mechanics/pickingUp";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { createSprite } from "../createSprite";
