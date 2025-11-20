@@ -46,7 +46,6 @@ export const renderCarriedOnce = <
     tickContext: {
       lastRenderRoomTime: neverTime,
       movedItems: emptySet,
-      progression: 0,
       deltaMS: 1,
     },
   });
