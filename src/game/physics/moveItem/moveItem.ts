@@ -14,6 +14,7 @@ import {
   subXyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
+import { visualiseVectorForLogs } from "../../../utils/vectors/visualiseVectorForLogs";
 import {
   collision1to1,
   collisionItemWithIndex,
@@ -33,7 +34,7 @@ import { helpfulMovementVector } from "./helpfulMovementVector";
 
 // turn this on for *very* noisy logging of all the movements/pushes etc.
 // esbuild should remove these if statements at build time
-const log = 0;
+const log = import.meta.env.VITE_LOG_MOVE_ITEM;
 
 type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
   // not everything that moves is a free item - fired doughnuts and lifts are non-free items that need moving
@@ -112,14 +113,15 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   if (log)
     console.group(
-      `[${path.size === 0 ? `first cause` : "pushed"} in ${room.id}]`,
+      `[${path.size === 0 ? `first cause` : `pushed ${path.size} deep`} in ${room.id}]`,
       "on path",
       [...path.values()],
       `💨 moving ${subjectItem.id} @`,
       subjectItem.state.position,
       `bb:`,
       subjectItem.aabb,
-      ` by `,
+      `\n By:`,
+      visualiseVectorForLogs(posDelta),
       posDelta,
       onTouch ? "with touch handling callback" : "skipping touch handling",
     );
@@ -202,12 +204,10 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     // record this acting on:
     recordActedOnBy(subjectItem, collidedWithItem, room);
 
-    if (onTouch !== undefined) {
-      if (log) {
-        console.log(
-          `handling onTouch() callback for ${subjectItem.id} touching ${collidedWithItem.id}`,
-        );
-      }
+    if (onTouch !== undefined && log) {
+      console.group(
+        `handling onTouch() callback for ${subjectItem.id} touching ${collidedWithItem.id}`,
+      );
     }
     onTouch?.({
       movingItem: subjectItem,
@@ -217,6 +217,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       deltaMS,
       room,
     });
+    if (onTouch !== undefined && log) {
+      console.groupEnd();
+    }
 
     // the touch handler might have removed either item from the world - in this case we can move on or stop:
     if (room.items[subjectItem.id] === undefined) {
@@ -241,7 +244,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     if (!isSolid(collidedWithItem, subjectItem) || !isSolid(subjectItem)) {
       if (log)
         console.log(
-          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `moving ${subjectItem.id}`,
           "either mover or ",
           collidedWithItem.id,
@@ -285,7 +287,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
     if (log)
       console.log(
-        `[${path.size === 0 ? `first cause` : "pushed"}]`,
         `${subjectItem.id} collided 💥 with ${collidedWithItem.id} to give backing-off mtv`,
         backingOffMtv,
       );
@@ -317,7 +318,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
       if (log)
         console.log(
-          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `${subjectItem.id} will recursively push ${collidedWithItem.id} by`,
           forwardPushVector,
           "with push coefficient of",
@@ -375,7 +375,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
       if (log)
         console.log(
-          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `${subjectItem.id} can't push ${collidedWithItem.id} so simply backed off to`,
           subjectItem.state.position,
         );
@@ -403,7 +402,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       ) {
         if (log)
           console.log(
-            `[${path.size === 0 ? `first cause` : "pushed"}]`,
             `${subjectItem.id} is a free item and collided vertically with ${collidedWithItem.id}`,
             collidedWithItem,
             `so will set ${subjectItem.id} as standing on ${collidedWithItem.id}`,
@@ -465,7 +463,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         forceful: false,
         onTouch,
         isHelpful: true,
+        // including self in the path of the recursive call here helps
+        // cases like in #moonbase20/#moonbase23 (arrow rooms) where
+        // the sliding blocks get piled up next to a door, and the sliding
+        // vector b2 being pushed by b1 comes back to impact b1
+        path: path.add(subjectItem.id),
       });
+      path.delete(subjectItem.id);
     }
   }
 
