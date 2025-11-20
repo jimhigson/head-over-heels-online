@@ -44,7 +44,6 @@ export type ItemTickContext = {
    * @see RoomRenderer.#lastRenderRoomTime
    */
   lastRenderRoomTime: number | undefined;
-  progression: number;
   deltaMS: number;
   movedItems: MovedItems<string, string>;
 };
