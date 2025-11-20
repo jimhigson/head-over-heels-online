@@ -21,6 +21,7 @@ import { useMouseWheelOptions } from "./useMouseWheel";
 type OptionCommandItemComponent<Value extends string> = FC<{
   value: Value;
   onSelect: (value: string) => void;
+  valueDisplayFormat?: (value: Value) => string;
 }>;
 
 export type SelectProps<Value extends string> = {
@@ -33,6 +34,7 @@ export type SelectProps<Value extends string> = {
   triggerButtonLabel?: ReactNode;
   onSelect: (value: Value) => void;
   tooltipContent?: ReactNode;
+  valueDisplayFormat?: (value: Value) => string;
 } & (
   | {
       disableCommandInput: true;
@@ -46,11 +48,14 @@ export type SelectProps<Value extends string> = {
 const DefaultOptionCommandItem: OptionCommandItemComponent<string> = ({
   value,
   onSelect,
-}) => (
-  <CommandItem value={value} onSelect={onSelect} className="px-1">
-    <BitmapText>{value}</BitmapText>
-  </CommandItem>
-);
+  valueDisplayFormat = (value) => value,
+}) => {
+  return (
+    <CommandItem value={value} onSelect={onSelect} className="px-1">
+      <BitmapText>{valueDisplayFormat(value)}</BitmapText>
+    </CommandItem>
+  );
+};
 
 export const Select = <Value extends string>(props: SelectProps<Value>) => {
   const {
@@ -62,6 +67,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
     triggerButtonLabel = "",
     OptionCommandItem = DefaultOptionCommandItem as OptionCommandItemComponent<Value>,
     tooltipContent,
+    valueDisplayFormat,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -119,6 +125,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
                       setOpen(false);
                       onSelect(newValue as Value);
                     }}
+                    valueDisplayFormat={valueDisplayFormat}
                   />
                 ))}
               </CommandGroup>

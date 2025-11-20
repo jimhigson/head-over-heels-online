@@ -1,13 +1,18 @@
 import type { Texture } from "pixi.js";
 
-import { Filter, GlProgram } from "pixi.js";
+import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
 import type { PaletteSwaps } from "./lutTexture/sparseLut";
 
-import { vertex } from "./defaults";
 import { sparseLut } from "./lutTexture/sparseLut";
 import { voronoiLut } from "./lutTexture/voronoiLut";
 import fragment from "./paletteSwap.frag";
+
+const glProgram = GlProgram.from({
+  vertex: defaultFilterVert,
+  fragment,
+  name: "palette-swop-filter",
+});
 
 // Cache for PaletteSwapFilter instances
 const filterCache = new Map<string, PaletteSwapFilter>();
@@ -22,12 +27,6 @@ class PaletteSwapFilter extends Filter {
    * @param options - Options for the PaletteSwapFilter constructor.
    */
   constructor(swops: PaletteSwaps, lutType: "sparse" | "voronoi") {
-    const glProgram = GlProgram.from({
-      vertex,
-      fragment,
-      name: "palette-swop-filter",
-    });
-
     const lutTexture = (lutType === "voronoi" ? voronoiLut : sparseLut)(swops);
 
     super({
