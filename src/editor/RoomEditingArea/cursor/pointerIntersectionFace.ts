@@ -1,6 +1,6 @@
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import type { Tool } from "../../Tool";
+import type { Tool } from "../interactivity/Tool";
 
 import {
   projectBottomCentre,

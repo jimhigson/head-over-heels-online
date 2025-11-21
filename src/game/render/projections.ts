@@ -1,9 +1,9 @@
 import type { Container } from "pixi.js";
 
 import { blockSizePx } from "../../sprites/spritePivots";
+import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
 import {
   addXyz,
-  orthoPlaneForNormal,
   subXy,
   type Xy,
   type XyMaybeZ,

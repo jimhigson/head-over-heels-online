@@ -12,7 +12,7 @@ import type {
   EditorRoomJson,
   EditorRoomJsonItems,
 } from "../../editorTypes";
-import type { ItemTool } from "../../Tool";
+import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import type {
   LevelEditorState,
   PreviewedRoomItemEdits,

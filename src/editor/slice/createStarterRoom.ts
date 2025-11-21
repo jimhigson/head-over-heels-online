@@ -1,5 +1,3 @@
-import { cycle, drop, take } from "iter-tools-es";
-
 import type { JsonItem } from "../../model/json/JsonItem";
 import type { Xy } from "../../utils/vectors/vectors";
 import type {
@@ -9,38 +7,7 @@ import type {
   EditorRoomJsonItems,
 } from "../editorTypes";
 
-import { type SceneryName, type Wall } from "../../sprites/planets";
-
-/**
- * some standard wall patterns that can be repeated for creating the wall tiles
- * in all of the sceneries, using all the tiles and being symmetrical in an 8x8 room
- */
-const wallStarterPatterns: { [ScN in SceneryName]: Array<Wall<ScN>> } = {
-  jail: ["bars"],
-  blacktooth: ["plain", "plain", "armour", "shield", "shield", "armour"],
-  bookworld: ["book", "book", "cowboy"],
-  egyptus: [
-    "hieroglyphics",
-    "hieroglyphics",
-    "hieroglyphics",
-    "sarcophagus",
-    "sarcophagus",
-  ],
-  market: ["passage", "more-fruits", "fruits", "more-fruits", "fruits"],
-  moonbase: ["coil", "window1", "window2", "window3"],
-  penitentiary: ["loop", "loop", "skeleton"],
-  safari: ["wall", "shield", "wall", "window", "window", "wall", "shield"],
-};
-
-export const rotatingSceneryTiles = <S extends SceneryName>(
-  sceneryName: S,
-  size: number,
-  skip: number = 0,
-): IterableIterator<Wall<S>> => {
-  const c = cycle(wallStarterPatterns[sceneryName]);
-
-  return drop(skip, take(size + skip, c));
-};
+import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
 
 const starterRoomWallItems = (size: Xy): EditorRoomJsonItems => ({
   ["awayWall" as EditorRoomItemId]: {

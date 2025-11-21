@@ -1,6 +1,6 @@
 import type { SceneryName, Wall } from "../../../sprites/planets";
 
-import { rotatingSceneryTiles } from "../createStarterRoom";
+import { rotatingSceneryTiles } from "../rotatingSceneryTiles";
 
 export const addOrRemoveWallTilesInPlace = <S extends SceneryName>(
   tiles: Array<Wall<S>>,
