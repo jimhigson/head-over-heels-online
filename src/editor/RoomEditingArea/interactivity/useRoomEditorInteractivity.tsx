@@ -3,8 +3,8 @@ import { useEffect, useRef } from "react";
 
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
-import type { Tool } from "../../Tool";
 import type { MaybePointingAtSomething } from "../cursor/PointingAt";
+import type { Tool } from "./Tool";
 import type { ToolHandler } from "./toolHandlers/ToolHandler";
 
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";

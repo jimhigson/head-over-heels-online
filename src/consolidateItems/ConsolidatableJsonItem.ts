@@ -1,7 +1,16 @@
 import type { JsonItemType, JsonItemUnion } from "../model/json/JsonItem";
 import type { Xyz } from "../utils/vectors/vectors";
 
-import { lengthXyz, originXyz, unitXyz } from "../utils/vectors/vectors";
+import {
+  lengthXyz,
+  originXyz,
+  unitXyz,
+  unitXyz_x,
+  unitXyz_xy,
+  unitXyz_xz,
+  unitXyz_y,
+  unitXyz_yz,
+} from "../utils/vectors/vectors";
 
 export const consolidatableJsonItemTypes = [
   "block",
@@ -44,10 +53,10 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
       switch (jsonItem.config.direction) {
         case "left":
         case "right":
-          return { x: 1, y: 0, z: 0 };
+          return unitXyz_x;
         case "away":
         case "towards":
-          return { x: 0, y: 1, z: 0 };
+          return unitXyz_y;
         default:
           jsonItem.config.direction satisfies never;
           throw new Error();
@@ -57,11 +66,11 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
       return unitXyz;
 
     case "teleporter":
-      return { x: 1, y: 1, z: 0 };
+      return unitXyz_xy;
 
     case "floor":
     case "spikes":
-      return { x: 1, y: 1, z: 0 };
+      return unitXyz_xy;
 
     case "block":
       /*
@@ -76,9 +85,9 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
       }
       switch (jsonItem.config.axis) {
         case "x":
-          return { x: 1, y: 0, z: 1 };
+          return unitXyz_xz;
         case "y":
-          return { x: 0, y: 1, z: 1 };
+          return unitXyz_yz;
         default:
           jsonItem.config.axis satisfies never;
           throw new Error();
@@ -87,10 +96,10 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
       switch (jsonItem.config.direction) {
         case "left":
         case "right":
-          return { x: 0, y: 1, z: 1 };
+          return unitXyz_yz;
         case "away":
         case "towards":
-          return { x: 1, y: 0, z: 1 };
+          return unitXyz_xz;
         default:
           jsonItem.config satisfies never;
           throw new Error();

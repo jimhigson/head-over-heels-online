@@ -69,6 +69,7 @@
     "react-resizable-panels": "^3.0.3",
     "redux-persist": "^6.0.0",
     "snarkdown-in-react": "^2.0.2",
+    "string-transform": "^21.9.19",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar": "^3.1.0",
     "timeago.js": "^4.0.2",

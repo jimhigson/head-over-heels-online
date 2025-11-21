@@ -3,7 +3,7 @@ import type {
   EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import type { GridResolution } from "../../slice/levelEditorSlice";
-import type { Tool } from "../../Tool";
+import type { Tool } from "../interactivity/Tool";
 import type { MaybePointingAtSomething, PointingAtNothing } from "./PointingAt";
 import type {
   PointerItemIntersection,
@@ -14,11 +14,8 @@ import { isSolid } from "../../../game/physics/itemPredicates";
 import { unprojectScreenXyToWorldXyzOnFace } from "../../../game/render/projections";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { blockSizePx } from "../../../sprites/spritePivots";
-import {
-  orthoPlaneForNormal,
-  type Xy,
-  type Xyz,
-} from "../../../utils/vectors/vectors";
+import { orthoPlaneForNormal } from "../../../utils/vectors/orthoPlane";
+import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
 import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
 import { pointerIntersectionEdge } from "./pointerIntersectionEdge";

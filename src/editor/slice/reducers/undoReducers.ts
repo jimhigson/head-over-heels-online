@@ -6,6 +6,7 @@ import type { EditorRoomJson } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { removeNonExistingItemsFromSelection } from "./selectionsReducers";
 
 // to be called from other reducers when they are ready to do something
 // that should be undoable, e.g. adding an item to the room
@@ -44,8 +45,10 @@ export const undoReducers = {
       campaignInProgress.rooms[currentlyEditingRoomId] as EditorRoomJson,
     );
 
-    campaignInProgress.rooms[currentlyEditingRoomId] =
-      undo.pop() as EditorRoomJson;
+    campaignInProgress.rooms[currentlyEditingRoomId] = undo.pop()!;
+
+    // undoing may have deleted a selected item: remove from selection if so:
+    removeNonExistingItemsFromSelection(state);
   },
 
   redo(_state) {
@@ -69,8 +72,10 @@ export const undoReducers = {
       campaignInProgress.rooms[currentlyEditingRoomId] as EditorRoomJson,
     );
 
-    campaignInProgress.rooms[currentlyEditingRoomId] =
-      redo.pop() as EditorRoomJson;
+    campaignInProgress.rooms[currentlyEditingRoomId] = redo.pop()!;
+
+    // redoing may have deleted a selected item: remove from selection if so:
+    removeNonExistingItemsFromSelection(state);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 

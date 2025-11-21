@@ -7,6 +7,21 @@ import type { HoveredItem, LevelEditorState } from "../levelEditorSlice";
 
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
+export const removeNonExistingItemsFromSelection = (
+  _state: LevelEditorState,
+) => {
+  // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+  // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
+  // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
+  const state = _state as LevelEditorState;
+
+  const roomItems = selectCurrentRoomFromLevelEditorState(state).items;
+
+  state.selectedJsonItemIds = state.selectedJsonItemIds.filter(
+    (jsonItemId) => jsonItemId in roomItems,
+  );
+};
+
 export const selectionsReducers = {
   /** set (or unset) the selection */
   setSelectedItemsInRoom(

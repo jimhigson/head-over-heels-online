@@ -1,4 +1,4 @@
-import type { Tool } from "../../../Tool";
+import type { Tool } from "../Tool";
 import type {
   MouseDownParams,
   MouseLeaveParams,

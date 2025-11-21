@@ -6,17 +6,10 @@ import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice
 
 export const itemsAreLocked = (
   storeState: RootStateWithLevelEditorSlice,
-  ...items: //| ItemInPlayType[]
-  EditorJsonItemUnion[] | EditorUnionOfAllItemInPlayTypes[]
+  ...items: EditorJsonItemUnion[] | EditorUnionOfAllItemInPlayTypes[]
 ) => {
   return (
     storeState.levelEditor.wallsFloorsLocked &&
-    items.some(
-      (t) =>
-        //typeof t === "string" ?
-        //  t === "wall" || t === "floor",
-        //:
-        t.type === "wall" || t.type === "floor",
-    )
+    items.some((t) => t.type === "wall" || t.type === "floor")
   );
 };
