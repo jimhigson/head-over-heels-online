@@ -1,23 +1,23 @@
 import type { Color } from "pixi.js";
 
+import { defaultFilterVert } from "pixi.js";
 import { Filter, GlProgram } from "pixi.js";
 
-import { vertex } from "./defaults";
 import fragment from "./oneColour.frag";
 
 type Uniforms = {
   uColour: Float32Array;
 };
 
+const glProgram = GlProgram.from({
+  vertex: defaultFilterVert,
+  fragment,
+  name: "oneColour-filter",
+});
+
 /* very simple filter - render non-transparent pixels as a single colour */
 export class OneColourFilter extends Filter {
   constructor(colour: Color) {
-    const glProgram = GlProgram.from({
-      vertex,
-      fragment,
-      name: "oneColour-filter",
-    });
-
     super({
       glProgram,
       resources: {
