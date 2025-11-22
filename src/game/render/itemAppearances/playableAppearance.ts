@@ -1,9 +1,6 @@
-import type { Filter } from "pixi.js";
-
 import { Container } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
 
-import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
@@ -32,7 +29,7 @@ import {
 } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { OneColourFilter } from "../filters/oneColourFilter";
-import { OutlineFilter, outlineFilters } from "../filters/outlineFilter";
+import { OutlineFilter } from "../filters/outlineFilter";
 import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { noFilters } from "../filters/standardFilters";
 import {
@@ -41,6 +38,14 @@ import {
   stackSprites,
 } from "./createStackedSprites";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+
+// playables keep their full set of available filter, they just get enabled
+// and disabled as needed
+type PlayableFilters = [
+  switchedToHighlightOutline: OutlineFilter,
+  invulnerableOutline: OutlineFilter,
+  invulnerableFlashAfterDeathFilter: OneColourFilter,
+];
 
 type PlayableRenderProps = {
   facingXy8: DirectionXy8;
@@ -68,17 +73,14 @@ const playableCreateSpriteOptions = ({
   teleportingPhase,
   gravityZ,
   paused,
-  gameSpeed,
 }: PlayableRenderProps & {
   name: IndividualCharacterName;
   paused: boolean;
-  gameSpeed?: number;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      gameSpeed,
     };
   }
 
@@ -86,7 +88,6 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      gameSpeed,
     };
   }
 
@@ -94,7 +95,6 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      gameSpeed,
     };
   }
 
@@ -102,7 +102,6 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.walking.${facingXy8}`,
       paused,
-      gameSpeed,
     };
   }
 
@@ -128,7 +127,6 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: idleAnimationId,
       paused,
-      gameSpeed,
     };
   }
   return { textureId: `${name}.walking.${facingXy8}.2` };
@@ -139,6 +137,7 @@ const shineSpriteSymbol: unique symbol = Symbol();
 type IndividualPlayableRenderingContainer = Container & {
   [playableSpriteContainerSymbol]: Container;
   [shineSpriteSymbol]: AnimatedSprite;
+  filters: PlayableFilters;
 };
 
 const updateIndividualPlayableSprite = (
@@ -146,7 +145,6 @@ const updateIndividualPlayableSprite = (
   renderPropsWithNameAndPause: PlayableRenderProps & {
     name: IndividualCharacterName;
     paused: boolean;
-    gameSpeed?: number;
   },
 ) => {
   container[playableSpriteContainerSymbol].removeChildren();
@@ -164,7 +162,6 @@ const createOutputContainer = (
   name: IndividualCharacterName,
   inSymbio: boolean,
   paused: boolean,
-  gameSpeed: number | undefined,
 ): IndividualPlayableRenderingContainer => {
   const container = new Container() as IndividualPlayableRenderingContainer;
   const playableSpriteContainer = new Container();
@@ -175,9 +172,22 @@ const createOutputContainer = (
     paused,
     filter: name === "heels" ? shineFilterForHeels : noFilters,
     flipX: name === "heels",
-    gameSpeed: gameSpeed ?? 1,
   }) as AnimatedSprite;
   container[shineSpriteSymbol] = shineSprite;
+  container.filters = [
+    //switchedToHighlightOutline: OutlineFilter,
+    // don't use the singleton per-colour outline filters since we set .enabled on these
+    // and would change the enabled status for all containers that are using it
+    new OutlineFilter({ color: spritesheetPalette[accentColours[name]] }),
+    //invulnerableOutline: OutlineFilter,
+    new OutlineFilter({ color: spritesheetPalette.midRed }),
+    //invulnerableFlashAfterDeathFilter: OneColourFilter,
+    new OneColourFilter(spritesheetPalette[accentColours[name]]),
+  ];
+  for (const f of container.filters) {
+    f.enabled = false;
+  }
+
   return container;
 };
 
@@ -221,63 +231,19 @@ export const isFlashing = (playableItem: PlayableItem): boolean => {
   );
 };
 
-const addFilterToContainer = (container: Container, newFilter: Filter) => {
-  if (!container.filters) {
-    // If no filters exist, assign the new filter directly
-    container.filters = newFilter;
-  } else if (Array.isArray(container.filters)) {
-    // If filters exist as an array, append the new filter
-    container.filters = [...container.filters, newFilter];
-  } else {
-    // If a single filter exists, convert to an array and append
-    container.filters = [container.filters, newFilter].flat();
-  }
-};
-
-const removeFilterFromContainer = (
-  container: Container,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filterClass: new (...args: any[]) => Filter,
-): void => {
-  container.filters =
-    Array.isArray(container.filters) ?
-      container.filters.filter((f): f is Filter => !(f instanceof filterClass))
-    : container.filters instanceof filterClass ? noFilters
-    : container.filters;
-};
-
 const applyFilters = (
-  name: IndividualCharacterName,
   { highlighted, flashing, shining }: PlayableRenderProps,
-  currentlyRenderedProps: PlayableRenderProps | undefined,
-  container: Container,
+  container: IndividualPlayableRenderingContainer,
 ) => {
-  const highlightColour: null | SpritesheetPaletteColourName =
-    highlighted ? accentColours[name]
-    : shining ? "midRed"
-    : null;
+  const [
+    switchedToHighlightOutline,
+    invulnerableOutline,
+    invulnerableFlashAfterDeathFilter,
+  ] = container.filters;
 
-  const currentHighlightColour: null | SpritesheetPaletteColourName =
-    currentlyRenderedProps?.highlighted ? accentColours[name]
-    : currentlyRenderedProps?.shining ? "midRed"
-    : null;
-
-  if (highlightColour !== currentHighlightColour) {
-    removeFilterFromContainer(container, OutlineFilter);
-    if (highlightColour !== null) {
-      addFilterToContainer(container, outlineFilters[highlightColour]);
-    }
-  }
-
-  const currentlyFlashing = currentlyRenderedProps?.flashing ?? false;
-  if (flashing && !currentlyFlashing) {
-    addFilterToContainer(
-      container,
-      new OneColourFilter(spritesheetPalette[accentColours[name]]),
-    );
-  } else if (!flashing && currentlyFlashing) {
-    removeFilterFromContainer(container, OneColourFilter);
-  }
+  switchedToHighlightOutline.enabled = highlighted;
+  invulnerableOutline.enabled = !highlighted && shining;
+  invulnerableFlashAfterDeathFilter.enabled = flashing;
 };
 
 const applyShine = (
@@ -298,23 +264,16 @@ const updateIndividualsRendering = (
   refreshSprites: boolean,
   renderProps: PlayableRenderProps,
   paused: boolean,
-  gameSpeed?: number,
   currentlyRenderedProps?: PlayableRenderProps,
 ) => {
   if (refreshSprites) {
     updateIndividualPlayableSprite(individualContainer, {
       name: individualCharacterName,
       ...renderProps,
-      gameSpeed,
       paused,
     });
   }
-  applyFilters(
-    individualCharacterName,
-    renderProps,
-    currentlyRenderedProps,
-    individualContainer,
-  );
+  applyFilters(renderProps, individualContainer);
   applyShine(
     individualContainer,
     renderProps.shining,
@@ -402,13 +361,8 @@ const playableAppearanceImpl: ItemAppearance<
     outputContainer =
       previousRendering ??
       stackSprites({
-        top: createOutputContainer("head", true, paused, gameState?.gameSpeed),
-        bottom: createOutputContainer(
-          "heels",
-          true,
-          paused,
-          gameState?.gameSpeed,
-        ),
+        top: createOutputContainer("head", true, paused),
+        bottom: createOutputContainer("heels", true, paused),
       });
 
     const stackedContainer =
@@ -420,7 +374,6 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      gameState?.gameSpeed,
       currentlyRenderedProps,
     );
     updateIndividualsRendering(
@@ -429,13 +382,11 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      gameState?.gameSpeed,
       currentlyRenderedProps,
     );
   } else {
     outputContainer =
-      previousRendering ??
-      createOutputContainer(type, false, paused, gameState?.gameSpeed);
+      previousRendering ?? createOutputContainer(type, false, paused);
 
     updateIndividualsRendering(
       type,
@@ -443,7 +394,6 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      gameState?.gameSpeed,
       currentlyRenderedProps,
     );
   }

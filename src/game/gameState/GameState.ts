@@ -57,17 +57,6 @@ export type GameState<RoomId extends string> = {
    * or player time is more useful
    */
   gameTime: number;
-
-  /**
-   * an incrementing number of how many times we have progressed the game engine
-   * each progression having its own unique number
-   */
-  progression: number;
-
-  /**
-   * 0 = paused, 1 = normal speed, 0.5 = slow motion, 2 = double speed, etc
-   */
-  gameSpeed: number;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

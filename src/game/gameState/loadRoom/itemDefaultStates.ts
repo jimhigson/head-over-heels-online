@@ -136,7 +136,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     ...(jsonItem.type === "switch" ?
       ({
         setting: jsonItem.config.initialSetting,
-        touchedOnProgression: -1,
+        lastToggledAtRoomTime: neverTime,
       } satisfies StateFragment<typeof jsonItem.type>)
     : {}),
     ...(jsonItem.type === "button" ?

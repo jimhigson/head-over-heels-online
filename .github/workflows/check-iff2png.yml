@@ -3,6 +3,11 @@ name: Check IFF to PNG conversion is up-to-date
 on:
   pull_request:
     branches: ["main"]
+    paths:
+      - "gfx/*.iff"
+      - "gfx/*.ts"
+      - "gfx/*.json"
+      - "scripts/iff2png.sh"
   workflow_dispatch:
 
 jobs:

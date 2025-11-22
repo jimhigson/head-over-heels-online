@@ -19,6 +19,7 @@ import { toggleUserSetting } from "../../../store/slices/gameMenus/gameMenusSlic
 import { store } from "../../../store/store";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { scaleXyz } from "../../../utils/vectors/vectors";
+import { switchMinTimeBetweenToggleMs } from "../mechanicsConstants";
 
 const oppositeSetting = (setting: string) => {
   return setting === "left" ? "right" : "left";
@@ -208,23 +209,15 @@ export const handleItemTouchingSwitch = <
   RoomItemId extends string,
 >({
   touchedItem: switchItem,
-  gameState: { progression },
   room,
 }: ItemTouchEventByItemType<RoomId, RoomItemId, ItemInPlayType, "switch">) => {
-  const {
-    // TODO: progression here could easily be roomTime, and progression could
-    // be removed as concept from the codebase
-    state: { touchedOnProgression },
-  } = switchItem;
+  const lastedToggledAt: number = switchItem.state.lastToggledAtRoomTime;
 
-  switchItem.state.touchedOnProgression = progression;
+  const { roomTime } = room;
 
-  if (
-    // touched on the last progression
-    progression === touchedOnProgression + 1 ||
-    // touched on this progression (handled touch twice in one frame)
-    progression === touchedOnProgression
-  ) {
+  switchItem.state.lastToggledAtRoomTime = roomTime;
+
+  if (lastedToggledAt + switchMinTimeBetweenToggleMs > roomTime) {
     // switch was already being pressed so skip it:
     return;
   }

@@ -23,7 +23,7 @@ import { positionCentredInBlock } from "./positionCentredInBlock";
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
-  shadowCastTexture: "shadow.smallRound",
+  shadowCastTexture: "shadow.playable",
   castsShadowWhileStoodOn: true,
   // head's nose is rendered outside of his bb in the original
   aabb: smallItemAabb,

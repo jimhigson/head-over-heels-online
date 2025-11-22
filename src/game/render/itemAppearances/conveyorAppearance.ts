@@ -44,14 +44,12 @@ const staggerAnimation = (
 const createRendering = (
   direction: DirectionXy4,
   times: Partial<Xy> | undefined,
-  gameSpeed: number = 1,
 ): Container<AnimatedSprite> => {
   const axis = tangentAxis(direction);
   const sprites = createSprite({
     animationId: `conveyor.${axis}`,
     reverse: direction === "towards" || direction === "right",
     times,
-    gameSpeed,
   });
   // createSprite will return a single AnimatedSprite for a single conveyor,
   // which is generally fine to avoid creating unnecessary containers. However,
@@ -82,7 +80,6 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy, direction },
     },
     room: { roomTime },
-    general: { gameState },
   },
   currentRendering,
 }) => {
@@ -102,9 +99,7 @@ const conveyorAppearanceImpl: ItemAppearance<
   const rerender =
     !currentOutput || direction !== currentlyRenderedProps?.direction;
   const rendering =
-    rerender ?
-      createRendering(direction, times, gameState?.gameSpeed)
-    : currentOutput;
+    rerender ? createRendering(direction, times) : currentOutput;
 
   // how fast to play the animation, with slowdown for how long since it stopped moving
   const playSpeedFrac = Math.max(0, 1 - periodSinceStopped / slowdownTimeMs);

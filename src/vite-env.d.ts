@@ -18,6 +18,7 @@ declare module "virtual:pwa-register" {
 }
 interface ImportMetaEnv {
   readonly VITE_GAME_URL: string;
+  readonly VITE_LOG_MOVE_ITEM?: string;
 }
 
 interface ImportMeta {

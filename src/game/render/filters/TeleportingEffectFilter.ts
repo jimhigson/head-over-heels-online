@@ -1,8 +1,13 @@
-import { Filter, GlProgram } from "pixi.js";
+import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
-import { vertex } from "./defaults";
-import { spectrumisePaletteSwopLut } from "./lutTexture/spectrumisePaletteSwopLut";
+import { spectrumLut } from "./lutTexture/stdLuts/spectrumLut";
 import fragment from "./teleportingEffect.frag";
+
+const glProgram = GlProgram.from({
+  vertex: defaultFilterVert,
+  fragment,
+  name: "attribute-block-filter",
+});
 
 type TeleportingEffectOptions = {
   /**
@@ -32,12 +37,6 @@ export class TeleportingEffectFilter extends Filter {
     centreX = 0.5,
     centreY = 0.5,
   }: TeleportingEffectOptions = {}) {
-    const glProgram = GlProgram.from({
-      vertex,
-      fragment,
-      name: "attribute-block-filter",
-    });
-
     super({
       glProgram,
       resources: {
@@ -64,16 +63,13 @@ export class TeleportingEffectFilter extends Filter {
             type: "f32",
           },
         },
-        uLut: spectrumisePaletteSwopLut.source,
+        uLut: spectrumLut.source,
       },
     });
 
     this.uniforms = this.resources.attributeBlockUniforms.uniforms;
   }
 
-  set blockSize(value: number) {
-    this.resources.attributeBlockUniforms.uniforms.uBlockSize = value;
-  }
   set progress(value: number) {
     this.resources.attributeBlockUniforms.uniforms.uProgress = value;
   }

@@ -1,6 +1,6 @@
 import type { Color, FilterSystem, RenderTexture, Texture } from "pixi.js";
 
-import { Filter, GlProgram } from "pixi.js";
+import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
 import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
 
@@ -8,7 +8,6 @@ import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
 import { transformObject } from "../../../utils/entries";
-import { vertex } from "./defaults";
 import fragment from "./outline.frag";
 
 export type OutlineFilterOptions = {
@@ -24,16 +23,16 @@ store.subscribe(() => {
   currentUpscale = selectGameEngineUpscale(store.getState());
 });
 
+const glProgram = GlProgram.from({
+  vertex: defaultFilterVert,
+  fragment,
+  name: "outline-filter",
+});
+
 export class OutlineFilter extends Filter {
   private outlineWidth?: number;
 
   constructor({ color, width }: OutlineFilterOptions) {
-    const glProgram = GlProgram.from({
-      vertex,
-      fragment,
-      name: "outline-filter",
-    });
-
     const upscale = width ?? currentUpscale;
 
     super({

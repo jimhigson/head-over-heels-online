@@ -8,6 +8,12 @@ float luminance(vec3 color) {
            color.b * channelPerceptualBrightness.b;
 }
 
+float luminance(vec4 color) {
+    return color.r * channelPerceptualBrightness.r +
+           color.g * channelPerceptualBrightness.g +
+           color.b * channelPerceptualBrightness.b;
+}
+
 // Determines if a color is not black based on perceptual luminance
 float isNotBlack(vec4 color, float blackPoint) {
     float lum = luminance(color.rgb);

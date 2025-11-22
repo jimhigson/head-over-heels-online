@@ -11,16 +11,16 @@ test.describe("LUT Texture Visualization", () => {
     await page.goto("/lut");
 
     // Wait for the LUT display div to appear
-    await page.waitForSelector(".lut-display", { timeout: 5000 });
+    await page.waitForSelector(".e2e-snapshot-target", { timeout: 5000 });
 
     // Give it a moment to fully load
     await page.waitForTimeout(500);
 
     // Take a screenshot of the LUT texture
     await expect(page).toHaveScreenshot("lut-texture.png", {
-      fullPage: false,
+      fullPage: true,
       animations: "disabled",
-      clip: { x: 0, y: 0, width: 512, height: 512 },
+      clip: { x: 0, y: 0, width: 512, height: 512 * 3 },
       threshold: 0.02,
       maxDiffPixels: 0,
     });

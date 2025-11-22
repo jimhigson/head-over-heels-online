@@ -9,6 +9,13 @@ import {
 import { isPushable } from "../itemPredicates";
 import { mtv, mtvAlongVector } from "../mtv";
 
+/**
+ * An mtv  in a specific direction - either:
+ *
+ *  - `mtvAlongVector`   : colliding with a pushable thing and pushing in xy only (no z)
+ *  - or, a normal `mtv` : if colliding up/down, or colliding with a non-pushable
+ *
+ */
 export const backingOffTranslationAfterCollision = <
   RoomId extends string,
   RoomItemId extends string,
@@ -27,7 +34,7 @@ export const backingOffTranslationAfterCollision = <
     forceful,
   );
 
-  const backingOffMtv = mtv(
+  const backingOffSimpleMtv = mtv(
     subjectItem.state.position,
     subjectItem.aabb,
     collidedWithItem.state.position,
@@ -43,7 +50,7 @@ export const backingOffTranslationAfterCollision = <
     collidedWithIsPushable &&
     // vertical pushing (ie, from lifts) doesn't get the special treatment - this is always
     // using the normal backing off mtv
-    backingOffMtv.z === 0
+    backingOffSimpleMtv.z === 0
   ) {
     // vector that would put the subject back where they started - this is easier than
     // their forward travel since it keeps the projection with their mtv positive
@@ -58,9 +65,14 @@ export const backingOffTranslationAfterCollision = <
     // of our direction of travel that we can modify it only back off in the direction we are travelling.
     // modifying the mtv to be in the direction of travel allows items to be pushed diagonally for
     // example, even though for aabbs, the mtv is always axis aligned. Dividing by the distance would give
-    // the projection - / by dist² gives projection as fraction of the travel distance
-    const backingOffProjectedOnMovementVector =
-      dotProductXyz(backingOffMtv, subjectTravelReverseVector) /
+    // the projection -
+    //
+    //  x/dist²
+    //  is (x➗dist)➗dist,
+    //  is projection➗dist,
+    //  ie the projection as fraction of the travel distance
+    const backingOffProjectedOnMovementVectorMagnitude: number =
+      dotProductXyz(backingOffSimpleMtv, subjectTravelReverseVector) /
       travelRevDistSquared;
 
     // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
@@ -68,7 +80,7 @@ export const backingOffTranslationAfterCollision = <
     subjectTravelReverseVector.z = 0;
 
     // a little bit wider than 45° (which would be 0.5 here)
-    if (backingOffProjectedOnMovementVector > 0.44) {
+    if (backingOffProjectedOnMovementVectorMagnitude > 0.44) {
       return mtvAlongVector(
         subjectItem.state.position,
         subjectItem.aabb,
@@ -81,5 +93,5 @@ export const backingOffTranslationAfterCollision = <
     }
   }
 
-  return backingOffMtv;
+  return backingOffSimpleMtv;
 };

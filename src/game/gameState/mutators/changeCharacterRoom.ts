@@ -271,14 +271,29 @@ export const changeCharacterRoom = <
         scrollsRead: store.getState().gameMenus.gameInPlay.scrollsRead,
       }) as RoomState<RoomId, RoomItemId>);
 
-  // take the character out of the previous room:
-  deleteItemFromRoom({ room: leavingRoom, item: playableItem });
-
   // heels can't carry items to different rooms:
   const heelsAbilities = selectHeelsAbilities(playableItem);
   if (heelsAbilities !== undefined) {
-    heelsAbilities.carrying = null;
+    const { carrying } = heelsAbilities;
+    if (carrying !== null) {
+      // heels was carrying something - drop it
+      // this usually doesn't matter since the room is about to be unloaded from memory
+      // anyway,  but it could matter if the other character is in the room, keeping
+      // it from being unloaded. We don't worry about if there is space for the item
+      // since it will replace the space the player is in when they are deleted
+      // from the room:
+      addItemToRoom({
+        room: leavingRoom,
+        item: carrying,
+        atPosition: playableItem.state.position,
+      });
+      heelsAbilities.carrying = null;
+    }
   }
+
+  // take the character out of the previous room:
+  deleteItemFromRoom({ room: leavingRoom, item: playableItem });
+
   // latent movement does not apply outside of the room it was given in:
   playableItem.state.latentMovement = [];
   // previous standing on (from the old room) no longer applies:

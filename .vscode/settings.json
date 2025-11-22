@@ -1,8 +1,10 @@
 {
   "cSpell.words": [
     "Aabb",
+    "Autofire",
     "Autowalk",
     "autowalking",
+    "backbuffer",
     "blacktooth",
     "blockstacking",
     "bookworld",
@@ -37,6 +39,7 @@
     "jims",
     "lookupable",
     "Lowlighted",
+    "luts",
     "magick",
     "mame",
     "moonbase",
@@ -97,6 +100,7 @@
     "unsolid",
     "upscaler",
     "vels",
+    "Voronoi",
     "wasd",
     "xyzs",
     "zeroable"

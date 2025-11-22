@@ -6,19 +6,9 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "egyptus10",
   items: {
-    barrier: {
-      config: { axis: "y", times: { y: 3, z: 4 } },
-      position: { x: 7.5, y: 1, z: 7 },
-      type: "barrier",
-    },
     barrier2: {
       config: { axis: "y", times: { z: 6 } },
       position: { x: 7.5, y: 1, z: 0 },
-      type: "barrier",
-    },
-    barrier3: {
-      config: { axis: "x", times: { z: 4 } },
-      position: { x: 8, y: 3.5, z: 7 },
       type: "barrier",
     },
     "block@7,2,0": {

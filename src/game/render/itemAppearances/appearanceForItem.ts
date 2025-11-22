@@ -71,7 +71,7 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config, id },
-        general: { paused, gameState },
+        general: { paused },
       },
     }) => {
       switch (config.style) {
@@ -81,7 +81,6 @@ const itemAppearancesMap: {
             times: config.times,
             randomiseStartFrame: id,
             paused,
-            gameSpeed: gameState?.gameSpeed,
           });
         case "toaster":
           throw new Error("use the special toaster appearance instead");
@@ -121,7 +120,7 @@ const itemAppearancesMap: {
   lift: itemAppearanceRenderOnce(
     ({
       renderContext: {
-        general: { paused, gameState },
+        general: { paused },
       },
     }) => {
       const rendering = new Container();
@@ -135,7 +134,6 @@ const itemAppearancesMap: {
           animationId: "lift",
           pivot,
           paused,
-          gameSpeed: gameState?.gameSpeed,
         }),
       );
 
@@ -165,7 +163,7 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config },
-        general: { paused, gameState },
+        general: { paused },
       },
     }) => {
       if (config.gives === "crown") {
@@ -189,7 +187,6 @@ const itemAppearancesMap: {
         reincarnation: {
           animationId: "fish",
           paused,
-          gameSpeed: gameState?.gameSpeed,
         },
       };
       const createSpriteOptions = pickupSpriteOptions[config.gives];
@@ -231,13 +228,12 @@ const itemAppearancesMap: {
           id,
           config: { style },
         },
-        general: { paused, gameState },
+        general: { paused },
       },
     }) => {
       return createSprite({
         animationId: `bubbles.bounce.${style}`,
         paused,
-        gameSpeed: gameState?.gameSpeed,
         randomiseStartFrame: id,
       });
     },
@@ -256,7 +252,7 @@ const itemAppearancesMap: {
         item: {
           config: { forCharacter },
         },
-        general: { paused, gameState },
+        general: { paused },
       },
     }) => {
       return createSprite({
@@ -264,7 +260,6 @@ const itemAppearancesMap: {
         anchor: { x: 0.5, y: 0.5 },
         filter: forCharacter === "heels" ? shineFilterForHeels : noFilters,
         paused,
-        gameSpeed: gameState?.gameSpeed,
       });
     },
   ),

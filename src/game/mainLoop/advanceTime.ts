@@ -12,7 +12,6 @@ export const advanceTime = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
   deltaMS: number,
 ) => {
-  gameState.progression++;
   gameState.gameTime += deltaMS;
   room.roomTime += deltaMS;
   const playable = selectCurrentPlayableItem(gameState);

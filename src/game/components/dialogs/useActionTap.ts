@@ -44,7 +44,9 @@ export const useActionTap = ({
         if (pressStatus === "tap") {
           const declinedToHandle = handler(a);
           if (!declinedToHandle) {
-            for (const a2 of actions) inputStateTracker.actionsHandled.add(a2);
+            for (const a2 of actions) {
+              inputStateTracker.inputWasHandled(a2);
+            }
           }
 
           break; // if we are looking for multiple actions, don't let them

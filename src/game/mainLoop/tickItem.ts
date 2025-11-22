@@ -35,7 +35,6 @@ import { isPlayableItem } from "../physics/itemPredicates";
 import { type MechanicResult } from "../physics/MechanicResult";
 import { tickActivation } from "../physics/mechanics/activation";
 import { buttonPressAndRelease } from "../physics/mechanics/buttonPressAndRelease";
-import { carrying } from "../physics/mechanics/carrying";
 import { emitting } from "../physics/mechanics/emitting";
 import { firing } from "../physics/mechanics/firing";
 import { gravity } from "../physics/mechanics/gravity";
@@ -44,6 +43,8 @@ import { latentMovement } from "../physics/mechanics/latentMovement";
 import { moveLift } from "../physics/mechanics/moveLift";
 import { tickMovement } from "../physics/mechanics/movement";
 import { onConveyor } from "../physics/mechanics/onConveyor";
+import { pickingUp } from "../physics/mechanics/pickingUp";
+import { puttingDown } from "../physics/mechanics/puttingDown";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
 import { moveItem } from "../physics/moveItem/moveItem";
@@ -96,14 +97,24 @@ function* itemMechanicResultGen<
 
     // user controls:
     if (item.id === gameState.currentCharacterName) {
+      const itemIsCarrier = isCarrier(item);
+
+      // putting down before jumping means that have a chance to
+      // put down a spring and then jump off of it:
+      if (itemIsCarrier) {
+        puttingDown(item, room, gameState, deltaMS);
+      }
+
       yield jumping(item, room, gameState, deltaMS) as MechanicResult<
         T,
         RoomId,
         RoomItemId
       >;
 
-      if (isCarrier(item)) {
-        carrying(item, room, gameState, deltaMS);
+      // picking up after jumping means have time to jump off a spring while
+      // instantly picking it up:
+      if (itemIsCarrier) {
+        pickingUp(item, room, gameState);
       }
       if (isFirer(item)) {
         firing(item, room, gameState, deltaMS);

@@ -35,7 +35,6 @@ vec2 attributeBlockPos(
     float blockSize,
     vec2 textureCoord  
 ) {
-    // Calculate which block this pixel belongs to
     vec2 pixelPos = textureCoord * texSize;
     
     return (floor(pixelPos / blockSize) * blockSize)/texSize;
@@ -50,10 +49,10 @@ vec4 attributeClash(
     float inputDim,
     vec2 textureCoord) {
     // Get texture dimensions
-    vec2 texSize = vec2(textureSize(inputTexture, 0));
+    vec2 textureSize = vec2(textureSize(inputTexture, 0));
 
     vec2 blockPos = attributeBlockPos(
-        texSize, 
+        textureSize, 
         blockSize, 
         textureCoord
     );
@@ -65,7 +64,7 @@ vec4 attributeClash(
     float colouredSamplesCount = 0.001;
 
     // Sample points evenly spread across the block, `/ texSize` converts to 0..1 space:
-    vec2 stepSize01 = vec2(blockSize / float(sampleCount)) / texSize;
+    vec2 stepSize01 = vec2(blockSize / float(sampleCount)) / textureSize;
     vec2 samplePos01 = blockPos;
     for (int y = 0; y < sampleCount; y++) {
         samplePos01.y += stepSize01.y;
@@ -128,8 +127,8 @@ vec4 attributeClash(
         isDimThresh03,
         avgColorLum03
     );
-    float isAboveDim50_01 = step(isDimThresh03 * 0.5, avgColorLum03);
-    float isAboveDim25_01 = step(isDimThresh03 * 0.01, avgColorLum03);
+    float thresholdForUnsatToBeBlue = step(isDimThresh03 * 0.3, avgColorLum03);
+    float thresholdForSaturatedToBeBlue = step(isDimThresh03 * 0.03, avgColorLum03);
 
     vec4 unsatOrQuantisedColor = mix(
         // mix for desaturated colours:
@@ -139,10 +138,10 @@ vec4 attributeClash(
             pureBlueColour, 
             // use white (for most of the lum range)
             pureWhiteColour, 
-            isAboveDim50_01
+            thresholdForUnsatToBeBlue
         ), 
         // is saturated - use the quantised colour:
-        mix(pureBlueColour, quantisedColor, isAboveDim25_01),
+        mix(pureBlueColour, quantisedColor, thresholdForSaturatedToBeBlue),
         isSaturated01
     );
     

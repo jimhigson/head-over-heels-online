@@ -92,14 +92,6 @@ type PortableItemState = {
   wouldPickUpNext: boolean;
 };
 
-type SingleTouch = {
-  /**
-   * the frame this switch was last touched on. Some touches (switched, scrolls) only count if they are touched and weren't
-   * already touched on the previous frame
-   */
-  touchedOnProgression: number;
-};
-
 export type PlayableState<RoomItemId extends string> =
   FreeItemState<RoomItemId> & {
     /**
@@ -303,7 +295,12 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
       "disappearing"
     > // copying the config into the state means that these settings are mutable at run-time. eg, by switches
   >;
-  switch: SingleTouch & {
+  switch: {
+    /**
+     * the frame this switch was last touched on. Some touches (switched, scrolls) only count if they are touched and weren't
+     * already touched on the previous frame
+     */
+    lastToggledAtRoomTime: number;
     setting: SwitchSetting;
   };
   button: {

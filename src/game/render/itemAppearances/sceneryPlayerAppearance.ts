@@ -22,7 +22,6 @@ const spriteOptions = (
   direction: DirectionXy8,
   id: string,
   paused: boolean,
-  gameSpeed?: number,
 ): Exclude<CreateSpriteOptions, string> => {
   const possibleAnimationId = `${name}.idle.${direction}`;
   if (isAnimationId(possibleAnimationId)) {
@@ -30,7 +29,6 @@ const spriteOptions = (
       animationId: possibleAnimationId,
       randomiseStartFrame: id,
       paused,
-      gameSpeed,
     };
   } else {
     return { textureId: `${name}.walking.${direction}.2` };
@@ -43,7 +41,7 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
       id,
       config: { which, startDirection },
     },
-    general: { paused, gameState },
+    general: { paused },
   },
   currentRendering,
 }) => {
@@ -59,30 +57,12 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
     output:
       which === "headOverHeels" ?
         createStackedSprites({
-          top: spriteOptions(
-            "head",
-            startDirection,
-            id,
-            paused,
-            gameState?.gameSpeed,
-          ),
-          bottom: spriteOptions(
-            "heels",
-            startDirection,
-            id,
-            paused,
-            gameState?.gameSpeed,
-          ),
+          top: spriteOptions("head", startDirection, id, paused),
+          bottom: spriteOptions("heels", startDirection, id, paused),
           filter: sceneryPlayerFilter,
         })
       : createSprite({
-          ...spriteOptions(
-            which,
-            startDirection,
-            id,
-            paused,
-            gameState?.gameSpeed,
-          ),
+          ...spriteOptions(which, startDirection, id, paused),
           filter: sceneryPlayerFilter,
         }),
     renderProps: emptyObject,

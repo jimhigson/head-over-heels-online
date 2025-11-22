@@ -4,16 +4,15 @@ precision lowp float;
 out vec4 finalColor;
 
 in vec2 vTextureCoord;
-uniform sampler2D uBackBuffer;
-uniform vec3 uTargetColor;
+uniform sampler2D uBackTexture;
+uniform sampler2D uTexture;
 // do not use uTexture in this frag - for some reason it causes pixi's render pipeline
 // to take away the backbuffer, which we rely on sampling from
 
 void main() {
-    vec3 bg = texture(uBackBuffer, vTextureCoord).rgb;
+    vec4 fg = texture(uTexture, vTextureCoord);
+    vec3 bg = texture(uBackTexture, vTextureCoord).rgb;
 
     float isBlack = step(length(bg), 0.001f); // 1 if black, 0 otherwise
-    finalColor = mix(vec4(uTargetColor, 1.0f), vec4(0, 0, 0, 0), isBlack);
-
-
+    finalColor = mix(fg, vec4(0.0, 0.0, 0.0, 0.0), isBlack);
 }

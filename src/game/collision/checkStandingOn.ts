@@ -2,18 +2,18 @@ import type { WritableDeep } from "type-fest";
 
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { FreeItem } from "../physics/itemPredicates";
-import type { Collideable } from "./aabbCollision";
+import type { CollideableItem } from "./aabbCollision";
 
 import { epsilon } from "../../utils/epsilon";
 import { iterate } from "../../utils/iterate";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
 import { isSolid } from "../physics/itemPredicates";
-import { collision1to1 } from "./aabbCollision";
+import { collision2Items } from "./aabbCollision";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
 
 // avoid allocating memory by keeping two buffers to copy values into
 // to run through the collision detection for standing on
-const itemAboveBuffer: WritableDeep<Collideable> = {
+const itemAboveBuffer: WritableDeep<CollideableItem> = {
   state: {
     position: {
       x: 0,
@@ -30,7 +30,7 @@ const itemAboveBuffer: WritableDeep<Collideable> = {
 };
 
 // just the zero-volume top of itemMaybeBeingStoodOn:
-const itemBelowBuffer: WritableDeep<Collideable> = {
+const itemBelowBuffer: WritableDeep<CollideableItem> = {
   state: {
     position: {
       x: 0,
@@ -104,7 +104,7 @@ export const spatiallyCheckStandingOn = <
 
   // check for collisions of a box representing just the top of one item
   // and just the bottom of the other
-  return collision1to1(itemAboveBuffer, itemBelowBuffer);
+  return collision2Items(itemAboveBuffer, itemBelowBuffer);
 };
 
 /**

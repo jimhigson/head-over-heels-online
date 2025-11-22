@@ -25,6 +25,11 @@ export const room = inferRoomJson({
       position: { x: 8, y: 2, z: 4 },
       type: "door",
     },
+    extraPortableBlock: {
+      config: { style: "cube" },
+      position: { x: 3, y: 2, z: 0 },
+      type: "portableBlock",
+    },
     "floor@0,0,0": {
       config: {
         floorType: "standable",

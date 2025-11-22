@@ -30,13 +30,6 @@ const float blackCircleMinSize = 0.33;
 
 const float blackCircleFeathering = 0.4;
 
-/* 
-1   => perfect circle, 
-<1  => ellipse (wider than tall)
->1  => taller than wide
-*/
-const float ellipticalFactor = 0.75; // 0.75 - circle matches ratio of a PAL screen
-
 // how much of the duration of the effect to use to fade out at the end, so that
 // any radius that is still showing doesn't disappear suddenly when the effect finishes
 const float fadeDuration = 0.1;
@@ -44,7 +37,14 @@ float fade() {
     return 1.0 - smoothstep(1.0 - fadeDuration, 1.0, uProgress);
 }
 
-float blockDistToCentre() {
+float blockDistToCentre(
+    /* 
+    1   => perfect circle, 
+    <1  => ellipse (wider than tall)
+    >1  => taller than wide
+    */
+    float ellipticalFactor) {
+
     float xCentreTrue = uInputClamp.x + (uInputClamp.z - uInputClamp.x) * uCentreX; 
     float yCentreTrue = uInputClamp.y + (uInputClamp.w - uInputClamp.y) * uCentreY; 
     vec2 trueCentre = vec2(xCentreTrue, yCentreTrue);
@@ -65,7 +65,6 @@ float blockDistToCentre() {
 float isInCirc(
         float blockDistToCentre01, 
         float feathering, 
-        /* 0 for an outwards-expanding circle, 1 for inwards-expanding */
         float circleMinSize,
         float progress ) {
 
@@ -84,7 +83,11 @@ float isInCirc(
 
 void main(void) {
 
-    float blockDistToCentre = blockDistToCentre();
+    // gets more elliptical towards the end of the animation - initially very circular
+    // to ensure more coverage of the screen
+    float elipticalFactor = mix(1.0, 0.5, uProgress);
+
+    float blockDistToCentre = blockDistToCentre(elipticalFactor);
 
     float insideBlackCirc01 = isInCirc(
         blockDistToCentre, 
@@ -98,8 +101,11 @@ void main(void) {
         blockDistToCentre, 
         blackCircleFeathering,
         0.0, // min size zero = close the circle completely
-        uProgress * 1.2
+        uProgress * 1.5 - 0.3
     );
+
+    // round insideInnerCirc01 to nearest half:
+    //insideInnerCirc01 = step(0.5, insideInnerCirc01);
 
     vec4 clashColour = attributeClash(
         uTexture,
@@ -129,5 +135,18 @@ void main(void) {
     //     finalColor, 
     //     vec4(1.0,0.0,1.0,1.0), 
     //     1.0 - step(0.01, length( (vTextureCoord - trueCentre ) / vec2(1, texAspect) ))
+    // );
+
+    // uncomment to see the black circle starkly (cyan):
+    // float thresh = 0.95;
+    // finalColor = mix( 
+    //     finalColor, 
+    //     vec4(0.0,1.0,1.0,1.0), 
+    //     step( thresh, insideBlackCirc01)
+    // );
+    // finalColor = mix( 
+    //     finalColor, 
+    //     vec4(1.0,1.0,0.0,1.0), 
+    //     step( thresh, insideInnerCirc01)
     // );
 }

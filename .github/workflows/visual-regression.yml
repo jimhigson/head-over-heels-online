@@ -26,6 +26,8 @@ jobs:
               - 'pnpm-lock.yaml'
               - '.github/workflows/visual-regression.yml'
 
+  # job builds once, and then the built, cached asset of the game (not inc editor) is used for all playwright
+  # jobs - meaning that each playwright runner does not have to do its own build
   build-game:
     needs: check-changes
     if: needs.check-changes.outputs.should-run == 'true'
@@ -38,7 +40,12 @@ jobs:
         id: game-build-cache
         with:
           path: dist/
-          key: game-build-${{ runner.os }}-${{ hashFiles('src/**', 'gfx/**', 'pnpm-lock.yaml', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json') }}
+          # hashing with hash-files is unreliable cross-platform (gives different results on unix/win) so use the
+          # git sha instead. This would means a new build for every new commit, which could otherwise have been skipped,
+          # but the build does only happen after check-changes has passed, so this shouldn't cause too many builds
+          key: game-build-${{ github.sha }}
+          # share caches with Windows even though building on Unix:
+          enableCrossOsArchive: true
 
       - name: Install pnpm
         if: steps.game-build-cache.outputs.cache-hit != 'true'
@@ -58,31 +65,57 @@ jobs:
         if: steps.game-build-cache.outputs.cache-hit != 'true'
         run: pnpm build:game
 
-  visual-tests:
+  visual-tests-rooms:
     needs: [check-changes, build-game]
     if: needs.check-changes.outputs.should-run == 'true'
-    runs-on: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        node-version: [22.x]
-        test:
-          - lutSnapshot
-          - roomSnapshots
-        browser:
-          - chromium-desktop
-          - webkit-desktop
-          - mobile-chrome
-          - mobile-safari
-        batch_number: [0, 1, 2]
-        batch_count: [3]
-        parallel_tests: [2]
-        exclude:
-          - test: lutSnapshot
-            batch_number: 1
-          - test: lutSnapshot
-            batch_number: 2
-    name: Visual tests - ${{ matrix.test }} - ${{ matrix.browser }}${{ matrix.test == 'roomSnapshots' && format(' - batch {0}', matrix.batch_number) || '' }}
+        # matrix is more readable with one-line per entry:
+        # prettier-ignore
+        include:
+          # Ubuntu - roomSnapshots tests (3 batches per browser, 2 parallel tests each)
+          ## chrom(ium) based - these run quite fast on github so 2 runners each:
+          - { os: ubuntu-24.04-arm, browser: --project chromium-desktop, batch_number: 0, batch_count: 2, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project chromium-desktop, batch_number: 1, batch_count: 2, parallel_tests: 2 }
+
+          ### mobile chrome on playwright is slower than desktop so 1 more runner:
+          - { os: ubuntu-24.04-arm, browser: --project mobile-chrome, batch_number: 0, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project mobile-chrome, batch_number: 1, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project mobile-chrome, batch_number: 2, batch_count: 3, parallel_tests: 2 }
+
+          ## webkit/safari based - these run a bit slower on github so 1 more runners each,
+          ## mobile is still slower than desktop:
+          - { os: ubuntu-24.04-arm, browser: --project webkit-desktop, batch_number: 0, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project webkit-desktop, batch_number: 1, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project webkit-desktop, batch_number: 2, batch_count: 3, parallel_tests: 2 }
+
+          - { os: ubuntu-24.04-arm, browser: --project mobile-safari, batch_number: 0, batch_count: 5, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project mobile-safari, batch_number: 1, batch_count: 5, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project mobile-safari, batch_number: 2, batch_count: 5, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project mobile-safari, batch_number: 3, batch_count: 5, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, browser: --project mobile-safari, batch_number: 4, batch_count: 5, parallel_tests: 2 }
+
+          # Windows - chromium only (no webkit/safari, no mobile browsers)
+          # windows runners are very low-spec so keep to one parallel test at a time
+          # Win runners are slow so they get more batches to even it out:
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 0, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 1, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 2, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 3, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 4, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 5, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 6, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 7, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 8, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 9, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 10, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 11, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 12, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, browser: --project chromium-desktop, batch_number: 13, batch_count: 14, parallel_tests: 1 }
+    # name is super-compressed to fit on the github UI with enough info to identify what's being run
+    name: ${{ contains(matrix.os, 'windows') && 'Wn' || 'Lx' }}.${{ contains(matrix.browser, 'chrom') && 'Ch' || contains(matrix.browser, 'webkit') && 'Wk' || contains(matrix.browser, 'safari') && 'Wk' || matrix.browser }}.${{ contains(matrix.browser, 'mobile') && 'mb' || 'dt' }}.${{ format('{0}/{1}', matrix.batch_number, matrix.batch_count) }}
 
     steps:
       - uses: actions/checkout@v4
@@ -93,7 +126,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22.x
           cache: "pnpm"
 
       - run: pnpm install
@@ -102,28 +135,33 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: dist/
-          key: game-build-${{ runner.os }}-${{ hashFiles('src/**', 'gfx/**', 'pnpm-lock.yaml', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json') }}
+          key: game-build-${{ github.sha }}
+          enableCrossOsArchive: true
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         id: playwright-cache
         with:
-          path: ~/.cache/ms-playwright
+          path: ${{ runner.os == 'Windows' && '~/AppData/Local/ms-playwright' || '~/.cache/ms-playwright' }}
           key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Install Playwright browsers
+        shell: bash
         run: |
+          # Install all browsers mentioned in the --project flags
           if [[ "${{ matrix.browser }}" == *"chromium"* ]] || [[ "${{ matrix.browser }}" == *"chrome"* ]]; then
             pnpm playwright install chromium
-          elif [[ "${{ matrix.browser }}" == *"firefox"* ]]; then
+          fi
+          if [[ "${{ matrix.browser }}" == *"firefox"* ]]; then
             pnpm playwright install firefox
-          elif [[ "${{ matrix.browser }}" == *"webkit"* ]] || [[ "${{ matrix.browser }}" == *"safari"* ]]; then
+          fi
+          if [[ "${{ matrix.browser }}" == *"webkit"* ]] || [[ "${{ matrix.browser }}" == *"safari"* ]]; then
             pnpm playwright install webkit
           fi
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Install Playwright system dependencies
-        if: matrix.browser == 'webkit-desktop' || matrix.browser == 'mobile-safari' || matrix.browser == 'firefox-desktop'
+        if: (contains(matrix.browser, 'webkit') || contains(matrix.browser, 'safari') || contains(matrix.browser, 'firefox')) && runner.os == 'Linux'
         run: pnpm playwright install-deps
 
       - name: Run Playwright tests
@@ -131,13 +169,94 @@ jobs:
           BATCH_COUNT: ${{ matrix.batch_count }}
           BATCH_NUMBER: ${{ matrix.batch_number }}
           PARALLEL_TESTS: ${{ matrix.parallel_tests }}
-        run: pnpm playwright test ${{ matrix.test }} --project=${{ matrix.browser }}
+          # on Windows CI runners, Chrome complains unless this is turned on to enable software OpenGL rendering:
+          PLAYWRIGHT_CHROMIUM_ARGS: ${{ runner.os == 'Windows' && '--enable-unsafe-swiftshader' || '' }}
+        run: pnpm playwright test roomSnapshots ${{ matrix.browser }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report-${{ matrix.browser }}
+          name: playwright-report-${{ matrix.os }}-${{ matrix.browser }}-roomSnapshots-${{ matrix.batch_number }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  visual-tests-lut:
+    needs: [check-changes, build-game]
+    if: needs.check-changes.outputs.should-run == 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # matrix is more readable with one-line per entry:
+        # prettier-ignore
+        include:
+          # Lut snapshots - one per os/browser combination, single batch, no parallelism (there's only one test)
+          - { os: ubuntu-24.04-arm, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          - { os: windows-latest, browser: --project chromium-desktop }
+    # name is super-compressed to fit on the github UI with enough info to identify what's being run
+    name: ${{ contains(matrix.os, 'windows') && 'Wn' || 'Lx' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: "pnpm"
+
+      - run: pnpm install
+
+      - name: Restore game build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: dist/
+          key: game-build-${{ github.sha }}
+          enableCrossOsArchive: true
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ${{ runner.os == 'Windows' && '~/AppData/Local/ms-playwright' || '~/.cache/ms-playwright' }}
+          key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install Playwright browsers
+        shell: bash
+        run: |
+          # Install all browsers mentioned in the --project flags
+          if [[ "${{ matrix.browser }}" == *"chromium"* ]] || [[ "${{ matrix.browser }}" == *"chrome"* ]]; then
+            pnpm playwright install chromium
+          fi
+          if [[ "${{ matrix.browser }}" == *"firefox"* ]]; then
+            pnpm playwright install firefox
+          fi
+          if [[ "${{ matrix.browser }}" == *"webkit"* ]] || [[ "${{ matrix.browser }}" == *"safari"* ]]; then
+            pnpm playwright install webkit
+          fi
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+
+      - name: Install Playwright system dependencies
+        if: (contains(matrix.browser, 'webkit') || contains(matrix.browser, 'safari') || contains(matrix.browser, 'firefox')) && runner.os == 'Linux'
+        run: pnpm playwright install-deps
+
+      - name: Run Playwright tests
+        env:
+          # on Windows CI runners, Chrome complains unless this is turned on to enable software OpenGL rendering:
+          PLAYWRIGHT_CHROMIUM_ARGS: ${{ runner.os == 'Windows' && '--enable-unsafe-swiftshader' || '' }}
+        run: pnpm playwright test lutSnapshot ${{ matrix.browser }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.os }}-${{ matrix.browser }}
           path: |
             playwright-report/
             test-results/
@@ -147,14 +266,14 @@ jobs:
   visual-regression-gate:
     name: "Visual Regression Gate"
     runs-on: ubuntu-24.04-arm
-    needs: [check-changes, visual-tests]
+    needs: [check-changes, visual-tests-rooms, visual-tests-lut]
     if: always()
     steps:
       - run: |
           if [[ "${{ needs.check-changes.outputs.should-run }}" != "true" ]]; then
             echo "Visual regression skipped - not required"
             exit 0
-          elif [[ "${{ needs.visual-tests.result }}" == "success" ]]; then
+          elif [[ "${{ needs.visual-tests-rooms.result }}" == "success" ]] && [[ "${{ needs.visual-tests-lut.result }}" == "success" ]]; then
             echo "Visual regression tests passed"
             exit 0
           else

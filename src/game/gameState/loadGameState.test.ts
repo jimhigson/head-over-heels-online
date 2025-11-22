@@ -76,7 +76,6 @@ test("if there is a saved game with both characters in the same room, only load 
       saveTime: 0,
       gameState: {
         gameTime: 0,
-        progression: 0,
         currentCharacterName: "heels",
         pickupsCollected: {},
         entryState: {},

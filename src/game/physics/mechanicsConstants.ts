@@ -100,7 +100,9 @@ const originalMoveSpeedMultiples = {
 
   computerBot: 1,
   turtle: 1,
-  ball: 2,
+  // would be 2 as per original, but then ball can't make it past the
+  // three enemies in #blacktooth37 in the remake - speed it up to 2+5/8 speed
+  ball: 2.625,
   firedDoughnut: 2,
   movingPlatform: 1,
   floatingText: 1,
@@ -191,7 +193,7 @@ export const afterDeathInvulnerabilityTime = 1_500;
 /** how quickly to flash after dying? */
 export const afterDeathInvulnerabilityFlashPeriod = 200;
 /** how long to flash for, as a fraction of the flash period */
-export const afterDeathInvulnerabilityFlashPhaseDuration = 0.15;
+export const afterDeathInvulnerabilityFlashPhaseDuration = 0.25;
 
 /**
  * how long after releasing a button does it act, and render as 'up'?
@@ -220,7 +222,7 @@ export const veryHighZ = 9999;
 /**
  * provide a 'grace' period after jumping where if the player hasn't started to rise due to
  * collision with an item above them, they still get the whole jump velocity when they are free
- * - this makes head's laders easier to climb at higher frame rates where it's much harder to press
+ * - this makes head's ladders easier to climb at higher frame rates where it's much harder to press
  * on the exact frame
  */
 export const jumpDelayGrace = 1000 / 12;
@@ -230,3 +232,5 @@ export const jumpDelayGrace = 1000 / 12;
  * a surface
  */
 export const coyoteTime = 1000 / 12;
+
+export const switchMinTimeBetweenToggleMs = 100;

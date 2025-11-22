@@ -55,7 +55,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
           textureId:
             flashing ? "shadowMask.teleporter.flashing"
             : activated ? "shadowMask.teleporter"
-            : "shadowMask.fullBlock",
+            : "shadowMask.artificial",
         },
         times,
       ),

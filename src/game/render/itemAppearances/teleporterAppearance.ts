@@ -19,7 +19,7 @@ export const teleporterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused, gameState },
+    general: { paused },
   },
   currentRendering,
 }) => {
@@ -54,7 +54,6 @@ export const teleporterAppearance: ItemAppearance<
               animationId: "teleporter.flashing",
               times,
               paused,
-              gameSpeed: gameState?.gameSpeed,
             }),
           ],
         })

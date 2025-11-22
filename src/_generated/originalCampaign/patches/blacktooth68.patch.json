@@ -1,6 +1,11 @@
 [
   {
     "op": "replace",
+    "path": "/items/door@3,0,5/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
     "path": "/items/block@7,4,3/position/z",
     "value": 0
   },
@@ -24,26 +29,20 @@
   },
   {
     "op": "add",
-    "path": "/items/block@3,0,3/config/times/z",
-    "value": 4
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier",
+    "path": "/items/block",
     "value": {
       "config": {
-        "axis": "x",
+        "style": "organic",
         "times": {
-          "x": 3,
-          "z": 8
+          "z": 2
         }
       },
       "position": {
-        "x": 4,
-        "y": 0.6,
+        "x": 2,
+        "y": 0,
         "z": 0
       },
-      "type": "barrier"
+      "type": "block"
     }
   },
   {

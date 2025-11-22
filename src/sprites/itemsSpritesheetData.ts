@@ -128,41 +128,47 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
-
-  hooter: {
+  "shadowMask.drum": {
     frame: {
       ...smallItemGridLocation({ x: 11, y: 2 }),
       ...smallItemTextureSize,
     },
   },
-  bag: {
+
+  hooter: {
     frame: {
       ...smallItemGridLocation({ x: 12, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+  bag: {
+    frame: {
+      ...smallItemGridLocation({ x: 13, y: 2 }),
       ...smallItemTextureSize,
     },
   },
 
   "joystick.stick": {
     frame: {
-      ...smallItemGridLocation({ x: 13, y: 2 }),
+      ...smallItemGridLocation({ x: 14, y: 2 }),
       ...smallItemTextureSize,
     },
   },
   "joystick.ball": {
     frame: {
-      ...smallItemGridLocation({ x: 14, y: 2 }),
+      ...smallItemGridLocation({ x: 15, y: 2 }),
       ...smallItemTextureSize,
     },
   },
   "joystick.whole": {
     frame: {
-      ...smallItemGridLocation({ x: 15, y: 2 }),
+      ...smallItemGridLocation({ x: 16, y: 2 }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.joystick": {
     frame: {
-      ...smallItemGridLocation({ x: 16, y: 2 }),
+      ...smallItemGridLocation({ x: 17, y: 2 }),
       ...smallItemTextureSize,
     },
   },
@@ -210,36 +216,48 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
-
-  "switch.left": {
+  "shadowMask.spring.compressed": {
     frame: {
       ...smallItemGridLocation({ x: 11, y: 3 }),
       ...smallItemTextureSize,
     },
   },
-  "switch.right": {
+  "shadowMask.spring.released": {
     frame: {
       ...smallItemGridLocation({ x: 12, y: 3 }),
       ...smallItemTextureSize,
     },
   },
-  "shadowMask.switch": {
+
+  "switch.left": {
     frame: {
       ...smallItemGridLocation({ x: 13, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "switch.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.switch": {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 3 }),
       ...smallItemTextureSize,
     },
   },
 
   tower: {
     frame: {
-      ...smallItemGridLocation({ x: 14, y: 3 }),
+      ...smallItemGridLocation({ x: 16, y: 3 }),
       ...smallItemTextureSize,
     },
   },
 
   "shadowMask.tower": {
     frame: {
-      ...smallItemGridLocation({ x: 15, y: 3 }),
+      ...smallItemGridLocation({ x: 17, y: 3 }),
       ...smallItemTextureSize,
     },
   },
@@ -505,39 +523,63 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
-  "block.artificial": {
+  "shadowMask.organic": {
     frame: {
       ...largeItemGridLocation({ x: 4, y: 0 }),
       ...largeItemTextureSize,
     },
   },
-  "block.artificial.disappearing": {
+  "block.artificial": {
     frame: {
       ...largeItemGridLocation({ x: 5, y: 0 }),
       ...largeItemTextureSize,
     },
   },
-  "book.x": {
+  "block.artificial.disappearing": {
     frame: {
       ...largeItemGridLocation({ x: 6, y: 0 }),
       ...largeItemTextureSize,
     },
   },
-  "book.y": {
+  "shadowMask.artificial": {
     frame: {
       ...largeItemGridLocation({ x: 7, y: 0 }),
       ...largeItemTextureSize,
     },
   },
-  "shadow.fullBlock": {
+  "book.x": {
     frame: {
       ...largeItemGridLocation({ x: 8, y: 0 }),
       ...largeItemTextureSize,
     },
   },
-  "shadowMask.fullBlock": {
+  "book.y": {
     frame: {
       ...largeItemGridLocation({ x: 9, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.book": {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadow.fullBlock": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  spikes: {
+    frame: {
+      ...largeItemGridLocation({ x: 12, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.spikes": {
+    frame: {
+      ...largeItemGridLocation({ x: 13, y: 0 }),
       ...largeItemTextureSize,
     },
   },
@@ -610,15 +652,9 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
-  spikes: {
+  "shadowMask.sandwich": {
     frame: {
       ...largeItemGridLocation({ x: 11, y: 1 }),
-      ...largeItemTextureSize,
-    },
-  },
-  "shadowMask.spikes": {
-    frame: {
-      ...largeItemGridLocation({ x: 12, y: 1 }),
       ...largeItemTextureSize,
     },
   },
@@ -685,7 +721,7 @@ const frames = {
   ...seriesOfNumberedTextures(
     "particle",
     4,
-    { x: 331, y: 396 },
+    { x: 265, y: 326 },
     { w: 9, h: 11 },
   ),
 } as const;
@@ -756,6 +792,16 @@ export const itemsSpritesheetData = {
         "spring.released",
         "spring.compressed",
         "spring.released",
+      ] as const,
+      0.5,
+    ),
+    "shadowMask.spring.bounce": withSpeed(
+      [
+        "shadowMask.spring.released",
+        "shadowMask.spring.compressed",
+        "shadowMask.spring.released",
+        "shadowMask.spring.compressed",
+        "shadowMask.spring.released",
       ] as const,
       0.5,
     ),

@@ -240,7 +240,6 @@ export class MainLoop<RoomId extends string> {
     // exit quickly when nothing has changed
 
     this.#roomRenderer?.tick({
-      progression: this.gameState.progression,
       movedItems,
       deltaMS,
     });

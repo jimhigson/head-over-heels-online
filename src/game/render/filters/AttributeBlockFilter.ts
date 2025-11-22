@@ -1,8 +1,13 @@
-import { Filter, GlProgram } from "pixi.js";
+import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
 import fragment from "./attributeBlock.frag";
-import { vertex } from "./defaults";
-import { spectrumisePaletteSwopLut } from "./lutTexture/spectrumisePaletteSwopLut";
+import { spectrumLut } from "./lutTexture/stdLuts/spectrumLut";
+
+const glProgram = GlProgram.from({
+  vertex: defaultFilterVert,
+  fragment,
+  name: "attribute-block-filter",
+});
 
 /**
  * Filter that divides the screen into blocks where each block
@@ -25,12 +30,6 @@ export class AttributeBlockFilter extends Filter {
      */
     blackPoint?: number;
   } = {}) {
-    const glProgram = GlProgram.from({
-      vertex,
-      fragment,
-      name: "attribute-block-filter",
-    });
-
     super({
       glProgram,
       resources: {
@@ -44,7 +43,7 @@ export class AttributeBlockFilter extends Filter {
             type: "f32",
           },
         },
-        uLut: spectrumisePaletteSwopLut.source,
+        uLut: spectrumLut.source,
       },
     });
   }

@@ -1,4 +1,5 @@
 import { objectValues } from "iter-tools-es";
+import { Ticker } from "pixi.js";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
@@ -312,7 +313,7 @@ const randomlyChangeDirection = <
 >(
   itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
   _room: RoomState<RoomId, RoomItemId>,
-  { gameSpeed }: GameState<RoomId>,
+  _gameState: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
@@ -327,15 +328,19 @@ const randomlyChangeDirection = <
     return notWalking;
   }
 
+  const {
+    shared: { speed: tickerSpeed },
+  } = Ticker;
+
   const produceNewWalk =
     xyzEqual(walking, originXyz) ?
       // standing on something but not walking - start walking (unless game speed is zero
       // since this needs to be deterministic for the visual regression tests (and no time
       // to turn around)
-      gameSpeed !== 0
+      tickerSpeed !== 0
       // change direction probabilistically, about once per second
       // of game time on average
-    : Math.random() < (deltaMS / 1000) * gameSpeed;
+    : Math.random() < deltaMS / 1000;
 
   if (!produceNewWalk) {
     return unitMechanicalResult;

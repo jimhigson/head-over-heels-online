@@ -24,7 +24,9 @@ test('playing through a complex, deterministic room ("laboratory") should always
     },
   });
 
-  playGameThrough(gameState, {});
+  playGameThrough(gameState, {
+    until: 30_000, // half a minute
+  });
 
   // fine to update this snapshot if there are intentional changes
   // to the mechanics etc, but should not change after pure refactoring

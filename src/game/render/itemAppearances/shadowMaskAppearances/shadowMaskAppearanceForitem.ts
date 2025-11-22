@@ -10,6 +10,7 @@ import {
   itemAppearanceShadowMaskFromConfig,
   itemStaticSpriteAppearance,
 } from "../ItemAppearance";
+import { springShadowMaskAppearance } from "../springAppearance";
 import { directionalShadowMaskAppearance } from "./directionalShadowMaskAppearance";
 import { teleporterShadowMaskAppearance } from "./teleporterShadowMaskAppearance";
 
@@ -61,20 +62,22 @@ const itemShadowMaskAppearances: {
     y: -1,
   })),
 
-  spring: itemStaticSpriteAppearance("shadowMask.smallRound"),
+  spring: springShadowMaskAppearance,
 
-  block: itemAppearanceShadowMaskFromConfig(({ style }) =>
-    style === "tower" ? "shadowMask.tower" : "shadowMask.fullBlock",
+  block: itemAppearanceShadowMaskFromConfig(
+    ({ style }) => `shadowMask.${style}`,
   ),
   pushableBlock: itemStaticSpriteAppearance("shadowMask.stepStool"),
-  movingPlatform: itemStaticSpriteAppearance("shadowMask.fullBlock"),
+  movingPlatform: itemStaticSpriteAppearance("shadowMask.sandwich"),
   hushPuppy: itemStaticSpriteAppearance("shadowMask.hushPuppy"),
 
   portableBlock: itemAppearanceShadowMaskFromConfig(({ style }) =>
-    style === "drum" ? "shadowMask.smallRound" : "shadowMask.smallBlock",
+    style === "drum" ? "shadowMask.drum" : "shadowMask.smallBlock",
   ),
   slidingBlock: itemAppearanceShadowMaskFromConfig(({ style }) =>
-    style === "book" ? "shadowMask.fullBlock" : "shadowMask.smallRound",
+    style === "book" ?
+      { textureId: "shadowMask.book", flipX: true }
+    : "shadowMask.smallRound",
   ),
   deadlyBlock: itemAppearanceShadowMaskFromConfig(({ style }) =>
     style === "volcano" ? "shadowMask.volcano" : "shadowMask.toaster",

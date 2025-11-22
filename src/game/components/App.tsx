@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { Provider } from "react-redux";
 import { Route, Switch } from "wouter";
 
 import { typedURLSearchParams } from "../../options/queryParams.ts";
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
-import { LutPage } from "../../pages/LutPage.tsx";
+import { importLutPage } from "../../pages/LutPage.import.ts";
 import { SpritePage } from "../../pages/SpritePage.tsx";
 import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import { gameStarted } from "../../store/slices/gameMenus/gameMenusSlice.ts";
@@ -13,6 +13,8 @@ import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { CssVariables } from "./CssVariables.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
 import { WantedEditor404 } from "./WantedEditor404.tsx";
+
+const LazyLutPage = lazy(importLutPage);
 
 const searchParams = typedURLSearchParams();
 const campaignName = searchParams.get("campaignName");
@@ -56,7 +58,7 @@ const AppInner = () => {
         <SpritePage />
       </Route>
       <Route path="/lut">
-        <LutPage />
+        <LazyLutPage />
       </Route>
       <Route path="/editor">
         <CssVariables>

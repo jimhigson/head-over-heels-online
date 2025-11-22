@@ -78,7 +78,7 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
     ({
       renderContext: {
         item: subject,
-        general: { gameState, paused },
+        general: { paused },
       },
     }) => {
       if (isMultipliedItem(subject)) {
@@ -86,13 +86,11 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
           ...createSpriteOptions,
           times: itemInPlayTimes(subject),
           paused,
-          gameSpeed: gameState?.gameSpeed,
         });
       } else {
         return createSprite({
           ...createSpriteOptions,
           paused,
-          gameSpeed: gameState?.gameSpeed,
         });
       }
     },

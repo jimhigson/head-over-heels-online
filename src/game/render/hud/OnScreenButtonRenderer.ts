@@ -18,7 +18,7 @@ import {
   selectHeelsAbilities,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { type BooleanAction } from "../../input/actions";
-import { findItemToPickup } from "../../physics/mechanics/carrying";
+import { findItemToPickup } from "../../physics/mechanics/pickingUp";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { createSprite } from "../createSprite";
@@ -101,7 +101,7 @@ const buttonAppearances: {
     renderContext: {
       button,
       inputStateTracker,
-      general: { colourised, gameState },
+      general: { colourised },
     },
     tickContext: { room, currentPlayable },
     currentRendering,
@@ -150,7 +150,6 @@ const buttonAppearances: {
             // this should include paused, but it isn't on the renderContext yet
             animationId: "teleporter.flashing",
             y: 5,
-            gameSpeed: gameState?.gameSpeed,
           }),
         );
       } else {

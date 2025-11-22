@@ -5,8 +5,8 @@ import { seriesOfNamedTextures } from "./spriteGenerators";
 export const editorSpritesheetData = {
   frames: {
     ...seriesOfNamedTextures(
-      ["share", "save", "pointer", "eyedropper"],
-      { x: 588, y: 0 },
+      ["share", "save", "open", "pointer", "eyedropper"],
+      { x: 640, y: 10 },
       { w: 12, h: 12 },
       undefined,
       "editor.tool",

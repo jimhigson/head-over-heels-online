@@ -19,7 +19,6 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
 
   useEffect(
     () => {
-      let progression = 0;
       const tick = ({ deltaMS }: Ticker) => {
         if (roomRenderer.destroyed) {
           return;
@@ -48,10 +47,6 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
           // or this might be fast enough given the level editor doesn't need to run as smoothly
           // as the actual game
           movedItems: considerAllItemsHaveMoved,
-          // if the progression isn't incremented, the shadow renderer doesn't remove
-          // old shadows (since they are marked with the progression when they were last updated
-          // and only removed when the progression they are marked with is old)
-          progression: progression++,
         });
         pixiApp.render();
       };

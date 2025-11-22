@@ -11,7 +11,7 @@ import type { UnknownRoomState } from "../../../model/RoomState";
 import type { ZxSpectrumRoomHue } from "../../../originalGame";
 import type { SceneryName } from "../../../sprites/planets";
 import type { Shades } from "../../hintColours";
-import type { PaletteSwaps } from "./lutTexture/createPaletteSwopLut";
+import type { PaletteSwaps } from "./lutTexture/sparseLut";
 
 import {
   halfbrite,

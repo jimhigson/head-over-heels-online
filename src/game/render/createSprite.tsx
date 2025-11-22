@@ -5,7 +5,7 @@ import type {
   SpritesheetFrameData,
 } from "pixi.js";
 
-import { Container } from "pixi.js";
+import { Container, Ticker } from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
 
 import { completeTimesXyz } from "../../model/times";
@@ -53,12 +53,6 @@ export type AnimatedCreateSpriteOptions = {
   /** if the game is paused, nothing should animate - this will automatically create just
       a sprite with the first frame of the animation */
   paused?: boolean;
-
-  /**
-   * the gameSpeed changes how fast animated sprites play, so they play in proportion to
-   * how fast the game is running. If not given, 1 will be used (normal speed)
-   */
-  gameSpeed?: number;
 };
 
 export type CreateSpriteOptions =
@@ -238,7 +232,6 @@ function createAnimatedSprite({
   playOnce,
   paused,
   randomiseStartFrame,
-  gameSpeed = 1,
 }: AnimatedCreateSpriteOptions): AnimatedSprite {
   const animationFrames = loadedSpriteSheet().animations[animationId];
   //const frames = paused ? [animationFrames[0]] : animationFrames;
@@ -256,15 +249,22 @@ function createAnimatedSprite({
 
   const animatedSprite = new AnimatedSprite(animatedSpriteFrames);
 
+  const tickerSpeed = Ticker.shared.speed;
+
   const animationSpeedModifier =
-    paused ? 0
+    paused || tickerSpeed === 0 ?
+      0
       // the original animations don't hold up too well sped up a lot, so while
       // they get faster the faster the game goes, it increases slower than linear and
       // sqrt is about right:
       //   2x gameSpeed gets ~1.4x faster animations
       //   1.2x (remake default) gets ~1.1x animation speed
       //   1x original gameSpeed stays at the original animation speed
-    : Math.sqrt(gameSpeed);
+      //
+      //    tickerSpeed = 1: Math.sqrt(1) / 1 = 1 → animations at 1x speed ✓
+      //    tickerSpeed = 2: Math.sqrt(2) / 2 = 1.414 / 2 = 0.707 → but ticker speeds it up by 2x, so effective speed = 0.707 × 2 = 1.414x ✓
+      //    tickerSpeed = 1.2: Math.sqrt(1.2) / 1.2 = 1.095 / 1.2 = 0.913 → effective speed = 0.913 × 1.2 = 1.096x ✓
+    : Math.sqrt(tickerSpeed) / tickerSpeed;
 
   animatedSprite.animationSpeed =
     spritesheetData.animations[animationId].animationSpeed *
