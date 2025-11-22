@@ -1,21 +1,18 @@
-import { Filter, GlProgram } from "pixi.js";
-// import { GpuProgram } from "pixi.js";
+import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
-import { vertex } from "./defaults";
 import fragment from "./shadowFilter.frag";
+
+const glProgram = GlProgram.from({
+  vertex: defaultFilterVert,
+  fragment,
+  name: "palletised-shadow-filter",
+});
 
 class ShadowFilter extends Filter {
   constructor() {
-    const glProgram = GlProgram.from({
-      vertex,
-      fragment,
-      name: "palletised-shadow-filter",
-    });
-
     super({
       glProgram,
       resources: {},
-      blendRequired: true,
     });
   }
 }

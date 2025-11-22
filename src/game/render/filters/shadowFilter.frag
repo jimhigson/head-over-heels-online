@@ -11,15 +11,7 @@ in vec2 vTextureCoord;
 // transparent value that works with premultiplied alpha (all values 0)
 const vec4 transparentBlack = vec4(0.0, 0.0, 0.0, 0.0);
 
-uniform sampler2D uPaletteLut;
-// uniform sampler2D uDarkenLut;
-// uniform sampler2D uDarkenMoreLut;
 uniform sampler2D uTexture;
-uniform sampler2D uBackTexture;
-//uniform float uPixelSize;
-
-const float darkenAtAllThresh = 0.1;
-const float darkenMoreThresh = 0.5;
 
 void main() {
 
