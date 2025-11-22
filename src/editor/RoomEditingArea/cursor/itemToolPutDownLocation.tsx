@@ -1,6 +1,6 @@
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { EditorRoomState } from "../../editorTypes";
-import type { ItemTool } from "../../Tool";
+import type { ItemTool } from "../interactivity/Tool";
 import type { PointingAtItem } from "./PointingAt";
 
 import {

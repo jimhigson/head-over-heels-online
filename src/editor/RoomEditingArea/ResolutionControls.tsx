@@ -1,7 +1,7 @@
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { type ResolutionName, resolutionNames } from "../../originalGame";
-import { ToolbarButton } from "../tools/ToolbarButton";
-import { useShortTimeDisplay } from "../tools/useShortTimeDisplay";
+import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
+import { useShortTimeDisplay } from "../toolbar/useShortTimeDisplay";
 
 const resolutionDisplayNames: Record<ResolutionName, string> = {
   amigaHiResPal: "Amiga Hi-Res PAL",

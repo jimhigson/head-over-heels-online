@@ -9,7 +9,7 @@ import type {
   EditorRoomItemId,
   EditorRoomJsonItems,
 } from "../../editorTypes";
-import type { Tool } from "../../Tool";
+import type { Tool } from "../../RoomEditingArea/interactivity/Tool";
 import type { ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
 
 import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";

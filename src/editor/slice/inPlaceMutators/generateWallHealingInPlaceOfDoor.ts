@@ -8,7 +8,7 @@ import {
   isWallHidden,
   type WallJsonConfig,
 } from "../../../model/json/WallJsonConfig";
-import { rotatingSceneryTiles } from "../createStarterRoom";
+import { rotatingSceneryTiles } from "../rotatingSceneryTiles";
 import { nextItemIdForItemTool } from "./addItemInPlace";
 
 export function* generateWallHealingInPlaceOfDoor(

@@ -15,7 +15,7 @@ import {
   type RootStateWithLevelEditorSlice,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { useSupabaseUser } from "../tools/useSupabaseUser";
+import { useSupabaseUser } from "../toolbar/useSupabaseUser";
 
 export const SaveAsDialog = ({
   /**

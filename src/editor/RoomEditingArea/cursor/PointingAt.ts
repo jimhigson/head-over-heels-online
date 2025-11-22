@@ -35,7 +35,7 @@ export type PointingAtOnItem = {
 
   /**
    * Plane defines the plane of resizing from this edge,
-   * and the position of the edge, in terms of the item's aabb
+   * and the position of the edge, on the item's aabb
    */
   edge?: Plane;
 };

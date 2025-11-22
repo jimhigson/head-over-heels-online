@@ -8,7 +8,7 @@ import { SpinnerHead, SpinnerHeels } from "../ui/Spinner";
 import { EditorMap } from "./EditorMap/EditorMap";
 import { LazyJsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor.lazy";
 import { LazyRoomEditingArea } from "./RoomEditingArea/RoomEditingArea.lazy";
-import { LevelEditorToolbar } from "./tools/LevelEditorToolbar";
+import { LevelEditorToolbar } from "./toolbar/LevelEditorToolbar";
 
 const LevelEditor = () => {
   usePageAsAnApp();
