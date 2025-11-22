@@ -16,7 +16,7 @@ import { Border } from "../../../../../../ui/Border";
 import { Button } from "../../../../../../ui/button";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { useActionTap, useInputTap } from "../../../useActionTap";
 import { MenuItems } from "../../MenuItems";

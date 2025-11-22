@@ -27,7 +27,7 @@ export type CharacterRooms<RoomId extends string> =
     [C in CharacterName]: RoomState<RoomId, string>;
   }>;
 
-export type GameState<RoomId extends string> = {
+export type GameState<RoomId extends string = string> = {
   currentCharacterName: CharacterName;
   /** 
     if playing combined, which character was paid immediately before combining?
