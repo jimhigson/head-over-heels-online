@@ -11,6 +11,8 @@ import {
 import { blockEncodeRgbBitDepth } from "./blockEncode";
 import { lutSize, lutW } from "./lutSize";
 
+const { floor, min } = Math;
+
 type SpritesheetPaletteMappings = {
   [C in SpritesheetPaletteColourName]?: Color | SpritesheetPaletteColourName;
 };
@@ -72,9 +74,9 @@ export function voronoiLut(
   const mapValues = map
     .values()
     .map((val) => ({
-      red: Math.floor(val.red * 255),
-      green: Math.floor(val.green * 255),
-      blue: Math.floor(val.blue * 255),
+      red: floor(val.red * 255),
+      green: floor(val.green * 255),
+      blue: floor(val.blue * 255),
     }))
     .toArray();
   const mapCount = mapKeys.length;
@@ -118,7 +120,7 @@ export function voronoiLut(
   for (let bi = 0; bi < chanRes; bi++) {
     // blockX/Y won't change for the combination or r/g values so compute them eagerly:
     const blockX = (bi % 8) * 64;
-    const blockY = Math.floor(bi / 8) * 64;
+    const blockY = floor(bi / 8) * 64;
 
     for (let mi = 0; mi < mapCount; mi++) {
       const d = blue01 - mapKeys[mi].blue;
@@ -151,7 +153,7 @@ export function voronoiLut(
 
         let fillRun = 1;
 
-        const maxLookaheadRi = Math.min(ri + lookahead, chanRes - 1);
+        const maxLookaheadRi = min(ri + lookahead, chanRes - 1);
 
         // look ahead some arbitrary number of pixels in case we can do
         // a run of fills without checking again:

@@ -7,7 +7,7 @@ import type {
   UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import type { ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
-import type { Collideable } from "../../../collision/aabbCollision";
+import type { CollideableItem } from "../../../collision/aabbCollision";
 import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import type {
   ItemRenderContext,
@@ -56,7 +56,7 @@ const itemCastsShadow = (
   caster.shadowCastTexture !== undefined;
 
 // Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
-const spaceAboveSurfaceBuffer: WritableDeep<Collideable> = {
+const spaceAboveSurfaceBuffer: WritableDeep<CollideableItem> = {
   id: "spaceAbove",
   state: {
     position: {

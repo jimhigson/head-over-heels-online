@@ -193,9 +193,19 @@ test("player can move around a fixed block, into a pushable one", () => {
     },
   });
 
+  const initialHeelsY = heelsState(gameState).position.y;
+
   playGameThrough(gameState, {
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = "right";
+    },
+    frameCallbacks() {
+      // heels should not slide in -y direction while pushing the portableBlock
+      // - this proves that hmvs are applied at the deepest point they are found
+      // in the tree of recursive calls to moveItem
+      expect(heelsState(gameState).position.y).toBeGreaterThanOrEqual(
+        initialHeelsY,
+      );
     },
     until() {
       // pushed item reached the right wall, even though there was a block in the way:

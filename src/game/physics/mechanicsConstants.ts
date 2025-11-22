@@ -100,7 +100,9 @@ const originalMoveSpeedMultiples = {
 
   computerBot: 1,
   turtle: 1,
-  ball: 2,
+  // would be 2 as per original, but then ball can't make it past the
+  // three enemies in #blacktooth37 in the remake - speed it up to 2+5/8 speed
+  ball: 2.625,
   firedDoughnut: 2,
   movingPlatform: 1,
   floatingText: 1,

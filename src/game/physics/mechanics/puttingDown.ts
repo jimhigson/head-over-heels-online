@@ -1,5 +1,5 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { Collideable } from "../../collision/aabbCollision";
+import type { CollideableItem } from "../../collision/aabbCollision";
 import type { GameState } from "../../gameState/GameState";
 import type { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
 import type { PlayableItem } from "../itemPredicates";
@@ -93,7 +93,7 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
     forceful: true,
     deltaMS,
     onTouch: handleItemsTouchingItems,
-    path: new Set([carrier.id]),
+    visited: new Set<RoomItemId>().add(carrier.id),
   });
 
   // standing on needs to be set right away for case of jump-putting-down springs
@@ -112,7 +112,7 @@ export const checkSpaceAvailableToPutDown = <
   item: T,
   roomSpatialIndex: GridSpatialIndex,
 ) => {
-  const proposedNewLocation: Collideable = {
+  const proposedNewLocation: CollideableItem = {
     state: {
       position: addXyz(item.state.position, { z: blockSizePx.h }),
     },

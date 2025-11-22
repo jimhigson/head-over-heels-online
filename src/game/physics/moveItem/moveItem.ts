@@ -14,8 +14,9 @@ import {
   subXyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
+import { visualiseVectorForLogs } from "../../../utils/vectors/visualiseVectorForLogs";
 import {
-  collision1to1,
+  collision2Items,
   collisionItemWithIndex,
 } from "../../collision/aabbCollision";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
@@ -33,7 +34,7 @@ import { helpfulMovementVector } from "./helpfulMovementVector";
 
 // turn this on for *very* noisy logging of all the movements/pushes etc.
 // esbuild should remove these if statements at build time
-const log = 0;
+const log = import.meta.env.VITE_LOG_MOVE_ITEM;
 
 type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
   // not everything that moves is a free item - fired doughnuts and lifts are non-free items that need moving
@@ -68,10 +69,12 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
    *
    * The size of the path is also checked for maximum recursion depth
    */
-  path?: Set<RoomItemId>;
+  visited?: Set<RoomItemId>;
 
-  // is this a recursive call from a helpful movement vector? If so, no further helpful movement
-  // can also be applied
+  /**
+   * is this a recursive call from a helpful movement vector? If so, no further helpful movement
+   * can also be applied
+   */
   isHelpful?: boolean;
 };
 
@@ -97,14 +100,21 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   room,
   deltaMS,
   onTouch,
-  path = new Set(),
-  forceful = isLift(subjectItem) && path.size === 0,
+  visited = new Set(),
+  forceful = isLift(subjectItem) && visited.size === 0,
   isHelpful,
-}: MoveItemOptions<RoomId, RoomItemId>) => {
+}: MoveItemOptions<RoomId, RoomItemId>): boolean => {
   if (xyzEqual(posDelta, originXyz)) {
     // applying zero movement - do nothing
-    return;
+    return false;
   }
+
+  /**
+   * record if any recursive call caused a helpful movement vector to be applied.
+   * this is tracked because we only want one helpful movement vector per top-level
+   * moveItem call. Ie, if you push something that gets an hmv, you can't also have one.
+   */
+  let causedHelpful = false;
 
   const {
     state: { position: originalPosition },
@@ -112,22 +122,22 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   if (log)
     console.group(
-      `[${path.size === 0 ? `first cause` : "pushed"} in ${room.id}]`,
+      `[${visited.size === 0 ? `first cause` : `pushed ${visited.size} deep`}]`,
       "on path",
-      [...path.values()],
+      [...visited.values()],
       `💨 moving ${subjectItem.id} @`,
       subjectItem.state.position,
       `bb:`,
       subjectItem.aabb,
-      ` by `,
-      posDelta,
+      `\n By:`,
+      ...visualiseVectorForLogs(posDelta),
       onTouch ? "with touch handling callback" : "skipping touch handling",
     );
 
   // strategy is to move to the target position, then back off as needed
   updateItemPosition(room, subjectItem, addXyz(originalPosition, posDelta));
 
-  if (path.size === 0) {
+  if (visited.size === 0) {
     // record 'first cause' acting on, directly from the mechanics.
     // (n>1)-cause are recorded in the collision loop
     recordActedOnBy(undefined, subjectItem, room);
@@ -140,14 +150,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
   if (log) {
     if (sortedCollisions.length === 0) {
-      console.log(
-        `[${path.size === 0 ? `first cause` : "pushed"}]`,
-        subjectItem.id,
-        "💥👎 'did not collide with anything",
-      );
+      console.log(subjectItem.id, "💥👎 'did not collide with anything");
     } else
       console.log(
-        `[${path.size === 0 ? `first cause` : "pushed"}]`,
         subjectItem.id,
         "💥 collided with item(s):",
         `[${sortedCollisions.map((c) => c.id).join(", ")}]`,
@@ -164,17 +169,16 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     //      -push-> C          ^ here there's no need to handle C pushing A, since A is up
     //                           the tree and will be handled for us when A pushes C directly
     //                           when it is done pushing B
-    if (path.has(collidedWithItem.id)) {
+    if (visited.has(collidedWithItem.id)) {
       if (log) {
         console.log(
-          `[${path.size === 0 ? `first cause` : "pushed"}]`,
-          `skipping collision handling for ${subjectItem.id} with ${collidedWithItem.id} as it is already on the path`,
+          `🦺🦺🦺 skipping collision handling for ${subjectItem.id} with ${collidedWithItem.id} since ${subjectItem.id} was already visited to get here`,
         );
       }
       continue;
     }
 
-    if (!collision1to1(subjectItem, collidedWithItem)) {
+    if (!collision2Items(subjectItem, collidedWithItem)) {
       // it is possible there is no longer a collision due to previous pushing and backing-off of the subjectItem - we have
       // been protected from this collision by previous collisions so it no longer applies
       if (log) {
@@ -202,12 +206,10 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     // record this acting on:
     recordActedOnBy(subjectItem, collidedWithItem, room);
 
-    if (onTouch !== undefined) {
-      if (log) {
-        console.log(
-          `handling onTouch() callback for ${subjectItem.id} touching ${collidedWithItem.id}`,
-        );
-      }
+    if (onTouch !== undefined && log) {
+      console.group(
+        `handling onTouch() callback for ${subjectItem.id} touching ${collidedWithItem.id}`,
+      );
     }
     onTouch?.({
       movingItem: subjectItem,
@@ -217,6 +219,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       deltaMS,
       room,
     });
+    if (onTouch !== undefined && log) {
+      console.groupEnd();
+    }
 
     // the touch handler might have removed either item from the world - in this case we can move on or stop:
     if (room.items[subjectItem.id] === undefined) {
@@ -226,7 +231,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         );
         console.groupEnd();
       }
-      return;
+      return causedHelpful;
     }
     if (room.items[collidedWithItem.id] === undefined) {
       if (log) {
@@ -241,7 +246,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     if (!isSolid(collidedWithItem, subjectItem) || !isSolid(subjectItem)) {
       if (log)
         console.log(
-          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `moving ${subjectItem.id}`,
           "either mover or ",
           collidedWithItem.id,
@@ -285,7 +289,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
     if (log)
       console.log(
-        `[${path.size === 0 ? `first cause` : "pushed"}]`,
         `${subjectItem.id} collided 💥 with ${collidedWithItem.id} to give backing-off mtv`,
         backingOffMtv,
       );
@@ -317,28 +320,27 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
       if (log)
         console.log(
-          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `${subjectItem.id} will recursively push ${collidedWithItem.id} by`,
           forwardPushVector,
           "with push coefficient of",
           pushMultiplier,
         );
 
-      if (path.size < maxPushRecursionDepth) {
+      if (visited.size < maxPushRecursionDepth) {
         // recursively apply push to pushed item
         // (but only if we didn't already recurse down to the maximum depth)
-        moveItem({
+        causedHelpful ||= moveItem({
           subjectItem: collidedWithItem,
           posDelta: forwardPushVector,
           gameState,
           room,
           deltaMS,
           forceful,
-          path: path.add(subjectItem.id),
+          visited: visited.add(subjectItem.id),
           onTouch,
         });
         // that recursive call is done now, and path is edited in-place to reduce gc
-        path.delete(subjectItem.id);
+        visited.delete(subjectItem.id);
       } else {
         console.warn("hit recursion depth limit", new Error());
       }
@@ -375,7 +377,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
       if (log)
         console.log(
-          `[${path.size === 0 ? `first cause` : "pushed"}]`,
           `${subjectItem.id} can't push ${collidedWithItem.id} so simply backed off to`,
           subjectItem.state.position,
         );
@@ -403,7 +404,6 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       ) {
         if (log)
           console.log(
-            `[${path.size === 0 ? `first cause` : "pushed"}]`,
             `${subjectItem.id} is a free item and collided vertically with ${collidedWithItem.id}`,
             collidedWithItem,
             `so will set ${subjectItem.id} as standing on ${collidedWithItem.id}`,
@@ -445,6 +445,10 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     // TODO: it isn't clear why a non-free item would be moving - tighten up moveItem input params
     // and remove this check
     isFreeItem(subjectItem) &&
+    // somewhere down the tree already caused an hmv to be applied
+    !causedHelpful &&
+    // don't allow helpful movement vectors to recursively call others -
+    // only one per top-level moveItem call
     !isHelpful
   ) {
     const hmv = helpfulMovementVector(
@@ -456,6 +460,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       sortedCollisions,
     );
     if (hmv) {
+      if (log) {
+        console.log(
+          `🦺 applying helpful movement vector to ${subjectItem.id} of`,
+          ...visualiseVectorForLogs(hmv),
+        );
+      }
+
       moveItem({
         subjectItem,
         posDelta: hmv,
@@ -465,9 +476,19 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         forceful: false,
         onTouch,
         isHelpful: true,
+        // including self in the path of the recursive call here helps
+        // cases like in #moonbase20/#moonbase23 (arrow rooms) where
+        // the sliding blocks get piled up next to a door, and the sliding
+        // vector b2 being pushed by b1 comes back to impact b1
+        visited: visited.add(subjectItem.id),
       });
+      visited.delete(subjectItem.id);
+
+      causedHelpful = true;
     }
   }
 
   if (log) console.groupEnd();
+
+  return causedHelpful;
 };
