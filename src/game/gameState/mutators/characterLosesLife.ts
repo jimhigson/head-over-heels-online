@@ -20,7 +20,7 @@ import {
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
-import { collision1to1 } from "../../collision/aabbCollision";
+import { collision2Items } from "../../collision/aabbCollision";
 import {
   selectCurrentPlayableItem,
   selectHeelsAbilities,
@@ -187,7 +187,7 @@ const combinedPlayableLosesLife = <RoomId extends string>(
     resetPlayableToEntryState(gameState, head);
     resetPlayableToEntryState(gameState, heels);
 
-    if (collision1to1(head, heels)) {
+    if (collision2Items(head, heels)) {
       // can't put then back as individuals without a collision - it is likely they
       // entered via the same door. Recombine and continue:
       const rejoined = combinePlayablesInSymbiosis({ head, heels });

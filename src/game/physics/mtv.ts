@@ -3,9 +3,11 @@ import type { Xyz } from "../../utils/vectors/vectors";
 import {
   axesXyz,
   lengthXyz,
-  scaleXyz,
+  originXyz,
+  scaleXyzWriteInto,
   unitVector,
 } from "../../utils/vectors/vectors";
+import { collisionPosAndBb } from "../collision/aabbCollision";
 
 /**
  * zBias causes the sliding collision to slightly favour moving in z over x and y.
@@ -23,25 +25,6 @@ import {
 const zWeight = 0.5;
 
 /**
- * Check if two rectangular objects are colliding.
- */
-const checkRectangularCollision = (
-  moverPosition: Xyz,
-  moverAabb: Xyz,
-  obstaclePosition: Xyz,
-  obstacleAabb: Xyz,
-): boolean => {
-  return (
-    moverPosition.x < obstaclePosition.x + obstacleAabb.x &&
-    moverPosition.x + moverAabb.x > obstaclePosition.x &&
-    moverPosition.y < obstaclePosition.y + obstacleAabb.y &&
-    moverPosition.y + moverAabb.y > obstaclePosition.y &&
-    moverPosition.z < obstaclePosition.z + obstacleAabb.z &&
-    moverPosition.z + moverAabb.z > obstaclePosition.z
-  );
-};
-
-/**
  * Calculate the minimum translation along a specific direction vector to separate two rectangular objects.
  * Uses arithmetic ray-AABB intersection to find the exact distance along the vector for separation.
  *
@@ -49,31 +32,30 @@ const checkRectangularCollision = (
  *                 Can be any direction, not limited to axis-aligned.
  * @returns The minimum translation vector along the constraint direction to separate the objects.
  */
-export const mtvAlongVector = (
+export const mtvAlongVectorWriteInto = (
   moverPosition: Xyz,
   moverAabb: Xyz,
   obstaclePosition: Xyz,
   obstacleAabb: Xyz,
   vector: Xyz,
+  writeInto: Partial<Xyz>,
 ): Xyz => {
   // Normalize the vector
   const vectorLength = lengthXyz(vector);
   if (vectorLength < 0.0001) {
     // Zero vector - can't constrain
-    return { x: 0, y: 0, z: 0 };
+    Object.assign(writeInto, originXyz);
+    return writeInto as Xyz;
   }
   const direction = unitVector(vector);
 
   // First, check if objects are already separated
   if (
-    !checkRectangularCollision(
-      moverPosition,
-      moverAabb,
-      obstaclePosition,
-      obstacleAabb,
-    )
+    !collisionPosAndBb(moverPosition, moverAabb, obstaclePosition, obstacleAabb)
   ) {
-    return { x: 0, y: 0, z: 0 };
+    // write origin and return
+    Object.assign(writeInto, originXyz);
+    return writeInto as Xyz;
   }
 
   // Ray-AABB intersection approach
@@ -95,7 +77,8 @@ export const mtvAlongVector = (
 
       if (moverMax <= obstacleMin || moverMin >= obstacleMax) {
         // No overlap on this axis means no collision at all
-        return { x: 0, y: 0, z: 0 };
+        Object.assign(writeInto, originXyz);
+        return writeInto as Xyz;
       }
       // Otherwise, this axis doesn't constrain t
       continue;
@@ -123,7 +106,9 @@ export const mtvAlongVector = (
 
   // If tMin > tMax, boxes don't overlap at any point along the ray
   if (tMin > tMax) {
-    return { x: 0, y: 0, z: 0 };
+    // write origin and return
+    Object.assign(writeInto, originXyz);
+    return writeInto as Xyz;
   }
 
   // We're currently overlapping (t=0 is in range [tMin, tMax])
@@ -136,25 +121,47 @@ export const mtvAlongVector = (
 
   if (tMax > 0 && (tMin >= 0 || tMax < -tMin)) {
     // Move forward to exit
-    return scaleXyz(direction, tMax);
+    return scaleXyzWriteInto(writeInto, direction, tMax);
   } else if (tMin < 0) {
     // Move backward to exit
-    return scaleXyz(direction, tMin);
+    return scaleXyzWriteInto(writeInto, direction, tMin);
   } else {
     // Already separated or touching
-    return { x: 0, y: 0, z: 0 };
+    Object.assign(writeInto, originXyz);
+    return writeInto as Xyz;
   }
+};
+
+/**
+ * @see mtvAlongVectorWriteInto but returns a new object for the result
+ */
+export const mtvAlongVector = (
+  moverPosition: Xyz,
+  moverAabb: Xyz,
+  obstaclePosition: Xyz,
+  obstacleAabb: Xyz,
+  vector: Xyz,
+): Xyz => {
+  return mtvAlongVectorWriteInto(
+    moverPosition,
+    moverAabb,
+    obstaclePosition,
+    obstacleAabb,
+    vector,
+    {},
+  );
 };
 
 /**
  * Calculate the standard axis-aligned Minimum Translation Vector (MTV) to separate two rectangular objects.
  * Returns the shortest axis-aligned vector to push the mover out of the obstacle.
  */
-export const mtv = (
+export const mtvWriteInto = (
   moverPosition: Xyz,
   moverAabb: Xyz,
   obstaclePosition: Xyz,
   obstacleAabb: Xyz,
+  writeInto: Partial<Xyz>,
 ): Xyz => {
   const dx1 = obstaclePosition.x + obstacleAabb.x - moverPosition.x; // Right overlap
   const dy1 = obstaclePosition.y + obstacleAabb.y - moverPosition.y; // Far overlap
@@ -175,13 +182,43 @@ export const mtv = (
 
   if (absMtvX < absMtvY && absMtvX < absMtvZ) {
     // x is the smallest
-    return { x: mtvX, y: 0, z: 0 }; // Slide along x-axis
+    writeInto.x = mtvX;
+    writeInto.y = 0;
+    writeInto.z = 0;
+    return writeInto as Xyz; // Slide along x-axis
   }
   if (absMtvY < absMtvZ) {
     // y is the smallest
-    return { x: 0, y: mtvY, z: 0 }; // Slide along y-axis
+    writeInto.x = 0;
+    writeInto.y = mtvY;
+    writeInto.z = 0;
+    return writeInto as Xyz; // Slide along y-axis
   } else {
     // z is the smallest
-    return { x: 0, y: 0, z: mtvZ }; // Slide along z-axis
+    writeInto.x = 0;
+    writeInto.y = 0;
+    writeInto.z = mtvZ;
+    return writeInto as Xyz; // Slide along z-axis
   }
+};
+
+/**
+ * Calculate the standard axis-aligned Minimum Translation Vector (MTV) to separate two rectangular objects.
+ * Returns the shortest axis-aligned vector to push the mover out of the obstacle.
+ *
+ * Version that returns a new object for the result
+ */
+export const mtv = (
+  moverPosition: Xyz,
+  moverAabb: Xyz,
+  obstaclePosition: Xyz,
+  obstacleAabb: Xyz,
+): Xyz => {
+  return mtvWriteInto(
+    moverPosition,
+    moverAabb,
+    obstaclePosition,
+    obstacleAabb,
+    {},
+  );
 };

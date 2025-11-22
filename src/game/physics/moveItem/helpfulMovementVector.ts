@@ -3,7 +3,7 @@ import type { WritableDeep } from "type-fest";
 import { isEmpty } from "iter-tools-es";
 
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { Collideable } from "../../collision/aabbCollision";
+import type { CollideableItem } from "../../collision/aabbCollision";
 import type { FreeItem } from "../itemPredicates";
 
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
@@ -27,7 +27,7 @@ import {
 const sensorProjectionLength = 0.1;
 
 /** a preallocated buffer to write sensors into, to avoid gc */
-const sensorBuffer: WritableDeep<Collideable> = {
+const sensorBuffer: WritableDeep<CollideableItem> = {
   id: "sensor",
   aabb: { x: 0, y: 0, z: 0 },
   state: { position: { x: 0, y: 0, z: 0 } },
@@ -36,7 +36,7 @@ const sensorBuffer: WritableDeep<Collideable> = {
  * a second preallocated buffer to write sensors into, to avoid gc, to use for checking after sliding aren't falling off
  * the current surface
  */
-const belowSensorBuffer: WritableDeep<Collideable> = {
+const belowSensorBuffer: WritableDeep<CollideableItem> = {
   id: "sensor",
   aabb: {
     x: sensorProjectionLength,
