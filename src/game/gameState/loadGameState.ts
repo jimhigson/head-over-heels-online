@@ -223,7 +223,6 @@ const _loadGameState = <RoomId extends string>({
     // new game - nothing picked up:
     pickupsCollected: {} as PickupsCollected<RoomId>,
     gameTime: 0,
-    progression: 0,
     freeCharacters: {},
 
     characterRooms: {

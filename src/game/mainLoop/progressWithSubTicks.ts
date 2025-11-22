@@ -60,13 +60,6 @@ export const progressWithSubTicks =
       // which at the reduced frame rate for snapshot tests is a lot of frames
       tickerSpeed === 0 ? 1 : Math.max(1, Math.ceil(deltaMS / maxStepDeltaMs));
 
-    // don't worry about this special case - it is ok (and simpler) to have a loop of one
-    // iteration
-    // if (numberOfSubTicks === 1) {
-    //   // simple case of no stepping required
-    //   return progress(gameState, timeProgressionDelta);
-    // }
-
     const stepDeltaMs = deltaMS / numberOfSubTicks;
 
     for (let i = 0; i < numberOfSubTicks; i++) {

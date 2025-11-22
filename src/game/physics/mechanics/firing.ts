@@ -56,7 +56,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
       type: "firedDoughnut",
       ...defaultItemProperties,
       config: emptyObject,
-      id: `firedDoughnut/${gameState.progression}` as RoomItemId,
+      id: `firedDoughnut/${firer.id}/${room.roomTime}` as RoomItemId,
       shadowCastTexture: "shadow.smallRound",
       state: {
         ...defaultBaseState(),

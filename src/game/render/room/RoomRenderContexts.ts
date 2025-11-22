@@ -61,6 +61,5 @@ export type RoomTickContext<
   RoomItemId extends string,
 > = {
   movedItems: MovedItems<RoomId, RoomItemId>;
-  progression: number;
   deltaMS: number;
 };

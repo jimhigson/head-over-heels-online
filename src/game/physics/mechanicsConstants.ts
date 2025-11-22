@@ -222,7 +222,7 @@ export const veryHighZ = 9999;
 /**
  * provide a 'grace' period after jumping where if the player hasn't started to rise due to
  * collision with an item above them, they still get the whole jump velocity when they are free
- * - this makes head's laders easier to climb at higher frame rates where it's much harder to press
+ * - this makes head's ladders easier to climb at higher frame rates where it's much harder to press
  * on the exact frame
  */
 export const jumpDelayGrace = 1000 / 12;
@@ -232,3 +232,5 @@ export const jumpDelayGrace = 1000 / 12;
  * a surface
  */
 export const coyoteTime = 1000 / 12;
+
+export const switchMinTimeBetweenToggleMs = 100;
