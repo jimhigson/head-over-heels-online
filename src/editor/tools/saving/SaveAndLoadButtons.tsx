@@ -149,7 +149,7 @@ export const SaveAndLoadButtons = () => {
         shortcutKeys={["^O", "⌘O"]}
       >
         <div className="flex flex-row items-center">
-          <span className={cn(`sprite texture-editor_tool_save relative`)} />
+          <span className={cn(`sprite texture-editor_tool_open relative`)} />
           <span
             className={cn(
               `sprite sprite-tinted text-highlightBeige texture-hud_char_➡ relative`,
