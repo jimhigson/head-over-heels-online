@@ -565,6 +565,14 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
+  // this is an alias of shadowMask.book - kept only because older saves may have
+  // references to 'shadowMask.fullBlock' in their json-serialised gameState
+  "shadowMask.fullBlock": {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y: 0 }),
+      ...largeItemTextureSize,
+    },
+  },
   "shadow.fullBlock": {
     frame: {
       ...largeItemGridLocation({ x: 11, y: 0 }),

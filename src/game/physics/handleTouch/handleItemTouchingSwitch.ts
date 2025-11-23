@@ -17,6 +17,7 @@ import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { toggleUserSetting } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
+import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { scaleXyz } from "../../../utils/vectors/vectors";
 import { switchMinTimeBetweenToggleMs } from "../mechanicsConstants";
@@ -211,13 +212,14 @@ export const handleItemTouchingSwitch = <
   touchedItem: switchItem,
   room,
 }: ItemTouchEventByItemType<RoomId, RoomItemId, ItemInPlayType, "switch">) => {
-  const lastedToggledAt: number = switchItem.state.lastToggledAtRoomTime;
+  const lastToggledAt: number =
+    switchItem.state.lastToggledAtRoomTime ?? neverTime;
 
   const { roomTime } = room;
 
   switchItem.state.lastToggledAtRoomTime = roomTime;
 
-  if (lastedToggledAt + switchMinTimeBetweenToggleMs > roomTime) {
+  if (lastToggledAt + switchMinTimeBetweenToggleMs > roomTime) {
     // switch was already being pressed so skip it:
     return;
   }

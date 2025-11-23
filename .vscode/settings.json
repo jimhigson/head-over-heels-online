@@ -22,6 +22,7 @@
     "dalek",
     "daleks",
     "dissapearing",
+    "dougmencken",
     "Drummand",
     "eastsouth",
     "egyptus",
@@ -36,6 +37,7 @@
     "Highligted",
     "immer",
     "iscurrenttool",
+    "jimhigson",
     "jims",
     "lookupable",
     "Lowlighted",
@@ -106,6 +108,9 @@
     "zeroable"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "hohjs-production"
+  ],
   "cSpell.language": "en-GB,en-US",
   "javascript.preferences.importModuleSpecifier": "relative",
   "workbench.colorCustomizations": {

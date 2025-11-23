@@ -299,8 +299,11 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     /**
      * the frame this switch was last touched on. Some touches (switched, scrolls) only count if they are touched and weren't
      * already touched on the previous frame
+     *
+     * this is only optional because was introduced once saves existed in the wild - where undefined,
+     * should be read with `?? neverTime`
      */
-    lastToggledAtRoomTime: number;
+    lastToggledAtRoomTime?: number;
     setting: SwitchSetting;
   };
   button: {
