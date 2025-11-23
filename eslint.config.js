@@ -78,6 +78,26 @@ export default tseslint.config(
       ],
       "no-prototype-builtins": "off",
 
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "hohjs-production",
+              message:
+                "Do not import from hohjs-production - this is only for type compatibility testing",
+            },
+          ],
+          patterns: [
+            {
+              group: ["hohjs-production/*"],
+              message:
+                "Do not import from hohjs-production - this is only for type compatibility testing",
+            },
+          ],
+        },
+      ],
+
       "perfectionist/sort-imports": [
         "error",
         {

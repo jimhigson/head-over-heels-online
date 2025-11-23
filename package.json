@@ -104,6 +104,7 @@
     "gh-pages": "^6.3.0",
     "git-format-staged": "^3.1.1",
     "globals": "^15.15.0",
+    "hohjs-production": "github:jimhigson/head-over-heels-online#production",
     "image-size": "^1.2.0",
     "immer": "^10.1.1",
     "js-base64": "^3.7.7",

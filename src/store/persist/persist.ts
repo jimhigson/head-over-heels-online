@@ -21,7 +21,6 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
   version: storeLatestVersion,
   migrate: gameMenusSliceMigrate,
   storage,
-  // this really says that userSettings should be its own slice, not tacked onto gameMenus!
   whitelist: gameMenusSliceWhitelist,
 };
 export const gameMenusPersistedReducer = persistReducer(
