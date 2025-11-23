@@ -1,4 +1,5 @@
-//import type { GameMenusSlicePersisted as GameMenusSlicePersistedProduction } from "hohjs-production/src/store/persist/persist";
+// eslint-disable-next-line no-restricted-imports -- this is the reason this dependency on ourselves exists - for this test
+import type { GameMenusSlicePersisted as GameMenusSlicePersistedProduction } from "hohjs-production/src/store/persist/persist";
 
 /**
  * This file is commented out, but useful. It checks that the values saved to the
@@ -19,10 +20,10 @@
  */
 import { test } from "vitest";
 
-//import type { GameMenusSlicePersisted } from "./GameMenusSlicePersisted";
+import type { GameMenusSlicePersisted } from "./GameMenusSlicePersisted";
 
 test("current GameMenusSlicePersisted can be assigned from a save made in the production version", () => {
-  //   const fakeProductionSave = {} as unknown as GameMenusSlicePersistedProduction;
-  //   const checkCanLoad = (_save: GameMenusSlicePersisted) => {};
-  //   checkCanLoad(fakeProductionSave);
+  const fakeProductionSave = {} as unknown as GameMenusSlicePersistedProduction;
+  const checkCanLoad = (_save: GameMenusSlicePersisted) => {};
+  checkCanLoad(fakeProductionSave);
 });
