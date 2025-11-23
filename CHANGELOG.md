@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.10.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.9.0...v1.10.0) (2025-11-23)
+
+
+### Features
+
+* change lighting direction on some main background sprites (volcanos and normal blocks) ([#601](https://github.com/jimhigson/head-over-heels-online/issues/601)) ([948fbcd](https://github.com/jimhigson/head-over-heels-online/commit/948fbcd760957133a1aec2361734320097cacbdd))
+* heels can jump-carry immediately on landing if inputs are held, head can auto-fire doughnuts if input held ([#594](https://github.com/jimhigson/head-over-heels-online/issues/594)) ([98a8317](https://github.com/jimhigson/head-over-heels-online/commit/98a8317bcea3ea4287aeabfda181a82e86e7e4b8))
+* hitting jump+carry when carrying a spring gets the extra jump height from the spring ([#604](https://github.com/jimhigson/head-over-heels-online/issues/604)) ([46222c9](https://github.com/jimhigson/head-over-heels-online/commit/46222c9161489c1e9ea15908a9a4fe2be401953c))
+* make blacktooth18 room not near-impossible in the remake engine ([#598](https://github.com/jimhigson/head-over-heels-online/issues/598)) ([22628f8](https://github.com/jimhigson/head-over-heels-online/commit/22628f864d0db882114faf8b04e3357881ec2c93))
+* more vibrant palette in dimmed rooms ([#597](https://github.com/jimhigson/head-over-heels-online/issues/597)) ([16951ad](https://github.com/jimhigson/head-over-heels-online/commit/16951ad729dea55ee65e2b6175b2dc53b2996195))
+* physics engine now allows players to push in x/y more quickly, and in z more slowly (used to be the same in both) since pushing upwards just as easily as horizontally felt unnatural ([#591](https://github.com/jimhigson/head-over-heels-online/issues/591)) ([a34cf7b](https://github.com/jimhigson/head-over-heels-online/commit/a34cf7b034eefd05323a70f0896ca8be94293e8c))
+* redraw several shadow masks, and render shadows with a custom pixel shader ([#600](https://github.com/jimhigson/head-over-heels-online/issues/600)) ([cbceebf](https://github.com/jimhigson/head-over-heels-online/commit/cbceebf63eceacd5e7e35869b725b71f2ac2f28a))
+* sliding around objects does not apply if would slide player onto a deadly item or make them fall off a platform ([#603](https://github.com/jimhigson/head-over-heels-online/issues/603)) ([471f99c](https://github.com/jimhigson/head-over-heels-online/commit/471f99c15ef782d337b3c40e4eb5db30fe60dad5))
+* slightly more shiny looking colourisation for conveyors, switches, and stepstools ([#586](https://github.com/jimhigson/head-over-heels-online/issues/586)) ([6cb86d1](https://github.com/jimhigson/head-over-heels-online/commit/6cb86d15d77c77a2c01ddce514bf236193ac8ff4))
+* slightly redraw some of the heels sprites ([#593](https://github.com/jimhigson/head-over-heels-online/issues/593)) ([6af13e2](https://github.com/jimhigson/head-over-heels-online/commit/6af13e2f81a90d64240f41df4adcb6df9383f8ee))
+* slightly refined teleporting effect ([#590](https://github.com/jimhigson/head-over-heels-online/issues/590)) ([d6d4071](https://github.com/jimhigson/head-over-heels-online/commit/d6d40716579a49542baa1f0e82d544465c11437b))
+
+
+### Bug Fixes
+
+* gamespeed reverts to 1.0 after reincarnation ([#599](https://github.com/jimhigson/head-over-heels-online/issues/599)) ([b37241b](https://github.com/jimhigson/head-over-heels-online/commit/b37241b4b9bed2bed7cdd9411bc2ad14e6e9f88e))
+* if heels loses a life while carrying an item and head is in the room, the item is dropped ([#596](https://github.com/jimhigson/head-over-heels-online/issues/596)) ([dc05f01](https://github.com/jimhigson/head-over-heels-online/commit/dc05f0152d0311d17208c618ff45397a8576582d))
+* on heels leaving a room while carrying an item, if heads is in the room, the item is dropped (no longer vanishes out of the game ([#587](https://github.com/jimhigson/head-over-heels-online/issues/587)) ([c8987ff](https://github.com/jimhigson/head-over-heels-online/commit/c8987ff65e86359fdd88f27ee2d12e8f1a3af18b))
+* remove remake-specific skip in blacktooth67 ([#602](https://github.com/jimhigson/head-over-heels-online/issues/602)) ([940f5a7](https://github.com/jimhigson/head-over-heels-online/commit/940f5a7e3e895571dbde29aae004f99bcb34bd54))
+* shadows now longer show as white in level editor room preview ([#605](https://github.com/jimhigson/head-over-heels-online/issues/605)) ([392cfd2](https://github.com/jimhigson/head-over-heels-online/commit/392cfd2484e21af1aaff0b3d5f9269ac384b74d6))
+* sliding/rolling items no longer travel in unexpected ways ([#609](https://github.com/jimhigson/head-over-heels-online/issues/609)) ([39f109a](https://github.com/jimhigson/head-over-heels-online/commit/39f109ad0f7b38b404cd4952ff2ab56c075c6872))
+* update colourisation to get lighting right on several sprites ([#589](https://github.com/jimhigson/head-over-heels-online/issues/589)) ([1f535c2](https://github.com/jimhigson/head-over-heels-online/commit/1f535c2f582883f5cd5192c99dc762d18f4db003))
+* use mp3 for all sound effects ([#583](https://github.com/jimhigson/head-over-heels-online/issues/583)) ([7b9afd4](https://github.com/jimhigson/head-over-heels-online/commit/7b9afd4fb50ff139a8f5354062869c6733493aca))
+
 ## [1.9.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.8.0...v1.9.0) (2025-11-02)
 
 
