@@ -35,140 +35,22 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  ...fourDirections(
-    "cyberman",
-    smallItemGridLocation({ x: 1, y: 1 }),
+  headlessBase: {
+    frame: {
+      ...smallItemGridLocation({ x: 7, y: 0 }),
+      ...smallItemTextureSize,
+    },
+  },
+  ...seriesOfNumberedTextures(
+    "headlessBase",
+    4,
+    smallItemGridLocation({ x: 8, y: 0 }),
     smallItemTextureSize,
   ),
 
-  ...fourDirections(
-    "charles",
-    smallItemGridLocation({ x: 3, y: 1 }),
-    smallItemTextureSize,
-  ),
-  "shadowMask.charles.away": {
+  "headlessBase.all": {
     frame: {
-      ...smallItemGridLocation({ x: 5, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.charles.right": {
-    frame: {
-      ...smallItemGridLocation({ x: 5, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  ...fourDirections(
-    "elephant",
-    smallItemGridLocation({ x: 6, y: 1 }),
-    smallItemTextureSize,
-  ),
-
-  "crown.blacktooth": {
-    frame: {
-      ...smallItemGridLocation({ x: 8, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "crown.safari": {
-    frame: {
-      ...smallItemGridLocation({ x: 9, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "crown.egyptus": {
-    frame: {
-      ...smallItemGridLocation({ x: 10, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "crown.penitentiary": {
-    frame: {
-      ...smallItemGridLocation({ x: 11, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "crown.bookworld": {
-    frame: {
-      ...smallItemGridLocation({ x: 12, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-  ball: {
-    frame: {
-      ...smallItemGridLocation({ x: 13, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.ball": {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 1 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  sticks: {
-    frame: {
-      ...smallItemGridLocation({ x: 8, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  cube: {
-    frame: {
-      ...smallItemGridLocation({ x: 9, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  drum: {
-    frame: {
-      ...smallItemGridLocation({ x: 10, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.drum": {
-    frame: {
-      ...smallItemGridLocation({ x: 11, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  hooter: {
-    frame: {
-      ...smallItemGridLocation({ x: 12, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-  bag: {
-    frame: {
-      ...smallItemGridLocation({ x: 13, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  "joystick.stick": {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "joystick.ball": {
-    frame: {
-      ...smallItemGridLocation({ x: 15, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "joystick.whole": {
-    frame: {
-      ...smallItemGridLocation({ x: 16, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.joystick": {
-    frame: {
-      ...smallItemGridLocation({ x: 17, y: 2 }),
+      ...smallItemGridLocation({ x: 12, y: 0 }),
       ...smallItemTextureSize,
     },
   },
@@ -193,178 +75,403 @@ const frames = {
   },
 
   ...fourDirections(
+    "cyberman",
+    smallItemGridLocation({ x: 6, y: 3 }),
+    smallItemTextureSize,
+  ),
+
+  ...fourDirections(
+    "skiHead.greenAndPink",
+    smallItemGridLocation({ x: 9, y: 3 }),
+    { w: 24, h: 32 },
+  ),
+  ...fourDirections(
+    "skiHead.starsAndStripes",
+    smallItemGridLocation({ x: 11, y: 3 }),
+    { w: 24, h: 32 },
+  ),
+
+  "shadowMask.skiHead.away": {
+    frame: {
+      ...smallItemGridLocation({ x: 13, y: 3 }),
+      ...smallItemTextureSize,
+      h: 32,
+    },
+  },
+  "shadowMask.skiHead.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 14, y: 3 }),
+      ...smallItemTextureSize,
+      h: 32,
+    },
+  },
+
+  ...fourDirections(
     "monkey",
-    smallItemGridLocation({ x: 5, y: 3 }),
+    smallItemGridLocation({ x: 0, y: 7 }),
     smallItemTextureSize,
   ),
 
   ...fourDirections(
     "computerBot",
-    smallItemGridLocation({ x: 7, y: 3 }),
+    smallItemGridLocation({ x: 3, y: 7 }),
     smallItemTextureSize,
   ),
 
-  "spring.compressed": {
-    frame: {
-      ...smallItemGridLocation({ x: 9, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "spring.released": {
-    frame: {
-      ...smallItemGridLocation({ x: 10, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.spring.compressed": {
-    frame: {
-      ...smallItemGridLocation({ x: 11, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.spring.released": {
-    frame: {
-      ...smallItemGridLocation({ x: 12, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  "switch.left": {
-    frame: {
-      ...smallItemGridLocation({ x: 13, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "switch.right": {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.switch": {
-    frame: {
-      ...smallItemGridLocation({ x: 15, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  tower: {
-    frame: {
-      ...smallItemGridLocation({ x: 16, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  "shadowMask.tower": {
-    frame: {
-      ...smallItemGridLocation({ x: 17, y: 3 }),
-      ...smallItemTextureSize,
-    },
-  },
-  scroll: {
-    frame: {
-      ...smallItemGridLocation({ x: 9, y: 4 }),
-      ...smallItemTextureSize,
-      pivot: { x: 17, y: 24 },
-    },
-  },
-  "shadow.scroll": {
-    frame: {
-      ...smallItemGridLocation({ x: 10, y: 4 }),
-      ...smallItemTextureSize,
-      pivot: { x: 17, y: 24 },
-    },
-  },
-  "shadowMask.scroll": {
-    frame: {
-      ...smallItemGridLocation({ x: 11, y: 4 }),
-      ...smallItemTextureSize,
-      pivot: { x: 17, y: 24 },
-    },
-  },
-  "spikyBall.1": {
-    frame: {
-      ...smallItemGridLocation({ x: 12, y: 4 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "spikyBall.2": {
-    frame: {
-      ...smallItemGridLocation({ x: 13, y: 4 }),
-      ...smallItemTextureSize,
-    },
-  },
-  puck: {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 4 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadow.smallRound": {
-    frame: {
-      ...smallItemGridLocation({ x: 15, y: 4 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.smallRound": {
-    frame: {
-      ...smallItemGridLocation({ x: 16, y: 4 }),
-      ...smallItemTextureSize,
-    },
-  },
+  ...fourDirections(
+    "elephant",
+    smallItemGridLocation({ x: 6, y: 7 }),
+    smallItemTextureSize,
+  ),
 
   ...seriesOfNumberedTextures(
     "helicopterBug",
     4,
-    smallItemGridLocation({ x: 0, y: 5 }),
+    smallItemGridLocation({ x: 9, y: 7 }),
     smallItemTextureSize,
   ),
 
   "barrier.x": {
     frame: {
-      ...smallItemGridLocation({ x: 4, y: 5 }),
+      ...smallItemGridLocation({ x: 17, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 18, y: 23 },
     },
   },
   "barrier.y": {
     frame: {
-      ...smallItemGridLocation({ x: 5, y: 5 }),
+      ...smallItemGridLocation({ x: 18, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 23 },
     },
   },
   "shadow.barrier.y": {
     frame: {
-      ...smallItemGridLocation({ x: 6, y: 5 }),
+      ...smallItemGridLocation({ x: 19, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 22 },
     },
   },
   "shadowMask.barrier.y": {
     frame: {
-      ...smallItemGridLocation({ x: 7, y: 5 }),
+      ...smallItemGridLocation({ x: 20, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 22 },
     },
   },
 
+  "joystick.stick": {
+    frame: {
+      ...smallItemGridLocation({ x: 18, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "joystick.ball": {
+    frame: {
+      ...smallItemGridLocation({ x: 19, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "joystick.whole": {
+    frame: {
+      ...smallItemGridLocation({ x: 20, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.joystick": {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: 1 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ball: {
+    frame: {
+      ...smallItemGridLocation({ x: 17, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.ball": {
+    frame: {
+      ...smallItemGridLocation({ x: 18, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "spikyBall.1": {
+    frame: {
+      ...smallItemGridLocation({ x: 20, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "spikyBall.2": {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  tower: {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "shadowMask.tower": {
+    frame: {
+      ...smallItemGridLocation({ x: 16, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  sticks: {
+    frame: {
+      ...smallItemGridLocation({ x: 18, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  cube: {
+    frame: {
+      ...smallItemGridLocation({ x: 19, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  drum: {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.drum": {
+    frame: {
+      ...smallItemGridLocation({ x: 22, y: 3 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  puck: {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadow.smallRound": {
+    frame: {
+      ...smallItemGridLocation({ x: 16, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.smallRound": {
+    frame: {
+      ...smallItemGridLocation({ x: 17, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "spring.compressed": {
+    frame: {
+      ...smallItemGridLocation({ x: 19, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "spring.released": {
+    frame: {
+      ...smallItemGridLocation({ x: 20, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.spring.compressed": {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.spring.released": {
+    frame: {
+      ...smallItemGridLocation({ x: 22, y: 4 }),
+      ...smallItemTextureSize,
+    },
+  },
+
   ...seriesOfNumberedTextures(
-    "bubbles.taupe",
-    3,
-    smallItemGridLocation({ x: 8, y: 5 }),
+    "fish",
+    2,
+    smallItemGridLocation({ x: 15, y: 6 }),
     smallItemTextureSize,
   ),
 
+  doughnuts: {
+    frame: {
+      ...smallItemGridLocation({ x: 18, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
+  // deliberately blank sprite to use as a noop
+  "shadowMask.doughnuts": {
+    frame: {
+      ...smallItemGridLocation({ x: 19, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  hooter: {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
+  bag: {
+    frame: {
+      ...smallItemGridLocation({ x: 22, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
+
   whiteRabbit: {
     frame: {
-      ...smallItemGridLocation({ x: 11, y: 5 }),
+      ...smallItemGridLocation({ x: 24, y: 6 }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.whiteRabbit": {
     frame: {
-      ...smallItemGridLocation({ x: 12, y: 5 }),
+      ...smallItemGridLocation({ x: 25, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "crown.blacktooth": {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.safari": {
+    frame: {
+      ...smallItemGridLocation({ x: 16, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.egyptus": {
+    frame: {
+      ...smallItemGridLocation({ x: 17, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.penitentiary": {
+    frame: {
+      ...smallItemGridLocation({ x: 18, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.bookworld": {
+    frame: {
+      ...smallItemGridLocation({ x: 19, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  scroll: {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 8 }),
+      ...smallItemTextureSize,
+      pivot: { x: 17, y: 24 },
+    },
+  },
+  "shadow.scroll": {
+    frame: {
+      ...smallItemGridLocation({ x: 16, y: 8 }),
+      ...smallItemTextureSize,
+      pivot: { x: 17, y: 24 },
+    },
+  },
+  "shadowMask.scroll": {
+    frame: {
+      ...smallItemGridLocation({ x: 17, y: 8 }),
+      ...smallItemTextureSize,
+      pivot: { x: 17, y: 24 },
+    },
+  },
+
+  buttonInGame: {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "buttonInGame.pressed": {
+    frame: {
+      ...smallItemGridLocation({ x: 16, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.buttonInGame": {
+    frame: {
+      ...smallItemGridLocation({ x: 17, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "switch.left": {
+    frame: {
+      ...smallItemGridLocation({ x: 19, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "switch.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 20, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.switch": {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: 9 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "lift.static": {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 10 }),
+      ...smallItemTextureSize,
+    },
+  },
+  ...seriesOfNumberedTextures(
+    "lift",
+    4,
+    smallItemGridLocation({ x: 16, y: 10 }),
+    smallItemTextureSize,
+  ),
+  "shadow.smallBlock": {
+    frame: {
+      ...smallItemGridLocation({ x: 20, y: 10 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.smallBlock": {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: 10 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...fourDirections(
+    "charles",
+    smallItemGridLocation({ x: 15, y: 11 }),
+    smallItemTextureSize,
+  ),
+  "shadowMask.charles.away": {
+    frame: {
+      ...smallItemGridLocation({ x: 17, y: 11 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.charles.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 17, y: 12 }),
       ...smallItemTextureSize,
     },
   },
@@ -372,120 +479,16 @@ const frames = {
   ...seriesOfNumberedTextures(
     "bubbles.white",
     3,
-    smallItemGridLocation({ x: 13, y: 5 }),
+    smallItemGridLocation({ x: 19, y: 11 }),
     smallItemTextureSize,
   ),
 
   ...seriesOfNumberedTextures(
-    "fish",
-    2,
-    smallItemGridLocation({ x: 12, y: 6 }),
+    "bubbles.taupe",
+    3,
+    smallItemGridLocation({ x: 19, y: 12 }),
     smallItemTextureSize,
   ),
-
-  doughnuts: {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 6 }),
-      ...smallItemTextureSize,
-    },
-  },
-  // deliberately blank sprite to use as a noop
-  "shadowMask.doughnuts": {
-    frame: {
-      ...smallItemGridLocation({ x: 15, y: 6 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  "lift.static": {
-    frame: {
-      ...smallItemGridLocation({ x: 10, y: 7 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  "shadow.smallBlock": {
-    frame: {
-      ...smallItemGridLocation({ x: 11, y: 7 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.smallBlock": {
-    frame: {
-      ...smallItemGridLocation({ x: 12, y: 7 }),
-      ...smallItemTextureSize,
-    },
-  },
-  buttonInGame: {
-    frame: {
-      ...smallItemGridLocation({ x: 13, y: 7 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "buttonInGame.pressed": {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 7 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.buttonInGame": {
-    frame: {
-      ...smallItemGridLocation({ x: 15, y: 7 }),
-      ...smallItemTextureSize,
-    },
-  },
-  ...seriesOfNumberedTextures(
-    "lift",
-    4,
-    smallItemGridLocation({ x: 10, y: 8 }),
-    smallItemTextureSize,
-  ),
-  headlessBase: {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 8 }),
-      ...smallItemTextureSize,
-    },
-  },
-  ...seriesOfNumberedTextures(
-    "headlessBase",
-    4,
-    smallItemGridLocation({ x: 10, y: 9 }),
-    smallItemTextureSize,
-  ),
-
-  "headlessBase.all": {
-    frame: {
-      ...smallItemGridLocation({ x: 14, y: 9 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  ...fourDirections(
-    "skiHead.greenAndPink",
-    { x: 251, y: 252 },
-    { w: 24, h: 32 },
-  ),
-  ...fourDirections(
-    "skiHead.starsAndStripes",
-    { x: 301, y: 252 },
-    { w: 24, h: 32 },
-  ),
-  "shadowMask.skiHead.away": {
-    frame: {
-      x: 351,
-      y: 252,
-      w: 24,
-      h: 32,
-    },
-  },
-  "shadowMask.skiHead.right": {
-    frame: {
-      x: 351,
-      y: 285,
-      w: 24,
-      h: 32,
-    },
-  },
 
   "editor.cursor.xz": {
     frame: {
@@ -729,7 +732,7 @@ const frames = {
   ...seriesOfNumberedTextures(
     "particle",
     4,
-    { x: 265, y: 326 },
+    { x: 100, y: 798 },
     { w: 9, h: 11 },
   ),
 } as const;

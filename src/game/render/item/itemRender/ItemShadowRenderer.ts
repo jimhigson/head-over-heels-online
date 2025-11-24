@@ -25,8 +25,9 @@ import { veryHighZ } from "../../../physics/mechanicsConstants";
 import { shadowFilter } from "../../filters/shadowFilter";
 import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import { projectWorldXyzToScreenXy } from "../../projections";
-import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import "pixi.js/advanced-blend-modes";
+
+import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 
 /**
  *
@@ -242,9 +243,19 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         // wasn't casting a shadow before - create a new one:
         const { times } = casterItem.config as ConsolidatableConfig;
 
+        const castTextureMultiplied = renderMultipliedXy(
+          casterItem.shadowCastTexture,
+          times,
+        );
+        // setting blendmode to lighten means the darker pixels for
+        // feathering at the edge of the shadows don't overwrite lighter
+        // ones from adjacent shadows if they overlap
+        for (const child of castTextureMultiplied.children) {
+          child.blendMode = "lighten";
+        }
         shadowSprite = maybeRenderContainerToSprite(
           pixiRenderer,
-          renderMultipliedXy(casterItem.shadowCastTexture, times),
+          castTextureMultiplied,
         );
         // shadows can only darken - this prevents shadows with lighter parts
         // in the spritesheet (less shadow is applied) from lightening over the

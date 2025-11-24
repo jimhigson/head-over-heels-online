@@ -223,8 +223,8 @@ const charFrames = <C extends string>(
 
 export const hudSpritesheetData = {
   frames: {
-    ...charFrames(row1, { x: 1, y: 605 }, 10),
-    ...charFrames(row2, { x: 1, y: 616 }),
-    ...charFrames(row3, { x: 1, y: 625 }),
+    ...charFrames(row1, { x: 1, y: 994 }, 10),
+    ...charFrames(row2, { x: 1, y: 1005 }),
+    ...charFrames(row3, { x: 1, y: 1014 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;

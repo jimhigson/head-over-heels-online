@@ -32,10 +32,11 @@ vec4 lutColourReplace(sampler2D lut, vec4 inputColour) {
     vec4 replacementColour = texture(lut, normalizedPos);
 
     // use original if either:
-    //      original alpha is 0 (because keep transparent)
+    //      original alpha is transparent
+    //        - even slightly transparent means do not replace 
     //      or lut alpha is 0 (signals unwritten slot in the LUT)
     // The alpha channel stores closeness (0 = unwritten, >0 = has replacement)
-    float shouldReplace = inputColour.a * step(0.004, replacementColour.a); // > 1/255 means written
+    float shouldReplace = step(0.99, inputColour.a) * step(0.004, replacementColour.a); // > 1/255 means written
 
     // Use the replacement color but force alpha to be fully opaque (or match original alpha)
     vec4 replacement = vec4(replacementColour.rgb, inputColour.a);

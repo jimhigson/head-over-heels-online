@@ -26,6 +26,7 @@ type WalkingTextureId<
 type PlayableTextureId<P extends CharacterName = CharacterName> =
   | `${P}.blinking.${DirectionXy8}`
   | `${P}.falling.${DirectionXy8}`
+  | `shadowMask.${P}.${DirectionXy8}`
   | WalkingTextureId<P>;
 type WalkingAnimationId<
   P extends CharacterName,
@@ -69,7 +70,7 @@ const playableFrames = <P extends CharacterName>(
   p: P,
   gridLocation: Xy,
   missingFrames: {
-    [D in DirectionXy8]?: { noBlinking?: boolean };
+    [D in DirectionXy8]?: { noBlinking?: boolean; noShadowMask?: boolean };
   },
 ) => {
   const directionsOrderOnSpritesheet: DirectionXy8[] = [
@@ -129,6 +130,21 @@ const playableFrames = <P extends CharacterName>(
           },
         ] as const;
       }
+
+      if (!missingFrames[d]?.noShadowMask) {
+        yield [
+          `shadowMask.${p}.${d}`,
+          {
+            frame: {
+              ...smallItemGridLocation({
+                x: gridLocation.x + 5,
+                y: gridLocation.y + iD,
+              }),
+              ...smallItemTextureSize,
+            },
+          },
+        ] as const;
+      }
     }
   }
 
@@ -171,16 +187,18 @@ const frames = {
   ...seriesOfNumberedTextures(
     "bubbles.head",
     6,
-    smallItemGridLocation({ x: 0, y: 6 }),
+    smallItemGridLocation({ x: 0, y: 10 }),
     smallItemTextureSize,
   ),
   ...playableFrames(
     "head",
-    { x: 0, y: 7 },
+    { x: 0, y: 11 },
     {
       awayLeft: { noBlinking: true },
       away: { noBlinking: true },
-      left: { noBlinking: true },
+      towards: { noShadowMask: true },
+      towardsLeft: { noShadowMask: true },
+      left: { noBlinking: true, noShadowMask: true },
     },
   ),
 
@@ -189,25 +207,26 @@ const frames = {
   ...seriesOfNumberedTextures(
     "bubbles.heels",
     6,
-    smallItemGridLocation({ x: 6, y: 6 }),
+    smallItemGridLocation({ x: 7, y: 10 }),
     smallItemTextureSize,
   ),
   ...playableFrames(
     "heels",
-    { x: 5, y: 7 },
+    { x: 7, y: 11 },
     {
       awayLeft: { noBlinking: true },
       away: { noBlinking: true },
       awayRight: { noBlinking: true },
-      towardsLeft: { noBlinking: true },
-      left: { noBlinking: true },
+      towards: { noShadowMask: true },
+      towardsLeft: { noBlinking: true, noShadowMask: true },
+      left: { noBlinking: true, noShadowMask: true },
     },
   ),
 
   ...seriesOfNumberedTextures(
     "shine",
     6,
-    largeItemGridLocation({ x: 8, y: -2 }),
+    largeItemGridLocation({ x: 0, y: 4 }),
     largeItemTextureSize,
     3,
   ),
@@ -222,7 +241,7 @@ const frames = {
 
   "shadow.playable": {
     frame: {
-      ...smallItemGridLocation({ x: 4, y: 7 }),
+      ...smallItemGridLocation({ x: 6, y: 11 }),
       ...smallItemTextureSize,
     },
   },
