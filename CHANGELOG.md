@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.10.0...v1.11.0) (2025-11-24)
+
+
+### Features
+
+* shadows projected onto playable characters ([#620](https://github.com/jimhigson/head-over-heels-online/issues/620)) ([d5dda1e](https://github.com/jimhigson/head-over-heels-online/commit/d5dda1ee24d0a2c10adf02b50e2c41c3d3c61a6e))
+
 ## [1.10.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.9.0...v1.10.0) (2025-11-23)
 
 
