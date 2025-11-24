@@ -10,3 +10,4 @@ build-stats-editor.html
 .vscode
 hohjs.code-workspace
 .claude
+screenshotTests/*-snapshots

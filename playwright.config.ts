@@ -23,6 +23,7 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:5201",
     trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
   snapshotPathTemplate:
     "{testDir}/{testFileDir}/{testFileName}-snapshots/{projectName}/{arg}{ext}",

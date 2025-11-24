@@ -4,6 +4,8 @@ export type AllowedQueryParams = {
   playAsHeels: "1" | null;
   campaignName: null | string;
   campaignAuthorUserId: null | string;
+  // for sprites page
+  scale: `${number}` | null;
 };
 
 export type TypedURLSearchParams = {

@@ -4,6 +4,7 @@ import type { Xy } from "../utils/vectors/vectors";
 
 import spritesheetUrl from "../../gfx/sprites.png";
 import { CssVariables } from "../game/components/CssVariables";
+import { typedURLSearchParams } from "../options/queryParams";
 import { spritesheetData, type TextureId } from "../sprites/spriteSheetData";
 
 declare module "react" {
@@ -15,7 +16,7 @@ declare module "react" {
   }
 }
 
-const spritePageScale = 4;
+const defaultScale = 2;
 const pivotCircleSizePx = 20;
 
 const SpriteOverlay = ({
@@ -145,10 +146,10 @@ const SpritesheetImage = () => {
   );
 };
 
-export const SpritePageInner = () => {
+export const SpritesPageInner = ({ scale }: { scale: number }) => {
   const textureIds = Object.keys(spritesheetData.frames).sort() as TextureId[];
   return (
-    <>
+    <div className="e2e-snapshot-target">
       <SpritesheetImage />
       <title>Sprites</title>
       <div className="flex flex-wrap p-[8px] bg-pureBlack">
@@ -160,10 +161,13 @@ export const SpritePageInner = () => {
           return (
             <div
               key={textureId}
-              className="bg-shadow m-[8px] p-[16px] text-center flex flex-col"
+              className="bg-shadow m-[8px] p-[16px] text-left flex flex-col w-14"
+              data-texture-id={textureId}
             >
               <div
-                className={`sprite bg-shadow hover:bg-pink hover:border-white border-shadow border-1 mb-1 box-content mx-auto w-min`}
+                className={`
+                  sprite bg-pureBlack hover:bg-moss border-shadow 
+                  box-content w-min`}
                 // most of these textures won't have classes loaded by tailwind due to ,
                 // so inline the relevant info - including how tailwind would inflate
                 // the css in prod
@@ -182,15 +186,20 @@ export const SpritePageInner = () => {
                       borderRadius: "50%",
                       width: `${pivotCircleSizePx}px`,
                       height: `${pivotCircleSizePx}px`,
-                      left: `${frameMaybeWithPivot.pivot.x * spritePageScale - pivotCircleSizePx / 2}px`,
-                      top: `${frameMaybeWithPivot.pivot.y * spritePageScale - pivotCircleSizePx / 2}px`,
+                      left: `${frameMaybeWithPivot.pivot.x * scale - pivotCircleSizePx / 2}px`,
+                      top: `${frameMaybeWithPivot.pivot.y * scale - pivotCircleSizePx / 2}px`,
                     }}
                   />
                 : null}
               </div>
               {/* take up space to keep the text at the bottom: */}
               <div className="flex-grow" />
-              <div className="text-moss">{textureId}</div>
+              <div className="text-moss mt-1 flex-wrap flex-row flex">
+                {textureId.split(/(\.)/).map((frag) => (
+                  <span>{frag}</span>
+                ))}
+              </div>
+
               <div className="text-lightGrey">
                 {frame.w}&nbsp;x&nbsp;{frame.h}
               </div>
@@ -209,14 +218,17 @@ export const SpritePageInner = () => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 
-export const SpritePage = () => {
+export const SpritesPage = () => {
+  const scaleParam = typedURLSearchParams().get("scale");
+  const scale = scaleParam ? Number(scaleParam) : defaultScale;
+
   return (
-    <CssVariables scaleFactor={spritePageScale}>
-      <SpritePageInner />
+    <CssVariables scaleFactor={scale}>
+      <SpritesPageInner scale={scale} />
     </CssVariables>
   );
 };
