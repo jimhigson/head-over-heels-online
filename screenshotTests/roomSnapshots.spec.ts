@@ -31,9 +31,16 @@ const maxTriesToLoadRoom = 3;
 
 // Override to run for just one room by setting the ROOMS envar, eg:
 // ROOMS=bookworld13,bookworld14 pnpm screenshot --update-snapshots
+// Or filter by item type using ROOMS_CONTAINING, eg:
+// ROOMS_CONTAINING=conveyor pnpm screenshot --update-snapshots
 const roomIds =
-  process.env.ROOMS ?
-    (process.env.ROOMS.split(",") as OriginalCampaignRoomId[])
+  process.env.ROOMS ? (process.env.ROOMS.split(",") as OriginalCampaignRoomId[])
+  : process.env.ROOMS_CONTAINING ?
+    keys(campaign.rooms).filter((roomId) => {
+      const room = campaign.rooms[roomId];
+      const itemType = process.env.ROOMS_CONTAINING;
+      return Object.values(room.items).some((item) => item.type === itemType);
+    })
   : keys(campaign.rooms).slice(0, roomLimit);
 
 // How many parallel runners are processing rooms (splits work across GitHub Actions runners)
