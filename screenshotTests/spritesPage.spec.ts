@@ -5,8 +5,6 @@ import type { TextureId } from "../src/sprites/spriteSheetData";
 
 import { progressLogHeader } from "./projectName";
 
-const batchSize = 10;
-
 const sanitiseForFilename = (textureId: string): string => {
   return textureId
     .replace(/@/g, "at")
@@ -53,6 +51,8 @@ test.describe("Sprites page", () => {
   test("Individual sprite snapshots", async ({ page }, testInfo) => {
     test.setTimeout(5 * 60 * 1_000); // Long timeout for many snapshots
 
+    // loading at a larger size (8x) makes the diffs easier to view in the playwright report,
+    // since it doesn't scale up small images
     await page.goto("/sprites?scale=1");
 
     // Wait for the e2e-snapshot-target container first
@@ -97,52 +97,32 @@ test.describe("Sprites page", () => {
       safeFilenameMap.set(tid, filename);
     }
 
-    // Process snapshots in batches to avoid overwhelming playwright's buffers
+    // Process snapshots one at a time
+    const totalCount = safeFilenameMap.size;
     console.log(
-      `${progressLogHeader(testInfo.project.name, 0)} Taking ${sortedTextureIds.length} sprite snapshots in batches of ${batchSize}...`,
+      `${progressLogHeader(testInfo.project.name, 0)} Taking ${totalCount} sprite snapshots...`,
     );
 
-    const processNext = async (): Promise<void> => {
-      const nextTid: TextureId = safeFilenameMap.keys().next().value!;
-      const spriteEle = page.locator(`[data-texture-id="${nextTid}"] .sprite`);
-      const safeFilename = safeFilenameMap.get(nextTid) || "sprite-unknown.png";
+    while (safeFilenameMap.size > 0) {
+      const [tid, safeFilename] = safeFilenameMap.entries().next().value!;
 
-      const remainingPc = () => {
-        const remainingFrac = safeFilenameMap.size / sortedTextureIds.length;
-        return Math.round((1 - remainingFrac) * 100);
-      };
+      await test.step(`sprite: ${tid}`, async () => {
+        const spriteEle = page.locator(`[data-texture-id="${tid}"] .sprite`);
+        const completed = totalCount - safeFilenameMap.size;
+        const progress = Math.round((completed / totalCount) * 100);
 
-      console.log(
-        `${progressLogHeader(testInfo.project.name, remainingPc())} snapshotting sprite ${nextTid} to ${safeFilename} ...`,
-      );
+        console.log(
+          `${progressLogHeader(testInfo.project.name, progress)} [${completed + 1}/${totalCount}] Snapshotting ${tid} to ${safeFilename}...`,
+        );
 
-      safeFilenameMap.delete(nextTid);
-
-      await expect(spriteEle)
-        .toHaveScreenshot(safeFilename, {
+        await expect.soft(spriteEle).toHaveScreenshot(safeFilename, {
           threshold: 0.02,
           maxDiffPixels: 0,
-          timeout: 20_000,
-        })
-        .then(() => {
-          console.log(
-            `${progressLogHeader(testInfo.project.name, remainingPc())} ...finished snapshotting ${safeFilename}`,
-          );
-        })
-        .catch((err) => {
-          console.error(
-            `...failed snapshotting sprite ${nextTid} to ${safeFilename}:`,
-            err,
-          );
-          throw err;
-        })
-        .finally(() => {
-          if (safeFilenameMap.size > 0) {
-            return processNext();
-          }
+          timeout: 5000,
         });
-    };
 
-    await Promise.all(new Array(batchSize).fill(0).map(() => processNext()));
+        safeFilenameMap.delete(tid);
+      });
+    }
   });
 });

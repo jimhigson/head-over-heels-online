@@ -20,6 +20,6 @@ export const smallItemGridLocation = (gridPos: Xy) => {
 export const largeItemGridLocation = (gridPos: Xy) => {
   return {
     x: gridPos.x * (largeItemTextureSize.w + 1) + 1,
-    y: gridPos.y * (largeItemTextureSize.h + 1) + 396,
+    y: gridPos.y * (largeItemTextureSize.h + 1) + 682,
   };
 };

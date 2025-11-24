@@ -136,9 +136,7 @@ const SpritesheetImage = () => {
               transform: "translate(8px, -100%)",
             }}
           >
-            {/* <BitmapText className="bg-pureBlack text-white block"> */}
             {mousePos.x},{mousePos.y}
-            {/* </BitmapText> */}
           </div>
         </>
       )}
@@ -161,7 +159,7 @@ export const SpritesPageInner = ({ scale }: { scale: number }) => {
           return (
             <div
               key={textureId}
-              className="bg-shadow m-[8px] p-[16px] text-left flex flex-col w-14"
+              className="bg-shadow m-[4px] p-[8px] text-left flex flex-col w-8"
               data-texture-id={textureId}
             >
               <div

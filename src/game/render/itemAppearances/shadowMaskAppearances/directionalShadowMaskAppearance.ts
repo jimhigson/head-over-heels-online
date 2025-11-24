@@ -1,23 +1,30 @@
 import type { Sprite } from "pixi.js";
 
+import type {
+  CharacterName,
+  IndividualCharacterName,
+} from "../../../../model/modelTypes";
+import type { TextureId } from "../../../../sprites/spriteSheetData";
+import type { DirectionXy8 } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
 import { blockSizePx } from "../../../../sprites/spritePivots";
 import {
   type DirectionXy4,
   vectorClosestDirectionXy4,
+  vectorClosestDirectionXy8,
 } from "../../../../utils/vectors/vectors";
 import { createSprite } from "../../createSprite";
 
-type RenderProps = {
+type RenderPropsXy4 = {
   facingXy4: DirectionXy4;
 };
 
-export const directionalShadowMaskAppearance =
+export const directionalShadowMaskAppearanceXy4 =
   <ShadowMaskBaseShadowId extends "charles" | "skiHead" | "turtle">(
     shadowMaskBaseShadowId: ShadowMaskBaseShadowId,
     heightBlocks: number = 1,
-  ): ItemAppearance<"charles" | "monster", RenderProps, Sprite> =>
+  ): ItemAppearance<"charles" | "monster", RenderPropsXy4, Sprite> =>
   ({
     renderContext: {
       item: {
@@ -49,5 +56,56 @@ export const directionalShadowMaskAppearance =
     return {
       output: sprite,
       renderProps: { facingXy4 },
+    };
+  };
+
+type RenderPropsXy8 = {
+  facingXy8: DirectionXy8;
+};
+
+const flipXy8: Partial<Record<DirectionXy8, DirectionXy8>> = {
+  left: "away",
+  towardsLeft: "awayRight",
+  towards: "right",
+};
+
+export const directionalShadowMaskAppearanceXy8 =
+  <ShadowMaskBaseShadowId extends IndividualCharacterName>(
+    shadowMaskBaseShadowId: ShadowMaskBaseShadowId,
+    heightBlocks: number = 1,
+  ): ItemAppearance<CharacterName, RenderPropsXy8, Sprite> =>
+  ({
+    renderContext: {
+      item: {
+        state: { facing },
+      },
+    },
+    currentRendering,
+  }) => {
+    const currentlyRenderedProps = currentRendering?.renderProps;
+    const facingXy8 = vectorClosestDirectionXy8(facing) ?? "towards";
+
+    const render =
+      currentlyRenderedProps === undefined ||
+      facingXy8 !== currentlyRenderedProps.facingXy8;
+
+    if (!render) {
+      return "no-update";
+    }
+
+    const flippedDirection = flipXy8[facingXy8];
+    const shadowMaskDirection = flippedDirection ?? facingXy8;
+
+    const sprite: Sprite = createSprite(
+      `shadowMask.${shadowMaskBaseShadowId}.${shadowMaskDirection}` as TextureId,
+    );
+
+    sprite.y = -(blockSizePx.h * (heightBlocks - 1));
+
+    sprite.scale.x = flippedDirection === undefined ? 1 : -1;
+
+    return {
+      output: sprite,
+      renderProps: { facingXy8 },
     };
   };

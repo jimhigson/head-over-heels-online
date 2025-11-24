@@ -11,7 +11,10 @@ import {
   itemStaticSpriteAppearance,
 } from "../ItemAppearance";
 import { springShadowMaskAppearance } from "../springAppearance";
-import { directionalShadowMaskAppearance } from "./directionalShadowMaskAppearance";
+import {
+  directionalShadowMaskAppearanceXy4,
+  directionalShadowMaskAppearanceXy8,
+} from "./directionalShadowMaskAppearance";
 import { teleporterShadowMaskAppearance } from "./teleporterShadowMaskAppearance";
 
 export type ItemShadowAppearanceOutsideView<T extends ItemInPlayType> =
@@ -105,13 +108,17 @@ const itemShadowMaskAppearances: {
   ball: itemStaticSpriteAppearance("shadowMask.ball"),
 
   "monster.dalek": itemStaticSpriteAppearance("shadowMask.dalek"),
-  "monster.turtle": directionalShadowMaskAppearance("turtle"),
-  "monster.skiHead": directionalShadowMaskAppearance("skiHead"),
+  "monster.turtle": directionalShadowMaskAppearanceXy4("turtle"),
+  "monster.skiHead": directionalShadowMaskAppearanceXy4("skiHead"),
   "monster.homingBot": itemStaticSpriteAppearance("shadowMask.smallRound"),
 
   joystick: itemStaticSpriteAppearance("shadowMask.joystick"),
 
-  charles: directionalShadowMaskAppearance("charles", 2),
+  charles: directionalShadowMaskAppearanceXy4("charles", 2),
+
+  head: directionalShadowMaskAppearanceXy8("head"),
+  heels: directionalShadowMaskAppearanceXy8("heels"),
+  headOverHeels: directionalShadowMaskAppearanceXy8("head", 2),
 };
 
 export const itemShadowMaskAppearanceForItem = <T extends ItemInPlayType>(
