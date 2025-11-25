@@ -6,5 +6,53 @@
       "activates": true,
       "expectType": "monster"
     }
+  },
+  {
+    "op": "add",
+    "path": "/items/block",
+    "value": {
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 3,
+        "y": 6,
+        "z": 2
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/tower",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 2
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 6,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pickup",
+    "value": {
+      "config": {
+        "gives": "jumps"
+      },
+      "position": {
+        "x": 3,
+        "y": 6,
+        "z": 3
+      },
+      "type": "pickup"
+    }
   }
 ]
