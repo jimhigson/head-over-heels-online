@@ -26,6 +26,8 @@ const frameCount = spritesheetData.animations["conveyor.x"].length;
 
 const easeOut = (t: number): number => 1 - (1 - t) ** 2;
 
+const framesAheadPerBlock = 2;
+
 /**
  * staggering the animation frames of multiple-sprite conveyors
  * gives a 'wave' effect in the direction of motion
@@ -36,7 +38,7 @@ const staggerAnimation = (
 ) => {
   for (let i = 0; i < rendering.children.length; i++) {
     const c = rendering.children[i];
-    const frame = i % frameCount;
+    const frame = (i * framesAheadPerBlock) % frameCount;
     c.gotoAndStop(reverse ? frameCount - frame - 1 : frame);
   }
 };
