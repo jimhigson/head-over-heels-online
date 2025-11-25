@@ -107,7 +107,7 @@
     "value": {
       "config": {
         "direction": "left",
-        "tiles": ["shield", "shield", "plain", "shield", "plain"]
+        "tiles": ["plain", "shield", "armour", "shield", "plain"]
       },
       "position": {
         "x": 8,

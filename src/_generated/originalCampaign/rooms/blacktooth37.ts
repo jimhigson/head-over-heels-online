@@ -7,6 +7,16 @@ export const room = inferRoomJson({
   id: "blacktooth37",
   items: {
     "ball@0,1,0": { config: {}, position: { x: 0, y: 1, z: 0 }, type: "ball" },
+    block: {
+      config: { style: "organic" },
+      position: { x: 3, y: 6, z: 2 },
+      type: "block",
+    },
+    tower: {
+      config: { style: "tower", times: { z: 2 } },
+      position: { x: 3, y: 6, z: 0 },
+      type: "block",
+    },
     "door@1,0,0": {
       config: { direction: "towards", toRoom: "blacktooth36" },
       position: { x: 1, y: 0, z: 0 },
@@ -58,6 +68,11 @@ export const room = inferRoomJson({
       },
       position: { x: 3, y: 3, z: 0 },
       type: "monster",
+    },
+    pickup: {
+      config: { gives: "jumps" },
+      position: { x: 3, y: 6, z: 3 },
+      type: "pickup",
     },
     "switch@0,7,0": {
       config: {
