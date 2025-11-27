@@ -9,7 +9,7 @@ import type {
   EditorRoomState,
   EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
-import type { ItemTool } from "../../Tool";
+import type { ItemTool } from "../interactivity/Tool";
 
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
@@ -17,7 +17,7 @@ import { isSolid } from "../../../game/physics/itemPredicates";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { iterate } from "../../../utils/iterate";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
-import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreviewReducers";
+import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 
 /**
  * find items that items being (added to/moved in/resized in) a room would

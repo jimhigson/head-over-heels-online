@@ -11,7 +11,7 @@ import type {
   EditorRoomJsonItems,
 } from "../editorTypes";
 import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
-import type { Tool } from "../Tool";
+import type { Tool } from "../RoomEditingArea/interactivity/Tool";
 
 import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
@@ -28,7 +28,7 @@ import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
-import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreviewReducers";
+import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
 import { undoReducers, undoSelectors } from "./reducers/undoReducers";

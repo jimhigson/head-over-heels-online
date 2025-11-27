@@ -417,6 +417,18 @@ export const roundXyzToXyHalvesInPlace = (xyz: Xyz): Xyz => {
 export const originXy: Xy = Object.freeze({ x: 0, y: 0 });
 export const originXyz: Xyz = Object.freeze({ x: 0, y: 0, z: 0 });
 export const unitXyz: Xyz = Object.freeze({ x: 1, y: 1, z: 1 });
+/** xyz vector with unit length in x and y */
+export const unitXyz_xy: Xyz = Object.freeze({ x: 1, y: 1, z: 0 });
+/** xyz vector with unit length in x and z */
+export const unitXyz_xz: Xyz = Object.freeze({ x: 1, y: 0, z: 1 });
+/** xyz vector with unit length in y and z */
+export const unitXyz_yz: Xyz = Object.freeze({ x: 0, y: 1, z: 1 });
+/** xyz vector with unit length in x only */
+export const unitXyz_x: Xyz = Object.freeze({ x: 1, y: 0, z: 0 });
+/** xyz vector with unit length in y only */
+export const unitXyz_y: Xyz = Object.freeze({ x: 0, y: 1, z: 0 });
+/** xyz vector with unit length in z only */
+export const unitXyz_z: Xyz = Object.freeze({ x: 0, y: 0, z: 1 });
 
 export type Xyz = {
   x: number;
@@ -521,41 +533,6 @@ export const manhattanDistanceXy = (
   { x: x2, y: y2 }: Xyz,
 ) => {
   return Math.abs(x2 - x1) + Math.abs(y2 - y1);
-};
-
-export type OrthoPlane = "xy" | "xz" | "yz";
-
-/**
- * For when a text descrition of a plane is easier to work with,
- * convert a normal vector to a plane
- */
-export const orthoPlaneForNormal = (
-  /** the normal vector to the plane */
-  planeNormal: Xyz,
-): OrthoPlane => {
-  const { x: nx, y: ny, z: nz } = planeNormal;
-
-  // For xy-plane (normal = [0, 0, 1]), z = 0
-  // on top/bottom face
-  if (veryClose(nx, 0) && veryClose(ny, 0) && !veryClose(nz, 0)) {
-    return "xy";
-  }
-
-  // For xz-plane (normal = [0, 1, 0]), y = 0
-  // on away/towards face
-  if (veryClose(nx, 0) && !veryClose(ny, 0) && veryClose(nz, 0)) {
-    return "xz";
-  }
-
-  // For yz-plane (normal = [1, 0, 0]), x = 0
-  // left/right face
-  if (!veryClose(nx, 0) && veryClose(ny, 0) && veryClose(nz, 0)) {
-    return "yz";
-  }
-
-  throw new Error(
-    `only axis-aligned planes are supported, cannot get normal plane for ${JSON.stringify(planeNormal)}`,
-  );
 };
 
 export type Plane = {

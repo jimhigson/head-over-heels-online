@@ -5,7 +5,7 @@ import type {
   MonsterJsonConfig,
 } from "../../../model/json/MonsterJsonConfig";
 import type { EditorJsonItemUnion } from "../../editorTypes";
-import type { ItemTool } from "../../Tool";
+import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import type { LevelEditorState } from "../levelEditorSlice";
 
 import { type Xyz } from "../../../utils/vectors/vectors";

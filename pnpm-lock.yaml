@@ -86,6 +86,9 @@ importers:
       snarkdown-in-react:
         specifier: ^2.0.2
         version: 2.0.2
+      string-transform:
+        specifier: ^21.9.19
+        version: 21.9.19
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0
@@ -4117,6 +4120,9 @@ packages:
   std-env@3.9.0:
     resolution: {integrity: sha512-UGvjygr6F6tpH7o2qyqR6QYpwraIjKSdtzyBdyytFOHmPZY917kwdwLG0RbOjWOnKmnm3PeHjaoLLMie7kPLQw==}
 
+  string-transform@21.9.19:
+    resolution: {integrity: sha512-T1YFD4MkljYI1rBxpncsdsnq5wHnlpjiHn50h6WLGsS78kVqn473HoXzEPw/z+9zpsQ6RhIDuMgVO2z5fIhfyw==}
+
   string-width@3.1.0:
     resolution: {integrity: sha512-vafcv6KjVZKSgz06oM/H6GDBrAtz8vdhQakGjFIvNrHA6y3HCF1CInLy+QLq8dTJPQ1b+KDUqDFctkdRW44e1w==}
     engines: {node: '>=6'}
@@ -4363,6 +4369,9 @@ packages:
     resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  uint@21.6.2:
+    resolution: {integrity: sha512-2kdYektVZzHjg8Rhs4YgSnGZQkBnOa8/Xkt67YRhBMo8T36cjxbb3MnQrEgqAMSh36RAvxJWiiSOI9ySLbtwpA==}
 
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
@@ -8658,6 +8667,10 @@ snapshots:
 
   std-env@3.9.0: {}
 
+  string-transform@21.9.19:
+    dependencies:
+      uint: 21.6.2
+
   string-width@3.1.0:
     dependencies:
       emoji-regex: 7.0.3
@@ -8988,6 +9001,8 @@ snapshots:
       - supports-color
 
   typescript@5.9.2: {}
+
+  uint@21.6.2: {}
 
   unbox-primitive@1.1.0:
     dependencies:

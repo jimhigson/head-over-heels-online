@@ -2,7 +2,7 @@ import { produce } from "immer";
 
 import type { DoorConfig } from "../../../../model/json/ItemConfigMap";
 import type { EditorItemInPlayUnion, EditorRoomId } from "../../../editorTypes";
-import type { Tool } from "../../../Tool";
+import type { Tool } from "../Tool";
 import type {
   MouseDownParams,
   MouseLeaveParams,

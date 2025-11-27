@@ -4,7 +4,7 @@ import type {
   EditorRoomItemId,
   EditorRoomJson,
 } from "../../editorTypes";
-import type { ItemTool } from "../../Tool";
+import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import type { LevelEditorState } from "../levelEditorSlice";
 
 import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";

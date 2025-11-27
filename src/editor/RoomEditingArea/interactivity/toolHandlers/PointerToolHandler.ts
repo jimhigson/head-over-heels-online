@@ -5,8 +5,8 @@ import type {
   EditorRoomState,
 } from "../../../editorTypes";
 import type { RootStateWithLevelEditorSlice } from "../../../slice/levelEditorSlice";
-import type { Tool } from "../../../Tool";
 import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
+import type { Tool } from "../Tool";
 import type {
   MouseDownParams,
   MouseLeaveParams,
@@ -26,6 +26,7 @@ import {
 import { store } from "../../../../store/store";
 import { emptyArray } from "../../../../utils/empty";
 import { iterate } from "../../../../utils/iterate";
+import { planeAxesDesc } from "../../../../utils/vectors/orthoPlane";
 import {
   addXyz,
   elementWiseProductXyz,
@@ -33,6 +34,9 @@ import {
   lengthXyz,
   originXyz,
   subXy,
+  unitXyz_x,
+  unitXyz_y,
+  unitXyz_z,
   xyzEqual,
 } from "../../../../utils/vectors/vectors";
 import {
@@ -44,6 +48,7 @@ import {
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
+import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { itemMoveOrResizeWouldCollide } from "../../cursor/editWouldCollide";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
 import {
@@ -59,7 +64,10 @@ const dragMinimumDistance = 5; // pixels
 
 const { dispatch } = store;
 
-/** decide which item(s) the user wants the current operation to affect - either single or multiple */
+/**
+ * interpret which item(s) the user wants the current operation to affect
+ *  - either single or multiple
+ */
 const getJsonItemIdsToUseForPointingAt = (
   storeState: RootStateWithLevelEditorSlice,
   roomState: EditorRoomState,
@@ -68,18 +76,23 @@ const getJsonItemIdsToUseForPointingAt = (
   const mouseDownItemInPlayId = mouseDownPointingAt?.world?.itemId;
 
   if (mouseDownItemInPlayId === undefined) {
+    // not pointing at anything:
     return emptyArray;
   }
 
   const mouseDownJsonItemId = roomState.items[mouseDownItemInPlayId].jsonItemId;
 
   if (mouseDownJsonItemId === undefined) {
+    // item not in the room - this shouldn't normally happen
     return emptyArray;
   }
 
   const { selectedJsonItemIds } = storeState.levelEditor;
 
-  return selectedJsonItemIds.includes(mouseDownJsonItemId) ? selectedJsonItemIds
+  return selectedJsonItemIds.includes(mouseDownJsonItemId) ?
+      // interacted with an already selected item - use all selected items:
+      selectedJsonItemIds
+      // interacted with an unselected item - use just that one:
     : [mouseDownJsonItemId];
 };
 
@@ -87,7 +100,7 @@ const getDragPlaneNormal = (
   mouseDownPointingAt: MaybePointingAtSomething,
   modifierPressed: boolean,
   jsonItems: Iterable<EditorJsonItemUnion>,
-): Xyz => {
+): undefined | Xyz => {
   const edgePlane = mouseDownPointingAt.world?.onItem.edge;
 
   // element-wise product of all the consolidatable vectors of the items:
@@ -96,22 +109,53 @@ const getDragPlaneNormal = (
     ...iterate(jsonItems).map((jsonItem) => getConsolidatableVector(jsonItem)),
   );
 
-  const edgeDirection = elementWiseProductXyz(
+  const resizeDirection = elementWiseProductXyz(
     edgePlane?.point ?? originXyz,
     consolidatableVector,
   );
 
-  if (lengthXyz(edgeDirection) > 0) {
+  if (lengthXyz(resizeDirection) > 0) {
     // dragging will be resizing - use the plane of the edge under the mouse:
     return edgePlane!.normal;
   }
 
-  // drag will be moving - use canned planes:
-  return modifierPressed ?
-      // vertical (z) movement - give (normal to) yz plane
-      { x: 1, y: 0, z: 0 }
-      // horizontal (xy) movement
-    : { x: 0, y: 0, z: 1 };
+  // not all items can be moved in all directions - get the legal directions
+  // for the current selections:
+  const movableVector = elementWiseProductXyz(
+    ...iterate(jsonItems).map((jsonItem) => getMovableVector(jsonItem)),
+  );
+
+  const movableVectorDesc = planeAxesDesc(movableVector);
+
+  switch (movableVectorDesc) {
+    case "xyz":
+      // item can move in all axes - use canned plane normals depending on if modifier key is pressed:
+      return modifierPressed ?
+          // vertical (z) movement - give (normal to) yz plane
+          unitXyz_x
+          // horizontal (xy) movement
+        : unitXyz_z;
+    case "x":
+    case "y":
+    case "xy":
+      // item can only move on xy plane - normal is z axis:
+      return unitXyz_z;
+    case "z":
+    case "xz":
+      // item can only move on xz plane - normal is y axis::
+      return unitXyz_y;
+    case "yz":
+      // item can only move on yz plane - normal is x axis::
+      return unitXyz_x;
+    case "":
+      // can't move on any axes:
+      return undefined;
+    default:
+      movableVectorDesc satisfies never;
+      throw new Error(
+        `unexpected movable vector description ${movableVectorDesc}`,
+      );
+  }
 };
 
 const getDragVector = (
@@ -141,6 +185,11 @@ const getDragVector = (
     jsonItem,
   );
 
+  if (plane === undefined) {
+    // can't move in any direction
+    return undefined;
+  }
+
   const dragVectorWorld = unprojectScreenXyToWorldXyz(plane, mouseMove);
 
   return modifierPressed ?
@@ -165,7 +214,7 @@ const roundDragVector = (
 
   return roundXyzProjection(
     dragVector,
-    { x: 0, y: 0, z: 1 },
+    unitXyz_z,
     levelEditorState.tool,
     alwaysFullBlocks ? 1 : levelEditorState.gridResolution,
   );
