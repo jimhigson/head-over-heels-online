@@ -1,6 +1,6 @@
 {
   "pureBlack": "#000000",
-  "shadow": "#264136",
+  "shadow": "#31413B",
   "midGrey": "#7C6E6C",
   "lightGrey": "#C0AFA9",
   "white": "#FFFFFF",
@@ -8,10 +8,10 @@
   "metallicBlue": "#226FD0",
   "pink": "#EE7EE6",
   "moss": "#AD9E00",
-  "redShadow": "#8E5944",
-  "midRed": "#EA684F",
-  "lightBeige": "#EE9F7F",
-  "highlightBeige": "#FCC274",
+  "redShadow": "#8E533C",
+  "midRed": "#E25D43",
+  "lightBeige": "#FF9C74",
+  "highlightBeige": "#FFCA97",
   "alpha": "#BBB7E5",
   "replaceLight": "#0D99A1",
   "replaceDark": "#115F60"
