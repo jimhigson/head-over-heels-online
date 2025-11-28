@@ -92,7 +92,7 @@ export const roomAccentColourClass = (color: ZxSpectrumRoomColour) => {
       );
     case "yellow":
       return (
-        "[--roomHintColor:theme(colors.lightBeige)] " +
+        "[--roomHintColor:theme(colors.highlightBeige)] " +
         "[--roomHintColorDarker:theme(colors.highlightBeigeHalfbrite)] " +
         "zx:[--roomHintColor:theme(colors.zxYellow)] " +
         "zx:[--roomHintColorDarker:theme(colors.zxYellowDimmed)]"
