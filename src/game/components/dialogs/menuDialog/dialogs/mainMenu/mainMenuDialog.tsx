@@ -49,6 +49,7 @@ const PlayGameMenuItem = () => {
       label={<BitmapText>Play the game</BitmapText>}
       doubleHeightWhenFocussed
       onSelect={goToWhichGameSubmenu}
+      opensSubMenu={true}
     />
   );
 };
@@ -59,7 +60,8 @@ const InstallMenuItem = () => {
       id="installGuide"
       label="Install"
       doubleHeightWhenFocussed
-      onSelect={useDispatchActionCallback(goToSubmenu, "installGuide")}
+      onSelect={useDispatchActionCallback(goToSubmenu, "markdown/installGuide")}
+      opensSubMenu={true}
     />
   );
 };
@@ -71,6 +73,7 @@ const LevelEditorMenuItem = () => {
       label="Level Editor"
       doubleHeightWhenFocussed
       onSelect={useDispatchActionCallback(goToSubmenu, "sureWantEditor")}
+      opensSubMenu={true}
     />
   );
 };
@@ -89,6 +92,7 @@ const QuitGameMenuItem = () => {
       onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
       doubleHeightWhenFocussed
       hidden={!isGameRunning}
+      opensSubMenu={true}
     />
   );
 };
@@ -110,7 +114,10 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
-      <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 justify-center">
+      <Dialog
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 justify-center"
+        dialogId="mainMenu"
+      >
         <MainMenuHeading
           noSubtitle={isGameRunning}
           className={isGameRunning ? "resHandheld:hidden" : ""}
@@ -127,6 +134,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               onSelect={useDispatchActionCallback(goToSubmenu, "map")}
               doubleHeightWhenFocussed
               hidden={!isGameRunning}
+              opensSubMenu={true}
             />
             <MenuItem
               id="viewCrowns"
@@ -134,6 +142,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               onSelect={showProgress}
               doubleHeightWhenFocussed
               hidden={!isGameRunning}
+              opensSubMenu={true}
             />
           </MenuItems>
           <div className="flex flex-row justify-between gap-2 w-24 mx-auto">
@@ -146,6 +155,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                   goToSubmenu,
                   "modernisationOptions",
                 )}
+                opensSubMenu={true}
               />
               <MenuItem
                 id="readTheManual"
@@ -155,6 +165,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                   goToSubmenu,
                   "readTheManual",
                 )}
+                opensSubMenu={true}
               />
             </MenuItems>
             <MenuItems>

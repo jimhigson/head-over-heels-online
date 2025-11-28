@@ -34,7 +34,11 @@ Make your fancy new screen look like it’s 1987 again.`;
 
 export const DisplayOptionsDialog = () => {
   return (
-    <Dialog fullScreen className={optionsDialogClasses}>
+    <Dialog
+      fullScreen
+      className={optionsDialogClasses}
+      dialogId="displayOptions"
+    >
       <DialogTitleBar
         path={["Options", "Display"]}
         className={titleBarClasses}
@@ -106,6 +110,7 @@ export const DisplayOptionsDialog = () => {
               goToSubmenu,
               "emulatedResolution",
             )}
+            opensSubMenu={true}
             verticalAlignItemsCentre
             hint={
               <BlockyMarkdown

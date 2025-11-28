@@ -34,7 +34,10 @@ export const SureWantEditorDialog = () => {
         className="bg-pureBlack zx:bg-zxBlack"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog className="bg-shadowHalfbrite zx:bg-zxBlack px-1 py-0">
+      <Dialog
+        className="bg-shadowHalfbrite zx:bg-zxBlack px-1 py-0"
+        dialogId="sureWantEditor"
+      >
         <Portal.Provider>
           <div className="flex flex-col gap-y-2 mt-1 h-full">
             {isTouchDevice() && (

@@ -205,6 +205,10 @@ export const spritesTailwindPlugin = plugin(
         (frames.length * (1 / zxSpectrumFrameRate)) / pixiJsAnimationSpeed;
 
       utilities[`.texture-animated-${sanitiseId(animationName)}`] = {
+        // x and y will be overwritten by the animation keyframes, but including here
+        // makes the sprite appear correct if animation is disabled - eg, in playwright tests
+        "--x": `${spritesheetData.frames[frames[0]].frame.x}px`,
+        "--y": `${spritesheetData.frames[frames[0]].frame.y}px`,
         "--w": `${spritesheetData.frames[frames[0]].frame.w}px`,
         "--h": `${spritesheetData.frames[frames[0]].frame.h}px`,
         animation: `sprite-animation-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) infinite`,

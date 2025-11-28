@@ -26,7 +26,7 @@ export const QuitGameConfirmDialog = () => {
   return (
     <DialogPortal>
       <Border className="bg-midRed zx:bg-zxYellow" />
-      <Dialog className="bg-white zx:bg-zxRed px-1">
+      <Dialog className="bg-white zx:bg-zxRed px-1" dialogId="quitGameConfirm">
         <Portal.Provider>
           <div className="flex flex-col gap-y-2 mt-1 items-center h-full">
             <BitmapText className="sprites-double-height resHandheld:mt-0 text-midRed zx:text-zxWhite">

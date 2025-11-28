@@ -14,8 +14,9 @@ import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";
 import { formatDuration } from "./formatDuration";
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
+import { logSelectorExistence } from "./logSelectorExistence";
 import { formatProjectName, progressLogHeader } from "./projectName";
-import { sleep } from "./sleep";
+import { retryWithRecovery } from "./retryWithRecovery";
 
 // set to limit the number of rooms we test in one run - useful when
 // developing the test to avoid having to do the whole run each time
@@ -86,20 +87,6 @@ const perTestRooms = Array.from({ length: parallelTestsCount }, (_, index) => {
 const playGameMenuItemSelector = "[data-menuitem_id=playGame]";
 const originalGameSelector = "[data-menuitem_id=originalGame]";
 const crownsDialogSelector = "[data-dialog-id=crowns]";
-
-const logSelectorExistence = async (
-  page: Page,
-  selector: string,
-  logHeader: string,
-  context?: string,
-): Promise<number> => {
-  const count = await page.locator(selector).count();
-  const contextStr = context ? ` (${context})` : "";
-  console.log(
-    `${logHeader}: Selector "${selector}"${contextStr} - found ${count} element(s)`,
-  );
-  return count;
-};
 
 const waitForRoomRenderEvent = async (
   page: Page,
@@ -255,7 +242,7 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
     },
     async recovery() {
       // Wait a bit for the game to initialize
-      await sleep(2_000);
+      await page.waitForTimeout(2_000);
     },
     logHeader: formattedName,
     actionDescription: "set game speed to zero",
@@ -371,72 +358,6 @@ const exitCrownsDialog = async (page: Page, projectName: string) => {
   });
 };
 
-const retryWithRecovery = async <T>({
-  action,
-  recovery,
-  maxAttempts = 5,
-  logHeader,
-  actionDescription,
-  page,
-  screenshotPrefix,
-}: {
-  action: (attempt: number) => Promise<T>;
-  recovery?: (attempt: number) => Promise<void>;
-  maxAttempts?: number;
-  logHeader: string;
-  actionDescription: string;
-  page?: Page;
-  screenshotPrefix?: string;
-}): Promise<T> => {
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    console.log(
-      `${logHeader} Attempting ${actionDescription} (attempt ${attempt}/${maxAttempts - 1})...`,
-    );
-
-    const startTime = performance.now();
-    try {
-      const result = await action(attempt);
-      console.log(
-        `${logHeader} ... succeeded after`,
-        chalk.yellow(formatDuration(performance.now() - startTime)),
-      );
-      return result;
-    } catch (error) {
-      console.log(
-        `${logHeader} ${chalk.red(`Failed on attempt ${attempt}`)}: ${error}`,
-      );
-
-      // Take a screenshot on failure if page and prefix are provided
-      if (page && screenshotPrefix) {
-        const screenshotPath = `test-results/${screenshotPrefix}-attempt-${attempt}-failed.png`;
-        console.log(`${logHeader} Saving screenshot to ${screenshotPath}`);
-        await page
-          .screenshot({
-            path: screenshotPath,
-            fullPage: false,
-          })
-          .catch((screenshotError) => {
-            console.log(
-              `${logHeader} Failed to save screenshot: ${screenshotError}`,
-            );
-          });
-      }
-
-      if (attempt < maxAttempts - 1 && recovery) {
-        await sleep(1_000); // brief pause before attempting recovery
-        await recovery(attempt);
-      } else if (attempt === maxAttempts - 1) {
-        throw new Error(
-          `Failed ${actionDescription} after ${maxAttempts} attempts: ${error}`,
-        );
-      }
-    }
-  }
-
-  // This should never be reached due to the throw above, but TypeScript needs it
-  throw new Error(`Failed ${actionDescription} after ${maxAttempts} attempts`);
-};
-
 test.describe.configure({ mode: "parallel" });
 
 test.describe("Room Visual Snapshots", () => {
@@ -521,7 +442,7 @@ test.describe("Room Visual Snapshots", () => {
             // Navigate somewhere else so we can come back again and have another chance
             // to catch the event:
             await page.goto(`/?cheats=1#finalroom`);
-            await sleep(500);
+            await page.waitForTimeout(500);
           },
           maxAttempts: maxTriesToLoadRoom,
           logHeader,

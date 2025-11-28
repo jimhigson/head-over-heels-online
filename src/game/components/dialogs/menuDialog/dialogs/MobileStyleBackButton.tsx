@@ -28,6 +28,7 @@ export const MobileStyleBackButton = ({
           (focussed ? "selectedMenuItem" : ""),
         className,
       )}
+      data-to-parent-menu={true}
       ref={ref}
     >
       <BitmapText className="inline-block scale-x-[-1]">{"⏩⏩"}</BitmapText>

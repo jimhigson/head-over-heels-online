@@ -104,7 +104,11 @@ export const ControlOptionsDialog = () => {
         className="bg-lightGrey zx:bg-zxRedDimmed"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog fullScreen className={optionsDialogClasses}>
+      <Dialog
+        fullScreen
+        className={optionsDialogClasses}
+        dialogId="controlOptions"
+      >
         <DialogTitleBar
           path={["Options", "Controls"]}
           className={titleBarClasses}

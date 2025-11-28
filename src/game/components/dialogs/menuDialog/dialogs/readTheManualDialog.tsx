@@ -32,6 +32,7 @@ const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
         `markdown/${pageName}` as DialogId,
       )}
       doubleHeightWhenFocussed={doubleHeightWhenFocussed}
+      opensSubMenu={true}
     />
   );
 };
@@ -54,6 +55,7 @@ export const ReadTheManualDialog = () => {
           `text-redShadow zx:text-zxWhite !gap-y-0 py-0 ` +
           "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack "
         }
+        dialogId="readTheManual"
       >
         <DialogTitleBar className="pl-1 mobile:px-3 " />
         <div

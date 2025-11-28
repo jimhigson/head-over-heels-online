@@ -15,6 +15,7 @@ export const dialogIds = [
   "errorCaught",
   "hold",
   "inputPreset",
+  // could be "markdown/installGuide" but keeping this way for backwards compatibility
   "installGuide",
   "mainMenu",
   "map",

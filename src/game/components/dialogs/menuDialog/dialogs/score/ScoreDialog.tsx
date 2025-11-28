@@ -163,6 +163,7 @@ export const ScoreDialog = () => {
         <Dialog
           className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block"
           onClick={useDispatchActionCallback(backToParentMenu)}
+          dialogId="score"
         >
           <ScoreDialogContents />
         </Dialog>

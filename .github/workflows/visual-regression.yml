@@ -120,12 +120,17 @@ jobs:
           - { os: ubuntu-24.04-arm, suite: lutSnapshot, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
           - { os: windows-latest, suite: lutSnapshot, browser: --project chromium-desktop }
 
+          # MENU SNAPSHOTS - single batch per os/browser combo
+          - { os: ubuntu-24.04-arm, suite: menuSnapshots, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          - { os: windows-latest, suite: menuSnapshots, browser: --project chromium-desktop }
+
           # SPRITES - single batch, chromium-desktop only on Linux
           - { os: ubuntu-24.04-arm, suite: spritesPage, browser: --project chromium-desktop }
     # name is super-compressed to fit on the github UI with enough info to identify what's being run
     name: >-
       ${{
         matrix.suite == 'lutSnapshot' && format('Lut {0}', contains(matrix.os, 'windows') && 'Windows' || 'Linux')
+        || matrix.suite == 'menuSnapshots' && format('Menu {0}', contains(matrix.os, 'windows') && 'Windows' || 'Linux')
         || matrix.suite == 'spritesPage' && 'Sprites'
         || format('Room:{0}.{1}{2} {3}/{4}',
             contains(matrix.os, 'windows') && 'Win' || 'Lnx',

@@ -10,6 +10,7 @@ export const BackMenuItem = ({ customLabel }: { customLabel?: string }) => {
       flipLeader
       doubleHeightWhenFocussed
       onSelect={useDispatchActionCallback(backToParentMenu)}
+      toParentMenu={true}
     />
   );
 };

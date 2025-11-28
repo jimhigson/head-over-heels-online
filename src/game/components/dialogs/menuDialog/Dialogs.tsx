@@ -49,16 +49,19 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
         <MarkdownDialog
           source="inline"
           markdown={topOpenMenu.menuParam.markdown}
+          dialogId="markdown/inline"
         />
       );
     } else {
       // standard manual pages:
+      const pageName = topOpenMenu.menuId.slice(
+        "markdown/".length,
+      ) as MarkdownPageName;
       return (
         <MarkdownDialog
           source="manual"
-          pageName={
-            topOpenMenu.menuId.slice("markdown/".length) as MarkdownPageName
-          }
+          pageName={pageName}
+          dialogId={topOpenMenu.menuId}
         />
       );
     }
@@ -80,7 +83,13 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "inputPreset":
       return <InputPresetDialog />;
     case "installGuide":
-      return <MarkdownDialog source="manual" pageName="installGuide" />;
+      return (
+        <MarkdownDialog
+          source="manual"
+          pageName="installGuide"
+          dialogId="installGuide"
+        />
+      );
     case "mainMenu":
       return <MainMenuDialog />;
     case "map":

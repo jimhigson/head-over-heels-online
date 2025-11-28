@@ -4,6 +4,8 @@ import type { MouseEvent, ReactNode, Ref } from "react";
 
 import { twMerge } from "tailwind-merge";
 
+import type { DialogId } from "../game/components/dialogs/menuDialog/DialogId";
+
 export type DialogProps = {
   children?: ReactNode;
   className?: string;
@@ -20,7 +22,8 @@ export type DialogProps = {
   /** click (or tap) handler for anywhere on the div; usually for closing the dialog */
   onClick?: (e: MouseEvent) => void;
   ref?: Ref<HTMLDialogElement>;
-  dialogId?: string; // for testing purposes
+  /** allows visual regression tests to know which dialog is being shown */
+  dialogId?: DialogId;
 };
 
 const getDialogClassName = (

@@ -49,7 +49,11 @@ export const OptionsDialog = () => {
   const infiniteLivesPokeOn = useAppSelector(selectIsInfiniteLivesPoke);
   return (
     <DialogPortal>
-      <Dialog fullScreen className={optionsDialogClasses}>
+      <Dialog
+        fullScreen
+        className={optionsDialogClasses}
+        dialogId="modernisationOptions"
+      >
         <DialogTitleBar path={["Options"]} className={titleBarClasses} />
         <div className={optionsMenuScrollClasses}>
           <MenuItems className={`gap-y-half`}>
@@ -63,6 +67,7 @@ export const OptionsDialog = () => {
                 goToSubmenu,
                 "controlOptions",
               )}
+              opensSubMenu={true}
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
@@ -82,6 +87,7 @@ export const OptionsDialog = () => {
               className="sprites-double-height"
               verticalAlignItemsCentre
               onSelect={useDispatchActionCallback(goToSubmenu, "sound")}
+              opensSubMenu={true}
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
@@ -99,6 +105,7 @@ export const OptionsDialog = () => {
                 goToSubmenu,
                 "displayOptions",
               )}
+              opensSubMenu={true}
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
