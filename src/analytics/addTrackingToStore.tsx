@@ -2,6 +2,7 @@ import { isAnyOf } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 
 import { useMaybeGameApi } from "../game/components/GameApiContext";
+import { typedURLSearchParams } from "../options/queryParams";
 import { startAppListening } from "../store/listenerMiddleware";
 import {
   crownCollected,
@@ -39,7 +40,7 @@ const useAddTrackingToStore = () => {
         const [, actionNameWithoutSlice] = action.type.split("/");
         const state = getState();
 
-        const globalTimeSeconds =
+        const gameTimeSeconds =
           gameState ? Math.round(gameState.gameTime / 1000) : undefined;
 
         const payloadProperties =
@@ -54,8 +55,9 @@ const useAddTrackingToStore = () => {
           : action.payload;
 
         const eventProperties = {
-          gameTimeSeconds: globalTimeSeconds,
-          ...state.gameMenus.gameInPlay,
+          gameTimeSeconds,
+          // this makes a lot of properties in umami, which are each counted as one event:
+          //...state.gameMenus.gameInPlay,
           cheatsOn: state.gameMenus.cheatsOn,
           ...payloadProperties,
           currentCharacter: gameState?.currentCharacterName,
@@ -84,4 +86,50 @@ const useAddTrackingToStore = () => {
   }, [maybeGameApi]);
 };
 
-export const AddTrackingToStore = HookComponent(useAddTrackingToStore);
+const AddTrackingToStoreInner = HookComponent(useAddTrackingToStore);
+
+const isLocalNetwork = () => {
+  const { hostname } = window.location;
+
+  // localhost or .local domains
+  if (hostname === "localhost" || hostname.endsWith(".local")) {
+    return true;
+  }
+
+  // loopback addresses (127.x.x.x)
+  if (hostname.startsWith("127.")) {
+    return true;
+  }
+
+  // private network ranges
+  // 192.168.x.x
+  if (hostname.startsWith("192.168.")) {
+    return true;
+  }
+
+  // 10.x.x.x
+  if (hostname.startsWith("10.")) {
+    return true;
+  }
+
+  // 172.16.x.x to 172.31.x.x
+  if (hostname.startsWith("172.")) {
+    const secondOctet = Number.parseInt(hostname.split(".")[1] as string);
+    if (secondOctet >= 16 && secondOctet <= 31) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+export const AddTrackingToStore = () => {
+  const searchParams = typedURLSearchParams();
+  const noTrackParam = searchParams.get("noTrack");
+
+  if (isLocalNetwork() || noTrackParam === "1") {
+    return null;
+  }
+
+  return <AddTrackingToStoreInner />;
+};

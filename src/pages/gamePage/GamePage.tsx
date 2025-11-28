@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 
 import type Cheats from "../../game/components/cheats/Cheats.tsx";
 
-import { AddTrackingToStore } from "../../analytics/addTrackingToStore.ts";
+import { AddTrackingToStore } from "../../analytics/addTrackingToStore.tsx";
 import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
 import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
