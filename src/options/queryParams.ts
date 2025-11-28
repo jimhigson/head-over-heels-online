@@ -6,6 +6,8 @@ export type AllowedQueryParams = {
   campaignAuthorUserId: null | string;
   // for sprites page
   scale: `${number}` | null;
+  // if on, all umami tracking is skipped
+  noTrack: "1" | null;
 };
 
 export type TypedURLSearchParams = {
