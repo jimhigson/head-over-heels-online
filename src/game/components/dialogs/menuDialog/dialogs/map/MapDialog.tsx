@@ -32,6 +32,7 @@ export const MapDialog = <RoomId extends string>() => {
         fullScreen
         className={`bg-white zx:bg-zxBlack pr-0 p-0 mobile:pl-0 justify-center ${mapColourClasses.containerClassName}`}
         onClick={useDispatchActionCallback(backToParentMenu)}
+        dialogId="map"
       >
         <div
           className="overflow-y-scroll scrollbar scrollbar-w-1 h-min"

@@ -31,7 +31,10 @@ export const OfferReincarnationDialog = () => {
   return (
     <DialogPortal>
       <Border className="bg-midRed zx:bg-zxYellow" />
-      <Dialog className="bg-white zx:bg-zxRed px-1">
+      <Dialog
+        className="bg-white zx:bg-zxRed px-1"
+        dialogId="offerReincarnation"
+      >
         <BitmapText className="sprites-double-height mt-1 mb-2 resHandheld:mt-0 text-redShadow zx:text-zxWhite">
           Uh-oh! Game over.
         </BitmapText>

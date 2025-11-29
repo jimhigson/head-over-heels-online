@@ -14,7 +14,11 @@ import { InputPresetMenuItem } from "./InputPresetMenuItem";
 export const InputPresetDialog = () => {
   return (
     <DialogPortal>
-      <Dialog fullScreen className={optionsDialogClasses}>
+      <Dialog
+        fullScreen
+        className={optionsDialogClasses}
+        dialogId="inputPreset"
+      >
         <DialogTitleBar
           path={["Options", "Controls", "Presets"]}
           className={titleBarClasses}

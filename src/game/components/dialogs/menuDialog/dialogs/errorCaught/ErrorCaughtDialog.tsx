@@ -120,6 +120,7 @@ ${sanitizedStack}
         className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1"
         tall
         wide
+        dialogId="errorCaught"
       >
         <div
           className={

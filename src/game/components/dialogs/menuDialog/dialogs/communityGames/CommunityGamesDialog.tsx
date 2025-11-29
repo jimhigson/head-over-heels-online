@@ -24,6 +24,7 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
       <Dialog
         fullScreen
         className="bg-metallicBlueHalfbrite text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1"
+        dialogId="communityGames"
       >
         <DialogTitleBar
           path={["Play", "Community contrib."]}

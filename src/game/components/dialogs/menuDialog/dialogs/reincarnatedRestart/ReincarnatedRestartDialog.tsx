@@ -16,6 +16,7 @@ export const ReincarnatedRestartDialog = () => {
         // need to be able to click/tap on the hold dialog to exit, or it
         // isn't possible to leave it on devices with no keyboard/gamepad:
         onClick={useDispatchActionCallback(backToParentMenu)}
+        dialogId="reincarnatedRestart"
       >
         <BitmapText
           className={`${multilineTextClass} text-zxRed block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}

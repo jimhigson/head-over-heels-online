@@ -14,6 +14,7 @@ export const ProclaimEmperorDialog = () => {
       <Dialog
         className="bg-pureBlack w-zx h-full block p-0"
         onClick={useDispatchActionCallback(backToParentMenu)}
+        dialogId="proclaimEmperor"
       >
         <div className="flex flex-col gap-3 items-center">
           <div className="flex gap-7">

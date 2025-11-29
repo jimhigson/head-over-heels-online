@@ -49,7 +49,11 @@ export const ResolutionMenuItem = ({
 export const EmulatedResolutionDialog = () => {
   return (
     <DialogPortal>
-      <Dialog fullScreen className={optionsDialogClasses}>
+      <Dialog
+        fullScreen
+        className={optionsDialogClasses}
+        dialogId="emulatedResolution"
+      >
         <DialogTitleBar
           path={["Options", "Display", "Res."]}
           className={titleBarClasses}

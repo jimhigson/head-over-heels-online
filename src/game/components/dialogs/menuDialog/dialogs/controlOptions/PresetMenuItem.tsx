@@ -41,6 +41,7 @@ export const PresetMenuItem = () => (
     }
     valueElement={<CurrentPresetValue />}
     onSelect={useDispatchActionCallback(goToSubmenu, "inputPreset")}
+    opensSubMenu={true}
     hint={
       <BlockyMarkdown
         className={optionsHintMarkdownClassname}

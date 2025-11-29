@@ -30,6 +30,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
       <Dialog
         fullScreen
         className="bg-metallicBlueHalfbrite zx:text-zxCyan text-highlightBeige selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1"
+        dialogId="whichGame"
       >
         <DialogTitleBar path={["Select which game"]} className="mobile:px-4" />
         <div
@@ -97,6 +98,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
                 goToSubmenu,
                 "communityGames",
               )}
+              opensSubMenu={true}
               leader={
                 <span
                   className={`${spriteLeaderClasses} sprite texture-charles_right sprites-normal-height zx:sprite-revert-to-white`}

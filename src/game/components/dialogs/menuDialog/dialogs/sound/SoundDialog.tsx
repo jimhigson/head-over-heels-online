@@ -21,7 +21,7 @@ export const SoundDialog = () => {
   const isMuted = useAppSelector(selectIsSoundMuted);
   const isNoFootstepSounds = useAppSelector(selectIsNoFootstepSounds);
   return (
-    <Dialog fullScreen className={optionsDialogClasses}>
+    <Dialog fullScreen className={optionsDialogClasses} dialogId="sound">
       <DialogTitleBar
         path={["Options", "Sounds"]}
         className={titleBarClasses}

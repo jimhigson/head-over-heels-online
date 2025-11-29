@@ -23,6 +23,8 @@ export type MenuItemProps = {
   hint?: ReactElement | string;
   hintInline?: boolean;
   verticalAlignItemsCentre?: boolean;
+  opensSubMenu?: boolean;
+  toParentMenu?: boolean;
 };
 
 // having swop in here marks the swop key as handled, so the game can't immediately
@@ -46,6 +48,8 @@ export const MenuItem = ({
   hint,
   leader,
   verticalAlignItemsCentre = false,
+  opensSubMenu = false,
+  toParentMenu = false,
 }: MenuItemProps) => {
   const { menuItemProps, ref, focussed } = useMenuItem({
     id,
@@ -64,6 +68,8 @@ export const MenuItem = ({
     // contents div puts children into the grid layout:
     <li
       {...menuItemProps}
+      data-opens-submenu={opensSubMenu}
+      data-to-parent-menu={toParentMenu}
       className={twMerge(
         "contents cursor-pointer",
         hidden ? "hidden" : "",
