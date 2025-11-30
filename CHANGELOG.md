@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.12.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.11.0...v1.12.0) (2025-11-30)
+
+
+### Features
+
+* make main palette slightly more saturated and contrasty ([#625](https://github.com/jimhigson/head-over-heels-online/issues/625)) ([94594cd](https://github.com/jimhigson/head-over-heels-online/commit/94594cdee1d062055f49a3041a424bf06c429938))
+* rooms: add an extra white rabbit for Heels to get by jumping on deactivated monsters ([#623](https://github.com/jimhigson/head-over-heels-online/issues/623)) ([d3b6ddc](https://github.com/jimhigson/head-over-heels-online/commit/d3b6ddcef85337205f771cf4e7d1a1efc6866d43))
+* sprite - touched up door and conveyor rendering ([#622](https://github.com/jimhigson/head-over-heels-online/issues/622)) ([96a838d](https://github.com/jimhigson/head-over-heels-online/commit/96a838da02991d46bd0db5dac673bcf1e30acd5b))
+* sprites - more colourful main characters ([#628](https://github.com/jimhigson/head-over-heels-online/issues/628)) ([bc3e457](https://github.com/jimhigson/head-over-heels-online/commit/bc3e457a51b9966f114348075deab61cc03fe35e))
+
+
+### Bug Fixes
+
+* resolve lock-ups in editor when: 1) undo removes the selected item; 2) trying to move a door outside of the room; 3) allow doors only to be mouse-dragged along the wall, not out of it ([#612](https://github.com/jimhigson/head-over-heels-online/issues/612)) ([0c25b14](https://github.com/jimhigson/head-over-heels-online/commit/0c25b1439fe7307c85734a49f61fcb19b53df698))
+
 ## [1.11.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.10.0...v1.11.0) (2025-11-24)
 
 
