@@ -23,8 +23,8 @@ export const whiteShades = {
 };
 export const yellowShadesInBasicRooms = {
   original: new Color(zxSpectrumColors.zxYellow),
-  basic: new Color(0xeedd66),
-  dimmed: halfbrite(new Color(0xeedd66)),
+  basic: spritesheetPalette.highlightBeige,
+  dimmed: spritesheetPalette.redShadow,
 };
 export const yellowShadesInDimmedRooms = {
   original: new Color(zxSpectrumColors.zxYellow),
@@ -41,6 +41,8 @@ export const magentaShades = {
 export const cyanShades = {
   original: new Color(zxSpectrumColors.zxCyan),
   basic: spritesheetPalette.pastelBlue,
+  // this looks ok for floor edges, but for floors like in #blacktooth23heels heels, it is way too saturated
+  //dimmed: spritesheetPalette.metallicBlue,
   dimmed: halfbrite(
     spritesheetPalette.pastelBlue,
     slightlyBrighterReducedBrightness,
@@ -49,7 +51,7 @@ export const cyanShades = {
 export const greenShades = {
   original: new Color(zxSpectrumColors.zxGreen),
   basic: spritesheetPalette.moss,
-  dimmed: halfbrite(spritesheetPalette.moss),
+  dimmed: halfbrite(spritesheetPalette.moss, slightlyBrighterReducedBrightness),
 };
 
 export type ColorScheme = {
