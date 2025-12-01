@@ -21,7 +21,7 @@ export const defaultUserSettings: DefaultUserSettings = {
     showShadowMasks: false,
     // crt filters are distinctive look for the game,
     // but also maybe slow it down on older devices
-    crtFilter: true,
+    crtFilter: false,
     uncolourised: false,
     emulatedResolution:
       detectDeviceType() === "mobile" ? "handheld" : "zxSpectrum",

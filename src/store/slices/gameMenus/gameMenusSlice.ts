@@ -602,14 +602,18 @@ export const gameMenusSlice = createSlice({
     toggleUserSetting(
       state,
       {
-        payload: { path },
+        payload: { path, value },
       }: PayloadAction<{
         path: UserSettingsBooleanPaths;
+        // value to set to. If not given, will toggle
+        value?: boolean;
       }>,
     ) {
-      const currentValue = selectBooleanUserSetting(state, path);
-
-      setAtPath(state.userSettings, path, !currentValue);
+      setAtPath(
+        state.userSettings,
+        path,
+        value ?? !selectBooleanUserSetting(state, path),
+      );
     },
 
     crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {

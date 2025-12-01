@@ -217,7 +217,7 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
           // turn off the crt filter (on by default)
           window._e2e_store.dispatch({
             type: "gameMenus/toggleUserSetting",
-            payload: { path: "displaySettings.crtFilter" },
+            payload: { path: "displaySettings.crtFilter", value: false },
           } satisfies ToggleUserSettingAction);
 
           // set the frame rate very low - this reduces how much cpu the tests need to run
