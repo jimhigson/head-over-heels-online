@@ -8,6 +8,7 @@ import chalk from "chalk";
 
 import type { DialogId } from "../src/game/components/dialogs/menuDialog/DialogId";
 
+import colours from "../gfx/spritesheetPalette.json" with { type: "json" };
 import { dispatchKeyPress } from "./dispatchKeyPress";
 import { formatDuration } from "./formatDuration";
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
@@ -20,7 +21,9 @@ import { retryWithRecovery } from "./retryWithRecovery";
 const osSlowness = process.platform === "win32" ? 4 : 1;
 const testTimeout = (process.env.CI ? 600_000 : 120_000) * osSlowness;
 
-const screenshotOptions: PageAssertionsToHaveScreenshotOptions = {
+const screenshotOptions = (
+  page: Page,
+): PageAssertionsToHaveScreenshotOptions => ({
   fullPage: false,
   scale: "device" as const,
   animations: "disabled" as const,
@@ -28,7 +31,9 @@ const screenshotOptions: PageAssertionsToHaveScreenshotOptions = {
   threshold: 0.1,
   maxDiffPixels: 50,
   timeout: 10_000 * osSlowness,
-};
+  mask: [page.locator("[data-screenshot-mask]")],
+  maskColor: colours.pink,
+});
 
 // Track visited dialogs to avoid infinite loops and duplicates
 type VisitedDialogs = Set<DialogId>;
@@ -53,7 +58,7 @@ const takeDialogScreenshot = async (
     await expect
       .configure({ timeout: 15_000 * osSlowness })
       .soft(page)
-      .toHaveScreenshot(`${dialogId}.png`, screenshotOptions);
+      .toHaveScreenshot(`${dialogId}.png`, screenshotOptions(page));
 
     console.log(
       `${logHeader} ...screenshot took`,
@@ -356,7 +361,7 @@ test.describe("Menu Visual Snapshots", () => {
           await expect
             .configure({ timeout: 15_000 * osSlowness })
             .soft(page)
-            .toHaveScreenshot("crowns.png", screenshotOptions);
+            .toHaveScreenshot("crowns.png", screenshotOptions(page));
 
           console.log(
             `${formattedName} ...screenshot took`,
@@ -431,7 +436,7 @@ test.describe("Menu Visual Snapshots", () => {
           await expect
             .configure({ timeout: 15_000 * osSlowness })
             .soft(page)
-            .toHaveScreenshot("map.png", screenshotOptions);
+            .toHaveScreenshot("map.png", screenshotOptions(page));
 
           console.log(
             `${formattedName} ...screenshot took`,
@@ -503,7 +508,7 @@ test.describe("Menu Visual Snapshots", () => {
           await expect
             .configure({ timeout: 15_000 * osSlowness })
             .soft(page)
-            .toHaveScreenshot("main-inGame.png", screenshotOptions);
+            .toHaveScreenshot("main-inGame.png", screenshotOptions(page));
 
           console.log(
             `${formattedName} ...screenshot took`,
@@ -550,7 +555,7 @@ test.describe("Menu Visual Snapshots", () => {
           await expect
             .configure({ timeout: 15_000 * osSlowness })
             .soft(page)
-            .toHaveScreenshot("score.png", screenshotOptions);
+            .toHaveScreenshot("score.png", screenshotOptions(page));
 
           console.log(
             `${formattedName} ...screenshot took`,

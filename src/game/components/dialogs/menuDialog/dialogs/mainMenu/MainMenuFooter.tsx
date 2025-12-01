@@ -2,7 +2,7 @@ import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuFooter = ({ className }: { className?: string }) => (
-  <div
+  <footer
     className={`flex justify-center gap-2 resHandheld:gap-1 leading-none ${className ?? ""}`}
   >
     <div className="flex flex-col items-center">
@@ -54,5 +54,5 @@ export const MainMenuFooter = ({ className }: { className?: string }) => (
         </div>
       </address>
     </div>
-  </div>
+  </footer>
 );
