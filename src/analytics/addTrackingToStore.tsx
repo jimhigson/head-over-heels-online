@@ -1,10 +1,11 @@
 import { isAnyOf } from "@reduxjs/toolkit";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { typedURLSearchParams } from "../options/queryParams";
 import { startAppListening } from "../store/listenerMiddleware";
 import {
+  characterRoomChange,
   crownCollected,
   errorCaught,
   gameOver,
@@ -12,7 +13,35 @@ import {
   lostLife,
   reincarnationAccepted,
 } from "../store/slices/gameMenus/gameMenusSlice";
-import { HookComponent } from "../utils/react/HookComponent";
+import { isLocalNetwork } from "./isLocalNetwork";
+
+const umamiScriptSrc = "https://cloud.umami.is/script.js";
+const umamiWebsiteId = "11813495-5844-44e6-acd4-f81e9c955951";
+
+const shouldTrack = () => {
+  const searchParams = typedURLSearchParams();
+  const trackParam = searchParams.get("track");
+
+  // if track param is explicit, use it directly; otherwise fall back to hostname detection
+  if (trackParam !== null) {
+    const track = trackParam === "1";
+    if (track) {
+      console.log("🍜✅ tracking explicitly enabled via query param");
+    } else {
+      console.log("🍜❌ tracking explicitly disabled via query param");
+    }
+    return track;
+  }
+
+  const isLocal = isLocalNetwork();
+  if (isLocal) {
+    console.log("🍜❌ not tracking because running on local network");
+  } else {
+    console.log("🍜✅ tracking enabled based on non-local network hostname");
+  }
+
+  return !isLocal;
+};
 
 const isTrackedEvent = isAnyOf(
   gameOver,
@@ -24,8 +53,8 @@ const isTrackedEvent = isAnyOf(
   gameStarted,
   crownCollected,
 
-  // burning though the umami.is events allowance too quickly so am disabling this:
-  //characterRoomChange,
+  // this burns though the event quota quite quickly - disable if running out:
+  characterRoomChange,
 );
 
 const useAddTrackingToStore = () => {
@@ -71,7 +100,7 @@ const useAddTrackingToStore = () => {
             eventProperties,
           );
           window.umami.track(actionNameWithoutSlice, eventProperties);
-          // didn't load umami - maybe browser is offline
+          // didn't load umami - maybe browser is offline or it didn't load yet
         } else {
           console.debug(
             "🍜 no umami for event:",
@@ -86,50 +115,33 @@ const useAddTrackingToStore = () => {
   }, [maybeGameApi]);
 };
 
-const AddTrackingToStoreInner = HookComponent(useAddTrackingToStore);
-
-const isLocalNetwork = () => {
-  const { hostname } = window.location;
-
-  // localhost or .local domains
-  if (hostname === "localhost" || hostname.endsWith(".local")) {
-    return true;
+const loadUmamiScript = () => {
+  // check if already added
+  if (document.querySelector(`script[src="${umamiScriptSrc}"]`)) {
+    return;
   }
 
-  // loopback addresses (127.x.x.x)
-  if (hostname.startsWith("127.")) {
-    return true;
-  }
+  const script = document.createElement("script");
+  script.src = umamiScriptSrc;
+  script.dataset.websiteId = umamiWebsiteId;
+  script.onload = () => console.log("🍜 umami script dynamically loaded");
+  document.head.appendChild(script);
+};
 
-  // private network ranges
-  // 192.168.x.x
-  if (hostname.startsWith("192.168.")) {
-    return true;
-  }
-
-  // 10.x.x.x
-  if (hostname.startsWith("10.")) {
-    return true;
-  }
-
-  // 172.16.x.x to 172.31.x.x
-  if (hostname.startsWith("172.")) {
-    const secondOctet = Number.parseInt(hostname.split(".")[1] as string);
-    if (secondOctet >= 16 && secondOctet <= 31) {
-      return true;
-    }
-  }
-
-  return false;
+const AddTrackingToStoreInner = () => {
+  useAddTrackingToStore();
+  useEffect(loadUmamiScript, []);
+  return null;
 };
 
 export const AddTrackingToStore = () => {
-  const searchParams = typedURLSearchParams();
-  const noTrackParam = searchParams.get("noTrack");
-
-  if (isLocalNetwork() || noTrackParam === "1") {
-    return null;
+  const trackingEnabledRef = useRef<boolean | null>(null);
+  if (trackingEnabledRef.current === null) {
+    trackingEnabledRef.current = shouldTrack();
   }
 
-  return <AddTrackingToStoreInner />;
+  if (trackingEnabledRef.current) {
+    return <AddTrackingToStoreInner />;
+  }
+  return null;
 };

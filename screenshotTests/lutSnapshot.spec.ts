@@ -8,7 +8,7 @@ test.describe("LUT Texture Visualization", () => {
     console.log(`${header} Taking snapshot of LUT texture`);
 
     // Navigate to the LUT debug page
-    await page.goto("/lut");
+    await page.goto("/lut?track=0");
 
     // Wait for the LUT display div to appear
     await page.waitForSelector(".e2e-snapshot-target", { timeout: 5000 });

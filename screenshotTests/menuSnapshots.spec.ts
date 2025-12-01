@@ -227,7 +227,7 @@ test.describe("Menu Visual Snapshots", () => {
       await retryWithRecovery({
         async action() {
           console.log(`${formattedName}: Navigating to /`);
-          await page.goto("/");
+          await page.goto("/?track=0");
 
           // Wait for main menu to appear (it opens automatically)
           const mainMenuSelector = "[data-dialog-id=mainMenu]";
@@ -288,7 +288,7 @@ test.describe("Menu Visual Snapshots", () => {
       await retryWithRecovery({
         async action() {
           console.log(`${formattedName}: Navigating to /`);
-          await page.goto("/");
+          await page.goto("/?track=0");
 
           // Wait for main menu to appear
           const mainMenuSelector = "[data-dialog-id=mainMenu]";
