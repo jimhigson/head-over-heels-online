@@ -139,7 +139,7 @@ const startOriginalGame = async (page: Page, projectName: string) => {
       // when the room loop tries to go to the first room, there is an actual navigation
       // into there
       let stepStart = performance.now();
-      await page.goto(`/?cheats=1#finalroom`);
+      await page.goto(`/?cheats=1&track=0#finalroom`);
       console.log(
         `${formattedName}: goto took ${formatDuration(performance.now() - stepStart)}`,
       );
@@ -435,13 +435,13 @@ test.describe("Room Visual Snapshots", () => {
               .catch(() => {});
 
             const renderEventPromise = waitForRoomRenderEvent(page, roomId);
-            await page.goto(`/?cheats=1#${roomId}`);
+            await page.goto(`/?cheats=1&track=0#${roomId}`);
             await renderEventPromise;
           },
           async recovery() {
             // Navigate somewhere else so we can come back again and have another chance
             // to catch the event:
-            await page.goto(`/?cheats=1#finalroom`);
+            await page.goto(`/?cheats=1&track=0#finalroom`);
             await page.waitForTimeout(500);
           },
           maxAttempts: maxTriesToLoadRoom,
