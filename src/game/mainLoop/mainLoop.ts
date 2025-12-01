@@ -12,6 +12,7 @@ import {
   selectInputDirectionMode,
   selectIsPaused,
   selectShouldRenderOnScreenControls,
+  selectShowFps,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   errorCaught,
@@ -27,10 +28,13 @@ import { HudRenderer } from "../render/hud/HudRenderer";
 import { RoomRenderer } from "../render/room/roomRenderer";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
 import { TeleportEffectRenderer } from "../render/TeleportEffectRenderer";
-import { getTimingStats } from "./FrameTimingStats";
+import { frameTimingStats } from "./frameTiming/FrameTimingStats";
+import { textInterfaceToShowDetailedFrameTiming } from "./frameTiming/logFrameTimingStats";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 import { topLevelFilters } from "./topLevelFilters";
+
+textInterfaceToShowDetailedFrameTiming();
 
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
@@ -100,8 +104,9 @@ export class MainLoop<RoomId extends string> {
   };
 
   private tick = ({ deltaMS }: Ticker): void => {
-    const timingStats = getTimingStats();
     const tickState = store.getState();
+    const timingRecord =
+      selectShowFps(tickState) ? frameTimingStats : undefined;
 
     if (selectHasError(tickState)) {
       // if there is an error, we don't want to tick the game state
@@ -130,7 +135,7 @@ export class MainLoop<RoomId extends string> {
       );
 
     // render hud start
-    timingStats?.startHudUpdate();
+    timingRecord?.startHudUpdate();
     const tickOnScreenControls = selectShouldRenderOnScreenControls(tickState);
     const tickInputDirectionMode = selectInputDirectionMode(tickState);
     if (
@@ -166,16 +171,16 @@ export class MainLoop<RoomId extends string> {
       freeCharacters: tickFreeCharacters,
     });
     // render hud end
-    timingStats?.endHudUpdate();
+    timingRecord?.endHudUpdate();
 
     // note that progressing the game state can change/reload the room,
     // so we need to tick physics considering recreating the room renderer
-    timingStats?.startPhysics();
+    timingRecord?.startPhysics();
     const movedItems =
       isPaused ? emptySet : this.#physicsTicker(this.gameState, deltaMS);
-    timingStats?.endPhysics();
+    timingRecord?.endPhysics();
 
-    timingStats?.startUpdateSceneGraph();
+    timingRecord?.startUpdateSceneGraph();
     // the tick could end on a different room than it started on, eg if ticking
     // the physics caused the player to go through a door:
     const tickEndRoom = selectCurrentRoomState(this.gameState);
@@ -244,12 +249,12 @@ export class MainLoop<RoomId extends string> {
       deltaMS,
     });
 
-    timingStats?.endUpdateSceneGraph();
+    timingRecord?.endUpdateSceneGraph();
 
     try {
-      timingStats?.startPixiRender();
+      timingRecord?.startPixiRender();
       this.app.render();
-      timingStats?.endPixiRender();
+      timingRecord?.endPixiRender();
       if (createNewRoomRenderer && tickEndRoom) {
         const event = new CustomEvent("firstRenderOfRoom", {
           detail: { roomId: tickEndRoom.id },
@@ -261,7 +266,7 @@ export class MainLoop<RoomId extends string> {
       throw new Error("Error in Pixi.js app.render()", { cause: e });
     }
 
-    timingStats?.tickDone();
+    timingRecord?.tickDone();
   };
 
   start() {
