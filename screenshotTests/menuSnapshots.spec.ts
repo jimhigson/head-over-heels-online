@@ -53,6 +53,22 @@ const takeDialogScreenshot = async (
     console.log(
       `${logHeader} Taking screenshot for dialog: ${chalk.cyan(dialogId)}`,
     );
+
+    await retryWithRecovery({
+      async action() {
+        await page.waitForSelector(`dialog[data-dialog-id="${dialogId}"]`, {
+          timeout: 5_000 * osSlowness,
+        });
+        await page
+          .getByRole("status")
+          .waitFor({ state: "detached", timeout: 5_000 * osSlowness });
+      },
+      logHeader,
+      actionDescription: `wait for dialog ${dialogId} without spinner`,
+      page,
+      screenshotPrefix: `wait-no-spinner-${dialogId}`,
+    });
+
     const screenshotStart = performance.now();
 
     await expect
@@ -101,15 +117,6 @@ const goToSubmenu = async (
       await logSelectorExistence(page, selector, logHeader);
 
       await page.click(selector);
-
-      // Give spinner a chance to appear, then wait for it to finish
-      await page.waitForTimeout(500);
-      await page
-        .getByRole("status")
-        .waitFor({ state: "detached", timeout: 10_000 })
-        .catch(() => {
-          // No spinner appeared - that's fine
-        });
     },
     logHeader,
     actionDescription: `click menu item ${menuItemId}`,
