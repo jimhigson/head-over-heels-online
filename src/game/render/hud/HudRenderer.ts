@@ -1,5 +1,4 @@
-import { spritesheetPalette } from "gfx/spritesheetPalette";
-import { Container, Sprite, Ticker } from "pixi.js";
+import { Container, Sprite } from "pixi.js";
 
 import type {
   HeadAbilities,
@@ -25,9 +24,9 @@ import {
   hudCharTextureSize,
   smallItemTextureSize,
 } from "../../../sprites/textureSizes";
+import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
-import { neverTime } from "../../../utils/neverTime";
 import {
   fastStepsRemaining,
   shieldRemainingForAbilities,
@@ -40,8 +39,8 @@ import {
   greyFilterExceptPink,
   noFilters,
 } from "../filters/standardFilters";
+import { FpsRenderer } from "./FpsRenderer";
 import {
-  hudFpsColourFilter,
   hudHighligtedFilter,
   hudIconFilter,
   hudLivesTextFilter,
@@ -52,8 +51,6 @@ import {
 import { OnScreenControls } from "./OnScreenControls";
 import { renderCarriedOnce } from "./renderCarried";
 import { makeTextContainer, showTextInContainer } from "./showTextInContainer";
-
-const fpsUpdatePeriod = 250;
 
 const livesTextFromCentre = (onScreenControls: boolean) =>
   onScreenControls ? 48 : 24;
@@ -89,6 +86,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
   #onScreenControls: OnScreenControls<RoomId, RoomItemId> | undefined =
     undefined;
+
+  #fpsRenderer: FpsRenderer | undefined;
 
   #hudElements = {
     head: {
@@ -148,8 +147,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         container: new Container({ label: "heelsCarrying" }),
       },
     },
-    fps: makeTextContainer({ label: "fps", outline: true }),
   };
+
+  #unlisten;
 
   constructor(public readonly renderContext: HudRenderContext<RoomId>) {
     const { onScreenControls } = renderContext;
@@ -167,10 +167,6 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       this.#container.addChild(this.#hudElements.heels.carrying.container);
     }
 
-    this.#container.addChild(this.#hudElements.fps);
-    this.#hudElements.fps.filters = [hudFpsColourFilter, hudOutlineFilter];
-    this.#hudElements.fps.y = hudCharTextureSize.h;
-
     this.#initSwopCharacterInteractivity();
 
     if (onScreenControls) {
@@ -187,6 +183,31 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       this.#container.addChild(this.#hudElements[character].sprite);
       this.#container.addChild(this.#hudElements[character].livesText);
     }
+
+    this.#unlisten = startAppListening({
+      predicate(_action, currentState, previousState) {
+        return selectShowFps(currentState) !== selectShowFps(previousState);
+      },
+      effect: (_action, { getState }) => {
+        if (selectShowFps(getState())) {
+          this.#fpsRenderer = new FpsRenderer();
+          this.#wireFpsRendererContainer();
+        } else {
+          this.#fpsRenderer?.destroy();
+          this.#fpsRenderer = undefined;
+        }
+      },
+    });
+
+    const showingFps = selectShowFps(store.getState());
+    this.#fpsRenderer = showingFps ? new FpsRenderer() : undefined;
+    if (this.#fpsRenderer) {
+      this.#wireFpsRendererContainer();
+    }
+  }
+
+  #wireFpsRendererContainer() {
+    this.#container.addChild(this.#fpsRenderer!.output);
   }
 
   #initSwopCharacterInteractivity() {
@@ -292,7 +313,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     this.#hudElements.heels.bag.container.y =
       this.#hudElements.head.hooter.container.y = screenSize.y - 8;
 
-    this.#hudElements.fps.x = screenSize.x - hudCharTextureSize.w * 2;
+    if (this.#fpsRenderer)
+      this.#fpsRenderer.output.x = screenSize.x - hudCharTextureSize.w * 3;
   }
 
   #itemFilter(highlighted: boolean, colourise: boolean) {
@@ -521,29 +543,6 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       : hudLivesTextFilter.original;
   }
 
-  #fpsLastUpdated: number = neverTime;
-  #updateFps() {
-    if (selectShowFps(store.getState())) {
-      if (performance.now() > this.#fpsLastUpdated + fpsUpdatePeriod) {
-        const fpsValue = Ticker.shared.FPS;
-        showTextInContainer(this.#hudElements.fps, Math.round(fpsValue));
-
-        hudFpsColourFilter.targetColor =
-          fpsValue > 100 ? spritesheetPalette.white
-          : fpsValue > 58 ? spritesheetPalette.moss
-          : fpsValue > 55 ? spritesheetPalette.pastelBlue
-          : fpsValue > 50 ? spritesheetPalette.metallicBlue
-          : fpsValue > 40 ? spritesheetPalette.pink
-          : spritesheetPalette.midRed;
-
-        this.#fpsLastUpdated = performance.now();
-      }
-      this.#hudElements.fps.visible = true;
-    } else {
-      this.#hudElements.fps.visible = false;
-    }
-  }
-
   tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>) {
     this.#updateColours(tickContext);
 
@@ -557,8 +556,6 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     this.#tickHooterAndDoughnuts(tickContext);
     this.#tickBagAndCarrying(tickContext);
 
-    this.#updateFps();
-
     this.#onScreenControls?.tick(tickContext);
   }
 
@@ -569,5 +566,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   destroy() {
     this.#container.destroy();
     this.#onScreenControls?.destroy();
+    this.#fpsRenderer?.destroy();
+    this.#unlisten();
   }
 }

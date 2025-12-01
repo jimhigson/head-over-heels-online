@@ -53,6 +53,9 @@ importers:
       iter-tools-es:
         specifier: ^7.5.4
         version: 7.5.4
+      mitt:
+        specifier: ^3.0.1
+        version: 3.0.1
       monaco-editor:
         specifier: ^0.52.2
         version: 0.52.2

@@ -1,8 +1,34 @@
+import mitt from "mitt";
+
+import { startAppListening } from "../../../store/listenerMiddleware";
+import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
+
+type PhaseStats = {
+  avgMs: number;
+  percentage: number;
+};
+
+export type FrameTimingStatsEvent = {
+  frameCount: number;
+  elapsedMs: number;
+  fps: number;
+  theoreticalFps: number;
+  phases: {
+    physics: PhaseStats;
+    hudUpdateSceneGraph: PhaseStats;
+    updateSceneGraph: PhaseStats;
+    pixiRender: PhaseStats;
+    total: PhaseStats;
+  };
+};
+
 /**
  * Tracks frame timing statistics for different phases of the game loop.
  * Accumulates timing data and reports averages periodically.
  */
 class FrameTimingStats {
+  static readonly instance = new FrameTimingStats();
+
   #stats = {
     physics: { totalMs: 0, count: 0 },
     hudUpdate: { totalMs: 0, count: 0 },
@@ -18,7 +44,24 @@ class FrameTimingStats {
   }> = {};
 
   #lastReportTime = performance.now();
-  #reportIntervalMs = 5_000;
+
+  #eventBuffer: FrameTimingStatsEvent = {
+    frameCount: 0,
+    elapsedMs: 0,
+    fps: 0,
+    theoreticalFps: 0,
+    phases: {
+      physics: { avgMs: 0, percentage: 0 },
+      hudUpdateSceneGraph: { avgMs: 0, percentage: 0 },
+      updateSceneGraph: { avgMs: 0, percentage: 0 },
+      pixiRender: { avgMs: 0, percentage: 0 },
+      total: { avgMs: 0, percentage: 0 },
+    },
+  };
+
+  #events = mitt<{ stats: FrameTimingStatsEvent }>();
+
+  private constructor(private reportIntervalMs: number = 2_000) {}
 
   startPhysics() {
     this.#currentTimings.physicsStart = performance.now();
@@ -87,9 +130,17 @@ class FrameTimingStats {
    */
   tickDone() {
     const now = performance.now();
-    if (now - this.#lastReportTime >= this.#reportIntervalMs) {
+    if (now - this.#lastReportTime >= this.reportIntervalMs) {
       this.#reportAndReset(now);
     }
+  }
+
+  on(handler: (event: FrameTimingStatsEvent) => void) {
+    this.#events.on("stats", handler);
+  }
+
+  off(handler: (event: FrameTimingStatsEvent) => void) {
+    this.#events.off("stats", handler);
   }
 
   #reportAndReset(now: number) {
@@ -104,6 +155,15 @@ class FrameTimingStats {
     ) {
       return;
     }
+
+    this.#fillEventBuffer(now);
+    this.#events.emit("stats", this.#eventBuffer);
+
+    this.reset(now);
+  }
+
+  #fillEventBuffer(now: number) {
+    const { physics, hudUpdate, updateSceneGraph, pixiRender } = this.#stats;
 
     const avgPhysics = physics.count > 0 ? physics.totalMs / physics.count : 0;
     const avgHudUpdate =
@@ -124,37 +184,28 @@ class FrameTimingStats {
       updateSceneGraph.count,
       pixiRender.count,
     );
-    const elapsedSeconds = (now - this.#lastReportTime) / 1000;
-    const fps = frameCount / elapsedSeconds;
-    const theoreticalFps = totalAvg > 0 ? 1000 / totalAvg : 0;
+    const elapsedMs = now - this.#lastReportTime;
 
-    console.log(
-      `Frame timing (${frameCount} frames, ${fps.toFixed(1)} fps, theoretical max: ${theoreticalFps.toFixed(1)} fps):`,
-    );
-    console.table({
-      physics: {
-        avgMs: avgPhysics.toFixed(2),
-        percentage: ((avgPhysics / totalAvg) * 100).toFixed(1) + "%",
-      },
-      hudUpdateSceneGraph: {
-        avgMs: avgHudUpdate.toFixed(2),
-        percentage: ((avgHudUpdate / totalAvg) * 100).toFixed(1) + "%",
-      },
-      updateSceneGraph: {
-        avgMs: avgUpdateSceneGraph.toFixed(2),
-        percentage: ((avgUpdateSceneGraph / totalAvg) * 100).toFixed(1) + "%",
-      },
-      "pixi.js app.render": {
-        avgMs: avgPixiRender.toFixed(2),
-        percentage: ((avgPixiRender / totalAvg) * 100).toFixed(1) + "%",
-      },
-      total: {
-        avgMs: totalAvg.toFixed(2),
-        percentage: "100%",
-      },
-    });
+    this.#eventBuffer.frameCount = frameCount;
+    this.#eventBuffer.elapsedMs = elapsedMs;
+    this.#eventBuffer.fps = (frameCount / elapsedMs) * 1_000;
+    this.#eventBuffer.theoreticalFps = totalAvg > 0 ? 1000 / totalAvg : 0;
+    this.#eventBuffer.phases.physics.avgMs = avgPhysics;
+    this.#eventBuffer.phases.physics.percentage = (avgPhysics / totalAvg) * 100;
+    this.#eventBuffer.phases.hudUpdateSceneGraph.avgMs = avgHudUpdate;
+    this.#eventBuffer.phases.hudUpdateSceneGraph.percentage =
+      (avgHudUpdate / totalAvg) * 100;
+    this.#eventBuffer.phases.updateSceneGraph.avgMs = avgUpdateSceneGraph;
+    this.#eventBuffer.phases.updateSceneGraph.percentage =
+      (avgUpdateSceneGraph / totalAvg) * 100;
+    this.#eventBuffer.phases.pixiRender.avgMs = avgPixiRender;
+    this.#eventBuffer.phases.pixiRender.percentage =
+      (avgPixiRender / totalAvg) * 100;
+    this.#eventBuffer.phases.total.avgMs = totalAvg;
+    this.#eventBuffer.phases.total.percentage = 100;
+  }
 
-    // Reset stats
+  reset(now: number = performance.now()) {
     this.#stats.physics.totalMs = 0;
     this.#stats.physics.count = 0;
     this.#stats.hudUpdate.totalMs = 0;
@@ -167,41 +218,14 @@ class FrameTimingStats {
   }
 }
 
-let frameTimingStats: FrameTimingStats | undefined;
+export const frameTimingStats = FrameTimingStats.instance;
 
-/**
- * Get the current timing stats instance, or undefined if not started
- */
-export const getTimingStats = () => frameTimingStats;
-
-/**
- * Start timing stats collection. Call from dev console: window.startTiming()
- */
-export const startTiming = () => {
-  if (!frameTimingStats) {
-    frameTimingStats = new FrameTimingStats();
-    console.log(
-      "Frame timing started. Stats will be reported every 5 seconds.",
-    );
-  } else {
-    console.log("Frame timing already running.");
-  }
-};
-
-declare global {
-  interface Window {
-    startTiming: typeof startTiming;
-  }
-}
-
-// Expose to window for dev console access
-if (typeof window !== "undefined") {
-  window.startTiming = startTiming;
-
-  // Log availability message
-  console.log(
-    "%cPerformance timing available:",
-    "color: #4CAF50; font-weight: bold",
-  );
-  console.log("call: startTiming() to start collecting frame timing stats");
-}
+startAppListening({
+  predicate(_action, currentState, previousState) {
+    return selectShowFps(currentState) !== selectShowFps(previousState);
+  },
+  effect(_action) {
+    // reset stats when toggling FPS
+    frameTimingStats.reset();
+  },
+});

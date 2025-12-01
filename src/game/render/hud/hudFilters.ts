@@ -13,10 +13,6 @@ export const hudLowlightedFilter: RevertColouriseFilter =
   new RevertColouriseFilter();
 export const hudIconFilter = new RevertColouriseFilter();
 export const hudTextFilter = new RevertColouriseFilter();
-export const hudFpsColourFilter = new RevertColouriseFilter(
-  spritesheetPalette.moss,
-);
-
 /**
  * without colourisation, the active character gets the same colour as the lives text
  */
