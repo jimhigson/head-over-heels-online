@@ -22,7 +22,11 @@ export const GitRepoInfo = () => {
           </span>
         </a>
       </div>
-      <div className="flex absolute bottom-0 right-0 z-dialog">
+      <footer
+        className="flex absolute bottom-0 right-0 z-dialog"
+        // this needs to be masked out of screenshots, or tests will fail after version updates:
+        data-screenshot-mask
+      >
         <a
           href={`${repoLocation}releases`}
           target="_blank"
@@ -33,7 +37,7 @@ export const GitRepoInfo = () => {
             {`v${version} `}
           </BitmapText>
         </a>
-      </div>
+      </footer>
     </>
   );
 };
