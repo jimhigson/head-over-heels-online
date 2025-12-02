@@ -445,6 +445,12 @@ const frames = {
     smallItemGridLocation({ x: 16, y: 10 }),
     smallItemTextureSize,
   ),
+  ...seriesOfNumberedTextures(
+    "shadow.lift",
+    4,
+    smallItemGridLocation({ x: 16, y: 11 }),
+    smallItemTextureSize,
+  ),
   "shadow.smallBlock": {
     frame: {
       ...smallItemGridLocation({ x: 20, y: 10 }),
@@ -746,6 +752,15 @@ export const itemsSpritesheetData = {
     ),
     fish: withSpeed(["fish.1", "fish.2"] as const, 0.25),
     lift: withSpeed(["lift.1", "lift.2", "lift.3", "lift.4"] as const, 0.5),
+    "shadow.lift": withSpeed(
+      [
+        "shadow.lift.1",
+        "shadow.lift.2",
+        "shadow.lift.3",
+        "shadow.lift.4",
+      ] as const,
+      0.5,
+    ),
     dalek: withSpeed(["dalek.1", "dalek.2"] as const, 0.5),
     "turtle.left": withSpeed(["turtle.left.1", "turtle.left.2"] as const, 0.25),
     "turtle.away": withSpeed(["turtle.away.1", "turtle.away.2"] as const, 0.25),

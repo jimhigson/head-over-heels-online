@@ -185,6 +185,9 @@ const shadowCast = (
 ): CreateSpriteOptions | undefined => {
   switch (jsonItem.type) {
     case "lift":
+      return {
+        animationId: "shadow.lift",
+      };
     case "switch":
       return "shadow.smallBlock";
     case "conveyor":
