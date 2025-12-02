@@ -285,7 +285,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   #characterSprite(characterName: IndividualCharacterName) {
     const characterSprite = new Sprite(
       loadedSpriteSheet().textures[
-        `${characterName}.walking.${characterName === "head" ? "right" : "towards"}.2`
+        characterName === "head" ?
+          "head.walking.right.2"
+        : "heels.standing.towards"
       ],
     );
 

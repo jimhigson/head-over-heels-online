@@ -7,9 +7,11 @@ import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
 import type { DialogId } from "../src/game/components/dialogs/menuDialog/DialogId";
+import type { goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
 
 import colours from "../gfx/spritesheetPalette.json" with { type: "json" };
 import { dispatchKeyPress } from "./dispatchKeyPress";
+import { dispatchToStore } from "./dispatchToStore";
 import { formatDuration } from "./formatDuration";
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
 import { logSelectorExistence } from "./logSelectorExistence";
@@ -102,7 +104,7 @@ const getSubmenuItems = async (page: Page): Promise<string[]> => {
   return itemIds;
 };
 
-const goToSubmenu = async (
+const navigateToSubmenu = async (
   page: Page,
   menuItemId: string,
   logHeader: string,
@@ -195,7 +197,7 @@ const traverseMenuDepthFirst = async (
     );
 
     // Click the menu item to open submenu
-    await goToSubmenu(page, itemId, logHeader);
+    await navigateToSubmenu(page, itemId, logHeader);
 
     // Recursively visit the submenu
     await traverseMenuDepthFirst(
@@ -573,6 +575,46 @@ test.describe("Menu Visual Snapshots", () => {
         actionDescription: "take score dialog screenshot",
         page,
         screenshotPrefix: "score-screenshot",
+      });
+    });
+
+    await test.step("Screenshot: proclaim emperor", async () => {
+      type GoToSubMenuAction = ReturnType<typeof goToSubmenu>;
+
+      await retryWithRecovery({
+        async action() {
+          // we need to do this one directly since there's no easy way to
+          // get to it other than collecting all the crowns:
+          const successShowProclaimEmperor = await dispatchToStore(page, {
+            type: "gameMenus/goToSubmenu",
+            payload: "proclaimEmperor",
+          } satisfies GoToSubMenuAction);
+
+          if (!successShowProclaimEmperor) {
+            throw new Error(
+              "Failed to open proclaim emperor dialog for screenshot",
+            );
+          }
+
+          console.log(
+            `${formattedName} Taking screenshot for dialog: ${chalk.cyan("proclaimEmperor")}`,
+          );
+          const screenshotStart = performance.now();
+
+          await expect
+            .configure({ timeout: 15_000 * osSlowness })
+            .soft(page)
+            .toHaveScreenshot("proclaimEmperor.png", screenshotOptions(page));
+
+          console.log(
+            `${formattedName} ...screenshot took`,
+            chalk.yellow(formatDuration(performance.now() - screenshotStart)),
+          );
+        },
+        logHeader: formattedName,
+        actionDescription: "take proclaimEmperor dialog screenshot",
+        page,
+        screenshotPrefix: "proclaimEmperor-screenshot",
       });
     });
 

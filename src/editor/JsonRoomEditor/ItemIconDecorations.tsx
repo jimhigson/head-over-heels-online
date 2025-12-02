@@ -243,7 +243,7 @@ const textureForItem = (
         case "headOverHeels":
           return twClass(`texture-head_walking_towards_2`);
         case "heels":
-          return twClass(`texture-heels_walking_towards_2`);
+          return twClass(`texture-heels_standing_towards`);
         default:
           item.config.which satisfies never;
       }

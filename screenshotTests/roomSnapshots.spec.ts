@@ -12,6 +12,7 @@ import type { SelectableGameSpeeds } from "../src/store/slices/gameMenus/selecta
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";
+import { dispatchToStore } from "./dispatchToStore";
 import { formatDuration } from "./formatDuration";
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
 import { logSelectorExistence } from "./logSelectorExistence";
@@ -196,41 +197,33 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
 
   await retryWithRecovery({
     async action(attempt) {
-      // Set game speed directly via gameApi
       const gameApiFound = await page.evaluate(() => {
-        if (
-          window._e2e_gamePageGameAi &&
-          window._e2e_store &&
-          window._e2e_pixiApplication
-        ) {
+        if (window._e2e_gamePageGameAi && window._e2e_pixiApplication) {
           window._e2e_gamePageGameAi.gameState.gameSpeed = 0;
-          type SetGameSpeedAction = ReturnType<typeof setGameSpeed>;
-          type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
-
-          // we need to fake a zero speed, since this isn't in the menu as a selectable option
-          // this freezes the game to make the screenshots deterministic
-          window._e2e_store.dispatch({
-            type: "gameMenus/setGameSpeed",
-            payload: 0 as SelectableGameSpeeds,
-          } satisfies SetGameSpeedAction);
-
-          // turn off the crt filter (on by default)
-          window._e2e_store.dispatch({
-            type: "gameMenus/toggleUserSetting",
-            payload: { path: "displaySettings.crtFilter", value: false },
-          } satisfies ToggleUserSettingAction);
-
           // set the frame rate very low - this reduces how much cpu the tests need to run
           window._e2e_pixiApplication.ticker.maxFPS = 5;
-
           return true;
         }
         return false;
       });
 
-      if (gameApiFound) {
-        console.log(`${formattedName}: Set game speed to 0 via gameApi`);
-      } else {
+      type SetGameSpeedAction = ReturnType<typeof setGameSpeed>;
+      type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
+
+      // we need to fake a zero speed, since this isn't in the menu as a selectable option
+      // this freezes the game to make the screenshots deterministic
+      const successSetSpeed = await dispatchToStore(page, {
+        type: "gameMenus/setGameSpeed",
+        payload: 0 as SelectableGameSpeeds,
+      } satisfies SetGameSpeedAction);
+
+      // turn off the crt filter (on by default)
+      const successToggleCrtFilter = await dispatchToStore(page, {
+        type: "gameMenus/toggleUserSetting",
+        payload: { path: "displaySettings.crtFilter", value: false },
+      } satisfies ToggleUserSettingAction);
+
+      if (!gameApiFound || !successSetSpeed || !successToggleCrtFilter) {
         await page
           .screenshot({
             path: `test-results/game-runs-zero-speed-${projectName}-attempt-${attempt}-no-game-api-found.png`,
@@ -239,6 +232,8 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
           .catch(() => {});
         throw new Error(`gameApi not found on window`);
       }
+
+      console.log(`${formattedName}: Set game speed to 0 via gameApi`);
     },
     async recovery() {
       // Wait a bit for the game to initialize

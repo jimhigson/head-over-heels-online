@@ -24,7 +24,7 @@ export const ProclaimEmperorDialog = () => {
             </div>
             <div className="flex flex-col items-center me-1">
               <span className="sprite texture-crown_blacktooth zx:sprite-revert-zxYellow" />
-              <span className="sprite zx:sprite-revert-zxYellow texture-heels_walking_towards_2 hover:texture-animated-heels_walking_towards relative z-topSprite" />
+              <span className="sprite zx:sprite-revert-zxYellow texture-heels_standing_towards hover:texture-animated-heels_walking_towards relative z-topSprite" />
             </div>
           </div>
           <div className="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan">
