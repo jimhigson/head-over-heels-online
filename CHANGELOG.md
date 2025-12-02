@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.13.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.12.0...v1.13.0) (2025-12-02)
+
+
+### Features
+
+* helicopter lifts cast animated shadows ([#637](https://github.com/jimhigson/head-over-heels-online/issues/637)) ([191f31d](https://github.com/jimhigson/head-over-heels-online/commit/191f31d69c453fb0a4a902bddafa9862a16dc3a5))
+* smoother Heels sprite walking animation (modified sprites from original) ([#636](https://github.com/jimhigson/head-over-heels-online/issues/636)) ([92e6778](https://github.com/jimhigson/head-over-heels-online/commit/92e6778423f506b32452553862a904e95e1330ef))
+
+
+### Bug Fixes
+
+* crt emulation off by default ([#634](https://github.com/jimhigson/head-over-heels-online/issues/634)) ([3c35808](https://github.com/jimhigson/head-over-heels-online/commit/3c3580834d864b3aa37ac250f26d82e664cf3354))
+* dynamically only load umami script when tracking is enabled ([#632](https://github.com/jimhigson/head-over-heels-online/issues/632)) ([e14f83e](https://github.com/jimhigson/head-over-heels-online/commit/e14f83e90af3a9ada5f1bde3615f4ae0e51d6d68))
+* fps counter is more reliable ([#630](https://github.com/jimhigson/head-over-heels-online/issues/630)) ([dd37996](https://github.com/jimhigson/head-over-heels-online/commit/dd37996f1b6ba0af2633ade19abfb12884b4c7ce))
+* improved lighting on Head sprite ([#633](https://github.com/jimhigson/head-over-heels-online/issues/633)) ([517a974](https://github.com/jimhigson/head-over-heels-online/commit/517a9745e5790d3b006569e4257e41c08e995579))
+* mask app version so visual regression tests pass when version numbers have changed ([#631](https://github.com/jimhigson/head-over-heels-online/issues/631)) ([1650ade](https://github.com/jimhigson/head-over-heels-online/commit/1650aded05e4b6e7245c865a57b4ea81ca7a077c))
+* sprites - smoother lighting/shading for Head ([92e6778](https://github.com/jimhigson/head-over-heels-online/commit/92e6778423f506b32452553862a904e95e1330ef))
+
 ## [1.12.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.11.0...v1.12.0) (2025-11-30)
 
 
