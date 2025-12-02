@@ -204,13 +204,19 @@ export const spritesTailwindPlugin = plugin(
       const animationDuration =
         (frames.length * (1 / zxSpectrumFrameRate)) / pixiJsAnimationSpeed;
 
+      const firstFrame = spritesheetData.frames[frames[0]];
+      if (firstFrame === undefined) {
+        throw new Error(
+          `Animation ${animationName} has invalid first frame ${frames[0]}`,
+        );
+      }
       utilities[`.texture-animated-${sanitiseId(animationName)}`] = {
         // x and y will be overwritten by the animation keyframes, but including here
         // makes the sprite appear correct if animation is disabled - eg, in playwright tests
-        "--x": `${spritesheetData.frames[frames[0]].frame.x}px`,
-        "--y": `${spritesheetData.frames[frames[0]].frame.y}px`,
-        "--w": `${spritesheetData.frames[frames[0]].frame.w}px`,
-        "--h": `${spritesheetData.frames[frames[0]].frame.h}px`,
+        "--x": `${firstFrame.frame.x}px`,
+        "--y": `${firstFrame.frame.y}px`,
+        "--w": `${firstFrame.frame.w}px`,
+        "--h": `${firstFrame.frame.h}px`,
         animation: `sprite-animation-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) infinite`,
       };
 
@@ -225,13 +231,21 @@ export const spritesTailwindPlugin = plugin(
 
       base[`@keyframes sprite-animation-${sanitiseId(animationName)}`] =
         Object.fromEntries(
-          frames.map((frame, i) => [
-            `${(i * 100) / (frames.length - 1)}%`,
-            {
-              "--x": `${spritesheetData.frames[frame].frame.x}px`,
-              "--y": `${spritesheetData.frames[frame].frame.y}px`,
-            },
-          ]),
+          frames.map((textureId, i) => {
+            const frame = spritesheetData.frames[textureId];
+            if (frame === undefined) {
+              throw new Error(
+                `Animation ${animationName} has invalid frame ${textureId}`,
+              );
+            }
+            return [
+              `${(i * 100) / (frames.length - 1)}%`,
+              {
+                "--x": `${frame.frame.x}px`,
+                "--y": `${frame.frame.y}px`,
+              },
+            ];
+          }),
         );
 
       const reversedFrames = frames.toReversed();

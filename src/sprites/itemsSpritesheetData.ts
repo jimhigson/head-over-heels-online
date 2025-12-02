@@ -460,18 +460,18 @@ const frames = {
 
   ...fourDirections(
     "charles",
-    smallItemGridLocation({ x: 15, y: 11 }),
+    smallItemGridLocation({ x: 15, y: 12 }),
     smallItemTextureSize,
   ),
   "shadowMask.charles.away": {
     frame: {
-      ...smallItemGridLocation({ x: 17, y: 11 }),
+      ...smallItemGridLocation({ x: 17, y: 12 }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.charles.right": {
     frame: {
-      ...smallItemGridLocation({ x: 17, y: 12 }),
+      ...smallItemGridLocation({ x: 17, y: 13 }),
       ...smallItemTextureSize,
     },
   },
@@ -479,14 +479,14 @@ const frames = {
   ...seriesOfNumberedTextures(
     "bubbles.white",
     3,
-    smallItemGridLocation({ x: 19, y: 11 }),
+    smallItemGridLocation({ x: 19, y: 12 }),
     smallItemTextureSize,
   ),
 
   ...seriesOfNumberedTextures(
     "bubbles.taupe",
     3,
-    smallItemGridLocation({ x: 19, y: 12 }),
+    smallItemGridLocation({ x: 19, y: 13 }),
     smallItemTextureSize,
   ),
 

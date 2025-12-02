@@ -26,10 +26,10 @@ const leaderClass: Record<DirectionsRelativeToMode, string> = {
     "texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_screenDirections",
   ),
   world: twClass(
-    "texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_worldDirections sprites-normal-height",
+    "texture-heels_standing_right selectedMenuItem:texture-animated-heels_worldDirections sprites-normal-height",
   ),
   mixed: twClass(
-    "texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_mixedDirections sprites-normal-height",
+    "texture-heels_standing_right selectedMenuItem:texture-animated-heels_mixedDirections sprites-normal-height",
   ),
 };
 

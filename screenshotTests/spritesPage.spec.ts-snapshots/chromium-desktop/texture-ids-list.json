@@ -223,6 +223,8 @@
   "heels.falling.towards",
   "heels.falling.towardsLeft",
   "heels.falling.towardsRight",
+  "heels.standing.right",
+  "heels.standing.towards",
   "heels.walking.away.1",
   "heels.walking.away.2",
   "heels.walking.away.3",

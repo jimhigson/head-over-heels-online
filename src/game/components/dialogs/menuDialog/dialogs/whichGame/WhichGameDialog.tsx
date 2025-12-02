@@ -79,7 +79,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               })}
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite texture-heels_walking_right_2 selectedMenuItem:texture-animated-heels_walking_right sprites-normal-height zx:sprite-revert-to-white`}
+                  className={`${spriteLeaderClasses} sprite texture-heels_standing_right selectedMenuItem:texture-animated-heels_walking_right sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               hint={

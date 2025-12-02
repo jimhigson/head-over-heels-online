@@ -50,7 +50,7 @@ export function RoomSelect<RoomId extends string>({
               <span className="sprite mr-1 my-1 texture-head_walking_towards_2" />
             )}
             {heelsRoomId === value && (
-              <span className="sprite mr-1 my-1 texture-heels_walking_towards_2" />
+              <span className="sprite mr-1 my-1 texture-heels_standing_towards" />
             )}
             <BitmapText>{value}</BitmapText>
           </CommandItem>

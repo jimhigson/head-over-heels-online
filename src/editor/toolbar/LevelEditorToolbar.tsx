@@ -870,7 +870,7 @@ Place on of these into one room
 This is where head will start the game`}
         >
           <span
-            className={`sprite texture-heels_walking_towards_2 [button:hover_&]:texture-animated-heels_walking_right ${buttonSpriteRevertColourClasses}`}
+            className={`sprite texture-heels_standing_towards [button:hover_&]:texture-animated-heels_walking_right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
       </div>
@@ -901,7 +901,7 @@ Citizens of Freedom
 stand around not doing much`}
         >
           <span
-            className={`sprite texture-heels_walking_towards_2 [button:hover_&]:texture-animated-heels_walking_right ${buttonSpriteRevertColourClasses}`}
+            className={`sprite texture-heels_standing_towards [button:hover_&]:texture-animated-heels_walking_right ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
         <ItemToolButton
@@ -916,7 +916,7 @@ stand around not doing much`}
         >
           <StackedToolbarIcons
             topClasses="texture-head_walking_towards_2 [button:hover_&]:texture-animated-head_walking_right"
-            bottomClasses="texture-heels_walking_towards_2 [button:hover_&]:texture-animated-heels_walking_right"
+            bottomClasses="texture-heels_standing_towards [button:hover_&]:texture-animated-heels_walking_right"
           />
         </ItemToolButton>
       </div>

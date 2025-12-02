@@ -23,11 +23,14 @@ type WalkingTextureId<
   P extends CharacterName = CharacterName,
   D extends DirectionXy8 = DirectionXy8,
 > = `${P}.walking.${D}.${"1" | "2" | "3"}`;
+
 type PlayableTextureId<P extends CharacterName = CharacterName> =
   | `${P}.blinking.${DirectionXy8}`
   | `${P}.falling.${DirectionXy8}`
+  | `${P}.standing.${DirectionXy8}`
   | `shadowMask.${P}.${DirectionXy8}`
   | WalkingTextureId<P>;
+
 type WalkingAnimationId<
   P extends CharacterName,
   D extends DirectionXy8 = DirectionXy8,
@@ -53,10 +56,16 @@ const headBlinking = (direction: DirectionXy8, neutralWalkFrame: number) => {
   return withSpeed(blinkingFrames, 0.5);
 };
 
-const heelsBlinking = (direction: DirectionXy8, neutralWalkFrame: number) => {
+const heelsBlinking = (
+  direction: DirectionXy8,
+  neutralWalkFrame: number = 2,
+) => {
   const totalFrames = Math.round(heelsBlinkPeriod / (zxSpectrumFrameRate * 4));
 
-  const neutralTextureId = `heels.walking.${direction}.${neutralWalkFrame}`;
+  const neutralTextureId =
+    direction === "towards" || direction === "right" ?
+      `heels.standing.${direction}`
+    : `heels.walking.${direction}.${neutralWalkFrame}`;
   const blinkingTextureId = `heels.blinking.${direction}`;
 
   const blinkingFrames: Array<keyof typeof frames> = [
@@ -70,7 +79,11 @@ const playableFrames = <P extends CharacterName>(
   p: P,
   gridLocation: Xy,
   missingFrames: {
-    [D in DirectionXy8]?: { noBlinking?: boolean; noShadowMask?: boolean };
+    [D in DirectionXy8]?: {
+      noBlinking?: boolean;
+      noShadowMask?: boolean;
+      noStanding?: boolean;
+    };
   },
 ) => {
   const directionsOrderOnSpritesheet: DirectionXy8[] = [
@@ -89,9 +102,25 @@ const playableFrames = <P extends CharacterName>(
   > {
     for (let iD = 0; iD < directionsXy8.length; iD++) {
       const d = directionsOrderOnSpritesheet[iD];
-      for (let iN = 0; iN <= 2; iN++) {
+
+      if (!missingFrames[d]?.noShadowMask) {
         yield [
-          `${p}.walking.${d}.${(iN + 1) as 1 | 2 | 3}`,
+          `shadowMask.${p}.${d}`,
+          {
+            frame: {
+              ...smallItemGridLocation({
+                x: gridLocation.x,
+                y: gridLocation.y + iD,
+              }),
+              ...smallItemTextureSize,
+            },
+          },
+        ] as const;
+      }
+
+      for (let iN: 1 | 2 | 3 = 1; iN <= 3; iN++) {
+        yield [
+          `${p}.walking.${d}.${iN as 1 | 2 | 3}`,
           {
             frame: {
               ...smallItemGridLocation({
@@ -108,7 +137,7 @@ const playableFrames = <P extends CharacterName>(
         {
           frame: {
             ...smallItemGridLocation({
-              x: gridLocation.x + 3,
+              x: gridLocation.x + 4,
               y: gridLocation.y + iD,
             }),
             ...smallItemTextureSize,
@@ -122,7 +151,7 @@ const playableFrames = <P extends CharacterName>(
           {
             frame: {
               ...smallItemGridLocation({
-                x: gridLocation.x + 4,
+                x: gridLocation.x + 5,
                 y: gridLocation.y + iD,
               }),
               ...smallItemTextureSize,
@@ -131,13 +160,13 @@ const playableFrames = <P extends CharacterName>(
         ] as const;
       }
 
-      if (!missingFrames[d]?.noShadowMask) {
+      if (!missingFrames[d]?.noStanding) {
         yield [
-          `shadowMask.${p}.${d}`,
+          `${p}.standing.${d}`,
           {
             frame: {
               ...smallItemGridLocation({
-                x: gridLocation.x + 5,
+                x: gridLocation.x + 6,
                 y: gridLocation.y + iD,
               }),
               ...smallItemTextureSize,
@@ -194,11 +223,14 @@ const frames = {
     "head",
     { x: 0, y: 11 },
     {
-      awayLeft: { noBlinking: true },
-      away: { noBlinking: true },
-      towards: { noShadowMask: true },
-      towardsLeft: { noShadowMask: true },
-      left: { noBlinking: true, noShadowMask: true },
+      awayLeft: { noBlinking: true, noStanding: true },
+      away: { noBlinking: true, noStanding: true },
+      awayRight: { noStanding: true },
+      right: { noStanding: true },
+      towardsRight: { noStanding: true },
+      towards: { noShadowMask: true, noStanding: true },
+      towardsLeft: { noShadowMask: true, noStanding: true },
+      left: { noBlinking: true, noShadowMask: true, noStanding: true },
     },
   ),
 
@@ -214,12 +246,14 @@ const frames = {
     "heels",
     { x: 7, y: 11 },
     {
-      awayLeft: { noBlinking: true },
-      away: { noBlinking: true },
-      awayRight: { noBlinking: true },
+      awayLeft: { noBlinking: true, noStanding: true },
+      away: { noBlinking: true, noStanding: true },
+      awayRight: { noBlinking: true, noStanding: true },
+      right: {},
+      towardsRight: { noStanding: true },
       towards: { noShadowMask: true },
-      towardsLeft: { noBlinking: true, noShadowMask: true },
-      left: { noBlinking: true, noShadowMask: true },
+      towardsLeft: { noBlinking: true, noShadowMask: true, noStanding: true },
+      left: { noBlinking: true, noShadowMask: true, noStanding: true },
     },
   ),
 
@@ -241,7 +275,7 @@ const frames = {
 
   "shadow.playable": {
     frame: {
-      ...smallItemGridLocation({ x: 6, y: 11 }),
+      ...smallItemGridLocation({ x: 6, y: 10 }),
       ...smallItemTextureSize,
     },
   },
@@ -263,23 +297,23 @@ export const playableSpritesheetData = {
     ),
     "heels.worldDirections": withSpeed(
       [
-        "heels.walking.towards.2",
+        "heels.standing.towards",
         "heels.walking.left.2",
         "heels.walking.away.2",
-        "heels.walking.right.2",
+        "heels.standing.right",
       ] as const,
       1 / 16,
     ),
     "heels.mixedDirections": withSpeed(
       [
         "heels.walking.towardsRight.2",
-        "heels.walking.towards.2",
+        "heels.standing.towards",
         "heels.walking.towardsLeft.2",
         "heels.walking.left.2",
         "heels.walking.awayLeft.2",
         "heels.walking.away.2",
         "heels.walking.awayRight.2",
-        "heels.walking.right.2",
+        "heels.standing.right",
       ] as const,
       1 / 8,
     ),
@@ -288,8 +322,8 @@ export const playableSpritesheetData = {
     "head.idle.towardsRight": headBlinking("towardsRight", 2),
     "head.idle.towardsLeft": headBlinking("towardsLeft", 2),
     "head.idle.awayRight": headBlinking("awayRight", 2),
-    "heels.idle.right": heelsBlinking("right", 2),
-    "heels.idle.towards": heelsBlinking("towards", 2),
+    "heels.idle.right": heelsBlinking("right"),
+    "heels.idle.towards": heelsBlinking("towards"),
     "heels.idle.towardsRight": heelsBlinking("towardsRight", 2),
     // teleport or death animations
     // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
