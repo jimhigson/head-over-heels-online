@@ -3045,7 +3045,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 3,
       },
-      "shadowCastTexture": "shadow.smallBlock",
+      "shadowCastTexture": {
+        "animationId": "shadow.lift",
+      },
       "state": {
         "actedOnAt": {
           "by": {},
@@ -3095,7 +3097,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 2,
       },
-      "shadowCastTexture": "shadow.smallBlock",
+      "shadowCastTexture": {
+        "animationId": "shadow.lift",
+      },
       "state": {
         "actedOnAt": {
           "by": {},
@@ -3145,7 +3149,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 1,
       },
-      "shadowCastTexture": "shadow.smallBlock",
+      "shadowCastTexture": {
+        "animationId": "shadow.lift",
+      },
       "state": {
         "actedOnAt": {
           "by": {},
@@ -3193,7 +3199,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 1,
       },
-      "shadowCastTexture": "shadow.smallBlock",
+      "shadowCastTexture": {
+        "animationId": "shadow.lift",
+      },
       "state": {
         "actedOnAt": {
           "by": {},
@@ -3241,7 +3249,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 0,
       },
-      "shadowCastTexture": "shadow.smallBlock",
+      "shadowCastTexture": {
+        "animationId": "shadow.lift",
+      },
       "state": {
         "actedOnAt": {
           "by": {},
