@@ -64,10 +64,10 @@
     "natural-compare-lite": "^1.4.0",
     "natural-orderby": "^5.0.0",
     "pixi.js": "^8.14.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "react-redux": "^9.2.0",
-    "react-resizable-panels": "^3.0.3",
+    "react-resizable-panels": "^3.0.6",
     "redux-persist": "^6.0.0",
     "snarkdown-in-react": "^2.0.2",
     "string-transform": "^21.9.19",
@@ -75,7 +75,7 @@
     "tailwind-scrollbar": "^3.1.0",
     "timeago.js": "^4.0.2",
     "use-immer": "^0.11.0",
-    "wouter": "^3.6.0"
+    "wouter": "^3.8.1"
   },
   "devDependencies": {
     "@dyljhd/use-effect-debugger": "^1.2.1",
