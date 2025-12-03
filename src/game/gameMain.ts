@@ -7,15 +7,17 @@ import type { GameApi } from "./GameApi";
 import type { SavedGame } from "./gameState/saving/SavedGameState";
 import type { InputStateTrackerInterface } from "./input/InputStateTracker";
 
+import { initOriginalSpritesheet } from "../sprites/spritesheet/loadedSpriteSheet";
+import { createUncolourisedSpritesheet } from "../sprites/spritesheet/variants/uncolourisedSpritesheetVariant";
+
+import "pixi.js/advanced-blend-modes";
+
 import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
 import {
   gameRestoreFromSave,
   roomExplored,
   selectSaveForCampaign,
 } from "../store/slices/gameMenus/gameMenusSlice";
-
-import "pixi.js/advanced-blend-modes";
-
 import { store } from "../store/store";
 import { trackTextures } from "../textureInspector/main";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
@@ -24,7 +26,6 @@ import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/select
 import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { MainLoop } from "./mainLoop/mainLoop";
-import { maxFps } from "./physics/mechanicsConstants";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -68,10 +69,13 @@ export const gameMain = async <RoomId extends string>(
   }
   const campaign = campaignResult.data;
 
-  trackTextures(app);
+  if (import.meta.env.DEV) {
+    trackTextures(app);
+  }
+  initOriginalSpritesheet(app.renderer);
+  createUncolourisedSpritesheet(app.renderer);
 
   stopAppAutoRendering(app);
-  app.ticker.maxFPS = maxFps;
 
   // only put on window after initialised and maxFPS set - this ensures it can also be
   // overwritten

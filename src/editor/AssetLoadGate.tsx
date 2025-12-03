@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect, useState } from "react";
 
-import { loadSpritesheet } from "../sprites/spriteSheet";
+import { loadSpritesheetAssets } from "../sprites/spritesheet/loadedSpriteSheet";
 
 export const AssetLoadGateHoc = (load: () => Promise<unknown>) => {
   const LoadGate = ({ children }: { children: ReactNode }) => {
@@ -21,4 +21,4 @@ export const AssetLoadGateHoc = (load: () => Promise<unknown>) => {
   return LoadGate;
 };
 
-export const LoadSpritesheetGate = AssetLoadGateHoc(loadSpritesheet);
+export const LoadSpritesheetGate = AssetLoadGateHoc(loadSpritesheetAssets);

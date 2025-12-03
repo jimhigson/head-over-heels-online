@@ -1,4 +1,10 @@
-import { defaultFilterVert, Filter, GlProgram, Texture } from "pixi.js";
+import {
+  type ColorSource,
+  defaultFilterVert,
+  Filter,
+  GlProgram,
+  Texture,
+} from "pixi.js";
 
 import fragment from "./colourClash.frag";
 
@@ -12,17 +18,16 @@ const glProgram = GlProgram.from({
  * Filter to use a colour from the backbuffer for non-black pixels
  */
 export class ColourClashFilter extends Filter {
-  constructor() {
+  constructor(colour: ColorSource) {
     super({
       glProgram,
       resources: {
-        colorReplaceUniforms: {},
         uBackTexture: Texture.EMPTY,
+        colourClashUniforms: {
+          uTintColour: { value: colour, type: "vec4<f32>" },
+        },
       },
       blendRequired: true,
     });
   }
 }
-
-// singleton instance since this has no params
-export const colourClashFilter = new ColourClashFilter();

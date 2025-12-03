@@ -15,7 +15,7 @@ import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { blockSizePx } from "../../../sprites/spritePivots";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
@@ -103,7 +103,7 @@ describe("lifts", () => {
       until: 5_000, // run for quite a long time
     });
 
-    const expectedMaxHeight = (liftTop + 1) * blockSizePx.h;
+    const expectedMaxHeight = (liftTop + 1) * blockSizePx.z;
 
     expect(maxHeight).toBeCloseTo(expectedMaxHeight, 0);
   });
@@ -269,7 +269,7 @@ describe("lifts", () => {
       until: 5_000,
     });
 
-    expect(heelsState(gameState).position.z).toBe(blockSizePx.h * 2);
+    expect(heelsState(gameState).position.z).toBe(blockSizePx.z * 2);
     expect(heelsState(gameState).standingOnItemId).toEqual("lift");
   });
 
@@ -304,7 +304,7 @@ describe("lifts", () => {
     });
 
     expect(itemState(gameState, "lift")!.position.z).toBeCloseTo(0);
-    expect(heelsState(gameState).position.z).toEqual(blockSizePx.h * 2);
+    expect(heelsState(gameState).position.z).toEqual(blockSizePx.z * 2);
     expect(heelsState(gameState).standingOnItemId).toEqual("heavyBlock");
   });
 });

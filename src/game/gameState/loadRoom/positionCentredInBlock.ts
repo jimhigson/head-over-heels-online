@@ -1,9 +1,9 @@
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { Xyz } from "../../../utils/vectors/vectors";
 
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
 
 export const positionCentredInBlock = (item: JsonItemUnion): Xyz => {
@@ -24,8 +24,8 @@ export const positionCentredInBlock = (item: JsonItemUnion): Xyz => {
     item.type === "wall" ?
       blockPosition
     : addXyz(blockPosition, {
-        x: (blockSizePx.w - aabb.x) >> 1,
-        y: (blockSizePx.d - aabb.y) >> 1,
+        x: (blockSizePx.x - aabb.x) >> 1,
+        y: (blockSizePx.y - aabb.y) >> 1,
       });
 
   return centredPosition;

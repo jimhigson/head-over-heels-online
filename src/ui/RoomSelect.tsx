@@ -4,7 +4,9 @@ import naturalCompare from "natural-compare-lite";
 
 import type { Campaign } from "../model/modelTypes";
 
+import { itemColourCss } from "../editor/toolbar/buttons/RoomColourSelect";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
+import { useIsUncolourised } from "../store/slices/gameMenus/gameMenusSelectors";
 import { CommandItem } from "./command";
 import { Select } from "./Select";
 
@@ -33,6 +35,8 @@ export function RoomSelect<RoomId extends string>({
     .filter((r) => !excludeRoomIds.includes(r as RoomId))
     .sort(naturalCompare) as RoomId[];
 
+  const uncolourised = useIsUncolourised();
+
   return (
     <Select<RoomId>
       onSelect={(roomId) => onSelect?.(roomId)}
@@ -45,7 +49,12 @@ export function RoomSelect<RoomId extends string>({
       triggerButtonLabel={value ?? "none"}
       OptionCommandItem={({ value, onSelect }) => {
         return (
-          <CommandItem value={value} onSelect={onSelect} className="px-1">
+          <CommandItem
+            value={value}
+            onSelect={onSelect}
+            className="px-1"
+            style={itemColourCss(campaign.rooms[value].color.hue, uncolourised)}
+          >
             {headRoomId === value && (
               <span className="sprite mr-1 my-1 texture-head_walking_towards_2" />
             )}

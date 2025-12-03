@@ -56,6 +56,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
             flashing ? "shadowMask.teleporter.flashing"
             : activated ? "shadowMask.teleporter"
             : "shadowMask.artificial",
+          spritesheetVariant: "original",
         },
         times,
       ),

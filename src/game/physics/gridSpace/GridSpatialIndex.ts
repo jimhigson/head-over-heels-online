@@ -2,9 +2,9 @@ import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { ProjectionOnAxes } from "../../render/sortZ/projectAabbCorners";
 
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { projectAabbAxes } from "../../render/sortZ/projectAabbCorners";
+import { blockSizePx } from "../mechanicsConstants";
 
 // Enable debug logging and verification for spatial index operations
 const DEBUG_SPATIAL_INDEX = false;
@@ -16,14 +16,14 @@ const DEBUG_ITEM_IDS = ["head", "heels"];
 // many cells - best to keep this small. Nothing else seems to mind
 // the multiplication very much perf-wise, since the number of items in any
 // given cell remains very small
-const cellDepth = blockSizePx.w * 2;
-const cellWidth = blockSizePx.w * 2;
+const cellDepth = blockSizePx.x * 2;
+const cellWidth = blockSizePx.x * 2;
 
 // like above, the multipliers are a balance between each item being in
 // more cells (because smaller cells) and having to do more of the fine
 // comparisons (because cells are big and have a lot of items in them)
-const projCellDepth = blockSizePx.w * 2;
-const projCellWidth = blockSizePx.w * 2;
+const projCellDepth = blockSizePx.x * 2;
+const projCellWidth = blockSizePx.x * 2;
 
 type XyCellKey = `${number},${number}`;
 

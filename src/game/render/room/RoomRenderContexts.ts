@@ -1,4 +1,4 @@
-import type { Renderer as PixiRenderer } from "pixi.js";
+import type { Renderer } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
 import type { RoomState } from "../../../model/RoomState";
@@ -18,7 +18,7 @@ import type { MovedItems } from "../../mainLoop/progressGameState";
 export type GeneralRenderContext<RoomId extends string> = {
   displaySettings: DisplaySettings;
   soundSettings: SoundSettings;
-  pixiRenderer: PixiRenderer;
+  pixiRenderer: Renderer;
   /**
    * The state of the game currently being played.
    *

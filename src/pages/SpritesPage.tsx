@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
+import type { TextureId } from "../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { Xy } from "../utils/vectors/vectors";
 
 import spritesheetUrl from "../../gfx/sprites.png";
 import { CssVariables } from "../game/components/CssVariables";
 import { typedURLSearchParams } from "../options/queryParams";
-import { spritesheetData, type TextureId } from "../sprites/spriteSheetData";
+import { spritesheetData } from "../sprites/spritesheet/spritesheetData/spriteSheetData";
 
 declare module "react" {
   interface CSSProperties {
@@ -29,14 +30,18 @@ const SpriteOverlay = ({
   const { frame } = spritesheetData.frames[textureId];
   return (
     <div
-      className="absolute border hover:bg-white"
+      className="absolute border hover:bg-white group"
       style={{
         left: `${(frame.x / spritesheetSize.x) * 100}%`,
         top: `${(frame.y / spritesheetSize.y) * 100}%`,
         width: `${(frame.w / spritesheetSize.x) * 100}%`,
         height: `${(frame.h / spritesheetSize.y) * 100}%`,
       }}
-    />
+    >
+      <span className="group-hover:inline text-pureBlack hidden">
+        {textureId}
+      </span>
+    </div>
   );
 };
 

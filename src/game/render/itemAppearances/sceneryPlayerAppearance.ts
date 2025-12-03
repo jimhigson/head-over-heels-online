@@ -1,37 +1,34 @@
 import type { IndividualCharacterName } from "../../../model/modelTypes";
+import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../createSprite";
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { emptyObject } from "../../../utils/empty";
 import { createSprite } from "../createSprite";
-import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { createStackedSprites } from "./createStackedSprites";
-
-// change the appearance of the citizens of Freedom to distinguish from the player */
-const sceneryPlayerFilter = getPaletteSwapFilter({
-  pastelBlue: spritesheetPalette.moss,
-  metallicBlue: spritesheetPalette.moss,
-  pink: spritesheetPalette.moss,
-});
 
 const spriteOptions = (
   name: IndividualCharacterName,
   direction: DirectionXy8,
   id: string,
   paused: boolean,
+  isColourised: boolean,
 ): Exclude<CreateSpriteOptions, string> => {
   const possibleAnimationId = `${name}.idle.${direction}`;
+  const spritesheetVariant: SpritesheetVariant =
+    isColourised ? "sceneryPlayer" : "uncolourised";
+
   if (isAnimationId(possibleAnimationId)) {
     return {
       animationId: possibleAnimationId,
       randomiseStartFrame: id,
       paused,
+      spritesheetVariant,
     };
   } else {
-    return { textureId: `${name}.walking.${direction}.2` };
+    return { textureId: `${name}.walking.${direction}.2`, spritesheetVariant };
   }
 };
 
@@ -41,7 +38,7 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
       id,
       config: { which, startDirection },
     },
-    general: { paused },
+    general: { paused, colourised },
   },
   currentRendering,
 }) => {
@@ -57,14 +54,18 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
     output:
       which === "headOverHeels" ?
         createStackedSprites({
-          top: spriteOptions("head", startDirection, id, paused),
-          bottom: spriteOptions("heels", startDirection, id, paused),
-          filter: sceneryPlayerFilter,
+          top: spriteOptions("head", startDirection, id, paused, colourised),
+          bottom: spriteOptions(
+            "heels",
+            startDirection,
+            id,
+            paused,
+            colourised,
+          ),
         })
-      : createSprite({
-          ...spriteOptions(which, startDirection, id, paused),
-          filter: sceneryPlayerFilter,
-        }),
+      : createSprite(
+          spriteOptions(which, startDirection, id, paused, colourised),
+        ),
     renderProps: emptyObject,
   };
 };

@@ -1,7 +1,7 @@
-import type { Texture, TEXTURE_FORMATS } from "pixi.js";
+import type { TEXTURE_FORMATS, TextureSource } from "pixi.js";
 
-export interface TrackedTexture {
-  texture: Texture;
+export interface TrackedTextureSource {
+  textureSource: TextureSource;
   createdAt: number;
   /**
    * Error object created at texture creation time.
@@ -12,16 +12,17 @@ export interface TrackedTexture {
     | "Item/Item Mask"
     | "ItemAppearance"
     | "ItemShadowRenderer"
-    | "PaletteSwapFilter";
+    | "PaletteSwapFilter"
+    | "Spritesheet swop";
 }
 
 // Track all dynamically created textures
-const trackedTextures = new Set<TrackedTexture>();
+const trackedTextures = new Map<TextureSource, TrackedTextureSource>();
 
 /**
  * Detect the type based on stack trace
  */
-const detectType = (stack: string): TrackedTexture["type"] => {
+const detectType = (stack: string): TrackedTextureSource["type"] => {
   if (stack.includes("ItemShadowRenderer.ts")) {
     return "ItemShadowRenderer";
   }
@@ -34,18 +35,21 @@ const detectType = (stack: string): TrackedTexture["type"] => {
   if (stack.includes("#tickMasks")) {
     return "Item/Item Mask";
   }
+  if (stack.includes("setSpritesheetPaletteSwops")) {
+    return "Spritesheet swop";
+  }
   return undefined;
 };
 
 /**
  * Add a texture to tracking
  */
-export const addTexture = (texture: Texture): void => {
+export const addTexture = (textureSource: TextureSource): void => {
   const callStack = new Error();
   const type = detectType(callStack.stack ?? "");
 
-  trackedTextures.add({
-    texture,
+  trackedTextures.set(textureSource, {
+    textureSource,
     createdAt: Date.now(),
     callStack,
     type,
@@ -55,20 +59,15 @@ export const addTexture = (texture: Texture): void => {
 /**
  * Remove a texture from tracking
  */
-export const removeTexture = (texture: Texture): void => {
-  for (const item of trackedTextures) {
-    if (item.texture === texture) {
-      trackedTextures.delete(item);
-      break;
-    }
-  }
+export const removeTexture = (textureSource: TextureSource): void => {
+  trackedTextures.delete(textureSource);
 };
 
 /**
  * Get all tracked textures
  */
-export const getTrackedTextures = (): Set<TrackedTexture> => {
-  return trackedTextures;
+export const getTrackedTextures = (): Array<TrackedTextureSource> => {
+  return trackedTextures.values().toArray();
 };
 
 /**
@@ -139,19 +138,8 @@ export const getBytesPerPixel = (format: TEXTURE_FORMATS): number => {
 /**
  * Get memory usage for a texture
  */
-export const getTextureMemory = (texture: Texture): number => {
-  const format = texture.source?.format ?? "rgba8unorm";
+export const getTextureMemory = (textureSource: TextureSource): number => {
+  const format = textureSource.format ?? "rgba8unorm";
   const bytesPerPixel = getBytesPerPixel(format);
-  return texture.width * texture.height * bytesPerPixel;
-};
-
-/**
- * Calculate total memory usage
- */
-export const getTotalMemory = (): number => {
-  let totalMemory = 0;
-  for (const item of trackedTextures) {
-    totalMemory += getTextureMemory(item.texture);
-  }
-  return totalMemory;
+  return textureSource.width * textureSource.height * bytesPerPixel;
 };

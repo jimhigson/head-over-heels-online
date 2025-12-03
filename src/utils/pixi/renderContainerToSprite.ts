@@ -1,11 +1,6 @@
 import type { Texture } from "pixi.js";
 
-import {
-  type Container,
-  type Renderer as PixiRenderer,
-  RenderTexture,
-  Sprite,
-} from "pixi.js";
+import { type Container, type Renderer, RenderTexture, Sprite } from "pixi.js";
 
 import { pixiContainerToString } from "./pixiContainerToString";
 import { UniqueTextureSprite } from "./UniqueTextureSprite";
@@ -15,7 +10,7 @@ import { UniqueTextureSprite } from "./UniqueTextureSprite";
  * which can be added to the scene instead of that container.
  */
 export const renderContainerToTexture = (
-  pixiRenderer: PixiRenderer,
+  pixiRenderer: Renderer,
   container: Container,
   /**
    * a render texture to try to reuse - there is no guarantee it
@@ -89,7 +84,7 @@ export const renderContainerToTexture = (
  * which can be added to the scene instead of that container.
  */
 export const renderContainerToSprite = (
-  pixiRenderer: PixiRenderer,
+  pixiRenderer: Renderer,
   container: Container,
   reuseSprite?: UniqueTextureSprite,
   label?: string,
@@ -128,7 +123,7 @@ export const renderContainerToSprite = (
  * safe for animated sprites, since it would freeze them in time!
  */
 export const maybeRenderContainerToSprite = (
-  pixiRenderer: PixiRenderer,
+  pixiRenderer: Renderer,
   container: Container,
 ) => {
   if (container instanceof Sprite) {

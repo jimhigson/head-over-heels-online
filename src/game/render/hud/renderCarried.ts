@@ -19,14 +19,9 @@ export const renderCarriedOnce = <
 >(
   carrying: PortableItem<RoomId, RoomItemId>,
   renderContext: RenderContextSubset<RoomId>,
-  room?: RoomState<RoomId, RoomItemId>,
-): Container | undefined => {
+  room: RoomState<RoomId, RoomItemId>,
+): Container => {
   const appearance = appearanceForItem(carrying)!;
-
-  if (!room) {
-    // only possible in game over state
-    return undefined;
-  }
 
   const appearanceReturn = appearance({
     renderContext: {
@@ -54,5 +49,5 @@ export const renderCarriedOnce = <
     throw new Error("no-update not supported in carried sprite");
   }
 
-  return appearanceReturn.output;
+  return appearanceReturn.output!;
 };

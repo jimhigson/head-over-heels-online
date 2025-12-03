@@ -9,7 +9,6 @@ import type { Mechanic } from "../MechanicResult";
 import type { TurnStrategy } from "./turnedVector";
 
 import { playablesInRoom, type RoomState } from "../../../model/RoomState";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { selectHasAllPlanetCrowns } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
@@ -35,6 +34,7 @@ import {
 import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClosestPlayable";
 import { isMonster, isSolid } from "../itemPredicates";
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import { blockSizePx } from "../mechanicsConstants";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv } from "../mtv";
 import { speedForItem } from "./speedForItem";
@@ -60,7 +60,7 @@ const notWalking = Object.freeze({
   string
 > satisfies MechanicResult<"movingPlatform", string, string>);
 
-const rushTripThreshold = blockSizePx.w / 2;
+const rushTripThreshold = blockSizePx.x / 2;
 const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
   {
     state: {
@@ -200,7 +200,7 @@ const walkAlongShortestAxisTowardsPlayer = <
   const travelAxis =
     (
       Math.abs(vectorXyToClosestPlayer[axisOfShortestDistance]) >
-      blockSizePx.w / 4
+      blockSizePx.x / 4
     ) ?
       axisOfShortestDistance
     : perpendicularAxisXy(axisOfShortestDistance);
@@ -256,7 +256,7 @@ const walkTowardAnalogueIfInSquare = <
 
   const playablePosition = closestPlayable.state.position;
 
-  const radius = blockSizePx.w * 3;
+  const radius = blockSizePx.x * 3;
   const inSquare =
     monsterPosition.x > playablePosition.x - radius &&
     monsterPosition.x < playablePosition.x + radius &&

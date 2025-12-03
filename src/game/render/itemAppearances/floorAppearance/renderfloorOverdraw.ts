@@ -21,6 +21,7 @@ import { projectWorldXyzToScreenXy } from "../../projections";
 export const renderFloorOverdraws = (
   { state: { position: floorPosition } }: ItemInPlay<"floor", string, string>,
   roomState: RoomState<string, string>,
+  colourised: boolean,
 ): Container => {
   const isOnFarSide = (
     item: ItemTypeUnion<"doorFrame" | "wall", string, string>,
@@ -63,6 +64,7 @@ export const renderFloorOverdraws = (
             : { [perpendicularAxisXy(tangentAxis(direction))]: 2 },
           anchor: { x: 0, y: 1 },
           flipX: direction === "away",
+          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
         });
       }),
     new Container({ label: "floorOverdraws" }),

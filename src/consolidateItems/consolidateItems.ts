@@ -11,8 +11,8 @@ import type {
 import type { SceneryName } from "../sprites/planets";
 import type { ConsolidatableJsonItem } from "./ConsolidatableJsonItem";
 
+import { blockSizePx } from "../game/physics/mechanicsConstants";
 import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
-import { blockSizeXyzPx } from "../sprites/spritePivots";
 import { omit } from "../utils/pick";
 import { type Xyz } from "../utils/vectors/vectors";
 import {
@@ -83,8 +83,8 @@ const isConsolidatableItemWithId = (
 // For example with 16px blocks: position 2.25 has offset 4 (since 0.25 * 16 = 4)
 const getFractionalOffset = (position: Xyz): { x: number; y: number } => {
   return {
-    x: Math.floor((position.x % 1) * blockSizeXyzPx.x),
-    y: Math.floor((position.y % 1) * blockSizeXyzPx.y),
+    x: Math.floor((position.x % 1) * blockSizePx.x),
+    y: Math.floor((position.y % 1) * blockSizePx.y),
   };
 };
 
@@ -181,8 +181,8 @@ export const consolidateItems = (
       // Restore the fractional offsets to the consolidated results
       // This ensures consolidated items maintain their correct fractional positions
       const [offsetX, offsetY] = binKey.split(",").map(Number);
-      const fractionalX = offsetX / blockSizeXyzPx.x;
-      const fractionalY = offsetY / blockSizeXyzPx.y;
+      const fractionalX = offsetX / blockSizePx.x;
+      const fractionalY = offsetY / blockSizePx.y;
 
       for (const [id, item] of consolidatedBin) {
         consolidatedItems.push([

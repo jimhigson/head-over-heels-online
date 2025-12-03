@@ -4,6 +4,7 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import type { CreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type JsonItem } from "../../../model/json/JsonItem";
@@ -33,6 +34,11 @@ export const floorEdgeRenderThicknessPx = 10;
  */
 const extraFloorAmountForDoorsFar = 0.52;
 const extraFloorAmountForDoorsNear = 0.5;
+
+const shadowFullBlock: CreateSpriteOptions = Object.freeze({
+  textureId: "shadow.fullBlock",
+  spritesheetVariant: "original",
+});
 
 export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   itemId: RoomItemId,
@@ -174,7 +180,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
     },
 
     // unusual for a floor to cast a shadow, but could be raised somehow in the remake engine
-    shadowCastTexture: "shadow.fullBlock",
+    shadowCastTexture: shadowFullBlock,
 
     // floors don't get a fixedZIndes - if there is only one
     // of them. Otherwise, they can be in front/behind each other, and need

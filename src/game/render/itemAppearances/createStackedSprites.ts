@@ -1,30 +1,18 @@
 import type { ContainerChild } from "pixi.js";
 
-import { Container, type Filter } from "pixi.js";
+import { Container } from "pixi.js";
 
-import type { AnimatedCreateSpriteOptions } from "../createSprite";
-
-import { blockSizePx } from "../../../sprites/spritePivots";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 
-export const itemRidingOnBubblesSpritesOptions: Omit<
-  AnimatedCreateSpriteOptions,
-  "gameSpeed"
-> = {
-  animationId: "bubbles.cold",
-};
 export const createStackedSprites = ({
   top,
-  bottom = "headlessBase",
-  filter,
+  bottom,
 }: {
   top: CreateSpriteOptions;
-  bottom?: CreateSpriteOptions;
-  filter?: Filter;
+  bottom: CreateSpriteOptions;
 }): StackedSpritesContainer => {
-  const container = new Container({
-    filters: filter,
-  }) as StackedSpritesContainer;
+  const container = new Container() as StackedSpritesContainer;
   const bottomSprite = createSprite(bottom);
   container.addChild(bottomSprite);
 
@@ -55,9 +43,15 @@ export const stackSprites = <C extends Container>({
 }): StackedSpritesContainer<C> => {
   const container = new Container<C>() as StackedSpritesContainer<C>;
   container.addChild(bottom);
-  top.y = -blockSizePx.h;
+  top.y = -blockSizePx.z;
   container.addChild(top);
   container[stackedTopSymbol] = top;
   container[stackedBottomSymbol] = bottom;
   return container;
+};
+
+export const isStackedSpritesContainer = (
+  container: Container,
+): container is StackedSpritesContainer => {
+  return stackedTopSymbol in container;
 };

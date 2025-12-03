@@ -1,6 +1,5 @@
 import type { Container } from "pixi.js";
 
-import { blockSizePx } from "../../sprites/spritePivots";
 import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
 import {
   addXyz,
@@ -9,6 +8,7 @@ import {
   type XyMaybeZ,
   type Xyz,
 } from "../../utils/vectors/vectors";
+import { blockSizePx } from "../physics/mechanicsConstants";
 
 export const moveContainerToBlockXyz = (
   blockXyz: XyMaybeZ,
@@ -123,9 +123,9 @@ export const blockXyzToFineXyz = ({
   z: zb = 0,
 }: Partial<Xyz>): Xyz => {
   return {
-    x: xb * blockSizePx.w,
-    y: yb * blockSizePx.d,
-    z: zb * blockSizePx.h,
+    x: xb * blockSizePx.x,
+    y: yb * blockSizePx.y,
+    z: zb * blockSizePx.z,
   };
 };
 
@@ -139,9 +139,9 @@ export const fineXyzToBlockXyz = ({
   z: zf = 0,
 }: Partial<Xyz>): Xyz => {
   return {
-    x: xf / blockSizePx.w,
-    y: yf / blockSizePx.d,
-    z: zf / blockSizePx.h,
+    x: xf / blockSizePx.x,
+    y: yf / blockSizePx.y,
+    z: zf / blockSizePx.z,
   };
 };
 

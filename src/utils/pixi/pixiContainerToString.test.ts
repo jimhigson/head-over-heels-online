@@ -16,9 +16,11 @@ describe("pixiContainerToString", () => {
     container.label = "SimpleContainer";
 
     const result = pixiContainerToString(container);
-    expect(result).toBe(`
-📦 Container "SimpleContainer"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "SimpleContainer"
+      "
+    `);
   });
 
   test("renders a container with children", () => {
@@ -34,11 +36,14 @@ describe("pixiContainerToString", () => {
     parent.addChild(child1, child2);
 
     const result = pixiContainerToString(parent);
-    expect(result).toBe(`
-📦 Container "Parent"
-├── 📦 Container "Child1"
-└── 📦 Container "Child2"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "Parent"
+      │  → children: 2
+      ├── 📦 Container "Child1"
+      └── 📦 Container "Child2"
+      "
+    `);
   });
 
   test("renders a complex scene graph", () => {
@@ -121,37 +126,44 @@ describe("pixiContainerToString", () => {
 
     const result = pixiContainerToString(root);
 
-    expect(result).toBe(`
-📦 Container "GameScene"
-│  → children: 3
-├── 📦 Container "World"
-│   │  → children: 4
-│   ├── 📦 Container "Player"
-│   │   │  → alpha: 0.90
-│   │   ├── 🖼️ Sprite "PlayerSprite"
-│   │   │      → texture: "EMPTY"
-│   │   └── 🎨 Graphics "Sword"
-│   ├── 📦 Container "Enemy"
-│   │   ├── 🖼️ Sprite
-│   │   │      → texture: "EMPTY"
-│   │   └── 🎨 Graphics "HealthBar"
-│   │          → alpha: 0.75
-│   ├── 📦 Container "TreasureChest"
-│   │   │  → hidden
-│   │   ├── 🖼️ Sprite
-│   │   │      → texture: "EMPTY"
-│   │   └── 🎨 Graphics "Sparkles"
-│   └── 📦 Container "MaskedItem"
-│       │  → 😷 masked
-│       ├── 📦 Container "ItemContent"
-│       └── 🖼️😷 Sprite "MaskSprite"
-│              → texture: "EMPTY"
-├── 📦 Container "UI"
-│   ├── 📝 Text "ScoreDisplay"
-│   └── 🎨 Graphics "Minimap"
-│          → alpha: 0.50
-└── 📦 Container "Effects"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "GameScene"
+      │  → children: 3
+      ├── 📦 Container "World"
+      │   │  → children: 4
+      │   ├── 📦 Container "Player"
+      │   │   │  → children: 2
+      │   │   │  → alpha: 0.90
+      │   │   ├── 🖼️ Sprite "PlayerSprite"
+      │   │   │      → texture: "EMPTY"
+      │   │   └── 🎨 Graphics "Sword"
+      │   ├── 📦 Container "Enemy"
+      │   │   │  → children: 2
+      │   │   ├── 🖼️ Sprite
+      │   │   │      → texture: "EMPTY"
+      │   │   └── 🎨 Graphics "HealthBar"
+      │   │          → alpha: 0.75
+      │   ├── 📦 Container "TreasureChest"
+      │   │   │  → children: 2
+      │   │   │  → hidden
+      │   │   ├── 🖼️ Sprite
+      │   │   │      → texture: "EMPTY"
+      │   │   └── 🎨 Graphics "Sparkles"
+      │   └── 📦 Container "MaskedItem"
+      │       │  → children: 2
+      │       │  → 😷 masked
+      │       ├── 📦 Container "ItemContent"
+      │       └── 🖼️😷 Sprite "MaskSprite"
+      │              → texture: "EMPTY"
+      ├── 📦 Container "UI"
+      │   │  → children: 2
+      │   ├── 📝 Text "ScoreDisplay"
+      │   └── 🎨 Graphics "Minimap"
+      │          → alpha: 0.50
+      └── 📦 Container "Effects"
+      "
+    `);
   });
 
   test("handles containers without labels", () => {
@@ -160,11 +172,14 @@ describe("pixiContainerToString", () => {
     parent.addChild(child);
 
     const result = pixiContainerToString(parent);
-    expect(result).toBe(`
-📦 Container
-└── 🖼️ Sprite
-       → texture: "EMPTY"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container
+      │  → children: 1
+      └── 🖼️ Sprite
+             → texture: "EMPTY"
+      "
+    `);
   });
 
   test("handles different Pixi display object types", () => {
@@ -185,15 +200,17 @@ describe("pixiContainerToString", () => {
     container.children[3].label = "Group";
 
     const result = pixiContainerToString(container);
-    expect(result).toBe(`
-📦 Container "MixedTypes"
-│  → children: 4
-├── 🖼️ Sprite "Image"
-│      → texture: "EMPTY"
-├── 🎨 Graphics "Shape"
-├── 📝 Text "Label"
-└── 📦 Container "Group"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "MixedTypes"
+      │  → children: 4
+      ├── 🖼️ Sprite "Image"
+      │      → texture: "EMPTY"
+      ├── 🎨 Graphics "Shape"
+      ├── 📝 Text "Label"
+      └── 📦 Container "Group"
+      "
+    `);
   });
 
   test("handles deeply nested structures", () => {
@@ -210,14 +227,21 @@ describe("pixiContainerToString", () => {
     }
 
     const result = pixiContainerToString(root);
-    expect(result).toBe(`
-📦 Container "Level0"
-└── 📦 Container "Level1"
-    └── 📦 Container "Level2"
-        └── 📦 Container "Level3"
-            └── 📦 Container "Level4"
-                └── 📦 Container "Level5"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "Level0"
+      │  → children: 1
+      └── 📦 Container "Level1"
+          │  → children: 1
+          └── 📦 Container "Level2"
+              │  → children: 1
+              └── 📦 Container "Level3"
+                  │  → children: 1
+                  └── 📦 Container "Level4"
+                      │  → children: 1
+                      └── 📦 Container "Level5"
+      "
+    `);
   });
 
   test("handles multiple properties at once", () => {
@@ -231,13 +255,16 @@ describe("pixiContainerToString", () => {
     container.addChild(child);
 
     const result = pixiContainerToString(container);
-    expect(result).toBe(`
-📦 Container "MultiProp"
-│  → hidden
-│  → alpha: 0.30
-│  → 😷 masked
-└── 📦 Container
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "MultiProp"
+      │  → children: 1
+      │  → hidden
+      │  → alpha: 0.30
+      │  → 😷 masked
+      └── 📦 Container
+      "
+    `);
   });
 
   test("includes position when not at origin", () => {
@@ -259,15 +286,19 @@ describe("pixiContainerToString", () => {
     container.addChild(child);
 
     const result = pixiContainerToString(container);
-    expect(result).toBe(`
-📦 Container "Positioned"
-│  → @(100, 50)
-└── 📦 Container "ChildAt30,40"
-    │  → @(30, 40)
-    └── 🖼️ Sprite
-           → @(5, 10)
-           → texture: "EMPTY"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "Positioned"
+      │  → @(x=100, y=50)
+      │  → children: 1
+      └── 📦 Container "ChildAt30,40"
+          │  → @(x=30, y=40)
+          │  → children: 1
+          └── 🖼️ Sprite
+                 → @(x=5, y=10)
+                 → texture: "EMPTY"
+      "
+    `);
   });
 
   test("displays texture information for Sprites", () => {
@@ -298,16 +329,18 @@ describe("pixiContainerToString", () => {
     );
 
     const result = pixiContainerToString(container);
-    expect(result).toBe(`
-📦 Container "SpriteShowcase"
-│  → children: 3
-├── 🖼️ Sprite "PlayerSprite"
-│      → texture: "player_idle"
-├── 🖼️ Sprite "BackgroundSprite"
-│      → texture: "(anon texture)"
-└── 🖼️ Sprite "EmptySprite"
-       → texture: "EMPTY"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "SpriteShowcase"
+      │  → children: 3
+      ├── 🖼️ Sprite "PlayerSprite"
+      │      → texture: "player_idle"
+      ├── 🖼️ Sprite "BackgroundSprite"
+      │      → texture: "(anon texture)"
+      └── 🖼️ Sprite "EmptySprite"
+             → texture: "EMPTY"
+      "
+    `);
   });
 
   test("handles Sprites with textures and other properties", () => {
@@ -325,13 +358,16 @@ describe("pixiContainerToString", () => {
     container.addChild(sprite);
 
     const result = pixiContainerToString(container);
-    expect(result).toBe(`
-📦 Container "ComplexSprite"
-└── 🖼️ Sprite "AnimatedSprite"
-       → @(50, 100)
-       → alpha: 0.70
-       → texture: "walk_frame_01"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "ComplexSprite"
+      │  → children: 1
+      └── 🖼️ Sprite "AnimatedSprite"
+             → @(x=50, y=100)
+             → alpha: 0.70
+             → texture: "walk_frame_01"
+      "
+    `);
   });
 
   test("handles Sprite subclasses with texture info", () => {
@@ -349,11 +385,14 @@ describe("pixiContainerToString", () => {
     container.addChild(customSprite);
 
     const result = pixiContainerToString(container);
-    expect(result).toBe(`
-📦 Container "SubclassTest"
-└── 📌 CustomSprite "MyCustomSprite"
-       → texture: "custom_texture"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "SubclassTest"
+      │  → children: 1
+      └── 📌 CustomSprite "MyCustomSprite"
+             → texture: "custom_texture"
+      "
+    `);
   });
 
   test("shows mask emoji on containers used as masks", () => {
@@ -374,13 +413,17 @@ describe("pixiContainerToString", () => {
     parent.mask = maskContainer;
 
     const result = pixiContainerToString(parent);
-    expect(result).toBe(`
-📦 Container "MaskedParent"
-│  → 😷 masked
-├── 📦 Container "Content"
-└── 📦😷 Container "MaskShape"
-    └── 🎨 Graphics "CircleMask"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "MaskedParent"
+      │  → children: 2
+      │  → 😷 masked
+      ├── 📦 Container "Content"
+      └── 📦😷 Container "MaskShape"
+          │  → children: 1
+          └── 🎨 Graphics "CircleMask"
+      "
+    `);
   });
 
   test("shows mask emoji with level indicator for grandparent masks", () => {
@@ -405,14 +448,19 @@ describe("pixiContainerToString", () => {
     grandparent.mask = maskSprite;
 
     const result = pixiContainerToString(grandparent);
-    expect(result).toBe(`
-📦 Container "Grandparent"
-│  → 😷 masked
-└── 📦 Container "Parent"
-    └── 📦 Container "Child"
-        └── 🖼️😷^3 Sprite "DeepMask"
-               → texture: "mask_texture"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "Grandparent"
+      │  → children: 1
+      │  → 😷 masked
+      └── 📦 Container "Parent"
+          │  → children: 1
+          └── 📦 Container "Child"
+              │  → children: 1
+              └── 🖼️😷^3 Sprite "DeepMask"
+                     → texture: "mask_texture"
+      "
+    `);
   });
 
   test("shows multiple mask relationships", () => {
@@ -437,13 +485,18 @@ describe("pixiContainerToString", () => {
     level1.mask = sharedMask;
 
     const result = pixiContainerToString(root);
-    expect(result).toBe(`
-📦 Container "Root"
-│  → 😷 masked
-└── 📦 Container "Level1"
-    │  → 😷 masked
-    └── 📦 Container "Level2"
-        └── 🎨😷^2😷^3 Graphics "SharedMask"
-`);
+    expect(result).toMatchInlineSnapshot(`
+      "
+      📦 Container "Root"
+      │  → children: 1
+      │  → 😷 masked
+      └── 📦 Container "Level1"
+          │  → children: 1
+          │  → 😷 masked
+          └── 📦 Container "Level2"
+              │  → children: 1
+              └── 🎨😷^2😷^3 Graphics "SharedMask"
+      "
+    `);
   });
 });

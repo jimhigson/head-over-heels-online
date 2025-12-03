@@ -1,10 +1,10 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import type { Xyz } from "../../../utils/vectors/vectors";
+import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -16,22 +16,37 @@ import {
   scaleXyz,
   subXyz,
 } from "../../../utils/vectors/vectors";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { veryHighZ } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
+
+const shadowDoorFloatingThresholdY: SpecifiedTextureCreateSpriteOptions =
+  Object.freeze({
+    textureId: "shadow.door.floatingThreshold.double.y",
+    spritesheetVariant: "original",
+  });
+
+const shadowDoorFloatingThresholdX: SpecifiedTextureCreateSpriteOptions =
+  Object.freeze({
+    textureId: "shadow.door.floatingThreshold.double.y",
+    flipX: true,
+    spritesheetVariant: "original",
+  });
+
 /**
  * this looks low when the bounding boxes are rendered, but visually
  * the playable characters go inside the doorframes a bit too much when
  * it is set to exactly match the door sprite's internal height
  */
-export const doorPortalHeight = blockSizePx.h * 2;
+export const doorPortalHeight = blockSizePx.z * 2;
 export const doorPostHeightBlocks = 4;
-export const doorPostHeightPx = blockSizePx.h * doorPostHeightBlocks;
+export const doorPostHeightPx = blockSizePx.z * doorPostHeightBlocks;
 
 /** how many blocks wide is the door, including frame and doorway? */
 export const doorOverallWidthBlocks = 2;
-export const doorOverallWidthPx = 2 * blockSizePx.w;
+export const doorOverallWidthPx = 2 * blockSizePx.x;
 
 // to be true to the original game, this should be 0.75 blocks, which is
 // enough to be completely outside the doorframe, and to fall off the ledge
@@ -75,7 +90,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   const tunnelSetbackBlocks = {
     [throughDoorAxis]: inHidden ? -doorTunnelLengthBlocks : 0,
   };
-  const doorTunnelLengthPx = doorTunnelLengthBlocks * blockSizePx.w;
+  const doorTunnelLengthPx = doorTunnelLengthBlocks * blockSizePx.x;
   // the extra to put onto door frame AABBs to make them longer for the tunnel
   const doorTunnelAabbPx = {
     ...originXyz,
@@ -163,7 +178,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   {
     const renderAabb = {
       [alongWallAxis]:
-        2 * blockSizePx.w - nearPostWidthInAxis - farPostWidthInAxis,
+        2 * blockSizePx.x - nearPostWidthInAxis - farPostWidthInAxis,
       [throughDoorAxis]: postWidthInThroughDoorAxis,
       z: doorPostHeightPx - doorPortalHeight,
     } as Xyz;
@@ -270,7 +285,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       },
       aabb: {
         [alongWallAxis]:
-          doorOverallWidthBlocks * blockSizePx.w -
+          doorOverallWidthBlocks * blockSizePx.x -
           nearPostWidthInAxis -
           farPostWidthInAxis,
         // portals get thickness for the same reason walls do -
@@ -302,10 +317,9 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         renders: true,
         shadowCastTexture:
           inHidden ?
-            {
-              textureId: "shadow.door.floatingThreshold.double.y",
-              flipX: alongWallAxis === "x",
-            }
+            alongWallAxis === "x" ?
+              shadowDoorFloatingThresholdX
+            : shadowDoorFloatingThresholdY
           : undefined,
         castsShadowWhileStoodOn: inHidden,
         state: {
@@ -345,7 +359,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
               {
                 [alongWallAxis]: 0,
                 [throughDoorAxis]: 0,
-                z: (position.z - 0.5) * blockSizePx.h,
+                z: (position.z - 0.5) * blockSizePx.z,
               } as Xyz,
               {
                 [throughDoorAxis]: doorTunnelAabbPx[throughDoorAxis],
@@ -354,7 +368,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           : undefined,
         shadowOffset: {
           // bring shadows up to the top of the legs:
-          z: position.z * blockSizePx.h,
+          z: position.z * blockSizePx.z,
           [throughDoorAxis]:
             inHidden ? doorTunnelAabbPx[throughDoorAxis] : undefined,
         },

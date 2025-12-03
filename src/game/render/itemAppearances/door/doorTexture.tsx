@@ -1,8 +1,8 @@
 import type { UnknownRoomState } from "../../../../model/RoomState";
-import type { DoorFrameTextureName } from "../../../../sprites/doorSpritesheetData";
-import type { TextureId } from "../../../../sprites/spriteSheetData";
+import type { DoorFrameTextureName } from "../../../../sprites/spritesheet/spritesheetData/doorSpritesheetData";
+import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 
-import { loadedSpriteSheet } from "../../../../sprites/spriteSheet";
+import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 
 export const doorTexture = (
   room: Pick<UnknownRoomState, "color" | "planet">,
@@ -10,7 +10,7 @@ export const doorTexture = (
   position: "far" | "near" | "top",
 ): DoorFrameTextureName => {
   const hasWorldSpecificTexture =
-    loadedSpriteSheet().textures[
+    originalSpriteSheet().textures[
       `door.frame.${room.planet}.${axis}.near` as TextureId
     ] !== undefined;
 
@@ -18,7 +18,7 @@ export const doorTexture = (
 
   const useDarkTexture =
     room.color.shade === "dimmed" &&
-    loadedSpriteSheet().textures[
+    originalSpriteSheet().textures[
       `door.frame.${sceneryName}.dark.${axis}.${position}` as TextureId
     ] !== undefined;
 

@@ -4,9 +4,9 @@ import { describe, expect, test } from "vitest";
 import type { FreeItem } from "../physics/itemPredicates";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
-import { blockSizePx } from "../../sprites/spritePivots";
 import { originXyz } from "../../utils/vectors/vectors";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
+import { blockSizePx } from "../physics/mechanicsConstants";
 import {
   findStandingOnWithHighestPriorityAndMostOverlap,
   spatiallyCheckStandingOn,
@@ -223,7 +223,7 @@ describe("spatiallyCheckStandingOn", () => {
     const result = spatiallyCheckStandingOn(
       playable as FreeItem<string, string>,
       itemMaybeBeingStoodOn,
-      blockSizePx.h * 0.02, // how much overlap is allowed - 2% of a block height
+      blockSizePx.z * 0.02, // how much overlap is allowed - 2% of a block height
     );
 
     expect(result).toBe(true);
@@ -294,7 +294,7 @@ describe("spatiallyCheckStandingOn", () => {
     )!;
 
     playable.state.position = { x: 4.1, y: 0, z: 2 };
-    itemMaybeBeingStoodOn.state.position = { x: blockSizePx.w, y: 0, z: 0 };
+    itemMaybeBeingStoodOn.state.position = { x: blockSizePx.x, y: 0, z: 0 };
 
     const result = spatiallyCheckStandingOn(
       playable as FreeItem<string, string>,

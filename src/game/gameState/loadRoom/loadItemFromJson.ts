@@ -5,24 +5,20 @@ import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { ScrollsRead } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Xyz } from "../../../utils/vectors/vectors";
-import type { CreateSpriteOptions } from "../../render/createSprite";
 import type { RoomPickupsCollected } from "../GameState";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { getJsonItemTimes } from "../../../model/times";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
-import {
-  lengthXyz,
-  tangentAxis,
-  unitXyz,
-} from "../../../utils/vectors/vectors";
+import { lengthXyz, unitXyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { initialState } from "./itemDefaultStates";
 import { loadDoor } from "./loadDoor";
 import { loadFloor } from "./loadFloor";
+import { loadItemShadowCast } from "./loadItemShadowCast";
 import { loadPlayer } from "./loadPlayer";
 import { loadWall } from "./loadWalls";
 
@@ -153,7 +149,7 @@ export function* loadItemFromJson<
         jsonItemId,
         fixedZIndex:
           jsonItem.type === "emitter" ? nonRenderingItemFixedZIndex : undefined,
-        shadowCastTexture: shadowCast(jsonItem),
+        shadowCastTexture: loadItemShadowCast(jsonItem),
         // items that have true here are items that let a little bit of the floor below them
         // be seen while they are standing on it
         castsShadowWhileStoodOn:
@@ -179,57 +175,3 @@ export function* loadItemFromJson<
     }
   }
 }
-
-const shadowCast = (
-  jsonItem: JsonItemUnion,
-): CreateSpriteOptions | undefined => {
-  switch (jsonItem.type) {
-    case "lift":
-      return {
-        animationId: "shadow.lift",
-      };
-    case "switch":
-      return "shadow.smallBlock";
-    case "conveyor":
-      return {
-        textureId: "shadow.fullBlock",
-        flipX: tangentAxis(jsonItem.config.direction) === "x",
-      };
-    case "barrier":
-      return {
-        textureId: "shadow.barrier.y",
-        flipX: jsonItem.config.axis === "x",
-      };
-    case "spring":
-    case "firedDoughnut":
-    case "slidingDeadly":
-      return "shadow.smallRound";
-    case "block":
-      return jsonItem.config.style === "tower" ?
-          "shadow.smallRound"
-        : "shadow.fullBlock";
-    case "pushableBlock":
-    case "movingPlatform":
-    case "hushPuppy":
-    case "deadlyBlock":
-    case "teleporter":
-    case "spikes":
-      return "shadow.fullBlock";
-    case "portableBlock":
-      return jsonItem.config.style === "drum" ?
-          "shadow.smallRound"
-        : "shadow.smallBlock";
-    case "pickup":
-      return jsonItem.config.gives === "scroll" ?
-          "shadow.scroll"
-        : "shadow.smallRound";
-    case "ball":
-    case "charles":
-    case "monster":
-      return "shadow.smallRound";
-    case "slidingBlock":
-      return jsonItem.config.style === "book" ?
-          "shadow.fullBlock"
-        : "shadow.smallRound";
-  }
-};

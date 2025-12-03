@@ -1,11 +1,9 @@
 import type { Container } from "pixi.js";
 
+import type { SpecifiedTextureCreateSpriteOptions } from "../../game/render/createSprite";
 import type { Xy, Xyz } from "../vectors/vectors";
 
-import {
-  createSprite,
-  type CreateSpriteOptions,
-} from "../../game/render/createSprite";
+import { createSprite } from "../../game/render/createSprite";
 
 /**
  * render to a sprite, using a base sprite to be repeated in x and y.
@@ -16,7 +14,7 @@ import {
  * scene structure
  */
 export const renderMultipliedXy = (
-  createSpriteOptions: CreateSpriteOptions,
+  createSpriteOptions: SpecifiedTextureCreateSpriteOptions,
   timesXyz: Partial<Xyz> | undefined,
 ): Container => {
   const timesXy: Partial<Xy> | undefined = timesXyz && {
@@ -25,9 +23,7 @@ export const renderMultipliedXy = (
   };
 
   return createSprite({
-    ...(typeof createSpriteOptions === "string" ?
-      { textureId: createSpriteOptions }
-    : createSpriteOptions),
+    ...createSpriteOptions,
     times: timesXy,
   });
 };

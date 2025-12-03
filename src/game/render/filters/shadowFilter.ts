@@ -8,6 +8,9 @@ const glProgram = GlProgram.from({
   name: "palletised-shadow-filter",
 });
 
+/**
+ * instead of AlphaFilter - since we need that anyway, might as well have a slightly bespoke filter
+ */
 class ShadowFilter extends Filter {
   constructor() {
     super({

@@ -1,11 +1,11 @@
 import { completeTimesXyz } from "../../model/times";
-import { blockSizeXyzPx } from "../../sprites/spritePivots";
 import {
   productXyz,
   subXyz,
   subXyzInPlace,
   type Xyz,
 } from "../../utils/vectors/vectors";
+import { blockSizePx } from "../physics/mechanicsConstants";
 
 export const multiplyBoundingBox = (
   singleItemBB: Xyz,
@@ -13,7 +13,7 @@ export const multiplyBoundingBox = (
 ): Xyz => {
   const times = completeTimesXyz(timesConfig);
 
-  const difference = subXyz(blockSizeXyzPx, singleItemBB);
+  const difference = subXyz(blockSizePx, singleItemBB);
 
-  return subXyzInPlace(productXyz(times, blockSizeXyzPx), difference);
+  return subXyzInPlace(productXyz(times, blockSizePx), difference);
 };
