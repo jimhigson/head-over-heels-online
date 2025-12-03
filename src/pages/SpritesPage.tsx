@@ -17,7 +17,7 @@ declare module "react" {
 }
 
 const defaultScale = 2;
-const pivotCircleSizePx = 20;
+const pivotOutlineSizePx = 10;
 
 const SpriteOverlay = ({
   textureId,
@@ -178,14 +178,12 @@ export const SpritesPageInner = ({ scale }: { scale: number }) => {
               >
                 {frameMaybeWithPivot.pivot ?
                   <div
-                    className="border-midRed relative"
+                    className="bg-midRed relative"
                     style={{
-                      borderWidth: "2px",
-                      borderRadius: "50%",
-                      width: `${pivotCircleSizePx}px`,
-                      height: `${pivotCircleSizePx}px`,
-                      left: `${frameMaybeWithPivot.pivot.x * scale - pivotCircleSizePx / 2}px`,
-                      top: `${frameMaybeWithPivot.pivot.y * scale - pivotCircleSizePx / 2}px`,
+                      width: `${pivotOutlineSizePx}px`,
+                      height: `${pivotOutlineSizePx}px`,
+                      left: `${frameMaybeWithPivot.pivot.x * scale - pivotOutlineSizePx / 2}px`,
+                      top: `${frameMaybeWithPivot.pivot.y * scale - pivotOutlineSizePx / 2}px`,
                     }}
                   />
                 : null}
@@ -201,14 +199,13 @@ export const SpritesPageInner = ({ scale }: { scale: number }) => {
               <div className="text-lightGrey">
                 {frame.w}&nbsp;x&nbsp;{frame.h}
               </div>
-              <div className="text-midRed">
-                {frameMaybeWithPivot.pivot ?
-                  <>
-                    pivot: ({frameMaybeWithPivot.pivot.x},&nbsp;
-                    {frameMaybeWithPivot.pivot.y})
-                  </>
-                : "no pivot"}
-              </div>
+
+              {frameMaybeWithPivot.pivot ?
+                <div className="text-midRed">
+                  pivot: ({frameMaybeWithPivot.pivot.x},&nbsp;
+                  {frameMaybeWithPivot.pivot.y})
+                </div>
+              : <div className="text-metallicBlue">no pivot</div>}
               <div className="text-midGrey">
                 @({frame.x},&nbsp;{frame.y})
               </div>
