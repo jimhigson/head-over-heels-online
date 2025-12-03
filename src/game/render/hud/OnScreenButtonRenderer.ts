@@ -1,6 +1,5 @@
+import type { Container } from "pixi.js";
 import type { EmptyObject } from "type-fest";
-
-import { Container } from "pixi.js";
 
 import type { PokeableNumber } from "../../../model/ItemStateMap";
 import type { RoomState } from "../../../model/RoomState";
@@ -22,16 +21,15 @@ import { findItemToPickup } from "../../physics/mechanics/pickingUp";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 import { createSprite } from "../createSprite";
+import { TextContainer } from "../text/TextContainer";
 import {
   arcadeStyleButtonRendering,
-  createTextForButtonSurface,
   setDisabled,
   setPressed,
   showOnSurface,
 } from "./arcadeStyleButtonRendering";
-import { hudOutlineFilter, hudTextFilter } from "./hudFilters";
 import { renderCarriedOnce } from "./renderCarried";
-import { makeTextContainer, showTextInContainer } from "./showTextInContainer";
+import { tintForHud } from "./spritesheetVariantForHud";
 
 export type ButtonType =
   | "carry"
@@ -55,15 +53,18 @@ type CommonButtonRenderProps = {
 type ButtonRenderProps = {
   jump: CommonButtonRenderProps & {
     standingOnTeleporter: boolean;
+    renderedInRoom: RoomState<string, string> | undefined;
   };
   carry: CommonButtonRenderProps & {
     hasBag: boolean;
     carrying: null | PortableItem<string, string>;
     disabled: boolean;
+    renderedInRoom: RoomState<string, string> | undefined;
   };
   fire: CommonButtonRenderProps & {
     doughnuts: PokeableNumber;
     hasHooter: boolean;
+    renderedInRoom: RoomState<string, string> | undefined;
   };
   carryAndJump: CommonButtonRenderProps & {
     hasBag: boolean;
@@ -78,7 +79,7 @@ type ButtonRenderContext<BT extends ButtonType, RoomId extends string> = {
   general: GeneralRenderContext<RoomId>;
 };
 type ButtonTickContext = {
-  room: RoomState<string, string> | undefined;
+  room: RoomState<string, string>;
   currentPlayable: PlayableItem | undefined;
   screenSize: Xy;
 };
@@ -101,12 +102,12 @@ const buttonAppearances: {
     renderContext: {
       button,
       inputStateTracker,
-      general: { colourised },
+      general: { colourised, pixiRenderer },
     },
     tickContext: { room, currentPlayable },
     currentRendering,
   }) {
-    const currentlyRenderedProps = currentRendering?.renderProps;
+    const previouslyRenderedProps = currentRendering?.renderProps;
     const previousRendering = currentRendering?.output;
 
     const standingOnId = currentPlayable?.state.standingOnItemId ?? null;
@@ -131,34 +132,32 @@ const buttonAppearances: {
         })
       : previousRendering;
 
-    if (currentlyRenderedProps?.pressed !== pressed) {
+    if (previouslyRenderedProps?.pressed !== pressed) {
       setPressed(container, pressed);
     }
 
     if (
       isStandingOnActiveTeleporter !==
-      currentlyRenderedProps?.standingOnTeleporter
+        previouslyRenderedProps?.standingOnTeleporter ||
+      room !== previouslyRenderedProps?.renderedInRoom
     ) {
       if (isStandingOnActiveTeleporter) {
         showOnSurface(
           container,
           createSprite({
-            textureId: "teleporter",
-            y: 5,
-          }),
-          createSprite({
             // this should include paused, but it isn't on the renderContext yet
             animationId: "teleporter.flashing",
             y: 5,
+            spritesheetVariant:
+              colourised ? "for-current-room" : "uncolourised",
           }),
         );
       } else {
-        const jumpTextContainer = createTextForButtonSurface(
-          button,
-          colourised,
-          "JUMP",
-        );
-        jumpTextContainer.y = textYForButtonCentre;
+        const jumpTextContainer = new TextContainer({
+          pixiRenderer,
+          text: "JUMP",
+          y: textYForButtonCentre,
+        });
         showOnSurface(container, jumpTextContainer);
       }
     }
@@ -169,6 +168,7 @@ const buttonAppearances: {
         pressed,
         standingOnTeleporter: isStandingOnActiveTeleporter,
         colourised,
+        renderedInRoom: room,
       },
     };
   },
@@ -179,7 +179,7 @@ const buttonAppearances: {
       general: { colourised },
     } = renderContext;
     const { currentPlayable, room } = tickContext;
-    const currentlyRenderedProps = currentRendering?.renderProps;
+    const previouslyRenderedProps = currentRendering?.renderProps;
     const previousRendering = currentRendering?.output;
 
     const heelsAbilities =
@@ -211,18 +211,19 @@ const buttonAppearances: {
     container.visible = hasBag;
 
     if (hasBag) {
-      if (disabled !== currentlyRenderedProps?.disabled) {
+      if (disabled !== previouslyRenderedProps?.disabled) {
         setDisabled(container, disabled, colourised);
       }
 
       container.visible = true;
-      if (currentlyRenderedProps?.pressed !== pressed) {
+      if (previouslyRenderedProps?.pressed !== pressed) {
         setPressed(container, pressed);
       }
 
       if (
-        hasBag !== currentlyRenderedProps?.hasBag ||
-        carrying !== currentlyRenderedProps?.carrying
+        !previouslyRenderedProps?.hasBag ||
+        carrying !== previouslyRenderedProps?.carrying ||
+        room !== previouslyRenderedProps?.renderedInRoom
       ) {
         let bgSprite: Container | undefined;
         if (carrying !== null) {
@@ -235,6 +236,8 @@ const buttonAppearances: {
           bgSprite = createSprite({
             textureId: "bag",
             y: -2,
+            spritesheetVariant:
+              colourised ? "for-current-room" : "uncolourised",
           }) as Container;
         }
 
@@ -242,28 +245,28 @@ const buttonAppearances: {
       }
     }
 
-    const renderProps: ButtonRenderProps["carry"] = {
-      pressed,
-      hasBag,
-      colourised,
-      carrying,
-      disabled,
-    };
     return {
       output: container,
-      renderProps,
+      renderProps: {
+        pressed,
+        hasBag,
+        colourised,
+        carrying,
+        disabled,
+        renderedInRoom: room,
+      },
     };
   },
   fire({
     renderContext: {
       button,
       inputStateTracker,
-      general: { colourised },
+      general: { colourised, pixiRenderer },
     },
     currentRendering,
-    tickContext: { currentPlayable },
+    tickContext: { currentPlayable, room },
   }) {
-    const currentlyRenderedProps = currentRendering?.renderProps;
+    const previouslyRenderedProps = currentRendering?.renderProps;
     const previousRendering = currentRendering?.output;
 
     const headAbilities =
@@ -287,30 +290,38 @@ const buttonAppearances: {
     container.visible = visible;
 
     if (visible) {
-      if (currentlyRenderedProps?.pressed !== pressed) {
+      if (previouslyRenderedProps?.pressed !== pressed) {
         setPressed(container, pressed);
       }
 
       if (
-        hasHooter !== currentlyRenderedProps?.hasHooter ||
-        doughnuts !== currentlyRenderedProps?.doughnuts
+        hasHooter !== previouslyRenderedProps?.hasHooter ||
+        doughnuts !== previouslyRenderedProps?.doughnuts ||
+        room !== previouslyRenderedProps?.renderedInRoom
       ) {
         let bgSprite: Container | undefined;
         if (hasHooter) {
-          bgSprite = createSprite({ textureId: "hooter", y: -3 });
+          bgSprite = createSprite({
+            textureId: "hooter",
+            y: -3,
+            spritesheetVariant:
+              colourised ? "for-current-room" : "uncolourised",
+          });
         } else if (pokeableToNumber(doughnuts) > 0) {
           bgSprite = createSprite({
             textureId: "doughnuts",
             y: -2,
+            spritesheetVariant:
+              colourised ? "for-current-room" : "uncolourised",
           }) as Container;
         }
 
-        const doughnutsCountNumber = showTextInContainer(
-          new Container(),
-          doughnuts,
-        );
-        doughnutsCountNumber.y = textYForButtonCentre;
-        doughnutsCountNumber.filters = hudOutlineFilter;
+        const doughnutsCountNumber = new TextContainer({
+          pixiRenderer,
+          text: doughnuts,
+          outline: true,
+          y: textYForButtonCentre,
+        });
         showOnSurface(container, bgSprite, doughnutsCountNumber);
 
         setDisabled(container, doughnuts === 0, colourised);
@@ -319,19 +330,25 @@ const buttonAppearances: {
 
     return {
       output: container,
-      renderProps: { pressed, colourised, doughnuts, hasHooter },
+      renderProps: {
+        pressed,
+        colourised,
+        doughnuts,
+        hasHooter,
+        renderedInRoom: room,
+      },
     };
   },
   carryAndJump({
     renderContext: {
       button,
       inputStateTracker,
-      general: { colourised },
+      general: { colourised, pixiRenderer },
     },
     currentRendering,
     tickContext: { currentPlayable },
   }) {
-    const currentlyRenderedProps = currentRendering?.renderProps;
+    const previouslyRenderedProps = currentRendering?.renderProps;
     const previousRendering = currentRendering?.output;
 
     const heelsAbilities =
@@ -343,10 +360,10 @@ const buttonAppearances: {
     );
 
     const needsRender =
-      currentlyRenderedProps === undefined ||
-      pressed !== currentlyRenderedProps.pressed ||
-      colourised !== currentlyRenderedProps.colourised ||
-      hasBag !== currentlyRenderedProps.hasBag;
+      previouslyRenderedProps === undefined ||
+      pressed !== previouslyRenderedProps.pressed ||
+      colourised !== previouslyRenderedProps.colourised ||
+      hasBag !== previouslyRenderedProps.hasBag;
 
     if (!needsRender) {
       return "no-update";
@@ -359,8 +376,11 @@ const buttonAppearances: {
         colourised,
         button,
       });
-      const carryText = createTextForButtonSurface(button, colourised, "C+J");
-      carryText.y = textYForButtonCentre;
+      const carryText = new TextContainer({
+        pixiRenderer,
+        text: "C+J",
+        y: textYForButtonCentre,
+      });
       showOnSurface(container, carryText);
     } else {
       container = previousRendering;
@@ -370,7 +390,7 @@ const buttonAppearances: {
       container.visible = false;
     } else {
       container.visible = true;
-      if (currentlyRenderedProps?.pressed !== pressed) {
+      if (previouslyRenderedProps?.pressed !== pressed) {
         setPressed(container, pressed);
       }
     }
@@ -384,27 +404,43 @@ const buttonAppearances: {
       },
     };
   },
-  menu({ currentRendering }) {
+  menu({ currentRendering, tickContext, renderContext }) {
     if (currentRendering !== undefined) {
+      currentRendering.output!.tint = tintForHud(
+        renderContext.general.colourised,
+        tickContext.room.color,
+        false,
+      );
       return "no-update";
     }
 
-    const sprite = createSprite("hud.char.Menu");
+    const sprite = createSprite({
+      textureId: "hud.char.Menu",
+      spritesheetVariant: "original",
+    });
     sprite.scale = 2;
-    sprite.filters = hudTextFilter;
 
     return {
       output: sprite,
       renderProps: emptyObject,
     };
   },
-  map({ currentRendering }) {
+  map({ currentRendering, tickContext, renderContext }) {
     if (currentRendering !== undefined) {
+      currentRendering.output!.tint = tintForHud(
+        renderContext.general.colourised,
+        tickContext.room.color,
+        false,
+      );
       return "no-update";
     }
 
-    const output = makeTextContainer({ label: "mapText", outline: true });
-    showTextInContainer(output, "MAP");
+    const output = new TextContainer({
+      pixiRenderer: renderContext.general.pixiRenderer,
+      label: "mapText",
+      outline: true,
+      text: "MAP",
+    });
 
     return {
       output,

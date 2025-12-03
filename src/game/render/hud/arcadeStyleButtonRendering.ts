@@ -2,19 +2,8 @@ import { Container, type Sprite } from "pixi.js";
 
 import type { Button } from "./OnScreenButtonRenderer";
 
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
-import { halfbrite } from "../../../utils/colour/halfBrite";
+import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { createSprite } from "../createSprite";
-import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
-import {
-  greyFilter,
-  noFilters,
-  replaceWithHalfbriteFilter,
-} from "../filters/standardFilters";
-import { buttonColours } from "./buttonColours";
-import { showTextInContainer } from "./showTextInContainer";
 
 export const surfaceContentSym: unique symbol = Symbol();
 export const buttonSpriteSym: unique symbol = Symbol();
@@ -46,18 +35,21 @@ export const arcadeStyleButtonRendering = ({
   const depressContainer = new Container({ label: "depress" });
 
   const rootContainer = new Container({
-    label: "arcadeButton",
+    label: `arcadeButton (${which})`,
   }) as ButtonRenderingContainer;
   rootContainer.addChild(depressContainer);
 
-  const buttonSprite = createSprite("button") as Sprite;
+  const buttonSprite = createSprite({
+    textureId: "button",
+    spritesheetVariant: "original",
+  });
 
   if (colourised) {
-    buttonSprite.filters = replaceWithHalfbriteFilter(
-      buttonColours.colourised[which],
-    );
+    // buttonSprite.filters = replaceWithHalfbriteFilter(
+    //   buttonColours.colourised[which],
+    // );
   } else {
-    rootContainer.filters = new RevertColouriseFilter(buttonColours.zx[which]);
+    //rootContainer.filters = new RevertColouriseFilter(buttonColours.zx[which]);
   }
 
   depressContainer.addChild(buttonSprite);
@@ -65,6 +57,7 @@ export const arcadeStyleButtonRendering = ({
   const surfaceMask = createSprite({
     textureId: "button.surfaceMask",
     label: "surfaceMask",
+    spritesheetVariant: "original",
   });
   depressContainer.addChild(surfaceMask);
   surface.mask = surfaceMask;
@@ -81,7 +74,10 @@ export const showOnSurface = (
   button: ButtonRenderingContainer,
   ...content: Array<Container | undefined>
 ) => {
-  button[surfaceContentSym].removeChildren();
+  for (const c of button[surfaceContentSym].children) {
+    c.destroy({ children: true });
+  }
+
   for (const c of content) {
     if (c !== undefined) {
       button[surfaceContentSym].addChild(c);
@@ -94,7 +90,7 @@ export const setPressed = (
   pressed: boolean,
 ) => {
   button[buttonSpriteSym].texture =
-    loadedSpriteSheet().textures[pressed ? "button.pressed" : "button"];
+    originalSpriteSheet().textures[pressed ? "button.pressed" : "button"];
   button[depressContainerSym].y = pressed ? 1 : 0;
 };
 
@@ -105,21 +101,6 @@ export const setDisabled = (
 ) => {
   if (colourise) {
     // the whole button doesn't get grey'd out, just the surface details:
-    button[surfaceContentSym].filters = disabled ? greyFilter : noFilters;
+    //button[surfaceContentSym].filters = disabled ? greyFilter : noFilters;
   }
-};
-
-export const createTextForButtonSurface = (
-  { which }: Button,
-  colourise: boolean,
-  text: string,
-): Container => {
-  const jumpTextContainer = showTextInContainer(new Container(), text);
-  jumpTextContainer.filters = getPaletteSwapFilter({
-    white:
-      colourise ?
-        halfbrite(buttonColours.colourised[which])
-      : spritesheetPalette.pureBlack,
-  });
-  return jumpTextContainer;
 };

@@ -4,12 +4,9 @@ import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { CreateSpriteOptions } from "../createSprite";
 import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { smallItemTextureSize } from "../../../sprites/textureSizes";
+import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { createSprite } from "../createSprite";
-import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
-import { bookPaletteSwapFilter, noFilters } from "../filters/standardFilters";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
 import { charlesAppearance } from "./charlesAppearance";
@@ -24,7 +21,7 @@ import {
 } from "./ItemAppearance";
 import { joystickAppearance } from "./joystickAppearance";
 import { monsterAppearance } from "./monsterAppearance";
-import { playableAppearance, shineFilterForHeels } from "./playableAppearance";
+import { playableAppearance } from "./playableAppearance";
 import { sceneryPlayerAppearance } from "./sceneryPlayerAppearance";
 import { spikyBallAppearance } from "./spikyBallAppearance";
 import { springAppearance } from "./springAppearance";
@@ -33,11 +30,6 @@ import { teleporterAppearance } from "./teleporterAppearance";
 import { toasterAppearance } from "./toasterAppearance";
 import { farWallAppearance } from "./wallAppearance";
 
-const disappearingBarrierFilter = getPaletteSwapFilter({
-  white: spritesheetPalette.lightBeige,
-  highlightBeige: spritesheetPalette.lightBeige,
-  midRed: spritesheetPalette.redShadow,
-});
 const itemAppearancesMap: {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;
 } = {
@@ -57,12 +49,13 @@ const itemAppearancesMap: {
         item: {
           config: { axis, times, disappearing },
         },
+        general: { colourised },
       },
     }) => {
       return createSprite({
-        textureId: `barrier.${axis}`,
+        textureId: `barrier.${axis}${disappearing ? ".disappearing" : ""}`,
         times,
-        filter: disappearing ? disappearingBarrierFilter : undefined,
+        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
       });
     },
   ),
@@ -71,7 +64,7 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config, id },
-        general: { paused },
+        general: { paused, colourised },
       },
     }) => {
       switch (config.style) {
@@ -81,6 +74,8 @@ const itemAppearancesMap: {
             times: config.times,
             randomiseStartFrame: id,
             paused,
+            spritesheetVariant:
+              colourised ? "for-current-room" : "uncolourised",
           });
         case "toaster":
           throw new Error("use the special toaster appearance instead");
@@ -100,14 +95,17 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        room,
+        general: { colourised },
       },
-    }) =>
-      createSprite(
+    }) => {
+      const spritesheetVariant =
+        colourised ? "for-current-room" : "uncolourised";
+      return createSprite(
         style === "book" ?
-          { textureId: "book.y", filter: bookPaletteSwapFilter(room) }
-        : style,
-      ),
+          { textureId: "book.y", spritesheetVariant }
+        : { textureId: style, spritesheetVariant },
+      );
+    },
   ),
 
   block: blockAppearance,
@@ -120,10 +118,12 @@ const itemAppearancesMap: {
   lift: itemAppearanceRenderOnce(
     ({
       renderContext: {
-        general: { paused },
+        general: { paused, colourised },
       },
     }) => {
       const rendering = new Container();
+      const spritesheetVariant =
+        colourised ? "for-current-room" : "uncolourised";
 
       const pivot = {
         x: smallItemTextureSize.w / 2,
@@ -134,10 +134,13 @@ const itemAppearancesMap: {
           animationId: "lift",
           pivot,
           paused,
+          spritesheetVariant,
         }),
       );
 
-      rendering.addChild(createSprite({ textureId: "lift.static", pivot }));
+      rendering.addChild(
+        createSprite({ textureId: "lift.static", pivot, spritesheetVariant }),
+      );
 
       return rendering;
     },
@@ -151,10 +154,12 @@ const itemAppearancesMap: {
         item: {
           config: { planet },
         },
+        general: { colourised },
       },
     }) => {
       return createSprite({
         textureId: `crown.${planet}`,
+        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
       });
     },
   ),
@@ -163,12 +168,16 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config },
-        general: { paused },
+        general: { paused, colourised },
       },
     }) => {
+      const spritesheetVariant =
+        colourised ? "for-current-room" : "uncolourised";
+
       if (config.gives === "crown") {
         return createSprite({
           textureId: `crown.${config.planet}`,
+          spritesheetVariant,
         });
       }
 
@@ -176,17 +185,18 @@ const itemAppearancesMap: {
         (typeof config)["gives"],
         CreateSpriteOptions
       > = {
-        shield: "whiteRabbit",
-        jumps: "whiteRabbit",
-        fast: "whiteRabbit",
-        "extra-life": "whiteRabbit",
-        bag: "bag",
-        doughnuts: "doughnuts",
-        hooter: "hooter",
-        scroll: { textureId: "scroll" },
+        shield: { textureId: "whiteRabbit", spritesheetVariant },
+        jumps: { textureId: "whiteRabbit", spritesheetVariant },
+        fast: { textureId: "whiteRabbit", spritesheetVariant },
+        "extra-life": { textureId: "whiteRabbit", spritesheetVariant },
+        bag: { textureId: "bag", spritesheetVariant },
+        doughnuts: { textureId: "doughnuts", spritesheetVariant },
+        hooter: { textureId: "hooter", spritesheetVariant },
+        scroll: { textureId: "scroll", spritesheetVariant },
         reincarnation: {
           animationId: "fish",
           paused,
+          spritesheetVariant,
         },
       };
       const createSpriteOptions = pickupSpriteOptions[config.gives];
@@ -211,8 +221,13 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
+        general: { colourised },
       },
-    }) => createSprite(style),
+    }) =>
+      createSprite({
+        textureId: style,
+        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+      }),
   ),
 
   spring: springAppearance,
@@ -228,13 +243,14 @@ const itemAppearancesMap: {
           id,
           config: { style },
         },
-        general: { paused },
+        general: { paused, colourised },
       },
     }) => {
       return createSprite({
         animationId: `bubbles.bounce.${style}`,
         paused,
         randomiseStartFrame: id,
+        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
       });
     },
   ),
@@ -252,14 +268,16 @@ const itemAppearancesMap: {
         item: {
           config: { forCharacter },
         },
-        general: { paused },
+        general: { paused, colourised },
       },
     }) => {
+      const characterEquivalent = forCharacter === "head" ? "head" : "heels";
+
       return createSprite({
-        animationId: "particle.fade",
+        animationId: `particle.${characterEquivalent}.fade`,
         anchor: { x: 0.5, y: 0.5 },
-        filter: forCharacter === "heels" ? shineFilterForHeels : noFilters,
         paused,
+        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
       });
     },
   ),

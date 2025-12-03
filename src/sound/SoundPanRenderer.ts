@@ -4,9 +4,9 @@ import type { ItemSoundRenderContext } from "./ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "./ItemSoundRenderer";
 
 import { defaultRoomHeightBlocks } from "../game/physics/mechanicsConstants";
+import { blockSizePx } from "../game/physics/mechanicsConstants";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
 import { floorsRenderExtent } from "../game/render/room/floorsExtent";
-import { blockSizePx } from "../sprites/spritePivots";
 import { addXyzInPlace, scaleXyzWriteInto } from "../utils/vectors/vectors";
 import { audioCtx } from "./audioCtx";
 
@@ -17,14 +17,14 @@ const log = 0;
 // bounds for how 'high' into the screen the sound is
 // things can go below zero but it is rare, and at this point they are effectively out of the game
 // so set the limit not very low:
-const soundPositionMinY = blockSizePx.h * -1;
-const soundPositionMaxY = blockSizePx.h * defaultRoomHeightBlocks;
+const soundPositionMinY = blockSizePx.z * -1;
+const soundPositionMaxY = blockSizePx.z * defaultRoomHeightBlocks;
 
 // bounds for how 'deep' into the screen the sound is
 const soundPositionMinZ = 0;
 // x+y blocks away from the listener - a typical large room is 8, so
 // max depth would be 8+8 = 16
-const soundPositionMaxZ = blockSizePx.w * 16;
+const soundPositionMaxZ = blockSizePx.x * 16;
 
 // a buffer to use while calculating positions - avoids creating new objects,
 // is safe to use because no two SoundPanRenderer can be ticking at the same time

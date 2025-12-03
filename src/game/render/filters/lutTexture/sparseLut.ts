@@ -5,7 +5,7 @@ import { Texture } from "pixi.js";
 import {
   spritesheetPalette,
   type SpritesheetPaletteColourName,
-} from "../../../../../gfx/spritesheetPalette";
+} from "../../../../sprites/palette/spritesheetPalette";
 import { standardBrightnessLevels } from "../../../../utils/colour/halfBrite";
 import { objectEntriesIter } from "../../../../utils/entries";
 import { getBlockNeighborhood } from "./blockEncode";

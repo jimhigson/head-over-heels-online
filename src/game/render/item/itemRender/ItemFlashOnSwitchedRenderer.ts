@@ -1,5 +1,3 @@
-import type { Filter } from "pixi.js";
-
 import { Container } from "pixi.js";
 
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
@@ -9,23 +7,17 @@ import type {
 } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
-import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
 import { iterateRoomItems } from "../../../../model/RoomState";
+import {
+  spritesheetPalette,
+  spritesheetPaletteDim,
+} from "../../../../sprites/palette/spritesheetPalette";
 import { isModifier } from "../../../physics/itemPredicates";
 import { OneColourFilter } from "../../filters/oneColourFilter";
-import { outlineFilters } from "../../filters/outlineFilter";
-import { noFilters } from "../../filters/standardFilters";
-
-const recentlySwitchedFiltersRight: Array<Filter> = [
-  new OneColourFilter(spritesheetPalette.midRed),
-  outlineFilters.pureBlack,
-];
-const recentlySwitchedFiltersLeft: Array<Filter> = [
-  new OneColourFilter(spritesheetPalette.moss),
-  outlineFilters.pureBlack,
-];
+import { OutlineFilter } from "../../filters/outlineFilter";
 
 const flashDurationMs = 75;
+
 export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
@@ -33,11 +25,36 @@ export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
     label: "ItemFlashOnSwitchedRenderer",
   });
 
+  #leftColourFilter: OneColourFilter;
+  #rightColourFilter: OneColourFilter;
+  #outlineFilter: OutlineFilter;
+
   constructor(
     readonly renderContext: ItemRenderContext<T>,
     private readonly childRenderer: ItemPixiRenderer<T>,
   ) {
     this.output.addChild(childRenderer.output);
+
+    const palette =
+      renderContext.room.color.shade === "dimmed" ?
+        spritesheetPaletteDim
+      : spritesheetPalette;
+
+    this.#leftColourFilter = new OneColourFilter(palette.moss);
+    this.#rightColourFilter = new OneColourFilter(palette.midRed);
+    this.#outlineFilter = new OutlineFilter({
+      color: palette.pureBlack,
+    });
+
+    this.#leftColourFilter.enabled = false;
+    this.#rightColourFilter.enabled = false;
+    this.#outlineFilter.enabled = false;
+
+    this.output.filters = [
+      this.#leftColourFilter,
+      this.#rightColourFilter,
+      this.#outlineFilter,
+    ];
   }
 
   tick(tickContext: ItemTickContext) {
@@ -50,12 +67,13 @@ export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
       },
     } = this;
 
-    this.output.filters =
-      roomTime - switchedAtRoomTime < flashDurationMs ?
-        switchedSetting === "left" ?
-          recentlySwitchedFiltersLeft
-        : recentlySwitchedFiltersRight
-      : noFilters;
+    const isFlashing = roomTime - switchedAtRoomTime < flashDurationMs;
+    const isLeft = switchedSetting === "left";
+
+    this.#leftColourFilter.enabled = isFlashing && isLeft;
+    this.#rightColourFilter.enabled = isFlashing && !isLeft;
+    this.#outlineFilter.enabled = isFlashing;
+
     this.childRenderer.tick(tickContext);
   }
 

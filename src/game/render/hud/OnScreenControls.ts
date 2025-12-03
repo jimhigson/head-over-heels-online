@@ -7,10 +7,10 @@ import type { InputDirectionMode } from "../../../store/slices/gameMenus/gameMen
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { Renderer } from "../Renderer";
 import type { GeneralRenderContext } from "../room/RoomRenderContexts";
-import type { HudRendererTickContext } from "./hudRendererContexts";
+import type { HudRendererTickContextWithRoom } from "./hudRendererContexts";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 
-import { spritesheetData } from "../../../sprites/spriteSheetData";
+import { spritesheetData } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";
@@ -35,7 +35,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
   implements
     Renderer<
       OnScreenControlsRenderContext<RoomId>,
-      HudRendererTickContext<RoomId, RoomItemId>,
+      HudRendererTickContextWithRoom<RoomId, RoomItemId>,
       Container
     >
 {
@@ -168,18 +168,18 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
       buttonRenderer.output.eventMode = "static";
       buttonRenderer.output.on("pointerdown", () => {
-        for (const a of actions) {
-          inputStateTracker.hudInputState[a] = true;
+        for (const action of actions) {
+          inputStateTracker.hudInputState[action] = true;
         }
       });
       buttonRenderer.output.on("pointerup", () => {
-        for (const a of actions) {
-          inputStateTracker.hudInputState[a] = false;
+        for (const action of actions) {
+          inputStateTracker.hudInputState[action] = false;
         }
       });
       buttonRenderer.output.on("pointerleave", () => {
-        for (const a of actions) {
-          inputStateTracker.hudInputState[a] = false;
+        for (const action of actions) {
+          inputStateTracker.hudInputState[action] = false;
         }
       });
     }
@@ -196,7 +196,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     this.#hudElements.buttons.map.output.x = screenSize.x - 4 * 8;
   }
 
-  tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>): void {
+  tick(tickContext: HudRendererTickContextWithRoom<RoomId, RoomItemId>): void {
     const { screenSize } = tickContext;
     const {
       general: { gameState },
@@ -209,7 +209,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
         currentPlayable: selectCurrentPlayableItem(gameState),
       });
     }
-    this.#hudElements.joystick.tick();
+    this.#hudElements.joystick.tick(tickContext);
     this.#hudElements.look.tick(tickContext);
   }
 
@@ -218,9 +218,9 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
   }
 
   destroy() {
-    this.#container.destroy();
     this.#hudElements.joystick.destroy();
     this.#hudElements.look.destroy();
+    this.#container.destroy({ children: true });
   }
 }
 export const buttonSpriteSize = spritesheetData.frames.button.frame;

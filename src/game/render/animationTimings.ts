@@ -1,6 +1,7 @@
-import type { AnimationId } from "../../sprites/spriteSheetData";
-
-import { spritesheetData } from "../../sprites/spriteSheetData";
+import {
+  type AnimationId,
+  spritesheetData,
+} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
 
 /**
   default animation speed is one frame of animation per twp

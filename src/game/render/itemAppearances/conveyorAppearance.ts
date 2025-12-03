@@ -1,11 +1,12 @@
 import { AnimatedSprite } from "pixi.js";
 import { Container } from "pixi.js";
 
+import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { spritesheetData } from "../../../sprites/spriteSheetData";
+import { spritesheetData } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { neverTime } from "../../../utils/neverTime";
 import { tangentAxis } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -46,12 +47,14 @@ const staggerAnimation = (
 const createRendering = (
   direction: DirectionXy4,
   times: Partial<Xy> | undefined,
+  spritesheetVariant: SpritesheetVariant,
 ): Container<AnimatedSprite> => {
   const axis = tangentAxis(direction);
   const sprites = createSprite({
     animationId: `conveyor.${axis}`,
     reverse: direction === "towards" || direction === "right",
     times,
+    spritesheetVariant,
   });
   // createSprite will return a single AnimatedSprite for a single conveyor,
   // which is generally fine to avoid creating unnecessary containers. However,
@@ -82,6 +85,7 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy, direction },
     },
     room: { roomTime },
+    general: { colourised },
   },
   currentRendering,
 }) => {
@@ -100,8 +104,11 @@ const conveyorAppearanceImpl: ItemAppearance<
   const currentOutput = currentRendering?.output;
   const rerender =
     !currentOutput || direction !== currentlyRenderedProps?.direction;
+  const spritesheetVariant = colourised ? "for-current-room" : "uncolourised";
   const rendering =
-    rerender ? createRendering(direction, times) : currentOutput;
+    rerender ?
+      createRendering(direction, times, spritesheetVariant)
+    : currentOutput;
 
   // how fast to play the animation, with slowdown for how long since it stopped moving
   const playSpeedFrac = Math.max(0, 1 - periodSinceStopped / slowdownTimeMs);

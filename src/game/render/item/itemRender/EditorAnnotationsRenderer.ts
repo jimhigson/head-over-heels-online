@@ -1,4 +1,5 @@
 import type { UnknownAction } from "@reduxjs/toolkit";
+import type { Color } from "pixi.js";
 
 import { Container } from "pixi.js";
 
@@ -24,7 +25,6 @@ import type {
 } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
-import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
 import {
   changeToRoom,
   selectHoveredItem,
@@ -34,30 +34,23 @@ import {
 } from "../../../../editor/slice/levelEditorSlice";
 import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
 import { iterateRoomItems } from "../../../../model/RoomState";
+import { spritesheetPalette } from "../../../../sprites/palette/spritesheetPalette";
 import { store } from "../../../../store/store";
 import { outlineFilters } from "../../filters/outlineFilter";
 import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
 import { noFilters } from "../../filters/standardFilters";
-import { showTextInContainer } from "../../hud/showTextInContainer";
+import { TextContainer } from "../../text/TextContainer";
 
 const selectionColour = spritesheetPalette.pastelBlue;
 const pointerHoverFilter = outlineFilters.highlightBeige;
+const monsterWakesColour = spritesheetPalette.lightBeige;
 const monsterWakesFilter = outlineFilters.lightBeige;
 const eyeDropperHoverFilter = outlineFilters.midRed;
 const controlHighlightFilter = outlineFilters.white;
 const selectedFilter = new RevertColouriseFilter(selectionColour);
-const textAnnotationFilterNormal = new RevertColouriseFilter(
-  spritesheetPalette.white,
-);
-const textAnnotationFilterError = new RevertColouriseFilter(
-  spritesheetPalette.midRed,
-);
-const wakingMonsterFilter = new RevertColouriseFilter(
-  spritesheetPalette.lightBeige,
-);
-const textClickableAnnotationFilterHover = new RevertColouriseFilter(
-  spritesheetPalette.pastelBlue,
-);
+const textAnnotationNormalColour = spritesheetPalette.white;
+const textAnnotationErrorColour = spritesheetPalette.midRed;
+const textClickableAnnotationHoverColour = spritesheetPalette.pastelBlue;
 
 const directionArrows = {
   left: `↖`,
@@ -227,10 +220,10 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
             this.#addTextAnnotation({
               annotationText: text,
               yAdj: direction === "left" || direction === "away" ? -48 : 0,
-              filter:
+              tint:
                 toRoomExists ?
-                  textAnnotationFilterNormal
-                : textAnnotationFilterError,
+                  textAnnotationNormalColour
+                : textAnnotationErrorColour,
               clickDispatch:
                 toRoomExists ?
                   () => changeToRoom(toRoom as EditorRoomId)
@@ -254,10 +247,10 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           this.#addTextAnnotation({
             annotationText: `➡${toRoom}`,
             yAdj: -12,
-            filter:
+            tint:
               toRoomExists ?
-                textAnnotationFilterNormal
-              : textAnnotationFilterError,
+                textAnnotationNormalColour
+              : textAnnotationErrorColour,
             clickDispatch:
               toRoomExists ?
                 () => changeToRoom(toRoom as EditorRoomId)
@@ -303,7 +296,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
               config.activated === "after-player-near":
               this.#addTextAnnotation({
                 annotationText: "wake",
-                filter: wakingMonsterFilter,
+                tint: monsterWakesColour,
                 yAdj: -12,
               });
               break;
@@ -326,12 +319,12 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
   #addTextAnnotation({
     annotationText,
     yAdj = 0,
-    filter = textAnnotationFilterNormal,
+    tint = textAnnotationNormalColour,
     clickDispatch,
   }: {
     annotationText: string;
     yAdj?: number;
-    filter?: RevertColouriseFilter;
+    tint?: Color;
     clickDispatch?: () => UnknownAction;
   }) {
     // this needs pixi 8.10, but that had some regressions when I tried it:
@@ -347,17 +340,20 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     // });
 
     const {
-      renderContext: { frontLayer },
+      renderContext: {
+        frontLayer,
+        general: { pixiRenderer },
+      },
     } = this;
 
-    const annotationContainer = showTextInContainer(
-      new Container({
-        label: "EditorAnnotationTextContainer",
-        filters: [filter, outlineFilters.pureBlack],
-      }),
-      annotationText,
-    );
-    annotationContainer.y = yAdj;
+    const annotationContainer = new TextContainer({
+      pixiRenderer,
+      label: "EditorAnnotationTextContainer",
+      outline: true,
+      tint,
+      text: annotationText,
+      y: yAdj,
+    });
 
     if (clickDispatch !== undefined) {
       annotationContainer.eventMode = "static";
@@ -377,14 +373,11 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         // TODO: this is over-dispatching - need some way to
         // prevent firing when enter/leave children
         store.dispatch(setClickableAnnotationHovered(true));
-        annotationContainer.filters = [
-          textClickableAnnotationFilterHover,
-          outlineFilters.pureBlack,
-        ];
+        annotationContainer.tint = textClickableAnnotationHoverColour;
       });
       annotationContainer.on("mouseout", () => {
         store.dispatch(setClickableAnnotationHovered(false));
-        annotationContainer.filters = [filter, outlineFilters.pureBlack];
+        annotationContainer.tint = tint;
       });
       annotationContainer.cursor = "pointer";
     }

@@ -6,7 +6,6 @@ import type { Mechanic } from "../MechanicResult";
 import { type CharacterName } from "../../../model/modelTypes";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { originalGameFrameDuration } from "../../../originalGame";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   isPickup,
   isPlayableItem,
@@ -15,6 +14,7 @@ import {
   type PlayableItem,
 } from "../itemPredicates";
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import { blockSizePx } from "../mechanicsConstants";
 import {
   fallG,
   jumpDelayGrace,
@@ -40,9 +40,9 @@ const jumpInitialVelocities = {
   head: jumpInitialVelocity(playerJumpHeightPx.head),
   // TODO: confirm that springs give one extra block of height for head - this is
   // correct for heels (from 1 to 2) but that could be a doubling
-  headOnSpring: jumpInitialVelocity(playerJumpHeightPx.head + blockSizePx.h),
+  headOnSpring: jumpInitialVelocity(playerJumpHeightPx.head + blockSizePx.z),
   heels: jumpInitialVelocity(playerJumpHeightPx.heels),
-  heelsOnSpring: jumpInitialVelocity(playerJumpHeightPx.heels + blockSizePx.h),
+  heelsOnSpring: jumpInitialVelocity(playerJumpHeightPx.heels + blockSizePx.z),
 };
 
 const getJumpInitialVelocity = (

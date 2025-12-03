@@ -21,12 +21,12 @@ export const FiveCrownsDisplay = () => {
         <TitledCrown
           planet="safari"
           label="Safari"
-          className="w-12 left-m10 top-15 absolute resHandheld:left-m8 resHandheld:top-8 translate-x-[-50%]"
+          className="w-12 left-m10 top-14 absolute resHandheld:left-m8 resHandheld:top-8 translate-x-[-50%]"
         />
         <TitledCrown
           planet="bookworld"
           label="Book World"
-          className="w-12 absolute left-10 top-15 resHandheld:left-8 resHandheld:top-8 translate-x-[-50%]"
+          className="w-12 absolute left-10 top-14 resHandheld:left-7 resHandheld:top-8 translate-x-[-50%]"
         />
         <TitledCrown
           planet="blacktooth"

@@ -1,17 +1,12 @@
-import { type Container, Sprite } from "pixi.js";
+import { type Container } from "pixi.js";
 
-const emojis: Record<string, string | undefined> = {
-  Container: "📦",
-  Sprite: "🖼️",
-  UniqueTextureSprite: "✨",
-  Graphics: "🎨",
-  Text: "📝",
-  AnimatedSprite: "🎬",
-  TilingSprite: "🔲",
-  BitmapText: "🔤",
-  Mesh: "🔺",
-  NineSliceSprite: "🔳",
-};
+import {
+  getContainerAdditionalInfo,
+  getContainerEmoji,
+  getContainerLabelSuffix,
+  getContainerTypeName,
+} from "./containerInfo";
+
 /**
  * Renders a Pixi container hierarchy as a string representation
  * showing the scene graph structure with labels and types
@@ -30,14 +25,10 @@ export const pixiContainerToString = (
     lines.push("");
   }
 
-  // Get the type name of the container, stripping leading underscore if present
-  // (minified Pixi builds may use names like _Container, _Sprite, etc.)
-  const rawTypeName = container.constructor.name;
-  const typeName =
-    rawTypeName.startsWith("_") ? rawTypeName.slice(1) : rawTypeName;
+  const typeName = getContainerTypeName(container);
 
   // Get emoji for the type
-  let typeEmoji = emojis[typeName] || "📌";
+  let typeEmoji = getContainerEmoji(typeName);
 
   // Check if this container is used as a mask by any ancestor
   // ancestors[0] is immediate parent, ancestors[1] is grandparent, etc.
@@ -53,43 +44,8 @@ export const pixiContainerToString = (
     }
   });
 
-  // Get the label if it exists and is different from the type name
-  const label =
-    container.label && container.label !== typeName ?
-      ` "${container.label}"`
-    : "";
-
-  // Get additional info
-  const additionalInfo: string[] = [];
-  try {
-    if (container.x !== 0 || container.y !== 0) {
-      additionalInfo.push(`@(${container.x}, ${container.y})`);
-    }
-  } catch (_e: unknown) {
-    additionalInfo.push("@(ERROR)");
-  }
-  if (container.children.length > 2) {
-    additionalInfo.push(`children: ${container.children.length}`);
-  }
-  if (!container.visible) {
-    additionalInfo.push("hidden");
-  }
-  if (container.alpha < 1) {
-    additionalInfo.push(`alpha: ${container.alpha.toFixed(2)}`);
-  }
-  if (container.mask) {
-    additionalInfo.push("😷 masked");
-  }
-  // Check for texture on Sprites and subclasses
-  if (container instanceof Sprite) {
-    const sprite = container as Sprite;
-    if (sprite.texture === null || sprite.texture === undefined) {
-      additionalInfo.push("texture: NO TEXTURE");
-    } else {
-      const textureLabel = sprite.texture.label || "(anon texture)";
-      additionalInfo.push(`texture: "${textureLabel}"`);
-    }
-  }
+  const label = getContainerLabelSuffix(container, typeName);
+  const additionalInfo = getContainerAdditionalInfo(container);
 
   // Build the current line
   const prefix = isRoot ? "" : indent + (isLast ? "└── " : "├── ");

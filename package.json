@@ -63,7 +63,7 @@
     "nano-equal": "^2.0.2",
     "natural-compare-lite": "^1.4.0",
     "natural-orderby": "^5.0.0",
-    "pixi.js": "^8.14.2",
+    "pixi.js": "8.15.0-rc",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
@@ -143,6 +143,9 @@
       "@swc/core",
       "esbuild",
       "supabase"
-    ]
+    ],
+    "patchedDependencies": {
+      "pixi.js": "patches/pixi.js.patch"
+    }
   }
 }

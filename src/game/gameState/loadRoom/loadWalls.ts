@@ -1,11 +1,11 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import type { Xyz } from "../../../utils/vectors/vectors";
+import type { CreateSpriteOptions } from "../../render/createSprite";
 
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { isWallHidden } from "../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../model/times";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
@@ -14,10 +14,22 @@ import {
   perpendicularAxisXy,
 } from "../../../utils/vectors/vectors";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { veryHighZ, wallRenderHeight } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
+
+const shadowWallY: CreateSpriteOptions = Object.freeze({
+  textureId: "shadow.wall.y",
+  spritesheetVariant: "original",
+});
+
+const shadowWallX: CreateSpriteOptions = Object.freeze({
+  textureId: "shadow.wall.y",
+  flipX: true,
+  spritesheetVariant: "original",
+});
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal.
@@ -26,24 +38,24 @@ import { defaultBaseState } from "./itemDefaultStates";
 export const wallThicknessBlocks = 1;
 
 export const xAxisWallAabb = {
-  x: blockSizePx.w,
-  y: blockSizePx.d * wallThicknessBlocks,
+  x: blockSizePx.x,
+  y: blockSizePx.y * wallThicknessBlocks,
   z: veryHighZ,
 };
 export const xAxisWallRenderAabb = {
-  x: blockSizePx.w,
+  x: blockSizePx.x,
   y: 0,
   // for rendering it extends to the drawn height of the wall tile:
   z: wallRenderHeight,
 };
 export const yAxisWallAabb = {
-  x: blockSizePx.w * wallThicknessBlocks,
-  y: blockSizePx.d,
+  x: blockSizePx.x * wallThicknessBlocks,
+  y: blockSizePx.y,
   z: veryHighZ,
 };
 export const yAxisWallRenderAabb = {
   x: 0,
-  y: blockSizePx.d,
+  y: blockSizePx.y,
   z: wallRenderHeight,
 };
 
@@ -91,10 +103,8 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
       // walls can never be stood on:
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },
-    shadowCastTexture:
-      wallTangentAxis === "y" ? "shadow.wall.y" : (
-        { textureId: "shadow.wall.y", flipX: true }
-      ),
+    shadowCastTexture: wallTangentAxis !== "y" ? shadowWallX : shadowWallY,
+
     //hidden walls cast shadows to give a hint of the unreachable areas on the floor
     castsShadowWhileStoodOn: isHidden,
   };

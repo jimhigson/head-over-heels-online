@@ -9,7 +9,7 @@ import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
 import type { PlayableItem } from "../../../../../physics/itemPredicates";
 import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
 
-import { hudLowercaseCharTextureSize } from "../../../../../../sprites/textureSizes";
+import { hudLowercaseCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { iterate } from "../../../../../../utils/iterate";
 import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";

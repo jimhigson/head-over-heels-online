@@ -2,10 +2,10 @@ import type { CSSProperties } from "react";
 
 import type { ZxSpectrumRoomHue } from "../../../originalGame";
 
-import { colorScheme } from "../../../game/hintColours";
-import { zxSpectrumRoomHue } from "../../../originalGame";
+import { gameColour } from "../../../game/render/gameColours/gameColours";
+import { zxSpectrumColor, zxSpectrumRoomHue } from "../../../originalGame";
 import { useAppDispatch } from "../../../store/hooks";
-import { cn } from "../../../ui/cn";
+import { useIsUncolourised } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { CommandItem } from "../../../ui/command";
 import { Select } from "../../../ui/Select";
 import { Switch } from "../../../ui/Switch";
@@ -15,16 +15,30 @@ import {
   useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 
-const itemColourCss = (hue: ZxSpectrumRoomHue): CSSProperties => {
-  const { main: mainColoursForHue } = colorScheme[hue].basic;
+export const itemColourCss = (
+  hue: ZxSpectrumRoomHue,
+  uncolourised: boolean,
+): CSSProperties => {
+  if (uncolourised) {
+    return {
+      backgroundColor: zxSpectrumColor(hue, "dimmed").toHex(),
+      borderColor: zxSpectrumColor(hue, "dimmed").toHex(),
+    };
+  }
+
   return {
-    backgroundColor: mainColoursForHue.basic.toHex(),
-    borderColor: mainColoursForHue.dimmed.toHex(),
+    backgroundColor: gameColour(`swop_${hue}`).toHex(),
+    borderColor: gameColour(`swop_${hue}Dim`).toHex(),
+    color:
+      hue === "white" || hue === "yellow" ?
+        gameColour("pureBlack").toHex()
+      : gameColour("white").toHex(),
   };
 };
 
 export function RoomColourSelect() {
   const dispatch = useAppDispatch();
+  const uncolourised = useIsUncolourised();
 
   const currentRoomColour = useAppSelectorWithLevelEditorSlice(
     selectCurrentEditingRoomColour,
@@ -47,16 +61,13 @@ export function RoomColourSelect() {
           <CommandItem
             value={value}
             className="border-l-3 h-2 w-full p-0"
-            style={itemColourCss(value)}
+            style={itemColourCss(value, uncolourised)}
             onSelect={onSelect}
           />
         )}
         triggerButtonLabel="Colour"
-        triggerButtonClassName={cn(
-          "w-full",
-          `${currentRoomColour.hue === "white" || currentRoomColour.hue === "yellow" ? "text-pureBlack" : "text-white"}`,
-        )}
-        triggerButtonStyle={itemColourCss(currentRoomColour.hue)}
+        triggerButtonClassName="w-full"
+        triggerButtonStyle={itemColourCss(currentRoomColour.hue, uncolourised)}
         tooltipContent="Change the colour of this room"
       />
       <Switch

@@ -1,7 +1,7 @@
 import type { HeadAbilities } from "../../../model/ItemStateMap";
 import type { PlayableItem } from "../../physics/itemPredicates";
 
-import { blockSizePx } from "../../../sprites/spritePivots";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { shieldDuration } from "../../physics/mechanicsConstants";
 
 export const shieldRemainingForAbilities = (abilities?: {
@@ -33,7 +33,7 @@ export const playableHasShield = (playableItem: PlayableItem): boolean => {
 
 export const fastStepsRemaining = (abilities: HeadAbilities) => {
   // how far a quick steps rabbit lets us walk fast:
-  const quickStepsDistance = 100 * blockSizePx.w;
+  const quickStepsDistance = 100 * blockSizePx.x;
 
   const hasFastSteps =
     abilities.gameWalkDistance <=
@@ -47,7 +47,7 @@ export const fastStepsRemaining = (abilities: HeadAbilities) => {
     100 -
     Math.ceil(
       (abilities.gameWalkDistance - abilities.fastStepsStartedAtDistance) /
-        blockSizePx.w,
+        blockSizePx.x,
     );
 
   return fastStepsRemaining;

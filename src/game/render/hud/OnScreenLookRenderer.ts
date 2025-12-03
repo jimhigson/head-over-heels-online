@@ -7,7 +7,6 @@ import type { Renderer } from "../Renderer";
 import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 import type { HudRendererTickContext } from "./hudRendererContexts";
 import type { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";
-import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
 
 import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
@@ -22,16 +21,14 @@ type LookRenderContext = {
 };
 
 export class OnScreenLookRenderer<
-    RoomId extends string = string,
-    RoomItemId extends string = string,
-  >
-  implements
+  RoomId extends string = string,
+  RoomItemId extends string = string,
+> implements
     Renderer<
       LookRenderContext,
       HudRendererTickContext<RoomId, RoomItemId>,
       Container
-    >,
-    PointerGrabbingRender
+    >
 {
   output = new Graphics({ label: "OnScreenLook", eventMode: "static" });
 
@@ -47,14 +44,18 @@ export class OnScreenLookRenderer<
   constructor(public readonly renderContext: LookRenderContext) {
     const { x: w, y: h } = renderContext.general.upscale.gameEngineScreenSize;
 
-    this.output.on("pointerenter", this.handlePointerEnter);
-    this.output.on("pointerup", this.stopCurrentPointer);
-    this.output.on("pointerupoutside", this.stopCurrentPointer);
+    this.output.on("touchstart", this.handleTouchStart);
+    this.output.on("mousedown", this.handleTouchStart);
+
+    this.output.on("touchend", this.stopCurrentPointer);
+    this.output.on("touchendoutside", this.stopCurrentPointer);
+    this.output.on("mouseup", this.stopCurrentPointer);
+    this.output.on("mouseupoutside", this.stopCurrentPointer);
 
     this.output.rect(0, 0, w, h).fill("#00000000");
   }
 
-  handlePointerEnter = (e: FederatedPointerEvent) => {
+  handleTouchStart = (e: FederatedPointerEvent) => {
     // already handling a pointer:
     if (this.#curPointerId !== undefined) {
       // switching from an old pointer to a new one
@@ -136,9 +137,13 @@ export class OnScreenLookRenderer<
 
   destroy() {
     this.stopCurrentPointer();
-    this.output.off("pointerenter", this.handlePointerEnter);
-    this.output.off("pointerup", this.stopCurrentPointer);
-    this.output.off("pointerupoutside", this.stopCurrentPointer);
+    this.output.off("touchstart", this.handleTouchStart);
+    this.output.off("mousedown", this.handleTouchStart);
+
+    this.output.off("touchend", this.stopCurrentPointer);
+    this.output.off("touchendoutside", this.stopCurrentPointer);
+    this.output.off("mouseup", this.stopCurrentPointer);
+    this.output.off("mouseupoutside", this.stopCurrentPointer);
     this.output.destroy();
   }
 

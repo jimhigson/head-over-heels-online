@@ -1,5 +1,5 @@
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { zxSpectrumColors } from "../../../originalGame";
+import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
 
 export const buttonColours = {
   colourised: {
@@ -11,11 +11,11 @@ export const buttonColours = {
     map: spritesheetPalette.lightGrey,
   },
   zx: {
-    jump: zxSpectrumColors.zxBlue,
-    fire: zxSpectrumColors.zxYellow,
-    carry: zxSpectrumColors.zxGreen,
-    carryAndJump: zxSpectrumColors.zxRed,
-    menu: zxSpectrumColors.zxWhite,
-    map: zxSpectrumColors.zxWhite,
+    jump: zxSpectrumColors.blue,
+    fire: zxSpectrumColors.yellow,
+    carry: zxSpectrumColors.green,
+    carryAndJump: zxSpectrumColors.red,
+    menu: zxSpectrumColors.white,
+    map: zxSpectrumColors.white,
   },
 };

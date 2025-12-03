@@ -2,25 +2,22 @@ import { Container } from "pixi.js";
 
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { blockSizePx } from "../../../sprites/spritePivots";
+import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
 import { emptyObject } from "../../../utils/empty";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
-import { outlineFilters } from "../filters/outlineFilter";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
-import { noFilters } from "../filters/standardFilters";
-import { showTextInContainer } from "../hud/showTextInContainer";
+import { TextContainer } from "../text/TextContainer";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;
 
 /** above this height, lines are hidden */
-const maxLineHeight = blockSizePx.h * 3;
+const maxLineHeight = blockSizePx.z * 3;
 
 const lightening = [
   spritesheetPalette.shadow,
-  spritesheetPalette.midGrey,
   spritesheetPalette.redShadow,
+  spritesheetPalette.midGrey,
   spritesheetPalette.metallicBlue,
   spritesheetPalette.midRed,
   spritesheetPalette.moss,
@@ -56,6 +53,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     room: { roomTime },
     general: {
       displaySettings: { uncolourised },
+      pixiRenderer,
     },
     frontLayer,
   },
@@ -69,25 +67,18 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
   const itemRenderHeight = age * floatingTextRiseSpeedPxPerMs;
 
   if (previousRendering === undefined) {
-    mainContainer = new Container({
-      filters: outlineFilters.pureBlack,
-    });
+    mainContainer = new Container();
     frontLayer?.attach(mainContainer);
 
     // add all lines early, even if some will be hidden right away:
     for (let i = 0; i < textLines.length; i++) {
       const textLine = textLines[i];
-      const lineContainer = showTextInContainer(
-        new Container({
-          label: textLine,
-          y: i * lineHeightPx,
-          filters:
-            uncolourised ? noFilters : (
-              new RevertColouriseFilter(spritesheetPalette.pink)
-            ),
-        }),
-        textLine.toUpperCase(),
-      );
+      const lineContainer = new TextContainer({
+        pixiRenderer,
+        y: i * lineHeightPx,
+        outline: true,
+        text: textLine.toUpperCase(),
+      });
       mainContainer.addChild(lineContainer);
     }
   } else {
@@ -98,9 +89,6 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
   // set line colours/visibility (every frame):
   for (let i = 0; i < textLines.length; i++) {
     const lineContainer = mainContainer.children[i];
-    const [lineColourFilter] = lineContainer.filters as
-      | []
-      | [RevertColouriseFilter];
 
     const lineHeight = itemRenderHeight + i * -lineHeightPx;
 
@@ -109,11 +97,11 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     lineContainer.visible = visible;
     anyVisible ||= visible;
 
-    if (visible && lineColourFilter) {
+    if (visible && !uncolourised) {
       const colourIndex = Math.floor(
         (lineHeight / maxLineHeight) * fadeOrderColourised.length,
       );
-      lineColourFilter.targetColor = fadeOrderColourised[colourIndex];
+      lineContainer.tint = fadeOrderColourised[colourIndex];
     }
   }
 

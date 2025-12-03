@@ -1,10 +1,9 @@
 import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
-import type { TextureId } from "../../../sprites/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
-import { bookPaletteSwapFilter } from "../filters/standardFilters";
 
 type BlockRenderProps = {
   // flatten disappear down to a single value, since all we care about is if it is on or not
@@ -31,7 +30,7 @@ const blockTextureId = (
 
 export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
-    general: { pixiRenderer },
+    general: { pixiRenderer, colourised },
     item: {
       config: { style, times },
       state: { disappearing: disappear },
@@ -59,10 +58,8 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           style,
           isDissapearing,
         ),
-        filter:
-          // books have special colourisation:
-          style === "book" ? bookPaletteSwapFilter(room) : undefined,
         times,
+        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
       }),
     ),
     renderProps: { isDissapearing },

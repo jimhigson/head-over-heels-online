@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 
 import type { SanitisedForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import type { SceneryName } from "../../sprites/planets";
-import type { TextureId } from "../../sprites/spriteSheetData";
+import type { TextureId } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
 
 import { keys } from "../../utils/entries";

@@ -2,20 +2,47 @@ import type { Config } from "tailwindcss";
 
 import scrollbar from "tailwind-scrollbar";
 
-import spritesheetPalette from "./gfx/spritesheetPalette.json";
-import { resolutions, zxSpectrumColors } from "./src/originalGame";
+import spritesheetPalette from "./src/_generated/palette/spritesheetPalette.json" with { type: "json" };
+import {
+  resolutions,
+  zxSpectrumColors,
+  zxSpectrumColorsDimmed,
+} from "./src/originalGame";
 import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
 import { halfbriteHex } from "./src/utils/colour/halfBrite";
 import { transformObject } from "./src/utils/entries";
 
+const halfbriteSpritesheetPalette = transformObject(
+  spritesheetPalette,
+  ([colourName, colourValue]) => [
+    (colourName + "Halfbrite") as `${typeof colourName}Halfbrite`,
+    halfbriteHex(colourValue),
+  ],
+);
+const zxSpecTailwindColours = transformObject(
+  zxSpectrumColors,
+  ([colourName, colourValue]) => [
+    `zx${colourName.charAt(0).toUpperCase()}${colourName.slice(1)}` as `zx${Capitalize<typeof colourName>}`,
+    colourValue.toHex(),
+  ],
+);
+
+const zxSpecTailwindColoursDimmed = transformObject(
+  zxSpectrumColorsDimmed,
+  ([colourName, colourValue]) => [
+    `zx${colourName.charAt(0).toUpperCase()}${colourName.slice(1)}Dimmed` as `zx${Capitalize<typeof colourName>}Dimmed`,
+    colourValue.toHex(),
+  ],
+);
+
 const colors = {
   ...spritesheetPalette,
-  ...transformObject(spritesheetPalette, ([colourName, colourValue]) => [
-    colourName + "Halfbrite",
-    halfbriteHex(colourValue),
-  ]),
+  ...halfbriteSpritesheetPalette,
 
-  ...zxSpectrumColors,
+  // zx Spectrum colours prefixed with 'zx' ie zxRed, zxGreen
+  ...zxSpecTailwindColours,
+  // zx Spectrum colours prefixed with 'zx' ie zxRedDimmed, zxGreenDimmed
+  ...zxSpecTailwindColoursDimmed,
 
   transparent: "transparent",
 } as const;

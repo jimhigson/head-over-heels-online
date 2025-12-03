@@ -1,13 +1,13 @@
 import type { Application, TextureSourceLike } from "pixi.js";
 
-import { RenderTexture, Texture } from "pixi.js";
+import { RenderTexture, Texture, TextureSource } from "pixi.js";
 
 import { addTexture, removeTexture } from "./textureData";
 
 // Store original methods
 const originalTextureFrom = Texture.from;
 const originalRenderTextureCreate = RenderTexture.create;
-const originalTextureDestroy = Texture.prototype.destroy;
+const originalTextureSourceDestroy = TextureSource.prototype.destroy;
 
 // Track if we've already patched the methods
 let isTracking = false;
@@ -31,7 +31,7 @@ const patchedTextureFrom = function (
   skipCache?: boolean,
 ): Texture {
   const texture = originalTextureFrom(id, skipCache);
-  addTexture(texture);
+  addTexture(texture.source);
   return texture;
 };
 
@@ -40,14 +40,14 @@ const patchedRenderTextureCreate = function (
   ...args: Parameters<typeof originalRenderTextureCreate>
 ): RenderTexture {
   const texture = originalRenderTextureCreate(...args);
-  addTexture(texture);
+  addTexture(texture.source);
   return texture;
 };
 
-// Monkey-patched destroy
-const patchedDestroy = function (this: Texture, destroyBase?: boolean): void {
+// Monkey-patched TextureSource.destroy
+const patchedTextureSourceDestroy = function (this: TextureSource): void {
   removeTexture(this);
-  return originalTextureDestroy.call(this, destroyBase);
+  return originalTextureSourceDestroy.call(this);
 };
 
 /**
@@ -67,7 +67,7 @@ export const patchPixiToTrackTextures = (application: Application): void => {
   // Apply monkey patches
   Texture.from = patchedTextureFrom;
   RenderTexture.create = patchedRenderTextureCreate;
-  Texture.prototype.destroy = patchedDestroy;
+  TextureSource.prototype.destroy = patchedTextureSourceDestroy;
 
   isTracking = true;
   console.log("🎯 Dynamic texture tracking enabled");

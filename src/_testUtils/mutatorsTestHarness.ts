@@ -25,13 +25,13 @@ import { removeStandingOn } from "../game/gameState/mutators/standingOn/removeSt
 import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOn";
 import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
 import { updateItemPosition } from "../game/gameState/mutators/updateItemPosition";
+import { blockSizePx } from "../game/physics/mechanicsConstants";
 import {
   type Campaign,
   type CharacterName,
   type IndividualCharacterName,
   otherIndividualCharacterName,
 } from "../model/modelTypes";
-import { blockSizePx } from "../sprites/spritePivots";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameOver } from "../store/slices/gameMenus/gameMenusSlice";
 import { iterate } from "../utils/iterate";
@@ -254,7 +254,7 @@ export const mutatorsTestHarness = () => {
         headRoom!,
         headPlayable,
         addXyz(heelsPlayable.state.position, {
-          z: blockSizePx.h,
+          z: blockSizePx.z,
         }),
       );
       removeStandingOn(headPlayable, headRoom!);

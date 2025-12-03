@@ -1,17 +1,15 @@
 import type { FederatedPointerEvent } from "pixi.js";
-import type { EmptyObject } from "type-fest";
 
-import { objectValues } from "iter-tools-es";
 import { Container, Graphics } from "pixi.js";
 
+import type { RoomState } from "../../../model/RoomState";
 import type { InputDirectionMode } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { Renderer } from "../Renderer";
 import type { GeneralRenderContext } from "../room/RoomRenderContexts";
-import type { OutlineAndColouriseFilter } from "./hudFilters";
+import type { HudRendererTickContextWithRoom } from "./hudRendererContexts";
 import type { OnScreenLookRenderer } from "./OnScreenLookRenderer";
-import type { PointerGrabbingRender } from "./PointerGrabbingRenderer";
 
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import { getSpriteSheetVariantTexture } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
@@ -22,6 +20,7 @@ import {
   scaleXyz,
   vectorClosestDirectionXy8,
 } from "../../../utils/vectors/vectors";
+import { charHeight } from "../../components/dialogs/menuDialog/dialogs/useScrollingFromInput";
 import {
   lightlySnapXy4,
   rotateInputVector45,
@@ -31,14 +30,8 @@ import {
   type InputStateTrackerInterface,
 } from "../../input/InputStateTracker";
 import { createSprite } from "../createSprite";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
-import { noFilters } from "../filters/standardFilters";
-import {
-  hudLowlightAndOutlineFilters,
-  hudLowlightedFilter,
-  hudOutlinedTextFilters,
-  hudOutlineFilter,
-} from "./hudFilters";
+import { TextContainer } from "../text/TextContainer";
+import { tintForHud } from "./spritesheetVariantForHud";
 
 const joystickArrowOffset = 14;
 const sensitivity = 2;
@@ -48,12 +41,6 @@ type JoystickRenderContext = {
   inputDirectionMode: InputDirectionMode;
   general: GeneralRenderContext<string>;
 };
-
-// pressed arrows are always white:
-const arrowPressedFilter = [
-  hudOutlineFilter,
-  new RevertColouriseFilter(spritesheetPalette.white),
-] as OutlineAndColouriseFilter;
 
 /**
  * how much to snap by for the sake of biasing to make the cardinal directions
@@ -65,83 +52,91 @@ const joystickFurthestTouchRadius = 40;
 const fullyTransparentHex = "#00000000";
 export class OnScreenJoystickRenderer
   implements
-    Renderer<JoystickRenderContext, EmptyObject, Container>,
-    PointerGrabbingRender
+    Renderer<
+      JoystickRenderContext,
+      HudRendererTickContextWithRoom<string, string>,
+      Container
+    >
 {
   output = new Container({ label: "OnScreenJoystick", eventMode: "static" });
 
   #arrowSprites: Partial<Record<DirectionXy8, Container>>;
 
-  #joystickSprite = createSprite({
-    textureId: "joystick.whole",
-    anchor: { x: 0.5, y: 0.5 },
-    y: 1,
-  });
+  #joystickSprite;
 
   #curPointerId: number | undefined;
 
   #lookRenderer: OnScreenLookRenderer | undefined;
 
+  #roomRenderedIn: RoomState<string, string> | undefined;
+
   constructor(public readonly renderContext: JoystickRenderContext) {
     const {
       inputDirectionMode,
-      general: { colourised },
+      general: { colourised, pixiRenderer },
     } = renderContext;
 
+    this.#joystickSprite = createSprite({
+      textureId: "joystick.whole",
+      anchor: { x: 0.5, y: 0.5 },
+      y: 1,
+      spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+    });
+
     this.#arrowSprites = {
-      away: createSprite({
-        textureId: "hud.char.↗",
-        anchor: { x: 0.5, y: 0.5 },
+      away: new TextContainer({
+        pixiRenderer,
+        outline: true,
         x: joystickArrowOffset,
         y: -joystickArrowOffset,
-        filter: hudLowlightAndOutlineFilters,
+        text: "↗",
       }),
-      right: createSprite({
-        textureId: "hud.char.↘",
-        anchor: { x: 0.5, y: 0.5 },
+      right: new TextContainer({
+        pixiRenderer,
+        outline: true,
         x: joystickArrowOffset,
         y: joystickArrowOffset,
-        filter: hudLowlightAndOutlineFilters,
+        text: "↘",
       }),
-      towards: createSprite({
-        textureId: "hud.char.↙",
-        anchor: { x: 0.5, y: 0.5 },
+      towards: new TextContainer({
+        pixiRenderer,
+        outline: true,
         x: -joystickArrowOffset,
         y: joystickArrowOffset,
-        filter: hudLowlightAndOutlineFilters,
+        text: "↙",
       }),
-      left: createSprite({
-        textureId: "hud.char.↖",
-        anchor: { x: 0.5, y: 0.5 },
+      left: new TextContainer({
+        pixiRenderer,
+        outline: true,
         x: -joystickArrowOffset,
         y: -joystickArrowOffset,
-        filter: hudLowlightAndOutlineFilters,
+        text: "↖",
       }),
       ...(inputDirectionMode !== "4-way" ?
         {
-          awayRight: createSprite({
-            textureId: "hud.char.➡",
-            anchor: { x: 0.5, y: 0.5 },
+          awayRight: new TextContainer({
+            pixiRenderer,
+            outline: true,
             x: joystickArrowOffset * Math.SQRT2,
-            filter: hudLowlightAndOutlineFilters,
+            text: "➡",
           }),
-          towardsRight: createSprite({
-            textureId: "hud.char.⬇",
-            anchor: { x: 0.5, y: 0.5 },
+          towardsRight: new TextContainer({
+            pixiRenderer,
+            outline: true,
             y: joystickArrowOffset * Math.SQRT2,
-            filter: hudLowlightAndOutlineFilters,
+            text: "⬇",
           }),
-          towardsLeft: createSprite({
-            textureId: "hud.char.⬅",
-            anchor: { x: 0.5, y: 0.5 },
+          towardsLeft: new TextContainer({
+            pixiRenderer,
+            outline: true,
             x: -joystickArrowOffset * Math.SQRT2,
-            filter: hudLowlightAndOutlineFilters,
+            text: "⬅",
           }),
-          awayLeft: createSprite({
-            textureId: "hud.char.⬆",
-            anchor: { x: 0.5, y: 0.5 },
+          awayLeft: new TextContainer({
+            pixiRenderer,
+            outline: true,
             y: -joystickArrowOffset * Math.SQRT2,
-            filter: hudLowlightAndOutlineFilters,
+            text: "⬆",
           }),
         }
       : {}),
@@ -154,24 +149,28 @@ export class OnScreenJoystickRenderer
         .circle(0, 0, joystickFurthestTouchRadius)
         .fill(fullyTransparentHex),
     );
-    for (const arrowSprite of objectValues(this.#arrowSprites)) {
-      this.output.addChild(arrowSprite);
-    }
+    this.output.addChild(
+      new Container({
+        children: Object.values(this.#arrowSprites),
+        y: charHeight / 2,
+      }),
+    );
 
-    this.output.on("pointerenter", this.handlePointerEnter);
-    // by using global, we can detect a pointer that started on the joystick
+    this.output.on("touchstart", this.handleTouchStart);
+    this.output.on("mousedown", this.handleTouchStart);
+    // by using global, we can detect a touch that started on the joystick
     // even if it wanders off of it
 
-    this.output.on("pointerup", this.stopCurrentPointer);
-    this.output.on("pointerupoutside", this.stopCurrentPointer);
-
-    this.#joystickSprite.filters = colourised ? noFilters : hudLowlightedFilter;
+    this.output.on("touchend", this.stopCurrentPointer);
+    this.output.on("touchendoutside", this.stopCurrentPointer);
+    this.output.on("mouseup", this.stopCurrentPointer);
+    this.output.on("mouseupoutside", this.stopCurrentPointer);
   }
 
-  handlePointerEnter = (e: FederatedPointerEvent) => {
-    // already handling a pointer:
+  handleTouchStart = (e: FederatedPointerEvent) => {
+    // already handling a touch:
     if (this.#curPointerId !== undefined) {
-      // switching from an old pointer to a new one
+      // switching from an old touch to a new one
       this.stopCurrentPointer();
     }
 
@@ -225,12 +224,22 @@ export class OnScreenJoystickRenderer
       );
   };
 
-  tick() {
+  tick({ room }: HudRendererTickContextWithRoom<string, string>): void {
     const {
       renderContext: {
+        general: { colourised },
         inputStateTracker: { directionVector },
       },
     } = this;
+
+    if (this.#roomRenderedIn !== room) {
+      this.#joystickSprite.texture = getSpriteSheetVariantTexture(
+        colourised ? "for-current-room" : "uncolourised",
+        "joystick.whole",
+      );
+      this.#roomRenderedIn = room;
+    }
+
     const menusOpen = store.getState().gameMenus.openMenus.length > 0;
 
     if (menusOpen) {
@@ -243,13 +252,14 @@ export class OnScreenJoystickRenderer
         vectorClosestDirectionXy8(directionVector)
       : undefined;
 
+    const activeTint = tintForHud(colourised, room.color, true);
+    const notActiveTint = tintForHud(colourised, room.color, false);
+
     for (const [directionXy8, sprite] of objectEntriesIter(
       this.#arrowSprites,
     )) {
-      sprite.filters =
-        directionXy8 === highlightDirectionXy8 ? arrowPressedFilter : (
-          hudOutlinedTextFilters
-        );
+      sprite.tint =
+        directionXy8 === highlightDirectionXy8 ? activeTint : notActiveTint;
     }
   }
 
@@ -263,9 +273,13 @@ export class OnScreenJoystickRenderer
 
   destroy() {
     this.stopCurrentPointer();
-    this.output.off("pointerenter", this.handlePointerEnter);
-    this.output.off("pointerup", this.stopCurrentPointer);
-    this.output.off("pointerupoutside", this.stopCurrentPointer);
+    this.output.off("touchstart", this.handleTouchStart);
+    this.output.off("mousedown", this.handleTouchStart);
+
+    this.output.off("touchend", this.stopCurrentPointer);
+    this.output.off("touchendoutside", this.stopCurrentPointer);
+    this.output.off("mouseup", this.stopCurrentPointer);
+    this.output.off("mouseupoutside", this.stopCurrentPointer);
     this.output.destroy();
   }
 }

@@ -7,7 +7,7 @@ import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
 import {
   nerdFontDiscordChar,
   nerdFontGithubChar,
-} from "../../../sprites/hudSritesheetData";
+} from "../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { Button } from "../../../ui/button";
 import { cn } from "../../../ui/cn";
 import { useSupabaseUser } from "../useSupabaseUser";

@@ -7,7 +7,7 @@ import { Texture } from "pixi.js";
 import {
   spritesheetPalette,
   type SpritesheetPaletteColourName,
-} from "../../../../../gfx/spritesheetPalette";
+} from "../../../../sprites/palette/spritesheetPalette";
 import { blockEncodeRgbBitDepth } from "./blockEncode";
 import { lutSize, lutW } from "./lutSize";
 

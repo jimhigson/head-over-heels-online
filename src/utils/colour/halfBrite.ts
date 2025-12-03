@@ -19,12 +19,6 @@ export const standardBrightnessLevels = [
   shadowAliasingBrightness,
 ];
 
-export const zxSpectrumDimmed = (c: Color) => {
-  const [r, g, b] = c.toUint8RgbArray();
-  // 0.5 seems a bit too dim, 0.75 seems to match the original hardware better
-  const hb = new Color({ r: r * 0.75, g: g * 0.75, b: b * 0.75 });
-  return hb;
-};
 export const halfbrite = (c: Color, dimFactor = amigaHalfBriteBrightness) => {
   const [r, g, b] = c.toUint8RgbArray();
   const hb = new Color({
