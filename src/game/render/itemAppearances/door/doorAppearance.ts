@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import type { Container } from "pixi.js";
 
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import type { Campaign } from "../../../../model/modelTypes";
@@ -10,6 +10,7 @@ import { blockSizePx } from "../../../../sprites/spritePivots";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
+import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import {
   addXy,
   doorAlongAxis,
@@ -111,14 +112,32 @@ const xyToTranslateToInsideOfRoom = (
 };
 
 export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
-  itemAppearanceRenderOnce(({ renderContext: { item, room } }) => {
-    return iterateToContainer(
-      doorLegsGenerator(item, room),
-      new Container({
-        ...xyToTranslateToInsideOfRoom(item.config.direction, item.aabb),
-      }),
-    );
-  });
+  itemAppearanceRenderOnce(
+    ({
+      renderContext: {
+        item,
+        room,
+        general: { pixiRenderer },
+      },
+    }) => {
+      const doorLegsContainer = iterateToContainer(
+        doorLegsGenerator(item, room),
+      );
+
+      // door legs can take quite a few sprites (ie, 11 each for the 5-high
+      // doors in #blacktooth39 - reduce down to a single sprite:
+      const sprite = renderContainerToSprite(pixiRenderer, doorLegsContainer);
+
+      const spriteXy = xyToTranslateToInsideOfRoom(
+        item.config.direction,
+        item.aabb,
+      );
+      sprite.x = spriteXy.x;
+      sprite.y = spriteXy.y;
+
+      return sprite;
+    },
+  );
 
 export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
   itemAppearanceRenderOnce(
