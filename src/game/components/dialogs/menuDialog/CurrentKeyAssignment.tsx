@@ -233,7 +233,7 @@ export const CurrentKeyAssignments = ({
   );
 
   return (
-    <div className={twMerge(className, inline ? "inline" : "w-full pl-2")}>
+    <div className={twMerge(className, inline ? "inline" : "w-full")}>
       {inline ?
         keyboardAssignments
       : <div className="flex flex-col w-[50%] gap-y-oneScaledPix">

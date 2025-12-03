@@ -2,8 +2,12 @@ import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameM
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { PressToContinueBanner } from "../../../PressToContinueBanner";
+import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
+import {
+  BitmapText,
+  MultipleBitmapText,
+} from "../../../../tailwindSprites/Sprite";
+import { CurrentKeyAssignments } from "../../CurrentKeyAssignment";
 import { multilineTextClass } from "../../multilineTextClass";
 
 export const HoldDialog = () => {
@@ -21,7 +25,46 @@ export const HoldDialog = () => {
           PAUSED
         </BitmapText>
         <span className="zx">
-          <PressToContinueBanner className={`${multilineTextClass} px-1`} />
+          {detectDeviceType() === "desktop" ?
+            <div className="flex flex-col gap-1">
+              <div
+                className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
+              >
+                <MultipleBitmapText>
+                  Press to <span className="text-zxWhite">continue</span>:
+                </MultipleBitmapText>
+                <div className="flex flex-row gap-1 mx-auto">
+                  <CurrentKeyAssignments
+                    className="flex flex-row gap-1"
+                    keyClassName="text-pink zx:text-zxRed"
+                    action="hold"
+                  />
+                </div>
+              </div>
+              <div
+                className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
+              >
+                <MultipleBitmapText>
+                  Press for <span className="text-zxWhite">Map</span>:
+                </MultipleBitmapText>
+                <div className="flex flex-row gap-1 mx-auto">
+                  <CurrentKeyAssignments
+                    className="flex flex-row gap-1"
+                    keyClassName="text-pink zx:text-zxRed"
+                    action="map"
+                  />
+                </div>
+              </div>
+            </div>
+          : <div
+              className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
+            >
+              <BitmapText className="me-1 text-pink zx:text-zxRed">
+                Tap screen
+              </BitmapText>
+              <BitmapText>to continue</BitmapText>
+            </div>
+          }
         </span>
       </Dialog>
     </DialogPortal>

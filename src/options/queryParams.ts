@@ -1,3 +1,5 @@
+import type { DeviceType } from "../utils/detectDeviceType";
+
 /** strong-typing for query params used in the game or editor */
 export type AllowedQueryParams = {
   cheats: "1" | null;
@@ -8,6 +10,9 @@ export type AllowedQueryParams = {
   scale: `${number}` | null;
   // explicit tracking control: "1" to track, "0" to skip; if absent, uses hostname detection
   track: "0" | "1" | null;
+
+  // overrides for device type detection to fake desktop/mobile/tablet/server:
+  device: DeviceType | null;
 };
 
 export type TypedURLSearchParams = {

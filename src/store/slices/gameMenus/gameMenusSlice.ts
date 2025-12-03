@@ -566,24 +566,30 @@ export const gameMenusSlice = createSlice({
       }
     },
     mapPressed(state) {
-      const showingAMenu = state.openMenus.length > 0;
+      const mapMenu: OpenMenu = {
+        menuId: "map",
+        scrollableSelection: false,
+        menuParam: emptyObject,
+      };
 
-      if (showingAMenu) {
-        const showingMapAlready = state.openMenus[0]?.menuId === "map";
-        if (showingMapAlready) {
-          // exit
-          state.openMenus = [];
+      const showingAnyMenus = state.openMenus.length >= 1;
+
+      if (showingAnyMenus) {
+        const visibleMenuId = state.openMenus.at(0)?.menuId;
+
+        if (visibleMenuId === "map") {
+          // exit the map - either to gameplay or to previous menu:
+          const [, ...tail] = state.openMenus;
+          state.openMenus = tail;
+        } else if (visibleMenuId === "hold") {
+          // allow direct transition from hold menu to the map,
+          // but exiting will come back to the hold dialog:
+          state.openMenus = [mapMenu, ...state.openMenus];
         }
-        // else do nothing if hold pressed while in menus
+        // else do nothing if map pressed while in menus
       } else {
         // show the map:
-        state.openMenus = [
-          {
-            menuId: "map",
-            scrollableSelection: false,
-            menuParam: emptyObject,
-          },
-        ];
+        state.openMenus = [mapMenu];
       }
     },
     setShowBoundingBoxes(

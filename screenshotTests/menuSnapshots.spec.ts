@@ -480,6 +480,79 @@ test.describe("Menu Visual Snapshots", () => {
       });
     });
 
+    await test.step("Open hold dialog", async () => {
+      await retryWithRecovery({
+        async action() {
+          console.log(
+            `${formattedName}: Clicking canvas and pressing P to open hold`,
+          );
+          await page.waitForTimeout(500);
+
+          const canvas = page.locator("canvas").first();
+          await canvas.click();
+          await page.waitForTimeout(200);
+
+          await dispatchKeyPress(page, "p", "KeyP");
+          await page.waitForTimeout(500);
+
+          const holdDialogSelector = "[data-dialog-id=hold]";
+          await page.waitForSelector(holdDialogSelector, {
+            timeout: 5_000 * osSlowness,
+          });
+          await logSelectorExistence(page, holdDialogSelector, formattedName);
+        },
+        logHeader: formattedName,
+        actionDescription: "open hold dialog",
+        page,
+        screenshotPrefix: "open-hold",
+      });
+    });
+
+    await test.step("Screenshot: hold", async () => {
+      await retryWithRecovery({
+        async action() {
+          console.log(
+            `${formattedName} Taking screenshot for dialog: ${chalk.cyan("hold")}`,
+          );
+          const screenshotStart = performance.now();
+
+          await expect
+            .configure({ timeout: 15_000 * osSlowness })
+            .soft(page)
+            .toHaveScreenshot("hold.png", screenshotOptions(page));
+
+          console.log(
+            `${formattedName} ...screenshot took`,
+            chalk.yellow(formatDuration(performance.now() - screenshotStart)),
+          );
+        },
+        logHeader: formattedName,
+        actionDescription: "take hold dialog screenshot",
+        page,
+        screenshotPrefix: "hold-screenshot",
+      });
+    });
+
+    await test.step("Exit hold dialog", async () => {
+      await retryWithRecovery({
+        async action() {
+          const holdDialogSelector = "[data-dialog-id=hold]";
+          console.log(`${formattedName}: Pressing P to exit hold`);
+          await dispatchKeyPress(page, "p", "KeyP");
+
+          await page.waitForSelector(holdDialogSelector, {
+            state: "detached",
+            timeout: 5_000 * osSlowness,
+          });
+          await page.waitForTimeout(500);
+        },
+        logHeader: formattedName,
+        actionDescription: "exit hold dialog",
+        page,
+        screenshotPrefix: "exit-hold",
+      });
+    });
+
     await test.step("Open in-game main menu", async () => {
       await retryWithRecovery({
         async action() {

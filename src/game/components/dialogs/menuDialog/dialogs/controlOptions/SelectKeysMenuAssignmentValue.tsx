@@ -20,7 +20,7 @@ export const SelectKeysMenuAssignmentValue = ({
   return (
     <CurrentKeyAssignments
       className={twMerge(
-        "flex flex-wrap gap-y-oneScaledPix gap-x-1",
+        "flex flex-wrap gap-y-oneScaledPix gap-x-1 ml-2",
         className,
       )}
       action={action}

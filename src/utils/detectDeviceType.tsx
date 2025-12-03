@@ -1,3 +1,5 @@
+import { typedURLSearchParams } from "../options/queryParams";
+
 export type DeviceType = "desktop" | "mobile" | "server" | "tablet";
 
 export const isTouchDevice = () => {
@@ -9,12 +11,10 @@ export const detectDeviceType = (): DeviceType => {
     return "server"; // probably running some tests
   }
 
-  const deviceTypeOverride = new URLSearchParams(window.location.search).get(
-    "device",
-  );
+  const deviceTypeOverride = typedURLSearchParams().get("device");
 
   if (deviceTypeOverride !== null) {
-    return deviceTypeOverride as DeviceType;
+    return deviceTypeOverride;
   }
 
   const ua = navigator.userAgent;
