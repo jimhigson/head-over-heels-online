@@ -2,7 +2,16 @@
 import {
   frameTimingStats,
   type FrameTimingStatsEvent,
+  type PhaseStats,
 } from "./FrameTimingStats";
+
+const formatPhaseStats = (phase: PhaseStats) => ({
+  avgMs: phase.avgMs.toFixed(2),
+  percentage: phase.percentage.toFixed(1) + "%",
+  fps: (1_000 / phase.avgMs).toLocaleString("en-GB", {
+    maximumFractionDigits: 0,
+  }),
+});
 
 const logFrameTimingStats = (event: FrameTimingStatsEvent) => {
   const { frameCount, fps, theoreticalFps, phases, elapsedMs } = event;
@@ -10,26 +19,11 @@ const logFrameTimingStats = (event: FrameTimingStatsEvent) => {
     `Frame timing (${frameCount} frames in ${(elapsedMs / 1_000).toFixed(3)}s, ${fps.toFixed(1)} fps, theoretical max: ${theoreticalFps.toLocaleString("en-GB", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} fps):`,
   );
   console.table({
-    physics: {
-      avgMs: phases.physics.avgMs.toFixed(2),
-      percentage: phases.physics.percentage.toFixed(1) + "%",
-    },
-    hudUpdateSceneGraph: {
-      avgMs: phases.hudUpdateSceneGraph.avgMs.toFixed(2),
-      percentage: phases.hudUpdateSceneGraph.percentage.toFixed(1) + "%",
-    },
-    updateSceneGraph: {
-      avgMs: phases.updateSceneGraph.avgMs.toFixed(2),
-      percentage: phases.updateSceneGraph.percentage.toFixed(1) + "%",
-    },
-    "pixi.js app.render": {
-      avgMs: phases.pixiRender.avgMs.toFixed(2),
-      percentage: phases.pixiRender.percentage.toFixed(1) + "%",
-    },
-    total: {
-      avgMs: phases.total.avgMs.toFixed(2),
-      percentage: "100%",
-    },
+    physics: formatPhaseStats(phases.physics),
+    hudUpdateSceneGraph: formatPhaseStats(phases.hudUpdateSceneGraph),
+    updateSceneGraph: formatPhaseStats(phases.updateSceneGraph),
+    "pixi.js app.render": formatPhaseStats(phases.pixiRender),
+    total: { ...formatPhaseStats(phases.total), percentage: "100%" },
   });
 };
 

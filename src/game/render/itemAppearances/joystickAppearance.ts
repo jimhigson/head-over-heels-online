@@ -2,6 +2,7 @@ import type { Sprite } from "pixi.js";
 
 import { Container } from "pixi.js";
 
+import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import {
@@ -16,11 +17,15 @@ type JoystickRenderProps = {
   pushDirection: PushDirection;
 };
 
-const createContainerAndSprites = () => {
+const createContainerAndSprites = (spritesheetVariant: SpritesheetVariant) => {
   const container = new Container({ label: "joystick" });
 
-  container.addChild(createSprite(`joystick.stick`));
-  container.addChild(createSprite(`joystick.ball`));
+  container.addChild(
+    createSprite({ textureId: "joystick.stick", spritesheetVariant }),
+  );
+  container.addChild(
+    createSprite({ textureId: "joystick.ball", spritesheetVariant }),
+  );
   return container;
 };
 
@@ -41,6 +46,7 @@ export const joystickAppearance: ItemAppearance<
       state: { actedOnAt, lastPushDirection },
     },
     room: { roomTime },
+    general: { colourised },
   },
   currentRendering,
 }) => {
@@ -58,7 +64,9 @@ export const joystickAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const output = currentRendering?.output ?? createContainerAndSprites();
+  const output =
+    currentRendering?.output ??
+    createContainerAndSprites(colourised ? "for-current-room" : "uncolourised");
 
   const ballSprite = output.getChildAt(1) as Sprite;
   const ballSpriteXy = ballRenderPushOffsets.get(pushDirection);

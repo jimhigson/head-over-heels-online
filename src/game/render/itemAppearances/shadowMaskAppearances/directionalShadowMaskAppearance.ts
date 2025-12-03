@@ -4,16 +4,16 @@ import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../../model/modelTypes";
-import type { TextureId } from "../../../../sprites/spriteSheetData";
-import type { DirectionXy8 } from "../../../../utils/vectors/vectors";
+import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { ItemAppearance } from "../ItemAppearance";
 
-import { blockSizePx } from "../../../../sprites/spritePivots";
 import {
   type DirectionXy4,
+  type DirectionXy8,
   vectorClosestDirectionXy4,
   vectorClosestDirectionXy8,
 } from "../../../../utils/vectors/vectors";
+import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 
 type RenderPropsXy4 = {
@@ -43,13 +43,15 @@ export const directionalShadowMaskAppearanceXy4 =
     if (!render) {
       return "no-update";
     }
-    const sprite: Sprite = createSprite(
-      facingXy4 === "left" || facingXy4 === "away" ?
-        `shadowMask.${shadowMaskBaseShadowId}.away`
-      : `shadowMask.${shadowMaskBaseShadowId}.right`,
-    );
+    const sprite: Sprite = createSprite({
+      textureId:
+        facingXy4 === "left" || facingXy4 === "away" ?
+          `shadowMask.${shadowMaskBaseShadowId}.away`
+        : `shadowMask.${shadowMaskBaseShadowId}.right`,
+      spritesheetVariant: "original",
+    });
 
-    sprite.y = -(blockSizePx.h * (heightBlocks - 1));
+    sprite.y = -(blockSizePx.z * (heightBlocks - 1));
 
     sprite.scale.x = facingXy4 === "away" || facingXy4 === "right" ? 1 : -1;
 
@@ -96,11 +98,13 @@ export const directionalShadowMaskAppearanceXy8 =
     const flippedDirection = flipXy8[facingXy8];
     const shadowMaskDirection = flippedDirection ?? facingXy8;
 
-    const sprite: Sprite = createSprite(
-      `shadowMask.${shadowMaskBaseShadowId}.${shadowMaskDirection}` as TextureId,
-    );
+    const sprite: Sprite = createSprite({
+      textureId:
+        `shadowMask.${shadowMaskBaseShadowId}.${shadowMaskDirection}` as TextureId,
+      spritesheetVariant: "original",
+    });
 
-    sprite.y = -(blockSizePx.h * (heightBlocks - 1));
+    sprite.y = -(blockSizePx.z * (heightBlocks - 1));
 
     sprite.scale.x = flippedDirection === undefined ? 1 : -1;
 

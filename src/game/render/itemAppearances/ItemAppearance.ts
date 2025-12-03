@@ -7,6 +7,7 @@ import type {
   ItemInPlayConfig,
   ItemInPlayType,
 } from "../../../model/ItemInPlay";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type {
   AppearanceOptions,
   AppearanceReturn,
@@ -18,7 +19,6 @@ import type {
 import type { ItemRenderContext, ItemTickContext } from "../ItemRenderContexts";
 
 import { itemInPlayTimes } from "../../../model/times";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
   maybeRenderContainerToSprite,
@@ -26,6 +26,7 @@ import {
 } from "../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../utils/pixi/renderMultpliedXy";
 import { isMultipliedItem } from "../../physics/itemPredicates";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 
 export type ItemAppearanceOptions<
@@ -53,24 +54,37 @@ export type ItemAppearance<
 ) => AppearanceReturn<RenderProps, Output>;
 
 export const itemStaticAppearance = <T extends ItemInPlayType>(
-  createSpriteOptions: CreateSpriteOptions,
+  createSpriteOptions: CreateSpriteOptions | TextureId,
 ): ItemAppearance<T> =>
-  itemAppearanceRenderOnce(({ renderContext: { item: subject } }) => {
-    if (isMultipliedItem(subject)) {
-      return createSprite({
-        ...(typeof createSpriteOptions === "string" ?
-          { textureId: createSpriteOptions }
-        : createSpriteOptions),
-        times: itemInPlayTimes(subject),
-      });
-    } else {
-      return createSprite(createSpriteOptions);
-    }
-  });
+  itemAppearanceRenderOnce(
+    ({
+      renderContext: {
+        item: subject,
+        general: { colourised },
+      },
+    }) => {
+      if (isMultipliedItem(subject)) {
+        return createSprite({
+          ...(typeof createSpriteOptions === "string" ?
+            { textureId: createSpriteOptions }
+          : createSpriteOptions),
+          times: itemInPlayTimes(subject),
+          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        });
+      } else {
+        return createSprite({
+          ...(typeof createSpriteOptions === "string" ?
+            { textureId: createSpriteOptions }
+          : createSpriteOptions),
+          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        });
+      }
+    },
+  );
 
 export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
   createSpriteOptions: Omit<
-    AnimatedCreateSpriteOptions,
+    Omit<AnimatedCreateSpriteOptions, "spritesheetVariant">,
     "gameSpeed" | "paused"
   >,
 ): ItemAppearance<T> =>
@@ -78,7 +92,7 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
     ({
       renderContext: {
         item: subject,
-        general: { paused },
+        general: { paused, colourised },
       },
     }) => {
       if (isMultipliedItem(subject)) {
@@ -86,11 +100,13 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
           ...createSpriteOptions,
           times: itemInPlayTimes(subject),
           paused,
+          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
         });
       } else {
         return createSprite({
           ...createSpriteOptions,
           paused,
+          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
         });
       }
     },
@@ -209,7 +225,7 @@ export const itemAppearanceShadowMaskFromConfig =
 
       if (times) {
         // move the shadow mast up if the item is multiplied in z:
-        appearanceReturn.output.y -= ((times.z ?? 1) - 1) * blockSizePx.h;
+        appearanceReturn.output.y -= ((times.z ?? 1) - 1) * blockSizePx.z;
       }
 
       return appearanceReturn;

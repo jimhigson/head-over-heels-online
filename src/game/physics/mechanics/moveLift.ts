@@ -3,12 +3,12 @@ import type { GameState } from "../../gameState/GameState";
 import type { Mechanic, MechanicResult } from "../MechanicResult";
 
 import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { veryClose } from "../../../utils/epsilon";
 import { originXyz } from "../../../utils/vectors/vectors";
+import { blockSizePx } from "../mechanicsConstants";
 import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
-const blockHeight = blockSizePx.h;
+const blockHeight = blockSizePx.z;
 
 const epsilonVelocity = 0.001;
 

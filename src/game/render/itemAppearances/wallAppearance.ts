@@ -3,7 +3,7 @@ import { Container } from "pixi.js";
 import type { Xy } from "../../../utils/vectors/vectors";
 
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
-import { wallTileSize } from "../../../sprites/textureSizes";
+import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
   perpendicularAxisXy,
@@ -17,7 +17,7 @@ import { itemAppearanceRenderOnce } from "./ItemAppearance";
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
-      general: { pixiRenderer },
+      general: { pixiRenderer, colourised },
       item: { id, config },
       room,
     },
@@ -54,6 +54,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
                 y: wallTileSize.h,
               }
             : { x: 0, y: wallTileSize.h },
+          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
         }),
       );
 
@@ -68,6 +69,8 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
               flipX: direction === "left",
               x: tileRenderPosition.x + (direction === "away" ? -8 : 8),
               y: tileRenderPosition.y - 23,
+              spritesheetVariant:
+                colourised ? "for-current-room" : "uncolourised",
             }),
           );
         }

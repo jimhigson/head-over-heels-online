@@ -17,8 +17,8 @@ import {
 } from "../../../_testUtils/playGameThrough";
 import { testFrameRates } from "../../../_testUtils/testFrameRates";
 import { individualCharacterNames } from "../../../model/modelTypes";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { smallItemAabb } from "../../collision/boundingBoxes";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { playerJumpHeightPx } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
@@ -69,7 +69,7 @@ describe("jumping", () => {
 
             // since head gets into the gap, should not go past one block of height:
             expect(headState(gameState).position.z).toBeLessThan(
-              blockSizePx.h + 1,
+              blockSizePx.z + 1,
             );
           },
         ],
@@ -238,9 +238,9 @@ describe("jumping", () => {
 
   describe.each(testFrameRates)("distance %j", (frameRate) => {
     const expectedJumpDistances = {
-      head: blockSizePx.w * 3 - 1.5,
+      head: blockSizePx.x * 3 - 1.5,
       // expect heels to be able to (only just) bridge a 2-block gap:
-      heels: blockSizePx.w * 2 - smallItemAabb.x + 0.75,
+      heels: blockSizePx.x * 2 - smallItemAabb.x + 0.75,
     };
 
     describe.each(individualCharacterNames)(`%s`, (name) => {
@@ -512,8 +512,8 @@ describe("jumping", () => {
       });
 
       // needs to be comfortably enough to get on top of another block, but not excessively so:
-      expect(highestItemZ).toBeGreaterThan(2 * blockSizePx.h + 1);
-      expect(highestItemZ).toBeLessThan(2.25 * blockSizePx.h);
+      expect(highestItemZ).toBeGreaterThan(2 * blockSizePx.z + 1);
+      expect(highestItemZ).toBeLessThan(2.25 * blockSizePx.z);
     },
   );
 });

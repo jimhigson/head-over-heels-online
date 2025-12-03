@@ -537,14 +537,22 @@ export class InputStateTracker {
     }
   };
 
-  currentActionPress(action: BooleanAction): PressStatus {
+  currentActionPress(
+    action: BooleanAction,
+    /**
+     * If true, will report a more raw state, including actions that have
+     * been handled already as 'tap' or 'pressed' - otherwise they are always
+     * 'released'
+     */
+    includeHandled: boolean = false,
+  ): PressStatus {
     const currentFrameInput = this.#frameInputBuffer.at(0);
 
     if (currentFrameInput === undefined) {
       // we are before the first frame
       return "released";
     }
-    if (this.#actionsHandled.has(action)) {
+    if (!includeHandled && this.#actionsHandled.has(action)) {
       return "released"; // has been handled - report as if was already released
     }
 

@@ -1,19 +1,12 @@
 import { Application, type Texture } from "pixi.js";
 import { useEffect, useState } from "react";
 
-import {
-  paletteQuantisationLut,
-  paletteQuantisationLutWithHalfbrite,
-} from "../game/render/filters/lutTexture/stdLuts/paletteQuantisationLut";
+import { paletteQuantisationLut } from "../game/render/filters/lutTexture/stdLuts/paletteQuantisationLut";
 import { spectrumLut } from "../game/render/filters/lutTexture/stdLuts/spectrumLut";
 
 const lutDisplaySize = 512;
 
-const luts = [
-  paletteQuantisationLut,
-  paletteQuantisationLutWithHalfbrite,
-  spectrumLut,
-];
+const luts = [paletteQuantisationLut, spectrumLut];
 
 interface SingleLutDisplayProps {
   /**

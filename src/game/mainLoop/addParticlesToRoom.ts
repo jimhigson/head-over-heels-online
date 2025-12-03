@@ -7,8 +7,7 @@ import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
 import { originalGameFrameDuration } from "../../originalGame";
-import { blockSizePx } from "../../sprites/spritePivots";
-import { spritesheetData } from "../../sprites/spriteSheetData";
+import { spritesheetData } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { epsilon } from "../../utils/epsilon";
 import { randomFromArray } from "../../utils/random/randomFromArray";
 import {
@@ -20,16 +19,17 @@ import {
 import { fastStepsRemaining } from "../gameState/gameStateSelectors/selectPickupAbilities";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
+import { blockSizePx } from "../physics/mechanicsConstants";
 
 const particleLifetimeMs =
   originalGameFrameDuration *
-  spritesheetData.animations["particle.fade"].length *
-  (1 / spritesheetData.animations["particle.fade"].animationSpeed);
+  spritesheetData.animations["particle.head.fade"].length *
+  (1 / spritesheetData.animations["particle.head.fade"].animationSpeed);
 
 const headParticlesFrequencyPerS = 20;
 const heelsParticlesFrequencyPerS = 38;
 const crownParticlesFrequencyPerS = 0.5;
-const particlesSpread = blockSizePx.w / 2;
+const particlesSpread = blockSizePx.x / 2;
 
 let particlesAdded = 0;
 
@@ -178,9 +178,9 @@ export const addParticlesAroundCrown = <
 
   const face = randomFromArray(axesXyz);
   const particlePosition = addXyz(crown.state.position, {
-    x: face === "x" ? 0 : Math.random() * blockSizePx.w,
-    y: face === "y" ? 0 : Math.random() * blockSizePx.d,
-    z: face === "z" ? blockSizePx.h : Math.random() * blockSizePx.h,
+    x: face === "x" ? 0 : Math.random() * blockSizePx.x,
+    y: face === "y" ? 0 : Math.random() * blockSizePx.y,
+    z: face === "z" ? blockSizePx.z : Math.random() * blockSizePx.z,
   });
 
   addItemToRoom({

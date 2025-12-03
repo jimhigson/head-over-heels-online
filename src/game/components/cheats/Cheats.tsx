@@ -22,7 +22,6 @@ import {
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import {
@@ -40,6 +39,7 @@ import {
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { CssVariables } from "../CssVariables";
 import { useGameApi } from "../GameApiContext";
 import { BitmapText } from "../tailwindSprites/Sprite";
@@ -249,7 +249,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
       // locate the item above the player
       position: {
         ...playable.state.position,
-        z: playable.state.position.z + blockSizePx.h * 2,
+        z: playable.state.position.z + blockSizePx.z * 2,
       },
       additionalIdPart: `${summonedItemNumber++}`,
     });

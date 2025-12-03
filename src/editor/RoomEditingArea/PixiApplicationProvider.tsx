@@ -4,7 +4,7 @@ import type { EmptyObject } from "type-fest";
 import { Application } from "pixi.js";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { spritesheetPalette } from "../../../gfx/spritesheetPalette";
+import { spritesheetPalette } from "../../sprites/palette/spritesheetPalette";
 import { stopAppAutoRendering } from "../../utils/pixi/stopAppAutoRendering";
 
 const PixiApplicationContext = createContext<Application>(

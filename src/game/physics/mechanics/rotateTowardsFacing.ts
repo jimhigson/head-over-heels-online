@@ -7,7 +7,7 @@ import { rotateVectorTowards } from "../../../utils/vectors/rotateVectorTowards"
 import { type PlayableItem } from "../itemPredicates";
 import { type MechanicResult } from "../MechanicResult";
 
-const playableTurnVisualAngularVelocityRadiansPerMs = 0.01;
+const playableTurnVisualAngularVelocityRadiansPerMs = 0.009;
 
 export const rotateTowardsFacing: Mechanic<CharacterName> = <
   RoomId extends string,

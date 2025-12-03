@@ -8,14 +8,16 @@ import type {
 import { Container, Ticker } from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
 
+import type {
+  AnimationId,
+  TextureId,
+} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { SpritesheetVariant } from "../../sprites/spritesheet/variants/SpritesheetVariant";
+
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
-import { loadedSpriteSheet } from "../../sprites/spriteSheet";
-import {
-  type AnimationId,
-  spritesheetData,
-  type TextureId,
-} from "../../sprites/spriteSheetData";
+import { spritesheetData } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import { getSpriteSheetVariant } from "../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { hashStringToNumber0to1 } from "../../utils/maths/hashStringToNumber0to1";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
@@ -50,6 +52,8 @@ export type AnimatedCreateSpriteOptions = {
   times?: Partial<Xyz>;
   label?: string;
 
+  spritesheetVariant: SpritesheetVariant;
+
   /** if the game is paused, nothing should animate - this will automatically create just
       a sprite with the first frame of the animation */
   paused?: boolean;
@@ -66,6 +70,7 @@ export type CreateSpriteOptions =
       filter?: Filter | Filter[];
       times?: Partial<Xyz>;
       label?: string;
+      spritesheetVariant: SpritesheetVariant;
     } & (
       | {
           times?: Partial<Xyz>;
@@ -79,8 +84,8 @@ export type CreateSpriteOptions =
           textureIdCallback: (x: number, y: number, z: number) => TextureId;
         }
     ))
-  | AnimatedCreateSpriteOptions
-  | TextureId;
+  | AnimatedCreateSpriteOptions;
+//| TextureId;
 
 const bottomMiddleDefaultAnchor = { x: 0.5, y: 1 };
 
@@ -94,137 +99,120 @@ const isAnimatedOptions = (
   );
 
 /** utility for creating a sprite while setting several properties on it */
-const _createSprite = (options: CreateSpriteOptions): Container => {
-  if (typeof options === "string") {
-    // shortcutted convenience for creating with the texture name and no other options
-    return _createSprite({ textureId: options });
-  } else {
-    const { anchor, flipX, pivot, x, y, filter, times, label } = options;
+const createSpriteImpl = (options: CreateSpriteOptions): Container => {
+  const { anchor, flipX, pivot, x, y, filter, times, label } = options;
 
-    // `times: undefined` or `times: {x:1}` should NOT cause the sprite to be wrapped in a container
-    // even if this means the the types change between two otherwise identical calls
-    if (options.times) {
-      const completeTimes = completeTimesXyz(times);
-      // only actually do multiplied rendering if we have a times vector
-      // with actual multiple instances in it (not 1x1x1) - this is important
-      // because other code looks at the output from createSprite and creates
-      // new sprites based off the container returned if it isn't a simple sprite
-      const needsMultipliedRendering = lengthXyz(completeTimes) >= 2;
+  // `times: undefined` or `times: {x:1}` should NOT cause the sprite to be wrapped in a container
+  // even if this means the the types change between two otherwise identical calls
+  if (options.times) {
+    const completeTimes = completeTimesXyz(times);
+    // only actually do multiplied rendering if we have a times vector
+    // with actual multiple instances in it (not 1x1x1) - this is important
+    // because other code looks at the output from createSprite and creates
+    // new sprites based off the container returned if it isn't a simple sprite
+    const needsMultipliedRendering = lengthXyz(completeTimes) >= 2;
 
-      if (needsMultipliedRendering) {
-        const container = new Container({ label: label ?? "timesXyz" });
-        for (let { x } = completeTimes; x >= 1; x--) {
-          for (let { y } = completeTimes; y >= 1; y--) {
-            for (let z = 1; z <= completeTimes.z; z++) {
-              const textureId =
-                options.textureId ??
-                options.textureIdCallback?.(x - 1, y - 1, z - 1);
-              const subSpriteOptions = {
-                ...options,
-                textureId,
-                label: `(${x},${y},${z})`,
-              };
-              if ("randomiseStartFrame" in subSpriteOptions) {
-                // if randomising the start frame, we don't want all the sub-sprites to get the same randomisation
-                // so the sub-position of the child sprite onto the randomiseStartFrame string:
-                subSpriteOptions.randomiseStartFrame = `${subSpriteOptions.randomiseStartFrame}${x},${y},${z}`;
-              }
-              delete subSpriteOptions.times;
-              const component = _createSprite(
-                subSpriteOptions as CreateSpriteOptions,
-              );
-              const displaceXy = projectBlockXyzToScreenXy({
-                x: x - 1,
-                y: y - 1,
-                z: z - 1,
-              });
-              component.x += displaceXy.x;
-              component.y += +displaceXy.y;
-
-              container.addChild(component);
+    if (needsMultipliedRendering) {
+      const container = new Container({ label: label ?? "timesXyz" });
+      for (let { x } = completeTimes; x >= 1; x--) {
+        for (let { y } = completeTimes; y >= 1; y--) {
+          for (let z = 1; z <= completeTimes.z; z++) {
+            const textureId =
+              options.textureId ??
+              options.textureIdCallback?.(x - 1, y - 1, z - 1);
+            const subSpriteOptions = {
+              ...options,
+              textureId,
+              label: `(${x},${y},${z})`,
+            };
+            if ("randomiseStartFrame" in subSpriteOptions) {
+              // if randomising the start frame, we don't want all the sub-sprites to get the same randomisation
+              // so the sub-position of the child sprite onto the randomiseStartFrame string:
+              subSpriteOptions.randomiseStartFrame = `${subSpriteOptions.randomiseStartFrame}${x},${y},${z}`;
             }
+            delete subSpriteOptions.times;
+            const component = createSpriteImpl(
+              subSpriteOptions as CreateSpriteOptions,
+            );
+            const displaceXy = projectBlockXyzToScreenXy({
+              x: x - 1,
+              y: y - 1,
+              z: z - 1,
+            });
+            component.x += displaceXy.x;
+            component.y += +displaceXy.y;
+
+            container.addChild(component);
           }
         }
-        return container;
       }
+      return container;
     }
+  }
 
-    let sprite: Sprite;
-    if (isAnimatedOptions(options)) {
-      sprite = createAnimatedSprite(options);
-    } else {
+  let sprite: Sprite;
+  if (isAnimatedOptions(options)) {
+    sprite = createAnimatedSprite(options);
+  } else {
+    const textureId = options.textureId ?? options.textureIdCallback?.(0, 0, 0);
+    const spritesheet = getSpriteSheetVariant(options.spritesheetVariant);
+    sprite = new Sprite(spritesheet.textures[textureId]);
+  }
+
+  if (anchor === undefined && pivot === undefined) {
+    if (!isAnimatedOptions(options)) {
       const textureId =
         options.textureId ?? options.textureIdCallback?.(0, 0, 0);
-      sprite = new Sprite(loadedSpriteSheet().textures[textureId]);
-    }
+      const spritesheet = getSpriteSheetVariant(options.spritesheetVariant);
+      const spritesheetFrameData: SpritesheetFrameData | undefined =
+        spritesheet.data.frames[textureId];
 
-    if (anchor === undefined && pivot === undefined) {
-      if (!isAnimatedOptions(options)) {
-        const textureId =
-          options.textureId ?? options.textureIdCallback?.(0, 0, 0);
-        const spritesheetFrameData: SpritesheetFrameData | undefined =
-          loadedSpriteSheet().data.frames[textureId];
-
-        if (spritesheetFrameData === undefined) {
-          throw new Error(`no spritesheet entry for textureId "${textureId}"`);
-        }
-        // There is a non-standard (unknown to Pixi.js) pivot property on the sprites:
-        const spriteDataFrame =
-          spritesheetFrameData.frame as SpritesheetFrameData["frame"] & {
-            pivot: Xy;
-          };
-        // what the spritesheet calls a anchor, I actually use as
-        // a pivot - not sure if pixi means it to be used that way
-        if (spriteDataFrame.pivot !== undefined) {
-          sprite.pivot = spriteDataFrame.pivot;
-        } else {
-          sprite.anchor = bottomMiddleDefaultAnchor;
-        }
+      if (spritesheetFrameData === undefined) {
+        throw new Error(`no spritesheet entry for textureId "${textureId}"`);
+      }
+      // There is a non-standard (unknown to Pixi.js) pivot property on the sprites:
+      const spriteDataFrame =
+        spritesheetFrameData.frame as SpritesheetFrameData["frame"] & {
+          pivot: Xy;
+        };
+      // what the spritesheet calls a anchor, I actually use as
+      // a pivot - not sure if pixi means it to be used that way
+      if (spriteDataFrame.pivot !== undefined) {
+        sprite.pivot = spriteDataFrame.pivot;
       } else {
         sprite.anchor = bottomMiddleDefaultAnchor;
       }
     } else {
-      if (anchor !== undefined) sprite.anchor = anchor;
-      if (pivot !== undefined) sprite.pivot = pivot;
+      sprite.anchor = bottomMiddleDefaultAnchor;
     }
-
-    if (x !== undefined) {
-      sprite.x = x;
-    }
-
-    if (y !== undefined) {
-      sprite.y = y;
-    }
-
-    if (filter !== undefined) {
-      sprite.filters = filter;
-    }
-
-    if (label !== undefined) {
-      sprite.label = label;
-    }
-
-    sprite.eventMode = "static";
-    if (flipX === true) {
-      sprite.scale.x = -1;
-    }
-
-    return sprite;
+  } else {
+    if (anchor !== undefined) sprite.anchor = anchor;
+    if (pivot !== undefined) sprite.pivot = pivot;
   }
-};
 
-export const createSprite = _createSprite as <O extends CreateSpriteOptions>(
-  options: O,
-) => O extends TextureId ? Sprite
-: O extends AnimatedCreateSpriteOptions ?
-  O extends { times?: Partial<Xyz> } ?
-    // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
-    AnimatedSprite | Container<AnimatedSprite>
-  : AnimatedSprite
-: O extends { times?: Partial<Xyz> } ?
-  // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
-  Container<Sprite> | Sprite
-: Sprite;
+  if (x !== undefined) {
+    sprite.x = x;
+  }
+
+  if (y !== undefined) {
+    sprite.y = y;
+  }
+
+  if (filter !== undefined) {
+    sprite.filters = filter;
+  }
+
+  if (label !== undefined) {
+    sprite.label = label;
+  }
+
+  sprite.eventMode = "static";
+  if (flipX === true) {
+    sprite.scale.x = -1;
+  }
+
+  return sprite;
+};
 
 function createAnimatedSprite({
   animationId,
@@ -232,8 +220,10 @@ function createAnimatedSprite({
   playOnce,
   paused,
   randomiseStartFrame,
+  spritesheetVariant,
 }: AnimatedCreateSpriteOptions): AnimatedSprite {
-  const animationFrames = loadedSpriteSheet().animations[animationId];
+  const animationFrames =
+    getSpriteSheetVariant(spritesheetVariant).animations[animationId];
   //const frames = paused ? [animationFrames[0]] : animationFrames;
 
   const animatedSpriteFrames: AnimatedSpriteFrames = animationFrames.map(
@@ -292,3 +282,29 @@ function createAnimatedSprite({
   }
   return animatedSprite;
 }
+
+const createSpriteImplAndCatch = (options: CreateSpriteOptions): Container => {
+  try {
+    return createSpriteImpl(options);
+  } catch (error) {
+    throw new Error(
+      `error in createSprite with options ${JSON.stringify(options, null, 2)}`,
+      { cause: error },
+    );
+  }
+};
+
+export const createSprite = (
+  import.meta.env.DEV ?
+    createSpriteImplAndCatch
+  : createSpriteImpl) as <O extends CreateSpriteOptions>(
+  options: O,
+) => O extends AnimatedCreateSpriteOptions ?
+  O extends { times?: Partial<Xyz> } ?
+    // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
+    AnimatedSprite | Container<AnimatedSprite>
+  : AnimatedSprite
+: O extends { times?: Partial<Xyz> } ?
+  // giving times doesn't guarantee a container, because the times could be 1x1x1 or equivalent
+  Container<Sprite> | Sprite
+: Sprite;

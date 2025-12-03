@@ -26,6 +26,7 @@ export const charlesAppearance: ItemAppearance<
       },
     },
     room: { roomTime, items },
+    general: { colourised },
   },
   currentRendering,
 }) => {
@@ -43,10 +44,16 @@ export const charlesAppearance: ItemAppearance<
   if (!render) {
     return "no-update";
   }
+
+  const spritesheetVariant = colourised ? "for-current-room" : "uncolourised";
+
   return {
     output: createStackedSprites({
-      top: `charles.${facingXy4}`,
-      bottom: controlledByJoystick ? "headlessBase.all" : "headlessBase",
+      top: { textureId: `charles.${facingXy4}`, spritesheetVariant },
+      bottom: {
+        textureId: controlledByJoystick ? "headlessBase.all" : "headlessBase",
+        spritesheetVariant,
+      },
     }),
     renderProps: { facingXy4, controlledByJoystick },
   };

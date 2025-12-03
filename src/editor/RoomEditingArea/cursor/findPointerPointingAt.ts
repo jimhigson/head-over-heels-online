@@ -11,9 +11,9 @@ import type {
 } from "./pointIntersectsItemAABB";
 
 import { isSolid } from "../../../game/physics/itemPredicates";
+import { blockSizePx } from "../../../game/physics/mechanicsConstants";
 import { unprojectScreenXyToWorldXyzOnFace } from "../../../game/render/projections";
 import { iterateRoomItems } from "../../../model/RoomState";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { orthoPlaneForNormal } from "../../../utils/vectors/orthoPlane";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
@@ -40,8 +40,8 @@ export const roundXyzProjection = (
 
   // potentially allow items to be positioned on half-blocks for x and y
   // (unlike original hoh)
-  const incrementXy = blockSizePx.w * gridResolution;
-  const incrementZ = blockSizePx.h;
+  const incrementXy = blockSizePx.x * gridResolution;
+  const incrementZ = blockSizePx.z;
 
   const biasXy =
     gridResolution === 1 ?
@@ -49,7 +49,7 @@ export const roundXyzProjection = (
       0
       // bias centres the position towards the bottom of the square while the pointer points to
       // the middle of it
-    : blockSizePx.w / 2;
+    : blockSizePx.x / 2;
   const biasZ = incrementZ / 2;
 
   const orthoPlane = orthoPlaneForNormal(planeNormal);

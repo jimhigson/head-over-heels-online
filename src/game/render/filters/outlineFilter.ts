@@ -2,9 +2,9 @@ import type { Color, FilterSystem, RenderTexture, Texture } from "pixi.js";
 
 import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
-import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
+import type { SpritesheetPaletteColourName } from "../../../sprites/palette/spritesheetPalette";
 
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
+import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
 import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
 import { transformObject } from "../../../utils/entries";

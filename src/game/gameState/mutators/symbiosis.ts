@@ -1,12 +1,12 @@
 import type { PlayableItem } from "../../physics/itemPredicates";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { doubleHeightCharacter } from "../../collision/boundingBoxes";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import {
   defaultBaseState,
   defaultFreeItemState,
@@ -35,7 +35,7 @@ export const uncombinePlayablesFromSymbiosis = <
       ...headOverHeels.state.head,
       facing: headOverHeels.state.facing,
       visualFacingVector: headOverHeels.state.visualFacingVector,
-      position: addXyz(headOverHeels.state.position, { z: blockSizePx.h }),
+      position: addXyz(headOverHeels.state.position, { z: blockSizePx.z }),
       switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
       collidedWith: headOverHeels.state.collidedWith,

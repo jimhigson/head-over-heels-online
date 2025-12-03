@@ -25,9 +25,7 @@ export const renderMultipliedXy = (
   };
 
   return createSprite({
-    ...(typeof createSpriteOptions === "string" ?
-      { textureId: createSpriteOptions }
-    : createSpriteOptions),
+    ...createSpriteOptions,
     times: timesXy,
   });
 };

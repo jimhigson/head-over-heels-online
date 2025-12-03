@@ -1,11 +1,11 @@
 import { describe, expect, test } from "vitest";
 
-import { blockSizePx } from "../../../../../../sprites/spritePivots";
+import { blockSizePx } from "../../../../../physics/mechanicsConstants";
 import { findSubRoomForItem, type MaybeDividedRoom } from "./itemIsInSubRoom";
 
 const createFinePosition = (x: number, y: number) => ({
-  x: x * blockSizePx.w,
-  y: y * blockSizePx.d,
+  x: x * blockSizePx.x,
+  y: y * blockSizePx.y,
 });
 
 const createMockRoom = (): MaybeDividedRoom => ({
@@ -171,8 +171,8 @@ test("fine and block modes give same results", () => {
   // Test a position inside subRoom1
   const blockPos1 = { x: 3, y: 3 };
   const finePos1 = {
-    x: 3 * blockSizePx.w,
-    y: 3 * blockSizePx.d,
+    x: 3 * blockSizePx.x,
+    y: 3 * blockSizePx.y,
   };
   expect(findSubRoomForItem(blockPos1, "block", room)).toBe(
     findSubRoomForItem(finePos1, "fine", room),
@@ -181,8 +181,8 @@ test("fine and block modes give same results", () => {
   // Test a position between rooms
   const blockPos2 = { x: 7, y: 7 };
   const finePos2 = {
-    x: 7 * blockSizePx.w,
-    y: 7 * blockSizePx.d,
+    x: 7 * blockSizePx.x,
+    y: 7 * blockSizePx.y,
   };
   expect(findSubRoomForItem(blockPos2, "block", room)).toBe(
     findSubRoomForItem(finePos2, "fine", room),
@@ -191,8 +191,8 @@ test("fine and block modes give same results", () => {
   // Test a position inside subRoom2
   const blockPos3 = { x: 12, y: 12 };
   const finePos3 = {
-    x: 12 * blockSizePx.w,
-    y: 12 * blockSizePx.d,
+    x: 12 * blockSizePx.x,
+    y: 12 * blockSizePx.y,
   };
   expect(findSubRoomForItem(blockPos3, "block", room)).toBe(
     findSubRoomForItem(finePos3, "fine", room),

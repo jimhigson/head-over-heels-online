@@ -2,8 +2,8 @@ import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
 import type { RoomJson } from "../../../../../../model/RoomJson";
 import type { Xy, Xyz } from "../../../../../../utils/vectors/vectors";
 
-import { blockSizePx } from "../../../../../../sprites/spritePivots";
 import { keysIter } from "../../../../../../utils/entries";
+import { blockSizePx } from "../../../../../physics/mechanicsConstants";
 
 export type InPlayItemLocatableInSubRoom = {
   id: string;
@@ -117,8 +117,8 @@ export const findSubRoomForItem = (
   const positionMaybeConverted =
     positionType === "fine" ?
       {
-        x: position.x / blockSizePx.w,
-        y: position.y / blockSizePx.d,
+        x: position.x / blockSizePx.x,
+        y: position.y / blockSizePx.y,
       }
     : position;
 

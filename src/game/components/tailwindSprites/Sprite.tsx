@@ -11,7 +11,7 @@ import { twMerge } from "tailwind-merge";
 
 import { isTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { ClassnameWrap } from "../../../utils/react/ClassnameWrap";
 import { sanitiseForClassName } from "./SanitiseForClassName";
 
@@ -88,7 +88,7 @@ export const BitmapText = ({
                   c.charCodeAt(0),
                   textureId,
                   "we have:",
-                  Object.keys(loadedSpriteSheet().textures),
+                  Object.keys(originalSpriteSheet().textures),
                 );
               }
               const imgSpriteEle = (

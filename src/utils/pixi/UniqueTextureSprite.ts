@@ -1,6 +1,6 @@
 import type { DestroyOptions } from "pixi.js";
 
-import { Sprite } from "pixi.js";
+import { RenderTexture, Sprite } from "pixi.js";
 
 /**
  * A Sprite subclass that automatically destroys its texture when the sprite is destroyed.
@@ -35,11 +35,15 @@ export class UniqueTextureSprite extends Sprite {
       // We always destroy texture, but respect the boolean for other options
       super.destroy({
         texture: hasTexture,
-        textureSource: options,
+        textureSource: this.texture instanceof RenderTexture,
         children: options,
       });
     } else {
-      super.destroy({ ...options, texture: hasTexture });
+      super.destroy({
+        ...options,
+        texture: hasTexture,
+        textureSource: this.texture instanceof RenderTexture,
+      });
     }
   }
 }

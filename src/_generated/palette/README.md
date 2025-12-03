@@ -1,0 +1,1 @@
+palette json generated from spritesheet

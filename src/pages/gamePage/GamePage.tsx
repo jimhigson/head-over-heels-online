@@ -11,7 +11,7 @@ import { type GameApi } from "../../game/GameApi.tsx";
 import { importGameMain } from "../../game/gameMain.import.ts";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import { loadSounds } from "../../sound/soundsLoader.ts";
-import { loadSpritesheet } from "../../sprites/spriteSheet.ts";
+import { loadSpritesheetAssets } from "../../sprites/spritesheet/loadedSpriteSheet.ts";
 import { useAppSelector } from "../../store/hooks.ts";
 import {
   useCheatsOn,
@@ -35,7 +35,7 @@ import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
 const loadGameAssets = importOnce(() => {
-  return Promise.all([importGameMain(), loadSpritesheet(), loadSounds()]);
+  return Promise.all([importGameMain(), loadSpritesheetAssets(), loadSounds()]);
 });
 
 const useCreateGameApi = (): GameApi<string> | undefined => {

@@ -1,37 +1,32 @@
-import type { EmptyObject } from "type-fest";
-
-import { spritesheetPalette } from "gfx/spritesheetPalette";
 import { Container } from "pixi.js";
 
-import type { OutlineFilter } from "../filters/outlineFilter";
 import type { Renderer } from "../Renderer";
+import type { HudRenderContext } from "./hudRendererContexts";
 
-import { hudCharTextureSize } from "../../../sprites/textureSizes";
+import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
+import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import {
   frameTimingStats,
   type FrameTimingStatsEvent,
 } from "../../mainLoop/frameTiming/FrameTimingStats";
-import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
-import { hudOutlineFilter } from "./hudFilters";
-import { makeTextContainer, showTextInContainer } from "./showTextInContainer";
-
-type Filters = [RevertColouriseFilter, OutlineFilter];
+import { TextContainer } from "../text/TextContainer";
 
 export class FpsRenderer
-  implements Renderer<EmptyObject, FrameTimingStatsEvent, Container>
+  implements
+    Renderer<HudRenderContext<string>, FrameTimingStatsEvent, Container>
 {
   #container = new Container({ label: "FpsRenderer" });
-  #fpsText = makeTextContainer({ label: "fps", outline: true });
+  #fpsText: TextContainer;
 
-  constructor(public readonly renderContext: EmptyObject = {}) {
-    this.#fpsText.filters = [
-      new RevertColouriseFilter(spritesheetPalette.pink),
-      hudOutlineFilter,
-    ];
-    this.#fpsText.y = hudCharTextureSize.h;
+  constructor(public readonly renderContext: HudRenderContext<string>) {
+    this.#fpsText = new TextContainer({
+      pixiRenderer: renderContext.general.pixiRenderer,
+      label: "fps",
+      outline: true,
+      y: hudCharTextureSize.h,
+      text: "...",
+    });
     this.#container.addChild(this.#fpsText);
-
-    showTextInContainer(this.#fpsText, "...");
     frameTimingStats.on(this.tick);
   }
 
@@ -50,12 +45,8 @@ export class FpsRenderer
 
   tick = (frameTimingStatsEvent: FrameTimingStatsEvent): void => {
     const fpsValue = frameTimingStatsEvent.fps;
-    const fpsText = Math.round(fpsValue);
-    showTextInContainer(this.#fpsText, fpsText);
-    (this.#fpsText.filters as Filters)[0].targetColor = this.#colourForFps(
-      fpsValue,
-      60,
-    );
+    this.#fpsText.text = `${Math.round(fpsValue)} FPS`;
+    this.#fpsText.tint = this.#colourForFps(fpsValue, 60);
   };
 
   get output() {
