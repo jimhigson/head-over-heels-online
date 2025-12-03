@@ -30,9 +30,9 @@ vi.mock("./hudFilters", () => ({
   hudTextFilter: [],
 }));
 
-import type { TextureId } from "../../../sprites/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 // Import the mocked functions
 import { createSprite } from "../createSprite";
 

@@ -10,7 +10,7 @@ import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 import type { HudRendererTickContext } from "./hudRendererContexts";
 import type { ButtonType } from "./OnScreenButtonRenderer";
 
-import { spritesheetData } from "../../../sprites/spriteSheetData";
+import { spritesheetData } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";

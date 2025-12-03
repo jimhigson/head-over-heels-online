@@ -13,8 +13,13 @@ import {
   type CharacterName,
   type IndividualCharacterName,
 } from "../../../model/modelTypes";
+import {
+  zxSpectrumColor,
+  type ZxSpectrumRoomColour,
+} from "../../../originalGame";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
-import { playableWalkAnimationSpeed } from "../../../sprites/playableSpritesheetData";
+import { getAmbientSwoppedColour } from "../../../sprites/spritesheet/paletteSwoppedSpritesheet";
+import { playableWalkAnimationSpeed } from "../../../sprites/spritesheet/spritesheetData/playableSpritesheetData";
 import {
   lengthXyz,
   vectorClosestDirectionXy8,
@@ -162,6 +167,8 @@ const createOutputContainer = (
   name: IndividualCharacterName,
   inSymbio: boolean,
   paused: boolean,
+  // for if in uncolourised mode; use this colour for all outlines:
+  overrideColour?: ZxSpectrumRoomColour,
 ): IndividualPlayableRenderingContainer => {
   const container = new Container() as IndividualPlayableRenderingContainer;
   const playableSpriteContainer = new Container();
@@ -178,11 +185,25 @@ const createOutputContainer = (
     //switchedToHighlightOutline: OutlineFilter,
     // don't use the singleton per-colour outline filters since we set .enabled on these
     // and would change the enabled status for all containers that are using it
-    new OutlineFilter({ color: spritesheetPalette[accentColours[name]] }),
+    new OutlineFilter({
+      color:
+        overrideColour ?
+          zxSpectrumColor(overrideColour)
+        : getAmbientSwoppedColour(accentColours[name]),
+    }),
     //invulnerableOutline: OutlineFilter,
-    new OutlineFilter({ color: spritesheetPalette.midRed }),
+    new OutlineFilter({
+      color:
+        overrideColour ?
+          zxSpectrumColor(overrideColour)
+        : getAmbientSwoppedColour("midRed"),
+    }),
     //invulnerableFlashAfterDeathFilter: OneColourFilter,
-    new OneColourFilter(spritesheetPalette[accentColours[name]]),
+    new OneColourFilter(
+      overrideColour ?
+        zxSpectrumColor(overrideColour)
+      : getAmbientSwoppedColour(accentColours[name]),
+    ),
   ];
   for (const f of container.filters) {
     f.enabled = false;
@@ -292,7 +313,8 @@ const playableAppearanceImpl: ItemAppearance<
 > = ({
   renderContext: {
     item: subject,
-    general: { gameState, paused },
+    general: { gameState, paused, colourised },
+    room,
   },
   currentRendering,
 }) => {
@@ -357,12 +379,19 @@ const playableAppearanceImpl: ItemAppearance<
 
   let outputContainer: PlayableRenderOutput;
 
+  const effectsColourFromRoom = !colourised ? room.color : undefined;
+
   if (type === "headOverHeels") {
     outputContainer =
       previousRendering ??
       stackSprites({
-        top: createOutputContainer("head", true, paused),
-        bottom: createOutputContainer("heels", true, paused),
+        top: createOutputContainer("head", true, paused, effectsColourFromRoom),
+        bottom: createOutputContainer(
+          "heels",
+          true,
+          paused,
+          effectsColourFromRoom,
+        ),
       });
 
     const stackedContainer =
@@ -386,7 +415,8 @@ const playableAppearanceImpl: ItemAppearance<
     );
   } else {
     outputContainer =
-      previousRendering ?? createOutputContainer(type, false, paused);
+      previousRendering ??
+      createOutputContainer(type, false, paused, effectsColourFromRoom);
 
     updateIndividualsRendering(
       type,

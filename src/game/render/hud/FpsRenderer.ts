@@ -6,7 +6,7 @@ import { Container } from "pixi.js";
 import type { OutlineFilter } from "../filters/outlineFilter";
 import type { Renderer } from "../Renderer";
 
-import { hudCharTextureSize } from "../../../sprites/textureSizes";
+import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import {
   frameTimingStats,
   type FrameTimingStatsEvent,

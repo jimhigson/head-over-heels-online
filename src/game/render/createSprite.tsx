@@ -8,14 +8,17 @@ import type {
 import { Container, Ticker } from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
 
+import type { AppSpritesheet } from "../../sprites/spritesheet/loadedSpriteSheet";
+import type {
+  AnimationId,
+  TextureId,
+} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
-import { loadedSpriteSheet } from "../../sprites/spriteSheet";
-import {
-  type AnimationId,
-  spritesheetData,
-  type TextureId,
-} from "../../sprites/spriteSheetData";
+import { loadedSpriteSheet } from "../../sprites/spritesheet/loadedSpriteSheet";
+import { paletteSwoppedSpritesheet } from "../../sprites/spritesheet/paletteSwoppedSpritesheet";
+import { spritesheetData } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { hashStringToNumber0to1 } from "../../utils/maths/hashStringToNumber0to1";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
@@ -50,6 +53,12 @@ export type AnimatedCreateSpriteOptions = {
   times?: Partial<Xyz>;
   label?: string;
 
+  /**
+   * if true, the sprites will be created using the original spritesheet image,
+   * without any palette swops applied. Otherwise, the swopped version will be used
+   */
+  noPaletteSwops?: boolean;
+
   /** if the game is paused, nothing should animate - this will automatically create just
       a sprite with the first frame of the animation */
   paused?: boolean;
@@ -66,6 +75,11 @@ export type CreateSpriteOptions =
       filter?: Filter | Filter[];
       times?: Partial<Xyz>;
       label?: string;
+      /**
+       * if true, the sprites will be created using the original spritesheet image,
+       * without any palette swops applied. Otherwise, the swopped version will be used
+       */
+      noPaletteSwops?: boolean;
     } & (
       | {
           times?: Partial<Xyz>;
@@ -83,6 +97,16 @@ export type CreateSpriteOptions =
   | TextureId;
 
 const bottomMiddleDefaultAnchor = { x: 0.5, y: 1 };
+
+const maybeSwoppedSpritesheet = (
+  noPaletteSwops: boolean = false,
+): AppSpritesheet => {
+  if (noPaletteSwops) {
+    return loadedSpriteSheet();
+  } else {
+    return paletteSwoppedSpritesheet();
+  }
+};
 
 const isAnimatedOptions = (
   options: CreateSpriteOptions,
@@ -155,15 +179,17 @@ const _createSprite = (options: CreateSpriteOptions): Container => {
     } else {
       const textureId =
         options.textureId ?? options.textureIdCallback?.(0, 0, 0);
-      sprite = new Sprite(loadedSpriteSheet().textures[textureId]);
+      const spritesheet = maybeSwoppedSpritesheet(options.noPaletteSwops);
+      sprite = new Sprite(spritesheet.textures[textureId]);
     }
 
     if (anchor === undefined && pivot === undefined) {
       if (!isAnimatedOptions(options)) {
         const textureId =
           options.textureId ?? options.textureIdCallback?.(0, 0, 0);
+        const spritesheet = maybeSwoppedSpritesheet(options.noPaletteSwops);
         const spritesheetFrameData: SpritesheetFrameData | undefined =
-          loadedSpriteSheet().data.frames[textureId];
+          spritesheet.data.frames[textureId];
 
         if (spritesheetFrameData === undefined) {
           throw new Error(`no spritesheet entry for textureId "${textureId}"`);
@@ -232,8 +258,10 @@ function createAnimatedSprite({
   playOnce,
   paused,
   randomiseStartFrame,
+  noPaletteSwops,
 }: AnimatedCreateSpriteOptions): AnimatedSprite {
-  const animationFrames = loadedSpriteSheet().animations[animationId];
+  const animationFrames =
+    maybeSwoppedSpritesheet(noPaletteSwops).animations[animationId];
   //const frames = paused ? [animationFrames[0]] : animationFrames;
 
   const animatedSpriteFrames: AnimatedSpriteFrames = animationFrames.map(

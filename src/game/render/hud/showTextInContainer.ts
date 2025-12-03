@@ -4,12 +4,12 @@ import { size } from "iter-tools-es";
 import { Container } from "pixi.js";
 
 import type { PokeableNumber } from "../../../model/ItemStateMap";
-import type { TextureId } from "../../../sprites/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
-import { hudCharTextureSize } from "../../../sprites/textureSizes";
+import { loadedSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { createSprite } from "../createSprite";
 import { hudOutlinedTextFilters, hudTextFilter } from "./hudFilters";
 

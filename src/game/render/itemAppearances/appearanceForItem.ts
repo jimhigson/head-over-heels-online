@@ -4,12 +4,10 @@ import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { CreateSpriteOptions } from "../createSprite";
 import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
-import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { smallItemTextureSize } from "../../../sprites/textureSizes";
+import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { createSprite } from "../createSprite";
-import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
-import { bookPaletteSwapFilter, noFilters } from "../filters/standardFilters";
+import { noFilters } from "../filters/standardFilters";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
 import { charlesAppearance } from "./charlesAppearance";
@@ -33,11 +31,6 @@ import { teleporterAppearance } from "./teleporterAppearance";
 import { toasterAppearance } from "./toasterAppearance";
 import { farWallAppearance } from "./wallAppearance";
 
-const disappearingBarrierFilter = getPaletteSwapFilter({
-  white: spritesheetPalette.lightBeige,
-  highlightBeige: spritesheetPalette.lightBeige,
-  midRed: spritesheetPalette.redShadow,
-});
 const itemAppearancesMap: {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;
 } = {
@@ -60,9 +53,8 @@ const itemAppearancesMap: {
       },
     }) => {
       return createSprite({
-        textureId: `barrier.${axis}`,
+        textureId: `barrier.${axis}${disappearing ? ".disappearing" : ""}`,
         times,
-        filter: disappearing ? disappearingBarrierFilter : undefined,
       });
     },
   ),
@@ -100,14 +92,8 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        room,
       },
-    }) =>
-      createSprite(
-        style === "book" ?
-          { textureId: "book.y", filter: bookPaletteSwapFilter(room) }
-        : style,
-      ),
+    }) => createSprite(style === "book" ? { textureId: "book.y" } : style),
   ),
 
   block: blockAppearance,

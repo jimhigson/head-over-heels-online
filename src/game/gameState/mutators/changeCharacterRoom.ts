@@ -16,7 +16,6 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   characterRoomChange,
@@ -33,6 +32,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { isPortal } from "../../physics/itemPredicates";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
@@ -163,7 +163,7 @@ const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
   toRoom: RoomState<RoomId, RoomItemId>,
 ) => {
   // back off one square, and push progressively into the room:
-  const backOffAndPushLength = 1 * blockSizePx.w;
+  const backOffAndPushLength = 1 * blockSizePx.x;
   updateItemPosition(
     toRoom,
     playableItem,
@@ -384,7 +384,7 @@ export const changeCharacterRoom = <
         // so the player needs to stand on a block, which is one block high, and they need to get up on top of it
         changeType === "portal" && sourceItem.config.direction.z > 0 ?
           {
-            z: blockSizePx.h,
+            z: blockSizePx.z,
             // *
             // (playableItem.type === "headOverHeels" ?
             //   // headOverHeels is taller, so they hit the ceiling portal earlier (bookworld28 -> bookworld29) so they need

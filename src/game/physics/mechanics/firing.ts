@@ -7,7 +7,6 @@ import {
   addPokeableNumbers,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
@@ -18,12 +17,13 @@ import {
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
+import { blockSizePx } from "../mechanicsConstants";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 
 /**
  * how far ahead of head the doughnuts start.
  */
-const aheadStart = blockSizePx.w * 0.75;
+const aheadStart = blockSizePx.x * 0.75;
 
 /**
  * if fire is press and held, how long until we next fire?
@@ -63,7 +63,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
         position: addXyz(
           position,
           scaleXyz(direction, aheadStart),
-          firer.type === "headOverHeels" ? { z: blockSizePx.h } : originXyz,
+          firer.type === "headOverHeels" ? { z: blockSizePx.z } : originXyz,
         ),
         vels: {
           fired: scaleXyz(direction, moveSpeedPixPerMs.firedDoughnut),

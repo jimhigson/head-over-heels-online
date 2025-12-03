@@ -5,7 +5,7 @@ import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { spritesheetData } from "../../../sprites/spriteSheetData";
+import { spritesheetData } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { neverTime } from "../../../utils/neverTime";
 import { tangentAxis } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";

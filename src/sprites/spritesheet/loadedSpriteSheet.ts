@@ -1,20 +1,20 @@
 import { Assets, Spritesheet, Texture } from "pixi.js";
 
-import spritesheetUrl from "../../gfx/sprites.png";
-import { spritesheetData } from "./spriteSheetData";
+import spritesheetUrl from "../../../gfx/sprites.png";
+import { spritesheetData } from "./spritesheetData/spriteSheetData";
 
-type AppSpritesheet = Spritesheet<typeof spritesheetData>;
+export type AppSpritesheet = Spritesheet<typeof spritesheetData>;
 
 let loaded: AppSpritesheet | undefined = undefined;
+let texture: Texture | undefined = undefined;
 
 export const loadSpritesheet = async () => {
   if (loaded !== undefined) {
     return loaded;
   }
 
-  let spritesTexture: Texture;
   try {
-    spritesTexture = await Assets.load<Texture>(spritesheetUrl);
+    texture = await Assets.load<Texture>(spritesheetUrl);
   } catch (_e) {
     console.warn(
       "did not load textures - hopefully this is running on a server!",
@@ -22,10 +22,10 @@ export const loadSpritesheet = async () => {
     // allows the game to run in vitest without using @pixi/node to load the
     // sprites in node. This could be dangerous in an actual browser where
     // we want an error if the sprites don't load
-    spritesTexture = Texture.EMPTY;
+    texture = Texture.EMPTY;
   }
 
-  const spriteSheet = new Spritesheet(spritesTexture, spritesheetData);
+  const spriteSheet = new Spritesheet(texture, spritesheetData);
 
   await spriteSheet.parse();
   spriteSheet.textureSource.scaleMode = "nearest";
@@ -47,4 +47,15 @@ export const loadedSpriteSheet = (): AppSpritesheet => {
     );
   }
   return loaded;
+};
+
+export const baseSpritesheetTexture = (): Texture => {
+  if (texture === undefined) {
+    throw new Error(
+      `spritesheet not loaded - only call this from inside code 
+      (like in a render loop) that is protected and only executed once 
+      loading has happened`,
+    );
+  }
+  return texture;
 };

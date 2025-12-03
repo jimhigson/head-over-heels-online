@@ -2,11 +2,9 @@ import type { Container } from "pixi.js";
 
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import type { Campaign } from "../../../../model/modelTypes";
-import type { RoomState } from "../../../../model/RoomState";
 import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
-import { blockSizePx } from "../../../../sprites/spritePivots";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
@@ -17,11 +15,9 @@ import {
   originXy,
   perpendicularAxisXy,
 } from "../../../../utils/vectors/vectors";
+import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
-import {
-  edgePaletteSwapFilters,
-  replacePlaceholderColoursPaletteSwapFilter,
-} from "../../filters/standardFilters";
+import { replacePlaceholderColoursPaletteSwapFilter } from "../../filters/standardFilters";
 import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
@@ -29,12 +25,9 @@ import {
 import { itemAppearanceRenderOnce } from "../ItemAppearance";
 import { doorTexture } from "./doorTexture";
 
-function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
-  {
-    config: { direction, inHiddenWall, height },
-  }: ItemInPlay<"doorLegs", RoomId, RoomItemId>,
-  room: RoomState<RoomId, RoomItemId>,
-): Generator<Container> {
+function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>({
+  config: { direction, inHiddenWall, height },
+}: ItemInPlay<"doorLegs", RoomId, RoomItemId>): Generator<Container> {
   const axis = doorAlongAxis(direction);
 
   // drag legs etc
@@ -51,14 +44,10 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
         const sprite = createSprite({
           textureId: `generic.door.floatingThreshold.${axis}`,
           ...addXy(offset, {
-            y: -blockSizePx.h * height,
+            y: -blockSizePx.z * height,
           }),
         });
-        sprite.filters = edgePaletteSwapFilters(
-          room,
-          axis === "x" ? "towards" : "right",
-          true,
-        );
+
         yield sprite;
       }
     } else {
@@ -73,7 +62,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
           pivot: { x: pivotX, y: 9 },
           textureId: `generic.door.legs.pillar.${axis}`,
           ...addXy(offset, {
-            y: -h * blockSizePx.h,
+            y: -h * blockSizePx.z,
           }),
         });
       }
@@ -85,7 +74,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   if (!inHiddenWall) {
     // non-floating threshold
     yield createSprite({
-      pivot: { x: 16, y: blockSizePx.h * height + 13 },
+      pivot: { x: 16, y: blockSizePx.z * height + 13 },
       textureId: `generic.door.legs.threshold.double.${axis}`,
       ...projectBlockXyzToScreenXy({ ...originXy, [axis]: 1 }),
     });
@@ -116,13 +105,10 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
     ({
       renderContext: {
         item,
-        room,
         general: { pixiRenderer },
       },
     }) => {
-      const doorLegsContainer = iterateToContainer(
-        doorLegsGenerator(item, room),
-      );
+      const doorLegsContainer = iterateToContainer(doorLegsGenerator(item));
 
       // door legs can take quite a few sprites (ie, 11 each for the 5-high
       // doors in #blacktooth39 - reduce down to a single sprite:
@@ -161,7 +147,14 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
       const useColoursFromRoom =
         campaign?.rooms[toRoom] ??
         // toRoom might not exist if working in the editor and didn't make it yet
+        // so just colour using the current room's colours:
         room;
+
+      // const filter = new PaletteSwapFilter(
+      //   {
+      //     paletteSwaps: {replaceLight getColorScheme(useColoursFromRoom.color).main.original },
+      //   },
+      // );
 
       const doorFrameSprite = createSprite({
         textureId: doorTexture(room, axis, part),

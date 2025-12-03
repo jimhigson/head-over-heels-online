@@ -8,7 +8,7 @@ import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../model/modelTypes";
-import type { TextureId } from "../../../sprites/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import type { PortableItem } from "../../physics/itemPredicates";
@@ -19,11 +19,11 @@ import type {
 } from "./hudRendererContexts";
 
 import { individualCharacterNames } from "../../../model/modelTypes";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import {
   hudCharTextureSize,
   smallItemTextureSize,
-} from "../../../sprites/textureSizes";
+} from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
@@ -290,6 +290,13 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         : "heels.standing.towards"
       ],
     );
+
+    // to use swopped palette spritesheets:
+    // const characterSprite = createSprite(
+    //   characterName === "head" ?
+    //     "head.walking.right.2"
+    //   : "heels.standing.towards",
+    // );
 
     characterSprite.anchor = { x: 0.5, y: 0 };
 

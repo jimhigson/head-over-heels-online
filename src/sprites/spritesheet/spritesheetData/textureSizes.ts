@@ -1,5 +1,5 @@
-import type { SpriteSize } from "../model/modelTypes";
-import type { Xy } from "../utils/vectors/vectors";
+import type { SpriteSize } from "../../../model/modelTypes";
+import type { Xy } from "../../../utils/vectors/vectors";
 
 export const floorTileSize = { w: 32, h: 16 } as const satisfies SpriteSize;
 export const wallTileSize = { w: 16, h: 56 } as const satisfies SpriteSize;

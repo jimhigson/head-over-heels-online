@@ -4,16 +4,16 @@ import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../../model/modelTypes";
-import type { TextureId } from "../../../../sprites/spriteSheetData";
-import type { DirectionXy8 } from "../../../../utils/vectors/vectors";
+import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { ItemAppearance } from "../ItemAppearance";
 
-import { blockSizePx } from "../../../../sprites/spritePivots";
 import {
   type DirectionXy4,
+  type DirectionXy8,
   vectorClosestDirectionXy4,
   vectorClosestDirectionXy8,
 } from "../../../../utils/vectors/vectors";
+import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 
 type RenderPropsXy4 = {
@@ -49,7 +49,7 @@ export const directionalShadowMaskAppearanceXy4 =
       : `shadowMask.${shadowMaskBaseShadowId}.right`,
     );
 
-    sprite.y = -(blockSizePx.h * (heightBlocks - 1));
+    sprite.y = -(blockSizePx.z * (heightBlocks - 1));
 
     sprite.scale.x = facingXy4 === "away" || facingXy4 === "right" ? 1 : -1;
 
@@ -100,7 +100,7 @@ export const directionalShadowMaskAppearanceXy8 =
       `shadowMask.${shadowMaskBaseShadowId}.${shadowMaskDirection}` as TextureId,
     );
 
-    sprite.y = -(blockSizePx.h * (heightBlocks - 1));
+    sprite.y = -(blockSizePx.z * (heightBlocks - 1));
 
     sprite.scale.x = flippedDirection === undefined ? 1 : -1;
 

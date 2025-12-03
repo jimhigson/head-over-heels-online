@@ -3,7 +3,7 @@ import { Container, type Sprite } from "pixi.js";
 import type { Button } from "./OnScreenButtonRenderer";
 
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { halfbrite } from "../../../utils/colour/halfBrite";
 import { createSprite } from "../createSprite";
 import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";

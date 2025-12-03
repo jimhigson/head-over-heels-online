@@ -1,9 +1,9 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
-import type { AxisXy } from "../utils/vectors/vectors";
+import type { AxisXy, Xy } from "../../../utils/vectors/vectors";
 
-import { fromAllEntries } from "../utils/entries";
-import { addXy, type Xy } from "../utils/vectors/vectors";
+import { fromAllEntries } from "../../../utils/entries";
+import { addXy } from "../../../utils/vectors/vectors";
 
 type SceneryName = "generic" | "moonbase.dark" | "moonbase";
 

@@ -3,8 +3,8 @@ import { Container } from "pixi.js";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { spritesheetPalette } from "../../../../gfx/spritesheetPalette";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
 import { outlineFilters } from "../filters/outlineFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
@@ -15,7 +15,7 @@ const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
 const lineHeightPx = 12;
 
 /** above this height, lines are hidden */
-const maxLineHeight = blockSizePx.h * 3;
+const maxLineHeight = blockSizePx.z * 3;
 
 const lightening = [
   spritesheetPalette.shadow,

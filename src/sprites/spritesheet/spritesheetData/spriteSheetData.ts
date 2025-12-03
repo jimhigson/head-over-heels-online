@@ -37,4 +37,8 @@ export const spritesheetData = {
   keyof typeof frames
 >;
 
+export const textureIds = Object.keys(spritesheetData.frames) as TextureId[];
+
 export type AnimationId = keyof (typeof spritesheetData)["animations"];
+
+export const spritesheetSize = { w: 1024, h: 1024 };

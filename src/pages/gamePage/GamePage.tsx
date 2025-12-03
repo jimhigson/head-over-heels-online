@@ -11,7 +11,7 @@ import { type GameApi } from "../../game/GameApi.tsx";
 import { importGameMain } from "../../game/gameMain.import.ts";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import { loadSounds } from "../../sound/soundsLoader.ts";
-import { loadSpritesheet } from "../../sprites/spriteSheet.ts";
+import { loadSpritesheet } from "../../sprites/spritesheet/loadedSpriteSheet.ts";
 import { useAppSelector } from "../../store/hooks.ts";
 import {
   useCheatsOn,

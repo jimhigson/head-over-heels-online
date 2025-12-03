@@ -2,8 +2,8 @@ import type { Sprite } from "pixi.js";
 
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
-import { wallTileSize } from "../../../sprites/textureSizes";
+import { paletteSwoppedSpritesheet } from "../../../sprites/spritesheet/paletteSwoppedSpritesheet";
+import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { lengthXy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
@@ -41,7 +41,8 @@ const spikyBallAppearanceImpl: ItemAppearance<
 
   const stepsTravelled = Math.floor((distanceTravelled * 2) / wallTileSize.w);
   const phase = (((stepsTravelled + startingPhase) % 2) + 1) as 1 | 2;
-  rendering.texture = loadedSpriteSheet().textures[`spikyBall.${phase}`];
+  rendering.texture =
+    paletteSwoppedSpritesheet().textures[`spikyBall.${phase}`];
 
   return {
     output: rendering,

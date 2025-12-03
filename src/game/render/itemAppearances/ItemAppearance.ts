@@ -18,7 +18,6 @@ import type {
 import type { ItemRenderContext, ItemTickContext } from "../ItemRenderContexts";
 
 import { itemInPlayTimes } from "../../../model/times";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
   maybeRenderContainerToSprite,
@@ -26,6 +25,7 @@ import {
 } from "../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../utils/pixi/renderMultpliedXy";
 import { isMultipliedItem } from "../../physics/itemPredicates";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 
 export type ItemAppearanceOptions<
@@ -209,7 +209,7 @@ export const itemAppearanceShadowMaskFromConfig =
 
       if (times) {
         // move the shadow mast up if the item is multiplied in z:
-        appearanceReturn.output.y -= ((times.z ?? 1) - 1) * blockSizePx.h;
+        appearanceReturn.output.y -= ((times.z ?? 1) - 1) * blockSizePx.z;
       }
 
       return appearanceReturn;

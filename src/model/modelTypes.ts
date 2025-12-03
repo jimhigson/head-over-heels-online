@@ -3,7 +3,7 @@ import type { SpritesheetFrameData } from "pixi.js";
 import type { SceneryName, Wall } from "../sprites/planets";
 import type { RoomJson } from "./RoomJson";
 
-import { blockSizePx } from "../sprites/spritePivots";
+import { blockSizePx } from "../game/physics/mechanicsConstants";
 
 export const individualCharacterNames = ["head", "heels"] as const;
 export const characterNames = [
@@ -20,8 +20,8 @@ export const isCharacterName = (name: string): name is CharacterName =>
 
 export type AnyWall = Wall<SceneryName>;
 
-export const floorThickness = blockSizePx.h;
-export const wallThickness = blockSizePx.w / 2;
+export const floorThickness = blockSizePx.z;
+export const wallThickness = blockSizePx.x / 2;
 
 /**
  * special value to use in place of a superbase auth.users.id

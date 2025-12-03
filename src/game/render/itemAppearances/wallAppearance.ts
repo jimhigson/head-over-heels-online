@@ -3,7 +3,7 @@ import { Container } from "pixi.js";
 import type { Xy } from "../../../utils/vectors/vectors";
 
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
-import { wallTileSize } from "../../../sprites/textureSizes";
+import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
   perpendicularAxisXy,

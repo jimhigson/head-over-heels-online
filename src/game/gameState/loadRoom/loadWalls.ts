@@ -5,7 +5,6 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { isWallHidden } from "../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../model/times";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
@@ -14,6 +13,7 @@ import {
   perpendicularAxisXy,
 } from "../../../utils/vectors/vectors";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { veryHighZ, wallRenderHeight } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
@@ -26,24 +26,24 @@ import { defaultBaseState } from "./itemDefaultStates";
 export const wallThicknessBlocks = 1;
 
 export const xAxisWallAabb = {
-  x: blockSizePx.w,
-  y: blockSizePx.d * wallThicknessBlocks,
+  x: blockSizePx.x,
+  y: blockSizePx.y * wallThicknessBlocks,
   z: veryHighZ,
 };
 export const xAxisWallRenderAabb = {
-  x: blockSizePx.w,
+  x: blockSizePx.x,
   y: 0,
   // for rendering it extends to the drawn height of the wall tile:
   z: wallRenderHeight,
 };
 export const yAxisWallAabb = {
-  x: blockSizePx.w * wallThicknessBlocks,
-  y: blockSizePx.d,
+  x: blockSizePx.x * wallThicknessBlocks,
+  y: blockSizePx.y,
   z: veryHighZ,
 };
 export const yAxisWallRenderAabb = {
   x: 0,
-  y: blockSizePx.d,
+  y: blockSizePx.y,
   z: wallRenderHeight,
 };
 

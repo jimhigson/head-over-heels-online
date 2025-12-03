@@ -1,8 +1,8 @@
 import type { UnknownRoomState } from "../../../../model/RoomState";
-import type { DoorFrameTextureName } from "../../../../sprites/doorSpritesheetData";
-import type { TextureId } from "../../../../sprites/spriteSheetData";
+import type { DoorFrameTextureName } from "../../../../sprites/spritesheet/spritesheetData/doorSpritesheetData";
+import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 
-import { loadedSpriteSheet } from "../../../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 
 export const doorTexture = (
   room: Pick<UnknownRoomState, "color" | "planet">,

@@ -3,9 +3,10 @@ import type { JsonItemConfig } from "../../model/json/JsonItem";
 import type { CharacterName } from "../../model/modelTypes";
 
 import { zxSpectrumFrameRate } from "../../originalGame";
-import { blockSizePx } from "../../sprites/spritePivots";
-import { wallTileSize } from "../../sprites/textureSizes";
+import { wallTileSize } from "../../sprites/spritesheet/spritesheetData/textureSizes";
 import { transformObject } from "../../utils/entries";
+
+export const blockSizePx = { x: 16, y: 16, z: 12 };
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 
@@ -44,10 +45,10 @@ export const fallG = 0.0002;
 
 export const terminalVelocityPixPerMs = {
   // head glides at height of two blocks per second
-  head: (blockSizePx.h * 2) / 1000,
+  head: (blockSizePx.z * 2) / 1000,
   // everyone else tops out at 2px/sec in original game
   //others: pxPerFrameSpeed(-2),
-  others: (blockSizePx.h * 6) / 1000,
+  others: (blockSizePx.z * 6) / 1000,
 };
 
 // the lift moves much faster than the original game, but also slows down much
@@ -167,10 +168,10 @@ export const originalGameJumpPxPerFrame = 2;
 export const jumpFudge = 1.1;
 export const playerJumpHeightPx = {
   // head can jump almost 3 blocks high
-  head: blockSizePx.h * 2.6 + jumpFudge,
+  head: blockSizePx.z * 2.6 + jumpFudge,
   // needs to allow to bridge 2-block gaps for #blacktooth83tofreedom,
   // including at high frame rates:
-  heels: blockSizePx.h + 1 + jumpFudge,
+  heels: blockSizePx.z + 1 + jumpFudge,
 };
 
 // original game lift speed was 1px per frame

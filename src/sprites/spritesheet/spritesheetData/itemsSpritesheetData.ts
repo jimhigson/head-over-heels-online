@@ -131,30 +131,44 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  "barrier.x": {
+  "barrier.x.disappearing": {
     frame: {
       ...smallItemGridLocation({ x: 17, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 18, y: 23 },
     },
   },
-  "barrier.y": {
+  "barrier.y.disappearing": {
     frame: {
       ...smallItemGridLocation({ x: 18, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 23 },
     },
   },
-  "shadow.barrier.y": {
+  "barrier.x": {
     frame: {
       ...smallItemGridLocation({ x: 19, y: 0 }),
+      ...smallItemTextureSize,
+      pivot: { x: 18, y: 23 },
+    },
+  },
+  "barrier.y": {
+    frame: {
+      ...smallItemGridLocation({ x: 20, y: 0 }),
+      ...smallItemTextureSize,
+      pivot: { x: 6, y: 23 },
+    },
+  },
+  "shadow.barrier.y": {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 22 },
     },
   },
   "shadowMask.barrier.y": {
     frame: {
-      ...smallItemGridLocation({ x: 20, y: 0 }),
+      ...smallItemGridLocation({ x: 22, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 22 },
     },
@@ -508,18 +522,6 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  "editor.cursor.xz": {
-    frame: {
-      ...largeItemGridLocation({ x: 7, y: -2 }),
-      ...largeItemTextureSize,
-    },
-  },
-  "editor.cursor.floor": {
-    frame: {
-      ...largeItemGridLocation({ x: 7, y: -1 }),
-      ...largeItemTextureSize,
-    },
-  },
   "block.organic": {
     frame: {
       ...largeItemGridLocation({ x: 0, y: 0 }),

@@ -3,7 +3,10 @@ import { Container } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
 
-import { loadedSpriteSheet, loadSpritesheet } from "../../sprites/spriteSheet";
+import {
+  loadedSpriteSheet,
+  loadSpritesheet,
+} from "../../sprites/spritesheet/loadedSpriteSheet";
 import { createSprite } from "./createSprite";
 
 beforeAll(async () => {

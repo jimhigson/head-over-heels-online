@@ -7,6 +7,7 @@ import type { RoomRenderContextInGame } from "../render/room/RoomRenderContexts"
 import type { RoomRendererType } from "../render/room/RoomRendererType";
 
 import { audioCtx } from "../../sound/audioCtx";
+import { setSpritesheetPaletteSwops } from "../../sprites/spritesheet/paletteSwoppedSpritesheet";
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
 import {
   selectInputDirectionMode,
@@ -25,6 +26,8 @@ import { createSerialisableErrors } from "../../utils/redux/createSerialisableEr
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { HudRenderer } from "../render/hud/HudRenderer";
+import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
+import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
 import { RoomRenderer } from "../render/room/roomRenderer";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
 import { TeleportEffectRenderer } from "../render/TeleportEffectRenderer";
@@ -134,17 +137,43 @@ export class MainLoop<RoomId extends string> {
         defaultUserSettings.displaySettings.uncolourised
       );
 
+    // note that progressing the game state can change/reload the room,
+    // so we need to tick physics considering recreating the room renderer
+    timingRecord?.startPhysics();
+    const movedItems =
+      isPaused ? emptySet : this.#physicsTicker(this.gameState, deltaMS);
+    timingRecord?.endPhysics();
+
+    timingRecord?.startUpdateSceneGraph();
+    // the tick could end on a different room than it started on, eg if ticking
+    // the physics caused the player to go through a door:
+    const tickEndRoom = selectCurrentRoomState(this.gameState);
+
+    const roomChanged = this.#roomRenderer?.renderContext.room !== tickEndRoom;
+
     // render hud start
     timingRecord?.startHudUpdate();
     const tickOnScreenControls = selectShouldRenderOnScreenControls(tickState);
     const tickInputDirectionMode = selectInputDirectionMode(tickState);
-    if (
-      this.#hudRenderer?.renderContext.general.colourised !== tickColourise ||
-      this.#hudRenderer?.renderContext.onScreenControls !==
-        tickOnScreenControls ||
-      this.#hudRenderer?.renderContext.inputDirectionMode !==
-        tickInputDirectionMode
-    ) {
+
+    const createNewHudRenderer = needsNewHudRenderer(
+      this.#hudRenderer,
+      roomChanged,
+      tickColourise,
+      tickOnScreenControls,
+      tickInputDirectionMode,
+    );
+
+    if (createNewHudRenderer) {
+      if (tickEndRoom) {
+        // TODO: check if game over - may be no room in this case and may crash!
+        setSpritesheetPaletteSwops(
+          this.app.renderer,
+          tickColourise,
+          tickEndRoom,
+        );
+      }
+
       this.#hudRenderer?.destroy();
       this.#hudRenderer = new HudRenderer({
         general: {
@@ -163,36 +192,23 @@ export class MainLoop<RoomId extends string> {
       this.app.stage.addChild(this.#hudRenderer.output);
     }
 
-    const tickStartRoom = selectCurrentRoomState(this.gameState);
     this.#hudRenderer.tick({
       screenSize: tickUpscale.gameEngineScreenSize,
-      room: tickStartRoom,
+      room: tickEndRoom,
       deltaMS,
       freeCharacters: tickFreeCharacters,
     });
-    // render hud end
     timingRecord?.endHudUpdate();
+    // render hud end
 
-    // note that progressing the game state can change/reload the room,
-    // so we need to tick physics considering recreating the room renderer
-    timingRecord?.startPhysics();
-    const movedItems =
-      isPaused ? emptySet : this.#physicsTicker(this.gameState, deltaMS);
-    timingRecord?.endPhysics();
-
-    timingRecord?.startUpdateSceneGraph();
-    // the tick could end on a different room than it started on, eg if ticking
-    // the physics caused the player to go through a door:
-    const tickEndRoom = selectCurrentRoomState(this.gameState);
-
-    const createNewRoomRenderer =
-      this.#roomRenderer?.renderContext.room !== tickEndRoom ||
-      this.#roomRenderer?.renderContext.general.upscale !== tickUpscale ||
-      this.#roomRenderer?.renderContext.general.displaySettings !==
-        tickDisplaySettings ||
-      this.#roomRenderer?.renderContext.general.soundSettings !==
-        tickSoundSettings ||
-      this.#roomRenderer?.renderContext.general.paused !== isPaused;
+    const createNewRoomRenderer = needsNewRoomRenderer(
+      this.#roomRenderer,
+      roomChanged,
+      tickUpscale,
+      tickDisplaySettings,
+      tickSoundSettings,
+      isPaused,
+    );
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene
       // graph if it changes - we simply destroy and recreate it entirely:

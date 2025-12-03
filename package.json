@@ -143,6 +143,9 @@
       "@swc/core",
       "esbuild",
       "supabase"
-    ]
+    ],
+    "overrides": {
+      "pixi.js": "link:../pixijs"
+    }
   }
 }

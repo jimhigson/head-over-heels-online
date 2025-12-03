@@ -4,7 +4,7 @@ import { Container, type Filter } from "pixi.js";
 
 import type { AnimatedCreateSpriteOptions } from "../createSprite";
 
-import { blockSizePx } from "../../../sprites/spritePivots";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 
 export const itemRidingOnBubblesSpritesOptions: Omit<
@@ -55,7 +55,7 @@ export const stackSprites = <C extends Container>({
 }): StackedSpritesContainer<C> => {
   const container = new Container<C>() as StackedSpritesContainer<C>;
   container.addChild(bottom);
-  top.y = -blockSizePx.h;
+  top.y = -blockSizePx.z;
   container.addChild(top);
   container[stackedTopSymbol] = top;
   container[stackedBottomSymbol] = bottom;

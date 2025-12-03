@@ -12,7 +12,8 @@ export interface TrackedTexture {
     | "Item/Item Mask"
     | "ItemAppearance"
     | "ItemShadowRenderer"
-    | "PaletteSwapFilter";
+    | "PaletteSwapFilter"
+    | "Spritesheet swop";
 }
 
 // Track all dynamically created textures
@@ -33,6 +34,9 @@ const detectType = (stack: string): TrackedTexture["type"] => {
   }
   if (stack.includes("#tickMasks")) {
     return "Item/Item Mask";
+  }
+  if (stack.includes("setSpritesheetPaletteSwops")) {
+    return "Spritesheet swop";
   }
   return undefined;
 };

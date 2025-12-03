@@ -7,13 +7,13 @@ import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { StackedSpritesContainer } from "./createStackedSprites";
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
 import {
   originXy,
   vectorClosestDirectionXy4,
   xyEqual,
 } from "../../../utils/vectors/vectors";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import {
   doughnuttedFilter,
@@ -64,7 +64,7 @@ const maybeAddBob = (
   ) {
     const outputTyped = currentOutput as StackedSpritesContainer<Sprite>;
     outputTyped[stackedTopSymbol].y =
-      -blockSizePx.h + floatingVerticalBob(room.roomTime, id);
+      -blockSizePx.z + floatingVerticalBob(room.roomTime, id);
   }
 };
 

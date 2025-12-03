@@ -1,9 +1,9 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
+import type { SceneryName, Wall } from "../../planets";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import type { SceneryName, Wall } from "./planets";
 
-import { wallTiles } from "./planets";
+import { wallTiles } from "../../planets";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { floorTileSize, wallTileSize } from "./textureSizes";
 import { withSpeed } from "./withSpeed";

@@ -2,7 +2,7 @@ import type { EmptyObject } from "type-fest";
 
 import { useCallback } from "react";
 
-import { nerdFontDiscordChar } from "../../../../../../sprites/hudSritesheetData";
+import { nerdFontDiscordChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsGameRunning } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {

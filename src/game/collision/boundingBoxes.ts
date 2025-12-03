@@ -1,15 +1,15 @@
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../model/json/JsonItem";
 
-import { blockSizePx } from "../../sprites/spritePivots";
 import { type Aabb, originXyz } from "../../utils/vectors/vectors";
+import { blockSizePx } from "../physics/mechanicsConstants";
 
-export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.h };
-export const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.h };
-export const fullBlockAabb: Aabb = { x: 16, y: 16, z: blockSizePx.h };
+export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.z };
+export const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.z };
+export const fullBlockAabb: Aabb = { x: 16, y: 16, z: blockSizePx.z };
 export const doubleHeightCharacter: Aabb = {
   ...smallItemAabb,
-  z: blockSizePx.h * 2,
+  z: blockSizePx.z * 2,
 };
 
 export const boundingBoxForItem = (
@@ -66,7 +66,7 @@ export const boundingBoxForItem = (
         case "book":
           return { aabb: fullBlockAabb };
         case "tower":
-          return { aabb: { x: 11, y: 11, z: blockSizePx.h } };
+          return { aabb: { x: 11, y: 11, z: blockSizePx.z } };
         default:
           throw new Error("unknown block style");
       }
@@ -113,8 +113,8 @@ export const boundingBoxForItem = (
       return {
         aabb:
           item.config.axis === "y" ?
-            { x: 3, y: 15, z: blockSizePx.h }
-          : { x: 15, y: 3, z: blockSizePx.h },
+            { x: 3, y: 15, z: blockSizePx.z }
+          : { x: 15, y: 3, z: blockSizePx.z },
       };
     }
 

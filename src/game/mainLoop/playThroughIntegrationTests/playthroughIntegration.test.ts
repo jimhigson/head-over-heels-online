@@ -23,10 +23,10 @@ import {
   stopAllInputAfter,
 } from "../../../_testUtils/playGameThrough";
 import { testFrameRates } from "../../../_testUtils/testFrameRates";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { smallItemAabb } from "../../collision/boundingBoxes";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
   resetStore();
@@ -597,7 +597,7 @@ describe("conveyors", () => {
     expect(heelsState(gameState).standingOnItemId).toEqual("floor");
     expect(heelsState(gameState).position).toEqual({
       x: 1,
-      y: blockSizePx.d,
+      y: blockSizePx.y,
       z: 0,
     });
 
@@ -607,8 +607,8 @@ describe("conveyors", () => {
     ).toEqual("heels");
     expect(portableBlock?.state.position).toEqual({
       x: 2,
-      y: blockSizePx.d,
-      z: blockSizePx.h,
+      y: blockSizePx.y,
+      z: blockSizePx.z,
     });
   });
 
@@ -866,9 +866,9 @@ describe("pushing", () => {
 
     expect(itemState(gameState, "somethingToPush")?.position.y).toBe(
       // the edge of the block we are pushing into:
-      blockSizePx.w * 3 +
+      blockSizePx.x * 3 +
         // a bit extra because the portable block does not fill up a full tile:
-        (blockSizePx.w - smallItemAabb.x),
+        (blockSizePx.x - smallItemAabb.x),
     );
   });
 
@@ -900,7 +900,7 @@ describe("pushing", () => {
       until() {
         const portableBlockState = itemState(gameState, "somethingToPush")!;
         // continue until we have pushed it a couple of blocks distance (it started at 1)
-        return portableBlockState.position.x > blockSizePx.w * 3;
+        return portableBlockState.position.x > blockSizePx.x * 3;
       },
     });
 
@@ -935,9 +935,9 @@ describe("pushing", () => {
 
     expect(itemState(gameState, "somethingToPush2")?.position.y).toBe(
       // the edge of the block we are pushing into:
-      blockSizePx.w * 3 +
+      blockSizePx.x * 3 +
         // a bit extra because the portable block does not fill up a full tile:
-        (blockSizePx.w - smallItemAabb.x),
+        (blockSizePx.x - smallItemAabb.x),
     );
   });
 
@@ -996,9 +996,9 @@ describe("pushing", () => {
 
     expect(itemState(gameState, "cyberman")?.position.x).toBe(
       // the edge of the block we are pushing into:
-      blockSizePx.w * 2 +
+      blockSizePx.x * 2 +
         // a bit extra because the portable block does not fill up a full tile:
-        (blockSizePx.w - smallItemAabb.x) / 2,
+        (blockSizePx.x - smallItemAabb.x) / 2,
     );
   });
 });
@@ -1152,7 +1152,7 @@ describe("latent movement", () => {
     const behindByWhileWalking = yDeltaNow() - initialPositionDelta;
 
     // should still be on heels (not fallen on the floor - if zero, it has slipped off!):
-    expect(pushableBlockZ()).toBe(blockSizePx.h);
+    expect(pushableBlockZ()).toBe(blockSizePx.z);
     expect(behindByWhileWalking).toBeGreaterThanOrEqual(4.1);
     expect(behindByWhileWalking).toBeLessThanOrEqual(4.5);
 
@@ -1167,7 +1167,7 @@ describe("latent movement", () => {
     const behindByAfterStopping = yDeltaNow() - initialPositionDelta;
 
     // should still be on heels (not fallen on the floor):
-    expect(pushableBlockZ()).toBe(blockSizePx.h);
+    expect(pushableBlockZ()).toBe(blockSizePx.z);
 
     // the block should no longer be behind
     expect(behindByAfterStopping).toBeGreaterThanOrEqual(-1);

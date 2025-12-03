@@ -6,18 +6,18 @@ import {
   iterateRoomItems,
   type RoomStateItems,
 } from "../../../model/RoomState";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { isFloor } from "../../physics/itemPredicates";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
-const portalThickness = blockSizePx.h;
+const portalThickness = blockSizePx.z;
 /* the z of the top of the portal to below */
-const portalToRoomBelowTop = -blockSizePx.h;
+const portalToRoomBelowTop = -blockSizePx.z;
 
 /**
  * combine all the floors of the room into one big, rectangular footprint to
@@ -102,7 +102,7 @@ export function* loadPortalsAboveAndBelow<
             // relative point one block high - this makes the player spawn on top of blocks when
             // transitioning to the room above, since a lot of rooms need you to appear *on* something,
             // and given these rooms usually have 'none' floors it probably isn't the floor
-            z: portalThickness + blockSizePx.h,
+            z: portalThickness + blockSizePx.z,
           },
           direction: unitVectors["down"],
         },
@@ -143,7 +143,7 @@ export function* loadPortalsAboveAndBelow<
                 x: (minX + maxX) / 2,
                 y: (minY + maxY) / 2,
               }),
-            z: -blockSizePx.h,
+            z: -blockSizePx.z,
           },
           direction: unitVectors["up"],
         },
@@ -161,7 +161,7 @@ export function* loadPortalsAboveAndBelow<
               y: minY,
             },
             {
-              z: blockSizePx.h * (roomJson.height ?? defaultRoomHeightBlocks),
+              z: blockSizePx.z * (roomJson.height ?? defaultRoomHeightBlocks),
             },
           ),
         },

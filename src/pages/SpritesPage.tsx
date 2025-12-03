@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
+import type { TextureId } from "../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { Xy } from "../utils/vectors/vectors";
 
 import spritesheetUrl from "../../gfx/sprites.png";
 import { CssVariables } from "../game/components/CssVariables";
 import { typedURLSearchParams } from "../options/queryParams";
-import { spritesheetData, type TextureId } from "../sprites/spriteSheetData";
+import { spritesheetData } from "../sprites/spritesheet/spritesheetData/spriteSheetData";
 
 declare module "react" {
   interface CSSProperties {

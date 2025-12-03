@@ -3,13 +3,15 @@ import type { CSSRuleObject } from "tailwindcss/types/config";
 import { imageSize } from "image-size";
 import plugin from "tailwindcss/plugin";
 
-import type { FramesWithSpeed, TextureId } from "./sprites/spriteSheetData";
-
 import spritesheetPalette from "../gfx/spritesheetPalette.json";
 import { sanitiseForClassName } from "./game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
 import { isTextureId } from "./sprites/assertIsTextureId";
-import { spritesheetData } from "./sprites/spriteSheetData";
+import {
+  type FramesWithSpeed,
+  spritesheetData,
+  type TextureId,
+} from "./sprites/spritesheet/spritesheetData/spriteSheetData";
 import { halfbriteHex } from "./utils/colour/halfBrite";
 import { objectEntriesIter } from "./utils/entries";
 
@@ -145,8 +147,8 @@ export const spritesTailwindPlugin = plugin(
       animation: "spectrum-load 0.5s linear infinite",
     };
     utilities[".zx-loading-border"] = {
-      "--c1": zxSpectrumColors.zxRed,
-      "--c2": zxSpectrumColors.zxCyan,
+      "--c1": zxSpectrumColors.red.toHex(),
+      "--c2": zxSpectrumColors.cyan.toHex(),
     };
     base["@keyframes spectrum-load"] = {
       from: {

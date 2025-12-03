@@ -8,12 +8,15 @@ out vec4 finalColor;
 
 uniform sampler2D uTexture;
 uniform sampler2D uLut;
+uniform sampler2D uMask;
 
 #include "fragFns/lutColourReplace.glsl"
 
 void main(void) {
 
     vec4 c = texture(uTexture, vTextureCoord);
+    float maskVal = texture(uMask, vTextureCoord).r;
 
-    finalColor = lutColourReplace(uLut, c);
+    //finalColor = lutColourReplace(uLut, c);
+    finalColor = mix(c, lutColourReplace(uLut, c), maskVal);
 }

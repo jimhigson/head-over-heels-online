@@ -11,7 +11,7 @@ import { twMerge } from "tailwind-merge";
 
 import { isTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import { loadedSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { ClassnameWrap } from "../../../utils/react/ClassnameWrap";
 import { sanitiseForClassName } from "./SanitiseForClassName";
 

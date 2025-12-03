@@ -1,13 +1,13 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
-import type { Xy } from "../utils/vectors/vectors";
-import type { EscapedForTailwind } from "./escapeCharForTailwind";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { EscapedForTailwind } from "../../escapeCharForTailwind";
 
-import { fromAllEntries } from "../utils/entries";
+import { fromAllEntries } from "../../../utils/entries";
 import {
   escapeCharForTailwind,
   uppercaseCharReplacement,
-} from "./escapeCharForTailwind";
+} from "../../escapeCharForTailwind";
 import { hudCharTextureSize } from "./textureSizes";
 
 // this source really needs a nerd font to read it:

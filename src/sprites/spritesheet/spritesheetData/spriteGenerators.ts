@@ -2,10 +2,11 @@ import type { SpritesheetFrameData } from "pixi.js";
 
 import { range } from "iter-tools-es";
 
-import type { SpriteSize } from "../model/modelTypes";
+import type { SpriteSize } from "../../../model/modelTypes";
+import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 
-import { iterate } from "../utils/iterate";
-import { addXy, type DirectionXy4, type Xy } from "../utils/vectors/vectors";
+import { iterate } from "../../../utils/iterate";
+import { addXy } from "../../../utils/vectors/vectors";
 
 type DirectionalTexture<TName extends string> = `${TName}.${DirectionXy4}`;
 export const fourDirections = <TName extends string>(
