@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.13.0...v1.14.0) (2025-12-11)
+
+
+### Features
+
+* advertise the map from pause screen ([#639](https://github.com/jimhigson/head-over-heels-online/issues/639)) ([9c2746e](https://github.com/jimhigson/head-over-heels-online/commit/9c2746eecbaf51dab07542e9c46a486c7a1c0aa6))
+* optimise - render door legs as a single texture ([#638](https://github.com/jimhigson/head-over-heels-online/issues/638)) ([471654e](https://github.com/jimhigson/head-over-heels-online/commit/471654e22c509801f793623da1680c341cb337e7))
+
 ## [1.13.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.12.0...v1.13.0) (2025-12-02)
 
 
