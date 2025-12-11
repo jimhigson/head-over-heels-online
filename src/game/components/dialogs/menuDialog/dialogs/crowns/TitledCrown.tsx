@@ -40,19 +40,27 @@ export const TitledCrown = ({
   const collected = useAppSelector(
     (state) => state.gameMenus.gameInPlay.planetsLiberated[planet],
   );
-  const colourised = !useIsUncolourised();
+  const uncolourised = useIsUncolourised();
 
   return (
     <div className={`flex flex-col ${className}`}>
       <span
-        className={`sprite block ${crownTextureClasses[planet]} ${collected ? `zx:sprite-revert-zxYellow` : "colourised:brightness-halfBrite zx:sprite-revert-zxMagenta"} mx-auto`}
+        className={`sprite block mx-auto
+          ${uncolourised ? "texture-crown_uncolourised sprite-tinted" : crownTextureClasses[planet]} 
+          ${collected ? `zx:text-zxYellow` : "colourised:brightness-halfBrite zx:text-zxMagentaDimmed"}
+          `}
       />
       <span
-        className={`sprite block texture-ball zx:sprite-revert-zxYellow mx-auto ${collected ? `` : "colourised:brightness-halfBrite"} ${colourCycle[planet][0]}`}
+        className={`sprite block 
+          ${uncolourised ? "texture-ball_uncolourised" : "texture-ball"} 
+          zx:sprite-tinted mx-auto 
+          ${collected ? `zx:text-zxWhite` : "zx:text-zxYellowDimmed colourised:brightness-halfBrite"} 
+          ${colourCycle[planet][0]}
+          `}
       />
       <BitmapText
-        classnameCycle={colourised ? colourCycle[planet] : undefined}
-        className={`block mx-auto zx:text-zxMagenta ${collected ? "" : "colourised:brightness-halfBrite"}`}
+        classnameCycle={uncolourised ? undefined : colourCycle[planet]}
+        className={`block mx-auto ${collected ? "zx:text-zxMagenta" : "zx:text-zxMagentaDimmed colourised:brightness-halfBrite"}`}
       >
         {label}
       </BitmapText>

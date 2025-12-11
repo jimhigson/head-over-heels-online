@@ -1,6 +1,7 @@
 [
   "bag",
   "ball",
+  "ball.uncolourised",
   "barrier.x",
   "barrier.y",
   "blacktooth.dark.floor",
@@ -88,6 +89,7 @@
   "crown.egyptus",
   "crown.penitentiary",
   "crown.safari",
+  "crown.uncolourised",
   "cube",
   "cyberman.away",
   "cyberman.left",
