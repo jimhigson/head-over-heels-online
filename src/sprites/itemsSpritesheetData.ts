@@ -197,6 +197,12 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  "ball.uncolourised": {
+    frame: {
+      ...smallItemGridLocation({ x: 19, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
   "spikyBall.1": {
     frame: {
       ...smallItemGridLocation({ x: 20, y: 2 }),
@@ -369,6 +375,12 @@ const frames = {
   "crown.bookworld": {
     frame: {
       ...smallItemGridLocation({ x: 19, y: 7 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "crown.uncolourised": {
+    frame: {
+      ...smallItemGridLocation({ x: 20, y: 7 }),
       ...smallItemTextureSize,
     },
   },

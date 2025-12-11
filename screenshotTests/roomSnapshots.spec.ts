@@ -16,18 +16,17 @@ import { dispatchToStore } from "./dispatchToStore";
 import { formatDuration } from "./formatDuration";
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
 import { logSelectorExistence } from "./logSelectorExistence";
+import { osSlowness } from "./osSlowness";
 import { formatProjectName, progressLogHeader } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
+import { setIsUncolourised } from "./setIsUncolourised";
 
 // set to limit the number of rooms we test in one run - useful when
 // developing the test to avoid having to do the whole run each time
 // but should be undefined in e2e to say "no limit"
 const roomLimit = undefined;
 
-// CI is slower, needs more time, even on arm64 runners (fastest on github).
-// Windows is even slower (on the Github runners at least).
-const osSlowness = process.platform === "win32" ? 4 : 1;
-const timeoutPerRoom = (process.env.CI ? 20_000 : 4_000) * osSlowness;
+const timeoutPerRoom = (process.env.CI ? 40_000 : 8_000) * osSlowness;
 const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
@@ -481,28 +480,34 @@ test.describe("Room Visual Snapshots", () => {
 
           await navigateToRoom(logHeader, roomId);
 
-          console.log(
-            `${logHeader} Taking screenshot for room: ${chalk.cyan(roomId)}`,
-          );
-          const screenshotStart = performance.now();
-          await expect
-            // github free runners are slow:
-            .configure({ timeout: 15_000 * osSlowness })
-            .soft(page)
-            .toHaveScreenshot(`${roomId}.png`, {
-              fullPage: false,
-              // default is 0.2, which is very permissive to palette changes.
-              // Whereas 0 makes builds fail with invisible differences between
-              // the OS running the test, at least in webkit/safari.
-              // keep a much smaller threshold than normal, but not zero:
-              threshold: 0.02,
-              scale: "device",
-              maxDiffPixels: 0,
-            });
-          console.log(
-            `${logHeader} ...screenshot took`,
-            chalk.yellow(formatDuration(performance.now() - screenshotStart)),
-          );
+          for (const uncolourised of [false, true]) {
+            const filenameSuffix = uncolourised ? "-uncolourised" : "";
+
+            await setIsUncolourised(page, formattedName, uncolourised);
+
+            console.log(
+              `${logHeader} Taking screenshot for room: ${chalk.cyan(roomId)} (uncolourised: ${uncolourised})`,
+            );
+            const screenshotStart = performance.now();
+            await expect
+              // github free runners are slow:
+              .configure({ timeout: 15_000 * osSlowness })
+              .soft(page)
+              .toHaveScreenshot(`${roomId}${filenameSuffix}.png`, {
+                fullPage: false,
+                // default is 0.2, which is very permissive to palette changes.
+                // Whereas 0 makes builds fail with invisible differences between
+                // the OS running the test, at least in webkit/safari.
+                // keep a much smaller threshold than normal, but not zero:
+                threshold: 0.02,
+                scale: "device",
+                maxDiffPixels: 0,
+              });
+            console.log(
+              `${logHeader} ...screenshot took`,
+              chalk.yellow(formatDuration(performance.now() - screenshotStart)),
+            );
+          }
         });
       }
     });
