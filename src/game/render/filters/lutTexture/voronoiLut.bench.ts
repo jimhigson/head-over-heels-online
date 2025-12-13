@@ -1,6 +1,6 @@
 import { bench } from "vitest";
 
-import { paletteQuantMappingsWithHalfBrite } from "./stdLuts/paletteQuantisationLut";
+import { spritesheetPalette } from "../../../../../gfx/spritesheetPalette";
 import { voronoiLut } from "./voronoiLut";
 
 /*
@@ -15,7 +15,7 @@ import { voronoiLut } from "./voronoiLut";
 bench(
   "voronoiLut (palette + halfbrite)",
   () => {
-    voronoiLut(paletteQuantMappingsWithHalfBrite);
+    voronoiLut(spritesheetPalette);
   },
   { iterations: 500 },
 );

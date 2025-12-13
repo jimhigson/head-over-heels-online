@@ -3,24 +3,13 @@ import { spritesheetPaletteDim } from "gfx/spritesheetPaletteDim";
 import { Color } from "pixi.js";
 import { type Filter } from "pixi.js";
 
-import type { UnknownRoomState } from "../../../model/RoomState";
 import type { SceneryName } from "../../../sprites/planets";
-import type { Shades } from "../../hintColours";
 import type { PaletteSwaps } from "./lutTexture/sparseLut";
 
-import {
-  zxSpectrumDimmed,
-  type ZxSpectrumRoomHue,
-} from "../../../originalGame";
+import { type ZxSpectrumRoomHue } from "../../../originalGame";
 import { halfbrite } from "../../../utils/colour/halfBrite";
 import { emptyArray } from "../../../utils/empty";
 import { omit } from "../../../utils/pick";
-import {
-  colorScheme,
-  getColorScheme,
-  yellowShadesInBasicRooms,
-  yellowShadesInDimmedRooms,
-} from "../../hintColours";
 import { HalfBriteFilter } from "./HalfBriteFilter";
 import { getPaletteSwapFilter } from "./PaletteSwapFilter";
 
@@ -61,23 +50,6 @@ export const doughnuttedFilter = getPaletteSwapFilter({
   replaceLight: spritesheetPalette.lightBeige,
 });
 
-export const replaceWithHalfbriteFilter = (c: Color) =>
-  getPaletteSwapFilter({ replaceLight: c, replaceDark: halfbrite(c) });
-
-export const edgeOriginalGameColour = (
-  room: Pick<UnknownRoomState, "color">,
-  side: "right" | "towards",
-): Color => {
-  const edge = getColorScheme(room.color).edges[side];
-  const basicColour = edge.original;
-
-  if (edge.dimInOriginal) {
-    return zxSpectrumDimmed(basicColour);
-  }
-
-  return basicColour;
-};
-
 const greyishBlueShadows = new Color("#424249");
 const brownishShadows = new Color("#494908");
 const magentaShadows = new Color("#554055");
@@ -110,27 +82,6 @@ export const hueColourReplacements: Partial<
   magenta: { shadow: magentaShadows },
   cyan: { shadow: bluishShadows },
 };
-
-/**
- * get the replaceLight/replaceDark swops for a room
- */
-export const replacePlaceholderColoursMapForRoom = ({
-  color: { hue, shade },
-  planet,
-}: Pick<UnknownRoomState, "color" | "planet">) => {
-  const shades: Shades =
-    hue === "yellow" ?
-      shade === "dimmed" || planet === "jail" ?
-        yellowShadesInDimmedRooms
-      : yellowShadesInBasicRooms
-    : colorScheme[hue][shade].main;
-
-  return { replaceLight: shades.basic, replaceDark: shades.dimmed };
-};
-
-export const replacePlaceholderColoursPaletteSwapFilter = (
-  room: Pick<UnknownRoomState, "color" | "planet">,
-): Filter => getPaletteSwapFilter(replacePlaceholderColoursMapForRoom(room));
 
 export const halfBriteFilter = new HalfBriteFilter();
 

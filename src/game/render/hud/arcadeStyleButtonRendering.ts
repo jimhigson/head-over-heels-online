@@ -8,11 +8,7 @@ import { halfbrite } from "../../../utils/colour/halfBrite";
 import { createSprite } from "../createSprite";
 import { getPaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { RevertColouriseFilter } from "../filters/RevertColouriseFilter";
-import {
-  greyFilter,
-  noFilters,
-  replaceWithHalfbriteFilter,
-} from "../filters/standardFilters";
+import { greyFilter, noFilters } from "../filters/standardFilters";
 import { buttonColours } from "./buttonColours";
 import { showTextInContainer } from "./showTextInContainer";
 
@@ -53,9 +49,9 @@ export const arcadeStyleButtonRendering = ({
   const buttonSprite = createSprite("button") as Sprite;
 
   if (colourised) {
-    buttonSprite.filters = replaceWithHalfbriteFilter(
-      buttonColours.colourised[which],
-    );
+    // buttonSprite.filters = replaceWithHalfbriteFilter(
+    //   buttonColours.colourised[which],
+    // );
   } else {
     rootContainer.filters = new RevertColouriseFilter(buttonColours.zx[which]);
   }

@@ -1,20 +1,17 @@
-import { Color } from "pixi.js";
+import type { Color } from "pixi.js";
 
-import type { SpritesheetPaletteColourName } from "../../gfx/spritesheetPalette";
-import type { IndividualCharacterName } from "../model/modelTypes";
+import type { SpritesheetPaletteColourName } from "../../../../gfx/spritesheetPalette";
+import type { IndividualCharacterName } from "../../../model/modelTypes";
+import type { UnknownRoomState } from "../../../model/RoomState";
 
-import { spritesheetPalette } from "../../gfx/spritesheetPalette";
 import {
-  zxSpectrumColors,
+  zxSpectrumColor,
   type ZxSpectrumRoomColour,
   type ZxSpectrumRoomHue,
   type ZxSpectrumShade,
-} from "../originalGame";
-import {
-  halfbrite,
-  slightlyBrighterReducedBrightness,
-} from "../utils/colour/halfBrite";
+} from "../../../originalGame";
 
+/*
 export type Shades = { basic: Color; dimmed: Color; original: Color };
 export const whiteShades = {
   original: new Color(zxSpectrumColors.white),
@@ -53,18 +50,21 @@ export const greenShades = {
   basic: spritesheetPalette.moss,
   dimmed: halfbrite(spritesheetPalette.moss, slightlyBrighterReducedBrightness),
 };
+*/
 
-export type ColorScheme = {
-  main: Shades;
+export type RoomColorScheme = {
+  main: ZxSpectrumRoomHue;
   edges: {
-    right: Shades & {
+    right: {
+      hue: ZxSpectrumRoomHue;
       /**
        * are the edges dimmed in the original? This only impacts when not colourised, since
        * when colourised, we change the colour of the edges but don't change them to be dimmed/not
        */
       dimInOriginal: boolean;
     };
-    towards: Shades & {
+    towards: {
+      hue: ZxSpectrumRoomHue;
       /**
        * are the edges dimmed in the original? This only impacts when not colourised, since
        * when colourised, we change the colour of the edges but don't change them to be dimmed/not
@@ -73,161 +73,171 @@ export type ColorScheme = {
     };
   };
   hud: {
-    lives: Shades;
-    dimmed: Shades;
-    icons: Shades;
+    lives: ZxSpectrumRoomHue;
+    dimmed: ZxSpectrumRoomHue;
+    icons: ZxSpectrumRoomHue;
   };
 };
 
 export const colorScheme: Record<
   ZxSpectrumRoomHue,
-  Record<ZxSpectrumShade, ColorScheme>
+  Record<ZxSpectrumShade, RoomColorScheme>
 > = {
   white: {
     basic: {
-      main: whiteShades,
+      main: "white",
       edges: {
-        towards: { ...cyanShades, dimInOriginal: false },
-        right: { ...yellowShadesInBasicRooms, dimInOriginal: true },
+        towards: { hue: "cyan", dimInOriginal: false },
+        right: { hue: "yellow", dimInOriginal: true },
       },
       hud: {
-        lives: yellowShadesInBasicRooms,
-        dimmed: magentaShades,
-        icons: cyanShades,
+        lives: "yellow",
+        dimmed: "magenta",
+        icons: "cyan",
       },
     },
     dimmed: {
-      main: whiteShades,
+      main: "white",
       edges: {
-        towards: { ...greenShades, dimInOriginal: false },
-        right: { ...cyanShades, dimInOriginal: true },
+        towards: { hue: "green", dimInOriginal: false },
+        right: { hue: "cyan", dimInOriginal: true },
       },
       hud: {
         // probably wrong
-        lives: yellowShadesInDimmedRooms,
-        dimmed: magentaShades,
-        icons: cyanShades,
+        lives: "yellow",
+        dimmed: "magenta",
+        icons: "cyan",
       },
     },
   },
   yellow: {
     basic: {
-      main: yellowShadesInBasicRooms,
+      main: "yellow",
       edges: {
-        towards: { ...greenShades, dimInOriginal: false },
-        right: { ...whiteShades, dimInOriginal: true },
+        towards: { hue: "green", dimInOriginal: false },
+        right: { hue: "white", dimInOriginal: true },
       },
       hud: {
-        lives: cyanShades,
-        dimmed: magentaShades,
-        icons: greenShades,
+        lives: "cyan",
+        dimmed: "magenta",
+        icons: "green",
       },
     },
     dimmed: {
-      main: yellowShadesInBasicRooms,
+      main: "yellow",
       edges: {
-        towards: { ...cyanShades, dimInOriginal: true },
-        right: { ...cyanShades, dimInOriginal: false },
+        towards: { hue: "cyan", dimInOriginal: true },
+        right: { hue: "cyan", dimInOriginal: false },
       },
       hud: {
         // probably wrong
-        lives: cyanShades,
-        dimmed: magentaShades,
-        icons: greenShades,
+        lives: "cyan",
+        dimmed: "magenta",
+        icons: "green",
       },
     },
   },
 
   magenta: {
     basic: {
-      main: magentaShades,
+      main: "magenta",
       edges: {
-        towards: { ...greenShades, dimInOriginal: true },
-        right: { ...cyanShades, dimInOriginal: true },
+        towards: { hue: "green", dimInOriginal: true },
+        right: { hue: "cyan", dimInOriginal: true },
       },
       hud: {
-        lives: whiteShades,
-        dimmed: cyanShades,
-        icons: yellowShadesInBasicRooms,
+        lives: "white",
+        dimmed: "cyan",
+        icons: "yellow",
       },
     },
     dimmed: {
-      main: magentaShades,
+      main: "magenta",
       edges: {
-        towards: { ...greenShades, dimInOriginal: true },
-        right: { ...cyanShades, dimInOriginal: true },
+        towards: { hue: "green", dimInOriginal: true },
+        right: { hue: "cyan", dimInOriginal: true },
       },
       hud: {
         // maybe wrong
-        lives: whiteShades,
-        dimmed: cyanShades,
-        icons: yellowShadesInBasicRooms,
+        lives: "white",
+        dimmed: "cyan",
+        icons: "yellow",
       },
     },
   },
   cyan: {
     basic: {
-      main: cyanShades,
+      main: "cyan",
       edges: {
-        towards: { ...magentaShades, dimInOriginal: false },
-        right: { ...whiteShades, dimInOriginal: false },
+        towards: { hue: "magenta", dimInOriginal: false },
+        right: { hue: "white", dimInOriginal: false },
       },
       hud: {
-        lives: whiteShades,
-        dimmed: greenShades,
-        icons: yellowShadesInBasicRooms,
+        lives: "white",
+        dimmed: "green",
+        icons: "yellow",
       },
     },
     dimmed: {
-      main: cyanShades,
+      main: "cyan",
       edges: {
-        towards: { ...magentaShades, dimInOriginal: true },
-        right: { ...whiteShades, dimInOriginal: true },
+        towards: { hue: "magenta", dimInOriginal: true },
+        right: { hue: "white", dimInOriginal: true },
       },
       hud: {
         // maybe wrong
-        lives: whiteShades,
-        dimmed: greenShades,
-        icons: yellowShadesInBasicRooms,
+        lives: "white",
+        dimmed: "green",
+        icons: "yellow",
       },
     },
   },
   green: {
     basic: {
-      main: greenShades,
+      main: "green",
       edges: {
-        towards: { ...cyanShades, dimInOriginal: false },
-        right: { ...yellowShadesInBasicRooms, dimInOriginal: false },
+        towards: { hue: "cyan", dimInOriginal: false },
+        right: { hue: "yellow", dimInOriginal: false },
       },
       hud: {
-        lives: whiteShades,
-        dimmed: magentaShades,
-        icons: cyanShades,
+        lives: "white",
+        dimmed: "magenta",
+        icons: "cyan",
       },
     },
     dimmed: {
-      main: greenShades,
+      main: "green",
       edges: {
-        towards: { ...cyanShades, dimInOriginal: true },
-        right: { ...yellowShadesInBasicRooms, dimInOriginal: true },
+        towards: { hue: "cyan", dimInOriginal: true },
+        right: { hue: "yellow", dimInOriginal: true },
       },
       hud: {
         // maybe wrong
-        lives: whiteShades,
-        dimmed: magentaShades,
-        icons: cyanShades,
+        lives: "white",
+        dimmed: "magenta",
+        icons: "cyan",
       },
     },
   },
 };
 
-export const getColorScheme = (colour: ZxSpectrumRoomColour): ColorScheme =>
-  colorScheme[colour.hue][colour.shade];
+export const getRoomColorScheme = (
+  colour: ZxSpectrumRoomColour,
+): RoomColorScheme => colorScheme[colour.hue][colour.shade];
 
-export const accentColours: Record<
+export const playableAccentColours: Record<
   IndividualCharacterName,
   SpritesheetPaletteColourName
 > = {
   head: "pastelBlue",
   heels: "pink",
+};
+
+export const edgeOriginalGameColour = (
+  room: Pick<UnknownRoomState, "color">,
+  side: "right" | "towards",
+): Color => {
+  const edge = getRoomColorScheme(room.color).edges[side];
+
+  return zxSpectrumColor(edge.hue, edge.dimInOriginal ? "dimmed" : "basic");
 };

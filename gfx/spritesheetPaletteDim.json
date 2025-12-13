@@ -13,6 +13,16 @@
   "lightBeige": "#B56435",
   "highlightBeige": "#D99029",
   "alpha": "#00404D",
-  "replaceLight": "#006847",
-  "replaceDark": "#00171C"
+  "replaceLight": "#010000",
+  "replaceDark": "#010100",
+  "swop_yellow": "#D9C600",
+  "swop_yellowDim": "#696500",
+  "swop_green": "#01AD6F",
+  "swop_greenDim": "#016C56",
+  "swop_cyan": "#00C6E0",
+  "swop_cyanDim": "#00698B",
+  "swop_magenta": "#D93A86",
+  "swop_magentaDim": "#8E2681",
+  "swop_white": "#FEFADD",
+  "swop_whiteDim": "#817F63"
 }

@@ -26,7 +26,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
-import { accentColours } from "../../hintColours";
+import { playableAccentColours } from "../gameColours/colourScheme";
 import {
   afterDeathInvulnerabilityFlashPeriod,
   afterDeathInvulnerabilityFlashPhaseDuration,
@@ -189,7 +189,7 @@ const createOutputContainer = (
       color:
         overrideColour ?
           zxSpectrumColor(overrideColour)
-        : getAmbientSwoppedColour(accentColours[name]),
+        : getAmbientSwoppedColour(playableAccentColours[name]),
     }),
     //invulnerableOutline: OutlineFilter,
     new OutlineFilter({
@@ -202,7 +202,7 @@ const createOutputContainer = (
     new OneColourFilter(
       overrideColour ?
         zxSpectrumColor(overrideColour)
-      : getAmbientSwoppedColour(accentColours[name]),
+      : getAmbientSwoppedColour(playableAccentColours[name]),
     ),
   ];
   for (const f of container.filters) {

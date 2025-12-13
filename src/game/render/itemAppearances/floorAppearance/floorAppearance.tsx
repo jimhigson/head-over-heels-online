@@ -29,7 +29,7 @@ import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { colourClashFilter } from "../../filters/ColourClashFilter";
 import { OutlineFilter } from "../../filters/outlineFilter";
-import { edgeOriginalGameColour } from "../../filters/standardFilters";
+import { edgeOriginalGameColour } from "../../gameColours/colourScheme";
 import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenX,

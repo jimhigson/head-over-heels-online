@@ -1,8 +1,8 @@
 import type { Simplify } from "type-fest";
 
-import type { Shades } from "../../game/hintColours";
 import type { PaletteSwaps } from "../../game/render/filters/lutTexture/sparseLut";
 import type { UnknownRoomState } from "../../model/RoomState";
+import type { ZxSpectrumRoomHue } from "../../originalGame";
 import type { TextureId } from "./spritesheetData/spriteSheetData";
 import type {
   SpritesheetTextureSwops,
@@ -11,13 +11,16 @@ import type {
 
 import { spritesheetPalette } from "../../../gfx/spritesheetPalette";
 import { spritesheetPaletteDim } from "../../../gfx/spritesheetPaletteDim";
-import { colorScheme, getColorScheme } from "../../game/hintColours";
 import {
   hueColourReplacements,
-  replacePlaceholderColoursMapForRoom,
   sceneryColourReplacements,
 } from "../../game/render/filters/standardFilters";
-import { zxSpectrumDimmed } from "../../originalGame";
+import { colorScheme } from "../../game/render/gameColours/colourScheme";
+import {
+  gameColour,
+  gameColourForHue,
+} from "../../game/render/gameColours/gameColours";
+import { zxSpectrumColor } from "../../originalGame";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { textureIds } from "./spritesheetData/spriteSheetData";
 
@@ -40,9 +43,10 @@ export const colourisedRoomSwops = (
       ambient: [
         {
           lutType: "sparse",
-          paletteSwaps: {
-            ...replacePlaceholderColoursMapForRoom(room),
-          },
+          paletteSwaps: replaceMapForHue(
+            room.color.hue,
+            room.color.shade === "dimmed",
+          ),
         },
         room.color.shade === "basic" ?
           {
@@ -63,25 +67,27 @@ export const colourisedRoomSwops = (
             },
           },
       ],
-      textureSpecific: [...floorPaletteSwops(room), ...floorEdgeSwops(room)],
+      textureSpecific: [
+        ...floorPaletteSwops(room),
+        ...floorEdgeSwops(room),
+        ...bookSwops(room),
+      ],
       // do not replace placeholder colours on doors with the room's colour,
       // since doors need to have them replaced with the colour of the room the
       // door leads to
       noReplacePlaceholderTextures: doorTextureIds,
     };
   } else {
-    const roomColour =
-      room.color.shade === "dimmed" ?
-        zxSpectrumDimmed(getColorScheme(room.color).main.original)
-      : getColorScheme(room.color).main.original;
+    const mainColour = zxSpectrumColor(room.color);
+
     return {
       ambient: [
         {
           lutType: "voronoi",
           paletteSwaps: {
             pureBlack: spritesheetPalette.pureBlack,
-            shadow: roomColour,
-            redShadow: roomColour,
+            shadow: mainColour,
+            redShadow: mainColour,
           },
         },
       ],
@@ -92,11 +98,11 @@ export const colourisedRoomSwops = (
 const floorEdgeSwops = (
   room: Pick<UnknownRoomState, "color" | "planet">,
 ): Array<TextureSpecificPaletteSwops> => {
-  const rightEdgeSwops = replaceMapForShades(
-    colorScheme[room.color.hue][room.color.shade].edges.right,
+  const rightEdgeSwops = replaceMapForHue(
+    colorScheme[room.color.hue][room.color.shade].edges.right.hue,
   );
-  const towardsEdgeSwops = replaceMapForShades(
-    colorScheme[room.color.hue][room.color.shade].edges.towards,
+  const towardsEdgeSwops = replaceMapForHue(
+    colorScheme[room.color.hue][room.color.shade].edges.towards.hue,
   );
 
   return [
@@ -144,6 +150,29 @@ const floorPaletteSwops = (
   }
 };
 
+const bookSwops = (
+  room: Pick<UnknownRoomState, "color" | "planet">,
+): Array<TextureSpecificPaletteSwops> => {
+  switch (room.color.hue) {
+    case "white": {
+      // avoid white floors standing out too much, since floors need to not
+      // be too distracting so that items stand out:
+      return [
+        {
+          textureIds: ["book.x", "book.y"],
+          paletteSwaps: {
+            shadow: gameColour("midGrey", room.color.shade === "dimmed"),
+          },
+        },
+      ];
+    }
+
+    default:
+      // no special colourisation needed
+      return emptyArray;
+  }
+};
+
 type PaletteSwapsForPlaceholderColours = Simplify<
   Required<Pick<PaletteSwaps, "replaceDark" | "replaceLight">>
 >;
@@ -151,10 +180,10 @@ type PaletteSwapsForPlaceholderColours = Simplify<
 /**
  * get the replaceLight/replaceDark swops for the given shade
  */
-const replaceMapForShades = ({
-  basic,
-  dimmed,
-}: Shades): PaletteSwapsForPlaceholderColours => ({
-  replaceLight: basic,
-  replaceDark: dimmed,
+export const replaceMapForHue = (
+  hue: ZxSpectrumRoomHue,
+  inDimmedPalette: boolean = false,
+): PaletteSwapsForPlaceholderColours => ({
+  replaceLight: gameColourForHue(hue, false, inDimmedPalette),
+  replaceDark: gameColourForHue(hue, true, inDimmedPalette),
 });

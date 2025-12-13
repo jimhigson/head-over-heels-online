@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 
 import type { ZxSpectrumRoomHue } from "../../../originalGame";
 
-import { colorScheme } from "../../../game/hintColours";
+import { gameColour } from "../../../game/render/gameColours/gameColours";
 import { zxSpectrumRoomHue } from "../../../originalGame";
 import { useAppDispatch } from "../../../store/hooks";
 import { cn } from "../../../ui/cn";
@@ -16,10 +16,9 @@ import {
 } from "../../slice/levelEditorSlice";
 
 const itemColourCss = (hue: ZxSpectrumRoomHue): CSSProperties => {
-  const { main: mainColoursForHue } = colorScheme[hue].basic;
   return {
-    backgroundColor: mainColoursForHue.basic.toHex(),
-    borderColor: mainColoursForHue.dimmed.toHex(),
+    backgroundColor: gameColour(`swop_${hue}`).toHex(),
+    borderColor: gameColour(`swop_${hue}Dim`).toHex(),
   };
 };
 

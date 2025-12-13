@@ -5,6 +5,7 @@ import type { Campaign } from "../../../../model/modelTypes";
 import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
+import { replaceMapForHue } from "../../../../sprites/spritesheet/roomSpritesheetSwops";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
@@ -17,7 +18,7 @@ import {
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
-import { replacePlaceholderColoursPaletteSwapFilter } from "../../filters/standardFilters";
+import { PaletteSwapFilter } from "../../filters/PaletteSwapFilter";
 import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
@@ -134,6 +135,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           aabb,
         },
         room,
+        //general: { pixiRenderer },
       },
     }) => {
       const campaign =
@@ -150,18 +152,22 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
         // so just colour using the current room's colours:
         room;
 
-      // const filter = new PaletteSwapFilter(
-      //   {
-      //     paletteSwaps: {replaceLight getColorScheme(useColoursFromRoom.color).main.original },
-      //   },
-      // );
+      const filter = new PaletteSwapFilter({
+        paletteSwaps: replaceMapForHue(
+          useColoursFromRoom.color.hue,
+          useColoursFromRoom.color.shade === "dimmed",
+        ),
+        lutType: "sparse",
+      });
 
       const doorFrameSprite = createSprite({
         textureId: doorTexture(room, axis, part),
         // needs a special filter since this may not be going to the same room:
-        filter: replacePlaceholderColoursPaletteSwapFilter(useColoursFromRoom),
+        filter,
         ...xyToTranslateToInsideOfRoom(direction, aabb),
       });
+
+      //const rendered = renderContainerToSprite(pixiRenderer, doorFrameSprite);
 
       return doorFrameSprite;
     },

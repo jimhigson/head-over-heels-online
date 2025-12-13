@@ -71,7 +71,7 @@ export const zxSpectrumDimmed = (c: Color) => {
 export function zxSpectrumColor(colour: ZxSpectrumRoomColour): Color;
 export function zxSpectrumColor(
   hue: ZxSpectrumRoomHue,
-  shade: ZxSpectrumShade,
+  shade?: ZxSpectrumShade,
 ): Color;
 export function zxSpectrumColor(
   hueOrColour: ZxSpectrumRoomColour | ZxSpectrumRoomHue,
@@ -79,7 +79,7 @@ export function zxSpectrumColor(
 ): Color {
   const { hue, shade: resolvedShade } =
     typeof hueOrColour === "object" ? hueOrColour : (
-      { hue: hueOrColour, shade: shade! }
+      { hue: hueOrColour, shade: shade ?? "basic" }
     );
   const hues =
     resolvedShade === "dimmed" ? zxSpectrumColorsDimmed : zxSpectrumColors;

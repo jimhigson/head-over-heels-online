@@ -19,6 +19,7 @@ import type {
 } from "./hudRendererContexts";
 
 import { individualCharacterNames } from "../../../model/modelTypes";
+import { zxSpectrumColor } from "../../../originalGame";
 import { loadedSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import {
   hudCharTextureSize,
@@ -32,13 +33,14 @@ import {
   shieldRemainingForAbilities,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { getColorScheme } from "../../hintColours";
 import {
   greyFilter,
   greyFilterExceptBlue,
   greyFilterExceptPink,
   noFilters,
 } from "../filters/standardFilters";
+import { getRoomColorScheme } from "../gameColours/colourScheme";
+import { gameColourForHue } from "../gameColours/gameColours";
 import { FpsRenderer } from "./FpsRenderer";
 import {
   hudHighligtedFilter,
@@ -522,19 +524,28 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       // game over, keep current colours
       return;
     }
-    const colorScheme = getColorScheme(room.color);
+    const colorScheme = getRoomColorScheme(room.color);
     const {
       general: { colourised, gameState },
     } = this.renderContext;
 
     hudLowlightedFilter.targetColor =
-      colorScheme.hud.dimmed[colourised ? "dimmed" : "original"];
+      colourised ?
+        gameColourForHue(colorScheme.hud.dimmed, true)
+      : zxSpectrumColor(colorScheme.hud.dimmed);
     hudTextFilter.targetColor =
-      colorScheme.hud.dimmed[colourised ? "basic" : "original"];
+      colourised ?
+        gameColourForHue(colorScheme.hud.dimmed, false)
+      : zxSpectrumColor(colorScheme.hud.dimmed);
     hudIconFilter.targetColor =
-      colorScheme.hud.icons[colourised ? "basic" : "original"];
+      colourised ?
+        gameColourForHue(colorScheme.hud.icons, false)
+      : zxSpectrumColor(colorScheme.hud.icons);
 
-    hudHighligtedFilter.targetColor = colorScheme.hud.lives.original;
+    hudHighligtedFilter.targetColor = gameColourForHue(
+      colorScheme.hud.lives,
+      false,
+    );
 
     // TODO: now that this renderer is recreated if colourisdd changes, we don't need
     // to do quite so much here on every frame:
