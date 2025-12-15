@@ -5,6 +5,13 @@
     "value": "on-stand"
   },
   {
+    "op": "add",
+    "path": "/items/block@0,2,0/config/times",
+    "value": {
+      "y": 2
+    }
+  },
+  {
     "op": "replace",
     "path": "/color/hue",
     "value": "magenta"

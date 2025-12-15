@@ -8,7 +8,7 @@ export const room = inferRoomJson({
   items: {
     "block@1,3,0": {
       config: { style: "book" },
-      position: { x: 1, y: 3, z: 0 },
+      position: { x: 1, y: 1.5, z: 0 },
       type: "block",
     },
     "block@1,7,0": {
@@ -52,7 +52,7 @@ export const room = inferRoomJson({
     },
     "slidingBlock@1,3,1": {
       config: { style: "book" },
-      position: { x: 1, y: 3, z: 1 },
+      position: { x: 1, y: 1.5, z: 1 },
       type: "slidingBlock",
     },
     "wall(right)@0,0,0": {

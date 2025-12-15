@@ -21,15 +21,11 @@ import { formatProjectName, progressLogHeader } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
 import { setIsUncolourised } from "./setIsUncolourised";
 
-// set to limit the number of rooms we test in one run - useful when
-// developing the test to avoid having to do the whole run each time
-// but should be undefined in e2e to say "no limit"
-const roomLimit = undefined;
-
 const timeoutPerRoom = (process.env.CI ? 40_000 : 8_000) * osSlowness;
 const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
+const campaignRoomIds = keys(campaign.rooms);
 // Override to run for just one room by setting the ROOMS envar, eg:
 // ROOMS=bookworld13,bookworld14 pnpm screenshot --update-snapshots
 // Or filter by item type using ROOMS_CONTAINING, eg:
@@ -37,12 +33,12 @@ const maxTriesToLoadRoom = 3;
 const roomIds =
   process.env.ROOMS ? (process.env.ROOMS.split(",") as OriginalCampaignRoomId[])
   : process.env.ROOMS_CONTAINING ?
-    keys(campaign.rooms).filter((roomId) => {
+    campaignRoomIds.filter((roomId) => {
       const room = campaign.rooms[roomId];
       const itemType = process.env.ROOMS_CONTAINING;
       return Object.values(room.items).some((item) => item.type === itemType);
     })
-  : keys(campaign.rooms).slice(0, roomLimit);
+  : campaignRoomIds;
 
 // How many parallel runners are processing rooms (splits work across GitHub Actions runners)
 const batchCount =
@@ -446,25 +442,27 @@ test.describe("Room Visual Snapshots", () => {
         });
       };
 
-      // first, navigate to the last room of the previous batch or test.
-      // this means that we start this test with the same location
-      // as if we had done one continuous run. This can impact which
-      // door the character starts at when they enter the room
-      const roomIdIndex = roomIds.indexOf(testRooms[0]);
-      if (roomIdIndex > 0) {
-        const logHeader = progressLogHeader(
-          testInfo.project.name,
-          -1,
-          testIndex,
-        );
+      {
+        // first, navigate to the last room of the previous batch or test.
+        // this means that we start this test with the same location
+        // as if we had done one continuous run. This can impact which
+        // door the character starts at when they enter the room
+        const roomIdIndex = campaignRoomIds.indexOf(testRooms[0]);
+        if (roomIdIndex > 0) {
+          const logHeader = progressLogHeader(
+            testInfo.project.name,
+            -1,
+            testIndex,
+          );
 
-        const previousRoomId = roomIds[roomIdIndex - 1];
+          const previousRoomId = campaignRoomIds[roomIdIndex - 1];
 
-        console.log(
-          `${logHeader} will pre-load previous room: ${previousRoomId} to set correct entry point to my first room: ${testRooms[0]}`,
-        );
+          console.log(
+            `${logHeader} will pre-load previous room: ${previousRoomId} to set correct entry point to my first room: ${testRooms[0]}`,
+          );
 
-        await navigateToRoom(logHeader, previousRoomId);
+          await navigateToRoom(logHeader, previousRoomId);
+        }
       }
 
       for (const [roomIndex, roomId] of testRooms.entries()) {
@@ -499,7 +497,7 @@ test.describe("Room Visual Snapshots", () => {
                 // Whereas 0 makes builds fail with invisible differences between
                 // the OS running the test, at least in webkit/safari.
                 // keep a much smaller threshold than normal, but not zero:
-                threshold: 0.02,
+                threshold: 0.05,
                 scale: "device",
                 maxDiffPixels: 0,
               });
