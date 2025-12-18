@@ -6,7 +6,6 @@ import type { CampaignLocator } from "../../../../../../model/modelTypes";
 
 import { gameStarted } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -40,10 +39,11 @@ const CampaignMenuItem = ({
       })}
       hintInline
       hint={
-        <BlockyMarkdown
-          className={selectGameHintMarkdownClassName}
-          markdown={` v.${version} updated ${format(createdAt)}`}
-        />
+        <div data-screenshot-mask>
+          <BitmapText
+            className={selectGameHintMarkdownClassName}
+          >{`v.${version} updated ${format(createdAt)}`}</BitmapText>
+        </div>
       }
     />
   );
