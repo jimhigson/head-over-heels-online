@@ -12,11 +12,6 @@ export const room = inferRoomJson({
       position: { x: 3, y: 6, z: 2 },
       type: "block",
     },
-    tower: {
-      config: { style: "tower", times: { z: 2 } },
-      position: { x: 3, y: 6, z: 0 },
-      type: "block",
-    },
     "door@1,0,0": {
       config: { direction: "towards", toRoom: "blacktooth36" },
       position: { x: 1, y: 0, z: 0 },
@@ -82,6 +77,11 @@ export const room = inferRoomJson({
       },
       position: { x: 0, y: 7, z: 0 },
       type: "switch",
+    },
+    tower: {
+      config: { style: "tower", times: { z: 2 } },
+      position: { x: 3, y: 6, z: 0 },
+      type: "block",
     },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 8 } },

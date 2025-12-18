@@ -24,6 +24,21 @@
   },
   {
     "op": "add",
+    "path": "/items/pickup",
+    "value": {
+      "config": {
+        "gives": "jumps"
+      },
+      "position": {
+        "x": 3,
+        "y": 6,
+        "z": 3
+      },
+      "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/tower",
     "value": {
       "config": {
@@ -38,21 +53,6 @@
         "z": 0
       },
       "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/pickup",
-    "value": {
-      "config": {
-        "gives": "jumps"
-      },
-      "position": {
-        "x": 3,
-        "y": 6,
-        "z": 3
-      },
-      "type": "pickup"
     }
   }
 ]

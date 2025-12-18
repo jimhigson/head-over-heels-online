@@ -1,5 +1,54 @@
 [
   {
+    "op": "add",
+    "path": "/items/slidingOnBook",
+    "value": {
+      "config": {
+        "style": "book"
+      },
+      "position": {
+        "x": 1,
+        "y": 5,
+        "z": 1
+      },
+      "type": "slidingBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/monsterOnBook",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "towards-tripped-on-axis-xy4",
+        "which": "homingBot"
+      },
+      "position": {
+        "x": 6,
+        "y": 2,
+        "z": 1
+      },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/monsterOnBook2",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "towards-tripped-on-axis-xy4",
+        "which": "homingBot"
+      },
+      "position": {
+        "x": 7,
+        "y": 5,
+        "z": 1
+      },
+      "type": "monster"
+    }
+  },
+  {
     "op": "replace",
     "path": "/color/shade",
     "value": "dimmed"
