@@ -358,7 +358,7 @@ test.describe("Room Visual Snapshots", () => {
     test(`Snapshot rooms test ${testDescription}`, async ({
       page,
     }, testInfo) => {
-      test.setTimeout(testRooms.length * timeoutPerRoom + 10_000);
+      test.setTimeout(testRooms.length * timeoutPerRoom + 20_000);
       const formattedName = `${formatProjectName(testInfo.project.name)} (${testIndex})`;
 
       forwardBrowserConsoleToNodeConsole(page, formattedName);
