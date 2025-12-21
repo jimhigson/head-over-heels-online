@@ -11,13 +11,6 @@ export const room = inferRoomJson({
       position: { x: 1, y: 5, z: 0 },
       type: "block",
     },
-    slidingOnBook: {
-      type: "slidingBlock",
-      position: { x: 1, y: 5, z: 1 },
-      config: {
-        style: "book",
-      },
-    },
     "block@3,3,0": {
       config: { style: "book" },
       position: { x: 3, y: 3, z: 0 },
@@ -28,28 +21,10 @@ export const room = inferRoomJson({
       position: { x: 6, y: 2, z: 0 },
       type: "block",
     },
-    monsterOnBook: {
-      config: {
-        activated: "on",
-        movement: "towards-tripped-on-axis-xy4",
-        which: "homingBot",
-      },
-      position: { x: 6, y: 2, z: 1 },
-      type: "monster",
-    },
     "block@7,5,0": {
       config: { style: "book" },
       position: { x: 7, y: 5, z: 0 },
       type: "block",
-    },
-    monsterOnBook2: {
-      config: {
-        activated: "on",
-        movement: "towards-tripped-on-axis-xy4",
-        which: "homingBot",
-      },
-      position: { x: 7, y: 5, z: 1 },
-      type: "monster",
     },
     "door@3,0,0": {
       config: { direction: "towards", toRoom: "bookworld22" },
@@ -78,6 +53,29 @@ export const room = inferRoomJson({
       },
       position: { x: 0, y: 4, z: 0 },
       type: "monster",
+    },
+    monsterOnBook: {
+      config: {
+        activated: "on",
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: { x: 6, y: 2, z: 1 },
+      type: "monster",
+    },
+    monsterOnBook2: {
+      config: {
+        activated: "on",
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: { x: 7, y: 5, z: 1 },
+      type: "monster",
+    },
+    slidingOnBook: {
+      config: { style: "book" },
+      position: { x: 1, y: 5, z: 1 },
+      type: "slidingBlock",
     },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 8 } },
