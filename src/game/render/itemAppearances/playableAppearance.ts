@@ -301,6 +301,7 @@ const playableAppearanceImpl: ItemAppearance<
     state: {
       action,
       facing,
+      visualFacingVector,
       teleporting,
       vels: {
         gravity: { z: gravityZ },
@@ -310,7 +311,8 @@ const playableAppearanceImpl: ItemAppearance<
   const currentlyRenderedProps = currentRendering?.renderProps;
   const previousRendering = currentRendering?.output;
 
-  const facingXy8 = vectorClosestDirectionXy8(facing) ?? "towards";
+  const facingXy8 =
+    vectorClosestDirectionXy8(visualFacingVector ?? facing) ?? "towards";
 
   /**
    * show the outline highlight from when the player has just switched to the character?

@@ -413,7 +413,8 @@ export const changeCharacterRoom = <
         // is usually a no-op since they had to be walking that way to get through, but
         // it is possible they were pushed through and the autowalk needs to go in
         // the right direction
-        playableItem.state.facing = scaleXyz(portalDirection, -1);
+        playableItem.state.facing = playableItem.state.visualFacingVector =
+          scaleXyz(portalDirection, -1);
 
         if (playableItem.state.action === "idle")
           playableItem.state.action = "moving";
