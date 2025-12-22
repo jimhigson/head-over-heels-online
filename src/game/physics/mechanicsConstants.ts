@@ -234,3 +234,12 @@ export const jumpDelayGrace = 1000 / 12;
 export const coyoteTime = 1000 / 12;
 
 export const switchMinTimeBetweenToggleMs = 100;
+
+/**
+ * how many ms need to elapse after walking input ends before the next walking
+ * input will continue at the speed from when previously stopped? Compensates for
+ * how when changing direction the old directions's input sometimes stops a little
+ * before the new one starts - otherwise player that was already moving would have
+ * to accelerate up to full speed again
+ */
+export const walkResumeGraceTime = 250;
