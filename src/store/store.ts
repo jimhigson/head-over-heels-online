@@ -13,6 +13,7 @@ import {
 
 import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
 
+import { detectDeviceType } from "../utils/detectDeviceType";
 import { listenerMiddleware } from "./listenerMiddleware";
 import { gameMenusPersistedReducer } from "./persist/persist";
 import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
@@ -20,6 +21,7 @@ import {
   debugItemClicked,
   gameMenusSlice,
 } from "./slices/gameMenus/gameMenusSlice";
+import { connectHistoryToMenusInStore } from "./slices/gameMenus/menuHistory";
 import { manualLoadingSlice } from "./slices/manualLoadingSlice";
 import {
   updateUpscaleWhenDisplaySettingsChange,
@@ -79,6 +81,9 @@ if (typeof window !== "undefined") {
 
 updateUpscaleWhenEmulatedResolutionChanges();
 updateUpscaleWhenDisplaySettingsChange();
+if (detectDeviceType() !== "server") {
+  connectHistoryToMenusInStore(store);
+}
 
 export const persistor = persistStore(store);
 
