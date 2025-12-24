@@ -45,6 +45,7 @@ import { tickMovement } from "../physics/mechanics/movement";
 import { onConveyor } from "../physics/mechanics/onConveyor";
 import { pickingUp } from "../physics/mechanics/pickingUp";
 import { puttingDown } from "../physics/mechanics/puttingDown";
+import { rotateTowardsFacing } from "../physics/mechanics/rotateTowardsFacing";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
 import { moveItem } from "../physics/moveItem/moveItem";
@@ -81,6 +82,12 @@ function* itemMechanicResultGen<
   if (isPlayableItem(item)) {
     // walking is allowed if not current for autowalking:
     yield walking(item, room, gameState, deltaMS) as MechanicResult<
+      T,
+      RoomId,
+      RoomItemId
+    >;
+
+    yield rotateTowardsFacing(item, room, gameState, deltaMS) as MechanicResult<
       T,
       RoomId,
       RoomItemId

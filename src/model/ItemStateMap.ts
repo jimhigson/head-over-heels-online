@@ -112,6 +112,12 @@ export type PlayableState<RoomItemId extends string> =
     };
 
     /**
+     * The direction visually facing - used for turning around animation
+     * Added Dec '25; optional so as to not break saves from previous versions that don't have it
+     */
+    visualFacingVector?: Xyz;
+
+    /**
      * how many pixels have we walked since we were last not walking? Ie, in this run of
      * walking?
      *
@@ -121,6 +127,10 @@ export type PlayableState<RoomItemId extends string> =
 
     /**
      * what direction were we facing just before we started walking?
+     * Used to decide if a small walk was in the direction already facing, in which case the min
+     * of 1px movement is applied.
+     *
+     * TODO: check this is so, with integration test - seems Head at least can walk 0px
      */
     walkStartFacing: Xyz;
 

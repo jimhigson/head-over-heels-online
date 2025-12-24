@@ -39,6 +39,7 @@ export const defaultPlayerState = () => {
     teleporting: null,
     autoWalk: false,
     facing: unitVectors["towards"],
+    visualFacingVector: unitVectors["towards"],
     walkStartFacing: unitVectors["towards"],
     walkDistance: 0,
     vels: {
