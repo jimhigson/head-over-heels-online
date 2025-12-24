@@ -9,8 +9,11 @@ import {
   getEffectivelyStandingOnItemIdForPlayable,
   stoodOnItem,
 } from "../../../model/stoodOnItemsLookup";
+import { epsilon } from "../../../utils/epsilon";
+import { neverTime } from "../../../utils/neverTime";
 import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
 import {
+  lengthXy,
   lengthXyz,
   originXy,
   originXyz,
@@ -29,6 +32,7 @@ import {
   moveSpeedPixPerMs,
   originalMoveSpeedPixPerMs,
   playerWalkAcceldPixPerMsSq,
+  walkResumeGraceTime,
 } from "../mechanicsConstants";
 
 const stopWalking = {
@@ -49,6 +53,7 @@ export const walking: Mechanic<CharacterName> = <
   const result = walkingImpl(playableItem, room, gameState, deltaMS);
 
   if (result.movementType === "vel" && result.vels.walking !== undefined) {
+    // add the gameWalkDistance
     const speed = lengthXyz(result.vels.walking);
 
     result.stateDelta = {
@@ -83,6 +88,20 @@ export const walking: Mechanic<CharacterName> = <
     };
   }
 
+  // detect stopping walking - record speed to take up next time
+  const prevWalkSpeed = lengthXy(playableItem.state.vels.walking);
+  if (
+    result.movementType === "vel" &&
+    xyEqual(originXy, result.vels.walking ?? originXy) &&
+    prevWalkSpeed > 0
+  ) {
+    result.stateDelta = {
+      ...result.stateDelta,
+      stoppedWalkingAtGameTime: gameState.gameTime,
+      stoppedWalkingSpeed: prevWalkSpeed,
+    };
+  }
+
   return result;
 };
 
@@ -93,7 +112,7 @@ export const walking: Mechanic<CharacterName> = <
 const walkingImpl = <RoomId extends string, RoomItemId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
-  { inputStateTracker, currentCharacterName }: GameState<RoomId>,
+  { inputStateTracker, currentCharacterName, gameTime }: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName, RoomId, RoomItemId> => {
   const {
@@ -105,6 +124,8 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
       teleporting,
       walkDistance,
       walkStartFacing,
+      stoppedWalkingAtGameTime,
+      stoppedWalkingSpeed,
       vels: { walking: previousWalkingVel, gravity: gravityVel },
     },
   } = playableItem;
@@ -236,6 +257,30 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
       };
     } else {
       // normal walking on the ground:
+
+      if (
+        // starting walking from stopped:
+        lengthXy(previousWalkingVel) < epsilon &&
+        // previously stopped walking recently:
+        (stoppedWalkingAtGameTime ?? neverTime) + walkResumeGraceTime >
+          gameTime &&
+        (stoppedWalkingSpeed ?? 0) > epsilon
+      ) {
+        console.log("keep speed grace");
+        //resuming walking after a very short stop - this means we can resume at the old speed:
+        return {
+          movementType: "vel",
+          vels: {
+            // assuming walkVector is a unit vector here
+            walking: scaleXyz(walkVector, stoppedWalkingSpeed!),
+          },
+          stateDelta: {
+            facing: walkVector,
+            action: "moving",
+          },
+        };
+      }
+
       return {
         movementType: "vel",
         vels: {

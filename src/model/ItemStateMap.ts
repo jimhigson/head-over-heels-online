@@ -125,6 +125,21 @@ export type PlayableState<RoomItemId extends string> =
     walkStartFacing: Xyz;
 
     /**
+     * The time we last stopped walking. Used to keep momentum after very short periods of not walking
+     * between inputs
+     *
+     * Added Dec '25; optional so as to not break saves from previous versions that don't have it
+     */
+    stoppedWalkingAtGameTime?: number;
+    /**
+     * The time we last stopped walking. Used to keep momentum after very short periods of not walking
+     * between inputs
+     *
+     * Added Dec '25; optional so as to not break saves from previous versions that don't have it
+     */
+    stoppedWalkingSpeed?: number;
+
+    /**
      * used to distinguish (for heels) when in the air: did we jump (mandatory forward motion) or did
      * we fall (vertical falling, no forward motion)
      */
