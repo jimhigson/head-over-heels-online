@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.14.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.13.0...v1.14.0) (2025-12-24)
+
+
+### Features
+
+* add grace to allow player to continue running at previous speed after very short (250ms) interuption in walk inputs ([#651](https://github.com/jimhigson/head-over-heels-online/issues/651)) ([90e0008](https://github.com/jimhigson/head-over-heels-online/commit/90e00085e07f0216a2a130deb8bfadaa02b0a6e3))
+* advertise the map from pause screen ([#639](https://github.com/jimhigson/head-over-heels-online/issues/639)) ([9c2746e](https://github.com/jimhigson/head-over-heels-online/commit/9c2746eecbaf51dab07542e9c46a486c7a1c0aa6))
+* blacktooth6 room layout changed from original, but is truer to the puzzle of the original in the physics of the new engine ([#647](https://github.com/jimhigson/head-over-heels-online/issues/647)) ([c82af01](https://github.com/jimhigson/head-over-heels-online/commit/c82af01ea9a4c7efcc0226e114f92b5215d5a6f6))
+* optimise - render door legs as a single texture ([#638](https://github.com/jimhigson/head-over-heels-online/issues/638)) ([471654e](https://github.com/jimhigson/head-over-heels-online/commit/471654e22c509801f793623da1680c341cb337e7))
+* refactor room blacktooth73 to be easier to visually parse ([#649](https://github.com/jimhigson/head-over-heels-online/issues/649)) ([dfcc270](https://github.com/jimhigson/head-over-heels-online/commit/dfcc270df4e512760a379c89bbc12ca96b45350c))
+* visually player rotates towards new facing direction if turning &lt; 180º ([#650](https://github.com/jimhigson/head-over-heels-online/issues/650)) ([30d2d30](https://github.com/jimhigson/head-over-heels-online/commit/30d2d3061bc3e5749eb25496e66da39b5f6b27e1))
+
+
+### Bug Fixes
+
+* bug where short hits on movement keys would sometimes not cause any movement ([#652](https://github.com/jimhigson/head-over-heels-online/issues/652)) ([b6b663a](https://github.com/jimhigson/head-over-heels-online/commit/b6b663ae96f3120b1b833bf1b696f52400a4aa42))
+
 ## [1.13.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.12.0...v1.13.0) (2025-12-02)
 
 
