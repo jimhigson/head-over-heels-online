@@ -248,9 +248,12 @@ export const tickItem = <
   // time, before the previous ones have changed the game state. This is good for
   // jumping and carrying at the same time, for example. Otherwise, these would
   // one stop the other from working.
-  const mechanicsResults = [
-    ...itemMechanicResultGen(item, room, gameState, deltaMS),
-  ];
+  const mechanicsResults = itemMechanicResultGen(
+    item,
+    room,
+    gameState,
+    deltaMS,
+  ).toArray();
 
   // this is done after the mechanicsResults are generated, so that the player
   // can do one more jump on a dissapearing block before the touch on that block
@@ -283,11 +286,19 @@ export const tickItem = <
     addParticlesAroundCrown(room, item, deltaMS);
   }
 
-  constrainToMaximumSpeedInPlace(
-    item,
-    tickItemPosDeltaAccumulationBuffer,
-    deltaMS,
-  );
+  // position deltas are instant - not subject to maximum speed constraints
+  // currently. Otherwise, the minimum 1px walking movement on short input
+  // bursts gets cancelled
+  const mrIncludesInstantMovement =
+    mechanicsResults.find((mr) => mr.movementType === "position") !== undefined;
+
+  if (!mrIncludesInstantMovement) {
+    constrainToMaximumSpeedInPlace(
+      item,
+      tickItemPosDeltaAccumulationBuffer,
+      deltaMS,
+    );
+  }
 
   moveItem({
     subjectItem: item as UnionOfAllItemInPlayTypes<RoomId>,

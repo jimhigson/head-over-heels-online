@@ -314,7 +314,11 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
     return {
       movementType: "position",
       posDelta: scaleXyz(facing, targetDistance - walkDistance),
-      stateDelta: { action: isFalling ? "falling" : "idle", walkDistance: 0 },
+      stateDelta: {
+        action: isFalling ? "falling" : "idle",
+        walkDistance: 0,
+        facing,
+      },
     };
   }
 
