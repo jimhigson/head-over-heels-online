@@ -34,6 +34,7 @@ export const uncombinePlayablesFromSymbiosis = <
       ...defaultPlayerState(),
       ...headOverHeels.state.head,
       facing: headOverHeels.state.facing,
+      visualFacingVector: headOverHeels.state.visualFacingVector,
       position: addXyz(headOverHeels.state.position, { z: blockSizePx.h }),
       switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
@@ -53,6 +54,7 @@ export const uncombinePlayablesFromSymbiosis = <
       ...defaultPlayerState(),
       ...headOverHeels.state.heels,
       facing: headOverHeels.state.facing,
+      visualFacingVector: headOverHeels.state.visualFacingVector,
       position: addXyz(headOverHeels.state.position),
       switchedToAt: neverTime,
       actedOnAt: headOverHeels.state.actedOnAt,
@@ -94,6 +96,7 @@ export const combinePlayablesInSymbiosis = <
       teleporting: null,
       autoWalk: false,
       facing: heels.state.facing,
+      visualFacingVector: heels.state.visualFacingVector,
       actedOnAt:
         heels.state.actedOnAt.roomTime > head.state.actedOnAt.roomTime ?
           heels.state.actedOnAt
