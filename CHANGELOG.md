@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.14.0...v1.14.1) (2025-12-30)
+
+
+### Bug Fixes
+
+* playable characters face wrong way coming in/out of symbiosis ([#653](https://github.com/jimhigson/head-over-heels-online/issues/653)) ([740b418](https://github.com/jimhigson/head-over-heels-online/commit/740b418ffa2b1f4a11fae27200d16d2013309687))
+
 ## [1.14.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.13.0...v1.14.0) (2025-12-24)
 
 
