@@ -44,7 +44,7 @@ export type ButtonContainerTypes = {
   carry: ArcadeStyleButtonContainer;
   fire: ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>;
   carryAndJump: ArcadeStyleButtonContainer<TextContainer>;
-  menu: Sprite;
+  menu: TextContainer;
   map: TextContainer;
 };
 

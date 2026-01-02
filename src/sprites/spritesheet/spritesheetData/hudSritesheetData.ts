@@ -163,7 +163,7 @@ const row3 = [
   // currently unused
   "EnterFullscreen",
   "ExitFullscreen",
-  "Menu",
+  "☰", // the menu "hamburger" icon
   "*",
   "@",
   "©",

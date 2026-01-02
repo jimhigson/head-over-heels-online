@@ -44,6 +44,7 @@ const printableString = (input: PokeableNumber | string): string => {
 export type TextContainerOptions = {
   pixiRenderer: PixiRenderer;
   doubleHeight?: boolean;
+  doubleWidth?: boolean;
   outline?: boolean;
   label?: string;
   x?: number;
@@ -58,11 +59,13 @@ export class TextContainer extends Container {
   #renderCacheSprite: Sprite;
   #characterSpriteContainer: Container<Sprite>;
   #renderToCacheContainer: Container<Container<Sprite>>;
-  #doubleHeight: boolean;
+  #heightMult: number;
+  #widthMult: number;
 
   constructor({
     pixiRenderer,
     doubleHeight = false,
+    doubleWidth = false,
     outline = false,
     label = "text",
     x,
@@ -73,11 +76,12 @@ export class TextContainer extends Container {
     super({ label, x, y, tint });
 
     this.#pixiRenderer = pixiRenderer;
-    this.#doubleHeight = doubleHeight;
+    this.#heightMult = doubleHeight ? 2 : 1;
+    this.#widthMult = doubleWidth ? 2 : 1;
 
     this.#renderCacheSprite = new Sprite();
     this.#renderCacheSprite.y = -(
-      hudCharTextureSize.h * (doubleHeight ? 2 : 1) +
+      hudCharTextureSize.h * this.#heightMult +
       // an extra -1 to compensate for padding for outline:
       1
     );
@@ -87,7 +91,10 @@ export class TextContainer extends Container {
     this.addChild(this.#renderToCacheContainer);
 
     this.#characterSpriteContainer = new Container<Sprite>();
-    this.#characterSpriteContainer.scale = { x: 1, y: doubleHeight ? 2 : 1 };
+    this.#characterSpriteContainer.scale = {
+      x: this.#widthMult,
+      y: this.#heightMult,
+    };
     if (outline) {
       this.#characterSpriteContainer.filters = new OutlineFilter({
         color: spritesheetPalette.pureBlack,
@@ -120,8 +127,8 @@ export class TextContainer extends Container {
     this.#renderToCacheContainer.boundsArea = new Rectangle(
       -1,
       -1,
-      hudCharTextureSize.w * str.length + 2,
-      (hudCharTextureSize.h + 2) * (this.#doubleHeight ? 2 : 1),
+      (hudCharTextureSize.w * str.length + 2) * this.#widthMult,
+      (hudCharTextureSize.h + 2) * this.#heightMult,
     );
 
     if (this.#renderCacheSprite.texture) {

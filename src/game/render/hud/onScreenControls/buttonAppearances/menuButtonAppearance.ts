@@ -1,4 +1,3 @@
-import type { Sprite } from "pixi.js";
 import type { EmptyObject } from "type-fest";
 
 import type { ButtonAppearance } from "./buttonTypes";
@@ -6,14 +5,14 @@ import type { ButtonAppearance } from "./buttonTypes";
 export type MenuButtonRenderProps = EmptyObject;
 
 import { emptyObject } from "../../../../../utils/empty";
-import { createSprite } from "../../../createSprite";
+import { TextContainer } from "../../../text/TextContainer";
 import { tintForHud } from "../../spritesheetVariantForHud";
 
-export const menuButtonAppearance: ButtonAppearance<"menu", string, Sprite> = ({
-  currentRendering,
-  tickContext,
-  renderContext,
-}) => {
+export const menuButtonAppearance: ButtonAppearance<
+  "menu",
+  string,
+  TextContainer
+> = ({ currentRendering, tickContext, renderContext }) => {
   if (currentRendering !== undefined) {
     currentRendering.output!.tint = tintForHud(
       renderContext.general.colourised,
@@ -23,14 +22,17 @@ export const menuButtonAppearance: ButtonAppearance<"menu", string, Sprite> = ({
     return "no-update";
   }
 
-  const sprite = createSprite({
-    textureId: "hud.char.Menu",
-    spritesheetVariant: "original",
+  const output = new TextContainer({
+    pixiRenderer: renderContext.general.pixiRenderer,
+    label: "menuText",
+    outline: true,
+    doubleHeight: true,
+    doubleWidth: true,
+    text: "☰",
   });
-  sprite.scale = 2;
 
   return {
-    output: sprite,
+    output,
     renderProps: emptyObject,
   };
 };

@@ -42,8 +42,6 @@ export type AnimatedCreateSpriteOptions = {
   x?: number;
   y?: number;
 
-  filter?: Filter | Filter[];
-
   /**
    * If true, will play once and vanish. Otherwise, (by default) will loop
    * indefinitely
@@ -100,7 +98,7 @@ const isAnimatedOptions = (
 
 /** utility for creating a sprite while setting several properties on it */
 const createSpriteImpl = (options: CreateSpriteOptions): Container => {
-  const { anchor, flipX, pivot, x, y, filter, times, label } = options;
+  const { anchor, flipX, pivot, x, y, times, label } = options;
 
   // `times: undefined` or `times: {x:1}` should NOT cause the sprite to be wrapped in a container
   // even if this means the the types change between two otherwise identical calls
@@ -200,10 +198,6 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
 
   if (y !== undefined) {
     sprite.y = y;
-  }
-
-  if (filter !== undefined) {
-    sprite.filters = filter;
   }
 
   if (label !== undefined) {

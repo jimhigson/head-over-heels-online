@@ -181,11 +181,11 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
       const doorFrameSprite = createSprite({
         textureId: doorTexture(room, axis, part),
         // needs a special filter since this may not be going to the same room:
-        filter,
         x,
         y,
         spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
       });
+      doorFrameSprite.filters = filter;
 
       // render to a static sprite to avoid every-frame application of the filter
       // which would break sprite batching
