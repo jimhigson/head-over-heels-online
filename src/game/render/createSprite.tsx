@@ -70,7 +70,7 @@ export type CreateSpriteOptions =
       filter?: Filter | Filter[];
       times?: Partial<Xyz>;
       label?: string;
-      spritesheetVariant: SpritesheetVariant;
+      spritesheetVariant?: SpritesheetVariant;
     } & (
       | {
           times?: Partial<Xyz>;
@@ -155,7 +155,9 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
     sprite = createAnimatedSprite(options);
   } else {
     const textureId = options.textureId ?? options.textureIdCallback?.(0, 0, 0);
-    const spritesheet = getSpriteSheetVariant(options.spritesheetVariant);
+    const spritesheet = getSpriteSheetVariant(
+      options.spritesheetVariant ?? "original",
+    );
     sprite = new Sprite(spritesheet.textures[textureId]);
   }
 
@@ -163,7 +165,9 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
     if (!isAnimatedOptions(options)) {
       const textureId =
         options.textureId ?? options.textureIdCallback?.(0, 0, 0);
-      const spritesheet = getSpriteSheetVariant(options.spritesheetVariant);
+      const spritesheet = getSpriteSheetVariant(
+        options.spritesheetVariant ?? "original",
+      );
       const spritesheetFrameData: SpritesheetFrameData | undefined =
         spritesheet.data.frames[textureId];
 
