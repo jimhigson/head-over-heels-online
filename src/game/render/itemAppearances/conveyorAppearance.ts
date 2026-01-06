@@ -27,7 +27,7 @@ const frameCount = spritesheetData.animations["conveyor.x"].length;
 
 const easeOut = (t: number): number => 1 - (1 - t) ** 2;
 
-const framesAheadPerBlock = 2;
+const framesAheadPerBlock = 3;
 
 /**
  * staggering the animation frames of multiple-sprite conveyors
