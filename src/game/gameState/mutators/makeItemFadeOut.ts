@@ -3,7 +3,6 @@ import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../GameState";
 
 import { getItemInPlayTimes } from "../../../model/times";
-import { blockSizeXyzPx } from "../../../sprites/spritePivots";
 import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
 import {
   addXyz,
@@ -12,6 +11,7 @@ import {
   subXyz,
 } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
@@ -74,9 +74,9 @@ export const makeItemFadeOut = <
 
         // Calculate position for this segment's bubble
         const segmentOffset = {
-          x: x * blockSizeXyzPx.x,
-          y: y * blockSizeXyzPx.y,
-          z: z * blockSizeXyzPx.z,
+          x: x * blockSizePx.x,
+          y: y * blockSizePx.y,
+          z: z * blockSizePx.z,
         };
 
         // Position bubble at the center of this segment

@@ -26,7 +26,50 @@ OUT_DIR="gfx"
 # we write everything to a temp dir, then switch, to avoid vite, tsc, etc picking up half-converted files
 TMP_DIR="gfx_temp"
 TMP_DIR_ICONS="icon_temp"
-colorNames=(pureBlack shadow midGrey lightGrey white pastelBlue metallicBlue pink moss redShadow midRed lightBeige highlightBeige alpha replaceLight replaceDark)
+colorNames=(
+pureBlack
+shadow
+midGrey
+lightGrey
+white
+pastelBlue
+metallicBlue
+pink
+moss
+redShadow
+midRed
+lightBeige
+highlightBeige
+replaceLight
+replaceDark
+ss_alphaKey
+ss_background
+swop_yellow
+swop_yellowMid
+swop_yellowDim
+swop_green
+swop_greenDim
+swop_cyan
+swop_cyanMid
+swop_cyanDim
+swop_magenta
+swop_magentaDim
+swop_white
+swop_whiteMid
+swop_whiteDim
+shadow_greyBlue
+shadow_brown
+shadow_magenta
+shadow_blue
+)
+lastColorIndex=$((${#colorNames[@]} - 1))
+
+# palette sampling grid position
+paletteStartX=562
+paletteStartY=663
+paletteStepY=10
+paletteStepX=90
+paletteColorsPerColumn=17
 
 # call like : print_with_bg_color message hexColor 
 print_with_bg_color() {
@@ -45,30 +88,35 @@ print_with_bg_color() {
     printf "\e[${fg_color};48;2;$(printf '%d;%d;%d' $r $g $b)m $message \e[0m\n"
 }
 
-# call like : write_palette(sourcePng, destinationName)
+# call like : write_palette(sourcePng, destinationName, [floodFillTransparent])
 write_palette() {
-    echo "🤖 sampling 🎨 palette from $1 -> $2{json, ts}"
-    echo "import { Color } from 'pixi.js';" >> "$TMP_DIR/$2.ts"
-    echo "// this file is generated from the spritesheet by iff2png.sh, do not edit directly" >> "$TMP_DIR/$2.ts"
-    echo "export const $2 = {" >> "$TMP_DIR/$2.ts"
-    echo "{" >> "$TMP_DIR/$2.json"
+    local sourcePng=$1
+    local destName=$2
+    local removeSample=${3:-false}
 
-    for i in $(seq 0 15);
+    echo "🤖 sampling 🎨 palette from $sourcePng -> $destName.json"
+    echo "{" >> "$TMP_DIR/$destName.json"
+
+    for i in $(seq 0 $lastColorIndex);
     do
+        x=$((paletteStartX + (i / paletteColorsPerColumn) * paletteStepX))
+        y=$((paletteStartY + (i % paletteColorsPerColumn) * paletteStepY))
         # taking the first 7 chars strips off the alpha, ie '#AABBCCFF' -> '#AABBCC'
-        color=$(magick $1 -format "#%[hex:u.p{$i,0}]" info: | cut -c1-7);
-        print_with_bg_color "$(printf '%-16s' "${colorNames[$i]}") $color" "$color"
-        echo "  \"${colorNames[$i]}\": new Color(\"$color\")," >> "$TMP_DIR/$2.ts"
-        echo "  \"${colorNames[$i]}\": \"$color\"" >> "$TMP_DIR/$2.json"
+        color=$(magick "$sourcePng" -format "#%[hex:u.p{$x,$y}]" info: | cut -c1-7);
+        print_with_bg_color "$(printf '%-16s' "${colorNames[$i]}") ($x,$y) $color" "$color"
+        echo "  \"${colorNames[$i]}\": \"$color\"" >> "$TMP_DIR/$destName.json"
 
-        if [ $i -ne 15 ]; then
-            echo "," >> "$TMP_DIR/$2.json"
+        # flood-fill the sampled location with transparent to remove palette swatches from image
+        if [ "$removeSample" = "true" ]; then
+            magick "$sourcePng" -fill transparent -floodfill "+${x}+${y}" "$color" "$sourcePng"
+        fi
+
+        if [ $i -ne $lastColorIndex ]; then
+            echo "," >> "$TMP_DIR/$destName.json"
         fi
     done
-    echo "} as const;" >> "$TMP_DIR/$2.ts"
-    echo "export type SpritesheetPaletteColourName = keyof typeof $2;" >> "$TMP_DIR/$2.ts"
-    echo "}" >> "$TMP_DIR/$2.json"
-    node_modules/.bin/prettier --write "$TMP_DIR/$2.*" 
+    echo "}" >> "$TMP_DIR/$destName.json"
+    node_modules/.bin/prettier --write "$TMP_DIR/$destName.json"
 }
 
 echo "🤖 converting iff -> png"
@@ -87,26 +135,31 @@ for iffFile in *.iff; do
     yes | ffmpeg -hide_banner -i $iffFile -update 1 -frames:v 1 ../$TMP_DIR/${iffFile%.iff}.png
 done
 cd ..
+# put the easily visually parsable png version somewhere - this is never used by the game
+cp "$TMP_DIR/sprites.png" "$TMP_DIR/sprites.borders".png
 
 echo "🤖 sampling palette -> {json, ts}"
-write_palette "$TMP_DIR/sprites.png" spritesheetPalette
-write_palette gfx/palette.dim.png spritesheetPaletteDim
+write_palette "$TMP_DIR/sprites.png" spritesheetPalette true
+# sprites_dim_lut.png has been edited using the curves tool in Krita to adjust the colours; we don't use most of the image
+# but we can sample the palette from it:
+write_palette gfx/palette_dim_lut.png spritesheetPaletteDim
 
-#
-# make sprite mask colour actually transparent in the png (dpaint uses a normal colour)
+
+# make sprite mask colours actually transparent in the png (dpaint uses rgb colours, no alpha channel)
 echo "🤖 making transparent"
-# since the palette is in the first 16 pixels of the image, we can auto-detect the transparency colour:
-transparencyColor=$(magick "$TMP_DIR/sprites.png" -format "#%[hex:u.p{13,0}]" info:)
-matteColor=$(magick "$TMP_DIR/sprites.png" -format "#%[hex:u.p{0,1}]" info:)
-echo "transparent color detected as \"$transparencyColor\" and matte as \"$matteColor\""
+alphaKeyColor=$(jq -r '.ss_alphaKey' "$TMP_DIR/spritesheetPalette.json")
+backgroundColor=$(jq -r '.ss_background' "$TMP_DIR/spritesheetPalette.json")
+print_with_bg_color "alpha key: $alphaKeyColor" "$alphaKeyColor"
+print_with_bg_color "background: $backgroundColor" "$backgroundColor"
 
-cp "$TMP_DIR/sprites.png" "$TMP_DIR/sprites.borders".png
-magick "$TMP_DIR/sprites.png" -transparent $transparencyColor -fill transparent -floodfill +0+1 $matteColor "$TMP_DIR/sprites.png"
+magick "$TMP_DIR/sprites.png" -transparent "$alphaKeyColor" -transparent "$backgroundColor" "$TMP_DIR/sprites.png"
 
 echo "🤖🎨 reducing 🎨 palette for $TMP_DIR/sprites.png"
 pngquant -vf --quality 100-100 \
     --ext .png \
-    -- "$TMP_DIR/sprites.png" 
+    -- "$TMP_DIR/sprites.png"
+magick identify -verbose "$TMP_DIR/sprites.png" | grep -E "^  (Geometry|Colorspace|Type|Depth|Colors):"
+echo "  Filesize: $(ls -lh "$TMP_DIR/sprites.png" | awk '{print $5}')"
 
 #make the sprite:
 ICON_FRAME=$(scripts/iconLocationOnSpriteSheet.ts)
@@ -116,8 +169,8 @@ magick $TMP_DIR/sprites.png -crop $ICON_FRAME +repage $TMP_DIR_ICONS/icon.png
 # move to centre of icon (if it doesn't fill the whole frame)
 magick $TMP_DIR_ICONS/icon.png -trim -gravity center -background transparent -extent 24x24 $TMP_DIR_ICONS/icon.png
 # remove transparency and put in fixed background:
-ICON_BG=`jq -r '.moss' gfx/spritesheetPalette.json`
-print_with_bg_color "ICON_BACKGROUND" "$ICON_BG"
+ICON_BG=`jq -r '.moss' src/_generated/palette/spritesheetPalette.json`
+print_with_bg_color "ICON_BACKGROUND ${ICON_BG}" "$ICON_BG"
 magick $TMP_DIR_ICONS/icon.png -background $ICON_BG -alpha remove $TMP_DIR_ICONS/icon.png
 # scale with nearest neighbour up so it remains pixelated after phone/tablet/etc scales it up:
 magick $TMP_DIR_ICONS/icon.png -filter point -resize 192x192 $TMP_DIR_ICONS/icon-192.png
@@ -125,9 +178,15 @@ magick $TMP_DIR_ICONS/icon.png -filter point -resize 512x512 $TMP_DIR_ICONS/icon
 pngquant -vf --quality 100-100 \
     --ext .png \
     -- $TMP_DIR_ICONS/icon-{192,512}.png
+for icon in $TMP_DIR_ICONS/icon-{192,512}.png; do
+    echo "$icon:"
+    magick identify -verbose "$icon" | grep -E "^  (Geometry|Colorspace|Type|Depth|Colors):"
+    echo "  Filesize: $(ls -lh "$icon" | awk '{print $5}')"
+done
 
 echo "🤖 moving temp to real"
-cp $TMP_DIR/* $OUT_DIR
+cp $TMP_DIR/*.png $OUT_DIR
+cp $TMP_DIR/*.json src/_generated/palette
 rm public/icon*.png
 cp $TMP_DIR_ICONS/*.png public
 
@@ -135,6 +194,6 @@ echo "🤖 deleting the temp dir"
 rm -fR $TMP_DIR
 rm -fR $TMP_DIR_ICONS
 
-echo "🤖 what we have now:"
-ls -lh $OUT_DIR/*.png
-ls -lh public/*.png
+# echo "🤖 what we have now:"
+# ls -lh $OUT_DIR/*.png
+# ls -lh public/*.png

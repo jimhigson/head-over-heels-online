@@ -3,7 +3,7 @@ import mitt from "mitt";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 
-type PhaseStats = {
+export type PhaseStats = {
   avgMs: number;
   percentage: number;
 };

@@ -1,4 +1,4 @@
-import type { Renderer as PixiRenderer } from "pixi.js";
+import type { Renderer } from "pixi.js";
 
 import { useEffect, useState } from "react";
 
@@ -18,7 +18,7 @@ import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 const editorGeneralRenderContext = (
-  pixiRenderer: PixiRenderer,
+  pixiRenderer: Renderer,
   showBoundingBoxes: ShowBoundingBoxes,
 ): GeneralRenderContext<EditorRoomId> => ({
   displaySettings: {
@@ -40,7 +40,7 @@ const editorGeneralRenderContext = (
 
 const createRoomRenderer = (
   roomState: EditorRoomState,
-  pixiRenderer: PixiRenderer,
+  pixiRenderer: Renderer,
   showBoundingBoxes: ShowBoundingBoxes,
 ) => {
   return new RoomRenderer({

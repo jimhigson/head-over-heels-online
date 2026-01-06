@@ -26,10 +26,7 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
         className="bg-metallicBlueHalfbrite text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1"
         dialogId="communityGames"
       >
-        <DialogTitleBar
-          path={["Play", "Community contrib."]}
-          className="mobile:px-4"
-        />
+        <DialogTitleBar path={["Play", "Community"]} className="mobile:px-4" />
         <div
           className={
             "flex flex-col gap-1 p-1 " +

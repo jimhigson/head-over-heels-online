@@ -1,6 +1,6 @@
 import type { TailwindPalette } from "../../../../../../../tailwind.config";
 import type { PlanetName } from "../../../../../../sprites/planets";
-import type { TextureId } from "../../../../../../sprites/spriteSheetData";
+import type { TextureId } from "../../../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { SanitisedForClassName } from "../../../../tailwindSprites/SanitiseForClassName";
 
 import { twClass } from "../../../../../../editor/twClass";

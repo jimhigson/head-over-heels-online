@@ -1,13 +1,13 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
+import type { CreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
   addPokeableNumbers,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
@@ -18,12 +18,18 @@ import {
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
+import { blockSizePx } from "../mechanicsConstants";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
+
+const shadowSmallRound: CreateSpriteOptions = Object.freeze({
+  textureId: "shadow.smallRound",
+  spritesheetVariant: "original",
+});
 
 /**
  * how far ahead of head the doughnuts start.
  */
-const aheadStart = blockSizePx.w * 0.75;
+const aheadStart = blockSizePx.x * 0.75;
 
 /**
  * if fire is press and held, how long until we next fire?
@@ -57,13 +63,13 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
       ...defaultItemProperties,
       config: emptyObject,
       id: `firedDoughnut/${firer.id}/${room.roomTime}` as RoomItemId,
-      shadowCastTexture: "shadow.smallRound",
+      shadowCastTexture: shadowSmallRound,
       state: {
         ...defaultBaseState(),
         position: addXyz(
           position,
           scaleXyz(direction, aheadStart),
-          firer.type === "headOverHeels" ? { z: blockSizePx.h } : originXyz,
+          firer.type === "headOverHeels" ? { z: blockSizePx.z } : originXyz,
         ),
         vels: {
           fired: scaleXyz(direction, moveSpeedPixPerMs.firedDoughnut),

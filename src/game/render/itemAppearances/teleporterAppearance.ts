@@ -1,5 +1,4 @@
-import { Container } from "pixi.js";
-
+import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
@@ -19,7 +18,7 @@ export const teleporterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused },
+    general: { paused, colourised },
   },
   currentRendering,
 }) => {
@@ -44,22 +43,22 @@ export const teleporterAppearance: ItemAppearance<
     return "no-update";
   }
 
+  const spritesheetVariant: SpritesheetVariant =
+    colourised ? "for-current-room" : "uncolourised";
+
   return {
     output:
       flashing ?
-        new Container({
-          children: [
-            createSprite({ textureId: "teleporter", times }),
-            createSprite({
-              animationId: "teleporter.flashing",
-              times,
-              paused,
-            }),
-          ],
+        createSprite({
+          animationId: "teleporter.flashing",
+          times,
+          paused,
+          spritesheetVariant,
         })
       : createSprite({
           textureId: activated ? "teleporter" : "block.artificial",
           times,
+          spritesheetVariant,
         }),
     renderProps: { flashing, activated },
   };

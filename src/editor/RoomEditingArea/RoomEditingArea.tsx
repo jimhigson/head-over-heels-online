@@ -16,6 +16,7 @@ import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplic
 import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
 import { useRoomRenderer } from "./useRoomRenderer";
 import { useTickRoomRenderer } from "./useTickRoomRenderer";
+import { useTickSpritesheetVariants } from "./useTickSpritesheetVariants";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 const RoomEditingAreaInner = () => {
@@ -34,6 +35,7 @@ const RoomEditingAreaInner = () => {
   );
   useResizePixiApplicationToMatchCanvasSize();
   useAddRoomRendererOutputToApplicationStage(roomRenderer);
+  useTickSpritesheetVariants();
   useTickRoomRenderer(roomRenderer);
   useRoomEditorInteractivity(renderArea);
   useAddApplicationCanvasToDom(renderArea);

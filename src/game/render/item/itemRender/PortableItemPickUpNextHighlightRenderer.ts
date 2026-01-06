@@ -8,14 +8,16 @@ import type {
 } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
+import { zxSpectrumColor } from "../../../../originalGame";
+import {
+  spritesheetPalette,
+  spritesheetPaletteDim,
+} from "../../../../sprites/palette/spritesheetPalette";
 import {
   isPortable,
   type PortableItemType,
 } from "../../../physics/itemPredicates";
-import { outlineFilters } from "../../filters/outlineFilter";
-import { noFilters } from "../../filters/standardFilters";
-
-const makeOutlineFilter = () => outlineFilters.moss;
+import { OutlineFilter } from "../../filters/outlineFilter";
 
 class PortableItemPickUpNextHighlightRenderer
   implements ItemPixiRenderer<PortableItemType>
@@ -23,22 +25,36 @@ class PortableItemPickUpNextHighlightRenderer
   public readonly output: Container = new Container({
     label: "PortableItemPickUpNextHighlightRenderer",
   });
-  #outlined: boolean = false;
+  #outlineFilter: OutlineFilter;
 
   constructor(
     readonly renderContext: ItemRenderContext<PortableItemType>,
     private readonly childRenderer: ItemPixiRenderer<ItemInPlayType>,
   ) {
     this.output.addChild(childRenderer.output);
+
+    const {
+      general: { colourised },
+      room,
+    } = renderContext;
+
+    this.#outlineFilter = new OutlineFilter({
+      color:
+        colourised ?
+          (room.color.shade === "dimmed" ?
+            spritesheetPaletteDim
+          : spritesheetPalette
+          ).moss
+        : zxSpectrumColor(room.color),
+    });
+    this.#outlineFilter.enabled = false;
+    this.output.filters = this.#outlineFilter;
   }
 
   tick(tickContext: ItemTickContext) {
-    const { wouldPickUpNext: outline } = this.renderContext.item.state;
+    const { wouldPickUpNext } = this.renderContext.item.state;
 
-    if (outline !== !this.#outlined) {
-      this.output.filters = outline ? [makeOutlineFilter()] : noFilters;
-    }
-    this.#outlined = outline;
+    this.#outlineFilter.enabled = wouldPickUpNext;
 
     this.childRenderer.tick(tickContext);
   }

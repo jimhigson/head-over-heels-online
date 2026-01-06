@@ -4,11 +4,11 @@ import type { Xy } from "../../../utils/vectors/vectors";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { emptyObject } from "../../../utils/empty";
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { subXy } from "../../../utils/vectors/vectors";
 import { isChargingCyberman } from "../../physics/itemPredicates";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 
 /**
@@ -38,8 +38,8 @@ const findChargingPositions = (
       // get the block xyz relative to the toaster - toasters are consolidated
       const relativePosition = subXy(monsterPosition, toasterPosition);
       const relativePositionBlocks: Xy = {
-        x: Math.floor(relativePosition.x / blockSizePx.w),
-        y: Math.floor(relativePosition.y / blockSizePx.d),
+        x: Math.floor(relativePosition.x / blockSizePx.x),
+        y: Math.floor(relativePosition.y / blockSizePx.y),
       };
       if (
         relativePositionBlocks.x < 0 ||
@@ -91,7 +91,7 @@ export const toasterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { pixiRenderer },
+    general: { pixiRenderer, colourised },
   },
   currentRendering,
 }) => {
@@ -131,6 +131,7 @@ export const toasterAppearance: ItemAppearance<
       return cyberman?.state.everActivated ? "toaster.off" : "toaster.on";
     },
     times: times ?? emptyObject,
+    spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
   });
 
   // that container potentially contains many sprites - reduce to a single sprite

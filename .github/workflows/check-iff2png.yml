@@ -5,8 +5,7 @@ on:
     branches: ["main"]
     paths:
       - "gfx/*.iff"
-      - "gfx/*.ts"
-      - "gfx/*.json"
+      - "src/_generated/palette/*.json"
       - "scripts/iff2png.sh"
   workflow_dispatch:
 
@@ -44,10 +43,8 @@ jobs:
       - name: Check image processing scripts are a no-op
         run: |
           NON_IMAGE_FILES="
-            gfx/spritesheetPalette.json
-            gfx/spritesheetPalette.ts
-            gfx/spritesheetPaletteDim.json
-            gfx/spritesheetPaletteDim.ts
+            src/_generated/palette/spritesheetPalette.json
+            src/_generated/palette/spritesheetPaletteDim.json
           "
           git diff --exit-code -- $NON_IMAGE_FILES || (echo "Files were modified by 'pnpm iff2png'. Please run 'pnpm iff2png' locally and commit the changes." && exit 1)
 

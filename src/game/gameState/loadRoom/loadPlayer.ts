@@ -5,6 +5,7 @@ import type {
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { PlayableItem } from "../../physics/itemPredicates";
+import type { CreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
@@ -21,9 +22,14 @@ import { originalGameStartingLives } from "../../physics/mechanicsConstants";
 import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
+const shadowPlayable: CreateSpriteOptions = Object.freeze({
+  textureId: "shadow.playable",
+  spritesheetVariant: "original",
+});
+
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
-  shadowCastTexture: "shadow.playable",
+  shadowCastTexture: shadowPlayable,
   castsShadowWhileStoodOn: true,
   // head's nose is rendered outside of his bb in the original
   aabb: smallItemAabb,

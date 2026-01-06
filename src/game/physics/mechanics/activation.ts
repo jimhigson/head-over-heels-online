@@ -7,10 +7,10 @@ import type { Mechanic } from "../MechanicResult";
 
 import { type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClosestPlayable";
 import { isPlayableItem } from "../itemPredicates";
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import { blockSizePx } from "../mechanicsConstants";
 
 type ItemWithActivation<RoomId extends string, RoomItemId extends string> =
   | ItemInPlay<"monster", RoomId, RoomItemId>
@@ -33,7 +33,7 @@ const deactivateResult = Object.freeze({
   string
 > satisfies MechanicResult<"movingPlatform", string, string>);
 
-const nearnessThreshold = blockSizePx.w * 3;
+const nearnessThreshold = blockSizePx.x * 3;
 
 const isNear = <RoomId extends string, RoomItemId extends string>(
   itemA: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,

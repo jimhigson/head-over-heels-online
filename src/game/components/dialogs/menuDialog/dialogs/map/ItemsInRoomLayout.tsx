@@ -8,7 +8,6 @@ import type { PlayableItem } from "../../../../../physics/itemPredicates";
 
 import { itemInPlayCentre } from "../../../../../../model/itemInPlayCentre";
 import { timesNotMultiplied } from "../../../../../../model/json/utilityJsonConfigTypes";
-import { blockSizePx } from "../../../../../../sprites/spritePivots";
 import { emptyObject } from "../../../../../../utils/empty";
 import { entries } from "../../../../../../utils/entries";
 import { normalise } from "../../../../../../utils/maths/normalise";
@@ -19,6 +18,7 @@ import {
   scaleXyz,
   type Xy,
 } from "../../../../../../utils/vectors/vectors";
+import { blockSizePx } from "../../../../../physics/mechanicsConstants";
 import { roomJsonFloorsExtent } from "../../../../../render/room/floorsExtent";
 import { roomGridSizeXY } from "./mapConstants";
 import {
@@ -192,8 +192,8 @@ export const InPlayItemsInRoomLayout = <
     const jsonItemNormalisedPosition = (item: PlayableItem): Xy => {
       const itemCentreXy = itemInPlayCentre(item);
       const itemBlocksCentreXy = elementWiseProductXyz(itemInPlayCentre(item), {
-        x: 1 / blockSizePx.w,
-        y: 1 / blockSizePx.d,
+        x: 1 / blockSizePx.x,
+        y: 1 / blockSizePx.y,
         z: 1, // z doesn't matter
       });
       const floorExtent = roomJsonFloorsExtent(roomJson);

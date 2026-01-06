@@ -152,7 +152,7 @@ ${sanitizedStack}
             <MenuItem
               doubleHeightWhenFocussed
               id="clearAllData"
-              label="Clear all data, start again"
+              label="Clear all data, reboot game"
               onSelect={useDispatchActionCallback(
                 errorDismissed,
                 "clearAllData",
@@ -175,7 +175,7 @@ ${sanitizedStack}
             }
           </MenuItems>
           <hr className="bg-pastelBlue zx:bg-zxWhite h-1 my-1 border-none" />
-          <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite`">
+          <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite">
             Error message for nerds:
           </BitmapText>
           <pre

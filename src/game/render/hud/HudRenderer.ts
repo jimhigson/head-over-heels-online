@@ -1,3 +1,5 @@
+import type { Texture } from "pixi.js";
+
 import { Container, Sprite } from "pixi.js";
 
 import type {
@@ -8,7 +10,8 @@ import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../model/modelTypes";
-import type { TextureId } from "../../../sprites/spriteSheetData";
+import type { RoomState } from "../../../model/RoomState";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import type { PortableItem } from "../../physics/itemPredicates";
@@ -16,14 +19,18 @@ import type { Renderer } from "../Renderer";
 import type {
   HudRenderContext,
   HudRendererTickContext,
+  HudRendererTickContextWithRoom,
 } from "./hudRendererContexts";
 
 import { individualCharacterNames } from "../../../model/modelTypes";
-import { loadedSpriteSheet } from "../../../sprites/spriteSheet";
+import { zxSpectrumColor } from "../../../originalGame";
+import { getSpritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
+import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import {
   hudCharTextureSize,
   smallItemTextureSize,
-} from "../../../sprites/textureSizes";
+} from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { getSpriteSheetVariantTexture } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
@@ -32,25 +39,32 @@ import {
   shieldRemainingForAbilities,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { getColorScheme } from "../../hintColours";
+import { outlineFilters } from "../filters/outlineFilter";
 import {
-  greyFilter,
-  greyFilterExceptBlue,
-  greyFilterExceptPink,
-  noFilters,
-} from "../filters/standardFilters";
+  getRoomColorScheme,
+  playableAccentColours,
+} from "../gameColours/colourScheme";
+import { TextContainer } from "../text/TextContainer";
 import { FpsRenderer } from "./FpsRenderer";
-import {
-  hudHighligtedFilter,
-  hudIconFilter,
-  hudLivesTextFilter,
-  hudLowlightedFilter,
-  hudOutlineFilter,
-  hudTextFilter,
-} from "./hudFilters";
-import { OnScreenControls } from "./OnScreenControls";
+import { OnScreenControls } from "./onScreenControls/OnScreenControls";
 import { renderCarriedOnce } from "./renderCarried";
-import { makeTextContainer, showTextInContainer } from "./showTextInContainer";
+import {
+  spritesheetVariantForHud,
+  tintForHud,
+  tintForHudIfUncolourised,
+  tintForIcon,
+} from "./spritesheetVariantForHud";
+
+const renderContextHasRoom = <RoomId extends string, RoomItemId extends string>(
+  ctx: HudRendererTickContext<RoomId, RoomItemId>,
+): ctx is HudRendererTickContextWithRoom<RoomId, RoomItemId> =>
+  ctx.room !== undefined;
+
+type IconWithNumber = {
+  textContainer: TextContainer;
+  icon: Sprite;
+  container: Container;
+};
 
 const livesTextFromCentre = (onScreenControls: boolean) =>
   onScreenControls ? 48 : 24;
@@ -74,6 +88,9 @@ const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
 
+const headTextureId = "head.walking.right.2";
+const heelsTextureId = "heels.standing.towards";
+
 export class HudRenderer<RoomId extends string, RoomItemId extends string>
   implements
     Renderer<
@@ -89,70 +106,92 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
   #fpsRenderer: FpsRenderer | undefined;
 
-  #hudElements = {
+  #hudElements: {
     head: {
-      sprite: this.#characterSprite("head"),
-      livesText: makeTextContainer({
-        label: "headLives",
-        doubleHeight: true,
-        outline: true,
-      }),
-      shield: this.#iconWithNumber({
-        label: "headShield",
-        textureId: "hud.char.🛡",
-        outline: true,
-      }),
-      extraSkill: this.#iconWithNumber({
-        label: "headFastSteps",
-        textureId: "hud.char.⚡",
-        outline: true,
-      }),
-      doughnuts: this.#iconWithNumber({
-        label: "headDoughnuts",
-        textureId: "doughnuts",
-        textOnTop: true,
-        outline: "text-only",
-      }),
-      hooter: this.#iconWithNumber({
-        label: "headHooter",
-        textureId: "hooter",
-        textOnTop: true,
-        noText: true,
-      }),
-    },
+      sprite: Sprite;
+      livesText: TextContainer;
+      shield: IconWithNumber;
+      extraSkill: IconWithNumber;
+      doughnuts: IconWithNumber;
+      hooter: IconWithNumber;
+    };
     heels: {
-      sprite: this.#characterSprite("heels"),
-      livesText: makeTextContainer({
-        label: "heelsLives",
-        doubleHeight: true,
-        outline: true,
-      }),
-      shield: this.#iconWithNumber({
-        label: "heelsShield",
-        textureId: "hud.char.🛡",
-        outline: true,
-      }),
-      extraSkill: this.#iconWithNumber({
-        label: "heelsBigJumps",
-        textureId: "hud.char.♨",
-        outline: true,
-      }),
-      bag: this.#iconWithNumber({
-        label: "heelsBag",
-        textureId: "bag",
-        textOnTop: true,
-        noText: true,
-      }),
-      carrying: {
-        container: new Container({ label: "heelsCarrying" }),
-      },
-    },
+      sprite: Sprite;
+      livesText: TextContainer;
+      shield: IconWithNumber;
+      extraSkill: IconWithNumber;
+      bag: IconWithNumber;
+      carrying: { container: Container };
+    };
   };
 
   #unlisten;
+  #carryingItemRoom: RoomState<RoomId, RoomItemId> | undefined = undefined;
 
   constructor(public readonly renderContext: HudRenderContext<RoomId>) {
-    const { onScreenControls } = renderContext;
+    const { onScreenControls, general } = renderContext;
+
+    this.#hudElements = {
+      head: {
+        sprite: this.#characterSprite("head"),
+        livesText: new TextContainer({
+          pixiRenderer: general.pixiRenderer,
+          label: "headLives",
+          doubleHeight: true,
+          outline: true,
+        }),
+        shield: this.#iconWithNumber({
+          label: "headShield",
+          textureId: "hud.char.🛡",
+          outline: true,
+        }),
+        extraSkill: this.#iconWithNumber({
+          label: "headFastSteps",
+          textureId: "hud.char.⚡",
+          outline: true,
+        }),
+        doughnuts: this.#iconWithNumber({
+          label: "headDoughnuts",
+          textureId: "doughnuts",
+          textOnTop: true,
+          outline: "text-only",
+        }),
+        hooter: this.#iconWithNumber({
+          label: "headHooter",
+          textureId: "hooter",
+          textOnTop: true,
+          noText: true,
+        }),
+      },
+      heels: {
+        sprite: this.#characterSprite("heels"),
+        livesText: new TextContainer({
+          pixiRenderer: general.pixiRenderer,
+          label: "heelsLives",
+          doubleHeight: true,
+          outline: true,
+        }),
+        shield: this.#iconWithNumber({
+          label: "heelsShield",
+          textureId: "hud.char.🛡",
+          outline: true,
+        }),
+        extraSkill: this.#iconWithNumber({
+          label: "heelsBigJumps",
+          textureId: "hud.char.♨",
+          outline: true,
+        }),
+        bag: this.#iconWithNumber({
+          label: "heelsBag",
+          textureId: "bag",
+          textOnTop: true,
+          noText: true,
+        }),
+        carrying: {
+          container: new Container({ label: "heelsCarrying" }),
+        },
+      },
+    };
 
     for (const character of individualCharacterNames) {
       this.#container.addChild(this.#hudElements[character].shield.container);
@@ -184,13 +223,14 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       this.#container.addChild(this.#hudElements[character].livesText);
     }
 
+    // if show fps is togged on or off, add or remove the fps renderer
     this.#unlisten = startAppListening({
       predicate(_action, currentState, previousState) {
         return selectShowFps(currentState) !== selectShowFps(previousState);
       },
       effect: (_action, { getState }) => {
         if (selectShowFps(getState())) {
-          this.#fpsRenderer = new FpsRenderer();
+          this.#fpsRenderer = new FpsRenderer(renderContext);
           this.#wireFpsRendererContainer();
         } else {
           this.#fpsRenderer?.destroy();
@@ -199,8 +239,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       },
     });
 
+    // initially create (or don't) the fps renderer
     const showingFps = selectShowFps(store.getState());
-    this.#fpsRenderer = showingFps ? new FpsRenderer() : undefined;
+    this.#fpsRenderer = showingFps ? new FpsRenderer(renderContext) : undefined;
     if (this.#fpsRenderer) {
       this.#wireFpsRendererContainer();
     }
@@ -249,45 +290,45 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     noText?: boolean;
     outline?: "text-only" | boolean;
     label: string;
-  }) {
+  }): IconWithNumber {
     const container = new Container({ label });
     container.pivot = { x: 4, y: 16 };
 
     const icon = new Sprite({
-      texture: loadedSpriteSheet().textures[textureId],
+      texture: originalSpriteSheet().textures[textureId],
       anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
-      filters: hudIconFilter,
       y: textOnTop ? 0 : 8,
     });
     container.addChild(icon);
 
-    const text = makeTextContainer({ outline: outline === "text-only" });
-    text.y = textOnTop ? 0 : 16;
-
-    text.x = icon.x = hudCharTextureSize.w / 2;
-    container.addChild(text);
-
+    const x = hudCharTextureSize.w / 2;
+    const text = new TextContainer({
+      pixiRenderer: this.renderContext.general.pixiRenderer,
+      outline: outline === "text-only",
+      y: textOnTop ? 0 : 16,
+      x,
+    });
     if (noText) {
       text.visible = false;
     }
+    icon.x = x;
+    container.addChild(text);
 
     if (outline === true) {
-      container.filters = hudOutlineFilter;
+      container.filters = outlineFilters.pureBlack;
     }
 
     return {
-      text,
+      textContainer: text,
       icon,
       container,
     };
   }
 
-  #characterSprite(characterName: IndividualCharacterName) {
+  #characterSprite(characterName: IndividualCharacterName): Sprite {
     const characterSprite = new Sprite(
-      loadedSpriteSheet().textures[
-        characterName === "head" ?
-          "head.walking.right.2"
-        : "heels.standing.towards"
+      originalSpriteSheet().textures[
+        characterName === "head" ? headTextureId : heelsTextureId
       ],
     );
 
@@ -299,7 +340,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   /* change the position of elements in the hud (ie, to adjust to different screen sizes) */
   #updateElementPositions({
     screenSize,
-  }: HudRendererTickContext<RoomId, RoomItemId>) {
+  }: HudRendererTickContextWithRoom<RoomId, RoomItemId>) {
     this.#hudElements.head.hooter.container.x =
       this.#hudElements.head.doughnuts.container.x =
         (screenSize.x >> 1) + sideMultiplier("head") * playersIconsFromCentre;
@@ -316,21 +357,14 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       this.#hudElements.head.hooter.container.y = screenSize.y - 8;
 
     if (this.#fpsRenderer)
-      this.#fpsRenderer.output.x = screenSize.x - hudCharTextureSize.w * 3;
-  }
-
-  #itemFilter(highlighted: boolean, colourise: boolean) {
-    return (
-      highlighted ?
-        colourise ? noFilters
-        : hudHighligtedFilter
-      : colourise ? greyFilter
-      : hudLowlightedFilter
-    );
+      this.#fpsRenderer.output.x =
+        screenSize.x / 2 - hudCharTextureSize.w * 1.5;
   }
 
   /** update the carrying element for heel's bag contents */
-  #tickBagAndCarrying(tickContext: HudRendererTickContext<RoomId, RoomItemId>) {
+  #tickBagAndCarrying({
+    room,
+  }: HudRendererTickContextWithRoom<RoomId, RoomItemId>) {
     const {
       renderContext: {
         general: { gameState, colourised },
@@ -338,7 +372,6 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     } = this;
 
     const heelsAbilities = selectAbilities(gameState, "heels");
-    const hasBag = heelsAbilities?.hasBag ?? false;
     const carrying = heelsAbilities?.carrying ?? null;
 
     const { container: carryingContainer } = this.#hudElements.heels.carrying;
@@ -348,30 +381,51 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       for (const child of carryingContainer.children) {
         child.destroy();
       }
+      this.#carryingItemRoom = undefined;
     }
-    if (carrying !== null && !hasSprite) {
+    if (
+      carrying !== null &&
+      (!hasSprite ||
+        // switched to Head in another room while heels is carrying an item - regenerate
+        // the item's rendering in case room colour scheme has changed, and textures were
+        // destroyed
+        room !== this.#carryingItemRoom)
+    ) {
       const carriedRendering = renderCarriedOnce<RoomId, RoomItemId>(
         carrying as PortableItem<RoomId, RoomItemId>,
         this.renderContext,
-        tickContext.room,
+        room,
       );
-      if (carriedRendering !== undefined) {
-        carryingContainer.addChild(carriedRendering);
-      }
+      this.#carryingItemRoom = room;
+
+      carryingContainer.removeChildren();
+      carryingContainer.addChild(carriedRendering);
+
+      carryingContainer.tint = tintForHudIfUncolourised(
+        colourised,
+        room.color,
+        // carried item is always activated
+        true,
+      );
     }
 
-    // TODO: colourise will never change in the lifetime of the renderer, this doesn't need to be done each tick
-    carryingContainer.filters = this.#itemFilter(true, colourised);
+    const bagSprite = this.#hudElements.heels.bag.icon;
+    const hasBag = heelsAbilities?.hasBag;
+    bagSprite.texture = getSpriteSheetVariantTexture(
+      spritesheetVariantForHud(colourised, hasBag ?? false),
+      "bag",
+    );
 
-    this.#hudElements.heels.bag.icon.filters = this.#itemFilter(
-      hasBag,
+    bagSprite.tint = tintForHudIfUncolourised(
       colourised,
+      room.color,
+      hasBag ?? false,
     );
   }
 
-  #tickHooterAndDoughnuts(
-    _tickContext: HudRendererTickContext<RoomId, RoomItemId>,
-  ) {
+  #tickHooterAndDoughnuts({
+    room,
+  }: HudRendererTickContextWithRoom<RoomId, RoomItemId>) {
     const {
       renderContext: {
         general: { gameState, colourised },
@@ -379,45 +433,69 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     } = this;
     const headAbilities = selectAbilities(gameState, "head");
 
-    const hasHooter = headAbilities?.hasHooter ?? false;
     const doughnutCount = headAbilities?.doughnuts ?? 0;
+    const hasDoughnuts = doughnutCount !== 0;
+    const hasHooter = headAbilities?.hasHooter;
+
+    const hooterSprite = this.#hudElements.head.hooter.icon;
+    const doughnutsSprite = this.#hudElements.head.doughnuts.icon;
+    const doughnutsText = this.#hudElements.head.doughnuts.textContainer;
 
     // TODO: colourise will never change in the lifetime of the renderer, this doesn't need to be done each tick
 
-    this.#hudElements.head.hooter.icon.filters = this.#itemFilter(
-      hasHooter,
-      colourised,
+    hooterSprite.texture = getSpriteSheetVariantTexture(
+      spritesheetVariantForHud(colourised, hasHooter ?? false),
+      "hooter",
     );
-    this.#hudElements.head.doughnuts.icon.filters = this.#itemFilter(
-      doughnutCount !== 0,
-      colourised,
+    doughnutsSprite.texture = getSpriteSheetVariantTexture(
+      spritesheetVariantForHud(colourised, hasDoughnuts),
+      "doughnuts",
     );
-    showTextInContainer(this.#hudElements.head.doughnuts.text, doughnutCount);
+
+    this.#hudElements.head.doughnuts.textContainer.text = doughnutCount;
+    doughnutsText.tint = tintForHud(colourised, room.color, false);
+
+    hooterSprite.tint = tintForHudIfUncolourised(
+      colourised,
+      room.color,
+      hasHooter ?? false,
+    );
+    doughnutsSprite.tint = tintForHudIfUncolourised(
+      colourised,
+      room.color,
+      hasDoughnuts,
+    );
   }
 
   #updateAbilitiesIcons(
     characterName: IndividualCharacterName,
-    { screenSize }: HudRendererTickContext<RoomId, RoomItemId>,
+    { screenSize, room }: HudRendererTickContextWithRoom<RoomId, RoomItemId>,
   ) {
     const {
       renderContext: {
         onScreenControls,
-        general: { gameState },
+        general: { gameState, colourised },
       },
     } = this;
     const abilities = selectAbilities(gameState, characterName);
 
-    const { text: shieldText, container: shieldContainer } =
-      this.#hudElements[characterName].shield;
-    const { text: skillText, container: extraSkillContainer } =
-      this.#hudElements[characterName].extraSkill;
+    const {
+      textContainer: shieldText,
+      container: shieldContainer,
+      icon: shieldIcon,
+    } = this.#hudElements[characterName].shield;
+    const {
+      textContainer: skillText,
+      container: extraSkillContainer,
+      icon: extraSkillIcon,
+    } = this.#hudElements[characterName].extraSkill;
 
     const shieldNumber = shieldRemainingForAbilities(abilities);
     const shieldVisible = shieldNumber > 0 || !onScreenControls;
     shieldContainer.visible = shieldVisible;
 
     if (shieldVisible) {
-      showTextInContainer(shieldText, shieldNumber);
+      shieldText.text = shieldNumber;
       shieldContainer.y = screenSize.y - shieldFromBottom(onScreenControls);
     }
 
@@ -436,10 +514,15 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     extraSkillContainer.visible = extraSkillVisible;
 
     if (extraSkillVisible) {
-      showTextInContainer(skillText, extraSkillNumber);
+      skillText.text = extraSkillNumber;
       extraSkillContainer.y =
         screenSize.y - extraSkillFromBottom(onScreenControls);
     }
+
+    skillText.tint = tintForHud(colourised, room.color, false);
+    shieldText.tint = tintForHud(colourised, room.color, false);
+    shieldIcon.tint = tintForIcon(colourised, room.color);
+    extraSkillIcon.tint = tintForIcon(colourised, room.color);
   }
 
   #characterIsActive(
@@ -455,7 +538,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
   #updateCharacterSprite(
     characterName: IndividualCharacterName,
-    { screenSize }: HudRendererTickContext<RoomId, RoomItemId>,
+    { screenSize, room }: HudRendererTickContextWithRoom<RoomId, RoomItemId>,
   ) {
     const {
       renderContext: {
@@ -464,34 +547,52 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       },
     } = this;
 
-    const isActive = this.#characterIsActive(gameState, characterName);
     const characterSprite = this.#hudElements[characterName].sprite;
-    if (isActive) {
-      characterSprite.filters = colourised ? noFilters : hudHighligtedFilter;
-    } else {
-      characterSprite.filters =
-        colourised ?
-          characterName === "heels" ?
-            greyFilterExceptPink
-          : greyFilterExceptBlue
-        : hudLowlightedFilter;
+
+    let characterTexture: Texture;
+    const isActive = this.#characterIsActive(gameState, characterName);
+
+    const spritesheetVariant = spritesheetVariantForHud(colourised, isActive);
+    try {
+      characterTexture = getSpriteSheetVariantTexture(
+        spritesheetVariant,
+        characterName === "head" ? headTextureId : heelsTextureId,
+      );
+    } catch (e) {
+      console.error(this.renderContext);
+      throw new Error(
+        `error getting texture for variant ${spritesheetVariant}`,
+        { cause: e },
+      );
     }
+
+    characterSprite.texture = characterTexture;
 
     characterSprite.x =
       (screenSize.x >> 1) +
       sideMultiplier(characterName) * playableIconFromCentre(onScreenControls);
 
     characterSprite.y = screenSize.y - smallItemTextureSize.h;
+
+    characterSprite.tint = tintForHudIfUncolourised(
+      colourised,
+      room.color,
+      isActive,
+    );
   }
 
   #updateLivesText(
     characterName: IndividualCharacterName,
-    { screenSize, freeCharacters }: HudRendererTickContext<RoomId, RoomItemId>,
+    {
+      screenSize,
+      freeCharacters,
+      room,
+    }: HudRendererTickContextWithRoom<RoomId, RoomItemId>,
   ) {
     const {
       renderContext: {
         onScreenControls,
-        general: { gameState },
+        general: { gameState, colourised },
       },
     } = this;
 
@@ -506,47 +607,26 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       sideMultiplier(characterName) * livesTextFromCentre(onScreenControls);
     livesTextContainer.y = screenSize.y;
 
-    showTextInContainer(livesTextContainer, livesText);
-  }
+    livesTextContainer.text = livesText;
 
-  #updateColours(tickContext: HudRendererTickContext<RoomId, RoomItemId>) {
-    const { room } = tickContext;
-    if (room === undefined) {
-      // game over, keep current colours
-      return;
-    }
-    const colorScheme = getColorScheme(room.color);
-    const {
-      general: { colourised, gameState },
-    } = this.renderContext;
+    const isActive = this.#characterIsActive(gameState, characterName);
+    const isDimRoom = room.color.shade === "dimmed";
 
-    hudLowlightedFilter.targetColor =
-      colorScheme.hud.dimmed[colourised ? "dimmed" : "original"];
-    hudTextFilter.targetColor =
-      colorScheme.hud.dimmed[colourised ? "basic" : "original"];
-    hudIconFilter.targetColor =
-      colorScheme.hud.icons[colourised ? "basic" : "original"];
-
-    hudHighligtedFilter.targetColor = colorScheme.hud.lives.original;
-
-    // TODO: now that this renderer is recreated if colourisdd changes, we don't need
-    // to do quite so much here on every frame:
-    this.#hudElements.head.livesText.filters =
+    const tintColour =
       colourised ?
-        hudLivesTextFilter.colourised.head[
-          this.#characterIsActive(gameState, "head") ? "active" : "inactive"
+        getSpritesheetPalette(isDimRoom)[
+          isActive ? playableAccentColours[characterName] : "midGrey"
         ]
-      : hudLivesTextFilter.original;
-    this.#hudElements.heels.livesText.filters =
-      colourised ?
-        hudLivesTextFilter.colourised.heels[
-          this.#characterIsActive(gameState, "heels") ? "active" : "inactive"
-        ]
-      : hudLivesTextFilter.original;
+      : zxSpectrumColor(getRoomColorScheme(room.color).hud.brightHue);
+
+    livesTextContainer.tint = tintColour;
   }
 
   tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>) {
-    this.#updateColours(tickContext);
+    if (!renderContextHasRoom(tickContext)) {
+      // game over - don't update hud
+      return;
+    }
 
     for (const character of individualCharacterNames) {
       this.#updateLivesText(character, tickContext);
@@ -566,7 +646,11 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   destroy() {
-    this.#container.destroy();
+    // text has dynamic sprites so explicitly destroy these:
+    this.#hudElements.head.doughnuts.textContainer.destroy();
+    this.#hudElements.head.hooter.textContainer.destroy();
+    this.#hudElements.heels.bag.textContainer.destroy();
+    this.#container.destroy({ children: true });
     this.#onScreenControls?.destroy();
     this.#fpsRenderer?.destroy();
     this.#unlisten();

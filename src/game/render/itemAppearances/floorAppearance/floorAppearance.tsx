@@ -1,15 +1,16 @@
-import { Container, Graphics, TilingSprite } from "pixi.js";
+import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
+import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { Subset } from "../../../../utils/subset";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
 import { iterateRoomItems, type RoomState } from "../../../../model/RoomState";
+import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
-import { blockSizePx } from "../../../../sprites/spritePivots";
-import { loadedSpriteSheet } from "../../../../sprites/spriteSheet";
-import { type TextureId } from "../../../../sprites/spriteSheetData";
+import { getAmbientSwoppedColour } from "../../../../sprites/spritesheet/variants/currentRoomSpritesheetVariant";
+import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
@@ -23,15 +24,11 @@ import {
   tangentAxis,
 } from "../../../../utils/vectors/vectors";
 import { isWallOrDoorFrame } from "../../../physics/itemPredicates";
+import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
-import { colourClashFilter } from "../../filters/ColourClashFilter";
-import { outlineFilters } from "../../filters/outlineFilter";
-import {
-  edgeOriginalGameColour,
-  edgePaletteSwapFilters,
-  floorPaletteSwapFilter,
-  noFilters,
-} from "../../filters/standardFilters";
+import { ColourClashFilter } from "../../filters/ColourClashFilter";
+import { OutlineFilter } from "../../filters/outlineFilter";
+import { edgeOriginalGameColour } from "../../gameColours/colourScheme";
 import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenX,
@@ -165,31 +162,24 @@ const floorLeftRightCutOffMask = <
   }
 };
 
-const edgeSide = ({
-  colourised,
+const edgeSprites = ({
   direction,
-  room,
   times,
   position,
-  colourSwap,
+  colourised,
 }: {
-  colourised: boolean;
   direction: Subset<DirectionXy4, "right" | "towards">;
-  room: RoomState<string, string>;
   times: Partial<Xy> | undefined;
   position: Partial<Xyz>;
-  colourSwap: boolean;
-}) => {
+  colourised?: boolean;
+}): Container<Sprite> => {
   return createSprite({
     label: `floorEdge(${direction})`,
     textureId: `floorEdge.${direction}`,
     times,
-    filter:
-      colourSwap ?
-        edgePaletteSwapFilters(room, direction, colourised)
-      : undefined,
     ...projectWorldXyzToScreenXy(position),
-  });
+    spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+  }) as Container<Sprite>;
 };
 
 const createColourClash = ({
@@ -205,26 +195,36 @@ const createColourClash = ({
 }) => {
   const container = new Container({
     label: "floorColourClash",
-    filters: [colourClashFilter],
   });
 
   const rightColour = edgeOriginalGameColour(room, "right");
+  const rightContainer = new Container({
+    label: "floorColourClash.right",
+    filters: [new ColourClashFilter(rightColour)],
+  });
   for (let i = 0; i <= ySize; i++) {
     const screenXy = projectBlockXyzToScreenXy({ x: 0, y: i, z: 0 });
     const g = new Graphics()
       .rect(screenXy.x - (i === 0 ? 0 : 8), screenXy.y, 8 * 3, 8)
       .fill(rightColour);
-    container.addChild(g);
+    rightContainer.addChild(g);
   }
+  container.addChild(rightContainer);
 
   const towardsColour = edgeOriginalGameColour(room, "towards");
+  const towardsContainer = new Container({
+    label: "floorColourClash.towards",
+    filters: [new ColourClashFilter(towardsColour)],
+  });
   for (let i = 0; i <= xSize; i++) {
     const screenXy = projectBlockXyzToScreenXy({ x: i, y: 0, z: 0 });
     const g = new Graphics()
       .rect(screenXy.x - 16, screenXy.y, 8 * (i === 0 ? 2 : 3), 8)
       .fill(towardsColour);
-    container.addChild(g);
+    towardsContainer.addChild(g);
   }
+  container.addChild(towardsContainer);
+
   container.y = y;
   return container;
 };
@@ -260,6 +260,14 @@ export const floorAppearance: ItemAppearance<"floor"> =
       const tilesRight = projectWorldXyzToScreenXy({ ...aabb, x: 0 });
       const tilesTop = projectWorldXyzToScreenXy(aabb);
 
+      const outlineFilter = new OutlineFilter({
+        color:
+          colourised ?
+            getAmbientSwoppedColour("pureBlack")
+          : zxSpectrumColors.black,
+        width: 1,
+      });
+
       if (floorType !== "none") {
         const tilesContainer = new Container({
           label: "tiles",
@@ -269,7 +277,9 @@ export const floorAppearance: ItemAppearance<"floor"> =
           floorType === "deadly" ?
             `generic${shade === "dimmed" ? ".dark" : ""}.floor.deadly`
           : `${floorConfig.scenery}${shade === "dimmed" ? ".dark" : ""}.floor`;
-        const texture = loadedSpriteSheet().textures[floorTileTextureId];
+        const tileTexture = getSpriteSheetVariant(
+          colourised ? "for-current-room" : "uncolourised",
+        ).textures[floorTileTextureId];
 
         try {
           assertIsTextureId(floorTileTextureId);
@@ -293,8 +303,8 @@ export const floorAppearance: ItemAppearance<"floor"> =
         const tileOffsetVector = subXy(naturalFootprint.position, position);
 
         const tileOffsetBlocks = {
-          x: frac(tileOffsetVector.x / blockSizePx.w),
-          y: frac(tileOffsetVector.y / blockSizePx.w),
+          x: frac(tileOffsetVector.x / blockSizePx.x),
+          y: frac(tileOffsetVector.y / blockSizePx.x),
         };
 
         // it is safe to add extra since the mask will cut off any excess.
@@ -322,12 +332,14 @@ export const floorAppearance: ItemAppearance<"floor"> =
         );
 
         const floorTilesTilingSprite = new TilingSprite({
-          texture,
+          texture: tileTexture,
           tilePosition,
           ...tilingSpriteRect,
         });
         tilesContainer.addChild(floorTilesTilingSprite);
-        tilesContainer.addChild(renderFloorOverdraws(floorItem, room));
+        tilesContainer.addChild(
+          renderFloorOverdraws(floorItem, room, colourised),
+        );
 
         const tilesMask = new Graphics()
           // top
@@ -353,15 +365,13 @@ export const floorAppearance: ItemAppearance<"floor"> =
         tilesContainer.addChild(tilesMaskSprite);
         tilesContainer.mask = tilesMaskSprite;
 
-        tilesContainer.filters = floorPaletteSwapFilter(room) ?? noFilters;
-
         // outline the tiles. This helps where floors are floating in the room (in remake only) - otherwise they are
         // the only item without a black outline. Also fills the gap between the tiles and the floor edge in with some
         // extra black pixels
         // the output from a mask doesn't get the filter applied, so to put an outline around the floor tiles, wrap them in an
         // extra container.
         const tilesOutline = new Container({ children: [tilesContainer] });
-        tilesOutline.filters = outlineFilters.black1pxFilter;
+        tilesOutline.filters = outlineFilter;
 
         spritesRenderContainer.addChild(tilesOutline);
       }
@@ -399,26 +409,22 @@ export const floorAppearance: ItemAppearance<"floor"> =
           overDrawFallenItemsGraphic.destroy();
         }
 
-        const edgeTilesY = Math.ceil(aabb.y / blockSizePx.w);
+        const edgeTilesY = Math.ceil(aabb.y / blockSizePx.x);
         floorEdgeContainer.addChild(
-          edgeSide({
-            colourised,
+          edgeSprites({
             direction: "right",
-            room,
             times: { y: edgeTilesY },
             position: { z: aabb.z },
-            colourSwap: colourised,
+            colourised,
           }),
         );
-        const edgeTilesX = Math.ceil(aabb.x / blockSizePx.w);
+        const edgeTilesX = Math.ceil(aabb.x / blockSizePx.x);
         floorEdgeContainer.addChild(
-          edgeSide({
-            colourised,
+          edgeSprites({
             direction: "towards",
-            room,
             times: { x: edgeTilesX },
             position: { z: aabb.z },
-            colourSwap: colourised,
+            colourised,
           }),
         );
 
@@ -426,7 +432,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
 
         const cutoffMask = floorLeftRightCutOffMask(room, floorItem);
         if (cutoffMask !== undefined) {
-          // rendering to a sprite first avoid (but doesn't completely fix) an issue in
+          // rendering to a sprite first works around an issue in
           // Firefox where floors are rendered blank. Otherwise, there's no need to do this,
           // but this is only done once per floor (not every frame) so it isn't too worrysome to
           // make a texture we immediately throw away
@@ -447,6 +453,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
           // destroying children is needed to free mem used for intermediate textures
           children: true,
         });
+        outlineFilter.destroy(false /* do not destroy programs */);
 
         if (!colourised) {
           const colourClashContainer = createColourClash({

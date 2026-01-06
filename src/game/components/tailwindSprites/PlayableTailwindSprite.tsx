@@ -1,5 +1,8 @@
 import type { IndividualCharacterName } from "../../../model/modelTypes";
-import type { AnimationId, TextureId } from "../../../sprites/spriteSheetData";
+import type {
+  AnimationId,
+  TextureId,
+} from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { SanitisedForClassName } from "./SanitiseForClassName";
 

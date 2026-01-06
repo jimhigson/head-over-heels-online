@@ -3,31 +3,24 @@ import type { Container, Sprite } from "pixi.js";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { ItemConfigMap } from "../../../model/json/ItemConfigMap";
 import type { RoomState } from "../../../model/RoomState";
+import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { StackedSpritesContainer } from "./createStackedSprites";
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
 import {
   originXy,
   vectorClosestDirectionXy4,
   xyEqual,
 } from "../../../utils/vectors/vectors";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
-import {
-  doughnuttedFilter,
-  greyFilterExceptBlue,
-} from "../filters/standardFilters";
-import {
-  createStackedSprites,
-  itemRidingOnBubblesSpritesOptions,
-  stackedTopSymbol,
-} from "./createStackedSprites";
+import { createStackedSprites, stackedTopSymbol } from "./createStackedSprites";
 
-const greyWhileDeactivated: Array<
-  ItemConfigMap<string, string>["monster"]["which"]
-> = [
+type MonsterWhich = ItemConfigMap<string, string>["monster"]["which"];
+
+const greyWhileDeactivated: Array<MonsterWhich> = [
   "cyberman",
   "dalek",
   "skiHead",
@@ -44,14 +37,22 @@ type MonsterRenderProps = {
   busyLickingDoughnutsOffFace: boolean;
 };
 
-const bobPeriod = 200;
-const bobAmplitude = 1;
-const floatingVerticalBob = (roomTime: number, itemId: string) => {
+const floatingVerticalBob = (
+  roomTime: number,
+  bobPeriod: number,
+  bobAmplitude: number,
+  itemId: string,
+) => {
   const itemsNameHash = hashStringToNumber0to1(itemId);
   return (
     Math.sin((roomTime + itemsNameHash * 20_000) / bobPeriod) * bobAmplitude
   );
 };
+
+const bobPeriodNervous = 50;
+const bobPeriodSlow = 200;
+const bobAmplitudeNervous = 0.25;
+const bobAmplitudeRelaxed = 1;
 
 const maybeAddBob = (
   { id, config: { which }, state }: ItemInPlay<"monster">,
@@ -59,12 +60,22 @@ const maybeAddBob = (
   currentOutput: Container,
 ) => {
   if (
-    ((which === "cyberman" || which === "bubbleRobot") && state.activated) ||
+    ((which === "cyberman" ||
+      which === "bubbleRobot" ||
+      which === "computerBot") &&
+      state.activated) ||
     which === "emperorsGuardian"
   ) {
+    const bobPeriod =
+      which === "computerBot" ? bobPeriodNervous : bobPeriodSlow;
+
+    const bobAmplitude =
+      which === "computerBot" ? bobAmplitudeNervous : bobAmplitudeRelaxed;
+
     const outputTyped = currentOutput as StackedSpritesContainer<Sprite>;
     outputTyped[stackedTopSymbol].y =
-      -blockSizePx.h + floatingVerticalBob(room.roomTime, id);
+      -blockSizePx.z +
+      floatingVerticalBob(room.roomTime, bobPeriod, bobAmplitude, id);
   }
 };
 
@@ -75,7 +86,7 @@ export const monsterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused },
+    general: { paused, colourised },
   },
   currentRendering,
 }) => {
@@ -84,13 +95,11 @@ export const monsterAppearance: ItemAppearance<
 
   const { activated, busyLickingDoughnutsOffFace } = state;
 
-  const filter =
-    busyLickingDoughnutsOffFace ? doughnuttedFilter
-    : !activated ?
-      greyWhileDeactivated.includes(config.which) ?
-        greyFilterExceptBlue
-      : undefined
-    : undefined;
+  const spritesheetVariant: SpritesheetVariant =
+    !colourised ? "uncolourised"
+    : busyLickingDoughnutsOffFace ? "doughnutted"
+    : !activated && greyWhileDeactivated.includes(config.which) ? "deactivated"
+    : "for-current-room";
 
   switch (config.which) {
     case "skiHead":
@@ -128,7 +137,7 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createSprite({
               textureId: `${config.which}.${config.style}.${facingXy4}`,
-              filter,
+              spritesheetVariant,
             }),
             renderProps,
           };
@@ -137,7 +146,7 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createSprite({
               textureId: `elephant.${facingXy4}`,
-              filter,
+              spritesheetVariant,
             }),
             renderProps,
           };
@@ -149,13 +158,13 @@ export const monsterAppearance: ItemAppearance<
               animate ?
                 createSprite({
                   animationId: `${config.which}.${facingXy4}`,
-                  filter,
+                  spritesheetVariant,
                   paused,
                   randomiseStartFrame: id,
                 })
               : createSprite({
                   textureId: `${config.which}.${facingXy4}.1`,
-                  filter,
+                  spritesheetVariant,
                 }),
             renderProps,
           };
@@ -168,17 +177,18 @@ export const monsterAppearance: ItemAppearance<
                 createStackedSprites({
                   top: {
                     textureId: `${config.which}.${facingXy4}`,
-                    filter: filter || undefined,
+                    spritesheetVariant,
                   },
                   bottom: {
-                    ...itemRidingOnBubblesSpritesOptions,
+                    animationId: "bubbles.jetpack",
                     paused,
+                    spritesheetVariant,
                   },
                 })
                 // charging on a toaster
               : createSprite({
                   textureId: `${config.which}.${facingXy4}`,
-                  filter,
+                  spritesheetVariant,
                 }),
             renderProps,
           };
@@ -188,14 +198,17 @@ export const monsterAppearance: ItemAppearance<
           // directional, not animated, stacked (base)
           return {
             output: createStackedSprites({
-              top: `${config.which}.${facingXy4}`,
+              top: {
+                textureId: `${config.which}.${facingXy4}`,
+                spritesheetVariant,
+              },
               bottom: {
                 animationId: `headlessBase.flash`,
                 // by playing once, the enemy's base flashes only when it has
                 // just changed direction etc
                 playOnce: "and-stop",
+                spritesheetVariant,
               },
-              filter,
             }),
             renderProps,
           };
@@ -222,16 +235,16 @@ export const monsterAppearance: ItemAppearance<
       }
 
       return {
-        filter,
+        spritesheetVariant,
         output: createSprite(
           activated && !busyLickingDoughnutsOffFace ?
             {
               animationId: walking ? "headlessBase.flash" : "headlessBase.scan",
-              filter,
+              spritesheetVariant,
             }
           : {
               textureId: `headlessBase`,
-              filter,
+              spritesheetVariant,
             },
         ),
         renderProps: {
@@ -276,11 +289,11 @@ export const monsterAppearance: ItemAppearance<
               animate ?
                 {
                   animationId: config.which,
-                  filter,
+                  spritesheetVariant,
                   paused,
                   randomiseStartFrame: id,
                 }
-              : { textureId: `${config.which}.1`, filter },
+              : { textureId: `${config.which}.1`, spritesheetVariant },
             ),
             renderProps,
           };
@@ -291,11 +304,15 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createStackedSprites({
               top: {
-                ...itemRidingOnBubblesSpritesOptions,
+                animationId: "bubbles.cold",
                 randomiseStartFrame: id,
                 paused,
+                spritesheetVariant,
               },
-              filter,
+              bottom: {
+                textureId: "headlessBase",
+                spritesheetVariant,
+              },
             }),
             renderProps,
           };
@@ -304,12 +321,12 @@ export const monsterAppearance: ItemAppearance<
           //not directional, stacked (bubbles):
           return {
             output: createStackedSprites({
-              top: `ball`,
+              top: { textureId: `ball`, spritesheetVariant },
               bottom: {
-                ...itemRidingOnBubblesSpritesOptions,
+                animationId: "bubbles.cold",
+                spritesheetVariant,
                 paused,
               },
-              filter,
             }),
             renderProps,
           };
@@ -318,7 +335,7 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createSprite({
               animationId: "bubbles.cold",
-              filter,
+              spritesheetVariant,
               paused,
             }),
             renderProps,

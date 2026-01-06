@@ -65,6 +65,9 @@ export const createItemRenderer = <T extends ItemInPlayType>(
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = !selectIsUncolourised(state);
+  const {
+    general: { paused },
+  } = itemRenderContext;
 
   const { item } = itemRenderContext;
 
@@ -104,7 +107,7 @@ export const createItemRenderer = <T extends ItemInPlayType>(
 
   // non-colourised rendering doesn't have shadows (yet) since it prevents
   // the colour revert shader from properly identifying black/non-black pixels
-  if (colourise) {
+  if (colourise && !paused) {
     const maybeItemShadowRenderer =
       maybeCreateItemShadowRenderer(itemRenderContext);
     if (maybeItemShadowRenderer !== undefined) {
@@ -138,7 +141,7 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     defaultUserSettings.soundSettings.mute;
 
   const soundRenderer =
-    itemRenderContext.general.paused || mute ?
+    paused || mute ?
       // no items are allowed to make sound while paused:
       undefined
     : createSoundRenderer(itemRenderContext);

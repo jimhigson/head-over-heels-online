@@ -1,8 +1,9 @@
 import type { EmptyObject } from "type-fest";
 
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import type { CreateSpriteOptions } from "../game/render/createSprite";
+import type { SpecifiedTextureCreateSpriteOptions } from "../game/render/createSprite";
 import type { SceneryName } from "../sprites/planets";
+import type { TextureId } from "../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
 import type { ItemState } from "./ItemState";
 import type { ExitGameRoomId } from "./json/ItemConfigMap";
@@ -143,7 +144,13 @@ export type ItemInPlay<
   readonly renderAabbOffset?: Aabb;
 
   /** the shadow this item casts on other items */
-  shadowCastTexture?: CreateSpriteOptions;
+  shadowCastTexture?:
+    | SpecifiedTextureCreateSpriteOptions
+    /**
+     * @deprecated - this is allowed only to provide backwards compatibility
+     * with released tag 1.14.0, and should only occur on saves from that version
+     */
+    | TextureId;
 
   /**
    * if true casts shadow while stood on. Most items can cast casting a shadow in this case, since

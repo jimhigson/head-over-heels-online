@@ -1,3 +1,5 @@
+import { Color } from "pixi.js";
+
 export const zxSpectrumRoomHue = [
   "yellow",
   "cyan",
@@ -6,6 +8,7 @@ export const zxSpectrumRoomHue = [
   "white",
 ] as const;
 export type ZxSpectrumRoomHue = (typeof zxSpectrumRoomHue)[number];
+export type ZxSpectrumHue = "black" | "blue" | "red" | ZxSpectrumRoomHue;
 export const zxSpectrumShades = ["basic", "dimmed"] as const;
 export type ZxSpectrumShade = (typeof zxSpectrumShades)[number];
 export type ZxSpectrumRoomColour = {
@@ -32,25 +35,54 @@ export type ResolutionName = keyof typeof resolutions;
 export const resolutionNames = Object.keys(resolutions) as ResolutionName[];
 
 export const zxSpectrumColors = {
-  // zx-spectrum colours:
-  zxRed: "#f00",
-  zxGreen: "#0f0",
-  zxBlue: "#00f",
-  zxCyan: "#0ff",
-  zxMagenta: "#f0f",
-  zxYellow: "#ff0",
-  zxBlack: "#000",
-  zxWhite: "#fff",
-  zxRedDimmed: "#800",
-  zxGreenDimmed: "#080",
-  zxBlueDimmed: "#008",
-  zxCyanDimmed: "#088",
-  zxMagentaDimmed: "#808",
-  zxYellowDimmed: "#880",
-  zxBlackDimmed: "#000",
-  zxWhiteDimmed: "#888",
+  // zx-spectrum colours (mostly for tailwind):
+  red: new Color("#f00"),
+  green: new Color("#0f0"),
+  blue: new Color("#00f"),
+  cyan: new Color("#0ff"),
+  magenta: new Color("#f0f"),
+  yellow: new Color("#ff0"),
+  black: new Color("#000"),
+  white: new Color("#fff"),
+};
+
+export const zxSpectrumColorsDimmed = {
+  // dimmed variants (B is 75% intensity, which approximately matches the original hardware):
+  red: new Color("#B00"),
+  green: new Color("#0B0"),
+  blue: new Color("#00B"),
+  cyan: new Color("#0BB"),
+  magenta: new Color("#B0B"),
+  yellow: new Color("#BB0"),
+  black: new Color("#000"),
+  white: new Color("#BBB"),
 };
 
 // don't know exact date but a guess based on the date of this review:
 // https://www.everygamegoing.com/larticle/Head-Over-Heels-000/32831
 export const releaseDateIso8601 = "1987-06-01T00:00:00Z";
+
+export const zxSpectrumDimmed = (c: Color) => {
+  const [r, g, b] = c.toUint8RgbArray();
+  // 0.5 seems a bit too dim, 0.75 seems to match the original hardware better
+  const hb = new Color({ r: r * 0.75, g: g * 0.75, b: b * 0.75 });
+  return hb;
+};
+
+export function zxSpectrumColor(colour: ZxSpectrumRoomColour): Color;
+export function zxSpectrumColor(
+  hue: ZxSpectrumHue,
+  shade?: ZxSpectrumShade,
+): Color;
+export function zxSpectrumColor(
+  hueOrColour: ZxSpectrumHue | ZxSpectrumRoomColour,
+  shade?: ZxSpectrumShade,
+): Color {
+  const { hue, shade: resolvedShade } =
+    typeof hueOrColour === "object" ? hueOrColour : (
+      { hue: hueOrColour, shade: shade ?? "basic" }
+    );
+  const hues =
+    resolvedShade === "dimmed" ? zxSpectrumColorsDimmed : zxSpectrumColors;
+  return hues[hue];
+}

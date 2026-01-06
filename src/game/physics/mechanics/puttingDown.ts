@@ -5,7 +5,6 @@ import type { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
 import type { PlayableItem } from "../itemPredicates";
 
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
@@ -14,6 +13,7 @@ import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/s
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 import { isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
+import { blockSizePx } from "../mechanicsConstants";
 import { moveItem } from "../moveItem/moveItem";
 
 /**
@@ -114,7 +114,7 @@ export const checkSpaceAvailableToPutDown = <
 ) => {
   const proposedNewLocation: CollideableItem = {
     state: {
-      position: addXyz(item.state.position, { z: blockSizePx.h }),
+      position: addXyz(item.state.position, { z: blockSizePx.z }),
     },
     aabb: item.aabb,
     id: `item.id-proposedPutdownLocation`,

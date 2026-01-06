@@ -7,13 +7,16 @@ out vec4 finalColor;
 uniform sampler2D uTexture;
 uniform vec3 uTargetColor;
 
-vec4 black = vec4(0.0, 0.0, 0.0, 1.0);
+// out of a max of √3 (diagonal of a cube) because is against the rgb vector
+// this shader was originally used for all uncolourised mode in the game, but now with 
+// spritesheet variants it is only used in the editor to show the selected item
+const float blackThreshold = sqrt(3.0) * 0.1;
 
 void main(void) {
     vec4 c = texture(uTexture, vTextureCoord);
 
     // 1 if black, 0 if non-black
-    float isBlack = step(length(c.rgb), 0.01);
+    float isBlack = step(length(c.rgb), blackThreshold);
 
     // keep original if either:
     //      * black

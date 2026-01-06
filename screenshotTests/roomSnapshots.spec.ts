@@ -21,30 +21,64 @@ import { formatProjectName, progressLogHeader } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
 import { setIsUncolourised } from "./setIsUncolourised";
 
+/**
+ * Environment variables for controlling screenshot tests:
+ *
+ * ROOMS              - Comma-separated list of room IDs or patterns with * wildcard (e.g., "blacktooth*,moonbase*")
+ * ROOMS_CONTAINING   - Filter to rooms containing a specific item type (e.g., "conveyor")
+ * BATCH_COUNT        - Total number of parallel runners splitting the work (default: 1)
+ * BATCH_NUMBER       - Which batch this runner processes, 0-indexed (default: 0)
+ * PARALLEL_TESTS     - Number of parallel tests within this runner (default: 2, or 1 for small batches)
+ * NO_UNCOLOURISED    - Skip uncolourised screenshots when set (faster local testing)
+ * CI                 - Increases timeouts when running in CI environment
+ *
+ * Examples:
+ *   ROOMS=bookworld13,bookworld14 pnpm screenshot --update-snapshots
+ *   ROOMS_CONTAINING=conveyor pnpm screenshot --update-snapshots
+ *   NO_UNCOLOURISED=1 pnpm screenshot
+ */
+
 const timeoutPerRoom = (process.env.CI ? 40_000 : 8_000) * osSlowness;
 const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
 const campaignRoomIds = keys(campaign.rooms);
-// Override to run for just one room by setting the ROOMS envar, eg:
-// ROOMS=bookworld13,bookworld14 pnpm screenshot --update-snapshots
-// Or filter by item type using ROOMS_CONTAINING, eg:
-// ROOMS_CONTAINING=conveyor pnpm screenshot --update-snapshots
-const roomIds =
-  process.env.ROOMS ? (process.env.ROOMS.split(",") as OriginalCampaignRoomId[])
-  : process.env.ROOMS_CONTAINING ?
-    campaignRoomIds.filter((roomId) => {
-      const room = campaign.rooms[roomId];
-      const itemType = process.env.ROOMS_CONTAINING;
-      return Object.values(room.items).some((item) => item.type === itemType);
-    })
-  : campaignRoomIds;
 
-// How many parallel runners are processing rooms (splits work across GitHub Actions runners)
+const resolveRoomIds = (
+  rooms: string | undefined,
+  roomsContaining: string | undefined,
+): OriginalCampaignRoomId[] => {
+  if (rooms) {
+    const patterns = rooms.split(",");
+    const regexes = patterns.map(
+      (pattern) => new RegExp(`^${pattern.replace(/\*/g, ".*")}$`),
+    );
+    return campaignRoomIds.filter((roomId) =>
+      regexes.some((regex) => regex.test(roomId)),
+    );
+  }
+  if (roomsContaining) {
+    return campaignRoomIds.filter((roomId) => {
+      const room = campaign.rooms[roomId];
+      return Object.values(room.items).some(
+        (item) => item.type === roomsContaining,
+      );
+    });
+  }
+  return campaignRoomIds;
+};
+
+const roomIds = resolveRoomIds(process.env.ROOMS, process.env.ROOMS_CONTAINING);
+
+if (roomIds.length === 0) {
+  throw new Error(
+    `Zero rooms matched: ROOMS=${process.env.ROOMS} ROOMS_CONTAINING=${process.env.ROOMS_CONTAINING}`,
+  );
+}
+
 const batchCount =
   process.env.BATCH_COUNT ? Number.parseInt(process.env.BATCH_COUNT) : 1;
 
-// Which batch number (0-indexed) this runner should process
 const batchNumber =
   process.env.BATCH_NUMBER !== undefined ?
     Number.parseInt(process.env.BATCH_NUMBER)
@@ -57,12 +91,14 @@ const batchStart = batchNumber * roomsPerBatch;
 const batchEnd = Math.min(batchStart + roomsPerBatch, totalRoomCount);
 const batchRoomIds = roomIds.slice(batchStart, batchEnd);
 
-// How many parallel tests to create within this runner (for progress visibility)
 const parallelTestsCount =
   // a single test for small batches:
   roomsPerBatch < 10 ? 1
   : process.env.PARALLEL_TESTS ? Number.parseInt(process.env.PARALLEL_TESTS)
   : 2;
+
+const colourisedModes: boolean[] =
+  process.env.NO_UNCOLOURISED ? [false] : [false, true];
 
 console.log(
   `🏃 runner will process batch ${batchNumber} of ${batchCount} total batches`,
@@ -478,7 +514,7 @@ test.describe("Room Visual Snapshots", () => {
 
           await navigateToRoom(logHeader, roomId);
 
-          for (const uncolourised of [false, true]) {
+          for (const uncolourised of colourisedModes) {
             const filenameSuffix = uncolourised ? "-uncolourised" : "";
 
             await setIsUncolourised(page, formattedName, uncolourised);
@@ -497,7 +533,7 @@ test.describe("Room Visual Snapshots", () => {
                 // Whereas 0 makes builds fail with invisible differences between
                 // the OS running the test, at least in webkit/safari.
                 // keep a much smaller threshold than normal, but not zero:
-                threshold: 0.05,
+                threshold: 0.02,
                 scale: "device",
                 maxDiffPixels: 0,
               });

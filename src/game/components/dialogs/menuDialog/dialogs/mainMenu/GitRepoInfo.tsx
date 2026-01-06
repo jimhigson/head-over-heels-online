@@ -1,5 +1,5 @@
 import { version } from "../../../../../../../package.json";
-import { nerdFontGithubChar } from "../../../../../../sprites/hudSritesheetData";
+import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 const repoLocation = "https://github.com/jimhigson/head-over-heels-online/";

@@ -104,7 +104,7 @@ export const CharacterSprite = ({
       <span
         className={`sprite zx:sprite-revert-to-white ${spriteClassName} relative z-topSprite`}
       />
-      <span className="sprite zx:hidden texture-shadow_smallRound sprite-shadow absolute left-0 top-[calc(var(--scale)*2px)] opacity-halfBrite" />
+      <span className="sprite zx:hidden texture-shadow_playable sprite-shadow absolute left-0 opacity-halfBrite" />
     </div>
   );
 };

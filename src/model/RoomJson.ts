@@ -49,6 +49,11 @@ export type RoomJson<
   height?: number;
   /** TODO: rename to scenery */
   planet: ScN;
+  /**
+   * the color the room was shown in in the zx spectrum original game. This is used to provide highlight
+   * colours in each room
+   */
+  color: ZxSpectrumRoomColour;
   roomAbove?: RoomId;
   subRoomAbove?: string;
   /**
@@ -59,9 +64,6 @@ export type RoomJson<
   ceilingRelativePoint?: Xy;
   roomBelow?: RoomId;
   subRoomBelow?: string;
-  // the color the room was shown in in the zx spectrum original game. This is used to provide highlight
-  // colours in each room
-  color: ZxSpectrumRoomColour;
 
   /**
    * by keying each item with an id, it makes the diffing easier since the array is no longer

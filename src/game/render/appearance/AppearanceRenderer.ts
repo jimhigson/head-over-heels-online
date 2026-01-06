@@ -3,6 +3,8 @@ import { Container } from "pixi.js";
 import type { Renderer } from "../Renderer";
 import type { Appearance, AppearanceRendering } from "./Appearance";
 
+import { destroyRenderTextureDescendants } from "../../../utils/pixi/destroyRenderTextureDescendants";
+
 /**
  * track changes of a subject over time, updating the rendering as necessary using a pluggable
  * appearance function.
@@ -25,8 +27,9 @@ export class AppearanceRenderer<
    */
   #currentRendering?: AppearanceRendering<RenderProps, Output>;
 
-  //#currentlyRenderedProps: RenderProps | undefined = undefined;
-  public readonly output: Container<Output>;
+  public readonly output: Container<Output> = new Container({
+    label: `AppearanceRenderer`,
+  });
 
   constructor(
     public readonly renderContext: RenderContext,
@@ -36,16 +39,12 @@ export class AppearanceRenderer<
       RenderProps,
       Output
     >,
-    /*outputContainer: Container<Output> = new Container({
-      label: `AppearanceRenderer`,
-    }),*/
-  ) {
-    this.output = new Container({
-      label: `AppearanceRenderer`,
-    });
-  }
+  ) {}
 
   destroy() {
+    if (this.#currentRendering?.output) {
+      destroyRenderTextureDescendants(this.#currentRendering.output);
+    }
     this.output.destroy({ children: true });
   }
 
@@ -61,11 +60,16 @@ export class AppearanceRenderer<
       if (this.output.children.at(0) !== rendering.output) {
         if (this.#currentRendering?.output) {
           this.output.removeChild(this.#currentRendering.output);
-          // #currentRendering may contain textures that need to be freed
+
+          // #currentRendering may contain dynamic textures that need to be freed
           // to prevent memory leaks. Without this, the dynamic teleporter shadow
           // maps textures (for multiplied teleporters) were not being freed
+          destroyRenderTextureDescendants(this.#currentRendering.output);
+
           this.#currentRendering.output.destroy({
-            texture: true,
+            // don't destroy textures here - hopefully the destroyRenderTextures above destroyed
+            // the dynamic ones
+            texture: false,
             children: true,
           });
         }

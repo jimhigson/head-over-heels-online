@@ -4,13 +4,18 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  pixi.js:
+    hash: af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf
+    path: patches/pixi.js.patch
+
 importers:
 
   .:
     dependencies:
       '@blockstacking/jims-shaders':
         specifier: ^0.4.3
-        version: 0.4.3(pixi.js@8.14.3)
+        version: 0.4.3(pixi.js@8.15.0-rc(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf))
       '@github/mini-throttle':
         specifier: ^2.1.1
         version: 2.1.1
@@ -69,8 +74,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       pixi.js:
-        specifier: ^8.14.2
-        version: 8.14.3
+        specifier: 8.15.0-rc
+        version: 8.15.0-rc(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf)
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -215,7 +220,7 @@ importers:
         version: 1.2.0
       pixi-filters:
         specifier: ^6.1.4
-        version: 6.1.4(pixi.js@8.14.3)
+        version: 6.1.4(pixi.js@8.15.0-rc(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf))
       postcss:
         specifier: ^8.5.3
         version: 8.5.3
@@ -2153,8 +2158,8 @@ packages:
   '@vitest/utils@3.2.4':
     resolution: {integrity: sha512-fB2V0JFrQSMsCo9HiSq3Ezpdv4iYaXRG1Sx8edX3MwxfyNn83mKiGzOcH+Fkxt4MHxr3y42fQi1oeAInqgX2QA==}
 
-  '@webgpu/types@0.1.66':
-    resolution: {integrity: sha512-YA2hLrwLpDsRueNDXIMqN9NTzD6bCDkuXbOSe0heS+f8YE8usA6Gbv1prj81pzVHrbaAma7zObnIC+I6/sXJgA==}
+  '@webgpu/types@0.1.68':
+    resolution: {integrity: sha512-3ab1B59Ojb6RwjOspYLsTpCzbNB3ZaamIAxBMmvnNkiDoLTZUOBXZ9p5nAYVEkQlDdf6qAZWi1pqj9+ypiqznA==}
 
   '@xmldom/xmldom@0.8.11':
     resolution: {integrity: sha512-cQzWCtO6C8TQiYl1ruKNn2U6Ao4o4WBBcbL61yJl84x+j5sOWWFU9X7DpND8XZG3daDppSsigMdfAIl2upQBRw==}
@@ -3690,6 +3695,9 @@ packages:
 
   pixi.js@8.14.3:
     resolution: {integrity: sha512-6xGYARV8D9E/fO1c2NmYn+k2dQ5oZldVm5tNlLQJ8obTlOQXdL5QpMc217qTpRyHVDFaw5eoFCLF1gr6p5ZcjQ==}
+
+  pixi.js@8.15.0-rc:
+    resolution: {integrity: sha512-Zkhowq0gRy5oNqzkS3JVBcpRXzOedmxRGbh0RTnjpa9KCvglj1UbnrT9b6pFQmbJuCEY2zhXoC2fA+QL6DZZ+g==}
 
   pkg-dir@4.2.0:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
@@ -5402,9 +5410,13 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@blockstacking/jims-shaders@0.4.3(pixi.js@8.14.3)':
+  '@blockstacking/jims-shaders@0.4.3(pixi.js@8.14.3(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf))':
     dependencies:
-      pixi.js: 8.14.3
+      pixi.js: 8.14.3(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf)
+
+  '@blockstacking/jims-shaders@0.4.3(pixi.js@8.15.0-rc(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf))':
+    dependencies:
+      pixi.js: 8.15.0-rc(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf)
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -6574,7 +6586,7 @@ snapshots:
       loupe: 3.1.4
       tinyrainbow: 2.0.0
 
-  '@webgpu/types@0.1.66': {}
+  '@webgpu/types@0.1.68': {}
 
   '@xmldom/xmldom@0.8.11': {}
 
@@ -7620,7 +7632,7 @@ snapshots:
 
   hohjs@https://codeload.github.com/jimhigson/head-over-heels-online/tar.gz/27c462047e4155990708258ad23b4a1bbbc1af6a(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(eslint@9.22.0(jiti@1.21.7))(immer@10.1.1)(redux@5.0.1)(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.9)(@types/node@22.13.10)(typescript@5.9.2)))(typescript@5.9.2):
     dependencies:
-      '@blockstacking/jims-shaders': 0.4.3(pixi.js@8.14.3)
+      '@blockstacking/jims-shaders': 0.4.3(pixi.js@8.14.3(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf))
       '@github/mini-throttle': 2.1.1
       '@monaco-editor/react': 4.7.0(monaco-editor@0.52.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@mutabazia/react-portal': 1.0.7
@@ -7639,7 +7651,7 @@ snapshots:
       nano-equal: 2.0.2
       natural-compare-lite: 1.4.0
       natural-orderby: 5.0.0
-      pixi.js: 8.14.3
+      pixi.js: 8.14.3(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       react-redux: 9.2.0(@types/react@19.0.10)(react@19.0.0)(redux@5.0.1)
@@ -8223,17 +8235,31 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  pixi-filters@6.1.4(pixi.js@8.14.3):
+  pixi-filters@6.1.4(pixi.js@8.15.0-rc(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf)):
     dependencies:
       '@types/gradient-parser': 0.1.5
-      pixi.js: 8.14.3
+      pixi.js: 8.15.0-rc(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf)
 
-  pixi.js@8.14.3:
+  pixi.js@8.14.3(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf):
     dependencies:
       '@pixi/colord': 2.9.6
       '@types/css-font-loading-module': 0.0.12
       '@types/earcut': 3.0.0
-      '@webgpu/types': 0.1.66
+      '@webgpu/types': 0.1.68
+      '@xmldom/xmldom': 0.8.11
+      earcut: 3.0.2
+      eventemitter3: 5.0.1
+      gifuct-js: 2.1.2
+      ismobilejs: 1.1.1
+      parse-svg-path: 0.1.2
+      tiny-lru: 11.4.5
+
+  pixi.js@8.15.0-rc(patch_hash=af474d65b6a36ac1eb1b0dfefa19deaee05b6f1ccf0643823de803faa3cb2bdf):
+    dependencies:
+      '@pixi/colord': 2.9.6
+      '@types/css-font-loading-module': 0.0.12
+      '@types/earcut': 3.0.0
+      '@webgpu/types': 0.1.68
       '@xmldom/xmldom': 0.8.11
       earcut: 3.0.2
       eventemitter3: 5.0.1

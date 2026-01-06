@@ -22,9 +22,15 @@ export type HudRendererTickContext<
 > = {
   screenSize: Xy;
   /** can be undefined when game over */
-  room: RoomState<RoomId, RoomItemId> | undefined;
+  room?: RoomState<RoomId, RoomItemId>;
   /** Delta time in milliseconds since last tick */
   deltaMS: number;
 
   freeCharacters: FreeCharacters;
 };
+
+/** for when we know the game isn't over */
+export type HudRendererTickContextWithRoom<
+  RoomId extends string,
+  RoomItemId extends string,
+> = SetRequired<HudRendererTickContext<RoomId, RoomItemId>, "room">;

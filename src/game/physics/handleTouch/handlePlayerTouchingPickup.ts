@@ -6,7 +6,6 @@ import type { ItemTouchEvent } from "./ItemTouchEvent";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
-import { blockSizePx } from "../../../sprites/spritePivots";
 import {
   crownCollected,
   reincarnationFishEaten,
@@ -22,6 +21,7 @@ import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { createSavedGame } from "../../gameState/saving/createSavedGame";
 import { floatingTextFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { blockSizePx } from "../mechanicsConstants";
 
 /**
  * how long to keep the floating text item in the room?
@@ -82,7 +82,7 @@ export const handlePlayerTouchingPickup = <
       aabb: originXyz, // zero-size per aabb
       state: {
         ...defaultBaseState(),
-        position: addXyz(pickupCentre, { z: blockSizePx.h / 2 }),
+        position: addXyz(pickupCentre, { z: blockSizePx.z / 2 }),
         expires: roomTime + floatingTextLife,
       },
       config: {

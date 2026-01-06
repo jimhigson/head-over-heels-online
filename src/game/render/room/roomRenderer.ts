@@ -16,9 +16,9 @@ import {
   iterateRoomItems,
   roomSpatialIndexKey,
 } from "../../../model/RoomState";
+import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { defaultUserSettings } from "../../../store/slices/gameMenus/defaultUserSettings";
-import { colourisedRoomFilter } from "../filters/standardFilters";
 import { createItemRenderer } from "../item/itemRender/createItemRenderer";
 import { type ZGraph } from "../sortZ/GraphEdges";
 import { toposort } from "../sortZ/toposort/toposort";
@@ -71,9 +71,8 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       general: { colourised, soundSettings },
+      room,
     } = renderContext;
-
-    this.initFilters();
 
     const mute = soundSettings.mute ?? defaultUserSettings.soundSettings.mute;
 
@@ -96,19 +95,10 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
     // layer in front of all else - for floating text, etc
     this.output.graphics.addChild(this.#frontLayer);
-  }
 
-  /**
-   * set the top-level filters for the room - either to revert colourisation or leave it in
-   * modern-mode
-   */
-  initFilters() {
-    const {
-      general: { colourised },
-      room,
-    } = this.renderContext;
-
-    this.#itemsContainer.filters = colourisedRoomFilter(colourised, room);
+    if (!colourised) {
+      this.#itemsContainer.tint = zxSpectrumColor(room.color);
+    }
   }
 
   #getItemRenderPipeline = (itemId: string) => {

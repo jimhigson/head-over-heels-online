@@ -1,11 +1,10 @@
-import type { Content as RadixContent } from "@radix-ui/react-popover";
+import type { ComponentProps } from "react";
 
 import {
   Popover as RadixPopover,
   PopoverContent as RadixPopoverContent,
   Trigger as RadixTrigger,
 } from "@radix-ui/react-popover";
-import * as React from "react";
 
 import { cn } from "./cn";
 
@@ -13,12 +12,12 @@ export const Popover = RadixPopover;
 
 export const PopoverTrigger = RadixTrigger;
 
-export const PopoverContent = React.forwardRef<
-  React.ElementRef<typeof RadixContent>,
-  React.ComponentPropsWithoutRef<typeof RadixContent>
->(({ className, align = "end", ...props }, ref) => (
+export const PopoverContent = ({
+  className,
+  align = "end",
+  ...props
+}: ComponentProps<typeof RadixPopoverContent>) => (
   <RadixPopoverContent
-    ref={ref}
     align={align}
     className={cn(
       "z-popups drop-shadow-oneBlock p-0 border-shadow outline-none",
@@ -30,4 +29,4 @@ export const PopoverContent = React.forwardRef<
       e.stopPropagation();
     }}
   />
-));
+);

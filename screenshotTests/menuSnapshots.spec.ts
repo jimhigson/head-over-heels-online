@@ -9,7 +9,7 @@ import chalk from "chalk";
 import type { DialogId } from "../src/game/components/dialogs/menuDialog/DialogId";
 import type { goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
 
-import spritesheetColours from "../gfx/spritesheetPalette.json" with { type: "json" };
+import spritesheetColours from "../src/_generated/palette/spritesheetPalette.json" with { type: "json" };
 import { dispatchKeyPress } from "./dispatchKeyPress";
 import { dispatchToStore } from "./dispatchToStore";
 import { formatDuration } from "./formatDuration";
