@@ -1,8 +1,18 @@
 import type { Texture } from "pixi.js";
 
+import { range } from "iter-tools-es";
+import { AnimatedSprite } from "pixi.js";
 import { type Container, type Renderer, RenderTexture, Sprite } from "pixi.js";
 
+import type { AnimationId } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+
+import {
+  animationSpeed,
+  framesWithOriginalGameTimings,
+} from "../../game/render/createSprite";
+import { iterate } from "../iterate";
 import { pixiContainerToString } from "./pixiContainerToString";
+import { UniqueTextureAnimatedSprite } from "./UniqueTextureAnimatedSprite";
 import { UniqueTextureSprite } from "./UniqueTextureSprite";
 
 /**
@@ -115,6 +125,59 @@ export const renderContainerToSprite = (
   };
 
   return sprite;
+};
+
+/** render a container full of animated sprites to a single animated sprite with one new texture per-frame */
+export const maybeRenderContainerToAnimatedSprite = (
+  pixiRenderer: Renderer,
+  container: Container,
+  // an animation id - used only to get the correct animation speed - multiple animations
+  // running at different speeds are not supported
+  animationId: AnimationId,
+  label?: string,
+): AnimatedSprite | Sprite => {
+  if (container instanceof AnimatedSprite || container instanceof Sprite) {
+    return container;
+  }
+
+  const localBounds = container.getLocalBounds();
+
+  // assuming all child sprites have te same frame count:
+  const frameCount =
+    container.children.find((child) => child instanceof AnimatedSprite)
+      ?.textures.length ??
+    // if no animated sprites, create a single frame:
+    1;
+
+  const textures = iterate(range(0, frameCount))
+    .map((): Texture => {
+      for (const child of container.children) {
+        if (child instanceof AnimatedSprite) {
+          child.gotoAndStop((child.currentFrame + 1) % frameCount);
+        }
+      }
+
+      return renderContainerToTexture(pixiRenderer, container);
+    })
+    .toArray();
+
+  const outputAnimatedSprite = new UniqueTextureAnimatedSprite(
+    framesWithOriginalGameTimings(textures),
+  );
+  outputAnimatedSprite.animationSpeed = animationSpeed(animationId, false);
+  outputAnimatedSprite.gotoAndPlay(0);
+
+  outputAnimatedSprite.label =
+    label ?? `animated sprite of container (${container.label})`;
+  outputAnimatedSprite.pivot = {
+    // without rounding of bounds here, floor tiles render in not quite the right
+    // place, since they can have fractional bounds. Rounded up the extent, so need
+    // to round down the x and y (expanding the range)
+    x: Math.floor(-localBounds.minX),
+    y: Math.floor(-localBounds.minY),
+  };
+
+  return outputAnimatedSprite;
 };
 
 /**
