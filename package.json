@@ -80,7 +80,7 @@
   "devDependencies": {
     "@dyljhd/use-effect-debugger": "^1.2.1",
     "@eslint/js": "^9.22.0",
-    "@playwright/test": "^1.55.0",
+    "@playwright/test": "^1.57.0",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@supabase/supabase-js": "^2.51.0",
     "@types/node": "^22.13.10",
