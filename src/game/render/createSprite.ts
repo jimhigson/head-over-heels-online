@@ -23,7 +23,7 @@ export type AnimatedCreateSpriteOptions = {
   pivot?: PointData;
   flipX?: boolean;
   textureId?: undefined;
-  textureIdCallback?: undefined;
+  subSpriteVariations?: undefined;
   animationId: AnimationId;
   /**
    * if given, the animation will start at a psuedo-random frame
@@ -75,13 +75,21 @@ export type SpecifiedTextureCreateSpriteOptions =
         | {
             times?: Partial<Xyz>;
             textureId: TextureId;
-            textureIdCallback?: undefined;
+            subSpriteVariations?: undefined;
           }
         | {
             times?: Partial<Xyz>;
             textureId?: undefined;
-            /** the texture id callback allows an item with repetition to have different textures at different locations */
-            textureIdCallback: (x: number, y: number, z: number) => TextureId;
+            /**
+             * variations (texture id, sprite id etc)
+             * callback allows an item with repetition to have
+             * different textures at different locations
+             */
+            subSpriteVariations: (
+              x: number,
+              y: number,
+              z: number,
+            ) => { textureId?: TextureId; animationId?: AnimationId };
           }
       ));
 
@@ -90,7 +98,7 @@ export type CreateSpriteOptions =
       /** create a blank sprite with Texture.EMPTY */
       times?: undefined;
       textureId?: undefined;
-      textureIdCallback?: undefined;
+      subSpriteVariations?: undefined;
     })
   | SpecifiedTextureCreateSpriteOptions;
 
@@ -124,14 +132,13 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
       for (let { x } = completeTimes; x >= 1; x--) {
         for (let { y } = completeTimes; y >= 1; y--) {
           for (let z = 1; z <= completeTimes.z; z++) {
-            const textureId =
-              options.textureId ??
-              options.textureIdCallback?.(x - 1, y - 1, z - 1);
             const subSpriteOptions = {
               ...options,
-              textureId,
               label: `(${x},${y},${z})`,
+              ...options.subSpriteVariations?.(x - 1, y - 1, z - 1),
+              subSpriteVariations: undefined,
             };
+
             if ("randomiseStartFrame" in subSpriteOptions) {
               // if randomising the start frame, we don't want all the sub-sprites to get the same randomisation
               // so the sub-position of the child sprite onto the randomiseStartFrame string:
@@ -157,11 +164,19 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
     }
   }
 
+  if (options.subSpriteVariations !== undefined) {
+    return createSpriteImpl({
+      ...options,
+      ...options.subSpriteVariations(0, 0, 0),
+      subSpriteVariations: undefined,
+    } as CreateSpriteOptions);
+  }
+
   let sprite: Sprite;
   if (isAnimatedOptions(options)) {
     sprite = createAnimatedSprite(options);
   } else {
-    const textureId = options.textureId ?? options.textureIdCallback?.(0, 0, 0);
+    const { textureId } = options;
     const spritesheet = getSpriteSheetVariant(
       options.spritesheetVariant ?? "original",
     );
@@ -172,8 +187,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
 
   if (anchor === undefined && pivot === undefined) {
     if (!isAnimatedOptions(options)) {
-      const textureId =
-        options.textureId ?? options.textureIdCallback?.(0, 0, 0);
+      const { textureId } = options;
       const spritesheetFrameData: SpritesheetFrameData | undefined =
         textureId !== undefined ?
           getSpriteSheetVariant(options.spritesheetVariant ?? "original").data

@@ -6,6 +6,7 @@ import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
@@ -64,12 +65,12 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config, id },
-        general: { paused, colourised },
+        general: { paused, colourised, pixiRenderer },
       },
     }) => {
       switch (config.style) {
-        case "volcano":
-          return createSprite({
+        case "volcano": {
+          const rendering = createSprite({
             animationId: "volcano",
             times: config.times,
             randomiseStartFrame: id,
@@ -77,6 +78,13 @@ const itemAppearancesMap: {
             spritesheetVariant:
               colourised ? "for-current-room" : "uncolourised",
           });
+
+          return maybeRenderContainerToAnimatedSprite(
+            pixiRenderer,
+            rendering,
+            "volcano",
+          );
+        }
         case "toaster":
           throw new Error("use the special toaster appearance instead");
         default:

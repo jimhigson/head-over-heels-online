@@ -34,7 +34,7 @@ import { setIsUncolourised } from "./setIsUncolourised";
  *
  * Examples:
  *   ROOMS=bookworld13,bookworld14 pnpm screenshot --update-snapshots
- *   ROOMS_CONTAINING=conveyor pnpm screenshot --update-snapshots
+ *   ROOMS_CONTAINING=conveyor,movingPlatform pnpm screenshot --update-snapshots
  *   NO_UNCOLOURISED=1 pnpm screenshot
  */
 
@@ -95,10 +95,11 @@ const resolveRoomIds = (
     );
   }
   if (roomsContaining) {
+    const itemTypes = roomsContaining.split(",");
     return campaignRoomIds.filter((roomId) => {
       const room = campaign.rooms[roomId];
-      return Object.values(room.items).some(
-        (item) => item.type === roomsContaining,
+      return Object.values(room.items).some((item) =>
+        itemTypes.includes(item.type),
       );
     });
   }
@@ -486,27 +487,51 @@ test.describe("Room Visual Snapshots", () => {
         throw error;
       }
 
+      let charactersCurrentRoomId: OriginalCampaignRoomId = "finalroom";
       const navigateToRoom = async (
         logHeader: string,
-        roomId: OriginalCampaignRoomId,
+        targetRoomId: OriginalCampaignRoomId,
+        ensureComingFromPrevious: boolean = true,
       ) => {
+        // first, check we are coming from the sequentially previous room, to keep the door we enter consistent:
+        if (ensureComingFromPrevious) {
+          const targetRoomIndex = campaignRoomIds.indexOf(targetRoomId);
+
+          const previousRoomId =
+            targetRoomIndex === 0 ? "finalroom" : (
+              campaignRoomIds[targetRoomIndex - 1]
+            );
+
+          if (charactersCurrentRoomId !== previousRoomId) {
+            console.log(
+              `${logHeader} will pre-load previous room: ${chalk.blue(previousRoomId)} to set correct entry point to target room: ${chalk.blue(testRooms[0])} (was in room: ${chalk.blue(charactersCurrentRoomId)})`,
+            );
+
+            await navigateToRoom(logHeader, previousRoomId, false);
+          }
+        }
+
         await retryWithRecovery({
           async action(attempt) {
             console.log(
-              `${logHeader} Navigating to room: ${chalk.cyan(roomId)}`,
+              `${logHeader} Navigating to room: ${chalk.cyan(targetRoomId)}`,
             );
 
             // Screenshot before navigation
             await page
               .screenshot({
-                path: `test-results/room-${testInfo.project.name}-${roomId}-attempt-${attempt}-before-nav.png`,
+                path: `test-results/room-${testInfo.project.name}-${targetRoomId}-attempt-${attempt}-before-nav.png`,
                 fullPage: false,
               })
               .catch(() => {});
 
-            const renderEventPromise = waitForRoomRenderEvent(page, roomId);
-            await page.goto(`/?cheats=1&track=0#${roomId}`);
+            const renderEventPromise = waitForRoomRenderEvent(
+              page,
+              targetRoomId,
+            );
+            await page.goto(`/?cheats=1&track=0#${targetRoomId}`);
             await renderEventPromise;
+            charactersCurrentRoomId = targetRoomId;
           },
           async recovery() {
             // Navigate somewhere else so we can come back again and have another chance
@@ -516,34 +541,13 @@ test.describe("Room Visual Snapshots", () => {
           },
           maxAttempts: maxTriesToLoadRoom,
           logHeader,
-          actionDescription: `load room ${chalk.cyan(roomId)}`,
+          actionDescription: `load room ${chalk.cyan(targetRoomId)}`,
           page,
-          screenshotPrefix: `room-${testInfo.project.name}-${roomId}`,
+          screenshotPrefix: `room-${testInfo.project.name}-${targetRoomId}`,
         });
       };
 
-      {
-        // first, navigate to the last room of the previous batch or test.
-        // this means that we start this test with the same location
-        // as if we had done one continuous run. This can impact which
-        // door the character starts at when they enter the room
-        const roomIdIndex = campaignRoomIds.indexOf(testRooms[0]);
-        if (roomIdIndex > 0) {
-          const logHeader = progressLogHeader(
-            testInfo.project.name,
-            -1,
-            testIndex,
-          );
-
-          const previousRoomId = campaignRoomIds[roomIdIndex - 1];
-
-          console.log(
-            `${logHeader} will pre-load previous room: ${previousRoomId} to set correct entry point to my first room: ${testRooms[0]}`,
-          );
-
-          await navigateToRoom(logHeader, previousRoomId);
-        }
-      }
+      let currentUncolourisedState = false;
 
       for (const [roomIndex, roomId] of testRooms.entries()) {
         await test.step(`room: ${roomId}`, async () => {
@@ -556,12 +560,19 @@ test.describe("Room Visual Snapshots", () => {
             testIndex,
           );
 
+          console.log(
+            `${formattedName} ${chalk.red("___ROOM STEP:")} ${chalk.blue(roomId)} ${chalk.red("___")}`,
+          );
+
           await navigateToRoom(logHeader, roomId);
 
           for (const uncolourised of colourisedModes) {
             const filenameSuffix = uncolourised ? "-uncolourised" : "";
 
-            await setIsUncolourised(page, formattedName, uncolourised);
+            if (currentUncolourisedState !== uncolourised) {
+              await setIsUncolourised(page, formattedName, uncolourised);
+            }
+            currentUncolourisedState = uncolourised;
 
             console.log(
               `${logHeader} Taking screenshot for room: ${chalk.cyan(roomId)} (uncolourised: ${uncolourised})`,
@@ -583,6 +594,7 @@ test.describe("Room Visual Snapshots", () => {
             );
           }
         });
+        charactersCurrentRoomId = roomId;
       }
     });
   }
