@@ -125,15 +125,25 @@ const showTextureStats = (): void => {
   const trackedTextures = getTrackedTextures();
   const sizeGroups = new Map<
     string,
-    { count: number; memory: number; width: number; height: number }
+    {
+      count: number;
+      memory: number;
+      width: number;
+      height: number;
+      types: Set<string>;
+    }
   >();
-  const typeGroups = new Map<string, { count: number; memory: number }>();
+  const typeGroups = new Map<
+    string,
+    { count: number; memory: number; sizes: Set<string> }
+  >();
   let totalMemory = 0;
 
   for (const item of trackedTextures) {
     const { textureSource, type } = item;
     const size = `${textureSource.width}x${textureSource.height}`;
     const memory = getTextureMemory(textureSource);
+    const typeKey = type ?? "unknown";
 
     // Track by size
     const existingSize = sizeGroups.get(size) ?? {
@@ -141,22 +151,30 @@ const showTextureStats = (): void => {
       memory: 0,
       width: textureSource.width,
       height: textureSource.height,
+      types: new Set<string>(),
     };
+    existingSize.types.add(typeKey);
     sizeGroups.set(size, {
       count: existingSize.count + 1,
       memory: existingSize.memory + memory,
       width: textureSource.width,
       height: textureSource.height,
+      types: existingSize.types,
     });
 
     totalMemory += memory;
 
     // Track by type
-    const typeKey = type ?? "unknown";
-    const existing = typeGroups.get(typeKey) ?? { count: 0, memory: 0 };
+    const existing = typeGroups.get(typeKey) ?? {
+      count: 0,
+      memory: 0,
+      sizes: new Set<string>(),
+    };
+    existing.sizes.add(size);
     typeGroups.set(typeKey, {
       count: existing.count + 1,
       memory: existing.memory + memory,
+      sizes: existing.sizes,
     });
   }
 
@@ -171,6 +189,7 @@ const showTextureStats = (): void => {
         type,
         count: stats.count,
         memory: formatMemory(stats.memory),
+        sizes: [...stats.sizes].join(", "),
       }))
       .sort((a, b) => b.count - a.count);
     console.table(typeArray);
@@ -183,6 +202,7 @@ const showTextureStats = (): void => {
         size,
         count: stats.count,
         memory: formatMemory(stats.memory),
+        types: [...stats.types].join(", "),
         width: stats.width,
         height: stats.height,
       }))

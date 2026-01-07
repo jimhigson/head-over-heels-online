@@ -1,5 +1,7 @@
 import type { TEXTURE_FORMATS, TextureSource } from "pixi.js";
 
+import { initOriginalSpritesheet } from "../sprites/spritesheet/loadedSpriteSheet";
+
 export interface TrackedTextureSource {
   textureSource: TextureSource;
   createdAt: number;
@@ -13,7 +15,9 @@ export interface TrackedTextureSource {
     | "ItemAppearance"
     | "ItemShadowRenderer"
     | "PaletteSwapFilter"
-    | "Spritesheet swop";
+    | "spritesheet(original)"
+    | "spritesheet(variant)"
+    | "TextContainer";
 }
 
 // Track all dynamically created textures
@@ -35,8 +39,14 @@ const detectType = (stack: string): TrackedTextureSource["type"] => {
   if (stack.includes("#tickMasks")) {
     return "Item/Item Mask";
   }
-  if (stack.includes("setSpritesheetPaletteSwops")) {
-    return "Spritesheet swop";
+  if (stack.includes("TextContainer")) {
+    return "TextContainer";
+  }
+  if (stack.includes("createSpritesheetVariant")) {
+    return "spritesheet(variant)";
+  }
+  if (stack.includes(initOriginalSpritesheet.name)) {
+    return "spritesheet(original)";
   }
   return undefined;
 };
