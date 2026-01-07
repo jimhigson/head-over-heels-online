@@ -14,6 +14,9 @@ import {
 } from "./textureSizes";
 import { withSpeed } from "./withSpeed";
 
+let x: number = 0;
+let y: number = 0;
+
 const frames = {
   ...seriesOfNumberedTextures(
     "dalek",
@@ -623,75 +626,88 @@ const frames = {
 
   stepStool: {
     frame: {
-      ...largeItemGridLocation({ x: 0, y: 1 }),
+      ...largeItemGridLocation({ x: (x = 0), y: (y = 1) }),
       ...largeItemTextureSize,
     },
   },
   "shadowMask.stepStool": {
     frame: {
-      ...largeItemGridLocation({ x: 1, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
 
   "volcano.1": {
     frame: {
-      ...largeItemGridLocation({ x: 2, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
   "volcano.2": {
     frame: {
-      ...largeItemGridLocation({ x: 3, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
   "shadowMask.volcano": {
     frame: {
-      ...largeItemGridLocation({ x: 4, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
 
   hushPuppy: {
     frame: {
-      ...largeItemGridLocation({ x: 5, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
   "shadowMask.hushPuppy": {
     frame: {
-      ...largeItemGridLocation({ x: 6, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
   "toaster.on": {
     frame: {
-      ...largeItemGridLocation({ x: 7, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
+  // same as sprite below: kept for backwards compatibility with old saves (Jan '26)
   "toaster.off": {
     frame: {
-      ...largeItemGridLocation({ x: 8, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
+      ...largeItemTextureSize,
+    },
+  },
+  "toaster.off.1": {
+    frame: {
+      ...largeItemGridLocation({ x, y }),
+      ...largeItemTextureSize,
+    },
+  },
+  "toaster.off.2": {
+    frame: {
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
   "shadowMask.toaster": {
     frame: {
-      ...largeItemGridLocation({ x: 9, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
   sandwich: {
     frame: {
-      ...largeItemGridLocation({ x: 10, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
   "shadowMask.sandwich": {
     frame: {
-      ...largeItemGridLocation({ x: 11, y: 1 }),
+      ...largeItemGridLocation({ x: ++x, y }),
       ...largeItemTextureSize,
     },
   },
@@ -841,6 +857,10 @@ export const itemsSpritesheetData = {
       0.5,
     ),
     volcano: withSpeed(seriesOfAnimationFrameTextureIds("volcano", 2), 3 / 16),
+    "toaster.off": withSpeed(
+      seriesOfAnimationFrameTextureIds("toaster.off", 2),
+      3 / 16,
+    ),
     "spring.bounce": withSpeed(
       [
         "spring.released",

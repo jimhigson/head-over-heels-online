@@ -5,7 +5,7 @@ import type { ItemAppearance } from "./ItemAppearance";
 
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { emptyObject } from "../../../utils/empty";
-import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
+import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { subXy } from "../../../utils/vectors/vectors";
 import { isChargingCyberman } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
@@ -120,24 +120,27 @@ export const toasterAppearance: ItemAppearance<
   }
 
   const outputContainer = createSprite({
-    textureIdCallback(x, y) {
+    subSpriteVariations(x, y) {
       const cyberManId = chargePositions[x][y];
       if (cyberManId === undefined) {
-        return "toaster.off";
+        return { animationId: "toaster.off" };
       }
       const cyberman = room.items[cyberManId] as
         | ItemInPlay<"monster">
         | undefined;
-      return cyberman?.state.everActivated ? "toaster.off" : "toaster.on";
+      return cyberman?.state.everActivated ?
+          { animationId: "toaster.off" }
+        : { textureId: "toaster.on" };
     },
     times: times ?? emptyObject,
     spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
   });
 
   // that container potentially contains many sprites - reduce to a single sprite
-  const outputSprite = maybeRenderContainerToSprite(
+  const outputSprite = maybeRenderContainerToAnimatedSprite(
     pixiRenderer,
     outputContainer,
+    "toaster.off",
   );
 
   return {
