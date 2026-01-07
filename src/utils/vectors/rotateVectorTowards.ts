@@ -22,16 +22,19 @@ export const rotateVectorTowards = (
 
   const absAngleDiff = Math.abs(angleDiff);
 
-  if (absAngleDiff + epsilon > Math.PI) {
-    // turning to opposite direction - short cut and go straight to the target
-    return target;
-  }
   if (absAngleDiff < epsilon) {
     return target;
   }
 
+  // when close to opposite direction (±π), always turn positive (clockwise since x and y axes have origin towards the viewer)
+  const correctedAngleDiff =
+    absAngleDiff > Math.PI - epsilon ? absAngleDiff : angleDiff;
+
   const maxRotation = angularVelocityRadiansPerMs * deltaMs;
-  const rotation = Math.max(-maxRotation, Math.min(maxRotation, angleDiff));
+  const rotation = Math.max(
+    -maxRotation,
+    Math.min(maxRotation, correctedAngleDiff),
+  );
 
   const c = Math.cos(rotation);
   const s = Math.sin(rotation);
