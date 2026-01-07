@@ -1,4 +1,4 @@
-import type { TailwindPalette } from "../../../../../../../tailwind.config";
+import type { TailwindColourName } from "../../../../../../../tailwind.config";
 import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureId } from "../../../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { SanitisedForClassName } from "../../../../tailwindSprites/SanitiseForClassName";
@@ -8,7 +8,7 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
-const colourCycle: Record<PlanetName, `text-${TailwindPalette}`[]> = {
+const colourCycle: Record<PlanetName, `text-${TailwindColourName}`[]> = {
   egyptus: ["text-lightBeige", "text-midRed", "text-highlightBeige"],
   blacktooth: ["text-midGrey", "text-lightGrey", "text-moss", "text-midRed"],
   safari: ["text-moss", "text-midRed", "text-highlightBeige"],

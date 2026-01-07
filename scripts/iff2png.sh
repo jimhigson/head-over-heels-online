@@ -128,12 +128,9 @@ mkdir $TMP_DIR
 mkdir $TMP_DIR_ICONS
 
 cd gfx;
-for iffFile in *.iff; do
-    echo
-    echo
-    echo "🤖 converting iff: $iffFile -> " ../$TMP_DIR/${iffFile%.iff}.png ...
-    yes | ffmpeg -hide_banner -i $iffFile -update 1 -frames:v 1 ../$TMP_DIR/${iffFile%.iff}.png
-done
+echo
+echo "🤖 converting iff: sprites.iff -> " ../$TMP_DIR/sprites.png ...
+yes | ffmpeg -hide_banner -i sprites.iff -update 1 -frames:v 1 ../$TMP_DIR/sprites.png
 cd ..
 # put the easily visually parsable png version somewhere - this is never used by the game
 cp "$TMP_DIR/sprites.png" "$TMP_DIR/sprites.borders".png
@@ -160,6 +157,11 @@ pngquant -vf --quality 100-100 \
     -- "$TMP_DIR/sprites.png"
 magick identify -verbose "$TMP_DIR/sprites.png" | grep -E "^  (Geometry|Colorspace|Type|Depth|Colors):"
 echo "  Filesize: $(ls -lh "$TMP_DIR/sprites.png" | awk '{print $5}')"
+
+# Tag as Display P3 by embedding a compact ICC profile (456 bytes)
+# from https://github.com/saucecontrol/Compact-ICC-Profiles
+echo "🤖 tagging sprites.png as Display P3"
+magick "$TMP_DIR/sprites.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/sprites.png"
 
 #make the sprite:
 ICON_FRAME=$(scripts/iconLocationOnSpriteSheet.ts)

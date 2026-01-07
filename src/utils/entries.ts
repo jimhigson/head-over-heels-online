@@ -49,9 +49,12 @@ export const transformObject = <
   VOut,
 >(
   object: Partial<Record<KIn, VIn>>,
-  transform: (entry: [KIn, VIn]) => [KOut, VOut],
+  /** function to transform the key/value pair as an entry, and return a new entry, or undefined to skip */
+  transform: (entry: [KIn, VIn]) => [KOut, VOut] | undefined,
 ): Record<KOut, VOut> => {
   const inIter = iterate(objectEntriesIter(object));
-  const transformedIter = inIter.map(transform);
+  const transformedIter = inIter
+    .map(transform)
+    .filter((entry) => entry !== undefined);
   return fromEntries(transformedIter) as Record<KOut, VOut>;
 };

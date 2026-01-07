@@ -42,6 +42,22 @@ const timeoutPerRoom = (process.env.CI ? 40_000 : 8_000) * osSlowness;
 const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
+const screenshotThreshold = (projectName: string) =>
+  (
+    process.env.CI &&
+    process.platform === "linux" &&
+    projectName.toLowerCase().includes("webkit")
+  ) ?
+    // on Linux Github runners, Safari doesn't support p3 colour mode in canvases;
+    // colors differ more from local screenshots:
+    0.2
+    // playwright default is 0.2, which is very permissive to palette changes.
+    // Whereas 0 makes builds fail with invisible differences between
+    // the OS running the test, at least in webkit/safari.
+    // keep a much smaller threshold than normal, but not zero:
+    // on Linux CI + Safari, P3 canvas mode isn't supported so colors differ slightly
+  : 0.02;
+
 const campaignRoomIds = keys(campaign.rooms);
 
 const resolveRoomIds = (
@@ -529,11 +545,7 @@ test.describe("Room Visual Snapshots", () => {
               .soft(page)
               .toHaveScreenshot(`${roomId}${filenameSuffix}.png`, {
                 fullPage: false,
-                // default is 0.2, which is very permissive to palette changes.
-                // Whereas 0 makes builds fail with invisible differences between
-                // the OS running the test, at least in webkit/safari.
-                // keep a much smaller threshold than normal, but not zero:
-                threshold: 0.02,
+                threshold: screenshotThreshold(testInfo.project.name),
                 scale: "device",
                 maxDiffPixels: 0,
               });

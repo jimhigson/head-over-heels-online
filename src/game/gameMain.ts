@@ -1,3 +1,5 @@
+import type { WebGLRenderer } from "pixi.js";
+
 import { Application } from "pixi.js";
 import { TextureStyle } from "pixi.js";
 
@@ -37,7 +39,7 @@ export const gameMain = async <RoomId extends string>(
   campaignLocator: CampaignLocator,
   inputStateTracker: InputStateTrackerInterface,
 ): Promise<GameApi<RoomId>> => {
-  const app = new Application();
+  const app = new Application<WebGLRenderer>();
 
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
@@ -60,6 +62,13 @@ export const gameMain = async <RoomId extends string>(
       useBackBuffer: true,
     }),
   ]);
+
+  /**
+   * put the canvas into p3 without any other changes of the colours used. This will cause colour shifts from
+   * the raw spritesheet since I'm editing in an editor that doesn't support p3. However, the hue changes aren't
+   * very dramatic, and the increased vibrancy looks nice for a retro game
+   */
+  app.renderer.gl.drawingBufferColorSpace = "display-p3";
 
   if (campaignResult.error) {
     throw new Error(
