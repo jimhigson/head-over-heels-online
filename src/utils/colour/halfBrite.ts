@@ -1,5 +1,7 @@
 import { Color } from "pixi.js";
 
+import { parseHex } from "./parseHex";
+
 /**
  * how dark to make the shadows in range 0..1 to emulate Amiga EHB (lower is darker)
  */
@@ -28,22 +30,13 @@ export const halfbrite = (c: Color, dimFactor = amigaHalfBriteBrightness) => {
   });
   return hb;
 };
-export function halfbriteHex(hex: string) {
-  // Remove the hash (#) if it exists
-  hex = hex.replace(/^#/, "");
+export const halfbriteHex = (hex: string) => {
+  const { r, g, b } = parseHex(hex);
 
-  // Parse the RGB values
-  let r = parseInt(hex.substring(0, 2), 16);
-  let g = parseInt(hex.substring(2, 4), 16);
-  let b = parseInt(hex.substring(4, 6), 16);
-
-  // Halve the brightness of each channel
-  r = Math.floor(r * amigaHalfBriteBrightness);
-  g = Math.floor(g * amigaHalfBriteBrightness);
-  b = Math.floor(b * amigaHalfBriteBrightness);
-
-  // Convert back to hex and pad with zeros if necessary
-  const toHex = (val: number) => val.toString(16).padStart(2, "0");
+  const toHex = (val: number) =>
+    Math.floor(val * amigaHalfBriteBrightness)
+      .toString(16)
+      .padStart(2, "0");
 
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
+};

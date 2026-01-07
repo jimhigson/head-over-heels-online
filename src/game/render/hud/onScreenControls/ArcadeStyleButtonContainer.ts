@@ -106,11 +106,17 @@ export class ArcadeStyleButtonContainer<
         halfbrite(colour, 0.66)
       : zxSpectrumColor(buttonColours.zx[which], "dimmed");
 
+    const colourBlack =
+      colourised ?
+        gameColour("pureBlack", room.color.shade === "dimmed")
+      : zxSpectrumColor("black");
+
     const filter = new PaletteSwapFilter({
       lutType: "sparse",
       paletteSwaps: {
         replaceLight: colour,
         replaceDark: colourDim,
+        pureBlack: colourBlack,
       },
     });
     spriteTemplate.filters = filter;

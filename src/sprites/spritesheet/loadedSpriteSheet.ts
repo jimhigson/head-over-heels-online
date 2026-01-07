@@ -1,11 +1,12 @@
 import type { Renderer } from "pixi.js";
 
-import { Assets, RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
+import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 
 import type { TextureId } from "./spritesheetData/spriteSheetData";
 
 import spritesheetUrl from "../../../gfx/sprites.png";
 import { PreprocessShadowTexturesFilter } from "../../game/render/filters/PreprocessShadowTexturesFilter";
+import { stripIccProfile } from "../../utils/png/stripIccProfile";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
 import { spritesheetData } from "./spritesheetData/spriteSheetData";
 
@@ -20,7 +21,18 @@ export const loadSpritesheetAssets = async () => {
   }
 
   try {
-    texture = await Assets.load<Texture>(spritesheetUrl);
+    // strip ICC profile from PNG to preserve raw RGB values for shader colour matching
+    // - this is more reliable than colorSpaceConversion: "none" across browsers/platforms, especially when
+    //   running playwright on github ci/cd Linux+Safari
+    // - the ICC profile in the PNG is still used when loaded via CSS
+    // - the final image shown on the canvas will be in p3 to make it more vibrant, but all the calculations
+    //   are done in raw sRGB/hex space
+    const response = await fetch(spritesheetUrl);
+    const pngBuffer = await response.arrayBuffer();
+    const strippedBuffer = stripIccProfile(pngBuffer);
+    const blob = new Blob([strippedBuffer], { type: "image/png" });
+    const bitmap = await createImageBitmap(blob);
+    texture = Texture.from(bitmap);
   } catch (_e) {
     console.warn("did not load textures - hopefully we are running under node");
     // allows the game to run in vitest without using @pixi/node to load the

@@ -12,6 +12,27 @@ Features mobile and desktop support, support for gamepads, keyboard, and touch i
 
 - CRT shaders made for this project spun out into their own repo here: [jims_shaders](https://github.com/jimhigson/jims_shaders).
 
+## Discord/social
+
+If you'd like, you can discuss the project on [Discord](https://discord.gg/Se5Jznc2jm)
+
+## Developing
+
+This project uses Playwright for visual regression testing, so the repo history can get large with screenshots. It is recommended to clone shallowly, since historic screenshots will inflate the size of the local repo:
+
+```sh
+# Clone with only the latest commit
+git clone --depth 1 https://github.com/jimhigson/hohjs.git
+```
+
+Then, run the game with:
+
+```sh
+pnpm i # install deps
+pnpm dev:game
+```
+
+For more info on developing, pls ask in [the Discord server](https://discord.gg/Se5Jznc2jm)
 
 ## Credits
 
@@ -23,8 +44,8 @@ Features mobile and desktop support, support for gamepads, keyboard, and touch i
 - Recoulourised 16 colour sprites are built from rips [by Tippy on Spriters Resource](https://www.spriters-resource.com/zx_spectrum/headoverheels/) based on original artwork by Bernie Drummand (sadly [no longer with us](https://www.theregister.com/2021/11/17/rip_bernie_drummond/)).
 * Playtesting, ideas, map design, and general support by my brother, Tom Higson
 * Playtesting, moral support, and constant comms by [Jon Albaugh](https://x.com/fextwolf?s=21&t=PEqxJblCn3JB_NH8AOR6Zg)
-* Head over heels [font](https://fontstruct.com/fontstructions/show/996776/head_over_heels)
-recreated by [Patrick H. Lauke](http://splintered.co.uk/) is used in save dialogs for the level editor
+* Head over heels [font](https://fontstruct.com/fontstructions/show/996776/head_over_heels) recreated by [Patrick H. Lauke](http://splintered.co.uk/) is used in save dialogs for the level editor
+* [PyDPainter](https://pydpainter.org/) used in this project for period-correct pixel art editing
 
 ## License
 This project is licensed under the GNU Affero General Public License v3.0 (only) - see the [LICENSE](LICENSE) file for details. All code is original except where indicated otherwise.

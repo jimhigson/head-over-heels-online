@@ -2,52 +2,14 @@ import type { Config } from "tailwindcss";
 
 import scrollbar from "tailwind-scrollbar";
 
-import spritesheetPalette from "./src/_generated/palette/spritesheetPalette.json" with { type: "json" };
-import {
-  resolutions,
-  zxSpectrumColors,
-  zxSpectrumColorsDimmed,
-} from "./src/originalGame";
-import { spritesTailwindPlugin } from "./src/spritesTailwindPlugin";
-import { halfbriteHex } from "./src/utils/colour/halfBrite";
-import { transformObject } from "./src/utils/entries";
+import type { colorsSrgb } from "./src/tailwind/tailwindColours";
 
-const halfbriteSpritesheetPalette = transformObject(
-  spritesheetPalette,
-  ([colourName, colourValue]) => [
-    (colourName + "Halfbrite") as `${typeof colourName}Halfbrite`,
-    halfbriteHex(colourValue),
-  ],
-);
-const zxSpecTailwindColours = transformObject(
-  zxSpectrumColors,
-  ([colourName, colourValue]) => [
-    `zx${colourName.charAt(0).toUpperCase()}${colourName.slice(1)}` as `zx${Capitalize<typeof colourName>}`,
-    colourValue.toHex(),
-  ],
-);
+import { resolutions } from "./src/originalGame";
+import { fallbackColourVariables } from "./src/tailwind/plugins/fallbackColourVariables";
+import { spritesTailwindPlugin } from "./src/tailwind/plugins/spritesTailwindPlugin";
+import { coloursCssVariables } from "./src/tailwind/tailwindColours";
 
-const zxSpecTailwindColoursDimmed = transformObject(
-  zxSpectrumColorsDimmed,
-  ([colourName, colourValue]) => [
-    `zx${colourName.charAt(0).toUpperCase()}${colourName.slice(1)}Dimmed` as `zx${Capitalize<typeof colourName>}Dimmed`,
-    colourValue.toHex(),
-  ],
-);
-
-const colors = {
-  ...spritesheetPalette,
-  ...halfbriteSpritesheetPalette,
-
-  // zx Spectrum colours prefixed with 'zx' ie zxRed, zxGreen
-  ...zxSpecTailwindColours,
-  // zx Spectrum colours prefixed with 'zx' ie zxRedDimmed, zxGreenDimmed
-  ...zxSpecTailwindColoursDimmed,
-
-  transparent: "transparent",
-} as const;
-
-export type TailwindPalette = keyof typeof colors;
+export type TailwindColourName = keyof typeof colorsSrgb;
 
 const blockMultiples = {
   0: "0px",
@@ -144,7 +106,7 @@ export default {
     },
   ],
   theme: {
-    colors,
+    colors: coloursCssVariables,
     spacing: {
       // for when rendering with (stacked) sprites - how much to pull-up the bottom sprite
       bottomStackPullup: `calc(var(--scale) * 17px)`,
@@ -245,6 +207,7 @@ export default {
     },
   },
   plugins: [
+    fallbackColourVariables,
     spritesTailwindPlugin,
     scrollbar({ preferredStrategy: "pseudoelements", nocompatible: true }),
   ],

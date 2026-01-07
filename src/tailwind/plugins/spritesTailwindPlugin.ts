@@ -3,17 +3,17 @@ import type { CSSRuleObject } from "tailwindcss/types/config";
 import { imageSize } from "image-size";
 import plugin from "tailwindcss/plugin";
 
-import spritesheetPalette from "./_generated/palette/spritesheetPalette.json" with { type: "json" };
-import { sanitiseForClassName } from "./game/components/tailwindSprites/SanitiseForClassName";
-import { zxSpectrumColors, zxSpectrumFrameRate } from "./originalGame";
-import { isTextureId } from "./sprites/assertIsTextureId";
+import spritesheetPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
+import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { zxSpectrumColors, zxSpectrumFrameRate } from "../../originalGame";
+import { isTextureId } from "../../sprites/assertIsTextureId";
 import {
   type FramesWithSpeed,
   spritesheetData,
   type TextureId,
-} from "./sprites/spritesheet/spritesheetData/spriteSheetData";
-import { halfbriteHex } from "./utils/colour/halfBrite";
-import { objectEntriesIter } from "./utils/entries";
+} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import { halfbriteHex } from "../../utils/colour/halfBrite";
+import { objectEntriesIter } from "../../utils/entries";
 
 const spritesheetSize = imageSize("gfx/sprites.png");
 

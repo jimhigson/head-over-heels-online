@@ -173,7 +173,19 @@ jobs:
 
       - name: Install Playwright system dependencies
         if: (contains(matrix.browser, 'webkit') || contains(matrix.browser, 'safari') || contains(matrix.browser, 'firefox')) && runner.os == 'Linux'
-        run: pnpm playwright install-deps
+        run: |
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo apt-get clean
+          sudo apt-get update
+          # Retry loop - ports.ubuntu.com load balances across mirrors that can be out of sync
+          for attempt in 1 2 3; do
+            echo "=== Attempt $attempt ==="
+            if pnpm playwright install-deps; then
+              break
+            fi
+            echo "=== Failed, retrying in 10s ==="
+            sleep 10
+          done
 
       - name: Install Playwright browsers
         shell: bash
