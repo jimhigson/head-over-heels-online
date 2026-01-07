@@ -42,21 +42,42 @@ const timeoutPerRoom = (process.env.CI ? 40_000 : 8_000) * osSlowness;
 const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
-const screenshotThreshold = (projectName: string) =>
-  (
-    process.env.CI &&
-    process.platform === "linux" &&
-    projectName.toLowerCase().includes("webkit")
-  ) ?
-    // on Linux Github runners, Safari doesn't support p3 colour mode in canvases;
-    // colors differ more from local screenshots:
-    0.2
-    // playwright default is 0.2, which is very permissive to palette changes.
-    // Whereas 0 makes builds fail with invisible differences between
-    // the OS running the test, at least in webkit/safari.
-    // keep a much smaller threshold than normal, but not zero:
-    // on Linux CI + Safari, P3 canvas mode isn't supported so colors differ slightly
-  : 0.02;
+const screenshotThreshold = ({
+  ci,
+  platform,
+  projectName,
+  logHeader,
+}: {
+  ci: boolean;
+  platform: NodeJS.Platform;
+  projectName: string;
+  logHeader: string;
+}) => {
+  const isWebkit =
+    projectName.toLowerCase().includes("webkit") ||
+    projectName.toLowerCase().includes("safari");
+
+  const threshold =
+    ci && platform === "linux" && isWebkit ?
+      // on Linux Github runners, Safari doesn't support p3 colour mode in canvases;
+      // colors differ more from local screenshots:
+      0.2
+      // playwright default is 0.2, which is very permissive to palette changes.
+      // Whereas 0 makes builds fail with invisible differences between
+      // the OS running the test, at least in webkit/safari.
+      // keep a much smaller threshold than normal, but not zero:
+      // on Linux CI + Safari, P3 canvas mode isn't supported so colors differ slightly
+    : 0.02;
+
+  console.log(
+    `${logHeader} Threshold for image comparison will be ${threshold} since:
+        ci is ${ci}
+        platform is ${platform}
+        projectName is ${projectName}`,
+  );
+
+  return threshold;
+};
 
 const campaignRoomIds = keys(campaign.rooms);
 
@@ -411,7 +432,14 @@ test.describe("Room Visual Snapshots", () => {
       page,
     }, testInfo) => {
       test.setTimeout(testRooms.length * timeoutPerRoom + 20_000);
+
       const formattedName = `${formatProjectName(testInfo.project.name)} (${testIndex})`;
+      const threshold = screenshotThreshold({
+        ci: !!process.env.CI,
+        platform: process.platform,
+        projectName: testInfo.project.name,
+        logHeader: formattedName,
+      });
 
       forwardBrowserConsoleToNodeConsole(page, formattedName);
 
@@ -545,7 +573,7 @@ test.describe("Room Visual Snapshots", () => {
               .soft(page)
               .toHaveScreenshot(`${roomId}${filenameSuffix}.png`, {
                 fullPage: false,
-                threshold: screenshotThreshold(testInfo.project.name),
+                threshold,
                 scale: "device",
                 maxDiffPixels: 0,
               });
