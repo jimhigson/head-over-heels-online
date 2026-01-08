@@ -8,11 +8,12 @@ import type { ItemAppearance } from "./ItemAppearance";
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { spritesheetData } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { neverTime } from "../../../utils/neverTime";
+import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { tangentAxis } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
-const slowdownTimeMs = 500;
+const slowdownTimeMs = 250;
 
 type ConveyorRenderProps = {
   moving: boolean;
@@ -77,7 +78,7 @@ const createRendering = (
 const conveyorAppearanceImpl: ItemAppearance<
   "conveyor",
   ConveyorRenderProps,
-  Container<AnimatedSprite>
+  AnimatedSprite
 > = ({
   renderContext: {
     item: {
@@ -85,18 +86,22 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy, direction },
     },
     room: { roomTime },
-    general: { colourised },
+    general: { colourised, pixiRenderer },
   },
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
   const moving = isStoodOn(stoodOnBy);
 
+  const justStopped = !moving && (currentlyRenderedProps?.moving ?? false);
+
   // the time when it stopped moving, if ever:
   const roomTimeStoppedMoving =
-    (!moving && currentlyRenderedProps?.moving ?
+    justStopped ?
+      // record the time when it stopped:
       roomTime
-    : currentlyRenderedProps?.roomTimeStoppedMoving) ?? neverTime;
+      // keep whatever value we had before:
+    : (currentlyRenderedProps?.roomTimeStoppedMoving ?? neverTime);
 
   const periodSinceStopped =
     moving ? 0 : Math.min(roomTime - roomTimeStoppedMoving, slowdownTimeMs);
@@ -105,28 +110,32 @@ const conveyorAppearanceImpl: ItemAppearance<
   const rerender =
     !currentOutput || direction !== currentlyRenderedProps?.direction;
   const spritesheetVariant = colourised ? "for-current-room" : "uncolourised";
-  const rendering =
+  const rendering: AnimatedSprite =
     rerender ?
-      createRendering(direction, times, spritesheetVariant)
+      maybeRenderContainerToAnimatedSprite(
+        pixiRenderer,
+        createRendering(direction, times, spritesheetVariant),
+        "conveyor.x",
+      )
     : currentOutput;
 
   // how fast to play the animation, with slowdown for how long since it stopped moving
   const playSpeedFrac = Math.max(0, 1 - periodSinceStopped / slowdownTimeMs);
 
-  for (const c of rendering.children) {
-    if (playSpeedFrac === 0) {
-      c.stop();
-    } else {
-      const playSpeed = conveyorAnimationSpeed * easeOut(playSpeedFrac);
-      c.play();
-      c.animationSpeed = playSpeed;
-    }
+  if (playSpeedFrac === 0) {
+    rendering.stop();
+  } else {
+    const playSpeed = conveyorAnimationSpeed * easeOut(playSpeedFrac);
+    rendering.play();
+    rendering.animationSpeed = playSpeed;
   }
 
-  return {
-    output: rendering,
-    renderProps: { moving, roomTimeStoppedMoving, direction },
-  };
+  return rerender || justStopped || moving !== currentlyRenderedProps?.moving ?
+      {
+        output: rendering,
+        renderProps: { moving, roomTimeStoppedMoving, direction },
+      }
+    : "no-update";
 };
 
 export const conveyorAppearance = itemAppearanceOutsideView(

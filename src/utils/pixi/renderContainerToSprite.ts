@@ -128,16 +128,18 @@ export const renderContainerToSprite = (
 };
 
 /** render a container full of animated sprites to a single animated sprite with one new texture per-frame */
-export const maybeRenderContainerToAnimatedSprite = (
+export const maybeRenderContainerToAnimatedSprite = <
+  C extends AnimatedSprite | Sprite,
+>(
   pixiRenderer: Renderer,
-  container: Container,
+  container: C | Container<C>,
   // an animation id - used only to get the correct animation speed - multiple animations
   // running at different speeds are not supported
   animationId: AnimationId,
   label?: string,
-): AnimatedSprite | Sprite => {
+): C => {
   if (container instanceof AnimatedSprite || container instanceof Sprite) {
-    return container;
+    return container as C;
   }
 
   const localBounds = container.getLocalBounds();
@@ -179,7 +181,7 @@ export const maybeRenderContainerToAnimatedSprite = (
     y: Math.floor(-localBounds.minY),
   };
 
-  return outputAnimatedSprite;
+  return outputAnimatedSprite as C;
 };
 
 /**
