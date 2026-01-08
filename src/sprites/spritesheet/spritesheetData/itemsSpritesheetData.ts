@@ -31,13 +31,6 @@ const frames = {
     },
   },
 
-  ...seriesOfNumberedTextures(
-    "bubbles.cold",
-    2,
-    smallItemGridLocation({ x: 3, y: 0 }),
-    smallItemTextureSize,
-  ),
-
   headlessBase: {
     frame: {
       ...smallItemGridLocation({ x: 7, y: 0 }),
@@ -514,20 +507,32 @@ const frames = {
   ...seriesOfNumberedTextures(
     "bubbles.white",
     3,
-    smallItemGridLocation({ x: 19, y: 12 }),
+    smallItemGridLocation({ x: (x = 23), y: (y = 9) }),
     smallItemTextureSize,
   ),
 
   ...seriesOfNumberedTextures(
     "bubbles.taupe",
     3,
-    smallItemGridLocation({ x: 19, y: 13 }),
+    smallItemGridLocation({ x, y: ++y }),
     smallItemTextureSize,
   ),
   ...seriesOfNumberedTextures(
     "bubbles.jetpack",
     2,
-    smallItemGridLocation({ x: 19, y: 14 }),
+    smallItemGridLocation({ x, y: ++y }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "bubbles.blueGreen",
+    2,
+    smallItemGridLocation({ x, y: ++y }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "bubbles.cold",
+    2,
+    smallItemGridLocation({ x, y: ++y }),
     smallItemTextureSize,
   ),
 
@@ -825,6 +830,10 @@ export const itemsSpritesheetData = {
     ),
     "bubbles.cold": withSpeed(
       ["bubbles.cold.1", "bubbles.cold.2" /*, "bubbles.3"*/] as const,
+      0.25,
+    ),
+    "bubbles.blueGreen": withSpeed(
+      ["bubbles.blueGreen.1", "bubbles.blueGreen.2"] as const,
       0.25,
     ),
     "bubbles.white": withSpeed(

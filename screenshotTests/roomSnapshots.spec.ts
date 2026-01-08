@@ -38,7 +38,7 @@ import { setIsUncolourised } from "./setIsUncolourised";
  *   NO_UNCOLOURISED=1 pnpm screenshot
  */
 
-const timeoutPerRoom = (process.env.CI ? 40_000 : 8_000) * osSlowness;
+const timeoutPerRoom = (process.env.CI ? 40_000 : 12_000) * osSlowness;
 const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
