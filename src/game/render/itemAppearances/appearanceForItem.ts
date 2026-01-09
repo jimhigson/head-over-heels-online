@@ -6,7 +6,10 @@ import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
+import {
+  maybeRenderContainerToAnimatedSprite,
+  maybeRenderContainerToSprite,
+} from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
@@ -50,14 +53,17 @@ const itemAppearancesMap: {
         item: {
           config: { axis, times, disappearing },
         },
-        general: { colourised },
+        general: { colourised, pixiRenderer },
       },
     }) => {
-      return createSprite({
-        textureId: `barrier.${axis}${disappearing ? ".disappearing" : ""}`,
-        times,
-        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
-      });
+      return maybeRenderContainerToSprite(
+        pixiRenderer,
+        createSprite({
+          textureId: `barrier.${axis}${disappearing ? ".disappearing" : ""}`,
+          times,
+          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        }),
+      );
     },
   ),
 
