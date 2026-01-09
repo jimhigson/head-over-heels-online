@@ -1915,7 +1915,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 24,
         "z": 24,
       },
-      "castsShadowWhileStoodOn": false,
+      "castsShadowWhileStoodOn": true,
       "config": {
         "direction": "towards",
         "inHiddenWall": true,
@@ -1924,6 +1924,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "id": "door@5,0,2/frameTop",
       "jsonItemId": "door@5,0,2",
+      "noShadowCastOn": undefined,
       "position": {
         "x": 5,
         "y": 0,
@@ -1939,6 +1940,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 16,
         "z": 0,
       },
+      "shadowCastTexture": undefined,
       "state": {
         "actedOnAt": {
           "by": {},
@@ -2228,7 +2230,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 24,
         "z": 24,
       },
-      "castsShadowWhileStoodOn": false,
+      "castsShadowWhileStoodOn": true,
       "config": {
         "direction": "away",
         "inHiddenWall": false,
@@ -2237,6 +2239,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "id": "door@5,14,2/frameTop",
       "jsonItemId": "door@5,14,2",
+      "noShadowCastOn": [
+        "doorLegs",
+      ],
       "position": {
         "x": 5,
         "y": 14,
@@ -2248,6 +2253,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "renderAabbOffset": undefined,
+      "shadowCastTexture": {
+        "flipX": true,
+        "spritesheetVariant": "original",
+        "textureId": "shadow.doorFrame.top.y",
+      },
       "state": {
         "actedOnAt": {
           "by": {},

@@ -201,7 +201,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     spaceAboveSurfaceBuffer.aabb.y = item.aabb.y;
     // z remains veryHighZ as set in the buffer initialization
 
-    const castersSet = new Set(
+    const castersAbove = new Set(
       collisionItemWithIndex(
         spaceAboveSurfaceBuffer,
         room[roomSpatialIndexKey],
@@ -215,14 +215,16 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           itemCastsShadow(maybeCaster) &&
           // ignore items above that are standing on and don't cast a shadow while they are:
           (maybeCaster.castsShadowWhileStoodOn ||
-            maybeCaster.state.position.z > item.state.position.z + item.aabb.z),
+            maybeCaster.state.position.z >
+              item.state.position.z + item.aabb.z) &&
+          !maybeCaster.noShadowCastOn?.includes(item.type),
       ),
     );
 
     let hasAnyShadows = false;
 
     for (const [previousCaster, shadowSprite] of this.#shadowSprites) {
-      if (!castersSet.has(previousCaster)) {
+      if (!castersAbove.has(previousCaster)) {
         // no longer casting a shadow on this item - remove the shadow sprite:
         this.#shadowsContainer.removeChild(shadowSprite);
         shadowSprite.destroy();
@@ -230,17 +232,17 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       }
     }
 
-    for (const casterItem of castersSet) {
+    for (const caster of castersAbove) {
       hasAnyShadows = true;
 
-      let shadowSprite = this.#shadowSprites.get(casterItem);
+      let shadowSprite = this.#shadowSprites.get(caster);
       let isNew = false;
 
       if (!shadowSprite) {
         // wasn't casting a shadow before - create a new one:
-        const { times } = casterItem.config as ConsolidatableConfig;
+        const { times } = caster.config as ConsolidatableConfig;
 
-        const { shadowCastTexture } = casterItem;
+        const { shadowCastTexture } = caster;
 
         const castTextureMultiplied = renderMultipliedXy(
           typeof shadowCastTexture === "string" ?
@@ -256,19 +258,19 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           castTextureMultiplied,
         );
 
-        shadowSprite.label = casterItem.id;
+        shadowSprite.label = caster.id;
         this.#shadowsContainer.addChild(shadowSprite);
-        this.#shadowSprites.set(casterItem, shadowSprite);
+        this.#shadowSprites.set(caster, shadowSprite);
         isNew = true;
       }
 
-      if (isNew || surfaceMoved || movedItems.has(casterItem)) {
+      if (isNew || surfaceMoved || movedItems.has(caster)) {
         // shadow needs (re) positioning
         const screenXy = projectWorldXyzToScreenXy({
           ...addXy(
-            subXy(casterItem.state.position, item.state.position),
+            subXy(caster.state.position, item.state.position),
             // use just the xy part of the shadow offset to position the shadow on the surface:
-            casterItem.shadowOffset ?? originXy,
+            caster.shadowOffset ?? originXy,
           ),
           // on the top of the item:
           z: item.aabb.z,

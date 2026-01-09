@@ -152,6 +152,9 @@ export type ItemInPlay<
      */
     | TextureId;
 
+  /** items this item will cast no shadows on */
+  noShadowCastOn?: Array<ItemInPlayType>;
+
   /**
    * if true casts shadow while stood on. Most items can cast casting a shadow in this case, since
    * they will completely cover up and hide their own shadow
