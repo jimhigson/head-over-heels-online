@@ -125,6 +125,9 @@ const frames = {
   "shadow.wall.y": {
     frame: { x: 432, y: 435, w: 36, h: 16 },
   },
+  "shadow.doorFrame.top.y": {
+    frame: { x: 432, y: 402, w: 36, h: 32, pivot: { x: 18, y: 31.5 } },
+  },
   "generic.floor.deadly": {
     frame: { x: 785, y: 462, ...floorTileSize },
   },

@@ -28,6 +28,19 @@ const shadowDoorFloatingThresholdY: SpecifiedTextureCreateSpriteOptions =
     spritesheetVariant: "original",
   });
 
+const shadowDoorFrameTopY: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+  textureId: "shadow.doorFrame.top.y",
+  spritesheetVariant: "original",
+});
+
+const shadowDoorFrameTopX: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+  textureId: "shadow.doorFrame.top.y",
+  flipX: true,
+  spritesheetVariant: "original",
+});
+
+const doorFrameTopNoCastShadowOn = ["doorLegs" as const];
+
 const shadowDoorFloatingThresholdX: SpecifiedTextureCreateSpriteOptions =
   Object.freeze({
     textureId: "shadow.door.floatingThreshold.double.y",
@@ -210,6 +223,13 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         aabb: addXyz(renderAabb, doorTunnelAabbPx),
         renderAabb,
         renderAabbOffset: inHidden ? doorTunnelAabbPx : undefined,
+        shadowCastTexture:
+          inHidden ? undefined
+          : alongWallAxis === "x" ? shadowDoorFrameTopX
+          : shadowDoorFrameTopY,
+        // ie, if character jumps while stood in a doorway, the top of the doorframe is now 'standing' on them:
+        castsShadowWhileStoodOn: true,
+        noShadowCastOn: inHidden ? undefined : doorFrameTopNoCastShadowOn,
       },
     };
   }

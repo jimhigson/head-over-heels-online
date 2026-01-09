@@ -103,6 +103,25 @@ const frames = {
   },
 
   ...fourDirections(
+    "charles",
+    smallItemGridLocation({ x: 0, y: 5 }),
+    smallItemTextureSize,
+  ),
+
+  "shadowMask.charles.away": {
+    frame: {
+      ...smallItemGridLocation({ x: 2, y: 5 }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.charles.right": {
+    frame: {
+      ...smallItemGridLocation({ x: 2, y: 6 }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  ...fourDirections(
     "monkey",
     smallItemGridLocation({ x: 0, y: 7 }),
     smallItemTextureSize,
@@ -314,7 +333,7 @@ const frames = {
   ...seriesOfNumberedTextures(
     "fish",
     2,
-    smallItemGridLocation({ x: 15, y: 6 }),
+    smallItemGridLocation({ x: 16, y: 6 }),
     smallItemTextureSize,
   ),
 
@@ -360,58 +379,58 @@ const frames = {
 
   "crown.blacktooth": {
     frame: {
-      ...smallItemGridLocation({ x: 15, y: 7 }),
+      ...smallItemGridLocation({ x: (x = 16), y: (y = 7) }),
       ...smallItemTextureSize,
     },
   },
   "crown.safari": {
     frame: {
-      ...smallItemGridLocation({ x: 16, y: 7 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "crown.egyptus": {
     frame: {
-      ...smallItemGridLocation({ x: 17, y: 7 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "crown.penitentiary": {
     frame: {
-      ...smallItemGridLocation({ x: 18, y: 7 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "crown.bookworld": {
     frame: {
-      ...smallItemGridLocation({ x: 19, y: 7 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "crown.uncolourised": {
     frame: {
-      ...smallItemGridLocation({ x: 20, y: 7 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
 
   scroll: {
     frame: {
-      ...smallItemGridLocation({ x: 15, y: 8 }),
+      ...smallItemGridLocation({ x: (x = 16), y: (y = 8) }),
       ...smallItemTextureSize,
       pivot: { x: 17, y: 24 },
     },
   },
   "shadow.scroll": {
     frame: {
-      ...smallItemGridLocation({ x: 16, y: 8 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
       pivot: { x: 17, y: 24 },
     },
   },
   "shadowMask.scroll": {
     frame: {
-      ...smallItemGridLocation({ x: 17, y: 8 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
       pivot: { x: 17, y: 24 },
     },
@@ -419,90 +438,72 @@ const frames = {
 
   buttonInGame: {
     frame: {
-      ...smallItemGridLocation({ x: 15, y: 9 }),
+      ...smallItemGridLocation({ x: (x = 16), y: (y = 9) }),
       ...smallItemTextureSize,
     },
   },
   "buttonInGame.pressed": {
     frame: {
-      ...smallItemGridLocation({ x: 16, y: 9 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.buttonInGame": {
     frame: {
-      ...smallItemGridLocation({ x: 17, y: 9 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
 
   "switch.left": {
     frame: {
-      ...smallItemGridLocation({ x: 19, y: 9 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "switch.right": {
     frame: {
-      ...smallItemGridLocation({ x: 20, y: 9 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.switch": {
     frame: {
-      ...smallItemGridLocation({ x: 21, y: 9 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
 
   "lift.static": {
     frame: {
-      ...smallItemGridLocation({ x: 15, y: 10 }),
+      ...smallItemGridLocation({ x: 16, y: (y = 10) }),
       ...smallItemTextureSize,
     },
   },
   ...seriesOfNumberedTextures(
     "lift",
     4,
-    smallItemGridLocation({ x: 16, y: 10 }),
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "shadow.lift",
-    4,
-    smallItemGridLocation({ x: 16, y: 11 }),
+    smallItemGridLocation({ x: 17, y }),
     smallItemTextureSize,
   ),
   "shadow.smallBlock": {
     frame: {
-      ...smallItemGridLocation({ x: 20, y: 10 }),
+      ...smallItemGridLocation({ x: 21, y }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.smallBlock": {
     frame: {
-      ...smallItemGridLocation({ x: 21, y: 10 }),
+      ...smallItemGridLocation({ x: 22, y }),
       ...smallItemTextureSize,
     },
   },
-
-  ...fourDirections(
-    "charles",
-    smallItemGridLocation({ x: 15, y: 12 }),
+  ...seriesOfNumberedTextures(
+    "shadow.lift",
+    4,
+    smallItemGridLocation({ x: 17, y: 11 }),
     smallItemTextureSize,
   ),
-  "shadowMask.charles.away": {
-    frame: {
-      ...smallItemGridLocation({ x: 17, y: 12 }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadowMask.charles.right": {
-    frame: {
-      ...smallItemGridLocation({ x: 17, y: 13 }),
-      ...smallItemTextureSize,
-    },
-  },
 
   ...seriesOfNumberedTextures(
     "bubbles.white",

@@ -7,6 +7,7 @@ import type {
 import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { ItemAppearance } from "../ItemAppearance";
 
+import { isTextureId } from "../../../../sprites/assertIsTextureId";
 import {
   type DirectionXy4,
   type DirectionXy8,
@@ -61,8 +62,9 @@ export const directionalShadowMaskAppearanceXy4 =
     };
   };
 
-type RenderPropsXy8 = {
+type PlayableShadowMaskRenderProps = {
   facingXy8: DirectionXy8;
+  falling: boolean;
 };
 
 const flipXy8: Partial<Record<DirectionXy8, DirectionXy8>> = {
@@ -71,25 +73,46 @@ const flipXy8: Partial<Record<DirectionXy8, DirectionXy8>> = {
   towards: "right",
 };
 
+const getPlayableShadowMaskTextureId = (
+  playableName: IndividualCharacterName,
+  falling: boolean,
+  direction: DirectionXy8,
+): TextureId => {
+  if (!falling) {
+    return `shadowMask.${playableName}.${direction}` as TextureId;
+  }
+
+  const fallingShadowMaskTextureId =
+    `shadowMask.${playableName}.falling.${direction}` as string;
+
+  return isTextureId(fallingShadowMaskTextureId) ?
+      fallingShadowMaskTextureId
+    : (`shadowMask.${playableName}.${direction}` as TextureId);
+};
+
 export const directionalShadowMaskAppearanceXy8 =
   <ShadowMaskBaseShadowId extends IndividualCharacterName>(
     shadowMaskBaseShadowId: ShadowMaskBaseShadowId,
     heightBlocks: number = 1,
-  ): ItemAppearance<CharacterName, RenderPropsXy8, Sprite> =>
+  ): ItemAppearance<CharacterName, PlayableShadowMaskRenderProps, Sprite> =>
   ({
     renderContext: {
       item: {
-        state: { facing },
+        state: { visualFacingVector, facing, action },
       },
     },
     currentRendering,
   }) => {
     const currentlyRenderedProps = currentRendering?.renderProps;
-    const facingXy8 = vectorClosestDirectionXy8(facing) ?? "towards";
+    const facingXy8 =
+      vectorClosestDirectionXy8(visualFacingVector ?? facing) ?? "towards";
+
+    const falling = action === "falling";
 
     const render =
       currentlyRenderedProps === undefined ||
-      facingXy8 !== currentlyRenderedProps.facingXy8;
+      facingXy8 !== currentlyRenderedProps.facingXy8 ||
+      falling !== currentlyRenderedProps.falling;
 
     if (!render) {
       return "no-update";
@@ -98,9 +121,14 @@ export const directionalShadowMaskAppearanceXy8 =
     const flippedDirection = flipXy8[facingXy8];
     const shadowMaskDirection = flippedDirection ?? facingXy8;
 
+    const textureId = getPlayableShadowMaskTextureId(
+      shadowMaskBaseShadowId,
+      falling,
+      shadowMaskDirection,
+    );
+
     const sprite: Sprite = createSprite({
-      textureId:
-        `shadowMask.${shadowMaskBaseShadowId}.${shadowMaskDirection}` as TextureId,
+      textureId,
       spritesheetVariant: "original",
     });
 
@@ -110,6 +138,6 @@ export const directionalShadowMaskAppearanceXy8 =
 
     return {
       output: sprite,
-      renderProps: { facingXy8 },
+      renderProps: { facingXy8, falling },
     };
   };
