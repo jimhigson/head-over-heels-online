@@ -304,7 +304,7 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createStackedSprites({
               top: {
-                animationId: "bubbles.cold",
+                animationId: "bubbles.blueGreen",
                 randomiseStartFrame: id,
                 paused,
                 spritesheetVariant,
