@@ -505,6 +505,7 @@
   "shadow.smallBlock",
   "shadow.smallRound",
   "shadow.wall.y",
+  "shadow.wallCorner",
   "shadowMask.artificial",
   "shadowMask.ball",
   "shadowMask.barrier.y",

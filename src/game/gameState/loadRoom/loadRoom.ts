@@ -18,6 +18,7 @@ import { isFreeItem, isSolid } from "../../physics/itemPredicates";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOn";
 import { loadItemFromJson } from "./loadItemFromJson";
 import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";
+import { maybeLoadExtraCornerShadow } from "./maybeLoadExtraCornerShadow";
 
 function* loadItems<RoomId extends string, RoomItemId extends string>(
   roomJson: RoomJson<RoomId, RoomItemId>,
@@ -78,6 +79,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   const items: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadPortalsAboveAndBelow(roomJson, roomItems)),
     ...roomItems,
+    ...itemsInItemObjectMap(maybeLoadExtraCornerShadow(roomJson)),
   };
 
   const spatialIndex = new GridSpatialIndex(iterateRoomItems(items));
