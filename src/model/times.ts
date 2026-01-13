@@ -17,11 +17,11 @@ export const wallTimes = (
   return {
     x:
       config.direction === "away" ? config.tiles!.length
-      : config.direction === "towards" ? config.times?.x
+      : config.direction === "towards" ? (config.times?.x ?? 1)
       : 1,
     y:
       config.direction === "left" ? config.tiles!.length
-      : config.direction === "right" ? config.times?.y
+      : config.direction === "right" ? (config.times?.y ?? 1)
       : 1,
   };
 };

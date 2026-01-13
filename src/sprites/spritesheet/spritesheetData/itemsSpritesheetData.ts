@@ -343,7 +343,7 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
-  // deliberately blank sprite to use as a noop
+
   "shadowMask.doughnuts": {
     frame: {
       ...smallItemGridLocation({ x: 19, y: 6 }),
@@ -495,6 +495,12 @@ const frames = {
   "shadowMask.smallBlock": {
     frame: {
       ...smallItemGridLocation({ x: 22, y }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadow.wallCorner": {
+    frame: {
+      ...smallItemGridLocation({ x: 21, y: y + 1 }),
       ...smallItemTextureSize,
     },
   },
