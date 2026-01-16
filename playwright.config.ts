@@ -16,6 +16,7 @@ const phoneSize = {
 
 export default defineConfig({
   testDir: "./screenshotTests",
+  testMatch: "**/*.spec.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,

@@ -18,6 +18,7 @@ import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNod
 import { logSelectorExistence } from "./logSelectorExistence";
 import { osSlowness } from "./osSlowness";
 import { formatProjectName, progressLogHeader } from "./projectName";
+import { resolveRoomIds } from "./resolveRoomIds";
 import { retryWithRecovery } from "./retryWithRecovery";
 import { setIsUncolourised } from "./setIsUncolourised";
 
@@ -25,7 +26,7 @@ import { setIsUncolourised } from "./setIsUncolourised";
  * Environment variables for controlling screenshot tests:
  *
  * ROOMS              - Comma-separated list of room IDs or patterns with * wildcard (e.g., "blacktooth*,moonbase*")
- * ROOMS_CONTAINING   - Filter to rooms containing a specific item type (e.g., "conveyor")
+ * ROOMS_CONTAINING   - Filter to rooms containing a specific item type (e.g., "conveyor") or type[configProp=value] (e.g., "monster[which=skiHead]")
  * BATCH_COUNT        - Total number of parallel runners splitting the work (default: 1)
  * BATCH_NUMBER       - Which batch this runner processes, 0-indexed (default: 0)
  * PARALLEL_TESTS     - Number of parallel tests within this runner (default: 2, or 1 for small batches)
@@ -34,13 +35,15 @@ import { setIsUncolourised } from "./setIsUncolourised";
  *
  * Examples:
  *   ROOMS=bookworld13,bookworld14 pnpm screenshot --update-snapshots
- *   ROOMS_CONTAINING=conveyor,movingPlatform pnpm screenshot --update-snapshots
+ *   ROOMS_CONTAINING=conveyor,monster[which=dalek] pnpm screenshot --update-snapshots
  *   NO_UNCOLOURISED=1 pnpm screenshot
  */
 
 const timeoutPerRoom = (process.env.CI ? 40_000 : 12_000) * osSlowness;
 const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
+
+const campaignRoomIds = keys(campaign.rooms);
 
 const screenshotThreshold = ({
   ci,
@@ -79,34 +82,10 @@ const screenshotThreshold = ({
   return threshold;
 };
 
-const campaignRoomIds = keys(campaign.rooms);
-
-const resolveRoomIds = (
-  rooms: string | undefined,
-  roomsContaining: string | undefined,
-): OriginalCampaignRoomId[] => {
-  if (rooms) {
-    const patterns = rooms.split(",");
-    const regexes = patterns.map(
-      (pattern) => new RegExp(`^${pattern.replace(/\*/g, ".*")}$`),
-    );
-    return campaignRoomIds.filter((roomId) =>
-      regexes.some((regex) => regex.test(roomId)),
-    );
-  }
-  if (roomsContaining) {
-    const itemTypes = roomsContaining.split(",");
-    return campaignRoomIds.filter((roomId) => {
-      const room = campaign.rooms[roomId];
-      return Object.values(room.items).some((item) =>
-        itemTypes.includes(item.type),
-      );
-    });
-  }
-  return campaignRoomIds;
-};
-
-const roomIds = resolveRoomIds(process.env.ROOMS, process.env.ROOMS_CONTAINING);
+const roomIds = resolveRoomIds(campaign, {
+  rooms: process.env.ROOMS,
+  roomsContaining: process.env.ROOMS_CONTAINING,
+});
 
 if (roomIds.length === 0) {
   throw new Error(
