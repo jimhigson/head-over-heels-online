@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.15.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.14.1...v1.15.0) (2026-01-14)
+
+
+### Features
+
+* animate toaster sprites ([#663](https://github.com/jimhigson/head-over-heels-online/issues/663)) ([8832955](https://github.com/jimhigson/head-over-heels-online/commit/88329553a33b52fff7a8c90e1210666fb3c94e18))
+* disabled and doughnutted sprites also use an updated spritesheet, not filters applied per-frame ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* doorframes cast shadows on items in doorway ([#666](https://github.com/jimhigson/head-over-heels-online/issues/666)) ([5cedd02](https://github.com/jimhigson/head-over-heels-online/commit/5cedd028c7ca20456d4354b924e4d87cad0bfc55))
+* heels sprites get more red pixels (less brown/grey) so they look more colourful ([b8b4552](https://github.com/jimhigson/head-over-heels-online/commit/b8b4552b12d1c878041a5d33390f47effd23e555))
+* improved texture monitoring (call textureInspector() on browser console) ([#661](https://github.com/jimhigson/head-over-heels-online/issues/661)) ([ce963ee](https://github.com/jimhigson/head-over-heels-online/commit/ce963ee05fcb42b9112c2dd41ab20e54e0491de9))
+* moonbase: floor re-colourisation, more consistent lighting on walls ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* more colourful Heels sprites ([#662](https://github.com/jimhigson/head-over-heels-online/issues/662)) ([fbafad8](https://github.com/jimhigson/head-over-heels-online/commit/fbafad8729d01a7060ebfbbb52519199f7aca768))
+* playable characters always rotate clockwise when turning 180º ([#660](https://github.com/jimhigson/head-over-heels-online/issues/660)) ([a43bc9f](https://github.com/jimhigson/head-over-heels-online/commit/a43bc9f6ce1b72499037dea7cce0d72b5c849d27))
+* redraw Head when facing fully towards the camera to be more in fitting with original game sprites ([fbafad8](https://github.com/jimhigson/head-over-heels-online/commit/fbafad8729d01a7060ebfbbb52519199f7aca768))
+* rendering refactor and general game-wide visual uplift ([#655](https://github.com/jimhigson/head-over-heels-online/issues/655)) ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* room-specific sprites are now generated from an updated spritesheet, not filters applied per-frame ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* shadows are darker; shadows appear on 'black' parts of floors, since they are now near-black (not pure black) ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* smoother animation on conveyors ([#657](https://github.com/jimhigson/head-over-heels-online/issues/657)) ([b05f672](https://github.com/jimhigson/head-over-heels-online/commit/b05f672b1024162e5b86ab1c8c98153dcb20ac70))
+* teleporter sprites re-colourised ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* throttle frame rate when paused to reduce CPU/GPU load ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* use p3 colour space for more vibrant colours in game, menu, and map ([#659](https://github.com/jimhigson/head-over-heels-online/issues/659)) ([1319e5a](https://github.com/jimhigson/head-over-heels-online/commit/1319e5a5950d26eb5a20a50fdec0dcd6317847e7))
+
+
+### Bug Fixes
+
+* fix bug where on-screen buttons don't appear pressed while actions are being handled ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* heads sprites stray pixels while blinking ([#658](https://github.com/jimhigson/head-over-heels-online/issues/658)) ([b8b4552](https://github.com/jimhigson/head-over-heels-online/commit/b8b4552b12d1c878041a5d33390f47effd23e555))
+
 ## [1.14.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.14.0...v1.14.1) (2025-12-30)
 
 
