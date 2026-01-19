@@ -7,5 +7,5 @@ import { parseHex } from "./parseHex";
  */
 export const srgbHexToP3 = (hex: string): string => {
   const { r, g, b } = parseHex(hex);
-  return `color(display-p3 ${r / 255} ${g / 255} ${b / 255})`;
+  return `color(display-p3 ${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)})`;
 };

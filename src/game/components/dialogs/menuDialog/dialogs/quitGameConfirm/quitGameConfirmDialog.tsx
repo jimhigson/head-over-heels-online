@@ -25,18 +25,22 @@ export const QuitGameConfirmDialog = () => {
   const gameApi = useGameApi();
   return (
     <DialogPortal>
-      <Border className="bg-midRed zx:bg-zxYellow" />
-      <Dialog className="bg-white zx:bg-zxRed px-1" dialogId="quitGameConfirm">
+      <Border className="bg-midRed zx:bg-zxYellowDimmed" />
+      <Dialog
+        className="bg-white zx:bg-zxRedDimmed px-1"
+        dialogId="quitGameConfirm"
+      >
         <Portal.Provider>
           <div className="flex flex-col gap-y-2 mt-1 items-center h-full">
             <BitmapText className="sprites-double-height resHandheld:mt-0 text-midRed zx:text-zxWhite">
               Quit the Game?
             </BitmapText>
-            <MenuItems className="text-lightGrey zx:text-zxWhite resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1">
+            <MenuItems className="text-lightGrey zx:text-zxWhite resHandheld:mt-0 resHandheld:!gap-y-1">
               <MenuItem
                 doubleHeightWhenFocussed
                 id="no"
                 label="Back"
+                className="selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen"
                 leader={
                   <span
                     className={`${spriteLeaderClasses} sprite texture-head_walking_awayLeft_2 selectedMenuItem:texture-animated-head_walking_towardsRight sprites-normal-height zx:sprite-revert-to-white`}
@@ -51,13 +55,19 @@ export const QuitGameConfirmDialog = () => {
                   doubleHeightWhenFocussed
                   id="reincarnate"
                   label="Reincarnate"
+                  className="selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxBlue"
                   leader={
                     <span
                       className={`${spriteLeaderClasses} sprite texture-fish_1 selectedMenuItem:texture-animated-fish sprites-normal-height zx:sprite-revert-to-white`}
                     />
                   }
                   onSelect={() => reincarnateSelected(gameApi)}
-                  hint="Go back and continue from the last reincarnation fish you ate"
+                  hint={
+                    <BlockyMarkdown
+                      className="zx:[&_.strong]:text-zxYellow"
+                      markdown="Go back and continue from the last **Reincarnation Fish** you ate"
+                    />
+                  }
                   verticalAlignItemsCentre
                 />
               )}
@@ -65,6 +75,7 @@ export const QuitGameConfirmDialog = () => {
                 doubleHeightWhenFocussed
                 id="yes"
                 label="Quit"
+                className="selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow"
                 onSelect={useDispatchActionCallback(gameOver, {
                   offerReincarnation: false,
                 })}
