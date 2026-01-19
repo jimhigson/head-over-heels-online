@@ -287,7 +287,6 @@ const frames = {
       },
       away: { noBlinking: true, noStanding: true, noShadowMaskFalling: true },
       awayRight: {
-        noBlinking: true,
         noStanding: true,
         noShadowMaskFalling: true,
       },
@@ -295,7 +294,6 @@ const frames = {
       towardsRight: { noStanding: true, noShadowMaskFalling: true },
       towards: { noShadowMask: true, noShadowMaskFalling: true },
       towardsLeft: {
-        noBlinking: true,
         noShadowMask: true,
         noStanding: true,
         noShadowMaskFalling: true,
@@ -384,6 +382,8 @@ export const playableSpritesheetData = {
     "heels.idle.right": heelsBlinking("right"),
     "heels.idle.towards": heelsBlinking("towards"),
     "heels.idle.towardsRight": heelsBlinking("towardsRight", 2),
+    "heels.idle.towardsLeft": heelsBlinking("towardsLeft", 2),
+    "heels.idle.awayRight": heelsBlinking("awayRight", 2),
     // teleport or death animations
     // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
     // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5
