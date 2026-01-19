@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.16.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.15.0...v1.16.0) (2026-01-19)
+
+
+### Features
+
+* slight Heels redraw when side-on to the camera ([#674](https://github.com/jimhigson/head-over-heels-online/issues/674)) ([8de1b6b](https://github.com/jimhigson/head-over-heels-online/commit/8de1b6beeb33f64ae203945dc665df6743f00f9a))
+* slightly change look of confirm quit dialog ([#673](https://github.com/jimhigson/head-over-heels-online/issues/673)) ([37c9675](https://github.com/jimhigson/head-over-heels-online/commit/37c9675a2fecad11351711237319b9b72fa9cfbd))
+
+
+### Bug Fixes
+
+* regression where carry button always visible, now only when got the bag ([#672](https://github.com/jimhigson/head-over-heels-online/issues/672)) ([e1c742c](https://github.com/jimhigson/head-over-heels-online/commit/e1c742c74370f7d1253059ff6031d7201e01ed97))
+
 ## [1.15.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.14.1...v1.15.0) (2026-01-14)
 
 
