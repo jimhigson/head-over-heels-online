@@ -289,6 +289,8 @@ export const spritesTailwindPlugin = plugin(
       // can put selectedMenuItem:foo on the top of the menu, and it will apply
       // to menu items with the selectedMenuItem class:
       "& .selectedMenuItem",
+      // can also put selectedMenuItem:foo on the menu item itself:
+      "&.selectedMenuItem",
       // can put selectedMenuItem:foo inside menu items with the selectedMenuItem
       // class
       ".selectedMenuItem &",
