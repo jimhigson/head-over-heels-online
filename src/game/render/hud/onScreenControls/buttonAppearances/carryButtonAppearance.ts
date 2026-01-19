@@ -113,7 +113,6 @@ export const carryButtonAppearance: ButtonAppearance<
     bag.texture = spritesheet.textures["bag"];
   }
 
-  container.visible = true;
   if (previouslyRenderedProps?.pressed !== pressed) {
     container.pressed = pressed;
   }

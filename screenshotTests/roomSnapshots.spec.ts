@@ -540,7 +540,7 @@ test.describe("Room Visual Snapshots", () => {
           );
 
           console.log(
-            `${formattedName} ${chalk.red("___ROOM STEP:")} ${chalk.blue(roomId)} ${chalk.red("___")}`,
+            `${formattedName} ${chalk.cyanBright("🚪 room step:")} ${chalk.blue(roomId)} ${chalk.red("___")}`,
           );
 
           await navigateToRoom(logHeader, roomId);
