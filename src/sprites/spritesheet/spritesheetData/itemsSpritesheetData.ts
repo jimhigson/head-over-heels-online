@@ -24,6 +24,12 @@ const frames = {
     smallItemGridLocation({ x: 0, y: 0 }),
     smallItemTextureSize,
   ),
+  ...seriesOfNumberedTextures(
+    "dalek.dark",
+    2,
+    smallItemGridLocation({ x: 0, y: 1 }),
+    smallItemTextureSize,
+  ),
   "shadowMask.dalek": {
     frame: {
       ...smallItemGridLocation({ x: 2, y: 0 }),
@@ -816,6 +822,7 @@ export const itemsSpritesheetData = {
       0.5,
     ),
     dalek: withSpeed(["dalek.1", "dalek.2"] as const, 0.5),
+    "dalek.dark": withSpeed(["dalek.dark.1", "dalek.dark.2"] as const, 0.5),
     "turtle.left": withSpeed(["turtle.left.1", "turtle.left.2"] as const, 0.25),
     "turtle.away": withSpeed(["turtle.away.1", "turtle.away.2"] as const, 0.25),
     "turtle.towards": withSpeed(

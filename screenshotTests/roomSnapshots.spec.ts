@@ -82,10 +82,10 @@ const screenshotThreshold = ({
   return threshold;
 };
 
-const roomIds = resolveRoomIds(campaign, {
+const roomIds = resolveRoomIds(campaign.rooms, {
   rooms: process.env.ROOMS,
   roomsContaining: process.env.ROOMS_CONTAINING,
-});
+}).toArray();
 
 if (roomIds.length === 0) {
   throw new Error(
@@ -107,6 +107,8 @@ const roomsPerBatch = Math.ceil(totalRoomCount / batchCount);
 const batchStart = batchNumber * roomsPerBatch;
 const batchEnd = Math.min(batchStart + roomsPerBatch, totalRoomCount);
 const batchRoomIds = roomIds.slice(batchStart, batchEnd);
+
+console.log("🚪🚪🚪 batchRoomIds:", batchRoomIds);
 
 const parallelTestsCount =
   // a single test for small batches:
