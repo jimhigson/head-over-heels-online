@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.0...v1.16.1) (2026-01-21)
+
+
+### Bug Fixes
+
+* fix some inconsistent shading on dark room sprites ([#677](https://github.com/jimhigson/head-over-heels-online/issues/677)) ([d50b2d5](https://github.com/jimhigson/head-over-heels-online/commit/d50b2d5ad227045dce269517396bf36ce0b2a528))
+
 ## [1.16.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.15.0...v1.16.0) (2026-01-19)
 
 
