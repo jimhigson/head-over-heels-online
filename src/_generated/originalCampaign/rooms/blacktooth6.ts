@@ -52,7 +52,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      position: { x: 0, y: 0, z: 1 },
+      position: { x: 0, y: 0, z: 5 },
       type: "monster",
     },
     extraMonster2: {
@@ -61,7 +61,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      position: { x: 7, y: 7, z: 3 },
+      position: { x: 7, y: 7, z: 7 },
       type: "monster",
     },
     extraMonster3: {
@@ -70,7 +70,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      position: { x: 6, y: 7, z: 2 },
+      position: { x: 6, y: 7, z: 4 },
       type: "monster",
     },
     extraMonster4: {
@@ -79,7 +79,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      position: { x: 7, y: 3, z: 2 },
+      position: { x: 7, y: 3, z: 3 },
       type: "monster",
     },
     extraMonster5: {
@@ -88,7 +88,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      position: { x: 7, y: 4, z: 2 },
+      position: { x: 7, y: 4, z: 6 },
       type: "monster",
     },
     "floor@0,0,0": {

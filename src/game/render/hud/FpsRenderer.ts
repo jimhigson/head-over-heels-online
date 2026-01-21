@@ -3,7 +3,10 @@ import { Container } from "pixi.js";
 import type { Renderer } from "../Renderer";
 import type { HudRenderContext } from "./hudRendererContexts";
 
-import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
+import {
+  getSpritesheetPalette,
+  type SpritesheetPaletteColourName,
+} from "../../../sprites/palette/spritesheetPalette";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import {
   frameTimingStats,
@@ -17,6 +20,16 @@ export class FpsRenderer
 {
   #container = new Container({ label: "FpsRenderer" });
   #fpsText: TextContainer;
+  #isDark = false;
+  #fpsValue: number | undefined;
+
+  set isDark(value: boolean) {
+    const changed = this.#isDark !== value;
+    if (changed) {
+      this.#isDark = value;
+      this.#updateRendering();
+    }
+  }
 
   constructor(public readonly renderContext: HudRenderContext<string>) {
     this.#fpsText = new TextContainer({
@@ -30,23 +43,35 @@ export class FpsRenderer
     frameTimingStats.on(this.tick);
   }
 
-  #colourForFps(fpsValue: number, goodFps: number) {
+  #colourNameForFps(
+    fpsValue: number,
+    goodFps: number,
+  ): SpritesheetPaletteColourName {
     const ratio = fpsValue / goodFps;
     return (
-      ratio > 1.95 ? spritesheetPalette.white
-      : ratio > 1.67 ? spritesheetPalette.highlightBeige
-      : ratio > 0.97 ? spritesheetPalette.moss
-      : ratio > 0.92 ? spritesheetPalette.pastelBlue
-      : ratio > 0.83 ? spritesheetPalette.metallicBlue
-      : ratio > 0.67 ? spritesheetPalette.pink
-      : spritesheetPalette.midRed
+      ratio > 1.95 ? "white"
+      : ratio > 1.67 ? "highlightBeige"
+      : ratio > 0.97 ? "moss"
+      : ratio > 0.92 ? "pastelBlue"
+      : ratio > 0.83 ? "metallicBlue"
+      : ratio > 0.67 ? "pink"
+      : "midRed"
     );
   }
 
+  #updateRendering() {
+    const fpsValue = this.#fpsValue;
+    this.#fpsText.text =
+      fpsValue === undefined ? "..." : `${Math.round(fpsValue)} FPS`;
+    const colourName =
+      fpsValue === undefined ? "white" : this.#colourNameForFps(fpsValue, 60);
+    const palette = getSpritesheetPalette(this.#isDark);
+    this.#fpsText.tint = palette[colourName];
+  }
+
   tick = (frameTimingStatsEvent: FrameTimingStatsEvent): void => {
-    const fpsValue = frameTimingStatsEvent.fps;
-    this.#fpsText.text = `${Math.round(fpsValue)} FPS`;
-    this.#fpsText.tint = this.#colourForFps(fpsValue, 60);
+    this.#fpsValue = frameTimingStatsEvent.fps;
+    this.#updateRendering();
   };
 
   get output() {

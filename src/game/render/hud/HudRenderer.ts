@@ -639,6 +639,10 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     this.#tickBagAndCarrying(tickContext);
 
     this.#onScreenControls?.tick(tickContext);
+
+    if (this.#fpsRenderer) {
+      this.#fpsRenderer.isDark = tickContext.room.color.shade === "dimmed";
+    }
   }
 
   get output() {

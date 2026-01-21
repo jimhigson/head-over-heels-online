@@ -5,6 +5,7 @@ import type { ItemConfigMap } from "../../../model/json/ItemConfigMap";
 import type { RoomState } from "../../../model/RoomState";
 import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
+import type { AnimatedCreateSpriteOptions } from "../createSprite";
 import type { StackedSpritesContainer } from "./createStackedSprites";
 import type { ItemAppearance } from "./ItemAppearance";
 
@@ -59,23 +60,36 @@ const maybeAddBob = (
   room: RoomState<string, string>,
   currentOutput: Container,
 ) => {
-  if (
-    ((which === "cyberman" ||
-      which === "bubbleRobot" ||
-      which === "computerBot") &&
-      state.activated) ||
-    which === "emperorsGuardian"
-  ) {
-    const bobPeriod =
-      which === "computerBot" ? bobPeriodNervous : bobPeriodSlow;
+  const bobsWhileDeactivated =
+    which === "emperorsGuardian" || which === "helicopterBug";
+  const isStacked =
+    which === "cyberman" ||
+    which === "bubbleRobot" ||
+    which === "computerBot" ||
+    which === "emperorsGuardian";
+
+  const isBobbingMonster = isStacked || which === "helicopterBug";
+
+  if ((isBobbingMonster && state.activated) || bobsWhileDeactivated) {
+    const nervousStyle = which === "computerBot" || which === "helicopterBug";
+    const bobPeriod = nervousStyle ? bobPeriodNervous : bobPeriodSlow;
 
     const bobAmplitude =
-      which === "computerBot" ? bobAmplitudeNervous : bobAmplitudeRelaxed;
+      nervousStyle ? bobAmplitudeNervous : bobAmplitudeRelaxed;
 
-    const outputTyped = currentOutput as StackedSpritesContainer<Sprite>;
-    outputTyped[stackedTopSymbol].y =
-      -blockSizePx.z +
-      floatingVerticalBob(room.roomTime, bobPeriod, bobAmplitude, id);
+    if (isStacked) {
+      const outputTyped = currentOutput as StackedSpritesContainer<Sprite>;
+      outputTyped[stackedTopSymbol].y =
+        -blockSizePx.z +
+        floatingVerticalBob(room.roomTime, bobPeriod, bobAmplitude, id);
+    } else {
+      currentOutput.y = floatingVerticalBob(
+        room.roomTime,
+        bobPeriod,
+        bobAmplitude,
+        id,
+      );
+    }
   }
 };
 
@@ -287,12 +301,22 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createSprite(
               animate ?
-                {
-                  animationId: config.which,
+                ({
+                  animationId:
+                    (
+                      config.which === "dalek" &&
+                      room.color.shade === "dimmed" &&
+                      // only use the dark dalek variant in scenery that has a dark variant:
+                      (room.planet === "blacktooth" ||
+                        room.planet === "egyptus" ||
+                        room.planet === "moonbase")
+                    ) ?
+                      "dalek.dark"
+                    : config.which,
                   spritesheetVariant,
                   paused,
                   randomiseStartFrame: id,
-                }
+                } satisfies AnimatedCreateSpriteOptions)
               : { textureId: `${config.which}.1`, spritesheetVariant },
             ),
             renderProps,

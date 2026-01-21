@@ -28,7 +28,7 @@
       "position": {
         "x": 0,
         "y": 0,
-        "z": 1
+        "z": 5
       },
       "type": "monster"
     }
@@ -45,7 +45,7 @@
       "position": {
         "x": 7,
         "y": 7,
-        "z": 3
+        "z": 7
       },
       "type": "monster"
     }
@@ -62,7 +62,7 @@
       "position": {
         "x": 6,
         "y": 7,
-        "z": 2
+        "z": 4
       },
       "type": "monster"
     }
@@ -79,7 +79,7 @@
       "position": {
         "x": 7,
         "y": 3,
-        "z": 2
+        "z": 3
       },
       "type": "monster"
     }
@@ -96,7 +96,7 @@
       "position": {
         "x": 7,
         "y": 4,
-        "z": 2
+        "z": 6
       },
       "type": "monster"
     }
