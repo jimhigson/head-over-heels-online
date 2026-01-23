@@ -45,6 +45,7 @@ import { setAtPath } from "../../../utils/getAtPath";
 import { nextInCycle } from "../../../utils/nextInCycle";
 import { pick } from "../../../utils/pick";
 import { directionsXy4 } from "../../../utils/vectors/vectors";
+import { defaultUserSettings } from "./defaultUserSettings";
 import { directionsRelativeToModes } from "./directionsRelativeToModes";
 import {
   selectBooleanUserSetting,
@@ -629,10 +630,17 @@ export const gameMenusSlice = createSlice({
         (b) => b,
       );
 
+      const playMusic = !(
+        state.userSettings.soundSettings.mute ??
+        defaultUserSettings.soundSettings.mute
+      );
+
       const crownsMenu = {
         menuId: "crowns",
         scrollableSelection: false,
-        menuParam: { playMusic: true },
+        menuParam: {
+          playMusic,
+        },
       } as const;
 
       if (allCrowns) {
