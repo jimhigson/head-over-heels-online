@@ -1,18 +1,27 @@
 import type { EmptyObject } from "type-fest";
 
-import { useCallback } from "react";
+import { isAnyOf } from "@reduxjs/toolkit";
+import { useCallback, useEffect, useState } from "react";
 
-import { useAppSelector } from "../../../../../../store/hooks";
+import { useAppSelector, useAppStore } from "../../../../../../store/hooks";
+import { startAppListening } from "../../../../../../store/listenerMiddleware";
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
 import { useIsGameRunning } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   closeAllMenus,
   goToSubmenu,
+  menuOpenOrExitPressed,
+  setFocussedMenuItemId,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { persistor } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { importTauriProcess } from "../../../../../../utils/tauri/dynamicLoad";
+import { dispatchSaveGame } from "../../../../../gameState/saving/dispatchSaveGame";
+import { isInPlaytestMode } from "../../../../../isInPlaytestMode";
+import { useMaybeGameApi } from "../../../../GameApiContext";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -20,6 +29,7 @@ import { GitRepoInfo } from "./GitRepoInfo";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
 import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
+import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
 
 const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
@@ -84,12 +94,59 @@ const QuitGameMenuItem = () => {
   return (
     <MenuItem
       id="quitGame"
-      label={hasReincarnationPoint ? "Quit / reincarnate" : "Quit the game"}
+      label={hasReincarnationPoint ? "End game / reincarnate" : "End game"}
       className="text-midRed zx:text-zxYellow"
       onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
       doubleHeightWhenFocussed
       hidden={!isGameRunning}
-      opensSubMenu={true}
+      opensSubMenu
+    />
+  );
+};
+
+const ExitAppMenuItem = () => {
+  const [selectedOnce, setSelectedOnce] = useState(false);
+  const isGameRunning = useIsGameRunning();
+  const gameApi = useMaybeGameApi();
+  const store = useAppStore();
+
+  useEffect(() => {
+    // selecting away from the exit item resets the selectedOnce state
+    const unsub = startAppListening({
+      matcher: isAnyOf(setFocussedMenuItemId, menuOpenOrExitPressed),
+      effect() {
+        setSelectedOnce(false);
+      },
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  return (
+    <MenuItem
+      id="exit"
+      label={selectedOnce ? "Again to exit" : "Exit"}
+      className={selectedOnce ? "selectedMenuItem:text-midRed" : ""}
+      leader={
+        <BitmapText className="text-center">
+          {selectedOnce ? "!" : "X"}
+        </BitmapText>
+      }
+      onSelect={async () => {
+        if (!selectedOnce) {
+          setSelectedOnce(true);
+        } else {
+          if (isGameRunning && !isInPlaytestMode()) {
+            dispatchSaveGame(gameApi!.gameState, store);
+            await persistor.flush();
+          }
+          const { exit } = await importTauriProcess();
+          exit();
+        }
+      }}
+      doubleHeightWhenFocussed
     />
   );
 };
@@ -136,9 +193,6 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           <MenuItems className="mx-auto">
             <PlayGameMenuItem />
             <MenuSeparator />
-            {!isGameRunning && detectDeviceType() === "desktop" && (
-              <LevelEditorMenuItem />
-            )}
 
             <MenuItem
               id="map"
@@ -168,11 +222,15 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             />
             <MenuItem
               id="about"
-              label="About / Links"
+              label="About + Links"
               doubleHeightWhenFocussed
               onSelect={useDispatchActionCallback(goToSubmenu, "about")}
               opensSubMenu={true}
             />
+            {!isGameRunning && detectDeviceType() === "desktop" && (
+              <LevelEditorMenuItem />
+            )}
+
             {offerDownloadOrInstall && <DownloadOrInstallMenuItem />}
 
             {isGameRunning ?
@@ -181,6 +239,12 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                 <QuitGameMenuItem />
               </>
             : null}
+            {deploymentType === "browser" || (
+              <>
+                <MenuSeparator />
+                <ExitAppMenuItem />
+              </>
+            )}
           </MenuItems>
         </div>
         {!isGameRunning && <MainMenuFooter className="resHandheld:mt-1" />}

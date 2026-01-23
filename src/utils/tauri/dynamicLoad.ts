@@ -7,3 +7,7 @@ export const importTauriOpener = importOnce(
 export const importTauriWindow = importOnce(
   () => import("@tauri-apps/api/window"),
 );
+
+export const importTauriProcess = importOnce(
+  () => import("@tauri-apps/plugin-process"),
+);

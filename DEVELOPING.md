@@ -27,19 +27,20 @@ pnpm iff2png
 
 Tauri builds to native executables for these platforms:
 
+## Building and developing with Tauri
+
+```sh
+pnpm tauri dev # - like vite dev
+pnpm tauri build # -like vite build
+cd src-tauri && cargo build # building rust side side
+```
+
 ## Updating Tauri
 
 `pnpm tauri info` - gets info on packages and other stuff installed
 `pnpm up --latest "@tauri-apps/*` - update node packages for tauri
 `cd src-tauri; cargo update` - update rust packages
 `fish_add_path ~/.rustup/toolchains/stable-aarch64-apple-darwin/bin` - (with fish) to put rustup instlled stuff on the path - adjust for shell
-
-## Building and developing with Tauri
-
-```sh
-pnpm tauri dev # - like vite dev
-pnpm tauri build # -like vite build
-```
 
 ## Build and dev for ios
 

@@ -33,7 +33,7 @@ export const QuitGameConfirmDialog = () => {
         <Portal.Provider>
           <div className="flex flex-col gap-y-2 mt-1 items-center h-full">
             <BitmapText className="sprites-double-height resHandheld:mt-0 text-midRed zx:text-zxWhite">
-              Quit the Game?
+              End the Game?
             </BitmapText>
             <MenuItems className="text-lightGrey zx:text-zxWhite resHandheld:mt-0 resHandheld:!gap-y-1">
               <MenuItem
@@ -74,7 +74,7 @@ export const QuitGameConfirmDialog = () => {
               <MenuItem
                 doubleHeightWhenFocussed
                 id="yes"
-                label="Quit"
+                label="End game"
                 className="selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow"
                 onSelect={useDispatchActionCallback(gameOver, {
                   offerReincarnation: false,
