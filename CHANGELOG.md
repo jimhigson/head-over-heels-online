@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.2](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.1...v1.16.2) (2026-01-23)
+
+
+### Bug Fixes
+
+* don't play music when  getting a crown if user has mute turned on ([#679](https://github.com/jimhigson/head-over-heels-online/issues/679)) ([69d09a5](https://github.com/jimhigson/head-over-heels-online/commit/69d09a5714383fa25984f9f303d156e9787f1620))
+
 ## [1.16.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.0...v1.16.1) (2026-01-21)
 
 
