@@ -25,6 +25,14 @@ export type RoomJsonSchema = {
     | "moonbase"
     | "penitentiary"
     | "safari";
+  /**
+   * the color the room was shown in in the zx spectrum original game. This is used to provide highlight
+   * colours in each room
+   */
+  color: {
+    hue: "yellow" | "cyan" | "green" | "magenta" | "white";
+    shade: "basic" | "dimmed";
+  };
   roomAbove?: string;
   subRoomAbove?: string;
   /**
@@ -38,10 +46,6 @@ export type RoomJsonSchema = {
   };
   roomBelow?: string;
   subRoomBelow?: string;
-  color: {
-    hue: "yellow" | "cyan" | "green" | "magenta" | "white";
-    shade: "basic" | "dimmed";
-  };
   /**
    * by keying each item with an id, it makes the diffing easier since the array is no longer
    * position-dependent
@@ -228,7 +232,7 @@ export type RoomJsonSchema = {
           z: number;
         };
         config: {
-          toRoom: string;
+          toRoom: string | "$$final";
           /**
            * the id of the door in the destination room. This usually does not need to be given
            * since the game can choose the door facing the right way from the destination room.
@@ -520,53 +524,17 @@ export type RoomJsonSchema = {
                */
               type: "in-store";
               path:
-                | "gameInPlay"
-                | "userSettings"
-                | "gameInPlay.planetsLiberated"
-                | "gameInPlay.scrollsRead"
-                | "gameInPlay.planetsLiberated.blacktooth"
-                | "gameInPlay.planetsLiberated.bookworld"
-                | "gameInPlay.planetsLiberated.egyptus"
-                | "gameInPlay.planetsLiberated.penitentiary"
-                | "gameInPlay.planetsLiberated.safari"
-                | "gameInPlay.scrollsRead.blacktooth"
-                | "gameInPlay.scrollsRead.egyptus"
-                | "gameInPlay.scrollsRead.penitentiary"
-                | "gameInPlay.scrollsRead.safari"
-                | "gameInPlay.scrollsRead.bag"
-                | "gameInPlay.scrollsRead.doughnuts"
-                | "gameInPlay.scrollsRead.hooter"
-                | "gameInPlay.scrollsRead.teleportBack"
-                | "gameInPlay.scrollsRead.historyOfTheBlacktoothEmpire"
-                | "gameInPlay.scrollsRead.theGame"
-                | "gameInPlay.scrollsRead.bookWorld"
-                | "gameInPlay.scrollsRead.head"
-                | "gameInPlay.scrollsRead.heels"
-                | "gameInPlay.scrollsRead.reincarnationFish"
-                | "gameInPlay.scrollsRead.cuddlyStuffedWhiteRabbits"
-                | "gameInPlay.scrollsRead.crowns"
-                | "gameInPlay.scrollsRead.teleports"
-                | "gameInPlay.scrollsRead.springs"
-                | "gameInPlay.scrollsRead.switches"
-                | "gameInPlay.scrollsRead.conveyorBelts"
-                | "gameInPlay.scrollsRead.hushPuppies"
-                | "gameInPlay.scrollsRead.theEmperorsGuardian"
-                | "gameInPlay.scrollsRead.swopKey"
-                | "gameInPlay.scrollsRead.hintsAndTips"
-                | "gameInPlay.scrollsRead.credits"
-                | "gameInPlay.scrollsRead.installGuide"
-                | "userSettings.displaySettings"
-                | "userSettings.infiniteLivesPoke"
-                | "userSettings.infiniteDoughnutsPoke"
-                | "userSettings.showFps"
-                | "userSettings.screenRelativeControl"
-                | "userSettings.onScreenControls"
-                | "userSettings.soundSettings"
-                | "userSettings.displaySettings.crtFilter"
-                | "userSettings.displaySettings.uncolourised"
-                | "userSettings.displaySettings.showShadowMasks"
-                | "userSettings.soundSettings.mute"
-                | "userSettings.soundSettings.noFootsteps";
+                | "displaySettings"
+                | "infiniteLivesPoke"
+                | "infiniteDoughnutsPoke"
+                | "showFps"
+                | "onScreenControls"
+                | "soundSettings"
+                | "displaySettings.crtFilter"
+                | "displaySettings.uncolourised"
+                | "displaySettings.showShadowMasks"
+                | "soundSettings.mute"
+                | "soundSettings.noFootsteps";
             }
           | {
               initialSetting: "right" | "left";
@@ -1364,55 +1332,42 @@ export type RoomJsonSchema = {
             z: number;
           };
           activatedOnStoreValue?:
-            | "gameInPlay"
-            | "userSettings"
-            | "gameInPlay.planetsLiberated"
-            | "gameInPlay.scrollsRead"
-            | "gameInPlay.planetsLiberated.blacktooth"
-            | "gameInPlay.planetsLiberated.bookworld"
-            | "gameInPlay.planetsLiberated.egyptus"
-            | "gameInPlay.planetsLiberated.penitentiary"
-            | "gameInPlay.planetsLiberated.safari"
-            | "gameInPlay.scrollsRead.blacktooth"
-            | "gameInPlay.scrollsRead.egyptus"
-            | "gameInPlay.scrollsRead.penitentiary"
-            | "gameInPlay.scrollsRead.safari"
-            | "gameInPlay.scrollsRead.bag"
-            | "gameInPlay.scrollsRead.doughnuts"
-            | "gameInPlay.scrollsRead.hooter"
-            | "gameInPlay.scrollsRead.teleportBack"
-            | "gameInPlay.scrollsRead.historyOfTheBlacktoothEmpire"
-            | "gameInPlay.scrollsRead.theGame"
-            | "gameInPlay.scrollsRead.bookWorld"
-            | "gameInPlay.scrollsRead.head"
-            | "gameInPlay.scrollsRead.heels"
-            | "gameInPlay.scrollsRead.reincarnationFish"
-            | "gameInPlay.scrollsRead.cuddlyStuffedWhiteRabbits"
-            | "gameInPlay.scrollsRead.crowns"
-            | "gameInPlay.scrollsRead.teleports"
-            | "gameInPlay.scrollsRead.springs"
-            | "gameInPlay.scrollsRead.switches"
-            | "gameInPlay.scrollsRead.conveyorBelts"
-            | "gameInPlay.scrollsRead.hushPuppies"
-            | "gameInPlay.scrollsRead.theEmperorsGuardian"
-            | "gameInPlay.scrollsRead.swopKey"
-            | "gameInPlay.scrollsRead.hintsAndTips"
-            | "gameInPlay.scrollsRead.credits"
-            | "gameInPlay.scrollsRead.installGuide"
-            | "userSettings.displaySettings"
-            | "userSettings.infiniteLivesPoke"
-            | "userSettings.infiniteDoughnutsPoke"
-            | "userSettings.showFps"
-            | "userSettings.screenRelativeControl"
-            | "userSettings.onScreenControls"
-            | "userSettings.soundSettings"
-            | "userSettings.displaySettings.crtFilter"
-            | "userSettings.displaySettings.uncolourised"
-            | "userSettings.displaySettings.showShadowMasks"
-            | "userSettings.soundSettings.mute"
-            | "userSettings.soundSettings.noFootsteps"
-            | "gameRunning"
-            | "cheatsOn";
+            | "planetsLiberated"
+            | "scrollsRead"
+            | "freeCharacters"
+            | "planetsLiberated.blacktooth"
+            | "planetsLiberated.bookworld"
+            | "planetsLiberated.egyptus"
+            | "planetsLiberated.penitentiary"
+            | "planetsLiberated.safari"
+            | "scrollsRead.blacktooth"
+            | "scrollsRead.egyptus"
+            | "scrollsRead.penitentiary"
+            | "scrollsRead.safari"
+            | "scrollsRead.bag"
+            | "scrollsRead.doughnuts"
+            | "scrollsRead.hooter"
+            | "scrollsRead.teleportBack"
+            | "scrollsRead.historyOfTheBlacktoothEmpire"
+            | "scrollsRead.theGame"
+            | "scrollsRead.bookWorld"
+            | "scrollsRead.head"
+            | "scrollsRead.heels"
+            | "scrollsRead.reincarnationFish"
+            | "scrollsRead.cuddlyStuffedWhiteRabbits"
+            | "scrollsRead.crowns"
+            | "scrollsRead.teleports"
+            | "scrollsRead.springs"
+            | "scrollsRead.switches"
+            | "scrollsRead.conveyorBelts"
+            | "scrollsRead.hushPuppies"
+            | "scrollsRead.theEmperorsGuardian"
+            | "scrollsRead.swopKey"
+            | "scrollsRead.hintsAndTips"
+            | "scrollsRead.credits"
+            | "scrollsRead.installGuide"
+            | "freeCharacters.head"
+            | "freeCharacters.heels";
         };
       }
     | {

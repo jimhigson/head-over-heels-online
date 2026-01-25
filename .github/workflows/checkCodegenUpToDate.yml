@@ -1,0 +1,31 @@
+name: Check generated files are up-to-date
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  checkGenUpToDate:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - run: pnpm install
+      - run: pnpm gen:types
+      - run: pnpm gen:roomSchema
+      - run: pnpm gen:dbTypes
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      - name: Check generated files are up-to-date
+        run: |
+          git diff --exit-code -- src/_generated || (echo "Generated files were modified. Run 'pnpm gen:types', 'pnpm gen:roomSchema', 'pnpm gen:dbTypes' locally and commit the changes." && exit 1)

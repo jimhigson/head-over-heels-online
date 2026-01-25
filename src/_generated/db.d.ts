@@ -76,10 +76,9 @@ export type Database = {
       };
     };
     Functions: {
-      get_all_users_latest_campaigns: {
-        Args: Record<PropertyKey, never> | { p_published_only?: boolean };
-        Returns: Json;
-      };
+      get_all_users_latest_campaigns:
+        | { Args: never; Returns: Json }
+        | { Args: { p_published_only?: boolean }; Returns: Json };
       get_latest_campaign: {
         Args: {
           p_campaign_name: string;
@@ -94,6 +93,12 @@ export type Database = {
           name: string;
           published: boolean;
           version: number;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "campaigns";
+          isOneToOne: true;
+          isSetofReturn: false;
         };
       };
       save_campaign_version: {
