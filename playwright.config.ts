@@ -14,6 +14,8 @@ const phoneSize = {
   deviceScaleFactor: 2,
 };
 
+const port = 5222;
+
 export default defineConfig({
   testDir: "./screenshotTests",
   testMatch: "**/*.spec.ts",
@@ -22,7 +24,7 @@ export default defineConfig({
   retries: 0,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:5201",
+    baseURL: `http://localhost:${port}`,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
@@ -68,8 +70,8 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "pnpm preview:game",
-    url: "http://localhost:5201",
+    command: `pnpm preview:game --port ${port}`,
+    url: `http://localhost:${port}`,
     reuseExistingServer: !process.env.CI,
   },
 });

@@ -312,9 +312,23 @@ export const MenuItems = ({
 
     const menuItemsDom = findMenuItems();
 
-    const firstMenuItemId = menuItemsDom[0].getAttribute(
+    const firstMenuItemDom = menuItemsDom.at(0);
+
+    if (firstMenuItemDom === undefined) {
+      const {
+        openMenus: [{ menuId }],
+      } = store.getState().gameMenus;
+      // this should never happen - if we ever need <MenuItems> with no items on the page
+      // to not throw, we can replace this with a console.warn instead
+      throw new Error(
+        `<MenuItems> component mounted with no menu items on the page in store current top menu is "${menuId}"`,
+      );
+    }
+
+    const firstMenuItemId = firstMenuItemDom.getAttribute(
       menuItemDataAttributeId,
     );
+
     const initialFocussedMenuId =
       // don't initially focus the back button - go to the 2nd item (unless there's only back)
       firstMenuItemId === "back" && menuItemsDom.length > 1 ?

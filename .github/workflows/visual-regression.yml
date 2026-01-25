@@ -43,7 +43,7 @@ jobs:
           # hashing with hash-files is unreliable cross-platform (gives different results on unix/win) so use the
           # git sha instead. This would means a new build for every new commit, which could otherwise have been skipped,
           # but the build does only happen after check-changes has passed, so this shouldn't cause too many builds
-          key: game-build-${{ github.sha }}
+          key: game-build-unminified-${{ github.sha }}
           # share caches with Windows even though building on Unix:
           enableCrossOsArchive: true
 
@@ -63,7 +63,9 @@ jobs:
 
       - name: Build game
         if: steps.game-build-cache.outputs.cache-hit != 'true'
-        run: pnpm build:game
+        # diverge from the normal build by not minifying, in case of errors so that it is easier to see what went
+        # wrong from the logs
+        run: pnpm build:game --minify false
 
   visual-tests:
     needs: [check-changes, build-game]
@@ -161,7 +163,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: dist/
-          key: game-build-${{ github.sha }}
+          key: game-build-unminified-${{ github.sha }}
           enableCrossOsArchive: true
 
       - name: Cache Playwright browsers
