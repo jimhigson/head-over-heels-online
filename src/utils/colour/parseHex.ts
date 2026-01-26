@@ -1,13 +1,20 @@
 export type Rgb = { r: number; g: number; b: number };
 
 /**
- * Parses a hex colour string to RGB values in range 0-255
+ * Parses a hex colour string to RGB values in range 0-255.
+ * Returns undefined if the string is not a valid hex colour.
  */
-export const parseHex = (hex: string): Rgb => {
-  const h = hex.replace(/^#/, "");
+export const parseHex = (hex: string): Rgb | undefined => {
+  const match = hex.match(
+    /^#?(?<r>[0-9a-f]{2})(?<g>[0-9a-f]{2})(?<b>[0-9a-f]{2})$/i,
+  );
+  if (!match?.groups) {
+    return undefined;
+  }
+  const { r, g, b } = match.groups;
   return {
-    r: parseInt(h.substring(0, 2), 16),
-    g: parseInt(h.substring(2, 4), 16),
-    b: parseInt(h.substring(4, 6), 16),
+    r: parseInt(r, 16),
+    g: parseInt(g, 16),
+    b: parseInt(b, 16),
   };
 };

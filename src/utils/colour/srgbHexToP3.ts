@@ -6,6 +6,14 @@ import { parseHex } from "./parseHex";
  * giving a vibrancy boost on P3 displays.
  */
 export const srgbHexToP3 = (hex: string): string => {
-  const { r, g, b } = parseHex(hex);
+  const rgb = parseHex(hex);
+
+  if (rgb === undefined) {
+    // rgh is not a valid hex colour, may be 'transparent' or other reserved word colour - return as-is
+    return hex;
+  }
+
+  const { r, g, b } = rgb;
+
   return `color(display-p3 ${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)})`;
 };

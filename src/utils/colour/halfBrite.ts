@@ -31,7 +31,7 @@ export const halfbrite = (c: Color, dimFactor = amigaHalfBriteBrightness) => {
   return hb;
 };
 export const halfbriteHex = (hex: string) => {
-  const { r, g, b } = parseHex(hex);
+  const { r, g, b } = parseHex(hex)!;
 
   const toHex = (val: number) =>
     Math.floor(val * amigaHalfBriteBrightness)
