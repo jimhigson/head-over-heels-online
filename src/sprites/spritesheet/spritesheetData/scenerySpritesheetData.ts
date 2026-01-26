@@ -2,8 +2,13 @@ import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
 import type { SceneryName, Wall } from "../../planets";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
+import type {
+  DoorFrameTextureName,
+  SceneryWithOwnDoors,
+} from "./doorSpritesheetData";
 
 import { wallTiles } from "../../planets";
+import { doorFrames, sceneryWithOwnDoors } from "./doorSpritesheetData";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { floorTileSize, wallTileSize } from "./textureSizes";
 import { withSpeed } from "./withSpeed";
@@ -19,24 +24,31 @@ export type WallTextureId<
   }[PS][TDark];
 
 export type BackgroundTextureId<
-  TPlanet extends SceneryName,
+  SN extends SceneryName,
   TDark extends ".dark" | "",
-> = `${TPlanet}${TDark}.floor` | WallTextureId<TPlanet, TDark>;
+> =
+  | `${SN}${TDark}.floor`
+  | (SN extends SceneryWithOwnDoors ? DoorFrameTextureName<`${SN}${TDark}`>
+    : never)
+  | WallTextureId<SN, TDark>;
 
-const backgroundFrames = <
-  TPlanet extends SceneryName,
-  TDark extends ".dark" | "",
->(
-  planet: TPlanet,
+const backgroundFrames = <SN extends SceneryName, TDark extends ".dark" | "">(
+  planet: SN,
   startX: number,
   startY: number,
   isDark: TDark,
-): Record<BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData> => {
-  function* backgroundFramesGenerator<TPlanet extends SceneryName>(
-    planet: TPlanet,
+): Record<BackgroundTextureId<SN, TDark>, SpritesheetFrameData> => {
+  const hasDoor = (sceneryWithOwnDoors as readonly SceneryName[]).includes(
+    planet,
+  );
+
+  type GeneratorTuple = [BackgroundTextureId<SN, TDark>, SpritesheetFrameData];
+
+  function* backgroundFramesGenerator(
+    planet: SN,
     startX: number,
     startY: number,
-  ): Generator<[BackgroundTextureId<TPlanet, TDark>, SpritesheetFrameData]> {
+  ): Generator<GeneratorTuple> {
     const walls = wallTiles[planet];
 
     const { w, h } = wallTileSize;
@@ -75,9 +87,22 @@ const backgroundFrames = <
         },
       },
     ];
+
+    if (hasDoor) {
+      const doorY = startY + yStep * walls.length - 9;
+      yield* doorFrames(`${planet as SN & SceneryWithOwnDoors}${isDark}`, "x", {
+        x: startX + w * walls.length + 1,
+        y: doorY,
+      }) as Generator<GeneratorTuple>;
+
+      yield* doorFrames(`${planet as SN & SceneryWithOwnDoors}${isDark}`, "y", {
+        x: startX - w * walls.length - 2,
+        y: doorY,
+      }) as Generator<GeneratorTuple>;
+    }
   }
 
-  type TextureName = BackgroundTextureId<TPlanet, TDark>;
+  type TextureName = BackgroundTextureId<SN, TDark>;
 
   return Object.fromEntries(
     backgroundFramesGenerator(planet, startX, startY),
