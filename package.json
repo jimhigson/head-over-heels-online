@@ -1,7 +1,7 @@
 {
   "name": "hohjs",
   "private": true,
-  "version": "1.16.2",
+  "version": "1.16.3",
   "type": "module",
   "license": "AGPL-3.0-only",
   "scripts": {
