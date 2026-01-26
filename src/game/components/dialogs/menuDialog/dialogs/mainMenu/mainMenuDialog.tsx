@@ -4,6 +4,7 @@ import { useCallback } from "react";
 
 import { nerdFontDiscordChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { useAppSelector } from "../../../../../../store/hooks";
+import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
 import { useIsGameRunning } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   closeAllMenus,
@@ -99,6 +100,17 @@ const QuitGameMenuItem = () => {
 
 const discordInviteUrl = "https://discord.gg/Se5Jznc2jm";
 export const MainMenuDialog = (_emptyProps: EmptyObject) => {
+  /* 
+    preload the community campaigns for when/if the user goes to that menu.
+    Strictly speaking this is unnecessary, and even most players will never use
+    this data. However, on the supabase free tier, they turn your app off if
+    there isn't enough requests going to the db. For the ones who do go to that
+    menu, this will cache it so it will have data faster, and on reliable networks
+    it at least gives more chance to load and the loading bars look cool I guess
+    ¯\_(ツ)_/¯
+   */
+  useGetAllUsersLatestCampaignsQuery({ publishedOnly: true });
+
   const isGameRunning = useIsGameRunning();
 
   const showCrowns = useDispatchActionCallback(goToSubmenu, "crowns");

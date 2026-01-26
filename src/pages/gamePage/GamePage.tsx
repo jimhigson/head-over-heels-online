@@ -14,14 +14,14 @@ import { loadSounds } from "../../sound/soundsLoader.ts";
 import { loadSpritesheetAssets } from "../../sprites/spritesheet/loadedSpriteSheet.ts";
 import { useAppSelector } from "../../store/hooks.ts";
 import {
+  gameAssetsLoadingFinished,
+  gameAssetsLoadingStarted,
+} from "../../store/slices/gameAssetsLoadingSlice.ts";
+import {
   useCheatsOn,
   useIsGameRunning,
 } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import { errorCaught } from "../../store/slices/gameMenus/gameMenusSlice.ts";
-import {
-  manualLoadingFinished,
-  manualLoadingStarted,
-} from "../../store/slices/manualLoadingSlice.ts";
 import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
@@ -69,9 +69,9 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
         }
 
         startedLoading = true;
-        store.dispatch(manualLoadingStarted());
+        store.dispatch(gameAssetsLoadingStarted());
         const [{ default: gameMain }] = await loadGameAssets();
-        store.dispatch(manualLoadingFinished());
+        store.dispatch(gameAssetsLoadingFinished());
 
         if (!thisEffectCancelled) {
           thisEffectGameApi = await gameMain(
@@ -83,7 +83,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
         }
       } catch (thrown) {
         if (startedLoading) {
-          store.dispatch(manualLoadingFinished());
+          store.dispatch(gameAssetsLoadingFinished());
         }
         // also put on console - sometimes stack trace is easier to read there
         console.error(thrown);

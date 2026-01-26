@@ -16,11 +16,11 @@ import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
 import { listenerMiddleware } from "./listenerMiddleware";
 import { gameMenusPersistedReducer } from "./persist/persist";
 import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
+import { gameAssetsLoadingSlice } from "./slices/gameAssetsLoadingSlice";
 import {
   debugItemClicked,
   gameMenusSlice,
 } from "./slices/gameMenus/gameMenusSlice";
-import { manualLoadingSlice } from "./slices/manualLoadingSlice";
 import {
   updateUpscaleWhenDisplaySettingsChange,
   updateUpscaleWhenEmulatedResolutionChanges,
@@ -31,7 +31,7 @@ const appReducer = combineSlices({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,
   [campaignsApiSlice.reducerPath]: campaignsApiSlice.reducer,
-  [manualLoadingSlice.reducerPath]: manualLoadingSlice.reducer,
+  [gameAssetsLoadingSlice.reducerPath]: gameAssetsLoadingSlice.reducer,
 }).withLazyLoadedSlices<
   // pre-empting the lazy-loaded slices for the types only (no run-time importing)
   // because it is easier. This could also be done via module augmentation in typescript

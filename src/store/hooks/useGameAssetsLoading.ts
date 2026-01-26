@@ -2,21 +2,21 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import {
-  manualLoadingFinished,
-  manualLoadingStarted,
-} from "../slices/manualLoadingSlice";
+  gameAssetsLoadingFinished,
+  gameAssetsLoadingStarted,
+} from "../slices/gameAssetsLoadingSlice";
 
 /**
- * Hook for wrapping async operations with loading state tracking
+ * Hook for wrapping async operations with game assets loading state tracking
  *
  * @example
- * const withLoading = useManualLoading();
+ * const withLoading = useGameAssetsLoading();
  *
  * const handleFileUpload = withLoading(async (file: File) => {
  *   await uploadFile(file);
  * });
  */
-export const useManualLoading = () => {
+export const useGameAssetsLoading = () => {
   const dispatch = useDispatch();
 
   return useCallback(
@@ -24,11 +24,11 @@ export const useManualLoading = () => {
       asyncFn: T,
     ): T => {
       return (async (...args: Parameters<T>) => {
-        dispatch(manualLoadingStarted());
+        dispatch(gameAssetsLoadingStarted());
         try {
           return await asyncFn(...args);
         } finally {
-          dispatch(manualLoadingFinished());
+          dispatch(gameAssetsLoadingFinished());
         }
       }) as T;
     },

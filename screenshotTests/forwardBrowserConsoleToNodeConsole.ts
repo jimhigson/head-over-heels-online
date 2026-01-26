@@ -1,6 +1,17 @@
-import type { Page } from "@playwright/test";
+import type { ConsoleMessage, Page } from "@playwright/test";
 
 import chalk from "chalk";
+
+type Colour = (a: string) => string;
+
+const colours = {
+  error: chalk.red,
+  warning: chalk.yellow,
+  info: chalk.blue,
+  log: chalk.green,
+} as Partial<Record<ReturnType<ConsoleMessage["type"]>, Colour>>;
+
+const identity = (a: string) => a;
 
 export const forwardBrowserConsoleToNodeConsole = (
   page: Page,
@@ -10,8 +21,11 @@ export const forwardBrowserConsoleToNodeConsole = (
   page.on("console", (msg) => {
     const type = msg.type();
     const text = msg.text();
+
+    const colour = colours[type] ?? identity;
+
     console.log(
-      `${formattedName} [${chalk.yellow("Console")} ${type}] ${text}`,
+      `${formattedName} [${chalk.yellow("Console")} type="${colour(type)}"] ${text}`,
     );
   });
 

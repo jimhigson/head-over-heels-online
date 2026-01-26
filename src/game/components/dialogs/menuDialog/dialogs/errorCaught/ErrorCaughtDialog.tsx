@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { SerialisableError } from "../../../../../../utils/redux/createSerialisableErrors";
 
@@ -39,8 +39,9 @@ const parseErrorForDisplay = (
   // Safari: "message@file:line:column\n..."
 
   // First, check if the stack starts with the error type and message
-  const errorPrefixPattern =
-    /^(?:Error|TypeError|ReferenceError|SyntaxError|RangeError|EvalError|URIError):\s*/;
+  // eg one of: TypeError|ReferenceError|SyntaxError|RangeError|EvalError|URIError
+  // or any generic "FooError"
+  const errorPrefixPattern = /^(?:[A-Z]\w*)?Error:\s*/;
   const stackStartsWithError = errorPrefixPattern.test(stack);
 
   let sanitizedStack = stack;
@@ -79,7 +80,7 @@ const parseErrorForDisplay = (
   return { message, sanitizedStack };
 };
 
-const markdown = `##The game crashed!
+const markdownIntro = `##The game crashed!
 You could:
 
 * Open an [issue on Github](https://github.com/jimhigson/head-over-heels-online/issues)
@@ -87,18 +88,8 @@ You could:
 * Rant on the [Discord server](https://discord.gg/XmV9QNWY)
 * Play [the MSX remake](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;
 
-export const ErrorCaughtDialog = ({
-  errors,
-}: {
-  errors: Array<SerialisableError>;
-}) => {
-  const hasReincarnationPoint = useAppSelector(
-    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
-  );
-  const [copied, setCopied] = useState<boolean>(false);
-  const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
-
-  const errorsReportText = errors.toReversed().map((error) => {
+const writeErrorReport = (errors: SerialisableError[]) => {
+  return errors.toReversed().map((error) => {
     const { message, sanitizedStack } = parseErrorForDisplay(error);
     return `
 ${message}
@@ -112,6 +103,25 @@ ${sanitizedStack}
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 
 `);
+};
+
+export const ErrorCaughtDialog = ({
+  errors,
+}: {
+  errors: Array<SerialisableError>;
+}) => {
+  const hasReincarnationPoint = useAppSelector(
+    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
+  );
+  const [copied, setCopied] = useState<boolean>(false);
+  const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
+
+  const errorsReportText = writeErrorReport(errors);
+
+  useEffect(() => {
+    // in case in visual regression, log the error to console too as a side-effect
+    console.error("ErrorCaughtDialog: Showing Report:", errorsReportText);
+  }, [errorsReportText]);
 
   return (
     <DialogPortal>
@@ -130,7 +140,7 @@ ${sanitizedStack}
             "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan"
           }
         >
-          <BlockyMarkdown markdown={markdown} />
+          <BlockyMarkdown markdown={markdownIntro} />
           <hr className="bg-pastelBlue zx:bg-zxWhite h-1 my-1 border-none" />
           <MenuItems
             className={`text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1 ${multilineTextClass}`}
