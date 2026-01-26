@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.16.3](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.2...v1.16.3) (2026-01-26)
+
+
+### Bug Fixes
+
+* (almost) pointless early load to keep db happy ([#681](https://github.com/jimhigson/head-over-heels-online/issues/681)) ([a5ba237](https://github.com/jimhigson/head-over-heels-online/commit/a5ba237dcadbbb3cef6431e94ab02a802b7db69d))
+* editor shows map rooms in black ([#683](https://github.com/jimhigson/head-over-heels-online/issues/683)) ([1ef2daa](https://github.com/jimhigson/head-over-heels-online/commit/1ef2daa9d8b9139bbd6a38f9f018196b9c99cabb))
+* update codegen, add github workflow so does not go out of date again ([#682](https://github.com/jimhigson/head-over-heels-online/issues/682)) ([d54763c](https://github.com/jimhigson/head-over-heels-online/commit/d54763c2b3c8ac722a5d8b109c917ef292e734f6))
+
 ## [1.16.2](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.1...v1.16.2) (2026-01-23)
 
 
