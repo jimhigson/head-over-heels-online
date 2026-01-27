@@ -31,7 +31,7 @@ export const room = inferRoomJson({
         movement: "towards-analogue-unless-planet-crowns",
         which: "emperorsGuardian",
       },
-      position: { x: 1, y: 3, z: 0 },
+      position: { x: 1.5, y: 3.5, z: 0 },
       type: "monster",
     },
     "wall(right)@0,0,0": {

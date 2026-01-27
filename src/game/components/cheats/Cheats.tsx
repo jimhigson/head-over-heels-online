@@ -49,9 +49,10 @@ import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
 interface SpeedButtonProps {
   speed: number;
+  className?: string;
 }
 
-const SpeedButton = ({ speed }: SpeedButtonProps) => {
+const SpeedButton = ({ speed, className = "" }: SpeedButtonProps) => {
   const dispatch = useAppDispatch();
   const currentSpeed = useAppSelector(
     (state) => state.gameMenus.userSettings.gameSpeed,
@@ -60,7 +61,7 @@ const SpeedButton = ({ speed }: SpeedButtonProps) => {
   return (
     <Button
       data-test-id={"cheats-speed-" + speed}
-      className={`${cheatsButtonClasses} ${speed === currentSpeed ? "bg-midRed text-white" : ""}`}
+      className={`${cheatsButtonClasses} ${className} ${speed === currentSpeed ? "bg-shadow text-white" : ""}`}
       onClick={(e) => {
         dispatch(
           setGameSpeed(
@@ -531,18 +532,19 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             <Heading>game speed x:</Heading>
             <div className="flex flex-row items-center">
               <SpeedButton speed={-1} />
-              <SpeedButton speed={0} />
+              <SpeedButton speed={0} className="bg-midGrey" />
               <SpeedButton speed={0.05} />
               <SpeedButton speed={0.2} />
               <SpeedButton speed={0.5} />
               <SpeedButton speed={1} />
-              <SpeedButton speed={1.2} />
+              <SpeedButton speed={1.2} className="bg-moss" />
               <SpeedButton speed={1.5} />
               <SpeedButton speed={2} />
               <SpeedButton speed={5} />
               <SpeedButton speed={10} />
-              <SpeedButton speed={25} />
-              <SpeedButton speed={100} />
+              <SpeedButton speed={25} className="bg-highlightBeige" />
+              <SpeedButton speed={100} className="bg-lightBeige" />
+              <SpeedButton speed={250} className="bg-midRed" />
             </div>
 
             <Heading>pokes:</Heading>

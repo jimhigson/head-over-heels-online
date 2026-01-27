@@ -59,7 +59,7 @@ const maybeAddBob = (
   { id, config: { which }, state }: ItemInPlay<"monster">,
   room: RoomState<string, string>,
   currentOutput: Container,
-) => {
+): Container => {
   const bobsWhileDeactivated =
     which === "emperorsGuardian" || which === "helicopterBug";
   const isStacked =
@@ -91,6 +91,8 @@ const maybeAddBob = (
       );
     }
   }
+
+  return currentOutput;
 };
 
 export const monsterAppearance: ItemAppearance<
@@ -184,21 +186,25 @@ export const monsterAppearance: ItemAppearance<
           };
         }
         case "cyberman":
-          // directional, animated, stacked (bubbles):
+          // directional, animated, stacked
           return {
             output:
               state.activated || state.busyLickingDoughnutsOffFace ?
-                createStackedSprites({
-                  top: {
-                    textureId: `${config.which}.${facingXy4}`,
-                    spritesheetVariant,
-                  },
-                  bottom: {
-                    animationId: "bubbles.jetpack",
-                    paused,
-                    spritesheetVariant,
-                  },
-                })
+                maybeAddBob(
+                  item,
+                  room,
+                  createStackedSprites({
+                    top: {
+                      textureId: `${config.which}.${facingXy4}`,
+                      spritesheetVariant,
+                    },
+                    bottom: {
+                      animationId: "bubbles.jetpack",
+                      paused,
+                      spritesheetVariant,
+                    },
+                  }),
+                )
                 // charging on a toaster
               : createSprite({
                   textureId: `${config.which}.${facingXy4}`,
@@ -206,24 +212,29 @@ export const monsterAppearance: ItemAppearance<
                 }),
             renderProps,
           };
+
         case "computerBot":
         case "elephant":
         case "monkey":
           // directional, not animated, stacked (base)
           return {
-            output: createStackedSprites({
-              top: {
-                textureId: `${config.which}.${facingXy4}`,
-                spritesheetVariant,
-              },
-              bottom: {
-                animationId: `headlessBase.flash`,
-                // by playing once, the enemy's base flashes only when it has
-                // just changed direction etc
-                playOnce: "and-stop",
-                spritesheetVariant,
-              },
-            }),
+            output: maybeAddBob(
+              item,
+              room,
+              createStackedSprites({
+                top: {
+                  textureId: `${config.which}.${facingXy4}`,
+                  spritesheetVariant,
+                },
+                bottom: {
+                  animationId: `headlessBase.flash`,
+                  // by playing once, the enemy's base flashes only when it has
+                  // just changed direction etc
+                  playOnce: "and-stop",
+                  spritesheetVariant,
+                },
+              }),
+            ),
             renderProps,
           };
         default:
@@ -299,25 +310,29 @@ export const monsterAppearance: ItemAppearance<
           const animate = activated && !busyLickingDoughnutsOffFace;
           // not directional, animated
           return {
-            output: createSprite(
-              animate ?
-                ({
-                  animationId:
-                    (
-                      config.which === "dalek" &&
-                      room.color.shade === "dimmed" &&
-                      // only use the dark dalek variant in scenery that has a dark variant:
-                      (room.planet === "blacktooth" ||
-                        room.planet === "egyptus" ||
-                        room.planet === "moonbase")
-                    ) ?
-                      "dalek.dark"
-                    : config.which,
-                  spritesheetVariant,
-                  paused,
-                  randomiseStartFrame: id,
-                } satisfies AnimatedCreateSpriteOptions)
-              : { textureId: `${config.which}.1`, spritesheetVariant },
+            output: maybeAddBob(
+              item,
+              room,
+              createSprite(
+                animate ?
+                  ({
+                    animationId:
+                      (
+                        config.which === "dalek" &&
+                        room.color.shade === "dimmed" &&
+                        // only use the dark dalek variant in scenery that has a dark variant:
+                        (room.planet === "blacktooth" ||
+                          room.planet === "egyptus" ||
+                          room.planet === "moonbase")
+                      ) ?
+                        "dalek.dark"
+                      : config.which,
+                    spritesheetVariant,
+                    paused,
+                    randomiseStartFrame: id,
+                  } satisfies AnimatedCreateSpriteOptions)
+                : { textureId: `${config.which}.1`, spritesheetVariant },
+              ),
             ),
             renderProps,
           };
@@ -326,32 +341,40 @@ export const monsterAppearance: ItemAppearance<
         case "bubbleRobot":
           //not directional, animated, stacked (base):
           return {
-            output: createStackedSprites({
-              top: {
-                animationId: "bubbles.blueGreen",
-                randomiseStartFrame: id,
-                paused,
-                spritesheetVariant,
-              },
-              bottom: {
-                textureId: "headlessBase",
-                spritesheetVariant,
-              },
-            }),
+            output: maybeAddBob(
+              item,
+              room,
+              createStackedSprites({
+                top: {
+                  animationId: "bubbles.blueGreen",
+                  randomiseStartFrame: id,
+                  paused,
+                  spritesheetVariant,
+                },
+                bottom: {
+                  textureId: "headlessBase",
+                  spritesheetVariant,
+                },
+              }),
+            ),
             renderProps,
           };
 
         case "emperorsGuardian":
           //not directional, stacked (bubbles):
           return {
-            output: createStackedSprites({
-              top: { textureId: `ball`, spritesheetVariant },
-              bottom: {
-                animationId: "bubbles.cold",
-                spritesheetVariant,
-                paused,
-              },
-            }),
+            output: maybeAddBob(
+              item,
+              room,
+              createStackedSprites({
+                top: { textureId: `ball.blueGreen`, spritesheetVariant },
+                bottom: {
+                  animationId: "bubbles.cold",
+                  spritesheetVariant,
+                  paused,
+                },
+              }),
+            ),
             renderProps,
           };
 

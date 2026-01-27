@@ -542,6 +542,12 @@ const frames = {
     smallItemGridLocation({ x, y: ++y }),
     smallItemTextureSize,
   ),
+  "ball.blueGreen": {
+    frame: {
+      ...smallItemGridLocation({ x: x + 2, y }),
+      ...smallItemTextureSize,
+    },
+  },
   ...seriesOfNumberedTextures(
     "bubbles.cold",
     2,
