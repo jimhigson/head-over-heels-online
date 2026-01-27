@@ -1,5 +1,10 @@
 [
   {
+    "op": "replace",
+    "path": "/items/spring@4,4,0/position/y",
+    "value": 3.5
+  },
+  {
     "op": "add",
     "path": "/items/map",
     "value": {
