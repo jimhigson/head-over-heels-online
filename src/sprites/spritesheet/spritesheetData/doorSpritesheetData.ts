@@ -1,14 +1,24 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
+import { concat } from "iter-tools-es";
+
 import type { AxisXy, Xy } from "../../../utils/vectors/vectors";
 
 import { fromAllEntries } from "../../../utils/entries";
 import { addXy } from "../../../utils/vectors/vectors";
 
-type SceneryName = "generic" | "moonbase.dark" | "moonbase";
+// which sceneries have their own door styles?
+export const sceneryWithOwnDoors = [
+  "moonbase" /*
+  uncomment for experimental egyptus doors:
+  "egyptus" 
+  */,
+] as const;
+export type SceneryWithOwnDoors = (typeof sceneryWithOwnDoors)[number];
+type DoorSceneryName = "generic" | `${SceneryWithOwnDoors}${".dark" | ""}`;
 
-export type DoorFrameTextureName<Name extends SceneryName = SceneryName> =
-  `door.frame.${Name}.${AxisXy}.${"far" | "near" | "top" | "whole"}`;
+export type DoorFrameTextureName<SN extends DoorSceneryName = DoorSceneryName> =
+  `door.frame.${SN}.${AxisXy}.${"far" | "near" | "top" | "whole"}`;
 
 type Frame = {
   x: number;
@@ -18,11 +28,11 @@ type Frame = {
   pivot: Xy;
 };
 
-export const doorFrames = <SN extends SceneryName>(
+export function* doorFrames<SN extends DoorSceneryName>(
   name: SN,
   orientation: AxisXy,
   startPosition: Xy,
-): Record<DoorFrameTextureName<SN>, SpritesheetFrameData> => {
+): Generator<[DoorFrameTextureName<SN>, SpritesheetFrameData]> {
   const maybeMirror = ({ x, y, w, h, pivot }: Frame) =>
     orientation === "x" ?
       {
@@ -38,77 +48,73 @@ export const doorFrames = <SN extends SceneryName>(
         pivot,
       };
 
-  function* charFramesGenerator(): Generator<
-    [DoorFrameTextureName<SN>, SpritesheetFrameData]
-  > {
-    yield [
-      `door.frame.${name}.${orientation}.whole`,
-      {
-        frame: {
-          ...maybeMirror({
-            x: -41,
-            y: 0,
-            w: 40,
-            h: 64,
-            pivot: { x: 9, y: 63 },
-          }),
-        },
+  yield [
+    `door.frame.${name}.${orientation}.whole`,
+    {
+      frame: {
+        ...maybeMirror({
+          x: -41,
+          y: 0,
+          w: 40,
+          h: 64,
+          pivot: { x: 9, y: 63 },
+        }),
       },
-    ];
-    yield [
-      `door.frame.${name}.${orientation}.far`,
-      {
-        frame: {
-          ...maybeMirror({
-            x: -18,
-            y: 0,
-            w: 17,
-            h: 57,
-            pivot: { x: 9, y: 52 },
-          }),
-        },
+    },
+  ];
+  yield [
+    `door.frame.${name}.${orientation}.far`,
+    {
+      frame: {
+        ...maybeMirror({
+          x: -18,
+          y: 0,
+          w: 17,
+          h: 57,
+          pivot: { x: 9, y: 52 },
+        }),
       },
-    ];
-    yield [
-      `door.frame.${name}.${orientation}.near`,
-      {
-        frame: {
-          ...maybeMirror({
-            x: -41,
-            y: 6,
-            w: 20,
-            h: 58,
-            pivot: { x: 8, y: 58 },
-          }),
-        },
+    },
+  ];
+  yield [
+    `door.frame.${name}.${orientation}.near`,
+    {
+      frame: {
+        ...maybeMirror({
+          x: -41,
+          y: 6,
+          w: 20,
+          h: 58,
+          pivot: { x: 8, y: 58 },
+        }),
       },
-    ];
-    yield [
-      `door.frame.${name}.${orientation}.top`,
-      {
-        frame: {
-          ...maybeMirror({
-            x: -57,
-            y: -1,
-            w: 15,
-            h: 36,
-            pivot: { x: 0, y: 37 },
-          }),
-        },
+    },
+  ];
+  yield [
+    `door.frame.${name}.${orientation}.top`,
+    {
+      frame: {
+        ...maybeMirror({
+          x: -57,
+          y: -1,
+          w: 15,
+          h: 36,
+          pivot: { x: 0, y: 37 },
+        }),
       },
-    ];
-  }
-
-  return fromAllEntries(charFramesGenerator());
-};
+    },
+  ];
+}
 
 export const doorSpritesheetData = {
-  frames: {
-    ...doorFrames("generic", "y", { x: 580, y: 415 }),
-    ...doorFrames("generic", "x", { x: 582, y: 415 }),
-    ...doorFrames("moonbase", "y", { x: 752, y: 232 }),
-    ...doorFrames("moonbase", "x", { x: 915, y: 232 }),
-    ...doorFrames("moonbase.dark", "y", { x: 752, y: 306 }),
-    ...doorFrames("moonbase.dark", "x", { x: 915, y: 306 }),
-  },
+  frames: fromAllEntries(
+    concat(
+      doorFrames("generic", "y", { x: 580, y: 415 }),
+      doorFrames("generic", "x", { x: 582, y: 415 }),
+      // ...doorFrames("moonbase", "y", { x: 752, y: 232 }),
+      // ...doorFrames("moonbase", "x", { x: 915, y: 232 }),
+      // ...doorFrames("moonbase.dark", "y", { x: 752, y: 306 }),
+      // ...doorFrames("moonbase.dark", "x", { x: 915, y: 306 }),
+    ),
+  ),
 } as const satisfies Pick<SpritesheetData, "frames">;

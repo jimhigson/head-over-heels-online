@@ -10,7 +10,7 @@ import { VitePWA } from "vite-plugin-pwa";
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   // don't conflict with the editor's vite cache
   cacheDir: ".vite/game",
 
@@ -30,7 +30,10 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,mp3,m4a}"],
-
+        // visual-regression builds are unminified so assets are larger
+        ...(mode === "visual-regression" && {
+          maximumFileSizeToCacheInBytes: 5 * 1_024 * 1_024,
+        }),
         runtimeCaching: [
           {
             // Cache everything *except* /editor/*
@@ -79,7 +82,8 @@ export default defineConfig({
   build: {
     target: "esnext",
     cssTarget: "esnext", // Don't transpile CSS for modern browsers
-    minify: "esbuild", // Use esbuild for faster minification
+    // visual-regression builds are unminified for easier debugging of failures
+    minify: mode === "visual-regression" ? false : "esbuild",
     // Optional: adjust module preload for better performance
     modulePreload: {
       polyfill: false, // Modern browsers don't need the polyfill
@@ -103,4 +107,4 @@ export default defineConfig({
   preview: {
     port: 5201,
   },
-});
+}));
