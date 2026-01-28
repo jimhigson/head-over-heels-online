@@ -1,3 +1,4 @@
+import type { DeploymentType } from "../utils/detectEnv/detectDeploymentType";
 import type { DeviceType } from "../utils/detectEnv/detectDeviceType";
 
 /** strong-typing for query params used in the game or editor */
@@ -13,6 +14,8 @@ export type AllowedQueryParams = {
 
   // overrides for device type detection to fake desktop/mobile/tablet/server:
   device: DeviceType | null;
+  // overrides for deployment type detection to fake browser/pwa/tauri:
+  deployment: DeploymentType | null;
 };
 
 export type TypedURLSearchParams = {

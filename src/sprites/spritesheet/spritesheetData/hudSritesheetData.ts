@@ -178,6 +178,7 @@ const row3 = [
   "⌘",
   "★",
   "§",
+  "&",
 ] as const satisfies CharRow;
 
 export type CharSpriteTextureId<C extends string> =
