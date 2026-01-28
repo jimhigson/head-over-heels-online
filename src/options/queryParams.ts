@@ -1,5 +1,5 @@
-import { DeploymentType } from "../utils/detectEnv/detectDeploymentType";
-import { DeviceType } from "../utils/detectEnv/detectDeviceType";
+import type { DeploymentType } from "../utils/detectEnv/detectDeploymentType";
+import type { DeviceType } from "../utils/detectEnv/detectDeviceType";
 
 /** strong-typing for query params used in the game or editor */
 export type AllowedQueryParams = {

@@ -6,7 +6,6 @@ import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
-import { useOpenExternalCallback } from "../../../../../../utils/tauri/openExternalLink";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItem } from "../../MenuItem";
@@ -53,7 +52,7 @@ export const SureWantEditorDialog = () => {
                 doubleHeightWhenFocussed
                 id="yes"
                 label="Edit the levels"
-                onSelect={useOpenExternalCallback(editorUrl)}
+                href={editorUrl}
               />
               {isTouchDevice() || (
                 <BackMenuItem customLabel="I’m scared, go back" />
