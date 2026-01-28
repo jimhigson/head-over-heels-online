@@ -65,7 +65,7 @@ const DownloadOrInstallMenuItem = () => {
   return (
     <MenuItem
       id="installGuide"
-      className="text-moss"
+      className="text-moss zx:text-zxGreen"
       label="Download / Install"
       doubleHeightWhenFocussed
       leader={<BitmapText className="text-center">⬇</BitmapText>}
@@ -177,7 +177,16 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   }, [showCrowns, showScore]);
 
   const deploymentType = detectDeploymentType();
+  const deviceType = detectDeviceType();
   const offerDownloadOrInstall = deploymentType === "browser";
+
+  const showExitApp =
+    // browsers don't show an exit option - the user can just close the tab
+    // whereas PWAs and Tauri are basically native (ish) apps and they get it:
+    deploymentType !== "browser" &&
+    // however, it isn't the done thing to have close app options on mobile,
+    // the user just swipes away with a gesture
+    deviceType !== "mobile";
 
   return (
     <DialogPortal>
@@ -223,7 +232,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
             />
             <MenuItem
               id="about"
-              label="About + Links"
+              label="About & Links"
               doubleHeightWhenFocussed
               onSelect={useDispatchActionCallback(goToSubmenu, "about")}
               opensSubMenu={true}
@@ -240,7 +249,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                 <QuitGameMenuItem />
               </>
             : null}
-            {deploymentType === "browser" || (
+            {showExitApp && (
               <>
                 <MenuSeparator />
                 <ExitAppMenuItem />

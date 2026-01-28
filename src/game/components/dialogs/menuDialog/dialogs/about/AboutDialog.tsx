@@ -10,10 +10,10 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { useOpenExternalCallback } from "../../../../../../utils/tauri/openExternalLink";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
+import { DialogTitleBar } from "../DialogTitleBar";
 
 const discordInviteUrl = "https://discord.gg/Se5Jznc2jm";
 
@@ -26,6 +26,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
         dialogId="about"
       >
         <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1 ">
+          <DialogTitleBar />
           <MenuItems className="w-24 mx-auto">
             <MenuItem
               id="manual"
@@ -34,43 +35,37 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
               opensSubMenu={true}
               hintInline
-              hint="The original game manual, readable online"
+              hint={
+                <BitmapText className="text-lightBeige">
+                  The original game manual, readable online
+                </BitmapText>
+              }
             />
             <MenuItem
               id="discord"
               leader={<BitmapText>{nerdFontDiscordChar}</BitmapText>}
-              label={
-                "Discord"
-                // <a
-                //   href={discordInviteUrl}
-                //   onClick={linkOpenExternalClickHandler}
-                //   target="_blank"
-                // >
-                //   <BitmapText>{`Discord`}</BitmapText>
-                // </a>
-              }
+              label="Discord"
               doubleHeightWhenFocussed
-              onSelect={useOpenExternalCallback(discordInviteUrl)}
+              href={discordInviteUrl}
               hintInline
-              hint="Join the community on our Discord server"
+              hint={
+                <BitmapText className="text-lightBeige">
+                  Join the community on our Discord server
+                </BitmapText>
+              }
             />
             <MenuItem
               id="github"
               leader={<BitmapText>{nerdFontGithubChar}</BitmapText>}
-              label={
-                "Github"
-                // <a
-                //   href={repository.url}
-                //   onClick={linkOpenExternalClickHandler}
-                //   target="_blank"
-                // >
-                //   <BitmapText>{`Github`}</BitmapText>
-                // </a>
-              }
+              label="Github"
               doubleHeightWhenFocussed
-              onSelect={useOpenExternalCallback(repository.url)}
+              href={repository.url}
               hintInline
-              hint="View the source code on GitHub"
+              hint={
+                <BitmapText className="text-lightBeige">
+                  View the source code on GitHub
+                </BitmapText>
+              }
             />
           </MenuItems>
         </div>

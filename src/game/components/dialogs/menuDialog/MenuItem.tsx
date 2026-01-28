@@ -1,7 +1,8 @@
 import Portal from "@mutabazia/react-portal";
-import { type ReactElement } from "react";
+import { type ReactElement, useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 
+import { openExternal } from "../../../../utils/tauri/openExternalLink";
 import { BitmapText } from "../../tailwindSprites/Sprite";
 import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
@@ -24,6 +25,11 @@ export type MenuItemProps = {
   verticalAlignItemsCentre?: boolean;
   opensSubMenu?: boolean;
   toParentMenu?: boolean;
+  /**
+   * if given, the menu item is a link, probably to
+   * a url external to this app
+   */
+  href?: string;
 };
 
 const noop = () => {};
@@ -45,18 +51,27 @@ export const MenuItem = ({
   verticalAlignItemsCentre = false,
   opensSubMenu = false,
   toParentMenu = false,
+  href,
 }: MenuItemProps) => {
+  const reifiedOnSelect = useCallback<() => void>(() => {
+    if (href) {
+      openExternal(href);
+    }
+    onSelect();
+  }, [href, onSelect]);
+
   const { menuItemProps, ref, focussed } = useMenuItem({
     id,
     hidden,
     disabled,
-    onSelect,
+    onSelect: reifiedOnSelect,
   });
 
   const menuItem = (
     // contents div puts children into the grid layout:
     <li
       {...menuItemProps}
+      role="menuitem"
       data-opens-submenu={opensSubMenu}
       data-to-parent-menu={toParentMenu}
       className={twMerge(
@@ -81,6 +96,7 @@ export const MenuItem = ({
       {/* second column content (main label)... */}
       <div
         ref={ref}
+        role={href ? "link" : undefined}
         className={twMerge(
           // if there is no value to show, take up the third column too:
           valueElement === undefined ? "col-span-2" : "",
