@@ -122,7 +122,11 @@ export const MenuItem = ({
     return (
       <>
         {menuItem}
-        <div className="col-span-2 col-start-2 mb-1">{hint}</div>
+        <div className="col-span-2 col-start-2 mb-1">
+          {typeof hint === "string" ?
+            <BitmapText className={multilineTextClass}>{hint}</BitmapText>
+          : hint}
+        </div>
       </>
     );
   } else {

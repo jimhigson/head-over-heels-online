@@ -1,5 +1,4 @@
 import Portal from "@mutabazia/react-portal";
-import { useCallback } from "react";
 
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
@@ -7,7 +6,7 @@ import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
-import { openExternal } from "../../../../../../utils/tauri/openExternalLink";
+import { useOpenExternalCallback } from "../../../../../../utils/tauri/openExternalLink";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItem } from "../../MenuItem";
@@ -24,11 +23,9 @@ I built an *editor* so I could make the **sequel levels**
 
 **In beta**; expect *crashes* and *confusion*!`;
 
-export const SureWantEditorDialog = () => {
-  const goToEditor = useCallback(() => {
-    openExternal(import.meta.env.VITE_EDITOR_URL);
-  }, []);
+const editorUrl = import.meta.env.VITE_EDITOR_URL;
 
+export const SureWantEditorDialog = () => {
   return (
     <DialogPortal>
       <Border
@@ -56,7 +53,7 @@ export const SureWantEditorDialog = () => {
                 doubleHeightWhenFocussed
                 id="yes"
                 label="Edit the levels"
-                onSelect={goToEditor}
+                onSelect={useOpenExternalCallback(editorUrl)}
               />
               {isTouchDevice() || (
                 <BackMenuItem customLabel="I’m scared, go back" />

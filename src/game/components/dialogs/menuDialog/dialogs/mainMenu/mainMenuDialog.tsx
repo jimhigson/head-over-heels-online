@@ -66,8 +66,9 @@ const DownloadOrInstallMenuItem = () => {
     <MenuItem
       id="installGuide"
       className="text-moss"
-      label="⬇ Download / Install"
+      label="Download / Install"
       doubleHeightWhenFocussed
+      leader={<BitmapText className="text-center">⬇</BitmapText>}
       onSelect={useDispatchActionCallback(goToSubmenu, "installGuide")}
     />
   );
