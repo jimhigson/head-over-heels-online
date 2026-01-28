@@ -1,5 +1,4 @@
-import { version } from "../../../../../../../package.json";
-import { repository } from "../../../../../../../package.json";
+import { repository, version } from "../../../../../../../package.json";
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
 import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
