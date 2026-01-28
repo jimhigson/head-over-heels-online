@@ -1,23 +1,29 @@
 import type { EmptyObject } from "type-fest";
 
-import { useCallback } from "react";
+import { isAnyOf } from "@reduxjs/toolkit";
+import { useCallback, useEffect, useState } from "react";
 
-import { nerdFontDiscordChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
-import { useAppSelector } from "../../../../../../store/hooks";
+import { useAppSelector, useAppStore } from "../../../../../../store/hooks";
+import { startAppListening } from "../../../../../../store/listenerMiddleware";
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
 import { useIsGameRunning } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   closeAllMenus,
   goToSubmenu,
+  menuOpenOrExitPressed,
+  setFocussedMenuItemId,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { persistor } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import {
-  detectDeviceType,
-  detectIsPwa,
-} from "../../../../../../utils/detectDeviceType";
+import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
+import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
+import { importTauriProcess } from "../../../../../../utils/tauri/dynamicLoad";
+import { dispatchSaveGame } from "../../../../../gameState/saving/dispatchSaveGame";
+import { isInPlaytestMode } from "../../../../../isInPlaytestMode";
+import { useMaybeGameApi } from "../../../../GameApiContext";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -55,14 +61,15 @@ const PlayGameMenuItem = () => {
   );
 };
 
-const InstallMenuItem = () => {
+const DownloadOrInstallMenuItem = () => {
   return (
     <MenuItem
       id="installGuide"
-      label="Install"
+      className="text-moss zx:text-zxGreen"
+      label="Download / Install"
       doubleHeightWhenFocussed
-      onSelect={useDispatchActionCallback(goToSubmenu, "markdown/installGuide")}
-      opensSubMenu={true}
+      leader={<BitmapText className="text-center">⬇</BitmapText>}
+      onSelect={useDispatchActionCallback(goToSubmenu, "installGuide")}
     />
   );
 };
@@ -88,17 +95,65 @@ const QuitGameMenuItem = () => {
   return (
     <MenuItem
       id="quitGame"
-      label={hasReincarnationPoint ? "quit / reincarnate" : "quit the game"}
+      label={hasReincarnationPoint ? "End game / reincarnate" : "End game"}
       className="text-midRed zx:text-zxYellow"
       onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
       doubleHeightWhenFocussed
       hidden={!isGameRunning}
-      opensSubMenu={true}
+      opensSubMenu
     />
   );
 };
 
-const discordInviteUrl = "https://discord.gg/Se5Jznc2jm";
+const ExitAppMenuItem = () => {
+  const [selectedOnce, setSelectedOnce] = useState(false);
+  const isGameRunning = useIsGameRunning();
+  const gameApi = useMaybeGameApi();
+  const store = useAppStore();
+
+  useEffect(() => {
+    // selecting away from the exit item resets the selectedOnce state
+    const unsub = startAppListening({
+      matcher: isAnyOf(setFocussedMenuItemId, menuOpenOrExitPressed),
+      effect() {
+        setSelectedOnce(false);
+      },
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  return (
+    <MenuItem
+      id="exit"
+      label={selectedOnce ? "Again to exit" : "Exit"}
+      className={selectedOnce ? "selectedMenuItem:text-midRed" : ""}
+      leader={
+        <BitmapText className="text-center">
+          {selectedOnce ? "!" : "X"}
+        </BitmapText>
+      }
+      onSelect={async () => {
+        if (!selectedOnce) {
+          setSelectedOnce(true);
+        } else {
+          if (isGameRunning && !isInPlaytestMode()) {
+            dispatchSaveGame(gameApi!.gameState, store);
+            await persistor.flush();
+          }
+          const { exit } = await importTauriProcess();
+          exit();
+        }
+      }}
+      doubleHeightWhenFocussed
+    />
+  );
+};
+
+export const MenuSeparator = () => <div className="h-half col-span-3" />;
+
 export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   /* 
     preload the community campaigns for when/if the user goes to that menu.
@@ -121,7 +176,17 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     showScore();
   }, [showCrowns, showScore]);
 
-  const offerInstall = detectIsPwa();
+  const deploymentType = detectDeploymentType();
+  const deviceType = detectDeviceType();
+  const offerDownloadOrInstall = deploymentType === "browser";
+
+  const showExitApp =
+    // browsers don't show an exit option - the user can just close the tab
+    // whereas PWAs and Tauri are basically native (ish) apps and they get it:
+    deploymentType !== "browser" &&
+    // however, it isn't the done thing to have close app options on mobile,
+    // the user just swipes away with a gesture
+    deviceType !== "mobile";
 
   return (
     <DialogPortal>
@@ -134,15 +199,14 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           noSubtitle={isGameRunning}
           className={isGameRunning ? "resHandheld:hidden" : ""}
         />
-        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1 sprites-uppercase">
-          <MenuItems className="w-24 mx-auto">
+        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1">
+          <MenuItems className="mx-auto">
             <PlayGameMenuItem />
-            {!isGameRunning && detectDeviceType() === "desktop" && (
-              <LevelEditorMenuItem />
-            )}
+            <MenuSeparator />
+
             <MenuItem
               id="map"
-              label="use the Map"
+              label="Use the Map"
               onSelect={useDispatchActionCallback(goToSubmenu, "map")}
               doubleHeightWhenFocussed
               hidden={!isGameRunning}
@@ -156,68 +220,42 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               hidden={!isGameRunning}
               opensSubMenu={true}
             />
+            <MenuItem
+              id="options"
+              label="Options"
+              doubleHeightWhenFocussed
+              onSelect={useDispatchActionCallback(
+                goToSubmenu,
+                "modernisationOptions",
+              )}
+              opensSubMenu={true}
+            />
+            <MenuItem
+              id="about"
+              label="About & Links"
+              doubleHeightWhenFocussed
+              onSelect={useDispatchActionCallback(goToSubmenu, "about")}
+              opensSubMenu={true}
+            />
+            {!isGameRunning && detectDeviceType() === "desktop" && (
+              <LevelEditorMenuItem />
+            )}
+
+            {offerDownloadOrInstall && <DownloadOrInstallMenuItem />}
+
+            {isGameRunning ?
+              <>
+                <MenuSeparator />
+                <QuitGameMenuItem />
+              </>
+            : null}
+            {showExitApp && (
+              <>
+                <MenuSeparator />
+                <ExitAppMenuItem />
+              </>
+            )}
           </MenuItems>
-          <div className="flex flex-row justify-between gap-2 w-24 mx-auto">
-            <MenuItems>
-              <MenuItem
-                id="options"
-                label="Options"
-                doubleHeightWhenFocussed
-                onSelect={useDispatchActionCallback(
-                  goToSubmenu,
-                  "modernisationOptions",
-                )}
-                opensSubMenu={true}
-              />
-              <MenuItem
-                id="readTheManual"
-                label="Manual"
-                doubleHeightWhenFocussed
-                onSelect={useDispatchActionCallback(
-                  goToSubmenu,
-                  "readTheManual",
-                )}
-                opensSubMenu={true}
-              />
-            </MenuItems>
-            <MenuItems>
-              {offerInstall ? null : <InstallMenuItem />}
-
-              <MenuItem
-                id="discord"
-                leader={<BitmapText>{nerdFontDiscordChar}</BitmapText>}
-                label={
-                  <a href={discordInviteUrl} target="_blank">
-                    <BitmapText>{`Discord`}</BitmapText>
-                  </a>
-                }
-                doubleHeightWhenFocussed
-                onSelect={useCallback(() => {
-                  window.open(discordInviteUrl, "_blank");
-                }, [])}
-              />
-
-              {offerInstall ?
-                <>
-                  {/* 
-                  when install isn't shown, we need a placeholder to take up the space
-                  to stop the layout jumping around. Since MenuItems is grid layout, we need
-                  three
-                  */}
-                  <div className="h-1" />
-                  <div className="h-1" />
-                  <div className="h-1" />
-                </>
-              : null}
-            </MenuItems>
-          </div>
-          {isGameRunning && (
-            // don't even put the MenuItems in when the game isn't running (don't just skip the menuitems)
-            // because even a zero-size element makes a gap in the flex parent container
-            <MenuItems className="w-24 mx-auto">
-              <QuitGameMenuItem />
-            </MenuItems>
-          )}
         </div>
         {!isGameRunning && <MainMenuFooter className="resHandheld:mt-1" />}
       </Dialog>

@@ -10,6 +10,7 @@ import type { DialogId } from "../src/game/components/dialogs/menuDialog/DialogI
 import type { goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
 
 import spritesheetColours from "../src/_generated/palette/spritesheetPalette.json" with { type: "json" };
+import { deploymentTypes } from "../src/utils/detectEnv/detectDeploymentType";
 import { dispatchKeyPress } from "./dispatchKeyPress";
 import { dispatchToStore } from "./dispatchToStore";
 import { formatDuration } from "./formatDuration";
@@ -153,6 +154,86 @@ const clickBackButton = async (page: Page, logHeader: string) => {
     actionDescription: "click back button",
     page,
     screenshotPrefix: "click-back",
+  });
+};
+
+const clickPlayTheGame = async (page: Page, logHeader: string) => {
+  await test.step("Click Play The Game", async () => {
+    await retryWithRecovery({
+      async action() {
+        const playGameSelector = "[data-menuitem_id=playGame]";
+        console.log(`${logHeader}: Clicking Play The Game`);
+        await logSelectorExistence(page, playGameSelector, logHeader);
+        await page.click(playGameSelector);
+        await page.waitForTimeout(500);
+      },
+      logHeader,
+      actionDescription: "click Play The Game",
+      page,
+      screenshotPrefix: "crowns-play-game",
+    });
+  });
+};
+
+const clickOriginalCampaign = async (page: Page, logHeader: string) => {
+  await test.step("Click Original Campaign", async () => {
+    await retryWithRecovery({
+      async action() {
+        const originalGameSelector = "[data-menuitem_id=originalGame]";
+        console.log(`${logHeader}: Clicking Original Campaign`);
+        await logSelectorExistence(page, originalGameSelector, logHeader);
+        await page.click(originalGameSelector);
+        await page.waitForTimeout(500);
+      },
+      logHeader,
+      actionDescription: "click Original Campaign",
+      page,
+      screenshotPrefix: "crowns-original-game",
+    });
+  });
+};
+
+const exitCrownsDialog = async (page: Page, logHeader: string) => {
+  await test.step("Exit crowns dialog", async () => {
+    await retryWithRecovery({
+      async action() {
+        const crownsDialogSelector = "[data-dialog-id=crowns]";
+        console.log(`${logHeader}: Exiting crowns dialog`);
+        await page.click(crownsDialogSelector);
+
+        await page.waitForSelector(crownsDialogSelector, {
+          state: "detached",
+          timeout: 5_000 * osSlowness,
+        });
+        await page.waitForTimeout(500);
+      },
+      logHeader,
+      actionDescription: "exit crowns dialog",
+      page,
+      screenshotPrefix: "exit-crowns",
+    });
+  });
+};
+
+const openInGameMainMenu = async (page: Page, logHeader: string) => {
+  await test.step("Open in-game main menu", async () => {
+    await retryWithRecovery({
+      async action() {
+        console.log(`${logHeader}: Pressing Escape to open in-game main menu`);
+        await dispatchKeyPress(page, "Escape", "Escape");
+        await page.waitForTimeout(500);
+
+        const inGameMainMenuSelector = "[data-dialog-id=mainMenu]";
+        await page.waitForSelector(inGameMainMenuSelector, {
+          timeout: 5_000 * osSlowness,
+        });
+        await logSelectorExistence(page, inGameMainMenuSelector, logHeader);
+      },
+      logHeader,
+      actionDescription: "open in-game main menu",
+      page,
+      screenshotPrefix: "open-ingame-main-menu",
+    });
   });
 };
 
@@ -345,41 +426,8 @@ for (const uncolourised of [false, true]) {
         await setIsUncolourised(page, formattedName, uncolourised);
       });
 
-      await test.step("Click Play The Game", async () => {
-        await retryWithRecovery({
-          async action() {
-            const playGameSelector = "[data-menuitem_id=playGame]";
-            console.log(`${formattedName}: Clicking Play The Game`);
-            await logSelectorExistence(page, playGameSelector, formattedName);
-            await page.click(playGameSelector);
-            await page.waitForTimeout(500);
-          },
-          logHeader: formattedName,
-          actionDescription: "click Play The Game",
-          page,
-          screenshotPrefix: "crowns-play-game",
-        });
-      });
-
-      await test.step("Click Original Campaign", async () => {
-        await retryWithRecovery({
-          async action() {
-            const originalGameSelector = "[data-menuitem_id=originalGame]";
-            console.log(`${formattedName}: Clicking Original Campaign`);
-            await logSelectorExistence(
-              page,
-              originalGameSelector,
-              formattedName,
-            );
-            await page.click(originalGameSelector);
-            await page.waitForTimeout(500);
-          },
-          logHeader: formattedName,
-          actionDescription: "click Original Campaign",
-          page,
-          screenshotPrefix: "crowns-original-game",
-        });
-      });
+      await clickPlayTheGame(page, formattedName);
+      await clickOriginalCampaign(page, formattedName);
 
       await test.step("Screenshot: crowns", async () => {
         await retryWithRecovery({
@@ -422,26 +470,7 @@ for (const uncolourised of [false, true]) {
         });
       });
 
-      await test.step("Exit crowns dialog", async () => {
-        await retryWithRecovery({
-          async action() {
-            const crownsDialogSelector = "[data-dialog-id=crowns]";
-            console.log(`${formattedName}: Exiting crowns dialog`);
-            await page.click(crownsDialogSelector);
-
-            // Wait for the crowns dialog to disappear
-            await page.waitForSelector(crownsDialogSelector, {
-              state: "detached",
-              timeout: 5_000 * osSlowness,
-            });
-            await page.waitForTimeout(500);
-          },
-          logHeader: formattedName,
-          actionDescription: "exit crowns dialog",
-          page,
-          screenshotPrefix: "exit-crowns",
-        });
-      });
+      await exitCrownsDialog(page, formattedName);
 
       await test.step("Open map dialog", async () => {
         await retryWithRecovery({
@@ -597,31 +626,7 @@ for (const uncolourised of [false, true]) {
         });
       });
 
-      await test.step("Open in-game main menu", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName}: Pressing Escape to open in-game main menu`,
-            );
-            await dispatchKeyPress(page, "Escape", "Escape");
-            await page.waitForTimeout(500);
-
-            const inGameMainMenuSelector = "[data-dialog-id=mainMenu]";
-            await page.waitForSelector(inGameMainMenuSelector, {
-              timeout: 5_000 * osSlowness,
-            });
-            await logSelectorExistence(
-              page,
-              inGameMainMenuSelector,
-              formattedName,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "open in-game main menu",
-          page,
-          screenshotPrefix: "open-ingame-main-menu",
-        });
-      });
+      await openInGameMainMenu(page, formattedName);
 
       await test.step("Screenshot: main-inGame", async () => {
         await retryWithRecovery({
@@ -750,5 +755,70 @@ for (const uncolourised of [false, true]) {
 
       console.log(`${formattedName}: ✓ Captured in game dialogs`);
     });
+
+    for (const deploymentType of deploymentTypes) {
+      test(`Main menu (deploymentType = ${deploymentType}, uncolourised = ${uncolourised})`, async ({
+        page,
+      }, testInfo) => {
+        test.setTimeout(testTimeout);
+
+        const formattedName = formatProjectName(testInfo.project.name);
+        const filenameSuffix = uncolourised ? "-uncolourised" : "";
+
+        forwardBrowserConsoleToNodeConsole(page, formattedName);
+
+        await test.step("Navigate to home page with deployment override and wait for main menu", async () => {
+          await retryWithRecovery({
+            async action() {
+              console.log(
+                `${formattedName}: Navigating to / with deployment=${deploymentType}`,
+              );
+              await page.goto(`/?track=0&deployment=${deploymentType}`);
+
+              const mainMenuSelector = "[data-dialog-id=mainMenu]";
+              await page.waitForSelector(mainMenuSelector, {
+                timeout: 5_000 * osSlowness,
+              });
+              await logSelectorExistence(page, mainMenuSelector, formattedName);
+
+              await page.waitForTimeout(500);
+            },
+            async recovery() {
+              console.log(
+                `${formattedName}: Retrying navigation with page reload`,
+              );
+              await page.reload();
+            },
+            logHeader: formattedName,
+            actionDescription: `navigate with deployment=${deploymentType}`,
+            page,
+            screenshotPrefix: `${deploymentType}-navigation`,
+          });
+        });
+
+        await test.step(`set uncolourised user setting to ${uncolourised}`, async () => {
+          await setIsUncolourised(page, formattedName, uncolourised);
+        });
+
+        await takeDialogScreenshot(
+          page,
+          "mainMenu",
+          formattedName,
+          `-deployment-${deploymentType}${filenameSuffix}`,
+        );
+
+        await clickPlayTheGame(page, formattedName);
+        await clickOriginalCampaign(page, formattedName);
+        await exitCrownsDialog(page, formattedName);
+        await openInGameMainMenu(page, formattedName);
+
+        await takeDialogScreenshot(
+          page,
+          "mainMenu",
+          formattedName,
+          `${deploymentType}-inGame${filenameSuffix}`,
+        );
+      });
+    }
   });
 }
