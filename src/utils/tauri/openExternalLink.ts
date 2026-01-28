@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { importTauriOpener } from "./dynamicLoad";
 
 /** add to the onclick of an <a> to open in default browser instead from Tauri */
@@ -8,6 +10,13 @@ export const openExternal = async (url: string) => {
   } else {
     window.open(url, "_blank");
   }
+};
+
+/** hook version of openExternal, for callbacks given to react-land */
+export const useOpenExternalCallback = (url: string) => {
+  return useCallback(() => {
+    openExternal(url);
+  }, [url]);
 };
 
 /** add to the onclick of an <a> to open in default browser instead from Tauri */
