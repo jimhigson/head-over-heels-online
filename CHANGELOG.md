@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.3...v1.17.0) (2026-01-27)
+
+
+### Features
+
+* emperor's guardian looks a bit more distinct ([#687](https://github.com/jimhigson/head-over-heels-online/issues/687)) ([5a462cb](https://github.com/jimhigson/head-over-heels-online/commit/5a462cb8013b19738eb41e01b23cac272fff74be))
+
 ## [1.16.3](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.2...v1.16.3) (2026-01-26)
 
 
