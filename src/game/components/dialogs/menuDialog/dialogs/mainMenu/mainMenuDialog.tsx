@@ -14,10 +14,8 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import {
-  detectDeviceType,
-  detectIsPwa,
-} from "../../../../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
+import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -121,7 +119,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     showScore();
   }, [showCrowns, showScore]);
 
-  const offerInstall = detectIsPwa();
+  const offerInstall = detectDeploymentType() === "pwa";
 
   return (
     <DialogPortal>
