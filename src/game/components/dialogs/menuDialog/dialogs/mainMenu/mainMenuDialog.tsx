@@ -18,18 +18,22 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
+import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
 import { importTauriProcess } from "../../../../../../utils/tauri/dynamicLoad";
 import { dispatchSaveGame } from "../../../../../gameState/saving/dispatchSaveGame";
 import { isInPlaytestMode } from "../../../../../isInPlaytestMode";
 import { useMaybeGameApi } from "../../../../GameApiContext";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import {
+  BitmapText,
+  MultipleBitmapText,
+} from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
-import { MenuItems } from "../../MenuItems";
 import { GitRepoInfo } from "./GitRepoInfo";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
-import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
-import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
+import { MaybeTwoColumnMenuitems } from "./MaybeTwoColumnMenuitems";
+import { MenuSeparator } from "./MenuSeparator";
 
 const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
@@ -66,7 +70,7 @@ const DownloadOrInstallMenuItem = () => {
     <MenuItem
       id="installGuide"
       className="text-moss zx:text-zxGreen"
-      label="Download / Install"
+      label="Download & Install"
       doubleHeightWhenFocussed
       leader={<BitmapText className="text-center">⬇</BitmapText>}
       onSelect={useDispatchActionCallback(goToSubmenu, "installGuide")}
@@ -152,8 +156,6 @@ const ExitAppMenuItem = () => {
   );
 };
 
-export const MenuSeparator = () => <div className="h-half col-span-3" />;
-
 export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   /* 
     preload the community campaigns for when/if the user goes to that menu.
@@ -200,62 +202,83 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
           className={isGameRunning ? "resHandheld:hidden" : ""}
         />
         <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1">
-          <MenuItems className="mx-auto">
-            <PlayGameMenuItem />
-            <MenuSeparator />
-
-            <MenuItem
-              id="map"
-              label="Use the Map"
-              onSelect={useDispatchActionCallback(goToSubmenu, "map")}
-              doubleHeightWhenFocussed
-              hidden={!isGameRunning}
-              opensSubMenu={true}
-            />
-            <MenuItem
-              id="viewCrowns"
-              label="Progress so far"
-              onSelect={showProgress}
-              doubleHeightWhenFocussed
-              hidden={!isGameRunning}
-              opensSubMenu={true}
-            />
-            <MenuItem
-              id="options"
-              label="Options"
-              doubleHeightWhenFocussed
-              onSelect={useDispatchActionCallback(
-                goToSubmenu,
-                "modernisationOptions",
-              )}
-              opensSubMenu={true}
-            />
-            <MenuItem
-              id="about"
-              label="About & Links"
-              doubleHeightWhenFocussed
-              onSelect={useDispatchActionCallback(goToSubmenu, "about")}
-              opensSubMenu={true}
-            />
-            {!isGameRunning && detectDeviceType() === "desktop" && (
-              <LevelEditorMenuItem />
-            )}
-
-            {offerDownloadOrInstall && <DownloadOrInstallMenuItem />}
-
-            {isGameRunning ?
+          <MaybeTwoColumnMenuitems
+            columnCount={detectDeviceType() === "mobile" ? 2 : 1}
+            topContents={
               <>
-                <MenuSeparator />
-                <QuitGameMenuItem />
+                <PlayGameMenuItem />
               </>
-            : null}
-            {showExitApp && (
+            }
+            middleContents={
               <>
-                <MenuSeparator />
-                <ExitAppMenuItem />
+                <MenuItem
+                  id="map"
+                  label={
+                    <MultipleBitmapText>
+                      <span className="resHandheld:hidden">Use the </span>Map
+                    </MultipleBitmapText>
+                  }
+                  onSelect={useDispatchActionCallback(goToSubmenu, "map")}
+                  doubleHeightWhenFocussed
+                  hidden={!isGameRunning}
+                  opensSubMenu={true}
+                />
+                <MenuItem
+                  id="viewCrowns"
+                  label={
+                    <MultipleBitmapText>
+                      <span className="resHandheld:hidden">Check </span>Progress
+                    </MultipleBitmapText>
+                  }
+                  onSelect={showProgress}
+                  doubleHeightWhenFocussed
+                  hidden={!isGameRunning}
+                  opensSubMenu={true}
+                />
+                <MenuItem
+                  id="options"
+                  label="Options"
+                  doubleHeightWhenFocussed
+                  onSelect={useDispatchActionCallback(
+                    goToSubmenu,
+                    "modernisationOptions",
+                  )}
+                  opensSubMenu={true}
+                />
+                <MenuItem
+                  id="about"
+                  label={
+                    <MultipleBitmapText>
+                      About<span className="resHandheld:hidden"> & Links</span>
+                    </MultipleBitmapText>
+                  }
+                  doubleHeightWhenFocussed
+                  onSelect={useDispatchActionCallback(goToSubmenu, "about")}
+                  opensSubMenu={true}
+                />
               </>
-            )}
-          </MenuItems>
+            }
+            bottomContents={
+              <>
+                {!isGameRunning && detectDeviceType() === "desktop" && (
+                  <LevelEditorMenuItem />
+                )}
+                {offerDownloadOrInstall && <DownloadOrInstallMenuItem />}
+                {isGameRunning ?
+                  <>
+                    <MenuSeparator />
+                    <QuitGameMenuItem />
+                  </>
+                : null}
+                {showExitApp && (
+                  <>
+                    <MenuSeparator />
+                    <ExitAppMenuItem />
+                  </>
+                )}
+              </>
+            }
+          />
         </div>
         {!isGameRunning && <MainMenuFooter className="resHandheld:mt-1" />}
       </Dialog>
