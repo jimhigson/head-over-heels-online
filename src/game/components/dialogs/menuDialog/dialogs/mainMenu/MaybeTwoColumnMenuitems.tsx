@@ -35,8 +35,8 @@ export const MaybeTwoColumnMenuitems = ({
   return (
     <>
       <MenuItems className="w-24 mx-auto">{topContents}</MenuItems>
-      <div className="flex flex-row justify-between gap-2 w-24 mx-auto">
-        <MenuItems>{column1}</MenuItems>
+      <div className="flex flex-row gap-2 w-24 mx-auto">
+        <MenuItems className="w-12">{column1}</MenuItems>
         <MenuItems>{column2}</MenuItems>
       </div>
       <MenuItems className="w-24 mx-auto">{bottomContents}</MenuItems>

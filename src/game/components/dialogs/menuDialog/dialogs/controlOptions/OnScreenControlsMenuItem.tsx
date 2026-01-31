@@ -4,9 +4,9 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { multilineTextClass } from "../../multilineTextClass";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 
 export const OnScreenControlsMenuItem = () => {
   const hintMarkdown = `Enables on-screen controls: for mobile, tablet, or any device with a touch-screen.

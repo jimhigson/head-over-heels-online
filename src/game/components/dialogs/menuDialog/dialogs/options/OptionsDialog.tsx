@@ -16,17 +16,17 @@ import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch, SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import {
+  optionsDialogClasses,
+  optionsHintMarkdownClassname,
+  optionsMenuScrollClasses,
+  spriteLeaderClasses,
+  titleBarClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
-import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 import { DialogTitleBar } from "../DialogTitleBar";
-import { optionsHintMarkdownClassname } from "./optionsHintMarkdownClassname";
-import {
-  optionsDialogClasses,
-  optionsMenuScrollClasses,
-  titleBarClasses,
-} from "./optionsMenuColours";
 
 const gameSpeedMarkdown = `Play at the original **1x** speed, **1.2x (default)** or faster **1.5x** or **2x** speeds`;
 

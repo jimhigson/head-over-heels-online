@@ -156,7 +156,7 @@ export const spritesTailwindPlugin = plugin(
       backgroundSize: "100% var(--patternLength)",
       backgroundAttachment: "fixed",
       animation:
-        "spectrum-load 0.5s steps(12) infinite, spectrum-wobble 0.5s steps(12) infinite, loading-bars-colour-cycle 12s steps(4, end) infinite",
+        "spectrum-load 1s steps(24) infinite, spectrum-wobble 1s steps(24) infinite, loading-bars-colour-cycle 12s steps(4, end) infinite",
     };
     utilities[".zx-loading-border"] = {
       animation:

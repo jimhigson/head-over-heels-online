@@ -9,15 +9,15 @@ import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { keys } from "../../../../../../utils/entries";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import {
+  optionsDialogClasses,
+  optionsHintMarkdownClassname,
+  optionsMenuScrollClasses,
+  titleBarClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { DialogTitleBar } from "../DialogTitleBar";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
-import {
-  optionsDialogClasses,
-  optionsMenuScrollClasses,
-  titleBarClasses,
-} from "../options/optionsMenuColours";
 
 export const ResolutionMenuItem = ({
   resolutionName,

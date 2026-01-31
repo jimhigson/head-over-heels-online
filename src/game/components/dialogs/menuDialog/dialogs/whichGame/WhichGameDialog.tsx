@@ -1,5 +1,6 @@
 import type { EmptyObject } from "type-fest";
 
+import { jimAtBlockstackingUserId } from "../../../../../../gameInfo";
 import { originalCampaignLocator } from "../../../../../../model/modelTypes";
 import {
   gameStarted,
@@ -9,14 +10,14 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import {
+  mainMenuScrollClasses,
+  selectGameHintMarkdownClassName,
+  spriteLeaderClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
-import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 import { DialogTitleBar } from "../DialogTitleBar";
-import { selectGameHintMarkdownClassName } from "./selectGameHintMarkdownClassName";
-
-// this uuid is the user id of jim@blockstack.ing on github for supabase
-const jimAtBlockstackingUserId = "2924c962-99f1-4dd2-9b9c-fef832dc991b";
 
 export const WhichGameDialog = (_emptyProps: EmptyObject) => {
   return (
@@ -27,17 +28,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
         dialogId="whichGame"
       >
         <DialogTitleBar path={["Select which game"]} className="mobile:px-4" />
-        <div
-          className={
-            "flex flex-col gap-1 p-1 " +
-            //"min-h-full " +
-            "overflow-y-scroll scrollbar scrollbar-w-1 " +
-            "scrollbar-thumb-lightGrey scrollbar-track-metallicBlueHalfbrite " +
-            "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite " +
-            // bring away from any 'notch' on mobile devices:
-            "mobile:px-3 "
-          }
-        >
+        <div className={mainMenuScrollClasses}>
           <MenuItems className="gap-y-1">
             <MenuItem
               className="sprites-double-height"

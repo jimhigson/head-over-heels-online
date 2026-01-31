@@ -5,8 +5,8 @@ import {
   keyAssignmentPresets,
 } from "../../../../../input/keyAssignmentPresets";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 
 export const InputPresetMenuItem = ({
   presetName,

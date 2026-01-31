@@ -72,7 +72,7 @@ const DownloadOrInstallMenuItem = () => {
       className="text-moss zx:text-zxGreen"
       label="Download & Install"
       doubleHeightWhenFocussed
-      leader={<BitmapText className="text-center">⬇</BitmapText>}
+      leader={<BitmapText className="text-center w-2">⬇</BitmapText>}
       onSelect={useDispatchActionCallback(goToSubmenu, "installGuide")}
     />
   );
@@ -194,14 +194,14 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 justify-center"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 justify-around"
         dialogId="mainMenu"
       >
         <MainMenuHeading
           noSubtitle={isGameRunning}
-          className={isGameRunning ? "resHandheld:hidden" : ""}
+          className={`${isGameRunning ? "resHandheld:hidden" : ""} pt-1 resHandheld:pt-half`}
         />
-        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1">
+        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
           <MaybeTwoColumnMenuitems
             columnCount={detectDeviceType() === "mobile" ? 2 : 1}
             topContents={
@@ -264,23 +264,14 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                   <LevelEditorMenuItem />
                 )}
                 {offerDownloadOrInstall && <DownloadOrInstallMenuItem />}
-                {isGameRunning ?
-                  <>
-                    <MenuSeparator />
-                    <QuitGameMenuItem />
-                  </>
-                : null}
-                {showExitApp && (
-                  <>
-                    <MenuSeparator />
-                    <ExitAppMenuItem />
-                  </>
-                )}
+                {(isGameRunning || showExitApp) && <MenuSeparator />}
+                {isGameRunning && <QuitGameMenuItem />}
+                {showExitApp && <ExitAppMenuItem />}
               </>
             }
           />
         </div>
-        {!isGameRunning && <MainMenuFooter className="resHandheld:mt-1" />}
+        {!isGameRunning && <MainMenuFooter />}
       </Dialog>
       <GitRepoInfo />
     </DialogPortal>

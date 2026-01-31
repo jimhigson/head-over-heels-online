@@ -12,10 +12,10 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { useGameApi } from "../../../../GameApiContext";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { spriteLeaderClasses } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { SelectedItemHint } from "../../SelectedItemHint";
-import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 import { reincarnateSelected } from "../offerReincarnation/OfferReincarnationDialog";
 
 export const QuitGameConfirmDialog = () => {
