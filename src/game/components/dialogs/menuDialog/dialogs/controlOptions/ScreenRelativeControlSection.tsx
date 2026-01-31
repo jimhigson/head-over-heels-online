@@ -8,9 +8,11 @@ import { nextDirectionRelativeTo } from "../../../../../../store/slices/gameMenu
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import {
+  optionsHintMarkdownClassname,
+  spriteLeaderClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
-import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const markdown: Record<DirectionsRelativeToMode, string> = {
   screen: `**Screen**: Control is relative to the *screen*.

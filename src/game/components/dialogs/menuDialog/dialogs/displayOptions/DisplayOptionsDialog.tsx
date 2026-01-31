@@ -13,16 +13,16 @@ import { Dialog } from "../../../../../../ui/dialog";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import {
+  optionsDialogClasses,
+  optionsHintMarkdownClassname,
+  optionsMenuScrollClasses,
+  titleBarClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogTitleBar } from "../DialogTitleBar";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
-import {
-  optionsDialogClasses,
-  optionsMenuScrollClasses,
-  titleBarClasses,
-} from "../options/optionsMenuColours";
 import { FullscreenMenuItem } from "./FullscreenMenuItem";
 
 const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**Off**: Original *two-tone* spectrum graphics

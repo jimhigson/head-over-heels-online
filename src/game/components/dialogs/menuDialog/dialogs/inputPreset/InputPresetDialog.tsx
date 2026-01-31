@@ -2,13 +2,13 @@ import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { keys } from "../../../../../../utils/entries";
 import { keyAssignmentPresets } from "../../../../../input/keyAssignmentPresets";
-import { MenuItems } from "../../MenuItems";
-import { DialogTitleBar } from "../DialogTitleBar";
 import {
   optionsDialogClasses,
   optionsMenuScrollClasses,
   titleBarClasses,
-} from "../options/optionsMenuColours";
+} from "../../../dialogClasses";
+import { MenuItems } from "../../MenuItems";
+import { DialogTitleBar } from "../DialogTitleBar";
 import { InputPresetMenuItem } from "./InputPresetMenuItem";
 
 export const InputPresetDialog = () => {

@@ -6,9 +6,9 @@ import { goToSubmenu } from "../../../../../../store/slices/gameMenus/gameMenusS
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { multilineTextClass } from "../../multilineTextClass";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 
 const markdown =
   "This blockstack.ing remake comes with modern default mappings for keyboard and controller. You can also select presets matching the original game or different systems.";
