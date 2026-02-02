@@ -96,6 +96,10 @@ const SpritesheetImage = () => {
     setMousePos(null);
   };
 
+  useEffect(() => {
+    console.log("spritesheetData:", spritesheetData);
+  }, []);
+
   const textureIds = Object.keys(spritesheetData.frames).sort() as TextureId[];
 
   return (

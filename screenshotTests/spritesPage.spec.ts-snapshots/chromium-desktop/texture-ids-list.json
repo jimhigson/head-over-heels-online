@@ -530,6 +530,7 @@
   "shadowMask.head.awayLeft",
   "shadowMask.head.awayRight",
   "shadowMask.head.falling.away",
+  "shadowMask.head.falling.awayRight",
   "shadowMask.head.falling.right",
   "shadowMask.head.falling.towardsRight",
   "shadowMask.head.right",
