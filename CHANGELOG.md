@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.17.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.17.0...v1.17.1) (2026-02-03)
+
+
+### Bug Fixes
+
+* add ampersand char to bitmap font ([#691](https://github.com/jimhigson/head-over-heels-online/issues/691)) ([eb297eb](https://github.com/jimhigson/head-over-heels-online/commit/eb297eb208e9208bd0cb0b21dc9ed00836da6f02))
+* head looking sideways to the camera partial redraw ([#693](https://github.com/jimhigson/head-over-heels-online/issues/693)) ([fb95567](https://github.com/jimhigson/head-over-heels-online/commit/fb9556791a4661053c024b861ec80eab95e224a7))
+
 ## [1.17.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.3...v1.17.0) (2026-01-27)
 
 
