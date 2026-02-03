@@ -87,6 +87,13 @@ const playableFrames = <P extends CharacterName>(
       noStanding?: boolean;
     };
   },
+  sizeOverride: {
+    [t in PlayableTextureId<P>]?: {
+      w: number;
+      h: number;
+      pivot?: { x: number; y: number };
+    };
+  } = {},
 ) => {
   const directionsOrderOnSpritesheet: DirectionXy8[] = [
     "awayLeft",
@@ -100,93 +107,99 @@ const playableFrames = <P extends CharacterName>(
   ];
 
   function* generate(): Generator<
-    [PlayableTextureId<P>, SpritesheetFrameData]
+    [PlayableTextureId<P>, SpritesheetFrameData & { pivot?: Xy }]
   > {
     for (let iD = 0; iD < directionsXy8.length; iD++) {
       const d = directionsOrderOnSpritesheet[iD];
 
       if (!missingFrames[d]?.noShadowMaskFalling) {
+        const textureId = `shadowMask.${p}.falling.${d}` as const;
         yield [
-          `shadowMask.${p}.falling.${d}`,
+          textureId,
           {
             frame: {
               ...smallItemGridLocation({
                 x: gridLocation.x,
                 y: gridLocation.y + iD,
               }),
-              ...smallItemTextureSize,
+              ...(sizeOverride[textureId] ?? smallItemTextureSize),
             },
           },
         ] as const;
       }
 
       if (!missingFrames[d]?.noShadowMask) {
+        const textureId = `shadowMask.${p}.${d}` as const;
         yield [
-          `shadowMask.${p}.${d}`,
+          textureId,
           {
             frame: {
               ...smallItemGridLocation({
                 x: gridLocation.x + 1,
                 y: gridLocation.y + iD,
               }),
-              ...smallItemTextureSize,
+              ...(sizeOverride[textureId] ?? smallItemTextureSize),
             },
           },
         ] as const;
       }
 
       for (let iN: 1 | 2 | 3 = 1; iN <= 3; iN++) {
+        const textureId = `${p}.walking.${d}.${iN as 1 | 2 | 3}` as const;
         yield [
-          `${p}.walking.${d}.${iN as 1 | 2 | 3}`,
+          textureId,
           {
             frame: {
               ...smallItemGridLocation({
                 x: gridLocation.x + iN + 1,
                 y: gridLocation.y + iD,
               }),
-              ...smallItemTextureSize,
+              ...(sizeOverride[textureId] ?? smallItemTextureSize),
             },
           },
         ] as const;
       }
+      const textureId = `${p}.falling.${d}` as const;
       yield [
-        `${p}.falling.${d}`,
+        textureId,
         {
           frame: {
             ...smallItemGridLocation({
               x: gridLocation.x + 5,
               y: gridLocation.y + iD,
             }),
-            ...smallItemTextureSize,
+            ...(sizeOverride[textureId] ?? smallItemTextureSize),
           },
         },
       ] as const;
 
       if (!missingFrames[d]?.noBlinking) {
+        const textureId = `${p}.blinking.${d}` as const;
         yield [
-          `${p}.blinking.${d}`,
+          textureId,
           {
             frame: {
               ...smallItemGridLocation({
                 x: gridLocation.x + 6,
                 y: gridLocation.y + iD,
               }),
-              ...smallItemTextureSize,
+              ...(sizeOverride[textureId] ?? smallItemTextureSize),
             },
           },
         ] as const;
       }
 
       if (!missingFrames[d]?.noStanding) {
+        const textureId = `${p}.standing.${d}` as const;
         yield [
-          `${p}.standing.${d}`,
+          textureId,
           {
             frame: {
               ...smallItemGridLocation({
                 x: gridLocation.x + 7,
                 y: gridLocation.y + iD,
               }),
-              ...smallItemTextureSize,
+              ...(sizeOverride[textureId] ?? smallItemTextureSize),
             },
           },
         ] as const;
@@ -246,7 +259,7 @@ const frames = {
         noShadowMaskFalling: true,
       },
       away: { noBlinking: true, noStanding: true },
-      awayRight: { noStanding: true, noShadowMaskFalling: true },
+      awayRight: { noStanding: true },
       right: { noStanding: true },
       towardsRight: { noStanding: true },
       towards: {
@@ -264,6 +277,18 @@ const frames = {
         noShadowMask: true,
         noStanding: true,
         noShadowMaskFalling: true,
+      },
+    },
+    {
+      "head.falling.awayRight": {
+        w: smallItemTextureSize.w + 1,
+        h: smallItemTextureSize.h,
+        pivot: { x: 12, y: 24 },
+      },
+      "head.falling.towardsLeft": {
+        w: smallItemTextureSize.w + 1,
+        h: smallItemTextureSize.h,
+        pivot: { x: 13, y: 24 },
       },
     },
   ),
@@ -377,8 +402,8 @@ export const playableSpritesheetData = {
     "head.idle.right": headBlinking("right", 3),
     "head.idle.towards": headBlinking("towards", 3),
     "head.idle.towardsRight": headBlinking("towardsRight", 2),
-    "head.idle.towardsLeft": headBlinking("towardsLeft", 2),
-    "head.idle.awayRight": headBlinking("awayRight", 2),
+    "head.idle.towardsLeft": headBlinking("towardsLeft", 3),
+    "head.idle.awayRight": headBlinking("awayRight", 3),
     "heels.idle.right": heelsBlinking("right"),
     "heels.idle.towards": heelsBlinking("towards"),
     "heels.idle.towardsRight": heelsBlinking("towardsRight", 2),
