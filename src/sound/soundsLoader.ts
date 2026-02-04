@@ -1,3 +1,4 @@
+import ballHitSoundUrl from "../../sounds/ballHit.mp3";
 import drumSoundUrl from "../../sounds/bongo.mp3";
 import bonusSoundUrl from "../../sounds/bonus.mp3";
 import bubbleRobotLoopSoundUrl from "../../sounds/bubblesLoop.mp3";
@@ -11,17 +12,19 @@ import glassClinkSoundUrl from "../../sounds/glassClink.mp3";
 import headFallSoundUrl from "../../sounds/headFall.mp3";
 import headJumpSoundUrl from "../../sounds/headJump.mp3";
 import headWalkSoundUrl from "../../sounds/headWalk.mp3";
-import heelsFallSoundUrl from "../../sounds/heelsFall.mp3";
+import fallSoundUrl from "../../sounds/heelsFall.mp3";
 import heelsJumpSoundUrl from "../../sounds/heelsJump.mp3";
 import heelsWalkSoundUrl from "../../sounds/heelsWalk.mp3";
 import helicopterSoundUrl from "../../sounds/helicopter.mp3";
 import hooterSoundUrl from "../../sounds/hooter.mp3";
 import hushPuppyVanishSoundUrl from "../../sounds/hushPuppyVanish.mp3";
+import iceScrapeSoundUrl from "../../sounds/iceScrape.mp3";
 import jetpackTurnaroundSoundUrl from "../../sounds/jetpack_turnaround.mp3";
 import jetpackLoopSoundUrl from "../../sounds/jetpackLoop.mp3";
 import landingSoundUrl from "../../sounds/landing.mp3";
+import lowHumSoundUrl from "../../sounds/lowHum.mp3";
 import metalHitSoundUrl from "../../sounds/metalClang.mp3";
-import stepStoolScrapingSoundUrl from "../../sounds/metalicScraping.mp3";
+import heavyMetalScrapingSoundUrl from "../../sounds/metalicScraping.mp3";
 import mojoLoopSoundUrl from "../../sounds/mojo.mp3";
 import mojoTurnSoundUrl from "../../sounds/mojoTurnSound.mp3";
 import robotBeepingLoopSoundUrl from "../../sounds/robotBeepingLoop.mp3";
@@ -37,6 +40,7 @@ import teleportInSoundUrl from "../../sounds/teleportIn.mp3";
 import teleportOutSoundUrl from "../../sounds/teleportOut.mp3";
 import teleportWarningSirenSoundUrl from "../../sounds/teleportWarningSiren.mp3";
 import toasterPopUpSoundUrl from "../../sounds/toasterPopUp.mp3";
+import woodScrapeSoundUrl from "../../sounds/woodScrape.mp3";
 import { importOnce } from "../utils/importOnce";
 import { audioCtx } from "./audioCtx";
 
@@ -83,7 +87,7 @@ const importSoundsOnce = importOnce(async () => {
     headFall: await loadAndDecode(headFallSoundUrl),
     headJump: await loadAndDecode(headJumpSoundUrl),
     headWalk: await loadAndDecode(headWalkSoundUrl),
-    heelsFall: await loadAndDecode(heelsFallSoundUrl),
+    fall: await loadAndDecode(fallSoundUrl),
     heelsJump: await loadAndDecode(heelsJumpSoundUrl),
     heelsWalk: await loadAndDecode(heelsWalkSoundUrl),
     helicopter: await loadAndDecode(helicopterSoundUrl),
@@ -98,17 +102,21 @@ const importSoundsOnce = importOnce(async () => {
     robotBeepingLoop: await loadAndDecode(robotBeepingLoopSoundUrl),
     robotWhirLoop: await loadAndDecode(robotWhirLoopSoundUrl),
     rollingBallLoop: await loadAndDecode(rollingBallLoopSoundUrl),
+    ballHit: await loadAndDecode(ballHitSoundUrl),
     servoLoop: await loadAndDecode(servoLoopUrl),
     servoStart: await loadAndDecode(servoStartUrl),
     servoStop: await loadAndDecode(servoStoptUrl),
     softBump: await loadAndDecode(softBumpSoundUrl),
     springBoing: await loadAndDecode(springBoingSoundUrl),
-    stepStoolScraping: await loadAndDecode(stepStoolScrapingSoundUrl),
+    heavyMetalScraping: await loadAndDecode(heavyMetalScrapingSoundUrl),
     switchClick: await loadAndDecode(switchClickSoundUrl),
     toasterPopUpSoundUrl: await loadAndDecode(toasterPopUpSoundUrl),
     teleportIn: await loadAndDecode(teleportInSoundUrl),
     teleportOut: await loadAndDecode(teleportOutSoundUrl),
     teleportWarningSiren: await loadAndDecode(teleportWarningSirenSoundUrl),
+    iceScrape: await loadAndDecode(iceScrapeSoundUrl),
+    lowHum: await loadAndDecode(lowHumSoundUrl),
+    woodScrape: await loadAndDecode(woodScrapeSoundUrl),
   };
 });
 

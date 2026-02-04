@@ -49,6 +49,7 @@ import { rotateTowardsFacing } from "../physics/mechanics/rotateTowardsFacing";
 import { teleporting } from "../physics/mechanics/teleporting";
 import { walking } from "../physics/mechanics/walking";
 import { moveItem } from "../physics/moveItem/moveItem";
+import { recordActedOnBy } from "../physics/recordActedOnBy";
 import { addParticlesAroundCrown } from "./addParticlesToRoom";
 import { applyMechanicsResults } from "./applyMechanicsResults";
 import { constrainToMaximumSpeedInPlace } from "./constrainToMaximumSpeed";
@@ -73,9 +74,6 @@ function* itemMechanicResultGen<
       T,
       RoomId,
       RoomItemId
-    >;
-    yield* latentMovement(item, room, gameState, deltaMS) as Generator<
-      MechanicResult<T, RoomId, RoomItemId>
     >;
   }
 
@@ -308,4 +306,32 @@ export const tickItem = <
     deltaMS,
     onTouch: handleItemsTouchingItems,
   });
+
+  if (isFreeItem(item)) {
+    // now, apply latent movement. this isn't a normal mechanic because
+    // it also has a movedBy property, which is used to record who the actor
+    // on the moved item is
+    for (const { movedBy, posDelta } of latentMovement(
+      item,
+      room,
+      gameState,
+      deltaMS,
+    )) {
+      recordActedOnBy(
+        movedBy,
+        item,
+        room,
+        posDelta.x !== 0 || posDelta.y !== 0,
+        posDelta.z !== 0,
+      );
+      moveItem({
+        subjectItem: item as UnionOfAllItemInPlayTypes<RoomId>,
+        posDelta,
+        gameState,
+        room,
+        deltaMS,
+        onTouch: handleItemsTouchingItems,
+      });
+    }
+  }
 };

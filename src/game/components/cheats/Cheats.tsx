@@ -374,6 +374,15 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               <Button
                 className={cheatsButtonClasses}
                 onClick={(e) => {
+                  summonItem("ball", {});
+                  e?.currentTarget.blur();
+                }}
+              >
+                <span className="sprite texture-ball" />
+              </Button>
+              <Button
+                className={cheatsButtonClasses}
+                onClick={(e) => {
                   summonItem("spring", {});
                   e?.currentTarget.blur();
                 }}

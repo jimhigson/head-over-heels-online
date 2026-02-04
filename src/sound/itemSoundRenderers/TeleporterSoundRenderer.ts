@@ -35,5 +35,7 @@ export class TeleporterSoundRenderer
     );
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this.#sirenBracket(false);
+  }
 }

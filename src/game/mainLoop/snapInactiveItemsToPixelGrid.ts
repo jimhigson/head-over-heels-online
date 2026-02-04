@@ -1,9 +1,16 @@
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { MovedItems } from "./progressGameState";
 
-import { iterateRoomItems, type RoomState } from "../../model/RoomState";
+import {
+  iterateRoomItems,
+  roomSpatialIndexKey,
+  type RoomState,
+} from "../../model/RoomState";
+import { collisionItemWithIndex } from "../collision/aabbCollision";
 import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
-import { type FreeItem, isFreeItem } from "../physics/itemPredicates";
+import { type FreeItem, isFreeItem, isSolid } from "../physics/itemPredicates";
+
+const logSnapping = 0;
 
 /** returns the snapped position, or undefined if no snapping is needed */
 export const snapFreeItemToPixelGrid = <
@@ -61,9 +68,41 @@ export const snapInactiveItemsToPixelGrid = <
       continue;
     }
     const snappedPosition = snapFreeItemToPixelGrid(item, room.roomTime);
-    if (snappedPosition !== undefined) {
-      updateItemPosition(room, item, snappedPosition);
-      movedItems.add(item);
+    if (snappedPosition === undefined) {
+      continue;
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    logSnapping &&
+      console.log(
+        "snapping",
+        item.id,
+        item.state.position,
+        "->",
+        snappedPosition,
+      );
+
+    const { id } = item;
+
+    const collisionsAfterSnapping = collisionItemWithIndex(
+      { id, aabb: item.aabb, state: { position: snappedPosition } },
+      room[roomSpatialIndexKey],
+      (i) => i.id !== id && isSolid(i, item),
+    ).toArray();
+    //if (!isEmpty(collisionsAfterSnapping)) {
+    if (collisionsAfterSnapping.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      logSnapping &&
+        console.log(
+          "not snapping because of collision:",
+          item.id,
+          "would collide with",
+          collisionsAfterSnapping.map((c) => c.id),
+        );
+      continue;
+    }
+
+    updateItemPosition(room, item, snappedPosition);
+    movedItems.add(item);
   }
 };

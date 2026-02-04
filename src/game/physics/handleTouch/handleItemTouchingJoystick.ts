@@ -94,7 +94,7 @@ export const handleItemTouchingJoystick = <
     sillyOldFace.state.controlledWithJoystickAtRoomTime = roomTime;
 
     recordActedOnBy(
-      joystickItem,
+      joystickItem.id,
       sillyOldFace,
       room,
       // joysticks always act in xy plane

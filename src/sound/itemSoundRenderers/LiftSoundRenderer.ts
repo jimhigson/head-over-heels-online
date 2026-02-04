@@ -3,6 +3,7 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
 import { audioCtx } from "../audioCtx";
 import { createAudioNode } from "../soundUtils/createAudioNode";
+import { stopWithFade } from "../soundUtils/stopWithFade";
 
 const dopplerSensitivity = 3;
 
@@ -39,5 +40,7 @@ export class LiftSoundRenderer implements ItemSoundRenderer<"lift"> {
     );
   }
 
-  destroy(): void {}
+  destroy(): void {
+    stopWithFade(this.#channelSource, this.output);
+  }
 }

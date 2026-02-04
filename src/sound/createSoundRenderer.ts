@@ -10,13 +10,16 @@ import { BubblesSoundRenderer } from "./itemSoundRenderers/BubblesSoundRenderer"
 import { ButtonSoundRenderer } from "./itemSoundRenderers/ButtonSoundRenderer";
 import { CharlesSoundRenderer } from "./itemSoundRenderers/CharlesSoundRenderer";
 import { ConveyorSoundRenderer } from "./itemSoundRenderers/ConveyorSoundRenderer";
+import { DrumSoundRenderer } from "./itemSoundRenderers/DrumSoundRenderer";
 import { FiredDoughnutSoundRenderer } from "./itemSoundRenderers/FiredDoughnutSoundRenderer";
+import { FreeItemSoundRenderer } from "./itemSoundRenderers/generic/FreeItemSoundRenderer";
 import { LiftSoundRenderer } from "./itemSoundRenderers/LiftSoundRenderer";
 import { MonsterSoundRenderer } from "./itemSoundRenderers/MonsterSoundRenderer";
+import { MovingPlatformSoundRenderer } from "./itemSoundRenderers/MovingPlatformSoundRenderer";
 import { PlayableSoundRenderer } from "./itemSoundRenderers/PlayableSoundRenderer";
-import { PortableBlockSoundRenderer } from "./itemSoundRenderers/PortableBlockSoundRenderer";
 import { PushableBlockSoundRenderer } from "./itemSoundRenderers/PushableBlockSoundRenderer";
 import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
+import { SlidingDeadlySoundRenderer } from "./itemSoundRenderers/SlidingDeadlySoundRenderer";
 import { SpringSoundRenderer } from "./itemSoundRenderers/SpringSoundRenderer";
 import { SwitchSoundRenderer } from "./itemSoundRenderers/SwitchSoundRenderer";
 import { TeleporterSoundRenderer } from "./itemSoundRenderers/TeleporterSoundRenderer";
@@ -36,12 +39,18 @@ const rendererClasses: {
   monster: MonsterSoundRenderer,
   conveyor: ConveyorSoundRenderer,
   spring: SpringSoundRenderer,
-  portableBlock: PortableBlockSoundRenderer,
+  portableBlock: FreeItemSoundRenderer,
   charles: CharlesSoundRenderer,
   ball: BallSoundRenderer,
   pushableBlock: PushableBlockSoundRenderer,
   firedDoughnut: FiredDoughnutSoundRenderer,
   slidingBlock: SlidingBlockSoundRenderer,
+  pickup: FreeItemSoundRenderer,
+  movingPlatform: MovingPlatformSoundRenderer,
+  moveableDeadly: FreeItemSoundRenderer,
+  slidingDeadly: SlidingDeadlySoundRenderer,
+  sceneryPlayer: FreeItemSoundRenderer,
+  sceneryCrown: FreeItemSoundRenderer,
 };
 
 export const createSoundRenderer = <T extends ItemInPlayType>(
@@ -53,6 +62,15 @@ export const createSoundRenderer = <T extends ItemInPlayType>(
   ) {
     return new ToasterSoundRenderer(
       renderContext as ItemSoundRenderContext<"deadlyBlock">,
+    ) as ItemSoundRenderer<T>;
+  }
+
+  if (
+    renderContext.item.type === "portableBlock" &&
+    renderContext.item.config.style === "drum"
+  ) {
+    return new DrumSoundRenderer(
+      renderContext as ItemSoundRenderContext<"portableBlock">,
     ) as ItemSoundRenderer<T>;
   }
 

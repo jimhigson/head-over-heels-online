@@ -10,7 +10,7 @@ import { keysIter } from "../../utils/entries";
 import { iterate } from "../../utils/iterate";
 import { audioCtx } from "../audioCtx";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
-import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
+import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
   public readonly output: GainNode = audioCtx.createGain();
@@ -27,19 +27,18 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
     this.#servoChannel,
   );
 
-  #collisionsSoundRenderer: CollisionSoundRenderer;
+  #freeItemSoundRenderer: FreeItemSoundRenderer;
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<"charles">,
   ) {
     this.#servoChannel.connect(this.output);
     this.#servoChannel.gain.value = 0.5;
-    this.#collisionsSoundRenderer = new CollisionSoundRenderer(
-      renderContext,
-      { soundId: "metalHit" },
-      0.3,
-    );
-    this.#collisionsSoundRenderer.output.connect(this.output);
+    this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
+      collision: { soundId: "metalHit", gain: 0.3 },
+      pushed: { soundId: "heavyMetalScraping", gain: 0.4 },
+    });
+    this.#freeItemSoundRenderer.output.connect(this.output);
   }
 
   tick(tickContext: ItemTickContext) {
@@ -61,10 +60,13 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
 
     this.#servoBracketed(controlledByJoystick);
 
-    this.#collisionsSoundRenderer.tick(tickContext);
+    this.#freeItemSoundRenderer.tick(tickContext, controlledByJoystick);
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this.#servoBracketed(false);
+    this.#freeItemSoundRenderer.destroy();
+  }
 }
 
 CharlesSoundRenderer satisfies ItemSoundRendererConstructableClass<"charles">;

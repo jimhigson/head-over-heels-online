@@ -11,7 +11,7 @@ export const recordActedOnBy = <
    * the item pushing or otherwise controlling the other item. Undefined for
    * a 'first cause' directly from a mechanic (ie, not acted on by any other item)
    */
-  actingItem: undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  actingItemId: RoomItemId | undefined,
   subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   /** whether the force being applied has a non-zero component in the XY plane */
@@ -32,13 +32,13 @@ export const recordActedOnBy = <
   }
 
   if (actedOnAt.roomTime === room.roomTime) {
-    if (actingItem) {
-      actedOnAt.by[actingItem.id] = true;
+    if (actingItemId) {
+      actedOnAt.by[actingItemId] = true;
     }
     actedOnAt.actedInXY ||= inXy;
     actedOnAt.actedInZ ||= inZ;
   } else {
-    actedOnAt.by = (actingItem ? { [actingItem.id]: true } : {}) as Record<
+    actedOnAt.by = (actingItemId ? { [actingItemId]: true } : {}) as Record<
       RoomItemId,
       true
     >;
