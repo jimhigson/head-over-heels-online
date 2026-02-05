@@ -87,10 +87,10 @@ const playableFrames = <P extends CharacterName>(
       noStanding?: boolean;
     };
   },
-  sizeOverride: {
+  overrides: {
     [t in PlayableTextureId<P>]?: {
-      w: number;
-      h: number;
+      w?: number;
+      h?: number;
       pivot?: { x: number; y: number };
     };
   } = {},
@@ -122,7 +122,8 @@ const playableFrames = <P extends CharacterName>(
                 x: gridLocation.x,
                 y: gridLocation.y + iD,
               }),
-              ...(sizeOverride[textureId] ?? smallItemTextureSize),
+              ...smallItemTextureSize,
+              ...overrides[textureId],
             },
           },
         ] as const;
@@ -138,7 +139,8 @@ const playableFrames = <P extends CharacterName>(
                 x: gridLocation.x + 1,
                 y: gridLocation.y + iD,
               }),
-              ...(sizeOverride[textureId] ?? smallItemTextureSize),
+              ...smallItemTextureSize,
+              ...overrides[textureId],
             },
           },
         ] as const;
@@ -154,7 +156,8 @@ const playableFrames = <P extends CharacterName>(
                 x: gridLocation.x + iN + 1,
                 y: gridLocation.y + iD,
               }),
-              ...(sizeOverride[textureId] ?? smallItemTextureSize),
+              ...smallItemTextureSize,
+              ...overrides[textureId],
             },
           },
         ] as const;
@@ -168,7 +171,8 @@ const playableFrames = <P extends CharacterName>(
               x: gridLocation.x + 5,
               y: gridLocation.y + iD,
             }),
-            ...(sizeOverride[textureId] ?? smallItemTextureSize),
+            ...smallItemTextureSize,
+            ...overrides[textureId],
           },
         },
       ] as const;
@@ -183,7 +187,8 @@ const playableFrames = <P extends CharacterName>(
                 x: gridLocation.x + 6,
                 y: gridLocation.y + iD,
               }),
-              ...(sizeOverride[textureId] ?? smallItemTextureSize),
+              ...smallItemTextureSize,
+              ...overrides[textureId],
             },
           },
         ] as const;
@@ -199,7 +204,8 @@ const playableFrames = <P extends CharacterName>(
                 x: gridLocation.x + 7,
                 y: gridLocation.y + iD,
               }),
-              ...(sizeOverride[textureId] ?? smallItemTextureSize),
+              ...smallItemTextureSize,
+              ...overrides[textureId],
             },
           },
         ] as const;
@@ -280,15 +286,16 @@ const frames = {
       },
     },
     {
+      // override the sprite's pivot to get the 'lean forward' effect when falling
+      // where it isn't already baked into the sprite:
       "head.falling.awayRight": {
-        w: smallItemTextureSize.w + 1,
-        h: smallItemTextureSize.h,
-        pivot: { x: 12, y: 24 },
+        pivot: { x: 11, y: 24 },
       },
       "head.falling.towardsLeft": {
-        w: smallItemTextureSize.w + 1,
-        h: smallItemTextureSize.h,
         pivot: { x: 13, y: 24 },
+      },
+      "head.falling.awayLeft": {
+        pivot: { x: 12, y: 25 },
       },
     },
   ),
