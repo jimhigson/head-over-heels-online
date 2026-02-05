@@ -93,7 +93,15 @@ export const handleItemTouchingJoystick = <
     sillyOldFace.state.facing = posDelta;
     sillyOldFace.state.controlledWithJoystickAtRoomTime = roomTime;
 
-    recordActedOnBy(joystickItem, sillyOldFace, room);
+    recordActedOnBy(
+      joystickItem,
+      sillyOldFace,
+      room,
+      // joysticks always act in xy plane
+      true,
+      // never act on z-axis
+      false,
+    );
 
     assignLatentMovement(
       sillyOldFace,

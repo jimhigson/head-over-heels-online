@@ -23,7 +23,7 @@ export const progressWithSubTicks =
     gameState: GameState<RoomId>,
     deltaMS: number,
   ): MovedItems<RoomId, RoomItemId> => {
-    /* 
+    /*
       swopping needs to be done outside of the sub-ticks - since it isn't
       possible to change the input between sub-steps, the most it can be
       done is once per tick
@@ -65,8 +65,8 @@ export const progressWithSubTicks =
     for (let i = 0; i < numberOfSubTicks; i++) {
       const subtickMoves = progress(gameState, stepDeltaMs);
 
-      for (const m of subtickMoves) {
-        movedItems.add(m);
+      for (const item of subtickMoves) {
+        movedItems.add(item);
       }
     }
 

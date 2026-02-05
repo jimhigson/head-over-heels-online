@@ -11,4 +11,14 @@ emptySet.clear = () => {
   throw new Error("emptySet.clear");
 };
 
+emptyMap.set = () => {
+  throw new Error("emptyMap.set");
+};
+emptyMap.clear = () => {
+  throw new Error("emptyMap.clear");
+};
+emptyMap.delete = () => {
+  throw new Error("emptyMap.delete");
+};
+
 export const emptyObject = Object.freeze({});

@@ -60,6 +60,16 @@ export const getRoomItem = <
     | undefined;
 };
 
+export const roomItemsArray = <
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName = SceneryName,
+>(
+  roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
+): Array<ValueOf<typeof roomItems>> => {
+  return Object.values(roomItems);
+};
+
 export const roomItemsIterable = <
   RoomId extends string,
   RoomItemId extends string,

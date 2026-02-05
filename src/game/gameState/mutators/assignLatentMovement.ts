@@ -1,7 +1,7 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { LatentMovementFrame } from "../../../model/ItemStateMap";
 import type { RoomState } from "../../../model/RoomState";
 import type { Xyz } from "../../../utils/vectors/vectors";
+import type { MovedItems } from "../../mainLoop/progressGameState";
 import type { FreeItem } from "../../physics/itemPredicates";
 
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
@@ -40,7 +40,7 @@ export const assignLatentMovementFromStandingOn = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  movedItems: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
+  movedItems: MovedItems<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
   deltaMS: number,

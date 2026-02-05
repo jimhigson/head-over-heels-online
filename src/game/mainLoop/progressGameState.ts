@@ -1,11 +1,14 @@
-import { objectValues } from "iter-tools-es";
-
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import type { RoomStateItems } from "../../model/RoomState";
+import type { Xyz } from "../../utils/vectors/vectors";
 import type { GameState } from "../gameState/GameState";
 
-import { iterateRoomItemEntries } from "../../model/RoomState";
+import {
+  iterateRoomItemEntries,
+  roomItemsArray,
+  roomItemsIterable,
+} from "../../model/RoomState";
 import { emptySet } from "../../utils/empty";
-import { iterate } from "../../utils/iterate";
 import { xyzEqual } from "../../utils/vectors/vectors";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
@@ -25,11 +28,26 @@ import { tickItem } from "./tickItem";
 
 // set to 1 to check for inconsistencies in the model for every subtick
 const extraDebugChecks = 0;
-
 /* the items that moved while progressing the game state */
 export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<
   UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
 >;
+
+const calculateMovedItems = <RoomId extends string, RoomItemId extends string>(
+  roomItems: RoomStateItems<RoomId, RoomItemId>,
+  startingPositions: Record<string, Xyz>,
+): MovedItems<RoomId, RoomItemId> => {
+  const movedItems = new Set() as MovedItems<RoomId, RoomItemId>;
+
+  for (const item of roomItemsIterable(roomItems)) {
+    const prev = startingPositions[item.id];
+    if (prev === undefined || !xyzEqual(prev, item.state.position)) {
+      movedItems.add(item);
+    }
+  }
+
+  return movedItems;
+};
 
 export type ProgressGameState<
   RoomId extends string,
@@ -46,11 +64,11 @@ export const progressGameState = <
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MovedItems<RoomId, RoomItemId> => {
-  const room = selectCurrentRoomState(gameState);
+  const room = selectCurrentRoomState<RoomId, RoomItemId>(gameState);
 
   if (room === undefined) {
     // no current room - probably this is because game over
-    return emptySet;
+    return emptySet as MovedItems<RoomId, RoomItemId>;
   }
 
   // advance time before applying the mechanics of the game
@@ -68,7 +86,7 @@ export const progressGameState = <
     ]),
   );
 
-  for (const item of objectValues(room.items)) {
+  for (const item of roomItemsIterable(room.items)) {
     if (itemHasExpired(item, room)) {
       deleteItemFromRoom({ room, item });
       if (isPlayableItem(item)) {
@@ -80,7 +98,7 @@ export const progressGameState = <
     }
   }
 
-  const sortedItems = Object.values(room.items).sort(itemTickOrderComparator);
+  const sortedItems = roomItemsArray(room.items).sort(itemTickOrderComparator);
 
   for (const item of sortedItems) {
     const playable = selectCurrentPlayableItem(gameState);
@@ -114,15 +132,10 @@ export const progressGameState = <
   // floating point correction must be done before looking for moved items:
   correctFloatingPointErrorsInRoom(room);
 
-  const movedItems = new Set(
-    iterate(objectValues(room.items)).filter(
-      (i) =>
-        // wasn't in the room before (treated like a move)
-        startingPositions[i.id] === undefined ||
-        // moved on this frame:
-        !xyzEqual(i.state.position, startingPositions[i.id]),
-    ),
-  ) as MovedItems<RoomId, RoomItemId>;
+  const movedItems = calculateMovedItems<RoomId, RoomItemId>(
+    room.items,
+    startingPositions,
+  );
 
   assignLatentMovementFromStandingOn(
     movedItems,

@@ -140,7 +140,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   if (visited.size === 0) {
     // record 'first cause' acting on, directly from the mechanics.
     // (n>1)-cause are recorded in the collision loop
-    recordActedOnBy(undefined, subjectItem, room);
+    recordActedOnBy(
+      undefined,
+      subjectItem,
+      room,
+      posDelta.x !== 0 || posDelta.y !== 0,
+      posDelta.z !== 0,
+    );
   }
 
   const sortedCollisions = sortObstaclesAboutPriorityAndVector(
@@ -204,7 +210,15 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
 
     // record this acting on:
-    recordActedOnBy(subjectItem, collidedWithItem, room);
+    recordActedOnBy(
+      subjectItem,
+      collidedWithItem,
+      room,
+      // this is an approximation: assumes that the axes of the force acting on a pushed object is the same as the
+      // axes of the force on the pusher
+      posDelta.x !== 0 || posDelta.y !== 0,
+      posDelta.z !== 0,
+    );
 
     if (onTouch !== undefined && log) {
       console.group(

@@ -3,7 +3,7 @@ import type { Disappear } from "./Disappear";
 import type { ItemInPlayType, SwitchSetting } from "./ItemInPlay";
 import type { ItemStateMap } from "./ItemStateMap";
 import type { StoodOnBy } from "./StoodOnBy";
-import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
+import type { TimedRelationWithOtherItemOnAxis } from "./TimedRelationWithOtherItem";
 
 export type BaseItemState<RoomItemId extends string = string> = {
   /**
@@ -62,7 +62,7 @@ export type BaseItemState<RoomItemId extends string = string> = {
   stoodOnUntilRoomTime: number;
 
   /** the roomTime when this item last had a force applied to it, and who did the pushing/acting */
-  actedOnAt: TimedRelationWithOtherItem<RoomItemId>;
+  actedOnAt: TimedRelationWithOtherItemOnAxis<RoomItemId>;
 };
 
 export type ItemState<

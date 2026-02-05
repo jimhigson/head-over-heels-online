@@ -516,4 +516,9 @@ describe("jumping", () => {
       expect(highestItemZ).toBeLessThan(2.25 * blockSizePx.z);
     },
   );
+
+  test.todo("heels can't jump between a two block gap", () => {
+    //     (h) --> jump    can't land here
+    // (block) (gap) (gap) (block)
+  });
 });

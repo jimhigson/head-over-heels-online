@@ -14,6 +14,10 @@ export const recordActedOnBy = <
   actingItem: undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
+  /** whether the force being applied has a non-zero component in the XY plane */
+  inXy: boolean,
+  /** whether the force being applied has a non-zero component in the Z axis */
+  inZ: boolean,
 ) => {
   // this cannot be undefined by the current types. However, an old save could
   // not have this for non-free items:
@@ -31,12 +35,16 @@ export const recordActedOnBy = <
     if (actingItem) {
       actedOnAt.by[actingItem.id] = true;
     }
+    actedOnAt.actedInXY ||= inXy;
+    actedOnAt.actedInZ ||= inZ;
   } else {
     actedOnAt.by = (actingItem ? { [actingItem.id]: true } : {}) as Record<
       RoomItemId,
       true
     >;
     actedOnAt.roomTime = room.roomTime;
+    actedOnAt.actedInXY = inXy;
+    actedOnAt.actedInZ = inZ;
   }
 };
 
