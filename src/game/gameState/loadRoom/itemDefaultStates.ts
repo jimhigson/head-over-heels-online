@@ -22,6 +22,8 @@ export const defaultBaseState = <RoomItemId extends string>() =>
     actedOnAt: {
       roomTime: neverTime,
       by: emptyObject as Record<RoomItemId, true>,
+      actedInXY: false,
+      actedInZ: false,
     },
   }) satisfies Partial<BaseItemState>;
 

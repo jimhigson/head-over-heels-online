@@ -1,5 +1,8 @@
+import type { Simplify } from "type-fest";
+
 export type TimedRelationWithOtherItem<RoomItemId extends string> = {
-  /** by recording the time of the event,
+  /**
+   * by recording the time of the event,
    * we allow rendering to take into account events that happened in sub-ticks since the room's
    * last render
    */
@@ -7,3 +10,11 @@ export type TimedRelationWithOtherItem<RoomItemId extends string> = {
   /** the ids of the item is related to */
   by: Record<RoomItemId, true>;
 };
+
+export type TimedRelationWithOtherItemOnAxis<RoomItemId extends string> =
+  Simplify<
+    TimedRelationWithOtherItem<RoomItemId> & {
+      actedInXY: boolean;
+      actedInZ: boolean;
+    }
+  >;

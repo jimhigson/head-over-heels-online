@@ -33,7 +33,7 @@ export const updateZEdges = <
    * the nodes that have moved - nodes that did not move are not considered
    *  - if not given, wil consider all
    */
-  moved: Set<TItem> = new Set(objectValues(items)),
+  moved: Iterable<TItem> = objectValues(items),
   /**
    * if given, will create an incremental update starting from the previous edges
    */
