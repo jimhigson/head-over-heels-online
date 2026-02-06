@@ -90,22 +90,25 @@ const getPlayableShadowMaskTextureId = (
     : (`shadowMask.${playableName}.${direction}` as TextureId);
 };
 
-export const directionalShadowMaskAppearanceXy8 =
-  <ShadowMaskBaseShadowId extends IndividualCharacterName>(
-    shadowMaskBaseShadowId: ShadowMaskBaseShadowId,
+export const playableShadowMaskAppearanceXy8 =
+  <ShadowMaskBaseShadowTextureId extends IndividualCharacterName>(
+    shadowMaskBaseShadowTextureId: ShadowMaskBaseShadowTextureId,
     heightBlocks: number = 1,
-  ): ItemAppearance<CharacterName, PlayableShadowMaskRenderProps, Sprite> =>
-  ({
-    renderContext: {
-      item: {
-        state: { visualFacingVector, facing, action },
-      },
-    },
-    currentRendering,
-  }) => {
+  ): ItemAppearance<
+    "sceneryPlayer" | CharacterName,
+    PlayableShadowMaskRenderProps,
+    Sprite
+  > =>
+  ({ renderContext: { item }, currentRendering }) => {
+    const action = item.type === "sceneryPlayer" ? "idle" : item.state.action;
+
     const currentlyRenderedProps = currentRendering?.renderProps;
     const facingXy8 =
-      vectorClosestDirectionXy8(visualFacingVector ?? facing) ?? "towards";
+      item.type === "sceneryPlayer" ?
+        item.config.startDirection
+      : (vectorClosestDirectionXy8(
+          item.state.visualFacingVector ?? item.state.facing,
+        ) ?? "towards");
 
     const falling = action === "falling";
 
@@ -122,7 +125,7 @@ export const directionalShadowMaskAppearanceXy8 =
     const shadowMaskDirection = flippedDirection ?? facingXy8;
 
     const textureId = getPlayableShadowMaskTextureId(
-      shadowMaskBaseShadowId,
+      shadowMaskBaseShadowTextureId,
       falling,
       shadowMaskDirection,
     );

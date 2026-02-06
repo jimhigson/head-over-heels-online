@@ -13,7 +13,7 @@ import {
 import { springShadowMaskAppearance } from "../springAppearance";
 import {
   directionalShadowMaskAppearanceXy4,
-  directionalShadowMaskAppearanceXy8,
+  playableShadowMaskAppearanceXy8,
 } from "./directionalShadowMaskAppearance";
 import { teleporterShadowMaskAppearance } from "./teleporterShadowMaskAppearance";
 
@@ -172,9 +172,9 @@ const itemShadowMaskAppearances: {
 
   charles: directionalShadowMaskAppearanceXy4("charles", 2),
 
-  head: directionalShadowMaskAppearanceXy8("head"),
-  heels: directionalShadowMaskAppearanceXy8("heels"),
-  headOverHeels: directionalShadowMaskAppearanceXy8("head", 2),
+  head: playableShadowMaskAppearanceXy8("head"),
+  heels: playableShadowMaskAppearanceXy8("heels"),
+  headOverHeels: playableShadowMaskAppearanceXy8("head", 2),
 };
 
 export const itemShadowMaskAppearanceForItem = <T extends ItemInPlayType>(
@@ -186,6 +186,10 @@ export const itemShadowMaskAppearanceForItem = <T extends ItemInPlayType>(
   /** no shadows cast on this item */
   | undefined => {
   switch (item.type) {
+    case "sceneryPlayer":
+      return itemShadowMaskAppearances[
+        item.config.which
+      ] as ItemShadowAppearanceOutsideView<T>;
     case "monster":
       return itemShadowMaskAppearances[`monster.${item.config.which}`] as
         | ItemShadowAppearanceOutsideView<T>
