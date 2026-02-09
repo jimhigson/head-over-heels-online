@@ -18,6 +18,36 @@
     }
   },
   {
+    "op": "add",
+    "path": "/items/portableBlock",
+    "value": {
+      "config": {
+        "style": "drum"
+      },
+      "position": {
+        "x": 0,
+        "y": 0.5,
+        "z": 1
+      },
+      "type": "portableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/portableBlock_2",
+    "value": {
+      "config": {
+        "style": "drum"
+      },
+      "position": {
+        "x": 3.5,
+        "y": 0,
+        "z": 1
+      },
+      "type": "portableBlock"
+    }
+  },
+  {
     "op": "replace",
     "path": "/color/hue",
     "value": "yellow"

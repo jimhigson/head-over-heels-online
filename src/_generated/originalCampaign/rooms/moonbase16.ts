@@ -49,6 +49,11 @@ export const room = inferRoomJson({
       position: { x: 11, y: 5, z: 0 },
       type: "pickup",
     },
+    portableBlock: {
+      config: { style: "drum" },
+      position: { x: 0, y: 0.5, z: 1 },
+      type: "portableBlock",
+    },
     "portableBlock@0,0,0": {
       config: { style: "drum" },
       position: { x: 0, y: 0, z: 0 },
@@ -67,6 +72,11 @@ export const room = inferRoomJson({
     "portableBlock@4,0,0": {
       config: { style: "drum" },
       position: { x: 4, y: 0, z: 0 },
+      type: "portableBlock",
+    },
+    portableBlock_2: {
+      config: { style: "drum" },
+      position: { x: 3.5, y: 0, z: 1 },
       type: "portableBlock",
     },
     "wall(right)@0,0,0": {
