@@ -1,6 +1,6 @@
 import plugin from "tailwindcss/plugin";
 
-import { transformObject } from "../../utils/entries";
+import { transformObject } from "../../utils/transformObject";
 import { colorsSrgb, coloursP3 } from "../tailwindColours";
 
 /**

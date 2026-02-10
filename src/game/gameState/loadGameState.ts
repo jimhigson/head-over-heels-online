@@ -17,6 +17,7 @@ import {
   roomSpatialIndexKey,
 } from "../../model/RoomState";
 import { typedURLSearchParams } from "../../options/queryParams";
+import { store } from "../../store/store";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { emptyObject } from "../../utils/empty";
 import {
@@ -190,6 +191,7 @@ const _loadGameState = <RoomId extends string>({
       roomJson: campaign.rooms[campaignStartingRoomIds.head],
       // we are not loading so nothing has been collected/read:
       ...defaultLoadRoom,
+      userSettings: store.getState().gameMenus.userSettings,
     });
 
   const heelsRoom: RoomState<RoomId, string> | undefined =
@@ -201,6 +203,7 @@ const _loadGameState = <RoomId extends string>({
         roomJson: campaign.rooms[campaignStartingRoomIds.heels],
         // we are not loading so nothing has been collected/read:
         ...defaultLoadRoom,
+        userSettings: store.getState().gameMenus.userSettings,
       });
 
   // both players, in their starting rooms:

@@ -1,8 +1,8 @@
 import type { CreateAudioNodeOptionsObject } from "./createAudioNode";
 
-import { audioCtx } from "../audioCtx";
+import { connectWithGain } from "./connectWithGain";
 import { createAudioNode } from "./createAudioNode";
-import { soundsFadeDurationSec, stopWithFade } from "./stopWithFade";
+import { stopWithFade } from "./stopWithFade";
 
 export type BracketedSound<Value = boolean> = ReturnType<
   typeof createBracketedSound<Value>
@@ -27,37 +27,6 @@ export type CreateBracketedEventOptions = {
   // a room and discovering that we are standing on something, only when the
   // state transitions
   noStartOnFirstFrame?: boolean;
-};
-
-/**
- * Create a gainNode between the sound and the connectTo node,
- * connect them up and return the gainNode.
- *
- * When randomiseStartPoint is true, the sound starts at a random position
- * in the waveform, so we fade in from zero to avoid a click from the
- * sudden non-zero amplitude.
- */
-const connectWithGain = (
-  sound: AudioBufferSourceNode,
-  { gain, randomiseStartPoint }: BracketedSegmentOptions,
-  connectTo: AudioNode,
-) => {
-  const gainNode = audioCtx.createGain();
-  const targetGain = gain ?? gainNode.gain.defaultValue;
-
-  if (randomiseStartPoint) {
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(
-      targetGain,
-      audioCtx.currentTime + soundsFadeDurationSec,
-    );
-  } else if (gain !== undefined) {
-    gainNode.gain.value = gain;
-  }
-
-  sound.connect(gainNode);
-  gainNode.connect(connectTo);
-  return gainNode;
 };
 
 export const createBracketedSound = <Value = boolean>(

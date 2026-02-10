@@ -534,6 +534,7 @@ export type RoomJsonSchema = {
                 | "displaySettings.uncolourised"
                 | "displaySettings.showShadowMasks"
                 | "soundSettings.mute"
+                | "soundSettings.noRoomEntryTunes"
                 | "soundSettings.noFootsteps";
             }
           | {
@@ -605,6 +606,7 @@ export type RoomJsonSchema = {
                           | "heels"
                           | "headOverHeels"
                           | "stopAutowalk"
+                          | "soundEffect"
                           | "doorFrame"
                           | "doorLegs"
                           | "portal"
@@ -686,6 +688,7 @@ export type RoomJsonSchema = {
                           | "heels"
                           | "headOverHeels"
                           | "stopAutowalk"
+                          | "soundEffect"
                           | "doorFrame"
                           | "doorLegs"
                           | "portal"
@@ -1774,6 +1777,7 @@ export type RoomJsonSchema = {
                       | "heels"
                       | "headOverHeels"
                       | "stopAutowalk"
+                      | "soundEffect"
                       | "doorFrame"
                       | "doorLegs"
                       | "portal"
@@ -1855,6 +1859,7 @@ export type RoomJsonSchema = {
                       | "heels"
                       | "headOverHeels"
                       | "stopAutowalk"
+                      | "soundEffect"
                       | "doorFrame"
                       | "doorLegs"
                       | "portal"

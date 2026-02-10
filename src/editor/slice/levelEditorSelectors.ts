@@ -18,6 +18,7 @@ import type {
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
+import { emptyUserSettings } from "../../store/slices/gameMenus/emptyUserSettings";
 import { emptyObject } from "../../utils/empty";
 import { selectorHook } from "../../utils/react/selectorHook";
 
@@ -65,6 +66,7 @@ export const selectEditorRoomState = createSelector(
       scrollsRead: emptyObject,
       // display heads and heels in their starting rooms:
       isNewGame: true,
+      userSettings: emptyUserSettings,
     });
   },
 );
@@ -82,6 +84,7 @@ export const selectEditorRoomStateWithPreviews = createSelector(
       scrollsRead: emptyObject,
       // display heads and heels in their starting rooms:
       isNewGame: true,
+      userSettings: emptyUserSettings,
     });
   },
 );

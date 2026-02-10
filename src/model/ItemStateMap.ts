@@ -351,4 +351,8 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
      */
     valid: boolean;
   };
+
+  soundEffect: {
+    played: boolean;
+  };
 };

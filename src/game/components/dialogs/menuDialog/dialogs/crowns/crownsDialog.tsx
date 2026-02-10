@@ -1,4 +1,4 @@
-import music from "../../../../../../../sounds/rock.mp3";
+import music from "../../../../../../../sounds/music/rock.mp3";
 import { useIsGameLoading } from "../../../../../../store/hooks/loadingHooks";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";

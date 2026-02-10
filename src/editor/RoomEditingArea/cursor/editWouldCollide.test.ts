@@ -51,6 +51,7 @@ describe("itemMoveOrResizeWouldCollide", () => {
         scrollsRead: {},
         roomPickupsCollected: {},
         isNewGame: false,
+        userSettings: { soundSettings: {}, displaySettings: {} },
       }) as EditorRoomState;
     };
 

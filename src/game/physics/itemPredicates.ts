@@ -39,6 +39,7 @@ const isNeverSolidItemType = isItemType(
   "floatingText",
   "emitter",
   "particle",
+  "soundEffect",
 );
 const isUnsolid = (
   item: UnionOfAllItemInPlayTypes,

@@ -10,8 +10,8 @@ import type { TextureId } from "./spritesheetData/spriteSheetData";
 
 import { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
 import { emptyArray } from "../../utils/empty";
-import { transformObject } from "../../utils/entries";
 import { iterate } from "../../utils/iterate";
+import { transformObject } from "../../utils/transformObject";
 import {
   spritesheetPalette,
   spritesheetPaletteDim,

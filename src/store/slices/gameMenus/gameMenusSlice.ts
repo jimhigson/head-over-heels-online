@@ -47,6 +47,7 @@ import { pick } from "../../../utils/pick";
 import { directionsXy4 } from "../../../utils/vectors/vectors";
 import { defaultUserSettings } from "./defaultUserSettings";
 import { directionsRelativeToModes } from "./directionsRelativeToModes";
+import { emptyUserSettings } from "./emptyUserSettings";
 import {
   selectBooleanUserSetting,
   selectDirectionsRelativeTo,
@@ -119,6 +120,7 @@ export type InputDirectionMode = (typeof inputDirectionModes)[number];
 
 export type SoundSettings = {
   mute?: boolean;
+  noRoomEntryTunes?: boolean;
   noFootsteps?: boolean;
 };
 
@@ -266,14 +268,7 @@ export type GameInPlayBooleanPaths = ToggleablePaths<
 >;
 
 export const initialGameMenuSliceState: GameMenusState = {
-  userSettings: {
-    displaySettings: {},
-    soundSettings:
-      navigator.webdriver ?
-        // avoid playing sounds while running visual integration tests:
-        { mute: true }
-      : {},
-  },
+  userSettings: emptyUserSettings,
 
   gameRunning: false,
   gameInPlay: initialGameInPlayStoreState,

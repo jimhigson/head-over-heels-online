@@ -142,6 +142,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   floatingText: 200,
   particle: 200,
   emitter: 200,
+  soundEffect: 200,
 };
 
 export const collisionsPriorityComparator = <I extends SortableObstacle>(

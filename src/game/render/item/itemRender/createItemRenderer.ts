@@ -146,9 +146,9 @@ export const createItemRenderer = <T extends ItemInPlayType>(
       undefined
     : createSoundRenderer(itemRenderContext);
   const sound =
-    soundRenderer === undefined ? undefined : (
-      new SoundPanRenderer(itemRenderContext, soundRenderer)
-    );
+    soundRenderer === undefined ? undefined
+    : item.noSoundPan ? soundRenderer
+    : new SoundPanRenderer(itemRenderContext, soundRenderer);
 
   return {
     top: new ItemSoundAndGraphicsRenderer(itemRenderContext, {
