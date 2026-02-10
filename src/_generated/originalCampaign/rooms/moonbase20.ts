@@ -8,7 +8,7 @@ export const room = inferRoomJson({
   items: {
     crownsScroll: {
       config: { gives: "scroll", page: "crowns", source: "manual" },
-      position: { x: 5, y: 4, z: 1 },
+      position: { x: 5, y: 3.5, z: 1 },
       type: "pickup",
     },
     "door@0,3,0": {
@@ -42,52 +42,52 @@ export const room = inferRoomJson({
     },
     "slidingBlock@1,4,0": {
       config: { style: "puck" },
-      position: { x: 1, y: 4, z: 0 },
+      position: { x: 1, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@2,4,0": {
       config: { style: "puck" },
-      position: { x: 2, y: 4, z: 0 },
+      position: { x: 2, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@3,4,0": {
       config: { style: "puck" },
-      position: { x: 3, y: 4, z: 0 },
+      position: { x: 3, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@4,2,0": {
       config: { style: "puck" },
-      position: { x: 4, y: 2, z: 0 },
+      position: { x: 4, y: 1.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@4,4,0": {
       config: { style: "puck" },
-      position: { x: 4, y: 4, z: 0 },
+      position: { x: 4, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@4,6,0": {
       config: { style: "puck" },
-      position: { x: 4, y: 6, z: 0 },
+      position: { x: 4, y: 5.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@5,3,0": {
       config: { style: "puck" },
-      position: { x: 5, y: 3, z: 0 },
+      position: { x: 5, y: 2.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@5,4,0": {
       config: { style: "puck" },
-      position: { x: 5, y: 4, z: 0 },
+      position: { x: 5, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@5,5,0": {
       config: { style: "puck" },
-      position: { x: 5, y: 5, z: 0 },
+      position: { x: 5, y: 4.5, z: 0 },
       type: "slidingBlock",
     },
     "slidingBlock@6,4,0": {
       config: { style: "puck" },
-      position: { x: 6, y: 4, z: 0 },
+      position: { x: 6, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
     "wall(right)@0,0,0": {
