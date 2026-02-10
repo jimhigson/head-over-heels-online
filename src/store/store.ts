@@ -21,6 +21,7 @@ import {
   debugItemClicked,
   gameMenusSlice,
 } from "./slices/gameMenus/gameMenusSlice";
+import { githubApiSlice } from "./slices/githubApiSlice";
 import {
   updateUpscaleWhenDisplaySettingsChange,
   updateUpscaleWhenEmulatedResolutionChanges,
@@ -31,6 +32,7 @@ const appReducer = combineSlices({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,
   [campaignsApiSlice.reducerPath]: campaignsApiSlice.reducer,
+  [githubApiSlice.reducerPath]: githubApiSlice.reducer,
   [gameAssetsLoadingSlice.reducerPath]: gameAssetsLoadingSlice.reducer,
 }).withLazyLoadedSlices<
   // pre-empting the lazy-loaded slices for the types only (no run-time importing)
@@ -70,7 +72,8 @@ export const store = configureStore({
       },
     })
       .prepend(listenerMiddleware.middleware)
-      .concat(campaignsApiSlice.middleware),
+      .concat(campaignsApiSlice.middleware)
+      .concat(githubApiSlice.middleware),
 });
 
 if (typeof window !== "undefined") {
