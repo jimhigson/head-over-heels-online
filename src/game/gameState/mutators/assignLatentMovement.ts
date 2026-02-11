@@ -27,10 +27,11 @@ export const assignLatentMovement = <
   deltaMS: number,
   latency = defaultLatency,
 ) => {
-  const latentMovementFrame: LatentMovementFrame = {
+  const latentMovementFrame: LatentMovementFrame<RoomItemId> = {
     endAtRoomTime: room.roomTime + deltaMS + latency,
     startAtRoomTime: room.roomTime + latency,
     velocity: scaleXyz(movementDelta, 1 / deltaMS),
+    fromStandingOn: itemToMove.state.standingOnItemId!,
   };
 
   itemToMove.state.latentMovement.push(latentMovementFrame);

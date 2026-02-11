@@ -3,9 +3,11 @@ import type { PartialDeep } from "type-fest";
 import { describe, expect, it } from "vitest";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { LatentMovementFrame } from "../../../model/ItemStateMap";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
 import type { FreeItemTypes } from "../itemPredicates";
+import type { ApplicableLatentMovement } from "./latentMovement";
 
 import { latentMovement } from "./latentMovement";
 
@@ -14,15 +16,12 @@ type TestRoomState = RoomState<string, string>;
 
 // Helper to create a test item with latent movement frames
 const createTestItemWithLatentMovement = (
-  latentMovementFrames: Array<{
-    startAtRoomTime: number;
-    endAtRoomTime: number;
-    velocity: { x: number; y: number; z: number };
-  }>,
+  latentMovementFrames: Array<LatentMovementFrame<string>>,
 ): TestItem => {
   return {
     state: {
       latentMovement: latentMovementFrames,
+      standingOnItemId: "testStandingOnId",
     },
   } satisfies PartialDeep<TestItem> as TestItem;
 };
@@ -42,8 +41,10 @@ describe("latentMovement", () => {
 
     const results = [...latentMovement(item, room, gameState, 16)];
 
-    expect(results).toEqual([]);
-    expect(item.state.latentMovement).toEqual([]);
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([]);
+    expect(item.state.latentMovement).toEqual<
+      Array<ApplicableLatentMovement<string>>
+    >([]);
   });
 
   it("should apply full movement for a frame that spans the entire tick", () => {
@@ -54,6 +55,7 @@ describe("latentMovement", () => {
         startAtRoomTime: 50,
         endAtRoomTime: 150,
         velocity: { x: 2, y: 0, z: 0 }, // 2 pixels per ms
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -62,9 +64,9 @@ describe("latentMovement", () => {
     const results = [...latentMovement(item, room, gameState, 16)];
 
     // Movement: velocity 2 px/ms × 16ms full tick = 32 pixels
-    expect(results).toEqual([
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
       {
-        movementType: "position",
+        movedBy: "testStandingOnId",
         posDelta: { x: 32, y: 0, z: 0 }, // 2 px/ms × 16ms = 32 pixels
       },
     ]);
@@ -81,6 +83,7 @@ describe("latentMovement", () => {
         startAtRoomTime: 90,
         endAtRoomTime: 200,
         velocity: { x: 3, y: 0, z: 0 }, // 3 pixels per ms
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -89,9 +92,9 @@ describe("latentMovement", () => {
     const results = [...latentMovement(item, room, gameState, 20)];
 
     // Movement: velocity 3 px/ms × 10ms active time = 30 pixels
-    expect(results).toEqual([
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
       {
-        movementType: "position",
+        movedBy: "testStandingOnId",
         posDelta: { x: 30, y: 0, z: 0 }, // 3 px/ms × 10ms = 30 pixels
       },
     ]);
@@ -107,6 +110,7 @@ describe("latentMovement", () => {
         startAtRoomTime: 50,
         endAtRoomTime: 95,
         velocity: { x: 0, y: 4, z: 0 }, // 4 pixels per ms
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -115,9 +119,9 @@ describe("latentMovement", () => {
     const results = [...latentMovement(item, room, gameState, 15)];
 
     // Movement: velocity 4 px/ms × 10ms active time = 40 pixels
-    expect(results).toEqual([
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
       {
-        movementType: "position",
+        movedBy: "testStandingOnId",
         posDelta: { x: 0, y: 40, z: 0 }, // 4 px/ms × 10ms = 40 pixels
       },
     ]);
@@ -135,11 +139,13 @@ describe("latentMovement", () => {
         startAtRoomTime: 50,
         endAtRoomTime: 150,
         velocity: { x: 1, y: 0, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
       {
         startAtRoomTime: 75,
         endAtRoomTime: 125,
         velocity: { x: 0, y: 2, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -148,13 +154,13 @@ describe("latentMovement", () => {
     const results = [...latentMovement(item, room, gameState, 10)]; // 90-100
 
     // Both frames active for full 10ms (from 90 to 100)
-    expect(results).toEqual([
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
       {
-        movementType: "position",
+        movedBy: "testStandingOnId",
         posDelta: { x: 10, y: 0, z: 0 }, // velocity 1 px/ms × 10ms active time = 10 pixels
       },
       {
-        movementType: "position",
+        movedBy: "testStandingOnId",
         posDelta: { x: 0, y: 20, z: 0 }, // velocity 2 px/ms × 10ms active time = 20 pixels
       },
     ]);
@@ -168,11 +174,13 @@ describe("latentMovement", () => {
         startAtRoomTime: 50,
         endAtRoomTime: 100, // Ends exactly at current time
         velocity: { x: 5, y: 0, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
       {
         startAtRoomTime: 150,
         endAtRoomTime: 200, // Future frame
         velocity: { x: 0, y: 3, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -181,18 +189,19 @@ describe("latentMovement", () => {
     const results = [...latentMovement(item, room, gameState, 16)]; // 84-100
 
     // First frame active from 84 to 100 = full 16ms
-    expect(results).toEqual([
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
       {
-        movementType: "position",
+        movedBy: "testStandingOnId",
         posDelta: { x: 80, y: 0, z: 0 }, // velocity 5 px/ms × 16ms = 80 pixels
       },
     ]);
     // First frame should be removed, second frame kept
     expect(item.state.latentMovement).toHaveLength(1);
-    expect(item.state.latentMovement[0]).toEqual({
+    expect(item.state.latentMovement[0]).toEqual<LatentMovementFrame<string>>({
       startAtRoomTime: 150,
       endAtRoomTime: 200,
       velocity: { x: 0, y: 3, z: 0 },
+      fromStandingOn: "testStandingOnId",
     });
   });
 
@@ -202,6 +211,7 @@ describe("latentMovement", () => {
         startAtRoomTime: 150, // Starts in the future
         endAtRoomTime: 200,
         velocity: { x: 10, y: 0, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -209,7 +219,7 @@ describe("latentMovement", () => {
 
     const results = [...latentMovement(item, room, gameState, 16)];
 
-    expect(results).toEqual([]);
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([]);
     expect(item.state.latentMovement).toHaveLength(1);
   });
 
@@ -219,11 +229,13 @@ describe("latentMovement", () => {
         startAtRoomTime: 10,
         endAtRoomTime: 50, // Ended before tick started
         velocity: { x: 10, y: 0, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
       {
         startAtRoomTime: 120,
         endAtRoomTime: 150, // Future frame to ensure array isn't emptied
         velocity: { x: 5, y: 0, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100); // Previous time would be 84
@@ -231,7 +243,7 @@ describe("latentMovement", () => {
 
     const results = [...latentMovement(item, room, gameState, 16)];
 
-    expect(results).toEqual([]);
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([]);
     // Old frame should be removed, only future frame remains
     expect(item.state.latentMovement).toHaveLength(1);
     expect(item.state.latentMovement[0].startAtRoomTime).toBe(120);
@@ -245,6 +257,7 @@ describe("latentMovement", () => {
         startAtRoomTime: 50,
         endAtRoomTime: 150,
         velocity: { x: 1.5, y: -2, z: 0.5 }, // Mixed positive/negative velocities
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -252,9 +265,9 @@ describe("latentMovement", () => {
 
     const results = [...latentMovement(item, room, gameState, 20)]; // 80-100
 
-    expect(results).toEqual([
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
       {
-        movementType: "position",
+        movedBy: "testStandingOnId",
         posDelta: { x: 30, y: -40, z: 10 }, // (1.5, -2, 0.5) px/ms × 20ms = (30, -40, 10) pixels
       },
     ]);
@@ -269,6 +282,7 @@ describe("latentMovement", () => {
         startAtRoomTime: 92,
         endAtRoomTime: 96,
         velocity: { x: 5, y: 0, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -277,9 +291,9 @@ describe("latentMovement", () => {
     const results = [...latentMovement(item, room, gameState, 10)]; // 90-100
 
     // Movement: velocity 5 px/ms × 4ms active time = 20 pixels
-    expect(results).toEqual([
+    expect(results).toEqual<Array<ApplicableLatentMovement<string>>>([
       {
-        movementType: "position",
+        movedBy: "testStandingOnId",
         posDelta: { x: 20, y: 0, z: 0 }, // 5 px/ms × 4ms = 20 pixels
       },
     ]);
@@ -294,16 +308,19 @@ describe("latentMovement", () => {
         startAtRoomTime: 10,
         endAtRoomTime: 90, // Ends during tick
         velocity: { x: 1, y: 0, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
       {
         startAtRoomTime: 20,
         endAtRoomTime: 95, // Also ends during tick
         velocity: { x: 0, y: 1, z: 0 },
+        fromStandingOn: "testStandingOnId",
       },
       {
         startAtRoomTime: 30,
         endAtRoomTime: 150, // Continues after tick
         velocity: { x: 0, y: 0, z: 1 },
+        fromStandingOn: "testStandingOnId",
       },
     ]);
     const room = createTestRoomAtTime(100);
@@ -315,16 +332,16 @@ describe("latentMovement", () => {
     // Frame 2: active from 80 to 95 = 15ms × 1 px/ms = 15 pixels in y
     // Frame 3: active from 80 to 100 = 20ms × 1 px/ms = 20 pixels in z
     expect(results).toHaveLength(3);
-    expect(results[0]).toEqual({
-      movementType: "position",
+    expect(results[0]).toEqual<ApplicableLatentMovement<string>>({
+      movedBy: "testStandingOnId",
       posDelta: { x: 10, y: 0, z: 0 },
     });
-    expect(results[1]).toEqual({
-      movementType: "position",
+    expect(results[1]).toEqual<ApplicableLatentMovement<string>>({
+      movedBy: "testStandingOnId",
       posDelta: { x: 0, y: 15, z: 0 },
     });
-    expect(results[2]).toEqual({
-      movementType: "position",
+    expect(results[2]).toEqual<ApplicableLatentMovement<string>>({
+      movedBy: "testStandingOnId",
       posDelta: { x: 0, y: 0, z: 20 },
     });
     // Only the third frame should remain (first two ended during tick)

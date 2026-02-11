@@ -5,13 +5,13 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
 import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
-import { neverTime } from "../../utils/neverTime";
 import { audioCtx } from "../audioCtx";
 import { loadedSounds } from "../soundsLoader";
 import {
   type BracketedSound,
   createBracketedSound,
 } from "../soundUtils/createBracketedSound";
+import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 const walkGain = 0.8;
 const carryGain = 1.2;
@@ -20,21 +20,10 @@ const jumpGain = 0.8;
 export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   public readonly output: GainNode = audioCtx.createGain();
 
-  // add the walking buffer sources to here to play them
   #walkChannel?: GainNode;
   #walkBracketedSound?: BracketedSound;
   #jumpChannel: GainNode = audioCtx.createGain();
   #jumpBracketedSound: BracketedSound;
-  #fallBracketedSound: BracketedSound;
-  // todo: this could be a generic freeitem sound renderer
-  #standingOnChannel: GainNode = audioCtx.createGain();
-  #standingOnBracketedSound: BracketedSound = createBracketedSound(
-    {
-      start: { soundId: "landing" },
-      noStartOnFirstFrame: true,
-    },
-    this.#standingOnChannel,
-  );
 
   #carryChannel: GainNode = audioCtx.createGain();
   #carryBracketedSound = createBracketedSound(
@@ -51,13 +40,9 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     this.#carryChannel,
   );
 
-  #currentRenderProps: {
-    teleportingPhase: "in" | "out" | null;
-    positionZ: number;
-  } = {
-    teleportingPhase: null,
-    positionZ: 0,
-  };
+  #freeItemSoundRenderer: FreeItemSoundRenderer;
+
+  #currentTeleportingPhase: "in" | "out" | null = null;
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<CharacterName>,
@@ -67,10 +52,9 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       item: { type: name },
     } = renderContext;
 
-    const { noFootsteps } = {
-      ...defaultUserSettings.soundSettings,
-      ...soundSettings,
-    };
+    const noFootsteps =
+      soundSettings.noFootsteps ??
+      defaultUserSettings.soundSettings.noFootsteps;
 
     if (!noFootsteps) {
       this.#walkChannel = audioCtx.createGain();
@@ -90,7 +74,6 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     this.#jumpChannel.connect(this.output);
     this.#carryChannel.gain.value = carryGain;
     this.#carryChannel.connect(this.output);
-    this.#standingOnChannel.connect(this.output);
 
     this.#jumpBracketedSound = createBracketedSound(
       {
@@ -101,17 +84,18 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       this.#jumpChannel,
     );
 
-    this.#fallBracketedSound = createBracketedSound(
-      {
-        loop: {
-          soundId: `${name === "headOverHeels" ? "head" : name}Fall`,
-        },
-      },
-      this.#jumpChannel,
-    );
+    this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
+      fall:
+        name === "headOverHeels" || name === "head" ?
+          { soundId: "headFall" }
+        : undefined,
+      standingOn: { soundId: "softBump" },
+      collision: { soundId: "softBump", gain: 0.5 },
+    });
+    this.#freeItemSoundRenderer.output.connect(this.output);
   }
 
-  tick({ lastRenderRoomTime }: ItemTickContext) {
+  tick(tickContext: ItemTickContext) {
     const {
       renderContext: { item },
     } = this;
@@ -126,38 +110,31 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
         vels: {
           gravity: { z: velZ },
         },
-        collidedWith: {
-          roomTime: roomTimeOfLastCollision,
-          by: collidedWithItemIds,
-        },
       },
     } = item;
     const heelsAbilities = selectHeelsAbilities(item);
-    const {
-      teleportingPhase: currentTeleportingPhase,
-      positionZ: currentPositionZ,
-    } = this.#currentRenderProps;
 
     const teleportingPhase = teleporting ? teleporting.phase : null;
 
     const playJumpSound =
       jumped &&
       positionZ > jumpStartZ &&
-      positionZ > currentPositionZ &&
+      positionZ > this.#freeItemSoundRenderer.currentPositionZ &&
       velZ > 0;
-
-    const playFallSound =
-      positionZ < currentPositionZ && velZ < 0 && standingOnItemId === null;
-
-    this.#fallBracketedSound(playFallSound);
 
     this.#jumpBracketedSound(playJumpSound);
 
+    const playFallSound =
+      positionZ < this.#freeItemSoundRenderer.currentPositionZ &&
+      velZ < 0 &&
+      standingOnItemId === null;
+
+    const playWalkSound =
+      !playJumpSound && !playFallSound && action === "moving";
+
     // walking
     if (this.#walkBracketedSound !== undefined) {
-      this.#walkBracketedSound(
-        !playJumpSound && !playFallSound && action === "moving",
-      );
+      this.#walkBracketedSound(playWalkSound);
     }
 
     // carrying (heels)
@@ -165,18 +142,9 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       this.#carryBracketedSound(heelsAbilities.carrying !== null);
     }
 
-    const landed =
-      // staning on something:
-      standingOnItemId !== null &&
-      // the thing we are standing on - we collided with since the room last rendered:
-      roomTimeOfLastCollision > (lastRenderRoomTime ?? neverTime) &&
-      collidedWithItemIds[standingOnItemId];
-
-    this.#standingOnBracketedSound(landed);
-
     if (
       teleportingPhase !== null &&
-      teleportingPhase !== currentTeleportingPhase
+      teleportingPhase !== this.#currentTeleportingPhase
     ) {
       if (teleportingPhase === "in") {
         const sound = loadedSounds().teleportIn;
@@ -193,8 +161,19 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       }
     }
 
-    this.#currentRenderProps = { teleportingPhase, positionZ };
+    this.#currentTeleportingPhase = teleportingPhase;
+
+    this.#freeItemSoundRenderer.tick(
+      tickContext,
+      // don't scrape if either walking or falling:
+      playWalkSound || action === "falling",
+    );
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this.#walkBracketedSound?.(false);
+    this.#jumpBracketedSound(false);
+    this.#carryBracketedSound(false);
+    this.#freeItemSoundRenderer.destroy();
+  }
 }

@@ -44,7 +44,7 @@ const numberInRangeToMinus1To1Range = (
 
 /* tone down the extremeness on the x left/right stereo channels - a smaller number
    makes the panning more subtle */
-const maxXOffsetFromCentre = 0.5;
+const maxXOffsetFromCentre = 0.3;
 /* going into the screen (z-direction) changes the loudness in too extreme ways. Allow
    to adjust in a more reasonable way */
 const maxZOffsetFromCentre = 0.3;

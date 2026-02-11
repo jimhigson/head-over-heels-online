@@ -31,13 +31,16 @@ export type PlayableTeleportingState =
       toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
     };
 
-export type LatentMovementFrame = {
+export type LatentMovementFrame<RoomItemId extends string> = {
   /** the time that the movement is scheduled to start happening */
   startAtRoomTime: number;
   /** the time that the movement is scheduled to stop happening */
   endAtRoomTime: number;
   /** the velocity to move at between the start and end times, in pixels per ms */
   velocity: Xyz;
+  // the id of the item was standing on at the time the latent movement was assigned.
+  // ie, the item that is moving below this item with the latent movement
+  fromStandingOn: RoomItemId;
 };
 
 export type FreeItemState<RoomItemId extends string> = {
@@ -47,7 +50,7 @@ export type FreeItemState<RoomItemId extends string> = {
   standingOnItemId: null | RoomItemId;
 
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
-  latentMovement: Array<LatentMovementFrame>;
+  latentMovement: Array<LatentMovementFrame<RoomItemId>>;
 
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */

@@ -13,7 +13,7 @@ export class SwitchSoundRenderer implements ItemSoundRenderer<"switch"> {
   // add the walking buffer sources to here to play them
   #channelNode: GainNode = audioCtx.createGain();
 
-  #currentRenderProps: { setting: SwitchSetting } | undefined = undefined;
+  #currentSetting: SwitchSetting | undefined = undefined;
 
   constructor(public readonly renderContext: ItemSoundRenderContext<"switch">) {
     this.#channelNode.connect(this.output);
@@ -29,7 +29,6 @@ export class SwitchSoundRenderer implements ItemSoundRenderer<"switch"> {
       },
     } = this;
 
-    // TODO: this is the same in the pixi renderer appearance, could be shared
     const setting =
       switchConfig.type === "in-store" ?
         (
@@ -42,16 +41,17 @@ export class SwitchSoundRenderer implements ItemSoundRenderer<"switch"> {
         : "left"
       : stateSetting;
 
-    const currentSetting = this.#currentRenderProps?.setting;
-
-    if (currentSetting !== undefined && currentSetting !== setting) {
+    if (
+      this.#currentSetting !== undefined &&
+      this.#currentSetting !== setting
+    ) {
       createAudioNode({
         soundId: "switchClick",
         playbackRate: setting === "right" ? 0.95 : 1.05,
         connectTo: this.#channelNode,
       });
     }
-    this.#currentRenderProps = { setting };
+    this.#currentSetting = setting;
   }
 
   destroy(): void {}

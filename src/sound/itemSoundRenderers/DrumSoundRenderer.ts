@@ -7,13 +7,18 @@ import { audioCtx } from "../audioCtx";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
-export class SpringSoundRenderer implements ItemSoundRenderer<"spring"> {
+export class DrumSoundRenderer implements ItemSoundRenderer<"portableBlock"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
+  #currentlyStoodOn = false;
 
-  constructor(public readonly renderContext: ItemSoundRenderContext<"spring">) {
-    this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext);
+  constructor(
+    public readonly renderContext: ItemSoundRenderContext<"portableBlock">,
+  ) {
+    this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
+      standingOn: { soundId: "drum" },
+    });
     this.#freeItemSoundRenderer.output.connect(this.output);
   }
 
@@ -21,23 +26,21 @@ export class SpringSoundRenderer implements ItemSoundRenderer<"spring"> {
     const {
       renderContext: {
         item: {
-          state: { stoodOnBy, stoodOnUntilRoomTime },
+          state: { stoodOnBy },
         },
       },
     } = this;
-    const compressed = isStoodOn(stoodOnBy);
 
-    const boing =
-      tickContext.lastRenderRoomTime !== undefined &&
-      stoodOnUntilRoomTime > tickContext.lastRenderRoomTime &&
-      !compressed;
+    const stoodOn = isStoodOn(stoodOnBy);
 
-    if (boing) {
+    if (!this.#currentlyStoodOn && stoodOn) {
       createAudioNode({
-        soundId: "springBoing",
+        soundId: "drum",
         connectTo: this.output,
       });
     }
+
+    this.#currentlyStoodOn = stoodOn;
 
     this.#freeItemSoundRenderer.tick(tickContext);
   }

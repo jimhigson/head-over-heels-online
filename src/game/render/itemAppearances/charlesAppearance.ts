@@ -32,6 +32,7 @@ export const charlesAppearance: ItemAppearance<
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
   const facingXy4 = vectorClosestDirectionXy4(facing) ?? "towards";
+
   const controlledByJoystick =
     roomTime === roomTimeActedOn &&
     iterate(keysIter(by)).some((id) => isJoystick(items[id]));

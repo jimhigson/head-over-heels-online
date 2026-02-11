@@ -18,6 +18,7 @@ import {
 } from "../../../model/RoomState";
 import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
+import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
 import { defaultUserSettings } from "../../../store/slices/gameMenus/defaultUserSettings";
 import { createItemRenderer } from "../item/itemRender/createItemRenderer";
 import { type ZGraph } from "../sortZ/GraphEdges";
@@ -302,7 +303,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   destroy() {
     this.output.graphics.label = this.output.graphics.label + "DESTROYED";
     this.output.graphics.destroy({ children: true });
-    this.output.sound?.disconnect();
+    const { sound } = this.output;
+    if (sound) {
+      const soundsFadeDurationMs = soundsFadeDurationSec * 1_000;
+      setTimeout(() => {
+        sound.disconnect();
+      }, soundsFadeDurationMs);
+    }
     this.#itemRenderers.forEach((itemRenderer) => {
       itemRenderer.top.destroy();
     });

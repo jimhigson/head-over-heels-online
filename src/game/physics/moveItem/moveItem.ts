@@ -211,7 +211,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
     // record this acting on:
     recordActedOnBy(
-      subjectItem,
+      subjectItem.id,
       collidedWithItem,
       room,
       // this is an approximation: assumes that the axes of the force acting on a pushed object is the same as the

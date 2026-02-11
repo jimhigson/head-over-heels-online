@@ -1,34 +1,23 @@
 import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-import type { FreeItemSoundRendererConstructorOptions } from "./generic/FreeItemSoundRenderer";
 
 import { audioCtx } from "../audioCtx";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
-const glassyOptions: FreeItemSoundRendererConstructorOptions = {
-  collision: { soundId: "glassClink", varyPlaybackRate: true, gain: 0.8 },
-  pushed: {
-    soundId: "iceScrape",
-    varyPlaybackRate: true,
-    randomiseStartPoint: true,
-  },
-};
-
-export class SlidingBlockSoundRenderer
-  implements ItemSoundRenderer<"slidingBlock">
+export class MovingPlatformSoundRenderer
+  implements ItemSoundRenderer<"movingPlatform">
 {
   public readonly output: GainNode = audioCtx.createGain();
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<"slidingBlock">,
+    public readonly renderContext: ItemSoundRenderContext<"movingPlatform">,
   ) {
-    this.#freeItemSoundRenderer = new FreeItemSoundRenderer(
-      renderContext,
-      renderContext.item.config.style === "puck" ? glassyOptions : undefined,
-    );
+    this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
+      pushed: null,
+    });
     this.#freeItemSoundRenderer.output.connect(this.output);
   }
 

@@ -247,4 +247,4 @@ export const switchMinTimeBetweenToggleMs = 100;
  * before the new one starts - otherwise player that was already moving would have
  * to accelerate up to full speed again
  */
-export const walkResumeGraceTime = 150;
+export const walkResumeGraceTime = 120;

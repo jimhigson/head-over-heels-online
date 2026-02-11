@@ -1,10 +1,15 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
+import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 
 import { scaleXyz } from "../../../utils/vectors/vectors";
 import { type FreeItemTypes } from "../itemPredicates";
-import { type MechanicResult } from "../MechanicResult";
+
+export type ApplicableLatentMovement<RoomItemId extends string> = {
+  posDelta: Xyz;
+  movedBy: RoomItemId;
+};
 
 /**
  * Apply scheduled movement frames to items. Movement frames have start and end times,
@@ -24,7 +29,7 @@ export function* latentMovement<
   _gameState: GameState<RoomId>,
   /** how much time, in ms has passed since the last tick */
   deltaMS: number,
-): Generator<MechanicResult<FreeItemTypes, RoomId, RoomItemId>> {
+): Generator<ApplicableLatentMovement<RoomItemId>> {
   const currentTime = roomTime;
   const previousTime = roomTime - deltaMS;
 
@@ -45,6 +50,13 @@ export function* latentMovement<
       continue;
     }
 
+    // remove frames where the item standing is no longer standing
+    // on the item that gave it the latent movement:
+    if (frame.fromStandingOn !== item.state.standingOnItemId) {
+      framesToRemove.push(i);
+      continue;
+    }
+
     // Calculate the time window this frame is active during this tick
     const frameStartDuringTick = Math.max(frame.startAtRoomTime, previousTime);
     const frameEndDuringTick = Math.min(frame.endAtRoomTime, currentTime);
@@ -54,7 +66,7 @@ export function* latentMovement<
     if (activeTime > 0) {
       // Convert velocity to position delta: velocity (pixels/ms) × time (ms) = pixels
       const posDelta = scaleXyz(frame.velocity, activeTime);
-      yield { movementType: "position", posDelta };
+      yield { posDelta, movedBy: frame.fromStandingOn };
     }
 
     // Mark frame for removal if it's fully consumed (past its end time)

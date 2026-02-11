@@ -18,7 +18,7 @@ import {
   type BracketedSegmentOptions,
   createBracketedSound,
 } from "../soundUtils/createBracketedSound";
-import { CollisionSoundRenderer } from "./generic/CollisionSoundRenderer";
+import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 type PerMonsterSounds = {
   [M in MonsterWhich]?: BracketedSegmentOptions;
@@ -44,6 +44,7 @@ const ambientSounds: PerMonsterSounds = {
   dalek: { soundId: "mojoLoop", gain: 0.2 },
   bubbleRobot: { soundId: "bubbleRobotLoop" },
   helicopterBug: { soundId: "helicopter" },
+  homingBot: { soundId: "lowHum", randomiseStartPoint: true },
 };
 const movingSounds: PerMonsterBracketedSoundOptions = {
   homingBot: {
@@ -69,7 +70,7 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
 
   #turnaroundBracketed: BracketedSound<DirectionXy8 | undefined> | undefined;
   #ambientBracketed: BracketedSound<boolean> | undefined;
-  #collisionSoundRenderer?: CollisionSoundRenderer | undefined;
+  #freeItemSoundRenderer: FreeItemSoundRenderer;
   #movingBracketed: BracketedSound<boolean> | undefined;
 
   constructor(
@@ -85,13 +86,13 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
       },
     } = renderContext;
 
-    if (collisionSounds[which] !== undefined) {
-      this.#collisionSoundRenderer = new CollisionSoundRenderer(
-        renderContext,
-        collisionSounds[which],
-      );
-      this.#collisionSoundRenderer.output.connect(this.output);
-    }
+    const collisionSound = collisionSounds[which];
+    this.#freeItemSoundRenderer = new FreeItemSoundRenderer(
+      renderContext,
+      collisionSound ? { collision: collisionSound } : undefined,
+    );
+    this.#freeItemSoundRenderer.output.connect(this.output);
+
     if (turnaroundSounds[which] !== undefined) {
       this.#turnaroundBracketed = createBracketedSound(
         {
@@ -134,20 +135,23 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
       this.#turnaroundBracketed(facingXy8);
     }
 
-    if (this.#collisionSoundRenderer) {
-      this.#collisionSoundRenderer.tick(tickContext);
-    }
-
     if (this.#ambientBracketed) {
       const online = activated && !busyLickingDoughnutsOffFace;
       this.#ambientBracketed(online);
     }
 
+    const isWalking = !xyzEqual(walking, originXyz);
     if (this.#movingBracketed) {
-      const moving = !xyzEqual(walking, originXyz);
-      this.#movingBracketed(moving);
+      this.#movingBracketed(isWalking);
     }
+
+    this.#freeItemSoundRenderer.tick(tickContext, isWalking);
   }
 
-  destroy(): void {}
+  destroy(): void {
+    // turn sounds off gracefully to avoid a click:
+    this.#ambientBracketed?.(false);
+    this.#movingBracketed?.(false);
+    this.#freeItemSoundRenderer.destroy();
+  }
 }
