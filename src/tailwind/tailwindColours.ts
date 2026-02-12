@@ -2,7 +2,7 @@ import jsonPalette from "../_generated/palette/spritesheetPalette.json" with { t
 import { zxSpectrumColors, zxSpectrumColorsDimmed } from "../originalGame";
 import { halfbriteHex } from "../utils/colour/halfBrite";
 import { srgbHexToP3 } from "../utils/colour/srgbHexToP3";
-import { transformObject } from "../utils/entries";
+import { transformObject } from "../utils/transformObject";
 
 const halfbriteSpritesheetPalette = transformObject(
   jsonPalette,

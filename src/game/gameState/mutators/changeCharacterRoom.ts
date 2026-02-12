@@ -269,6 +269,7 @@ export const changeCharacterRoom = <
         roomPickupsCollected:
           gameState.pickupsCollected[toRoomId] ?? emptyObject,
         scrollsRead: store.getState().gameMenus.gameInPlay.scrollsRead,
+        userSettings: store.getState().gameMenus.userSettings,
       }) as RoomState<RoomId, RoomItemId>);
 
   // heels can't carry items to different rooms:

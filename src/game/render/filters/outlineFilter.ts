@@ -7,7 +7,7 @@ import type { SpritesheetPaletteColourName } from "../../../sprites/palette/spri
 import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
 import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
-import { transformObject } from "../../../utils/entries";
+import { transformObject } from "../../../utils/transformObject";
 import fragment from "./outline.frag";
 
 export type OutlineFilterOptions = {

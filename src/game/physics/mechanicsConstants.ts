@@ -4,7 +4,7 @@ import type { CharacterName } from "../../model/modelTypes";
 
 import { zxSpectrumFrameRate } from "../../originalGame";
 import { wallTileSize } from "../../sprites/spritesheet/spritesheetData/textureSizes";
-import { transformObject } from "../../utils/entries";
+import { transformObject } from "../../utils/transformObject";
 
 export const blockSizePx = { x: 16, y: 16, z: 12 };
 

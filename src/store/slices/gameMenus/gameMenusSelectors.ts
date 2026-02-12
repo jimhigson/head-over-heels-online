@@ -145,6 +145,9 @@ export const selectIsSoundMuted = selectUserSetting("soundSettings.mute");
 export const selectIsNoFootstepSounds = selectUserSetting(
   "soundSettings.noFootsteps",
 );
+export const selectIsNoRoomEntryTunes = selectUserSetting(
+  "soundSettings.noRoomEntryTunes",
+);
 
 export const selectShouldRenderOnScreenControls = ({
   gameMenus,

@@ -1,3 +1,4 @@
+import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { LatentMovementFrame } from "../../../model/ItemStateMap";
 import type { RoomState } from "../../../model/RoomState";
 import type { Xyz } from "../../../utils/vectors/vectors";
@@ -6,10 +7,10 @@ import type { FreeItem } from "../../physics/itemPredicates";
 
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import {
-  originXyz,
+  originXy,
   scaleXyz,
   subXyz,
-  xyzEqual,
+  xyEqual,
 } from "../../../utils/vectors/vectors";
 import { originalFramePeriod } from "../../render/animationTimings";
 
@@ -31,10 +32,19 @@ export const assignLatentMovement = <
     endAtRoomTime: room.roomTime + deltaMS + latency,
     startAtRoomTime: room.roomTime + latency,
     velocity: scaleXyz(movementDelta, 1 / deltaMS),
+    // we know the itemToMove is standing on something, since that's how we found it, so the
+    // non-null assertion (!) is safe here:
     fromStandingOn: itemToMove.state.standingOnItemId!,
   };
 
   itemToMove.state.latentMovement.push(latentMovementFrame);
+};
+
+const isStoodOnByAnything = (item: UnionOfAllItemInPlayTypes) => {
+  for (const _ in item.state.stoodOnBy) {
+    return true;
+  }
+  return false;
 };
 
 export const assignLatentMovementFromStandingOn = <
@@ -58,17 +68,18 @@ export const assignLatentMovementFromStandingOn = <
       // item was introduced to the world during this tick, can't have latent movement:
       continue;
     }
+    if (!isStoodOnByAnything(moverItem)) {
+      // if nothing is stood on this item, no latent movement to assign:
+      continue;
+    }
 
-    // check what is standing on us - this implies that we're also checking what everything is stood on,
-    // but gives us a chance to apply latent movement:
-    const movementDelta = subXyz(moverItem.state.position, previousPosition);
+    // work out how much we moved in this frame
+    const latentMovement = subXyz(moverItem.state.position, previousPosition);
 
     // latent movement is only horizontal - anything else, collisions and gravity can handle
-    const latentMovement = { ...movementDelta, z: 0 };
+    latentMovement.z = 0;
 
-    // TODO: quit early if nothing standing on this item
-    // TODO: optimise by using xyEqual here instead, and create xyz only when needed
-    if (!xyzEqual(latentMovement, originXyz)) {
+    if (!xyEqual(latentMovement, originXy)) {
       for (const standerItem of iterateStoodOnByItems(
         moverItem.state.stoodOnBy,
         room,

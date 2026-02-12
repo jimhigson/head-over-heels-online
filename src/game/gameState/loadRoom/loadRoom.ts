@@ -1,6 +1,9 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
-import type { ScrollsRead } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type {
+  ScrollsRead,
+  UserSettings,
+} from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { RoomPickupsCollected } from "../GameState";
 
 import {
@@ -10,7 +13,6 @@ import {
   type RoomStateItems,
 } from "../../../model/RoomState";
 import { entries } from "../../../utils/entries";
-import { iterate } from "../../../utils/iterate";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
@@ -18,6 +20,7 @@ import { isFreeItem, isSolid } from "../../physics/itemPredicates";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOn";
 import { loadItemFromJson } from "./loadItemFromJson";
 import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";
+import { loadRoomEntrySound } from "./loadRoomEntrySound";
 import { maybeLoadExtraCornerShadow } from "./maybeLoadExtraCornerShadow";
 
 function* loadItems<RoomId extends string, RoomItemId extends string>(
@@ -45,17 +48,13 @@ function* loadItems<RoomId extends string, RoomItemId extends string>(
  * convert items from a flat list to an object map, key'd by their ids
  */
 const itemsInItemObjectMap = <RoomId extends string, RoomItemId extends string>(
-  items: Iterable<UnionOfAllItemInPlayTypes<RoomId>>,
+  items: Iterable<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
 ): RoomStateItems<RoomId, RoomItemId> => {
-  return iterate(items).reduce(
-    (ac, cur) => {
-      return {
-        ...ac,
-        [cur.id]: cur,
-      };
-    },
-    {} as RoomStateItems<RoomId, RoomItemId>,
-  );
+  const map = {} as RoomStateItems<RoomId, RoomItemId>;
+  for (const item of items) {
+    map[item.id] = item;
+  }
+  return map;
 };
 
 /**
@@ -66,20 +65,27 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   roomPickupsCollected,
   scrollsRead,
   isNewGame = false,
+  userSettings,
 }: {
   roomJson: RoomJson<RoomId, RoomItemId>;
   roomPickupsCollected: RoomPickupsCollected;
   scrollsRead: ScrollsRead;
-  /** if true, this is a new game - ie, load head and heels if they are in the room */
+  /**
+   * if true, this is a new game - ie, load head and heels at using their starting json
+   * item if they are in the room
+   */
   isNewGame?: boolean;
+  userSettings: UserSettings;
 }): RoomState<RoomId, RoomItemId> => {
   const roomItems = itemsInItemObjectMap(
     loadItems(roomJson, roomPickupsCollected, scrollsRead, isNewGame),
   );
+  const roomEntrySound = loadRoomEntrySound(roomJson, userSettings, isNewGame);
   const items: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadPortalsAboveAndBelow(roomJson, roomItems)),
     ...roomItems,
     ...itemsInItemObjectMap(maybeLoadExtraCornerShadow(roomJson)),
+    ...(roomEntrySound ? { [roomEntrySound.id]: roomEntrySound } : undefined),
   };
 
   const spatialIndex = new GridSpatialIndex(iterateRoomItems(items));

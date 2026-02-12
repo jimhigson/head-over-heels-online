@@ -1,6 +1,6 @@
 import type { Key } from "./keys";
 
-import { transformObject } from "../../utils/entries";
+import { transformObject } from "../../utils/transformObject";
 
 /**
  * mapping for positions of buttons on a controller to their numbers in the gamepad api

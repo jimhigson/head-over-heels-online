@@ -2,7 +2,7 @@ import { Color } from "pixi.js";
 
 import jsonPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import jsonPaletteDim from "../../_generated/palette/spritesheetPaletteDim.json" with { type: "json" };
-import { transformObject } from "../../utils/entries";
+import { transformObject } from "../../utils/transformObject";
 
 export type SpritesheetPaletteColourName = keyof typeof jsonPalette;
 

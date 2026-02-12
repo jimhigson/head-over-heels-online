@@ -20,6 +20,7 @@ import { PlayableSoundRenderer } from "./itemSoundRenderers/PlayableSoundRendere
 import { PushableBlockSoundRenderer } from "./itemSoundRenderers/PushableBlockSoundRenderer";
 import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
 import { SlidingDeadlySoundRenderer } from "./itemSoundRenderers/SlidingDeadlySoundRenderer";
+import { SoundEffectSoundRenderer } from "./itemSoundRenderers/SoundEffectSoundRenderer";
 import { SpringSoundRenderer } from "./itemSoundRenderers/SpringSoundRenderer";
 import { SwitchSoundRenderer } from "./itemSoundRenderers/SwitchSoundRenderer";
 import { TeleporterSoundRenderer } from "./itemSoundRenderers/TeleporterSoundRenderer";
@@ -49,6 +50,7 @@ const rendererClasses: {
   movingPlatform: MovingPlatformSoundRenderer,
   moveableDeadly: FreeItemSoundRenderer,
   slidingDeadly: SlidingDeadlySoundRenderer,
+  soundEffect: SoundEffectSoundRenderer,
   sceneryPlayer: FreeItemSoundRenderer,
   sceneryCrown: FreeItemSoundRenderer,
 };

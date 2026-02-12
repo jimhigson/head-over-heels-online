@@ -2,6 +2,7 @@ import type { EmptyObject } from "type-fest";
 
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { SpecifiedTextureCreateSpriteOptions } from "../game/render/createSprite";
+import type { BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
 import type { SceneryName } from "../sprites/planets";
 import type { TextureId } from "../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
@@ -32,7 +33,9 @@ export type ItemInPlayType =
    */
   | "particle"
   /** when collecting pickups */
-  | "floatingText";
+  | "floatingText"
+  /** a sound that plays from a point in a room */
+  | "soundEffect";
 
 export type SwitchSetting = "left" | "right";
 
@@ -88,6 +91,9 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   };
   doorFrame: DoorFrameConfig<RoomId>;
   doorLegs: DoorLegsConfig;
+  soundEffect: {
+    soundOptions: BracketedSegmentOptions;
+  };
 };
 
 export type ItemInPlayConfig<
@@ -179,6 +185,9 @@ export type ItemInPlay<
    * topological sort of the items in the room
    */
   fixedZIndex?: number;
+
+  /** if true, this item (exceptionally) does not play at any panned location */
+  noSoundPan?: boolean;
 };
 
 /**

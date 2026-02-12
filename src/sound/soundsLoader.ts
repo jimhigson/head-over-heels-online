@@ -1,52 +1,9 @@
-import ballHitSoundUrl from "../../sounds/ballHit.mp3";
-import drumSoundUrl from "../../sounds/bongo.mp3";
-import bonusSoundUrl from "../../sounds/bonus.mp3";
-import bubbleRobotLoopSoundUrl from "../../sounds/bubblesLoop.mp3";
-import carrySoundUrl from "../../sounds/carry.mp3";
-import conveyorLoopSoundUrl from "../../sounds/conveyorLoop.mp3";
-import conveyorStartSoundUrl from "../../sounds/conveyorStart.mp3";
-import conveyorEndSoundUrl from "../../sounds/conveyorStop.mp3";
-import destroySoundUrl from "../../sounds/destroy.mp3";
-import detectSoundUrl from "../../sounds/detect.mp3";
-import glassClinkSoundUrl from "../../sounds/glassClink.mp3";
-import headFallSoundUrl from "../../sounds/headFall.mp3";
-import headJumpSoundUrl from "../../sounds/headJump.mp3";
-import headWalkSoundUrl from "../../sounds/headWalk.mp3";
-import fallSoundUrl from "../../sounds/heelsFall.mp3";
-import heelsJumpSoundUrl from "../../sounds/heelsJump.mp3";
-import heelsWalkSoundUrl from "../../sounds/heelsWalk.mp3";
-import helicopterSoundUrl from "../../sounds/helicopter.mp3";
-import hooterSoundUrl from "../../sounds/hooter.mp3";
-import hushPuppyVanishSoundUrl from "../../sounds/hushPuppyVanish.mp3";
-import iceScrapeSoundUrl from "../../sounds/iceScrape.mp3";
-import jetpackTurnaroundSoundUrl from "../../sounds/jetpack_turnaround.mp3";
-import jetpackLoopSoundUrl from "../../sounds/jetpackLoop.mp3";
-import landingSoundUrl from "../../sounds/landing.mp3";
-import lowHumSoundUrl from "../../sounds/lowHum.mp3";
-import metalHitSoundUrl from "../../sounds/metalClang.mp3";
-import heavyMetalScrapingSoundUrl from "../../sounds/metalicScraping.mp3";
-import mojoLoopSoundUrl from "../../sounds/mojo.mp3";
-import mojoTurnSoundUrl from "../../sounds/mojoTurnSound.mp3";
-import robotBeepingLoopSoundUrl from "../../sounds/robotBeepingLoop.mp3";
-import robotWhirLoopSoundUrl from "../../sounds/robotWhirLoop.mp3";
-import rollingBallLoopSoundUrl from "../../sounds/rollingBallLoop.mp3";
-import servoLoopUrl from "../../sounds/servosLoop.mp3";
-import servoStartUrl from "../../sounds/servosStart.mp3";
-import servoStoptUrl from "../../sounds/servosStop.mp3";
-import softBumpSoundUrl from "../../sounds/softBump.mp3";
-import springBoingSoundUrl from "../../sounds/spring.mp3";
-import switchClickSoundUrl from "../../sounds/switch-shorter.mp3";
-import teleportInSoundUrl from "../../sounds/teleportIn.mp3";
-import teleportOutSoundUrl from "../../sounds/teleportOut.mp3";
-import teleportWarningSirenSoundUrl from "../../sounds/teleportWarningSiren.mp3";
-import toasterPopUpSoundUrl from "../../sounds/toasterPopUp.mp3";
-import woodScrapeSoundUrl from "../../sounds/woodScrape.mp3";
+import { entries } from "../utils/entries";
 import { importOnce } from "../utils/importOnce";
 import { audioCtx } from "./audioCtx";
+import { soundUrls } from "./soundUrls";
 
-type AppSounds = Awaited<ReturnType<typeof importSoundsOnce>>;
-
-export type SoundId = keyof AppSounds;
+type AppSounds = { [K in keyof typeof soundUrls]: AudioBuffer };
 
 let loaded: AppSounds | undefined = undefined;
 
@@ -72,52 +29,12 @@ const loadAndDecode = async (url: string): Promise<AudioBuffer> => {
   }
 };
 
-const importSoundsOnce = importOnce(async () => {
-  return {
-    bonus: await loadAndDecode(bonusSoundUrl),
-    bubbleRobotLoop: await loadAndDecode(bubbleRobotLoopSoundUrl),
-    carry: await loadAndDecode(carrySoundUrl),
-    conveyorEnd: await loadAndDecode(conveyorEndSoundUrl),
-    conveyorLoop: await loadAndDecode(conveyorLoopSoundUrl),
-    conveyorStart: await loadAndDecode(conveyorStartSoundUrl),
-    destroy: await loadAndDecode(destroySoundUrl),
-    detect: await loadAndDecode(detectSoundUrl),
-    drum: await loadAndDecode(drumSoundUrl),
-    glassClink: await loadAndDecode(glassClinkSoundUrl),
-    headFall: await loadAndDecode(headFallSoundUrl),
-    headJump: await loadAndDecode(headJumpSoundUrl),
-    headWalk: await loadAndDecode(headWalkSoundUrl),
-    fall: await loadAndDecode(fallSoundUrl),
-    heelsJump: await loadAndDecode(heelsJumpSoundUrl),
-    heelsWalk: await loadAndDecode(heelsWalkSoundUrl),
-    helicopter: await loadAndDecode(helicopterSoundUrl),
-    hooter: await loadAndDecode(hooterSoundUrl),
-    hushPuppyVanish: await loadAndDecode(hushPuppyVanishSoundUrl),
-    jetpackLoop: await loadAndDecode(jetpackLoopSoundUrl),
-    jetpackTurnaround: await loadAndDecode(jetpackTurnaroundSoundUrl),
-    landing: await loadAndDecode(landingSoundUrl),
-    metalHit: await loadAndDecode(metalHitSoundUrl),
-    mojoLoop: await loadAndDecode(mojoLoopSoundUrl),
-    mojoTurn: await loadAndDecode(mojoTurnSoundUrl),
-    robotBeepingLoop: await loadAndDecode(robotBeepingLoopSoundUrl),
-    robotWhirLoop: await loadAndDecode(robotWhirLoopSoundUrl),
-    rollingBallLoop: await loadAndDecode(rollingBallLoopSoundUrl),
-    ballHit: await loadAndDecode(ballHitSoundUrl),
-    servoLoop: await loadAndDecode(servoLoopUrl),
-    servoStart: await loadAndDecode(servoStartUrl),
-    servoStop: await loadAndDecode(servoStoptUrl),
-    softBump: await loadAndDecode(softBumpSoundUrl),
-    springBoing: await loadAndDecode(springBoingSoundUrl),
-    heavyMetalScraping: await loadAndDecode(heavyMetalScrapingSoundUrl),
-    switchClick: await loadAndDecode(switchClickSoundUrl),
-    toasterPopUpSoundUrl: await loadAndDecode(toasterPopUpSoundUrl),
-    teleportIn: await loadAndDecode(teleportInSoundUrl),
-    teleportOut: await loadAndDecode(teleportOutSoundUrl),
-    teleportWarningSiren: await loadAndDecode(teleportWarningSirenSoundUrl),
-    iceScrape: await loadAndDecode(iceScrapeSoundUrl),
-    lowHum: await loadAndDecode(lowHumSoundUrl),
-    woodScrape: await loadAndDecode(woodScrapeSoundUrl),
-  };
+const importSoundsOnce = importOnce(async (): Promise<AppSounds> => {
+  const decoded = {} as Record<string, AudioBuffer>;
+  for (const [id, url] of entries(soundUrls)) {
+    decoded[id] = await loadAndDecode(url);
+  }
+  return decoded as AppSounds;
 });
 
 export const loadSounds = async () => {
