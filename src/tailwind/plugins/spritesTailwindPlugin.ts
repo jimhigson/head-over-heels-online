@@ -130,30 +130,57 @@ export const spritesTailwindPlugin = plugin(
       },
     };
 
+    // s(offset) is shorthand for a sin-based wobble that shifts each band
+    // boundary independently. --t is animated from 0 to 360, and each stop
+    // uses a different offset so the bands breathe out of phase.
+    const s = (offset: number) => `0.04 * sin(${offset}deg + var(--t) * 1deg)`;
+    const stop = (base: number, offset: number) =>
+      `calc((${base} + ${s(offset)}) * var(--patternLength))`;
+
     utilities[".loading-border"] = {
-      "--c1": spritesheetPalette.pureBlack,
-      "--c2": halfbriteHex(spritesheetPalette.shadow),
-      "--stripeWidth": "5vh",
+      "--c1": spritesheetPalette.highlightBeige,
+      "--c2": spritesheetPalette.metallicBlue,
+      "--patternLength": "15vh",
+      "--t": "0",
       background: `repeating-linear-gradient(
           to bottom,
-          var(--c1) 0, var(--c1) calc(1.5 * var(--stripeWidth)),
-          var(--c2) calc(1.5 * var(--stripeWidth)), var(--c2) calc(2 * var(--stripeWidth))
+          var(--c1) 0,                  var(--c1) ${stop(0.075, 0)},
+          var(--c2) ${stop(0.075, 0)},  var(--c2) ${stop(0.175, 47)},
+          var(--c1) ${stop(0.175, 47)}, var(--c1) ${stop(0.35, 131)},
+          var(--c2) ${stop(0.35, 131)}, var(--c2) ${stop(0.425, 203)},
+          var(--c1) ${stop(0.425, 203)},var(--c1) ${stop(0.65, 97)},
+          var(--c2) ${stop(0.65, 97)},  var(--c2) ${stop(0.725, 271)},
+          var(--c1) ${stop(0.725, 271)},var(--c1) ${stop(0.8, 163)},
+          var(--c2) ${stop(0.8, 163)},  var(--c2) calc(1 * var(--patternLength))
         )`,
-      // smooth scrolling effect:
-      backgroundSize: "100% calc(2 * var(--stripeWidth))",
+      backgroundSize: "100% var(--patternLength)",
       backgroundAttachment: "fixed",
-      animation: "spectrum-load 0.5s linear infinite",
+      animation:
+        "spectrum-load 0.5s steps(12) infinite, spectrum-wobble 0.5s steps(12) infinite",
     };
     utilities[".zx-loading-border"] = {
       "--c1": zxSpectrumColors.red.toHex(),
       "--c2": zxSpectrumColors.cyan.toHex(),
+    };
+    base["@property --t"] = {
+      syntax: `"<number>"`,
+      inherits: "false",
+      "initial-value": "0",
     };
     base["@keyframes spectrum-load"] = {
       from: {
         backgroundPosition: "0 0",
       },
       to: {
-        backgroundPosition: "0 calc(2 * var(--stripeWidth))",
+        backgroundPosition: "0 var(--patternLength)",
+      },
+    };
+    base["@keyframes spectrum-wobble"] = {
+      from: {
+        "--t": "0",
+      },
+      to: {
+        "--t": "360",
       },
     };
 
