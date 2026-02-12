@@ -1,15 +1,21 @@
 import { version } from "../../../../../../../package.json";
+import { repository } from "../../../../../../../package.json";
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
+import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
-const repoLocation = "https://github.com/jimhigson/head-over-heels-online/";
-
 export const GitRepoInfo = () => {
+  const { data: latestRelease } = useGetLatestReleaseQuery();
+
+  const latestTag = latestRelease?.tag_name;
+  const isLatest =
+    latestTag === undefined ? undefined : latestTag === `v${version}`;
+
   return (
     <>
       <div className="flex absolute top-oneScaledPix right-1 z-dialog">
         <a
-          href={repoLocation}
+          href={repository.url}
           className="bitmap-text-link bg-transparent zx:bg-zxBlack"
         >
           <BitmapText className="text-highlightBeige zx:text-zxYellow">
@@ -28,14 +34,21 @@ export const GitRepoInfo = () => {
         data-screenshot-mask
       >
         <a
-          href={`${repoLocation}releases`}
+          href={`${repository.url}/releases`}
           target="_blank"
           className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack"
+          data-screenshot-mask
         >
           <BitmapText>
             {/* extra space pulls away from rounded corners of phone screens and app windows */}
-            {`v${version} `}
+            {` ${version} `}
           </BitmapText>
+          {isLatest === false && (
+            <BitmapText className="animate-flash text-midRed zx:text-zxRed">
+              {/* extra space pulls away from rounded corners of phone screens and app windows */}
+              {"⬆ "}
+            </BitmapText>
+          )}
         </a>
       </footer>
     </>
