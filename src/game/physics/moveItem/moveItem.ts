@@ -405,7 +405,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       // mtv in z while jumping against an item, for the moment when the character is slightly
       // inside the corner. Eg, springs would record standing on momentarily, and appear compressed
       // if jumped against (but not on)
-      posDelta.z < 0
+      posDelta.z < 0 &&
+      // 'standing on' only makes sense with solid items
+      isSolid(collidedWithItem, subjectItem)
     ) {
       if (
         // subject not already standing on something
