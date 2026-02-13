@@ -42,7 +42,7 @@ const pokesMarkdown = `##Cheats
 
 Magazines used to print memory locations to ‘*poke*’ values into so that readers could modify their games; usually to cheat.
                   
-A true hero leaves these **off**! Then again, do modern gamers even know what lives are?`;
+A true hero leaves these **off**, but do modern gamers even know what lives are?`;
 
 export const OptionsDialog = () => {
   const infiniteLivesPokeOn = useAppSelector(selectIsInfiniteLivesPoke);

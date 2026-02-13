@@ -42,7 +42,7 @@ export const SureWantEditorDialog = () => {
 
           <MenuItems className="text-lightGrey zx:text-zxWhite resHandheld:mt-0 zx:selectedMenuItem:text-zxCyan resHandheld:!gap-y-1">
             <MenuItem
-              doubleHeightWhenFocussed
+              className="sprites-double-height"
               id="yes"
               label="Ok, take me to the editor"
               href={editorUrl}

@@ -21,17 +21,16 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Border className="bg-metallicBlue zx:bg-zxRed" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white gap-y-2 resHandheld:gap-y-1 justify-center"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white gap-y-0 justify-center"
         dialogId="about"
       >
-        <DialogTitleBar />
+        <DialogTitleBar className="pl-1" />
         <div className={mainMenuScrollClasses}>
-          <MenuItems className="w-28 mx-auto">
+          <MenuItems>
             <MenuItem
               className="sprites-double-height"
               id="manual"
               label="Read the manual"
-              doubleHeightWhenFocussed
               subMenuId="readTheManual"
               hintInline
               hint={
@@ -47,7 +46,6 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               id="discord"
               leader={<BitmapText>{nerdFontDiscordChar}</BitmapText>}
               label="Discord"
-              doubleHeightWhenFocussed
               href={discordInviteUrl}
               hintInline
               hint={
@@ -63,7 +61,6 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               id="github"
               leader={<BitmapText>{nerdFontGithubChar}</BitmapText>}
               label="Github"
-              doubleHeightWhenFocussed
               href={repository.url}
               hintInline
               hint={
@@ -79,7 +76,6 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               id="changelog"
               leader={<BitmapText>{nerdFontGithubChar}</BitmapText>}
               label="Changelog"
-              doubleHeightWhenFocussed
               href={`${repository.url}/releases`}
               hintInline
               hint={
