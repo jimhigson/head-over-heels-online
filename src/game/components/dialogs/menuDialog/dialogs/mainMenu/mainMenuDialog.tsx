@@ -38,10 +38,6 @@ import { MenuSeparator } from "./MenuSeparator";
 const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
   const resume = useDispatchActionCallback(closeAllMenus);
-  const goToWhichGameSubmenu = useDispatchActionCallback(
-    goToSubmenu,
-    "whichGame",
-  );
 
   if (isGameRunning) {
     return (
@@ -59,8 +55,7 @@ const PlayGameMenuItem = () => {
       id="playGame"
       label={<BitmapText>Play the game</BitmapText>}
       doubleHeightWhenFocussed
-      onSelect={goToWhichGameSubmenu}
-      opensSubMenu={true}
+      subMenuId="whichGame"
     />
   );
 };
@@ -73,7 +68,7 @@ const DownloadOrInstallMenuItem = () => {
       label="Download & Install"
       doubleHeightWhenFocussed
       leader={<BitmapText className="text-center w-2">⬇</BitmapText>}
-      onSelect={useDispatchActionCallback(goToSubmenu, "installGuide")}
+      subMenuId="install"
     />
   );
 };
@@ -84,8 +79,7 @@ const LevelEditorMenuItem = () => {
       id="levelEditor"
       label="Level Editor"
       doubleHeightWhenFocussed
-      onSelect={useDispatchActionCallback(goToSubmenu, "sureWantEditor")}
-      opensSubMenu={true}
+      subMenuId="sureWantEditor"
     />
   );
 };
@@ -101,10 +95,9 @@ const QuitGameMenuItem = () => {
       id="quitGame"
       label={hasReincarnationPoint ? "End game / reincarnate" : "End game"}
       className="text-midRed zx:text-zxYellow"
-      onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
+      subMenuId="quitGameConfirm"
       doubleHeightWhenFocussed
       hidden={!isGameRunning}
-      opensSubMenu
     />
   );
 };
@@ -218,10 +211,9 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                       <span className="resHandheld:hidden">Use the </span>Map
                     </MultipleBitmapText>
                   }
-                  onSelect={useDispatchActionCallback(goToSubmenu, "map")}
+                  subMenuId="map"
                   doubleHeightWhenFocussed
                   hidden={!isGameRunning}
-                  opensSubMenu={true}
                 />
                 <MenuItem
                   id="viewCrowns"
@@ -239,11 +231,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                   id="options"
                   label="Options"
                   doubleHeightWhenFocussed
-                  onSelect={useDispatchActionCallback(
-                    goToSubmenu,
-                    "modernisationOptions",
-                  )}
-                  opensSubMenu={true}
+                  subMenuId="modernisationOptions"
                 />
                 <MenuItem
                   id="about"
@@ -253,8 +241,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                     </MultipleBitmapText>
                   }
                   doubleHeightWhenFocussed
-                  onSelect={useDispatchActionCallback(goToSubmenu, "about")}
-                  opensSubMenu={true}
+                  subMenuId="about"
                 />
               </>
             }

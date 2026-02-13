@@ -6,8 +6,6 @@ import {
   nerdFontDiscordChar,
   nerdFontGithubChar,
 } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
-import { goToSubmenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
@@ -34,8 +32,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               id="manual"
               label="Read the manual"
               doubleHeightWhenFocussed
-              onSelect={useDispatchActionCallback(goToSubmenu, "readTheManual")}
-              opensSubMenu={true}
+              subMenuId="readTheManual"
               hintInline
               hint={
                 <BitmapText
