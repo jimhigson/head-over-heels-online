@@ -2,10 +2,7 @@ import type { EmptyObject } from "type-fest";
 
 import { jimAtBlockstackingUserId } from "../../../../../../gameInfo";
 import { originalCampaignLocator } from "../../../../../../model/modelTypes";
-import {
-  gameStarted,
-  goToSubmenu,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { gameStarted } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
@@ -79,11 +76,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               label="Community contributed"
               className="sprites-double-height"
               hintInline
-              onSelect={useDispatchActionCallback(
-                goToSubmenu,
-                "communityGames",
-              )}
-              opensSubMenu={true}
+              subMenuId="communityGames"
               leader={
                 <span
                   className={`${spriteLeaderClasses} sprite texture-charles_right sprites-normal-height zx:sprite-revert-to-white`}

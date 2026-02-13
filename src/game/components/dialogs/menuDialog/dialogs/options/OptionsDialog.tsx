@@ -6,7 +6,6 @@ import {
   useIsGameRunning,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
-  goToSubmenu,
   setGameSpeed,
   toggleUserSetting,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
@@ -63,11 +62,7 @@ export const OptionsDialog = () => {
               label="Controls"
               verticalAlignItemsCentre
               className="sprites-double-height"
-              onSelect={useDispatchActionCallback(
-                goToSubmenu,
-                "controlOptions",
-              )}
-              opensSubMenu={true}
+              subMenuId="controlOptions"
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
@@ -86,8 +81,7 @@ export const OptionsDialog = () => {
               label="Sounds"
               className="sprites-double-height"
               verticalAlignItemsCentre
-              onSelect={useDispatchActionCallback(goToSubmenu, "sound")}
-              opensSubMenu={true}
+              subMenuId="sound"
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
@@ -101,11 +95,7 @@ export const OptionsDialog = () => {
               label="Display"
               className="sprites-double-height"
               verticalAlignItemsCentre
-              onSelect={useDispatchActionCallback(
-                goToSubmenu,
-                "displayOptions",
-              )}
-              opensSubMenu={true}
+              subMenuId="displayOptions"
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}

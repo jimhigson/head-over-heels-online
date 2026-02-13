@@ -4,10 +4,7 @@ import {
   selectShowFps,
   useIsUncolourised,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import {
-  goToSubmenu,
-  toggleUserSetting,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
 import { Switch } from "../../../../../../ui/Switch";
@@ -111,11 +108,7 @@ export const DisplayOptionsDialog = () => {
             className="sprites-double-height"
             id="emulatedResolution"
             label="Emulated Resolution"
-            onSelect={useDispatchActionCallback(
-              goToSubmenu,
-              "emulatedResolution",
-            )}
-            opensSubMenu={true}
+            subMenuId="emulatedResolution"
             verticalAlignItemsCentre
             hint={
               <BlockyMarkdown
