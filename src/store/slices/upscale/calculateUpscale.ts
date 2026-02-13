@@ -5,6 +5,14 @@ import { type ResolutionName, resolutions } from "../../../originalGame";
 import { detectDeviceType } from "../../../utils/detectDeviceType";
 import { scaleXy, type Xy } from "../../../utils/vectors/vectors";
 
+// increases the number of steps available. Value of 1 means integer scaling only, giving fewer scaling
+// steps, but better accuracy of square pixels in the end result.
+// value of n; n > 1 means fractional scaling is possible at a fraction of 1/n
+// non-powers of 2 tend to give less wobbliness artifacts on animations (esp animated sprites like
+// homing bot monsters) - presumably because they are never exactly on the boundary of two rounding
+// directions
+const scaleSubsteps = 5;
+
 export type CalculateUpscaleOptions = {
   renderAreaSize: Xy;
   emulatedResolutionName: ResolutionName;
@@ -44,11 +52,12 @@ export const calculateUpscale = ({
 
   const totalUpscale = Math.max(
     Math.floor(
-      Math.min(
-        hardwarePixels.x / emulatedResolution.size.x,
-        hardwarePixels.y / emulatedResolution.size.y,
-      ),
-    ),
+      scaleSubsteps *
+        Math.min(
+          hardwarePixels.x / emulatedResolution.size.x,
+          hardwarePixels.y / emulatedResolution.size.y,
+        ),
+    ) / scaleSubsteps,
     1,
   );
 

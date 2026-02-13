@@ -29,7 +29,15 @@ export const resolutions = {
   // there was never really a handheld port, and this is a bit big for period-correct
   // handhelds (gameboy was 160x120), but this is the smallest I can go to be playable
   // on modern phones and not be too small
-  handheld: { name: "Handheld", size: { x: 256, y: 135 } },
+  handheld: {
+    name: "Handheld",
+    size: {
+      x: 256,
+      // y chosen so the compact version of the 5 crowns display (only just) always
+      // fits on the screen
+      y: 141,
+    },
+  },
 };
 export type ResolutionName = keyof typeof resolutions;
 export const resolutionNames = Object.keys(resolutions) as ResolutionName[];

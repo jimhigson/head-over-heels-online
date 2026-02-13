@@ -33,7 +33,10 @@ const screenshotOptions = (
   animations: "disabled" as const,
   // unlike in-game screenshots, this is using html rendering so needs to be a bit more lenient:
   threshold: 0.1,
-  maxDiffPixels: 50,
+  // non-integer scaling can sometimes cause different snapping of scaled
+  // nearest-neighbour graphics:
+  // results tend to be about 5M pixels, so 0.0001 is ~500 pixels difference allowed
+  maxDiffPixelRatio: 0.0001,
   timeout: 10_000 * osSlowness,
   mask: [page.locator("[data-screenshot-mask]")],
   maskColor: spritesheetColours.white,
