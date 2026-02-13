@@ -43,7 +43,7 @@ const PlayGameMenuItem = () => {
     return (
       <MenuItem
         id="playGame"
-        label={<BitmapText>Resume the game</BitmapText>}
+        label={<BitmapText>Back to the game</BitmapText>}
         doubleHeightWhenFocussed
         onSelect={resume}
       />
@@ -187,16 +187,18 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 justify-around"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-0 pt-0 pb-oneScaledPix"
         dialogId="mainMenu"
       >
         <MainMenuHeading
           noSubtitle={isGameRunning}
-          className={`${isGameRunning ? "resHandheld:hidden" : ""} pt-1 resHandheld:pt-half`}
+          className={`${isGameRunning ? "resHandheld:hidden" : ""} pt-3 resHandheld:pt-half`}
         />
-        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
+        <div className="flex-grow justify-around text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
           <MaybeTwoColumnMenuitems
-            columnCount={detectDeviceType() === "mobile" ? 2 : 1}
+            columnCount={
+              isGameRunning && detectDeviceType() === "mobile" ? 2 : 1
+            }
             topContents={
               <>
                 <PlayGameMenuItem />
@@ -206,11 +208,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               <>
                 <MenuItem
                   id="map"
-                  label={
-                    <MultipleBitmapText>
-                      <span className="resHandheld:hidden">Use the </span>Map
-                    </MultipleBitmapText>
-                  }
+                  label={<MultipleBitmapText>View Map</MultipleBitmapText>}
                   subMenuId="map"
                   doubleHeightWhenFocussed
                   hidden={!isGameRunning}

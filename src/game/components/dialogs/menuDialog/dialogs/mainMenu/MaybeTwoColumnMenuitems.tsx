@@ -1,7 +1,6 @@
 import { Children, type Fragment, type ReactElement } from "react";
 
 import { MenuItems } from "../../MenuItems";
-import { MenuSeparator } from "./MenuSeparator";
 
 export type MaybeTwoColumnMenuitemsProps = {
   topContents: ReactElement;
@@ -21,7 +20,6 @@ export const MaybeTwoColumnMenuitems = ({
     return (
       <MenuItems className="mx-auto">
         {topContents}
-        <MenuSeparator />
         {middleContents}
         {bottomContents}
       </MenuItems>
@@ -33,13 +31,13 @@ export const MaybeTwoColumnMenuitems = ({
   const column2 = allMiddle.filter((_, i) => i % 2 === 1);
 
   return (
-    <>
-      <MenuItems className="w-24 mx-auto">{topContents}</MenuItems>
+    <div>
+      <MenuItems className="w-24 mx-auto mb-1">{topContents}</MenuItems>
       <div className="flex flex-row gap-2 w-24 mx-auto">
         <MenuItems className="w-12">{column1}</MenuItems>
         <MenuItems>{column2}</MenuItems>
       </div>
       <MenuItems className="w-24 mx-auto">{bottomContents}</MenuItems>
-    </>
+    </div>
   );
 };

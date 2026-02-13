@@ -1,10 +1,8 @@
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { mainMenuCycle } from "./mainMenuCycle";
 
-export const MainMenuFooter = ({ className }: { className?: string }) => (
-  <footer
-    className={`flex justify-center gap-2 resHandheld:gap-1 leading-none ${className ?? ""}`}
-  >
+export const MainMenuFooter = () => (
+  <footer className="flex justify-center gap-2 resHandheld:gap-1 leading-none h-[calc(26px*var(--scale))]">
     <div className="flex flex-col items-center">
       <BitmapText className="text-pastelBlue zx:text-zxBlack relative left-oneScaledPix">
         1987 Original
