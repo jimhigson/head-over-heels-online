@@ -15,6 +15,7 @@ import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedR
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 import { HoldDialog } from "./dialogs/hold/holdDialog";
 import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
+import { InstallDialog } from "./dialogs/install/InstallDialog";
 import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
 import { MapDialog } from "./dialogs/map/MapDialog";
 import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
@@ -85,14 +86,6 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <HoldDialog />;
     case "inputPreset":
       return <InputPresetDialog />;
-    case "installGuide":
-      return (
-        <MarkdownDialog
-          source="manual"
-          pageName="installGuide"
-          dialogId="installGuide"
-        />
-      );
     case "mainMenu":
       return <MainMenuDialog />;
     case "map":
@@ -119,11 +112,30 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <SureWantEditorDialog />;
     case "whichGame":
       return <WhichGameDialog />;
+    case "installGuide":
+      return <InstallDialog />;
+    case "installGuidePwa":
+      return (
+        <MarkdownDialog
+          source="manual"
+          pageName="installPwa"
+          dialogId="installGuidePwa"
+        />
+      );
+    case "installGuideNative":
+      return (
+        <MarkdownDialog
+          source="manual"
+          pageName="installNative"
+          dialogId="installGuideNative"
+        />
+      );
+
     default:
       topOpenMenu.menuId satisfies never;
       return (
         <Dialog>
-          <BitmapText>{`unknown dialog ${topOpenMenu}`}</BitmapText>
+          <BitmapText className="pl-1">{`unknown dialog: ‘${topOpenMenu.menuId}’`}</BitmapText>
         </Dialog>
       );
   }

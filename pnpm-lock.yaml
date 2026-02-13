@@ -96,8 +96,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(react@19.2.3)(redux@5.0.1)
       snarkdown-in-react:
-        specifier: ^2.0.2
-        version: 2.0.2
+        specifier: ^2.0.3
+        version: 2.0.3
       string-transform:
         specifier: ^21.9.19
         version: 21.9.19
@@ -4346,8 +4346,8 @@ packages:
     resolution: {integrity: sha512-rInDH6lCNiEyn3+hH8KVGFdbjc099j47+OSgbMrfDYX1CmXLfdKd7qi6IfcWj2wFxvSVkuI46M+wPGYfEOEj6g==}
     engines: {node: '>= 18'}
 
-  snarkdown-in-react@2.0.2:
-    resolution: {integrity: sha512-sZ5mhr4VYmFKdn7PkFf+coiPatuNx8pAPfYs02HxWn0whTvF6gWS2rVcNgpRSh0GJaYdgEIK3I9PVupRv4djaA==}
+  snarkdown-in-react@2.0.3:
+    resolution: {integrity: sha512-WQaIYoDZZBAlgTLSSg3Aick36I3uPyLIcu2mZksUg/xqMsKU2avVnFxL647TaD4WA/mSkXHsLDHZ1Cri8EWoCA==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -8061,7 +8061,7 @@ snapshots:
       react-redux: 9.2.0(@types/react@19.0.10)(react@19.2.3)(redux@5.0.1)
       react-resizable-panels: 3.0.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       redux-persist: 6.0.0(react@19.2.3)(redux@5.0.1)
-      snarkdown-in-react: 2.0.2
+      snarkdown-in-react: 2.0.3
       tailwind-merge: 2.6.0
       tailwind-scrollbar: 3.1.0(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.9)(@types/node@22.13.10)(typescript@5.9.3)))
       timeago.js: 4.0.2
@@ -9112,7 +9112,7 @@ snapshots:
 
   smol-toml@1.4.2: {}
 
-  snarkdown-in-react@2.0.2:
+  snarkdown-in-react@2.0.3:
     dependencies:
       react: 19.2.3
 

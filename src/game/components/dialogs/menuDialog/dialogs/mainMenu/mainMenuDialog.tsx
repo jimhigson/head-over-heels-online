@@ -68,7 +68,7 @@ const DownloadOrInstallMenuItem = () => {
       label="Download & Install"
       doubleHeightWhenFocussed
       leader={<BitmapText className="text-center w-2">⬇</BitmapText>}
-      subMenuId="install"
+      subMenuId="installGuide"
     />
   );
 };
