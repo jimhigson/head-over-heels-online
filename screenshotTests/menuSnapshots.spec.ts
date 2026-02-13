@@ -794,7 +794,12 @@ for (const uncolourised of [false, true]) {
       }, testInfo) => {
         const { noUncolourised } = testInfo.project
           .use as ScreenshotTestOptions;
-        if (uncolourised && noUncolourised) {
+        const isMobile = testInfo.project.name.startsWith("mobile-");
+        if (
+          (uncolourised && noUncolourised) ||
+          // currently not providing a tauri build on mobile (but could in future):
+          (isMobile && deploymentType === "tauri")
+        ) {
           test.skip();
           return;
         }

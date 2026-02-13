@@ -6,7 +6,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useAppSelector, useAppStore } from "../../../../../../store/hooks";
 import { startAppListening } from "../../../../../../store/listenerMiddleware";
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
-import { useIsGameRunning } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import {
+  useEmulatedResolutionName,
+  useIsGameRunning,
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   closeAllMenus,
   goToSubmenu,
@@ -43,7 +46,7 @@ const PlayGameMenuItem = () => {
     return (
       <MenuItem
         id="playGame"
-        label={<BitmapText>Resume the game</BitmapText>}
+        label={<BitmapText>Back to the game</BitmapText>}
         doubleHeightWhenFocussed
         onSelect={resume}
       />
@@ -61,14 +64,21 @@ const PlayGameMenuItem = () => {
 };
 
 const DownloadOrInstallMenuItem = () => {
+  const deviceType = detectDeviceType();
+
   return (
     <MenuItem
       id="installGuide"
       className="text-moss zx:text-zxGreen"
-      label="Download & Install"
+      label={deviceType === "mobile" ? "Install" : "Download & Install"}
       doubleHeightWhenFocussed
       leader={<BitmapText className="text-center w-2">⬇</BitmapText>}
-      subMenuId="installGuide"
+      subMenuId={
+        deviceType === "mobile" ?
+          // currently only have pwa builds on mobile:
+          "installGuidePwa"
+        : "installGuide"
+      }
     />
   );
 };
@@ -171,9 +181,13 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     showScore();
   }, [showCrowns, showScore]);
 
+  const emulatedResolutionName = useEmulatedResolutionName();
+
   const deploymentType = detectDeploymentType();
   const deviceType = detectDeviceType();
-  const offerDownloadOrInstall = deploymentType === "browser";
+  const offerDownloadOrInstall =
+    deploymentType === "browser" &&
+    (!isGameRunning || deviceType === "desktop");
 
   const showExitApp =
     // browsers don't show an exit option - the user can just close the tab
@@ -187,16 +201,19 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 justify-around"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-0 pt-0 pb-oneScaledPix resHandheld:w-30"
         dialogId="mainMenu"
       >
         <MainMenuHeading
           noSubtitle={isGameRunning}
-          className={`${isGameRunning ? "resHandheld:hidden" : ""} pt-1 resHandheld:pt-half`}
+          className={`${isGameRunning ? "resHandheld:hidden pt-3" : "pt-2"} resHandheld:pt-half`}
         />
-        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
+        <div className="flex-grow justify-around text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
           <MaybeTwoColumnMenuitems
-            columnCount={detectDeviceType() === "mobile" ? 2 : 1}
+            spaceOut={emulatedResolutionName !== "handheld"}
+            columnCount={
+              isGameRunning && emulatedResolutionName === "handheld" ? 2 : 1
+            }
             topContents={
               <>
                 <PlayGameMenuItem />
@@ -206,11 +223,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               <>
                 <MenuItem
                   id="map"
-                  label={
-                    <MultipleBitmapText>
-                      <span className="resHandheld:hidden">Use the </span>Map
-                    </MultipleBitmapText>
-                  }
+                  label={<MultipleBitmapText>View Map</MultipleBitmapText>}
                   subMenuId="map"
                   doubleHeightWhenFocussed
                   hidden={!isGameRunning}
@@ -251,14 +264,25 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                   <LevelEditorMenuItem />
                 )}
                 {offerDownloadOrInstall && <DownloadOrInstallMenuItem />}
-                {(isGameRunning || showExitApp) && <MenuSeparator />}
-                {isGameRunning && <QuitGameMenuItem />}
-                {showExitApp && <ExitAppMenuItem />}
+                {isGameRunning && (
+                  <>
+                    <MenuSeparator />
+                    <QuitGameMenuItem />
+                  </>
+                )}
+                {showExitApp && (
+                  <>
+                    <MenuSeparator />
+                    <ExitAppMenuItem />
+                  </>
+                )}
               </>
             }
           />
         </div>
-        {!isGameRunning && <MainMenuFooter />}
+        {!isGameRunning && emulatedResolutionName !== "handheld" && (
+          <MainMenuFooter />
+        )}
       </Dialog>
       <GitRepoInfo />
     </DialogPortal>

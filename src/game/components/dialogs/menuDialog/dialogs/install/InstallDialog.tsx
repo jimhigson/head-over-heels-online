@@ -31,14 +31,12 @@ export const InstallDialog = (_emptyProps: EmptyObject) => {
               id="manual"
               label="P.W.A. install guide"
               subMenuId="installGuidePwa"
-              hintInline
             />
             <MenuItem
               className="sprites-double-height"
               id="discord"
               label="Native builds (beta)"
               subMenuId="installGuideNative"
-              hintInline
             />
           </MenuItems>
         </div>

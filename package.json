@@ -15,7 +15,7 @@
     "preview:game": "vite preview",
     "preview:editor": "vite --config vite.editor.config.ts preview",
     "build:game": "vite build",
-    "build:editor": "vite b`uild --config vite.editor.config.ts --emptyOutDir",
+    "build:editor": "vite build --config vite.editor.config.ts --emptyOutDir",
     "build": "pnpm run \"/^build:.*/\"",
     "//check:build": "I don't know any way to check the build will pass other than running it:",
     "check:build:game": "pnpm build:game",

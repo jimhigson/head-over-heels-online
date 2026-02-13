@@ -9,7 +9,7 @@ export const MainMenuHeading = ({
   noSubtitle?: boolean;
   className?: string;
 }) => (
-  <div className={`flex flex-col items-center ${className}`}>
+  <header className={`flex flex-col items-center ${className}`}>
     <h1 className="flex">
       <div className="flex flex-row gap-1 items-center me-1 sprites-uppercase">
         <BitmapText className="sprites-double-height text-pastelBlue zx:text-zxYellow mt-1">
@@ -38,5 +38,5 @@ export const MainMenuHeading = ({
         <BitmapText classnameCycle={mainMenuCycle}> remake</BitmapText>
       </h2>
     )}
-  </div>
+  </header>
 );
