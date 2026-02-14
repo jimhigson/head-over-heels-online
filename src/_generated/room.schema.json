@@ -1394,7 +1394,8 @@
                               "swopKey",
                               "hintsAndTips",
                               "credits",
-                              "installGuide"
+                              "installPwa",
+                              "installNative"
                             ],
                             "type": "string"
                           },
@@ -2247,7 +2248,8 @@
                                                         "swopKey",
                                                         "hintsAndTips",
                                                         "credits",
-                                                        "installGuide"
+                                                        "installPwa",
+                                                        "installNative"
                                                       ],
                                                       "type": "string"
                                                     },
@@ -2963,7 +2965,8 @@
                                                         "swopKey",
                                                         "hintsAndTips",
                                                         "credits",
-                                                        "installGuide"
+                                                        "installPwa",
+                                                        "installNative"
                                                       ],
                                                       "type": "string"
                                                     },
@@ -3912,7 +3915,8 @@
                           "scrollsRead.swopKey",
                           "scrollsRead.hintsAndTips",
                           "scrollsRead.credits",
-                          "scrollsRead.installGuide",
+                          "scrollsRead.installPwa",
+                          "scrollsRead.installNative",
                           "freeCharacters.head",
                           "freeCharacters.heels"
                         ],
@@ -4884,7 +4888,8 @@
                                           "swopKey",
                                           "hintsAndTips",
                                           "credits",
-                                          "installGuide"
+                                          "installPwa",
+                                          "installNative"
                                         ],
                                         "type": "string"
                                       },
@@ -5701,7 +5706,8 @@
                                                     "swopKey",
                                                     "hintsAndTips",
                                                     "credits",
-                                                    "installGuide"
+                                                    "installPwa",
+                                                    "installNative"
                                                   ],
                                                   "type": "string"
                                                 },
@@ -6414,7 +6420,8 @@
                                                     "swopKey",
                                                     "hintsAndTips",
                                                     "credits",
-                                                    "installGuide"
+                                                    "installPwa",
+                                                    "installNative"
                                                   ],
                                                   "type": "string"
                                                 },

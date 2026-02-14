@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { objectKeys, objectValues, size } from "iter-tools-es";
-import { Suspense } from "react";
 
+import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 import type { RootState } from "../../../../../../store/store";
 
 import { useAppSelector } from "../../../../../../store/hooks";
@@ -74,7 +74,24 @@ const selectFreeCharacters = createSelector(
     Object.keys(freeCharacters) as Array<keyof typeof freeCharacters>,
 );
 
-const ScoreDialogContents = () => {
+const asPercentage = (part: number, whole: number) =>
+  `${((100 * part) / whole).toFixed(1)}%`;
+
+const FreeCharacterText = ({
+  freeCharacterName,
+}: {
+  freeCharacterName: IndividualCharacterName;
+}) => (
+  <span className="block text-center mx-auto text-lightGrey zx:text-zxYellow">
+    {freeCharacterName === "head" ?
+      <BitmapText className="text-metallicBlue zx:text-zxBlue">Head</BitmapText>
+    : <BitmapText className="text-pink zx:text-zxWhite">Heels</BitmapText>}
+    <BitmapText> is</BitmapText>
+    <BitmapText classnameCycle={mainMenuCycle}> free</BitmapText>
+  </span>
+);
+
+export const ScoreDialog = () => {
   const campaign = useCurrentCampaign();
 
   const planetsLiberatedCount = useAppSelector(selectPlanetsLiberatedCount);
@@ -100,74 +117,41 @@ const ScoreDialogContents = () => {
   const scoreLabel = getScoreLabel(score, maxScore);
 
   return (
-    <>
-      <MainMenuHeading noSubtitle className="resHandheld:hidden" />
-      <BitmapText
-        classnameCycle={mainMenuCycle}
-        className="mt-1 resHandheld:mt-3 block text-center mx-auto sprites-double-height sprites-uppercase"
-      >
-        {scoreLabel}
-      </BitmapText>
-      <div className={`contents ${multilineTextClass}`}>
-        <BitmapText className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
-          Score {score.toLocaleString()}
-        </BitmapText>
-        <div className="mt-1">
-          {freeCharacters.map((fc) => {
-            return (
-              <span
-                key={fc}
-                className="block text-center mx-auto text-lightGrey zx:text-zxYellow"
-              >
-                {fc === "head" ?
-                  <BitmapText className="text-metallicBlue zx:text-zxBlue">
-                    Head
-                  </BitmapText>
-                : <BitmapText className="text-pink zx:text-zxWhite">
-                    Heels
-                  </BitmapText>
-                }
-                <BitmapText> is</BitmapText>
-                <BitmapText classnameCycle={mainMenuCycle}> free</BitmapText>
-              </span>
-            );
-          })}
-        </div>
-        <BitmapText className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
-          Explored {roomsExploredCount} / {roomCount} rooms{" "}
-          {`(${((100 * roomsExploredCount) / roomCount).toFixed(1)}%)`}
-        </BitmapText>
-        <BitmapText className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
-          Liberated {planetsLiberatedCount} planets
-        </BitmapText>
-        <MenuItems className="hidden">
-          <BackMenuItem />
-        </MenuItems>
-      </div>
-    </>
-  );
-};
-
-export const ScoreDialog = () => {
-  return (
     <DialogPortal>
-      <Suspense
-        fallback={
-          <>
-            <Border className="bg-metallicBlue zx:bg-zxCyan" />
-            <Dialog className="bg-metallicBlueHalfbrite zx:bg-zxRed h-full block" />
-          </>
-        }
+      <Border className="bg-metallicBlue zx:bg-zxCyan" />
+      <Dialog
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full flex flex-col"
+        onClick={useDispatchActionCallback(backToParentMenu)}
+        dialogId="score"
       >
-        <Border className="bg-metallicBlue zx:bg-zxCyan" />
-        <Dialog
-          className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full block"
-          onClick={useDispatchActionCallback(backToParentMenu)}
-          dialogId="score"
-        >
-          <ScoreDialogContents />
-        </Dialog>
-      </Suspense>
+        <MainMenuHeading noSubtitle className="resHandheld:hidden" />
+        <div className={`${multilineTextClass} my-auto`}>
+          <BitmapText
+            classnameCycle={mainMenuCycle}
+            className="mt-1 resHandheld:mt-3 block text-center mx-auto sprites-double-height sprites-uppercase"
+          >
+            {scoreLabel}
+          </BitmapText>
+          <BitmapText className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
+            Score {score.toLocaleString()}
+          </BitmapText>
+          <div className="mt-1">
+            {freeCharacters.map((fc) => (
+              <FreeCharacterText key={fc} freeCharacterName={fc} />
+            ))}
+          </div>
+          <BitmapText className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
+            Explored {roomsExploredCount} / {roomCount} rooms{" "}
+            {`(${asPercentage(roomsExploredCount, roomCount)})`}
+          </BitmapText>
+          <BitmapText className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
+            Liberated {planetsLiberatedCount} planets
+          </BitmapText>
+          <MenuItems className="hidden">
+            <BackMenuItem />
+          </MenuItems>
+        </div>
+      </Dialog>
     </DialogPortal>
   );
 };

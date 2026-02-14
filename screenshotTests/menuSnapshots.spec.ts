@@ -27,6 +27,7 @@ const testTimeout = (process.env.CI ? 600_000 : 120_000) * osSlowness;
 
 const screenshotOptions = (
   page: Page,
+  uncolourised: boolean,
 ): PageAssertionsToHaveScreenshotOptions => ({
   fullPage: false,
   scale: "device" as const,
@@ -36,7 +37,7 @@ const screenshotOptions = (
   maxDiffPixels: 50,
   timeout: 10_000 * osSlowness,
   mask: [page.locator("[data-screenshot-mask]")],
-  maskColor: spritesheetColours.white,
+  maskColor: uncolourised ? "#ff00ff" : spritesheetColours.pink,
 });
 
 // Track visited dialogs to avoid infinite loops and duplicates
@@ -53,6 +54,7 @@ const takeDialogScreenshot = async (
   dialogId: DialogId,
   logHeader: string,
   filenameSuffix: (null | string)[] | string,
+  uncolourised: boolean,
 ) => {
   const resolvedSuffix =
     typeof filenameSuffix === "string" ? filenameSuffix : (
@@ -86,7 +88,7 @@ const takeDialogScreenshot = async (
       .soft(page)
       .toHaveScreenshot(
         `${dialogId}${resolvedSuffix}.png`,
-        screenshotOptions(page),
+        screenshotOptions(page, uncolourised),
       );
 
     console.log(
@@ -248,6 +250,7 @@ const traverseMenuDepthFirst = async (
   logHeader: string,
   projectName: string,
   filenameSuffix: string,
+  uncolourised: boolean,
   depth: number = 0,
 ): Promise<void> => {
   const currentDialogId = await getCurrentDialogId(page);
@@ -273,7 +276,13 @@ const traverseMenuDepthFirst = async (
   visited.add(currentDialogId);
 
   // Take screenshot
-  await takeDialogScreenshot(page, currentDialogId, logHeader, filenameSuffix);
+  await takeDialogScreenshot(
+    page,
+    currentDialogId,
+    logHeader,
+    filenameSuffix,
+    uncolourised,
+  );
 
   // Get all submenu items
   const submenuItemIds = await getSubmenuItems(page);
@@ -298,6 +307,7 @@ const traverseMenuDepthFirst = async (
       logHeader,
       projectName,
       filenameSuffix,
+      uncolourised,
       depth + 1,
     );
 
@@ -370,6 +380,7 @@ for (const uncolourised of [false, true]) {
             formattedName,
             testInfo.project.name,
             filenameSuffix,
+            uncolourised,
           );
         });
       } catch (error) {
@@ -460,7 +471,7 @@ for (const uncolourised of [false, true]) {
               .soft(page)
               .toHaveScreenshot(
                 `crowns${filenameSuffix}.png`,
-                screenshotOptions(page),
+                screenshotOptions(page, uncolourised),
               );
 
             console.log(
@@ -519,7 +530,7 @@ for (const uncolourised of [false, true]) {
               .soft(page)
               .toHaveScreenshot(
                 `map${filenameSuffix}.png`,
-                screenshotOptions(page),
+                screenshotOptions(page, uncolourised),
               );
 
             console.log(
@@ -596,7 +607,7 @@ for (const uncolourised of [false, true]) {
               .soft(page)
               .toHaveScreenshot(
                 `hold${filenameSuffix}.png`,
-                screenshotOptions(page),
+                screenshotOptions(page, uncolourised),
               );
 
             console.log(
@@ -646,7 +657,7 @@ for (const uncolourised of [false, true]) {
               .soft(page)
               .toHaveScreenshot(
                 `main-inGame${filenameSuffix}.png`,
-                screenshotOptions(page),
+                screenshotOptions(page, uncolourised),
               );
 
             console.log(
@@ -700,7 +711,7 @@ for (const uncolourised of [false, true]) {
               .soft(page)
               .toHaveScreenshot(
                 `score${filenameSuffix}.png`,
-                screenshotOptions(page),
+                screenshotOptions(page, uncolourised),
               );
 
             console.log(
@@ -743,7 +754,7 @@ for (const uncolourised of [false, true]) {
               .soft(page)
               .toHaveScreenshot(
                 `proclaimEmperor${filenameSuffix}.png`,
-                screenshotOptions(page),
+                screenshotOptions(page, uncolourised),
               );
 
             console.log(
@@ -804,21 +815,26 @@ for (const uncolourised of [false, true]) {
           await setIsUncolourised(page, formattedName, uncolourised);
         });
 
-        await takeDialogScreenshot(page, "mainMenu", formattedName, [
-          deploymentType,
-          uncolourised ? "uncolourised" : null,
-        ]);
+        await takeDialogScreenshot(
+          page,
+          "mainMenu",
+          formattedName,
+          [deploymentType, uncolourised ? "uncolourised" : null],
+          uncolourised,
+        );
 
         await clickPlayTheGame(page, formattedName);
         await clickOriginalCampaign(page, formattedName);
         await exitCrownsDialog(page, formattedName);
         await openInGameMainMenu(page, formattedName);
 
-        await takeDialogScreenshot(page, "mainMenu", formattedName, [
-          deploymentType,
-          "inGame",
-          uncolourised ? "uncolourised" : null,
-        ]);
+        await takeDialogScreenshot(
+          page,
+          "mainMenu",
+          formattedName,
+          [deploymentType, "inGame", uncolourised ? "uncolourised" : null],
+          uncolourised,
+        );
       });
     }
   });

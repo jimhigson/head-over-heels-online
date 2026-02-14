@@ -1,14 +1,18 @@
 import Portal from "@mutabazia/react-portal";
-import { type ReactElement } from "react";
+import { type ReactElement, useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 
+import type { DialogId } from "./DialogId";
+
+import { useAppDispatch } from "../../../../store/hooks";
+import { goToSubmenu } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import { openExternal } from "../../../../utils/tauri/openExternalLink";
 import { BitmapText } from "../../tailwindSprites/Sprite";
-import { useActionTap } from "../useActionTap";
 import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
 import { multilineTextClass } from "./multilineTextClass";
 
-export type MenuItemProps = {
+export type BaseMenuItemProps = {
   id: string;
   label: ReactElement | string;
   valueElement?: ReactElement;
@@ -18,18 +22,41 @@ export type MenuItemProps = {
   leader?: ReactElement;
   hidden?: boolean;
   disabled?: boolean;
-  onSelect?: () => void;
   className?: string;
   hint?: ReactElement | string;
   hintInline?: boolean;
   verticalAlignItemsCentre?: boolean;
+  // explicity state if this menu item opens a sub-menu or not. Usually this can be implied
   opensSubMenu?: boolean;
   toParentMenu?: boolean;
 };
 
-// having swop in here marks the swop key as handled, so the game can't immediately
-// swap chars on loading
-const menuSelectOrJump = ["menu_select", "swop", "jump"] as const;
+export type LinkMenuItemProps = BaseMenuItemProps & {
+  /**
+   * if given, the menu item is a link, probably to
+   * a url external to this app
+   */
+  href?: string;
+  subMenuId?: undefined;
+  onSelect?: undefined;
+};
+
+export type SubMenuMenuItemProps = BaseMenuItemProps & {
+  subMenuId: DialogId;
+  href?: undefined;
+  onSelect?: undefined;
+};
+
+export type CallbackMenuItemProps = BaseMenuItemProps & {
+  onSelect?: () => void;
+  subMenuId?: undefined;
+  href?: undefined;
+};
+
+export type MenuItemProps =
+  | CallbackMenuItemProps
+  | LinkMenuItemProps
+  | SubMenuMenuItemProps;
 
 const noop = () => {};
 
@@ -48,26 +75,35 @@ export const MenuItem = ({
   hint,
   leader,
   verticalAlignItemsCentre = false,
-  opensSubMenu = false,
   toParentMenu = false,
+  href,
+  subMenuId,
+  opensSubMenu = subMenuId !== undefined,
 }: MenuItemProps) => {
+  const dispatch = useAppDispatch();
+
+  const resolvedOnSelect = useCallback<() => void>(() => {
+    if (href) {
+      openExternal(href);
+    } else if (subMenuId) {
+      dispatch(goToSubmenu(subMenuId));
+    } else {
+      onSelect();
+    }
+  }, [dispatch, href, onSelect, subMenuId]);
+
   const { menuItemProps, ref, focussed } = useMenuItem({
     id,
     hidden,
     disabled,
-    onSelect,
-  });
-
-  useActionTap({
-    action: menuSelectOrJump,
-    handler: onSelect,
-    disabled: !focussed || hidden || disabled,
+    onSelect: resolvedOnSelect,
   });
 
   const menuItem = (
     // contents div puts children into the grid layout:
     <li
       {...menuItemProps}
+      role="menuitem"
       data-opens-submenu={opensSubMenu}
       data-to-parent-menu={toParentMenu}
       className={twMerge(
@@ -92,6 +128,7 @@ export const MenuItem = ({
       {/* second column content (main label)... */}
       <div
         ref={ref}
+        role={href ? "link" : undefined}
         className={twMerge(
           // if there is no value to show, take up the third column too:
           valueElement === undefined ? "col-span-2" : "",
@@ -133,7 +170,11 @@ export const MenuItem = ({
     return (
       <>
         {menuItem}
-        <div className="col-span-2 col-start-2 mb-1">{hint}</div>
+        <div className="col-span-2 col-start-2 mb-1">
+          {typeof hint === "string" ?
+            <BitmapText className={multilineTextClass}>{hint}</BitmapText>
+          : hint}
+        </div>
       </>
     );
   } else {

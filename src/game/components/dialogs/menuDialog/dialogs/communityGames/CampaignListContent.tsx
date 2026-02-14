@@ -7,9 +7,9 @@ import type { CampaignLocator } from "../../../../../../model/modelTypes";
 import { gameStarted } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { selectGameHintMarkdownClassName } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
-import { selectGameHintMarkdownClassName } from "../whichGame/selectGameHintMarkdownClassName";
 
 const CampaignMenuItem = ({
   userId,

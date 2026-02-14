@@ -8,15 +8,15 @@ import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/game
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
 import { Switch } from "../../../../../../ui/Switch";
-import { MenuItem } from "../../MenuItem";
-import { MenuItems } from "../../MenuItems";
-import { MenuItemSeparator } from "../../MenuItemSeparator";
-import { DialogTitleBar } from "../DialogTitleBar";
 import {
   optionsDialogClasses,
   optionsMenuScrollClasses,
   titleBarClasses,
-} from "../options/optionsMenuColours";
+} from "../../../dialogClasses";
+import { MenuItem } from "../../MenuItem";
+import { MenuItems } from "../../MenuItems";
+import { MenuItemSeparator } from "../../MenuItemSeparator";
+import { DialogTitleBar } from "../DialogTitleBar";
 
 export const SoundDialog = () => {
   const isMuted = useAppSelector(selectIsSoundMuted);

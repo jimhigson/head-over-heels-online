@@ -443,7 +443,8 @@ export type RoomJsonSchema = {
                 | "swopKey"
                 | "hintsAndTips"
                 | "credits"
-                | "installGuide";
+                | "installPwa"
+                | "installNative";
             };
       }
     | {
@@ -840,7 +841,8 @@ export type RoomJsonSchema = {
                                 | "swopKey"
                                 | "hintsAndTips"
                                 | "credits"
-                                | "installGuide";
+                                | "installPwa"
+                                | "installNative";
                             }
                           | {
                               which: "bubbleRobot";
@@ -1081,7 +1083,8 @@ export type RoomJsonSchema = {
                                 | "swopKey"
                                 | "hintsAndTips"
                                 | "credits"
-                                | "installGuide";
+                                | "installPwa"
+                                | "installNative";
                             }
                           | {
                               which: "bubbleRobot";
@@ -1368,7 +1371,8 @@ export type RoomJsonSchema = {
             | "scrollsRead.swopKey"
             | "scrollsRead.hintsAndTips"
             | "scrollsRead.credits"
-            | "scrollsRead.installGuide"
+            | "scrollsRead.installPwa"
+            | "scrollsRead.installNative"
             | "freeCharacters.head"
             | "freeCharacters.heels";
         };
@@ -1611,7 +1615,8 @@ export type RoomJsonSchema = {
                         | "swopKey"
                         | "hintsAndTips"
                         | "credits"
-                        | "installGuide";
+                        | "installPwa"
+                        | "installNative";
                     };
               }
             | {
@@ -2011,7 +2016,8 @@ export type RoomJsonSchema = {
                             | "swopKey"
                             | "hintsAndTips"
                             | "credits"
-                            | "installGuide";
+                            | "installPwa"
+                            | "installNative";
                         }
                       | {
                           which: "bubbleRobot";
@@ -2232,7 +2238,8 @@ export type RoomJsonSchema = {
                             | "swopKey"
                             | "hintsAndTips"
                             | "credits"
-                            | "installGuide";
+                            | "installPwa"
+                            | "installNative";
                         }
                       | {
                           which: "bubbleRobot";

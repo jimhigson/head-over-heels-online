@@ -138,7 +138,7 @@ export const spritesTailwindPlugin = plugin(
       `calc((${base} + ${s(offset)}) * var(--patternLength))`;
 
     utilities[".loading-border"] = {
-      "--c1": spritesheetPalette.highlightBeige,
+      "--c1": spritesheetPalette.pastelBlue,
       "--c2": spritesheetPalette.metallicBlue,
       "--patternLength": "15vh",
       "--t": "0",
@@ -156,7 +156,7 @@ export const spritesTailwindPlugin = plugin(
       backgroundSize: "100% var(--patternLength)",
       backgroundAttachment: "fixed",
       animation:
-        "spectrum-load 0.5s steps(12) infinite, spectrum-wobble 0.5s steps(12) infinite",
+        "spectrum-load 1s steps(24) infinite, spectrum-wobble 1s steps(24) infinite",
     };
     utilities[".zx-loading-border"] = {
       "--c1": zxSpectrumColors.red.toHex(),

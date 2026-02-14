@@ -32,7 +32,8 @@ export const manualPages = {
   credits: rawPages["./credits.md"],
 
   // new pages for the remake:
-  installGuide: rawPages["./remake/installGuide.md"],
+  installPwa: rawPages["./remake/installGuidePwa.md"],
+  installNative: rawPages["./remake/installGuideNative.md"],
 };
 
 export type ManualPageName = keyof typeof manualPages;
