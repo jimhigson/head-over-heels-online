@@ -139,9 +139,10 @@ describe("descriptive cases", () => {
         x: 1600,
         y: 1200,
       },
-      //gameEngineScreenSize: zxSpectrumRes,
-      // not quite up to the max cap
-      gameEngineUpscale: 6,
+
+      // would be 6 if rounded down to integer, but with scaleSubsteps of 5,
+      // rounds to the nearest fifth:
+      gameEngineUpscale: 6.2,
       // gets back down to hardware pixels:
       cssUpscale: 0.5,
       rotate90: false,

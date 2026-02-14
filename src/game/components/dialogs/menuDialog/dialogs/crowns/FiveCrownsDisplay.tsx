@@ -26,7 +26,7 @@ export const FiveCrownsDisplay = () => {
         <TitledCrown
           planet="bookworld"
           label="Book World"
-          className="w-12 absolute left-10 top-14 resHandheld:left-7 resHandheld:top-8 translate-x-[-50%]"
+          className="w-12 absolute left-10 top-14 resHandheld:left-8 resHandheld:top-8 translate-x-[-50%]"
         />
         <TitledCrown
           planet="blacktooth"
