@@ -16,7 +16,10 @@ import {
 
 export type FreeItemSoundRendererConstructorOptions = {
   fall?: BracketedSegmentOptions;
-  standingOn?: BracketedSegmentOptions;
+  /**
+   * set to null to explicitly not have a standing on sound,
+   * otherwise a default will be used */
+  standingOn?: BracketedSegmentOptions | null;
   collision?: BracketedSegmentOptions;
   /**
    * set to null to explicitly not have a pushed sound, otherwise a default
@@ -33,6 +36,9 @@ const defaultPushedSoundOptions: BracketedSegmentOptions = {
   gain: 0.8,
   randomiseStartPoint: true,
   playbackRate: 0.8,
+};
+const defaultStandingOnSoundOptions: BracketedSegmentOptions = {
+  soundId: "softBump",
 };
 
 const playSoundStandingOnCheck = (
@@ -75,8 +81,15 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
     const standingOnChannel: GainNode = audioCtx.createGain();
     standingOnChannel.connect(this.output);
     this.#standingOnBracketedSound =
-      options?.standingOn &&
-      createBracketedSound({ start: options.standingOn }, standingOnChannel);
+      options?.standingOn === null ?
+        undefined
+      : createBracketedSound(
+          {
+            start: options?.standingOn ?? defaultStandingOnSoundOptions,
+            noStartOnFirstFrame: true,
+          },
+          standingOnChannel,
+        );
 
     const collisionChannel: GainNode = audioCtx.createGain();
     collisionChannel.connect(this.output);
