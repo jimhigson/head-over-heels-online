@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.18.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.17.1...v1.18.0) (2026-02-15)
+
+
+### Features
+
+* games upscale can be fractional sometimes to more precisely match the size of the screen it is played on ([#709](https://github.com/jimhigson/head-over-heels-online/issues/709)) ([961787c](https://github.com/jimhigson/head-over-heels-online/commit/961787c7a2a690b10af3d7cf8adb92418291c3a0))
+* more sounds for generic items: falling, scraping ([#701](https://github.com/jimhigson/head-over-heels-online/issues/701)) ([cc1b6a2](https://github.com/jimhigson/head-over-heels-online/commit/cc1b6a2c690cde1574650bb8ee18333e311b69d7))
+* pixel grid snapping applies in xy plane while an item falls purely vertically ([#697](https://github.com/jimhigson/head-over-heels-online/issues/697)) ([5cca663](https://github.com/jimhigson/head-over-heels-online/commit/5cca663f67e56c361011b51d3cc20748583c8beb))
+* room entry sounds (disabled by default) ([#706](https://github.com/jimhigson/head-over-heels-online/issues/706)) ([0b9b2d2](https://github.com/jimhigson/head-over-heels-online/commit/0b9b2d26ddcfb87d4934b56c9d34fee2893a20f4))
+* scenery players in finalRoom get shadowmasks too, same as real players ([#698](https://github.com/jimhigson/head-over-heels-online/issues/698)) ([39f0a5f](https://github.com/jimhigson/head-over-heels-online/commit/39f0a5f5ad59d5ea0fc8cea6288d33b594cd8d5e))
+* show latest version indicator on home screen ([#705](https://github.com/jimhigson/head-over-heels-online/issues/705)) ([85f4200](https://github.com/jimhigson/head-over-heels-online/commit/85f420061d61abd2973cd5976b5be6fbac4bb816))
+* slightly more expressive Heels falling sprites for towards and right direction ([#708](https://github.com/jimhigson/head-over-heels-online/issues/708)) ([36d695f](https://github.com/jimhigson/head-over-heels-online/commit/36d695f49dd8b5733290dfd9c9b4659dfce15019))
+* slightly more realistic spectrum-style loading bars ([#707](https://github.com/jimhigson/head-over-heels-online/issues/707)) ([968748d](https://github.com/jimhigson/head-over-heels-online/commit/968748dc45cf05ce1bfe2ef066196a0f1cf455dd))
+
+
+### Bug Fixes
+
+* editor highlighted/selected items render dark pixels as black ([#695](https://github.com/jimhigson/head-over-heels-online/issues/695)) ([7f4dfa5](https://github.com/jimhigson/head-over-heels-online/commit/7f4dfa5187a5dfc57fa4261405295f8df7eb1214))
+* head facing sideways using standard 24x24 pixel sprites ([#694](https://github.com/jimhigson/head-over-heels-online/issues/694)) ([724ccb4](https://github.com/jimhigson/head-over-heels-online/commit/724ccb4c5b164921d4a813512eac4d7e94811ac0))
+* make moonbase16 less confusing by adding more drums to use to pile up to jump over volcanos ([#700](https://github.com/jimhigson/head-over-heels-online/issues/700)) ([88c7ffd](https://github.com/jimhigson/head-over-heels-online/commit/88c7ffd74f3fb885c7d7aaf1f58b4e9e9d56ce75))
+* make sliding blocks stand out a bit better from the floor in moonbase arrow rooms ([#703](https://github.com/jimhigson/head-over-heels-online/issues/703)) ([4a306e4](https://github.com/jimhigson/head-over-heels-online/commit/4a306e4bf1723738c2d1937c53ccae0702760b83))
+* moonbase arrow rooms (moonbase20, moonbase23) have arrow centered in room (unlike original game) ([#699](https://github.com/jimhigson/head-over-heels-online/issues/699)) ([8b7f2e0](https://github.com/jimhigson/head-over-heels-online/commit/8b7f2e027b181fcc7e994b2e715a8197c52251bf))
+
 ## [1.17.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.17.0...v1.17.1) (2026-02-03)
 
 
