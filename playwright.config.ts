@@ -1,4 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
+import { produce } from "immer";
+
+import type { ScreenshotTestOptions } from "./screenshotTests/ScreenshotTestOptions";
 
 const desktopSize = {
   // this size gives us an upscale of exactly 8 for the game in default settings - hopefully
@@ -16,7 +19,7 @@ const phoneSize = {
 
 const port = 5222;
 
-export default defineConfig({
+export default defineConfig<ScreenshotTestOptions>({
   testDir: "./screenshotTests",
   testMatch: "**/*.spec.ts",
   fullyParallel: true,
@@ -65,6 +68,28 @@ export default defineConfig({
       use: {
         ...devices["iPhone 12 Pro Max landscape"],
         ...phoneSize,
+      },
+    },
+    {
+      name: "mobile-safari-portrait",
+      testMatch: ["roomSnapshots.spec.ts", "menuSnapshots.spec.ts"],
+      use: {
+        ...devices["iPhone 15 Pro"],
+        ...produce(phoneSize, (draft) => {
+          const {
+            viewport: { height, width },
+          } = draft;
+
+          draft.viewport.height = width;
+          draft.viewport.width = height;
+        }),
+        // this portrait test is only to do a quick test for general correctness of rendering
+        // since the game is played in landscape mode
+        rooms: ["blacktooth1head"],
+        // we're only testing layout for portrait mode, so uncolourised doesn't matter:
+        noUncolourised: true,
+        // keep to just the main menu to check the rotation is done correctly
+        mainMenuOnly: true,
       },
     },
   ],

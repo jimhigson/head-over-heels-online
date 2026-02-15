@@ -9,6 +9,7 @@ import type {
   toggleUserSetting,
 } from "../src/store/slices/gameMenus/gameMenusSlice";
 import type { SelectableGameSpeeds } from "../src/store/slices/gameMenus/selectableGameSpeeds";
+import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";
@@ -413,7 +414,24 @@ test.describe("Room Visual Snapshots", () => {
     test(`Snapshot rooms test ${testDescription}`, async ({
       page,
     }, testInfo) => {
-      test.setTimeout(testRooms.length * timeoutPerRoom + 20_000);
+      const { rooms: projectRooms, noUncolourised } = testInfo.project
+        .use as ScreenshotTestOptions;
+
+      // not all projects include all rooms = this can be changed using 'use' in the playwright config
+      const includedTestRooms =
+        projectRooms === undefined ? testRooms : (
+          testRooms.filter((r) => projectRooms.includes(r))
+        );
+
+      if (includedTestRooms.length === 0) {
+        test.skip();
+        return;
+      }
+
+      const effectiveColourisedModes: boolean[] =
+        noUncolourised ? [false] : colourisedModes;
+
+      test.setTimeout(includedTestRooms.length * timeoutPerRoom + 20_000);
 
       const formattedName = `${formatProjectName(testInfo.project.name)} (${testIndex})`;
       const threshold = screenshotThreshold({
@@ -485,7 +503,7 @@ test.describe("Room Visual Snapshots", () => {
 
           if (charactersCurrentRoomId !== previousRoomId) {
             console.log(
-              `${logHeader} will pre-load previous room: ${chalk.blue(previousRoomId)} to set correct entry point to target room: ${chalk.blue(testRooms[0])} (was in room: ${chalk.blue(charactersCurrentRoomId)})`,
+              `${logHeader} will pre-load previous room: ${chalk.blue(previousRoomId)} to set correct entry point to target room: ${chalk.blue(includedTestRooms[0])} (was in room: ${chalk.blue(charactersCurrentRoomId)})`,
             );
 
             await navigateToRoom(logHeader, previousRoomId, false);
@@ -530,10 +548,10 @@ test.describe("Room Visual Snapshots", () => {
 
       let currentUncolourisedState = false;
 
-      for (const [roomIndex, roomId] of testRooms.entries()) {
+      for (const [roomIndex, roomId] of includedTestRooms.entries()) {
         await test.step(`room: ${roomId}`, async () => {
           const progress = Math.round(
-            ((roomIndex + 1) / testRooms.length) * 100,
+            ((roomIndex + 1) / includedTestRooms.length) * 100,
           );
           const logHeader = progressLogHeader(
             testInfo.project.name,
@@ -547,7 +565,7 @@ test.describe("Room Visual Snapshots", () => {
 
           await navigateToRoom(logHeader, roomId);
 
-          for (const uncolourised of colourisedModes) {
+          for (const uncolourised of effectiveColourisedModes) {
             const filenameSuffix = uncolourised ? "-uncolourised" : "";
 
             if (currentUncolourisedState !== uncolourised) {

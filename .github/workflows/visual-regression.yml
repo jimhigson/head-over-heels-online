@@ -126,6 +126,9 @@ jobs:
           - { os: ubuntu-24.04-arm, suite: menuSnapshots, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
           - { os: windows-latest, suite: menuSnapshots, browser: --project chromium-desktop }
 
+          # PORTRAIT - room + menu snapshots on a single agent (suite filter not needed, project testMatch restricts specs)
+          - { os: ubuntu-24.04-arm, suite: "", browser: --project mobile-safari-portrait }
+
           # SPRITES - single batch, chromium-desktop only on Linux
           - { os: ubuntu-24.04-arm, suite: spritesPage, browser: --project chromium-desktop }
     # name is super-compressed to fit on the github UI with enough info to identify what's being run
@@ -134,6 +137,7 @@ jobs:
         matrix.suite == 'lutSnapshot' && format('Lut {0}', contains(matrix.os, 'windows') && 'Windows' || 'Linux')
         || matrix.suite == 'menuSnapshots' && format('Menu {0}', contains(matrix.os, 'windows') && 'Windows' || 'Linux')
         || matrix.suite == 'spritesPage' && 'Sprites'
+        || matrix.suite == '' && format('All:{0}', matrix.browser)
         || format('Room:{0}.{1}{2} {3}/{4}',
             contains(matrix.os, 'windows') && 'Win' || 'Lnx',
             contains(matrix.browser, 'chrom') && 'Chrm'
@@ -217,7 +221,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report-${{ matrix.os }}-${{ matrix.suite }}-${{ matrix.batch_number || 'single' }}
+          name: playwright-report-${{ matrix.os }}-${{ matrix.suite || 'all' }}-${{ matrix.batch_number || 'single' }}
           path: |
             playwright-report/
             test-results/
