@@ -95,7 +95,10 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
     collisionChannel.connect(this.output);
     this.#collisionBracketedSound =
       options?.collision &&
-      createBracketedSound({ start: options.collision }, collisionChannel);
+      createBracketedSound(
+        { start: options.collision, noStartOnFirstFrame: true },
+        collisionChannel,
+      );
 
     const pushedChannel: GainNode = audioCtx.createGain();
     pushedChannel.connect(this.output);

@@ -22,14 +22,20 @@ import {
   useIsGameRunning,
 } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import { errorCaught } from "../../store/slices/gameMenus/gameMenusSlice.ts";
-import { selectCanvasSize } from "../../store/slices/upscale/upscaleSlice.ts";
+import {
+  selectCanvasSize,
+  selectRot90,
+} from "../../store/slices/upscale/upscaleSlice.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
 import { SetSpeedOnSharedTickerFromStore } from "../../store/storeFlow/useSetSpeedOnTickerFromStore.tsx";
 import { importOnce } from "../../utils/importOnce.ts";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
-import { useCanvasInlineStyle } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
+import {
+  useCanvasInlineStyle,
+  useMaybeRotated,
+} from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
@@ -119,6 +125,7 @@ export const GamePage = () => {
   const cheatsOn = useCheatsOn();
   const gameApi = useCreateGameApi();
   const canvasSize = useAppSelector(selectCanvasSize);
+  const rot90 = useAppSelector(selectRot90);
 
   const canvasInlineStyle = useCanvasInlineStyle();
 
@@ -135,8 +142,8 @@ export const GamePage = () => {
   }, [gameApi, renderArea]);
 
   useEffect(() => {
-    gameApi?.resizeTo(canvasSize);
-  }, [canvasSize, gameApi]);
+    gameApi?.resizeTo(canvasSize, rot90);
+  }, [canvasSize, gameApi, rot90]);
 
   return (
     <>
@@ -156,7 +163,13 @@ export const GamePage = () => {
           <AddTrackingToStore />
           <ConnectInputToStore />
           <SetSpeedOnSharedTickerFromStore />
-          <Dialogs />
+          {/* 
+          dialogs are html and therefore rotated using css, as opposed
+          to the game engine which can be rotated using opengl transforms
+          */}
+          <div style={useMaybeRotated()}>
+            <Dialogs />
+          </div>
         </DispatchingErrorBoundary>
         {gameApi && cheatsOn && (
           <Suspense fallback={null}>

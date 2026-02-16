@@ -2,6 +2,7 @@ import type { Application, Ticker } from "pixi.js";
 
 import { Container, Rectangle } from "pixi.js";
 
+import type { Upscale } from "../../store/slices/upscale/Upscale";
 import type { GameState } from "../gameState/GameState";
 import type { RoomRenderContextInGame } from "../render/room/RoomRenderContexts";
 import type { RoomRendererType } from "../render/room/RoomRendererType";
@@ -40,6 +41,7 @@ import { topLevelFilters } from "./topLevelFilters";
 
 textInterfaceToShowDetailedFrameTiming();
 
+const quarterTurnClockwise = Math.PI / 2;
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
   /**
@@ -47,11 +49,16 @@ export class MainLoop<RoomId extends string> {
    * players have lost all lives
    */
   #roomRenderer: RoomRendererType<RoomId, string> | undefined;
-  #worldGraphics: Container = new Container({
-    label: "MainLoop/world",
+  #worldContainer: Container = new Container({
+    label: "MainLoop/worldContainer",
   });
   #worldSound: AudioNode = audioCtx.createGain();
   #physicsTicker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
+
+  #mainContainer = new Container({
+    label: "MainLoop/mainContainer",
+    children: [this.#worldContainer],
+  });
 
   constructor(
     private app: Application,
@@ -63,7 +70,7 @@ export class MainLoop<RoomId extends string> {
       const gameEngineUpscale = selectGameEngineUpscale(storeState);
 
       this.#worldSound.connect(audioCtx.destination);
-      app.stage.addChild(this.#worldGraphics);
+      app.stage.addChild(this.#mainContainer);
       app.stage.scale = gameEngineUpscale;
 
       const startingRoom = selectCurrentRoomState(gameState);
@@ -94,11 +101,9 @@ export class MainLoop<RoomId extends string> {
     this.app.stage.filters = topLevelFilters(displaySettings, upscale);
   }
 
-  private tickAndCatch = (
-    options: Parameters<InstanceType<typeof MainLoop>["tick"]>[0],
-  ): void => {
+  #tickAndCatch = (ticker: Ticker): void => {
     try {
-      this.tick(options);
+      this.#tick(ticker);
     } catch (thrown) {
       const wrappedError = new Error("Error caught in main loop tick", {
         cause: thrown,
@@ -107,7 +112,21 @@ export class MainLoop<RoomId extends string> {
     }
   };
 
-  private tick = ({ deltaMS }: Ticker): void => {
+  #tickRootContainer({
+    gameEngineUpscale,
+    rotate90,
+    gameEngineScreenSize,
+  }: Upscale) {
+    const {
+      app: { stage },
+    } = this;
+
+    stage.scale = gameEngineUpscale;
+    this.#mainContainer.rotation = rotate90 ? quarterTurnClockwise : 0;
+    this.#mainContainer.position.x = rotate90 ? gameEngineScreenSize.y : 0;
+  }
+
+  #tick = ({ deltaMS }: Ticker): void => {
     const tickState = store.getState();
     const timingRecord =
       selectShowFps(tickState) ? frameTimingStats : undefined;
@@ -175,6 +194,7 @@ export class MainLoop<RoomId extends string> {
       tickColourise,
       tickOnScreenControls,
       tickInputDirectionMode,
+      tickUpscale,
     );
 
     if (createNewHudRenderer) {
@@ -194,7 +214,7 @@ export class MainLoop<RoomId extends string> {
         inputDirectionMode: tickInputDirectionMode,
         onScreenControls: tickOnScreenControls,
       });
-      this.app.stage.addChild(this.#hudRenderer.output);
+      this.#mainContainer.addChild(this.#hudRenderer.output);
     }
 
     this.#hudRenderer!.tick({
@@ -242,23 +262,27 @@ export class MainLoop<RoomId extends string> {
             new RoomRenderer(roomRenderContext),
           ),
         );
-        this.#worldGraphics.addChild(this.#roomRenderer.output.graphics);
+        this.#worldContainer.addChild(this.#roomRenderer.output.graphics);
         this.#roomRenderer.output.sound?.connect(this.#worldSound);
       } else {
         this.#roomRenderer = undefined;
       }
 
-      this.app.stage.scale = tickUpscale.gameEngineUpscale;
+      this.#tickRootContainer(tickUpscale);
       this.#initTopLevelFilters();
 
       // setting static boundsArea helps if a filter is put over the whole output container, since the bounds of the
       // container won't change. Eg, a lift going vertically up into a screen y-coord where previously nothing was
       // rendered does not stretch the container upwards
-      this.app.stage.boundsArea = new Rectangle(
+      this.#mainContainer.boundsArea = new Rectangle(
         0,
         0,
-        tickUpscale.gameEngineScreenSize.x,
-        tickUpscale.gameEngineScreenSize.y,
+        tickUpscale.rotate90 ?
+          tickUpscale.gameEngineScreenSize.y
+        : tickUpscale.gameEngineScreenSize.x,
+        tickUpscale.rotate90 ?
+          tickUpscale.gameEngineScreenSize.x
+        : tickUpscale.gameEngineScreenSize.y,
       );
     }
 
@@ -298,14 +322,14 @@ export class MainLoop<RoomId extends string> {
   };
 
   start() {
-    this.app.ticker.add(this.tickAndCatch);
+    this.app.ticker.add(this.#tickAndCatch);
     return this;
   }
   stop() {
-    this.app.stage.removeChild(this.#worldGraphics);
+    this.app.stage.removeChild(this.#mainContainer);
     this.#worldSound.disconnect();
     this.#roomRenderer?.destroy();
     this.#hudRenderer?.destroy();
-    this.app.ticker.remove(this.tickAndCatch);
+    this.app.ticker.remove(this.#tickAndCatch);
   }
 }

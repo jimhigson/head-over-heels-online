@@ -4,6 +4,7 @@ import { Container, Graphics } from "pixi.js";
 
 import type { RoomState } from "../../../../model/RoomState";
 import type { InputDirectionMode } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import type { Xy } from "../../../../utils/vectors/vectors";
 import type { Renderer } from "../../Renderer";
 import type { GeneralRenderContext } from "../../room/RoomRenderContexts";
 import type { HudRendererTickContextWithRoom } from "../hudRendererContexts";
@@ -32,9 +33,13 @@ import {
 import { createSprite } from "../../createSprite";
 import { TextContainer } from "../../text/TextContainer";
 import { tintForHud } from "../spritesheetVariantForHud";
+import { setPointerXyMaybeRotated } from "./look/setPointerXyMaybeRotated";
 
 const joystickArrowOffset = 14;
 const sensitivity = 2;
+
+/** avoid gc */
+const xyPositionBuffer: Xy = { x: -1, y: -1 };
 
 type JoystickRenderContext = {
   inputStateTracker: InputStateTrackerInterface;
@@ -48,7 +53,7 @@ type JoystickRenderContext = {
  */
 const snapCosineThreshold = Math.cos(30 * (Math.PI / 180));
 
-const joystickFurthestTouchRadius = 40;
+const joystickFurthestTouchRadius = 55;
 const fullyTransparentHex = "#00000000";
 export class OnScreenJoystickRenderer
   implements
@@ -199,17 +204,34 @@ export class OnScreenJoystickRenderer
   usePointerLocation = (e: FederatedPointerEvent) => {
     if (e.pointerId !== this.#curPointerId) return;
 
+    const {
+      rotate90,
+      gameEngineScreenSize: { y: gameEngineScreenSizeY },
+    } = this.renderContext.general.upscale;
     const scale = selectTotalUpscale(store.getState());
 
     const { x: containerX, y: containerY } = this.output;
-    const { x: eventX, y: eventY } = e;
+
+    const joyCentreX = containerX;
+    const joyCentreY =
+      rotate90 ? gameEngineScreenSizeY - containerY : containerY;
+
+    const { x: ex, y: ey } = setPointerXyMaybeRotated(
+      e,
+      rotate90,
+      xyPositionBuffer,
+    );
+
+    const exScaled = ex / scale;
+    const eyScaled = ey / scale;
 
     const { width: containerWidth, height: containerHeight } =
       this.output.getLocalBounds();
 
     // get x/y relative to joystick centre, at joystick's scale:
-    const joyX = (eventX / scale - containerX) / (containerWidth / 2);
-    const joyY = (eventY / scale - containerY) / (containerHeight / 2);
+    const joyX = (exScaled - joyCentreX) / (containerWidth / 2);
+    const joyY =
+      ((eyScaled - joyCentreY) / (containerHeight / 2)) * (rotate90 ? -1 : 1);
 
     const onScreenDirectionVector = rotateInputVector45({
       x: -joyX,

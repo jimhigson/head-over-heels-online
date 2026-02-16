@@ -58,6 +58,14 @@ export class TeleportEffectRenderer<
       scaleXyz(currentPlayable.aabb, 0.5),
     );
 
+    const {
+      renderContext: {
+        general: {
+          upscale: { rotate90 },
+        },
+      },
+    } = this;
+
     const { x: xPx, y: yPx } = projectWorldXyzToScreenXy(playableMidXyz);
 
     const containerLocalBounds = this.output.graphics.getLocalBounds();
@@ -68,10 +76,20 @@ export class TeleportEffectRenderer<
     // to the playable character actually is:
     this.output.graphics.filterArea = containerLocalBounds.rectangle;
 
-    this.#teleportingEffectFilter!.centreX =
-      (xPx - containerLocalBounds.x) / containerLocalBounds.width;
-    this.#teleportingEffectFilter!.centreY =
-      (yPx - containerLocalBounds.y) / containerLocalBounds.height;
+    const uX = (xPx - containerLocalBounds.x) / containerLocalBounds.width;
+    const uY = (yPx - containerLocalBounds.y) / containerLocalBounds.height;
+
+    // pixi filters operate on screen-space even inside rotated containers, so
+    // compensate accordingly:
+    if (rotate90) {
+      // rotated case
+      this.#teleportingEffectFilter!.centreX = 1 - uY;
+      this.#teleportingEffectFilter!.centreY = uX;
+    } else {
+      // normal case
+      this.#teleportingEffectFilter!.centreX = uX;
+      this.#teleportingEffectFilter!.centreY = uY;
+    }
   }
 
   #update() {

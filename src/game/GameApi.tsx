@@ -8,7 +8,7 @@ export type GameApi<RoomId extends string> = {
   campaign: Campaign<RoomId>;
   /** Instantly move to a different room. Mostly for testing, debugging etc */
   changeRoom: (newRoom: RoomId) => void;
-  resizeTo: (newSize: Xy) => void;
+  resizeTo: (newSize: Xy, rot90: boolean) => void;
   /**
    * @returns the state for the room that is currently being viewed, or undefined if
    * none (game over)

@@ -53,8 +53,8 @@ export class SoundPanRenderer<T extends ItemInPlayType>
   implements ItemSoundRenderer<T>
 {
   public readonly output = audioCtx.createPanner();
-  private soundPositionMinX;
-  private soundPositionMaxX;
+  #soundPositionMinX;
+  #soundPositionMaxX;
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<T>,
@@ -67,8 +67,8 @@ export class SoundPanRenderer<T extends ItemInPlayType>
 
     const floorRenderExtends = floorsRenderExtent(renderContext.room).floors;
 
-    this.soundPositionMinX = floorRenderExtends.edgeLeftX;
-    this.soundPositionMaxX = floorRenderExtends.edgeRightX;
+    this.#soundPositionMinX = floorRenderExtends.edgeLeftX;
+    this.#soundPositionMaxX = floorRenderExtends.edgeRightX;
   }
 
   tick(tickContext: ItemTickContext) {
@@ -83,8 +83,8 @@ export class SoundPanRenderer<T extends ItemInPlayType>
 
     const soundPositionX = numberInRangeToMinus1To1Range(
       projectWorldXyzToScreenX(itemCentrePosition),
-      this.soundPositionMinX,
-      this.soundPositionMaxX,
+      this.#soundPositionMinX,
+      this.#soundPositionMaxX,
     );
 
     // y in screen-coords, z (altitude) in game-coords
@@ -120,7 +120,7 @@ export class SoundPanRenderer<T extends ItemInPlayType>
     if (log) {
       console.log(
         item.id,
-        `x= ${soundPositionX * maxXOffsetFromCentre}/(${this.soundPositionMinX} - ${this.soundPositionMaxX})`,
+        `x= ${soundPositionX * maxXOffsetFromCentre}/(${this.#soundPositionMinX} - ${this.#soundPositionMaxX})`,
         soundPositionY,
         soundPositionZ,
       );

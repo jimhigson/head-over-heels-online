@@ -121,11 +121,15 @@ export const gameMain = async <RoomId extends string>(
     renderIn(containerElement) {
       containerElement.appendChild(app.canvas);
     },
-    resizeTo(newSize: Xy) {
+    resizeTo(newSize: Xy, rot90: boolean) {
       // app.resizeTo is not very reliable - it only resizes if the window resizes. That's usually
       // fine, but if the upscale changes without a window resize it can mean that we get the wrong size initially
       // instead - be explicit about it:
-      app.renderer?.resize(newSize.x, newSize.y);
+      if (rot90) {
+        app.renderer.resize(newSize.y, newSize.x);
+      } else {
+        app.renderer.resize(newSize.x, newSize.y);
+      }
     },
     changeRoom(roomId: RoomId) {
       const currentPlayable = selectCurrentPlayableItem(gameState);
