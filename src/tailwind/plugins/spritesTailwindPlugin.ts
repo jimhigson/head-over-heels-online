@@ -138,8 +138,8 @@ export const spritesTailwindPlugin = plugin(
       `calc((${base} + ${s(offset)}) * var(--patternLength))`;
 
     utilities[".loading-border"] = {
-      "--c1": spritesheetPalette.highlightBeige,
-      "--c2": spritesheetPalette.metallicBlue,
+      "--c1": halfbriteHex(spritesheetPalette.metallicBlue),
+      "--c2": halfbriteHex(spritesheetPalette.pastelBlue),
       "--patternLength": "15vh",
       "--t": "0",
       background: `repeating-linear-gradient(
@@ -156,11 +156,11 @@ export const spritesTailwindPlugin = plugin(
       backgroundSize: "100% var(--patternLength)",
       backgroundAttachment: "fixed",
       animation:
-        "spectrum-load 0.5s steps(12) infinite, spectrum-wobble 0.5s steps(12) infinite",
+        "spectrum-load 0.5s steps(12) infinite, spectrum-wobble 0.5s steps(12) infinite, loading-bars-colour-cycle 12s steps(4, end) infinite",
     };
     utilities[".zx-loading-border"] = {
-      "--c1": zxSpectrumColors.red.toHex(),
-      "--c2": zxSpectrumColors.cyan.toHex(),
+      animation:
+        "spectrum-load 0.5s steps(12) infinite, spectrum-wobble 0.5s steps(12) infinite, zx-loading-bars-colour-cycle 6s steps(2, end) infinite",
     };
     base["@property --t"] = {
       syntax: `"<number>"`,
@@ -181,6 +181,38 @@ export const spritesTailwindPlugin = plugin(
       },
       to: {
         "--t": "360",
+      },
+    };
+    base["@keyframes zx-loading-bars-colour-cycle"] = {
+      "0%": {
+        "--c1": zxSpectrumColors.red.toHex(),
+        "--c2": zxSpectrumColors.cyan.toHex(),
+      },
+      "50%": {
+        "--c1": zxSpectrumColors.yellow.toHex(),
+        "--c2": zxSpectrumColors.blue.toHex(),
+      },
+      "100%": {
+        "--c1": zxSpectrumColors.yellow.toHex(),
+        "--c2": zxSpectrumColors.blue.toHex(),
+      },
+    };
+    base["@keyframes loading-bars-colour-cycle"] = {
+      "0%": {
+        "--c1": halfbriteHex(spritesheetPalette.metallicBlue),
+        "--c2": halfbriteHex(spritesheetPalette.pastelBlue),
+      },
+      "25%": {
+        "--c1": halfbriteHex(spritesheetPalette.midRed),
+        "--c2": halfbriteHex(spritesheetPalette.highlightBeige),
+      },
+      "50%": {
+        "--c1": halfbriteHex(spritesheetPalette.moss),
+        "--c2": halfbriteHex(spritesheetPalette.swop_cyan),
+      },
+      "75%": {
+        "--c1": halfbriteHex(spritesheetPalette.pink),
+        "--c2": halfbriteHex(spritesheetPalette.white),
       },
     };
 
