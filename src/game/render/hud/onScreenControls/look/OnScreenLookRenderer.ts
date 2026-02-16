@@ -10,10 +10,13 @@ import type { OnScreenJoystickRenderer } from "../OnScreenJoystickRenderer";
 
 import { selectTotalUpscale } from "../../../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../../../store/store";
-import { pick } from "../../../../../utils/pick";
 import { originXyz } from "../../../../../utils/vectors/vectors";
 import { type InputStateTrackerInterface } from "../../../../input/InputStateTracker";
 import { DragInertia } from "./DragInertia";
+import { setPointerXyMaybeRotated } from "./setPointerXyMaybeRotated";
+
+/** avoid gc */
+const xyPositionBuffer: Xy = { x: -1, y: -1 };
 
 type LookRenderContext = {
   inputStateTracker: InputStateTrackerInterface;
@@ -34,7 +37,7 @@ export class OnScreenLookRenderer<
 
   #curPointerId: number | undefined;
 
-  #curXY: undefined | Xy = undefined;
+  #curXY: Xy = { x: -1, y: -1 };
 
   #joystickRenderer: OnScreenJoystickRenderer | undefined;
 
@@ -67,9 +70,13 @@ export class OnScreenLookRenderer<
       return;
     }
 
+    const rot90 = this.renderContext.general.upscale.rotate90;
+
     // allows tapping without movement:
     this.#curPointerId = e.pointerId;
-    this.#curXY = pick(e, "x", "y");
+
+    setPointerXyMaybeRotated(e, rot90, this.#curXY);
+
     this.#dragInertia.startDrag();
     this.usePointerLocation(e);
     this.output.on("globalpointermove", this.usePointerLocation);
@@ -77,7 +84,6 @@ export class OnScreenLookRenderer<
 
   stopCurrentPointer = () => {
     this.#curPointerId = undefined;
-    this.#curXY = undefined;
     this.#dragInertia.stopDrag();
     // Don't reset directionVector - let inertia handle it
     this.renderContext.inputStateTracker.hudInputState.directionVector =
@@ -88,13 +94,24 @@ export class OnScreenLookRenderer<
   usePointerLocation = (e: FederatedPointerEvent) => {
     if (e.pointerId !== this.#curPointerId) return;
 
-    const curXy = this.#curXY!;
+    const rot90 = this.renderContext.general.upscale.rotate90;
+
+    const curXy = this.#curXY;
 
     const scale = selectTotalUpscale(store.getState());
-    const { x: ex, y: ey } = e;
+
+    const { x: ex, y: ey } = setPointerXyMaybeRotated(
+      e,
+      rot90,
+      xyPositionBuffer,
+    );
 
     const dx = (curXy.x - ex) / scale;
-    const dy = (curXy.y - ey) / scale;
+    let dy = (curXy.y - ey) / scale;
+
+    if (rot90) {
+      dy = -dy;
+    }
 
     // Update velocity tracking
     this.#dragInertia.updateVelocity({ x: dx, y: dy });

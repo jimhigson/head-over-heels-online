@@ -151,13 +151,9 @@ export const selectIsNoRoomEntryTunes = selectUserSetting(
 
 export const selectShouldRenderOnScreenControls = ({
   gameMenus,
-  upscale,
 }: RootState): boolean =>
-  (gameMenus.userSettings.onScreenControls ??
-    defaultUserSettings.onScreenControls) &&
-  // the on-screen controls currently don't work when the display is rotated,
-  // so hide them in this case:
-  upscale.upscale.rotate90 === false;
+  gameMenus.userSettings.onScreenControls ??
+  defaultUserSettings.onScreenControls;
 
 export const useIsUserPreferenceOnScreenControls = () => {
   return useAppSelector(selectUserPreferenceOnScreenControls);

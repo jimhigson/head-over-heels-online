@@ -8,6 +8,7 @@ import chalk from "chalk";
 
 import type { DialogId } from "../src/game/components/dialogs/menuDialog/DialogId";
 import type { goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
+import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import spritesheetColours from "../src/_generated/palette/spritesheetPalette.json" with { type: "json" };
 import { deploymentTypes } from "../src/utils/detectEnv/detectDeploymentType";
@@ -321,6 +322,12 @@ for (const uncolourised of [false, true]) {
     test(`Snapshot all menu dialogs (uncolourised = ${uncolourised})`, async ({
       page,
     }, testInfo) => {
+      const { mainMenuOnly, noUncolourised } = testInfo.project
+        .use as ScreenshotTestOptions;
+      if (mainMenuOnly || (uncolourised && noUncolourised)) {
+        test.skip();
+        return;
+      }
       test.setTimeout(testTimeout);
 
       const formattedName = formatProjectName(testInfo.project.name);
@@ -394,6 +401,12 @@ for (const uncolourised of [false, true]) {
     test(`Snapshot in game dialogs (uncolourised = ${uncolourised})`, async ({
       page,
     }, testInfo) => {
+      const { mainMenuOnly, noUncolourised } = testInfo.project
+        .use as ScreenshotTestOptions;
+      if (mainMenuOnly || (uncolourised && noUncolourised)) {
+        test.skip();
+        return;
+      }
       test.setTimeout(testTimeout);
 
       const formattedName = formatProjectName(testInfo.project.name);
@@ -768,6 +781,12 @@ for (const uncolourised of [false, true]) {
       test(`Main menu (deploymentType = ${deploymentType}, uncolourised = ${uncolourised})`, async ({
         page,
       }, testInfo) => {
+        const { noUncolourised } = testInfo.project
+          .use as ScreenshotTestOptions;
+        if (uncolourised && noUncolourised) {
+          test.skip();
+          return;
+        }
         test.setTimeout(testTimeout);
 
         const formattedName = formatProjectName(testInfo.project.name);

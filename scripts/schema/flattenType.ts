@@ -14,29 +14,27 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export class TypeFlattener {
-  private processedTypes = new Set<string>();
-  private typeDefinitions: string[] = [];
-  private typeChecker: TypeChecker;
-  private project: Project;
-  private currentSourceFile?: string;
+  #processedTypes = new Set<string>();
+  #typeDefinitions: string[] = [];
+  #typeChecker: TypeChecker;
+  #project: Project;
 
-  constructor(typeChecker: TypeChecker, project: Project, sourceFile?: string) {
-    this.typeChecker = typeChecker;
-    this.project = project;
-    this.currentSourceFile = sourceFile;
+  constructor(typeChecker: TypeChecker, project: Project) {
+    this.#typeChecker = typeChecker;
+    this.#project = project;
   }
 
   public reset() {
-    this.processedTypes.clear();
-    this.typeDefinitions = [];
+    this.#processedTypes.clear();
+    this.#typeDefinitions = [];
   }
 
   public getTypeDefinitions(): string[] {
-    return [...this.typeDefinitions];
+    return [...this.#typeDefinitions];
   }
 
   // Helper to ensure type names start with capital letter
-  private capitalizeTypeName(typeName: string): string {
+  #capitalizeTypeName(typeName: string): string {
     if (
       !typeName ||
       typeName === "any" ||
@@ -74,7 +72,7 @@ export class TypeFlattener {
         // This is a Record<string, T> type - process the value type
         const valueType = this.processType(
           stringIndexType,
-          this.capitalizeTypeName(`${typeName}Value`),
+          this.#capitalizeTypeName(`${typeName}Value`),
           depth + 1,
         );
         return `Record<string, ${valueType}>`;
@@ -106,7 +104,7 @@ export class TypeFlattener {
         }
 
         // Get the type at the property's location for better accuracy
-        const propType = this.typeChecker.getTypeOfSymbolAtLocation(
+        const propType = this.#typeChecker.getTypeOfSymbolAtLocation(
           prop,
           propDeclaration,
         );
@@ -166,7 +164,7 @@ export class TypeFlattener {
         ) {
           // This is the special case for RoomJson.items
           // We need to manually construct the union of all JsonItem types
-          propTypeName = this.buildJsonItemUnion(depth + 1);
+          propTypeName = this.#buildJsonItemUnion(depth + 1);
         } else if (
           propName === "emits" &&
           (typeName.includes("Emitter") || typeName.includes("emitter")) &&
@@ -175,11 +173,11 @@ export class TypeFlattener {
         ) {
           // Special case for emitter.emits property
           // We need to manually construct the union of emittable item types
-          propTypeName = this.buildEmittableItemUnion(depth + 1);
+          propTypeName = this.#buildEmittableItemUnion(depth + 1);
         } else {
           propTypeName = this.processType(
             typeToProcess,
-            this.capitalizeTypeName(
+            this.#capitalizeTypeName(
               `${typeName}${propName.charAt(0).toUpperCase() + propName.slice(1)}`,
             ),
             depth + 1,
@@ -317,7 +315,7 @@ export class TypeFlattener {
           const unionMembers = sourceType.getUnionTypes();
           const distributedMembers = unionMembers.map((memberType, index) => {
             // For each union member, create an object without the omitted keys
-            return this.processOmitType(
+            return this.#processOmitType(
               memberType,
               keysToOmit,
               `${typeName}Member${index}`,
@@ -328,7 +326,7 @@ export class TypeFlattener {
           return distributedMembers.join(" | ");
         } else {
           // Not a union, process normally
-          return this.processOmitType(
+          return this.#processOmitType(
             sourceType,
             keysToOmit,
             typeName,
@@ -365,16 +363,16 @@ export class TypeFlattener {
         symbolName !== "__type" &&
         !symbolName.startsWith("__")
       ) {
-        const capitalizedSymbolName = this.capitalizeTypeName(symbolName);
+        const capitalizedSymbolName = this.#capitalizeTypeName(symbolName);
 
         // If we haven't processed this type yet, resolve it now
-        if (!this.processedTypes.has(capitalizedSymbolName)) {
+        if (!this.#processedTypes.has(capitalizedSymbolName)) {
           const typeDeclarations = targetSymbol.getDeclarations();
           if (typeDeclarations && typeDeclarations.length > 0) {
             const [declaration] = typeDeclarations;
 
             // Mark as processing to avoid infinite recursion
-            this.processedTypes.add(capitalizedSymbolName);
+            this.#processedTypes.add(capitalizedSymbolName);
 
             let resolvedTypeDefinition = "";
 
@@ -398,7 +396,7 @@ export class TypeFlattener {
                       const [, sourceTypeName, keysToOmitStr] = omitMatch;
 
                       // Try to resolve the source type
-                      const sourceTypeSymbol = this.project
+                      const sourceTypeSymbol = this.#project
                         .getSourceFiles()
                         .flatMap((sf) => [
                           ...sf.getTypeAliases(),
@@ -408,7 +406,7 @@ export class TypeFlattener {
 
                       if (sourceTypeSymbol) {
                         const sourceType =
-                          this.typeChecker.getTypeAtLocation(sourceTypeSymbol);
+                          this.#typeChecker.getTypeAtLocation(sourceTypeSymbol);
 
                         // Create a synthetic string literal type for the keys
                         const keysToOmit = keysToOmitStr
@@ -433,7 +431,7 @@ export class TypeFlattener {
                                 if (!propDeclaration) continue;
 
                                 const propType =
-                                  this.typeChecker.getTypeOfSymbolAtLocation(
+                                  this.#typeChecker.getTypeOfSymbolAtLocation(
                                     prop,
                                     propDeclaration,
                                   );
@@ -459,7 +457,7 @@ export class TypeFlattener {
                   }
 
                   const aliasedType =
-                    this.typeChecker.getTypeAtLocation(aliasedTypeNode);
+                    this.#typeChecker.getTypeAtLocation(aliasedTypeNode);
                   resolvedTypeDefinition = this.processType(
                     aliasedType,
                     capitalizedSymbolName,
@@ -469,7 +467,7 @@ export class TypeFlattener {
               } else {
                 // Interface or other: get the type directly from the declaration
                 const declType =
-                  this.typeChecker.getTypeAtLocation(declaration);
+                  this.#typeChecker.getTypeAtLocation(declaration);
                 resolvedTypeDefinition = this.processType(
                   declType,
                   capitalizedSymbolName,
@@ -478,7 +476,7 @@ export class TypeFlattener {
               }
             } catch (_error) {
               // Fallback: try to resolve by name from project files
-              this.resolveTypeByName(symbolName);
+              this.#resolveTypeByName(symbolName);
               return capitalizedSymbolName;
             }
 
@@ -493,7 +491,7 @@ export class TypeFlattener {
             }
           } else {
             // Try to resolve this type from the project files as fallback
-            this.resolveTypeByName(symbolName);
+            this.#resolveTypeByName(symbolName);
           }
         } else {
           // Already processed, but we might have a definition for it
@@ -532,13 +530,14 @@ export class TypeFlattener {
         const [, baseTypeName] = genericMatch;
 
         // Try to find and resolve the base type from the project
-        const sourceFiles = this.getProject().getSourceFiles();
+        const sourceFiles = this.#getProject().getSourceFiles();
         for (const sourceFile of sourceFiles) {
           const typeAlias = sourceFile.getTypeAlias(baseTypeName);
           if (typeAlias) {
             const typeNode = typeAlias.getTypeNode();
             if (typeNode) {
-              const resolvedType = this.typeChecker.getTypeAtLocation(typeNode);
+              const resolvedType =
+                this.#typeChecker.getTypeAtLocation(typeNode);
               const baseDefinition = this.processType(
                 resolvedType,
                 typeName,
@@ -550,11 +549,11 @@ export class TypeFlattener {
         }
       }
 
-      const capitalizedName = this.capitalizeTypeName(cleanTypeString);
+      const capitalizedName = this.#capitalizeTypeName(cleanTypeString);
 
       // Try to resolve this type from the project if we haven't seen it yet
-      if (!this.processedTypes.has(capitalizedName)) {
-        this.resolveTypeByName(cleanTypeString);
+      if (!this.#processedTypes.has(capitalizedName)) {
+        this.#resolveTypeByName(cleanTypeString);
       }
 
       return capitalizedName;
@@ -630,7 +629,7 @@ export class TypeFlattener {
           } else {
             return this.processType(
               unionType,
-              this.capitalizeTypeName(`${typeName}Union${index}`),
+              this.#capitalizeTypeName(`${typeName}Union${index}`),
               depth + 1,
               stripUndefined,
             );
@@ -744,7 +743,7 @@ export class TypeFlattener {
         if (typeArguments.length === 2) {
           const keyType = this.processType(
             typeArguments[0],
-            this.capitalizeTypeName(`${typeName}Key`),
+            this.#capitalizeTypeName(`${typeName}Key`),
             depth + 1,
           );
 
@@ -757,14 +756,14 @@ export class TypeFlattener {
             // For object types, use processTypeAsObject to ensure all properties are expanded
             valueType = this.processTypeAsObject(
               valueTypeArg,
-              this.capitalizeTypeName(`${typeName}Value`),
+              this.#capitalizeTypeName(`${typeName}Value`),
               depth + 1,
             );
           } else {
             // For non-object types, process normally
             valueType = this.processType(
               valueTypeArg,
-              this.capitalizeTypeName(`${typeName}Value`),
+              this.#capitalizeTypeName(`${typeName}Value`),
               depth + 1,
             );
           }
@@ -783,7 +782,7 @@ export class TypeFlattener {
             // This is a Record<string, T> type - process the value type properly
             const valueType = this.processType(
               stringIndexType,
-              this.capitalizeTypeName(`${typeName}Value`),
+              this.#capitalizeTypeName(`${typeName}Value`),
               depth + 1,
             );
             return `Record<string, ${valueType}>`;
@@ -811,13 +810,13 @@ export class TypeFlattener {
   }
 
   // Helper function to resolve a type by name from the project
-  private resolveTypeByName(typeName: string): void {
-    if (this.processedTypes.has(typeName)) {
+  #resolveTypeByName(typeName: string): void {
+    if (this.#processedTypes.has(typeName)) {
       return; // Already processed
     }
 
     // Search for the type in all source files
-    const sourceFiles = this.getProject().getSourceFiles();
+    const sourceFiles = this.#getProject().getSourceFiles();
     for (const sourceFile of sourceFiles) {
       // Look for type alias declarations
       const typeAlias = sourceFile.getTypeAlias(typeName);
@@ -825,8 +824,8 @@ export class TypeFlattener {
         const typeNode = typeAlias.getTypeNode();
         if (typeNode) {
           // Check if this is an Omit type
-          const resolvedType = this.typeChecker.getTypeAtLocation(typeNode);
-          this.processedTypes.add(typeName);
+          const resolvedType = this.#typeChecker.getTypeAtLocation(typeNode);
+          this.#processedTypes.add(typeName);
           const definition = this.processType(resolvedType, typeName, 0);
           if (definition !== typeName && definition !== "any") {
             // Don't create separate type definitions for inline resolution
@@ -839,8 +838,8 @@ export class TypeFlattener {
       // Look for interface declarations
       const interfaceDecl = sourceFile.getInterface(typeName);
       if (interfaceDecl) {
-        const resolvedType = this.typeChecker.getTypeAtLocation(interfaceDecl);
-        this.processedTypes.add(typeName);
+        const resolvedType = this.#typeChecker.getTypeAtLocation(interfaceDecl);
+        this.#processedTypes.add(typeName);
         const definition = this.processType(resolvedType, typeName, 0);
         if (definition !== typeName && definition !== "any") {
           // Don't create separate type definitions for inline resolution
@@ -850,17 +849,17 @@ export class TypeFlattener {
     }
   }
 
-  private getProject(): Project {
-    return this.project;
+  #getProject(): Project {
+    return this.#project;
   }
 
   // Special method to build the JsonItemUnion for RoomJson.items
-  private buildJsonItemUnion(_depth: number): string {
+  #buildJsonItemUnion(_depth: number): string {
     // Try to find JsonItemType in the project
     let itemTypes: string[] = [];
 
     // First try to find it in the current source files
-    const sourceFiles = this.getProject().getSourceFiles();
+    const sourceFiles = this.#getProject().getSourceFiles();
     for (const sourceFile of sourceFiles) {
       const filePath = sourceFile.getFilePath();
       if (filePath.includes("JsonItem")) {
@@ -869,7 +868,7 @@ export class TypeFlattener {
         if (jsonItemType) {
           const typeNode = jsonItemType.getTypeNode();
           if (typeNode) {
-            const type = this.typeChecker.getTypeAtLocation(typeNode);
+            const type = this.#typeChecker.getTypeAtLocation(typeNode);
             if (type.isUnion()) {
               itemTypes = type
                 .getUnionTypes()
@@ -935,7 +934,7 @@ export class TypeFlattener {
   z: number;
 };
 
-  config: ${this.getConfigForItemType(itemType)};
+  config: ${this.#getConfigForItemType(itemType)};
 }`;
       unionParts.push(itemTypeDef);
     }
@@ -944,7 +943,7 @@ export class TypeFlattener {
   }
 
   // Process Omit<T, K> type by removing specified keys
-  private processOmitType(
+  #processOmitType(
     sourceType: Type,
     keysToOmit: Type,
     typeName: string,
@@ -996,7 +995,7 @@ export class TypeFlattener {
         }
 
         // Get the type at the property's location for better accuracy
-        const propType = this.typeChecker.getTypeOfSymbolAtLocation(
+        const propType = this.#typeChecker.getTypeOfSymbolAtLocation(
           prop,
           propDeclaration,
         );
@@ -1027,7 +1026,7 @@ export class TypeFlattener {
         // Process the type
         const propTypeName = this.processType(
           propType,
-          this.capitalizeTypeName(
+          this.#capitalizeTypeName(
             `${typeName}${propName.charAt(0).toUpperCase() + propName.slice(1)}`,
           ),
           depth + 1,
@@ -1080,7 +1079,7 @@ export class TypeFlattener {
   }
 
   // Special method to build the EmittableItemRecipe union for emitter.emits
-  private buildEmittableItemUnion(_depth: number): string {
+  #buildEmittableItemUnion(_depth: number): string {
     // Get the list of emittable item types (FreeItemTypes | "firedDoughnut")
     const emittableItemTypes = [...freeItemTypes, "firedDoughnut"] as const;
 
@@ -1088,7 +1087,7 @@ export class TypeFlattener {
     const unionParts: string[] = [];
 
     for (const itemType of emittableItemTypes) {
-      const config = this.getConfigForItemType(itemType);
+      const config = this.#getConfigForItemType(itemType);
       // Skip items that have no meaningful config
       if (
         config === "Record<string, never>" ||
@@ -1110,9 +1109,9 @@ export class TypeFlattener {
   }
 
   // Helper to get the config type for each item type
-  private getConfigForItemType(itemType: string): string {
+  #getConfigForItemType(itemType: string): string {
     // Try to find the actual config type from ItemConfigMap
-    const sourceFiles = this.getProject().getSourceFiles();
+    const sourceFiles = this.#getProject().getSourceFiles();
     for (const sourceFile of sourceFiles) {
       const filePath = sourceFile.getFilePath();
       if (filePath.includes("ItemConfigMap")) {
@@ -1122,10 +1121,10 @@ export class TypeFlattener {
           // Try to get the property for this item type
           const typeNode = itemConfigMap.getTypeNode();
           if (typeNode) {
-            const type = this.typeChecker.getTypeAtLocation(typeNode);
+            const type = this.#typeChecker.getTypeAtLocation(typeNode);
             const prop = type.getProperty(itemType);
             if (prop) {
-              const propType = this.typeChecker.getTypeOfSymbolAtLocation(
+              const propType = this.#typeChecker.getTypeOfSymbolAtLocation(
                 prop,
                 itemConfigMap,
               );
@@ -1255,7 +1254,7 @@ export async function flattenTypes(
   const typeChecker = project.getTypeChecker();
 
   // Create the flattener instance
-  const flattener = new TypeFlattener(typeChecker, project, sourceFilePath);
+  const flattener = new TypeFlattener(typeChecker, project);
 
   // Get the source file and type to flatten
   const sourceFile = project.getSourceFileOrThrow(sourceFilePath);

@@ -30,7 +30,7 @@ const glProgram = GlProgram.from({
 });
 
 export class OutlineFilter extends Filter {
-  private outlineWidth?: number;
+  #outlineWidth?: number;
 
   constructor({ color, width }: OutlineFilterOptions) {
     const upscale = width ?? currentUpscale;
@@ -52,7 +52,7 @@ export class OutlineFilter extends Filter {
       },
     });
 
-    this.outlineWidth = width;
+    this.#outlineWidth = width;
 
     const uniforms = this.resources.colorReplaceUniforms.uniforms as {
       uOutline: Float32Array;
@@ -80,7 +80,7 @@ export class OutlineFilter extends Filter {
     };
 
     // Use custom width if provided, otherwise use standard behavior
-    const outlineWidth = this.outlineWidth ?? currentUpscale;
+    const outlineWidth = this.#outlineWidth ?? currentUpscale;
 
     this.padding = outlineWidth;
     uniforms.uOutlineWidth[0] = outlineWidth;
