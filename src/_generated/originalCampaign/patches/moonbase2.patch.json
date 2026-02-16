@@ -1,6 +1,73 @@
 [
   {
     "op": "replace",
+    "path": "/items/wall@5,6,0/position/x",
+    "value": 6
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@5,6,0/config/tiles/2"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,6,0/config/tiles/1",
+    "value": "window1"
+  },
+  {
+    "op": "replace",
+    "path": "/items/wall@5,6,0/config/tiles/0",
+    "value": "coil"
+  },
+  {
+    "op": "add",
+    "path": "/items/wall@0,6,0/config/tiles/3",
+    "value": "window3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall@0,4,0"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall(right)@0,0,0"
+  },
+  {
+    "op": "add",
+    "path": "/items/hushPuppy@4,5,2/config/times",
+    "value": {
+      "x": 2
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@3,6,4/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/door@0,2,0/position/y",
+    "value": 0
+  },
+  {
+    "op": "add",
+    "path": "/items/wall_2",
+    "value": {
+      "config": {
+        "direction": "right",
+        "times": {
+          "y": 4
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "type": "wall"
+    }
+  },
+  {
+    "op": "replace",
     "path": "/color/hue",
     "value": "cyan"
   }
