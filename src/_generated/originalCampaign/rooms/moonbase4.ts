@@ -12,8 +12,8 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@1,7,3": {
-      config: { style: "artificial", times: { x: 3 } },
-      position: { x: 1, y: 7, z: 3 },
+      config: { style: "artificial", times: { x: 2 } },
+      position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
     "block@7,0,0": {
@@ -32,7 +32,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@7,3,3": {
-      config: { style: "artificial" },
+      config: { style: "artificial", times: { y: 2 } },
       position: { x: 7, y: 3, z: 3 },
       type: "block",
     },
@@ -78,12 +78,12 @@ export const room = inferRoomJson({
     },
     "door@3,8,5": {
       config: { direction: "away", toRoom: "moonbase5" },
-      position: { x: 3, y: 8, z: 5 },
+      position: { x: 0, y: 8, z: 4 },
       type: "door",
     },
     "door@8,3,5": {
       config: { direction: "left", toRoom: "moonbase1" },
-      position: { x: 8, y: 3, z: 5 },
+      position: { x: 8, y: 3, z: 4 },
       type: "door",
     },
     "floor@0,0,0": {
@@ -113,6 +113,14 @@ export const room = inferRoomJson({
       position: { x: 5, y: 2, z: 0 },
       type: "monster",
     },
+    wall: {
+      config: {
+        direction: "away",
+        tiles: ["window2", "window3", "coil", "window2", "coil", "window1"],
+      },
+      position: { x: 2, y: 8, z: 0 },
+      type: "wall",
+    },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
@@ -121,16 +129,6 @@ export const room = inferRoomJson({
     "wall(towards)@0,0,0": {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
-      type: "wall",
-    },
-    "wall@0,8,0": {
-      config: { direction: "away", tiles: ["window3", "coil", "window2"] },
-      position: { x: 0, y: 8, z: 0 },
-      type: "wall",
-    },
-    "wall@5,8,0": {
-      config: { direction: "away", tiles: ["window2", "coil", "window1"] },
-      position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {

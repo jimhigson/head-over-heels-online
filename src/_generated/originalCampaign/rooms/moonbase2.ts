@@ -13,12 +13,12 @@ export const room = inferRoomJson({
     },
     "door@0,2,0": {
       config: { direction: "right", toRoom: "moonbase1" },
-      position: { x: 0, y: 2, z: 0 },
+      position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
     "door@3,6,4": {
       config: { direction: "away", toRoom: "moonbase3" },
-      position: { x: 3, y: 6, z: 4 },
+      position: { x: 4, y: 6, z: 4 },
       type: "door",
     },
     "floor@0,0,0": {
@@ -41,7 +41,7 @@ export const room = inferRoomJson({
       type: "hushPuppy",
     },
     "hushPuppy@4,5,2": {
-      config: {},
+      config: { times: { x: 2 } },
       position: { x: 4, y: 5, z: 2 },
       type: "hushPuppy",
     },
@@ -94,29 +94,22 @@ export const room = inferRoomJson({
       position: { x: 7, y: 4, z: 1 },
       type: "monster",
     },
-    "wall(right)@0,0,0": {
-      config: { direction: "right", times: { y: 2 } },
-      position: { x: 0, y: 0, z: 0 },
-      type: "wall",
-    },
     "wall(towards)@0,0,0": {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
-      config: { direction: "right", times: { y: 2 } },
-      position: { x: 0, y: 4, z: 0 },
-      type: "wall",
-    },
     "wall@0,6,0": {
-      config: { direction: "away", tiles: ["window3", "coil", "window2"] },
+      config: {
+        direction: "away",
+        tiles: ["window3", "coil", "window2", "window3"],
+      },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
     "wall@5,6,0": {
-      config: { direction: "away", tiles: ["window2", "coil", "window1"] },
-      position: { x: 5, y: 6, z: 0 },
+      config: { direction: "away", tiles: ["coil", "window1"] },
+      position: { x: 6, y: 6, z: 0 },
       type: "wall",
     },
     "wall@8,0,0": {
@@ -125,6 +118,11 @@ export const room = inferRoomJson({
         tiles: ["window1", "coil", "window2", "window3", "coil", "window1"],
       },
       position: { x: 8, y: 0, z: 0 },
+      type: "wall",
+    },
+    wall_2: {
+      config: { direction: "right", times: { y: 4 } },
+      position: { x: 0, y: 2, z: 0 },
       type: "wall",
     },
   },
