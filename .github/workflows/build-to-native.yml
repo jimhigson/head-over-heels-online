@@ -15,25 +15,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: macos-13
-            tauri-build-args: ""
           - platform: macos-latest
-            tauri-build-args: ""
+            tauri-build-args: "--target universal-apple-darwin"
+            # support both arm and intel macs with a universal binary:
+            rust-target: "aarch64-apple-darwin,x86_64-apple-darwin"
           - platform: ubuntu-24.04-arm
             tauri-build-args: ""
           - platform: ubuntu-latest
             tauri-build-args: ""
           - platform: windows-latest
-            tauri-build-args: ""
             # msvc is MS Visual C++ toolchain supported officially
             # by tauri, but building with it causes Windows Defender to have issues
             toolchain: "msvc"
+            tauri-build-args: ""
           - platform: windows-latest
             # mingw is the gnu equivalent - not officially supported by tauri
             # but may help with Windows Defender AV
             toolchain: "mingw"
             rust-target: x86_64-pc-windows-gnu
             rust-toolchain: stable-x86_64-pc-windows-gnu
+            tauri-build-args: "--target x86_64-pc-windows-gnu"
 
     runs-on: ${{ matrix.platform }}
 
@@ -84,9 +85,13 @@ jobs:
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         with:
-          args: ${{ matrix.rust-target && format('--target {0}', matrix.rust-target) || '' }}
+          args: ${{ matrix.tauri-build-args }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List build artefacts
+        shell: bash
+        run: find src-tauri/target -name "*.dmg" -o -name "*.msi" -o -name "*-setup.exe" -o -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" | sort
 
       - name: Upload artifacts (non-release)
         if: github.event_name != 'release'
@@ -95,6 +100,7 @@ jobs:
           name: ${{ matrix.toolchain && format('{0}-{1}', matrix.platform, matrix.toolchain) || matrix.platform }}
           path: |
             src-tauri/target/release/bundle/dmg/*.dmg
+            src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
             src-tauri/target/release/bundle/msi/*.msi
             src-tauri/target/release/bundle/nsis/*-setup.exe
             src-tauri/target/x86_64-pc-windows-gnu/release/bundle/dmg/*.dmg
@@ -112,6 +118,7 @@ jobs:
           tag_name: ${{ github.event.release.tag_name }}
           files: |
             src-tauri/target/release/bundle/dmg/*.dmg
+            src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
             src-tauri/target/release/bundle/msi/*.msi
             src-tauri/target/release/bundle/nsis/*-setup.exe
             src-tauri/target/x86_64-pc-windows-gnu/release/bundle/dmg/*.dmg

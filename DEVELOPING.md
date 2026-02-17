@@ -36,6 +36,23 @@ pnpm tauri build # -like vite build
 cd src-tauri && cargo build # building rust side side
 ```
 
+## Building a MacOS universal binary
+
+Universal binaries work on both Apple Silicon and Intel Macs
+
+```sh
+# Install both rust targets:
+rustup target add aarch64-apple-darwin x86_64-apple-darwin
+# Build a package for both Apple Silicon and Intel:
+pnpm tauri build --target universal-apple-darwin
+
+# universal binary should now be at:
+ls src-tauri/target/universal-apple-darwin/release/bundle/dmg/\ Head\ over\ Heels_(version)_universal.dmg
+
+# can check both arch exist like:
+file src-tauri/target/universal-apple-darwin/release/bundle/macos/BlockStack\ Head\ over\ Heels.app/Contents/MacOS/app
+```
+
 ## Updating Tauri
 
 `pnpm tauri info` - gets info on packages and other stuff installed
