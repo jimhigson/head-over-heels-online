@@ -1,0 +1,26 @@
+name: Post to Discord on Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  github-releases-to-discord:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: GitHub Releases to Discord
+        uses: SethCohen/github-releases-to-discord@b96a33520f8ad5e6dcdecee6f1212bdf88b16550 # v1.19.0
+        with:
+          webhook_url: ${{ secrets.RELEASES_DISCORD_WEBHOOK }}
+          color: "15032132"
+          username: "Release Changelog"
+          avatar_url: "https://blockstack.ing/icon-192.png"
+          content: "||@everyone||"
+          footer_title: "Changelog"
+          footer_timestamp: true
+          reduce_headings: true
