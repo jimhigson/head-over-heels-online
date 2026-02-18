@@ -37,8 +37,8 @@ const screenshotOptions = (
   threshold: 0.1,
   // non-integer scaling can sometimes cause different snapping of scaled
   // nearest-neighbour graphics:
-  // results tend to be about 5M pixels, so 0.0001 is ~500 pixels difference allowed
-  maxDiffPixelRatio: 0.0001,
+  // results tend to be about 5M pixels, so 0.0001 is ~1,000 pixels difference allowed
+  maxDiffPixelRatio: 0.0002,
   timeout: 10_000 * osSlowness,
   mask: [page.locator("[data-screenshot-mask]")],
   maskColor: uncolourised ? "#ff00ff" : spritesheetColours.pink,

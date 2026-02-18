@@ -30,13 +30,13 @@ export const InstallDialog = (_emptyProps: EmptyObject) => {
               className="sprites-double-height"
               id="manual"
               label="P.W.A. install guide"
-              subMenuId="installGuidePwa"
+              subMenuId="markdown/installPwa"
             />
             <MenuItem
               className="sprites-double-height"
               id="discord"
               label="Native builds (beta)"
-              subMenuId="installGuideNative"
+              subMenuId="markdown/installNative"
             />
           </MenuItems>
         </div>

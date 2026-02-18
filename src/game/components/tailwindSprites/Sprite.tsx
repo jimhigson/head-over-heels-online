@@ -80,16 +80,21 @@ export const BitmapText = ({
           >
             {/* Array.from(string) is unicode-aware */}
             {Array.from(word).map((c, charIndex) => {
-              const textureId = `hud.char.${escapeCharForTailwind(c)}`;
+              let textureId = `hud.char.${escapeCharForTailwind(c)}`;
               if (!isTextureId(textureId)) {
-                console.error(
-                  "no texture for char",
-                  c,
-                  c.charCodeAt(0),
-                  textureId,
-                  "we have:",
-                  Object.keys(originalSpriteSheet().textures),
-                );
+                // in case of an uppercase-only texture, try the uppercase version of the char:
+                textureId = `hud.char.${escapeCharForTailwind(c).toLocaleUpperCase()}`;
+
+                if (!isTextureId(textureId)) {
+                  console.error(
+                    "no texture for char",
+                    c,
+                    c.charCodeAt(0),
+                    textureId,
+                    "we have:",
+                    Object.keys(originalSpriteSheet().textures),
+                  );
+                }
               }
               const imgSpriteEle = (
                 <span

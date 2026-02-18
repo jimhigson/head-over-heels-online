@@ -1,8 +1,8 @@
 ## PWA install instructions
 
-**> This page also available with normal fonts: [on Github](https://github.com/jimhigson/head-over-heels-online/tree/main/src/manual/remake/installGuidePwa.md)**
+**> This page also available available to read on the web: [on Github](https://github.com/jimhigson/head-over-heels-online/tree/main/src/manual/remake/installGuidePwa.md)**
 
-PWAs:
+Progressive Web Apps:
 
 * Run like installed apps
 * Work on phones and desktops

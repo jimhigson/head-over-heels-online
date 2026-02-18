@@ -41,7 +41,7 @@ const controlOptionsMarkdown = `*Select the keys* and other input settings`;
 const pokesMarkdown = `##Cheats
 
 Magazines used to print memory locations to ‘*poke*’ values into so that readers could modify their games; usually to cheat.
-                  
+
 A true hero leaves these **off**, but do modern gamers even know what lives are?`;
 
 export const OptionsDialog = () => {

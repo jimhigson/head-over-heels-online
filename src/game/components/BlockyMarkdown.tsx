@@ -115,6 +115,17 @@ const markdownComponents: CustomComponentsOption = {
       <hr className="bg-metallicBlue zx:bg-zxWhite h-half mb-half border-none" />
     );
   },
+  pre: function Pre({ children }: PropsWithChildren<EmptyObject>) {
+    return (
+      <div className="bg-shadow zx:bg-zxBlack p-1 my-1 mr-1">
+        <MultipleBitmapText
+          className={`text-white zx:text-zxWhite leading-[1em] px-1 w-max min-w-full ${multilineTextClass}`}
+        >
+          {children}
+        </MultipleBitmapText>
+      </div>
+    );
+  },
 };
 
 export type BlockyMarkdownProps = {

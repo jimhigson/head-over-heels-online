@@ -1,5 +1,4 @@
 import type { ManualPageName } from "../../../../../manual/pages";
-import type { DialogId } from "../DialogId";
 
 import { manualPages, pageTitle } from "../../../../../manual/pages";
 import { backToParentMenu } from "../../../../../store/slices/gameMenus/gameMenusSlice";
