@@ -4,10 +4,10 @@
   "version": "1.17.1",
   "identifier": "com.blockstacking.head-over-heels",
   "build": {
-    "frontendDist": "../dist",
+    "frontendDist": "../dist-tauri",
     "devUrl": "http://localhost:5299",
     "beforeDevCommand": "pnpm kill-port 5299 && pnpm dev:game --port 5299",
-    "beforeBuildCommand": "pnpm build:game"
+    "beforeBuildCommand": "pnpm build:game --mode tauri"
   },
   "app": {
     "windows": [

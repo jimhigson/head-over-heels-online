@@ -9,109 +9,119 @@ import { VitePWA } from "vite-plugin-pwa";
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
+type Mode = "development" | "production" | "tauri" | "visual-regression";
+
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  // don't conflict with the editor's vite cache
-  cacheDir: ".vite/game",
+export default defineConfig(({ mode: _mode }) => {
+  const mode = _mode as Mode;
 
-  clearScreen: false,
+  return {
+    // don't conflict with the editor's vite cache
+    cacheDir: ".vite/game",
 
-  envPrefix: ["VITE_", "TAURI_"],
+    clearScreen: false,
 
-  plugins: [
-    react({
-      // during development, use the same build target as builds - ie,
-      // assume a capable browser and avoid unnecessary transpilation
-      devTarget: "esnext",
-    }),
-    visualizer({
-      gzipSize: true,
-      brotliSize: true,
-      template: "treemap",
-      filename: "build-stats.html",
-    }) as PluginOption,
-    VitePWA({
-      registerType: "autoUpdate",
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,png,mp3,m4a}"],
-        // visual-regression builds are unminified so assets are larger
-        ...(mode === "visual-regression" && {
-          maximumFileSizeToCacheInBytes: 5 * 1_024 * 1_024,
-        }),
-        runtimeCaching: [
-          {
-            // Cache everything *except* /editor/*
-            urlPattern: ({ url }) => !url.pathname.startsWith("/editor"),
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "app-cache",
-              expiration: {
-                maxEntries: 999,
-                maxAgeSeconds: oneWeekInSeconds,
+    envPrefix: ["VITE_", "TAURI_"],
+
+    plugins: [
+      react({
+        // during development, use the same build target as builds - ie,
+        // assume a capable browser and avoid unnecessary transpilation
+        devTarget: "esnext",
+      }),
+      visualizer({
+        gzipSize: true,
+        brotliSize: true,
+        template: "treemap",
+        filename: "build-stats.html",
+      }) as PluginOption,
+      VitePWA({
+        registerType: "autoUpdate",
+        workbox: {
+          globPatterns: ["**/*.{js,css,html,png,mp3,m4a}"],
+          // visual-regression builds are unminified so assets are larger
+          ...(mode === "visual-regression" && {
+            maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+          }),
+          runtimeCaching: [
+            {
+              // Cache everything *except* /editor/*
+              urlPattern: ({ url }) => !url.pathname.startsWith("/editor"),
+              handler: "NetworkFirst",
+              options: {
+                cacheName: "app-cache",
+                expiration: {
+                  maxEntries: 999,
+                  maxAgeSeconds: oneWeekInSeconds,
+                },
               },
             },
-          },
-        ],
-        navigateFallback: "/index.html",
-        navigateFallbackDenylist: [/^\/editor/], // Don’t redirect /editor/* to index.html
+          ],
+          navigateFallback: "/index.html",
+          navigateFallbackDenylist: [/^\/editor/], // Don’t redirect /editor/* to index.html
+        },
+        manifest: {
+          background_color: "#000000",
+          theme_color: "#000000",
+          name: "Head over Heels",
+          short_name: "Head over Heels",
+          orientation: "landscape",
+          display: "fullscreen",
+          scope: "/",
+          start_url: "/",
+          icons: [
+            {
+              src: "/icon-192.png",
+              sizes: "192x192",
+              type: "image/png",
+            },
+            {
+              src: "/icon-512.png",
+              sizes: "512x512",
+              type: "image/png",
+            },
+          ],
+        },
+      }),
+      glsl({
+        minify: true,
+      }),
+    ],
+
+    build: {
+      // keep tauri builds in their own dir, since they have tauri-specific
+      // code injected into them, which doesn't work if run normally:
+      outDir: mode === "tauri" ? "dist-tauri" : "dist",
+      target: "esnext",
+      cssTarget: "esnext", // Don't transpile CSS for modern browsers
+
+      // visual-regression builds are unminified for easier debugging of failures
+      minify: mode === "visual-regression" ? false : "esbuild",
+      // Optional: adjust module preload for better performance
+      modulePreload: {
+        polyfill: false, // Modern browsers don't need the polyfill
       },
-      manifest: {
-        background_color: "#000000",
-        theme_color: "#000000",
-        name: "Head over Heels",
-        short_name: "Head over Heels",
-        orientation: "landscape",
-        display: "fullscreen",
-        scope: "/",
-        start_url: "/",
-        icons: [
-          {
-            src: "/icon-192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "/icon-512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-        ],
+    },
+
+    resolve: {
+      alias: {
+        gfx: path.resolve(__dirname, "./gfx"),
       },
-    }),
-    glsl({
-      minify: true,
-    }),
-  ],
-
-  build: {
-    target: "esnext",
-    cssTarget: "esnext", // Don't transpile CSS for modern browsers
-    // visual-regression builds are unminified for easier debugging of failures
-    minify: mode === "visual-regression" ? false : "esbuild",
-    // Optional: adjust module preload for better performance
-    modulePreload: {
-      polyfill: false, // Modern browsers don't need the polyfill
     },
-  },
 
-  resolve: {
-    alias: {
-      gfx: path.resolve(__dirname, "./gfx"),
+    server: {
+      // want to test on my iphone
+      host: true,
+      // want to connect using (computername).local, not just the ip
+      allowedHosts: [".local"],
+      // consistent port number for this project (not vite default)
+      port: 5200,
+      // don't try other ports - this causes issues in `tauri dev` if the port is
+      // different form what Tauri expects
+      strictPort: true,
     },
-  },
-
-  server: {
-    // want to test on my iphone
-    host: true,
-    // want to connect using (computername).local, not just the ip
-    allowedHosts: [".local"],
-    // consistent port number for this project (not vite default)
-    port: 5200,
-    // don't try other ports - this causes issues in `tauri dev` if the port is
-    // different form what Tauri expects
-    strictPort: true,
-  },
-  preview: {
-    port: 5201,
-  },
-}));
+    preview: {
+      port: 5201,
+    },
+  };
+});
