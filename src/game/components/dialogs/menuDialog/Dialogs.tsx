@@ -114,22 +114,6 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <WhichGameDialog />;
     case "installGuide":
       return <InstallDialog />;
-    case "installGuidePwa":
-      return (
-        <MarkdownDialog
-          source="manual"
-          pageName="installPwa"
-          dialogId="installGuidePwa"
-        />
-      );
-    case "installGuideNative":
-      return (
-        <MarkdownDialog
-          source="manual"
-          pageName="installNative"
-          dialogId="installGuideNative"
-        />
-      );
 
     default:
       topOpenMenu.menuId satisfies never;

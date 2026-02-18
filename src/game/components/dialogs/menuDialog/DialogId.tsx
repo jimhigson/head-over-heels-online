@@ -31,8 +31,6 @@ export const dialogIds = [
   "sureWantEditor",
   "whichGame",
   "installGuide",
-  "installGuideNative",
-  "installGuidePwa",
   // 'standard' pages from the original game manual
   ...manualDialogIds,
   // inline markdown pages - the content is stored in the scroll item's json config

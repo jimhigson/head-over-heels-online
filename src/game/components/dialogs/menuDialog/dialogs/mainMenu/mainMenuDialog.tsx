@@ -76,7 +76,7 @@ const DownloadOrInstallMenuItem = () => {
       subMenuId={
         deviceType === "mobile" ?
           // currently only have pwa builds on mobile:
-          "installGuidePwa"
+          "markdown/installPwa"
         : "installGuide"
       }
     />
