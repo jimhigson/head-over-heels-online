@@ -9,6 +9,7 @@ import { pixiContainerToString } from "../../../utils/pixi/pixiContainerToString
 import { isFreeItem, isItemType } from "../../physics/itemPredicates";
 import { useGameApi } from "../GameApiContext";
 
+/** store side-effect to log when an item is clicked in the world for debugging */
 export const useDebugClickOnItem = <RoomId extends string>() => {
   const gameApi = useGameApi<RoomId>();
 

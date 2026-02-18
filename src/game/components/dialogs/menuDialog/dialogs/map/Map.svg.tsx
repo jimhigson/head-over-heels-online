@@ -18,10 +18,12 @@ import { roomWorldPosition } from "./roomWorldPosition";
 import { ScrollIntoView } from "./ScrollIntoView";
 import { translateXyz } from "./svgHelpers";
 
+export type OnRoomClick<RoomId extends string> = (roomId: RoomId) => void;
+
 export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
   containerWidth?: number;
   onPlayableClick?: (name: IndividualCharacterName) => void;
-  onRoomClick?: (roomId: RoomId) => void;
+  onRoomClick?: OnRoomClick<RoomId>;
 };
 
 export type Bounds = {

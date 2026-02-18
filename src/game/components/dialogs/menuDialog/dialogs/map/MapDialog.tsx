@@ -1,5 +1,9 @@
+import { useMemo } from "react";
 import { useResizeDetector } from "react-resize-detector";
 
+import type { OnRoomClick } from "./Map.svg";
+
+import { useCheatsOn } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
@@ -17,7 +21,17 @@ export const MapDialog = <RoomId extends string>() => {
     useResizeDetector();
   const scrollingContentRef = useScrollingFromInput();
 
+  const cheatsOn = useCheatsOn();
+
   const gameApi = useGameApi<RoomId>();
+
+  const handleRoomClick = useMemo<OnRoomClick<RoomId> | undefined>(() => {
+    if (cheatsOn) {
+      return (roomId: RoomId) => {
+        gameApi.changeRoom(roomId);
+      };
+    }
+  }, [cheatsOn, gameApi]);
 
   // the user can switch characters while looking at the map:
   useAllowCharacterSwopping();
@@ -41,6 +55,7 @@ export const MapDialog = <RoomId extends string>() => {
           <MapSvg<RoomId>
             onPlayableClick={(name) => swopPlayables(gameApi.gameState, name)}
             containerWidth={mapContainerWidth}
+            onRoomClick={handleRoomClick}
             {...mapData}
           />
         </div>
