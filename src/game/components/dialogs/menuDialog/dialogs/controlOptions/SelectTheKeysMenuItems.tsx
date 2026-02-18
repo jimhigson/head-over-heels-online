@@ -3,11 +3,13 @@ import { assignInputStart } from "../../../../../../store/slices/gameMenus/gameM
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import {
+  optionsHintMarkdownClassname,
+  spriteLeaderClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { multilineTextClass } from "../../multilineTextClass";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
-import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 export const SelectTheKeysMenuItems = () => {
   const isScreenRelativeControl = useDirectionsRelativeTo() === "screen";

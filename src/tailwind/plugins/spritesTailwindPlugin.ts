@@ -156,18 +156,18 @@ export const spritesTailwindPlugin = plugin(
       backgroundSize: "100% var(--patternLength)",
       backgroundAttachment: "fixed",
       animation:
-        "spectrum-load 0.5s steps(12) infinite, spectrum-wobble 0.5s steps(12) infinite, loading-bars-colour-cycle 12s steps(4, end) infinite",
+        "loading-border-scroll-down 1s steps(24) infinite, loading-border-flux 1s steps(24) infinite, loading-bars-colour-cycle 12s steps(4, end) infinite",
     };
     utilities[".zx-loading-border"] = {
       animation:
-        "spectrum-load 0.5s steps(12) infinite, spectrum-wobble 0.5s steps(12) infinite, zx-loading-bars-colour-cycle 6s steps(2, end) infinite",
+        "loading-border-scroll-down 1s steps(20) infinite, loading-border-flux 1s steps(20) infinite, zx-loading-bars-colour-cycle 6s steps(2, end) infinite",
     };
     base["@property --t"] = {
       syntax: `"<number>"`,
       inherits: "false",
       "initial-value": "0",
     };
-    base["@keyframes spectrum-load"] = {
+    base["@keyframes loading-border-scroll-down"] = {
       from: {
         backgroundPosition: "0 0",
       },
@@ -175,7 +175,7 @@ export const spritesTailwindPlugin = plugin(
         backgroundPosition: "0 var(--patternLength)",
       },
     };
-    base["@keyframes spectrum-wobble"] = {
+    base["@keyframes loading-border-flux"] = {
       from: {
         "--t": "0",
       },

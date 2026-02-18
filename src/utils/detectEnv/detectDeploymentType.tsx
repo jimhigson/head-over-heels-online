@@ -4,7 +4,7 @@ interface NonStandardIosNavigator extends Navigator {
   standalone?: boolean;
 }
 
-export const deploymentTypes = ["browser", "pwa"] as const;
+export const deploymentTypes = ["browser", "pwa", "tauri"] as const;
 export type DeploymentType = (typeof deploymentTypes)[number];
 
 /**
@@ -23,9 +23,12 @@ export const detectDeploymentType = (): DeploymentType => {
   }
 
   return (
+    import.meta.env.TAURI_ENV_PLATFORM ? "tauri"
+    : (
       window.matchMedia("(display-mode: standalone)").matches ||
-        (window.navigator as NonStandardIosNavigator).standalone
+      (window.navigator as NonStandardIosNavigator).standalone
     ) ?
       "pwa"
-    : "browser";
+    : "browser"
+  );
 };

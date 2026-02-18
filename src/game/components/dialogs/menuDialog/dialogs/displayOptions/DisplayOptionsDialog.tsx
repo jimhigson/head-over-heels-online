@@ -4,25 +4,23 @@ import {
   selectShowFps,
   useIsUncolourised,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import {
-  goToSubmenu,
-  toggleUserSetting,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import {
+  optionsDialogClasses,
+  optionsHintMarkdownClassname,
+  optionsMenuScrollClasses,
+  titleBarClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogTitleBar } from "../DialogTitleBar";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
-import {
-  optionsDialogClasses,
-  optionsMenuScrollClasses,
-  titleBarClasses,
-} from "../options/optionsMenuColours";
+import { FullscreenMenuItem } from "./FullscreenMenuItem";
 
 const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**Off**: Original *two-tone* spectrum graphics
 
@@ -45,6 +43,10 @@ export const DisplayOptionsDialog = () => {
       />
       <div className={optionsMenuScrollClasses}>
         <MenuItems>
+          {
+            // keep inline (not deploymentType()) to allow tree-shaking
+            import.meta.env.TAURI_ENV_PLATFORM && <FullscreenMenuItem />
+          }
           <MenuItem
             hintInline
             className="sprites-double-height"
@@ -106,11 +108,7 @@ export const DisplayOptionsDialog = () => {
             className="sprites-double-height"
             id="emulatedResolution"
             label="Emulated Resolution"
-            onSelect={useDispatchActionCallback(
-              goToSubmenu,
-              "emulatedResolution",
-            )}
-            opensSubMenu={true}
+            subMenuId="emulatedResolution"
             verticalAlignItemsCentre
             hint={
               <BlockyMarkdown

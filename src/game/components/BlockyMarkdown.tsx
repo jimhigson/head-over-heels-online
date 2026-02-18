@@ -7,6 +7,7 @@ import { SnarkdownInReact } from "snarkdown-in-react";
 import { twMerge } from "tailwind-merge";
 
 import { useTotalUpscale } from "../../store/slices/upscale/upscaleSelectors";
+import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
 
@@ -53,6 +54,7 @@ const markdownComponents: CustomComponentsOption = {
       <a
         className="bitmap-text-link"
         href={href}
+        onClick={linkOpenExternalClickHandler}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -111,6 +113,17 @@ const markdownComponents: CustomComponentsOption = {
   hr: function Hr() {
     return (
       <hr className="bg-metallicBlue zx:bg-zxWhite h-half mb-half border-none" />
+    );
+  },
+  pre: function Pre({ children }: PropsWithChildren<EmptyObject>) {
+    return (
+      <div className="bg-shadow zx:bg-zxBlack p-1 my-1 mr-1">
+        <MultipleBitmapText
+          className={`text-white zx:text-zxWhite leading-[1em] px-1 w-max min-w-full ${multilineTextClass}`}
+        >
+          {children}
+        </MultipleBitmapText>
+      </div>
     );
   },
 };

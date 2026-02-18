@@ -16,17 +16,17 @@ import { Border } from "../../../../../../ui/Border";
 import { Button } from "../../../../../../ui/button";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { isTouchDevice } from "../../../../../../utils/detectDeviceType";
+import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
-import { useActionTap, useInputTap } from "../../../useActionTap";
-import { MenuItems } from "../../MenuItems";
-import { multilineTextClass } from "../../multilineTextClass";
-import { DialogTitleBar } from "../DialogTitleBar";
 import {
   optionsDialogClasses,
   optionsMenuScrollClasses,
   titleBarClasses,
-} from "../options/optionsMenuColours";
+} from "../../../dialogClasses";
+import { useActionTap, useInputTap } from "../../../useActionTap";
+import { MenuItems } from "../../MenuItems";
+import { multilineTextClass } from "../../multilineTextClass";
+import { DialogTitleBar } from "../DialogTitleBar";
 import { InputDirectionModeMenuItem } from "./InputDirectionModeMenuItem";
 import { OnScreenControlsMenuItem } from "./OnScreenControlsMenuItem";
 import { PresetMenuItem } from "./PresetMenuItem";

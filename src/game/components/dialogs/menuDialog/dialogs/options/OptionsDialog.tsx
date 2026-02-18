@@ -6,7 +6,6 @@ import {
   useIsGameRunning,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
-  goToSubmenu,
   setGameSpeed,
   toggleUserSetting,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
@@ -16,17 +15,17 @@ import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch, SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import {
+  optionsDialogClasses,
+  optionsHintMarkdownClassname,
+  optionsMenuScrollClasses,
+  spriteLeaderClasses,
+  titleBarClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
-import { spriteLeaderClasses } from "../controlOptions/spriteLeaderClasses";
 import { DialogTitleBar } from "../DialogTitleBar";
-import { optionsHintMarkdownClassname } from "./optionsHintMarkdownClassname";
-import {
-  optionsDialogClasses,
-  optionsMenuScrollClasses,
-  titleBarClasses,
-} from "./optionsMenuColours";
 
 const gameSpeedMarkdown = `Play at the original **1x** speed, **1.2x (default)** or faster **1.5x** or **2x** speeds`;
 
@@ -42,8 +41,8 @@ const controlOptionsMarkdown = `*Select the keys* and other input settings`;
 const pokesMarkdown = `##Cheats
 
 Magazines used to print memory locations to ‘*poke*’ values into so that readers could modify their games; usually to cheat.
-                  
-A true hero leaves these **off**! Then again, do modern gamers even know what lives are?`;
+
+A true hero leaves these **off**, but do modern gamers even know what lives are?`;
 
 export const OptionsDialog = () => {
   const infiniteLivesPokeOn = useAppSelector(selectIsInfiniteLivesPoke);
@@ -63,11 +62,7 @@ export const OptionsDialog = () => {
               label="Controls"
               verticalAlignItemsCentre
               className="sprites-double-height"
-              onSelect={useDispatchActionCallback(
-                goToSubmenu,
-                "controlOptions",
-              )}
-              opensSubMenu={true}
+              subMenuId="controlOptions"
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
@@ -86,8 +81,7 @@ export const OptionsDialog = () => {
               label="Sounds"
               className="sprites-double-height"
               verticalAlignItemsCentre
-              onSelect={useDispatchActionCallback(goToSubmenu, "sound")}
-              opensSubMenu={true}
+              subMenuId="sound"
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}
@@ -101,11 +95,7 @@ export const OptionsDialog = () => {
               label="Display"
               className="sprites-double-height"
               verticalAlignItemsCentre
-              onSelect={useDispatchActionCallback(
-                goToSubmenu,
-                "displayOptions",
-              )}
-              opensSubMenu={true}
+              subMenuId="displayOptions"
               hint={
                 <BlockyMarkdown
                   className={optionsHintMarkdownClassname}

@@ -1,4 +1,4 @@
-import { detectDeviceType } from "../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { startAppListening } from "../../listenerMiddleware";
 import { setEmulatedResolution } from "../gameMenus/gameMenusSlice";
 import { updateUpscaleNow } from "./updateUpscaleNow";

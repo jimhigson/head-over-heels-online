@@ -6,9 +6,11 @@ import {
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import {
+  optionsHintMarkdownClassname,
+  spriteLeaderClasses,
+} from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
-import { optionsHintMarkdownClassname } from "../options/optionsHintMarkdownClassname";
-import { spriteLeaderClasses } from "./spriteLeaderClasses";
 
 const directions4HintMarkdown =
   "**4-way**: True to the 1987 original - move in x directions only";

@@ -17,3 +17,6 @@ jobs:
         with:
           token: ${{ secrets.RELEASE_PLEASE_PAT }}
           release-type: node
+          extra-files: |
+            src-tauri/tauri.conf.json
+            src-tauri/Cargo.toml

@@ -54,7 +54,7 @@ export const MarkdownDialog = (
         dialogId={props.dialogId}
       >
         <DialogTitleBar
-          className="pl-1 mobile:px-3 "
+          className="pl-1 pt-1 mobile:px-3 "
           path={isSubmenuFromManual ? ["Manual"] : []}
         />
         <div

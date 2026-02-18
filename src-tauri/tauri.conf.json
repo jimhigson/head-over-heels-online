@@ -1,0 +1,36 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "BlockStack Head over Heels",
+  "version": "1.17.1",
+  "identifier": "com.blockstacking.head-over-heels",
+  "build": {
+    "frontendDist": "../dist-tauri",
+    "devUrl": "http://localhost:5299",
+    "beforeDevCommand": "pnpm kill-port 5299 && pnpm dev:game --port 5299",
+    "beforeBuildCommand": "pnpm build:game --mode tauri"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "HEAD over HEELS",
+        "width": 800,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ]
+  }
+}

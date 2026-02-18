@@ -1,41 +1,52 @@
 import type { EmptyObject } from "type-fest";
 
-import { useCallback } from "react";
+import { isAnyOf } from "@reduxjs/toolkit";
+import { useCallback, useEffect, useState } from "react";
 
-import { nerdFontDiscordChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
-import { useAppSelector } from "../../../../../../store/hooks";
+import { useAppSelector, useAppStore } from "../../../../../../store/hooks";
+import { startAppListening } from "../../../../../../store/listenerMiddleware";
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
-import { useIsGameRunning } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import {
+  useEmulatedResolutionName,
+  useIsGameRunning,
+} from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   closeAllMenus,
   goToSubmenu,
+  menuOpenOrExitPressed,
+  setFocussedMenuItemId,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { persistor } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { detectDeviceType } from "../../../../../../utils/detectDeviceType";
 import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
+import { importTauriProcess } from "../../../../../../utils/tauri/dynamicLoad";
+import { dispatchSaveGame } from "../../../../../gameState/saving/dispatchSaveGame";
+import { isInPlaytestMode } from "../../../../../isInPlaytestMode";
+import { useMaybeGameApi } from "../../../../GameApiContext";
+import {
+  BitmapText,
+  MultipleBitmapText,
+} from "../../../../tailwindSprites/Sprite";
 import { MenuItem } from "../../MenuItem";
-import { MenuItems } from "../../MenuItems";
 import { GitRepoInfo } from "./GitRepoInfo";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
+import { MaybeTwoColumnMenuitems } from "./MaybeTwoColumnMenuitems";
+import { MenuSeparator } from "./MenuSeparator";
 
 const PlayGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
   const resume = useDispatchActionCallback(closeAllMenus);
-  const goToWhichGameSubmenu = useDispatchActionCallback(
-    goToSubmenu,
-    "whichGame",
-  );
 
   if (isGameRunning) {
     return (
       <MenuItem
         id="playGame"
-        label={<BitmapText>Resume the game</BitmapText>}
+        label={<BitmapText>Back to the game</BitmapText>}
         doubleHeightWhenFocussed
         onSelect={resume}
       />
@@ -47,20 +58,27 @@ const PlayGameMenuItem = () => {
       id="playGame"
       label={<BitmapText>Play the game</BitmapText>}
       doubleHeightWhenFocussed
-      onSelect={goToWhichGameSubmenu}
-      opensSubMenu={true}
+      subMenuId="whichGame"
     />
   );
 };
 
-const InstallMenuItem = () => {
+const DownloadOrInstallMenuItem = () => {
+  const deviceType = detectDeviceType();
+
   return (
     <MenuItem
       id="installGuide"
-      label="Install"
+      className="text-moss zx:text-zxGreen"
+      label={deviceType === "mobile" ? "Install" : "Download & Install"}
       doubleHeightWhenFocussed
-      onSelect={useDispatchActionCallback(goToSubmenu, "markdown/installGuide")}
-      opensSubMenu={true}
+      leader={<BitmapText className="text-center w-2">⬇</BitmapText>}
+      subMenuId={
+        deviceType === "mobile" ?
+          // currently only have pwa builds on mobile:
+          "markdown/installPwa"
+        : "installGuide"
+      }
     />
   );
 };
@@ -71,8 +89,7 @@ const LevelEditorMenuItem = () => {
       id="levelEditor"
       label="Level Editor"
       doubleHeightWhenFocussed
-      onSelect={useDispatchActionCallback(goToSubmenu, "sureWantEditor")}
-      opensSubMenu={true}
+      subMenuId="sureWantEditor"
     />
   );
 };
@@ -86,17 +103,62 @@ const QuitGameMenuItem = () => {
   return (
     <MenuItem
       id="quitGame"
-      label={hasReincarnationPoint ? "quit / reincarnate" : "quit the game"}
+      label={hasReincarnationPoint ? "End game / reincarnate" : "End game"}
       className="text-midRed zx:text-zxYellow"
-      onSelect={useDispatchActionCallback(goToSubmenu, "quitGameConfirm")}
+      subMenuId="quitGameConfirm"
       doubleHeightWhenFocussed
       hidden={!isGameRunning}
-      opensSubMenu={true}
     />
   );
 };
 
-const discordInviteUrl = "https://discord.gg/Se5Jznc2jm";
+const ExitAppMenuItem = () => {
+  const [selectedOnce, setSelectedOnce] = useState(false);
+  const isGameRunning = useIsGameRunning();
+  const gameApi = useMaybeGameApi();
+  const store = useAppStore();
+
+  useEffect(() => {
+    // selecting away from the exit item resets the selectedOnce state
+    const unsub = startAppListening({
+      matcher: isAnyOf(setFocussedMenuItemId, menuOpenOrExitPressed),
+      effect() {
+        setSelectedOnce(false);
+      },
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  return (
+    <MenuItem
+      id="exit"
+      label={selectedOnce ? "Again to exit" : "Exit"}
+      className={selectedOnce ? "selectedMenuItem:text-midRed" : ""}
+      leader={
+        <BitmapText className="text-center">
+          {selectedOnce ? "!" : "X"}
+        </BitmapText>
+      }
+      onSelect={async () => {
+        if (!selectedOnce) {
+          setSelectedOnce(true);
+        } else {
+          if (isGameRunning && !isInPlaytestMode()) {
+            dispatchSaveGame(gameApi!.gameState, store);
+            await persistor.flush();
+          }
+          const { exit } = await importTauriProcess();
+          exit();
+        }
+      }}
+      doubleHeightWhenFocussed
+    />
+  );
+};
+
 export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   /* 
     preload the community campaigns for when/if the user goes to that menu.
@@ -119,105 +181,108 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     showScore();
   }, [showCrowns, showScore]);
 
-  const offerInstall = detectDeploymentType() === "pwa";
+  const emulatedResolutionName = useEmulatedResolutionName();
+
+  const deploymentType = detectDeploymentType();
+  const deviceType = detectDeviceType();
+  const offerDownloadOrInstall =
+    deploymentType === "browser" &&
+    (!isGameRunning || deviceType === "desktop");
+
+  const showExitApp =
+    // browsers don't show an exit option - the user can just close the tab
+    // whereas PWAs and Tauri are basically native (ish) apps and they get it:
+    deploymentType !== "browser" &&
+    // however, it isn't the done thing to have close app options on mobile,
+    // the user just swipes away with a gesture
+    deviceType !== "mobile";
 
   return (
     <DialogPortal>
       <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-2 resHandheld:gap-y-1 justify-center"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-0 pt-0 pb-oneScaledPix resHandheld:w-30"
         dialogId="mainMenu"
       >
         <MainMenuHeading
           noSubtitle={isGameRunning}
-          className={isGameRunning ? "resHandheld:hidden" : ""}
+          className={`${isGameRunning ? "resHandheld:hidden pt-3" : "pt-2"} resHandheld:pt-half`}
         />
-        <div className="text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white resHandheld:mt-half flex flex-col gap-1 sprites-uppercase">
-          <MenuItems className="w-24 mx-auto">
-            <PlayGameMenuItem />
-            {!isGameRunning && detectDeviceType() === "desktop" && (
-              <LevelEditorMenuItem />
-            )}
-            <MenuItem
-              id="map"
-              label="use the Map"
-              onSelect={useDispatchActionCallback(goToSubmenu, "map")}
-              doubleHeightWhenFocussed
-              hidden={!isGameRunning}
-              opensSubMenu={true}
-            />
-            <MenuItem
-              id="viewCrowns"
-              label="Progress so far"
-              onSelect={showProgress}
-              doubleHeightWhenFocussed
-              hidden={!isGameRunning}
-              opensSubMenu={true}
-            />
-          </MenuItems>
-          <div className="flex flex-row justify-between gap-2 w-24 mx-auto">
-            <MenuItems>
-              <MenuItem
-                id="options"
-                label="Options"
-                doubleHeightWhenFocussed
-                onSelect={useDispatchActionCallback(
-                  goToSubmenu,
-                  "modernisationOptions",
+        <div className="flex-grow justify-around text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
+          <MaybeTwoColumnMenuitems
+            spaceOut={emulatedResolutionName !== "handheld"}
+            columnCount={
+              isGameRunning && emulatedResolutionName === "handheld" ? 2 : 1
+            }
+            topContents={
+              <>
+                <PlayGameMenuItem />
+              </>
+            }
+            middleContents={
+              <>
+                <MenuItem
+                  id="map"
+                  label={<MultipleBitmapText>View Map</MultipleBitmapText>}
+                  subMenuId="map"
+                  doubleHeightWhenFocussed
+                  hidden={!isGameRunning}
+                />
+                <MenuItem
+                  id="viewCrowns"
+                  label={
+                    <MultipleBitmapText>
+                      <span className="resHandheld:hidden">Check </span>Progress
+                    </MultipleBitmapText>
+                  }
+                  onSelect={showProgress}
+                  doubleHeightWhenFocussed
+                  hidden={!isGameRunning}
+                  opensSubMenu={true}
+                />
+                <MenuItem
+                  id="options"
+                  label="Options"
+                  doubleHeightWhenFocussed
+                  subMenuId="modernisationOptions"
+                />
+                <MenuItem
+                  id="about"
+                  label={
+                    <MultipleBitmapText>
+                      About<span className="resHandheld:hidden"> & Links</span>
+                    </MultipleBitmapText>
+                  }
+                  doubleHeightWhenFocussed
+                  subMenuId="about"
+                />
+              </>
+            }
+            bottomContents={
+              <>
+                {!isGameRunning && detectDeviceType() === "desktop" && (
+                  <LevelEditorMenuItem />
                 )}
-                opensSubMenu={true}
-              />
-              <MenuItem
-                id="readTheManual"
-                label="Manual"
-                doubleHeightWhenFocussed
-                onSelect={useDispatchActionCallback(
-                  goToSubmenu,
-                  "readTheManual",
+                {offerDownloadOrInstall && <DownloadOrInstallMenuItem />}
+                {isGameRunning && (
+                  <>
+                    <MenuSeparator />
+                    <QuitGameMenuItem />
+                  </>
                 )}
-                opensSubMenu={true}
-              />
-            </MenuItems>
-            <MenuItems>
-              {offerInstall ? null : <InstallMenuItem />}
-
-              <MenuItem
-                id="discord"
-                leader={<BitmapText>{nerdFontDiscordChar}</BitmapText>}
-                label={
-                  <a href={discordInviteUrl} target="_blank">
-                    <BitmapText>{`Discord`}</BitmapText>
-                  </a>
-                }
-                doubleHeightWhenFocussed
-                onSelect={useCallback(() => {
-                  window.open(discordInviteUrl, "_blank");
-                }, [])}
-              />
-
-              {offerInstall ?
-                <>
-                  {/* 
-                  when install isn't shown, we need a placeholder to take up the space
-                  to stop the layout jumping around. Since MenuItems is grid layout, we need
-                  three
-                  */}
-                  <div className="h-1" />
-                  <div className="h-1" />
-                  <div className="h-1" />
-                </>
-              : null}
-            </MenuItems>
-          </div>
-          {isGameRunning && (
-            // don't even put the MenuItems in when the game isn't running (don't just skip the menuitems)
-            // because even a zero-size element makes a gap in the flex parent container
-            <MenuItems className="w-24 mx-auto">
-              <QuitGameMenuItem />
-            </MenuItems>
-          )}
+                {showExitApp && (
+                  <>
+                    <MenuSeparator />
+                    <ExitAppMenuItem />
+                  </>
+                )}
+              </>
+            }
+          />
         </div>
-        {!isGameRunning && <MainMenuFooter className="resHandheld:mt-1" />}
+        {!isGameRunning && emulatedResolutionName !== "handheld" && (
+          <MainMenuFooter />
+        )}
       </Dialog>
       <GitRepoInfo />
     </DialogPortal>

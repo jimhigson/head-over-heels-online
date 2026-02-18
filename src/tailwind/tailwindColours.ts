@@ -18,6 +18,8 @@ const zxSpecTailwindColours = transformObject(
     colourValue.toHex(),
   ],
 );
+
+// zx Spectrum colours prefixed with 'zx' ie zxRedDimmed, zxGreenDimmed
 const zxSpecTailwindColoursDimmed = transformObject(
   zxSpectrumColorsDimmed,
   ([colourName, colourValue]) => [
@@ -31,7 +33,7 @@ export const colorsSrgb = {
 
   // zx Spectrum colours prefixed with 'zx' ie zxRed, zxGreen
   ...zxSpecTailwindColours,
-  // zx Spectrum colours prefixed with 'zx' ie zxRedDimmed, zxGreenDimmed
+
   ...zxSpecTailwindColoursDimmed,
 
   transparent: "transparent",
@@ -44,3 +46,14 @@ export const coloursCssVariables = transformObject(colorsSrgb, ([name]) => [
   name,
   `var(--colour-${name})`,
 ]);
+
+export type TailwindColourName = keyof typeof colorsSrgb;
+export type TailwindColourisedColourName =
+  | keyof typeof halfbriteSpritesheetPalette
+  | keyof typeof jsonPalette;
+export type TailwindSpectrumColourName =
+  | keyof typeof zxSpecTailwindColours
+  | keyof typeof zxSpecTailwindColoursDimmed;
+
+export type TailwindTextColourClassname =
+  `text-${TailwindColourisedColourName} zx:text-${TailwindColourName}`;

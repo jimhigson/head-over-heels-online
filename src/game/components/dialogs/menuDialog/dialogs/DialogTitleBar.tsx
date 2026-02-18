@@ -17,6 +17,7 @@ export const DialogTitleBar = ({
   const last = path.at(-1);
   return (
     <div
+      role="menubar"
       className={twMerge(
         "flex flex-row sticky top-0 z-slightlyAbove py-oneScaledPix gap-2 pl-2",
         className,

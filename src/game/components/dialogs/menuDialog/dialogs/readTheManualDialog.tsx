@@ -1,16 +1,12 @@
 import type { ManualPageName } from "../../../../../manual/pages";
-import type { DialogId } from "../DialogId";
 
 import { manualPages, pageTitle } from "../../../../../manual/pages";
-import {
-  backToParentMenu,
-  goToSubmenu,
-} from "../../../../../store/slices/gameMenus/gameMenusSlice";
+import { backToParentMenu } from "../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../ui/Border";
 import { Dialog } from "../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../ui/DialogPortal";
-import { detectDeviceType } from "../../../../../utils/detectDeviceType";
+import { detectDeviceType } from "../../../../../utils/detectEnv/detectDeviceType";
 import { BitmapText } from "../../../tailwindSprites/Sprite";
 import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";
@@ -27,12 +23,8 @@ const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
     <MenuItem
       id={`markdown/${pageName}`}
       label={title}
-      onSelect={useDispatchActionCallback(
-        goToSubmenu,
-        `markdown/${pageName}` as DialogId,
-      )}
+      subMenuId={`markdown/${pageName}` as const}
       doubleHeightWhenFocussed={doubleHeightWhenFocussed}
-      opensSubMenu={true}
     />
   );
 };

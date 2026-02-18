@@ -1,7 +1,7 @@
-import { version } from "../../../../../../../package.json";
-import { repository } from "../../../../../../../package.json";
+import { repository, version } from "../../../../../../../package.json";
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
+import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 
 export const GitRepoInfo = () => {
@@ -12,31 +12,13 @@ export const GitRepoInfo = () => {
     latestTag === undefined ? undefined : latestTag === `v${version}`;
 
   return (
-    <>
-      <div className="flex absolute top-oneScaledPix right-1 z-dialog">
-        <a
-          href={repository.url}
-          className="bitmap-text-link bg-transparent zx:bg-zxBlack"
-        >
-          <BitmapText className="text-highlightBeige zx:text-zxYellow">
-            ★
-          </BitmapText>
-          <span className="text-lightGrey zx:text-whiteHalfbrite">
-            <BitmapText className="resHandheld:hidden"> on</BitmapText>
-            <BitmapText>{nerdFontGithubChar}</BitmapText>
-            <BitmapText className="resHandheld:hidden">Github</BitmapText>
-          </span>
-        </a>
-      </div>
-      <footer
-        className="flex absolute bottom-0 right-0 z-dialog"
-        // this needs to be masked out of screenshots, or tests will fail after version updates:
-        data-screenshot-mask
-      >
+    <div className="flex absolute z-dialog w-full justify-between">
+      <span>
         <a
           href={`${repository.url}/releases`}
           target="_blank"
-          className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack"
+          onClick={linkOpenExternalClickHandler}
+          className={`bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack`}
           data-screenshot-mask
         >
           <BitmapText>
@@ -50,7 +32,22 @@ export const GitRepoInfo = () => {
             </BitmapText>
           )}
         </a>
-      </footer>
-    </>
+      </span>
+      <a
+        href={repository.url}
+        onClick={linkOpenExternalClickHandler}
+        target="_blank"
+        className="bitmap-text-link zx:bg-zxBlack bg-metallicBlue"
+      >
+        <BitmapText className="text-highlightBeige zx:text-zxYellow">
+          ★
+        </BitmapText>
+        <span className="text-lightGrey zx:text-whiteHalfbrite mr-1">
+          <BitmapText className="resHandheld:hidden"> on</BitmapText>
+          <BitmapText>{nerdFontGithubChar}</BitmapText>
+          <BitmapText className="resHandheld:hidden">Github</BitmapText>
+        </span>
+      </a>
+    </div>
   );
 };

@@ -28,6 +28,7 @@ import {
 } from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { entryState } from "../PlayableEntryState";
+import { dispatchSaveGame } from "../saving/dispatchSaveGame";
 import { addItemToRoom } from "./addItemToRoom";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import {
@@ -405,5 +406,8 @@ export const playableLosesLife = <RoomId extends string>(
 
   if (selectCurrentPlayableItem(gameState) === undefined) {
     store.dispatch(gameOver({ offerReincarnation: true }));
+  } else {
+    // probably a good time to save the game:
+    dispatchSaveGame(gameState, store);
   }
 };

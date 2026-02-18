@@ -1,0 +1,130 @@
+name: Build to Native
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, production]
+  release:
+    types: [published]
+
+jobs:
+  tauri-build:
+    name: TauriBuild - ${{ matrix.platform }} ${{ matrix.toolchain && format('({0})', matrix.toolchain) || '' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            tauri-build-args: "--target universal-apple-darwin"
+            # support both arm and intel macs with a universal binary:
+            rust-target: "aarch64-apple-darwin,x86_64-apple-darwin"
+          - platform: ubuntu-24.04-arm
+            tauri-build-args: ""
+          - platform: ubuntu-latest
+            tauri-build-args: ""
+          - platform: windows-latest
+            # msvc is MS Visual C++ toolchain supported officially
+            # by tauri, but building with it causes Windows Defender to have issues
+            toolchain: "msvc"
+            tauri-build-args: ""
+          - platform: windows-latest
+            # mingw is the gnu equivalent - not officially supported by tauri
+            # but may help with Windows Defender AV
+            toolchain: "mingw"
+            rust-target: x86_64-pc-windows-gnu
+            rust-toolchain: stable-x86_64-pc-windows-gnu
+            tauri-build-args: "--target x86_64-pc-windows-gnu"
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: "pnpm"
+
+      - run: pnpm install
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust-toolchain || 'stable' }}
+          targets: ${{ matrix.rust-target }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+
+      - name: Install dependencies (Ubuntu only)
+        if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'ubuntu-24.04-arm'
+        # xdg-utils provides xdg-open; needed for opening external links in default browser
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev xdg-utils
+
+      - name: Setup MinGW (Windows GNU only)
+        if: matrix.toolchain == 'mingw'
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          # Disable the static pthread workaround (static: 0)
+          # The workaround removes libpthread.dll.a and libwinpthread.dll.a import libraries
+          # to force static linking of pthread, avoiding runtime DLL dependencies.
+          # However, MinGW 15.2.0+ no longer ships libpthread.dll.a at the expected location,
+          # causing the removal step to fail. Since Tauri handles its own static linking
+          # configuration, we don't need this workaround.
+          static: 0
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        with:
+          args: ${{ matrix.tauri-build-args }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List build artefacts
+        shell: bash
+        run: find src-tauri/target -name "*.dmg" -o -name "*.msi" -o -name "*-setup.exe" -o -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" | sort
+
+      - name: Upload artifacts (non-release)
+        if: github.event_name != 'release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.toolchain && format('{0}-{1}', matrix.platform, matrix.toolchain) || matrix.platform }}
+          path: |
+            src-tauri/target/release/bundle/dmg/*.dmg
+            src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/nsis/*-setup.exe
+            src-tauri/target/x86_64-pc-windows-gnu/release/bundle/dmg/*.dmg
+            src-tauri/target/x86_64-pc-windows-gnu/release/bundle/msi/*.msi
+            src-tauri/target/x86_64-pc-windows-gnu/release/bundle/nsis/*-setup.exe
+            src-tauri/target/release/*.exe
+            src-tauri/target/release/bundle/deb/*.deb
+            src-tauri/target/release/bundle/rpm/*.rpm
+            src-tauri/target/release/bundle/appimage/*.AppImage
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: |
+            src-tauri/target/release/bundle/dmg/*.dmg
+            src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/nsis/*-setup.exe
+            src-tauri/target/x86_64-pc-windows-gnu/release/bundle/dmg/*.dmg
+            src-tauri/target/x86_64-pc-windows-gnu/release/bundle/msi/*.msi
+            src-tauri/target/x86_64-pc-windows-gnu/release/bundle/nsis/*-setup.exe
+            src-tauri/target/release/*.exe
+            src-tauri/target/release/bundle/deb/*.deb
+            src-tauri/target/release/bundle/rpm/*.rpm
+            src-tauri/target/release/bundle/appimage/*.AppImage

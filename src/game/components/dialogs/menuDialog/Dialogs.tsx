@@ -6,6 +6,7 @@ import type { DialogId } from "./DialogId";
 import { useAppSelector } from "../../../../store/hooks";
 import { Dialog } from "../../../../ui/dialog";
 import { BitmapText } from "../../tailwindSprites/Sprite";
+import { AboutDialog } from "./dialogs/about/AboutDialog";
 import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
 import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
 import { CrownsDialog } from "./dialogs/crowns/crownsDialog";
@@ -14,6 +15,7 @@ import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedR
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 import { HoldDialog } from "./dialogs/hold/holdDialog";
 import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
+import { InstallDialog } from "./dialogs/install/InstallDialog";
 import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
 import { MapDialog } from "./dialogs/map/MapDialog";
 import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
@@ -68,6 +70,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
   }
 
   switch (topOpenMenu.menuId) {
+    case "about":
+      return <AboutDialog />;
     case "communityGames":
       return <CommunityGamesDialog />;
     case "controlOptions":
@@ -82,14 +86,6 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <HoldDialog />;
     case "inputPreset":
       return <InputPresetDialog />;
-    case "installGuide":
-      return (
-        <MarkdownDialog
-          source="manual"
-          pageName="installGuide"
-          dialogId="installGuide"
-        />
-      );
     case "mainMenu":
       return <MainMenuDialog />;
     case "map":
@@ -116,11 +112,14 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <SureWantEditorDialog />;
     case "whichGame":
       return <WhichGameDialog />;
+    case "installGuide":
+      return <InstallDialog />;
+
     default:
       topOpenMenu.menuId satisfies never;
       return (
         <Dialog>
-          <BitmapText>{`unknown dialog ${topOpenMenu}`}</BitmapText>
+          <BitmapText className="pl-1">{`unknown dialog: ‘${topOpenMenu.menuId}’`}</BitmapText>
         </Dialog>
       );
   }
