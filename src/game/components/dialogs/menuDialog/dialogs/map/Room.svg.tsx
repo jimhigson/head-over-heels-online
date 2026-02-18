@@ -161,6 +161,7 @@ export const RoomSvg = <RoomId extends string>({
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, color, items } = roomJson;
   const label = roomJson.meta?.label;
+  const highlightOnHover = onRoomClick !== undefined;
 
   // find some notable items:
   const notableItems = useNotableItems(
@@ -179,7 +180,17 @@ export const RoomSvg = <RoomId extends string>({
     <g
       data-room-id={id}
       strokeWidth={strokeWidth}
-      className={roomAccentColourClass(color)}
+      className={`
+        ${roomAccentColourClass(color)} 
+        ${
+          highlightOnHover ?
+            `
+            group/room
+            hover:[--roomHintColor:theme(colors.midRed)] 
+            zx:hover:[--roomHintColor:theme(colors.zxRed)]`
+          : ""
+        }
+        `}
     >
       {noFloor ?
         <>
@@ -201,7 +212,18 @@ export const RoomSvg = <RoomId extends string>({
           {/* whole floor in colour */}
           <path className="fill-[var(--roomHintColor)]" d={floorFillPathD} />
           {/* white in the middle w/ to doors */}
-          <path className="fill-white" d={floorPathFillPathD(boundaries)} />
+          <path
+            className={`fill-white
+              ${
+                highlightOnHover ?
+                  `
+                  group-hover/room:fill-pastelBlue
+                  zx:group-hover/room:fill-zxCyan`
+                : ""
+              }
+            `}
+            d={floorPathFillPathD(boundaries)}
+          />
           {deadlyFloor && (
             <path
               className="stroke-[var(--roomHintColor)]"

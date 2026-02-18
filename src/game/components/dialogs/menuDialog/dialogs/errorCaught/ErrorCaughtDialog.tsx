@@ -125,7 +125,7 @@ export const ErrorCaughtDialog = ({
 
   return (
     <DialogPortal>
-      <Border className="loading-border" />
+      <Border className="loading-border zx:zx-loading-border" />
       <Dialog
         className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1"
         tall
