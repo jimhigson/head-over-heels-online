@@ -42,7 +42,7 @@ export const screenshotOptions = (
   // results tend to be about 5M pixels, so 0.0001 is ~1,000 pixels difference allowed
   maxDiffPixelRatio: 0.0002,
   timeout: 10_000 * osSlowness,
-  mask: [page.locator("[data-screenshot-mask]")],
+  mask: [page.locator(".screenshot-mask")],
   maskColor: uncolourised ? "#ff00ff" : spritesheetColours.pink,
 });
 

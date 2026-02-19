@@ -39,7 +39,7 @@ const CampaignMenuItem = ({
       })}
       hintInline
       hint={
-        <div data-screenshot-mask>
+        <div className="screenshot-mask">
           <BitmapText
             className={selectGameHintMarkdownClassName}
           >{`v.${version} updated ${format(createdAt)}`}</BitmapText>
