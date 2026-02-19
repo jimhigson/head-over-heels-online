@@ -22,6 +22,8 @@ then
     exit 1
 fi
 
+source scripts/revert-noop-pngs.sh
+
 OUT_DIR="gfx"
 # we write everything to a temp dir, then switch, to avoid vite, tsc, etc picking up half-converted files
 TMP_DIR="gfx_temp"
@@ -206,6 +208,11 @@ magick public/icon.png -filter point -resize 256x256 -define icon:auto-resize=25
 echo "🤖 deleting the temp dirs"
 rm -fR $TMP_DIR
 rm -fR $TMP_DIR_ICONS
+
+echo "🤖 reverting noop PNGs"
+revert_noop_pngs public/icon*.png gfx/sprites*.png src-tauri/icons/*.png
+
+
 
 # echo "🤖 what we have now:"
 # ls -lh $OUT_DIR/*.png
