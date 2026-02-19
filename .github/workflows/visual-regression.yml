@@ -122,9 +122,14 @@ jobs:
           - { os: ubuntu-24.04-arm, suite: lutSnapshot, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
           - { os: windows-latest, suite: lutSnapshot, browser: --project chromium-desktop }
 
-          # MENU SNAPSHOTS - single batch per os/browser combo
-          - { os: ubuntu-24.04-arm, suite: menuSnapshots, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
-          - { os: windows-latest, suite: menuSnapshots, browser: --project chromium-desktop }
+          # MENU SNAPSHOTS - one agent per spec file per OS
+          - { os: ubuntu-24.04-arm, suite: menuSnapshotsDialogs, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          - { os: ubuntu-24.04-arm, suite: menuSnapshotsInGame, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          - { os: ubuntu-24.04-arm, suite: menuSnapshotsMainMenu, browser: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          # skip uncolourised on windows to speed it up since it is the slowest:
+          - { os: windows-latest, suite: menuSnapshotsDialogs, browser: --project chromium-desktop, no_uncolourised: "1" }
+          - { os: windows-latest, suite: menuSnapshotsInGame, browser: --project chromium-desktop, no_uncolourised: "1" }
+          - { os: windows-latest, suite: menuSnapshotsMainMenu, browser: --project chromium-desktop, no_uncolourised: "1" }
 
           # PORTRAIT - room + menu snapshots on a single agent (suite filter not needed, project testMatch restricts specs)
           - { os: ubuntu-24.04-arm, suite: "", browser: --project mobile-safari-portrait }
@@ -135,7 +140,9 @@ jobs:
     name: >-
       ${{
         matrix.suite == 'lutSnapshot' && format('Lut {0}', contains(matrix.os, 'windows') && 'Windows' || 'Linux')
-        || matrix.suite == 'menuSnapshots' && format('Menu {0}', contains(matrix.os, 'windows') && 'Windows' || 'Linux')
+        || matrix.suite == 'menuSnapshotsDialogs' && format('MnuDlg {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
+        || matrix.suite == 'menuSnapshotsInGame' && format('MnuGame {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
+        || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'spritesPage' && 'Sprites'
         || matrix.suite == '' && format('All:{0}', matrix.browser)
         || format('Room:{0}.{1}{2} {3}/{4}',
@@ -215,6 +222,7 @@ jobs:
           PARALLEL_TESTS: ${{ matrix.parallel_tests }}
           # on Windows CI runners, Chrome complains unless this is turned on to enable software OpenGL rendering:
           PLAYWRIGHT_CHROMIUM_ARGS: ${{ runner.os == 'Windows' && '--enable-unsafe-swiftshader' || '' }}
+          NO_UNCOLOURISED: ${{ matrix.no_uncolourised }}
         run: pnpm playwright test ${{ matrix.suite }} ${{ matrix.browser }}
 
       - name: Upload test results
