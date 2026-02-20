@@ -1,4 +1,4 @@
-import type { PropsWithChildren, RefObject } from "react";
+import type { AriaRole, PropsWithChildren, RefObject } from "react";
 
 import { useCallback, useEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
@@ -291,12 +291,14 @@ const useMenuNavigationInput = (
 type MenuItemsProps = PropsWithChildren<{
   className?: string;
   inline?: boolean;
+  role?: AriaRole;
 }>;
 
 export const MenuItems = ({
   className = "",
   children,
   inline = false,
+  role = undefined,
 }: MenuItemsProps) => {
   const ref = useRef<HTMLMenuElement>(null);
 
@@ -348,6 +350,7 @@ export const MenuItems = ({
   return (
     <menu
       ref={ref}
+      role={role}
       className={twMerge(inline ? "" : presentationalMenuClasses, className)}
     >
       {children}

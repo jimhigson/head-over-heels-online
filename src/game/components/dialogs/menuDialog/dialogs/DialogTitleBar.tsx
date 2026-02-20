@@ -17,13 +17,13 @@ export const DialogTitleBar = ({
   const last = path.at(-1);
   return (
     <div
-      role="menubar"
+      role="header"
       className={twMerge(
         "flex flex-row sticky top-0 z-slightlyAbove py-oneScaledPix gap-2 pl-2",
         className,
       )}
     >
-      <MenuItems inline>
+      <MenuItems inline role="menubar">
         <MobileStyleBackButton />
       </MenuItems>
       <div className="flex flex-row items-center">

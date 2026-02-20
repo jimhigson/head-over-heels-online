@@ -72,7 +72,7 @@ export default defineConfig<ScreenshotTestOptions>({
     },
     {
       name: "mobile-safari-portrait",
-      testMatch: ["roomSnapshots.spec.ts", "menuSnapshots.spec.ts"],
+      testMatch: ["roomSnapshots.spec.ts", "menuSnapshotsMainMenu.spec.ts"],
       use: {
         ...devices["iPhone 15 Pro"],
         ...produce(phoneSize, (draft) => {
