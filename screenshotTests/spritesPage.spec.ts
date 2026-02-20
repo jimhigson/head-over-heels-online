@@ -118,6 +118,7 @@ test.describe("Sprites page", () => {
         await expect.soft(spriteEle).toHaveScreenshot(safeFilename, {
           threshold: 0.02,
           maxDiffPixels: 0,
+          scale: "css",
           timeout: 5000,
         });
 

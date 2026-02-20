@@ -584,7 +584,7 @@ test.describe("Room Visual Snapshots", () => {
               .toHaveScreenshot(`${roomId}${filenameSuffix}.png`, {
                 fullPage: false,
                 threshold,
-                scale: "device",
+                scale: "css",
                 maxDiffPixels: 0,
               });
             console.log(

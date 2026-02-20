@@ -7,13 +7,14 @@ const desktopSize = {
   // this size gives us an upscale of exactly 8 for the game in default settings - hopefully
   // being an exact power of 2 will help with deterministic rendering on GPUs on different hardware
   // (ie, upscaling by 7 would be more difficult ratios and potentially messier)
-  viewport: { width: 1024, height: 768 },
+  // this is also smaller than real phones, so that we get smaller screenshot files on disc
+  viewport: { width: 512, height: 384 },
   deviceScaleFactor: 2,
 };
 const phoneSize = {
-  // again, results in 8x upscale for the game area, but in an aspect ratio more plausible for a phone,
+  // again, results in 4x upscale for the game area, but in an aspect ratio more plausible for a phone,
   // even though a fictitious size
-  viewport: { width: 1600, height: 768 },
+  viewport: { width: 800, height: 384 },
   deviceScaleFactor: 2,
 };
 
