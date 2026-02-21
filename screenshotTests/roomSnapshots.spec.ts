@@ -13,10 +13,11 @@ import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { keys } from "../src/utils/entries";
-import { dispatchToStore } from "./dispatchToStore";
+import { dispatchToStore } from "./e2eStoreUtils";
 import { formatDuration } from "./formatDuration";
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
 import { logSelectorExistence } from "./logSelectorExistence";
+import { logUpscale } from "./logUpscale";
 import { osSlowness } from "./osSlowness";
 import { formatProjectName, progressLogHeader } from "./projectName";
 import { resolveRoomIds } from "./resolveRoomIds";
@@ -201,6 +202,7 @@ const startOriginalGame = async (page: Page, projectName: string) => {
       console.log(`${formattedName}: clicking Play The Game...`);
       stepStart = performance.now();
       await logSelectorExistence(page, playGameMenuItemSelector, formattedName);
+
       console.log(
         `${formattedName}: logSelectorExistence (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
@@ -457,6 +459,9 @@ test.describe("Room Visual Snapshots", () => {
         });
         throw error;
       }
+
+      // with the game started, safe to say upscale should be available:
+      await logUpscale(page, formattedName);
 
       try {
         await test.step(`slowing game to zero speed`, async () => {

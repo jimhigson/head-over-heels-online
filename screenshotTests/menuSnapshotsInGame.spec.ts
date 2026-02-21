@@ -5,9 +5,10 @@ import type { goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
 import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import { dispatchKeyPress } from "./dispatchKeyPress";
-import { dispatchToStore } from "./dispatchToStore";
+import { dispatchToStore } from "./e2eStoreUtils";
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
 import { logSelectorExistence } from "./logSelectorExistence";
+import { logUpscale } from "./logUpscale";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
@@ -68,6 +69,8 @@ for (const { uncolourised } of colourisedModes) {
           screenshotPrefix: "crowns-initial-navigation",
         });
       });
+
+      await logUpscale(page, formattedName);
 
       await test.step(`set colourised user setting`, async () => {
         await setIsUncolourised(page, formattedName, uncolourised);
