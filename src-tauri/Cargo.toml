@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "1.17.1"
+version = "18.0.0"
 description = "Blockstack.ing Head over Heels"
 authors = ["Jim Higson"]
 license = "AGPL-3.0"
