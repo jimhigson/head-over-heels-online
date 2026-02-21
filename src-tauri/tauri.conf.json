@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "BlockStack Head over Heels",
-  "version": "18.0.0",
+  "version": "1.0.0",
   "identifier": "com.blockstacking.head-over-heels",
   "build": {
     "frontendDist": "../dist-tauri",
