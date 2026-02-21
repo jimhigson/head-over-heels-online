@@ -4,7 +4,7 @@ import { produce } from "immer";
 import type { ScreenshotTestOptions } from "./screenshotTests/ScreenshotTestOptions";
 
 const desktopSize = {
-  // this size gives us an upscale of exactly 8 (for scaling factor 2, 4 for 1) for the game in default settings - hopefully
+  // this size gives us an upscale of exactly 2 for the game in default settings - hopefully
   // being an exact power of 2 will help with deterministic rendering on GPUs on different hardware
   // (ie, upscaling by 7 would be more difficult ratios and potentially messier)
   // this is also smaller than real phones, so that we get smaller screenshot files on disc
@@ -12,9 +12,9 @@ const desktopSize = {
   deviceScaleFactor: 1,
 };
 const phoneSize = {
-  // again, results in 4x upscale for the game area, but in an aspect ratio more plausible for a phone,
-  // even though a fictitious size
-  viewport: { width: 800, height: 384 },
+  // again, results in 2x upscale for the game area, but in an aspect ratio more plausible for a phone,
+  // even though a fictitious size - real phones are much higher res than this
+  viewport: { width: 640, height: 300 },
   // setting to 1 removes css scaling, which can be inconsistent between platforms for visual regression
   deviceScaleFactor: 1,
 };
