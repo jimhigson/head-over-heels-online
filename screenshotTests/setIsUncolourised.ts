@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 
 import type { toggleUserSetting } from "../src/store/slices/gameMenus/gameMenusSlice";
 
-import { dispatchToStore } from "./dispatchToStore";
+import { dispatchToStore } from "./e2eStoreUtils";
 import { osSlowness } from "./osSlowness";
 import { retryWithRecovery } from "./retryWithRecovery";
 

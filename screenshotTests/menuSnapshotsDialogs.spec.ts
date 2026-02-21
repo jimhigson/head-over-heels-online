@@ -7,6 +7,7 @@ import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
 import { logSelectorExistence } from "./logSelectorExistence";
+import { logUpscale } from "./logUpscale";
 import {
   clickBackButton,
   colourisedModes,
@@ -151,6 +152,8 @@ for (const { uncolourised } of colourisedModes) {
           screenshotPrefix: "initial-navigation",
         });
       });
+
+      await logUpscale(page, formattedName);
 
       await test.step(`set uncolourised user setting to ${uncolourised}`, async () => {
         await setIsUncolourised(page, formattedName, uncolourised);

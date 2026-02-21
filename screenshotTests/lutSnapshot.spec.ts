@@ -23,6 +23,7 @@ test.describe("LUT Texture Visualization", () => {
       clip: { x: 0, y: 0, width: 512, height: 512 * 3 },
       threshold: 0.02,
       maxDiffPixels: 0,
+      scale: "css",
     });
 
     console.log("✅ LUT texture snapshot complete");

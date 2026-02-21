@@ -32,7 +32,8 @@ export const screenshotOptions = (
   uncolourised: boolean,
 ): PageAssertionsToHaveScreenshotOptions => ({
   fullPage: false,
-  scale: "device" as const,
+  // use smaller 'css' screenshots to reduce file size:
+  scale: "css" as const,
   animations: "disabled" as const,
   // unlike in-game screenshots, this is using html rendering so needs to be a bit more lenient:
   threshold: 0.1,
