@@ -118,11 +118,27 @@ const movementPatternAnnotationText = (
         case "left":
           return "↖↗↘↙";
         case "right":
-          return "↘↙↖↘";
+          return "↘↙↖↗";
         case "away":
           return "↗↘↙↖";
         case "towards":
           return "↙↖↗↘";
+        default:
+          startDirection satisfies never;
+          throw new Error(`Unexpected startDirection`);
+      }
+    }
+
+    case "anticlockwise": {
+      switch (startDirection) {
+        case "left":
+          return "↖↙↘↗";
+        case "right":
+          return "↘↗↖↙";
+        case "away":
+          return "↗↖↙↘";
+        case "towards":
+          return "↙↘↗↖";
         default:
           startDirection satisfies never;
           throw new Error(`Unexpected startDirection`);

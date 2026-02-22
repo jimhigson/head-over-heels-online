@@ -102,6 +102,7 @@ export type MonsterJsonConfig =
         | "back-forth"
         | "clockwise"
         // remake
+        | "anticlockwise"
         | "forwards"
       >;
       startDirection: DirectionXy4;

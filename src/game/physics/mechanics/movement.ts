@@ -536,6 +536,7 @@ export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
 
     case "back-forth":
     case "forwards":
+    case "anticlockwise":
     case "clockwise": {
       return keepWalkingInSameDirection(
         itemWithMovement,
@@ -568,7 +569,9 @@ export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
 
     default:
       itemWithMovement.config satisfies never;
-      throw new Error("this should be unreachable");
+      throw new Error(
+        `this should be unreachable; movement= ${(itemWithMovement as ItemWithMovement<RoomId, RoomItemId>).config.movement}`,
+      );
   }
 };
 
@@ -595,8 +598,9 @@ export const handleItemWithMovementTouchingItem = <
     case "patrol-randomly-xy8":
       handleMonsterTouchingItemByTurning(e, "opposite");
       break;
+    case "anticlockwise":
     case "clockwise":
-      handleMonsterTouchingItemByTurning(e, "clockwise");
+      handleMonsterTouchingItemByTurning(e, itemWithMovement.config.movement);
       break;
     case "towards-tripped-on-axis-xy4":
       handleMonsterTouchingItemByStopping(e);
@@ -611,6 +615,8 @@ export const handleItemWithMovementTouchingItem = <
 
     default:
       itemWithMovement.config satisfies never;
-      throw new Error("this should be unreachable");
+      throw new Error(
+        `this should be unreachable; movement= ${(itemWithMovement as ItemWithMovement<RoomId, RoomItemId>).config.movement}`,
+      );
   }
 };

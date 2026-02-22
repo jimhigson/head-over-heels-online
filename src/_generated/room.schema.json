@@ -1166,7 +1166,12 @@
                             "type": "string"
                           },
                           "movement": {
-                            "enum": ["back-forth", "clockwise", "forwards"],
+                            "enum": [
+                              "back-forth",
+                              "clockwise",
+                              "forwards",
+                              "anticlockwise"
+                            ],
                             "type": "string"
                           },
                           "startDirection": {
@@ -2590,7 +2595,8 @@
                                                       "enum": [
                                                         "back-forth",
                                                         "clockwise",
-                                                        "forwards"
+                                                        "forwards",
+                                                        "anticlockwise"
                                                       ],
                                                       "type": "string"
                                                     },
@@ -3307,7 +3313,8 @@
                                                       "enum": [
                                                         "back-forth",
                                                         "clockwise",
-                                                        "forwards"
+                                                        "forwards",
+                                                        "anticlockwise"
                                                       ],
                                                       "type": "string"
                                                     },
@@ -4601,7 +4608,8 @@
                                         "enum": [
                                           "back-forth",
                                           "clockwise",
-                                          "forwards"
+                                          "forwards",
+                                          "anticlockwise"
                                         ],
                                         "type": "string"
                                       },
@@ -6048,7 +6056,8 @@
                                                   "enum": [
                                                     "back-forth",
                                                     "clockwise",
-                                                    "forwards"
+                                                    "forwards",
+                                                    "anticlockwise"
                                                   ],
                                                   "type": "string"
                                                 },
@@ -6762,7 +6771,8 @@
                                                   "enum": [
                                                     "back-forth",
                                                     "clockwise",
-                                                    "forwards"
+                                                    "forwards",
+                                                    "anticlockwise"
                                                   ],
                                                   "type": "string"
                                                 },

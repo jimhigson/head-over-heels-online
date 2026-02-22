@@ -6,6 +6,11 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "moonbase30",
   items: {
+    block: {
+      config: { style: "artificial" },
+      position: { x: 3, y: 0, z: 0 },
+      type: "block",
+    },
     "block@3,3,0": {
       config: { style: "artificial", times: { y: 2 } },
       position: { x: 3, y: 2, z: 0 },
@@ -39,6 +44,26 @@ export const room = inferRoomJson({
       },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
+    },
+    turtle: {
+      config: {
+        activated: "on",
+        movement: "anticlockwise",
+        startDirection: "right",
+        which: "turtle",
+      },
+      position: { x: 5, y: 3, z: 3 },
+      type: "monster",
+    },
+    turtle_2: {
+      config: {
+        activated: "on",
+        movement: "clockwise",
+        startDirection: "right",
+        which: "turtle",
+      },
+      position: { x: 5, y: 2, z: 3 },
+      type: "monster",
     },
     "wall(right)@0,0,0": {
       config: { direction: "right", times: { y: 6 } },
