@@ -9,16 +9,12 @@ jobs:
   check:
     runs-on: ubuntu-24.04-arm
 
-    strategy:
-      matrix:
-        node-version: [25.x]
-
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 25.x
           cache: "pnpm"
       - run: pnpm install
       - run: pnpm run check
