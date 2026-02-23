@@ -3,6 +3,11 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
+import type { DistributedOmit } from "type-fest";
+
+import type { TestRoomId } from "../../../_testUtils/basicRoom";
+import type { JsonItemUnion } from "../../../model/json/JsonItem";
+
 import {
   firstRoomId,
   secondRoomId,
@@ -21,76 +26,176 @@ beforeEach(() => {
   resetStore();
 });
 
-test("heels can pick up and put down a cube", () => {
-  const gameState = setUpBasicGame({
-    firstRoomItems: {
-      heels: {
-        type: "player",
-        position: { x: 5, y: 5, z: 2 },
-        config: {
-          which: "heels",
-        },
-      },
-      bag: {
-        type: "pickup",
-        position: { x: 5, y: 5, z: 1 },
-        config: {
-          gives: "bag",
-        },
-      },
-      portable: {
-        type: "portableBlock",
-        position: { x: 5, y: 5, z: 0 },
-        config: {
-          style: "cube",
-        },
+test.for<{
+  itemJson: DistributedOmit<JsonItemUnion<TestRoomId>, "position">;
+  expectedPortable: boolean;
+}>([
+  {
+    itemJson: {
+      type: "portableBlock",
+      config: {
+        style: "cube",
       },
     },
-  });
-
-  playGameThrough(gameState, {
-    frameCallbacks(gameState) {
-      const hs = heelsState(gameState);
-
-      if (hs.standingOnItemId === "portable" && hs.carrying === null) {
-        gameState.inputStateTracker.mockPressing("carry");
-      }
+    expectedPortable: true,
+  },
+  {
+    itemJson: {
+      type: "spring",
+      config: {},
     },
-    until() {
-      return heelsState(gameState).carrying?.type === "portableBlock";
+    expectedPortable: true,
+  },
+  {
+    itemJson: {
+      type: "slidingBlock",
+      config: {
+        style: "puck",
+      },
     },
-  });
+    expectedPortable: true,
+  },
+  {
+    itemJson: {
+      type: "slidingBlock",
+      config: {
+        style: "book",
+      },
+    },
+    expectedPortable: false,
+  },
+  {
+    itemJson: {
+      type: "block",
+      config: {
+        style: "organic",
+      },
+    },
+    expectedPortable: false,
+  },
+  {
+    itemJson: {
+      type: "pickup",
+      config: {
+        gives: "doughnuts",
+      },
+    },
+    // heels cannot use doughnuts so can carry them:
+    expectedPortable: true,
+  },
+  {
+    itemJson: {
+      type: "pickup",
+      config: {
+        gives: "shield",
+      },
+    },
+    // touching a shield collects it - cannot carry
+    expectedPortable: false,
+  },
+  {
+    itemJson: {
+      type: "monster",
+      config: {
+        which: "turtle",
+        activated: "off",
+        movement: "back-forth",
+        startDirection: "away",
+      },
+    },
+    // a deactivated turtle can be picked up:
+    expectedPortable: true,
+  },
+  {
+    itemJson: {
+      type: "monster",
+      config: {
+        which: "cyberman",
+        activated: "on",
+        // this monster should stay where it is:
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "away",
+      },
+    },
+    // an activated monster can not be picked up (player will lose a life instead)
+    expectedPortable: false,
+  },
+])(
+  "heels can pick up and put down: $itemJson.type $itemJson.config = $expectedPortable",
+  ({ itemJson, expectedPortable }) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 5, y: 5, z: 3 },
+          config: {
+            which: "heels",
+          },
+        },
+        bag: {
+          type: "pickup",
+          position: { x: 5, y: 5, z: 2 },
+          config: {
+            gives: "bag",
+          },
+        },
+        testItem: { ...itemJson, position: { x: 5, y: 5, z: 0 } },
+      },
+    });
 
-  playGameThrough(gameState, {
-    setupInitialInput(mockInputStateTracker) {
-      mockInputStateTracker.mockNotPressing("carry");
-    },
-    until() {
-      // wait for heels to land on the floor:
-      return heelsState(gameState).standingOnItemId === "floor";
-    },
-  });
+    playGameThrough(gameState, {
+      frameCallbacks(gameState) {
+        const hs = heelsState(gameState);
 
-  expect(heelsState(gameState).carrying?.type).toBe("portableBlock");
-  expect(itemState(gameState, "floor").stoodOnBy).toEqual({ heels: true });
+        if (hs.standingOnItemId === "testItem" && hs.carrying === null) {
+          gameState.inputStateTracker.mockPressing("carry");
+        }
+      },
+      until() {
+        return expectedPortable ?
+            heelsState(gameState).carrying?.id === "testItem"
+            // if we're not expecting it to be portable, wait a short time before giving up trying to carry it:
+          : gameState.gameTime >= 5_000;
+      },
+    });
 
-  // fell back to the floor - drop the item again:
-  playGameThrough(gameState, {
-    setupInitialInput(mockInputStateTracker) {
-      // heels in on the floor - start pressing carry to put down the cube:
-      mockInputStateTracker.mockPressing("carry");
-    },
-    until() {
-      return heelsState(gameState).carrying === null;
-    },
-  });
+    if (!expectedPortable) {
+      expect(heelsState(gameState).carrying).toBeNull();
+      // ok, the test is done!
+      return;
+    }
 
-  expect(itemState(gameState, "floor").stoodOnBy).toEqual({ portable: true });
-  expect(itemState(gameState, "portable").stoodOnBy).toEqual({
-    heels: true,
-  });
-  expect(heelsState(gameState).standingOnItemId).toEqual("portable");
-});
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockNotPressing("carry");
+      },
+      until() {
+        // wait for heels to land on the floor:
+        return heelsState(gameState).standingOnItemId === "floor";
+      },
+    });
+
+    expect(heelsState(gameState).carrying?.id).toBe("testItem");
+    expect(itemState(gameState, "floor").stoodOnBy).toEqual({ heels: true });
+
+    // fell back to the floor - drop the item again:
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        // heels in on the floor - start pressing carry to put down the cube:
+        mockInputStateTracker.mockPressing("carry");
+      },
+      until() {
+        return heelsState(gameState).carrying === null;
+      },
+    });
+
+    expect(itemState(gameState, "floor").stoodOnBy).toEqual({ testItem: true });
+    expect(itemState(gameState, "testItem").stoodOnBy).toEqual({
+      heels: true,
+    });
+    expect(heelsState(gameState).standingOnItemId).toEqual("testItem");
+  },
+);
 
 // seems obscure, but caused issues putting down while pushing for heels in
 // #blacktooth27fish that would store inconsistent state and have a knock-on
