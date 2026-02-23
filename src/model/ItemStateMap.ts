@@ -298,7 +298,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   ball: SlidingItemState<RoomItemId>;
 
   monster: MonsterState<RoomItemId>;
-  pickup: FreeItemState<RoomItemId>;
+  pickup: FreeItemState<RoomItemId> & PortableItemState;
   lift: Simplify<
     {
       direction: "down" | "up";

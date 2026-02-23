@@ -8,7 +8,11 @@ import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz, scaleXyz } from "../../../utils/vectors/vectors";
-import { freeItemTypes, slidingItemTypes } from "../../physics/itemPredicates";
+import {
+  freeItemTypes,
+  portableItemTypes,
+  slidingItemTypes,
+} from "../../physics/itemPredicates";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
@@ -74,7 +78,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
           : {}),
         },
       } satisfies Partial<FreeItemState<string>>)
-    : {}),
+    : emptyObject),
     ...((
       jsonItem.type === "joystick" ||
       jsonItem.type === "emitter" ||
@@ -87,7 +91,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       ({
         ...structuredClone(jsonItem.config),
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "monster" ?
       ({
         activated: jsonItem.config.activated === "on",
@@ -104,7 +108,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
           }
         : { facing: unitVectors.towards }),
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "pickup" ?
       ({
         disappearing: {
@@ -127,56 +131,56 @@ export const initialState = (jsonItem: JsonItemUnion) => {
             : ["head", "heels", "headOverHeels"],
         },
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "movingPlatform" ?
       ({
         activated: jsonItem.config.activated === "on",
         everActivated: jsonItem.config.activated === "on",
         facing: unitVectors[jsonItem.config.startDirection],
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "switch" ?
       ({
         setting: jsonItem.config.initialSetting,
         lastToggledAtRoomTime: neverTime,
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "button" ?
       ({
         pressed: false,
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "block" ?
       ({
         disappearing: jsonItem.config.disappearing ?? null,
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "conveyor" ?
       ({
         disappearing: jsonItem.config.disappearing ?? null,
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "barrier" ?
       ({
         disappearing: jsonItem.config.disappearing ?? null,
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "lift" ?
       ({ direction: "up", vels: { lift: originXyz } } satisfies StateFragment<
         typeof jsonItem.type
       >)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "charles" ?
       ({ facing: unitVectors.towards } satisfies StateFragment<
         typeof jsonItem.type
       >)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "emitter" ?
       ({
         lastEmittedAtRoomTime: neverTime,
         quantityEmitted: 0,
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
     ...(jsonItem.type === "firedDoughnut" ?
       ({
         disappearing: { on: "touch" },
@@ -190,6 +194,16 @@ export const initialState = (jsonItem: JsonItemUnion) => {
             : originXyz,
         },
       } satisfies StateFragment<typeof jsonItem.type>)
-    : {}),
+    : emptyObject),
+    // portable items:
+    ...((
+      (portableItemTypes satisfies JsonItemType[] as JsonItemType[]).includes(
+        jsonItem.type,
+      )
+    ) ?
+      ({
+        wouldPickUpNext: false,
+      } satisfies StateFragment<(typeof portableItemTypes)[number]>)
+    : emptyObject),
   };
 };

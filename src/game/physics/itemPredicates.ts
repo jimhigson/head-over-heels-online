@@ -132,6 +132,8 @@ export const portableItemTypes = [
   "sceneryCrown",
   "monster", // <-- but only small monsters
   "slidingBlock", // <-- but only small sliding blocks
+  "pickup", // <-- Heels can pick up Head's pickups (ie, doughnuts) - different from the original
+  // but compatible since Heels never got to touch them
 ] as const satisfies ItemInPlayType[];
 const portableMonsters: MonsterWhich[] = [
   "dalek",
