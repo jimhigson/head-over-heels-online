@@ -5,6 +5,7 @@
 
 ### Features
 
+* default landing sound used for all items that land on any surface ([#711](https://github.com/jimhigson/head-over-heels-online/issues/711)) ([40e8db4](https://github.com/jimhigson/head-over-heels-online/commit/40e8db4160285b398842e95bc56dbce3103cb62f))
 * games upscale can be fractional sometimes to more precisely match the size of the screen it is played on ([#709](https://github.com/jimhigson/head-over-heels-online/issues/709)) ([961787c](https://github.com/jimhigson/head-over-heels-online/commit/961787c7a2a690b10af3d7cf8adb92418291c3a0))
 * more colours on loading bars in border ([#712](https://github.com/jimhigson/head-over-heels-online/issues/712)) ([ac4c085](https://github.com/jimhigson/head-over-heels-online/commit/ac4c085f8f7d7873d6fda0af9ebca5deabd31583))
 * more sounds for generic items: falling, scraping ([#701](https://github.com/jimhigson/head-over-heels-online/issues/701)) ([cc1b6a2](https://github.com/jimhigson/head-over-heels-online/commit/cc1b6a2c690cde1574650bb8ee18333e311b69d7))
@@ -13,19 +14,32 @@
 * room entry sounds (disabled by default) ([#706](https://github.com/jimhigson/head-over-heels-online/issues/706)) ([0b9b2d2](https://github.com/jimhigson/head-over-heels-online/commit/0b9b2d26ddcfb87d4934b56c9d34fee2893a20f4))
 * scenery players in finalRoom get shadowmasks too, same as real players ([#698](https://github.com/jimhigson/head-over-heels-online/issues/698)) ([39f0a5f](https://github.com/jimhigson/head-over-heels-online/commit/39f0a5f5ad59d5ea0fc8cea6288d33b594cd8d5e))
 * show latest version indicator on home screen ([#705](https://github.com/jimhigson/head-over-heels-online/issues/705)) ([85f4200](https://github.com/jimhigson/head-over-heels-online/commit/85f420061d61abd2973cd5976b5be6fbac4bb816))
-* slightly more expressive Heels falling sprites for towards and right direction ([#708](https://github.com/jimhigson/head-over-heels-online/issues/708)) ([36d695f](https://github.com/jimhigson/head-over-heels-online/commit/36d695f49dd8b5733290dfd9c9b4659dfce15019))
 * slightly more realistic spectrum-style loading bars ([#707](https://github.com/jimhigson/head-over-heels-online/issues/707)) ([968748d](https://github.com/jimhigson/head-over-heels-online/commit/968748dc45cf05ce1bfe2ef066196a0f1cf455dd))
 * when cheats are on, clicking/tapping on a room on the map jumps the current character there ([#715](https://github.com/jimhigson/head-over-heels-online/issues/715)) ([80aaecc](https://github.com/jimhigson/head-over-heels-online/commit/80aaeccbc9417043925d262e138c34c3819cf6b4))
 
 
 ### Bug Fixes
 
-* editor highlighted/selected items render dark pixels as black ([#695](https://github.com/jimhigson/head-over-heels-online/issues/695)) ([7f4dfa5](https://github.com/jimhigson/head-over-heels-online/commit/7f4dfa5187a5dfc57fa4261405295f8df7eb1214))
 * head facing sideways using standard 24x24 pixel sprites ([#694](https://github.com/jimhigson/head-over-heels-online/issues/694)) ([724ccb4](https://github.com/jimhigson/head-over-heels-online/commit/724ccb4c5b164921d4a813512eac4d7e94811ac0))
-* make moonbase16 less confusing by adding more drums to use to pile up to jump over volcanos ([#700](https://github.com/jimhigson/head-over-heels-online/issues/700)) ([88c7ffd](https://github.com/jimhigson/head-over-heels-online/commit/88c7ffd74f3fb885c7d7aaf1f58b4e9e9d56ce75))
+* phone wrong orientation playable ([#714](https://github.com/jimhigson/head-over-heels-online/issues/714)) ([8e93e7f](https://github.com/jimhigson/head-over-heels-online/commit/8e93e7f5ca300203bf58015c7d8b8a90d627e975))
+
+
+### Room Changes
+
+* moonbase2, moonbase4: remove room skip by diagonal jumping ([#713](https://github.com/jimhigson/head-over-heels-online/issues/713)) ([f4cba97](https://github.com/jimhigson/head-over-heels-online/commit/f4cba97f5fd658abf1f66842dd0af260ec27bd14))
+* moonbase16: make less confusing by adding more drums to use to pile up to jump over volcanos ([#700](https://github.com/jimhigson/head-over-heels-online/issues/700)) ([88c7ffd](https://github.com/jimhigson/head-over-heels-online/commit/88c7ffd74f3fb885c7d7aaf1f58b4e9e9d56ce75))
+* moonbase20, moonbase23: arrow rooms have arrow centred in room (unlike original game) ([#699](https://github.com/jimhigson/head-over-heels-online/issues/699)) ([8b7f2e0](https://github.com/jimhigson/head-over-heels-online/commit/8b7f2e027b181fcc7e994b2e715a8197c52251bf))
+
+
+### Sprite Changes
+
 * make sliding blocks stand out a bit better from the floor in moonbase arrow rooms ([#703](https://github.com/jimhigson/head-over-heels-online/issues/703)) ([4a306e4](https://github.com/jimhigson/head-over-heels-online/commit/4a306e4bf1723738c2d1937c53ccae0702760b83))
-* moonbase arrow rooms (moonbase20, moonbase23) have arrow centered in room (unlike original game) ([#699](https://github.com/jimhigson/head-over-heels-online/issues/699)) ([8b7f2e0](https://github.com/jimhigson/head-over-heels-online/commit/8b7f2e027b181fcc7e994b2e715a8197c52251bf))
-* remove room skip in #moonbase4 by diagonal jumping ([#713](https://github.com/jimhigson/head-over-heels-online/issues/713)) ([f4cba97](https://github.com/jimhigson/head-over-heels-online/commit/f4cba97f5fd658abf1f66842dd0af260ec27bd14))
+* slightly more expressive Heels falling sprites for towards and right direction ([#708](https://github.com/jimhigson/head-over-heels-online/issues/708)) ([36d695f](https://github.com/jimhigson/head-over-heels-online/commit/36d695f49dd8b5733290dfd9c9b4659dfce15019))
+
+
+### Editor Changes
+
+* editor highlighted/selected items render dark pixels as black ([#695](https://github.com/jimhigson/head-over-heels-online/issues/695)) ([7f4dfa5](https://github.com/jimhigson/head-over-heels-online/commit/7f4dfa5187a5dfc57fa4261405295f8df7eb1214))
 
 ## [1.17.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.17.0...v1.17.1) (2026-02-03)
 
@@ -42,14 +56,23 @@
 
 * emperor's guardian looks a bit more distinct ([#687](https://github.com/jimhigson/head-over-heels-online/issues/687)) ([5a462cb](https://github.com/jimhigson/head-over-heels-online/commit/5a462cb8013b19738eb41e01b23cac272fff74be))
 
+
+### Room Changes
+
+* blacktooth24: spring aligned with doorway ([#688](https://github.com/jimhigson/head-over-heels-online/issues/688)) ([d682624](https://github.com/jimhigson/head-over-heels-online/commit/d682624bfdfa2a1d0d11ff5a82627fbee8947d02))
+
 ## [1.16.3](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.2...v1.16.3) (2026-01-26)
 
 
 ### Bug Fixes
 
 * (almost) pointless early load to keep db happy ([#681](https://github.com/jimhigson/head-over-heels-online/issues/681)) ([a5ba237](https://github.com/jimhigson/head-over-heels-online/commit/a5ba237dcadbbb3cef6431e94ab02a802b7db69d))
-* editor shows map rooms in black ([#683](https://github.com/jimhigson/head-over-heels-online/issues/683)) ([1ef2daa](https://github.com/jimhigson/head-over-heels-online/commit/1ef2daa9d8b9139bbd6a38f9f018196b9c99cabb))
 * update codegen, add github workflow so does not go out of date again ([#682](https://github.com/jimhigson/head-over-heels-online/issues/682)) ([d54763c](https://github.com/jimhigson/head-over-heels-online/commit/d54763c2b3c8ac722a5d8b109c917ef292e734f6))
+
+
+### Editor Changes
+
+* editor shows map rooms in black ([#683](https://github.com/jimhigson/head-over-heels-online/issues/683)) ([1ef2daa](https://github.com/jimhigson/head-over-heels-online/commit/1ef2daa9d8b9139bbd6a38f9f018196b9c99cabb))
 
 ## [1.16.2](https://github.com/jimhigson/head-over-heels-online/compare/v1.16.1...v1.16.2) (2026-01-23)
 
@@ -89,7 +112,6 @@
 * heels sprites get more red pixels (less brown/grey) so they look more colourful ([b8b4552](https://github.com/jimhigson/head-over-heels-online/commit/b8b4552b12d1c878041a5d33390f47effd23e555))
 * improved texture monitoring (call textureInspector() on browser console) ([#661](https://github.com/jimhigson/head-over-heels-online/issues/661)) ([ce963ee](https://github.com/jimhigson/head-over-heels-online/commit/ce963ee05fcb42b9112c2dd41ab20e54e0491de9))
 * moonbase: floor re-colourisation, more consistent lighting on walls ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
-* more colourful Heels sprites ([#662](https://github.com/jimhigson/head-over-heels-online/issues/662)) ([fbafad8](https://github.com/jimhigson/head-over-heels-online/commit/fbafad8729d01a7060ebfbbb52519199f7aca768))
 * playable characters always rotate clockwise when turning 180º ([#660](https://github.com/jimhigson/head-over-heels-online/issues/660)) ([a43bc9f](https://github.com/jimhigson/head-over-heels-online/commit/a43bc9f6ce1b72499037dea7cce0d72b5c849d27))
 * redraw Head when facing fully towards the camera to be more in fitting with original game sprites ([fbafad8](https://github.com/jimhigson/head-over-heels-online/commit/fbafad8729d01a7060ebfbbb52519199f7aca768))
 * rendering refactor and general game-wide visual uplift ([#655](https://github.com/jimhigson/head-over-heels-online/issues/655)) ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
@@ -104,7 +126,15 @@
 ### Bug Fixes
 
 * fix bug where on-screen buttons don't appear pressed while actions are being handled ([bb2e74a](https://github.com/jimhigson/head-over-heels-online/commit/bb2e74a76e770700a30bd811d3c27db089e458fb))
+* rooms with shadows indicating invisible walls on the two sides closest to the camera no longer have a bright square on near corner ([#667](https://github.com/jimhigson/head-over-heels-online/issues/667)) ([f4ef85a](https://github.com/jimhigson/head-over-heels-online/commit/f4ef85a987db869517863dcabfeddae2fbd3e9cd))
+
+
+### Sprite Changes
+
 * heads sprites stray pixels while blinking ([#658](https://github.com/jimhigson/head-over-heels-online/issues/658)) ([b8b4552](https://github.com/jimhigson/head-over-heels-online/commit/b8b4552b12d1c878041a5d33390f47effd23e555))
+* more colourful Heels sprites ([#662](https://github.com/jimhigson/head-over-heels-online/issues/662)) ([fbafad8](https://github.com/jimhigson/head-over-heels-online/commit/fbafad8729d01a7060ebfbbb52519199f7aca768))
+* recolour spiky balls, bubble bots, and dark moonbase doors ([#665](https://github.com/jimhigson/head-over-heels-online/issues/665)) ([014d116](https://github.com/jimhigson/head-over-heels-online/commit/014d1161681b729f859e11a2fe6c93e51c47d0b9))
+* various sprite updates ([#669](https://github.com/jimhigson/head-over-heels-online/issues/669)) ([d724a78](https://github.com/jimhigson/head-over-heels-online/commit/d724a78f687b8ccd18d2ec0755860ec65680a85f))
 
 ## [1.14.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.14.0...v1.14.1) (2025-12-30)
 
@@ -120,15 +150,27 @@
 
 * add grace to allow player to continue running at previous speed after very short (250ms) interuption in walk inputs ([#651](https://github.com/jimhigson/head-over-heels-online/issues/651)) ([90e0008](https://github.com/jimhigson/head-over-heels-online/commit/90e00085e07f0216a2a130deb8bfadaa02b0a6e3))
 * advertise the map from pause screen ([#639](https://github.com/jimhigson/head-over-heels-online/issues/639)) ([9c2746e](https://github.com/jimhigson/head-over-heels-online/commit/9c2746eecbaf51dab07542e9c46a486c7a1c0aa6))
-* blacktooth6 room layout changed from original, but is truer to the puzzle of the original in the physics of the new engine ([#647](https://github.com/jimhigson/head-over-heels-online/issues/647)) ([c82af01](https://github.com/jimhigson/head-over-heels-online/commit/c82af01ea9a4c7efcc0226e114f92b5215d5a6f6))
 * optimise - render door legs as a single texture ([#638](https://github.com/jimhigson/head-over-heels-online/issues/638)) ([471654e](https://github.com/jimhigson/head-over-heels-online/commit/471654e22c509801f793623da1680c341cb337e7))
-* refactor room blacktooth73 to be easier to visually parse ([#649](https://github.com/jimhigson/head-over-heels-online/issues/649)) ([dfcc270](https://github.com/jimhigson/head-over-heels-online/commit/dfcc270df4e512760a379c89bbc12ca96b45350c))
 * visually player rotates towards new facing direction if turning &lt; 180º ([#650](https://github.com/jimhigson/head-over-heels-online/issues/650)) ([30d2d30](https://github.com/jimhigson/head-over-heels-online/commit/30d2d3061bc3e5749eb25496e66da39b5f6b27e1))
 
 
 ### Bug Fixes
 
 * bug where short hits on movement keys would sometimes not cause any movement ([#652](https://github.com/jimhigson/head-over-heels-online/issues/652)) ([b6b663a](https://github.com/jimhigson/head-over-heels-online/commit/b6b663ae96f3120b1b833bf1b696f52400a4aa42))
+
+
+### Room Changes
+
+* blacktooth37, bookworld11, bookworld21, bookworld24, bookworld6: room layout changed from original, but is truer to the puzzle of the original in the physics of the new engine ([#647](https://github.com/jimhigson/head-over-heels-online/issues/647)) ([c82af01](https://github.com/jimhigson/head-over-heels-online/commit/c82af01ea9a4c7efcc0226e114f92b5215d5a6f6))
+* blacktooth73, bookworld21: refactor room to be easier to visually parse ([#649](https://github.com/jimhigson/head-over-heels-online/issues/649)) ([dfcc270](https://github.com/jimhigson/head-over-heels-online/commit/dfcc270df4e512760a379c89bbc12ca96b45350c))
+
+
+### Sprite Changes
+
+* heels more consistent shading between angles ([#643](https://github.com/jimhigson/head-over-heels-online/issues/643)) ([fd2c464](https://github.com/jimhigson/head-over-heels-online/commit/fd2c4647d329b68394f37b255c9695589ba54578))
+* minor playable character redraw ([#641](https://github.com/jimhigson/head-over-heels-online/issues/641)) ([da0f9f8](https://github.com/jimhigson/head-over-heels-online/commit/da0f9f834d6835b41ac721116fa22eca77d414bf))
+* reshade Heels colourisation; make dimmed palette a bit closer to the normal one ([#644](https://github.com/jimhigson/head-over-heels-online/issues/644)) ([0b10530](https://github.com/jimhigson/head-over-heels-online/commit/0b10530613d2a762c1198eb7cf1dd6e2606dc0b8))
+* slight head recolour ([#645](https://github.com/jimhigson/head-over-heels-online/issues/645)) ([98136d6](https://github.com/jimhigson/head-over-heels-online/commit/98136d6f9de83766b72e1b206fe2a860f5977e01))
 
 ## [1.13.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.12.0...v1.13.0) (2025-12-02)
 
@@ -144,8 +186,12 @@
 * crt emulation off by default ([#634](https://github.com/jimhigson/head-over-heels-online/issues/634)) ([3c35808](https://github.com/jimhigson/head-over-heels-online/commit/3c3580834d864b3aa37ac250f26d82e664cf3354))
 * dynamically only load umami script when tracking is enabled ([#632](https://github.com/jimhigson/head-over-heels-online/issues/632)) ([e14f83e](https://github.com/jimhigson/head-over-heels-online/commit/e14f83e90af3a9ada5f1bde3615f4ae0e51d6d68))
 * fps counter is more reliable ([#630](https://github.com/jimhigson/head-over-heels-online/issues/630)) ([dd37996](https://github.com/jimhigson/head-over-heels-online/commit/dd37996f1b6ba0af2633ade19abfb12884b4c7ce))
-* improved lighting on Head sprite ([#633](https://github.com/jimhigson/head-over-heels-online/issues/633)) ([517a974](https://github.com/jimhigson/head-over-heels-online/commit/517a9745e5790d3b006569e4257e41c08e995579))
 * mask app version so visual regression tests pass when version numbers have changed ([#631](https://github.com/jimhigson/head-over-heels-online/issues/631)) ([1650ade](https://github.com/jimhigson/head-over-heels-online/commit/1650aded05e4b6e7245c865a57b4ea81ca7a077c))
+
+
+### Sprite Changes
+
+* improved lighting on Head sprite ([#633](https://github.com/jimhigson/head-over-heels-online/issues/633)) ([517a974](https://github.com/jimhigson/head-over-heels-online/commit/517a9745e5790d3b006569e4257e41c08e995579))
 * sprites - smoother lighting/shading for Head ([92e6778](https://github.com/jimhigson/head-over-heels-online/commit/92e6778423f506b32452553862a904e95e1330ef))
 
 ## [1.12.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.11.0...v1.12.0) (2025-11-30)
@@ -154,12 +200,21 @@
 ### Features
 
 * make main palette slightly more saturated and contrasty ([#625](https://github.com/jimhigson/head-over-heels-online/issues/625)) ([94594cd](https://github.com/jimhigson/head-over-heels-online/commit/94594cdee1d062055f49a3041a424bf06c429938))
-* rooms: add an extra white rabbit for Heels to get by jumping on deactivated monsters ([#623](https://github.com/jimhigson/head-over-heels-online/issues/623)) ([d3b6ddc](https://github.com/jimhigson/head-over-heels-online/commit/d3b6ddcef85337205f771cf4e7d1a1efc6866d43))
 * sprite - touched up door and conveyor rendering ([#622](https://github.com/jimhigson/head-over-heels-online/issues/622)) ([96a838d](https://github.com/jimhigson/head-over-heels-online/commit/96a838da02991d46bd0db5dac673bcf1e30acd5b))
-* sprites - more colourful main characters ([#628](https://github.com/jimhigson/head-over-heels-online/issues/628)) ([bc3e457](https://github.com/jimhigson/head-over-heels-online/commit/bc3e457a51b9966f114348075deab61cc03fe35e))
 
 
-### Bug Fixes
+### Room Changes
+
+* blacktooth37: add an extra white rabbit for Heels to get by jumping on deactivated monsters ([#623](https://github.com/jimhigson/head-over-heels-online/issues/623)) ([d3b6ddc](https://github.com/jimhigson/head-over-heels-online/commit/d3b6ddcef85337205f771cf4e7d1a1efc6866d43))
+
+
+### Sprite Changes
+
+* brighter blue in palette ([#629](https://github.com/jimhigson/head-over-heels-online/issues/629)) ([90f2de2](https://github.com/jimhigson/head-over-heels-online/commit/90f2de2c372c788498ed036c28d498914a6a90d5))
+* more colourful main characters ([#628](https://github.com/jimhigson/head-over-heels-online/issues/628)) ([bc3e457](https://github.com/jimhigson/head-over-heels-online/commit/bc3e457a51b9966f114348075deab61cc03fe35e))
+
+
+### Editor Changes
 
 * resolve lock-ups in editor when: 1) undo removes the selected item; 2) trying to move a door outside of the room; 3) allow doors only to be mouse-dragged along the wall, not out of it ([#612](https://github.com/jimhigson/head-over-heels-online/issues/612)) ([0c25b14](https://github.com/jimhigson/head-over-heels-online/commit/0c25b1439fe7307c85734a49f61fcb19b53df698))
 
@@ -175,29 +230,47 @@
 
 ### Features
 
-* change lighting direction on some main background sprites (volcanos and normal blocks) ([#601](https://github.com/jimhigson/head-over-heels-online/issues/601)) ([948fbcd](https://github.com/jimhigson/head-over-heels-online/commit/948fbcd760957133a1aec2361734320097cacbdd))
 * heels can jump-carry immediately on landing if inputs are held, head can auto-fire doughnuts if input held ([#594](https://github.com/jimhigson/head-over-heels-online/issues/594)) ([98a8317](https://github.com/jimhigson/head-over-heels-online/commit/98a8317bcea3ea4287aeabfda181a82e86e7e4b8))
 * hitting jump+carry when carrying a spring gets the extra jump height from the spring ([#604](https://github.com/jimhigson/head-over-heels-online/issues/604)) ([46222c9](https://github.com/jimhigson/head-over-heels-online/commit/46222c9161489c1e9ea15908a9a4fe2be401953c))
-* make blacktooth18 room not near-impossible in the remake engine ([#598](https://github.com/jimhigson/head-over-heels-online/issues/598)) ([22628f8](https://github.com/jimhigson/head-over-heels-online/commit/22628f864d0db882114faf8b04e3357881ec2c93))
-* more vibrant palette in dimmed rooms ([#597](https://github.com/jimhigson/head-over-heels-online/issues/597)) ([16951ad](https://github.com/jimhigson/head-over-heels-online/commit/16951ad729dea55ee65e2b6175b2dc53b2996195))
 * physics engine now allows players to push in x/y more quickly, and in z more slowly (used to be the same in both) since pushing upwards just as easily as horizontally felt unnatural ([#591](https://github.com/jimhigson/head-over-heels-online/issues/591)) ([a34cf7b](https://github.com/jimhigson/head-over-heels-online/commit/a34cf7b034eefd05323a70f0896ca8be94293e8c))
 * redraw several shadow masks, and render shadows with a custom pixel shader ([#600](https://github.com/jimhigson/head-over-heels-online/issues/600)) ([cbceebf](https://github.com/jimhigson/head-over-heels-online/commit/cbceebf63eceacd5e7e35869b725b71f2ac2f28a))
 * sliding around objects does not apply if would slide player onto a deadly item or make them fall off a platform ([#603](https://github.com/jimhigson/head-over-heels-online/issues/603)) ([471f99c](https://github.com/jimhigson/head-over-heels-online/commit/471f99c15ef782d337b3c40e4eb5db30fe60dad5))
-* slightly more shiny looking colourisation for conveyors, switches, and stepstools ([#586](https://github.com/jimhigson/head-over-heels-online/issues/586)) ([6cb86d1](https://github.com/jimhigson/head-over-heels-online/commit/6cb86d15d77c77a2c01ddce514bf236193ac8ff4))
 * slightly redraw some of the heels sprites ([#593](https://github.com/jimhigson/head-over-heels-online/issues/593)) ([6af13e2](https://github.com/jimhigson/head-over-heels-online/commit/6af13e2f81a90d64240f41df4adcb6df9383f8ee))
 * slightly refined teleporting effect ([#590](https://github.com/jimhigson/head-over-heels-online/issues/590)) ([d6d4071](https://github.com/jimhigson/head-over-heels-online/commit/d6d40716579a49542baa1f0e82d544465c11437b))
 
 
 ### Bug Fixes
 
+* ensure backwards-compatability with currently deployed game saves ([#615](https://github.com/jimhigson/head-over-heels-online/issues/615)) ([a80c19f](https://github.com/jimhigson/head-over-heels-online/commit/a80c19faf97a57c4ab8ff292d306f32eb23aae65))
 * gamespeed reverts to 1.0 after reincarnation ([#599](https://github.com/jimhigson/head-over-heels-online/issues/599)) ([b37241b](https://github.com/jimhigson/head-over-heels-online/commit/b37241b4b9bed2bed7cdd9411bc2ad14e6e9f88e))
 * if heels loses a life while carrying an item and head is in the room, the item is dropped ([#596](https://github.com/jimhigson/head-over-heels-online/issues/596)) ([dc05f01](https://github.com/jimhigson/head-over-heels-online/commit/dc05f0152d0311d17208c618ff45397a8576582d))
 * on heels leaving a room while carrying an item, if heads is in the room, the item is dropped (no longer vanishes out of the game ([#587](https://github.com/jimhigson/head-over-heels-online/issues/587)) ([c8987ff](https://github.com/jimhigson/head-over-heels-online/commit/c8987ff65e86359fdd88f27ee2d12e8f1a3af18b))
-* remove remake-specific skip in blacktooth67 ([#602](https://github.com/jimhigson/head-over-heels-online/issues/602)) ([940f5a7](https://github.com/jimhigson/head-over-heels-online/commit/940f5a7e3e895571dbde29aae004f99bcb34bd54))
-* shadows now longer show as white in level editor room preview ([#605](https://github.com/jimhigson/head-over-heels-online/issues/605)) ([392cfd2](https://github.com/jimhigson/head-over-heels-online/commit/392cfd2484e21af1aaff0b3d5f9269ac384b74d6))
 * sliding/rolling items no longer travel in unexpected ways ([#609](https://github.com/jimhigson/head-over-heels-online/issues/609)) ([39f109a](https://github.com/jimhigson/head-over-heels-online/commit/39f109ad0f7b38b404cd4952ff2ab56c075c6872))
-* update colourisation to get lighting right on several sprites ([#589](https://github.com/jimhigson/head-over-heels-online/issues/589)) ([1f535c2](https://github.com/jimhigson/head-over-heels-online/commit/1f535c2f582883f5cd5192c99dc762d18f4db003))
+* use correct mp3 files for some sound effects that had a badly converted file ([#585](https://github.com/jimhigson/head-over-heels-online/issues/585)) ([44746f9](https://github.com/jimhigson/head-over-heels-online/commit/44746f994e7991b73a5d318625703ef3d38b5390))
 * use mp3 for all sound effects ([#583](https://github.com/jimhigson/head-over-heels-online/issues/583)) ([7b9afd4](https://github.com/jimhigson/head-over-heels-online/commit/7b9afd4fb50ff139a8f5354062869c6733493aca))
+
+
+### Room Changes
+
+* blacktooth18: make room not near-impossible in the remake engine ([#598](https://github.com/jimhigson/head-over-heels-online/issues/598)) ([22628f8](https://github.com/jimhigson/head-over-heels-online/commit/22628f864d0db882114faf8b04e3357881ec2c93))
+* blacktooth18, blacktooth67: remove remake-specific skip ([#602](https://github.com/jimhigson/head-over-heels-online/issues/602)) ([940f5a7](https://github.com/jimhigson/head-over-heels-online/commit/940f5a7e3e895571dbde29aae004f99bcb34bd54))
+* blacktooth68, egyptus10, penitentiary8: various room tweaks ([#588](https://github.com/jimhigson/head-over-heels-online/issues/588)) ([b7c0fc1](https://github.com/jimhigson/head-over-heels-online/commit/b7c0fc12c2c4035b1aedb4ee3870278521dade22))
+
+
+### Sprite Changes
+
+* change lighting direction on some main background sprites (volcanos and normal blocks) ([#601](https://github.com/jimhigson/head-over-heels-online/issues/601)) ([948fbcd](https://github.com/jimhigson/head-over-heels-online/commit/948fbcd760957133a1aec2361734320097cacbdd))
+* improvements to heels sprites, blocks, armour in blacktooth, and new icons for the editor ([#608](https://github.com/jimhigson/head-over-heels-online/issues/608)) ([33a91dd](https://github.com/jimhigson/head-over-heels-online/commit/33a91ddd6703c28d69e2fc9c8cdcc7fd847031c9))
+* more consistent lighting in a few sprites ([#606](https://github.com/jimhigson/head-over-heels-online/issues/606)) ([3af93d0](https://github.com/jimhigson/head-over-heels-online/commit/3af93d082994b736ceb05c294566696dc87fb176))
+* more vibrant palette in dimmed rooms ([#597](https://github.com/jimhigson/head-over-heels-online/issues/597)) ([16951ad](https://github.com/jimhigson/head-over-heels-online/commit/16951ad729dea55ee65e2b6175b2dc53b2996195))
+* slightly more shiny looking colourisation for conveyors, switches, and stepstools ([#586](https://github.com/jimhigson/head-over-heels-online/issues/586)) ([6cb86d1](https://github.com/jimhigson/head-over-heels-online/commit/6cb86d15d77c77a2c01ddce514bf236193ac8ff4))
+* teleporter sprites get a bit more highlight while flashing ([#617](https://github.com/jimhigson/head-over-heels-online/issues/617)) ([81db719](https://github.com/jimhigson/head-over-heels-online/commit/81db7199ce2953d897820f87359c04807d1e8649))
+* update colourisation to get lighting right on several sprites ([#589](https://github.com/jimhigson/head-over-heels-online/issues/589)) ([1f535c2](https://github.com/jimhigson/head-over-heels-online/commit/1f535c2f582883f5cd5192c99dc762d18f4db003))
+
+
+### Editor Changes
+
+* shadows no longer show as white in level editor room preview ([#605](https://github.com/jimhigson/head-over-heels-online/issues/605)) ([392cfd2](https://github.com/jimhigson/head-over-heels-online/commit/392cfd2484e21af1aaff0b3d5f9269ac384b74d6))
 
 ## [1.9.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.8.0...v1.9.0) (2025-11-02)
 
@@ -214,9 +287,9 @@
 * joysticks animated when pressed ([#578](https://github.com/jimhigson/head-over-heels-online/issues/578)) ([b40b67f](https://github.com/jimhigson/head-over-heels-online/commit/b40b67fb62d09144c6c4d0563798cb94b2a0dda5))
 
 
-### Bug Fixes
+### Room Changes
 
-* avoid skip in blacktooth78 by jumping diagonally from the entrance door threshold ([#580](https://github.com/jimhigson/head-over-heels-online/issues/580)) ([dcbc7db](https://github.com/jimhigson/head-over-heels-online/commit/dcbc7db1c33444993bc6645485e76fb9b3e7f9c7))
+* blacktooth78: avoid skip by jumping diagonally from the entrance door threshold ([#580](https://github.com/jimhigson/head-over-heels-online/issues/580)) ([dcbc7db](https://github.com/jimhigson/head-over-heels-online/commit/dcbc7db1c33444993bc6645485e76fb9b3e7f9c7))
 
 ## [1.7.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.6.0...v1.7.0) (2025-10-26)
 
@@ -236,17 +309,19 @@
 * heels blinks like head on main menu screen ([#564](https://github.com/jimhigson/head-over-heels-online/issues/564)) ([e2b6a65](https://github.com/jimhigson/head-over-heels-online/commit/e2b6a658c6efbf17d57119c3b001410a33c9a005))
 * if putting down a carried item causes Heels to touch a reincarnation fish, don't create a bugged save with a duplicate of the item put down (both in the bag and in the room) - this would cause crashed on reloading the reincarnation point ([#570](https://github.com/jimhigson/head-over-heels-online/issues/570)) ([58994cf](https://github.com/jimhigson/head-over-heels-online/commit/58994cf6040b3f1ca6e835dfc9fae712a03315e7))
 
+
+### Sprite Changes
+
+* add a lower-case (variable width) version of a slash to the game font ([#565](https://github.com/jimhigson/head-over-heels-online/issues/565)) ([a8bf517](https://github.com/jimhigson/head-over-heels-online/commit/a8bf51731ce563c7aa87626ddfc42f94a27fba5d))
+* update lift colourisation ([#576](https://github.com/jimhigson/head-over-heels-online/issues/576)) ([28c7c30](https://github.com/jimhigson/head-over-heels-online/commit/28c7c3086e6add7a71dfd104144f83c4091286ea))
+
 ## [1.6.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.5.0...v1.6.0) (2025-10-15)
 
 
 ### Features
 
-* editor annotations tell user which monsters will wake when the player goes near ([#552](https://github.com/jimhigson/head-over-heels-online/issues/552)) ([7dba80b](https://github.com/jimhigson/head-over-heels-online/commit/7dba80be1e395871f6811000b8749adb496a2b0c))
 * make crt effect more subtle ([#556](https://github.com/jimhigson/head-over-heels-online/issues/556)) ([4080e85](https://github.com/jimhigson/head-over-heels-online/commit/4080e853d09efdc3a0e99f11facc4781a011df15))
 * make dimmed rooms appear more vibrant ([#559](https://github.com/jimhigson/head-over-heels-online/issues/559)) ([8ddcfed](https://github.com/jimhigson/head-over-heels-online/commit/8ddcfedada7bbba4d1122f342371ad603642ea79))
-* market scenery improved colourisation on the bricks above the stalls ([#562](https://github.com/jimhigson/head-over-heels-online/issues/562)) ([9f562c5](https://github.com/jimhigson/head-over-heels-online/commit/9f562c5f087da725d825c774011814f18e3fa663))
-* more solid-looking egyptus floors ([#553](https://github.com/jimhigson/head-over-heels-online/issues/553)) ([2754e9f](https://github.com/jimhigson/head-over-heels-online/commit/2754e9fafef955e7ba09d3095c1b961db460042f))
-* small changes in egyptus7 ([#551](https://github.com/jimhigson/head-over-heels-online/issues/551)) ([d9e0973](https://github.com/jimhigson/head-over-heels-online/commit/d9e097312f62b1ed9bd9593ce3a3acfbcc27e9e3))
 * update snapshot tests to run in parellel batches; make items dissapearing on room entry render the bubbles deterministicly so that tests do not depend on room order ([#549](https://github.com/jimhigson/head-over-heels-online/issues/549)) ([2ac95a0](https://github.com/jimhigson/head-over-heels-online/commit/2ac95a07edf15c2397c976e31bc4f675cce5dcff))
 * workflows now run on arm64 (not amd64) architecture ([#560](https://github.com/jimhigson/head-over-heels-online/issues/560)) ([6815d1c](https://github.com/jimhigson/head-over-heels-online/commit/6815d1cf67b1474219f13af13bb7abf084a432e4))
 
@@ -254,6 +329,22 @@
 ### Bug Fixes
 
 * pause/hold banner had unequal spacing on each side ([#557](https://github.com/jimhigson/head-over-heels-online/issues/557)) ([cb673ff](https://github.com/jimhigson/head-over-heels-online/commit/cb673ff620232599eeed78483d6fc44b04a4038c))
+
+
+### Room Changes
+
+* egyptus2, egyptus3: more solid-looking egyptus floors ([#553](https://github.com/jimhigson/head-over-heels-online/issues/553)) ([2754e9f](https://github.com/jimhigson/head-over-heels-online/commit/2754e9fafef955e7ba09d3095c1b961db460042f))
+* egyptus7: small changes ([#551](https://github.com/jimhigson/head-over-heels-online/issues/551)) ([d9e0973](https://github.com/jimhigson/head-over-heels-online/commit/d9e097312f62b1ed9bd9593ce3a3acfbcc27e9e3))
+
+
+### Sprite Changes
+
+* market scenery improved colourisation on the bricks above the stalls ([#562](https://github.com/jimhigson/head-over-heels-online/issues/562)) ([9f562c5](https://github.com/jimhigson/head-over-heels-online/commit/9f562c5f087da725d825c774011814f18e3fa663))
+
+
+### Editor Changes
+
+* editor annotations tell user which monsters will wake when the player goes near ([#552](https://github.com/jimhigson/head-over-heels-online/issues/552)) ([7dba80b](https://github.com/jimhigson/head-over-heels-online/commit/7dba80be1e395871f6811000b8749adb496a2b0c))
 
 ## [1.5.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.4.0...v1.5.0) (2025-10-12)
 
@@ -270,12 +361,16 @@
 ### Features
 
 * cyan rooms get blue/grey shadows; generally darker mid/dark tones in most rooms ([#542](https://github.com/jimhigson/head-over-heels-online/issues/542)) ([dfe61cd](https://github.com/jimhigson/head-over-heels-online/commit/dfe61cda9b5ba2186d8eabfaf309fde59b718eaa))
-* lower-case text in editor room annotations ([#543](https://github.com/jimhigson/head-over-heels-online/issues/543)) ([83b7cdb](https://github.com/jimhigson/head-over-heels-online/commit/83b7cdba71edc1020a61ea22efd12452d4783112))
 
 
 ### Bug Fixes
 
 * picking items up also gets coyote time, for running and jumping and picking up items, to pick up for a short time after leaving the item ([#544](https://github.com/jimhigson/head-over-heels-online/issues/544)) ([07f39dc](https://github.com/jimhigson/head-over-heels-online/commit/07f39dcce017c69f682d7ddd9145fb95654daed8))
+
+
+### Editor Changes
+
+* lower-case text in editor room annotations ([#543](https://github.com/jimhigson/head-over-heels-online/issues/543)) ([83b7cdb](https://github.com/jimhigson/head-over-heels-online/commit/83b7cdba71edc1020a61ea22efd12452d4783112))
 
 ## [1.3.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.2.0...v1.3.0) (2025-10-09)
 
@@ -285,6 +380,11 @@
 * make crt emulation brighter overall ([#538](https://github.com/jimhigson/head-over-heels-online/issues/538)) ([53a16f5](https://github.com/jimhigson/head-over-heels-online/commit/53a16f5e9d4fa07e97d1a1728b54e5919445947a))
 * make easier to walk though doors by applying sliding even if more misalligned than before ([#537](https://github.com/jimhigson/head-over-heels-online/issues/537)) ([7cd27dc](https://github.com/jimhigson/head-over-heels-online/commit/7cd27dc8251686523ba52aeb410c1f9c0507db3c))
 * make some monster sounds quieter ([#539](https://github.com/jimhigson/head-over-heels-online/issues/539)) ([ee189b5](https://github.com/jimhigson/head-over-heels-online/commit/ee189b5be1e156ca10df5a5d233bd453bd7ad885))
+
+
+### Bug Fixes
+
+* update shader library to not crash on windows/chrome/d3d ([#540](https://github.com/jimhigson/head-over-heels-online/issues/540)) ([6253c0c](https://github.com/jimhigson/head-over-heels-online/commit/6253c0c18c6f5d1ae7355be75625d2e8bfe916f1))
 
 ## [1.2.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.1.1...v1.2.0) (2025-10-08)
 
@@ -303,10 +403,15 @@
 * minor footer allignment ([#530](https://github.com/jimhigson/head-over-heels-online/issues/530)) ([a4e928b](https://github.com/jimhigson/head-over-heels-online/commit/a4e928b68f62c016303b1145dab0d2c74636c8f3))
 * more modern default keys, hold dialog minor formatting (now called PAUSE, not "Hold") ([#531](https://github.com/jimhigson/head-over-heels-online/issues/531)) ([b82f6bc](https://github.com/jimhigson/head-over-heels-online/commit/b82f6bcda1c0747dfc6e12109179d4f2c8ad6712))
 
+
+### Room Changes
+
+* finalroom: congratulations scroll minor rewrite ([#532](https://github.com/jimhigson/head-over-heels-online/issues/532)) ([efa4b88](https://github.com/jimhigson/head-over-heels-online/commit/efa4b88933998a333532d78c93bed3f4652fc004))
+
 ## [1.1.1](https://github.com/jimhigson/head-over-heels-online/compare/v1.1.0...v1.1.1) (2025-10-08)
 
 
-### Bug Fixes
+### Editor Changes
 
 * update editor ui to properly use upper/lower case characters ([#524](https://github.com/jimhigson/head-over-heels-online/issues/524)) ([3ff70a2](https://github.com/jimhigson/head-over-heels-online/commit/3ff70a255efaa03cae5a6d360122f7d44506b8b1))
 

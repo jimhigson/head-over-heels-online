@@ -3,6 +3,48 @@
   "release-type": "node",
   "versioning": "always-bump-major",
   "include-component-in-tag": false,
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Features"
+    },
+    {
+      "type": "fix",
+      "section": "Bug Fixes"
+    },
+    {
+      "type": "room",
+      "section": "Room Changes"
+    },
+    {
+      "type": "sprite",
+      "section": "Sprite Changes"
+    },
+    {
+      "type": "editor",
+      "section": "Editor Changes"
+    },
+    {
+      "type": "chore",
+      "section": "Miscellaneous",
+      "hidden": true
+    },
+    {
+      "type": "ci",
+      "section": "CI CD Changes",
+      "hidden": true
+    },
+    {
+      "type": "refactor",
+      "section": "Refactoring",
+      "hidden": true
+    },
+    {
+      "type": "test",
+      "section": "Tests",
+      "hidden": true
+    }
+  ],
   "packages": {
     ".": {
       "extra-files": [
