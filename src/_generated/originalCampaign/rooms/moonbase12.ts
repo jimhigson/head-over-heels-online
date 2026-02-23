@@ -6,14 +6,49 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "moonbase12",
   items: {
+    block: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "block",
+    },
     "block@0,0,3": {
-      config: { style: "organic", times: { x: 6 } },
+      config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 0, z: 3 },
       type: "block",
     },
     "block@0,2,3": {
       config: { style: "organic", times: { y: 3 } },
       position: { x: 0, y: 2, z: 3 },
+      type: "block",
+    },
+    block_2: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 2, z: 0 },
+      type: "block",
+    },
+    block_3: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 4, z: 0 },
+      type: "block",
+    },
+    block_4: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 7, y: 0, z: 0 },
+      type: "block",
+    },
+    block_5: {
+      config: { style: "organic", times: { y: 6 } },
+      position: { x: 7, y: 2, z: 3 },
+      type: "block",
+    },
+    block_6: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 7, y: 7, z: 0 },
+      type: "block",
+    },
+    block_7: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 7, y: 2, z: 0 },
       type: "block",
     },
     "door@0,3,4": {
@@ -37,17 +72,17 @@ export const room = inferRoomJson({
     },
     "hushPuppy@5,0,0": {
       config: {},
-      position: { x: 5, y: 0, z: 0 },
+      position: { x: 6, y: 5, z: 0 },
       type: "hushPuppy",
     },
     "hushPuppy@6,0,1": {
       config: {},
-      position: { x: 6, y: 0, z: 1 },
+      position: { x: 6, y: 6, z: 1 },
       type: "hushPuppy",
     },
     "hushPuppy@7,0,2": {
       config: {},
-      position: { x: 7, y: 0, z: 2 },
+      position: { x: 6, y: 7, z: 2 },
       type: "hushPuppy",
     },
     "wall(right)@0,0,0": {
