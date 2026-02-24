@@ -42,7 +42,7 @@ const defaultStandingOnSoundOptions: BracketedSegmentOptions = {
 };
 
 const playSoundStandingOnCheck = (
-  actedOnBy: Record<string, unknown>,
+  actedOnBy: Record<string, true>,
   standingOnItemId: string,
 ): boolean => {
   let hasAny = false;
@@ -53,7 +53,8 @@ const playSoundStandingOnCheck = (
     }
     hasAny = true;
   }
-  // if is empty, we play the sound, otherwise we only found what we're stood on
+  // if is empty, we play the sound,
+  // otherwise we only found what we're stood on, which never gets the pushing sound:
   return !hasAny;
 };
 
@@ -176,21 +177,9 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
         actedInXY &&
         // must be standing on something to scrape on the ground:
         standingOnItemId !== null &&
-        // being acted on by the thing we are standing on (only) doesn't count:
-        // restore this - but is causing issues for long-running pushed items!
         playSoundStandingOnCheck(actedOnBy, standingOnItemId) &&
         // must be moving(!)
         movedItems.has(item);
-
-      // if (beingPushed) {
-      //   console.log(
-      //     item.id,
-      //     "being pushed",
-      //     item.state.action,
-      //     item.state.actedOnAt,
-      //     `standingOnItemId: ${standingOnItemId}`,
-      //   );
-      // }
 
       this.#pushedBracketedSound(beingPushed);
     }

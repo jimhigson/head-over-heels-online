@@ -5081,7 +5081,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "actedOnAt": {
           "actedInXY": true,
           "actedInZ": false,
-          "by": {},
+          "by": {
+            "conveyor@3,6,0": true,
+          },
           "roomTime": 30016.66666666516,
         },
         "collidedWith": {
@@ -5302,7 +5304,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "actedOnAt": {
           "actedInXY": true,
           "actedInZ": false,
-          "by": {},
+          "by": {
+            "conveyor@0,0,0": true,
+          },
           "roomTime": 2408.3333333333326,
         },
         "collidedWith": {
@@ -6016,7 +6020,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "actedOnAt": {
           "actedInXY": true,
           "actedInZ": false,
-          "by": {},
+          "by": {
+            "conveyor@6,7,0": true,
+          },
           "roomTime": 30016.66666666516,
         },
         "collidedWith": {
