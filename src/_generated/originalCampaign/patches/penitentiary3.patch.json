@@ -13,6 +13,11 @@
     "value": "right"
   },
   {
+    "op": "replace",
+    "path": "/items/switch@0,0,0/position/x",
+    "value": 1
+  },
+  {
     "op": "add",
     "path": "/items/switch@0,0,0/config/modifies/0",
     "value": {
@@ -37,6 +42,21 @@
     "op": "replace",
     "path": "/items/movingPlatform@0,1,0/config/startDirection",
     "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/block",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "type": "block"
+    }
   },
   {
     "op": "replace",
