@@ -22,6 +22,7 @@ import {
   conveyorSpeedPixPerMs,
   moveSpeedPixPerMs,
 } from "../mechanicsConstants";
+import { recordActedOnBy } from "../recordActedOnBy";
 
 const resetConveyorStateForItem = {
   movementType: "vel",
@@ -79,6 +80,8 @@ export const onConveyor: Mechanic<FreeItemTypes> = <
     heelsWalkingAgainst ? moveSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
 
   const conveyorVelocity = scaleXyz(unitVectors[direction], conveyorSpeed);
+
+  recordActedOnBy(standingOn.id, item, room, true, false);
 
   return {
     movementType: "vel",

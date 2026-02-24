@@ -5,6 +5,8 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
 import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
+import { epsilon } from "../../utils/epsilon";
+import { lengthXy } from "../../utils/vectors/vectors";
 import { audioCtx } from "../audioCtx";
 import { loadedSounds } from "../soundsLoader";
 import {
@@ -109,6 +111,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
         position: { z: positionZ },
         vels: {
           gravity: { z: velZ },
+          walking,
         },
       },
     } = item;
@@ -130,7 +133,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       standingOnItemId === null;
 
     const playWalkSound =
-      !playJumpSound && !playFallSound && action === "moving";
+      !playJumpSound && !playFallSound && lengthXy(walking) > epsilon;
 
     // walking
     if (this.#walkBracketedSound !== undefined) {
