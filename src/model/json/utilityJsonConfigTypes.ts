@@ -3,6 +3,7 @@ import type { Xyz } from "../../utils/vectors/vectors";
 export type BlockStyle = "artificial" | "book" | "organic" | "tower";
 
 export type JsonMovement =
+  | "anticlockwise"
   | "back-forth"
   | "clockwise"
   | "forwards"

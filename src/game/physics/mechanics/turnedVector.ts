@@ -14,6 +14,12 @@ export const turnedVector = (
         y: mtv.y === 0 ? walkVector.y : -walkVector.y,
         z: 0,
       };
+    case "anticlockwise":
+      return {
+        x: walkVector.y,
+        y: -walkVector.x,
+        z: 0,
+      };
     case "clockwise":
       return {
         x: -walkVector.y,
@@ -32,6 +38,7 @@ export const turnedVector = (
   }
 };
 export type TurnStrategy =
+  | "anticlockwise"
   | "clockwise"
   | "opposite"
   | "perpendicular-or-reverse"

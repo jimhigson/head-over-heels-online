@@ -6,6 +6,21 @@
   },
   {
     "op": "add",
+    "path": "/items/block",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/block@3,3,0",
     "value": {
       "config": {
@@ -56,6 +71,42 @@
         "z": 2
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/turtle",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "anticlockwise",
+        "startDirection": "right",
+        "which": "turtle"
+      },
+      "position": {
+        "x": 5,
+        "y": 3,
+        "z": 3
+      },
+      "type": "monster"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/turtle_2",
+    "value": {
+      "config": {
+        "activated": "on",
+        "movement": "clockwise",
+        "startDirection": "right",
+        "which": "turtle"
+      },
+      "position": {
+        "x": 5,
+        "y": 2,
+        "z": 3
+      },
+      "type": "monster"
     }
   },
   {

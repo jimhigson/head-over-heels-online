@@ -359,7 +359,11 @@ export type RoomJsonSchema = {
             }
           | {
               which: "turtle";
-              movement: "back-forth" | "clockwise" | "forwards";
+              movement:
+                | "back-forth"
+                | "clockwise"
+                | "forwards"
+                | "anticlockwise";
               startDirection: "right" | "towards" | "away" | "left";
               activated: "off" | "on";
             }
@@ -921,7 +925,11 @@ export type RoomJsonSchema = {
                             }
                           | {
                               which: "turtle";
-                              movement: "back-forth" | "clockwise" | "forwards";
+                              movement:
+                                | "back-forth"
+                                | "clockwise"
+                                | "forwards"
+                                | "anticlockwise";
                               startDirection:
                                 | "right"
                                 | "towards"
@@ -1163,7 +1171,11 @@ export type RoomJsonSchema = {
                             }
                           | {
                               which: "turtle";
-                              movement: "back-forth" | "clockwise" | "forwards";
+                              movement:
+                                | "back-forth"
+                                | "clockwise"
+                                | "forwards"
+                                | "anticlockwise";
                               startDirection:
                                 | "right"
                                 | "towards"
@@ -1521,7 +1533,11 @@ export type RoomJsonSchema = {
                     }
                   | {
                       which: "turtle";
-                      movement: "back-forth" | "clockwise" | "forwards";
+                      movement:
+                        | "back-forth"
+                        | "clockwise"
+                        | "forwards"
+                        | "anticlockwise";
                       startDirection: "right" | "towards" | "away" | "left";
                       activated: "off" | "on";
                     }
@@ -2088,7 +2104,11 @@ export type RoomJsonSchema = {
                         }
                       | {
                           which: "turtle";
-                          movement: "back-forth" | "clockwise" | "forwards";
+                          movement:
+                            | "back-forth"
+                            | "clockwise"
+                            | "forwards"
+                            | "anticlockwise";
                           startDirection: "right" | "towards" | "away" | "left";
                           activated: "off" | "on";
                         }
@@ -2310,7 +2330,11 @@ export type RoomJsonSchema = {
                         }
                       | {
                           which: "turtle";
-                          movement: "back-forth" | "clockwise" | "forwards";
+                          movement:
+                            | "back-forth"
+                            | "clockwise"
+                            | "forwards"
+                            | "anticlockwise";
                           startDirection: "right" | "towards" | "away" | "left";
                           activated: "off" | "on";
                         }
