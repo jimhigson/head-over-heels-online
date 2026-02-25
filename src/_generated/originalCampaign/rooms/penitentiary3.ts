@@ -6,6 +6,11 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "penitentiary3",
   items: {
+    block: {
+      config: { style: "artificial" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "block",
+    },
     "block@0,3,0": {
       config: { style: "artificial", times: { y: 2 } },
       position: { x: 0, y: 3, z: 0 },
@@ -59,7 +64,7 @@ export const room = inferRoomJson({
         ],
         type: "in-room",
       },
-      position: { x: 0, y: 0, z: 0 },
+      position: { x: 1, y: 0, z: 0 },
       type: "switch",
     },
     "switch@7,7,0": {
