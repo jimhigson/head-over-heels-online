@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
 import { dispatchSaveGame } from "../../game/gameState/saving/dispatchSaveGame";
-import { isInPlaytestMode } from "../../game/isInPlaytestMode";
 import { useAppStore } from "../hooks";
 import { holdPressed } from "../slices/gameMenus/gameMenusSlice";
 
@@ -19,10 +18,8 @@ export const useHoldOnWindowHidden = (): void => {
       if (document.visibilityState === "hidden") {
         store.dispatch(holdPressed("hold"));
 
-        if (!isInPlaytestMode()) {
-          // probably a good time to save:
-          dispatchSaveGame(gameApi.gameState, store);
-        }
+        // probably a good time to save:
+        dispatchSaveGame(gameApi.gameState, store);
       }
     };
 
