@@ -25,7 +25,6 @@ import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDe
 import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
 import { importTauriProcess } from "../../../../../../utils/tauri/dynamicLoad";
 import { dispatchSaveGame } from "../../../../../gameState/saving/dispatchSaveGame";
-import { isInPlaytestMode } from "../../../../../isInPlaytestMode";
 import { useMaybeGameApi } from "../../../../GameApiContext";
 import {
   BitmapText,
@@ -146,7 +145,7 @@ const ExitAppMenuItem = () => {
         if (!selectedOnce) {
           setSelectedOnce(true);
         } else {
-          if (isGameRunning && !isInPlaytestMode()) {
+          if (isGameRunning) {
             dispatchSaveGame(gameApi!.gameState, store);
             await persistor.flush();
           }
