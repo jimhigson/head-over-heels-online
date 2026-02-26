@@ -3,7 +3,11 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
+import {
+  firstRoomId,
+  secondRoomId,
+  setUpBasicGame,
+} from "../../../_testUtils/basicRoom";
 import {
   headState,
   heelsState,
@@ -11,6 +15,7 @@ import {
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
   resetStore();
@@ -471,3 +476,62 @@ describe("hmv blocked by falling or deadly", () => {
     },
   );
 });
+
+test.for(["right", "left"] as const)(
+  "slides to come out of a doorway, even if nowhere to land %j",
+  (walkDirection) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: {
+            x: 1,
+            // at this y head is perfectly aligned to get through the door without colliding with the doorframe
+            y: 2.5,
+            z: 0,
+          },
+          config: {
+            which: "head",
+          },
+        },
+        doorToSecondRoom: {
+          type: "door",
+          position: { x: 0, y: 2, z: 0 },
+          config: { direction: "right", toRoom: secondRoomId },
+        },
+      },
+      secondRoomItems: {
+        doorToFirstRoom: {
+          type: "door",
+          position: {
+            x: 8,
+            y: 2,
+            // door is high - so there is no floor to slide onto:
+            z: 4,
+          },
+          config: { direction: "left", toRoom: firstRoomId },
+        },
+      },
+    });
+
+    // walk until reaching second room:
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "right";
+      },
+      until(gameState) {
+        return selectCurrentRoomState(gameState)?.id === secondRoomId;
+      },
+    });
+
+    // walk perpendicular to the doorway to slide on the doorframe:
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = walkDirection;
+      },
+      until(gameState) {
+        return headState(gameState).standingOnItemId === "floor";
+      },
+    });
+  },
+);

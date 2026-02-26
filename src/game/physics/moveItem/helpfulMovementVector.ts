@@ -237,11 +237,19 @@ export const helpfulMovementVector = <
   const negWins = slideScoreNegSide > slideScorePosSide;
 
   if (negWins) {
-    if (!somewhereToSlideToOnPosSide) {
+    if (
+      !somewhereToSlideToOnPosSide &&
+      // doors are an exception - can slide on doorframes even if there's nothing to slide onto:
+      slideScoreNegSide !== slideScoreColWithDoorFrame
+    ) {
       return;
     }
   } else {
-    if (!somewhereToSlideToOnNegSide) {
+    if (
+      !somewhereToSlideToOnNegSide &&
+      // doors are an exception - can slide on doorframes even if there's nothing to slide onto:
+      slideScorePosSide !== slideScoreColWithDoorFrame
+    ) {
       return;
     }
   }

@@ -55,14 +55,6 @@ const basicEmptyRoomWithItems = (
   };
 };
 
-/*const gameStateWithInput = (
-  gameState: GameState<TestRoomId>,
-  inputState?: Partial<InputState>,
-): GameState<TestRoomId> => ({
-  ...gameState,
-  inputStateTracker: { ...gameState.inputStateTracker, ...inputState },
-});*/
-
 export const setupGameForCampaign = <RoomId extends string>(
   campaign: Campaign<RoomId>,
 ) => {
