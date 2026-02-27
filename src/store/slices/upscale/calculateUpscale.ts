@@ -11,7 +11,7 @@ import { scaleXy, type Xy } from "../../../utils/vectors/vectors";
 // non-powers of 2 tend to give less wobbliness artifacts on animations (esp animated sprites like
 // homing bot monsters) - presumably because they are never exactly on the boundary of two rounding
 // directions
-const scaleSubsteps = 5;
+const scaleSubsteps = 1;
 
 export type CalculateUpscaleOptions = {
   renderAreaSize: Xy;
