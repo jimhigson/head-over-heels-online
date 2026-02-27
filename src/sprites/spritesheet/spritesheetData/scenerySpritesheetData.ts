@@ -1,5 +1,6 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
+import type { Xy } from "../../../utils/vectors/vectors";
 import type { SceneryName, Wall } from "../../planets";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
 import type {
@@ -7,6 +8,7 @@ import type {
   SceneryWithOwnDoors,
 } from "./doorSpritesheetData";
 
+import { fromAllEntries } from "../../../utils/entries";
 import { wallTiles } from "../../planets";
 import { doorFrames, sceneryWithOwnDoors } from "./doorSpritesheetData";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
@@ -89,14 +91,14 @@ const backgroundFrames = <SN extends SceneryName, TDark extends ".dark" | "">(
     ];
 
     if (hasDoor) {
-      const doorY = startY + yStep * walls.length - 9;
+      const doorY = startY + yStep * walls.length - 1;
       yield* doorFrames(`${planet as SN & SceneryWithOwnDoors}${isDark}`, "x", {
-        x: startX + w * walls.length + 1,
+        x: startX + w * walls.length,
         y: doorY,
       }) as Generator<GeneratorTuple>;
 
       yield* doorFrames(`${planet as SN & SceneryWithOwnDoors}${isDark}`, "y", {
-        x: startX - w * walls.length - 2,
+        x: startX - w * walls.length - 1,
         y: doorY,
       }) as Generator<GeneratorTuple>;
     }
@@ -111,6 +113,67 @@ const backgroundFrames = <SN extends SceneryName, TDark extends ".dark" | "">(
 
 const floorEdgeSize = { w: 16, h: 13 };
 const floorEdgeHalfSize = { w: 8, h: 9 };
+
+type DoorLegPrefix<S extends "generic" | SceneryName, Dark extends boolean> =
+  Dark extends true ? `${S}.dark` : S;
+
+type DoorLegTextureId<
+  S extends "generic" | SceneryName,
+  Dark extends boolean,
+> = `${DoorLegPrefix<S, Dark>}.door.legs.${"base" | "pillar" | "threshold"}.${"x" | "y"}`;
+type SpritesheetFrameDataMaybeWithPivot = SpritesheetFrameData & {
+  frame: { pivot?: Xy };
+};
+
+const doorLegsFrames = <
+  S extends "generic" | SceneryName,
+  Dark extends boolean = false,
+>(
+  scenery: S,
+  centrePosition: Xy,
+  isDark?: Dark,
+): Record<DoorLegTextureId<S, Dark>, SpritesheetFrameDataMaybeWithPivot> => {
+  const w = wallTileSize.w * 2;
+  const prefix = isDark ? `${scenery}.dark` : scenery;
+
+  function* doorLegsFramesGen(): Generator<
+    [DoorLegTextureId<S, Dark>, SpritesheetFrameDataMaybeWithPivot]
+  > {
+    const partW = w + 8;
+    for (const [part, yOffset, h, pivotY] of [
+      ["threshold", 0, 24, 21],
+      ["pillar", 25, 20, 17],
+      ["base", 46, 20, 17],
+    ] as const) {
+      yield [
+        `${prefix}.door.legs.${part}.x` as DoorLegTextureId<S, Dark>,
+        {
+          frame: {
+            x: centrePosition.x + 1,
+            y: centrePosition.y + yOffset,
+            w: partW,
+            h,
+            pivot: { x: w, y: pivotY },
+          },
+        },
+      ];
+      yield [
+        `${prefix}.door.legs.${part}.y` as DoorLegTextureId<S, Dark>,
+        {
+          frame: {
+            x: centrePosition.x - 40,
+            y: centrePosition.y + yOffset,
+            w: partW,
+            h,
+            pivot: { x: 8, y: pivotY },
+          },
+        },
+      ];
+    }
+  }
+
+  return fromAllEntries(doorLegsFramesGen());
+};
 
 const yPeriod = 74;
 let y = 53;
@@ -132,17 +195,17 @@ const frames = {
   ...backgroundFrames("safari", 834, (y += yPeriod), ""),
   ...backgroundFrames("safari", 834, y, ".dark"), // same really
 
-  "floorEdge.right": {
-    frame: { x: 418, y: 466, ...floorEdgeSize, pivot: { x: 0, y: 4 } },
-  },
   "floorEdge.towards": {
-    frame: { x: 401, y: 466, ...floorEdgeSize, pivot: { x: 15, y: 4 } },
-  },
-  "floorEdge.half.right": {
-    frame: { x: 418, y: 470, ...floorEdgeHalfSize, pivot: { x: 0, y: 0 } },
+    frame: { x: 421, y: 472, ...floorEdgeSize, pivot: { x: 15, y: 4 } },
   },
   "floorEdge.half.towards": {
-    frame: { x: 401, y: 466, ...floorEdgeHalfSize, pivot: { x: 7, y: 0 } },
+    frame: { x: 421, y: 472, ...floorEdgeHalfSize, pivot: { x: 7, y: 0 } },
+  },
+  "floorEdge.right": {
+    frame: { x: 438, y: 472, ...floorEdgeSize, pivot: { x: 0, y: 4 } },
+  },
+  "floorEdge.half.right": {
+    frame: { x: 438, y: 476, ...floorEdgeHalfSize, pivot: { x: 0, y: 0 } },
   },
   "floorOverdraw.cornerNearWall": {
     frame: { x: 623, y: 452, w: wallTileSize.w, h: 8 },
@@ -160,25 +223,10 @@ const frames = {
     frame: { x: 785, y: 479, ...floorTileSize },
   },
 
-  // doors names after the axis they go along: x=towards/away, y=left/right
-  "generic.door.legs.pillar.y": {
-    frame: { x: 508, y: 476, w: wallTileSize.w, h: 12 },
-  },
-  "generic.door.legs.base.y": {
-    frame: { x: 508, y: 488, w: wallTileSize.w, h: 9 },
-  },
-  "generic.door.legs.pillar.x": {
-    frame: { x: 524, y: 476, w: wallTileSize.w, h: 12 },
-  },
-  "generic.door.legs.base.x": {
-    frame: { x: 524, y: 488, w: wallTileSize.w, h: 9 },
-  },
-  "generic.door.legs.threshold.double.x": {
-    frame: { x: 508, y: 452, w: wallTileSize.w * 2, h: 24 },
-  },
-  "generic.door.legs.threshold.double.y": {
-    frame: { x: 469, y: 452, w: wallTileSize.w * 2, h: 24 },
-  },
+  ...doorLegsFrames("generic", { x: 441, y: 498 }),
+  ...doorLegsFrames("moonbase", { x: 955, y: 173 }),
+  ...doorLegsFrames("moonbase", { x: 955, y: 387 }, true),
+
   "shadowMask.door.legs.threshold.double.y": {
     frame: {
       x: 469,
@@ -190,8 +238,8 @@ const frames = {
   },
   "generic.door.floatingThreshold.x": {
     frame: {
-      x: 457,
-      y: 492,
+      x: 448,
+      y: 452,
       w: 26,
       h: 19,
 
@@ -200,8 +248,8 @@ const frames = {
   },
   "generic.door.floatingThreshold.y": {
     frame: {
-      x: 430,
-      y: 492,
+      x: 421,
+      y: 452,
       w: 26,
       h: 19,
 
@@ -261,6 +309,48 @@ const frames = {
     },
     { w: 10, h: 7 },
   ),
+  "moonbase.wallDoorTransition.away": {
+    frame: {
+      x: 971,
+      y: 247,
+      ...wallTileSize,
+    },
+  },
+  "moonbase.wallDoorTransition.away.dark": {
+    frame: {
+      x: 971,
+      y: 321,
+      ...wallTileSize,
+    },
+  },
+  "moonbase.wallDoorTransition.away.mask": {
+    frame: {
+      x: 988,
+      y: 247,
+      ...wallTileSize,
+    },
+  },
+  "moonbase.wallDoorTransition.left": {
+    frame: {
+      x: 681,
+      y: 247,
+      ...wallTileSize,
+    },
+  },
+  "moonbase.wallDoorTransition.left.dark": {
+    frame: {
+      x: 681,
+      y: 321,
+      ...wallTileSize,
+    },
+  },
+  "moonbase.wallDoorTransition.left.mask": {
+    frame: {
+      x: 664,
+      y: 247,
+      ...wallTileSize,
+    },
+  },
 } as const;
 
 export const scenerySpritesheetData = {

@@ -1,4 +1,5 @@
 import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
+import type { SceneryName } from "../../../sprites/planets";
 import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { ItemAppearance } from "./ItemAppearance";
 
@@ -15,9 +16,10 @@ const blockTextureId = (
   isDark: boolean,
   style: BlockStyle,
   isDissapearing: boolean,
+  scenery: SceneryName,
 ): TextureId => {
   if (style === "tower") {
-    return "tower";
+    return scenery === "moonbase" ? "tower.moonbase" : "tower";
   }
   if (style === "book") {
     return `book.x`;
@@ -57,6 +59,7 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           room.color.shade === "dimmed",
           style,
           isDissapearing,
+          room.planet,
         ),
         times,
         spritesheetVariant: colourised ? "for-current-room" : "uncolourised",

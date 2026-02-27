@@ -287,6 +287,7 @@ export const isJoystick = isItemType("joystick");
 export const isConveyor = isItemType("conveyor");
 export const isHushPuppy = isItemType("hushPuppy");
 export const isFiredDoughnut = isItemType("firedDoughnut");
+export const isDoorframeOrLegs = isItemType("doorFrame", "doorLegs");
 export const isWallOrDoorFrame = isItemType("wall", "doorFrame");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("monster", "movingPlatform");

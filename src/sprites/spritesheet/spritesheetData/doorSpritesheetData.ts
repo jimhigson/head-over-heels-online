@@ -111,10 +111,6 @@ export const doorSpritesheetData = {
     concat(
       doorFrames("generic", "y", { x: 580, y: 415 }),
       doorFrames("generic", "x", { x: 582, y: 415 }),
-      // ...doorFrames("moonbase", "y", { x: 752, y: 232 }),
-      // ...doorFrames("moonbase", "x", { x: 915, y: 232 }),
-      // ...doorFrames("moonbase.dark", "y", { x: 752, y: 306 }),
-      // ...doorFrames("moonbase.dark", "x", { x: 915, y: 306 }),
     ),
   ),
 } as const satisfies Pick<SpritesheetData, "frames">;
