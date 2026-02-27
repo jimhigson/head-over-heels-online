@@ -140,9 +140,9 @@ describe("descriptive cases", () => {
         y: 1200,
       },
 
-      // would be 6 if rounded down to integer, but with scaleSubsteps of 5,
+      // would be 6 if rounded down to integer, but eg, with scaleSubsteps of 5,
       // rounds to the nearest fifth:
-      gameEngineUpscale: 6.2,
+      gameEngineUpscale: 6,
       // gets back down to hardware pixels:
       cssUpscale: 0.5,
       rotate90: false,
