@@ -1,3 +1,4 @@
+import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { MovedItems } from "./progressGameState";
 
@@ -6,7 +7,10 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../model/RoomState";
-import { collisionItemWithIndex } from "../collision/aabbCollision";
+import {
+  collisionItemWithIndex,
+  hasCollisionItemWithIndex,
+} from "../collision/aabbCollision";
 import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
 import { type FreeItem, isFreeItem, isSolid } from "../physics/itemPredicates";
 
@@ -84,20 +88,33 @@ export const snapInactiveItemsToPixelGrid = <
 
     const { id } = item;
 
-    const collisionsAfterSnapping = collisionItemWithIndex(
-      { id, aabb: item.aabb, state: { position: snappedPosition } },
+    const collisionPredicate = (
+      i: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    ): boolean => i.id !== id && isSolid(i, item);
+    const snappedCollideable = {
+      id,
+      aabb: item.aabb,
+      state: { position: snappedPosition },
+    };
+    const collidesAfterSnapping = hasCollisionItemWithIndex(
+      snappedCollideable,
       room[roomSpatialIndexKey],
-      (i) => i.id !== id && isSolid(i, item),
-    ).toArray();
-    //if (!isEmpty(collisionsAfterSnapping)) {
-    if (collisionsAfterSnapping.length > 0) {
+      collisionPredicate,
+    );
+    if (collidesAfterSnapping) {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       logSnapping &&
         console.log(
           "not snapping because of collision:",
           item.id,
           "would collide with",
-          collisionsAfterSnapping.map((c) => c.id),
+          collisionItemWithIndex(
+            snappedCollideable,
+            room[roomSpatialIndexKey],
+            collisionPredicate,
+          )
+            .map((i) => i.id)
+            .toArray(),
         );
       continue;
     }

@@ -101,3 +101,34 @@ export function* collisionItemWithIndex<
     }
   }
 }
+
+/**
+ * Check for collisions between a single item and multiple others - similar to
+ * @see collisionItemWithIndex, except for when the caller doesn't need to know
+ * what the collided items are, only that they exist.
+ *
+ * equivalent to, but more efficient than:
+ *
+ * ```ts
+ *    isEmpty(collisionItemWithIndex(...))
+ * ```
+ */
+export const hasCollisionItemWithIndex = <C extends CollideableItem>(
+  subject: CollideableItem,
+  index: GridSpatialIndex<string, string, C>,
+  considerItem: (item: C) => boolean = alwaysUseForCollision,
+): boolean => {
+  const neighbours = index.getItemCuboidNeighbourhood(subject);
+  for (const candidateItem of neighbours) {
+    if (
+      considerItem(candidateItem) &&
+      // preventing  self- collision not needed because the neighbourhood
+      // knows not to return the item itself
+      //subject.id !== candidateItem.id &&
+      collision2Items(subject, candidateItem)
+    ) {
+      return true;
+    }
+  }
+  return false;
+};

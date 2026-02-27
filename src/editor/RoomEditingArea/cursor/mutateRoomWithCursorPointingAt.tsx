@@ -1,9 +1,8 @@
 import { produce } from "immer";
-import { isEmpty } from "iter-tools-es";
 
 import type { EditorRoomItemId } from "../../editorTypes";
 
-import { collisionItemWithIndex } from "../../../game/collision/aabbCollision";
+import { hasCollisionItemWithIndex } from "../../../game/collision/aabbCollision";
 import { updateItemPosition } from "../../../game/gameState/mutators/updateItemPosition";
 import {
   iterateRoomItems,
@@ -46,12 +45,10 @@ export const mutateRoomMoveItemForDrag = (
       );
     });
     // item won't collide with the unmodified version of itself because they have the same id:
-    const collisions = collisionItemWithIndex(
+    return hasCollisionItemWithIndex(
       itemCopyAtNewLocation,
       roomState[roomSpatialIndexKey],
     );
-
-    return !isEmpty(collisions);
   });
 
   if (!hasCollisions) {
