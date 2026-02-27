@@ -1,6 +1,19 @@
 import type { IndividualCharacterName } from "../../../model/modelTypes";
+import type { RoomState } from "../../../model/RoomState";
+import type { Xyz } from "../../../utils/vectors/vectors";
+import type { FreeItem } from "../../physics/itemPredicates";
 
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import { epsilon } from "../../../utils/epsilon";
+import {
+  addXyz,
+  lengthXyz,
+  scaleXyz,
+  subXyz,
+} from "../../../utils/vectors/vectors";
+import { handleItemsTouchingItems } from "../../physics/handleTouch/handleItemsTouchingItems";
+import { blockSizePx } from "../../physics/mechanicsConstants";
+import { moveItem } from "../../physics/moveItem/moveItem";
 import { type GameState } from "../GameState";
 import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
@@ -12,12 +25,103 @@ import {
   uncombinePlayablesFromSymbiosis,
 } from "./symbiosis";
 
+const maxTriesToGoIntoSymbiosis = 3;
+const maxSteppedMoveIterations = 50;
+
+/** move an item towards a target position in small steps of about 0.5px,
+ * respecting collisions.
+ *
+ * @returns the distance remaining to the target
+ */
+const steppedMoveTowards = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  room: RoomState<RoomId, string>,
+  item: FreeItem<RoomId, string>,
+  targetPosition: Xyz,
+): number => {
+  for (let i = 0; i < maxSteppedMoveIterations; i++) {
+    const remainingVector = subXyz(targetPosition, item.state.position);
+    const remainingDistance = lengthXyz(remainingVector);
+
+    if (remainingDistance < epsilon) {
+      return remainingDistance;
+    }
+
+    const stepVector =
+      remainingDistance <= 0.5 ? remainingVector : (
+        scaleXyz(remainingVector, 0.5 / remainingDistance)
+      );
+
+    const positionBefore = item.state.position;
+    moveItem({
+      subjectItem: item,
+      deltaMS: epsilon,
+      posDelta: stepVector,
+      gameState,
+      room,
+      onTouch: handleItemsTouchingItems,
+    });
+
+    if (lengthXyz(subXyz(item.state.position, positionBefore)) < epsilon) {
+      break;
+    }
+  }
+
+  return lengthXyz(subXyz(item.state.position, targetPosition));
+};
+
+/**
+ * @returns true is successful. Returns false if can't find a way to
+ * align the characters with each other after several times trying
+ */
 export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
-) => {
+): boolean => {
   const room = gameState.characterRooms["head"]!;
   const head = selectPlayableItem(gameState, "head")!;
   const heels = selectPlayableItem(gameState, "heels")!;
+
+  let distanceOffBy = Infinity;
+  for (let i = 0; i < maxTriesToGoIntoSymbiosis; i++) {
+    const headTargetPosition = addXyz(heels.state.position, {
+      z: blockSizePx.z,
+    });
+    distanceOffBy = steppedMoveTowards(
+      gameState,
+      room,
+      head,
+      headTargetPosition,
+    );
+
+    if (distanceOffBy < epsilon) {
+      // found a way into symbiosis - no problem stop trying
+      break;
+    }
+
+    // try to move heels under head now:
+    const heelsTargetPosition = subXyz(head.state.position, {
+      z: blockSizePx.z,
+    });
+    distanceOffBy = steppedMoveTowards(
+      gameState,
+      room,
+      heels,
+      heelsTargetPosition,
+    );
+
+    if (distanceOffBy < epsilon) {
+      // found a way into symbiosis - no problem stop trying
+      break;
+    }
+  }
+
+  if (distanceOffBy > epsilon) {
+    // this should be very rare, but it is possible, for example if
+    // joining together creates an overlap that moveItem can't resolve
+    // via normal movement
+    return false;
+  }
+
   const headOverHeels = combinePlayablesInSymbiosis({ head, heels });
 
   deleteItemFromRoom({ room, item: "head" });
@@ -33,6 +137,8 @@ export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
   };
   // note : headOverHeels is left without an entry state because they never
   // entered this room in symbiosis
+
+  return true;
 };
 
 const swopFromCombinedToUncombinedPlayables = <RoomId extends string>(

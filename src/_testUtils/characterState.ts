@@ -24,6 +24,12 @@ export const heelsState = (gameState: GameState<TestRoomId>) => {
   >;
 };
 
+export const headOverHeelsState = (gameState: GameState<TestRoomId>) => {
+  // TODO: cast should be unnecessary with known item ids
+  return gameState.characterRooms.headOverHeels!.items["headOverHeels"]!
+    .state as ItemState<"headOverHeels", string, string>;
+};
+
 export const currentPlayableState = (gameState: GameState<TestRoomId>) => {
   const currentPlayable = gameState.currentCharacterName;
   return getRoomItem(
