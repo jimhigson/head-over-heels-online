@@ -1,7 +1,5 @@
 import type { WritableDeep } from "type-fest";
 
-import { isEmpty } from "iter-tools-es";
-
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { CollideableItem } from "../../collision/aabbCollision";
 import type { FreeItem } from "../itemPredicates";
@@ -14,7 +12,10 @@ import {
   subXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { collisionItemWithIndex } from "../../collision/aabbCollision";
+import {
+  collisionItemWithIndex,
+  hasCollisionItemWithIndex,
+} from "../../collision/aabbCollision";
 import {
   isDeadly,
   isJoystick,
@@ -194,13 +195,13 @@ export const helpfulMovementVector = <
   belowSensorBuffer.state.position[crossAxis] =
     subjectItem.state.position[crossAxis];
 
-  const collidesNegSideBelow = collisionItemWithIndex(
+  const collidesNegSideBelow = hasCollisionItemWithIndex(
     belowSensorBuffer,
     room[roomSpatialIndexKey],
-  ).filter((c) => isSolid(c) && !(isPlayableItem(subjectItem) && isDeadly(c)));
+    (c) => isSolid(c) && !(isPlayableItem(subjectItem) && isDeadly(c)),
+  );
 
-  const somewhereToSlideToOnNegSide =
-    standingOnNothing || !isEmpty(collidesNegSideBelow);
+  const somewhereToSlideToOnNegSide = standingOnNothing || collidesNegSideBelow;
 
   // switch sensorBuffer to test positive direction in cross axis:
   sensorBuffer.state.position[crossAxis] =
@@ -221,13 +222,13 @@ export const helpfulMovementVector = <
   belowSensorBuffer.state.position[crossAxis] =
     subjectItem.state.position[crossAxis] + subjectItem.aabb[crossAxis] - 1;
 
-  const collidesPosSideBelow = collisionItemWithIndex(
+  const collidesPosSideBelow = hasCollisionItemWithIndex(
     belowSensorBuffer,
     room[roomSpatialIndexKey],
-  ).filter((c) => isSolid(c) && !(isPlayableItem(subjectItem) && isDeadly(c)));
+    (c) => isSolid(c) && !(isPlayableItem(subjectItem) && isDeadly(c)),
+  );
 
-  const somewhereToSlideToOnPosSide =
-    standingOnNothing || !isEmpty(collidesPosSideBelow);
+  const somewhereToSlideToOnPosSide = standingOnNothing || collidesPosSideBelow;
 
   if (slideScoreNegSide === slideScorePosSide) {
     // equally motivated to slide both ways, so move none
