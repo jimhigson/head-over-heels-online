@@ -6,14 +6,19 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "moonbase10",
   items: {
-    "block@0,3,3": {
-      config: { style: "artificial", times: { y: 4, z: 4 } },
+    block: {
+      config: { style: "tower", times: { y: 4, z: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
+    "block@0,3,3": {
+      config: { style: "artificial", times: { y: 4 } },
+      position: { x: 0, y: 0, z: 3 },
+      type: "block",
+    },
     "block@0,7,3": {
-      config: { style: "artificial", times: { z: 4 } },
-      position: { x: 0, y: 7, z: 0 },
+      config: { style: "artificial" },
+      position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
     "block@0,7,5": {
@@ -22,7 +27,17 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@4,7,3": {
-      config: { style: "artificial", times: { x: 2, z: 4 } },
+      config: { style: "artificial", times: { x: 2 } },
+      position: { x: 4, y: 7, z: 3 },
+      type: "block",
+    },
+    block_3: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 7, z: 0 },
+      type: "block",
+    },
+    block_4: {
+      config: { style: "tower", times: { x: 2, z: 3 } },
       position: { x: 4, y: 7, z: 0 },
       type: "block",
     },

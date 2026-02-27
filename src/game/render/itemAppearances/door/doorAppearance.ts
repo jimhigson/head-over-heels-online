@@ -2,10 +2,12 @@ import { Container } from "pixi.js";
 
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import type { Campaign } from "../../../../model/modelTypes";
+import type { SceneryName } from "../../../../sprites/planets";
 import type { SpritesheetVariant } from "../../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
+import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
@@ -32,59 +34,63 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
     config: { direction, inHiddenWall, height },
   }: ItemInPlay<"doorLegs", RoomId, RoomItemId>,
   spritesheetVariant: SpritesheetVariant,
+  sceneryName: SceneryName,
+  isDark: boolean,
 ): Generator<Container> {
   const axis = doorAlongAxis(direction);
 
-  // drag legs etc
-  const pivotX = axis === "y" ? 1 : 16;
+  if (inHiddenWall) {
+    if (height !== 0) {
+      //draw the 'floating' (no legs) threshold (two sprites):
 
-  function* legGenerator(
-    /** an offset, since doors have two legs and they can't render in exactly the same place */
-    offset: Xy,
-  ): Generator<Container> {
-    if (inHiddenWall) {
-      if (height !== 0) {
-        //draw the 'floating' (no legs) threshold:
-
-        const sprite = createSprite({
-          textureId: `generic.door.floatingThreshold.${axis}`,
-          ...addXy(offset, {
-            y: -blockSizePx.z * height,
-          }),
-          spritesheetVariant,
-        });
-
-        yield sprite;
-      }
-    } else {
-      yield createSprite({
-        pivot: { x: pivotX, y: 9 },
-        textureId: `generic.door.legs.base.${axis}`,
-        ...addXy(offset, {}),
-        spritesheetVariant,
-      });
-
-      for (let h = 1; h < height; h++) {
+      for (const offset of [1, 0]) {
         yield createSprite({
-          pivot: { x: pivotX, y: 9 },
-          textureId: `generic.door.legs.pillar.${axis}`,
-          ...addXy(offset, {
-            y: -h * blockSizePx.z,
+          textureId: planetSpecificIfExists(
+            sceneryName,
+            `door.floatingThreshold.${axis}`,
+            isDark,
+          ),
+          ...addXy(projectBlockXyzToScreenXy({ [axis]: offset }), {
+            y: -blockSizePx.z * height,
           }),
           spritesheetVariant,
         });
       }
     }
+  } else {
+    yield createSprite({
+      textureId: planetSpecificIfExists(
+        sceneryName,
+        `door.legs.base.${axis}`,
+        isDark,
+      ),
+      spritesheetVariant,
+    });
+
+    const pillarTextureId = planetSpecificIfExists(
+      sceneryName,
+      `door.legs.pillar.${axis}`,
+      isDark,
+    );
+
+    for (let h = 1; h < height; h++) {
+      yield createSprite({
+        textureId: pillarTextureId,
+        y: -h * blockSizePx.z,
+        spritesheetVariant,
+      });
+    }
   }
 
-  yield* legGenerator(projectBlockXyzToScreenXy({ ...originXy, [axis]: 1 }));
-  yield* legGenerator(originXy);
   if (!inHiddenWall) {
     // non-floating threshold
     yield createSprite({
-      pivot: { x: 16, y: blockSizePx.z * height + 13 },
-      textureId: `generic.door.legs.threshold.double.${axis}`,
-      ...projectBlockXyzToScreenXy({ ...originXy, [axis]: 1 }),
+      textureId: planetSpecificIfExists(
+        sceneryName,
+        `door.legs.threshold.${axis}`,
+        isDark,
+      ),
+      ...projectBlockXyzToScreenXy({ ...originXy, z: height }),
       spritesheetVariant,
     });
   }
@@ -115,12 +121,16 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
       renderContext: {
         item,
         general: { pixiRenderer, colourised },
+        room: {
+          planet,
+          color: { shade },
+        },
       },
     }) => {
       const spritesheetVariant =
         colourised ? "for-current-room" : "uncolourised";
       const doorLegsContainer = iterateToContainer(
-        doorLegsGenerator(item, spritesheetVariant),
+        doorLegsGenerator(item, spritesheetVariant, planet, shade === "dimmed"),
       );
 
       // door legs can take quite a few sprites (ie, 11 each for the 5-high

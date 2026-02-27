@@ -257,6 +257,12 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  "tower.moonbase": {
+    frame: {
+      ...smallItemGridLocation({ x: 15, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
 
   "shadowMask.tower": {
     frame: {
