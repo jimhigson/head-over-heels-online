@@ -45,6 +45,17 @@ export type SwitchItemModificationUnion<
     }
   // turning off disappearing blocks:
   | {
+      // ganged switches:
+      // test on:
+      //    * original/#penitentiary3
+      //    * original/#moonbase13
+      //    * sequel/turtle_dance
+      expectType: "switch";
+      targets?: RoomItemId[];
+      /** this switch will flip the other switch when it is flipped */
+      flip: true;
+    }
+  | {
       expectType: "block";
       targets?: RoomItemId[];
       /**
@@ -73,11 +84,16 @@ export type SwitchItemModificationUnion<
         }
       >;
     }
-  // ganged switches:
-  // test on:
-  //    * original/#penitentiary3
-  //    * original/#moonbase13
-  //    * sequel/turtle_dance
+  | {
+      expectType: "charles";
+      targets?: RoomItemId[];
+      leftState: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["charles"], "activated">
+      >;
+      rightState: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["charles"], "activated">
+      >;
+    }
   | {
       expectType: "conveyor";
       targets?: RoomItemId[];
@@ -121,12 +137,6 @@ export type SwitchItemModificationUnion<
       targets?: RoomItemId[];
       leftState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
       rightState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
-    }
-  | {
-      expectType: "switch";
-      targets?: RoomItemId[];
-      /** this switch will flip the other switch when it is flipped */
-      flip: true;
     }
   | {
       expectType: "teleporter";

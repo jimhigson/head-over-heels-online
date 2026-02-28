@@ -338,8 +338,8 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     pressed: boolean;
   };
   charles: FreeItemState<RoomItemId> & {
-    // others will follow this soon - facing is changing to a vector
     facing: Xy;
+    activated?: boolean;
   };
 
   scroll: FreeItemState<RoomItemId>;

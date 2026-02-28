@@ -171,9 +171,10 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       >)
     : emptyObject),
     ...(jsonItem.type === "charles" ?
-      ({ facing: unitVectors.towards } satisfies StateFragment<
-        typeof jsonItem.type
-      >)
+      ({
+        facing: unitVectors.towards,
+        activated: jsonItem.config.activated ?? true,
+      } satisfies StateFragment<typeof jsonItem.type>)
     : emptyObject),
     ...(jsonItem.type === "emitter" ?
       ({

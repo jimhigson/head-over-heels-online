@@ -202,6 +202,9 @@ export type ItemConfigMap<
   portableBlock: {
     style: PortableBlockStyle;
   };
+  charles: {
+    activated?: boolean;
+  };
   movingPlatform: {
     movement: MovementsSubset<"back-forth" | "clockwise" | "towards-analogue">;
     /* if this item starts initially activated */

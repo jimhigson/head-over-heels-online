@@ -478,8 +478,12 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "additionalProperties": {
-                      "not": {}
+                    "additionalProperties": false,
+                    "properties": {
+                      "activated": {
+                        "enum": [false, true],
+                        "type": "boolean"
+                      }
                     },
                     "type": "object"
                   },
@@ -1986,6 +1990,28 @@
                                   "additionalProperties": false,
                                   "properties": {
                                     "expectType": {
+                                      "const": "switch",
+                                      "type": "string"
+                                    },
+                                    "flip": {
+                                      "const": true,
+                                      "description": "this switch will flip the other switch when it is flipped",
+                                      "type": "boolean"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": ["expectType", "flip"],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
                                       "const": "block",
                                       "type": "string"
                                     },
@@ -2032,6 +2058,47 @@
                                       "properties": {
                                         "disappearing": {
                                           "type": "null"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "expectType",
+                                    "leftState",
+                                    "rightState"
+                                  ],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "expectType": {
+                                      "const": "charles",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "activated": {
+                                          "enum": [false, true],
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "rightState": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "activated": {
+                                          "enum": [false, true],
+                                          "type": "boolean"
                                         }
                                       },
                                       "type": "object"
@@ -2268,6 +2335,16 @@
                                                     "source",
                                                     "page"
                                                   ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": [false, true],
+                                                      "type": "boolean"
+                                                    }
+                                                  },
                                                   "type": "object"
                                                 },
                                                 {
@@ -2986,6 +3063,16 @@
                                                     "source",
                                                     "page"
                                                   ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activated": {
+                                                      "enum": [false, true],
+                                                      "type": "boolean"
+                                                    }
+                                                  },
                                                   "type": "object"
                                                 },
                                                 {
@@ -3736,28 +3823,6 @@
                                     "leftState",
                                     "rightState"
                                   ],
-                                  "type": "object"
-                                },
-                                {
-                                  "additionalProperties": false,
-                                  "properties": {
-                                    "expectType": {
-                                      "const": "switch",
-                                      "type": "string"
-                                    },
-                                    "flip": {
-                                      "const": true,
-                                      "description": "this switch will flip the other switch when it is flipped",
-                                      "type": "boolean"
-                                    },
-                                    "targets": {
-                                      "items": {
-                                        "type": "string"
-                                      },
-                                      "type": "array"
-                                    }
-                                  },
-                                  "required": ["expectType", "flip"],
                                   "type": "object"
                                 },
                                 {
@@ -4703,8 +4768,12 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "additionalProperties": {
-                                  "not": {}
+                                "additionalProperties": false,
+                                "properties": {
+                                  "activated": {
+                                    "enum": [false, true],
+                                    "type": "boolean"
+                                  }
                                 },
                                 "type": "object"
                               },
@@ -5450,6 +5519,28 @@
                               "additionalProperties": false,
                               "properties": {
                                 "expectType": {
+                                  "const": "switch",
+                                  "type": "string"
+                                },
+                                "flip": {
+                                  "const": true,
+                                  "description": "this switch will flip the other switch when it is flipped",
+                                  "type": "boolean"
+                                },
+                                "targets": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                }
+                              },
+                              "required": ["expectType", "flip"],
+                              "type": "object"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "expectType": {
                                   "const": "block",
                                   "type": "string"
                                 },
@@ -5496,6 +5587,47 @@
                                   "properties": {
                                     "disappearing": {
                                       "type": "null"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "targets": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                }
+                              },
+                              "required": [
+                                "expectType",
+                                "leftState",
+                                "rightState"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "expectType": {
+                                  "const": "charles",
+                                  "type": "string"
+                                },
+                                "leftState": {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "activated": {
+                                      "enum": [false, true],
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "rightState": {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "activated": {
+                                      "enum": [false, true],
+                                      "type": "boolean"
                                     }
                                   },
                                   "type": "object"
@@ -5729,6 +5861,16 @@
                                                 "source",
                                                 "page"
                                               ],
+                                              "type": "object"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "activated": {
+                                                  "enum": [false, true],
+                                                  "type": "boolean"
+                                                }
+                                              },
                                               "type": "object"
                                             },
                                             {
@@ -6444,6 +6586,16 @@
                                                 "source",
                                                 "page"
                                               ],
+                                              "type": "object"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "activated": {
+                                                  "enum": [false, true],
+                                                  "type": "boolean"
+                                                }
+                                              },
                                               "type": "object"
                                             },
                                             {
@@ -7194,28 +7346,6 @@
                                 "leftState",
                                 "rightState"
                               ],
-                              "type": "object"
-                            },
-                            {
-                              "additionalProperties": false,
-                              "properties": {
-                                "expectType": {
-                                  "const": "switch",
-                                  "type": "string"
-                                },
-                                "flip": {
-                                  "const": true,
-                                  "description": "this switch will flip the other switch when it is flipped",
-                                  "type": "boolean"
-                                },
-                                "targets": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                }
-                              },
-                              "required": ["expectType", "flip"],
                               "type": "object"
                             },
                             {
