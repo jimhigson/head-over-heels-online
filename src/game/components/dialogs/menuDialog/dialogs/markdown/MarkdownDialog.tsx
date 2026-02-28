@@ -37,24 +37,33 @@ export const MarkdownDialog = (
     const { openMenus } = state.gameMenus;
     return openMenus.some((menu) => menu.menuId === "readTheManual");
   });
+  const isTopLevelMenu = useAppSelector((state) => {
+    const { openMenus } = state.gameMenus;
+    return openMenus.length === 1;
+  });
+
+  const goBackCallback = useDispatchActionCallback(backToParentMenu);
 
   return (
     <DialogPortal>
-      <Border
-        className="bg-midGrey zx:bg-zxWhiteDimmed"
-        onClick={useDispatchActionCallback(backToParentMenu)}
-      />
+      {isTopLevelMenu || (
+        // if a top level menu, let the game show through under:
+        <Border
+          className="bg-midGrey zx:bg-zxWhiteDimmed"
+          onClick={goBackCallback}
+        />
+      )}
       <Dialog
-        tall
+        tall={!isTopLevelMenu}
         className={
           "bg-highlightBeige zx:bg-zxCyanDimmed " +
           `text-shadow zx:text-zxWhite !gap-y-0 py-0 ` +
-          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack "
+          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack"
         }
         dialogId={props.dialogId}
       >
         <DialogTitleBar
-          className="pl-1 pt-1 mobile:px-3 "
+          className={`pl-1 pt-1 mobile:px-3 ${isTopLevelMenu ? "hidden" : ""}`}
           path={isSubmenuFromManual ? ["Manual"] : []}
         />
         <div
@@ -67,7 +76,7 @@ export const MarkdownDialog = (
           )}
           ref={contentRef}
           // although we have a back button, you can actually click/tap anywhere to exit
-          onClick={useDispatchActionCallback(backToParentMenu)}
+          onClick={goBackCallback}
         >
           <BlockyMarkdown markdown={markdown} />
         </div>
