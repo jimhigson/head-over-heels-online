@@ -6,10 +6,11 @@ import type { FreeItem } from "../../physics/itemPredicates";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import { epsilon } from "../../../utils/epsilon";
 import {
-  addXyz,
+  addXyzWriteInto,
   lengthXyz,
-  scaleXyz,
-  subXyz,
+  manhattanDistanceXy,
+  scaleXyzWriteInto,
+  subXyzWriteInto,
 } from "../../../utils/vectors/vectors";
 import { handleItemsTouchingItems } from "../../physics/handleTouch/handleItemsTouchingItems";
 import { blockSizePx } from "../../physics/mechanicsConstants";
@@ -25,49 +26,43 @@ import {
   uncombinePlayablesFromSymbiosis,
 } from "./symbiosis";
 
-const maxTriesToGoIntoSymbiosis = 3;
-const maxSteppedMoveIterations = 50;
+const maxSymbiosisStepIterations = 50;
 
-/** move an item towards a target position in small steps of about 0.5px,
- * respecting collisions.
- *
- * @returns the distance remaining to the target
- */
-const steppedMoveTowards = <RoomId extends string>(
+const targetBuffer = { x: 0, y: 0, z: 0 };
+const remainingVectorBuffer = { x: 0, y: 0, z: 0 };
+
+/** move an item one step (at most 0.5px) towards a target position,
+ * respecting collisions */
+const stepTowards = <RoomId extends string>(
   gameState: GameState<RoomId>,
   room: RoomState<RoomId, string>,
   item: FreeItem<RoomId, string>,
   targetPosition: Xyz,
-): number => {
-  for (let i = 0; i < maxSteppedMoveIterations; i++) {
-    const remainingVector = subXyz(targetPosition, item.state.position);
-    const remainingDistance = lengthXyz(remainingVector);
+) => {
+  subXyzWriteInto(remainingVectorBuffer, targetPosition, item.state.position);
+  const remainingDistance = lengthXyz(remainingVectorBuffer);
 
-    if (remainingDistance < epsilon) {
-      return remainingDistance;
-    }
-
-    const stepVector =
-      remainingDistance <= 0.5 ? remainingVector : (
-        scaleXyz(remainingVector, 0.5 / remainingDistance)
-      );
-
-    const positionBefore = item.state.position;
-    moveItem({
-      subjectItem: item,
-      deltaMS: epsilon,
-      posDelta: stepVector,
-      gameState,
-      room,
-      onTouch: handleItemsTouchingItems,
-    });
-
-    if (lengthXyz(subXyz(item.state.position, positionBefore)) < epsilon) {
-      break;
-    }
+  if (remainingDistance < epsilon) {
+    return;
   }
 
-  return lengthXyz(subXyz(item.state.position, targetPosition));
+  // return remaining vector to a step:
+  if (remainingDistance >= 0.5) {
+    scaleXyzWriteInto(
+      remainingVectorBuffer,
+      remainingVectorBuffer,
+      0.5 / remainingDistance,
+    );
+  }
+
+  moveItem({
+    subjectItem: item,
+    deltaMS: epsilon,
+    posDelta: remainingVectorBuffer,
+    gameState,
+    room,
+    onTouch: handleItemsTouchingItems,
+  });
 };
 
 /**
@@ -77,58 +72,50 @@ const steppedMoveTowards = <RoomId extends string>(
 export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
   gameState: GameState<RoomId>,
 ): boolean => {
+  const previousPlayable =
+    gameState.currentCharacterName as IndividualCharacterName;
   const room = gameState.characterRooms["head"]!;
   const head = selectPlayableItem(gameState, "head")!;
   const heels = selectPlayableItem(gameState, "heels")!;
 
-  let distanceOffBy = Infinity;
-  for (let i = 0; i < maxTriesToGoIntoSymbiosis; i++) {
-    const headTargetPosition = addXyz(heels.state.position, {
-      z: blockSizePx.z,
+  let aligned = false;
+
+  for (let i = 0; i < maxSymbiosisStepIterations; i++) {
+    // step head towards heels:
+    addXyzWriteInto(targetBuffer, heels.state.position, { z: blockSizePx.z });
+    stepTowards(gameState, room, head, targetBuffer);
+
+    // step heels towards head:
+    addXyzWriteInto(targetBuffer, head.state.position, {
+      z: -blockSizePx.z,
     });
-    distanceOffBy = steppedMoveTowards(
-      gameState,
-      room,
-      head,
-      headTargetPosition,
-    );
+    stepTowards(gameState, room, heels, targetBuffer);
 
-    if (distanceOffBy < epsilon) {
-      // found a way into symbiosis - no problem stop trying
-      break;
-    }
-
-    // try to move heels under head now:
-    const heelsTargetPosition = subXyz(head.state.position, {
-      z: blockSizePx.z,
-    });
-    distanceOffBy = steppedMoveTowards(
-      gameState,
-      room,
-      heels,
-      heelsTargetPosition,
-    );
-
-    if (distanceOffBy < epsilon) {
-      // found a way into symbiosis - no problem stop trying
+    if (
+      manhattanDistanceXy(head.state.position, heels.state.position) < epsilon
+    ) {
+      aligned = true;
       break;
     }
   }
 
-  if (distanceOffBy > epsilon) {
+  if (!aligned) {
     // this should be very rare, but it is possible, for example if
     // joining together creates an overlap that moveItem can't resolve
     // via normal movement
     return false;
   }
 
-  const headOverHeels = combinePlayablesInSymbiosis({ head, heels });
+  const headOverHeels = combinePlayablesInSymbiosis({
+    head,
+    heels,
+    previousPlayable,
+  });
 
   deleteItemFromRoom({ room, item: "head" });
   deleteItemFromRoom({ room, item: "heels" });
   addItemToRoom({ room, item: headOverHeels });
-  gameState.previousPlayable =
-    gameState.currentCharacterName as IndividualCharacterName;
+  gameState.previousPlayable = previousPlayable;
   gameState.currentCharacterName = "headOverHeels";
   gameState.characterRooms = {
     head: undefined,

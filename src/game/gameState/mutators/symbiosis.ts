@@ -1,3 +1,4 @@
+import type { IndividualCharacterName } from "../../../model/modelTypes";
 import type { PlayableItem } from "../../physics/itemPredicates";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
@@ -73,10 +74,19 @@ export const combinePlayablesInSymbiosis = <
 >({
   head,
   heels,
+  previousPlayable,
 }: {
   head: PlayableItem<"head", RoomId, RoomItemId>;
   heels: PlayableItem<"heels", RoomId, RoomItemId>;
+  /**
+   * which player was current before combining?
+   * If not given, assumes Heels
+   */
+  previousPlayable?: IndividualCharacterName;
 }): PlayableItem<"headOverHeels", RoomId, RoomItemId> => {
+  const previouslySelectedState =
+    previousPlayable === "head" ? head.state : heels.state;
+
   return {
     // TODO: remove cast with known ids
     id: "headOverHeels" as RoomItemId,
@@ -95,8 +105,8 @@ export const combinePlayablesInSymbiosis = <
       jumped: false,
       teleporting: null,
       autoWalk: false,
-      facing: heels.state.facing,
-      visualFacingVector: heels.state.visualFacingVector,
+      facing: previouslySelectedState.facing,
+      visualFacingVector: previouslySelectedState.visualFacingVector,
       actedOnAt:
         heels.state.actedOnAt.roomTime > head.state.actedOnAt.roomTime ?
           heels.state.actedOnAt

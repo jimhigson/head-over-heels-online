@@ -101,6 +101,22 @@ export const subXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   return xy;
 };
 
+export const subXyWriteInto = (
+  writeInto: object,
+  xy: Xy,
+  ...xys: Array<Partial<Xy>>
+): Xy => {
+  const writeIntoTyped = writeInto as Xy;
+  writeIntoTyped.x = xy.x;
+  writeIntoTyped.y = xy.y;
+
+  for (const xyi of xys) {
+    writeIntoTyped.x -= xyi.x ?? 0;
+    writeIntoTyped.y -= xyi.y ?? 0;
+  }
+  return writeIntoTyped;
+};
+
 export const scaleXy = (xy: Xy, scale: number): Xy => ({
   x: xy.x * scale,
   y: xy.y * scale,
@@ -326,6 +342,24 @@ export const subXyzInPlace = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
   return xyz;
 };
 
+export const subXyzWriteInto = (
+  writeInto: object,
+  xyz: Xyz,
+  ...xyzs: Array<Partial<Xyz>>
+): Xyz => {
+  const writeIntoTyped = writeInto as Xyz;
+  writeIntoTyped.x = xyz.x;
+  writeIntoTyped.y = xyz.y;
+  writeIntoTyped.z = xyz.z;
+
+  for (const xyzToSub of xyzs) {
+    writeIntoTyped.x -= xyzToSub.x ?? 0;
+    writeIntoTyped.y -= xyzToSub.y ?? 0;
+    writeIntoTyped.z -= xyzToSub.z ?? 0;
+  }
+  return writeIntoTyped;
+};
+
 export const xyzEqual = (
   { x: ax, y: ay, z: az }: Xyz,
   { x: bx, y: by, z: bz }: Xyz,
@@ -533,6 +567,10 @@ export const manhattanDistanceXy = (
   { x: x2, y: y2 }: Xyz,
 ) => {
   return Math.abs(x2 - x1) + Math.abs(y2 - y1);
+};
+
+export const distanceXyz = (a: Xyz, b: Xyz) => {
+  return lengthXyz(subXyz(a, b));
 };
 
 export type Plane = {
