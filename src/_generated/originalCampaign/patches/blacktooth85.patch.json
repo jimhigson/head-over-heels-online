@@ -19,9 +19,36 @@
     "value": "plain"
   },
   {
+    "op": "remove",
+    "path": "/items/wall@5,0,0"
+  },
+  {
+    "op": "remove",
+    "path": "/items/wall(towards)@0,0,0"
+  },
+  {
     "op": "replace",
     "path": "/items/door@8,3,0/position/y",
     "value": 6
+  },
+  {
+    "op": "add",
+    "path": "/items/block",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "x": 2,
+          "z": 4
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "type": "block"
+    }
   },
   {
     "op": "replace",
