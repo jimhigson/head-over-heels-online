@@ -70,7 +70,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               hint={
                 <BlockyMarkdown
                   className={selectGameHintMarkdownClassName}
-                  markdown={`*Unofficial sequel* - the empire is back! All-new levels designed for the remake. **Work in progress!**`}
+                  markdown={`*Unofficial sequel* - The empire is back! All-new levels designed for the remake. **Work in progress!**`}
                 />
               }
             />
