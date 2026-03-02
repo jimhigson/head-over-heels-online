@@ -6,11 +6,6 @@
   },
   {
     "op": "replace",
-    "path": "/items/block@7,4,3/position/z",
-    "value": 0
-  },
-  {
-    "op": "replace",
     "path": "/items/block@7,4,3/position/y",
     "value": 3
   },
@@ -18,8 +13,7 @@
     "op": "add",
     "path": "/items/block@7,4,3/config/times",
     "value": {
-      "y": 2,
-      "z": 4
+      "y": 2
     }
   },
   {
@@ -40,6 +34,25 @@
       "position": {
         "x": 2,
         "y": 0,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block_2",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "y": 2,
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 7,
+        "y": 3,
         "z": 0
       },
       "type": "block"
