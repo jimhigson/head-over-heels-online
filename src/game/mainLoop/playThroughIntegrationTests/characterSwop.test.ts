@@ -1,18 +1,31 @@
 import { beforeEach, expect, test } from "vitest";
 
+import type { TestRoomId } from "../../../_testUtils/basicRoom";
+
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import {
   headOverHeelsState,
+  headState,
   heelsState,
   itemState,
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { addXyz, roundXyz, scaleXyz } from "../../../utils/vectors/vectors";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
   resetStore();
 });
+
+type TestItemIds =
+  | "block_2"
+  | "block"
+  | "head"
+  | "headOverHeels"
+  | "heels"
+  | "portableBlock_2"
+  | "portableBlock";
 
 test.for([
   { expectSymbio: true, blockOffset: 0 },
@@ -43,6 +56,7 @@ test.for([
     });
 
     const heelsStartPosition = { ...heelsState(gameState).position };
+    const headStartPosition = { ...headState(gameState).position };
 
     playGameThrough(gameState, {
       setupInitialInput(mockInputStateTracker) {
@@ -56,11 +70,18 @@ test.for([
       },
     });
 
-    const room = selectCurrentRoomState(gameState);
+    const room = selectCurrentRoomState<TestRoomId, TestItemIds>(gameState);
     if (expectSymbio) {
-      // should be where heels started:
+      // should be at their midpoint:
+      const midpointXyPosition = {
+        ...roundXyz(
+          scaleXyz(addXyz(heelsStartPosition, headStartPosition), 0.5),
+        ),
+        z: 0,
+      };
+
       expect(headOverHeelsState(gameState).position).toEqual(
-        heelsStartPosition,
+        midpointXyPosition,
       );
 
       expect(room!.items.head).toBeUndefined();
@@ -68,7 +89,7 @@ test.for([
     } else {
       expect(room!.items.head).toBeDefined();
       expect(room!.items.heels).toBeDefined();
-      expect(room!.items.headOverHeel).toBeUndefined();
+      expect(room!.items.headOverHeels).toBeUndefined();
     }
   },
 );
@@ -104,6 +125,7 @@ test("going into symbiosis with a block also on top of heels", () => {
   ).toEqual("heels");
 
   const heelsStartPosition = { ...heelsState(gameState).position };
+  const headStartPosition = { ...headState(gameState).position };
 
   playGameThrough(gameState, {
     setupInitialInput(mockInputStateTracker) {
@@ -124,7 +146,12 @@ test("going into symbiosis with a block also on top of heels", () => {
     itemState<"portableBlock">(gameState, "portable").standingOnItemId,
   ).toEqual("floor");
 
-  expect(headOverHeelsState(gameState).position).toEqual(heelsStartPosition);
+  const midpointXyPosition = {
+    ...roundXyz(scaleXyz(addXyz(heelsStartPosition, headStartPosition), 0.5)),
+    z: 0,
+  };
+
+  expect(headOverHeelsState(gameState).position).toEqual(midpointXyPosition);
 });
 test("going into symbiosis with a block on top of heels and requiring movement from Heel's initial position", () => {
   const gameState = setUpBasicGame({
@@ -289,8 +316,8 @@ test("fails to go into symbiosis for an impossible case", () => {
   });
 
   // impossible scenario - could not go into symbiosis
-  const room = selectCurrentRoomState(gameState);
+  const room = selectCurrentRoomState<TestRoomId, TestItemIds>(gameState);
+  expect(room!.items.headOverHeels).toBeUndefined();
   expect(room!.items.head).toBeDefined();
   expect(room!.items.heels).toBeDefined();
-  expect(room!.items.headOverHeel).toBeUndefined();
 });
