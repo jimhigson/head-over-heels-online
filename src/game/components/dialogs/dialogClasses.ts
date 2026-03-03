@@ -35,4 +35,4 @@ export const optionsHintMarkdownClassname = twClass(
 );
 
 export const selectGameHintMarkdownClassName =
-  "text-lightGrey zx:text-zxWhite sprites-normal-height";
+  "text-lightGrey zx:text-zxWhite sprites-normal-height zx:[&_.strong]:text-zxYellow";

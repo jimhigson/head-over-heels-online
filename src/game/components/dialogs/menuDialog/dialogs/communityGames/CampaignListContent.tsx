@@ -14,21 +14,17 @@ import { MenuItems } from "../../MenuItems";
 const CampaignMenuItem = ({
   userId,
   campaignName,
-  label,
-  version,
   createdAt,
 }: {
   userId: string;
   campaignName: string;
-  label: string;
-  version: number;
   createdAt: string;
 }) => {
   return (
     <MenuItem
       className="sprites-double-height"
       id={`campaign-${userId}-${campaignName}`}
-      label={label}
+      label={`‘${campaignName}’`}
       doubleHeightWhenFocussed
       onSelect={useDispatchActionCallback(gameStarted, {
         campaignLocator: {
@@ -42,7 +38,7 @@ const CampaignMenuItem = ({
         <div className="screenshot-mask">
           <BitmapText
             className={selectGameHintMarkdownClassName}
-          >{`v.${version} updated ${format(createdAt)}`}</BitmapText>
+          >{`Updated ${format(createdAt)}`}</BitmapText>
         </div>
       }
     />
@@ -68,8 +64,6 @@ export const CampaignListContent = ({
                   <CampaignMenuItem
                     userId={userEntry.user.id}
                     campaignName={campaign.name}
-                    label={`'${campaign.name}'`}
-                    version={campaign.version}
                     createdAt={campaign.created_at}
                   />
                 </MenuItems>
