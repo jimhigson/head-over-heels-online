@@ -1,3 +1,4 @@
+import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { keysIter } from "../../../utils/entries";
@@ -12,6 +13,7 @@ import { createStackedSprites } from "./createStackedSprites";
 type CharlesRenderProps = {
   facingXy4: DirectionXy4;
   controlledByJoystick: boolean;
+  activated: boolean;
 };
 
 export const charlesAppearance: ItemAppearance<
@@ -23,6 +25,7 @@ export const charlesAppearance: ItemAppearance<
       state: {
         facing,
         actedOnAt: { roomTime: roomTimeActedOn, by },
+        activated = true,
       },
     },
     room: { roomTime, items },
@@ -40,13 +43,18 @@ export const charlesAppearance: ItemAppearance<
   const render =
     currentlyRenderedProps === undefined ||
     facingXy4 !== currentlyRenderedProps.facingXy4 ||
-    controlledByJoystick !== currentlyRenderedProps.controlledByJoystick;
+    controlledByJoystick !== currentlyRenderedProps.controlledByJoystick ||
+    activated !== currentlyRenderedProps.activated;
 
   if (!render) {
     return "no-update";
   }
 
-  const spritesheetVariant = colourised ? "for-current-room" : "uncolourised";
+  const spritesheetVariant: SpritesheetVariant =
+    colourised ?
+      activated ? "for-current-room"
+      : "deactivated"
+    : "uncolourised";
 
   return {
     output: createStackedSprites({
@@ -56,6 +64,6 @@ export const charlesAppearance: ItemAppearance<
         spritesheetVariant,
       },
     }),
-    renderProps: { facingXy4, controlledByJoystick },
+    renderProps: { facingXy4, controlledByJoystick, activated },
   };
 };

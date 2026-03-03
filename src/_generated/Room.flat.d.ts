@@ -187,7 +187,9 @@ export type RoomJsonSchema = {
           y: number;
           z: number;
         };
-        config: Record<string, never>;
+        config: {
+          activated?: false | true;
+        };
       }
     | {
         type: "conveyor";
@@ -729,6 +731,14 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "switch";
+                    targets?: string[];
+                    /**
+                     * this switch will flip the other switch when it is flipped
+                     */
+                    flip: true;
+                  }
+                | {
                     expectType: "block";
                     targets?: string[];
                     /**
@@ -747,6 +757,16 @@ export type RoomJsonSchema = {
                     };
                     rightState: {
                       disappearing?: null;
+                    };
+                  }
+                | {
+                    expectType: "charles";
+                    targets?: string[];
+                    leftState: {
+                      activated?: false | true;
+                    };
+                    rightState: {
+                      activated?: false | true;
                     };
                   }
                 | {
@@ -847,6 +867,9 @@ export type RoomJsonSchema = {
                                 | "credits"
                                 | "installPwa"
                                 | "installNative";
+                            }
+                          | {
+                              activated?: false | true;
                             }
                           | {
                               which: "bubbleRobot";
@@ -1093,6 +1116,9 @@ export type RoomJsonSchema = {
                                 | "credits"
                                 | "installPwa"
                                 | "installNative";
+                            }
+                          | {
+                              activated?: false | true;
                             }
                           | {
                               which: "bubbleRobot";
@@ -1298,14 +1324,6 @@ export type RoomJsonSchema = {
                       top?: number;
                       bottom?: number;
                     };
-                  }
-                | {
-                    expectType: "switch";
-                    targets?: string[];
-                    /**
-                     * this switch will flip the other switch when it is flipped
-                     */
-                    flip: true;
                   }
                 | {
                     expectType: "teleporter";
@@ -1554,7 +1572,9 @@ export type RoomJsonSchema = {
               }
             | {
                 type: "charles";
-                config: Record<string, never>;
+                config: {
+                  activated?: false | true;
+                };
               }
             | {
                 type: "pushableBlock";
@@ -1916,6 +1936,14 @@ export type RoomJsonSchema = {
                 };
               }
             | {
+                expectType: "switch";
+                targets?: string[];
+                /**
+                 * this switch will flip the other switch when it is flipped
+                 */
+                flip: true;
+              }
+            | {
                 expectType: "block";
                 targets?: string[];
                 /**
@@ -1934,6 +1962,16 @@ export type RoomJsonSchema = {
                 };
                 rightState: {
                   disappearing?: null;
+                };
+              }
+            | {
+                expectType: "charles";
+                targets?: string[];
+                leftState: {
+                  activated?: false | true;
+                };
+                rightState: {
+                  activated?: false | true;
                 };
               }
             | {
@@ -2034,6 +2072,9 @@ export type RoomJsonSchema = {
                             | "credits"
                             | "installPwa"
                             | "installNative";
+                        }
+                      | {
+                          activated?: false | true;
                         }
                       | {
                           which: "bubbleRobot";
@@ -2260,6 +2301,9 @@ export type RoomJsonSchema = {
                             | "credits"
                             | "installPwa"
                             | "installNative";
+                        }
+                      | {
+                          activated?: false | true;
                         }
                       | {
                           which: "bubbleRobot";
@@ -2445,14 +2489,6 @@ export type RoomJsonSchema = {
                   top?: number;
                   bottom?: number;
                 };
-              }
-            | {
-                expectType: "switch";
-                targets?: string[];
-                /**
-                 * this switch will flip the other switch when it is flipped
-                 */
-                flip: true;
               }
             | {
                 expectType: "teleporter";

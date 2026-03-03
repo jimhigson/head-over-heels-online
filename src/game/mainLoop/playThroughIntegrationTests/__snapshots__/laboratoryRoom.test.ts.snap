@@ -1276,6 +1276,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "roomTime": 30016.66666666516,
         },
+        "activated": true,
         "collidedWith": {
           "by": {
             "floor@0,0,0": true,
@@ -1365,6 +1366,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {},
           "roomTime": -9007199254740991,
         },
+        "activated": true,
         "collidedWith": {
           "by": {},
           "roomTime": -9007199254740991,
