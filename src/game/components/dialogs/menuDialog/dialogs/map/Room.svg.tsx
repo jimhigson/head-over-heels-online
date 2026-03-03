@@ -145,6 +145,7 @@ type RoomSvgProps<RoomId extends string> = {
   onPlayableClick?: (name: IndividualCharacterName) => void;
   onRoomClick?: (roomId: RoomId) => void;
   currentCharacterName: CharacterName;
+  isCurrentRoom: boolean;
 };
 
 export const RoomSvg = <RoomId extends string>({
@@ -158,6 +159,7 @@ export const RoomSvg = <RoomId extends string>({
   currentCharacterName,
   onPlayableClick,
   onRoomClick,
+  isCurrentRoom,
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, color, items } = roomJson;
   const label = roomJson.meta?.label;
@@ -183,6 +185,12 @@ export const RoomSvg = <RoomId extends string>({
       className={`
         ${roomAccentColourClass(color)} 
         ${
+          isCurrentRoom ?
+            // make the current room look visually distinct by changing the floor colour:
+            `[--floorColor:theme(colors.shadow)] zx:[--floorColor:theme(colors.zxBlack)]`
+          : `[--floorColor:theme(colors.white)]`
+        } 
+        ${
           highlightOnHover ?
             `
             group/room
@@ -202,7 +210,7 @@ export const RoomSvg = <RoomId extends string>({
             d={`${floorFillPathD} ${floorPathFillPathD(boundaries)}`}
           />
           <path
-            className="fill-white"
+            className="fill-[var(--floorColor)]"
             fillRule="evenodd"
             // whole tile, then use evenodd to cut out the middle:
             d={`${floorPathFillPathD(boundaries)} ${floorPathFillPathD(boundaries, doorwayGap * 0.7)}`}
@@ -213,9 +221,9 @@ export const RoomSvg = <RoomId extends string>({
           <path className="fill-[var(--roomHintColor)]" d={floorFillPathD} />
           {/* white in the middle w/ to doors */}
           <path
-            className={`fill-white
+            className={`fill-[var(--floorColor)]
               ${
-                highlightOnHover ?
+                highlightOnHover && !isCurrentRoom ?
                   `
                   group-hover/room:fill-pastelBlue
                   zx:group-hover/room:fill-zxCyan`

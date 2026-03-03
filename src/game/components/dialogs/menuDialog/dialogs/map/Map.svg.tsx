@@ -124,6 +124,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
                 roomGridPositionSpec={gridPositionSpec}
                 roomPickupsCollected={pickupsCollected[roomId] ?? emptyObject}
                 roomJson={campaign.rooms[roomId]}
+                isCurrentRoom={curRoomId === roomId}
                 headItemInRoom={selectPlayableItemInRoomAndSubroom(
                   characterRooms,
                   "head",
