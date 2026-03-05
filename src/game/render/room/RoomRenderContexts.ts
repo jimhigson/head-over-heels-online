@@ -29,6 +29,9 @@ export type GeneralRenderContext<RoomId extends string> = {
   paused: boolean;
   colourised: boolean;
   upscale: Upscale;
+
+  onScreenControls: boolean;
+
   /**
    * if true, we are rendering for the room editor. Otherwise, we are
    * in-game

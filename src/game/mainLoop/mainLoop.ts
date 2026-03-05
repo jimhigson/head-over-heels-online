@@ -209,10 +209,10 @@ export class MainLoop<RoomId extends string> {
           colourised: tickColourise,
           upscale: tickUpscale,
           editor: false,
+          onScreenControls: tickOnScreenControls,
         },
 
         inputDirectionMode: tickInputDirectionMode,
-        onScreenControls: tickOnScreenControls,
       });
       this.#mainContainer.addChild(this.#hudRenderer.output);
     }
@@ -252,6 +252,7 @@ export class MainLoop<RoomId extends string> {
             colourised: tickColourise,
             upscale: tickUpscale,
             editor: false,
+            onScreenControls: tickOnScreenControls,
           },
           room: tickEndRoom,
         };

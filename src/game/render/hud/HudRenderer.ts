@@ -66,20 +66,31 @@ type IconWithNumber = {
   container: Container;
 };
 
-const livesTextFromCentre = (onScreenControls: boolean) =>
-  onScreenControls ? 48 : 24;
-const playableIconFromCentre = (onScreenControls: boolean) =>
-  onScreenControls ? 68 : 56;
+const livesTextFromCentre = (
+  onScreenControls: boolean,
+  gameEngineScreenX: number,
+) => (onScreenControls ? gameEngineScreenX / 2 - 24 : 24);
+const playableIconFromCentre = (
+  onScreenControls: boolean,
+  gameEngineScreenX: number,
+) => (onScreenControls ? gameEngineScreenX / 2 - 24 : 56);
 
-const smallIconsFromCentre = (onScreenControls: boolean, screenSize: Xy) =>
+const extraSkillFromCentre = (onScreenControls: boolean, screenSize: Xy) =>
   onScreenControls ?
     // need to come in enough to clear a 'notch':
-    screenSize.x / 2 - 24
+    Math.round(screenSize.x / 2) - 80
   : 80;
+
+const shieldFromCentre = (onScreenControls: boolean, screenSize: Xy) =>
+  onScreenControls ?
+    // need to come in enough to clear a 'notch':
+    Math.round(screenSize.x / 2) - 104
+  : 80;
+
 const extraSkillFromBottom = (onScreenControls: boolean) =>
-  onScreenControls ? 72 : 24;
+  onScreenControls ? 0 : 24;
 const shieldFromBottom = (onScreenControls: boolean) =>
-  onScreenControls ? 88 : 0;
+  onScreenControls ? 0 : 0;
 
 // bag/hooter/doughnuts etc - how far to render the icon from the screen centre::
 const playersIconsFromCentre = 112;
@@ -129,7 +140,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   #carryingItemRoom: RoomState<RoomId, RoomItemId> | undefined = undefined;
 
   constructor(public readonly renderContext: HudRenderContext<RoomId>) {
-    const { onScreenControls, general } = renderContext;
+    const { general } = renderContext;
 
     this.#hudElements = {
       head: {
@@ -199,7 +210,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         this.#hudElements[character].extraSkill.container,
       );
     }
-    if (!onScreenControls) {
+    if (!general.onScreenControls) {
       this.#container.addChild(this.#hudElements.head.doughnuts.container);
       this.#container.addChild(this.#hudElements.head.hooter.container);
       this.#container.addChild(this.#hudElements.heels.bag.container);
@@ -208,7 +219,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     this.#initSwopCharacterInteractivity();
 
-    if (onScreenControls) {
+    if (general.onScreenControls) {
       this.#onScreenControls = new OnScreenControls({
         general: renderContext.general,
         inputDirectionMode: renderContext.inputDirectionMode,
@@ -219,8 +230,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     // these have to come after the on-screen controls, since they are tappable to
     // change character, and shouldn't be hidden behind the look event catcher
     for (const character of individualCharacterNames) {
-      this.#container.addChild(this.#hudElements[character].sprite);
       this.#container.addChild(this.#hudElements[character].livesText);
+      this.#container.addChild(this.#hudElements[character].sprite);
     }
 
     // if show fps is togged on or off, add or remove the fps renderer
@@ -473,8 +484,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       renderContext: {
-        onScreenControls,
-        general: { gameState, colourised },
+        general: { gameState, colourised, onScreenControls },
       },
     } = this;
     const abilities = selectAbilities(gameState, characterName);
@@ -499,10 +509,15 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       shieldContainer.y = screenSize.y - shieldFromBottom(onScreenControls);
     }
 
-    extraSkillContainer.x = shieldContainer.x =
+    extraSkillContainer.x =
       (screenSize.x >> 1) +
       sideMultiplier(characterName) *
-        smallIconsFromCentre(onScreenControls, screenSize);
+        extraSkillFromCentre(onScreenControls, screenSize);
+
+    shieldContainer.x =
+      (screenSize.x >> 1) +
+      sideMultiplier(characterName) *
+        shieldFromCentre(onScreenControls, screenSize);
 
     const extraSkillNumber =
       abilities === undefined ? 0
@@ -542,8 +557,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       renderContext: {
-        onScreenControls,
-        general: { gameState, colourised },
+        general: { gameState, colourised, onScreenControls },
       },
     } = this;
 
@@ -570,9 +584,13 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     characterSprite.x =
       (screenSize.x >> 1) +
-      sideMultiplier(characterName) * playableIconFromCentre(onScreenControls);
+      sideMultiplier(characterName) *
+        playableIconFromCentre(onScreenControls, screenSize.x);
 
-    characterSprite.y = screenSize.y - smallItemTextureSize.h;
+    characterSprite.y =
+      onScreenControls ?
+        Math.round(screenSize.y * 0.4) - smallItemTextureSize.h + 2
+      : screenSize.y - smallItemTextureSize.h;
 
     characterSprite.tint = tintForHudIfUncolourised(
       colourised,
@@ -591,8 +609,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       renderContext: {
-        onScreenControls,
-        general: { gameState, colourised },
+        general: { gameState, colourised, onScreenControls },
       },
     } = this;
 
@@ -604,8 +621,10 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const livesTextContainer = this.#hudElements[characterName].livesText;
     livesTextContainer.x =
       (screenSize.x >> 1) +
-      sideMultiplier(characterName) * livesTextFromCentre(onScreenControls);
-    livesTextContainer.y = screenSize.y;
+      sideMultiplier(characterName) *
+        livesTextFromCentre(onScreenControls, screenSize.x);
+    livesTextContainer.y =
+      onScreenControls ? Math.round(screenSize.y * 0.4) + 16 : screenSize.y;
 
     livesTextContainer.text = livesText;
 

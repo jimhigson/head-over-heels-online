@@ -9,7 +9,6 @@ import type { Xy } from "../../../utils/vectors/vectors";
 import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 
 export type HudRenderContext<RoomId extends string> = {
-  onScreenControls: boolean;
   inputDirectionMode: InputDirectionMode;
   /**
    * for HUDs, there really must be a game playing, so set the (usually optional) gameState to required

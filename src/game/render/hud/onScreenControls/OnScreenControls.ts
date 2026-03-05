@@ -218,7 +218,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     this.#hudElements.joystick.output.x = joystickX;
     this.#hudElements.joystick.output.y = screenSize.y - joystickYFromBottom;
 
-    this.#hudElements.buttons.map.output.x = screenSize.x - 4 * 8;
+    this.#hudElements.buttons.map.output.x = screenSize.x - 3 * 8;
   }
 
   tick(tickContext: HudRendererTickContextWithRoom<RoomId, RoomItemId>): void {

@@ -4,7 +4,9 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import { iterateRoomJsonItems } from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../projections";
+import { nonRenderingItemFixedZIndex } from "../sortZ/fixedZIndexes";
 
 export type ItemsProjectedExtents = {
   floors: {
@@ -91,21 +93,28 @@ export const floorsRenderExtent = <
       // impact scrolling, but is being left to keep scrolling changes
       // out of the current work - a future item should be raised to deal
       // with them separately to keep work isolated to one change at once
-      // if (item.fixedZIndex === nonRenderingItemFixedZIndex) {
-      //   continue;
-      // }
+      if (item.fixedZIndex === nonRenderingItemFixedZIndex) {
+        continue;
+      }
 
       // any non-floor item
       // natural position:
-      const topEdgeY = projectWorldXyzToScreenXy(
+      const itemTopEdgeY = projectWorldXyzToScreenXy(
         addXyz(
-          item.state.position,
+          item.type === "lift" ?
+            // lifts are a special case - use the top of their travel instead of
+            // their starting position for rendering height estimation
+            {
+              ...item.state.position,
+              z: item.config.top * blockSizePx.z,
+            }
+          : item.state.position,
           item.renderAabb ?? item.aabb ?? originXyz,
           item.renderAabbOffset ?? originXyz,
         ),
       ).y;
 
-      allItemsTopEdgeY = Math.min(allItemsTopEdgeY, topEdgeY);
+      allItemsTopEdgeY = Math.min(allItemsTopEdgeY, itemTopEdgeY);
     }
   }
 
