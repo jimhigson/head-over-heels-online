@@ -7985,11 +7985,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "fixedZIndex": -2,
       "id": "wall(right)@0,0,0",
       "jsonItemId": "wall(right)@0,0,0",
-      "renderAabb": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.wall.y",
@@ -8032,11 +8027,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "fixedZIndex": -2,
       "id": "wall(towards)@0,0,0",
       "jsonItemId": "wall(towards)@0,0,0",
-      "renderAabb": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "shadowCastTexture": {
         "flipX": true,
         "spritesheetVariant": "original",
@@ -8192,11 +8182,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "fixedZIndex": -2,
       "id": "wall@7,0,0",
       "jsonItemId": "wall@7,0,0",
-      "renderAabb": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "shadowCastTexture": {
         "flipX": true,
         "spritesheetVariant": "original",

@@ -14,7 +14,7 @@ export const needsNewHudRenderer = <
 ): boolean =>
   renderer === undefined ||
   renderer.renderContext.general.colourised !== colourised ||
-  renderer.renderContext.onScreenControls !== onScreenControls ||
+  renderer.renderContext.general.onScreenControls !== onScreenControls ||
   renderer.renderContext.inputDirectionMode !== inputDirectionMode ||
   // invalidate on changing landscape/portrait since on-screen controls need this
   // to re-initialise

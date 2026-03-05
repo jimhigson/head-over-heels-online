@@ -1,7 +1,4 @@
-import type { Writable } from "type-fest";
-
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlayAAbbInfo } from "../../../model/ItemInPlay";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
@@ -93,12 +90,6 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     },
     times,
   });
-
-  // hack to keep rendering the same since non-rendering items currently impact scrolling
-  // TODO: fix this properly in a PR that changes scroll start position
-  if (isHidden) {
-    (aabbInfo as Writable<ItemInPlayAAbbInfo>).renderAabb = originXyz;
-  }
 
   return {
     type: "wall",

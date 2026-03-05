@@ -35,6 +35,7 @@ const editorGeneralRenderContext = (
   paused: false,
   colourised: true,
   upscale: selectUpscale(store.getState()),
+  onScreenControls: false,
   editor: true,
 });
 

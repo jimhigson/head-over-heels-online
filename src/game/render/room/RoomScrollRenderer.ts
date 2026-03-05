@@ -15,7 +15,6 @@ import type {
 } from "./RoomRendererType";
 
 import { defaultUserSettings } from "../../../store/slices/gameMenus/defaultUserSettings";
-import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
 import { assignRoundedXy } from "../../../utils/pixi/assignRoundedXy";
@@ -102,6 +101,10 @@ export class RoomScrollRenderer<
       },
     } = renderContext;
 
+    const onScreenControls =
+      renderContext.general.onScreenControls ??
+      defaultUserSettings.onScreenControls;
+
     const {
       floors: {
         edgeLeftX: floorsEdgeLeftX,
@@ -114,45 +117,62 @@ export class RoomScrollRenderer<
     this.#edgeLeftXTranslated = floorsEdgeLeftX;
     this.#edgeRightXTranslated = floorsEdgeRightX;
 
-    const renderingMedianX = (floorsEdgeRightX + floorsEdgeLeftX) / 2;
+    let renderingMedianX = (floorsEdgeRightX + floorsEdgeLeftX) / 2;
 
-    const renderingWidth = floorsEdgeRightX - floorsEdgeLeftX;
-    const renderingHeight = floorsBottomEdgeY - allItemsTopEdgeY;
-    const fitsInY = effectiveScreenSize.y >= renderingHeight;
-    const fitsOnScreen = fitsInY && effectiveScreenSize.x >= renderingWidth;
+    const roomRenderingWidth = floorsEdgeRightX - floorsEdgeLeftX;
+    const roomRenderingHeight = floorsBottomEdgeY - allItemsTopEdgeY;
+    const fitsInY = effectiveScreenSize.y >= roomRenderingHeight;
+    const fitsInX = effectiveScreenSize.x >= roomRenderingWidth;
+    const roomFitsOnScreen = fitsInY && fitsInX;
+
+    if (fitsInX && !onScreenControls) {
+      // if we have space, reduce renderingMedianX towards zero to make the room
+      // more centred in the ui, which also brings it lower in the ui, allowing more
+      // of the higher parts to be seen
+      renderingMedianX /= 2;
+    }
 
     // how much to move the room up (at home position) to bring off the hud
     const bottomMargin =
-      fitsInY ?
+      onScreenControls ?
+        // probably on mobile space is super-tight and we don't have the traditional hud to worry about
+        // - allow half a playable block to go off-screen
+        -4
+      : fitsInY ?
         // like the original:
         16
         // we don't fit so we're going to not sacrifice vertical y space to the gap
-        // at the bottom:
-      : detectDeviceType() === "mobile" ?
-        // space is super-tight and we don't have the traditional hud to worry about
-        // - allow half a playable block to go off-screen
-        -4
-        // the very bottom standable pixel will be at the bottom of the screen, overlapping the hud
+        // at the bottom - the very bottom standable pixel will be at the bottom of the screen, overlapping the hud
       : 0;
 
     this.#roomHomePosition = {
       x: effectiveScreenSize.x / 2 - renderingMedianX,
       y:
-        effectiveScreenSize.y -
-        bottomMargin -
-        floorsBottomEdgeY -
-        (fitsOnScreen ?
-          /* similar to the original's (non-scrolling) room  positioning on screen: moving up by half
+        fitsInY && onScreenControls ?
+          // streamlined version for rooms that fit on the screen in y on mobile - simply centre vertically:
+          Math.floor((effectiveScreenSize.y + roomRenderingHeight) / 2) - 4
+        : effectiveScreenSize.y -
+          bottomMargin -
+          floorsBottomEdgeY -
+          (roomFitsOnScreen && !onScreenControls ?
+            /* similar to the original's (non-scrolling) room  positioning on screen: moving up by half
              the x offset creates movement in the 2:1 isometric projection along the x/y in-game axes;
-             also avoids the hud elements since they are set up at about 2:1 ratio */
-          Math.abs(renderingMedianX / 2)
-          // ignore this adjustment if the room is wider than the screen - it tends to force a
-          // black space below, especially on non-rectangular 'big' rooms and mobile-sized displays, where
-        : 0),
+             also avoids the hud elements since they are set up at about 2:1 ratio 
+             
+             test on (eg #egyptus33 or #egyptus35)
+             */
+            Math.abs(renderingMedianX / 2)
+            // ignore this adjustment on mobile since we are free to let the room render all the way down
+            // to the bottom of the screen
+            // ignore this adjustment if the room is wider than the screen - it tends to force a
+            // black space below, especially on non-rectangular 'big' rooms and mobile-sized displays, where
+          : 0),
     };
 
     // is there content off the left edge when the room is in its home position?
     this.#scrollableLeft =
+      // < 0 performs poorly in #blacktooth35, #bookworld3 since the door coming into the room will be under the
+      // hud joystick
       this.#roomHomePosition.x + this.#edgeLeftXTranslated < 0;
     // is there content off the right edge when the room is in its home position?
     this.#scrollableRight =
@@ -370,8 +390,6 @@ export const showRoomScrollBounds = <
     },
     allItems: { topEdgeY: allItemsTopEdgeY },
   } = floorsRenderExtent(roomState);
-
-  console.log(floorsRenderExtent(roomState));
 
   const graphics = new Graphics()
     .rect(
