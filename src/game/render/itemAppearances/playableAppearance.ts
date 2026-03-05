@@ -20,6 +20,7 @@ import {
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import { playableWalkAnimationSpeed } from "../../../sprites/spritesheet/spritesheetData/playableSpritesheetData";
 import { getAmbientSwoppedColour } from "../../../sprites/spritesheet/variants/currentRoomSpritesheetVariant";
+import { isEmptyObject } from "../../../utils/empty";
 import {
   lengthXyz,
   vectorClosestDirectionXy8,
@@ -55,6 +56,7 @@ type PlayableRenderProps = {
   action: PlayableActionState;
   teleportingPhase: "in" | "out" | null;
   gravityZ: number;
+  isStoodOn: boolean;
 
   highlighted: boolean;
   flashing: boolean;
@@ -77,6 +79,7 @@ const playableCreateSpriteOptions = ({
   gravityZ,
   paused,
   spritesheetVariant,
+  isStoodOn,
 }: PlayableRenderProps & {
   name: IndividualCharacterName;
   paused: boolean;
@@ -131,6 +134,17 @@ const playableCreateSpriteOptions = ({
       return { textureId: fallingTextureName, spritesheetVariant };
   }
 
+  if (name === "head" && isStoodOn) {
+    // head (or head component of head-over-heels) - show with eyes closed
+    const blinkingTextureId = `${name}.blinking.${facingXy8}`;
+    if (isTextureId(blinkingTextureId)) {
+      return {
+        textureId: blinkingTextureId,
+        spritesheetVariant,
+      };
+    }
+  }
+
   const idleAnimationId = `${name}.idle.${facingXy8}` as const;
   if (isAnimationId(idleAnimationId)) {
     // we have an idle anim for this character/direction
@@ -140,6 +154,7 @@ const playableCreateSpriteOptions = ({
       spritesheetVariant,
     };
   }
+  // no idle animation:
   return { textureId: `${name}.walking.${facingXy8}.2`, spritesheetVariant };
 };
 
@@ -363,6 +378,12 @@ const playableAppearanceImpl: ItemAppearance<
   const walkSpeed = lengthXyz(facing);
 
   const teleportingPhase = teleporting?.phase ?? null;
+  const isStoodOn =
+    type !== "heels" &&
+    (!isEmptyObject(subject.state.stoodOnBy) ||
+      // keep eyes closed for a short time after being stepped off of, so that instantaneous
+      // jumps off head still get this effect:
+      subject.state.stoodOnUntilRoomTime + 300 > room.roomTime);
 
   const renderProps: PlayableRenderProps = {
     action,
@@ -372,6 +393,7 @@ const playableAppearanceImpl: ItemAppearance<
     highlighted,
     shining,
     gravityZ,
+    isStoodOn,
   };
 
   const refreshSprites =
@@ -381,7 +403,8 @@ const playableAppearanceImpl: ItemAppearance<
     currentlyRenderedProps.facingXy8 !== facingXy8 ||
     currentlyRenderedProps.teleportingPhase !== teleportingPhase ||
     currentlyRenderedProps?.gravityZ > jumpSpriteGravityZThreshold !==
-      gravityZ > jumpSpriteGravityZThreshold;
+      gravityZ > jumpSpriteGravityZThreshold ||
+    currentlyRenderedProps.isStoodOn !== isStoodOn;
 
   let outputContainer: PlayableRenderOutput;
 
