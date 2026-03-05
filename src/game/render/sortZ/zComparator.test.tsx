@@ -1,30 +1,41 @@
 import { describe, expect, test } from "vitest";
 
+import type { ItemInPlayAAbbInfo } from "../../../model/ItemInPlay";
+
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
 const unitCube = { x: 1, y: 1, z: 1 };
 
+function describeOrder(order: number) {
+  return (
+    order > 0 ? "is in front of it"
+    : order < 0 ? "is behind it"
+    : "has no ordering with it"
+  );
+}
+
 expect.extend({
   toBeInFrontOf(received: DrawOrderComparable, reference: DrawOrderComparable) {
     const spatialIndex = new GridSpatialIndex([received, reference]);
-    const { isNot } = this;
+    const { isNot, utils } = this;
+    const order = zComparator(received, reference, spatialIndex);
     return {
       // do not alter your "pass" based on isNot. Vitest does it for you
-      pass: zComparator(received, reference, spatialIndex) > 0,
-
+      pass: order > 0,
       message: () =>
-        `${received.id} is${isNot ? "" : " not"} in front of ${reference.id}`,
+        `expected ${utils.printExpected(received.id)} to be ${isNot ? "not " : ""}in front of ${utils.printExpected(reference.id)} but ${utils.printReceived(describeOrder(order))}`,
     };
   },
   toBeBehind(received: DrawOrderComparable, reference: DrawOrderComparable) {
     const spatialIndex = new GridSpatialIndex([received, reference]);
-    const { isNot } = this;
+    const { isNot, utils } = this;
+    const order = zComparator(received, reference, spatialIndex);
     return {
       // do not alter your "pass" based on isNot. Vitest does it for you
-      pass: zComparator(received, reference, spatialIndex) < 0,
+      pass: order < 0,
       message: () =>
-        `${received.id} is${isNot ? "" : " not"} behind ${reference.id}`,
+        `expected ${utils.printExpected(received.id)} to be ${isNot ? "not " : ""}behind ${utils.printExpected(reference.id)} but ${utils.printReceived(describeOrder(order))}`,
     };
   },
   toHaveNoOrderPreferenceWith(
@@ -32,17 +43,13 @@ expect.extend({
     reference: DrawOrderComparable,
   ) {
     const spatialIndex = new GridSpatialIndex([received, reference]);
-    const { isNot } = this;
-    const result = zComparator(received, reference, spatialIndex) === 0;
+    const { isNot, utils } = this;
+    const order = zComparator(received, reference, spatialIndex);
     return {
       // do not alter your "pass" based on isNot. Vitest does it for you
-      pass: result,
+      pass: order === 0,
       message: () =>
-        `${received.id} ${
-          isNot ? "has no order preference with"
-          : result ? "is in front of"
-          : "is behind"
-        } ${reference.id} but expected no order preference`,
+        `expected ${utils.printExpected(received.id)} to have ${isNot ? "no " : ""}order preference with ${utils.printExpected(reference.id)} but ${utils.printReceived(describeOrder(order))}`,
     };
   },
 });
@@ -302,4 +309,102 @@ test("zComparator gives no order preference for slightly-visually-overlapping di
 
   expect(leftTop).toBeBehind(rightLow);
   expect(rightLow).toBeInFrontOf(leftTop);
+});
+
+describe("overlapping renderAABBs", () => {
+  const awayOrTowardsWallAabbInfo: ItemInPlayAAbbInfo = {
+    aabb: { x: 8, y: 1, z: 4 },
+  };
+  const leftOrRightWallAabbInfo: ItemInPlayAAbbInfo = {
+    aabb: { x: 1, y: 8, z: 4 },
+  };
+  const floorAabbInfo: ItemInPlayAAbbInfo = {
+    aabb: { x: 8, y: 8, z: 1 },
+  };
+  const headAabbInfo: ItemInPlayAAbbInfo = {
+    aabb: unitCube,
+    // character renders slightly bigger than their aabb (on all sides):
+    renderAabbOffset: { x: -0.1, y: -0.1, z: -0.1 },
+    renderAabb: { x: 1.2, y: 1.2, z: 1.2 },
+  };
+
+  test("character at far wall", () => {
+    const awayWall: DrawOrderComparable = {
+      id: "away-wall",
+      state: { position: { x: 0, y: 8, z: 0 } },
+      ...awayOrTowardsWallAabbInfo,
+    };
+    const head: DrawOrderComparable = {
+      id: "head",
+      state: { position: { x: 4, y: 7, z: 0 } },
+      ...headAabbInfo,
+    };
+
+    expect(head).toBeInFrontOf(awayWall);
+    expect(awayWall).toBeBehind(head);
+  });
+
+  test("character at near wall", () => {
+    const nearWall: DrawOrderComparable = {
+      id: "near-wall",
+      state: { position: { x: 0, y: -1, z: 0 } },
+      ...awayOrTowardsWallAabbInfo,
+    };
+    const head: DrawOrderComparable = {
+      id: "head",
+      state: { position: { x: 4, y: 0, z: 0 } },
+      ...headAabbInfo,
+    };
+
+    expect(nearWall).toBeInFrontOf(head);
+    expect(head).toBeBehind(nearWall);
+  });
+
+  test("character at right wall", () => {
+    const rightWall: DrawOrderComparable = {
+      id: "right-wall",
+      state: { position: { x: 8, y: 0, z: 0 } },
+      ...leftOrRightWallAabbInfo,
+    };
+    const head: DrawOrderComparable = {
+      id: "head",
+      state: { position: { x: 7, y: 4, z: 0 } },
+      ...headAabbInfo,
+    };
+
+    expect(head).toBeInFrontOf(rightWall);
+    expect(rightWall).toBeBehind(head);
+  });
+
+  test("character at left wall", () => {
+    const leftWall: DrawOrderComparable = {
+      id: "left-wall",
+      state: { position: { x: -1, y: 0, z: 0 } },
+      ...leftOrRightWallAabbInfo,
+    };
+    const head: DrawOrderComparable = {
+      id: "head",
+      state: { position: { x: 0, y: 4, z: 0 } },
+      ...headAabbInfo,
+    };
+
+    expect(leftWall).toBeInFrontOf(head);
+    expect(head).toBeBehind(leftWall);
+  });
+
+  test("character standing on floor", () => {
+    const floor: DrawOrderComparable = {
+      id: "floor",
+      state: { position: { x: 0, y: 0, z: -1 } },
+      ...floorAabbInfo,
+    };
+    const head: DrawOrderComparable = {
+      id: "head",
+      state: { position: { x: 4, y: 4, z: 0 } },
+      ...headAabbInfo,
+    };
+
+    expect(head).toBeInFrontOf(floor);
+    expect(floor).toBeBehind(head);
+  });
 });

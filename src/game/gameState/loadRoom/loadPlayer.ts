@@ -17,7 +17,7 @@ import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { smallItemAabb } from "../../collision/boundingBoxes";
+import { headAabbInfo, heelsAabbInfo } from "../../collision/boundingBoxes";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
 import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
@@ -31,8 +31,6 @@ export const defaultPlayableRootAttributes = {
   config: emptyObject,
   shadowCastTexture: shadowPlayable,
   castsShadowWhileStoodOn: true,
-  // head's nose is rendered outside of his bb in the original
-  aabb: smallItemAabb,
 } satisfies Partial<PlayableItem<CharacterName, string>>;
 
 export const defaultPlayerState = () => {
@@ -79,6 +77,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       type: "head",
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
+      ...headAabbInfo,
       state: {
         ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
@@ -101,6 +100,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       type: "heels",
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
+      ...heelsAabbInfo,
       state: {
         ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),

@@ -154,7 +154,10 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   }
 
   const floorPosition = blockXyzToFineXyz(adjustedPositionBlocks);
-  const floorAabb = multiplyBoundingBox(fullBlockAabb, adjustedSizeBlocks);
+  const floorAabb = multiplyBoundingBox({
+    singleItemBBInfo: { aabb: fullBlockAabb },
+    times: adjustedSizeBlocks,
+  }).aabb;
 
   return {
     ...defaultItemProperties,
@@ -164,7 +167,10 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
     config: {
       ...floorJson.config,
       naturalFootprint: {
-        aabb: multiplyBoundingBox(fullBlockAabb, naturalAabbBlocks),
+        aabb: multiplyBoundingBox({
+          singleItemBBInfo: { aabb: fullBlockAabb },
+          times: naturalAabbBlocks,
+        }).aabb,
         position: blockXyzToFineXyz(naturalPositionBlocks),
       },
     },

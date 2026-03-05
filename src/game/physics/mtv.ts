@@ -163,18 +163,32 @@ export const mtvWriteInto = (
   obstacleAabb: Xyz,
   writeInto: Partial<Xyz>,
 ): Xyz => {
-  const dx1 = obstaclePosition.x + obstacleAabb.x - moverPosition.x; // Right overlap
-  const dy1 = obstaclePosition.y + obstacleAabb.y - moverPosition.y; // Far overlap
-  const dz1 = obstaclePosition.z + obstacleAabb.z - moverPosition.z; // overlap Bottom of mover with Top of solid
+  const oXMin = obstaclePosition.x;
+  const oXMax = oXMin + obstacleAabb.x;
+  const oYMin = obstaclePosition.y;
+  const oYMax = oYMin + obstacleAabb.y;
+  const oZMin = obstaclePosition.z;
+  const oZMax = oZMin + obstacleAabb.z;
 
-  const dx2 = moverPosition.x + moverAabb.x - obstaclePosition.x; // overlap Left of mover with Right of solid
-  const dy2 = moverPosition.y + moverAabb.y - obstaclePosition.y; // overlap Away of mover with Towards of solid
-  const dzT = moverPosition.z + moverAabb.z - obstaclePosition.z; // overlap Top of mover with Bottom of solid
+  const mXMin = moverPosition.x;
+  const mXMax = mXMin + moverAabb.x;
+  const mYMin = moverPosition.y;
+  const mYMax = mYMin + moverAabb.y;
+  const mZMin = moverPosition.z;
+  const mZMax = mZMin + moverAabb.z;
+
+  const dx1 = oXMax - mXMin; // Right overlap
+  const dy1 = oYMax - mYMin; // Far overlap
+  const dz1 = oZMax - mZMin; // overlap Bottom of mover with Top of solid
+
+  const dx2 = mXMax - oXMin; // overlap Left of mover with Right of solid
+  const dy2 = mYMax - oYMin; // overlap Away of mover with Towards of solid
+  const dz2 = mZMax - oZMin; // overlap Top of mover with Bottom of solid
 
   // Find minimum x overlap in x,y,z
   const mtvX = Math.abs(dx1) < Math.abs(dx2) ? dx1 : -dx2;
   const mtvY = Math.abs(dy1) < Math.abs(dy2) ? dy1 : -dy2;
-  const mtvZ = Math.abs(dz1) < Math.abs(dzT) ? dz1 : -dzT;
+  const mtvZ = Math.abs(dz1) < Math.abs(dz2) ? dz1 : -dz2;
 
   const absMtvX = Math.abs(mtvX);
   const absMtvY = Math.abs(mtvY);

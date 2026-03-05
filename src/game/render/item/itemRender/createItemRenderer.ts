@@ -58,7 +58,7 @@ export type ItemRenderPipeline<T extends ItemInPlayType> = {
   /** the top-level, chained renderer that was created for this item. Tick this to tick the item */
   top: ItemSoundAndGraphicsRenderer<T>;
 
-  // hooks into sub-renderers - more could be added later if needed
+  // a hook into the sub-renderer that makes the actual appearance - more could be added later if needed
   itemAppearanceRenderer?: ItemAppearancePixiRenderer<T, object, Container>;
 };
 

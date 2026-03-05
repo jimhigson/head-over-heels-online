@@ -109,6 +109,21 @@ export type ItemInPlayConfig<
   T extends JsonItemType ? JsonItemConfig<T, RoomId, RoomItemId, ScN>
   : EmptyObject;
 
+export type ItemInPlayAAbbInfo = {
+  /**
+   * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
+   * are no non-collideable items
+   */
+  aabb: Aabb;
+  /** an optional second bb which is used only for determining render order - not for collisions */
+  readonly renderAabb?: Aabb;
+  /**
+   * the offset of the render aabb from the item position. like renderAabb, has no role in collisions,
+   * only determining the render order
+   */
+  readonly renderAabbOffset?: Aabb;
+};
+
 export type ItemInPlay<
   T extends ItemInPlayType,
   RoomId extends string = string,
@@ -117,7 +132,7 @@ export type ItemInPlay<
   /** the item id> for this item */
   ItemId extends RoomItemId = RoomItemId,
   ScN extends SceneryName = SceneryName,
-> = {
+> = ItemInPlayAAbbInfo & {
   type: T;
 
   /**
@@ -135,19 +150,6 @@ export type ItemInPlay<
 
   readonly id: ItemId;
   state: ItemState<T, RoomId, RoomItemId>;
-
-  /**
-   * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
-   * are no non-collideable items
-   */
-  aabb: Aabb;
-  /** an optional second bb which is used only for determining render order - not for collisions */
-  readonly renderAabb?: Aabb;
-  /**
-   * the offset of the render aabb from the item position. like renderAabb, has no role in collisions,
-   * only determining the render order
-   */
-  readonly renderAabbOffset?: Aabb;
 
   /** the shadow this item casts on other items */
   shadowCastTexture?:

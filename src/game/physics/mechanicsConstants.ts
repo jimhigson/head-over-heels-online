@@ -217,7 +217,7 @@ export const maxPushRecursionDepth = 8;
 // to the wall-top on the same x-coord column
 export const wallHeightPx = wallTileSize.h - wallTileSize.w / 2;
 
-// in practice, walls render details above their height, so give the render height a couple of
+// in practice, walls render details above their height, so give the render height a few
 // extra pixels:
 export const wallRenderHeight = wallHeightPx + 2;
 

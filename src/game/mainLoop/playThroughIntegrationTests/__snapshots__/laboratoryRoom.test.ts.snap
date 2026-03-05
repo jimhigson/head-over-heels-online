@@ -24,6 +24,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 13,
+        "y": 13,
+        "z": 13,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -94,6 +104,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 2,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 13,
+        "y": 13,
+        "z": 13,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -158,6 +178,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "position": {
         "x": 7,
         "y": 4,
+        "z": 0,
+      },
+      "renderAabb": {
+        "x": 13,
+        "y": 13,
+        "z": 13,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
         "z": 0,
       },
       "shadowCastTexture": {
@@ -230,6 +260,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 13,
+        "y": 13,
+        "z": 13,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -287,7 +327,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "barrier@10,6,0": {
       "aabb": {
         "x": 15,
-        "y": 3,
+        "y": 4,
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
@@ -330,7 +370,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "barrier@10,6,1": {
       "aabb": {
         "x": 15,
-        "y": 3,
+        "y": 4,
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
@@ -378,7 +418,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "barrier@10,8,0": {
       "aabb": {
         "x": 15,
-        "y": 3,
+        "y": 4,
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
@@ -421,7 +461,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     "barrier@10,8,1": {
       "aabb": {
         "x": 15,
-        "y": 3,
+        "y": 4,
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
@@ -487,7 +527,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 3,
         "z": 3,
       },
-      "renderAabb": undefined,
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -535,7 +574,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 2,
       },
-      "renderAabb": undefined,
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -581,7 +619,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 5,
         "z": 0,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 14,
+        "y": 14,
+        "z": 24,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -623,6 +665,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 13,
         "y": 7,
         "z": 0,
+      },
+      "renderAabb": {
+        "x": 14,
+        "y": 14,
+        "z": 12,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -669,7 +716,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 3,
         "z": 0,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 14,
+        "y": 14,
+        "z": 24,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -1070,7 +1121,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 0,
         "z": 0,
       },
-      "renderAabb": undefined,
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -1123,7 +1173,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 0,
         "z": 0,
       },
-      "renderAabb": undefined,
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -1262,6 +1311,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 3,
         "z": 9,
       },
+      "renderAabb": {
+        "x": 17,
+        "y": 17,
+        "z": 24,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -1355,6 +1414,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 5,
         "z": 9,
       },
+      "renderAabb": {
+        "x": 17,
+        "y": 17,
+        "z": 24,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -1429,7 +1498,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 0,
         "z": 0,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 18,
+        "y": 34,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -1481,7 +1559,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 0,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 18,
+        "y": 50,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -1535,7 +1622,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 9,
         "z": 0,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 50,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "flipX": true,
         "spritesheetVariant": "original",
@@ -1588,7 +1684,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 0,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 50,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "flipX": true,
         "spritesheetVariant": "original",
@@ -1637,6 +1742,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 4,
         "y": 6,
         "z": 5,
+      },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
       },
       "shadowCastTexture": {
         "flipX": true,
@@ -1687,7 +1802,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 7,
         "z": 0,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 18,
+        "y": 50,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -1741,7 +1865,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 2,
         "z": 0,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 18,
+        "y": 66,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -1787,7 +1920,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 3,
         "z": 1,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 18,
+        "y": 50,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -1833,7 +1975,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 2,
       },
-      "renderAabb": undefined,
+      "renderAabb": {
+        "x": 18,
+        "y": 34,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -1875,6 +2026,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 17,
         "y": 5,
         "z": 3,
+      },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -2641,6 +2802,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 0,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 29,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -3,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -2724,6 +2895,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 0,
         "y": 0,
         "z": 0,
+      },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 29,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -3,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -2810,6 +2991,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 0,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 29,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -3,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -2895,6 +3086,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 0,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 29,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -3,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -2976,6 +3177,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 0,
         "y": 0,
         "z": 0,
+      },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 29,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -3,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -3155,6 +3366,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {},
       "id": "heels",
       "jsonItemId": "heels",
+      "renderAabb": {
+        "x": 14,
+        "y": 14,
+        "z": 14,
+      },
+      "renderAabbOffset": {
+        "x": -1.5,
+        "y": -1.5,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.playable",
@@ -3349,6 +3570,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 3,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 15,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -2,
+      },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
         "spritesheetVariant": "original",
@@ -3403,6 +3634,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 1,
         "y": 4,
         "z": 2,
+      },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 15,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -2,
       },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
@@ -3459,6 +3700,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 1,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 15,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -2,
+      },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
         "spritesheetVariant": "original",
@@ -3512,6 +3763,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 1,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 15,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -2,
+      },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
         "spritesheetVariant": "original",
@@ -3564,6 +3825,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 3,
         "y": 4,
         "z": 0,
+      },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 15,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -2,
       },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
@@ -4122,6 +4393,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 8,
         "z": 5,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 29,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -3,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -4275,6 +4556,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 4,
         "z": 9,
       },
+      "renderAabb": {
+        "x": 16,
+        "y": 11,
+        "z": 13,
+      },
+      "renderAabbOffset": {
+        "x": -2,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -4423,6 +4714,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 1,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 13,
+        "z": 13,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -4493,6 +4789,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 16,
         "y": 1,
         "z": 0,
+      },
+      "renderAabb": {
+        "x": 12,
+        "y": 13,
+        "z": 13,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -4567,6 +4868,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 1,
         "z": 1,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 13,
+        "z": 13,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -4637,6 +4943,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 17,
         "y": 1,
         "z": 0,
+      },
+      "renderAabb": {
+        "x": 12,
+        "y": 13,
+        "z": 13,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -4711,6 +5022,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 1,
         "z": 1,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 13,
+        "z": 13,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -4784,6 +5100,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 1,
         "z": 2,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 13,
+        "z": 13,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -4855,6 +5176,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 5,
         "z": 11,
       },
+      "renderAabb": {
+        "x": 13,
+        "y": 13,
+        "z": 16,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -4925,6 +5251,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 4,
         "y": 6,
         "z": 1,
+      },
+      "renderAabb": {
+        "x": 13,
+        "y": 13,
+        "z": 16,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -5075,6 +5406,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 13,
       },
+      "renderAabb": {
+        "x": 13,
+        "y": 13,
+        "z": 16,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -5149,6 +5485,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 4,
         "y": 6,
         "z": 9,
+      },
+      "renderAabb": {
+        "x": 12,
+        "y": 13,
+        "z": 13,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -6214,6 +6555,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -6280,6 +6631,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 1,
         "y": 6,
         "z": 1,
+      },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -6348,6 +6709,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 2,
       },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -6413,6 +6784,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 7,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -6475,6 +6856,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 10,
         "y": 7,
         "z": 1,
+      },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -6539,6 +6930,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 7,
         "z": 2,
       },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -6601,6 +7002,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 10,
         "y": 7,
         "z": 3,
+      },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -6665,6 +7076,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 7,
         "z": 4,
       },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -6728,6 +7149,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 7,
         "z": 5,
       },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -6787,6 +7218,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "position": {
         "x": 2,
         "y": 6,
+        "z": 0,
+      },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
         "z": 0,
       },
       "shadowCastTexture": {
@@ -6856,6 +7297,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 1,
       },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -6923,6 +7374,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 6,
         "z": 2,
       },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
@@ -6986,6 +7447,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "position": {
         "x": 2,
         "y": 9,
+        "z": 0,
+      },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
         "z": 0,
       },
       "shadowCastTexture": {
@@ -7055,6 +7526,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 0,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 14,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -7120,6 +7596,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 14,
         "y": 0,
         "z": 0,
+      },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 14,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -7205,6 +7686,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 12,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 12,
+        "y": 12,
+        "z": 15,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
@@ -7253,6 +7739,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "x": 16,
         "y": 13,
         "z": 1,
+      },
+      "renderAabb": {
+        "x": 14,
+        "y": 14,
+        "z": 14,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -2,
       },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
@@ -7338,6 +7834,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 12,
         "z": 0,
       },
+      "renderAabb": {
+        "x": 14,
+        "y": 14,
+        "z": 14,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": -2,
+      },
       "shadowCastTexture": {
         "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
@@ -7421,6 +7927,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "position": {
         "x": 1,
         "y": 0,
+        "z": 0,
+      },
+      "renderAabb": {
+        "x": 18,
+        "y": 18,
+        "z": 12,
+      },
+      "renderAabbOffset": {
+        "x": -1,
+        "y": -1,
         "z": 0,
       },
       "shadowCastTexture": {

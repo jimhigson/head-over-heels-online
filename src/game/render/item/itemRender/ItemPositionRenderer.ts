@@ -26,6 +26,8 @@ interface MaskingContainer extends Container {
   children: [UniqueTextureSprite, Container];
 }
 
+const logCyclicRendering = import.meta.env.VITE_LOG_CYCLIC_RENDERING === "true";
+
 export class ItemPositionRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
@@ -147,6 +149,15 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
         const maskingContainer = this.#maskingContainers.get(previousFront);
 
         if (maskingContainer) {
+          if (logCyclicRendering) {
+            console.info(
+              "no longer masking:",
+              previousFront,
+              "from:",
+              this.renderContext.item.id,
+            );
+          }
+
           try {
             this.#destroyMaskingContainer(previousFront, maskingContainer);
           } catch (e) {
@@ -193,8 +204,17 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
       // TODO: remove after this PR merged/released in pixi: https://github.com/pixijs/pixijs/pull/11757
       frontRenderingForMask.filters = previousFilters as Filter[];
 
-      if (preExistingMaskingContainer === undefined)
+      if (preExistingMaskingContainer === undefined) {
+        if (logCyclicRendering) {
+          console.warn(
+            "adding masking for item in front:",
+            frontItemId,
+            "from:",
+            this.renderContext.item.id,
+          );
+        }
         this.#addMaskingContainer(frontItemId, curMaskingSprite);
+      }
 
       const otherItem = this.renderContext.room.items[frontItemId];
 

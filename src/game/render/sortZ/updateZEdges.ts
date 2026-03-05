@@ -124,6 +124,8 @@ export const updateZEdges = <
       const front = comparison > 0 ? itemI.id : itemJ.id;
       const back = comparison > 0 ? itemJ.id : itemI.id;
 
+      // edges are initially added as not broken - the sorting algo later might
+      // find a cycle though and mark this as broken in order to defeat the cycle
       addEdge(zEdges, back, front, false);
 
       // can't link the other way - delete if it does:

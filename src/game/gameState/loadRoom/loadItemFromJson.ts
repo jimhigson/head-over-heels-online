@@ -120,14 +120,10 @@ export function* loadItemFromJson<
           (jsonItem.config as ItemConfigMaybeWithMultiplication).times !==
           undefined
         ) ?
-          {
-            aabb: multiplyBoundingBox(
-              boundingBoxes.aabb,
-              (jsonItem.config as ItemConfigMaybeWithMultiplication).times,
-            ),
-            // multiplied items can't have a separate render bb:
-            renderAabb: undefined,
-          }
+          multiplyBoundingBox({
+            singleItemBBInfo: boundingBoxes,
+            times: (jsonItem.config as ItemConfigMaybeWithMultiplication).times,
+          })
         : boundingBoxes;
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
