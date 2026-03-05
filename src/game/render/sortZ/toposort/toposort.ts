@@ -21,12 +21,15 @@ import type { ZGraph } from "../GraphEdges";
 
 import { emptySet } from "../../../../utils/empty";
 
+const logCyclicRendering = import.meta.env.VITE_LOG_CYCLIC_RENDERING === "true";
+
 /**
  * @param edges An array of directed edges describing a graph. An edge looks
  * like this: `Map{ from => Map{to => edge} }`
  * @param N The type of the nodes in the graph
  * @returns a list of vertices, sorted from "start" to "end"
- * @note automatically breaks cycles by marking edges as broken
+ * @note automatically breaks cycles by marking edges as broken by mutating the graph that is
+ * passed in
  */
 export const toposort = <N>(graph: ZGraph<N>): N[] => {
   // Mark all edges as not broken on entry
@@ -57,6 +60,33 @@ export const toposort = <N>(graph: ZGraph<N>): N[] => {
       if (parent !== null) {
         const parentEdges = graph.get(parent);
         if (parentEdges?.has(node)) {
+          if (logCyclicRendering) {
+            console.groupCollapsed(
+              "cycle found with",
+              predecessors,
+              "marking edge as broken:",
+              parent,
+              "->",
+              node,
+            );
+            console.log(
+              "in graph",
+              JSON.stringify(
+                graph,
+                (_, value) => {
+                  if (value instanceof Set) {
+                    return [...value];
+                  }
+                  if (value instanceof Map) {
+                    return Object.fromEntries(value);
+                  }
+                  return value;
+                },
+                2,
+              ),
+            );
+          }
+          console.groupEnd();
           parentEdges.set(node, true);
         }
       }

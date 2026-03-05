@@ -6,7 +6,11 @@ import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";
 import { addXyz } from "../../../utils/vectors/vectors";
-import { doubleHeightCharacter } from "../../collision/boundingBoxes";
+import {
+  headAabbInfo,
+  headOverHeelsAabbInfo,
+  heelsAabbInfo,
+} from "../../collision/boundingBoxes";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import {
   defaultBaseState,
@@ -29,6 +33,7 @@ export const uncombinePlayablesFromSymbiosis = <
     type: "head",
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
+    ...headAabbInfo,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
@@ -49,6 +54,7 @@ export const uncombinePlayablesFromSymbiosis = <
     type: "heels",
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
+    ...heelsAabbInfo,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
@@ -95,7 +101,7 @@ export const combinePlayablesInSymbiosis = <
     shadowCastTexture: heels.shadowCastTexture,
     castsShadowWhileStoodOn: heels.castsShadowWhileStoodOn,
     config: emptyObject,
-    aabb: doubleHeightCharacter,
+    ...headOverHeelsAabbInfo,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),

@@ -371,7 +371,7 @@ export const showRoomScrollBounds = <
     allItems: { topEdgeY: allItemsTopEdgeY },
   } = floorsRenderExtent(roomState);
 
-  //const wallHeight = 0;
+  console.log(floorsRenderExtent(roomState));
 
   const graphics = new Graphics()
     .rect(

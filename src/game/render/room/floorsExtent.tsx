@@ -2,7 +2,7 @@ import type { AnyRoomJson } from "../../../model/RoomJson";
 import type { Xyz } from "../../../utils/vectors/vectors";
 
 import { iterateRoomJsonItems } from "../../../model/RoomJson";
-import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
 
@@ -16,18 +16,6 @@ export type ItemsProjectedExtents = {
   allItems: {
     topEdgeY: number;
   };
-};
-
-const nullFloorsRenderExtent: ItemsProjectedExtents = {
-  floors: {
-    edgeLeftX: Number.POSITIVE_INFINITY,
-    edgeRightX: Number.NEGATIVE_INFINITY,
-    topEdgeY: Number.POSITIVE_INFINITY,
-    bottomEdgeY: Number.NEGATIVE_INFINITY,
-  },
-  allItems: {
-    topEdgeY: Number.POSITIVE_INFINITY,
-  },
 };
 
 /**
@@ -50,75 +38,88 @@ export const floorsRenderExtent = <
 >(
   roomState: RoomState<RoomId, RoomItemId>,
 ): ItemsProjectedExtents => {
-  return iterateRoomItems(roomState.items).reduce(
-    (ac: ItemsProjectedExtents, item): ItemsProjectedExtents => {
-      if (item.type === "floor") {
-        const {
-          config: { naturalFootprint },
-          state: { position },
-          renderAabb,
-          renderAabbOffset,
-          aabb,
-        } = item;
+  let floorsEdgeLeftX = Number.POSITIVE_INFINITY;
+  let floorsEdgeRightX = Number.NEGATIVE_INFINITY;
+  let floorsTopEdgeY = Number.POSITIVE_INFINITY;
+  let floorsBottomEdgeY = Number.NEGATIVE_INFINITY;
+  let allItemsTopEdgeY = Number.POSITIVE_INFINITY;
 
-        // natural position:
-        const floorEdgeLeftX = projectWorldXyzToScreenXy(
-          addXyz(naturalFootprint.position, {
-            x: naturalFootprint.aabb.x,
-            z: naturalFootprint.aabb.z,
-          }),
-        ).x;
+  for (const item of roomItemsIterable(roomState.items)) {
+    if (item.type === "floor") {
+      const {
+        config: { naturalFootprint },
+        state: { position },
+        renderAabb,
+        renderAabbOffset,
+        aabb,
+      } = item;
 
-        // natural position:
-        const floorEdgeRightX = projectWorldXyzToScreenXy(
-          addXyz(naturalFootprint.position, {
-            y: naturalFootprint.aabb.y,
-            z: naturalFootprint.aabb.z,
-          }),
-        ).x;
+      // natural position:
+      const floorEdgeLeftX = projectWorldXyzToScreenXy(
+        addXyz(naturalFootprint.position, {
+          x: naturalFootprint.aabb.x,
+          z: naturalFootprint.aabb.z,
+        }),
+      ).x;
 
-        // natural position:
-        const topEdgeY = projectWorldXyzToScreenXy(
-          addXyz(naturalFootprint.position, naturalFootprint.aabb),
-        ).y;
+      // natural position:
+      const floorEdgeRightX = projectWorldXyzToScreenXy(
+        addXyz(naturalFootprint.position, {
+          y: naturalFootprint.aabb.y,
+          z: naturalFootprint.aabb.z,
+        }),
+      ).x;
 
-        // extended position:
-        const frontSide = projectWorldXyzToScreenXy(
-          addXyz(position, renderAabbOffset ?? originXyz, {
-            z: (renderAabb ?? aabb).z,
-          }),
-        ).y;
+      // natural position:
+      const topEdgeY = projectWorldXyzToScreenXy(
+        addXyz(naturalFootprint.position, naturalFootprint.aabb),
+      ).y;
 
-        return {
-          allItems: ac.allItems,
-          floors: {
-            edgeLeftX: Math.min(ac.floors.edgeLeftX, floorEdgeLeftX),
-            edgeRightX: Math.max(ac.floors.edgeRightX, floorEdgeRightX),
-            topEdgeY: Math.min(ac.floors.topEdgeY, topEdgeY),
-            bottomEdgeY: Math.max(ac.floors.bottomEdgeY, frontSide),
-          },
-        };
-      } else {
-        // any non-floor item
-        // natural position:
-        const topEdgeY = projectWorldXyzToScreenXy(
-          addXyz(
-            item.state.position,
-            item.renderAabb ?? item.aabb ?? originXyz,
-            item.renderAabbOffset ?? originXyz,
-          ),
-        ).y;
+      // extended position:
+      const frontSide = projectWorldXyzToScreenXy(
+        addXyz(position, renderAabbOffset ?? originXyz, {
+          z: (renderAabb ?? aabb).z,
+        }),
+      ).y;
 
-        return {
-          allItems: {
-            topEdgeY: Math.min(ac.allItems.topEdgeY, topEdgeY),
-          },
-          floors: ac.floors,
-        };
-      }
+      floorsEdgeLeftX = Math.min(floorsEdgeLeftX, floorEdgeLeftX);
+      floorsEdgeRightX = Math.max(floorsEdgeRightX, floorEdgeRightX);
+      floorsTopEdgeY = Math.min(floorsTopEdgeY, topEdgeY);
+      floorsBottomEdgeY = Math.max(floorsBottomEdgeY, frontSide);
+    } else {
+      // This should be in place so that non-rendering items don't
+      // impact scrolling, but is being left to keep scrolling changes
+      // out of the current work - a future item should be raised to deal
+      // with them separately to keep work isolated to one change at once
+      // if (item.fixedZIndex === nonRenderingItemFixedZIndex) {
+      //   continue;
+      // }
+
+      // any non-floor item
+      // natural position:
+      const topEdgeY = projectWorldXyzToScreenXy(
+        addXyz(
+          item.state.position,
+          item.renderAabb ?? item.aabb ?? originXyz,
+          item.renderAabbOffset ?? originXyz,
+        ),
+      ).y;
+
+      allItemsTopEdgeY = Math.min(allItemsTopEdgeY, topEdgeY);
+    }
+  }
+
+  return {
+    floors: {
+      edgeLeftX: floorsEdgeLeftX,
+      edgeRightX: floorsEdgeRightX,
+      topEdgeY: floorsTopEdgeY,
+      bottomEdgeY: floorsBottomEdgeY,
     },
-    nullFloorsRenderExtent,
-  );
+    allItems: {
+      topEdgeY: allItemsTopEdgeY,
+    },
+  };
 };
 
 export type RoomJsonFloorsExtent = {
