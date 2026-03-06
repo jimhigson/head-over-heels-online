@@ -408,3 +408,42 @@ describe("overlapping renderAABBs", () => {
     expect(floor).toBeBehind(head);
   });
 });
+
+describe("original campaign comparisons", () => {
+  test("#bookworld1 adjacency anti-flicker", () => {
+    const wall: DrawOrderComparable = {
+      id: "wall@0,8,0",
+      aabb: { x: 128, y: 16, z: 9_999 },
+      renderAabb: { x: 128, y: 0, z: 50 },
+      state: { position: { x: 0, y: 128, z: 0 } },
+    };
+    const block: DrawOrderComparable = {
+      id: "extraLanding",
+      aabb: { x: 16, y: 16, z: 48 },
+      state: { position: { x: 0, y: 64, z: 0 } },
+    };
+
+    expect(block).toBeInFrontOf(wall);
+    expect(wall).toBeBehind(block);
+  });
+
+  test("#bookworld7 door in front of floor", () => {
+    const doorFrame: DrawOrderComparable = {
+      id: "door@1,0,4/frameNear",
+      aabb: { x: 9, y: 24, z: 48 },
+      renderAabb: { x: 9, y: 8, z: 48 },
+      renderAabbOffset: { x: 0, y: 16, z: 0 },
+      state: { position: { x: 16, y: -24, z: 48 } },
+    };
+    const floor: DrawOrderComparable = {
+      id: "floor@0,0,0",
+      aabb: { x: 64, y: 144.32, z: 36 },
+      renderAabb: { x: 64, y: 144.32, z: 10 },
+      renderAabbOffset: { x: 0, y: 0, z: 26 },
+      state: { position: { x: 0, y: -8, z: -36 } },
+    };
+
+    expect(doorFrame).toBeInFrontOf(floor);
+    expect(floor).toBeBehind(doorFrame);
+  });
+});
