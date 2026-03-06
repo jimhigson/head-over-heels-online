@@ -13,9 +13,8 @@ import { lutSize, lutW } from "./lutSize";
 
 export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
 
-export const sparseLut = (swops: PaletteSwaps): Texture => {
-  // Create RGBA texture data (4 bytes per pixel)
-  const data = new Uint8Array(lutSize * 4);
+export const writeSparseLut = (swops: PaletteSwaps, data: Uint8Array): void => {
+  data.fill(0);
 
   // we also put the shadow-ed version of the colour in the LUT:
   for (const bright of standardBrightnessLevels) {
@@ -63,15 +62,17 @@ export const sparseLut = (swops: PaletteSwaps): Texture => {
       data[i] = 255;
     }
   }
+};
 
-  // Create texture from the uint8 data using BufferSourceOptions
-  const texture = Texture.from({
+export const sparseLut = (swops: PaletteSwaps): Texture => {
+  const data = new Uint8Array(lutSize * 4);
+  writeSparseLut(swops, data);
+
+  return Texture.from({
     resource: data,
     width: lutW,
     height: lutW,
     scaleMode: "nearest",
     antialias: false,
   });
-
-  return texture;
 };

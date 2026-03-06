@@ -176,11 +176,14 @@ export class MainLoop<RoomId extends string> {
           this.#roomRenderer?.renderContext.general.colourised) &&
       tickEndRoom !== undefined
     ) {
+      const previousRoom = this.#roomRenderer?.renderContext.room;
       tickSpritesheetVariants(
         this.app.renderer,
         tickColourise,
         tickEndRoom.planet,
         tickEndRoom.color,
+        this.#roomRenderer?.renderContext.general.colourised,
+        previousRoom?.color,
       );
     }
 

@@ -52,44 +52,29 @@ const isSceneryTexture = (t: TextureId) =>
   isFloorTexture(t) || isWallTexture(t);
 
 export const colourisedRoomSwops = (
-  colourised: boolean,
   roomScenery: SceneryName,
   roomColor: ZxSpectrumRoomColour,
-): SpritesheetTextureSwops | undefined => {
-  if (colourised) {
-    // non-dimmed room:
-    return {
-      ambient: [
-        {
-          lutType: "sparse",
-          paletteSwaps: replacementColours(
-            roomColor.hue,
-            roomColor.shade === "dimmed",
-          ),
-        },
-        roomColor.shade === "basic" ?
-          ambienceSwops(roomScenery, roomColor)
-        : {
-            // swop to the dimmed palette:
-            lutType: "sparse" as const,
-            paletteSwaps: {
-              ...spritesheetPaletteDim,
-            },
-          },
-      ],
-      textureSpecific: [
-        ...scenerySwops(roomScenery, roomColor),
-        ...floorEdgeSwops(roomScenery, roomColor),
-        ...bookSwops(roomColor),
-      ],
-      // do not replace placeholder colours on doors with the room's colour,
-      // since doors need to have them replaced with the colour of the room the
-      // door leads to
-      noReplacePlaceholderTextures: doorTextureIds,
-    };
-  } else {
-    return undefined;
-  }
+): SpritesheetTextureSwops => {
+  return {
+    ambient: {
+      lutType: "sparse",
+      paletteSwaps: {
+        ...(roomColor.shade === "basic" ?
+          ambienceSwops(roomScenery, roomColor).paletteSwaps
+        : spritesheetPaletteDim),
+        ...replacementColours(roomColor.hue, roomColor.shade === "dimmed"),
+      },
+    },
+    textureSpecific: [
+      ...scenerySwops(roomScenery, roomColor),
+      ...floorEdgeSwops(roomScenery, roomColor),
+      ...bookSwops(roomColor),
+    ],
+    // do not replace placeholder colours on doors with the room's colour,
+    // since doors need to have them replaced with the colour of the room the
+    // door leads to
+    noReplacePlaceholderTextures: doorTextureIds,
+  };
 };
 
 const floorEdgeSwops = (

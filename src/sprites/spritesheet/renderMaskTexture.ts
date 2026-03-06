@@ -54,9 +54,17 @@ const reifyTextureIds = (
     : textureIdsOrPredicate;
 };
 
+/**
+ * creates a mask texture that can be used to control where other filters apply to the spritesheet
+ */
 export const renderMaskTexture = (
   pixiRenderer: Renderer,
   { rects, placeholderColoursMasks, clearColour }: RenderMaskTextureOptions,
+  destinationTexture: RenderTexture = RenderTexture.create({
+    width: spritesheetSize.w,
+    height: spritesheetSize.h,
+    format: "r8unorm",
+  }),
 ): RenderTexture => {
   const graphics = new Graphics();
   const scene: Container<ContainerChild> = new Container({
@@ -97,11 +105,7 @@ export const renderMaskTexture = (
     }
   }
 
-  const texture = RenderTexture.create({
-    width: spritesheetSize.w,
-    height: spritesheetSize.h,
-  });
-  pixiRenderer.render({ container: scene, target: texture });
+  pixiRenderer.render({ container: scene, target: destinationTexture });
 
-  return texture;
+  return destinationTexture;
 };

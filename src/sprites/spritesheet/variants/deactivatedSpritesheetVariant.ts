@@ -1,4 +1,4 @@
-import type { Renderer } from "pixi.js";
+import { type Renderer, RenderTexture, Spritesheet } from "pixi.js";
 
 import type { PaletteSwaps } from "../../../game/render/filters/lutTexture/sparseLut";
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
@@ -9,14 +9,16 @@ import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
 import { omit } from "../../../utils/pick";
 import { spritesheetPalette } from "../../palette/spritesheetPalette";
 import { ambienceSwops } from "../colourisedRoomSwops";
-import { textureIds } from "../spritesheetData/spriteSheetData";
 import {
-  createSpritesheetVariant,
-  dimSwops,
-  replaceSpritesheetWithSwopped,
-} from "../spritesheetPaletteSwop";
+  spritesheetData,
+  spritesheetSize,
+  textureIds,
+} from "../spritesheetData/spriteSheetData";
+import { dimSwops, spritesheetPaletteSwop } from "../spritesheetPaletteSwop";
 
-let swopped: AppSpritesheet | undefined = undefined;
+let intermediateTexture: RenderTexture | undefined = undefined;
+let destinationTexture: RenderTexture | undefined = undefined;
+let spritesheet: AppSpritesheet | undefined = undefined;
 
 export const greySwaps: PaletteSwaps = {
   lightBeige: spritesheetPalette.lightGrey,
@@ -40,7 +42,7 @@ export const greyFilterExceptBlue = omit(
 export const greyFilterExceptPink = omit(greySwaps, "pink");
 
 export const deactivatedSpritesheetTextureSwops: SpritesheetTextureSwops = {
-  ambient: [{ paletteSwaps: greySwaps, lutType: "sparse" }],
+  ambient: { paletteSwaps: greySwaps, lutType: "sparse" },
   //texture specific swops let head/heels keep blue/pink while deactivated (ie, in hud)
   textureSpecific: [
     {
@@ -58,11 +60,27 @@ export const deactivatedSpritesheetTextureSwops: SpritesheetTextureSwops = {
   ],
 };
 
+const lazyInitRenderTexture = (
+  texture: RenderTexture | undefined,
+): RenderTexture =>
+  texture ??
+  RenderTexture.create({
+    width: spritesheetSize.w,
+    height: spritesheetSize.h,
+  });
+
 export const destroyDeactivatedSpritesheetVariant = () => {
-  if (swopped !== undefined) {
-    swopped.textureSource.destroy();
-    swopped.destroy(true);
-    swopped = undefined;
+  if (spritesheet !== undefined) {
+    spritesheet.destroy(true);
+    spritesheet = undefined;
+  }
+  if (destinationTexture !== undefined) {
+    destinationTexture.destroy(true);
+    destinationTexture = undefined;
+  }
+  if (intermediateTexture !== undefined) {
+    intermediateTexture.destroy(true);
+    intermediateTexture = undefined;
   }
 };
 
@@ -71,22 +89,40 @@ export const createDeactivatedSpritesheetVariant = (
   roomScenery: SceneryName,
   roomColor: ZxSpectrumRoomColour,
 ): void => {
-  destroyDeactivatedSpritesheetVariant();
+  intermediateTexture = lazyInitRenderTexture(intermediateTexture);
+  destinationTexture = lazyInitRenderTexture(destinationTexture);
 
-  let result = createSpritesheetVariant(
+  spritesheetPaletteSwop(
     pixiRenderer,
     deactivatedSpritesheetTextureSwops,
+    undefined,
+    intermediateTexture,
   );
 
   if (roomColor.shade === "dimmed") {
-    result = replaceSpritesheetWithSwopped(pixiRenderer, result, dimSwops);
+    spritesheetPaletteSwop(
+      pixiRenderer,
+      dimSwops,
+      intermediateTexture,
+      destinationTexture,
+    );
   } else {
-    result = replaceSpritesheetWithSwopped(pixiRenderer, result, {
-      ambient: [ambienceSwops(roomScenery, roomColor)],
-    });
+    spritesheetPaletteSwop(
+      pixiRenderer,
+      { ambient: ambienceSwops(roomScenery, roomColor) },
+      intermediateTexture,
+      destinationTexture,
+    );
   }
 
-  swopped = result;
+  if (spritesheet === undefined) {
+    spritesheet = new Spritesheet(
+      destinationTexture.source,
+      structuredClone(spritesheetData),
+    );
+    spritesheet.parseSync();
+    spritesheet.textureSource.scaleMode = "nearest";
+  }
 };
 
 /**
@@ -95,11 +131,11 @@ export const createDeactivatedSpritesheetVariant = (
  * inside the update/render loop synchronously many times
  */
 export const deactivatedSpritesheetVariant = (): AppSpritesheet => {
-  if (swopped === undefined) {
+  if (spritesheet === undefined) {
     throw new Error(
       `swopped spritesheet undefined - should only be called when we know for sure it is available`,
     );
   }
 
-  return swopped;
+  return spritesheet;
 };

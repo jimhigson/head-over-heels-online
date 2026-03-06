@@ -52,22 +52,14 @@ const black: SimpleColor = { red: 0, blue: 0, green: 0 };
 /* arbitrary amount to try to look ahead to block-fill some pixels */
 const lookahead = 9;
 
-export function voronoiLut(map: ArbitraryMappings): Texture;
-export function voronoiLut(map: SpritesheetPaletteMappings): Texture;
-/**
- * A (very) optimised lut generator in js (not shaders)
- * - js is fast enough after a lot of optimisation that it
- * doesn't make sense to switch
- */
-export function voronoiLut(
+export const writeVoronoiLut = (
   inputMap: ArbitraryMappings | SpritesheetPaletteMappings,
-) {
+  data: Uint8Array,
+): void => {
   const map = normaliseInput(inputMap);
 
-  // Create RGBA texture data (4 bytes per pixel)
-  const data = new Uint8Array(lutSize * 4)
-    // fill with 255 for the alpha channel - rgb will be overwritten:
-    .fill(255);
+  // fill with 255 for the alpha channel - rgb will be overwritten:
+  data.fill(255);
 
   // convert all seed values to 0...255 range once to avoid later calculation:
   const mapKeys = map.keys().toArray();
@@ -189,14 +181,26 @@ export function voronoiLut(
     }
     blue01 += increment01;
   }
+};
 
-  const texture = Texture.from({
+export function voronoiLut(map: ArbitraryMappings): Texture;
+export function voronoiLut(map: SpritesheetPaletteMappings): Texture;
+/**
+ * A (very) optimised lut generator in js (not shaders)
+ * - js is fast enough after a lot of optimisation that it
+ * doesn't make sense to switch
+ */
+export function voronoiLut(
+  inputMap: ArbitraryMappings | SpritesheetPaletteMappings,
+) {
+  const data = new Uint8Array(lutSize * 4);
+  writeVoronoiLut(inputMap, data);
+
+  return Texture.from({
     resource: data,
     width: lutW,
     height: lutW,
     scaleMode: "nearest",
     antialias: false,
   });
-
-  return texture;
 }

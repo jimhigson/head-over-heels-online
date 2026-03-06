@@ -1,4 +1,4 @@
-import { type Renderer } from "pixi.js";
+import { type Renderer, RenderTexture, Spritesheet } from "pixi.js";
 
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { SceneryName } from "../../planets";
@@ -11,19 +11,26 @@ import {
 } from "../../palette/spritesheetPalette";
 import { colourisedRoomSwops } from "../colourisedRoomSwops";
 import {
-  createSpritesheetVariant,
+  spritesheetData,
+  spritesheetSize,
+} from "../spritesheetData/spriteSheetData";
+import {
   noopSpritesheetTextureSwops,
+  spritesheetPaletteSwop,
 } from "../spritesheetPaletteSwop";
 
-let swopped: AppSpritesheet | undefined = undefined;
-let spritesheetTextureSwops: SpritesheetTextureSwops =
-  noopSpritesheetTextureSwops;
+let destinationTexture: RenderTexture | undefined = undefined;
+let spritesheet: AppSpritesheet | undefined = undefined;
+let currentSwops: SpritesheetTextureSwops = noopSpritesheetTextureSwops;
 
 export const destroyCurrentRoomSpritesheetVariant = () => {
-  if (swopped !== undefined) {
-    swopped.textureSource.destroy();
-    swopped.destroy(true);
-    swopped = undefined;
+  if (spritesheet !== undefined) {
+    spritesheet.destroy(true);
+    spritesheet = undefined;
+  }
+  if (destinationTexture !== undefined) {
+    destinationTexture.destroy(true);
+    destinationTexture = undefined;
   }
 };
 
@@ -33,19 +40,33 @@ export const destroyCurrentRoomSpritesheetVariant = () => {
  */
 export const createCurrentRoomSpritesheetVariant = (
   pixiRenderer: Renderer,
-  colourised: boolean,
   roomScenery: SceneryName,
   roomColor: ZxSpectrumRoomColour,
 ) => {
-  // throw away previous swopped version of spritesheet - these are
-  // short-lived and created on-demand:
-  destroyCurrentRoomSpritesheetVariant();
+  currentSwops = colourisedRoomSwops(roomScenery, roomColor);
 
-  spritesheetTextureSwops =
-    colourisedRoomSwops(colourised, roomScenery, roomColor) ??
-    noopSpritesheetTextureSwops;
+  if (destinationTexture === undefined) {
+    destinationTexture = RenderTexture.create({
+      width: spritesheetSize.w,
+      height: spritesheetSize.h,
+    });
+  }
 
-  swopped = createSpritesheetVariant(pixiRenderer, spritesheetTextureSwops);
+  spritesheetPaletteSwop(
+    pixiRenderer,
+    currentSwops,
+    undefined,
+    destinationTexture,
+  );
+
+  if (spritesheet === undefined) {
+    spritesheet = new Spritesheet(
+      destinationTexture.source,
+      structuredClone(spritesheetData),
+    );
+    spritesheet.parseSync();
+    spritesheet.textureSource.scaleMode = "nearest";
+  }
 };
 
 /**
@@ -54,13 +75,13 @@ export const createCurrentRoomSpritesheetVariant = (
  * inside the update/render loop synchronously many times
  */
 export const currentRoomSpritesheetVariant = (): AppSpritesheet => {
-  if (import.meta.env.DEV && swopped === undefined) {
+  if (import.meta.env.DEV && spritesheet === undefined) {
     throw new Error(
       `current room spritesheet undefined - currentRoomSpritesheetVariant() should only be called when we know for sure it is available`,
     );
   }
 
-  return swopped!;
+  return spritesheet!;
 };
 
 /**
@@ -73,11 +94,8 @@ export const currentRoomSpritesheetVariant = (): AppSpritesheet => {
 export const getAmbientSwoppedColour = (
   colourName: SpritesheetPaletteColourName,
 ) => {
-  let swoppedColour = spritesheetPalette[colourName];
-
-  for (const ambient of spritesheetTextureSwops.ambient) {
-    swoppedColour = ambient.paletteSwaps[colourName] ?? swoppedColour;
-  }
-
-  return swoppedColour;
+  return (
+    currentSwops.ambient.paletteSwaps[colourName] ??
+    spritesheetPalette[colourName]
+  );
 };

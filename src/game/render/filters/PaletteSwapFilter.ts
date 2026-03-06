@@ -3,8 +3,8 @@ import { defaultFilterVert, Filter, GlProgram, Texture } from "pixi.js";
 import type { PaletteSwaps } from "./lutTexture/sparseLut";
 
 import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
-import { sparseLut } from "./lutTexture/sparseLut";
-import { voronoiLut } from "./lutTexture/voronoiLut";
+import { sparseLut, writeSparseLut } from "./lutTexture/sparseLut";
+import { voronoiLut, writeVoronoiLut } from "./lutTexture/voronoiLut";
 import fragment from "./paletteSwap.frag";
 
 const glProgram = GlProgram.from({
@@ -25,10 +25,8 @@ export type PaletteSwopSpec = { paletteSwaps: PaletteSwaps; lutType: LutType };
  */
 export class PaletteSwapFilter extends Filter {
   #lutTexture: Texture;
+  #lutType: LutType;
 
-  /**
-   * @param options - Options for the PaletteSwapFilter constructor.
-   */
   constructor(
     { paletteSwaps, lutType }: PaletteSwopSpec,
     /**
@@ -51,6 +49,30 @@ export class PaletteSwapFilter extends Filter {
     });
 
     this.#lutTexture = lutTexture;
+    this.#lutType = lutType;
+  }
+
+  /**
+   * Re-writes the LUT data in-place and re-uploads to GPU,
+   * avoiding allocation of a new texture
+   */
+  updateLut({ paletteSwaps, lutType }: PaletteSwopSpec): void {
+    this.#lutType = lutType;
+
+    const data = this.#lutTexture.source.resource as Uint8Array;
+
+    if (lutType === "voronoi") {
+      writeVoronoiLut(paletteSwaps, data);
+    } else {
+      writeSparseLut(paletteSwaps, data);
+    }
+
+    this.#lutTexture.source.update();
+  }
+
+  set maskTexture(texture: Texture) {
+    this.mask = texture;
+    this.resources.uMask = texture.source;
   }
 
   /**
