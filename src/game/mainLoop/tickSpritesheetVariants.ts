@@ -17,6 +17,7 @@ export const tickSpritesheetVariants = (
   roomScenery: SceneryName,
   roomColor: ZxSpectrumRoomColour,
 ): void => {
+  performance.mark("tickSpritesheetVariants-start");
   if (colourised) {
     const isDim = roomColor.shade === "dimmed";
     createCurrentRoomSpritesheetVariant(
@@ -31,4 +32,11 @@ export const tickSpritesheetVariants = (
   } else {
     destroyCurrentRoomSpritesheetVariant();
   }
+  performance.mark("tickSpritesheetVariants-end");
+  const measure = performance.measure(
+    "tickSpritesheetVariants",
+    "tickSpritesheetVariants-start",
+    "tickSpritesheetVariants-end",
+  );
+  console.log(`tickSpritesheetVariants: ${measure.duration.toFixed(2)}ms`);
 };

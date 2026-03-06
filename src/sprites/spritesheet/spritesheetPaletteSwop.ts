@@ -21,7 +21,11 @@ import {
   originalSpriteSheet,
 } from "./loadedSpriteSheet";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
-import { spritesheetData, textureIds } from "./spritesheetData/spriteSheetData";
+import {
+  spritesheetData,
+  spritesheetSize,
+  textureIds,
+} from "./spritesheetData/spriteSheetData";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TextureIdsListOrPredicate;
@@ -77,6 +81,11 @@ const createPlaceholderMaskFilter = (placeholder: Color, others: Color) =>
     lutType: "sparse",
   });
 
+const masksBuffer = RenderTexture.create({
+  width: spritesheetSize.w,
+  height: spritesheetSize.h,
+});
+
 export const spritesheetPaletteSwop = (
   pixiRenderer: Renderer,
   {
@@ -90,6 +99,10 @@ export const spritesheetPaletteSwop = (
     noReplacePlaceholderTextures = emptyArray,
   }: SpritesheetTextureSwops,
   baseTexture: Texture = baseSpritesheetTexture(),
+  destinationTexture: RenderTexture = RenderTexture.create({
+    width: baseTexture.width,
+    height: baseTexture.height,
+  }),
 ): Texture => {
   const filters: Filter[] = [];
 
@@ -115,28 +128,32 @@ export const spritesheetPaletteSwop = (
       createPlaceholderMaskFilter(black, white)
     : undefined;
 
-  const doNotFilterTexture = renderMaskTexture(pixiRenderer, {
-    clearColour: white,
-    rects: {
-      textureIds: concat(
-        neverSwoppedTextureIds,
-        iterate(textureSpecific)
-          .filter(({ dodgeAmbient }) => dodgeAmbient)
-          .flatMap(({ textureIds }) => reifyTextureIds(textureIds)),
-      ),
-      color: black,
+  const doNotFilterTexture = renderMaskTexture(
+    pixiRenderer,
+    {
+      clearColour: white,
+      rects: {
+        textureIds: concat(
+          neverSwoppedTextureIds,
+          iterate(textureSpecific)
+            .filter(({ dodgeAmbient }) => dodgeAmbient)
+            .flatMap(({ textureIds }) => reifyTextureIds(textureIds)),
+        ),
+        color: black,
+      },
+      placeholderColoursMasks:
+        placeholderMaskFilter ?
+          {
+            textureIds: noReplacePlaceholderTextures,
+            placeholder: black,
+            others: white,
+            filter: placeholderMaskFilter,
+            originalSpritesheet: originalSpriteSheet(),
+          }
+        : undefined,
     },
-    placeholderColoursMasks:
-      placeholderMaskFilter ?
-        {
-          textureIds: noReplacePlaceholderTextures,
-          placeholder: black,
-          others: white,
-          filter: placeholderMaskFilter,
-          originalSpritesheet: originalSpriteSheet(),
-        }
-      : undefined,
-  });
+    masksBuffer,
+  );
 
   placeholderMaskFilter?.destroy({
     destroyLutTexture: true,
@@ -155,14 +172,9 @@ export const spritesheetPaletteSwop = (
   const sprite = new Sprite(baseTexture);
   sprite.filters = filters;
 
-  const swoppedTexture = RenderTexture.create({
-    width: baseTexture.width,
-    height: baseTexture.height,
-  });
-
   pixiRenderer.render({
     container: sprite,
-    target: swoppedTexture,
+    target: destinationTexture,
   });
 
   // Promise.all([
@@ -196,7 +208,7 @@ export const spritesheetPaletteSwop = (
     }
   }
 
-  return swoppedTexture;
+  return destinationTexture;
 };
 
 export const createSpritesheetVariant = (

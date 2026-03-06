@@ -21,7 +21,7 @@ let spritesheetTextureSwops: SpritesheetTextureSwops =
 
 export const destroyCurrentRoomSpritesheetVariant = () => {
   if (swopped !== undefined) {
-    swopped.textureSource.destroy();
+    //swopped.textureSource.destroy();
     swopped.destroy(true);
     swopped = undefined;
   }
