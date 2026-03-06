@@ -3,7 +3,7 @@ import type { ProjectionOnAxes } from "./projectAabbCorners";
 /** to compensate for floating point error, ranges have to be overlapping by this much to consider them to be visually overlapping */
 const visuallyOverlapsMinimumOverlap = 0.000_01;
 /** negative overlap means a small gap is allowed to be considered visually adjacent */
-const visuallyAdjacentMinimumOverlap = -1;
+const visuallyAdjacentMinimumOverlap = -0.1;
 
 const rangeOverlap = (
   aMin: number,
@@ -70,7 +70,6 @@ export const visuallyOverlaps = (
   if (
     yAxisOverlap &&
     zAxisOverlap &&
-    // x adjacent:
     rangeOverlap(
       a.xAxisProjectionMin,
       a.xAxisProjectionMax,

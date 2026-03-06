@@ -91,8 +91,7 @@ export const zComparator = (
       return renderBBsOrder;
     }
     case ADJACENT_X: {
-      // special case for where items are touching on an edge along the y axis, meaning that one
-      // item must be the same height as if it were on top of the other.
+      // special case for where items are touching on an edge along the x axis
       // eg - a wall next to a floor
       if (
         veryClose(aPosVisual.y, bPosVisual.y + bBbVisual.y) &&
@@ -106,7 +105,10 @@ export const zComparator = (
       ) {
         return -1;
       }
-      return 0;
+
+      // higher y places items behind, higher z places them in front;
+      // subtract z from y to account for both effects:
+      return bPosVisual.y - bPosVisual.z - (aPosVisual.y - aPosVisual.z);
     }
     case ADJACENT_Y: {
       // same as ADJACENT_X, but for adjacency along the y axis (look at x and z)
@@ -122,7 +124,10 @@ export const zComparator = (
       ) {
         return -1;
       }
-      return 0;
+
+      // higher x places items behind, higher z places them in front;
+      // subtract z from x to account for both effects:
+      return bPosVisual.x - bPosVisual.z - (aPosVisual.x - aPosVisual.z);
     }
     default: {
       visualOverlap satisfies NO_OVERLAP;
