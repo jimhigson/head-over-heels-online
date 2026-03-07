@@ -1,5 +1,55 @@
 # Changelog
 
+## [19.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v18.0.0...v19.0.0) (2026-03-06)
+
+
+### Features
+
+* charles robots can be deactivated, and render grey while they have the deactivated state ([#745](https://github.com/jimhigson/head-over-heels-online/issues/745)) ([088867b](https://github.com/jimhigson/head-over-heels-online/commit/088867bef326237004396e1dc32fe77dc8ff4367))
+* easier to slide out of doorways ([#735](https://github.com/jimhigson/head-over-heels-online/issues/735)) ([6b3f1f7](https://github.com/jimhigson/head-over-heels-online/commit/6b3f1f713ef5b1443c6aa59919c10ca9a84e98c0))
+* first beta release of native builds ([#563](https://github.com/jimhigson/head-over-heels-online/issues/563)) ([e1026dd](https://github.com/jimhigson/head-over-heels-online/commit/e1026dddde13d0e2c8daf52bb1705d7862209ced))
+* going into symbiosis now moved heads and heels to their midpoint horizontally, and faces in the direction the previous character was facing ([#741](https://github.com/jimhigson/head-over-heels-online/issues/741)) ([f2724e6](https://github.com/jimhigson/head-over-heels-online/commit/f2724e6bcf64cdd6f3f681777e20f003d65e47a9))
+* head closes eyes if stood on by heels or another item ([#747](https://github.com/jimhigson/head-over-heels-online/issues/747)) ([8169351](https://github.com/jimhigson/head-over-heels-online/commit/81693515631ac2e5392c0a3948f6b21ca4ced376))
+* Heels can carry Head's pickups (doughnuts, hooter, fast steps etc) ([#728](https://github.com/jimhigson/head-over-heels-online/issues/728)) ([0b07627](https://github.com/jimhigson/head-over-heels-online/commit/0b07627547f78dee1a5a106a3fa13d7719fdcd14))
+* improved positioning of room rendering on screen ([#749](https://github.com/jimhigson/head-over-heels-online/issues/749)) ([6638c90](https://github.com/jimhigson/head-over-heels-online/commit/6638c90b29e1169bda14756c912b0386c6df8f38))
+* map current room highlighted in both game and editor ([#744](https://github.com/jimhigson/head-over-heels-online/issues/744)) ([dd540c3](https://github.com/jimhigson/head-over-heels-online/commit/dd540c365b348ebab1284368da5ec6bd2f00f902))
+* moonbase rooms have bluer moonscape outside ([#725](https://github.com/jimhigson/head-over-heels-online/issues/725)) ([597ed89](https://github.com/jimhigson/head-over-heels-online/commit/597ed89974c6fcb3c360da3a84e297f7746c22a3))
+* reorganised on-screen hud on mobile ([6638c90](https://github.com/jimhigson/head-over-heels-online/commit/6638c90b29e1169bda14756c912b0386c6df8f38))
+* scrolls in-game improved appearance ([#742](https://github.com/jimhigson/head-over-heels-online/issues/742)) ([8a84109](https://github.com/jimhigson/head-over-heels-online/commit/8a8410965948554b59abf496452c09ed2bfe366d))
+* show simple version numbers (ie "v18") instead of semver (like "18.0.0") in the game ([#718](https://github.com/jimhigson/head-over-heels-online/issues/718)) ([bdd91b5](https://github.com/jimhigson/head-over-heels-online/commit/bdd91b56e04ec8bc6dd35d1c1585b2348eef5119))
+
+
+### Bug Fixes
+
+* fix rendering order bug where players and other items would sometimes incorrectly be rendered behind scenery items ([#748](https://github.com/jimhigson/head-over-heels-online/issues/748)) ([11e3d79](https://github.com/jimhigson/head-over-heels-online/commit/11e3d7920e3fd64ece83964e55a588d354eb354a))
+* improvee behind/in-front detection of items where items are adjacent for rare failure case where items would flicker in front/behind each other during gameplay ([#751](https://github.com/jimhigson/head-over-heels-online/issues/751)) ([2b191d3](https://github.com/jimhigson/head-over-heels-online/commit/2b191d34a4b9f3fdefdbe3d22fcfca76d0abd479))
+* restore upscaling by integer amounts only - non-integer upscale was causing render artefacts ([#738](https://github.com/jimhigson/head-over-heels-online/issues/738)) ([b4fb1c1](https://github.com/jimhigson/head-over-heels-online/commit/b4fb1c1e1befc509c9fac32f179ecf5af0bc0782))
+* scraping sound no longer plays when player quickly changes direction or rides on a conveyor ([#730](https://github.com/jimhigson/head-over-heels-online/issues/730)) ([fb1e937](https://github.com/jimhigson/head-over-heels-online/commit/fb1e9373cfa88aab3b48c405ff06ebce850f4859))
+* scraping sound no longer plays when player quickly changes direction or rides on a conveyor ([#731](https://github.com/jimhigson/head-over-heels-online/issues/731)) ([6d960ff](https://github.com/jimhigson/head-over-heels-online/commit/6d960ff39580337a5b0e9c8040e1bd25b04ae515))
+
+
+### Room Changes
+
+* blacktooth68 and blacktooth85 non-impactful update to make rooms easier to read ([#743](https://github.com/jimhigson/head-over-heels-online/issues/743)) ([7ba64f2](https://github.com/jimhigson/head-over-heels-online/commit/7ba64f20efa43dc77a86d1290852a71d76e9452a))
+* make moonbase12 less visually confusing ([#727](https://github.com/jimhigson/head-over-heels-online/issues/727)) ([65650a2](https://github.com/jimhigson/head-over-heels-online/commit/65650a2b2737a06b4683b178238d9c4b615836ea))
+* moonbase 30 made more interesting with some turtles ([#733](https://github.com/jimhigson/head-over-heels-online/issues/733)) ([70e4260](https://github.com/jimhigson/head-over-heels-online/commit/70e42601d7c5cf5a310168f213acd97fedc7b77c))
+* penitentiary 3 made a bit easier since in the remake Head while gliding moves slower than the moving platforms, so giving a small head start makes it harder to miss the platform ([#732](https://github.com/jimhigson/head-over-heels-online/issues/732)) ([98c3cf4](https://github.com/jimhigson/head-over-heels-online/commit/98c3cf44d2a89f103cbe0e5e44c343eb4298cc35))
+
+
+### Sprite Changes
+
+* cowboys in bookworld wearing blue jeans (bookworld wsa looking too brown overall) ([c27c9ed](https://github.com/jimhigson/head-over-heels-online/commit/c27c9ed3cfbe2828c7edcb43a4991e7b02478b37))
+* dark blacktooth room wall recolourise ([#750](https://github.com/jimhigson/head-over-heels-online/issues/750)) ([6439ec9](https://github.com/jimhigson/head-over-heels-online/commit/6439ec9c0b53a58fa210dcf5f37afed4a191f72a))
+* moonbase doors get a more consistent colourise in dim rooms ([#729](https://github.com/jimhigson/head-over-heels-online/issues/729)) ([125c7e9](https://github.com/jimhigson/head-over-heels-online/commit/125c7e96d3432dd3d284d826af57b92b71f75415))
+* moonbase doors have specific door 'legs' sprites, not the generic stone towers ([c27c9ed](https://github.com/jimhigson/head-over-heels-online/commit/c27c9ed3cfbe2828c7edcb43a4991e7b02478b37))
+* moonbase walls next to doors end nicely to let the door show through, instead of showing moonscape where the door should be ([c27c9ed](https://github.com/jimhigson/head-over-heels-online/commit/c27c9ed3cfbe2828c7edcb43a4991e7b02478b37))
+* new, moonbase-specific sprite for towers since stone towers looked out of place here ([c27c9ed](https://github.com/jimhigson/head-over-heels-online/commit/c27c9ed3cfbe2828c7edcb43a4991e7b02478b37))
+
+
+### Editor Changes
+
+* crash on entering playtest mode from editor ([#734](https://github.com/jimhigson/head-over-heels-online/issues/734)) ([b4b9db4](https://github.com/jimhigson/head-over-heels-online/commit/b4b9db469d3e848c9a5c37a12ed633601bafa942))
+
 ## [1.18.0](https://github.com/jimhigson/head-over-heels-online/compare/v1.17.1...v1.18.0) (2026-02-18)
 
 
