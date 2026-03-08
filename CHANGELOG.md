@@ -1,5 +1,17 @@
 # Changelog
 
+## [20.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v19.0.0...v20.0.0) (2026-03-08)
+
+
+### Bug Fixes
+
+* Head sometimes keeps eyes cloesd after changing room ([#752](https://github.com/jimhigson/head-over-heels-online/issues/752)) ([0bb932f](https://github.com/jimhigson/head-over-heels-online/commit/0bb932fc725d26b835dffbe35c3a1c78b07318fd))
+
+
+### Room Changes
+
+* make bookworld27 a little nicer looking ([#753](https://github.com/jimhigson/head-over-heels-online/issues/753)) ([e3c63b4](https://github.com/jimhigson/head-over-heels-online/commit/e3c63b487111e971157751bdaf66bd498484808b))
+
 ## [19.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v18.0.0...v19.0.0) (2026-03-06)
 
 
