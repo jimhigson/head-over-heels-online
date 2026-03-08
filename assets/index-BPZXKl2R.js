@@ -1,1 +1,0 @@
-import"./App-BvSj7y2V.js";import"./index-DC8UfYCH.js";async function i(n,t={},o){return window.__TAURI_INTERNALS__.invoke(n,t,o)}async function a(n=0){await i("plugin:process|exit",{code:n})}async function c(){await i("plugin:process|restart")}export{a as exit,c as relaunch};
