@@ -301,6 +301,7 @@ export const changeCharacterRoom = <
   // previous standing on (from the old room) no longer applies:
   playableItem.state.previousStandingOnItemId = null;
   playableItem.state.standingOnUntilRoomTime = neverTime;
+  playableItem.state.stoodOnUntilRoomTime = neverTime;
 
   // hush puppies vanish the moment head enters:
   if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
