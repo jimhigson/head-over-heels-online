@@ -1,8 +1,17 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@0,3,0/config/toPosition"
+  },
+  {
     "op": "add",
     "path": "/items/teleporter@0,3,0/config/activatedOnStoreValue",
     "value": "planetsLiberated.penitentiary"
+  },
+  {
+    "op": "add",
+    "path": "/items/teleporter@0,3,0/config/toItemId",
+    "value": "block@0,3,0"
   },
   {
     "op": "add",

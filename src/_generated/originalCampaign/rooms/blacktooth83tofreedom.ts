@@ -90,7 +90,7 @@ export const room = inferRoomJson({
       type: "hushPuppy",
     },
     "teleporter@7,2,1": {
-      config: { toPosition: { x: 7, y: 2, z: 2 }, toRoom: "finalroom" },
+      config: { toItemId: "block@7,2,1", toRoom: "finalroom" },
       position: { x: 7, y: 2, z: 1 },
       type: "teleporter",
     },

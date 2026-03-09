@@ -1,11 +1,7 @@
-import type { Operation } from "fast-json-patch";
-
-import chalk from "chalk";
-import fastJsonPatch from "fast-json-patch";
 import { objectValues } from "iter-tools-es";
 import { canonicalize } from "json-canonicalize";
 import { orderBy } from "natural-orderby";
-import { readFile, writeFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 
 import type { Campaign } from "../model/modelTypes";
 import type { AnyRoomJson } from "../model/RoomJson";
@@ -18,10 +14,6 @@ import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";\n
 import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n
 export const room = inferRoomJson(${canonicalize(room)}) satisfies RoomJson<OriginalCampaignRoomId, string, "${room.planet}">;
 `;
-
-const targetDir = "src/_generated/originalCampaign/";
-const patchFilename = (roomId: string) =>
-  `${targetDir}/patches/${roomId}.patch.json`;
 
 export const writeOut = async ({
   rooms: convertedRooms,
@@ -59,10 +51,10 @@ export const writeOut = async ({
         (roomId) => `import {room as ${roomId}} from "./rooms/${roomId}.ts";`,
       )
       .join("\n")};\n
-        
-    export const campaign = { 
+
+    export const campaign = {
       "locator": ${canonicalize(locator)},
-      "rooms": { 
+      "rooms": {
         ${roomIdsSorted.join(",\n")}
        },
     } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;`,
@@ -77,54 +69,7 @@ export const writeOut = async ({
           throw new Error("room without an id");
         }
 
-        let roomPatch: Operation[] | undefined;
-        try {
-          roomPatch = JSON.parse(
-            await readFile(patchFilename(room.id), "utf8"),
-          );
-        } catch (_e) {
-          // failed to load - proably no patch exists for this room
-          roomPatch = undefined;
-        }
-
-        if (!roomPatch) {
-          console.log(`❌ No patch for ${room.id}`);
-          return writeFile(tsRoomFilename(room.id), roomTs(room));
-        }
-
-        console.log("✅ will patch room", chalk.yellow(room.id), "...");
-
-        let roomPatched: AnyRoomJson | undefined = undefined;
-
-        // repeatedly try, and remove/warn about paths that cannot be applied
-        while (roomPatched === undefined) {
-          try {
-            roomPatched = fastJsonPatch.applyPatch(
-              room,
-              roomPatch,
-              true,
-            ).newDocument;
-          } catch (e) {
-            if (e instanceof fastJsonPatch.JsonPatchError) {
-              if (e.name === "OPERATION_PATH_UNRESOLVABLE") {
-                const failedPath = e.operation.path;
-                console.warn(
-                  `⚠️⚠️⚠️ Could not apply a path ${failedPath} for a patch at room ${room.id} - will drop this, but please check if this was not expected`,
-                  "room ids are",
-                  Object.keys(room.items),
-                );
-
-                roomPatch = roomPatch?.filter((op) => op.path !== failedPath);
-              }
-            } else {
-              throw new Error(`Error applying patch to room ${room.id}`, {
-                cause: e,
-              });
-            }
-          }
-        }
-
-        return writeFile(tsRoomFilename(room.id), roomTs(roomPatched));
+        return writeFile(tsRoomFilename(room.id), roomTs(room));
       } catch (e) {
         console.error(e);
         throw new Error(`Error writing room ${room.id}`, e as Error);

@@ -1,8 +1,17 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@3,3,0/config/toPosition"
+  },
+  {
     "op": "add",
     "path": "/items/teleporter@3,3,0/config/activatedOnStoreValue",
     "value": "planetsLiberated.egyptus"
+  },
+  {
+    "op": "add",
+    "path": "/items/teleporter@3,3,0/config/toItemId",
+    "value": "block@3,3,0"
   },
   {
     "op": "add",

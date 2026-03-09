@@ -30,11 +30,6 @@
     "path": "/items/teleBackToCrownForHeelsIfSheFallsOffInTheCrownRoom",
     "value": {
       "config": {
-        "toPosition": {
-          "x": 7,
-          "y": 5,
-          "z": 4
-        },
         "toRoom": "penitentiary34crown"
       },
       "position": {

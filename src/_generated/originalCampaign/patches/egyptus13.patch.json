@@ -45,9 +45,8 @@
     "value": 10
   },
   {
-    "op": "replace",
-    "path": "/items/teleporter@4,0,5/config/toPosition/x",
-    "value": 3
+    "op": "remove",
+    "path": "/items/teleporter@4,0,5/config/toPosition"
   },
   {
     "op": "replace",

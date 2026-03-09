@@ -128,21 +128,24 @@ const markdownComponents: CustomComponentsOption = {
   },
 };
 
-export type BlockyMarkdownProps = {
-  markdown: string;
+export function BlockyMarkdown(props: {
   className?: string;
-};
+  children: string;
+}): ReactElement;
+export function BlockyMarkdown(props: {
+  className?: string;
+  markdown: string;
+}): ReactElement;
+export function BlockyMarkdown(props: {
+  className?: string;
+  children?: string;
+  markdown?: string;
+}): ReactElement {
+  const md = (props.markdown ?? props.children)!;
 
-export const BlockyMarkdown = ({
-  markdown,
-  className,
-}: BlockyMarkdownProps): ReactElement => {
   return (
-    <div className={`contents ${className}`}>
-      <SnarkdownInReact
-        customComponents={markdownComponents}
-        markdown={markdown}
-      />
+    <div className={twMerge("contents", props.className)}>
+      <SnarkdownInReact customComponents={markdownComponents} markdown={md} />
     </div>
   );
-};
+}

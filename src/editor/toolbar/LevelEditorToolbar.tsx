@@ -5,7 +5,6 @@ import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
 import { useAppDispatch } from "../../store/hooks";
 import { RoomSelect } from "../../ui/RoomSelect";
 import { emptyArray, emptyObject } from "../../utils/empty";
-import { originXyz } from "../../utils/vectors/vectors";
 import {
   changeToRoom,
   useAppSelectorWithLevelEditorSlice,
@@ -781,7 +780,6 @@ Why are the books slippery?`}
             type: "teleporter",
             config: {
               toRoom: "to?" as EditorRoomId,
-              toPosition: originXyz,
             },
           }}
         >

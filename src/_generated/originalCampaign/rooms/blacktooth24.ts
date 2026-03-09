@@ -46,7 +46,7 @@ export const room = inferRoomJson({
       type: "spring",
     },
     "teleporter@0,0,0": {
-      config: { toPosition: { x: 0, y: 0, z: 0 }, toRoom: "blacktooth23heels" },
+      config: { toRoom: "blacktooth23heels" },
       position: { x: 0, y: 0, z: 0 },
       type: "teleporter",
     },

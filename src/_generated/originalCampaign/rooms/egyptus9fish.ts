@@ -46,7 +46,7 @@ export const room = inferRoomJson({
       type: "pickup",
     },
     "teleporter@2,0,5": {
-      config: { toPosition: { x: 4, y: 0, z: 5 }, toRoom: "egyptus13" },
+      config: { toRoom: "egyptus13" },
       position: { x: 3, y: 0, z: 5 },
       type: "teleporter",
     },

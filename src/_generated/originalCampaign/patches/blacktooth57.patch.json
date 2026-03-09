@@ -1,5 +1,9 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@3,3,0/config/toPosition"
+  },
+  {
     "op": "replace",
     "path": "/items/floor@0,0,0/config/scenery",
     "value": "bookworld"

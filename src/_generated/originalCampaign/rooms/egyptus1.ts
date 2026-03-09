@@ -21,11 +21,7 @@ export const room = inferRoomJson({
       type: "floor",
     },
     "teleporter@3,3,0": {
-      config: {
-        times: { x: 2, y: 2 },
-        toPosition: { x: 3, y: 3, z: 0 },
-        toRoom: "moonbase24toegyptus",
-      },
+      config: { times: { x: 2, y: 2 }, toRoom: "moonbase24toegyptus" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },

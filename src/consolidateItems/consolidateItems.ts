@@ -1,4 +1,4 @@
-import type { ValueOf } from "type-fest";
+import type { AllUnionFields, ValueOf } from "type-fest";
 
 import { canonicalize } from "json-canonicalize";
 
@@ -36,7 +36,11 @@ const hashItem = (o: ConsolidatableJsonItem): string => {
       // also exclude times as it represents extent, not type
       canonicalize({
         type: o.type,
-        config: omit(o.config, "toPosition", "times"),
+        config: omit(
+          o.config as AllUnionFields<typeof o.config>,
+          "toPosition",
+          "times",
+        ),
       })
       // for other items, exclude times as it represents extent, not type
     : canonicalize({ type: o.type, config: omit(o.config, "times") })

@@ -1355,57 +1355,173 @@ export type RoomJsonSchema = {
           y: number;
           z: number;
         };
-        config: {
-          times?: {
-            x?: number;
-            y?: number;
-            z?: number;
-          };
-          toRoom: string;
-          toPosition: {
-            x: number;
-            y: number;
-            z: number;
-          };
-          activatedOnStoreValue?:
-            | "planetsLiberated"
-            | "scrollsRead"
-            | "freeCharacters"
-            | "planetsLiberated.blacktooth"
-            | "planetsLiberated.bookworld"
-            | "planetsLiberated.egyptus"
-            | "planetsLiberated.penitentiary"
-            | "planetsLiberated.safari"
-            | "scrollsRead.blacktooth"
-            | "scrollsRead.egyptus"
-            | "scrollsRead.penitentiary"
-            | "scrollsRead.safari"
-            | "scrollsRead.bag"
-            | "scrollsRead.doughnuts"
-            | "scrollsRead.hooter"
-            | "scrollsRead.teleportBack"
-            | "scrollsRead.historyOfTheBlacktoothEmpire"
-            | "scrollsRead.theGame"
-            | "scrollsRead.bookWorld"
-            | "scrollsRead.head"
-            | "scrollsRead.heels"
-            | "scrollsRead.reincarnationFish"
-            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-            | "scrollsRead.crowns"
-            | "scrollsRead.teleports"
-            | "scrollsRead.springs"
-            | "scrollsRead.switches"
-            | "scrollsRead.conveyorBelts"
-            | "scrollsRead.hushPuppies"
-            | "scrollsRead.theEmperorsGuardian"
-            | "scrollsRead.swopKey"
-            | "scrollsRead.hintsAndTips"
-            | "scrollsRead.credits"
-            | "scrollsRead.installPwa"
-            | "scrollsRead.installNative"
-            | "freeCharacters.head"
-            | "freeCharacters.heels";
-        };
+        config:
+          | {
+              times?: {
+                x?: number;
+                y?: number;
+                z?: number;
+              };
+              /**
+               * note that if the other room contains exactly one teleporter, we need not
+               * give the position or the item
+               */
+              toRoom: string | "$$final";
+              activatedOnStoreValue?:
+                | "planetsLiberated"
+                | "scrollsRead"
+                | "freeCharacters"
+                | "planetsLiberated.blacktooth"
+                | "planetsLiberated.bookworld"
+                | "planetsLiberated.egyptus"
+                | "planetsLiberated.penitentiary"
+                | "planetsLiberated.safari"
+                | "scrollsRead.blacktooth"
+                | "scrollsRead.egyptus"
+                | "scrollsRead.penitentiary"
+                | "scrollsRead.safari"
+                | "scrollsRead.bag"
+                | "scrollsRead.doughnuts"
+                | "scrollsRead.hooter"
+                | "scrollsRead.teleportBack"
+                | "scrollsRead.historyOfTheBlacktoothEmpire"
+                | "scrollsRead.theGame"
+                | "scrollsRead.bookWorld"
+                | "scrollsRead.head"
+                | "scrollsRead.heels"
+                | "scrollsRead.reincarnationFish"
+                | "scrollsRead.cuddlyStuffedWhiteRabbits"
+                | "scrollsRead.crowns"
+                | "scrollsRead.teleports"
+                | "scrollsRead.springs"
+                | "scrollsRead.switches"
+                | "scrollsRead.conveyorBelts"
+                | "scrollsRead.hushPuppies"
+                | "scrollsRead.theEmperorsGuardian"
+                | "scrollsRead.swopKey"
+                | "scrollsRead.hintsAndTips"
+                | "scrollsRead.credits"
+                | "scrollsRead.installPwa"
+                | "scrollsRead.installNative"
+                | "freeCharacters.head"
+                | "freeCharacters.heels";
+            }
+          | {
+              times?: {
+                x?: number;
+                y?: number;
+                z?: number;
+              };
+              /**
+               * note that if the other room contains exactly one teleporter, we need not
+               * give the position or the item
+               */
+              toRoom: string | "$$final";
+              activatedOnStoreValue?:
+                | "planetsLiberated"
+                | "scrollsRead"
+                | "freeCharacters"
+                | "planetsLiberated.blacktooth"
+                | "planetsLiberated.bookworld"
+                | "planetsLiberated.egyptus"
+                | "planetsLiberated.penitentiary"
+                | "planetsLiberated.safari"
+                | "scrollsRead.blacktooth"
+                | "scrollsRead.egyptus"
+                | "scrollsRead.penitentiary"
+                | "scrollsRead.safari"
+                | "scrollsRead.bag"
+                | "scrollsRead.doughnuts"
+                | "scrollsRead.hooter"
+                | "scrollsRead.teleportBack"
+                | "scrollsRead.historyOfTheBlacktoothEmpire"
+                | "scrollsRead.theGame"
+                | "scrollsRead.bookWorld"
+                | "scrollsRead.head"
+                | "scrollsRead.heels"
+                | "scrollsRead.reincarnationFish"
+                | "scrollsRead.cuddlyStuffedWhiteRabbits"
+                | "scrollsRead.crowns"
+                | "scrollsRead.teleports"
+                | "scrollsRead.springs"
+                | "scrollsRead.switches"
+                | "scrollsRead.conveyorBelts"
+                | "scrollsRead.hushPuppies"
+                | "scrollsRead.theEmperorsGuardian"
+                | "scrollsRead.swopKey"
+                | "scrollsRead.hintsAndTips"
+                | "scrollsRead.credits"
+                | "scrollsRead.installPwa"
+                | "scrollsRead.installNative"
+                | "freeCharacters.head"
+                | "freeCharacters.heels";
+              /**
+               * an item in the destination room this teleporter should go to - the
+               * player will be moved to atop this item
+               * note: not RoomItemId because that is the ids of items in *this* room, but this
+               * is pointing to another room
+               */
+              toItemId: string;
+            }
+          | {
+              times?: {
+                x?: number;
+                y?: number;
+                z?: number;
+              };
+              /**
+               * note that if the other room contains exactly one teleporter, we need not
+               * give the position or the item
+               */
+              toRoom: string | "$$final";
+              activatedOnStoreValue?:
+                | "planetsLiberated"
+                | "scrollsRead"
+                | "freeCharacters"
+                | "planetsLiberated.blacktooth"
+                | "planetsLiberated.bookworld"
+                | "planetsLiberated.egyptus"
+                | "planetsLiberated.penitentiary"
+                | "planetsLiberated.safari"
+                | "scrollsRead.blacktooth"
+                | "scrollsRead.egyptus"
+                | "scrollsRead.penitentiary"
+                | "scrollsRead.safari"
+                | "scrollsRead.bag"
+                | "scrollsRead.doughnuts"
+                | "scrollsRead.hooter"
+                | "scrollsRead.teleportBack"
+                | "scrollsRead.historyOfTheBlacktoothEmpire"
+                | "scrollsRead.theGame"
+                | "scrollsRead.bookWorld"
+                | "scrollsRead.head"
+                | "scrollsRead.heels"
+                | "scrollsRead.reincarnationFish"
+                | "scrollsRead.cuddlyStuffedWhiteRabbits"
+                | "scrollsRead.crowns"
+                | "scrollsRead.teleports"
+                | "scrollsRead.springs"
+                | "scrollsRead.switches"
+                | "scrollsRead.conveyorBelts"
+                | "scrollsRead.hushPuppies"
+                | "scrollsRead.theEmperorsGuardian"
+                | "scrollsRead.swopKey"
+                | "scrollsRead.hintsAndTips"
+                | "scrollsRead.credits"
+                | "scrollsRead.installPwa"
+                | "scrollsRead.installNative"
+                | "freeCharacters.head"
+                | "freeCharacters.heels";
+              /**
+               * where in the destination room this teleporter should go - usually
+               * to atop another teleporter, but could be anywhere
+               */
+              toPosition: {
+                x: number;
+                y: number;
+                z: number;
+              };
+            };
       }
     | {
         type: "movingPlatform";

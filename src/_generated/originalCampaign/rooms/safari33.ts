@@ -53,7 +53,6 @@ export const room = inferRoomJson({
       config: {
         activatedOnStoreValue: "planetsLiberated.safari",
         times: { x: 2, y: 2 },
-        toPosition: { x: 2, y: 3, z: 0 },
         toRoom: "safari1",
       },
       position: { x: 1, y: 6, z: 0 },

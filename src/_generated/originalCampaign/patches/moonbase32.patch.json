@@ -1,5 +1,9 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@3,3,0/config/toPosition"
+  },
+  {
     "op": "add",
     "path": "/items/door@3,8,0/config/meta",
     "value": {
