@@ -14,7 +14,7 @@ import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
 import { emptyArray } from "../../utils/empty";
 import { addXyz, scaleXyz } from "../../utils/vectors/vectors";
-import { isTeleporter, type PlayableItem } from "../physics/itemPredicates";
+import { type PlayableItem } from "../physics/itemPredicates";
 import { fadeInOrOutDuration } from "./animationTimings";
 import { TeleportingEffectFilter } from "./filters/TeleportingEffectFilter";
 import { projectWorldXyzToScreenXy } from "./projections";
@@ -109,17 +109,11 @@ export class TeleportEffectRenderer<
     if (currentPlayable !== undefined) {
       const { teleporting } = currentPlayable.state;
 
-      // special case - don't show effect if teleporting inside the same room:
-      const standingOnItem =
+      const needsEffect =
         teleporting &&
-        currentPlayable.state.standingOnItemId !== null &&
-        items[currentPlayable.state.standingOnItemId as RoomItemId];
-      const destinationRoomId =
-        standingOnItem &&
-        isTeleporter(standingOnItem) &&
-        standingOnItem.state.toRoom;
-
-      const needsEffect = teleporting !== null && destinationRoomId !== roomId;
+        (teleporting.phase === "out" ?
+          teleporting.toRoom !== roomId
+        : teleporting.fromRoom !== roomId);
       const hasEffect = this.#teleportingEffectFilter !== undefined;
 
       if (hasEffect !== needsEffect) {

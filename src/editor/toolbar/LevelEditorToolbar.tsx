@@ -787,6 +787,18 @@ Why are the books slippery?`}
             className={`sprite texture-teleporter ${buttonSpriteRevertColourClasses}`}
           />
         </ItemToolButton>
+        <ItemToolButton
+          itemTool={{
+            type: "portableTeleporter",
+            config: {
+              toRoom: "to?" as EditorRoomId,
+            },
+          }}
+        >
+          <span
+            className={`sprite texture-portableTeleporter ${buttonSpriteRevertColourClasses}`}
+          />
+        </ItemToolButton>
 
         <ItemToolButton
           itemTool={{

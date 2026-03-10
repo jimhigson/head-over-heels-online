@@ -24,11 +24,12 @@ export type PlayableTeleportingState =
   | {
       phase: "in";
       timeRemaining: number;
+      fromRoom: string;
     }
   | {
       phase: "out";
       timeRemaining: number;
-      toRoom: string; // TODO: RoomId, although maybe not since this propagates generics all over for something quite safe anyway
+      toRoom: string;
     };
 
 export type LatentMovementFrame<RoomItemId extends string> = {
@@ -288,6 +289,9 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     lastPushDirection: DirectionXy4 | undefined;
   } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["joystick"]; // copying the config into the state means that these settings are mutable at run-time. eg, changing what the joystick controls using switches
   teleporter: ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+  portableTeleporter: FreeItemState<RoomItemId> &
+    PortableItemState &
+    ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
 
   pushableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
   movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;

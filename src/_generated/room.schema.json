@@ -1798,6 +1798,7 @@
                                                       "spring",
                                                       "switch",
                                                       "teleporter",
+                                                      "portableTeleporter",
                                                       "movingPlatform",
                                                       "spikes",
                                                       "portableBlock",
@@ -1902,6 +1903,7 @@
                                                       "spring",
                                                       "switch",
                                                       "teleporter",
+                                                      "portableTeleporter",
                                                       "movingPlatform",
                                                       "spikes",
                                                       "portableBlock",
@@ -2813,6 +2815,268 @@
                                                 {
                                                   "additionalProperties": false,
                                                   "properties": {
+                                                    "activatedOnStoreValue": {
+                                                      "enum": [
+                                                        "planetsLiberated",
+                                                        "scrollsRead",
+                                                        "freeCharacters",
+                                                        "planetsLiberated.blacktooth",
+                                                        "planetsLiberated.bookworld",
+                                                        "planetsLiberated.egyptus",
+                                                        "planetsLiberated.penitentiary",
+                                                        "planetsLiberated.safari",
+                                                        "scrollsRead.blacktooth",
+                                                        "scrollsRead.egyptus",
+                                                        "scrollsRead.penitentiary",
+                                                        "scrollsRead.safari",
+                                                        "scrollsRead.bag",
+                                                        "scrollsRead.doughnuts",
+                                                        "scrollsRead.hooter",
+                                                        "scrollsRead.teleportBack",
+                                                        "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                        "scrollsRead.theGame",
+                                                        "scrollsRead.bookWorld",
+                                                        "scrollsRead.head",
+                                                        "scrollsRead.heels",
+                                                        "scrollsRead.reincarnationFish",
+                                                        "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                        "scrollsRead.crowns",
+                                                        "scrollsRead.teleports",
+                                                        "scrollsRead.springs",
+                                                        "scrollsRead.switches",
+                                                        "scrollsRead.conveyorBelts",
+                                                        "scrollsRead.hushPuppies",
+                                                        "scrollsRead.theEmperorsGuardian",
+                                                        "scrollsRead.swopKey",
+                                                        "scrollsRead.hintsAndTips",
+                                                        "scrollsRead.credits",
+                                                        "scrollsRead.installPwa",
+                                                        "scrollsRead.installNative",
+                                                        "freeCharacters.head",
+                                                        "freeCharacters.heels"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "times": {
+                                                      "additionalProperties": false,
+                                                      "properties": {
+                                                        "x": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "y": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "z": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    },
+                                                    "toRoom": {
+                                                      "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["toRoom"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activatedOnStoreValue": {
+                                                      "enum": [
+                                                        "planetsLiberated",
+                                                        "scrollsRead",
+                                                        "freeCharacters",
+                                                        "planetsLiberated.blacktooth",
+                                                        "planetsLiberated.bookworld",
+                                                        "planetsLiberated.egyptus",
+                                                        "planetsLiberated.penitentiary",
+                                                        "planetsLiberated.safari",
+                                                        "scrollsRead.blacktooth",
+                                                        "scrollsRead.egyptus",
+                                                        "scrollsRead.penitentiary",
+                                                        "scrollsRead.safari",
+                                                        "scrollsRead.bag",
+                                                        "scrollsRead.doughnuts",
+                                                        "scrollsRead.hooter",
+                                                        "scrollsRead.teleportBack",
+                                                        "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                        "scrollsRead.theGame",
+                                                        "scrollsRead.bookWorld",
+                                                        "scrollsRead.head",
+                                                        "scrollsRead.heels",
+                                                        "scrollsRead.reincarnationFish",
+                                                        "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                        "scrollsRead.crowns",
+                                                        "scrollsRead.teleports",
+                                                        "scrollsRead.springs",
+                                                        "scrollsRead.switches",
+                                                        "scrollsRead.conveyorBelts",
+                                                        "scrollsRead.hushPuppies",
+                                                        "scrollsRead.theEmperorsGuardian",
+                                                        "scrollsRead.swopKey",
+                                                        "scrollsRead.hintsAndTips",
+                                                        "scrollsRead.credits",
+                                                        "scrollsRead.installPwa",
+                                                        "scrollsRead.installNative",
+                                                        "freeCharacters.head",
+                                                        "freeCharacters.heels"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "times": {
+                                                      "additionalProperties": false,
+                                                      "properties": {
+                                                        "x": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "y": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "z": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    },
+                                                    "toItemId": {
+                                                      "description": "an item in the destination room this teleporter should go to - the player will be moved to atop this item note: not RoomItemId because that is the ids of items in *this* room, but this is pointing to another room",
+                                                      "type": "string"
+                                                    },
+                                                    "toRoom": {
+                                                      "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "toRoom",
+                                                    "toItemId"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activatedOnStoreValue": {
+                                                      "enum": [
+                                                        "planetsLiberated",
+                                                        "scrollsRead",
+                                                        "freeCharacters",
+                                                        "planetsLiberated.blacktooth",
+                                                        "planetsLiberated.bookworld",
+                                                        "planetsLiberated.egyptus",
+                                                        "planetsLiberated.penitentiary",
+                                                        "planetsLiberated.safari",
+                                                        "scrollsRead.blacktooth",
+                                                        "scrollsRead.egyptus",
+                                                        "scrollsRead.penitentiary",
+                                                        "scrollsRead.safari",
+                                                        "scrollsRead.bag",
+                                                        "scrollsRead.doughnuts",
+                                                        "scrollsRead.hooter",
+                                                        "scrollsRead.teleportBack",
+                                                        "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                        "scrollsRead.theGame",
+                                                        "scrollsRead.bookWorld",
+                                                        "scrollsRead.head",
+                                                        "scrollsRead.heels",
+                                                        "scrollsRead.reincarnationFish",
+                                                        "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                        "scrollsRead.crowns",
+                                                        "scrollsRead.teleports",
+                                                        "scrollsRead.springs",
+                                                        "scrollsRead.switches",
+                                                        "scrollsRead.conveyorBelts",
+                                                        "scrollsRead.hushPuppies",
+                                                        "scrollsRead.theEmperorsGuardian",
+                                                        "scrollsRead.swopKey",
+                                                        "scrollsRead.hintsAndTips",
+                                                        "scrollsRead.credits",
+                                                        "scrollsRead.installPwa",
+                                                        "scrollsRead.installNative",
+                                                        "freeCharacters.head",
+                                                        "freeCharacters.heels"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "times": {
+                                                      "additionalProperties": false,
+                                                      "properties": {
+                                                        "x": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "y": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "z": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    },
+                                                    "toPosition": {
+                                                      "additionalProperties": false,
+                                                      "description": "where in the destination room this teleporter should go - usually to atop another teleporter, but could be anywhere",
+                                                      "properties": {
+                                                        "x": {
+                                                          "type": "number"
+                                                        },
+                                                        "y": {
+                                                          "type": "number"
+                                                        },
+                                                        "z": {
+                                                          "type": "number"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "x",
+                                                        "y",
+                                                        "z"
+                                                      ],
+                                                      "type": "object"
+                                                    },
+                                                    "toRoom": {
+                                                      "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "toRoom",
+                                                    "toPosition"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
                                                     "activated": {
                                                       "enum": [
                                                         "off",
@@ -2910,6 +3174,7 @@
                                                 "slidingBlock",
                                                 "slidingDeadly",
                                                 "spring",
+                                                "portableTeleporter",
                                                 "movingPlatform",
                                                 "portableBlock",
                                                 "pushableBlock",
@@ -3541,6 +3806,268 @@
                                                 {
                                                   "additionalProperties": false,
                                                   "properties": {
+                                                    "activatedOnStoreValue": {
+                                                      "enum": [
+                                                        "planetsLiberated",
+                                                        "scrollsRead",
+                                                        "freeCharacters",
+                                                        "planetsLiberated.blacktooth",
+                                                        "planetsLiberated.bookworld",
+                                                        "planetsLiberated.egyptus",
+                                                        "planetsLiberated.penitentiary",
+                                                        "planetsLiberated.safari",
+                                                        "scrollsRead.blacktooth",
+                                                        "scrollsRead.egyptus",
+                                                        "scrollsRead.penitentiary",
+                                                        "scrollsRead.safari",
+                                                        "scrollsRead.bag",
+                                                        "scrollsRead.doughnuts",
+                                                        "scrollsRead.hooter",
+                                                        "scrollsRead.teleportBack",
+                                                        "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                        "scrollsRead.theGame",
+                                                        "scrollsRead.bookWorld",
+                                                        "scrollsRead.head",
+                                                        "scrollsRead.heels",
+                                                        "scrollsRead.reincarnationFish",
+                                                        "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                        "scrollsRead.crowns",
+                                                        "scrollsRead.teleports",
+                                                        "scrollsRead.springs",
+                                                        "scrollsRead.switches",
+                                                        "scrollsRead.conveyorBelts",
+                                                        "scrollsRead.hushPuppies",
+                                                        "scrollsRead.theEmperorsGuardian",
+                                                        "scrollsRead.swopKey",
+                                                        "scrollsRead.hintsAndTips",
+                                                        "scrollsRead.credits",
+                                                        "scrollsRead.installPwa",
+                                                        "scrollsRead.installNative",
+                                                        "freeCharacters.head",
+                                                        "freeCharacters.heels"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "times": {
+                                                      "additionalProperties": false,
+                                                      "properties": {
+                                                        "x": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "y": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "z": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    },
+                                                    "toRoom": {
+                                                      "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": ["toRoom"],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activatedOnStoreValue": {
+                                                      "enum": [
+                                                        "planetsLiberated",
+                                                        "scrollsRead",
+                                                        "freeCharacters",
+                                                        "planetsLiberated.blacktooth",
+                                                        "planetsLiberated.bookworld",
+                                                        "planetsLiberated.egyptus",
+                                                        "planetsLiberated.penitentiary",
+                                                        "planetsLiberated.safari",
+                                                        "scrollsRead.blacktooth",
+                                                        "scrollsRead.egyptus",
+                                                        "scrollsRead.penitentiary",
+                                                        "scrollsRead.safari",
+                                                        "scrollsRead.bag",
+                                                        "scrollsRead.doughnuts",
+                                                        "scrollsRead.hooter",
+                                                        "scrollsRead.teleportBack",
+                                                        "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                        "scrollsRead.theGame",
+                                                        "scrollsRead.bookWorld",
+                                                        "scrollsRead.head",
+                                                        "scrollsRead.heels",
+                                                        "scrollsRead.reincarnationFish",
+                                                        "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                        "scrollsRead.crowns",
+                                                        "scrollsRead.teleports",
+                                                        "scrollsRead.springs",
+                                                        "scrollsRead.switches",
+                                                        "scrollsRead.conveyorBelts",
+                                                        "scrollsRead.hushPuppies",
+                                                        "scrollsRead.theEmperorsGuardian",
+                                                        "scrollsRead.swopKey",
+                                                        "scrollsRead.hintsAndTips",
+                                                        "scrollsRead.credits",
+                                                        "scrollsRead.installPwa",
+                                                        "scrollsRead.installNative",
+                                                        "freeCharacters.head",
+                                                        "freeCharacters.heels"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "times": {
+                                                      "additionalProperties": false,
+                                                      "properties": {
+                                                        "x": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "y": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "z": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    },
+                                                    "toItemId": {
+                                                      "description": "an item in the destination room this teleporter should go to - the player will be moved to atop this item note: not RoomItemId because that is the ids of items in *this* room, but this is pointing to another room",
+                                                      "type": "string"
+                                                    },
+                                                    "toRoom": {
+                                                      "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "toRoom",
+                                                    "toItemId"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "activatedOnStoreValue": {
+                                                      "enum": [
+                                                        "planetsLiberated",
+                                                        "scrollsRead",
+                                                        "freeCharacters",
+                                                        "planetsLiberated.blacktooth",
+                                                        "planetsLiberated.bookworld",
+                                                        "planetsLiberated.egyptus",
+                                                        "planetsLiberated.penitentiary",
+                                                        "planetsLiberated.safari",
+                                                        "scrollsRead.blacktooth",
+                                                        "scrollsRead.egyptus",
+                                                        "scrollsRead.penitentiary",
+                                                        "scrollsRead.safari",
+                                                        "scrollsRead.bag",
+                                                        "scrollsRead.doughnuts",
+                                                        "scrollsRead.hooter",
+                                                        "scrollsRead.teleportBack",
+                                                        "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                        "scrollsRead.theGame",
+                                                        "scrollsRead.bookWorld",
+                                                        "scrollsRead.head",
+                                                        "scrollsRead.heels",
+                                                        "scrollsRead.reincarnationFish",
+                                                        "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                        "scrollsRead.crowns",
+                                                        "scrollsRead.teleports",
+                                                        "scrollsRead.springs",
+                                                        "scrollsRead.switches",
+                                                        "scrollsRead.conveyorBelts",
+                                                        "scrollsRead.hushPuppies",
+                                                        "scrollsRead.theEmperorsGuardian",
+                                                        "scrollsRead.swopKey",
+                                                        "scrollsRead.hintsAndTips",
+                                                        "scrollsRead.credits",
+                                                        "scrollsRead.installPwa",
+                                                        "scrollsRead.installNative",
+                                                        "freeCharacters.head",
+                                                        "freeCharacters.heels"
+                                                      ],
+                                                      "type": "string"
+                                                    },
+                                                    "times": {
+                                                      "additionalProperties": false,
+                                                      "properties": {
+                                                        "x": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "y": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        },
+                                                        "z": {
+                                                          "type": "number",
+                                                          "multipleOf": 1,
+                                                          "minimum": 1,
+                                                          "maximum": 99
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    },
+                                                    "toPosition": {
+                                                      "additionalProperties": false,
+                                                      "description": "where in the destination room this teleporter should go - usually to atop another teleporter, but could be anywhere",
+                                                      "properties": {
+                                                        "x": {
+                                                          "type": "number"
+                                                        },
+                                                        "y": {
+                                                          "type": "number"
+                                                        },
+                                                        "z": {
+                                                          "type": "number"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "x",
+                                                        "y",
+                                                        "z"
+                                                      ],
+                                                      "type": "object"
+                                                    },
+                                                    "toRoom": {
+                                                      "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "toRoom",
+                                                    "toPosition"
+                                                  ],
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "additionalProperties": false,
+                                                  "properties": {
                                                     "activated": {
                                                       "enum": [
                                                         "off",
@@ -3638,6 +4165,7 @@
                                                 "slidingBlock",
                                                 "slidingDeadly",
                                                 "spring",
+                                                "portableTeleporter",
                                                 "movingPlatform",
                                                 "portableBlock",
                                                 "pushableBlock",
@@ -4232,6 +4760,298 @@
                   },
                   "type": {
                     "const": "teleporter",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activatedOnStoreValue": {
+                            "enum": [
+                              "planetsLiberated",
+                              "scrollsRead",
+                              "freeCharacters",
+                              "planetsLiberated.blacktooth",
+                              "planetsLiberated.bookworld",
+                              "planetsLiberated.egyptus",
+                              "planetsLiberated.penitentiary",
+                              "planetsLiberated.safari",
+                              "scrollsRead.blacktooth",
+                              "scrollsRead.egyptus",
+                              "scrollsRead.penitentiary",
+                              "scrollsRead.safari",
+                              "scrollsRead.bag",
+                              "scrollsRead.doughnuts",
+                              "scrollsRead.hooter",
+                              "scrollsRead.teleportBack",
+                              "scrollsRead.historyOfTheBlacktoothEmpire",
+                              "scrollsRead.theGame",
+                              "scrollsRead.bookWorld",
+                              "scrollsRead.head",
+                              "scrollsRead.heels",
+                              "scrollsRead.reincarnationFish",
+                              "scrollsRead.cuddlyStuffedWhiteRabbits",
+                              "scrollsRead.crowns",
+                              "scrollsRead.teleports",
+                              "scrollsRead.springs",
+                              "scrollsRead.switches",
+                              "scrollsRead.conveyorBelts",
+                              "scrollsRead.hushPuppies",
+                              "scrollsRead.theEmperorsGuardian",
+                              "scrollsRead.swopKey",
+                              "scrollsRead.hintsAndTips",
+                              "scrollsRead.credits",
+                              "scrollsRead.installPwa",
+                              "scrollsRead.installNative",
+                              "freeCharacters.head",
+                              "freeCharacters.heels"
+                            ],
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              },
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              },
+                              "z": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "toRoom": {
+                            "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["toRoom"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activatedOnStoreValue": {
+                            "enum": [
+                              "planetsLiberated",
+                              "scrollsRead",
+                              "freeCharacters",
+                              "planetsLiberated.blacktooth",
+                              "planetsLiberated.bookworld",
+                              "planetsLiberated.egyptus",
+                              "planetsLiberated.penitentiary",
+                              "planetsLiberated.safari",
+                              "scrollsRead.blacktooth",
+                              "scrollsRead.egyptus",
+                              "scrollsRead.penitentiary",
+                              "scrollsRead.safari",
+                              "scrollsRead.bag",
+                              "scrollsRead.doughnuts",
+                              "scrollsRead.hooter",
+                              "scrollsRead.teleportBack",
+                              "scrollsRead.historyOfTheBlacktoothEmpire",
+                              "scrollsRead.theGame",
+                              "scrollsRead.bookWorld",
+                              "scrollsRead.head",
+                              "scrollsRead.heels",
+                              "scrollsRead.reincarnationFish",
+                              "scrollsRead.cuddlyStuffedWhiteRabbits",
+                              "scrollsRead.crowns",
+                              "scrollsRead.teleports",
+                              "scrollsRead.springs",
+                              "scrollsRead.switches",
+                              "scrollsRead.conveyorBelts",
+                              "scrollsRead.hushPuppies",
+                              "scrollsRead.theEmperorsGuardian",
+                              "scrollsRead.swopKey",
+                              "scrollsRead.hintsAndTips",
+                              "scrollsRead.credits",
+                              "scrollsRead.installPwa",
+                              "scrollsRead.installNative",
+                              "freeCharacters.head",
+                              "freeCharacters.heels"
+                            ],
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              },
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              },
+                              "z": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "toItemId": {
+                            "description": "an item in the destination room this teleporter should go to - the player will be moved to atop this item note: not RoomItemId because that is the ids of items in *this* room, but this is pointing to another room",
+                            "type": "string"
+                          },
+                          "toRoom": {
+                            "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["toRoom", "toItemId"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "activatedOnStoreValue": {
+                            "enum": [
+                              "planetsLiberated",
+                              "scrollsRead",
+                              "freeCharacters",
+                              "planetsLiberated.blacktooth",
+                              "planetsLiberated.bookworld",
+                              "planetsLiberated.egyptus",
+                              "planetsLiberated.penitentiary",
+                              "planetsLiberated.safari",
+                              "scrollsRead.blacktooth",
+                              "scrollsRead.egyptus",
+                              "scrollsRead.penitentiary",
+                              "scrollsRead.safari",
+                              "scrollsRead.bag",
+                              "scrollsRead.doughnuts",
+                              "scrollsRead.hooter",
+                              "scrollsRead.teleportBack",
+                              "scrollsRead.historyOfTheBlacktoothEmpire",
+                              "scrollsRead.theGame",
+                              "scrollsRead.bookWorld",
+                              "scrollsRead.head",
+                              "scrollsRead.heels",
+                              "scrollsRead.reincarnationFish",
+                              "scrollsRead.cuddlyStuffedWhiteRabbits",
+                              "scrollsRead.crowns",
+                              "scrollsRead.teleports",
+                              "scrollsRead.springs",
+                              "scrollsRead.switches",
+                              "scrollsRead.conveyorBelts",
+                              "scrollsRead.hushPuppies",
+                              "scrollsRead.theEmperorsGuardian",
+                              "scrollsRead.swopKey",
+                              "scrollsRead.hintsAndTips",
+                              "scrollsRead.credits",
+                              "scrollsRead.installPwa",
+                              "scrollsRead.installNative",
+                              "freeCharacters.head",
+                              "freeCharacters.heels"
+                            ],
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              },
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              },
+                              "z": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "toPosition": {
+                            "additionalProperties": false,
+                            "description": "where in the destination room this teleporter should go - usually to atop another teleporter, but could be anywhere",
+                            "properties": {
+                              "x": {
+                                "type": "number"
+                              },
+                              "y": {
+                                "type": "number"
+                              },
+                              "z": {
+                                "type": "number"
+                              }
+                            },
+                            "required": ["x", "y", "z"],
+                            "type": "object"
+                          },
+                          "toRoom": {
+                            "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["toRoom", "toPosition"],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.125,
+                        "minimum": -30,
+                        "maximum": 30
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.125,
+                        "minimum": -30,
+                        "maximum": 30
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": -30,
+                        "maximum": 30
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "portableTeleporter",
                     "type": "string"
                   }
                 },
@@ -5306,6 +6126,273 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
+                                "anyOf": [
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activatedOnStoreValue": {
+                                        "enum": [
+                                          "planetsLiberated",
+                                          "scrollsRead",
+                                          "freeCharacters",
+                                          "planetsLiberated.blacktooth",
+                                          "planetsLiberated.bookworld",
+                                          "planetsLiberated.egyptus",
+                                          "planetsLiberated.penitentiary",
+                                          "planetsLiberated.safari",
+                                          "scrollsRead.blacktooth",
+                                          "scrollsRead.egyptus",
+                                          "scrollsRead.penitentiary",
+                                          "scrollsRead.safari",
+                                          "scrollsRead.bag",
+                                          "scrollsRead.doughnuts",
+                                          "scrollsRead.hooter",
+                                          "scrollsRead.teleportBack",
+                                          "scrollsRead.historyOfTheBlacktoothEmpire",
+                                          "scrollsRead.theGame",
+                                          "scrollsRead.bookWorld",
+                                          "scrollsRead.head",
+                                          "scrollsRead.heels",
+                                          "scrollsRead.reincarnationFish",
+                                          "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                          "scrollsRead.crowns",
+                                          "scrollsRead.teleports",
+                                          "scrollsRead.springs",
+                                          "scrollsRead.switches",
+                                          "scrollsRead.conveyorBelts",
+                                          "scrollsRead.hushPuppies",
+                                          "scrollsRead.theEmperorsGuardian",
+                                          "scrollsRead.swopKey",
+                                          "scrollsRead.hintsAndTips",
+                                          "scrollsRead.credits",
+                                          "scrollsRead.installPwa",
+                                          "scrollsRead.installNative",
+                                          "freeCharacters.head",
+                                          "freeCharacters.heels"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "times": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "x": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          },
+                                          "y": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          },
+                                          "z": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          }
+                                        },
+                                        "type": "object"
+                                      },
+                                      "toRoom": {
+                                        "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["toRoom"],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activatedOnStoreValue": {
+                                        "enum": [
+                                          "planetsLiberated",
+                                          "scrollsRead",
+                                          "freeCharacters",
+                                          "planetsLiberated.blacktooth",
+                                          "planetsLiberated.bookworld",
+                                          "planetsLiberated.egyptus",
+                                          "planetsLiberated.penitentiary",
+                                          "planetsLiberated.safari",
+                                          "scrollsRead.blacktooth",
+                                          "scrollsRead.egyptus",
+                                          "scrollsRead.penitentiary",
+                                          "scrollsRead.safari",
+                                          "scrollsRead.bag",
+                                          "scrollsRead.doughnuts",
+                                          "scrollsRead.hooter",
+                                          "scrollsRead.teleportBack",
+                                          "scrollsRead.historyOfTheBlacktoothEmpire",
+                                          "scrollsRead.theGame",
+                                          "scrollsRead.bookWorld",
+                                          "scrollsRead.head",
+                                          "scrollsRead.heels",
+                                          "scrollsRead.reincarnationFish",
+                                          "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                          "scrollsRead.crowns",
+                                          "scrollsRead.teleports",
+                                          "scrollsRead.springs",
+                                          "scrollsRead.switches",
+                                          "scrollsRead.conveyorBelts",
+                                          "scrollsRead.hushPuppies",
+                                          "scrollsRead.theEmperorsGuardian",
+                                          "scrollsRead.swopKey",
+                                          "scrollsRead.hintsAndTips",
+                                          "scrollsRead.credits",
+                                          "scrollsRead.installPwa",
+                                          "scrollsRead.installNative",
+                                          "freeCharacters.head",
+                                          "freeCharacters.heels"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "times": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "x": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          },
+                                          "y": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          },
+                                          "z": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          }
+                                        },
+                                        "type": "object"
+                                      },
+                                      "toItemId": {
+                                        "description": "an item in the destination room this teleporter should go to - the player will be moved to atop this item note: not RoomItemId because that is the ids of items in *this* room, but this is pointing to another room",
+                                        "type": "string"
+                                      },
+                                      "toRoom": {
+                                        "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["toRoom", "toItemId"],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "activatedOnStoreValue": {
+                                        "enum": [
+                                          "planetsLiberated",
+                                          "scrollsRead",
+                                          "freeCharacters",
+                                          "planetsLiberated.blacktooth",
+                                          "planetsLiberated.bookworld",
+                                          "planetsLiberated.egyptus",
+                                          "planetsLiberated.penitentiary",
+                                          "planetsLiberated.safari",
+                                          "scrollsRead.blacktooth",
+                                          "scrollsRead.egyptus",
+                                          "scrollsRead.penitentiary",
+                                          "scrollsRead.safari",
+                                          "scrollsRead.bag",
+                                          "scrollsRead.doughnuts",
+                                          "scrollsRead.hooter",
+                                          "scrollsRead.teleportBack",
+                                          "scrollsRead.historyOfTheBlacktoothEmpire",
+                                          "scrollsRead.theGame",
+                                          "scrollsRead.bookWorld",
+                                          "scrollsRead.head",
+                                          "scrollsRead.heels",
+                                          "scrollsRead.reincarnationFish",
+                                          "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                          "scrollsRead.crowns",
+                                          "scrollsRead.teleports",
+                                          "scrollsRead.springs",
+                                          "scrollsRead.switches",
+                                          "scrollsRead.conveyorBelts",
+                                          "scrollsRead.hushPuppies",
+                                          "scrollsRead.theEmperorsGuardian",
+                                          "scrollsRead.swopKey",
+                                          "scrollsRead.hintsAndTips",
+                                          "scrollsRead.credits",
+                                          "scrollsRead.installPwa",
+                                          "scrollsRead.installNative",
+                                          "freeCharacters.head",
+                                          "freeCharacters.heels"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "times": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "x": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          },
+                                          "y": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          },
+                                          "z": {
+                                            "type": "number",
+                                            "multipleOf": 1,
+                                            "minimum": 1,
+                                            "maximum": 99
+                                          }
+                                        },
+                                        "type": "object"
+                                      },
+                                      "toPosition": {
+                                        "additionalProperties": false,
+                                        "description": "where in the destination room this teleporter should go - usually to atop another teleporter, but could be anywhere",
+                                        "properties": {
+                                          "x": {
+                                            "type": "number"
+                                          },
+                                          "y": {
+                                            "type": "number"
+                                          },
+                                          "z": {
+                                            "type": "number"
+                                          }
+                                        },
+                                        "required": ["x", "y", "z"],
+                                        "type": "object"
+                                      },
+                                      "toRoom": {
+                                        "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["toRoom", "toPosition"],
+                                    "type": "object"
+                                  }
+                                ]
+                              },
+                              "type": {
+                                "const": "portableTeleporter",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type", "config"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config": {
                                 "additionalProperties": false,
                                 "properties": {
                                   "direction": {
@@ -5496,6 +6583,7 @@
                                                   "spring",
                                                   "switch",
                                                   "teleporter",
+                                                  "portableTeleporter",
                                                   "movingPlatform",
                                                   "spikes",
                                                   "portableBlock",
@@ -5600,6 +6688,7 @@
                                                   "spring",
                                                   "switch",
                                                   "teleporter",
+                                                  "portableTeleporter",
                                                   "movingPlatform",
                                                   "spikes",
                                                   "portableBlock",
@@ -6503,6 +7592,264 @@
                                             {
                                               "additionalProperties": false,
                                               "properties": {
+                                                "activatedOnStoreValue": {
+                                                  "enum": [
+                                                    "planetsLiberated",
+                                                    "scrollsRead",
+                                                    "freeCharacters",
+                                                    "planetsLiberated.blacktooth",
+                                                    "planetsLiberated.bookworld",
+                                                    "planetsLiberated.egyptus",
+                                                    "planetsLiberated.penitentiary",
+                                                    "planetsLiberated.safari",
+                                                    "scrollsRead.blacktooth",
+                                                    "scrollsRead.egyptus",
+                                                    "scrollsRead.penitentiary",
+                                                    "scrollsRead.safari",
+                                                    "scrollsRead.bag",
+                                                    "scrollsRead.doughnuts",
+                                                    "scrollsRead.hooter",
+                                                    "scrollsRead.teleportBack",
+                                                    "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                    "scrollsRead.theGame",
+                                                    "scrollsRead.bookWorld",
+                                                    "scrollsRead.head",
+                                                    "scrollsRead.heels",
+                                                    "scrollsRead.reincarnationFish",
+                                                    "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                    "scrollsRead.crowns",
+                                                    "scrollsRead.teleports",
+                                                    "scrollsRead.springs",
+                                                    "scrollsRead.switches",
+                                                    "scrollsRead.conveyorBelts",
+                                                    "scrollsRead.hushPuppies",
+                                                    "scrollsRead.theEmperorsGuardian",
+                                                    "scrollsRead.swopKey",
+                                                    "scrollsRead.hintsAndTips",
+                                                    "scrollsRead.credits",
+                                                    "scrollsRead.installPwa",
+                                                    "scrollsRead.installNative",
+                                                    "freeCharacters.head",
+                                                    "freeCharacters.heels"
+                                                  ],
+                                                  "type": "string"
+                                                },
+                                                "times": {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "x": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "y": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "z": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                },
+                                                "toRoom": {
+                                                  "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": ["toRoom"],
+                                              "type": "object"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "activatedOnStoreValue": {
+                                                  "enum": [
+                                                    "planetsLiberated",
+                                                    "scrollsRead",
+                                                    "freeCharacters",
+                                                    "planetsLiberated.blacktooth",
+                                                    "planetsLiberated.bookworld",
+                                                    "planetsLiberated.egyptus",
+                                                    "planetsLiberated.penitentiary",
+                                                    "planetsLiberated.safari",
+                                                    "scrollsRead.blacktooth",
+                                                    "scrollsRead.egyptus",
+                                                    "scrollsRead.penitentiary",
+                                                    "scrollsRead.safari",
+                                                    "scrollsRead.bag",
+                                                    "scrollsRead.doughnuts",
+                                                    "scrollsRead.hooter",
+                                                    "scrollsRead.teleportBack",
+                                                    "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                    "scrollsRead.theGame",
+                                                    "scrollsRead.bookWorld",
+                                                    "scrollsRead.head",
+                                                    "scrollsRead.heels",
+                                                    "scrollsRead.reincarnationFish",
+                                                    "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                    "scrollsRead.crowns",
+                                                    "scrollsRead.teleports",
+                                                    "scrollsRead.springs",
+                                                    "scrollsRead.switches",
+                                                    "scrollsRead.conveyorBelts",
+                                                    "scrollsRead.hushPuppies",
+                                                    "scrollsRead.theEmperorsGuardian",
+                                                    "scrollsRead.swopKey",
+                                                    "scrollsRead.hintsAndTips",
+                                                    "scrollsRead.credits",
+                                                    "scrollsRead.installPwa",
+                                                    "scrollsRead.installNative",
+                                                    "freeCharacters.head",
+                                                    "freeCharacters.heels"
+                                                  ],
+                                                  "type": "string"
+                                                },
+                                                "times": {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "x": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "y": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "z": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                },
+                                                "toItemId": {
+                                                  "description": "an item in the destination room this teleporter should go to - the player will be moved to atop this item note: not RoomItemId because that is the ids of items in *this* room, but this is pointing to another room",
+                                                  "type": "string"
+                                                },
+                                                "toRoom": {
+                                                  "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "toRoom",
+                                                "toItemId"
+                                              ],
+                                              "type": "object"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "activatedOnStoreValue": {
+                                                  "enum": [
+                                                    "planetsLiberated",
+                                                    "scrollsRead",
+                                                    "freeCharacters",
+                                                    "planetsLiberated.blacktooth",
+                                                    "planetsLiberated.bookworld",
+                                                    "planetsLiberated.egyptus",
+                                                    "planetsLiberated.penitentiary",
+                                                    "planetsLiberated.safari",
+                                                    "scrollsRead.blacktooth",
+                                                    "scrollsRead.egyptus",
+                                                    "scrollsRead.penitentiary",
+                                                    "scrollsRead.safari",
+                                                    "scrollsRead.bag",
+                                                    "scrollsRead.doughnuts",
+                                                    "scrollsRead.hooter",
+                                                    "scrollsRead.teleportBack",
+                                                    "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                    "scrollsRead.theGame",
+                                                    "scrollsRead.bookWorld",
+                                                    "scrollsRead.head",
+                                                    "scrollsRead.heels",
+                                                    "scrollsRead.reincarnationFish",
+                                                    "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                    "scrollsRead.crowns",
+                                                    "scrollsRead.teleports",
+                                                    "scrollsRead.springs",
+                                                    "scrollsRead.switches",
+                                                    "scrollsRead.conveyorBelts",
+                                                    "scrollsRead.hushPuppies",
+                                                    "scrollsRead.theEmperorsGuardian",
+                                                    "scrollsRead.swopKey",
+                                                    "scrollsRead.hintsAndTips",
+                                                    "scrollsRead.credits",
+                                                    "scrollsRead.installPwa",
+                                                    "scrollsRead.installNative",
+                                                    "freeCharacters.head",
+                                                    "freeCharacters.heels"
+                                                  ],
+                                                  "type": "string"
+                                                },
+                                                "times": {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "x": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "y": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "z": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                },
+                                                "toPosition": {
+                                                  "additionalProperties": false,
+                                                  "description": "where in the destination room this teleporter should go - usually to atop another teleporter, but could be anywhere",
+                                                  "properties": {
+                                                    "x": {
+                                                      "type": "number"
+                                                    },
+                                                    "y": {
+                                                      "type": "number"
+                                                    },
+                                                    "z": {
+                                                      "type": "number"
+                                                    }
+                                                  },
+                                                  "required": ["x", "y", "z"],
+                                                  "type": "object"
+                                                },
+                                                "toRoom": {
+                                                  "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "toRoom",
+                                                "toPosition"
+                                              ],
+                                              "type": "object"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
                                                 "activated": {
                                                   "enum": [
                                                     "off",
@@ -6600,6 +7947,7 @@
                                             "slidingBlock",
                                             "slidingDeadly",
                                             "spring",
+                                            "portableTeleporter",
                                             "movingPlatform",
                                             "portableBlock",
                                             "pushableBlock",
@@ -7228,6 +8576,264 @@
                                             {
                                               "additionalProperties": false,
                                               "properties": {
+                                                "activatedOnStoreValue": {
+                                                  "enum": [
+                                                    "planetsLiberated",
+                                                    "scrollsRead",
+                                                    "freeCharacters",
+                                                    "planetsLiberated.blacktooth",
+                                                    "planetsLiberated.bookworld",
+                                                    "planetsLiberated.egyptus",
+                                                    "planetsLiberated.penitentiary",
+                                                    "planetsLiberated.safari",
+                                                    "scrollsRead.blacktooth",
+                                                    "scrollsRead.egyptus",
+                                                    "scrollsRead.penitentiary",
+                                                    "scrollsRead.safari",
+                                                    "scrollsRead.bag",
+                                                    "scrollsRead.doughnuts",
+                                                    "scrollsRead.hooter",
+                                                    "scrollsRead.teleportBack",
+                                                    "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                    "scrollsRead.theGame",
+                                                    "scrollsRead.bookWorld",
+                                                    "scrollsRead.head",
+                                                    "scrollsRead.heels",
+                                                    "scrollsRead.reincarnationFish",
+                                                    "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                    "scrollsRead.crowns",
+                                                    "scrollsRead.teleports",
+                                                    "scrollsRead.springs",
+                                                    "scrollsRead.switches",
+                                                    "scrollsRead.conveyorBelts",
+                                                    "scrollsRead.hushPuppies",
+                                                    "scrollsRead.theEmperorsGuardian",
+                                                    "scrollsRead.swopKey",
+                                                    "scrollsRead.hintsAndTips",
+                                                    "scrollsRead.credits",
+                                                    "scrollsRead.installPwa",
+                                                    "scrollsRead.installNative",
+                                                    "freeCharacters.head",
+                                                    "freeCharacters.heels"
+                                                  ],
+                                                  "type": "string"
+                                                },
+                                                "times": {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "x": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "y": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "z": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                },
+                                                "toRoom": {
+                                                  "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": ["toRoom"],
+                                              "type": "object"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "activatedOnStoreValue": {
+                                                  "enum": [
+                                                    "planetsLiberated",
+                                                    "scrollsRead",
+                                                    "freeCharacters",
+                                                    "planetsLiberated.blacktooth",
+                                                    "planetsLiberated.bookworld",
+                                                    "planetsLiberated.egyptus",
+                                                    "planetsLiberated.penitentiary",
+                                                    "planetsLiberated.safari",
+                                                    "scrollsRead.blacktooth",
+                                                    "scrollsRead.egyptus",
+                                                    "scrollsRead.penitentiary",
+                                                    "scrollsRead.safari",
+                                                    "scrollsRead.bag",
+                                                    "scrollsRead.doughnuts",
+                                                    "scrollsRead.hooter",
+                                                    "scrollsRead.teleportBack",
+                                                    "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                    "scrollsRead.theGame",
+                                                    "scrollsRead.bookWorld",
+                                                    "scrollsRead.head",
+                                                    "scrollsRead.heels",
+                                                    "scrollsRead.reincarnationFish",
+                                                    "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                    "scrollsRead.crowns",
+                                                    "scrollsRead.teleports",
+                                                    "scrollsRead.springs",
+                                                    "scrollsRead.switches",
+                                                    "scrollsRead.conveyorBelts",
+                                                    "scrollsRead.hushPuppies",
+                                                    "scrollsRead.theEmperorsGuardian",
+                                                    "scrollsRead.swopKey",
+                                                    "scrollsRead.hintsAndTips",
+                                                    "scrollsRead.credits",
+                                                    "scrollsRead.installPwa",
+                                                    "scrollsRead.installNative",
+                                                    "freeCharacters.head",
+                                                    "freeCharacters.heels"
+                                                  ],
+                                                  "type": "string"
+                                                },
+                                                "times": {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "x": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "y": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "z": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                },
+                                                "toItemId": {
+                                                  "description": "an item in the destination room this teleporter should go to - the player will be moved to atop this item note: not RoomItemId because that is the ids of items in *this* room, but this is pointing to another room",
+                                                  "type": "string"
+                                                },
+                                                "toRoom": {
+                                                  "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "toRoom",
+                                                "toItemId"
+                                              ],
+                                              "type": "object"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
+                                                "activatedOnStoreValue": {
+                                                  "enum": [
+                                                    "planetsLiberated",
+                                                    "scrollsRead",
+                                                    "freeCharacters",
+                                                    "planetsLiberated.blacktooth",
+                                                    "planetsLiberated.bookworld",
+                                                    "planetsLiberated.egyptus",
+                                                    "planetsLiberated.penitentiary",
+                                                    "planetsLiberated.safari",
+                                                    "scrollsRead.blacktooth",
+                                                    "scrollsRead.egyptus",
+                                                    "scrollsRead.penitentiary",
+                                                    "scrollsRead.safari",
+                                                    "scrollsRead.bag",
+                                                    "scrollsRead.doughnuts",
+                                                    "scrollsRead.hooter",
+                                                    "scrollsRead.teleportBack",
+                                                    "scrollsRead.historyOfTheBlacktoothEmpire",
+                                                    "scrollsRead.theGame",
+                                                    "scrollsRead.bookWorld",
+                                                    "scrollsRead.head",
+                                                    "scrollsRead.heels",
+                                                    "scrollsRead.reincarnationFish",
+                                                    "scrollsRead.cuddlyStuffedWhiteRabbits",
+                                                    "scrollsRead.crowns",
+                                                    "scrollsRead.teleports",
+                                                    "scrollsRead.springs",
+                                                    "scrollsRead.switches",
+                                                    "scrollsRead.conveyorBelts",
+                                                    "scrollsRead.hushPuppies",
+                                                    "scrollsRead.theEmperorsGuardian",
+                                                    "scrollsRead.swopKey",
+                                                    "scrollsRead.hintsAndTips",
+                                                    "scrollsRead.credits",
+                                                    "scrollsRead.installPwa",
+                                                    "scrollsRead.installNative",
+                                                    "freeCharacters.head",
+                                                    "freeCharacters.heels"
+                                                  ],
+                                                  "type": "string"
+                                                },
+                                                "times": {
+                                                  "additionalProperties": false,
+                                                  "properties": {
+                                                    "x": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "y": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    },
+                                                    "z": {
+                                                      "type": "number",
+                                                      "multipleOf": 1,
+                                                      "minimum": 1,
+                                                      "maximum": 99
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                },
+                                                "toPosition": {
+                                                  "additionalProperties": false,
+                                                  "description": "where in the destination room this teleporter should go - usually to atop another teleporter, but could be anywhere",
+                                                  "properties": {
+                                                    "x": {
+                                                      "type": "number"
+                                                    },
+                                                    "y": {
+                                                      "type": "number"
+                                                    },
+                                                    "z": {
+                                                      "type": "number"
+                                                    }
+                                                  },
+                                                  "required": ["x", "y", "z"],
+                                                  "type": "object"
+                                                },
+                                                "toRoom": {
+                                                  "description": "note that if the other room contains exactly one teleporter, we need not give the position or the item",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "toRoom",
+                                                "toPosition"
+                                              ],
+                                              "type": "object"
+                                            },
+                                            {
+                                              "additionalProperties": false,
+                                              "properties": {
                                                 "activated": {
                                                   "enum": [
                                                     "off",
@@ -7325,6 +8931,7 @@
                                             "slidingBlock",
                                             "slidingDeadly",
                                             "spring",
+                                            "portableTeleporter",
                                             "movingPlatform",
                                             "portableBlock",
                                             "pushableBlock",

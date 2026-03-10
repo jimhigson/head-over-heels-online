@@ -12,7 +12,7 @@ type TeleporterRenderProps = {
 };
 
 export const teleporterAppearance: ItemAppearance<
-  "teleporter",
+  "portableTeleporter" | "teleporter",
   TeleporterRenderProps
 > = ({
   renderContext: {
@@ -23,6 +23,7 @@ export const teleporterAppearance: ItemAppearance<
   currentRendering,
 }) => {
   const {
+    type,
     state: { stoodOnBy },
     config: { times },
   } = item;
@@ -50,13 +51,13 @@ export const teleporterAppearance: ItemAppearance<
     output:
       flashing ?
         createSprite({
-          animationId: "teleporter.flashing",
+          animationId: `${type}.flashing`,
           times,
           paused,
           spritesheetVariant,
         })
       : createSprite({
-          textureId: activated ? "teleporter" : "block.artificial",
+          textureId: activated ? type : "block.artificial",
           times,
           spritesheetVariant,
         }),

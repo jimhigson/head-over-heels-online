@@ -8,21 +8,28 @@ import { audioCtx } from "../audioCtx";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
 export class TeleporterSoundRenderer
-  implements ItemSoundRenderer<"teleporter">
+  implements ItemSoundRenderer<"portableTeleporter" | "teleporter">
 {
   public readonly output: GainNode = audioCtx.createGain();
 
-  // add the walking buffer sources to here to play them
-  #sirenBracket = createBracketedSound(
-    {
-      loop: { soundId: "teleportWarningSiren" },
-    },
-    this.output,
-  );
+  #sirenBracket;
 
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<"teleporter">,
-  ) {}
+    public readonly renderContext: ItemSoundRenderContext<
+      "portableTeleporter" | "teleporter"
+    >,
+  ) {
+    this.#sirenBracket = createBracketedSound(
+      {
+        loop: {
+          soundId: "teleportWarningSiren",
+          playbackRate:
+            renderContext.item.type === "portableTeleporter" ? 1.25 : 1,
+        },
+      },
+      this.output,
+    );
+  }
 
   tick() {
     const {

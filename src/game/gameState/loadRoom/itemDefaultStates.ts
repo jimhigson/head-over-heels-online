@@ -84,7 +84,8 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       jsonItem.type === "emitter" ||
       jsonItem.type === "lift" ||
       jsonItem.type === "conveyor" ||
-      jsonItem.type === "teleporter"
+      jsonItem.type === "teleporter" ||
+      jsonItem.type === "portableTeleporter"
     ) ?
       // these items have their config copied into their state. This allows them to
       // be changed at run-time by other items such as switches

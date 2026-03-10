@@ -89,6 +89,33 @@ export type DoorConfig<RoomId extends string> = {
   };
 };
 
+type TeleporterConfig<RoomId extends string> = ConsolidatableConfig & {
+  /**
+   * note that if the other room contains exactly one teleporter, we need not
+   * give the position or the item
+   **/
+  toRoom: ExitGameRoomId | RoomId;
+  activatedOnStoreValue?: GameInPlayBooleanPaths;
+} & (
+    | {
+        /**
+         * an item in the destination room this teleporter should go to - the
+         * player will be moved to atop this item
+         * note: not RoomItemId because that is the ids of items in *this* room, but this
+         * is pointing to another room
+         */
+        toItemId: string;
+      }
+    | {
+        /**
+         * where in the destination room this teleporter should go - usually
+         * to atop another teleporter, but could be anywhere
+         */
+        toPosition: Xyz;
+      }
+    | EmptyObject
+  );
+
 export type ItemConfigMap<
   RoomId extends string,
   /** ids of items in this room */
@@ -113,32 +140,8 @@ export type ItemConfigMap<
         times: Xy;
       };
   wall: WallJsonConfig<ScN>;
-  teleporter: ConsolidatableConfig & {
-    /**
-     * note that if the other room contains exactly one teleporter, we need not
-     * give the position or the item
-     **/
-    toRoom: ExitGameRoomId | RoomId;
-    activatedOnStoreValue?: GameInPlayBooleanPaths;
-  } & (
-      | {
-          /**
-           * an item in the destination room this teleporter should go to - the
-           * player will be moved to atop this item
-           * note: not RoomItemId because that is the ids of items in *this* room, but this
-           * is pointing to another room
-           */
-          toItemId: string;
-        }
-      | {
-          /**
-           * where in the destination room this teleporter should go - usually
-           * to atop another teleporter, but could be anywhere
-           */
-          toPosition: Xyz;
-        }
-      | EmptyObject
-    );
+  teleporter: TeleporterConfig<RoomId>;
+  portableTeleporter: TeleporterConfig<RoomId>;
   barrier: ConsolidatableConfig & {
     // the axis the barrier runs along
     axis: AxisXy;

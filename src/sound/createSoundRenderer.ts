@@ -37,6 +37,7 @@ const rendererClasses: {
   heels: PlayableSoundRenderer,
   headOverHeels: PlayableSoundRenderer,
   teleporter: TeleporterSoundRenderer,
+  portableTeleporter: TeleporterSoundRenderer,
   monster: MonsterSoundRenderer,
   conveyor: ConveyorSoundRenderer,
   spring: SpringSoundRenderer,

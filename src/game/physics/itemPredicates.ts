@@ -130,6 +130,7 @@ export const portableItemTypes = [
   // just for fun/an easter egg - let pick up the characters in the final room :-)
   "sceneryPlayer",
   "sceneryCrown",
+  "portableTeleporter",
   "monster", // <-- but only small monsters
   "slidingBlock", // <-- but only small sliding blocks
   "pickup", // <-- Heels can pick up Head's pickups (ie, doughnuts) - different from the original
@@ -202,6 +203,7 @@ export const freeItemTypes = [
   "spring",
   "sceneryPlayer", // just for fun
   "sceneryCrown",
+  "portableTeleporter",
 ] as const satisfies ItemInPlayType[];
 
 export type FreeItemTypes = (typeof freeItemTypes)[number];
@@ -249,7 +251,7 @@ export const isMultipliedItem = <
 };
 
 export const isPortal = isItemType("portal");
-export const isTeleporter = isItemType("teleporter");
+export const isTeleporter = isItemType("teleporter", "portableTeleporter");
 export const isHeels = isItemType("heels");
 export const isHead = isItemType("head");
 export const isHeadOverHeels = isItemType("headOverHeels");

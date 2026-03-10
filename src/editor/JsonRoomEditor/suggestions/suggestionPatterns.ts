@@ -59,6 +59,38 @@ const getJoystickControllableItemIds = (
   );
 };
 
+const getTeleporterDestinationItemIds: SuggestionGenerator = (
+  storeState,
+  _currentRoomJson,
+  _toItemIdStringNode,
+  config,
+) => {
+  const otherRoomId = getNodePropertyValue(config, "toRoom") as
+    | EditorRoomId
+    | undefined;
+
+  if (otherRoomId === undefined) {
+    return emptyArray;
+  }
+
+  const otherRoom =
+    storeState.levelEditor.campaignInProgress.rooms[otherRoomId];
+
+  if (otherRoom === undefined) {
+    return emptyArray;
+  }
+
+  // any type is valid, but only suggest the common ones - user can type for the others:
+  return iterateRoomJsonItemsWithIds(
+    otherRoom.items,
+    "teleporter",
+    "portableTeleporter",
+    "block",
+  )
+    .map(([id]) => id)
+    .toArray();
+};
+
 /**
  * Patterns for property paths and their corresponding suggestion generators
  */
@@ -66,6 +98,7 @@ const getJoystickControllableItemIds = (
 export const suggestionPatterns: SuggestionPatterns = {
   // teleporters can go to the same room:
   ["[type=teleporter].config.toRoom"]: getRoomIds,
+  ["[type=portableTeleporter].config.toRoom"]: getRoomIds,
   toRoom: getOtherRoomIds,
   roomAbove: getOtherRoomIds,
   roomBelow: getOtherRoomIds,
@@ -138,32 +171,9 @@ export const suggestionPatterns: SuggestionPatterns = {
       .map(([id]) => id)
       .toArray();
   },
-  ["[type=teleporter].config.toItemId"](
-    storeState,
-    _currentRoomJson,
-    _toItemIdStringNode,
-    config,
-  ) {
-    const otherRoomId = getNodePropertyValue(config, "toRoom") as
-      | EditorRoomId
-      | undefined;
-
-    if (otherRoomId === undefined) {
-      return emptyArray;
-    }
-
-    const otherRoom =
-      storeState.levelEditor.campaignInProgress.rooms[otherRoomId];
-
-    if (otherRoom === undefined) {
-      return emptyArray;
-    }
-
-    // any type is valid, but only suggest the common ones - user can type for the others:
-    return iterateRoomJsonItemsWithIds(otherRoom.items, "teleporter", "block")
-      .map(([id]) => id)
-      .toArray();
-  },
+  ["[type=teleporter].config.toItemId"]: getTeleporterDestinationItemIds,
+  ["[type=portableTeleporter].config.toItemId"]:
+    getTeleporterDestinationItemIds,
   ["[type=door].config.meta.toSubRoom"](
     storeState,
     _currentRoomJson,

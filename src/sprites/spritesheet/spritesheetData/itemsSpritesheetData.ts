@@ -561,6 +561,56 @@ const frames = {
     smallItemTextureSize,
   ),
 
+  portableTeleporter: {
+    frame: {
+      ...smallItemGridLocation({ x: (x = 0), y: (y = 23) }),
+      ...smallItemTextureSize,
+    },
+  },
+  ...seriesOfNumberedTextures(
+    "portableTeleporter.flashing",
+    2,
+    smallItemGridLocation({ x: ++x, y }),
+    smallItemTextureSize,
+  ),
+  "shadowMask.portableTeleporter": {
+    frame: {
+      ...smallItemGridLocation({ x: (x += 2), y }),
+      ...smallItemTextureSize,
+    },
+  },
+  "shadowMask.portableTeleporter.flashing": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  teleporter: {
+    frame: {
+      ...largeItemGridLocation({ x: (x = 0), y: (y = -2) }),
+      ...largeItemTextureSize,
+    },
+  },
+  ...seriesOfNumberedTextures(
+    "teleporter.flashing",
+    2,
+    largeItemGridLocation({ x: ++x, y }),
+    largeItemTextureSize,
+  ),
+  "shadowMask.teleporter": {
+    frame: {
+      ...largeItemGridLocation({ x: (x += 2), y }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.teleporter.flashing": {
+    frame: {
+      ...largeItemGridLocation({ x: ++x, y }),
+      ...largeItemTextureSize,
+    },
+  },
+
   "block.organic": {
     frame: {
       ...largeItemGridLocation({ x: 0, y: 0 }),
@@ -777,30 +827,6 @@ const frames = {
     largeItemGridLocation({ x: 0, y: 3 }),
     largeItemTextureSize,
   ),
-  teleporter: {
-    frame: {
-      ...largeItemGridLocation({ x: 7, y: 3 }),
-      ...largeItemTextureSize,
-    },
-  },
-  ...seriesOfNumberedTextures(
-    "teleporter.flashing",
-    2,
-    largeItemGridLocation({ x: 8, y: 3 }),
-    largeItemTextureSize,
-  ),
-  "shadowMask.teleporter": {
-    frame: {
-      ...largeItemGridLocation({ x: 10, y: 3 }),
-      ...largeItemTextureSize,
-    },
-  },
-  "shadowMask.teleporter.flashing": {
-    frame: {
-      ...largeItemGridLocation({ x: 11, y: 3 }),
-      ...largeItemTextureSize,
-    },
-  },
   ...seriesOfNumberedTextures(
     "particle.head",
     4,
@@ -820,6 +846,13 @@ export const itemsSpritesheetData = {
   animations: {
     "teleporter.flashing": withSpeed(
       ["teleporter.flashing.1", "teleporter.flashing.2"] as const,
+      0.5,
+    ),
+    "portableTeleporter.flashing": withSpeed(
+      [
+        "portableTeleporter.flashing.1",
+        "portableTeleporter.flashing.2",
+      ] as const,
       0.5,
     ),
     fish: withSpeed(["fish.1", "fish.2"] as const, 0.25),

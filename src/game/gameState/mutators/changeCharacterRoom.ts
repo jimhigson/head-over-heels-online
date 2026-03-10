@@ -2,7 +2,10 @@ import type { AllUnionFields } from "type-fest";
 
 import { first } from "iter-tools-es";
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type {
+  ItemInPlay,
+  UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlay";
 import type {
   CharacterName,
   IndividualCharacterName,
@@ -166,8 +169,30 @@ const findTeleporterDestinationPosition = <
     return blockXyzToFineXyz(s.toPosition);
   }
 
+  type DestinationItem =
+    | undefined
+    | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+
+  let destinationItem: DestinationItem;
+
   if (s.toItemId !== undefined) {
-    const destinationItem = toRoom.items[s.toItemId as RoomItemId];
+    destinationItem = toRoom.items[s.toItemId as RoomItemId];
+
+    if (destinationItem === undefined) {
+      // still one last change to find - maybe the room has Heels in it and heels is carrying a portable
+      // teleporter:
+      const heels = toRoom.items["heels" as RoomItemId] as
+        | PlayableItem<"heels", RoomId, RoomItemId>
+        | undefined;
+      if (
+        heels !== undefined &&
+        heels.state.carrying !== null &&
+        heels.state.carrying.id === s.toItemId
+      ) {
+        destinationItem = heels;
+      }
+    }
+
     if (destinationItem === undefined) {
       throw new Error(
         `bad room data: no item with id ${s.toItemId} in destination room ${toRoom.id}`,
@@ -183,22 +208,33 @@ const findTeleporterDestinationPosition = <
     return addXyz(destinationItemPosition, { z: destinationItemHeight });
   }
 
-  let onlyTeleporterInDestinationRoom:
-    | ItemInPlay<"teleporter", RoomId, RoomItemId>
-    | undefined;
-
   for (const teleporter of iterateRoomItems(toRoom.items).filter(
     isTeleporter,
   )) {
-    if (onlyTeleporterInDestinationRoom === undefined) {
-      onlyTeleporterInDestinationRoom = teleporter;
+    if (destinationItem === undefined) {
+      destinationItem = teleporter;
     } else {
       throw new Error(
         `bad room data: no \`config.toPosition\` or \`config.toItemId\` given and multiple teleporters in destination room ${toRoom.id}`,
       );
     }
   }
-  if (onlyTeleporterInDestinationRoom === undefined) {
+  if (destinationItem === undefined) {
+    // still one last change to find - maybe the room has Heels in it and heels is carrying a portable
+    // teleporter:
+    const heels = toRoom.items["heels" as RoomItemId] as
+      | PlayableItem<"heels", RoomId, RoomItemId>
+      | undefined;
+    if (
+      heels !== undefined &&
+      heels.state.carrying !== null &&
+      heels.state.carrying.type === "portableTeleporter"
+    ) {
+      destinationItem = heels;
+    }
+  }
+
+  if (destinationItem === undefined) {
     throw new Error(
       `bad room data: no teleporters in destination room ${toRoom.id}`,
     );
@@ -207,7 +243,7 @@ const findTeleporterDestinationPosition = <
   const {
     state: { position },
     aabb: { z: height },
-  } = onlyTeleporterInDestinationRoom;
+  } = destinationItem;
 
   return addXyz(position, { z: height });
 };
@@ -326,8 +362,9 @@ export const changeCharacterRoom = <
   if (toRoomJson === undefined) {
     throw new Error(`room ${toRoomId} does not exist in campaign`);
   }
+  const isSameRoomTransport = leavingRoom.id === toRoomId;
   const toRoom: RoomState<RoomId, RoomItemId> =
-    leavingRoom.id === toRoomId ? leavingRoom
+    isSameRoomTransport ? leavingRoom
       // special case of staying in the same room (ie a teleporter to the same room)
     : otherCharacterLoadedRoom?.id === toRoomId ? otherCharacterLoadedRoom
       // TODO: this cast is a bit off - 2/3 rooms are in scope here and no reason for them to have the same RoomItemId type
@@ -341,7 +378,7 @@ export const changeCharacterRoom = <
 
   // heels can't carry items to different rooms:
   const heelsAbilities = selectHeelsAbilities(playableItem);
-  if (heelsAbilities !== undefined) {
+  if (!isSameRoomTransport && heelsAbilities !== undefined) {
     const { carrying } = heelsAbilities;
     if (carrying !== null) {
       // heels was carrying something - drop it
