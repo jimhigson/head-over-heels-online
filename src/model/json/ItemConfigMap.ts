@@ -1,3 +1,5 @@
+import type { EmptyObject } from "type-fest";
+
 import type { FreeItemTypes } from "../../game/physics/itemPredicates";
 import type { MarkdownPageName } from "../../manual/pages";
 import type { PlanetName, SceneryName } from "../../sprites/planets";
@@ -112,12 +114,31 @@ export type ItemConfigMap<
       };
   wall: WallJsonConfig<ScN>;
   teleporter: ConsolidatableConfig & {
-    toRoom: RoomId;
-    // where in the destination room this teleporter should go - usually
-    // to atop another teleporter, but could be anywhere
-    toPosition: Xyz;
+    /**
+     * note that if the other room contains exactly one teleporter, we need not
+     * give the position or the item
+     **/
+    toRoom: ExitGameRoomId | RoomId;
     activatedOnStoreValue?: GameInPlayBooleanPaths;
-  };
+  } & (
+      | {
+          /**
+           * an item in the destination room this teleporter should go to - the
+           * player will be moved to atop this item
+           * note: not RoomItemId because that is the ids of items in *this* room, but this
+           * is pointing to another room
+           */
+          toItemId: string;
+        }
+      | {
+          /**
+           * where in the destination room this teleporter should go - usually
+           * to atop another teleporter, but could be anywhere
+           */
+          toPosition: Xyz;
+        }
+      | EmptyObject
+    );
   barrier: ConsolidatableConfig & {
     // the axis the barrier runs along
     axis: AxisXy;

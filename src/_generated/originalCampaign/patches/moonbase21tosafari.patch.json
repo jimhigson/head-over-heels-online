@@ -1,5 +1,9 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@2,3,0/config/toPosition"
+  },
+  {
     "op": "add",
     "path": "/items/scroll",
     "value": {
@@ -9,9 +13,9 @@
         "source": "manual"
       },
       "position": {
-        "x": 1,
+        "x": 0,
         "y": 3,
-        "z": 0
+        "z": 2
       },
       "type": "pickup"
     }

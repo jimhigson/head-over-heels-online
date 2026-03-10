@@ -103,7 +103,7 @@ export const room = inferRoomJson({
     "teleporter@0,6,0": {
       config: {
         times: { x: 2, y: 2 },
-        toPosition: { x: 0, y: 6, z: 0 },
+        toItemId: "teleporter@0,6,0",
         toRoom: "blacktooth60",
       },
       position: { x: 0, y: 6, z: 0 },
@@ -112,7 +112,7 @@ export const room = inferRoomJson({
     "teleporter@6,6,0": {
       config: {
         times: { x: 2, y: 2 },
-        toPosition: { x: 6, y: 6, z: 0 },
+        toItemId: "teleporter@6,6,0",
         toRoom: "blacktooth60",
       },
       position: { x: 6, y: 6, z: 0 },

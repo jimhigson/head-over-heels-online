@@ -1,5 +1,9 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@0,0,0/config/toPosition"
+  },
+  {
     "op": "replace",
     "path": "/items/spring@4,4,0/position/y",
     "value": 3.5

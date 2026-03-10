@@ -1,5 +1,23 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@6,6,0/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/teleporter@6,6,0/config/toItemId",
+    "value": "teleporter@6,6,0"
+  },
+  {
+    "op": "remove",
+    "path": "/items/teleporter@0,6,0/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/teleporter@0,6,0/config/toItemId",
+    "value": "teleporter@0,6,0"
+  },
+  {
     "op": "replace",
     "path": "/items/monster@5,0,1/config/activated",
     "value": "after-player-near"

@@ -1,3 +1,5 @@
+import type { AllUnionFields } from "type-fest";
+
 import { first } from "iter-tools-es";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
@@ -31,7 +33,7 @@ import {
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
-import { isPortal } from "../../physics/itemPredicates";
+import { isPortal, isTeleporter } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
@@ -149,6 +151,67 @@ const findDestinationPortal = <
   }
 };
 
+const findTeleporterDestinationPosition = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  sourceItem: ItemInPlay<"teleporter", RoomId, RoomItemId>,
+  toRoom: RoomState<RoomId, RoomItemId>,
+): Xyz => {
+  const { state } = sourceItem;
+
+  const s = state as AllUnionFields<typeof state>;
+
+  if (s.toPosition !== undefined) {
+    return blockXyzToFineXyz(s.toPosition);
+  }
+
+  if (s.toItemId !== undefined) {
+    const destinationItem = toRoom.items[s.toItemId as RoomItemId];
+    if (destinationItem === undefined) {
+      throw new Error(
+        `bad room data: no item with id ${s.toItemId} in destination room ${toRoom.id}`,
+      );
+    }
+
+    const {
+      state: { position: destinationItemPosition },
+      aabb: { z: destinationItemHeight },
+    } = destinationItem;
+
+    // always to the top of the destination item:
+    return addXyz(destinationItemPosition, { z: destinationItemHeight });
+  }
+
+  let onlyTeleporterInDestinationRoom:
+    | ItemInPlay<"teleporter", RoomId, RoomItemId>
+    | undefined;
+
+  for (const teleporter of iterateRoomItems(toRoom.items).filter(
+    isTeleporter,
+  )) {
+    if (onlyTeleporterInDestinationRoom === undefined) {
+      onlyTeleporterInDestinationRoom = teleporter;
+    } else {
+      throw new Error(
+        `bad room data: no \`config.toPosition\` or \`config.toItemId\` given and multiple teleporters in destination room ${toRoom.id}`,
+      );
+    }
+  }
+  if (onlyTeleporterInDestinationRoom === undefined) {
+    throw new Error(
+      `bad room data: no teleporters in destination room ${toRoom.id}`,
+    );
+  }
+
+  const {
+    state: { position },
+    aabb: { z: height },
+  } = onlyTeleporterInDestinationRoom;
+
+  return addXyz(position, { z: height });
+};
+
 /**
  * when entering a room, there could be obstructions in the way. Move out of the room, and incrementally
  * back to the intended position over a series of frames to allow pushing by several small amounts, which
@@ -231,10 +294,12 @@ export const changeCharacterRoom = <
     case "teleport": {
       const {
         state: { position: teleporterPosition },
+        aabb: { z: teleporterHeight },
       } = sourceItem;
       positionRelativeToSourcePortal = subXyz(
         playableItem.state.position,
-        teleporterPosition,
+        // should be relative to the top of the teleporter:
+        addXyz(teleporterPosition, { z: teleporterHeight }),
       );
       break;
     }
@@ -324,18 +389,16 @@ export const changeCharacterRoom = <
 
   // character is in the room, now let's update some of their state before the physics starts ticking again:
   if (changeCharacterRoomOptions.changeType === "teleport") {
-    const {
-      state: { toPosition: teleporterToBlockPosition },
-    } = changeCharacterRoomOptions.sourceItem;
-
-    updateItemPosition(
+    const destinationTeleporterPosition = findTeleporterDestinationPosition(
+      changeCharacterRoomOptions.sourceItem,
       toRoom,
-      playableItem,
-      addXyz(
-        blockXyzToFineXyz(teleporterToBlockPosition),
-        positionRelativeToSourcePortal,
-      ),
     );
+
+    const positionInDestinationRoom = addXyz(
+      destinationTeleporterPosition,
+      positionRelativeToSourcePortal,
+    );
+    updateItemPosition(toRoom, playableItem, positionInDestinationRoom);
   } else {
     // find the door (etc) in the new room to enter in:
     const destinationPortal = findDestinationPortal<RoomId, RoomItemId>(

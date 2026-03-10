@@ -1,13 +1,12 @@
 [
   {
-    "op": "replace",
-    "path": "/items/teleporter@7,2,1/config/toPosition/z",
-    "value": 2
+    "op": "remove",
+    "path": "/items/teleporter@7,2,1/config/toPosition"
   },
   {
-    "op": "replace",
-    "path": "/items/teleporter@7,2,1/config/toPosition/x",
-    "value": 7
+    "op": "add",
+    "path": "/items/teleporter@7,2,1/config/toItemId",
+    "value": "block@7,2,1"
   },
   {
     "op": "replace",

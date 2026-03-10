@@ -87,15 +87,11 @@ export const room = inferRoomJson({
     },
     scroll: {
       config: { gives: "scroll", page: "safari", source: "manual" },
-      position: { x: 1, y: 3, z: 0 },
+      position: { x: 0, y: 3, z: 2 },
       type: "pickup",
     },
     "teleporter@2,3,0": {
-      config: {
-        times: { x: 2, y: 2 },
-        toPosition: { x: 2, y: 3, z: 0 },
-        toRoom: "safari1",
-      },
+      config: { times: { x: 2, y: 2 }, toRoom: "safari1" },
       position: { x: 2, y: 3, z: 0 },
       type: "teleporter",
     },

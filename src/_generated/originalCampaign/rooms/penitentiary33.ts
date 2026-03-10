@@ -58,7 +58,7 @@ export const room = inferRoomJson({
       config: {
         activatedOnStoreValue: "planetsLiberated.penitentiary",
         times: { x: 2, y: 2 },
-        toPosition: { x: 0, y: 3, z: 0 },
+        toItemId: "block@0,3,0",
         toRoom: "penitentiary2",
       },
       position: { x: 0, y: 3, z: 0 },

@@ -131,6 +131,27 @@ export const suggestionPatterns: SuggestionPatterns = {
       .map(([id]) => id)
       .toArray();
   },
+  ["[type=teleporter].config.toItemId"](
+    storeState,
+    _currentRoomJson,
+    _toItemIdStringNode,
+    config,
+  ) {
+    const otherRoomId = getNodePropertyValue(config, "toRoom") as
+      | EditorRoomId
+      | undefined;
+
+    if (otherRoomId === undefined) {
+      return emptyArray;
+    }
+
+    const otherRoom =
+      storeState.levelEditor.campaignInProgress.rooms[otherRoomId];
+
+    return iterateRoomJsonItemsWithIds(otherRoom.items, "teleporter", "block")
+      .map(([id]) => id)
+      .toArray();
+  },
   ["[type=door].config.meta.toSubRoom"](
     storeState,
     _currentRoomJson,

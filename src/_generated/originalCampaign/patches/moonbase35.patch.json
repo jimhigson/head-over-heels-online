@@ -1,5 +1,9 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@2,2,0/config/toPosition"
+  },
+  {
     "op": "replace",
     "path": "/items/monster@5,4,1/config/activated",
     "value": "after-player-near"

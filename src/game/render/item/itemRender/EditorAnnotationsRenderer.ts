@@ -1,5 +1,6 @@
 import type { UnknownAction } from "@reduxjs/toolkit";
 import type { Color } from "pixi.js";
+import type { AllUnionFields } from "type-fest";
 
 import { Container } from "pixi.js";
 
@@ -254,14 +255,16 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           const { rooms } = (store.getState() as RootStateWithLevelEditorSlice)
             .levelEditor.campaignInProgress;
 
-          const {
-            config: { toRoom },
-          } = item;
+          const config = item.config as AllUnionFields<typeof item.config>;
 
-          const toRoomExists = !!rooms[toRoom];
+          const { toRoom, toItemId, toPosition } = config;
+
+          const toRoomExists = toRoom === exitGameRoomId || !!rooms[toRoom];
+
+          const annotationText = `➡${toRoom}${toItemId ? `:${toItemId}` : ""}${toPosition ? `@(${toPosition.x},${toPosition.y},${toPosition.z})` : ""}`;
 
           this.#addTextAnnotation({
-            annotationText: `➡${toRoom}`,
+            annotationText,
             yAdj: -12,
             tint:
               toRoomExists ?

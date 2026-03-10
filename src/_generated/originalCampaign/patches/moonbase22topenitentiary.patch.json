@@ -1,5 +1,9 @@
 [
   {
+    "op": "remove",
+    "path": "/items/teleporter@2,3,0/config/toPosition"
+  },
+  {
     "op": "add",
     "path": "/items/scroll",
     "value": {

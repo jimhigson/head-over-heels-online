@@ -65,7 +65,7 @@ export const room = inferRoomJson({
       type: "pickup",
     },
     "teleporter@5,7,0": {
-      config: { toPosition: { x: 5, y: 7, z: 0 }, toRoom: "blacktooth1head" },
+      config: { toRoom: "blacktooth1head" },
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },

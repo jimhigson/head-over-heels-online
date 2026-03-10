@@ -5,9 +5,13 @@
     "value": "skeleton"
   },
   {
-    "op": "replace",
-    "path": "/items/teleporter@0,3,4/config/toPosition/x",
-    "value": 0
+    "op": "remove",
+    "path": "/items/teleporter@0,3,4/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/teleporter@0,3,4/config/toItemId",
+    "value": "teleporter@0,4,4"
   },
   {
     "op": "replace",

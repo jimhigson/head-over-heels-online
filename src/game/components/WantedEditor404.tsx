@@ -1,11 +1,12 @@
+import { repository } from "../../../package.json";
 import { Border } from "../../ui/Border";
 import { Dialog } from "../../ui/dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
-import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 import { directionsXy8 } from "../../utils/vectors/vectors";
-import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
+import { BlockyMarkdown } from "./BlockyMarkdown";
 import { playableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
-import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
+
+const editorUrl = import.meta.env.VITE_EDITOR_URL;
 
 export const WantedEditor404 = () => {
   return (
@@ -21,29 +22,16 @@ export const WantedEditor404 = () => {
           ))}
         </div>
         <div className="flex flex-col grow text-center justify-center">
-          <BitmapText className="sprites-double-height mb-1">
-            This is not the editor
-          </BitmapText>
-          <MultipleBitmapText
-            className={`${multilineTextClass} p-1 pt-2 text-metallicBlue`}
-          >
-            <p>
-              If you’re seeing this, you’re trying to access the level editor,
-              but the web manifest is getting in the way and redirected you to
-              the game’s client-side routing.
-            </p>
-            <p className="pt-1">
-              You could try going to:{" "}
-              <a
-                href="/editor/"
-                onClick={linkOpenExternalClickHandler}
-                className="bitmap-text-link"
-              >
-                /editor/
-              </a>{" "}
-              (with a slash on the end)
-            </p>
-          </MultipleBitmapText>
+          <BlockyMarkdown>{`## This is not the editor
+
+If you’re seeing this, you got routed wrong somehow
+
+Maybe the web manifest is getting in the way and redirected to the game’s client-side routing.
+
+Maybe [open an issue on github](${repository.url}/issues)
+
+The link I have is: [${editorUrl}](${editorUrl})
+`}</BlockyMarkdown>
         </div>
         <div className="flex flex-col">
           {directionsXy8.toReversed().map((d) => (

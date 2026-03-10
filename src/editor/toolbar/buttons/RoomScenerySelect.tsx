@@ -23,7 +23,7 @@ export function RoomScenerySelect() {
       onSelect={(currentValue) => {
         dispatch(changeRoomScenery(currentValue as SceneryName));
       }}
-      values={sceneryNames}
+      values={sceneryNames.toSorted()}
       placeholder="scenery"
       triggerButtonClassName="w-full"
       triggerButtonLabel={capitalize(currentRoomScenery)}

@@ -1,13 +1,11 @@
 [
   {
-    "op": "replace",
-    "path": "/items/teleporter@15,4,4/config/toPosition/x",
-    "value": 7
+    "op": "remove",
+    "path": "/items/teleporter@15,4,4/config/toPosition"
   },
   {
-    "op": "replace",
-    "path": "/items/teleporter@0,4,4/config/toPosition/x",
-    "value": 0
+    "op": "remove",
+    "path": "/items/teleporter@0,4,4/config/toPosition"
   },
   {
     "op": "add",

@@ -30,7 +30,6 @@ export const room = inferRoomJson({
       config: {
         activatedOnStoreValue: "planetsLiberated.bookworld",
         times: { y: 2 },
-        toPosition: { x: 7, y: 3, z: 0 },
         toRoom: "bookworld1",
       },
       position: { x: 7, y: 3, z: 0 },

@@ -1,6 +1,10 @@
 [
   {
     "op": "remove",
+    "path": "/items/teleporter@0,0,0/config/toPosition"
+  },
+  {
+    "op": "remove",
     "path": "/items/pushableBlock@1,4,1"
   },
   {
