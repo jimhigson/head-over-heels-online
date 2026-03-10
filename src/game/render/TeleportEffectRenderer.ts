@@ -2,7 +2,6 @@ import type { SetRequired } from "type-fest";
 
 import { Container } from "pixi.js";
 
-import type { PlayableItem } from "../physics/itemPredicates";
 import type {
   RoomRenderContextInGame,
   RoomTickContext,
@@ -15,6 +14,7 @@ import type { SoundAndGraphicsOutput } from "./SoundAndGraphicsOutput";
 
 import { emptyArray } from "../../utils/empty";
 import { addXyz, scaleXyz } from "../../utils/vectors/vectors";
+import { isTeleporter, type PlayableItem } from "../physics/itemPredicates";
 import { fadeInOrOutDuration } from "./animationTimings";
 import { TeleportingEffectFilter } from "./filters/TeleportingEffectFilter";
 import { projectWorldXyzToScreenXy } from "./projections";
@@ -98,7 +98,7 @@ export class TeleportEffectRenderer<
         general: {
           gameState: { currentCharacterName },
         },
-        room: { items },
+        room: { items, id: roomId },
       },
     } = this;
 
@@ -109,12 +109,22 @@ export class TeleportEffectRenderer<
     if (currentPlayable !== undefined) {
       const { teleporting } = currentPlayable.state;
 
-      if (
-        (this.#teleportingEffectFilter === undefined) !==
-        (teleporting === null)
-      ) {
+      // special case - don't show effect if teleporting inside the same room:
+      const standingOnItem =
+        teleporting &&
+        currentPlayable.state.standingOnItemId !== null &&
+        items[currentPlayable.state.standingOnItemId as RoomItemId];
+      const destinationRoomId =
+        standingOnItem &&
+        isTeleporter(standingOnItem) &&
+        standingOnItem.state.toRoom;
+
+      const needsEffect = teleporting !== null && destinationRoomId !== roomId;
+      const hasEffect = this.#teleportingEffectFilter !== undefined;
+
+      if (hasEffect !== needsEffect) {
         // need to create or destroy the filter:
-        if (teleporting !== null) {
+        if (needsEffect) {
           // create
           const {
             renderContext: {
@@ -136,7 +146,7 @@ export class TeleportEffectRenderer<
         }
       } else {
         // no need to create/destroy, check if need to update:
-        if (teleporting !== null) {
+        if (needsEffect) {
           // update filter progress and x/y:
           const { timeRemaining, phase } = teleporting;
           const proportion = timeRemaining / fadeInOrOutDuration;

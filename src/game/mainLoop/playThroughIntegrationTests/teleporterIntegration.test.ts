@@ -3,7 +3,11 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import { secondRoomId, setUpBasicGame } from "../../../_testUtils/basicRoom";
+import {
+  firstRoomId,
+  secondRoomId,
+  setUpBasicGame,
+} from "../../../_testUtils/basicRoom";
 import { heelsState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
@@ -45,8 +49,49 @@ describe("teleporter", () => {
         mockInputStateTracker.mockPressing("jump");
       },
       frameCallbacks(gameState) {
-        if (gameState.characterRooms.heels?.id === "secondRoom") {
-          // stop jumping when gone through the teleporter
+        if (heelsState(gameState).teleporting !== null) {
+          // stop pressing jump/teleporter once teleporting has started
+          gameState.inputStateTracker.mockNotPressing("jump");
+        }
+      },
+      until(gameState) {
+        return heelsState(gameState).standingOnItemId === "teleporterLanding";
+      },
+    });
+  });
+
+  test("can teleport to the same room (with `config.toPosition`)", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 0, y: 2, z: 1 },
+          config: {
+            which: "heels",
+          },
+        },
+        teleporter: {
+          type: "teleporter",
+          position: { x: 0, y: 2, z: 0 },
+          config: { toRoom: firstRoomId, toPosition: { x: 4, y: 4, z: 3 } },
+        },
+        teleporterLanding: {
+          type: "block",
+          position: { x: 4, y: 4, z: 2 },
+          config: { style: "organic" },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      frameRate: { fps: [15] }, // keep frame rate low to reduce computation
+
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockPressing("jump");
+      },
+      frameCallbacks(gameState) {
+        if (heelsState(gameState).teleporting !== null) {
+          // stop pressing jump/teleporter once teleporting has started
           gameState.inputStateTracker.mockNotPressing("jump");
         }
       },
@@ -88,8 +133,8 @@ describe("teleporter", () => {
         mockInputStateTracker.mockPressing("jump");
       },
       frameCallbacks(gameState) {
-        if (gameState.characterRooms.heels?.id === "secondRoom") {
-          // stop jumping when gone through the teleporter
+        if (heelsState(gameState).teleporting !== null) {
+          // stop pressing jump/teleporter once teleporting has started
           gameState.inputStateTracker.mockNotPressing("jump");
         }
       },
@@ -131,8 +176,8 @@ describe("teleporter", () => {
         mockInputStateTracker.mockPressing("jump");
       },
       frameCallbacks(gameState) {
-        if (gameState.characterRooms.heels?.id === "secondRoom") {
-          // stop jumping when gone through the teleporter
+        if (heelsState(gameState).teleporting !== null) {
+          // stop pressing jump/teleporter once teleporting has started
           gameState.inputStateTracker.mockNotPressing("jump");
         }
       },
@@ -174,8 +219,8 @@ describe("teleporter", () => {
         mockInputStateTracker.mockPressing("jump");
       },
       frameCallbacks(gameState) {
-        if (gameState.characterRooms.heels?.id === "secondRoom") {
-          // stop jumping when gone through the teleporter
+        if (heelsState(gameState).teleporting !== null) {
+          // stop pressing jump/teleporter once teleporting has started
           gameState.inputStateTracker.mockNotPressing("jump");
         }
       },
