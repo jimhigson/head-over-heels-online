@@ -18,10 +18,23 @@ jobs:
           cache: "pnpm"
       - run: pnpm install
       - run: pnpm gen:types
+      - name: Check gen:types is up-to-date
+        run: git diff --exit-code -- src/_generated || (echo "Run 'pnpm gen:types' locally and commit the changes." && exit 1)
+
       - run: pnpm gen:roomSchema
+      - name: Check gen:roomSchema is up-to-date
+        run: git diff --exit-code -- src/_generated || (echo "Run 'pnpm gen:roomSchema' locally and commit the changes." && exit 1)
+
       - run: pnpm gen:dbTypes
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      - name: Check generated files are up-to-date
-        run: |
-          git diff --exit-code -- src/_generated || (echo "Generated files were modified. Run 'pnpm gen:types', 'pnpm gen:roomSchema', 'pnpm gen:dbTypes' locally and commit the changes." && exit 1)
+      - name: Check gen:dbTypes is up-to-date
+        run: git diff --exit-code -- src/_generated || (echo "Run 'pnpm gen:dbTypes' locally and commit the changes." && exit 1)
+
+      - run: pnpm gen:roomsPatch
+      - name: Check gen:roomsPatch is up-to-date
+        run: git diff --exit-code -- src/_generated || (echo "Run 'pnpm gen:roomsPatch' locally and commit the changes." && exit 1)
+
+      - run: pnpm gen:rooms
+      - name: Check gen:rooms is up-to-date
+        run: git diff --exit-code -- src/_generated || (echo "Run 'pnpm gen:rooms' locally and commit the changes." && exit 1)

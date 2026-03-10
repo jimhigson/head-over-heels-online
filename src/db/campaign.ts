@@ -41,7 +41,9 @@ export const saveCampaignToDb = async (campaign: EditorCampaign) => {
   return res.data;
 };
 
-export const loadCampaignFromDb = async (options: CampaignGetLocator) => {
+export const loadCampaignFromDb = async (
+  options: CampaignGetLocator,
+): Promise<Campaign<string>> => {
   const res = await supabaseDb.rpc("get_latest_campaign", {
     p_campaign_name: options.campaignName,
     p_user_id: options.userId,

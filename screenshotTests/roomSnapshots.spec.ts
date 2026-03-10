@@ -16,6 +16,11 @@ import { keys } from "../src/utils/entries";
 import { dispatchToStore } from "./e2eStoreUtils";
 import { formatDuration } from "./formatDuration";
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
+import {
+  maximumWaitForStep,
+  playGameMenuItemSelector,
+  waitForRoomRenderEvent,
+} from "./gameTestUtils";
 import { logSelectorExistence } from "./logSelectorExistence";
 import { logUpscale } from "./logUpscale";
 import { osSlowness } from "./osSlowness";
@@ -42,7 +47,6 @@ import { setIsUncolourised } from "./setIsUncolourised";
  */
 
 const timeoutPerRoom = (process.env.CI ? 40_000 : 15_000) * osSlowness;
-const maximumWaitForStep = 15_000 * osSlowness;
 const maxTriesToLoadRoom = 3;
 
 const campaignRoomIds = keys(campaign.rooms);
@@ -137,47 +141,8 @@ const perTestRooms = Array.from({ length: parallelTestsCount }, (_, index) => {
 });
 
 // Selectors for menu navigation
-const playGameMenuItemSelector = "[data-menuitem_id=playGame]";
 const originalGameSelector = "[data-menuitem_id=originalGame]";
 const crownsDialogSelector = "[data-dialog-id=crowns]";
-
-const waitForRoomRenderEvent = async (
-  page: Page,
-  expectedRoomId: OriginalCampaignRoomId,
-): Promise<void> => {
-  const foundRoomId = await Promise.race([
-    // Wait for the event in the browser
-    page.evaluate(
-      () =>
-        new Promise<OriginalCampaignRoomId>((resolve) => {
-          window.addEventListener(
-            "firstRenderOfRoom",
-            (event) => {
-              const { roomId } = (event as CustomEvent).detail;
-              resolve(roomId);
-            },
-            { once: true },
-          );
-        }),
-    ),
-    // Timeout handled in Node process
-    new Promise<never>((_, reject) =>
-      setTimeout(
-        () =>
-          reject(
-            new Error(
-              `Timeout waiting for firstRenderOfRoom event ${expectedRoomId} after ${formatDuration(maximumWaitForStep)}`,
-            ),
-          ),
-        maximumWaitForStep,
-      ),
-    ),
-  ]);
-
-  if (foundRoomId !== expectedRoomId) {
-    throw new Error(`Expected roomId ${expectedRoomId} but got ${foundRoomId}`);
-  }
-};
 
 const startOriginalGame = async (page: Page, projectName: string) => {
   // we can't stop the losing branch completely from finishing its operation, but

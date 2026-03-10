@@ -9,11 +9,11 @@ import type { Campaign, CampaignLocator } from "../../../model/modelTypes";
 import type { RootState } from "../../store";
 
 import { importOriginalCampaign } from "../../../_generated/originalCampaign/campaign.import";
+import { saveCampaignToDb } from "../../../db/campaign";
 import {
-  getAllUsersLatestCampaigns,
-  loadCampaignFromDb,
-  saveCampaignToDb,
-} from "../../../db/campaign";
+  getAllUsersLatestCampaignsCached,
+  loadCampaignFromDbCached,
+} from "../../../db/campaignCached";
 import { decompressObject } from "../../../db/compressObject";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
 
@@ -43,12 +43,13 @@ export const campaignsApiSlice = createApi({
           }
 
           // load via the database:
-          return { data: await loadCampaignFromDb(campaignLocator) };
+          return { data: await loadCampaignFromDbCached(campaignLocator) };
         } catch (e) {
           return {
             error: createSerialisableErrors(
               new Error(
-                `getCampaign queryFn( ${JSON.stringify(campaignLocator)} ) failed: ${e}`,
+                `getCampaign queryFn( ${JSON.stringify(campaignLocator)} ) failed`,
+                { cause: e },
               ),
             ),
           };
@@ -61,7 +62,9 @@ export const campaignsApiSlice = createApi({
     >({
       async queryFn({ publishedOnly }) {
         try {
-          const campaigns = await getAllUsersLatestCampaigns({ publishedOnly });
+          const campaigns = await getAllUsersLatestCampaignsCached({
+            publishedOnly,
+          });
           return { data: campaigns };
         } catch (e) {
           return {
