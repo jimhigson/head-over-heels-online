@@ -270,9 +270,9 @@ export const changeCharacterRoom = <
     throw new Error(`${playableItem.id} is not in a room on the gameState`);
   }
 
-  if (toRoomId === leavingRoom.id) {
+  if (toRoomId === leavingRoom.id && changeType !== "teleport") {
     throw new Error(
-      `Can't move ${playableItem.id} to the same room "${toRoomId}""`,
+      `Can't move ${playableItem.id} to the same room "${toRoomId}"`,
     );
   }
 
@@ -327,9 +327,10 @@ export const changeCharacterRoom = <
     throw new Error(`room ${toRoomId} does not exist in campaign`);
   }
   const toRoom: RoomState<RoomId, RoomItemId> =
-    otherCharacterLoadedRoom?.id === toRoomId ?
-      otherCharacterLoadedRoom
-      // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
+    leavingRoom.id === toRoomId ? leavingRoom
+      // special case of staying in the same room (ie a teleporter to the same room)
+    : otherCharacterLoadedRoom?.id === toRoomId ? otherCharacterLoadedRoom
+      // TODO: this cast is a bit off - 2/3 rooms are in scope here and no reason for them to have the same RoomItemId type
     : (loadRoom({
         roomJson: toRoomJson,
         roomPickupsCollected:

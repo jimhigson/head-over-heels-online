@@ -24,11 +24,16 @@ export type SuggestionPatterns = Record<string, SuggestionGenerator>;
 /**
  * Get all room IDs except the currently editing one
  */
-
 const getOtherRoomIds = (storeState: RootStateWithLevelEditorSlice): string[] =>
   Object.keys(storeState.levelEditor.campaignInProgress.rooms).filter(
     (roomId) => roomId !== storeState.levelEditor.currentlyEditingRoomId,
   );
+
+/**
+ * Get all room IDs INCLUDING the currently editing one
+ */
+const getRoomIds = (storeState: RootStateWithLevelEditorSlice): string[] =>
+  Object.keys(storeState.levelEditor.campaignInProgress.rooms);
 
 const getJoystickControllableItemIds = (
   storeState: RootStateWithLevelEditorSlice,
@@ -59,6 +64,8 @@ const getJoystickControllableItemIds = (
  */
 
 export const suggestionPatterns: SuggestionPatterns = {
+  // teleporters can go to the same room:
+  ["[type=teleporter].config.toRoom"]: getRoomIds,
   toRoom: getOtherRoomIds,
   roomAbove: getOtherRoomIds,
   roomBelow: getOtherRoomIds,
@@ -148,6 +155,11 @@ export const suggestionPatterns: SuggestionPatterns = {
     const otherRoom =
       storeState.levelEditor.campaignInProgress.rooms[otherRoomId];
 
+    if (otherRoom === undefined) {
+      return emptyArray;
+    }
+
+    // any type is valid, but only suggest the common ones - user can type for the others:
     return iterateRoomJsonItemsWithIds(otherRoom.items, "teleporter", "block")
       .map(([id]) => id)
       .toArray();
@@ -170,9 +182,11 @@ export const suggestionPatterns: SuggestionPatterns = {
     const otherRoom =
       storeState.levelEditor.campaignInProgress.rooms[otherRoomId];
 
-    const subRooms = otherRoom.meta?.subRooms;
+    if (otherRoom === undefined) {
+      return emptyArray;
+    }
 
-    console.log(otherRoom, subRooms);
+    const subRooms = otherRoom.meta?.subRooms;
 
     return subRooms ? Object.keys(subRooms) : emptyArray;
   },
