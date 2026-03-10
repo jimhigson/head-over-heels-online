@@ -3,7 +3,7 @@ import type { SetRequired } from "type-fest";
 import { Container, Graphics } from "pixi.js";
 
 import type { RoomState } from "../../../model/RoomState";
-import type { Xy } from "../../../utils/vectors/vectors";
+import type { Xy, Xyz } from "../../../utils/vectors/vectors";
 import type { SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import type {
   RoomRenderContextInGame,
@@ -31,10 +31,11 @@ import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/se
 import { projectWorldXyzToScreenXy } from "../projections";
 import { floorsRenderExtent } from "./floorsExtent";
 
+// how close over towards the edge of the screen do you have to be for scrolling to occur?
 // a higher value means more scrolling will occur.
 // 0.33 is generally good for original game levels, 0.4 is good for new remake-specific levels
 // with more verticality
-const scrollLimit = 0.4;
+const scrollLimitCoefficient = 0.4;
 
 /** roughly how long the eased scrolling should aim to catch up with where its
  *  target position is */
@@ -62,6 +63,19 @@ const easeTowards = (vector: Xy, deltaMS: number) => {
   // that distance gets smaller):
   return scaleXy(vector, Math.min(1, deltaMS / scrollCatchupPeriod));
 };
+
+/**
+ * the edge of the screen will stop this much short of the edge of the room
+ * while on-screen controls are enabled, so the on-screen controls don't overlap
+ * the content too much
+ * test in:
+ *  #blacktooth35
+ *  #bookworld28
+ *  #bookworld31
+ *  #moonbase33triple
+ *
+ */
+const onScreenControlsOverscroll = 64;
 
 /**
  * put the room on the screen in the right place - either scrolling, or at its home position similar to how
@@ -207,6 +221,94 @@ export class RoomScrollRenderer<
     this.output = output;
   }
 
+  #targetRoomPosition(playablePosition: Xyz): Xy {
+    const {
+      general: {
+        upscale: { gameEngineScreenSize: effectiveScreenSize },
+        onScreenControls,
+      },
+    } = this.renderContext;
+
+    const characterProjectionInRoom =
+      projectWorldXyzToScreenXy(playablePosition);
+
+    let x: number;
+    let y: number;
+
+    const overscroll = onScreenControls ? onScreenControlsOverscroll : 0;
+    const { x: homeX, y: homeY } = this.#roomHomePosition;
+    const combinedProjectedPositionAtRoomHome = addXy(
+      characterProjectionInRoom,
+      this.#roomHomePosition,
+    );
+
+    if (
+      this.#scrollableLeft &&
+      combinedProjectedPositionAtRoomHome.x <
+        effectiveScreenSize.x * scrollLimitCoefficient
+    ) {
+      const adjustedPlayerX = Math.max(
+        characterProjectionInRoom.x,
+        onScreenControls ?
+          this.#edgeLeftXTranslated + onScreenControlsOverscroll
+          // unit value of .max (no effect)
+        : Number.NEGATIVE_INFINITY,
+      );
+
+      const maxX =
+        effectiveScreenSize.x * scrollLimitCoefficient - adjustedPlayerX;
+
+      // scrolling to show more of the left side of the room
+      x = Math.min(
+        // x with left-edge of the room on the left edge of the screen - ie the
+        // most left-scrolled position we will go to:
+        -this.#edgeLeftXTranslated + overscroll,
+        // put player on scrollLimit proportion of effective width:
+        maxX,
+      );
+    } else if (
+      this.#scrollableRight &&
+      combinedProjectedPositionAtRoomHome.x >
+        effectiveScreenSize.x * (1 - scrollLimitCoefficient)
+    ) {
+      const adjustedPlayerX = Math.min(
+        characterProjectionInRoom.x,
+        onScreenControls ?
+          this.#edgeRightXTranslated - onScreenControlsOverscroll
+        : Number.POSITIVE_INFINITY,
+      );
+
+      const minX =
+        // x that puts the player on the (1-scrollLimit) proportion of the screen:
+        effectiveScreenSize.x * (1 - scrollLimitCoefficient) - adjustedPlayerX;
+
+      // scrolling to show more of the right side of the room
+      x = Math.max(
+        // x with right-edge of the room on the right edge of the screen:
+        effectiveScreenSize.x - this.#edgeRightXTranslated - overscroll,
+
+        minX,
+      );
+    } else {
+      // not scrolling in x - staying in home position
+      x = homeX;
+    }
+
+    if (
+      this.#scrollableUp &&
+      combinedProjectedPositionAtRoomHome.y <
+        effectiveScreenSize.y * scrollLimitCoefficient
+    ) {
+      y =
+        effectiveScreenSize.y * scrollLimitCoefficient -
+        characterProjectionInRoom.y;
+    } else {
+      y = homeY;
+    }
+
+    return { x, y };
+  }
+
   #updateOutputXy() {
     const {
       general: {
@@ -274,10 +376,7 @@ export class RoomScrollRenderer<
 
   tick(tickContext: RoomTickContext<RoomId, RoomItemId>) {
     const {
-      general: {
-        upscale: { gameEngineScreenSize: effectiveScreenSize },
-        gameState,
-      },
+      general: { gameState },
     } = this.renderContext;
     const { deltaMS } = tickContext;
 
@@ -289,53 +388,9 @@ export class RoomScrollRenderer<
       return;
     }
 
-    const characterProjectionInRoom = projectWorldXyzToScreenXy(
+    const targetRoomPositionWithScrolling = this.#targetRoomPosition(
       playable.state.position,
     );
-
-    const combinedProjectedPositionAtRoomHome = addXyz(
-      characterProjectionInRoom,
-      this.#roomHomePosition,
-    );
-
-    const targetRoomPositionWithScrolling = {
-      x:
-        (
-          this.#scrollableLeft &&
-          combinedProjectedPositionAtRoomHome.x <
-            effectiveScreenSize.x * scrollLimit
-        ) ?
-          // scrolling to show more of the left side of the room
-          Math.min(
-            // x with left-edge of the room on the left edge of the screen:
-            -this.#edgeLeftXTranslated,
-            // put player on scrollLimit proportion of effective width:
-            effectiveScreenSize.x * scrollLimit - characterProjectionInRoom.x,
-          )
-        : (
-          this.#scrollableRight &&
-          combinedProjectedPositionAtRoomHome.x >
-            effectiveScreenSize.x * (1 - scrollLimit)
-        ) ?
-          // scrolling to show more of the right side of the room
-          Math.max(
-            // x with right-edge of the room on the right edge of the screen:
-            effectiveScreenSize.x - this.#edgeRightXTranslated,
-            // x that puts the player on the (1-scrollLimit) proportion of the screen:
-            effectiveScreenSize.x * (1 - scrollLimit) -
-              characterProjectionInRoom.x,
-          )
-          // not scrolling in x - staying in home position
-        : this.#roomHomePosition.x,
-      y:
-        (
-          this.#scrollableUp &&
-          combinedProjectedPositionAtRoomHome.y <
-            effectiveScreenSize.y * scrollLimit
-        ) ?
-          effectiveScreenSize.y * scrollLimit - characterProjectionInRoom.y
-        : this.#roomHomePosition.y,
-    };
 
     const snapInstantly = !this.#everRendered;
     if (snapInstantly) {
