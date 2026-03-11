@@ -1,3 +1,4 @@
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
@@ -17,7 +18,11 @@ export const teleporterIsActive = <
   RoomItemId extends string,
 >({
   config: { activatedOnStoreValue },
-}: ItemInPlay<"teleporter", RoomId, RoomItemId>): boolean => {
+}: ItemTypeUnion<
+  "portableTeleporter" | "teleporter",
+  RoomId,
+  RoomItemId
+>): boolean => {
   return activatedOnStoreValue === undefined ? true : (
       !!getAtPath(store.getState().gameMenus.gameInPlay, activatedOnStoreValue)
     );
@@ -102,8 +107,7 @@ export const teleporting: Mechanic<CharacterName> = <
           >,
           playableItem,
           gameState,
-          toRoomId:
-            teleporting.toRoom as RoomId /* TODO: propertly type in state */,
+          toRoomId: teleporting.toRoom as RoomId,
         });
         return {
           movementType: "steady",
@@ -111,6 +115,7 @@ export const teleporting: Mechanic<CharacterName> = <
             teleporting: {
               phase: "in",
               timeRemaining: fadeInOrOutDuration,
+              fromRoom: room.id,
             },
           },
         };

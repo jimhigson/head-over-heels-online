@@ -251,6 +251,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         break;
 
       case "teleporter":
+      case "portableTeleporter":
         {
           const { rooms } = (store.getState() as RootStateWithLevelEditorSlice)
             .levelEditor.campaignInProgress;

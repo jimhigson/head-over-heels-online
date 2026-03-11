@@ -59,6 +59,7 @@ const itemShadowMaskAppearances: {
   }),
 
   teleporter: teleporterShadowMaskAppearance,
+  portableTeleporter: teleporterShadowMaskAppearance,
 
   // no shadow mast for the floor
   floor: "no-mask",

@@ -1,7 +1,5 @@
 import { cycle } from "iter-tools-es";
 
-import type { GameState } from "../game/gameState/GameState";
-import type { TestRoomId } from "./basicRoom";
 import type {
   GameStateWithMockInput,
   MockInputStateTracker,
@@ -19,7 +17,7 @@ type FrameCallback = (
 
 type PlayGameThroughOptions = {
   frameRate?: FrameRateSpec;
-  until?: ((gameState: GameState<TestRoomId>) => boolean) | number;
+  until?: ((gameState: GameStateWithMockInput) => boolean) | number;
   /**
    * allows us to change the gamestate after certain frames, for example to change the
    * joystick input while the simulation is running

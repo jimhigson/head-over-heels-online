@@ -14,7 +14,7 @@ type RenderProps = {
 };
 
 export const teleporterShadowMaskAppearance: ItemAppearance<
-  "teleporter",
+  "portableTeleporter" | "teleporter",
   RenderProps,
   Sprite
 > = ({
@@ -26,6 +26,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   currentRendering,
 }) => {
   const {
+    type,
     state: { stoodOnBy },
     config: { times },
   } = item;
@@ -53,8 +54,8 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
       renderMultipliedXy(
         {
           textureId:
-            flashing ? "shadowMask.teleporter.flashing"
-            : activated ? "shadowMask.teleporter"
+            flashing ? `shadowMask.${type}.flashing`
+            : activated ? `shadowMask.${type}`
             : "shadowMask.artificial",
           spritesheetVariant: "original",
         },

@@ -30,6 +30,7 @@ type GeneratedTypeUnion =
   | "particle"
   | "pickup"
   | "portableBlock"
+  | "portableTeleporter"
   | "portal"
   | "pushableBlock"
   | "sceneryCrown"
@@ -131,6 +132,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "portableBlock" ?
       ItemInPlay<"portableBlock", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "portableTeleporter" ?
+      ItemInPlay<"portableTeleporter", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "portal" ?
       ItemInPlay<"portal", RoomId, RoomItemId, RoomItemId, ScN>

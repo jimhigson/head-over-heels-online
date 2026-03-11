@@ -26,6 +26,8 @@ export type JsonItemType =
   | "spring"
   | "switch"
   | "teleporter"
+  /** new for remake - a smaller, lighter teleporter */
+  | "portableTeleporter"
   /** something that moves by itself, possibly activated by a switch */
   | "movingPlatform"
   /** vary from the original game by distinbuishing toasters/volcanos from

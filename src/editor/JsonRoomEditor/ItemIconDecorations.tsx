@@ -204,6 +204,8 @@ const textureForItem = (
       break;
     case "teleporter":
       return twClass(`texture-teleporter`);
+    case "portableTeleporter":
+      return twClass(`texture-portableTeleporter`);
     case "lift":
       return twClass(`texture-lift_static`);
     case "hushPuppy":

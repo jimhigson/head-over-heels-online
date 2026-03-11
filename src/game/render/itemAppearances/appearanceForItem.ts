@@ -161,6 +161,7 @@ const itemAppearancesMap: {
   ),
 
   teleporter: teleporterAppearance,
+  portableTeleporter: teleporterAppearance,
 
   sceneryCrown: itemAppearanceRenderOnce(
     ({
