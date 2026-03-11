@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import {
   TooltipContent,
   TooltipPortal,
+  Provider as TooltipProvider,
   Root as TooltipRoot,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
@@ -40,3 +41,5 @@ export const Tooltip = ({ triggerContent, tooltipContent }: TooltipProps) => {
   }
   return triggerContent;
 };
+
+export { TooltipProvider };

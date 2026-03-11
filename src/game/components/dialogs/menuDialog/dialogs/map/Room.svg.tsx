@@ -1,4 +1,7 @@
+import type { ReactNode } from "react";
+
 import { range } from "iter-tools-es";
+import { Suspense } from "react";
 
 import type {
   CharacterName,
@@ -10,6 +13,7 @@ import type { PlayableItem } from "../../../../../physics/itemPredicates";
 import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
 
 import { hudLowercaseCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { LazyTooltip } from "../../../../../../ui/LazyTooltip";
 import { iterate } from "../../../../../../utils/iterate";
 import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
@@ -31,6 +35,34 @@ import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
 import { useNotableItems } from "./useNotableItems";
 import { VisitedFootprint } from "./VisitedFootprint";
+
+const FloorInteractiveArea = <RoomId extends string>({
+  onRoomClick,
+  roomId,
+  tooltipContent,
+}: {
+  onRoomClick: (roomId: RoomId) => void;
+  roomId: RoomId;
+  tooltipContent: ReactNode;
+}) => {
+  const clickablePath = (
+    <path
+      className="fill-transparent cursor-pointer"
+      d={floorFillPathD}
+      onClick={() => {
+        onRoomClick(roomId);
+      }}
+    />
+  );
+  return (
+    <Suspense fallback={clickablePath}>
+      <LazyTooltip
+        triggerContent={clickablePath}
+        tooltipContent={tooltipContent}
+      />
+    </Suspense>
+  );
+};
 
 const strokeWidth = 3;
 
@@ -427,12 +459,10 @@ z
       {onRoomClick ?
         // add a transparent area over the whole floor if we need to handle clicks.
         // otherwise, the rendering above is too complex to handle this
-        <path
-          className="fill-transparent cursor-pointer"
-          d={floorFillPathD}
-          onClick={() => {
-            onRoomClick(id);
-          }}
+        <FloorInteractiveArea
+          onRoomClick={onRoomClick}
+          roomId={id}
+          tooltipContent={<BitmapText>{roomJson.id}</BitmapText>}
         />
       : null}
     </g>
