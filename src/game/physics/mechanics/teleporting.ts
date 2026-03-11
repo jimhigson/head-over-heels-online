@@ -35,7 +35,6 @@ export const teleporting: Mechanic<CharacterName> = <
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
-  deltaMS: number,
 ): MechanicResult<CharacterName, RoomId, RoomItemId> => {
   const {
     type,
@@ -71,8 +70,8 @@ export const teleporting: Mechanic<CharacterName> = <
         stateDelta: {
           teleporting: {
             phase: "out",
-            toRoom: standingOn.state.toRoom,
-            timeRemaining: fadeInOrOutDuration,
+            otherRoom: standingOn.state.toRoom ?? room.id,
+            startRoomTime: room.roomTime,
           },
         },
       };
@@ -80,10 +79,11 @@ export const teleporting: Mechanic<CharacterName> = <
     return unitMechanicalResult;
   }
 
-  const newTimeRemaining = Math.max(teleporting.timeRemaining - deltaMS, 0);
+  const finished =
+    teleporting.startRoomTime + fadeInOrOutDuration <= room.roomTime;
 
   switch (teleporting.phase) {
-    case "out":
+    case "out": {
       if (!standingOnActivatedTeleporter) {
         // rare-but-possible case where the player has moved off the teleporter while teleporting,
         // this can sometimes happen due to vagueness in floating point collision detection
@@ -97,8 +97,8 @@ export const teleporting: Mechanic<CharacterName> = <
         };
       }
 
-      if (newTimeRemaining === 0) {
-        changeCharacterRoom({
+      if (finished) {
+        const newRoom = changeCharacterRoom({
           changeType: "teleport",
           sourceItem: standingOn as ItemInPlay<
             "teleporter",
@@ -107,23 +107,23 @@ export const teleporting: Mechanic<CharacterName> = <
           >,
           playableItem,
           gameState,
-          toRoomId: teleporting.toRoom as RoomId,
+          toRoomId: teleporting.otherRoom as RoomId,
         });
         return {
           movementType: "steady",
           stateDelta: {
             teleporting: {
               phase: "in",
-              timeRemaining: fadeInOrOutDuration,
-              fromRoom: room.id,
+              startRoomTime: newRoom.roomTime,
+              otherRoom: room.id,
             },
           },
         };
       }
       break;
-
+    }
     case "in":
-      if (newTimeRemaining === 0) {
+      if (finished) {
         return {
           movementType: "steady",
           stateDelta: {
@@ -133,16 +133,8 @@ export const teleporting: Mechanic<CharacterName> = <
       }
       break;
     default:
-      teleporting satisfies never;
+      teleporting.phase satisfies never;
   }
 
-  return {
-    movementType: "steady",
-    stateDelta: {
-      teleporting: {
-        ...teleporting,
-        timeRemaining: newTimeRemaining,
-      },
-    },
-  };
+  return unitMechanicalResult;
 };

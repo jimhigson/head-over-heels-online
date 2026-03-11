@@ -260,7 +260,12 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
           const { toRoom, toItemId, toPosition } = config;
 
-          const toRoomExists = toRoom === exitGameRoomId || !!rooms[toRoom];
+          const toRoomExists =
+            // teleporter to finish game:
+            toRoom === exitGameRoomId ||
+            // same room teleporter:
+            toRoom === undefined ||
+            !!rooms[toRoom];
 
           const annotationText = `➡${toRoom}${toItemId ? `:${toItemId}` : ""}${toPosition ? `@(${toPosition.x},${toPosition.y},${toPosition.z})` : ""}`;
 

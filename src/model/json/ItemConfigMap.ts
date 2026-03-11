@@ -1,5 +1,3 @@
-import type { EmptyObject } from "type-fest";
-
 import type { FreeItemTypes } from "../../game/physics/itemPredicates";
 import type { MarkdownPageName } from "../../manual/pages";
 import type { PlanetName, SceneryName } from "../../sprites/planets";
@@ -90,30 +88,40 @@ export type DoorConfig<RoomId extends string> = {
 };
 
 type TeleporterConfig<RoomId extends string> = ConsolidatableConfig & {
-  /**
-   * note that if the other room contains exactly one teleporter, we need not
-   * give the position or the item
-   **/
-  toRoom: ExitGameRoomId | RoomId;
   activatedOnStoreValue?: GameInPlayBooleanPaths;
 } & (
     | {
         /**
          * an item in the destination room this teleporter should go to - the
          * player will be moved to atop this item
+         *
+         * If not given, will find the (only teleporter) in the destination room
+         *
          * note: not RoomItemId because that is the ids of items in *this* room, but this
          * is pointing to another room
          */
-        toItemId: string;
+        toItemId?: string;
+        /**
+         * note that if the other room contains exactly one teleporter, we need not
+         * give the position or the item.
+         **/
+        toRoom?: ExitGameRoomId | RoomId;
       }
     | {
         /**
          * where in the destination room this teleporter should go - usually
-         * to atop another teleporter, but could be anywhere
+         * to atop another teleporter, but could be anywhere.
+         *
+         * If not given, will find the (only teleporter) in the destination room
          */
         toPosition: Xyz;
+        /**
+         * note that if the other room contains exactly one teleporter, we need not
+         * give the position or the item
+         * If undefined, is a same-room teleporter
+         **/
+        toRoom?: ExitGameRoomId | RoomId;
       }
-    | EmptyObject
   );
 
 export type ItemConfigMap<

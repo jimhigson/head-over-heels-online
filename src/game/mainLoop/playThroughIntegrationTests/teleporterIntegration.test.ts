@@ -54,6 +54,14 @@ test("can teleport to the next room (with `config.toPosition`)", () => {
       return heelsState(gameState).standingOnItemId === "teleporterLanding";
     },
   });
+
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 65,
+      "y": 65,
+      "z": 36,
+    }
+  `);
 });
 
 test("can teleport to the same room (with `config.toPosition`)", () => {
@@ -92,6 +100,60 @@ test("can teleport to the same room (with `config.toPosition`)", () => {
       return heelsState(gameState).standingOnItemId === "teleporterLanding";
     },
   });
+
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 65,
+      "y": 65,
+      "z": 36,
+    }
+  `);
+});
+
+test("can teleport to the same room (with empty config`)", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 0, y: 2, z: 1 },
+        config: {
+          which: "heels",
+        },
+      },
+      teleporter: {
+        type: "teleporter",
+        position: { x: 0, y: 2, z: 0 },
+        config: {},
+      },
+      destinationTeleporter: {
+        type: "teleporter",
+        position: { x: 4, y: 4, z: 2 },
+        config: {},
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    frameRate: { fps: [15] }, // keep frame rate low to reduce computation
+
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("jump");
+    },
+    until(gameState) {
+      if (heelsState(gameState).teleporting !== null) {
+        gameState.inputStateTracker.mockNotPressing("jump");
+      }
+      return heelsState(gameState).standingOnItemId === "destinationTeleporter";
+    },
+  });
+
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 65,
+      "y": 65,
+      "z": 36,
+    }
+  `);
 });
 
 test("can teleport to the next room (with `config.toItemId`)", () => {
@@ -132,6 +194,14 @@ test("can teleport to the next room (with `config.toItemId`)", () => {
       return heelsState(gameState).standingOnItemId === "teleporterLanding";
     },
   });
+
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 65,
+      "y": 65,
+      "z": 36,
+    }
+  `);
 });
 
 test("can teleport to the next room (with `config.toItemId`) to a taller item than the teleporter", () => {
@@ -172,6 +242,14 @@ test("can teleport to the next room (with `config.toItemId`) to a taller item th
       return heelsState(gameState).standingOnItemId === "teleporterLanding";
     },
   });
+
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 65,
+      "y": 65,
+      "z": 144,
+    }
+  `);
 });
 
 test("can teleport to the next room (with room specified only)", () => {
@@ -215,6 +293,14 @@ test("can teleport to the next room (with room specified only)", () => {
       );
     },
   });
+
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 65,
+      "y": 65,
+      "z": 36,
+    }
+  `);
 });
 
 test("teleporter can be inactive based on a store value", () => {
@@ -261,6 +347,13 @@ test("teleporter can be inactive based on a store value", () => {
 
   // should not have teleported - we don't have the crown
   expect(gameState.characterRooms.heels?.id).toEqual("firstRoom");
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 1,
+      "y": 0,
+      "z": 12.958333333333348,
+    }
+  `);
 });
 test("teleporter can be activated based on a store value", () => {
   // set
@@ -313,6 +406,13 @@ test("teleporter can be activated based on a store value", () => {
 
   // should have teleported
   expect(gameState.characterRooms.heels?.id).toEqual("secondRoom");
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 65,
+      "y": 0,
+      "z": 11.42777777777782,
+    }
+  `);
 });
 
 test("teleporting to a portable teleporter while Heels is holding it brings Head on top of Heels", () => {
@@ -437,6 +537,21 @@ test("teleporting to a portable teleporter while Heels is holding it brings Head
       return headState(gameState).standingOnItemId === "heels";
     },
   });
+
+  expect(headState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 1,
+      "y": 33,
+      "z": 12,
+    }
+  `);
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 1,
+      "y": 33,
+      "z": 0,
+    }
+  `);
 });
 
 test("Heels can carry a teleporter through a same-room teleporter", () => {
@@ -513,4 +628,62 @@ test("Heels can carry a teleporter through a same-room teleporter", () => {
     id: "portableTeleporter",
     type: "portableTeleporter",
   });
+
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 65,
+      "y": 65,
+      "z": 12,
+    }
+  `);
+});
+
+test("teleporting clamps position so player doesn't overhang destination", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        // fractional position puts heels off-centre on the source teleporter,
+        // so relative offset will cause overhang at the destination:
+        position: { x: 0.4, y: 0.4, z: 1 },
+        config: {
+          which: "heels",
+        },
+      },
+      teleporter: {
+        type: "teleporter",
+        position: { x: 0, y: 0, z: 0 },
+        config: { toRoom: secondRoomId, toItemId: "destinationTeleporter" },
+      },
+    },
+    secondRoomItems: {
+      destinationTeleporter: {
+        type: "teleporter",
+        position: { x: 4, y: 4, z: 0 },
+        config: {},
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    frameRate: { fps: [15] },
+
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("jump");
+    },
+    until(gameState) {
+      if (heelsState(gameState).teleporting !== null) {
+        gameState.inputStateTracker.mockNotPressing("jump");
+      }
+      return heelsState(gameState).standingOnItemId === "destinationTeleporter";
+    },
+  });
+
+  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    {
+      "x": 68,
+      "y": 68,
+      "z": 12,
+    }
+  `);
 });

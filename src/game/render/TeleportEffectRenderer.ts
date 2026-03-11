@@ -110,10 +110,8 @@ export class TeleportEffectRenderer<
       const { teleporting } = currentPlayable.state;
 
       const needsEffect =
-        teleporting &&
-        (teleporting.phase === "out" ?
-          teleporting.toRoom !== roomId
-        : teleporting.fromRoom !== roomId);
+        teleporting !== null && teleporting.otherRoom !== roomId;
+
       const hasEffect = this.#teleportingEffectFilter !== undefined;
 
       if (hasEffect !== needsEffect) {
@@ -142,7 +140,12 @@ export class TeleportEffectRenderer<
         // no need to create/destroy, check if need to update:
         if (needsEffect) {
           // update filter progress and x/y:
-          const { timeRemaining, phase } = teleporting;
+          const { startRoomTime, phase } = teleporting;
+          const timeRemaining = Math.max(
+            0,
+            fadeInOrOutDuration -
+              (this.renderContext.room.roomTime - startRoomTime),
+          );
           const proportion = timeRemaining / fadeInOrOutDuration;
           const progress01 = phase === "in" ? proportion : 1 - proportion;
 
