@@ -12,12 +12,33 @@
     "path": "/items/block",
     "value": {
       "config": {
-        "style": "organic"
+        "style": "organic",
+        "times": {
+          "y": 5
+        }
       },
       "position": {
         "x": 3,
-        "y": 6,
+        "y": 2,
         "z": 2
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/block_2",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 2
+        }
+      },
+      "position": {
+        "x": 3,
+        "y": 2,
+        "z": 0
       },
       "type": "block"
     }
