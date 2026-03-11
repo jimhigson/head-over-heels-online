@@ -36,7 +36,7 @@ import {
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
-import { isPortal, isTeleporter } from "../../physics/itemPredicates";
+import { isPortal, isSolid, isTeleporter } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
@@ -160,13 +160,19 @@ const findTeleporterDestinationPosition = <
 >(
   sourceItem: ItemInPlay<"teleporter", RoomId, RoomItemId>,
   toRoom: RoomState<RoomId, RoomItemId>,
+  /** the character's position relative to the top of the source teleporter */
+  positionRelativeToSourcePortal: Xyz,
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
 ): Xyz => {
   const { state } = sourceItem;
 
   const s = state as AllUnionFields<typeof state>;
 
   if (s.toPosition !== undefined) {
-    return blockXyzToFineXyz(s.toPosition);
+    return addXyz(
+      blockXyzToFineXyz(s.toPosition),
+      positionRelativeToSourcePortal,
+    );
   }
 
   type DestinationItem =
@@ -198,39 +204,37 @@ const findTeleporterDestinationPosition = <
         `bad room data: no item with id ${s.toItemId} in destination room ${toRoom.id}`,
       );
     }
-
-    const {
-      state: { position: destinationItemPosition },
-      aabb: { z: destinationItemHeight },
-    } = destinationItem;
-
-    // always to the top of the destination item:
-    return addXyz(destinationItemPosition, { z: destinationItemHeight });
   }
 
-  for (const teleporter of iterateRoomItems(toRoom.items).filter(
-    isTeleporter,
-  )) {
-    if (destinationItem === undefined) {
-      destinationItem = teleporter;
-    } else {
-      throw new Error(
-        `bad room data: no \`config.toPosition\` or \`config.toItemId\` given and multiple teleporters in destination room ${toRoom.id}`,
-      );
-    }
-  }
   if (destinationItem === undefined) {
-    // still one last change to find - maybe the room has Heels in it and heels is carrying a portable
-    // teleporter:
-    const heels = toRoom.items["heels" as RoomItemId] as
-      | PlayableItem<"heels", RoomId, RoomItemId>
-      | undefined;
-    if (
-      heels !== undefined &&
-      heels.state.carrying !== null &&
-      heels.state.carrying.type === "portableTeleporter"
-    ) {
-      destinationItem = heels;
+    for (const teleporter of iterateRoomItems(toRoom.items).filter(
+      isTeleporter,
+    )) {
+      if (teleporter === sourceItem) {
+        // don't find the teleporter if it is the sourceItem
+        continue;
+      }
+      if (destinationItem === undefined) {
+        destinationItem = teleporter;
+      } else {
+        throw new Error(
+          `bad room data: no \`config.toPosition\` or \`config.toItemId\` given and multiple teleporters in destination room ${toRoom.id}`,
+        );
+      }
+    }
+    if (destinationItem === undefined) {
+      // still one last change to find - maybe the room has Heels in it and heels is carrying a portable
+      // teleporter:
+      const heels = toRoom.items["heels" as RoomItemId] as
+        | PlayableItem<"heels", RoomId, RoomItemId>
+        | undefined;
+      if (
+        heels !== undefined &&
+        heels.state.carrying !== null &&
+        heels.state.carrying.type === "portableTeleporter"
+      ) {
+        destinationItem = heels;
+      }
     }
   }
 
@@ -242,10 +246,28 @@ const findTeleporterDestinationPosition = <
 
   const {
     state: { position },
-    aabb: { z: height },
+    aabb: { x: destW, y: destD, z: destH },
   } = destinationItem;
 
-  return addXyz(position, { z: height });
+  const { x: playerW, y: playerD } = playableItem.aabb;
+
+  const unclamped = addXyz(
+    position,
+    { z: destH },
+    positionRelativeToSourcePortal,
+  );
+
+  return {
+    x: Math.max(
+      position.x,
+      Math.min(unclamped.x, position.x + destW - playerW),
+    ),
+    y: Math.max(
+      position.y,
+      Math.min(unclamped.y, position.y + destD - playerD),
+    ),
+    z: unclamped.z,
+  };
 };
 
 /**
@@ -287,12 +309,15 @@ const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
   }
 };
 
+/**
+ * @returns the room the character is in after the call
+ */
 export const changeCharacterRoom = <
   RoomId extends string,
   RoomItemId extends string,
 >(
   changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId, RoomItemId>,
-) => {
+): RoomState<RoomId, RoomItemId> => {
   const { playableItem, gameState, toRoomId, changeType, sourceItem } =
     changeCharacterRoomOptions;
 
@@ -427,14 +452,11 @@ export const changeCharacterRoom = <
 
   // character is in the room, now let's update some of their state before the physics starts ticking again:
   if (changeCharacterRoomOptions.changeType === "teleport") {
-    const destinationTeleporterPosition = findTeleporterDestinationPosition(
+    const positionInDestinationRoom = findTeleporterDestinationPosition(
       changeCharacterRoomOptions.sourceItem,
       toRoom,
-    );
-
-    const positionInDestinationRoom = addXyz(
-      destinationTeleporterPosition,
       positionRelativeToSourcePortal,
+      playableItem,
     );
     updateItemPosition(toRoom, playableItem, positionInDestinationRoom);
   } else {
@@ -528,24 +550,26 @@ export const changeCharacterRoom = <
     }
   }
 
-  const collisionInDestinationRoom = first(
-    collisionItemWithIndex(
-      playableItem,
-      toRoom[roomSpatialIndexKey],
-      (item) => !isPortal(item),
-    ),
-  );
-  if (collisionInDestinationRoom !== undefined) {
-    console.warn(
-      "on entering room",
-      toRoomId,
-      "character",
-      playableItem.id,
-      "at",
-      playableItem.state.position,
-      "collides with (at least one; only first is shown) non-portal item:",
-      collisionInDestinationRoom,
+  if (log) {
+    const collisionInDestinationRoom = first(
+      collisionItemWithIndex(
+        playableItem,
+        toRoom[roomSpatialIndexKey],
+        (item) => !isPortal(item) && isSolid(item),
+      ),
     );
+    if (collisionInDestinationRoom !== undefined) {
+      console.warn(
+        "on entering room",
+        toRoomId,
+        "character",
+        playableItem.id,
+        "at",
+        playableItem.state.position,
+        "collides with (at least one; only first is shown) non-portal item:",
+        collisionInDestinationRoom,
+      );
+    }
   }
 
   /** TODO: @knownRoomIds - remove casts */
@@ -580,5 +604,8 @@ export const changeCharacterRoom = <
   store.dispatch(
     characterRoomChange({ characterName: playableItem.type, roomId: toRoomId }),
   );
+  // good time to save:
   dispatchSaveGame(gameState, store);
+
+  return toRoom;
 };

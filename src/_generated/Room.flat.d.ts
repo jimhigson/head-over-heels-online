@@ -1002,61 +1002,6 @@ export type RoomJsonSchema = {
                                 y?: number;
                                 z?: number;
                               };
-                              /**
-                               * note that if the other room contains exactly one teleporter, we need not
-                               * give the position or the item
-                               */
-                              toRoom: string;
-                              activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
-                                | "planetsLiberated.blacktooth"
-                                | "planetsLiberated.bookworld"
-                                | "planetsLiberated.egyptus"
-                                | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
-                            }
-                          | {
-                              times?: {
-                                x?: number;
-                                y?: number;
-                                z?: number;
-                              };
-                              /**
-                               * note that if the other room contains exactly one teleporter, we need not
-                               * give the position or the item
-                               */
-                              toRoom: string;
                               activatedOnStoreValue?:
                                 | "planetsLiberated"
                                 | "scrollsRead"
@@ -1098,10 +1043,18 @@ export type RoomJsonSchema = {
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
+                               *
+                               * If not given, will find the (only teleporter) in the destination room
+                               *
                                * note: not RoomItemId because that is the ids of items in *this* room, but this
                                * is pointing to another room
                                */
-                              toItemId: string;
+                              toItemId?: string;
+                              /**
+                               * note that if the other room contains exactly one teleporter, we need not
+                               * give the position or the item.
+                               */
+                              toRoom?: string;
                             }
                           | {
                               times?: {
@@ -1109,11 +1062,6 @@ export type RoomJsonSchema = {
                                 y?: number;
                                 z?: number;
                               };
-                              /**
-                               * note that if the other room contains exactly one teleporter, we need not
-                               * give the position or the item
-                               */
-                              toRoom: string;
                               activatedOnStoreValue?:
                                 | "planetsLiberated"
                                 | "scrollsRead"
@@ -1154,13 +1102,21 @@ export type RoomJsonSchema = {
                                 | "freeCharacters.heels";
                               /**
                                * where in the destination room this teleporter should go - usually
-                               * to atop another teleporter, but could be anywhere
+                               * to atop another teleporter, but could be anywhere.
+                               *
+                               * If not given, will find the (only teleporter) in the destination room
                                */
                               toPosition: {
                                 x: number;
                                 y: number;
                                 z: number;
                               };
+                              /**
+                               * note that if the other room contains exactly one teleporter, we need not
+                               * give the position or the item
+                               * If undefined, is a same-room teleporter
+                               */
+                              toRoom?: string;
                             }
                           | {
                               movement:
@@ -1418,61 +1374,6 @@ export type RoomJsonSchema = {
                                 y?: number;
                                 z?: number;
                               };
-                              /**
-                               * note that if the other room contains exactly one teleporter, we need not
-                               * give the position or the item
-                               */
-                              toRoom: string;
-                              activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
-                                | "planetsLiberated.blacktooth"
-                                | "planetsLiberated.bookworld"
-                                | "planetsLiberated.egyptus"
-                                | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
-                            }
-                          | {
-                              times?: {
-                                x?: number;
-                                y?: number;
-                                z?: number;
-                              };
-                              /**
-                               * note that if the other room contains exactly one teleporter, we need not
-                               * give the position or the item
-                               */
-                              toRoom: string;
                               activatedOnStoreValue?:
                                 | "planetsLiberated"
                                 | "scrollsRead"
@@ -1514,10 +1415,18 @@ export type RoomJsonSchema = {
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
+                               *
+                               * If not given, will find the (only teleporter) in the destination room
+                               *
                                * note: not RoomItemId because that is the ids of items in *this* room, but this
                                * is pointing to another room
                                */
-                              toItemId: string;
+                              toItemId?: string;
+                              /**
+                               * note that if the other room contains exactly one teleporter, we need not
+                               * give the position or the item.
+                               */
+                              toRoom?: string;
                             }
                           | {
                               times?: {
@@ -1525,11 +1434,6 @@ export type RoomJsonSchema = {
                                 y?: number;
                                 z?: number;
                               };
-                              /**
-                               * note that if the other room contains exactly one teleporter, we need not
-                               * give the position or the item
-                               */
-                              toRoom: string;
                               activatedOnStoreValue?:
                                 | "planetsLiberated"
                                 | "scrollsRead"
@@ -1570,13 +1474,21 @@ export type RoomJsonSchema = {
                                 | "freeCharacters.heels";
                               /**
                                * where in the destination room this teleporter should go - usually
-                               * to atop another teleporter, but could be anywhere
+                               * to atop another teleporter, but could be anywhere.
+                               *
+                               * If not given, will find the (only teleporter) in the destination room
                                */
                               toPosition: {
                                 x: number;
                                 y: number;
                                 z: number;
                               };
+                              /**
+                               * note that if the other room contains exactly one teleporter, we need not
+                               * give the position or the item
+                               * If undefined, is a same-room teleporter
+                               */
+                              toRoom?: string;
                             }
                           | {
                               movement:
@@ -1698,61 +1610,6 @@ export type RoomJsonSchema = {
                 y?: number;
                 z?: number;
               };
-              /**
-               * note that if the other room contains exactly one teleporter, we need not
-               * give the position or the item
-               */
-              toRoom: string | "$$final";
-              activatedOnStoreValue?:
-                | "planetsLiberated"
-                | "scrollsRead"
-                | "freeCharacters"
-                | "planetsLiberated.blacktooth"
-                | "planetsLiberated.bookworld"
-                | "planetsLiberated.egyptus"
-                | "planetsLiberated.penitentiary"
-                | "planetsLiberated.safari"
-                | "scrollsRead.blacktooth"
-                | "scrollsRead.egyptus"
-                | "scrollsRead.penitentiary"
-                | "scrollsRead.safari"
-                | "scrollsRead.bag"
-                | "scrollsRead.doughnuts"
-                | "scrollsRead.hooter"
-                | "scrollsRead.teleportBack"
-                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                | "scrollsRead.theGame"
-                | "scrollsRead.bookWorld"
-                | "scrollsRead.head"
-                | "scrollsRead.heels"
-                | "scrollsRead.reincarnationFish"
-                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                | "scrollsRead.crowns"
-                | "scrollsRead.teleports"
-                | "scrollsRead.springs"
-                | "scrollsRead.switches"
-                | "scrollsRead.conveyorBelts"
-                | "scrollsRead.hushPuppies"
-                | "scrollsRead.theEmperorsGuardian"
-                | "scrollsRead.swopKey"
-                | "scrollsRead.hintsAndTips"
-                | "scrollsRead.credits"
-                | "scrollsRead.installPwa"
-                | "scrollsRead.installNative"
-                | "freeCharacters.head"
-                | "freeCharacters.heels";
-            }
-          | {
-              times?: {
-                x?: number;
-                y?: number;
-                z?: number;
-              };
-              /**
-               * note that if the other room contains exactly one teleporter, we need not
-               * give the position or the item
-               */
-              toRoom: string | "$$final";
               activatedOnStoreValue?:
                 | "planetsLiberated"
                 | "scrollsRead"
@@ -1794,10 +1651,18 @@ export type RoomJsonSchema = {
               /**
                * an item in the destination room this teleporter should go to - the
                * player will be moved to atop this item
+               *
+               * If not given, will find the (only teleporter) in the destination room
+               *
                * note: not RoomItemId because that is the ids of items in *this* room, but this
                * is pointing to another room
                */
-              toItemId: string;
+              toItemId?: string;
+              /**
+               * note that if the other room contains exactly one teleporter, we need not
+               * give the position or the item.
+               */
+              toRoom?: string | "$$final";
             }
           | {
               times?: {
@@ -1805,11 +1670,6 @@ export type RoomJsonSchema = {
                 y?: number;
                 z?: number;
               };
-              /**
-               * note that if the other room contains exactly one teleporter, we need not
-               * give the position or the item
-               */
-              toRoom: string | "$$final";
               activatedOnStoreValue?:
                 | "planetsLiberated"
                 | "scrollsRead"
@@ -1850,13 +1710,21 @@ export type RoomJsonSchema = {
                 | "freeCharacters.heels";
               /**
                * where in the destination room this teleporter should go - usually
-               * to atop another teleporter, but could be anywhere
+               * to atop another teleporter, but could be anywhere.
+               *
+               * If not given, will find the (only teleporter) in the destination room
                */
               toPosition: {
                 x: number;
                 y: number;
                 z: number;
               };
+              /**
+               * note that if the other room contains exactly one teleporter, we need not
+               * give the position or the item
+               * If undefined, is a same-room teleporter
+               */
+              toRoom?: string | "$$final";
             };
       }
     | {
@@ -1873,61 +1741,6 @@ export type RoomJsonSchema = {
                 y?: number;
                 z?: number;
               };
-              /**
-               * note that if the other room contains exactly one teleporter, we need not
-               * give the position or the item
-               */
-              toRoom: string | "$$final";
-              activatedOnStoreValue?:
-                | "planetsLiberated"
-                | "scrollsRead"
-                | "freeCharacters"
-                | "planetsLiberated.blacktooth"
-                | "planetsLiberated.bookworld"
-                | "planetsLiberated.egyptus"
-                | "planetsLiberated.penitentiary"
-                | "planetsLiberated.safari"
-                | "scrollsRead.blacktooth"
-                | "scrollsRead.egyptus"
-                | "scrollsRead.penitentiary"
-                | "scrollsRead.safari"
-                | "scrollsRead.bag"
-                | "scrollsRead.doughnuts"
-                | "scrollsRead.hooter"
-                | "scrollsRead.teleportBack"
-                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                | "scrollsRead.theGame"
-                | "scrollsRead.bookWorld"
-                | "scrollsRead.head"
-                | "scrollsRead.heels"
-                | "scrollsRead.reincarnationFish"
-                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                | "scrollsRead.crowns"
-                | "scrollsRead.teleports"
-                | "scrollsRead.springs"
-                | "scrollsRead.switches"
-                | "scrollsRead.conveyorBelts"
-                | "scrollsRead.hushPuppies"
-                | "scrollsRead.theEmperorsGuardian"
-                | "scrollsRead.swopKey"
-                | "scrollsRead.hintsAndTips"
-                | "scrollsRead.credits"
-                | "scrollsRead.installPwa"
-                | "scrollsRead.installNative"
-                | "freeCharacters.head"
-                | "freeCharacters.heels";
-            }
-          | {
-              times?: {
-                x?: number;
-                y?: number;
-                z?: number;
-              };
-              /**
-               * note that if the other room contains exactly one teleporter, we need not
-               * give the position or the item
-               */
-              toRoom: string | "$$final";
               activatedOnStoreValue?:
                 | "planetsLiberated"
                 | "scrollsRead"
@@ -1969,10 +1782,18 @@ export type RoomJsonSchema = {
               /**
                * an item in the destination room this teleporter should go to - the
                * player will be moved to atop this item
+               *
+               * If not given, will find the (only teleporter) in the destination room
+               *
                * note: not RoomItemId because that is the ids of items in *this* room, but this
                * is pointing to another room
                */
-              toItemId: string;
+              toItemId?: string;
+              /**
+               * note that if the other room contains exactly one teleporter, we need not
+               * give the position or the item.
+               */
+              toRoom?: string | "$$final";
             }
           | {
               times?: {
@@ -1980,11 +1801,6 @@ export type RoomJsonSchema = {
                 y?: number;
                 z?: number;
               };
-              /**
-               * note that if the other room contains exactly one teleporter, we need not
-               * give the position or the item
-               */
-              toRoom: string | "$$final";
               activatedOnStoreValue?:
                 | "planetsLiberated"
                 | "scrollsRead"
@@ -2025,13 +1841,21 @@ export type RoomJsonSchema = {
                 | "freeCharacters.heels";
               /**
                * where in the destination room this teleporter should go - usually
-               * to atop another teleporter, but could be anywhere
+               * to atop another teleporter, but could be anywhere.
+               *
+               * If not given, will find the (only teleporter) in the destination room
                */
               toPosition: {
                 x: number;
                 y: number;
                 z: number;
               };
+              /**
+               * note that if the other room contains exactly one teleporter, we need not
+               * give the position or the item
+               * If undefined, is a same-room teleporter
+               */
+              toRoom?: string | "$$final";
             };
       }
     | {
@@ -2340,61 +2164,6 @@ export type RoomJsonSchema = {
                         y?: number;
                         z?: number;
                       };
-                      /**
-                       * note that if the other room contains exactly one teleporter, we need not
-                       * give the position or the item
-                       */
-                      toRoom: string | "$$final";
-                      activatedOnStoreValue?:
-                        | "planetsLiberated"
-                        | "scrollsRead"
-                        | "freeCharacters"
-                        | "planetsLiberated.blacktooth"
-                        | "planetsLiberated.bookworld"
-                        | "planetsLiberated.egyptus"
-                        | "planetsLiberated.penitentiary"
-                        | "planetsLiberated.safari"
-                        | "scrollsRead.blacktooth"
-                        | "scrollsRead.egyptus"
-                        | "scrollsRead.penitentiary"
-                        | "scrollsRead.safari"
-                        | "scrollsRead.bag"
-                        | "scrollsRead.doughnuts"
-                        | "scrollsRead.hooter"
-                        | "scrollsRead.teleportBack"
-                        | "scrollsRead.historyOfTheBlacktoothEmpire"
-                        | "scrollsRead.theGame"
-                        | "scrollsRead.bookWorld"
-                        | "scrollsRead.head"
-                        | "scrollsRead.heels"
-                        | "scrollsRead.reincarnationFish"
-                        | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                        | "scrollsRead.crowns"
-                        | "scrollsRead.teleports"
-                        | "scrollsRead.springs"
-                        | "scrollsRead.switches"
-                        | "scrollsRead.conveyorBelts"
-                        | "scrollsRead.hushPuppies"
-                        | "scrollsRead.theEmperorsGuardian"
-                        | "scrollsRead.swopKey"
-                        | "scrollsRead.hintsAndTips"
-                        | "scrollsRead.credits"
-                        | "scrollsRead.installPwa"
-                        | "scrollsRead.installNative"
-                        | "freeCharacters.head"
-                        | "freeCharacters.heels";
-                    }
-                  | {
-                      times?: {
-                        x?: number;
-                        y?: number;
-                        z?: number;
-                      };
-                      /**
-                       * note that if the other room contains exactly one teleporter, we need not
-                       * give the position or the item
-                       */
-                      toRoom: string | "$$final";
                       activatedOnStoreValue?:
                         | "planetsLiberated"
                         | "scrollsRead"
@@ -2436,10 +2205,18 @@ export type RoomJsonSchema = {
                       /**
                        * an item in the destination room this teleporter should go to - the
                        * player will be moved to atop this item
+                       *
+                       * If not given, will find the (only teleporter) in the destination room
+                       *
                        * note: not RoomItemId because that is the ids of items in *this* room, but this
                        * is pointing to another room
                        */
-                      toItemId: string;
+                      toItemId?: string;
+                      /**
+                       * note that if the other room contains exactly one teleporter, we need not
+                       * give the position or the item.
+                       */
+                      toRoom?: string | "$$final";
                     }
                   | {
                       times?: {
@@ -2447,11 +2224,6 @@ export type RoomJsonSchema = {
                         y?: number;
                         z?: number;
                       };
-                      /**
-                       * note that if the other room contains exactly one teleporter, we need not
-                       * give the position or the item
-                       */
-                      toRoom: string | "$$final";
                       activatedOnStoreValue?:
                         | "planetsLiberated"
                         | "scrollsRead"
@@ -2492,13 +2264,21 @@ export type RoomJsonSchema = {
                         | "freeCharacters.heels";
                       /**
                        * where in the destination room this teleporter should go - usually
-                       * to atop another teleporter, but could be anywhere
+                       * to atop another teleporter, but could be anywhere.
+                       *
+                       * If not given, will find the (only teleporter) in the destination room
                        */
                       toPosition: {
                         x: number;
                         y: number;
                         z: number;
                       };
+                      /**
+                       * note that if the other room contains exactly one teleporter, we need not
+                       * give the position or the item
+                       * If undefined, is a same-room teleporter
+                       */
+                      toRoom?: string | "$$final";
                     };
               }
             | {
@@ -2988,61 +2768,6 @@ export type RoomJsonSchema = {
                             y?: number;
                             z?: number;
                           };
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item
-                           */
-                          toRoom: string;
-                          activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
-                            | "planetsLiberated.blacktooth"
-                            | "planetsLiberated.bookworld"
-                            | "planetsLiberated.egyptus"
-                            | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
-                        }
-                      | {
-                          times?: {
-                            x?: number;
-                            y?: number;
-                            z?: number;
-                          };
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item
-                           */
-                          toRoom: string;
                           activatedOnStoreValue?:
                             | "planetsLiberated"
                             | "scrollsRead"
@@ -3084,10 +2809,18 @@ export type RoomJsonSchema = {
                           /**
                            * an item in the destination room this teleporter should go to - the
                            * player will be moved to atop this item
+                           *
+                           * If not given, will find the (only teleporter) in the destination room
+                           *
                            * note: not RoomItemId because that is the ids of items in *this* room, but this
                            * is pointing to another room
                            */
-                          toItemId: string;
+                          toItemId?: string;
+                          /**
+                           * note that if the other room contains exactly one teleporter, we need not
+                           * give the position or the item.
+                           */
+                          toRoom?: string;
                         }
                       | {
                           times?: {
@@ -3095,11 +2828,6 @@ export type RoomJsonSchema = {
                             y?: number;
                             z?: number;
                           };
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item
-                           */
-                          toRoom: string;
                           activatedOnStoreValue?:
                             | "planetsLiberated"
                             | "scrollsRead"
@@ -3140,13 +2868,21 @@ export type RoomJsonSchema = {
                             | "freeCharacters.heels";
                           /**
                            * where in the destination room this teleporter should go - usually
-                           * to atop another teleporter, but could be anywhere
+                           * to atop another teleporter, but could be anywhere.
+                           *
+                           * If not given, will find the (only teleporter) in the destination room
                            */
                           toPosition: {
                             x: number;
                             y: number;
                             z: number;
                           };
+                          /**
+                           * note that if the other room contains exactly one teleporter, we need not
+                           * give the position or the item
+                           * If undefined, is a same-room teleporter
+                           */
+                          toRoom?: string;
                         }
                       | {
                           movement:
@@ -3384,61 +3120,6 @@ export type RoomJsonSchema = {
                             y?: number;
                             z?: number;
                           };
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item
-                           */
-                          toRoom: string;
-                          activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
-                            | "planetsLiberated.blacktooth"
-                            | "planetsLiberated.bookworld"
-                            | "planetsLiberated.egyptus"
-                            | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
-                        }
-                      | {
-                          times?: {
-                            x?: number;
-                            y?: number;
-                            z?: number;
-                          };
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item
-                           */
-                          toRoom: string;
                           activatedOnStoreValue?:
                             | "planetsLiberated"
                             | "scrollsRead"
@@ -3480,10 +3161,18 @@ export type RoomJsonSchema = {
                           /**
                            * an item in the destination room this teleporter should go to - the
                            * player will be moved to atop this item
+                           *
+                           * If not given, will find the (only teleporter) in the destination room
+                           *
                            * note: not RoomItemId because that is the ids of items in *this* room, but this
                            * is pointing to another room
                            */
-                          toItemId: string;
+                          toItemId?: string;
+                          /**
+                           * note that if the other room contains exactly one teleporter, we need not
+                           * give the position or the item.
+                           */
+                          toRoom?: string;
                         }
                       | {
                           times?: {
@@ -3491,11 +3180,6 @@ export type RoomJsonSchema = {
                             y?: number;
                             z?: number;
                           };
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item
-                           */
-                          toRoom: string;
                           activatedOnStoreValue?:
                             | "planetsLiberated"
                             | "scrollsRead"
@@ -3536,13 +3220,21 @@ export type RoomJsonSchema = {
                             | "freeCharacters.heels";
                           /**
                            * where in the destination room this teleporter should go - usually
-                           * to atop another teleporter, but could be anywhere
+                           * to atop another teleporter, but could be anywhere.
+                           *
+                           * If not given, will find the (only teleporter) in the destination room
                            */
                           toPosition: {
                             x: number;
                             y: number;
                             z: number;
                           };
+                          /**
+                           * note that if the other room contains exactly one teleporter, we need not
+                           * give the position or the item
+                           * If undefined, is a same-room teleporter
+                           */
+                          toRoom?: string;
                         }
                       | {
                           movement:

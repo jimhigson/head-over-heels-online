@@ -34,22 +34,21 @@ export const addOrRemoveRoomReducers = {
   removeRoom(state) {
     const currentRoom =
       state.campaignInProgress.rooms[state.currentlyEditingRoomId];
-    // to stay near the deleted room, find something adjacent to it:
-    const doorOrTeleporterEntry = first(
-      iterateRoomJsonItemsWithIds(currentRoom.items, "door", "teleporter"),
-    );
+    // to stay near the deleted room, find another room adjacent to it:
+    const doorOrTeleporterEntry =
+      first(iterateRoomJsonItemsWithIds(currentRoom.items, "door")) ??
+      first(iterateRoomJsonItemsWithIds(currentRoom.items, "teleporter"));
 
-    const nextRoom =
-      doorOrTeleporterEntry?.[1].config.toRoom ??
-      (first(
+    const nextRoom = (doorOrTeleporterEntry?.[1].config.toRoom ??
+      first(
         filter(
           (roomId) => roomId !== state.currentlyEditingRoomId,
           objectKeys(state.campaignInProgress.rooms),
         ),
-      ) as EditorRoomId | undefined);
+      )) as EditorRoomId | undefined;
 
     if (nextRoom === undefined || nextRoom === exitGameRoomId) {
-      // refuse to delete the last room
+      // refuse to delete the last room (why?)
       return;
     }
 

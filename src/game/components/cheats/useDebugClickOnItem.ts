@@ -21,7 +21,7 @@ export const useDebugClickOnItem = <RoomId extends string>() => {
 
         if (isItemType("teleporter", "doorFrame")(item)) {
           const { toRoom } = item.config;
-          if (toRoom === exitGameRoomId) {
+          if (toRoom === exitGameRoomId || toRoom === undefined) {
             return;
           }
           gameApi.changeRoom(toRoom);

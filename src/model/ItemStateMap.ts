@@ -20,17 +20,11 @@ export type PlayableActionState =
   /** death animation is playing - character will have had expired set  */
   | "death";
 
-export type PlayableTeleportingState =
-  | {
-      phase: "in";
-      timeRemaining: number;
-      fromRoom: string;
-    }
-  | {
-      phase: "out";
-      timeRemaining: number;
-      toRoom: string;
-    };
+export type PlayableTeleportingState = {
+  phase: "in" | "out";
+  startRoomTime: number;
+  otherRoom: string;
+};
 
 export type LatentMovementFrame<RoomItemId extends string> = {
   /** the time that the movement is scheduled to start happening */
