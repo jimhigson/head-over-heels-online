@@ -27,6 +27,7 @@ type GeneratedTypeUnion =
   | "monster"
   | "moveableDeadly"
   | "movingPlatform"
+  | "outOfBounds"
   | "particle"
   | "pickup"
   | "portableBlock"
@@ -123,6 +124,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "movingPlatform" ?
       ItemInPlay<"movingPlatform", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "outOfBounds" ?
+      ItemInPlay<"outOfBounds", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "particle" ?
       ItemInPlay<"particle", RoomId, RoomItemId, RoomItemId, ScN>

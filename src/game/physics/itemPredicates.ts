@@ -40,6 +40,7 @@ const isNeverSolidItemType = isItemType(
   "emitter",
   "particle",
   "soundEffect",
+  "outOfBounds",
 );
 const isUnsolid = (
   item: UnionOfAllItemInPlayTypes,

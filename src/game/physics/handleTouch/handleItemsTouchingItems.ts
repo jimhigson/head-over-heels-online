@@ -3,6 +3,7 @@ import { handleItemWithMovementTouchingItem } from "../mechanics/movement";
 import { handleFiredDoughnutTouchingMonster } from "./handleFiredDoughnutTouchingMonster";
 import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing";
 import { handleItemTouchingJoystick } from "./handleItemTouchingJoystick";
+import { handleItemTouchingOutOfBounds } from "./handleItemTouchingOutOfBounds";
 import {
   handleItemTouchingSlidingItem,
   handleSlidingItemTouchingAnyItem,
@@ -65,6 +66,10 @@ export const handleItemsTouchingItems = <
 
   if (touchedItemIsType(e, "joystick")) {
     handleItemTouchingJoystick(e);
+  }
+
+  if (touchedItemIsType(e, "outOfBounds")) {
+    handleItemTouchingOutOfBounds(e);
   }
 
   if (e.touchedItem.state.disappearing) {

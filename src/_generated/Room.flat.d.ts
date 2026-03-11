@@ -621,6 +621,7 @@ export type RoomJsonSchema = {
                           | "blocker"
                           | "particle"
                           | "floatingText"
+                          | "outOfBounds"
                         )[];
                       };
                       /**
@@ -704,6 +705,7 @@ export type RoomJsonSchema = {
                           | "blocker"
                           | "particle"
                           | "floatingText"
+                          | "outOfBounds"
                         )[];
                       };
                       /**
@@ -2623,6 +2625,7 @@ export type RoomJsonSchema = {
                       | "blocker"
                       | "particle"
                       | "floatingText"
+                      | "outOfBounds"
                     )[];
                   };
                   /**
@@ -2706,6 +2709,7 @@ export type RoomJsonSchema = {
                       | "blocker"
                       | "particle"
                       | "floatingText"
+                      | "outOfBounds"
                     )[];
                   };
                   /**
