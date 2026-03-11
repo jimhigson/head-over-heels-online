@@ -1,10 +1,10 @@
-import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
 import { Suspense } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import { CssVariables } from "../game/components/CssVariables";
 import { usePageAsAnApp } from "../pages/gamePage/usePageAsAnApp";
 import { SpinnerHead, SpinnerHeels } from "../ui/Spinner";
+import { TooltipProvider } from "../ui/Tooltip";
 import { EditorMap } from "./EditorMap/EditorMap";
 import { LazyJsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor.lazy";
 import { LazyRoomEditingArea } from "./RoomEditingArea/RoomEditingArea.lazy";

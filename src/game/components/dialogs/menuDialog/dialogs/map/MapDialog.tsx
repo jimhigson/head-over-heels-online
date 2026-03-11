@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useResizeDetector } from "react-resize-detector";
 
 import type { OnRoomClick } from "./Map.svg";
@@ -8,6 +8,7 @@ import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameM
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { LazyTooltipProvider } from "../../../../../../ui/LazyTooltip";
 import { swopPlayables } from "../../../../../gameState/mutators/swopCharacters";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
@@ -39,6 +40,15 @@ export const MapDialog = <RoomId extends string>() => {
   const mapData = useMapDataForCurrentGame<RoomId>();
   const mapColourClasses = getMapColoursClass(mapData.curRoomScenery);
 
+  const mapSvg = (
+    <MapSvg<RoomId>
+      onPlayableClick={(name) => swopPlayables(gameApi.gameState, name)}
+      containerWidth={mapContainerWidth}
+      onRoomClick={handleRoomClick}
+      {...mapData}
+    />
+  );
+
   return (
     <DialogPortal>
       <Dialog
@@ -52,12 +62,14 @@ export const MapDialog = <RoomId extends string>() => {
           className="overflow-y-scroll scrollbar scrollbar-w-1 h-min"
           ref={scrollingContentRef}
         >
-          <MapSvg<RoomId>
-            onPlayableClick={(name) => swopPlayables(gameApi.gameState, name)}
-            containerWidth={mapContainerWidth}
-            onRoomClick={handleRoomClick}
-            {...mapData}
-          />
+          {handleRoomClick !== undefined ?
+            // TooltipProvider is lazy-loaded to keep the game's core bundle small,
+            // since tooltips are only used with cheats on (don't load radix into the
+            // game engine)
+            <Suspense fallback={mapSvg}>
+              <LazyTooltipProvider>{mapSvg}</LazyTooltipProvider>
+            </Suspense>
+          : mapSvg}
         </div>
       </Dialog>
     </DialogPortal>
