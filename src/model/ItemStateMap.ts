@@ -160,7 +160,6 @@ export type PlayableState<RoomItemId extends string> =
     jumped: boolean;
 
     /** used for the jump grace period */
-    jumpStartTime: number;
     jumpStartZ: number;
 
     teleporting: null | PlayableTeleportingState;

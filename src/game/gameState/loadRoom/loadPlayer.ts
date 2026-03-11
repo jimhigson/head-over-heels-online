@@ -54,7 +54,6 @@ export const defaultPlayerState = () => {
     switchedToAt: neverTime,
     lastDiedAt: neverTime,
     gameTime: 0,
-    jumpStartTime: neverTime,
     lives:
       infiniteLivesPoke ? ("infinite" as const) : originalGameStartingLives,
     // since a jump hasn't started this value doesn't matter:

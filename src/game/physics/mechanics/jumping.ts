@@ -17,7 +17,6 @@ import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { blockSizePx } from "../mechanicsConstants";
 import {
   fallG,
-  jumpDelayGrace,
   jumpFudge,
   originalGameJumpPxPerFrame,
   playerJumpHeightPx,
@@ -84,7 +83,7 @@ const isJumpOffable = <RoomItemId extends string>(
   return true;
 };
 
-const eligibleForJumpStartGrace = (
+const canJumpRefresh = (
   playableItem: PlayableItem<CharacterName, string, string>,
 ) => {
   return (
@@ -92,11 +91,8 @@ const eligibleForJumpStartGrace = (
     playableItem.state.jumped &&
     // ... but we haven't moved up
     playableItem.state.position.z === playableItem.state.jumpStartZ &&
-    // and we're still in the jump grace period
-    playableItem.state.jumpStartTime + jumpDelayGrace >
-      (playableItem.type === "headOverHeels" ?
-        playableItem.state.head.gameTime
-      : playableItem.state.gameTime)
+    // not landing (must be moving up or trying to)
+    playableItem.state.vels.gravity.z > 0
   );
 };
 
@@ -122,13 +118,16 @@ export const jumping: Mechanic<CharacterName> = <
     effectivelyStandingOnItemId === null ? null : (
       room.items[effectivelyStandingOnItemId]
     );
-  if (eligibleForJumpStartGrace(playableItem)) {
-    console.info("jump grace");
-    // provide a 'grace' period after jumping where if the player hasn't started to ride due to
+
+  const jumpButtonDown =
+    inputStateTracker.currentActionPress("jump") !== "released";
+
+  if (jumpButtonDown && canJumpRefresh(playableItem)) {
+    // provide a delayed jumping: if the player hasn't started to rise due to
     // collision with an item above them, they still get the whole jump velocity when they are free
-    // - this makes head's laders easier to climb at higher frame rates where it's much harder to press
-    // on the exact frame
-    // BUG: the jump grace for heels looks like it subtracts bigJumps count here
+    // no matter how long this takes
+    // - this makes head's ladders easier to climb in general, but especially at modern frame rates where
+    // it's much harder to press on the exact frame than it was in the low frame-rate original
     const velZ = getJumpInitialVelocity(
       playableItem,
       false,
@@ -145,7 +144,7 @@ export const jumping: Mechanic<CharacterName> = <
   const startingAJump =
     // player cannot jump during death animation:
     playableItem.state.action !== "death" &&
-    inputStateTracker.currentActionPress("jump") !== "released" &&
+    jumpButtonDown &&
     isJumpOffable(effectivelyStandingOn);
 
   if (!standingOnItemId && startingAJump) {
@@ -195,10 +194,6 @@ export const jumping: Mechanic<CharacterName> = <
         : { isBigJump: false }
       : {}),
       jumpStartZ: playableItem.state.position.z,
-      jumpStartTime:
-        playableItem.type === "headOverHeels" ?
-          playableItem.state.head.gameTime
-        : playableItem.state.gameTime,
     },
   };
 };
