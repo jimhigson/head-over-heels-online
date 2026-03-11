@@ -43,11 +43,12 @@ import {
  * */
 const loseLifeWithRetrospecModelLivesTransfer = (
   characterLosingLifeState: { lives: PokeableNumber },
-  otherCharacterState?: { lives: PokeableNumber },
+  otherCharacterState: { lives: PokeableNumber } | undefined,
+  livesLost: -1 | 0,
 ) => {
   characterLosingLifeState.lives = addPokeableNumbers(
     characterLosingLifeState.lives,
-    -1,
+    livesLost,
   );
 
   // allow the other player to send one of their lives over - this is the Retrospec revised lives model
@@ -108,21 +109,26 @@ const dropCarriedItemIfAny = <RoomId extends string>(
 const combinedPlayableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
   headOverHeels: PlayableItem<"headOverHeels", RoomId>,
+  livesLost: -1 | 0,
 ) => {
   const room = gameState.characterRooms["headOverHeels"]!;
 
   loseLifeWithRetrospecModelLivesTransfer(
     headOverHeels.state.head,
     headOverHeels.state.heels,
+    livesLost,
   );
 
   loseLifeWithRetrospecModelLivesTransfer(
     headOverHeels.state.heels,
     headOverHeels.state.head,
+    livesLost,
   );
 
-  headOverHeels.state.head.lastDiedAt = headOverHeels.state.head.gameTime;
-  headOverHeels.state.heels.lastDiedAt = headOverHeels.state.heels.gameTime;
+  if (livesLost) {
+    headOverHeels.state.head.lastDiedAt = headOverHeels.state.head.gameTime;
+    headOverHeels.state.heels.lastDiedAt = headOverHeels.state.heels.gameTime;
+  }
 
   const totalLivesRemaining = addPokeableNumbers(
     headOverHeels.state.head.lives,
@@ -287,13 +293,12 @@ const individualPlayableLosesLife = <
     RoomId,
     RoomItemId
   >,
+  livesLost: -1 | 0,
 ) => {
   const otherCharacter = selectPlayableItem(
     gameState,
     otherIndividualCharacterName(characterLosingLife.type),
   );
-
-  characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
 
   const roomWithCharacterLosingLife =
     gameState.characterRooms[characterLosingLife.type]!;
@@ -301,9 +306,14 @@ const individualPlayableLosesLife = <
   dropCarriedItemIfAny(roomWithCharacterLosingLife, characterLosingLife);
   removeNonTransferableState(characterLosingLife);
 
+  if (livesLost) {
+    characterLosingLife.state.lastDiedAt = characterLosingLife.state.gameTime;
+  }
+
   loseLifeWithRetrospecModelLivesTransfer(
     characterLosingLife.state,
     otherCharacter?.state,
+    livesLost,
   );
 
   if (characterLosingLife.state.lives === 0) {
@@ -393,15 +403,27 @@ const individualPlayableLosesLife = <
   }
 };
 
-export const playableLosesLife = <RoomId extends string>(
+/**
+ * Handle a playable character "losing a life" — resetting to entry state and reloading the room.
+ *
+ * When `livesLost` is 0, the respawn logic runs identically but no lives are
+ * actually decremented and no death-related state (lastDiedAt, lostLife dispatch) is set.
+ * This is used by the out-of-bounds catcher: falling out of the world is an error-recovery
+ * situation (not a gameplay penalty), so the player should be restored to safety without
+ * being punished with a life loss.
+ */
+const playableLosesLifeImpl = <RoomId extends string>(
   gameState: GameState<RoomId>,
   characterLosingLifeItem: PlayableItem<CharacterName, RoomId>,
+  livesLost: -1 | 0 = -1,
 ) => {
-  store.dispatch(lostLife({ characterLosingLifeItem }));
+  if (livesLost) {
+    store.dispatch(lostLife({ characterLosingLifeItem }));
+  }
   if (characterLosingLifeItem.type === "headOverHeels") {
-    combinedPlayableLosesLife(gameState, characterLosingLifeItem);
+    combinedPlayableLosesLife(gameState, characterLosingLifeItem, livesLost);
   } else {
-    individualPlayableLosesLife(gameState, characterLosingLifeItem);
+    individualPlayableLosesLife(gameState, characterLosingLifeItem, livesLost);
   }
 
   if (selectCurrentPlayableItem(gameState) === undefined) {
@@ -410,4 +432,25 @@ export const playableLosesLife = <RoomId extends string>(
     // probably a good time to save the game:
     dispatchSaveGame(gameState, store);
   }
+};
+
+/**
+ * Decrements the life counter, sets death-related state (lastDiedAt, lostLife
+ * dispatch), resets to entry position, and reloads the room. May trigger game
+ * over if no lives remain. */
+export const playableLosesLife = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  characterLosingLifeItem: PlayableItem<CharacterName, RoomId>,
+) => {
+  playableLosesLifeImpl(gameState, characterLosingLifeItem, -1);
+};
+/**
+ * For when an OOB is detected for the character.
+ * Goes through the same process as losing a life, but without decrementing the lives count
+ */
+export const playableResetAfterOutOfBounds = <RoomId extends string>(
+  gameState: GameState<RoomId>,
+  characterLosingLifeItem: PlayableItem<CharacterName, RoomId>,
+) => {
+  playableLosesLifeImpl(gameState, characterLosingLifeItem, 0);
 };

@@ -4464,6 +4464,36 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "type": "monster",
     },
+    "outOfBounds": {
+      "aabb": {
+        "x": 224,
+        "y": 224,
+        "z": 12,
+      },
+      "castsShadowWhileStoodOn": false,
+      "config": {},
+      "fixedZIndex": -2,
+      "id": "outOfBounds",
+      "state": {
+        "actedOnAt": {
+          "actedInXY": false,
+          "actedInZ": false,
+          "by": {},
+          "roomTime": -9007199254740991,
+        },
+        "disappearing": null,
+        "expires": null,
+        "position": {
+          "x": -64,
+          "y": -64,
+          "z": -120,
+        },
+        "stoodOnBy": {},
+        "stoodOnUntilRoomTime": -9007199254740991,
+        "switchedAtRoomTime": -9007199254740991,
+      },
+      "type": "outOfBounds",
+    },
     "pickup@0,4,9": {
       "aabb": {
         "x": 12,

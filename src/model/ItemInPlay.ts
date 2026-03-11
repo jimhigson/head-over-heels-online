@@ -35,7 +35,13 @@ export type ItemInPlayType =
   /** when collecting pickups */
   | "floatingText"
   /** a sound that plays from a point in a room */
-  | "soundEffect";
+  | "soundEffect"
+  /**
+   * an item that if touched, the toucher is deleted out of the universe - eg, it has been detected
+   * now as out of bounds. Maybe because of falling below a room with no floor - if the player touches
+   * this it is probably a bug. If anything else does, it is unreachable already so it can be removed
+   */
+  | "outOfBounds";
 
 export type SwitchSetting = "left" | "right";
 

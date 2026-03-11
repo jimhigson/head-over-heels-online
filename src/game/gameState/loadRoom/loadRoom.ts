@@ -19,6 +19,7 @@ import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { isFreeItem, isSolid } from "../../physics/itemPredicates";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOn";
 import { loadItemFromJson } from "./loadItemFromJson";
+import { loadOutOfBoundsItem } from "./loadOutOfBoundsItem";
 import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";
 import { loadRoomEntrySound } from "./loadRoomEntrySound";
 import { maybeLoadExtraCornerShadow } from "./maybeLoadExtraCornerShadow";
@@ -81,11 +82,13 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     loadItems(roomJson, roomPickupsCollected, scrollsRead, isNewGame),
   );
   const roomEntrySound = loadRoomEntrySound(roomJson, userSettings, isNewGame);
+  const outOfBoundsItem = loadOutOfBoundsItem<RoomId, RoomItemId>();
   const items: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadPortalsAboveAndBelow(roomJson, roomItems)),
     ...roomItems,
     ...itemsInItemObjectMap(maybeLoadExtraCornerShadow(roomJson)),
     ...(roomEntrySound ? { [roomEntrySound.id]: roomEntrySound } : undefined),
+    [outOfBoundsItem.id]: outOfBoundsItem,
   };
 
   const spatialIndex = new GridSpatialIndex(iterateRoomItems(items));

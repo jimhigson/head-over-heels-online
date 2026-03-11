@@ -1818,7 +1818,8 @@
                                                       "portal",
                                                       "blocker",
                                                       "particle",
-                                                      "floatingText"
+                                                      "floatingText",
+                                                      "outOfBounds"
                                                     ],
                                                     "type": "string"
                                                   },
@@ -1923,7 +1924,8 @@
                                                       "portal",
                                                       "blocker",
                                                       "particle",
-                                                      "floatingText"
+                                                      "floatingText",
+                                                      "outOfBounds"
                                                     ],
                                                     "type": "string"
                                                   },
@@ -6201,7 +6203,8 @@
                                                   "portal",
                                                   "blocker",
                                                   "particle",
-                                                  "floatingText"
+                                                  "floatingText",
+                                                  "outOfBounds"
                                                 ],
                                                 "type": "string"
                                               },
@@ -6306,7 +6309,8 @@
                                                   "portal",
                                                   "blocker",
                                                   "particle",
-                                                  "floatingText"
+                                                  "floatingText",
+                                                  "outOfBounds"
                                                 ],
                                                 "type": "string"
                                               },
