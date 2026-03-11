@@ -3408,7 +3408,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gameTime": 30016.66666666516,
         "hasBag": false,
         "isBigJump": false,
-        "jumpStartTime": -9007199254740991,
         "jumpStartZ": 0,
         "jumped": false,
         "lastDiedAt": -9007199254740991,
