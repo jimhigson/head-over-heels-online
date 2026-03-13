@@ -19,6 +19,7 @@ import {
   optimiseTimesXyz,
   wallTimes,
 } from "../../../../model/times";
+import { keys } from "../../../../utils/entries";
 import { iterate } from "../../../../utils/iterate";
 import { eachAxis } from "../../../../utils/vectors/eachAxis";
 import {
@@ -561,7 +562,10 @@ export const moveOrResizeItemPreviewReducers = {
         for (const [
           healedWallItemId,
           healedWallItem,
-        ] of generateWallHealingInPlaceOfDoor(jsonItem, current(room))) {
+        ] of generateWallHealingInPlaceOfDoor(jsonItem, room.planet, [
+          ...keys(room.items),
+          ...keys(state.previewedEdits),
+        ])) {
           state.previewedEdits[healedWallItemId] = healedWallItem;
         }
       }

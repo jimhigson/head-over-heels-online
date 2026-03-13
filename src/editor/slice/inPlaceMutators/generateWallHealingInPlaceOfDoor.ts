@@ -1,8 +1,5 @@
-import type {
-  EditorJsonItem,
-  EditorRoomItemId,
-  EditorRoomJson,
-} from "../../editorTypes";
+import type { SceneryName } from "../../../sprites/planets";
+import type { EditorJsonItem, EditorRoomItemId } from "../../editorTypes";
 
 import {
   isWallHidden,
@@ -13,7 +10,8 @@ import { nextItemIdForItemTool } from "./addItemInPlace";
 
 export function* generateWallHealingInPlaceOfDoor(
   item: EditorJsonItem<"door">,
-  roomJson: EditorRoomJson,
+  planet: SceneryName,
+  existingIds: Iterable<EditorRoomItemId>,
 ): Generator<[EditorRoomItemId, EditorJsonItem<"wall">]> {
   const replacementWall: EditorJsonItem<"wall"> = {
     type: "wall" as const,
@@ -32,7 +30,7 @@ export function* generateWallHealingInPlaceOfDoor(
           direction: item.config.direction,
           tiles: [
             ...rotatingSceneryTiles(
-              roomJson.planet,
+              planet,
               2,
               item.position[item.config.direction === "away" ? "x" : "y"],
             ),
@@ -41,9 +39,9 @@ export function* generateWallHealingInPlaceOfDoor(
     position: { ...item.position, z: 0 },
   } satisfies EditorJsonItem<"wall">;
 
-  // deleting a door - replace with the equivalent wall, and then consolidate to
+  // replace the door with the equivalent wall, and then consolidate to
   // join the new wall with adjacent walls:
-  const nextWallId = nextItemIdForItemTool(roomJson, replacementWall, false);
+  const nextWallId = nextItemIdForItemTool(existingIds, replacementWall, false);
 
   yield [nextWallId, replacementWall];
 }

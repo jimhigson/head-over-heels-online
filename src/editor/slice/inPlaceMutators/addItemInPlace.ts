@@ -9,7 +9,6 @@ import type {
   EditorJsonItemUnion,
   EditorRoomId,
   EditorRoomItemId,
-  EditorRoomJson,
   EditorRoomJsonItems,
 } from "../../editorTypes";
 import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
@@ -18,24 +17,26 @@ import type {
   PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 
+import { keys } from "../../../utils/entries";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const nextItemId = (
-  targetRoomJson: EditorRoomJson,
+  existingIds: Iterable<EditorRoomItemId>,
   baseName: string,
 ): EditorRoomItemId => {
+  const existing = new Set(existingIds);
   // eslint-disable-next-line no-constant-condition -- while(true) is ok; this will terminate
   for (let i = 1; true; i++) {
     const itemId = (
       i === 1 ? baseName : `${baseName}_${i}`) as EditorRoomItemId;
-    if (!targetRoomJson.items[itemId]) {
+    if (!existing.has(itemId)) {
       return itemId;
     }
   }
 };
 
 export const nextItemIdForItemTool = <T extends JsonItemType = JsonItemType>(
-  targetRoomJson: EditorRoomJson,
+  existingIds: Iterable<EditorRoomItemId>,
   itemTool: ItemTool<T>,
   isPreview: boolean,
 ): EditorRoomItemId => {
@@ -59,7 +60,7 @@ export const nextItemIdForItemTool = <T extends JsonItemType = JsonItemType>(
       (itemTool.config as MonsterJsonConfig).which
     : itemTool.type;
 
-  return nextItemId(targetRoomJson, baseName);
+  return nextItemId(existingIds, baseName);
 };
 
 export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
@@ -69,7 +70,7 @@ export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   isPreview: boolean,
 ): [EditorRoomItemId, EditorJsonItem<T>] => {
   const room = selectCurrentRoomFromLevelEditorState(state);
-  const id = nextItemIdForItemTool(room, itemTool, isPreview);
+  const id = nextItemIdForItemTool(keys(room.items), itemTool, isPreview);
 
   const target = roomEditTarget(state, isPreview);
 
