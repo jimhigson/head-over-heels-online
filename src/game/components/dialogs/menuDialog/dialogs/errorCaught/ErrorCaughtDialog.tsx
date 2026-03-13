@@ -80,10 +80,10 @@ const parseErrorForDisplay = (
   return { message, sanitizedStack };
 };
 
-const markdownIntro = `##The game crashed!
+const markdownIntro = `## Uh-oh! The game crashed!
 You could:
 
-* Open an [issue on Github](https://github.com/jimhigson/head-over-heels-online/issues)
+* Open an [issue on GitHub](https://github.com/jimhigson/head-over-heels-online/issues)
 * Email [jim@blockstack.ing](mailto:jim@blockstack.ing)
 * Rant on the [Discord server](https://discord.gg/XmV9QNWY)
 * Play [the MSX remake](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;

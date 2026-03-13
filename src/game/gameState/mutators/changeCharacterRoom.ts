@@ -163,7 +163,7 @@ const findTeleporterDestinationPosition = <
   /** the character's position relative to the top of the source teleporter */
   positionRelativeToSourcePortal: Xyz,
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
-): Xyz => {
+): undefined | Xyz => {
   const { state } = sourceItem;
 
   const s = state as AllUnionFields<typeof state>;
@@ -200,9 +200,10 @@ const findTeleporterDestinationPosition = <
     }
 
     if (destinationItem === undefined) {
-      throw new Error(
-        `bad room data: no item with id ${s.toItemId} in destination room ${toRoom.id}`,
+      console.warn(
+        `no item with id ${s.toItemId} in destination room ${toRoom.id}`,
       );
+      return undefined;
     }
   }
 
@@ -217,9 +218,10 @@ const findTeleporterDestinationPosition = <
       if (destinationItem === undefined) {
         destinationItem = teleporter;
       } else {
-        throw new Error(
-          `bad room data: no \`config.toPosition\` or \`config.toItemId\` given and multiple teleporters in destination room ${toRoom.id}`,
+        console.warn(
+          `no \`config.toPosition\` or \`config.toItemId\` given and multiple teleporters in destination room ${toRoom.id}`,
         );
+        return undefined;
       }
     }
     if (destinationItem === undefined) {
@@ -239,9 +241,8 @@ const findTeleporterDestinationPosition = <
   }
 
   if (destinationItem === undefined) {
-    throw new Error(
-      `bad room data: no teleporters in destination room ${toRoom.id}`,
-    );
+    console.warn(`no teleporters in destination room ${toRoom.id}`);
+    return undefined;
   }
 
   const {
@@ -268,6 +269,21 @@ const findTeleporterDestinationPosition = <
     ),
     z: unclamped.z,
   };
+};
+
+/**
+ * for when we're sure a room transition is taking place - make the move
+ */
+const changeRoom = <RoomId extends string, RoomItemId extends string>(
+  leavingRoom: RoomState<RoomId, RoomItemId>,
+  toRoom: RoomState<RoomId, RoomItemId>,
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
+  gameState: GameState<RoomId>,
+  atPosition: Xyz,
+) => {
+  deleteItemFromRoom({ room: leavingRoom, item: playableItem });
+  addItemToRoom({ room: toRoom, item: playableItem, atPosition });
+  gameState.characterRooms[playableItem.id as CharacterName] = toRoom;
 };
 
 /**
@@ -392,7 +408,6 @@ export const changeCharacterRoom = <
     isSameRoomTransport ? leavingRoom
       // special case of staying in the same room (ie a teleporter to the same room)
     : otherCharacterLoadedRoom?.id === toRoomId ? otherCharacterLoadedRoom
-      // TODO: this cast is a bit off - 2/3 rooms are in scope here and no reason for them to have the same RoomItemId type
     : (loadRoom({
         roomJson: toRoomJson,
         roomPickupsCollected:
@@ -421,9 +436,6 @@ export const changeCharacterRoom = <
     }
   }
 
-  // take the character out of the previous room:
-  deleteItemFromRoom({ room: leavingRoom, item: playableItem });
-
   // latent movement does not apply outside of the room it was given in:
   playableItem.state.latentMovement = [];
   // previous standing on (from the old room) no longer applies:
@@ -439,16 +451,9 @@ export const changeCharacterRoom = <
   // remove the character from the new room if they're already there - this only really happens
   // if the room is their starting room (so they're in it twice since they appear in the starting room
   // by default):
-  if (toRoom.items[playableItem.id] !== undefined) {
+  if (!isSameRoomTransport && toRoom.items[playableItem.id] !== undefined) {
     deleteItemFromRoom({ room: toRoom, item: playableItem });
   }
-
-  // put the character into the (probably newly loaded) room:
-  addItemToRoom({ room: toRoom, item: playableItem });
-
-  // update game state to know which room this character is now in:
-  /** TODO: @knownRoomIds - remove casts */
-  gameState.characterRooms[playableItem.id as CharacterName] = toRoom;
 
   // character is in the room, now let's update some of their state before the physics starts ticking again:
   if (changeCharacterRoomOptions.changeType === "teleport") {
@@ -458,7 +463,19 @@ export const changeCharacterRoom = <
       positionRelativeToSourcePortal,
       playableItem,
     );
-    updateItemPosition(toRoom, playableItem, positionInDestinationRoom);
+    if (positionInDestinationRoom === undefined) {
+      // teleporting can fail - eg, a portable teleporter could have been pushed out of
+      // the floor of a room. In this case, don't move the player
+    } else {
+      // go ahead and move to the new room+position
+      changeRoom(
+        leavingRoom,
+        toRoom,
+        playableItem,
+        gameState,
+        positionInDestinationRoom,
+      );
+    }
   } else {
     // find the door (etc) in the new room to enter in:
     const destinationPortal = findDestinationPortal<RoomId, RoomItemId>(
@@ -490,9 +507,11 @@ export const changeCharacterRoom = <
         // Could be the final room, but could also in theory be a room with only teleporters
         // to access (don't think there are any in the original game though)
         // not much to go off so choose a random spot that's likely to not collide:
-        updateItemPosition(
+        changeRoom(
+          leavingRoom,
           toRoom,
           playableItem,
+          gameState,
           blockXyzToFineXyz({ x: 1, y: 1, z: 8 }),
         );
       } else {
@@ -521,7 +540,7 @@ export const changeCharacterRoom = <
           }
         : {},
       );
-      updateItemPosition(toRoom, playableItem, newPosition);
+      changeRoom(leavingRoom, toRoom, playableItem, gameState, newPosition);
 
       const {
         config: { direction: portalDirection },
