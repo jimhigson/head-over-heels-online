@@ -267,7 +267,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
             toRoom === undefined ||
             !!rooms[toRoom];
 
-          const annotationText = `➡${toRoom}${toItemId ? `:${toItemId}` : ""}${toPosition ? `@(${toPosition.x},${toPosition.y},${toPosition.z})` : ""}`;
+          const annotationText = `➡${toRoom ?? "."}${toItemId ? `:${toItemId}` : ""}${toPosition ? `@(${toPosition.x},${toPosition.y},${toPosition.z})` : ""}`;
 
           this.#addTextAnnotation({
             annotationText,

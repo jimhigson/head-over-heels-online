@@ -25,6 +25,7 @@ import {
   addXyz,
   type AxisXy,
   elementWiseProductXyz,
+  isExactIntegerXyz,
   lengthXyz,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
@@ -496,7 +497,13 @@ export const moveOrResizeItemPreviewReducers = {
     }>,
   ) {
     const state = _state as LevelEditorState;
+    // positionDelta is cumulative (total offset from the original position), so
+    // each preview must be recomputed from the base room state, not layered on
+    // top of a previous preview's edits (which may have modified surrounding
+    // walls, doors, etc.)
+    state.previewedEdits = {};
     const room = selectCurrentRoomFromLevelEditorState(state);
+    const isIntegerPosDelta = isExactIntegerXyz(positionDelta);
 
     for (const jsonItemId of jsonItemIds) {
       // get the json item we will be changing for the preview:
@@ -509,6 +516,10 @@ export const moveOrResizeItemPreviewReducers = {
       }
 
       if (jsonItem.type === "wall") {
+        if (!isIntegerPosDelta) {
+          continue;
+        }
+
         for (const [id, modifiedItem] of moveFloorForWallChangeInPlace(
           room,
           jsonItem,
@@ -522,6 +533,10 @@ export const moveOrResizeItemPreviewReducers = {
       }
 
       if (jsonItem.type === "floor") {
+        if (!isIntegerPosDelta) {
+          continue;
+        }
+
         for (const [
           id,
           modifiedItem,
@@ -532,24 +547,25 @@ export const moveOrResizeItemPreviewReducers = {
           positionDelta,
           timesDelta,
         )) {
-          // Apply the modified wall item to the preview state
+          // Apply the modified floor item to the preview state
           state.previewedEdits[id] = modifiedItem;
         }
       }
 
       if (jsonItem.type === "door") {
-        console.log("before healing, room items are", current(room.items));
+        if (!isIntegerPosDelta) {
+          continue;
+        }
 
-        for (const [nextWallId, healedWall] of generateWallHealingInPlaceOfDoor(
-          jsonItem,
-          current(room),
-        )) {
-          console.log("healing", `"${nextWallId}"`, healedWall);
-          state.previewedEdits[nextWallId] = healedWall;
+        // first, we heal up the wall under the door:
+        for (const [
+          healedWallItemId,
+          healedWallItem,
+        ] of generateWallHealingInPlaceOfDoor(jsonItem, current(room))) {
+          state.previewedEdits[healedWallItemId] = healedWallItem;
         }
       }
 
-      // Always update the item being moved/resized
       const previewedCopy = {
         ...jsonItem,
         position: addXyz(jsonItem.position, positionDelta),
@@ -566,17 +582,12 @@ export const moveOrResizeItemPreviewReducers = {
       );
 
       if (jsonItem.type === "door") {
-        console.log("before cutting room plus previews is", {
-          ...current(room.items),
-          ...current(state.previewedEdits),
-        });
-
+        // now, we cut any wall under the door:
         for (const [cutItemId, cutItem] of generateHoleInWallsForDoor(
-          { ...current(room.items), ...current(state.previewedEdits) },
+          { ...current(room.items), ...state.previewedEdits },
           (previewedCopy as EditorJsonItem<"door">).config.direction,
           previewedCopy.position,
         )) {
-          console.log("cutting", `"${cutItemId}"`, cutItem);
           state.previewedEdits[cutItemId] = cutItem;
         }
       }

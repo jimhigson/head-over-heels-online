@@ -11,9 +11,9 @@ import {
   setTool,
 } from "../levelEditorSlice";
 import {
-  applyLevelEditorActions,
   doorItemToolWithAutoAddRooms,
   editorStateWithOneRoomWithOneAwayWall,
+  reduceLevelEditorActions,
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
@@ -21,7 +21,7 @@ import {
 test('deleting a door "heals" the void where the door once stood by extending and joining existing walls', () => {
   const state0 = editorStateWithOneRoomWithOneAwayWall;
 
-  const state1 = applyLevelEditorActions(
+  const state1 = reduceLevelEditorActions(
     state0,
     setTool(doorItemToolWithAutoAddRooms),
     // cut hole in the middle of a door:

@@ -16,11 +16,11 @@ import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { applyItemTool, setTool } from "../levelEditorSlice";
 import {
-  applyLevelEditorActions,
   doorItemToolWithAutoAddRooms,
   doorItemToolWithoutAutoAddRooms,
   editorStateWithOneRoomWithNoItems,
   editorStateWithOneRoomWithOneAwayWall,
+  reduceLevelEditorActions,
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
@@ -44,7 +44,7 @@ describe("applying tools", () => {
         preview: false,
       };
 
-      const next = applyLevelEditorActions(
+      const next = reduceLevelEditorActions(
         {
           ...editorStateWithOneRoomWithNoItems,
           tool: {
@@ -122,7 +122,7 @@ describe("applying tools", () => {
               },
             },
           };
-          const next = applyLevelEditorActions(
+          const next = reduceLevelEditorActions(
             {
               ...editorStateWithOneRoomWithNoItems,
               tool: addCybermanTool,
@@ -164,7 +164,7 @@ describe("applying tools", () => {
           preview: false,
         };
 
-        const next = applyLevelEditorActions(
+        const next = reduceLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
@@ -219,7 +219,7 @@ describe("applying tools", () => {
           preview: false,
         };
 
-        const next = applyLevelEditorActions(
+        const next = reduceLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
@@ -270,7 +270,7 @@ describe("applying tools", () => {
           preview: false,
         };
 
-        const next = applyLevelEditorActions(
+        const next = reduceLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
@@ -331,7 +331,7 @@ describe("applying tools", () => {
           preview: false,
         };
 
-        const next = applyLevelEditorActions(
+        const next = reduceLevelEditorActions(
           editorStateWithOneRoomWithOneSmallAwayWall,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
@@ -368,7 +368,7 @@ describe("applying tools", () => {
           preview: false,
         };
 
-        const next = applyLevelEditorActions(
+        const next = reduceLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
           setTool(doorItemToolWithAutoAddRooms),
           applyItemTool(actionPayload),
@@ -418,7 +418,7 @@ describe("applying tools", () => {
           preview: false,
         };
 
-        const next = applyLevelEditorActions(
+        const next = reduceLevelEditorActions(
           editorStateWithOneRoomWithOneAwayWall,
           setTool(doorItemToolWithoutAutoAddRooms),
           applyItemTool(actionPayload),

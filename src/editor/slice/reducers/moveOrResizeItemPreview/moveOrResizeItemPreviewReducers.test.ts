@@ -12,8 +12,8 @@ import type {
 import type { LevelEditorState } from "../../levelEditorSlice";
 
 import {
-  applyLevelEditorActions,
   editorStateWithOneRoomWithNoItems,
+  reduceLevelEditorActions,
   testRoomId,
 } from "../__test__/storeStates";
 import { wallTimes } from "../../../../model/times";
@@ -180,7 +180,7 @@ const testWallMovement = (
   timesDelta?: Xyz,
 ) => {
   // Apply preview
-  const state1 = applyLevelEditorActions(
+  const state1 = reduceLevelEditorActions(
     state0,
     moveOrResizeItemAsPreview({
       jsonItemIds: [wallId],
@@ -195,7 +195,10 @@ const testWallMovement = (
   );
 
   // Commit the preview
-  const state2 = applyLevelEditorActions(state1, commitCurrentPreviewedEdits());
+  const state2 = reduceLevelEditorActions(
+    state1,
+    commitCurrentPreviewedEdits(),
+  );
 
   return state2;
 };
@@ -265,7 +268,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Increase floor size in y by 2 (8x8 -> 8x10)
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -425,7 +428,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Decrease floor size in y by 3 (10x10 -> 10x7)
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -584,7 +587,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Increase floor size in x by 4 (6x6 -> 10x6)
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -744,7 +747,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move floor by (1, 1, 0)
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -804,7 +807,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Resize floor to 4x3
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -859,7 +862,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move floor
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -924,7 +927,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Shrink floor from right (reduce x size by 2)
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -993,7 +996,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Expand floor by 2 in both directions
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -1081,7 +1084,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Shrink floor from bottom (reduce y size by 3)
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -1161,7 +1164,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move and resize floor
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -1181,6 +1184,94 @@ describe("changeWallsForFloorChangeInPlace", () => {
           toRoom: "otherRoom",
         },
       });
+    });
+
+    test("moving a door one way, then back again should be a no-op once committed", () => {
+      const doorId = "door" as EditorRoomItemId;
+      const awayWallBeforeDoorId = "awayWallBeforeDoor" as EditorRoomItemId;
+      const awayWallAfterDoorId = "awayWallAfterDoor" as EditorRoomItemId;
+
+      const state0: LevelEditorState = produce(
+        editorStateWithOneRoomWithNoItems,
+        (draft) => {
+          const room = draft.campaignInProgress.rooms[testRoomId];
+
+          // Add a door in the middle of a wall
+          room.items[awayWallBeforeDoorId] = {
+            type: "wall",
+            position: { x: 8, y: 0, z: 0 },
+            config: {
+              tiles: ["plain", "plain", "plain"],
+              direction: "left",
+            },
+          };
+          room.items[doorId] = {
+            type: "door",
+            position: { x: 8, y: 3, z: 0 },
+            config: {
+              direction: "left",
+              toRoom: "nowhere" as EditorRoomId,
+            },
+          };
+          room.items[awayWallAfterDoorId] = {
+            type: "wall",
+            position: { x: 8, y: 5, z: 0 },
+            config: {
+              tiles: ["plain", "plain", "plain"],
+              direction: "left",
+            },
+          };
+        },
+      );
+
+      // Move, move back, and commit:
+      const state1 = reduceLevelEditorActions(
+        state0,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [doorId],
+          positionDelta: { x: 0, y: 1, z: 0 },
+        }),
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [doorId],
+          // back to where it started (position delta zero)
+          positionDelta: { x: 0, y: 0, z: 0 },
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      // check all 3 items individually match to get shorter error messages if they don't match
+      expect
+        .soft(
+          state1.campaignInProgress.rooms[testRoomId].items[
+            awayWallBeforeDoorId
+          ],
+          "wall before door should match original",
+        )
+        .toMatchObject(
+          state0.campaignInProgress.rooms[testRoomId].items[
+            awayWallBeforeDoorId
+          ],
+        );
+      expect
+        .soft(
+          state1.campaignInProgress.rooms[testRoomId].items[doorId],
+          "door should match original",
+        )
+        .toMatchObject(
+          state0.campaignInProgress.rooms[testRoomId].items[doorId],
+        );
+      expect
+        .soft(
+          state1.campaignInProgress.rooms[testRoomId].items[
+            awayWallAfterDoorId
+          ],
+          "wall after door should match original",
+        )
+        .toMatchObject(
+          state0.campaignInProgress.rooms[testRoomId].items[
+            awayWallAfterDoorId
+          ],
+        );
     });
   });
 
@@ -1218,7 +1309,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Shrink floor to 2x2
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -1270,7 +1361,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move floor
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -1324,7 +1415,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Move floor
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -2100,7 +2191,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Extend floor from lower edge in x: position moves to (-2,0) and size becomes 10x8
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
@@ -2200,7 +2291,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
       );
 
       // Extend floor from higher edge in x: size becomes 10x8 (still at 0,0)
-      const state1 = applyLevelEditorActions(
+      const state1 = reduceLevelEditorActions(
         state0,
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
