@@ -1,5 +1,39 @@
 # Changelog
 
+## [21.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v20.0.0...v21.0.0) (2026-03-15)
+
+
+### Features
+
+* editor-created campaigns can load from cache if previously loaded and browser is offline ([#756](https://github.com/jimhigson/head-over-heels-online/issues/756)) ([65e97f7](https://github.com/jimhigson/head-over-heels-online/commit/65e97f7411167524e7abbb26a84ba55c43d4392f))
+* improve scroll position on mobile ([#755](https://github.com/jimhigson/head-over-heels-online/issues/755)) ([a86c758](https://github.com/jimhigson/head-over-heels-online/commit/a86c75851a5b91640acb3001e752d03eb7bbf66d))
+* portable teleporters ([#758](https://github.com/jimhigson/head-over-heels-online/issues/758)) ([27a7a10](https://github.com/jimhigson/head-over-heels-online/commit/27a7a10ceaa0d90e0d5ec96902e1ba900327afb3))
+* simpler room json format for teleporters - no longer has to give position in destination room ([#757](https://github.com/jimhigson/head-over-heels-online/issues/757)) ([338a8f9](https://github.com/jimhigson/head-over-heels-online/commit/338a8f9c58ab5979f3d6d966fa47c1470d5a3690))
+* teleportation now works within a single room (teleporting from one part of a room to another part of the same room) ([#759](https://github.com/jimhigson/head-over-heels-online/issues/759)) ([49d420e](https://github.com/jimhigson/head-over-heels-online/commit/49d420ec74ab846aafb74e0a68f572725be6b122))
+* tweak jumping to make it easier to climb Head's ladders by allowing holding jump while constrained by the rung above for as long as the player likes (was previously 1/12s or ~82ms) ([#761](https://github.com/jimhigson/head-over-heels-online/issues/761)) ([e848201](https://github.com/jimhigson/head-over-heels-online/commit/e848201cc69d38992326b32cbae3f9ae1fabd766))
+
+
+### Bug Fixes
+
+* a bug where player could levitate along a ceiling ([#768](https://github.com/jimhigson/head-over-heels-online/issues/768)) ([39e1711](https://github.com/jimhigson/head-over-heels-online/commit/39e171195d643fb993bb135b65ee72de2097856e))
+* character no longer falls forever if they go out of bounds ([#762](https://github.com/jimhigson/head-over-heels-online/issues/762)) ([c763428](https://github.com/jimhigson/head-over-heels-online/commit/c763428ad956aa4cf4fc28fab7cd26b6f1d5fb55))
+* failed teleporting no longer crashes the game ([#769](https://github.com/jimhigson/head-over-heels-online/issues/769)) ([603a571](https://github.com/jimhigson/head-over-heels-online/commit/603a57149e559ec7ee8c76cb1ade46514f34a964))
+
+
+### Room Changes
+
+* blacktooth37 has a longer platform to jump onto after deactivating the monsters ([#765](https://github.com/jimhigson/head-over-heels-online/issues/765)) ([daa9142](https://github.com/jimhigson/head-over-heels-online/commit/daa914207728c1973146daf96a59b4b30a3a8767))
+
+
+### Sprite Changes
+
+* some sprites a bit rounder ([#766](https://github.com/jimhigson/head-over-heels-online/issues/766)) ([f6d9f71](https://github.com/jimhigson/head-over-heels-online/commit/f6d9f713c5b8f9eef2285561633262aedeb5b54e))
+
+
+### Editor Changes
+
+* show name of room on map as a tooltip when hovering over the room (also in game with cheats turned on) ([#763](https://github.com/jimhigson/head-over-heels-online/issues/763)) ([ca603f0](https://github.com/jimhigson/head-over-heels-online/commit/ca603f0db24ba2d4223e155987ab57f6162ff8e0))
+
 ## [20.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v19.0.0...v20.0.0) (2026-03-08)
 
 
