@@ -41,17 +41,9 @@ export const matchesPattern = (
 
   // Check if pattern matches, handling wildcards and attribute selectors
   return patternParts.every((part, index) => {
-    console.log("part", part);
-
     const attributeSelector = parseAttributeSelector(part);
 
     if (attributeSelector) {
-      console.log(
-        "atrSel",
-        nodeHead[index],
-        attributeSelector.property,
-        getNodePropertyValue(nodeHead[index], attributeSelector.property),
-      );
       // Attribute selector checks a property on the node at this position
       return (
         getNodePropertyValue(nodeHead[index], attributeSelector.property) ===

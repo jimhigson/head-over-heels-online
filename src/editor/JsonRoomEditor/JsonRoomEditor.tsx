@@ -4,7 +4,7 @@ import type { editor } from "monaco-editor";
 import { Editor } from "@monaco-editor/react";
 import { useState } from "react";
 
-import roomSchema from "../../_generated/room.schema.json";
+import { importOnce } from "../../utils/importOnce";
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useItemIconDecorations } from "./ItemIconDecorations";
 import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";
@@ -12,6 +12,12 @@ import { useSyncMonacoCaretToStoreItemSelection } from "./useSyncMonacoCaretToSt
 import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncSelectionWithMonaco";
 import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
+
+const importRoomSchemaOnce = importOnce(() =>
+  import("../../_generated/room.schema.json").then(
+    ({ default: schema }) => schema,
+  ),
+);
 
 const JsonRoomEditor = () => {
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(
@@ -34,17 +40,24 @@ const JsonRoomEditor = () => {
   ) => {
     setEditor(editor);
 
-    // Configure JSON language service with the room schema
-    monaco.json.jsonDefaults.setDiagnosticsOptions({
-      validate: true,
-      schemas: [
-        {
-          uri: "https://blockstack.org/room.schema.json",
-          fileMatch: ["*"],
-          schema: roomSchema,
-        },
-      ],
-    });
+    importRoomSchemaOnce()
+      .then((roomSchema) => {
+        monaco.json.jsonDefaults.setDiagnosticsOptions({
+          validate: true,
+          schemas: [
+            {
+              uri: "https://blockstack.org/room.schema.json",
+              fileMatch: ["*"],
+              schema: roomSchema,
+            },
+          ],
+        });
+      })
+      .catch((e) =>
+        console.error(
+          new Error("could not load room jsonSchema", { cause: e }),
+        ),
+      );
   };
 
   // which of the possibly multiple models in monaco are we currently using?
