@@ -65,7 +65,7 @@ export const editorStateWithOneRoomWithOneAwayWall: LevelEditorState = produce(
 );
 
 /** convenience to apply any number of actions in sequence */
-export const applyLevelEditorActions = (
+export const reduceLevelEditorActions = (
   state: LevelEditorState,
   ...actions: /* functional version allows creating a pipelining that bases the action off the
    * current state, ie finding items in the current room to use in the next action */

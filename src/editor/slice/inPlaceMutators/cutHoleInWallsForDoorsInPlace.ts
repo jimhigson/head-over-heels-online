@@ -34,13 +34,13 @@ Generator<[EditorRoomItemId, EditorJsonItem<"wall"> | null]> {
     }
 
     if (item.type !== "wall") {
-      // nothing changed so don't yield
       // not a wall, so no need to cut
+      // nothing changed so don't yield
       continue;
     }
     if (item.config.direction !== doorDirection) {
-      // nothing changed so don't yield
       // wall not facing in the direction that this door would cut
+      // nothing changed so don't yield
       continue;
     }
 

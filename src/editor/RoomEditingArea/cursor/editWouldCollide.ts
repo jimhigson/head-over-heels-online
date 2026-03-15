@@ -125,7 +125,15 @@ export const itemMoveOrResizeWouldCollide = ({
           loadedItem,
           collideableItemsAlreadyInRoom,
         )) {
-          console.warn(loadedItem.id, "colliding with static item", c.id);
+          console.warn(
+            loadedItem.id,
+            "colliding with static item",
+            c.id,
+            "after moving by",
+            blockPositionDelta,
+            timesDelta ? "with timesDelta" : "",
+            timesDelta ?? "",
+          );
           return true;
         }
 

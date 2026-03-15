@@ -81,14 +81,14 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
           <div className="pt-1 flex flex-col gap-half">
             <BitmapText>Log in with:</BitmapText>
             <Button
-              className="px-1 w-full flex-row justify-between bg-redShadow"
+              className="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
               onClick={handleLogin("github")}
             >
               <BitmapText>{nerdFontGithubChar}</BitmapText>
               <BitmapText>GitHub</BitmapText>
             </Button>
             <Button
-              className="px-1 w-full flex-row justify-between bg-redShadow"
+              className="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
               onClick={handleLogin("discord")}
             >
               <BitmapText>{nerdFontDiscordChar}</BitmapText>

@@ -10,6 +10,7 @@ import type { LevelEditorState } from "../levelEditorSlice";
 import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { keys } from "../../../utils/entries";
 import { iterate } from "../../../utils/iterate";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -119,7 +120,9 @@ export const addReturnDoorInPlace = ({
     fromRoomJson,
   );
 
-  const returnDoorId = nextItemId(toRoomJson, "door");
+  // don't consider previews item ids, since these only cover the current room,
+  // and this will be added to the other room:
+  const returnDoorId = nextItemId(keys(toRoomJson.items), "door");
 
   const returnDoorPosition: Xyz = {
     x:

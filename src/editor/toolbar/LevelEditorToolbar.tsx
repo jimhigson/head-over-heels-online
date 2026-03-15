@@ -1,4 +1,4 @@
-import type { EditorRoomId, EditorRoomItemId } from "../editorTypes";
+import type { EditorRoomItemId } from "../editorTypes";
 
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
@@ -778,9 +778,7 @@ Why are the books slippery?`}
         <ItemToolButton
           itemTool={{
             type: "teleporter",
-            config: {
-              toRoom: "to?" as EditorRoomId,
-            },
+            config: {},
           }}
         >
           <span
@@ -790,9 +788,7 @@ Why are the books slippery?`}
         <ItemToolButton
           itemTool={{
             type: "portableTeleporter",
-            config: {
-              toRoom: "to?" as EditorRoomId,
-            },
+            config: {},
           }}
         >
           <span

@@ -1,6 +1,7 @@
 import type { EditorRoomItemId, EditorRoomJson } from "../../editorTypes";
 
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
+import { keys } from "../../../utils/entries";
 import { generateWallHealingInPlaceOfDoor } from "./generateWallHealingInPlaceOfDoor";
 
 export const deleteItemInPlace = (
@@ -13,7 +14,11 @@ export const deleteItemInPlace = (
     for (const [
       nextWallId,
       replacementWall,
-    ] of generateWallHealingInPlaceOfDoor(item, roomJson)) {
+    ] of generateWallHealingInPlaceOfDoor(
+      item,
+      roomJson.planet,
+      keys(roomJson.items),
+    )) {
       roomJson.items[nextWallId] = replacementWall;
     }
 

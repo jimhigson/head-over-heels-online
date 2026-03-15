@@ -17,8 +17,15 @@ export const changeIdOfCurrentRoomInPlace = (
     // update any doors and teleporters that reference the old room id
     iterateRoomJsonItems(room)
       .filter(
-        (item): item is EditorJsonItem<"door"> | EditorJsonItem<"teleporter"> =>
-          item.type === "door" || item.type === "teleporter",
+        (
+          item,
+        ): item is
+          | EditorJsonItem<"door">
+          | EditorJsonItem<"portableTeleporter">
+          | EditorJsonItem<"teleporter"> =>
+          item.type === "door" ||
+          item.type === "teleporter" ||
+          item.type === "portableTeleporter",
       )
       .filter((item) => item.config.toRoom === prevRoomId)
       .forEach((item) => {
@@ -29,6 +36,14 @@ export const changeIdOfCurrentRoomInPlace = (
     const ncrWith = room.meta?.nonContiguousRelationship?.with;
     if (ncrWith?.room === prevRoomId) {
       ncrWith.room = newRoomId;
+    }
+
+    // update above/below room references
+    if (room.roomAbove === prevRoomId) {
+      room.roomAbove = newRoomId;
+    }
+    if (room.roomBelow === prevRoomId) {
+      room.roomBelow = newRoomId;
     }
   }
 
