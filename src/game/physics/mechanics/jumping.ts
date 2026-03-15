@@ -1,12 +1,19 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
 import type { Mechanic } from "../MechanicResult";
 
 import { type CharacterName } from "../../../model/modelTypes";
+import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { originalGameFrameDuration } from "../../../originalGame";
 import {
+  type CollideableItem,
+  hasCollisionItemWithIndex,
+} from "../../collision/aabbCollision";
+import { smallItemAabb } from "../../collision/boundingBoxes";
+import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import {
+  isDeadly,
   isPickup,
   isPlayableItem,
   isSpring,
@@ -22,6 +29,24 @@ import {
   playerJumpHeightPx,
 } from "../mechanicsConstants";
 import { teleporterIsActive } from "./teleporting";
+
+const jumpRefreshCollideBufferHeight = 0.1;
+const jumpRefreshCollideBuffer: CollideableItem = {
+  aabb: {
+    // x and y of playable
+    x: smallItemAabb.x,
+    y: smallItemAabb.y,
+    z: jumpRefreshCollideBufferHeight,
+  },
+  id: "jumpRefreshCollideBuffer",
+  state: {
+    position: {
+      x: 0,
+      y: 0,
+      z: 0,
+    },
+  },
+};
 
 const jumpInitialVelocity = (apexZ: number) => {
   const fudgedApexZ = apexZ - jumpFudge;
@@ -83,17 +108,41 @@ const isJumpOffable = <RoomItemId extends string>(
   return true;
 };
 
-const canJumpRefresh = (
-  playableItem: PlayableItem<CharacterName, string, string>,
+const canRefreshJump = <RoomId extends string, RoomItemId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
 ) => {
-  return (
-    // we have jumped...
-    playableItem.state.jumped &&
-    // ... but we haven't moved up
-    playableItem.state.position.z === playableItem.state.jumpStartZ &&
-    // not landing (must be moving up or trying to)
-    playableItem.state.vels.gravity.z > 0
+  if (!playableItem.state.jumped) {
+    return false;
+  }
+  // must not have moved up from the jump start position:
+  if (playableItem.state.position.z !== playableItem.state.jumpStartZ) {
+    return false;
+  }
+  // must be moving up or trying to (not landing):
+  if (playableItem.state.vels.gravity.z <= 0) {
+    return false;
+  }
+
+  const bufferPosition = jumpRefreshCollideBuffer.state.position;
+  const playablePosition = playableItem.state.position;
+  bufferPosition.x = playablePosition.x;
+  bufferPosition.y = playablePosition.y;
+  bufferPosition.z = playablePosition.z - jumpRefreshCollideBufferHeight;
+
+  const hasShield = playableHasShield(playableItem);
+  const jumpoffable = (item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>) => {
+    return isJumpOffable(item) && (!isDeadly(item) || hasShield);
+  };
+
+  // still have something below to jump off (even if the standingOnItemId was cleared by the jump):
+  const hasSomethingToJumpOff = hasCollisionItemWithIndex(
+    jumpRefreshCollideBuffer,
+    room[roomSpatialIndexKey],
+    jumpoffable,
   );
+
+  return hasSomethingToJumpOff;
 };
 
 export const jumping: Mechanic<CharacterName> = <
@@ -122,7 +171,7 @@ export const jumping: Mechanic<CharacterName> = <
   const jumpButtonDown =
     inputStateTracker.currentActionPress("jump") !== "released";
 
-  if (jumpButtonDown && canJumpRefresh(playableItem)) {
+  if (jumpButtonDown && canRefreshJump(playableItem, room)) {
     // provide a delayed jumping: if the player hasn't started to rise due to
     // collision with an item above them, they still get the whole jump velocity when they are free
     // no matter how long this takes
