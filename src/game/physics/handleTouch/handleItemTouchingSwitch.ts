@@ -70,6 +70,18 @@ const getNewState = <RoomId extends string, RoomItemId extends string>(
         }) satisfies Partial<ItemState<"monster", RoomId, RoomItemId>>;
   }
 
+  if (modifiesItem.expectType === "charles" && "activates" in modifiesItem) {
+    const { activates } = modifiesItem;
+    return (
+      setting === (activates ? "left" : "right") ?
+        {
+          activated: true,
+        }
+      : {
+          activated: false,
+        }) satisfies Partial<ItemState<"charles", RoomId, RoomItemId>>;
+  }
+
   if (
     modifiesItem.expectType === "monster" &&
     "switchedDirection" in modifiesItem &&

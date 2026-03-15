@@ -766,10 +766,17 @@ export type RoomJsonSchema = {
                 | {
                     expectType: "charles";
                     targets?: string[];
-                    leftState: {
+                    /**
+                     * true is a shorthand for monsters/platforms that are activated by default:
+                     *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
+                     * false is shorthand for monsters/platforms that are deactivated by default:
+                     *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
+                     */
+                    activates?: false | true;
+                    leftState?: {
                       activated?: false | true;
                     };
-                    rightState: {
+                    rightState?: {
                       activated?: false | true;
                     };
                   }
@@ -2550,10 +2557,17 @@ export type RoomJsonSchema = {
             | {
                 expectType: "charles";
                 targets?: string[];
-                leftState: {
+                /**
+                 * true is a shorthand for monsters/platforms that are activated by default:
+                 *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
+                 * false is shorthand for monsters/platforms that are deactivated by default:
+                 *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
+                 */
+                activates?: false | true;
+                leftState?: {
                   activated?: false | true;
                 };
-                rightState: {
+                rightState?: {
                   activated?: false | true;
                 };
               }
