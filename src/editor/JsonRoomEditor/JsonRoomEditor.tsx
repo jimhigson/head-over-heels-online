@@ -4,7 +4,7 @@ import type { editor } from "monaco-editor";
 import { Editor } from "@monaco-editor/react";
 import { useState } from "react";
 
-import roomSchema from "../../_generated/room.schema.json";
+import { importOnce } from "../../utils/importOnce";
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useItemIconDecorations } from "./ItemIconDecorations";
 import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";
@@ -12,6 +12,12 @@ import { useSyncMonacoCaretToStoreItemSelection } from "./useSyncMonacoCaretToSt
 import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncSelectionWithMonaco";
 import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
+
+const importRoomSchema = importOnce(() =>
+  import("../../_generated/room.schema.json").then(
+    ({ default: schema }) => schema,
+  ),
+);
 
 const JsonRoomEditor = () => {
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(
@@ -28,13 +34,14 @@ const JsonRoomEditor = () => {
   useUpdateJsonTextWhenStoreChanges(editor);
   useItemIconDecorations(editor);
 
-  const handleEditorMount = (
+  const handleEditorMount = async (
     editor: editor.IStandaloneCodeEditor,
     monaco: Monaco,
   ) => {
     setEditor(editor);
 
-    // Configure JSON language service with the room schema
+    const roomSchema = await importRoomSchema();
+
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       schemas: [

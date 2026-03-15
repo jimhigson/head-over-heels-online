@@ -68,7 +68,7 @@
     "husky": "^9.1.7",
     "iter-tools-es": "^7.5.4",
     "mitt": "^3.0.1",
-    "monaco-editor": "^0.52.2",
+    "monaco-editor": "^0.55.1",
     "nano-equal": "^2.0.2",
     "natural-compare-lite": "^1.4.0",
     "natural-orderby": "^5.0.0",
