@@ -1,4 +1,4 @@
-import type { Monaco } from "@monaco-editor/react";
+import type * as Monaco from "monaco-editor";
 
 import { loader } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
@@ -9,7 +9,7 @@ import paletteJson from "../../_generated/palette/spritesheetPalette.json" with 
 import { halfbriteHex } from "../../utils/colour/halfBrite";
 import { importOnce } from "../../utils/importOnce";
 
-export const monacoLoader = async (): Promise<Monaco> => {
+export const monacoLoader = async (): Promise<typeof Monaco> => {
   self.MonacoEnvironment = {
     getWorker(_, label) {
       if (label === "json") {

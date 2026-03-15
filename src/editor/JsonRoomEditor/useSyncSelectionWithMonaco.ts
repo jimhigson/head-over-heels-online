@@ -1,4 +1,4 @@
-import type { Monaco } from "@monaco-editor/react";
+import type * as Monaco from "monaco-editor";
 import type { editor } from "monaco-editor";
 
 import { findNodeAtLocation, type Node, parseTree } from "jsonc-parser";
@@ -54,7 +54,7 @@ export const useSyncStoreItemSelectionToMonacoDecorations = (
     rootNode: Node;
     editorModel: editor.ITextModel;
     selectedJsonItemIds: EditorRoomItemId[];
-    monaco: Monaco;
+    monaco: typeof Monaco;
   }) {
     const decorationsOptions: editor.IModelDecorationOptions = {
       stickiness:

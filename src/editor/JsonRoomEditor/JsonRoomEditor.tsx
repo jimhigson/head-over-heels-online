@@ -1,4 +1,4 @@
-import type { Monaco } from "@monaco-editor/react";
+import type * as Monaco from "monaco-editor";
 import type { editor } from "monaco-editor";
 
 import { Editor } from "@monaco-editor/react";
@@ -30,12 +30,12 @@ const JsonRoomEditor = () => {
 
   const handleEditorMount = (
     editor: editor.IStandaloneCodeEditor,
-    monaco: Monaco,
+    monaco: typeof Monaco,
   ) => {
     setEditor(editor);
 
     // Configure JSON language service with the room schema
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+    monaco.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       schemas: [
         {

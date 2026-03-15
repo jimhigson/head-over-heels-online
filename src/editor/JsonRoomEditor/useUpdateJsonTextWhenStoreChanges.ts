@@ -1,4 +1,4 @@
-import type { Monaco } from "@monaco-editor/react";
+import type * as Monaco from "monaco-editor";
 import type { editor } from "monaco-editor";
 
 import { findNodeAtLocation, getLocation, parseTree } from "jsonc-parser";
@@ -15,7 +15,7 @@ import { useLoadMonaco } from "./useLoadMonaco";
 const updateTextNow = (
   editor: editor.IStandaloneCodeEditor,
   state: RootStateWithLevelEditorSlice,
-  monaco: Monaco | null,
+  monaco: null | typeof Monaco,
 ) => {
   if (!monaco) {
     return;
@@ -105,7 +105,7 @@ const updateTextNow = (
 
 const useUpdateTextWhenJsonChangesInSameRoom = (
   editor: editor.IStandaloneCodeEditor | null,
-  monaco: Monaco | null,
+  monaco: null | typeof Monaco,
 ) => {
   const currentRoomJson = useAppSelectorWithLevelEditorSlice(
     selectCurrentEditingRoomJson,
@@ -145,7 +145,7 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
  *      * not clear how to fix this since ids are ids
  */
 const useCreateDocumentsInMonacoWhenCurrentRoomChanges = (
-  monaco: Monaco | null,
+  monaco: null | typeof Monaco,
 ) => {
   const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
     (state) => state.levelEditor.currentlyEditingRoomId,

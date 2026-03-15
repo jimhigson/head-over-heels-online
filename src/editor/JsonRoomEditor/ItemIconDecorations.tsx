@@ -1,4 +1,4 @@
-import type { Monaco } from "@monaco-editor/react";
+import type * as Monaco from "monaco-editor";
 import type { editor } from "monaco-editor";
 
 import { findNodeAtLocation } from "jsonc-parser";
@@ -357,7 +357,7 @@ function* generateItemIconDecorations({
   editor: editor.IStandaloneCodeEditor;
   jsonItems: EditorRoomJsonItems;
   scenery: SceneryName;
-  monaco: Monaco;
+  monaco: typeof Monaco;
   //decorationsOptions: editor.IModelDecorationOptions;
 }): Generator<editor.IModelDeltaDecoration, void, void> {
   const editorModel = editor.getModel();
