@@ -17,6 +17,7 @@ import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 import { iterateRoomItems } from "../../../model/RoomState";
 import { toggleUserSetting } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
+import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { scaleXyz } from "../../../utils/vectors/vectors";
@@ -84,7 +85,19 @@ const getNewState = <RoomId extends string, RoomItemId extends string>(
     >;
   }
 
-  return modifiesItem[`${setting}State`];
+  if (modifiesItem.expectType === "charles" && "activates" in modifiesItem) {
+    const { activates } = modifiesItem;
+    return (
+      setting === (activates ? "left" : "right") ?
+        {
+          activated: true,
+        }
+      : {
+          activated: false,
+        }) satisfies Partial<ItemState<"charles", RoomId, RoomItemId>>;
+  }
+
+  return modifiesItem[`${setting}State`] ?? emptyObject;
 };
 
 // exported for buttons
