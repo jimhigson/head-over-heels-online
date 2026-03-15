@@ -2083,6 +2083,11 @@
                                 {
                                   "additionalProperties": false,
                                   "properties": {
+                                    "activates": {
+                                      "description": "true is a shorthand for charles bots that are activated by default:   {leftState: {activated: true}, rightState: {activated: false}}, false is shorthand for charles bots that are deactivated by default:   {leftState: {activated: false}, rightState: {activated: true}},",
+                                      "enum": [false, true],
+                                      "type": "boolean"
+                                    },
                                     "expectType": {
                                       "const": "charles",
                                       "type": "string"
@@ -2114,11 +2119,7 @@
                                       "type": "array"
                                     }
                                   },
-                                  "required": [
-                                    "expectType",
-                                    "leftState",
-                                    "rightState"
-                                  ],
+                                  "required": ["expectType"],
                                   "type": "object"
                                 },
                                 {
@@ -6463,6 +6464,11 @@
                             {
                               "additionalProperties": false,
                               "properties": {
+                                "activates": {
+                                  "description": "true is a shorthand for charles bots that are activated by default:   {leftState: {activated: true}, rightState: {activated: false}}, false is shorthand for charles bots that are deactivated by default:   {leftState: {activated: false}, rightState: {activated: true}},",
+                                  "enum": [false, true],
+                                  "type": "boolean"
+                                },
                                 "expectType": {
                                   "const": "charles",
                                   "type": "string"
@@ -6494,11 +6500,7 @@
                                   "type": "array"
                                 }
                               },
-                              "required": [
-                                "expectType",
-                                "leftState",
-                                "rightState"
-                              ],
+                              "required": ["expectType"],
                               "type": "object"
                             },
                             {

@@ -87,10 +87,17 @@ export type SwitchItemModificationUnion<
   | {
       expectType: "charles";
       targets?: RoomItemId[];
-      leftState: Partial<
+      /**
+       * true is a shorthand for charles bots that are activated by default:
+       *   {leftState: {activated: true}, rightState: {activated: false}},
+       * false is shorthand for charles bots that are deactivated by default:
+       *   {leftState: {activated: false}, rightState: {activated: true}},
+       */
+      activates?: boolean;
+      leftState?: Partial<
         Pick<ItemStateMap<RoomId, RoomItemId>["charles"], "activated">
       >;
-      rightState: Partial<
+      rightState?: Partial<
         Pick<ItemStateMap<RoomId, RoomItemId>["charles"], "activated">
       >;
     }
