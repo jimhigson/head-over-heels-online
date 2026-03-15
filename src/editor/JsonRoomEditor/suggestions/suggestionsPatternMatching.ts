@@ -7,7 +7,7 @@ import type {
 
 import { getNodePropertyValue } from "./getNodePropertyValue";
 
-export const log = 1;
+export const log = 0;
 
 /**
  * Parse an attribute selector like [type=door] into property and value
