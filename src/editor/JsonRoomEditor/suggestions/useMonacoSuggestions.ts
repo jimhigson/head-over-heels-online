@@ -25,7 +25,7 @@ export const useMonacoSuggestions = () => {
     // Suggest room ids:
     monaco.languages.registerCompletionItemProvider("json", {
       triggerCharacters: [":", '"'],
-      provideCompletionItems(editorModel, position) {
+      provideCompletionItems(editorModel, position, _context, _token) {
         const editorText = editorModel.getValue();
         const offset = editorModel.getOffsetAt(position);
 

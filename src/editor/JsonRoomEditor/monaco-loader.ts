@@ -1,4 +1,4 @@
-import type { Monaco } from "@monaco-editor/react";
+import type * as Monaco from "monaco-editor";
 
 import { loader } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
@@ -9,27 +9,29 @@ import paletteJson from "../../_generated/palette/spritesheetPalette.json" with 
 import { halfbriteHex } from "../../utils/colour/halfBrite";
 import { importOnce } from "../../utils/importOnce";
 
-export const monacoLoader = async (): Promise<Monaco> => {
-  self.MonacoEnvironment = {
-    getWorker(_, label) {
-      if (label === "json") {
-        return new jsonWorker();
-      }
-      // if (label === "css" || label === "scss" || label === "less") {
-      // return new cssWorker();
-      // }
-      // if (label === "html" || label === "handlebars" || label === "razor") {
-      // return new htmlWorker();
-      // }
-      // if (label === "typescript" || label === "javascript") {
-      // return new tsWorker();
-      // }
-      return new editorWorker();
-    },
-  };
+// Must be called at module level, not inside a useEffect or async function.
+// @monaco-editor/react's <Editor> component calls loader.init() in its own
+// useEffect on first mount. If loader.config hasn't run yet at that point,
+// it falls back to fetching monaco from CDN. Module-level execution is
+// guaranteed to happen before any component mounts.
+//
+// MonacoEnvironment must also be set at module level - if set inside the async
+// monacoLoader function, a warm loader.init() (which resolves synchronously from
+// cache) may request workers before MonacoEnvironment is assigned, causing the
+// JSON language service to silently fall back to the plain editor worker and
+// leaving the editor without JSON syntax highlighting or folding.
+self.MonacoEnvironment = {
+  getWorker(_, label) {
+    if (label === "json") {
+      return new jsonWorker();
+    }
+    // we don't need any other languages
+    return new editorWorker();
+  },
+};
+loader.config({ monaco });
 
-  loader.config({ monaco });
-
+export const monacoLoader = async (): Promise<typeof Monaco> => {
   const monacoInstance = await loader.init();
 
   monacoInstance.editor.defineTheme("hoh-dark", {
