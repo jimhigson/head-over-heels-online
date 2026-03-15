@@ -638,6 +638,44 @@ test("Heels can carry a teleporter through a same-room teleporter", () => {
   `);
 });
 
+test("teleporting when destination teleporter is missing leaves player in the same place in the same room", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 0, y: 2, z: 1 },
+        config: {
+          which: "heels",
+        },
+      },
+      teleporter: {
+        type: "teleporter",
+        position: { x: 0, y: 2, z: 0 },
+        config: { toRoom: secondRoomId },
+      },
+    },
+    // no teleporters in destination room
+    secondRoomItems: {},
+  });
+
+  const originalPosition = heelsState(gameState).position;
+
+  playGameThrough(gameState, {
+    frameRate: { fps: [15] }, // keep frame rate low to reduce computation
+
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("jump");
+    },
+    until(gameState) {
+      return gameState.gameTime > 5_000;
+    },
+  });
+
+  // game should not have crashed; heels stays in the original room
+  expect(gameState.characterRooms.heels?.id).toEqual("firstRoom");
+  expect(heelsState(gameState).position).toEqual(originalPosition);
+});
+
 test("teleporting clamps position so player doesn't overhang destination", () => {
   const gameState = setUpBasicGame({
     firstRoomItems: {
