@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { CampaignLocator } from "../../../model/modelTypes";
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
-import { supabaseDb } from "../../../db/supabaseDb";
+import { importSupabaseDb } from "../../../db/supabaseDb.import";
 import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
 import {
   loadCampaignFromApi,
@@ -51,6 +51,7 @@ const save = async () => {
     throw new Error("Campaign is not named, can't save");
   }
 
+  const { supabaseDb } = await importSupabaseDb();
   const { data, error } = await supabaseDb.auth.getUser();
   if (error) {
     throw new Error("Failed to get user:", error);

@@ -2,7 +2,7 @@ import type { Provider } from "@supabase/supabase-js";
 
 import type { Subset } from "../../../utils/subset";
 
-import { supabaseDb } from "../../../db/supabaseDb";
+import { importSupabaseDb } from "../../../db/supabaseDb.import";
 import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
 import {
   nerdFontDiscordChar,
@@ -46,6 +46,7 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
     redirectToUrl.hash = "";
     const redirectTo = redirectToUrl.toString();
 
+    const { supabaseDb } = await importSupabaseDb();
     const { error } = await supabaseDb.auth.signInWithOAuth({
       provider,
       options: {
@@ -55,6 +56,7 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
     if (error) console.error("Login error:", error);
   };
   const handleLogout = async () => {
+    const { supabaseDb } = await importSupabaseDb();
     const { error } = await supabaseDb.auth.signOut();
     if (error) console.error("Logout error:", error);
   };

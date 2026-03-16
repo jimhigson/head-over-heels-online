@@ -5,7 +5,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { LoadingBanner } from "../../../../../../ui/LoadingBanner";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
@@ -31,9 +31,7 @@ export const CrownsDialog = ({
         <FiveCrownsDisplay />
         {isLoading && (
           <div>
-            <BitmapText className="animate-flash text-center sprites-double-height block text-midRed zx:text-zxRed bg-white top-4">
-              LOADING
-            </BitmapText>
+            <LoadingBanner>LOADING</LoadingBanner>
           </div>
         )}
         {!isLoading && (

@@ -4,7 +4,7 @@ import type { EditorCampaign } from "../editor/editorTypes";
 import type { Campaign, CampaignLocator } from "../model/modelTypes";
 
 import { compressObject, decompressObject } from "./compressObject";
-import { supabaseDb } from "./supabaseDb";
+import { importSupabaseDb } from "./supabaseDb.import";
 
 export type CampaignGetLocator = SetOptional<
   CampaignLocator,
@@ -23,6 +23,7 @@ export const saveCampaignToDb = async (campaign: EditorCampaign) => {
     throw new Error("can not save a campaign without a name");
   }
 
+  const { supabaseDb } = await importSupabaseDb();
   const res = await supabaseDb.rpc("save_campaign_version", {
     p_name: campaign.locator.campaignName,
     p_data: await compressObject(campaign),
@@ -44,6 +45,7 @@ export const saveCampaignToDb = async (campaign: EditorCampaign) => {
 export const loadCampaignFromDb = async (
   options: CampaignGetLocator,
 ): Promise<Campaign<string>> => {
+  const { supabaseDb } = await importSupabaseDb();
   const res = await supabaseDb.rpc("get_latest_campaign", {
     p_campaign_name: options.campaignName,
     p_user_id: options.userId,
@@ -102,6 +104,7 @@ export const getAllUsersLatestCampaigns = async ({
 }: {
   publishedOnly: boolean;
 }): Promise<CampaignDirectory> => {
+  const { supabaseDb } = await importSupabaseDb();
   const res = await supabaseDb.rpc("get_all_users_latest_campaigns", {
     p_published_only: publishedOnly,
   });
