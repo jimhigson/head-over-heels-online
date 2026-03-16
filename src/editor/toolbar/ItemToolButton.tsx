@@ -9,12 +9,12 @@ import { setTool } from "../slice/levelEditorSlice";
 import { ToolbarButton } from "./buttons/ToolbarButton";
 import { useIsCurrentItemTool } from "./useIsCurrentItemTool";
 
-type ItemToolButtonProps<T extends JsonItemType> = {
+export type ItemToolButtonProps<T extends JsonItemType> = PropsWithChildren<{
   itemTool: ItemTool<T>;
   className?: string;
   shortcutKeys?: ShortcutKeys;
   tooltipContent?: ReactNode;
-};
+}>;
 
 export const ItemToolButton = <T extends JsonItemType>({
   itemTool,
@@ -22,7 +22,7 @@ export const ItemToolButton = <T extends JsonItemType>({
   className,
   shortcutKeys,
   tooltipContent,
-}: PropsWithChildren<ItemToolButtonProps<T>>) => {
+}: ItemToolButtonProps<T>) => {
   const isCurrentTool = useIsCurrentItemTool(itemTool);
 
   return (

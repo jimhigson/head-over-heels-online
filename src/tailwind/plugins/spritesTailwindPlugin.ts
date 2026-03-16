@@ -375,5 +375,11 @@ export const spritesTailwindPlugin = plugin(
       ".sprites-uppercase&",
       ".sprites-uppercase &",
     ]);
+
+    addVariant("activated", [
+      "button:hover &",
+      // how cmd-k marks a command in the list as selected:
+      "[data-selected='true'] &",
+    ]);
   },
 );

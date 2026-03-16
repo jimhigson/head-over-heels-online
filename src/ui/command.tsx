@@ -6,13 +6,17 @@ import { cn } from "./cn";
 
 const Command = ({
   className,
+  onClose,
   ...props
-}: ComponentProps<typeof CommandPrimitive>) => (
+}: ComponentProps<typeof CommandPrimitive> & { onClose?: () => void }) => (
   <CommandPrimitive
     className={cn(
       "flex h-full w-full flex-col overflow-hidden bg-metallicBlue text-popover-foreground",
       className,
     )}
+    onKeyDown={(e) => {
+      if (e.key === "Escape") onClose?.();
+    }}
     {...props}
   />
 );
