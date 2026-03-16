@@ -1,0 +1,35 @@
+name: Compressed Size
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  compressed-size:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25.x
+          cache: "pnpm"
+      - uses: preactjs/compressed-size-action@v2
+        with:
+          build-script: "build:game"
+          pattern: "./dist/assets/*.js"
+          # strip content hashes from filenames (e.g. App-DK0reEgR.js → App.js)
+          # so the action can match chunks across the base and PR branches
+          strip-hash: "(-[a-zA-Z0-9_-]{8})\\."
+          compression: "gzip"
+          comment-key: "game"
+          sort-by: "Size:desc"
+      - uses: preactjs/compressed-size-action@v2
+        with:
+          build-script: "build:editor"
+          pattern: "./dist/editor/assets/*.js"
+          strip-hash: "(-[a-zA-Z0-9_-]{8})\\."
+          compression: "gzip"
+          comment-key: "editor"
+          sort-by: "Size:desc"

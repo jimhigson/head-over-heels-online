@@ -19,9 +19,13 @@ export const useSupabaseUser = () => {
       if (cancelled) return;
 
       // Get initial user
-      supabaseDb.auth.getUser().then(({ data: { user } }) => {
-        setUser(user);
-      });
+      const {
+        data: { user },
+      } = await supabaseDb.auth.getUser();
+
+      if (cancelled) return;
+
+      setUser(user);
 
       // Subscribe to changes
       const {
