@@ -1,5 +1,13 @@
 # Changelog
 
+## [22.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v21.0.0...v22.0.0) (2026-03-16)
+
+
+### Editor Changes
+
+* cmd-k command palette ([#775](https://github.com/jimhigson/head-over-heels-online/issues/775)) ([13bcaab](https://github.com/jimhigson/head-over-heels-online/commit/13bcaaba49d745175a7a0c0a748315655966be13))
+* refactor json schema for room json in editor to be ~70% smaller by reducing duplication ([#770](https://github.com/jimhigson/head-over-heels-online/issues/770)) ([023a950](https://github.com/jimhigson/head-over-heels-online/commit/023a9508e8023e47b53023153c81fdb19ebb4b50))
+
 ## [21.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v20.0.0...v21.0.0) (2026-03-15)
 
 
