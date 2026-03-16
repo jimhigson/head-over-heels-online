@@ -34,7 +34,7 @@ export const DissapearingItemToolbarIcon = ({
   return (
     <StackedToolbarIcons
       topClasses={twClass(
-        "texture-bubbles_white_2 [button:hover_&]:texture-animated-bubbles_white",
+        "texture-bubbles_white_2 activated:texture-animated-bubbles_white",
       )}
       bottomClasses={iconClassName}
     />
