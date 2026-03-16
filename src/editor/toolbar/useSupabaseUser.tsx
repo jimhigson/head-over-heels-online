@@ -2,7 +2,7 @@ import type { User } from "@supabase/supabase-js";
 
 import { useEffect, useState } from "react";
 
-import { supabaseDb } from "../../db/supabaseDb";
+import { importSupabaseDb } from "../../db/supabaseDb.import";
 
 export const useSupabaseUser = () => {
   // undefined - unknown
@@ -10,19 +10,39 @@ export const useSupabaseUser = () => {
   const [user, setUser] = useState<null | undefined | User>(undefined);
 
   useEffect(() => {
-    // Get initial user
-    supabaseDb.auth.getUser().then(({ data: { user } }) => {
+    let cancelled = false;
+
+    let cleanup: (() => void) | undefined;
+
+    const init = async () => {
+      const { supabaseDb } = await importSupabaseDb();
+      if (cancelled) return;
+
+      // Get initial user
+      const {
+        data: { user },
+      } = await supabaseDb.auth.getUser();
+
+      if (cancelled) return;
+
       setUser(user);
-    });
 
-    // Subscribe to changes
-    const {
-      data: { subscription },
-    } = supabaseDb.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-    });
+      // Subscribe to changes
+      const {
+        data: { subscription },
+      } = supabaseDb.auth.onAuthStateChange((event, session) => {
+        setUser(session?.user ?? null);
+      });
 
-    return () => subscription.unsubscribe();
+      cleanup = () => subscription.unsubscribe();
+    };
+
+    init();
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
+    };
   }, []);
 
   return user;

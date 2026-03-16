@@ -17,7 +17,7 @@ import { HoldDialog } from "./dialogs/hold/holdDialog";
 import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
 import { InstallDialog } from "./dialogs/install/InstallDialog";
 import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
-import { MapDialog } from "./dialogs/map/MapDialog";
+import { LazyMapDialog } from "./dialogs/map/MapDialog.lazy";
 import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
 import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
 import { OptionsDialog } from "./dialogs/options/OptionsDialog";
@@ -89,7 +89,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "mainMenu":
       return <MainMenuDialog />;
     case "map":
-      return <MapDialog />;
+      return <LazyMapDialog />;
     case "modernisationOptions":
       return <OptionsDialog />;
     case "offerReincarnation":
