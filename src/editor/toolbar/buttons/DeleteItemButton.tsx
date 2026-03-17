@@ -1,3 +1,5 @@
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { store } from "../../../store/store";
 import {
   deleteSelected,
@@ -19,7 +21,9 @@ export const DeleteItemToolButton = () => {
       tooltipContent={`## Delete items
 delete selected item(s)`}
     >
-      <span className={`sprite sprite-tinted texture-hud_char_X relative`} />
+      <span
+        className={`sprite sprite-tinted ${"texture-hud_char_X" satisfies TextureTailwindClass} relative`}
+      />
     </ToolbarButton>
   );
 };

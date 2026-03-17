@@ -1,7 +1,10 @@
 import type { Renderer } from "pixi.js";
 
 import type { PaletteSwaps } from "../../../game/render/filters/lutTexture/sparseLut";
-import type { AppSpritesheet } from "../loadedSpriteSheet";
+import type {
+  AppSpritesheet,
+  LoadableSpriteOption,
+} from "../loadedSpriteSheet";
 
 import { spritesheetPalette } from "../../palette/spritesheetPalette";
 import {
@@ -30,15 +33,23 @@ export const destroySceneryPlayerSpritesheetVariant = () => {
 export const createSceneryPlayerSpritesheetVariant = (
   pixiRenderer: Renderer,
   isDim: boolean,
+  spriteOption: LoadableSpriteOption,
 ): void => {
   destroySceneryPlayerSpritesheetVariant();
 
-  let result = createSpritesheetVariant(pixiRenderer, {
-    ambient: [{ paletteSwaps: sceneryPlayerSwaps, lutType: "sparse" }],
-  });
+  let result = createSpritesheetVariant(
+    pixiRenderer,
+    { ambient: [{ paletteSwaps: sceneryPlayerSwaps, lutType: "sparse" }] },
+    spriteOption,
+  );
 
   if (isDim) {
-    result = replaceSpritesheetWithSwopped(pixiRenderer, result, dimSwops);
+    result = replaceSpritesheetWithSwopped(
+      pixiRenderer,
+      result,
+      dimSwops,
+      spriteOption,
+    );
   }
 
   swopped = result;

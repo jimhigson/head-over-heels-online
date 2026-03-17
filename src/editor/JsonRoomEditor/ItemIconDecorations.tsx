@@ -4,11 +4,14 @@ import type { editor } from "monaco-editor";
 import { findNodeAtLocation } from "jsonc-parser";
 import { useEffect, useRef } from "react";
 
-import type { SanitisedForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import type { SceneryName } from "../../sprites/planets";
-import type { TextureId } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
+} from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
 
+import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/PlayableTailwindSprite";
 import { keys } from "../../utils/entries";
 import {
   selectCurrentEditingRoomJson,
@@ -21,7 +24,7 @@ import { useLoadMonaco } from "./useLoadMonaco";
 const textureForItem = (
   item: EditorJsonItemUnion,
   scenery: SceneryName,
-): `texture-${SanitisedForClassName<TextureId>}` => {
+): AnimatedTextureTailwindClass | TextureTailwindClass => {
   switch (item.type) {
     case "block":
       switch (item.config.style) {
@@ -56,10 +59,13 @@ const textureForItem = (
         case "bag":
           return twClass(`texture-bag`);
         case "shield":
+          return twClass(`texture-whiteRabbit_shield`);
         case "jumps":
+          return twClass(`texture-whiteRabbit_jumps`);
         case "extra-life":
+          return twClass(`texture-whiteRabbit_extra-life`);
         case "fast":
-          return twClass(`texture-whiteRabbit`);
+          return twClass(`texture-whiteRabbit_fast`);
         case "doughnuts":
           return twClass(`texture-doughnuts`);
         case "hooter":
@@ -243,9 +249,19 @@ const textureForItem = (
       switch (item.config.which) {
         case "head":
         case "headOverHeels":
-          return twClass(`texture-head_walking_towards_2`);
+          return playableTailwindSpriteClassname({
+            spritesheetName: "BlockStack" as "BlockStack",
+            character: "head",
+            action: "idle",
+            facingXy8: "towards",
+          });
         case "heels":
-          return twClass(`texture-heels_standing_towards`);
+          return playableTailwindSpriteClassname({
+            spritesheetName: "BlockStack" as "BlockStack",
+            character: "heels",
+            action: "idle",
+            facingXy8: "towards",
+          });
         default:
           item.config.which satisfies never;
       }

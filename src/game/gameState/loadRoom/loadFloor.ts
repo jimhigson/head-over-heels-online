@@ -4,7 +4,7 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import type { CreateSpriteOptions } from "../../render/createSprite";
+import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type JsonItem } from "../../../model/json/JsonItem";
@@ -35,7 +35,7 @@ export const floorEdgeRenderThicknessPx = 10;
 const extraFloorAmountForDoorsFar = 0.52;
 const extraFloorAmountForDoorsNear = 0.5;
 
-const shadowFullBlock: CreateSpriteOptions = Object.freeze({
+const shadowFullBlock: SpecifiedTextureCreateSpriteOptions = Object.freeze({
   textureId: "shadow.fullBlock",
   spritesheetVariant: "original",
 });

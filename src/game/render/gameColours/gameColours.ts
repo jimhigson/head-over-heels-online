@@ -1,6 +1,7 @@
 import type { Color } from "pixi.js";
 import type { Simplify } from "type-fest";
 
+import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { PaletteSwaps } from "../filters/lutTexture/sparseLut";
 
 import {
@@ -31,10 +32,12 @@ type PaletteSwapsForPlaceholderColours = Simplify<
   Required<Pick<PaletteSwaps, "replaceDark" | "replaceLight">>
 >;
 
+type Trend = "light-dark" | "light-mid" | "mid-dark";
+
 export const replacementColours = (
   hue: ZxSpectrumRoomHue,
   inDimmedPalette: boolean = false,
-  trend: "light-dark" | "light-mid" | "mid-dark" = "light-dark",
+  trend: Trend = "light-dark",
 ): PaletteSwapsForPlaceholderColours => {
   const palette = getSpritesheetPalette(inDimmedPalette);
 
@@ -65,5 +68,8 @@ export const replacementColours = (
   };
 };
 
-export const getWhite = (colourised: boolean, dim: boolean = false): Color =>
-  colourised ? gameColour("white", dim) : zxSpectrumColors.white;
+export const getWhite = (
+  spriteOption: SpriteOption,
+  dim: boolean = false,
+): Color =>
+  spriteOption === "Speccy" ? zxSpectrumColors.white : gameColour("white", dim);

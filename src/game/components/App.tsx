@@ -1,20 +1,22 @@
-import { lazy, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Provider } from "react-redux";
 import { Route, Switch } from "wouter";
 
 import { typedURLSearchParams } from "../../options/queryParams.ts";
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
 import { importLutPage } from "../../pages/LutPage.import.ts";
-import { SpritesPage } from "../../pages/SpritesPage.tsx";
-import { useIsUncolourised } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
+import { importSpritesPage } from "../../pages/spritesPage/SpritesPage.import.ts";
+import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import { gameStarted } from "../../store/slices/gameMenus/gameMenusSlice.ts";
 import { store } from "../../store/store.ts";
+import { SpinnerHead } from "../../ui/Spinner.tsx";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { CssVariables } from "./CssVariables.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
 import { WantedEditor404 } from "./WantedEditor404.tsx";
 
 const LazyLutPage = lazy(importLutPage);
+const LazySpritesPage = lazy(importSpritesPage);
 
 const searchParams = typedURLSearchParams();
 const campaignName = searchParams.get("campaignName");
@@ -37,12 +39,15 @@ if (campaignName !== null) {
 }
 
 const AppInner = () => {
-  const uncolourised = useIsUncolourised();
+  const spritesOption = useSpritesOption();
   useEffect(() => {
     // note that this isn't done before the first load, since we don't have the store then!
-    document.body.classList.toggle("zx", uncolourised);
-    document.body.classList.toggle("colourised", !uncolourised);
-  }, [uncolourised]);
+    document.body.classList.toggle("zx", spritesOption === "Speccy");
+    document.body.classList.toggle(
+      "colourised",
+      spritesOption === "BlockStack" || spritesOption === "Toppy",
+    );
+  }, [spritesOption]);
 
   return (
     // css variables needs the store so has to be in AppInner, not App
@@ -55,7 +60,9 @@ const AppInner = () => {
         </CssVariables>
       </Route>
       <Route path="/sprites">
-        <SpritesPage />
+        <Suspense fallback={<SpinnerHead />}>
+          <LazySpritesPage />
+        </Suspense>
       </Route>
       <Route path="/lut">
         <LazyLutPage />

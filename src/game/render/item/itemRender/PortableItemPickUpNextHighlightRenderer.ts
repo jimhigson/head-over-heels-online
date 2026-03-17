@@ -34,18 +34,18 @@ class PortableItemPickUpNextHighlightRenderer
     this.output.addChild(childRenderer.output);
 
     const {
-      general: { colourised },
+      general: { spriteOption },
       room,
     } = renderContext;
 
     this.#outlineFilter = new OutlineFilter({
       color:
-        colourised ?
-          (room.color.shade === "dimmed" ?
+        spriteOption === "Speccy" ?
+          zxSpectrumColor(room.color)
+        : (room.color.shade === "dimmed" ?
             spritesheetPaletteDim
           : spritesheetPalette
-          ).moss
-        : zxSpectrumColor(room.color),
+          ).moss,
     });
     this.#outlineFilter.enabled = false;
     this.output.filters = this.#outlineFilter;

@@ -1,6 +1,6 @@
 ## Cuddly Stuffed White Rabbits
 
-![](texture-whiteRabbit?float-right)The *cute toy bunnies* magically enhance your powers. The status display at the
+![](texture-whiteRabbit?float-right&sprite-scale-2)The *cute toy bunnies* magically enhance your powers. The status display at the
 bottom of the screen will keep you informed as to which powers are temporarily
 enhanced.
 
@@ -18,9 +18,9 @@ If you pick them up while head and heels are joined, they get *two each*
 
 ## ♨ Jump higher bunny
 
-![](texture-animated-heels_idle_right?text-metallicBlue&float-left)Only works on Heels
+![](texture-animated-heels_idle_right?text-metallicBlue&float-left&sprite-scale-2)Only works on Heels
 
 ## ⚡ Go faster bunny
-![](texture-animated-head_idle_right?text-metallicBlue&float-left)Only works on slow-moving Head
+![](texture-animated-head_idle_right?text-metallicBlue&float-left&sprite-scale-2)Only works on slow-moving Head
 
 > Section adapted from the original Head over Heels manual

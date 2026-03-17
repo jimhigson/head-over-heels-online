@@ -24,7 +24,7 @@ const spikyBallAppearanceImpl: ItemAppearance<
       },
       config: { startingPhase },
     },
-    general: { paused, colourised },
+    general: { paused, spriteOption },
   },
   tickContext: { deltaMS },
   currentRendering,
@@ -37,7 +37,8 @@ const spikyBallAppearanceImpl: ItemAppearance<
 
   const previousRendering = currentRendering?.output;
 
-  const variant = colourised ? "for-current-room" : "uncolourised";
+  const variant =
+    spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
   const rendering =
     previousRendering ??
     createSprite({

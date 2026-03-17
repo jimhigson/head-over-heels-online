@@ -1,7 +1,13 @@
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
+} from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { assignInputStart } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import {
   optionsHintMarkdownClassname,
@@ -12,6 +18,7 @@ import { multilineTextClass } from "../../multilineTextClass";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
 
 export const SelectTheKeysMenuItems = () => {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
   const isScreenRelativeControl = useDirectionsRelativeTo() === "screen";
 
   return (
@@ -31,8 +38,8 @@ export const SelectTheKeysMenuItems = () => {
           <span
             className={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
-                "texture-head_walking_towardsLeft_2 selectedMenuItem:texture-animated-head_walking_towardsLeft"
-              : "texture-head_walking_left_2 selectedMenuItem:texture-animated-head_walking_left"
+                `${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsLeft" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "towardsLeft" })}`
+              : `${spriteClassname({ character: "head", action: "idle", facingXy8: "left" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "left" })}`
             }`}
           />
         }
@@ -46,8 +53,8 @@ export const SelectTheKeysMenuItems = () => {
           <span
             className={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
-                "texture-head_walking_awayRight_2 selectedMenuItem:texture-animated-head_walking_awayRight"
-              : "texture-head_walking_right_2 selectedMenuItem:texture-animated-head_walking_right"
+                `${spriteClassname({ character: "head", action: "idle", facingXy8: "awayRight" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "awayRight" })}`
+              : `${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "right" })}`
             }`}
           />
         }
@@ -61,8 +68,8 @@ export const SelectTheKeysMenuItems = () => {
           <span
             className={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
-                "texture-head_walking_awayLeft_2 selectedMenuItem:texture-animated-head_walking_awayLeft"
-              : "texture-head_walking_away_2 selectedMenuItem:texture-animated-head_walking_away"
+                `${spriteClassname({ character: "head", action: "idle", facingXy8: "awayLeft" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "awayLeft" })}`
+              : `${spriteClassname({ character: "head", action: "idle", facingXy8: "away" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "away" })}`
             }`}
           />
         }
@@ -76,8 +83,8 @@ export const SelectTheKeysMenuItems = () => {
           <span
             className={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
-                "texture-head_walking_towardsRight_2 selectedMenuItem:texture-animated-head_walking_towardsRight"
-              : "texture-head_walking_towards_2 selectedMenuItem:texture-animated-head_walking_towards"
+                `${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "towardsRight" })}`
+              : `${spriteClassname({ character: "head", action: "idle", facingXy8: "towards" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "towards" })}`
             }`}
           />
         }
@@ -89,7 +96,7 @@ export const SelectTheKeysMenuItems = () => {
         label="Jump"
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-spring_released selectedMenuItem:texture-spring_compressed`}
+            className={`${spriteLeaderClasses} ${"texture-spring_released" satisfies TextureTailwindClass} ${"selectedMenuItem:texture-spring_compressed" satisfies TextureTailwindClass}`}
           />
         }
         valueElement={<SelectKeysMenuAssignmentValue action="jump" />}
@@ -105,15 +112,18 @@ export const SelectTheKeysMenuItems = () => {
       </div>
       <div className={`${multilineTextClass} col-span-3`}>
         <BlockyMarkdown
-          markdown={`**NOTE:** Some puzzles require Heels to jump and pick up/down simultaneously - assign a key to *both jump and carry*
-          `}
+          markdown={`**NOTE:** Some puzzles require Heels to jump and pick up/down simultaneously - keep a key assigned to *both jump and carry*`}
           className={optionsHintMarkdownClassname}
         />
       </div>
       <MenuItem
         id="carry"
         label="Carry"
-        leader={<span className={`${spriteLeaderClasses} texture-bag`} />}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} ${"texture-bag" satisfies TextureTailwindClass}`}
+          />
+        }
         valueElement={<SelectKeysMenuAssignmentValue action="carry" />}
         onSelect={useDispatchActionCallback(assignInputStart, "carry")}
         hint={
@@ -131,7 +141,11 @@ export const SelectTheKeysMenuItems = () => {
             Fire dough- nuts
           </BitmapText>
         }
-        leader={<span className={`${spriteLeaderClasses} texture-doughnuts`} />}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} ${"texture-doughnuts" satisfies TextureTailwindClass}`}
+          />
+        }
         hint={
           <BlockyMarkdown
             className={optionsHintMarkdownClassname}
@@ -164,13 +178,13 @@ export const SelectTheKeysMenuItems = () => {
         hintInline
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-blank relative overflow-hidden`}
+            className={`${spriteLeaderClasses} ${"texture-blank" satisfies TextureTailwindClass} relative overflow-hidden`}
           >
             <span
-              className={`${spriteLeaderClasses} texture-head_walking_towardsRight_2 selectedMenuItem:texture-animated-head_walking_towardsRight absolute right-[50%]`}
+              className={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute right-[50%]`}
             />
             <span
-              className={`${spriteLeaderClasses} texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_walking_towardsRight absolute left-[50%]`}
+              className={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute left-[50%]`}
             />
           </span>
         }
@@ -193,7 +207,7 @@ export const SelectTheKeysMenuItems = () => {
         hintInline
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-head_walking_towardsRight_2 selectedMenuItem:texture-animated-head_walking_towardsRight`}
+            className={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
           />
         }
       />
@@ -220,7 +234,7 @@ export const SelectTheKeysMenuItems = () => {
         hintInline
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_walking_towardsRight`}
+            className={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
           />
         }
       />
@@ -237,7 +251,11 @@ export const SelectTheKeysMenuItems = () => {
         label="Map"
         valueElement={<SelectKeysMenuAssignmentValue action="map" />}
         onSelect={useDispatchActionCallback(assignInputStart, "map")}
-        leader={<span className={`${spriteLeaderClasses} texture-scroll`} />}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} ${"texture-scroll" satisfies TextureTailwindClass}`}
+          />
+        }
       />
       <MenuItem
         id="hold"
@@ -245,7 +263,11 @@ export const SelectTheKeysMenuItems = () => {
         label="Pause"
         valueElement={<SelectKeysMenuAssignmentValue action="hold" />}
         onSelect={useDispatchActionCallback(assignInputStart, "hold")}
-        leader={<span className={`${spriteLeaderClasses} texture-drum`} />}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} ${"texture-drum" satisfies TextureTailwindClass}`}
+          />
+        }
       />
       <MenuItem
         id="menu"
@@ -317,22 +339,17 @@ export const SelectTheKeysMenuItems = () => {
         </BitmapText>
       </div>
       <MenuItem
-        id="toggleColourisation"
+        id="cycleSprites"
         label={
           <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-            Toggle colour- isation
+            Next skin
           </BitmapText>
         }
-        valueElement={
-          <SelectKeysMenuAssignmentValue action="toggleColourisation" />
-        }
-        onSelect={useDispatchActionCallback(
-          assignInputStart,
-          "toggleColourisation",
-        )}
+        valueElement={<SelectKeysMenuAssignmentValue action="cycleSprites" />}
+        onSelect={useDispatchActionCallback(assignInputStart, "cycleSprites")}
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-switch_left sprites-normal-height`}
+            className={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
           />
         }
       />
@@ -352,7 +369,7 @@ export const SelectTheKeysMenuItems = () => {
         )}
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-switch_left sprites-normal-height`}
+            className={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
           />
         }
       />
@@ -372,7 +389,7 @@ export const SelectTheKeysMenuItems = () => {
         )}
         leader={
           <span
-            className={`${spriteLeaderClasses} texture-switch_left sprites-normal-height`}
+            className={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
           />
         }
       />

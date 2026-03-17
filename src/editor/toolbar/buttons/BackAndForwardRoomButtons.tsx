@@ -1,3 +1,5 @@
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { useAppDispatch } from "../../../store/hooks";
 import {
   roomBack,
@@ -43,7 +45,9 @@ export const BackAndForwardRoomButtons = () => {
         shortcutKeys={["⇧<"]}
         tooltipContent={backTooltipMarkdown}
       >
-        <span className={`sprite texture-hud_char_lt relative`} />
+        <span
+          className={`sprite ${"texture-hud_char_lt" satisfies TextureTailwindClass} relative`}
+        />
       </ToolbarButton>
       <ToolbarButton
         className="bg-highlightBeige"
@@ -54,7 +58,9 @@ export const BackAndForwardRoomButtons = () => {
         shortcutKeys={["⇧>"]}
         tooltipContent={forwardTooltipMarkdown}
       >
-        <span className={`sprite texture-hud_char_gt relative`} />
+        <span
+          className={`sprite ${"texture-hud_char_gt" satisfies TextureTailwindClass} relative`}
+        />
       </ToolbarButton>
     </>
   );

@@ -4,6 +4,7 @@ import { size } from "iter-tools-es";
 import { Container, Rectangle, Sprite } from "pixi.js";
 
 import type { PokeableNumber } from "../../../model/ItemStateMap";
+import type { AppSpritesheetData } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
@@ -14,19 +15,21 @@ import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
 import { OutlineFilter } from "../filters/outlineFilter";
 
-const characterSpriteTextureId = (char: string): TextureId => {
+const characterSpriteTextureId = (
+  char: string,
+  spritesheetData: AppSpritesheetData,
+): TextureId => {
   const textureId = `hud.char.${escapeCharForTailwind(char)}`;
 
-  try {
-    assertIsTextureId(textureId);
-  } catch (e) {
-    throw new Error(
-      `no texture id for char "${char}": ${(e as Error).message}`,
-      { cause: e },
-    );
+  if (import.meta.env.DEV) {
+    try {
+      assertIsTextureId(textureId, spritesheetData);
+    } catch (e) {
+      throw new Error(`no texture id for char "${char}"`, { cause: e });
+    }
   }
 
-  return textureId;
+  return textureId as TextureId;
 };
 
 const printableString = (input: PokeableNumber | string): string => {
@@ -155,11 +158,12 @@ export class TextContainer extends Container {
     const lengthChanged = strLength !== oldLength;
 
     try {
-      const spritesheetTextures = originalSpriteSheet().textures;
+      const spritesheet = originalSpriteSheet();
+      const spritesheetTextures = spritesheet.textures;
 
       let i = 0;
       for (const char of str) {
-        const textureId = characterSpriteTextureId(char);
+        const textureId = characterSpriteTextureId(char, spritesheet.data);
 
         let sprite: Sprite | undefined;
         if (i < oldLength) {

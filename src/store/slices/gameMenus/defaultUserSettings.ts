@@ -22,9 +22,9 @@ export const defaultUserSettings: DefaultUserSettings = {
     // crt filters are distinctive look for the game,
     // but also maybe slow it down on older devices
     crtFilter: false,
-    uncolourised: false,
     emulatedResolution:
       detectDeviceType() === "mobile" ? "handheld" : "zxSpectrum",
+    sprites: "BlockStack",
   },
 
   gameSpeed: 1.2,

@@ -27,7 +27,8 @@ See the [DEVELOPING](./DEVELOPING.md) guide.
 - Some HoH audio also forked and re-encoded from [Doug Mencken's remake](https://github.com/dougmencken/HeadOverHeels) under the terms of the GPL v3
 - I built [snarkdown-in-react](https://www.npmjs.com/package/snarkdown-in-react) for this project, forked from the original [snarkdown](https://github.com/developit/snarkdown)
 - This repo has a [fork](src/game/render/sortZ/toposort/toposort.ts) built from [toposort](https://github.com/marcelklehr/toposort), adjusted ot be a bit more tolerant of cyclic paths in the graph
-- Recolourised 16 colour sprites are built from rips [by Tippy on Spriters Resource](https://www.spriters-resource.com/zx_spectrum/headoverheels/) based on original artwork by Bernie Drummand (sadly [no longer with us](https://www.theregister.com/2021/11/17/rip_bernie_drummond/)).
+- Recolourised 16 colour sprites are built from rips [by Toppy on Spriters Resource](https://www.spriters-resource.com/zx_spectrum/headoverheels/) based on original artwork by Bernie Drummand (sadly [no longer with us](https://www.theregister.com/2021/11/17/rip_bernie_drummond/)).
+- **Toppy** Also contributing redrawn artwork in the form of his spritesheet
 * Playtesting, ideas, map design, and general support by my brother, Tom Higson
 * Playtesting, moral support, and constant comms by [Jon Albaugh](https://x.com/fextwolf?s=21&t=PEqxJblCn3JB_NH8AOR6Zg)
 * Head over heels [font](https://fontstruct.com/fontstructions/show/996776/head_over_heels) recreated by [Patrick H. Lauke](http://splintered.co.uk/) is used in save dialogs for the level editor

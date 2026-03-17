@@ -6,6 +6,7 @@ import type {
 } from "../../originalGame";
 import type { DirectionXy4 } from "../../utils/vectors/vectors";
 import type { SceneryName } from "../planets";
+import type { LoadableSpriteOption } from "./loadedSpriteSheet";
 import type { TextureId } from "./spritesheetData/spriteSheetData";
 import type {
   SpritesheetTextureSwops,
@@ -21,11 +22,7 @@ import { halfbrite } from "../../utils/colour/halfBrite";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { spritesheetPalette } from "../palette/spritesheetPalette";
 import { spritesheetPaletteDim } from "../palette/spritesheetPalette";
-import { textureIds } from "./spritesheetData/spriteSheetData";
-
-const doorTextureIds = textureIds.filter(
-  (tid): tid is TextureId & `door.${string}` => tid.startsWith("door."),
-);
+const isDoorTexture = (tid: TextureId) => tid.startsWith("door.");
 
 /** NOTE: - does not match deadly floors */
 const isFloorTexture = (
@@ -41,54 +38,83 @@ const isWallTexture = (
 const isDoorLegsPillarTexture = (
   textureId: TextureId,
 ): textureId is TextureId & `${string}.door.legs.pillar.${string}` =>
-  /door\.legs\.pillar/.test(textureId);
+  /^door\.legs\.pillar/.test(textureId);
 
 const isLeftWallTexture = (
   textureId: TextureId,
 ): textureId is TextureId & `${string}.wall.${string}.left` =>
   /\.wall\.[^.]+\.left$/.test(textureId);
 
+const isMoonbaseScreen = (
+  textureId: TextureId,
+): textureId is TextureId & `moonbase.wall.screen.${number}` =>
+  /^moonbase\.wall\.screen/.test(textureId);
+
 const isSceneryTexture = (t: TextureId) =>
   isFloorTexture(t) || isWallTexture(t);
 
-export const colourisedRoomSwops = (
-  colourised: boolean,
+export const roomSpritesheetTextureSwops = (
   roomScenery: SceneryName,
   roomColor: ZxSpectrumRoomColour,
+  /**
+   * different spritesheets will have different levels of palette swopping - this
+   * param allows us to handle them differently in these cases
+   */
+  spriteOption: LoadableSpriteOption,
 ): SpritesheetTextureSwops | undefined => {
-  if (colourised) {
-    // non-dimmed room:
-    return {
-      ambient: [
-        {
-          lutType: "sparse",
-          paletteSwaps: replacementColours(
-            roomColor.hue,
-            roomColor.shade === "dimmed",
-          ),
-        },
-        roomColor.shade === "basic" ?
-          ambienceSwops(roomScenery, roomColor)
-        : {
-            // swop to the dimmed palette:
-            lutType: "sparse" as const,
-            paletteSwaps: {
-              ...spritesheetPaletteDim,
-            },
+  switch (spriteOption) {
+    case "BlockStack":
+      return {
+        ambient: [
+          {
+            lutType: "sparse",
+            paletteSwaps: replacementColours(
+              roomColor.hue,
+              roomColor.shade === "dimmed",
+            ),
           },
-      ],
-      textureSpecific: [
-        ...scenerySwops(roomScenery, roomColor),
-        ...floorEdgeSwops(roomScenery, roomColor),
-        ...bookSwops(roomColor),
-      ],
-      // do not replace placeholder colours on doors with the room's colour,
-      // since doors need to have them replaced with the colour of the room the
-      // door leads to
-      noReplacePlaceholderTextures: doorTextureIds,
-    };
-  } else {
-    return undefined;
+          roomColor.shade === "basic" ?
+            ambienceSwops(roomScenery, roomColor)
+          : {
+              // swop to the dimmed palette:
+              lutType: "sparse" as const,
+              paletteSwaps: {
+                ...spritesheetPaletteDim,
+              },
+            },
+        ],
+        textureSpecific: [
+          ...scenerySwops(roomScenery, roomColor),
+          ...floorEdgeSwops(roomScenery, roomColor),
+          ...bookSwops(roomColor),
+        ],
+        // do not replace placeholder colours on doors with the room's colour,
+        // since doors need to have them replaced with the colour of the room the
+        // door leads to
+        noReplacePlaceholderTextures: isDoorTexture,
+      };
+    case "Toppy":
+      return {
+        ambient: [],
+        // do colour replacement only on the backgrounds, which Toppy didn't (re)draw (yet?):
+        textureSpecific: [
+          {
+            paletteSwaps: replacementColours(
+              roomColor.hue,
+              false, // never use the dimmed palette for replacements
+            ),
+            textureIds: (t: TextureId) =>
+              isFloorTexture(t) ||
+              isWallTexture(t) ||
+              isDoorLegsPillarTexture(t) ||
+              isMoonbaseScreen(t),
+          },
+          ...floorEdgeSwops(roomScenery, roomColor),
+        ],
+      };
+    default:
+      spriteOption satisfies never;
+      return undefined;
   }
 };
 

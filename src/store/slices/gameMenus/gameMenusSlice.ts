@@ -106,13 +106,15 @@ export type OpenMenu =
       menuParam: EmptyObject;
     });
 
+export const spriteOptionValues = ["BlockStack", "Speccy", "Toppy"] as const;
+export type SpriteOption = (typeof spriteOptionValues)[number];
+
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
   crtFilter?: boolean;
-  // all settings named after the opposite of the default - hence, uncolourised, not colourised
-  uncolourised?: false;
   showBoundingBoxes?: ShowBoundingBoxes;
   showShadowMasks?: boolean;
+  sprites?: SpriteOption;
 };
 
 export const inputDirectionModes = ["4-way", "8-way", "analogue"] as const;
@@ -601,6 +603,16 @@ export const gameMenusSlice = createSlice({
       state.userSettings.displaySettings.showShadowMasks = showShadowMasks;
     },
 
+    nextSpritesOption(state) {
+      state.userSettings.displaySettings.sprites = nextInCycle(
+        spriteOptionValues,
+        state.userSettings.displaySettings.sprites ??
+          defaultUserSettings.displaySettings.sprites,
+      );
+    },
+    setSpritesOption(state, { payload }: PayloadAction<SpriteOption>) {
+      state.userSettings.displaySettings.sprites = payload;
+    },
     toggleUserSetting(
       state,
       {
@@ -962,6 +974,8 @@ export const {
   mapPressed,
   menuOpenOrExitPressed,
   nextDirectionRelativeTo,
+  nextSpritesOption,
+  setSpritesOption,
   nextInputDirectionMode,
   reincarnationAccepted,
   reincarnationFishEaten,

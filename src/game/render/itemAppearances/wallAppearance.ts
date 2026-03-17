@@ -7,6 +7,7 @@ import type { CollideableItem } from "../../collision/aabbCollision";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
   perpendicularAxisXy,
@@ -29,7 +30,7 @@ const sampleBuffer: CollideableItem = {
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
-      general: { pixiRenderer, colourised },
+      general: { pixiRenderer, spriteOption },
       item,
       room,
     },
@@ -59,6 +60,10 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
           }
         : { x: 0, y: wallTileSize.h };
 
+      const spritesheetVariant =
+        spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
+      const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+
       const wallTileSprite = createSprite({
         textureId: wallTextureId(
           room.planet,
@@ -68,7 +73,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
         ),
         ...tileRenderPosition,
         pivot: tileRenderPivot,
-        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        spritesheet,
       });
       // TODO: use callback version of createSprite to create the wall with different textures
       wallTilesContainer.addChild(wallTileSprite);
@@ -76,7 +81,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
       if (room.planet === "moonbase") {
         const animationId = `moonbase.wall.screen.${tiles[i]}.away`;
         // only moonbase has animated walls
-        if (isAnimationId(animationId)) {
+        if (isAnimationId(animationId, spritesheet.data)) {
           wallAnimationsContainer.addChild(
             createSprite({
               animationId,
@@ -84,8 +89,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
               flipX: direction === "left",
               x: tileRenderPosition.x + (direction === "away" ? -8 : 8),
               y: tileRenderPosition.y - 23,
-              spritesheetVariant:
-                colourised ? "for-current-room" : "uncolourised",
+              spritesheet,
             }),
           );
         }
@@ -113,7 +117,9 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
                 ...tileRenderPosition,
                 pivot: tileRenderPivot,
                 spritesheetVariant:
-                  colourised ? "for-current-room" : "uncolourised",
+                  spriteOption === "Speccy" ? "uncolourised" : (
+                    "for-current-room"
+                  ),
               }),
             );
             const maskSprite = createSprite({

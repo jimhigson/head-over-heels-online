@@ -3,6 +3,7 @@ import type { RenderTexture } from "pixi.js";
 import { Container, type Renderer, Sprite, Texture } from "pixi.js";
 
 import type { RoomState } from "../../../../model/RoomState";
+import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import type { ButtonId } from "./OnScreenButtonRenderer";
 
 import { zxSpectrumColor } from "../../../../originalGame";
@@ -31,7 +32,7 @@ export class ArcadeStyleButtonContainer<
   #pressedButtonSprite: Sprite;
 
   constructor(
-    private readonly colourised: boolean,
+    private readonly spriteOption: SpriteOption,
     private readonly which: ButtonId,
     private readonly pixiRenderer: Renderer,
     initiallyShowOnSurface: SurfaceContent,
@@ -87,29 +88,29 @@ export class ArcadeStyleButtonContainer<
   }
 
   generateButtonSpriteTextures(room: RoomState<string, string>): void {
-    const { which, colourised } = this;
+    const { which, spriteOption } = this;
 
     const spriteTemplate = createSprite({
       textureId: "button",
       spritesheetVariant: "original",
     });
     const colour =
-      colourised ?
-        gameColour(
+      spriteOption === "Speccy" ?
+        zxSpectrumColor(buttonColours.zx[which])
+      : gameColour(
           buttonColours.colourised[which],
           room.color.shade === "dimmed",
-        )
-      : zxSpectrumColor(buttonColours.zx[which]);
+        );
 
     const colourDim =
-      colourised ?
-        halfbrite(colour, 0.66)
-      : zxSpectrumColor(buttonColours.zx[which], "dimmed");
+      spriteOption === "Speccy" ?
+        zxSpectrumColor(buttonColours.zx[which], "dimmed")
+      : halfbrite(colour, 0.66);
 
     const colourBlack =
-      colourised ?
-        gameColour("pureBlack", room.color.shade === "dimmed")
-      : zxSpectrumColor("black");
+      spriteOption === "Speccy" ?
+        zxSpectrumColor("black")
+      : gameColour("pureBlack", room.color.shade === "dimmed");
 
     const filter = new PaletteSwapFilter({
       lutType: "sparse",

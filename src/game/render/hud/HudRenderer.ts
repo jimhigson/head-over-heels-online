@@ -12,7 +12,7 @@ import type {
 } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
 import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
-import type { Xy } from "../../../utils/vectors/vectors";
+import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import type { PortableItem } from "../../physics/itemPredicates";
 import type { Renderer } from "../Renderer";
@@ -25,7 +25,11 @@ import type {
 import { individualCharacterNames } from "../../../model/modelTypes";
 import { zxSpectrumColor } from "../../../originalGame";
 import { getSpritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
-import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import {
+  type LoadableSpriteOption,
+  originalSpriteSheet,
+} from "../../../sprites/spritesheet/loadedSpriteSheet";
+import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetas";
 import {
   hudCharTextureSize,
   smallItemTextureSize,
@@ -99,8 +103,10 @@ const sideMultiplier = (character: CharacterName) => {
   return character === "heels" ? 1 : -1;
 };
 
-const headTextureId = "head.walking.right.2";
-const heelsTextureId = "heels.standing.towards";
+const hudCharacterDirection = {
+  head: "right",
+  heels: "towards",
+} as const satisfies Record<IndividualCharacterName, DirectionXy4>;
 
 export class HudRenderer<RoomId extends string, RoomItemId extends string>
   implements
@@ -136,15 +142,22 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     };
   };
 
+  #characterTextureIds: Record<IndividualCharacterName, TextureId>;
+
   #unlisten;
   #carryingItemRoom: RoomState<RoomId, RoomItemId> | undefined = undefined;
 
   constructor(public readonly renderContext: HudRenderContext<RoomId>) {
     const { general } = renderContext;
 
+    this.#characterTextureIds = {
+      head: this.#resolveCharacterTextureId("head"),
+      heels: this.#resolveCharacterTextureId("heels"),
+    };
+
     this.#hudElements = {
       head: {
-        sprite: this.#characterSprite("head"),
+        sprite: this.#createCharacterSprite("head"),
         livesText: new TextContainer({
           pixiRenderer: general.pixiRenderer,
           label: "headLives",
@@ -175,7 +188,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         }),
       },
       heels: {
-        sprite: this.#characterSprite("heels"),
+        sprite: this.#createCharacterSprite("heels"),
         livesText: new TextContainer({
           pixiRenderer: general.pixiRenderer,
           label: "heelsLives",
@@ -336,11 +349,29 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     };
   }
 
-  #characterSprite(characterName: IndividualCharacterName): Sprite {
+  #resolveCharacterTextureId(
+    characterName: IndividualCharacterName,
+  ): TextureId {
+    const { spriteOption } = this.renderContext.general;
+    const loadable: LoadableSpriteOption =
+      spriteOption === "Speccy" ? "BlockStack" : spriteOption;
+    const direction = hudCharacterDirection[characterName];
+    const standing =
+      spritesheetMetas[loadable].playable[characterName][direction]?.standing;
+    if (!standing) {
+      throw new Error(
+        `no standing defined for ${characterName}.${direction} in ${loadable}`,
+      );
+    }
+
+    return standing === true ?
+        `${characterName}.standing.${direction}`
+      : `${characterName}.walking.${direction}.${standing}`;
+  }
+
+  #createCharacterSprite(characterName: IndividualCharacterName): Sprite {
     const characterSprite = new Sprite(
-      originalSpriteSheet().textures[
-        characterName === "head" ? headTextureId : heelsTextureId
-      ],
+      originalSpriteSheet().textures[this.#characterTextureIds[characterName]],
     );
 
     characterSprite.anchor = { x: 0.5, y: 0 };
@@ -378,7 +409,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   }: HudRendererTickContextWithRoom<RoomId, RoomItemId>) {
     const {
       renderContext: {
-        general: { gameState, colourised },
+        general: { gameState, spriteOption },
       },
     } = this;
 
@@ -413,7 +444,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       carryingContainer.addChild(carriedRendering);
 
       carryingContainer.tint = tintForHudIfUncolourised(
-        colourised,
+        spriteOption,
         room.color,
         // carried item is always activated
         true,
@@ -423,12 +454,12 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const bagSprite = this.#hudElements.heels.bag.icon;
     const hasBag = heelsAbilities?.hasBag;
     bagSprite.texture = getSpriteSheetVariantTexture(
-      spritesheetVariantForHud(colourised, hasBag ?? false),
+      spritesheetVariantForHud(spriteOption, hasBag ?? false),
       "bag",
     );
 
     bagSprite.tint = tintForHudIfUncolourised(
-      colourised,
+      spriteOption,
       room.color,
       hasBag ?? false,
     );
@@ -439,7 +470,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   }: HudRendererTickContextWithRoom<RoomId, RoomItemId>) {
     const {
       renderContext: {
-        general: { gameState, colourised },
+        general: { gameState, spriteOption, spritesheetMeta },
       },
     } = this;
     const headAbilities = selectAbilities(gameState, "head");
@@ -455,24 +486,29 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     // TODO: colourise will never change in the lifetime of the renderer, this doesn't need to be done each tick
 
     hooterSprite.texture = getSpriteSheetVariantTexture(
-      spritesheetVariantForHud(colourised, hasHooter ?? false),
+      spritesheetVariantForHud(spriteOption, hasHooter ?? false),
       "hooter",
     );
     doughnutsSprite.texture = getSpriteSheetVariantTexture(
-      spritesheetVariantForHud(colourised, hasDoughnuts),
+      spritesheetVariantForHud(spriteOption, hasDoughnuts),
       "doughnuts",
     );
 
     this.#hudElements.head.doughnuts.textContainer.text = doughnutCount;
-    doughnutsText.tint = tintForHud(colourised, room.color, false);
+    doughnutsText.tint = tintForHud(
+      spriteOption,
+      room.color,
+      false,
+      spritesheetMeta,
+    );
 
     hooterSprite.tint = tintForHudIfUncolourised(
-      colourised,
+      spriteOption,
       room.color,
       hasHooter ?? false,
     );
     doughnutsSprite.tint = tintForHudIfUncolourised(
-      colourised,
+      spriteOption,
       room.color,
       hasDoughnuts,
     );
@@ -484,7 +520,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       renderContext: {
-        general: { gameState, colourised, onScreenControls },
+        general: { gameState, spriteOption, spritesheetMeta, onScreenControls },
       },
     } = this;
     const abilities = selectAbilities(gameState, characterName);
@@ -534,10 +570,20 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         screenSize.y - extraSkillFromBottom(onScreenControls);
     }
 
-    skillText.tint = tintForHud(colourised, room.color, false);
-    shieldText.tint = tintForHud(colourised, room.color, false);
-    shieldIcon.tint = tintForIcon(colourised, room.color);
-    extraSkillIcon.tint = tintForIcon(colourised, room.color);
+    skillText.tint = tintForHud(
+      spriteOption,
+      room.color,
+      false,
+      spritesheetMeta,
+    );
+    shieldText.tint = tintForHud(
+      spriteOption,
+      room.color,
+      false,
+      spritesheetMeta,
+    );
+    shieldIcon.tint = tintForIcon(spriteOption, room.color);
+    extraSkillIcon.tint = tintForIcon(spriteOption, room.color);
   }
 
   #characterIsActive(
@@ -557,7 +603,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       renderContext: {
-        general: { gameState, colourised, onScreenControls },
+        general: { gameState, spriteOption, onScreenControls },
       },
     } = this;
 
@@ -566,11 +612,11 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     let characterTexture: Texture;
     const isActive = this.#characterIsActive(gameState, characterName);
 
-    const spritesheetVariant = spritesheetVariantForHud(colourised, isActive);
+    const spritesheetVariant = spritesheetVariantForHud(spriteOption, isActive);
     try {
       characterTexture = getSpriteSheetVariantTexture(
         spritesheetVariant,
-        characterName === "head" ? headTextureId : heelsTextureId,
+        this.#characterTextureIds[characterName],
       );
     } catch (e) {
       console.error(this.renderContext);
@@ -593,7 +639,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       : screenSize.y - smallItemTextureSize.h;
 
     characterSprite.tint = tintForHudIfUncolourised(
-      colourised,
+      spriteOption,
       room.color,
       isActive,
     );
@@ -609,7 +655,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   ) {
     const {
       renderContext: {
-        general: { gameState, colourised, onScreenControls },
+        general: { gameState, spriteOption, spritesheetMeta, onScreenControls },
       },
     } = this;
 
@@ -629,14 +675,16 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     livesTextContainer.text = livesText;
 
     const isActive = this.#characterIsActive(gameState, characterName);
-    const isDimRoom = room.color.shade === "dimmed";
+    const useDimmedColours =
+      spritesheetMeta.useAltPaletteInDimmedRoom === true &&
+      room.color.shade === "dimmed";
 
     const tintColour =
-      colourised ?
-        getSpritesheetPalette(isDimRoom)[
+      spriteOption === "Speccy" ?
+        zxSpectrumColor(getRoomColorScheme(room.color).hud.brightHue)
+      : getSpritesheetPalette(useDimmedColours)[
           isActive ? playableAccentColours[characterName] : "midGrey"
-        ]
-      : zxSpectrumColor(getRoomColorScheme(room.color).hud.brightHue);
+        ];
 
     livesTextContainer.tint = tintColour;
   }

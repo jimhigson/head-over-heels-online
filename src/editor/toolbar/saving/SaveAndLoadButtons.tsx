@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import type { CampaignLocator } from "../../../model/modelTypes";
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
@@ -121,14 +122,17 @@ export const SaveAndLoadButtons = () => {
               <div className="flex flex-row items-center">
                 <span
                   className={cn(
-                    `sprite sprite-tinted text-highlightBeige texture-hud_char_➡ relative`,
+                    `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
                     { "text-lightGrey": user === null },
                   )}
                 />
                 <span
-                  className={cn(`sprite texture-editor_tool_save relative`, {
-                    "sprite-revert-to-two-tone-dim": user === null,
-                  })}
+                  className={cn(
+                    `sprite ${"texture-editor_tool_save" satisfies TextureTailwindClass} relative`,
+                    {
+                      "sprite-revert-to-two-tone-dim": user === null,
+                    },
+                  )}
                 />
               </div>
             </ToolbarButton>
@@ -153,10 +157,14 @@ export const SaveAndLoadButtons = () => {
         shortcutKeys={["^O", "⌘O"]}
       >
         <div className="flex flex-row items-center">
-          <span className={cn(`sprite texture-editor_tool_open relative`)} />
           <span
             className={cn(
-              `sprite sprite-tinted text-highlightBeige texture-hud_char_➡ relative`,
+              `sprite ${"texture-editor_tool_open" satisfies TextureTailwindClass} relative`,
+            )}
+          />
+          <span
+            className={cn(
+              `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
             )}
           />
         </div>

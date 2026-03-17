@@ -9,9 +9,9 @@ import {
 import "react";
 import { twMerge } from "tailwind-merge";
 
-import { isTextureId } from "../../../sprites/assertIsTextureId";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
-import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { ClassnameWrap } from "../../../utils/react/ClassnameWrap";
 import { sanitiseForClassName } from "./SanitiseForClassName";
 
@@ -28,16 +28,18 @@ export interface BitmapTextProps {
    */
   classnameCycle?: string[];
   className?: string;
+  id?: string;
   noSlitWords?: boolean;
   onClick?: MouseEventHandler<HTMLSpanElement>;
   noTint?: boolean;
-  TagName?: "h1" | "h2" | "span";
+  TagName?: "h1" | "h2" | "li" | "span";
   role?: AriaRole;
 }
 
 export const BitmapText = ({
   children: text,
   className,
+  id,
   noSlitWords,
   classnameCycle,
   onClick,
@@ -61,7 +63,7 @@ export const BitmapText = ({
   const words = noSlitWords ? [textString] : textString.split(/\s+/);
 
   return (
-    <TagName className={className} onClick={onClick}>
+    <TagName className={className} id={id} onClick={onClick}>
       <span className="sr-only">{textString}</span>
       {words.map((word, wordIndex) => {
         return (
@@ -80,34 +82,14 @@ export const BitmapText = ({
           >
             {/* Array.from(string) is unicode-aware */}
             {Array.from(word).map((c, charIndex) => {
-              let textureId = `hud.char.${escapeCharForTailwind(c)}`;
-              if (!isTextureId(textureId)) {
-                // in case of an uppercase-only texture, try the uppercase version of the char:
-                textureId = `hud.char.${escapeCharForTailwind(c).toLocaleUpperCase()}`;
+              const textureId =
+                `hud.char.${escapeCharForTailwind(c)}` as TextureId;
 
-                if (!isTextureId(textureId)) {
-                  console.error(
-                    "no texture for char",
-                    c,
-                    c.charCodeAt(0),
-                    textureId,
-                    "we have:",
-                    Object.keys(originalSpriteSheet().textures),
-                  );
-                }
-              }
               const imgSpriteEle = (
                 <span
                   role={role}
                   key={charIndex}
-                  className={`sprite ${
-                    isTextureId(textureId) ?
-                      // all texture-hud_char_* classnames are whitelisted in tailwind config so it is
-                      // fine to construct dynamically:
-                      //twClass("texture-hud_char_A")
-                      `texture-${sanitiseForClassName(textureId)}`
-                    : "texture-hud_char_?"
-                  }
+                  className={`sprite ${`texture-${sanitiseForClassName(textureId)}`}
                   ${noTint ? "" : "sprite-tinted"}
                   ${
                     classnameCycle === undefined ? "" : (

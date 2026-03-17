@@ -1,0 +1,19 @@
+{
+  "warm1": "#FFFFA0",
+  "warm2": "#FFE080",
+  "warm3": "#FFC040",
+  "warm4": "#E08040",
+  "warm5": "#A04000",
+  "warm6": "#800000",
+  "pink1": "#FF80A0",
+  "pink2": "#FF4060",
+  "grey1": "#A0A0A0",
+  "grey2": "#707070",
+  "grey3": "#404040",
+  "grey4": "#000000",
+  "cool1": "#C0C0E0",
+  "cool2": "#6094E0",
+  "cool3": "#6060C0",
+  "replaceLight": "#3FDB8B",
+  "replaceDark": "#2EA17C"
+}

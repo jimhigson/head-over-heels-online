@@ -3,11 +3,12 @@ import { Container } from "pixi.js";
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import type { Campaign } from "../../../../model/modelTypes";
 import type { SceneryName } from "../../../../sprites/planets";
-import type { SpritesheetVariant } from "../../../../sprites/spritesheet/variants/SpritesheetVariant";
+import type { AppSpritesheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
 import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
+import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
@@ -33,7 +34,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   {
     config: { direction, inHiddenWall, height },
   }: ItemInPlay<"doorLegs", RoomId, RoomItemId>,
-  spritesheetVariant: SpritesheetVariant,
+  spritesheet: AppSpritesheet,
   sceneryName: SceneryName,
   isDark: boolean,
 ): Generator<Container> {
@@ -48,12 +49,13 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
           textureId: planetSpecificIfExists(
             sceneryName,
             `door.floatingThreshold.${axis}`,
+            spritesheet.data,
             isDark,
           ),
           ...addXy(projectBlockXyzToScreenXy({ [axis]: offset }), {
             y: -blockSizePx.z * height,
           }),
-          spritesheetVariant,
+          spritesheet,
         });
       }
     }
@@ -62,14 +64,16 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
       textureId: planetSpecificIfExists(
         sceneryName,
         `door.legs.base.${axis}`,
+        spritesheet.data,
         isDark,
       ),
-      spritesheetVariant,
+      spritesheet,
     });
 
     const pillarTextureId = planetSpecificIfExists(
       sceneryName,
       `door.legs.pillar.${axis}`,
+      spritesheet.data,
       isDark,
     );
 
@@ -77,7 +81,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
       yield createSprite({
         textureId: pillarTextureId,
         y: -h * blockSizePx.z,
-        spritesheetVariant,
+        spritesheet,
       });
     }
   }
@@ -88,10 +92,11 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
       textureId: planetSpecificIfExists(
         sceneryName,
         `door.legs.threshold.${axis}`,
+        spritesheet.data,
         isDark,
       ),
       ...projectBlockXyzToScreenXy({ ...originXy, z: height }),
-      spritesheetVariant,
+      spritesheet,
     });
   }
 }
@@ -120,7 +125,7 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
     ({
       renderContext: {
         item,
-        general: { pixiRenderer, colourised },
+        general: { pixiRenderer, spriteOption },
         room: {
           planet,
           color: { shade },
@@ -128,9 +133,10 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
       },
     }) => {
       const spritesheetVariant =
-        colourised ? "for-current-room" : "uncolourised";
+        spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
+      const spritesheet = getSpriteSheetVariant(spritesheetVariant);
       const doorLegsContainer = iterateToContainer(
-        doorLegsGenerator(item, spritesheetVariant, planet, shade === "dimmed"),
+        doorLegsGenerator(item, spritesheet, planet, shade === "dimmed"),
       );
 
       // door legs can take quite a few sprites (ie, 11 each for the 5-high
@@ -157,7 +163,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           aabb,
         },
         room,
-        general: { pixiRenderer, colourised },
+        general: { pixiRenderer, spriteOption, spritesheetMeta },
       },
     }) => {
       const campaign =
@@ -177,7 +183,8 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
       const filter = new PaletteSwapFilter({
         paletteSwaps: replacementColours(
           useColoursFromRoom.color.hue,
-          room.color.shade === "dimmed",
+          spritesheetMeta.useAltPaletteInDimmedRoom === true &&
+            room.color.shade === "dimmed",
           room.planet === "moonbase" ?
             // moonbase doors are illuminated:
             "light-mid"
@@ -193,7 +200,8 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
         // needs a special filter since this may not be going to the same room:
         x,
         y,
-        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        spritesheetVariant:
+          spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
       });
       doorFrameSprite.filters = filter;
 

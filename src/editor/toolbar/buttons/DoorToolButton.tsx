@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
 import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 
@@ -36,8 +37,8 @@ export const DoorToolButton = () => {
 
   const textureClassname = twClass(
     scenery === "moonbase" ?
-      "texture-door_frame_moonbase_x_whole"
-    : "texture-door_frame_generic_x_whole",
+      ("texture-door_frame_moonbase_x_whole" satisfies TextureTailwindClass)
+    : ("texture-door_frame_generic_x_whole" satisfies TextureTailwindClass),
   );
 
   const itemTool: ItemTool = doorItemTool(autoAddRoom);

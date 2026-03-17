@@ -53,7 +53,7 @@ const itemAppearancesMap: {
         item: {
           config: { axis, times, disappearing },
         },
-        general: { colourised, pixiRenderer },
+        general: { spriteOption, pixiRenderer },
       },
     }) => {
       return maybeRenderContainerToSprite(
@@ -61,7 +61,8 @@ const itemAppearancesMap: {
         createSprite({
           textureId: `barrier.${axis}${disappearing ? ".disappearing" : ""}`,
           times,
-          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+          spritesheetVariant:
+            spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
         }),
       );
     },
@@ -71,7 +72,7 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config, id },
-        general: { paused, colourised, pixiRenderer },
+        general: { paused, spriteOption, pixiRenderer },
       },
     }) => {
       switch (config.style) {
@@ -82,7 +83,7 @@ const itemAppearancesMap: {
             randomiseStartFrame: id,
             paused,
             spritesheetVariant:
-              colourised ? "for-current-room" : "uncolourised",
+              spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
           });
 
           return maybeRenderContainerToAnimatedSprite(
@@ -109,11 +110,11 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { colourised },
+        general: { spriteOption },
       },
     }) => {
       const spritesheetVariant =
-        colourised ? "for-current-room" : "uncolourised";
+        spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
       return createSprite(
         style === "book" ?
           { textureId: "book.y", spritesheetVariant }
@@ -132,12 +133,12 @@ const itemAppearancesMap: {
   lift: itemAppearanceRenderOnce(
     ({
       renderContext: {
-        general: { paused, colourised },
+        general: { paused, spriteOption },
       },
     }) => {
       const rendering = new Container();
       const spritesheetVariant =
-        colourised ? "for-current-room" : "uncolourised";
+        spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
 
       const pivot = {
         x: smallItemTextureSize.w / 2,
@@ -169,12 +170,13 @@ const itemAppearancesMap: {
         item: {
           config: { planet },
         },
-        general: { colourised },
+        general: { spriteOption },
       },
     }) => {
       return createSprite({
         textureId: `crown.${planet}`,
-        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        spritesheetVariant:
+          spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
       });
     },
   ),
@@ -183,11 +185,11 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config },
-        general: { paused, colourised },
+        general: { paused, spriteOption },
       },
     }) => {
       const spritesheetVariant =
-        colourised ? "for-current-room" : "uncolourised";
+        spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
 
       if (config.gives === "crown") {
         return createSprite({
@@ -200,10 +202,22 @@ const itemAppearancesMap: {
         (typeof config)["gives"],
         CreateSpriteOptions
       > = {
-        shield: { textureId: "whiteRabbit", spritesheetVariant },
-        jumps: { textureId: "whiteRabbit", spritesheetVariant },
-        fast: { textureId: "whiteRabbit", spritesheetVariant },
-        "extra-life": { textureId: "whiteRabbit", spritesheetVariant },
+        shield: {
+          textureId: "whiteRabbit.shield",
+          spritesheetVariant,
+        },
+        jumps: {
+          textureId: "whiteRabbit.jumps",
+          spritesheetVariant,
+        },
+        fast: {
+          textureId: "whiteRabbit.fast",
+          spritesheetVariant,
+        },
+        "extra-life": {
+          textureId: "whiteRabbit.extra-life",
+          spritesheetVariant,
+        },
         bag: { textureId: "bag", spritesheetVariant },
         doughnuts: { textureId: "doughnuts", spritesheetVariant },
         hooter: { textureId: "hooter", spritesheetVariant },
@@ -221,7 +235,7 @@ const itemAppearancesMap: {
   ),
 
   // these are always dead fish:
-  moveableDeadly: itemStaticAppearance("fish.1"),
+  moveableDeadly: itemStaticAppearance("fish.dead"),
 
   charles: charlesAppearance,
 
@@ -236,12 +250,13 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { colourised },
+        general: { spriteOption },
       },
     }) =>
       createSprite({
         textureId: style,
-        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        spritesheetVariant:
+          spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
       }),
   ),
 
@@ -258,14 +273,15 @@ const itemAppearancesMap: {
           id,
           config: { style },
         },
-        general: { paused, colourised },
+        general: { paused, spriteOption },
       },
     }) => {
       return createSprite({
         animationId: `bubbles.bounce.${style}`,
         paused,
         randomiseStartFrame: id,
-        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        spritesheetVariant:
+          spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
       });
     },
   ),
@@ -283,7 +299,7 @@ const itemAppearancesMap: {
         item: {
           config: { forCharacter },
         },
-        general: { paused, colourised },
+        general: { paused, spriteOption },
       },
     }) => {
       const characterEquivalent = forCharacter === "head" ? "head" : "heels";
@@ -292,7 +308,8 @@ const itemAppearancesMap: {
         animationId: `particle.${characterEquivalent}.fade`,
         anchor: { x: 0.5, y: 0.5 },
         paused,
-        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        spritesheetVariant:
+          spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
       });
     },
   ),

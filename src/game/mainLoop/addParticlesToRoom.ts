@@ -6,8 +6,6 @@ import type { PlayableItem } from "../physics/itemPredicates";
 import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
-import { originalGameFrameDuration } from "../../originalGame";
-import { spritesheetData } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { epsilon } from "../../utils/epsilon";
 import { randomFromArray } from "../../utils/random/randomFromArray";
 import {
@@ -21,10 +19,10 @@ import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
-const particleLifetimeMs =
-  originalGameFrameDuration *
-  spritesheetData.animations["particle.head.fade"].length *
-  (1 / spritesheetData.animations["particle.head.fade"].animationSpeed);
+const particleLifetimeMs = 300;
+// originalGameFrameDuration *
+// spritesheetData.animations["particle.head.fade"].length *
+// (1 / spritesheetData.animations["particle.head.fade"].animationSpeed);
 
 const headParticlesFrequencyPerS = 20;
 const heelsParticlesFrequencyPerS = 38;

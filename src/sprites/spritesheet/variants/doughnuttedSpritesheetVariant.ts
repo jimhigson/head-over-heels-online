@@ -1,7 +1,10 @@
 import type { Renderer } from "pixi.js";
 
 import type { PaletteSwaps } from "../../../game/render/filters/lutTexture/sparseLut";
-import type { AppSpritesheet } from "../loadedSpriteSheet";
+import type {
+  AppSpritesheet,
+  LoadableSpriteOption,
+} from "../loadedSpriteSheet";
 
 import { spritesheetPalette } from "../../palette/spritesheetPalette";
 import {
@@ -36,15 +39,25 @@ export const destroyDoughnuttedSpritesheetVariant = () => {
 export const createDoughnuttedSpritesheetVariant = (
   pixiRenderer: Renderer,
   isDim: boolean,
+  spriteOption: LoadableSpriteOption,
 ): void => {
   destroyDoughnuttedSpritesheetVariant();
 
-  let result = createSpritesheetVariant(pixiRenderer, {
-    ambient: [{ paletteSwaps: doughnuttedSwaps, lutType: "sparse" }],
-  });
+  let result = createSpritesheetVariant(
+    pixiRenderer,
+    {
+      ambient: [{ paletteSwaps: doughnuttedSwaps, lutType: "sparse" }],
+    },
+    spriteOption,
+  );
 
   if (isDim) {
-    result = replaceSpritesheetWithSwopped(pixiRenderer, result, dimSwops);
+    result = replaceSpritesheetWithSwopped(
+      pixiRenderer,
+      result,
+      dimSwops,
+      spriteOption,
+    );
   }
 
   swopped = result;

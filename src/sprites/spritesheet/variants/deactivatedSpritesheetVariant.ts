@@ -3,13 +3,16 @@ import type { Renderer } from "pixi.js";
 import type { PaletteSwaps } from "../../../game/render/filters/lutTexture/sparseLut";
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { SceneryName } from "../../planets";
-import type { AppSpritesheet } from "../loadedSpriteSheet";
+import type {
+  AppSpritesheet,
+  LoadableSpriteOption,
+} from "../loadedSpriteSheet";
 import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
 
 import { omit } from "../../../utils/pick";
 import { spritesheetPalette } from "../../palette/spritesheetPalette";
-import { ambienceSwops } from "../colourisedRoomSwops";
-import { textureIds } from "../spritesheetData/spriteSheetData";
+import { ambienceSwops } from "../roomSpritesheetTextureSwops";
+import { spritesheetMetaForOption } from "../spritesheetData/spritesheetMetas";
 import {
   createSpritesheetVariant,
   dimSwops,
@@ -44,13 +47,13 @@ export const deactivatedSpritesheetTextureSwops: SpritesheetTextureSwops = {
   //texture specific swops let head/heels keep blue/pink while deactivated (ie, in hud)
   textureSpecific: [
     {
-      textureIds: textureIds.filter((tid) => tid.startsWith("head.")),
+      textureIds: (tid) => tid.startsWith("head."),
       paletteSwaps: greyFilterExceptBlue,
       // don't let the ambient swop blue out first:
       dodgeAmbient: true,
     },
     {
-      textureIds: textureIds.filter((tid) => tid.startsWith("heels.")),
+      textureIds: (tid) => tid.startsWith("heels."),
       paletteSwaps: greyFilterExceptPink,
       // don't let the ambient swop pink out first:
       dodgeAmbient: true,
@@ -70,20 +73,37 @@ export const createDeactivatedSpritesheetVariant = (
   pixiRenderer: Renderer,
   roomScenery: SceneryName,
   roomColor: ZxSpectrumRoomColour,
+  spriteOption: LoadableSpriteOption,
 ): void => {
   destroyDeactivatedSpritesheetVariant();
 
   let result = createSpritesheetVariant(
     pixiRenderer,
     deactivatedSpritesheetTextureSwops,
+    spriteOption,
   );
 
-  if (roomColor.shade === "dimmed") {
-    result = replaceSpritesheetWithSwopped(pixiRenderer, result, dimSwops);
+  const spritesheetMeta = spritesheetMetaForOption(spriteOption);
+
+  if (
+    roomColor.shade === "dimmed" &&
+    spritesheetMeta.useAltPaletteInDimmedRoom === true
+  ) {
+    result = replaceSpritesheetWithSwopped(
+      pixiRenderer,
+      result,
+      dimSwops,
+      spriteOption,
+    );
   } else {
-    result = replaceSpritesheetWithSwopped(pixiRenderer, result, {
-      ambient: [ambienceSwops(roomScenery, roomColor)],
-    });
+    result = replaceSpritesheetWithSwopped(
+      pixiRenderer,
+      result,
+      {
+        ambient: [ambienceSwops(roomScenery, roomColor)],
+      },
+      spriteOption,
+    );
   }
 
   swopped = result;

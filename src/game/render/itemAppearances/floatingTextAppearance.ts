@@ -51,10 +51,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
       config: { textLines, appearanceRoomTime },
     },
     room: { roomTime },
-    general: {
-      displaySettings: { uncolourised },
-      pixiRenderer,
-    },
+    general: { spriteOption, pixiRenderer },
     frontLayer,
   },
   currentRendering,
@@ -97,7 +94,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     lineContainer.visible = visible;
     anyVisible ||= visible;
 
-    if (visible && !uncolourised) {
+    if (visible && spriteOption !== "Speccy") {
       const colourIndex = Math.floor(
         (lineHeight / maxLineHeight) * fadeOrderColourised.length,
       );

@@ -5,7 +5,8 @@ import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 
 import type { PaletteSwaps } from "../../game/render/filters/lutTexture/sparseLut";
 import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
-import type { AppSpritesheet } from "./loadedSpriteSheet";
+import type { AppSpritesheet, AppSpritesheetData } from "./loadedSpriteSheet";
+import type { LoadableSpriteOption } from "./loadedSpriteSheet";
 import type { TextureId } from "./spritesheetData/spriteSheetData";
 
 import { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
@@ -20,8 +21,10 @@ import {
   baseSpritesheetTexture,
   originalSpriteSheet,
 } from "./loadedSpriteSheet";
+import { reifyTextureIds } from "./reifyTextureIds";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
-import { spritesheetData, textureIds } from "./spritesheetData/spriteSheetData";
+import { makeSpritesheetData } from "./spritesheetData/spriteSheetData";
+import { spritesheetMetas } from "./spritesheetData/spritesheetMetas";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TextureIdsListOrPredicate;
@@ -33,7 +36,7 @@ export type TextureSpecificPaletteSwops = {
 export type SpritesheetTextureSwops = {
   ambient: Array<PaletteSwopSpec>;
   textureSpecific?: Array<TextureSpecificPaletteSwops>;
-  noReplacePlaceholderTextures?: TextureId[];
+  noReplacePlaceholderTextures?: TextureIdsListOrPredicate;
 };
 
 export const noopSpritesheetTextureSwops = {
@@ -44,26 +47,12 @@ type TextureIdsListOrPredicate =
   | ((candidate: TextureId) => boolean)
   | Iterable<TextureId>;
 
-const neverSwoppedTextureIds = iterate(textureIds)
-  .filter(
-    (
-      name,
-    ): name is TextureId & `${"hud" | "shadow" | "shadowMask"}.${string}` => {
-      return (
-        name.startsWith("shadow.") ||
-        name.startsWith("shadowMask.") ||
-        name.startsWith("hud.")
-      );
-    },
-  )
-  .toArray();
-
-const reifyTextureIds = (
-  textureIdsOrPredicate: TextureIdsListOrPredicate,
-): Iterable<TextureId> =>
-  typeof textureIdsOrPredicate === "function" ?
-    iterate(textureIds).filter(textureIdsOrPredicate)
-  : textureIdsOrPredicate;
+const isNeverSwoppedTextureId = (
+  name: TextureId,
+): name is TextureId & `${"hud" | "shadow" | "shadowMask"}.${string}` =>
+  name.startsWith("shadow.") ||
+  name.startsWith("shadowMask.") ||
+  name.startsWith("hud.");
 
 const createPlaceholderMaskFilter = (placeholder: Color, others: Color) =>
   new PaletteSwapFilter({
@@ -87,9 +76,10 @@ export const spritesheetPaletteSwop = (
      * This is useful if the game engine needs to replace the placeholders multiple different ways
      * in a single room, ie for doors taking on the colour of the room that they lead to
      */
-    noReplacePlaceholderTextures = emptyArray,
+    noReplacePlaceholderTextures,
   }: SpritesheetTextureSwops,
   baseTexture: Texture = baseSpritesheetTexture(),
+  spritesheetData: AppSpritesheetData,
 ): Texture => {
   const filters: Filter[] = [];
 
@@ -97,7 +87,11 @@ export const spritesheetPaletteSwop = (
   for (const { textureIds, paletteSwaps } of textureSpecific) {
     // Create mask to apply swops only to this texture:
     const specificMaskTexture = renderMaskTexture(pixiRenderer, {
-      rects: { textureIds, color: white },
+      rects: {
+        textureIds,
+        color: white,
+        spritesheetDataFrames: spritesheetData.frames,
+      },
       clearColour: black,
     });
 
@@ -111,7 +105,7 @@ export const spritesheetPaletteSwop = (
 
   // Draw black rectangles over shadow/shadowMask/hud frames (filter does not apply)
   const placeholderMaskFilter =
-    noReplacePlaceholderTextures.length > 0 ?
+    noReplacePlaceholderTextures !== undefined ?
       createPlaceholderMaskFilter(black, white)
     : undefined;
 
@@ -119,15 +113,18 @@ export const spritesheetPaletteSwop = (
     clearColour: white,
     rects: {
       textureIds: concat(
-        neverSwoppedTextureIds,
+        reifyTextureIds(isNeverSwoppedTextureId, spritesheetData.frames),
         iterate(textureSpecific)
           .filter(({ dodgeAmbient }) => dodgeAmbient)
-          .flatMap(({ textureIds }) => reifyTextureIds(textureIds)),
+          .flatMap(({ textureIds }) =>
+            reifyTextureIds(textureIds, spritesheetData.frames),
+          ),
       ),
       color: black,
+      spritesheetDataFrames: spritesheetData.frames,
     },
     placeholderColoursMasks:
-      placeholderMaskFilter ?
+      placeholderMaskFilter && noReplacePlaceholderTextures ?
         {
           textureIds: noReplacePlaceholderTextures,
           placeholder: black,
@@ -202,16 +199,19 @@ export const spritesheetPaletteSwop = (
 export const createSpritesheetVariant = (
   pixiRenderer: Renderer,
   spritesheetTextureSwops: SpritesheetTextureSwops,
+  spriteOption: LoadableSpriteOption,
   baseTexture?: Texture,
 ) => {
+  const spritesheetData = makeSpritesheetData(spritesheetMetas[spriteOption]);
   const swoppedTexture = spritesheetPaletteSwop(
     pixiRenderer,
     spritesheetTextureSwops,
     baseTexture,
+    spritesheetData,
   );
   const swoppedSpritesheet = new Spritesheet(
     swoppedTexture.source,
-    structuredClone(spritesheetData),
+    spritesheetData,
   );
   swoppedSpritesheet.parseSync();
   swoppedSpritesheet.textureSource.scaleMode = "nearest";
@@ -230,11 +230,13 @@ export const replaceSpritesheetWithSwopped = (
   pixiRenderer: Renderer,
   baseSpritesheet: AppSpritesheet,
   swops: SpritesheetTextureSwops,
+  spriteOption: LoadableSpriteOption,
 ): AppSpritesheet => {
   const baseTexture = Texture.from(baseSpritesheet.textureSource);
   const dimmedSpritesheet = createSpritesheetVariant(
     pixiRenderer,
     swops,
+    spriteOption,
     baseTexture,
   );
   baseTexture.destroy();

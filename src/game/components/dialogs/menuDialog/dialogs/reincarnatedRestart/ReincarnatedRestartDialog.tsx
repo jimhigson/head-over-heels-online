@@ -1,3 +1,5 @@
+import type { AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
@@ -38,7 +40,9 @@ export const ReincarnatedRestartDialog = () => {
         >
           Everything is back to how it was when you ate the fish
         </BitmapText>
-        <span className="sprite mx-auto  bg-zxBlack texture-animated-fish sprite-revert-to-white" />
+        <span
+          className={`sprite mx-auto bg-zxBlack ${"texture-animated-fish" satisfies AnimatedTextureTailwindClass} sprite-revert-to-white`}
+        />
         <MenuItems className="hidden">
           <BackMenuItem />
         </MenuItems>

@@ -10,7 +10,6 @@ import { buttonActionsPressed } from "./buttonActionsPressed";
 
 export type CarryAndJumpButtonRenderProps = {
   pressed: boolean;
-  colourised: boolean;
   hasBag: boolean;
   renderedInRoom: RoomState<string, string> | undefined;
 };
@@ -24,7 +23,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { colourised, pixiRenderer },
+    general: { spriteOption, pixiRenderer },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -41,7 +40,6 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   const needsRender =
     previouslyRenderedProps === undefined ||
     pressed !== previouslyRenderedProps.pressed ||
-    colourised !== previouslyRenderedProps.colourised ||
     hasBag !== previouslyRenderedProps.hasBag;
 
   // (or is first render)
@@ -55,7 +53,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   const container: ArcadeStyleButtonContainer<TextContainer> =
     previousRendering === undefined ?
       new ArcadeStyleButtonContainer(
-        colourised,
+        spriteOption,
         button.which,
         pixiRenderer,
         new TextContainer({
@@ -69,7 +67,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   if (roomChangedSinceLastRendered) {
     container.generateButtonSpriteTextures(room);
     container.shownOnSurface.tint = getWhite(
-      colourised,
+      spriteOption,
       room?.color.shade === "dimmed",
     );
   }
@@ -88,7 +86,6 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
     renderProps: {
       pressed,
       hasBag,
-      colourised,
       renderedInRoom: room,
     },
   };

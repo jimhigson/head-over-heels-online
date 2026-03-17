@@ -1,4 +1,5 @@
 import type { SceneryName } from "./planets";
+import type { AppSpritesheetData } from "./spritesheet/loadedSpriteSheet";
 import type { TextureId } from "./spritesheet/spritesheetData/spriteSheetData";
 
 import { isTextureId } from "./assertIsTextureId";
@@ -17,12 +18,15 @@ export const planetSpecificIfExists = (
   sceneryName: SceneryName,
   /** e.g. `door.floatingThreshold.x` — will be prefixed with both the scenery name and `generic` */
   suffix: GenericTextureSuffix,
+  spritesheetData: AppSpritesheetData,
   isDark = false,
 ): TextureId => {
   if (isDark) {
     const darkTextureId = `${sceneryName}.dark.${suffix}`;
-    if (isTextureId(darkTextureId)) return darkTextureId;
+    if (isTextureId(darkTextureId, spritesheetData)) return darkTextureId;
   }
   const planetSpecific = `${sceneryName}.${suffix}`;
-  return isTextureId(planetSpecific) ? planetSpecific : `generic.${suffix}`;
+  return isTextureId(planetSpecific, spritesheetData) ? planetSpecific : (
+      `generic.${suffix}`
+    );
 };

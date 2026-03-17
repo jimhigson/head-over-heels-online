@@ -6,7 +6,7 @@ import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { spritesheetData } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { tangentAxis } from "../../../utils/vectors/vectors";
@@ -22,10 +22,6 @@ type ConveyorRenderProps = {
   direction: DirectionXy4;
 };
 
-const conveyorAnimationSpeed =
-  spritesheetData.animations["conveyor.x"].animationSpeed;
-const frameCount = spritesheetData.animations["conveyor.x"].length;
-
 const easeOut = (t: number): number => 1 - (1 - t) ** 2;
 
 const framesAheadPerBlock = 3;
@@ -37,6 +33,7 @@ const framesAheadPerBlock = 3;
 const staggerAnimation = (
   rendering: Container<AnimatedSprite>,
   reverse: boolean,
+  frameCount: number,
 ) => {
   for (let i = 0; i < rendering.children.length; i++) {
     const c = rendering.children[i];
@@ -49,12 +46,14 @@ const createRendering = (
   direction: DirectionXy4,
   times: Partial<Xy> | undefined,
   spritesheetVariant: SpritesheetVariant,
+  frameCount: number,
 ): Container<AnimatedSprite> => {
   const axis = tangentAxis(direction);
   const sprites = createSprite({
     animationId: `conveyor.${axis}`,
     reverse: direction === "towards" || direction === "right",
     times,
+    // TODO: should be able to take the spritesheet instead of the variant!
     spritesheetVariant,
   });
   // createSprite will return a single AnimatedSprite for a single conveyor,
@@ -70,6 +69,7 @@ const createRendering = (
     // createSprite given times, so will actually generate a container of AnimatedSprites
     animatedSpritesContainer,
     direction === "towards" || direction === "right",
+    frameCount,
   );
 
   return animatedSpritesContainer;
@@ -86,7 +86,7 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy, direction },
     },
     room: { roomTime },
-    general: { colourised, pixiRenderer },
+    general: { spriteOption, pixiRenderer },
   },
   currentRendering,
 }) => {
@@ -109,12 +109,19 @@ const conveyorAppearanceImpl: ItemAppearance<
   const currentOutput = currentRendering?.output;
   const rerender =
     !currentOutput || direction !== currentlyRenderedProps?.direction;
-  const spritesheetVariant = colourised ? "for-current-room" : "uncolourised";
+  const spritesheetVariant =
+    spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
+
+  const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+  const conveyorAnimationSpeed: number =
+    spritesheet.data.animations["conveyor.x"].animationSpeed;
+  const frameCount = spritesheet.data.animations["conveyor.x"].length;
+
   const rendering: AnimatedSprite =
     rerender ?
       maybeRenderContainerToAnimatedSprite(
         pixiRenderer,
-        createRendering(direction, times, spritesheetVariant),
+        createRendering(direction, times, spritesheetVariant, frameCount),
         "conveyor.x",
       )
     : currentOutput;

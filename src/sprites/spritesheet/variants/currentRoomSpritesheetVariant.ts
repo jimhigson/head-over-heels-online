@@ -2,14 +2,17 @@ import { type Renderer } from "pixi.js";
 
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { SceneryName } from "../../planets";
-import type { AppSpritesheet } from "../loadedSpriteSheet";
+import type {
+  AppSpritesheet,
+  LoadableSpriteOption,
+} from "../loadedSpriteSheet";
 import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
 
 import {
   spritesheetPalette,
   type SpritesheetPaletteColourName,
 } from "../../palette/spritesheetPalette";
-import { colourisedRoomSwops } from "../colourisedRoomSwops";
+import { roomSpritesheetTextureSwops } from "../roomSpritesheetTextureSwops";
 import {
   createSpritesheetVariant,
   noopSpritesheetTextureSwops,
@@ -33,19 +36,23 @@ export const destroyCurrentRoomSpritesheetVariant = () => {
  */
 export const createCurrentRoomSpritesheetVariant = (
   pixiRenderer: Renderer,
-  colourised: boolean,
   roomScenery: SceneryName,
   roomColor: ZxSpectrumRoomColour,
+  spriteOption: LoadableSpriteOption,
 ) => {
   // throw away previous swopped version of spritesheet - these are
   // short-lived and created on-demand:
   destroyCurrentRoomSpritesheetVariant();
 
   spritesheetTextureSwops =
-    colourisedRoomSwops(colourised, roomScenery, roomColor) ??
+    roomSpritesheetTextureSwops(roomScenery, roomColor, spriteOption) ??
     noopSpritesheetTextureSwops;
 
-  swopped = createSpritesheetVariant(pixiRenderer, spritesheetTextureSwops);
+  swopped = createSpritesheetVariant(
+    pixiRenderer,
+    spritesheetTextureSwops,
+    spriteOption,
+  );
 };
 
 /**

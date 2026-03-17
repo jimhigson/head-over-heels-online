@@ -92,7 +92,9 @@ afterEach(() => {
 });
 
 test("creates sprites for text", () => {
-  const container = new TextContainer({ pixiRenderer: mockPixiRenderer });
+  const container = new TextContainer({
+    pixiRenderer: mockPixiRenderer,
+  });
   container.text = "hi";
 
   expect(container.characterSpriteContainer.children.length).toBe(2);
@@ -114,7 +116,9 @@ test("creates sprites for text", () => {
 });
 
 test("changes from a longer string to a shorter one", () => {
-  const container = new TextContainer({ pixiRenderer: mockPixiRenderer });
+  const container = new TextContainer({
+    pixiRenderer: mockPixiRenderer,
+  });
 
   // First set a longer string
   container.text = "test";
@@ -137,7 +141,9 @@ test("changes from a longer string to a shorter one", () => {
 });
 
 test("changes from a shorter string to a longer one", () => {
-  const container = new TextContainer({ pixiRenderer: mockPixiRenderer });
+  const container = new TextContainer({
+    pixiRenderer: mockPixiRenderer,
+  });
 
   // First set a shorter string
   container.text = "hi";
@@ -163,7 +169,9 @@ test("changes from a shorter string to a longer one", () => {
 });
 
 test("changes text but keeps the same length", () => {
-  const container = new TextContainer({ pixiRenderer: mockPixiRenderer });
+  const container = new TextContainer({
+    pixiRenderer: mockPixiRenderer,
+  });
 
   // First set initial string
   container.text = "test";
@@ -189,7 +197,9 @@ test("changes text but keeps the same length", () => {
 });
 
 test("displays numbers correctly", () => {
-  const container = new TextContainer({ pixiRenderer: mockPixiRenderer });
+  const container = new TextContainer({
+    pixiRenderer: mockPixiRenderer,
+  });
 
   // Test integer
   container.text = 42;
@@ -205,14 +215,18 @@ test("displays numbers correctly", () => {
 });
 
 test("handles special 'infinite' string by showing nothing", () => {
-  const container = new TextContainer({ pixiRenderer: mockPixiRenderer });
+  const container = new TextContainer({
+    pixiRenderer: mockPixiRenderer,
+  });
 
   container.text = "infinite";
   expect(container.characterSpriteContainer.children.length).toBe(0);
 });
 
 test("throws error for non-existing texture", () => {
-  const container = new TextContainer({ pixiRenderer: mockPixiRenderer });
+  const container = new TextContainer({
+    pixiRenderer: mockPixiRenderer,
+  });
 
   // Use a string with an emoji character that won't have a texture
   expect(() => {
@@ -239,7 +253,9 @@ test("TextContainer creates container with correct options", () => {
 });
 
 test("reuses existing sprites when updating text", () => {
-  const container = new TextContainer({ pixiRenderer: mockPixiRenderer });
+  const container = new TextContainer({
+    pixiRenderer: mockPixiRenderer,
+  });
 
   // Set initial text
   container.text = "abc";

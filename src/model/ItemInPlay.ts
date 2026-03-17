@@ -4,7 +4,6 @@ import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { SpecifiedTextureCreateSpriteOptions } from "../game/render/createSprite";
 import type { BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
 import type { SceneryName } from "../sprites/planets";
-import type { TextureId } from "../sprites/spritesheet/spritesheetData/spriteSheetData";
 import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
 import type { ItemState } from "./ItemState";
 import type { ExitGameRoomId } from "./json/ItemConfigMap";
@@ -135,7 +134,7 @@ export type ItemInPlay<
   RoomId extends string = string,
   /** the items ids for items in the same room as this item */
   RoomItemId extends string = string,
-  /** the item id> for this item */
+  /** the item id for this item */
   ItemId extends RoomItemId = RoomItemId,
   ScN extends SceneryName = SceneryName,
 > = ItemInPlayAAbbInfo & {
@@ -146,8 +145,8 @@ export type ItemInPlay<
    * that this item was created based off. Multiple items can exist in-play for
    * a single json item, and an in-play item doesn't have to come from a json item
    *
-   * TODO: this type isn't quite correct since the json and in-play item ids are
-   * confused
+   * This type isn't quite correct since the json and in-play item ids are
+   * conflated - they're not really drawn from the same string subset
    */
   jsonItemId?: RoomItemId;
 
@@ -158,13 +157,7 @@ export type ItemInPlay<
   state: ItemState<T, RoomId, RoomItemId>;
 
   /** the shadow this item casts on other items */
-  shadowCastTexture?:
-    | SpecifiedTextureCreateSpriteOptions
-    /**
-     * @deprecated - this is allowed only to provide backwards compatibility
-     * with released tag 1.14.0, and should only occur on saves from that version
-     */
-    | TextureId;
+  shadowCastTexture?: SpecifiedTextureCreateSpriteOptions;
 
   /** items this item will cast no shadows on */
   noShadowCastOn?: Array<ItemInPlayType>;

@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 
-import type { toggleUserSetting } from "../src/store/slices/gameMenus/gameMenusSlice";
+import type { setSpritesOption } from "../src/store/slices/gameMenus/gameMenusSlice";
 
 import { dispatchToStore } from "./e2eStoreUtils";
 import { osSlowness } from "./osSlowness";
@@ -15,16 +15,13 @@ export const setIsUncolourised = async (
     async action() {
       console.log(`${formattedName}: setting uncolourised to ${uncolourised}`);
 
-      type ToggleUserSetting = ReturnType<typeof toggleUserSetting>;
-      const successSetUnColourised = await dispatchToStore(page, {
-        type: "gameMenus/toggleUserSetting",
-        payload: {
-          path: "displaySettings.uncolourised",
-          value: uncolourised,
-        },
-      } satisfies ToggleUserSetting);
+      type SetSpritesOption = ReturnType<typeof setSpritesOption>;
+      const success = await dispatchToStore(page, {
+        type: "gameMenus/setSpritesOption",
+        payload: uncolourised ? "Speccy" : "BlockStack",
+      } satisfies SetSpritesOption);
 
-      if (!successSetUnColourised) {
+      if (!success) {
         throw new Error(
           `Failed to dispatch to store - setting uncolourised to ${uncolourised}`,
         );

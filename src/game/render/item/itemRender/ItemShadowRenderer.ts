@@ -245,11 +245,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         const { shadowCastTexture } = caster;
 
         const castTextureMultiplied = renderMultipliedXy(
-          typeof shadowCastTexture === "string" ?
-            // shadowCastTexture as a single string is deprecated, for compatibility with
-            // v 1.14.0 saved games
-            { textureId: shadowCastTexture }
-          : shadowCastTexture,
+          shadowCastTexture,
           times,
         );
 

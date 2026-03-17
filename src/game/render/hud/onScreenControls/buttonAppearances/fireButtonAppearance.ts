@@ -53,7 +53,6 @@ const createSurface = (
 
 export type FireButtonRenderProps = {
   pressed: boolean;
-  colourised: boolean;
   showingSprite: ShowingSprite;
   renderedInRoom: RoomState<string, string> | undefined;
   disabled: boolean;
@@ -69,7 +68,7 @@ export const fireButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { colourised, pixiRenderer },
+    general: { spriteOption, pixiRenderer },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -100,7 +99,6 @@ export const fireButtonAppearance: ButtonAppearance<
 
   if (
     previouslyRenderedProps !== undefined &&
-    colourised === previouslyRenderedProps.colourised &&
     spriteChanged &&
     !disabledChanged &&
     !pressedChanged &&
@@ -112,7 +110,7 @@ export const fireButtonAppearance: ButtonAppearance<
   const container =
     currentRendering?.output ??
     new ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>(
-      colourised,
+      spriteOption,
       button.which,
       pixiRenderer,
       createSurface(pixiRenderer),
@@ -140,15 +138,14 @@ export const fireButtonAppearance: ButtonAppearance<
 
   if (disabledChanged || roomChanged) {
     const spritesheet = getSpriteSheetVariant(
-      colourised ?
-        disabled ? "deactivated"
-        : "for-current-room"
-      : "uncolourised",
+      spriteOption === "Speccy" ? "uncolourised"
+      : disabled ? "deactivated"
+      : "for-current-room",
     );
 
     hooter.texture = spritesheet.textures["hooter"];
     doughnuts.texture = spritesheet.textures["doughnuts"];
-    text.tint = getWhite(colourised, room.color.shade === "dimmed");
+    text.tint = getWhite(spriteOption, room.color.shade === "dimmed");
   }
 
   if (doughnutsCount !== previouslyRenderedProps?.doughnutsCount) {
@@ -159,7 +156,6 @@ export const fireButtonAppearance: ButtonAppearance<
     output: container,
     renderProps: {
       pressed,
-      colourised,
       showingSprite,
       renderedInRoom: room,
       disabled,

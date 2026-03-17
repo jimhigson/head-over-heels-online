@@ -91,7 +91,7 @@ export const toasterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { pixiRenderer, colourised },
+    general: { pixiRenderer, spriteOption },
   },
   currentRendering,
 }) => {
@@ -133,7 +133,8 @@ export const toasterAppearance: ItemAppearance<
         : { textureId: "toaster.on" };
     },
     times: times ?? emptyObject,
-    spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+    spritesheetVariant:
+      spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
   });
 
   // that container potentially contains many sprites - reduce to a single sprite
