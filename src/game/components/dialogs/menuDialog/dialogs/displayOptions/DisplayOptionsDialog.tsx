@@ -2,7 +2,6 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectIsCrtFilter,
   selectShowFps,
-  useIsUncolourised,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
@@ -21,10 +20,7 @@ import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogTitleBar } from "../DialogTitleBar";
 import { FullscreenMenuItem } from "./FullscreenMenuItem";
-
-const colouriseMarkdown = `![](texture-animated-head_walking_towards?float-right&mt-1)**Off**: Original *two-tone* spectrum graphics
-
-**On**: *16-colour* palette with colourised sprites`;
+import { SpritesOptionMenuItem } from "./SpritesOptionMenuItem";
 
 const crtEffectMarkdown = `Here for the nostalgia?
 
@@ -47,25 +43,7 @@ export const DisplayOptionsDialog = () => {
             // keep inline (not deploymentType()) to allow tree-shaking
             import.meta.env.TAURI_ENV_PLATFORM && <FullscreenMenuItem />
           }
-          <MenuItem
-            hintInline
-            className="sprites-double-height"
-            id="colourise"
-            label="Colourise"
-            valueElement={
-              <Switch className="ml-auto" value={!useIsUncolourised()} />
-            }
-            onSelect={useDispatchActionCallback(toggleUserSetting, {
-              path: "displaySettings.uncolourised",
-            })}
-            hint={
-              <BlockyMarkdown
-                className={optionsHintMarkdownClassname}
-                markdown={colouriseMarkdown}
-              />
-            }
-            verticalAlignItemsCentre
-          />
+          <SpritesOptionMenuItem />
           <MenuItem
             hintInline
             className="sprites-double-height"

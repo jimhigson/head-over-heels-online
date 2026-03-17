@@ -7,6 +7,7 @@ import {
   gameMenusSlice,
   type GameMenusState,
 } from "../slices/gameMenus/gameMenusSlice";
+import { spritesheetOverrideSlice } from "../slices/spritesheetOverrideSlice";
 import { gameMenusSliceMigrate } from "./gameMenusSliceMigrate";
 import { gameMenusSliceWhitelist } from "./gameMenusSliceWhitelist";
 
@@ -26,4 +27,16 @@ const gameMenusSlicePersistConfig: PersistConfig<GameMenusState> = {
 export const gameMenusPersistedReducer = persistReducer(
   gameMenusSlicePersistConfig,
   gameMenusSlice.reducer,
+);
+
+const spritesheetOverridePersistConfig: PersistConfig<
+  ReturnType<typeof spritesheetOverrideSlice.reducer>
+> = {
+  key: "hohol/spritesheetOverride",
+  version: 1,
+  storage,
+};
+export const spritesheetOverridePersistedReducer = persistReducer(
+  spritesheetOverridePersistConfig,
+  spritesheetOverrideSlice.reducer,
 );

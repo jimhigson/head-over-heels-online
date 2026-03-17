@@ -4,10 +4,12 @@ import type {
   CharacterName,
   IndividualCharacterName,
 } from "../../../../model/modelTypes";
-import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { AppSpritesheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
+import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { ItemAppearance } from "../ItemAppearance";
 
 import { isTextureId } from "../../../../sprites/assertIsTextureId";
+import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 import {
   type DirectionXy4,
   type DirectionXy8,
@@ -77,6 +79,7 @@ const getPlayableShadowMaskTextureId = (
   playableName: IndividualCharacterName,
   falling: boolean,
   direction: DirectionXy8,
+  spritesheet: AppSpritesheet,
 ): TextureId => {
   if (!falling) {
     return `shadowMask.${playableName}.${direction}` as TextureId;
@@ -85,7 +88,7 @@ const getPlayableShadowMaskTextureId = (
   const fallingShadowMaskTextureId =
     `shadowMask.${playableName}.falling.${direction}` as string;
 
-  return isTextureId(fallingShadowMaskTextureId) ?
+  return isTextureId(fallingShadowMaskTextureId, spritesheet.data) ?
       fallingShadowMaskTextureId
     : (`shadowMask.${playableName}.${direction}` as TextureId);
 };
@@ -124,15 +127,19 @@ export const playableShadowMaskAppearanceXy8 =
     const flippedDirection = flipXy8[facingXy8];
     const shadowMaskDirection = flippedDirection ?? facingXy8;
 
+    // shadow masks always use the original spritesheet
+    const spritesheet = originalSpriteSheet();
+
     const textureId = getPlayableShadowMaskTextureId(
       shadowMaskBaseShadowTextureId,
       falling,
       shadowMaskDirection,
+      spritesheet,
     );
 
     const sprite: Sprite = createSprite({
       textureId,
-      spritesheetVariant: "original",
+      spritesheet,
     });
 
     sprite.y = -(blockSizePx.z * (heightBlocks - 1));

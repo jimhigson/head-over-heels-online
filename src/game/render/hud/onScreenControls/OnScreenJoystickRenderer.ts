@@ -78,14 +78,15 @@ export class OnScreenJoystickRenderer
   constructor(public readonly renderContext: JoystickRenderContext) {
     const {
       inputDirectionMode,
-      general: { colourised, pixiRenderer },
+      general: { spriteOption, pixiRenderer },
     } = renderContext;
 
     this.#joystickSprite = createSprite({
       textureId: "joystick.whole",
       anchor: { x: 0.5, y: 0.5 },
       y: 1,
-      spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+      spritesheetVariant:
+        spriteOption.uncolourised ? "uncolourised" : "for-current-room",
     });
 
     this.#arrowSprites = {
@@ -249,14 +250,14 @@ export class OnScreenJoystickRenderer
   tick({ room }: HudRendererTickContextWithRoom<string, string>): void {
     const {
       renderContext: {
-        general: { colourised },
+        general: { spriteOption, spritesheetMeta },
         inputStateTracker: { directionVector },
       },
     } = this;
 
     if (this.#roomRenderedIn !== room) {
       this.#joystickSprite.texture = getSpriteSheetVariantTexture(
-        colourised ? "for-current-room" : "uncolourised",
+        spriteOption.uncolourised ? "uncolourised" : "for-current-room",
         "joystick.whole",
       );
       this.#roomRenderedIn = room;
@@ -274,8 +275,18 @@ export class OnScreenJoystickRenderer
         vectorClosestDirectionXy8(directionVector)
       : undefined;
 
-    const activeTint = tintForHud(colourised, room.color, true);
-    const notActiveTint = tintForHud(colourised, room.color, false);
+    const activeTint = tintForHud(
+      spriteOption,
+      room.color,
+      true,
+      spritesheetMeta,
+    );
+    const notActiveTint = tintForHud(
+      spriteOption,
+      room.color,
+      false,
+      spritesheetMeta,
+    );
 
     for (const [directionXy8, sprite] of objectEntriesIter(
       this.#arrowSprites,

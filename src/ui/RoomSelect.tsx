@@ -5,6 +5,7 @@ import naturalCompare from "natural-compare-lite";
 import type { Campaign } from "../model/modelTypes";
 
 import { itemColourCss } from "../editor/toolbar/buttons/RoomColourSelect";
+import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/PlayableTailwindSprite";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
 import { useIsUncolourised } from "../store/slices/gameMenus/gameMenusSelectors";
 import { CommandItem } from "./command";
@@ -31,6 +32,7 @@ export function RoomSelect<RoomId extends string>({
   excludeRoomIds = [],
   tooltipContent,
 }: RoomSelectProps<RoomId>) {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
   const roomIds = Object.keys(campaign.rooms)
     .filter((r) => !excludeRoomIds.includes(r as RoomId))
     .sort(naturalCompare) as RoomId[];
@@ -56,10 +58,14 @@ export function RoomSelect<RoomId extends string>({
             style={itemColourCss(campaign.rooms[value].color.hue, uncolourised)}
           >
             {headRoomId === value && (
-              <span className="sprite mr-1 my-1 texture-head_walking_towards_2" />
+              <span
+                className={`sprite mr-1 my-1 ${spriteClassname({ character: "head", action: "idle", facingXy8: "towards" })}`}
+              />
             )}
             {heelsRoomId === value && (
-              <span className="sprite mr-1 my-1 texture-heels_standing_towards" />
+              <span
+                className={`sprite mr-1 my-1 ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towards" })}`}
+              />
             )}
             <BitmapText>{value}</BitmapText>
           </CommandItem>

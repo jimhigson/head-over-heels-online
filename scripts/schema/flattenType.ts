@@ -1,6 +1,6 @@
 #!/usr/bin/env -S pnpm tsx
 
-import type { Type, TypeChecker } from "ts-morph";
+import type { JSDoc, Type, TypeChecker } from "ts-morph";
 
 import { Command } from "commander";
 import * as path from "path";
@@ -200,12 +200,9 @@ export class TypeFlattener {
               ).getJsDocs()
             : [];
           if (jsDocNodes.length > 0) {
-            const comment = jsDocNodes[0].getComment();
+            const comment = (jsDocNodes[0] as JSDoc).getCommentText();
             if (comment) {
-              const commentText =
-                typeof comment === "string" ? comment : (
-                  comment.map((c) => c.getText()).join("")
-                );
+              const commentText = comment;
               jsDocComment = `\n  /**\n   * ${commentText.replace(/\n/g, "\n   * ")}\n   */`;
             }
           }
@@ -618,7 +615,7 @@ export class TypeFlattener {
           if (unionType.isStringLiteral()) {
             return `"${unionType.getLiteralValue()}"`;
           } else if (unionType.isNumberLiteral()) {
-            return unionType.getLiteralValue().toString();
+            return unionType.getLiteralValue()!.toString();
           } else if (unionType.isBooleanLiteral()) {
             // getLiteralValue() returns undefined for boolean literals, use getText() instead
             return unionType.getText();
@@ -1048,12 +1045,9 @@ export class TypeFlattener {
               ).getJsDocs()
             : [];
           if (jsDocNodes.length > 0) {
-            const comment = jsDocNodes[0].getComment();
+            const comment = (jsDocNodes[0] as JSDoc).getCommentText();
             if (comment) {
-              const commentText =
-                typeof comment === "string" ? comment : (
-                  comment.map((c) => c.getText()).join("")
-                );
+              const commentText = comment;
               jsDocComment = `\n  /**\n   * ${commentText.replace(/\n/g, "\n   * ")}\n   */`;
             }
           }

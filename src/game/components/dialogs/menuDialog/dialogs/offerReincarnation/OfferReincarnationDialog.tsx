@@ -1,3 +1,4 @@
+import type { AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { GameApi } from "../../../../../GameApi";
 
 import {
@@ -23,7 +24,7 @@ export const reincarnateSelected = (gameApi: GameApi<string>) => {
   store.dispatch(reincarnationAccepted());
 };
 
-const markdown = `![](?sprite&texture-animated-fish&float-left)Ah, But you ate a Reincarnation Fish! Reincarnate?`;
+const markdown = `![](?sprite&${"texture-animated-fish" satisfies AnimatedTextureTailwindClass}&float-left)Ah, But you ate a Reincarnation Fish! Reincarnate?`;
 
 export const OfferReincarnationDialog = () => {
   const gameApi = useGameApi();

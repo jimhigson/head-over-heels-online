@@ -1,6 +1,6 @@
 import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
-import { spectrumLut } from "./lutTexture/stdLuts/spectrumLut";
+import { blockstackToSpectrumLut } from "./lutTexture/stdLuts/blockstackToSpectrumLut";
 import fragment from "./teleportingEffect.frag";
 
 const glProgram = GlProgram.from({
@@ -63,7 +63,7 @@ export class TeleportingEffectFilter extends Filter {
             type: "f32",
           },
         },
-        uLut: spectrumLut.source,
+        uLut: blockstackToSpectrumLut.source,
       },
     });
 

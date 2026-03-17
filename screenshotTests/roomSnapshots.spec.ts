@@ -6,12 +6,14 @@ import chalk from "chalk";
 import type { OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
 import type {
   setGameSpeed,
+  SpriteOption,
   toggleUserSetting,
 } from "../src/store/slices/gameMenus/gameMenusSlice";
 import type { SelectableGameSpeeds } from "../src/store/slices/gameMenus/selectableGameSpeeds";
 import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
+import { spriteOptionEquals } from "../src/store/slices/gameMenus/spriteOptionEquals";
 import { keys } from "../src/utils/entries";
 import { dispatchToStore } from "./e2eStoreUtils";
 import { formatDuration } from "./formatDuration";
@@ -23,12 +25,17 @@ import {
 } from "./gameTestUtils";
 import { logSelectorExistence } from "./logSelectorExistence";
 import { logUpscale } from "./logUpscale";
-import { exitCrownsDialog } from "./menuSnapshotUtils";
+import {
+  enabledSpriteModes,
+  exitCrownsDialog,
+  spriteOptionSuffix,
+} from "./menuSnapshotUtils";
 import { osSlowness } from "./osSlowness";
 import { elapsed, formatProjectName, progressLogHeader } from "./projectName";
 import { resolveRoomIds } from "./resolveRoomIds";
 import { retryWithRecovery } from "./retryWithRecovery";
-import { setIsUncolourised } from "./setIsUncolourised";
+import { roomScreenshotOptions } from "./screenshotOptions";
+import { setSpriteOption } from "./setSpriteOption";
 
 /**
  * Environment variables for controlling screenshot tests:
@@ -51,43 +58,6 @@ const timeoutPerRoom = (process.env.CI ? 40_000 : 15_000) * osSlowness;
 const maxTriesToLoadRoom = 3;
 
 const campaignRoomIds = keys(campaign.rooms);
-
-const screenshotThreshold = ({
-  ci,
-  platform,
-  projectName,
-  logHeader,
-}: {
-  ci: boolean;
-  platform: NodeJS.Platform;
-  projectName: string;
-  logHeader: string;
-}) => {
-  const isWebkit =
-    projectName.toLowerCase().includes("webkit") ||
-    projectName.toLowerCase().includes("safari");
-
-  const threshold =
-    ci && platform === "linux" && isWebkit ?
-      // on Linux Github runners, Safari doesn't support p3 colour mode in canvases;
-      // colors differ more from local screenshots:
-      0.2
-      // playwright default is 0.2, which is very permissive to palette changes.
-      // Whereas 0 makes builds fail with invisible differences between
-      // the OS running the test, at least in webkit/safari.
-      // keep a much smaller threshold than normal, but not zero:
-      // on Linux CI + Safari, P3 canvas mode isn't supported so colors differ slightly
-    : 0.02;
-
-  console.log(
-    `${logHeader} ${elapsed()} Threshold for image comparison will be ${threshold} since:
-        ci is ${ci}
-        platform is ${platform}
-        projectName is ${projectName}`,
-  );
-
-  return threshold;
-};
 
 const roomIds = resolveRoomIds(campaign.rooms, {
   rooms: process.env.ROOMS,
@@ -122,9 +92,6 @@ const parallelTestsCount =
   roomsPerBatch < 10 ? 1
   : process.env.PARALLEL_TESTS ? Number.parseInt(process.env.PARALLEL_TESTS)
   : 2;
-
-const colourisedModes: boolean[] =
-  process.env.NO_UNCOLOURISED ? [false] : [false, true];
 
 console.log(
   `🏃 runner will process batch ${batchNumber} of ${batchCount} total batches`,
@@ -291,18 +258,18 @@ test.describe("Room Visual Snapshots", () => {
         return;
       }
 
-      const effectiveColourisedModes: boolean[] =
-        noUncolourised ? [false] : colourisedModes;
+      // enabledSpriteModes is already filtered by the NO_UNCOLOURISED env var,
+      // but noUncolourised here is a per-project flag from the Playwright config
+      // (eg, mobile-safari can disable uncolourised independently of the env var)
+      const effectiveModes =
+        noUncolourised ?
+          enabledSpriteModes.filter((m) => !m.uncolourised)
+        : enabledSpriteModes;
 
       test.setTimeout(includedTestRooms.length * timeoutPerRoom + 20_000);
 
       const formattedName = `${formatProjectName(testInfo.project.name)} (${testIndex})`;
-      const threshold = screenshotThreshold({
-        ci: !!process.env.CI,
-        platform: process.platform,
-        projectName: testInfo.project.name,
-        logHeader: formattedName,
-      });
+      const screenshotOpts = roomScreenshotOptions(testInfo.project.name);
 
       forwardBrowserConsoleToNodeConsole(page, formattedName);
 
@@ -418,7 +385,7 @@ test.describe("Room Visual Snapshots", () => {
         });
       };
 
-      let currentUncolourisedState = false;
+      let currentSpriteOption: SpriteOption | undefined;
 
       for (const [roomIndex, roomId] of includedTestRooms.entries()) {
         await test.step(`room: ${roomId}`, async () => {
@@ -437,28 +404,25 @@ test.describe("Room Visual Snapshots", () => {
 
           await navigateToRoom(logHeader, roomId);
 
-          for (const uncolourised of effectiveColourisedModes) {
-            const filenameSuffix = uncolourised ? "-uncolourised" : "";
-
-            if (currentUncolourisedState !== uncolourised) {
-              await setIsUncolourised(page, formattedName, uncolourised);
+          for (const spriteOption of effectiveModes) {
+            if (
+              currentSpriteOption === undefined ||
+              !spriteOptionEquals(currentSpriteOption, spriteOption)
+            ) {
+              await setSpriteOption(page, formattedName, spriteOption);
             }
-            currentUncolourisedState = uncolourised;
+            currentSpriteOption = spriteOption;
 
+            const suffix = spriteOptionSuffix(spriteOption);
             console.log(
-              `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} (uncolourised: ${uncolourised})`,
+              `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} ${JSON.stringify(spriteOption)} at ${chalk.cyan(`${roomId}${suffix}.png`)}`,
             );
             const screenshotStart = performance.now();
             await expect
               // github free runners are slow:
               .configure({ timeout: 15_000 * osSlowness })
               .soft(page)
-              .toHaveScreenshot(`${roomId}${filenameSuffix}.png`, {
-                fullPage: false,
-                threshold,
-                scale: "css",
-                maxDiffPixels: 0,
-              });
+              .toHaveScreenshot(`${roomId}${suffix}.png`, screenshotOpts);
             console.log(
               `${logHeader} ${elapsed()} ...screenshot took`,
               chalk.yellow(formatDuration(performance.now() - screenshotStart)),

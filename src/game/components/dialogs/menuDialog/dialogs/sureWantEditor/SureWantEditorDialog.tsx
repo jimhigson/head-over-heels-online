@@ -1,3 +1,5 @@
+import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
@@ -12,7 +14,7 @@ import { DialogTitleBar } from "../DialogTitleBar";
 
 const blurbMarkdown = `I built an *editor* so I could make the **sequel levels**
 
-![](texture-headlessBase?float-left)**Make puzzles**!
+![](${`${"texture-headlessBase" satisfies TextureTailwindClass}?float-left`})**Make puzzles**!
 
 *Challenge* others to **solve them**!
 

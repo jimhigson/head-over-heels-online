@@ -9,28 +9,29 @@ import { logUpscale } from "./logUpscale";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
-  colourisedModes,
+  enabledSpriteModes,
   exitCrownsDialog,
   openInGameMainMenu,
+  spriteOptionName,
   takeDialogScreenshot,
   testTimeout,
 } from "./menuSnapshotUtils";
 import { osSlowness } from "./osSlowness";
 import { elapsed, formatProjectName } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
-import { setIsUncolourised } from "./setIsUncolourised";
+import { setSpriteOption } from "./setSpriteOption";
 
-for (const { uncolourised } of colourisedModes) {
-  test.describe("Menu Visual Snapshots", () => {
+for (const spriteOption of enabledSpriteModes) {
+  test.describe(`Menu Visual Snapshots ${JSON.stringify(spriteOption)}`, () => {
     for (const deploymentType of deploymentTypes) {
-      test(`Main menu (deploymentType = ${deploymentType}, uncolourised = ${uncolourised})`, async ({
+      test(`Main menu (deploymentType = ${deploymentType}) ${JSON.stringify(spriteOption)}`, async ({
         page,
       }, testInfo) => {
         const { noUncolourised } = testInfo.project
           .use as ScreenshotTestOptions;
         const isMobile = testInfo.project.name.startsWith("mobile-");
         if (
-          (uncolourised && noUncolourised) ||
+          (spriteOption.uncolourised && noUncolourised) ||
           // currently not providing a tauri build on mobile (but could in future):
           (isMobile && deploymentType === "tauri")
         ) {
@@ -74,16 +75,19 @@ for (const { uncolourised } of colourisedModes) {
 
         await logUpscale(page, formattedName);
 
-        await test.step(`set uncolourised user setting to ${uncolourised}`, async () => {
-          await setIsUncolourised(page, formattedName, uncolourised);
+        const nameSegment = spriteOptionName(spriteOption) || null;
+
+        await test.step(`set sprite option to ${JSON.stringify(spriteOption)}`, async () => {
+          await setSpriteOption(page, formattedName, spriteOption);
         });
 
         await takeDialogScreenshot(
           page,
           "mainMenu",
           formattedName,
-          [deploymentType, uncolourised ? "uncolourised" : null],
-          uncolourised,
+          [deploymentType, nameSegment],
+          spriteOption,
+          testInfo.project.name,
         );
 
         await clickPlayTheGame(page, formattedName);
@@ -95,8 +99,9 @@ for (const { uncolourised } of colourisedModes) {
           page,
           "mainMenu",
           formattedName,
-          [deploymentType, "inGame", uncolourised ? "uncolourised" : null],
-          uncolourised,
+          [deploymentType, "inGame", nameSegment],
+          spriteOption,
+          testInfo.project.name,
         );
       });
     }

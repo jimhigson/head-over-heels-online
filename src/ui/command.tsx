@@ -2,6 +2,8 @@ import type { ComponentProps } from "react";
 
 import { Command as CommandPrimitive } from "cmdk";
 
+import type { TextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { cn } from "./cn";
 
 const Command = ({
@@ -26,7 +28,9 @@ const CommandInput = ({
   ...props
 }: ComponentProps<typeof CommandPrimitive.Input>) => (
   <div className="flex items-center border-b px-1 pb-1" cmdk-input-wrapper="">
-    <span className="sprite mr-1 texture-hud_char_gt" />
+    <span
+      className={`sprite mr-1 ${"texture-hud_char_gt" satisfies TextureTailwindClass}`}
+    />
     <CommandPrimitive.Input
       className={cn(
         "flex h-1 w-full bg-pastelBlue py-1 outline-none placeholder:text-shadow disabled:cursor-not-allowed",

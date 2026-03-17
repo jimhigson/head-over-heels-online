@@ -11,10 +11,10 @@ import type { InputStateTrackerInterface } from "./input/InputStateTracker";
 
 import { initOriginalSpritesheet } from "../sprites/spritesheet/loadedSpriteSheet";
 import { createUncolourisedSpritesheet } from "../sprites/spritesheet/variants/uncolourisedSpritesheetVariant";
+import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
 
 import "pixi.js/advanced-blend-modes";
 
-import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
 import {
   gameRestoreFromSave,
   roomExplored,

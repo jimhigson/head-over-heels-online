@@ -8,10 +8,10 @@ import type {
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
 import { roomItemsIterable } from "../../../../model/RoomState";
-import {
-  spritesheetPalette,
-  spritesheetPaletteDim,
-} from "../../../../sprites/palette/spritesheetPalette";
+import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
+import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
+import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { isModifier } from "../../../physics/itemPredicates";
 import { OneColourFilter } from "../../filters/oneColourFilter";
 import { OutlineFilter } from "../../filters/outlineFilter";
@@ -35,15 +35,34 @@ export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
   ) {
     this.output.addChild(childRenderer.output);
 
-    const palette =
-      renderContext.room.color.shade === "dimmed" ?
-        spritesheetPaletteDim
-      : spritesheetPalette;
+    const { spriteOption, spritesheetMeta } = renderContext.general;
+    const { color: roomColor } = renderContext.room;
 
-    this.#leftColourFilter = new OneColourFilter(palette.moss);
-    this.#rightColourFilter = new OneColourFilter(palette.midRed);
+    const useDim = roomColor.shade === "dimmed";
+
+    let leftColour;
+    let rightColour;
+    if (spriteOption.uncolourised) {
+      // Speccy is two-tone - either room colour or black:
+      leftColour = zxSpectrumColor(roomColor);
+      rightColour = zxSpectrumColors.black;
+    } else {
+      leftColour = effectColour(spritesheetMeta, useDim, "left");
+      rightColour = effectColour(spritesheetMeta, useDim, "right");
+    }
+
+    this.#leftColourFilter = new OneColourFilter(leftColour);
+    this.#rightColourFilter = new OneColourFilter(rightColour);
+
     this.#outlineFilter = new OutlineFilter({
-      color: palette.pureBlack,
+      color:
+        spriteOption.uncolourised ?
+          zxSpectrumColors.black
+        : getAmbientSwoppedColour(
+            spritesheetMeta.palette,
+            spritesheetMeta.effectColours.outline,
+            getSpriteSheetVariant("for-current-room").ambient,
+          ),
     });
 
     this.#leftColourFilter.enabled = false;

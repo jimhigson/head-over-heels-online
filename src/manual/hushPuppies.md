@@ -1,16 +1,17 @@
 ## Hush Puppies
 
-![](texture-hushPuppy?float-right)These are a very strange type of beast; they are incredibly 
+![](texture-hushPuppy)These are a very strange type of beast; they are incredibly 
 sleepy. In fact, they never wake up and it is quite normal for them to sleep for 
 their entire lives.
 
-They are often used as tables and even used as building bricks. 
-They are a native of Freedom, ![](texture-head_walking_right_2?clear-both)and for many thousands of years Head and his ancestors 
+They are often used as tables and even used as building bricks.
+
+![](texture-head_walking_right_2?clear-both)They are a native of Freedom, and for many thousands of years Head and his ancestors 
 have been mistaking them for Heels and causing so much trouble to the poor old hush
 puppies that they evolved a defense mechanism they somehow learned to teleport
 themselves away.
 
-![](texture-animated-bubbles_white?float-right&clear-both)Nobody knows where they go, but
+![](texture-animated-bubbles_white)Nobody knows where they go, but
 the instant they see any of Head’s race, they disappear and won’t return until they are sure the coast is
 clear.
 

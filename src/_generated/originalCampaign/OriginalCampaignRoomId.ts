@@ -273,4 +273,5 @@ export type OriginalCampaignRoomId =
   | "safari34"
   | "safari35"
   | "safari36"
-  | "safari37crown";
+  | "safari37crown"
+  | "switch_room";

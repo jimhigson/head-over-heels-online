@@ -269,12 +269,14 @@ export const isPickup = isItemType("pickup");
 export const isModifier = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 ): item is
-  | ItemInPlay<"button", RoomId, RoomItemId>
+  | (ItemInPlay<"button", RoomId, RoomItemId> & {
+      config: { type: "in-room" };
+    })
   | (ItemInPlay<"switch", RoomId, RoomItemId> & {
       config: { type: "in-room" };
     }) => {
   return (
-    item.type === "button" ||
+    (item.type === "button" && item.config.type === "in-room") ||
     (item.type === "switch" && item.config.type === "in-room")
   );
 };

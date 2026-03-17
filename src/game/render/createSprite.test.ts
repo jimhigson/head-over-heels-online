@@ -38,6 +38,12 @@ const mockSpriteSheet = await vi.hoisted(async () => {
         "block.artificial": mockFrame,
         "block.organic": mockFrame,
       },
+      animations: {
+        dalek: Object.assign(["dalek.1", "dalek.2"], { animationSpeed: 1 }),
+        "conveyor.x": Object.assign(["conveyor.x.1", "conveyor.x.2"], {
+          animationSpeed: 1,
+        }),
+      },
     },
   };
 });
@@ -51,7 +57,7 @@ vi.mock("../../sprites/spritesheet/variants/getSpriteSheetVariant", () => ({
   getSpriteSheetVariant: vi.fn(() => mockSpriteSheet),
 }));
 
-import type { TextureId } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "./createSprite";
 

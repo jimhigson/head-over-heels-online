@@ -1,5 +1,5 @@
 ## Springs
 
-![](texture-animated-once-spring_bounce)Jumping from a spring will give extra height to your jump.
+![](texture-animated-spring_bounce?sprite-play-once)Jumping from a spring will give extra height to your jump.
 
 > Section adapted from the original Head over Heels manual

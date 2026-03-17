@@ -9,6 +9,7 @@ import {
   holdPressed,
   mapPressed,
   menuOpenOrExitPressed,
+  nextSpritesOption,
   setEmulatedResolution,
   toggleUserSetting,
 } from "../slices/gameMenus/gameMenusSlice";
@@ -72,10 +73,8 @@ export const useUniversalKeys = () => {
   });
 
   useActionTap({
-    action: "toggleColourisation",
-    handler: useDispatchActionCallback(toggleUserSetting, {
-      path: "displaySettings.uncolourised",
-    }),
+    action: "cycleSprites",
+    handler: useDispatchActionCallback(nextSpritesOption),
     disabled: assigningKeys,
   });
 

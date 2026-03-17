@@ -1,7 +1,7 @@
 import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import type { Subset } from "../../../../utils/subset";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
@@ -9,10 +9,11 @@ import type { ItemAppearance } from "../ItemAppearance";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
-import { getAmbientSwoppedColour } from "../../../../sprites/spritesheet/variants/currentRoomSpritesheetVariant";
+import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
+import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import {
   addXy,
@@ -28,6 +29,7 @@ import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
 import { OutlineFilter } from "../../filters/outlineFilter";
+import { floorTextureId } from "../../floorTextureId";
 import { edgeOriginalGameColour } from "../../gameColours/colourScheme";
 import {
   projectBlockXyzToScreenXy,
@@ -163,19 +165,20 @@ const edgeSprites = ({
   direction,
   times,
   position,
-  colourised,
+  spriteOption,
 }: {
   direction: Subset<DirectionXy4, "right" | "towards">;
   times: Partial<Xy> | undefined;
   position: Partial<Xyz>;
-  colourised?: boolean;
+  spriteOption: SpriteOption;
 }): Container<Sprite> => {
   return createSprite({
     label: `floorEdge(${direction})`,
     textureId: `floorEdge.${direction}`,
     times,
     ...projectWorldXyzToScreenXy(position),
-    spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+    spritesheetVariant:
+      spriteOption.uncolourised ? "uncolourised" : "for-current-room",
   }) as Container<Sprite>;
 };
 
@@ -232,7 +235,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
       renderContext: {
         room,
         item: floorItem,
-        general: { colourised, pixiRenderer },
+        general: { spriteOption, spritesheetMeta, pixiRenderer },
         colourClashLayer,
         frontLayer,
       },
@@ -257,11 +260,19 @@ export const floorAppearance: ItemAppearance<"floor"> =
       const tilesRight = projectWorldXyzToScreenXy({ ...aabb, x: 0 });
       const tilesTop = projectWorldXyzToScreenXy(aabb);
 
+      const spritesheetVariant =
+        spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+      const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+
       const outlineFilter = new OutlineFilter({
         color:
-          colourised ?
-            getAmbientSwoppedColour("pureBlack")
-          : zxSpectrumColors.black,
+          spriteOption.uncolourised ?
+            zxSpectrumColors.black
+          : getAmbientSwoppedColour(
+              spritesheetMeta.palette,
+              spritesheetMeta.effectColours.outline,
+              spritesheet.ambient,
+            ),
         width: 1,
       });
 
@@ -270,23 +281,25 @@ export const floorAppearance: ItemAppearance<"floor"> =
           label: "tiles",
         });
 
-        const floorTileTextureId: TextureId =
-          floorType === "deadly" ?
-            `generic${shade === "dimmed" ? ".dark" : ""}.floor.deadly`
-          : `${floorConfig.scenery}${shade === "dimmed" ? ".dark" : ""}.floor`;
-        const tileTexture = getSpriteSheetVariant(
-          colourised ? "for-current-room" : "uncolourised",
-        ).textures[floorTileTextureId];
+        const floorTileTextureId = floorTextureId(
+          floorConfig,
+          shade === "dimmed",
+          spritesheet.data,
+        );
 
-        try {
-          assertIsTextureId(floorTileTextureId);
-        } catch (e) {
-          throw new Error(
-            `no floor textureId for floorType: ${floorType}, shade: ${shade}`,
-            {
-              cause: e,
-            },
-          );
+        const tileTexture = spritesheet.textures[floorTileTextureId];
+
+        if (import.meta.env.DEV) {
+          try {
+            assertIsTextureId(floorTileTextureId, originalSpriteSheet().data);
+          } catch (e) {
+            throw new Error(
+              `no floor textureId for floorType: ${floorType}, shade: ${shade}`,
+              {
+                cause: e,
+              },
+            );
+          }
         }
 
         // aligning floor tiles, we have three goals:
@@ -335,7 +348,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         });
         tilesContainer.addChild(floorTilesTilingSprite);
         tilesContainer.addChild(
-          renderFloorOverdraws(floorItem, room, colourised),
+          renderFloorOverdraws(floorItem, room, spriteOption),
         );
 
         const tilesMask = new Graphics()
@@ -412,7 +425,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
             direction: "right",
             times: { y: edgeTilesY },
             position: { z: aabb.z },
-            colourised,
+            spriteOption,
           }),
         );
         const edgeTilesX = Math.ceil(aabb.x / blockSizePx.x);
@@ -421,7 +434,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
             direction: "towards",
             times: { x: edgeTilesX },
             position: { z: aabb.z },
-            colourised,
+            spriteOption,
           }),
         );
 
@@ -452,7 +465,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         });
         outlineFilter.destroy(false /* do not destroy programs */);
 
-        if (!colourised) {
+        if (spriteOption.uncolourised) {
           const colourClashContainer = createColourClash({
             xSize: edgeTilesX,
             ySize: edgeTilesY,

@@ -1,7 +1,7 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import type { Xyz } from "../../../utils/vectors/vectors";
-import type { CreateSpriteOptions } from "../../render/createSprite";
+import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { isWallHidden } from "../../../model/json/WallJsonConfig";
@@ -20,12 +20,12 @@ import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
-const shadowWallY: CreateSpriteOptions = Object.freeze({
+const shadowWallY: SpecifiedTextureCreateSpriteOptions = Object.freeze({
   textureId: "shadow.wall.y",
   spritesheetVariant: "original",
 });
 
-const shadowWallX: CreateSpriteOptions = Object.freeze({
+const shadowWallX: SpecifiedTextureCreateSpriteOptions = Object.freeze({
   textureId: "shadow.wall.y",
   flipX: true,
   spritesheetVariant: "original",

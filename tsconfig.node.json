@@ -1,20 +1,13 @@
 {
+  /*
+   * Extends the app config because Node scripts and tests import from src/,
+   * which needs JSX, iterator augmentations, and other app-specific settings.
+   * This config adds Node types on top so that node:* imports, process, etc.
+   * are available.
+   */
+  "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["ESNext"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "types": ["umami", "node"]
   },
   "include": [
     "vite.config.ts",

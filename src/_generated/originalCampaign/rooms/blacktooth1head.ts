@@ -26,23 +26,10 @@ export const room = inferRoomJson({
       position: { x: 5, y: 0, z: 6 },
       type: "barrier",
     },
-    colouriseSwitch: {
-      config: {
-        initialSetting: "left",
-        path: "displaySettings.uncolourised",
-        type: "in-store",
-      },
-      position: { x: 5, y: 3, z: 0 },
-      type: "switch",
-    },
-    crtSwitch: {
-      config: {
-        initialSetting: "left",
-        path: "displaySettings.crtFilter",
-        type: "in-store",
-      },
-      position: { x: 5, y: 4, z: 0 },
-      type: "switch",
+    door: {
+      config: { direction: "left", toRoom: "switch_room" },
+      position: { x: 6, y: 3, z: 0 },
+      type: "door",
     },
     "door@0,3,0": {
       config: { direction: "right", toRoom: "blacktooth23heels" },
@@ -110,11 +97,13 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
-      config: {
-        direction: "left",
-        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],
-      },
+    "wall@6,0,0/afterDoor": {
+      config: { direction: "left", tiles: ["bars", "bars", "bars"] },
+      position: { x: 6, y: 5, z: 0 },
+      type: "wall",
+    },
+    "wall@6,0,0/beforeDoor": {
+      config: { direction: "left", tiles: ["bars", "bars", "bars"] },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },

@@ -2,7 +2,7 @@ import type { Color } from "pixi.js";
 
 import type { IndividualCharacterName } from "../../../model/modelTypes";
 import type { UnknownRoomState } from "../../../model/RoomState";
-import type { SpritesheetPaletteColourName } from "../../../sprites/palette/spritesheetPalette";
+import type { BlockstackPaletteColourName } from "../../../sprites/palette/spritesheetPalette";
 
 import {
   zxSpectrumColor,
@@ -10,47 +10,6 @@ import {
   type ZxSpectrumRoomHue,
   type ZxSpectrumShade,
 } from "../../../originalGame";
-
-/*
-export type Shades = { basic: Color; dimmed: Color; original: Color };
-export const whiteShades = {
-  original: new Color(zxSpectrumColors.white),
-  basic: spritesheetPalette.white,
-  dimmed: spritesheetPalette.lightGrey,
-};
-export const yellowShadesInBasicRooms = {
-  original: new Color(zxSpectrumColors.yellow),
-  basic: spritesheetPalette.highlightBeige,
-  dimmed: spritesheetPalette.redShadow,
-};
-export const yellowShadesInDimmedRooms = {
-  original: new Color(zxSpectrumColors.yellow),
-  basic: spritesheetPalette.midRed,
-  dimmed: spritesheetPalette.redShadow,
-};
-export const magentaShades = {
-  original: new Color(zxSpectrumColors.magenta),
-  basic: spritesheetPalette.pink,
-  // by using halfbrite from the original palette, it should be found by a the LUT
-  // palette swap filter when it indexes also the halfbrite versions of the input colours
-  dimmed: halfbrite(spritesheetPalette.pink),
-};
-export const cyanShades = {
-  original: new Color(zxSpectrumColors.cyan),
-  basic: spritesheetPalette.pastelBlue,
-  // this looks ok for floor edges, but for floors like in #blacktooth23heels heels, it is way too saturated
-  //dimmed: spritesheetPalette.metallicBlue,
-  dimmed: halfbrite(
-    spritesheetPalette.pastelBlue,
-    slightlyBrighterReducedBrightness,
-  ),
-};
-export const greenShades = {
-  original: new Color(zxSpectrumColors.green),
-  basic: spritesheetPalette.moss,
-  dimmed: halfbrite(spritesheetPalette.moss, slightlyBrighterReducedBrightness),
-};
-*/
 
 export type RoomColorScheme = {
   main: ZxSpectrumRoomHue;
@@ -229,7 +188,7 @@ export const getRoomColorScheme = (
 
 export const playableAccentColours: Record<
   IndividualCharacterName,
-  SpritesheetPaletteColourName
+  BlockstackPaletteColourName
 > = {
   head: "pastelBlue",
   heels: "pink",

@@ -1,10 +1,12 @@
 import type { IndividualCharacterName } from "../../../model/modelTypes";
 import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
+import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../createSprite";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
+import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { emptyObject } from "../../../utils/empty";
 import { createSprite } from "../createSprite";
 import { createStackedSprites } from "./createStackedSprites";
@@ -14,21 +16,22 @@ const spriteOptions = (
   direction: DirectionXy8,
   id: string,
   paused: boolean,
-  isColourised: boolean,
+  spriteOption: SpriteOption,
 ): Exclude<CreateSpriteOptions, string> => {
   const possibleAnimationId = `${name}.idle.${direction}`;
   const spritesheetVariant: SpritesheetVariant =
-    isColourised ? "sceneryPlayer" : "uncolourised";
+    spriteOption.uncolourised ? "uncolourised" : "sceneryPlayer";
+  const spritesheet = getSpriteSheetVariant(spritesheetVariant);
 
-  if (isAnimationId(possibleAnimationId)) {
+  if (isAnimationId(possibleAnimationId, spritesheet.data)) {
     return {
       animationId: possibleAnimationId,
       randomiseStartFrame: id,
       paused,
-      spritesheetVariant,
+      spritesheet,
     };
   } else {
-    return { textureId: `${name}.walking.${direction}.2`, spritesheetVariant };
+    return { textureId: `${name}.walking.${direction}.2`, spritesheet };
   }
 };
 
@@ -38,7 +41,7 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
       id,
       config: { which, startDirection },
     },
-    general: { paused, colourised },
+    general: { paused, spriteOption },
   },
   currentRendering,
 }) => {
@@ -54,17 +57,17 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
     output:
       which === "headOverHeels" ?
         createStackedSprites({
-          top: spriteOptions("head", startDirection, id, paused, colourised),
+          top: spriteOptions("head", startDirection, id, paused, spriteOption),
           bottom: spriteOptions(
             "heels",
             startDirection,
             id,
             paused,
-            colourised,
+            spriteOption,
           ),
         })
       : createSprite(
-          spriteOptions(which, startDirection, id, paused, colourised),
+          spriteOptions(which, startDirection, id, paused, spriteOption),
         ),
     renderProps: emptyObject,
   };

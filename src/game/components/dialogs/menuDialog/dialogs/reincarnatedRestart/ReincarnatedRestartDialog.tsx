@@ -1,3 +1,5 @@
+import type { AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/dialog";
@@ -19,26 +21,28 @@ export const ReincarnatedRestartDialog = () => {
         dialogId="reincarnatedRestart"
       >
         <BitmapText
-          className={`${multilineTextClass} text-zxRed block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
+          className={`${multilineTextClass} text-midRed zx:text-zxRed block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
         >
           You don’t go towards the light
         </BitmapText>
         <BitmapText
-          className={`${multilineTextClass} block text-zxYellow w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
+          className={`${multilineTextClass} block text-highlightBeige zx:text-zxYellow w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
         >
           You have a horrible taste in your mouth
         </BitmapText>
         <BitmapText
-          className={`${multilineTextClass} block text-zxGreen w-24 mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix`}
+          className={`${multilineTextClass} block text-moss zx:text-zxGreen w-24 mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix`}
         >
           You have reincarnated!
         </BitmapText>
         <BitmapText
-          className={`${multilineTextClass} block text-zxCyan w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
+          className={`${multilineTextClass} block text-pastelBlue zx:text-zxCyan w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
         >
           Everything is back to how it was when you ate the fish
         </BitmapText>
-        <span className="sprite mx-auto  bg-zxBlack texture-animated-fish sprite-revert-to-white" />
+        <span
+          className={`sprite mx-auto bg-zxBlack ${"texture-animated-fish" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-white`}
+        />
         <MenuItems className="hidden">
           <BackMenuItem />
         </MenuItems>

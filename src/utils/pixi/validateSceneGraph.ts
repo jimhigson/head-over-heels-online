@@ -26,48 +26,65 @@ const getDestroyedIssue = (container: Container): string | undefined => {
   return undefined;
 };
 
-const assertNotDestroyed = (
+const describeDestroyedNode = (
   container: Container,
   root: Container,
   context: string,
-): void => {
+): string | undefined => {
   const issue = getDestroyedIssue(container);
-  if (issue !== undefined) {
-    throw new Error(
-      `${context} (${issue}):\n  ${getAncestryPath(container, root)}`,
-    );
-  }
+  if (issue === undefined) return undefined;
+  return `${context} (${issue}):\n  ${getAncestryPath(container, root)}`;
 };
 
-const assertFiltersNotDestroyed = (
+const describeDestroyedFilters = (
   container: Container,
   root: Container,
-): void => {
+): string[] => {
   const { filters } = container;
-  if (filters === null || filters === undefined) return;
+  if (filters === null || filters === undefined) return [];
 
+  const issues: string[] = [];
   for (const filter of filters) {
     if (!filter.enabled) continue;
     if (filter._destroyed) {
-      throw new Error(
+      issues.push(
         `Destroyed filter found:\n  ${getAncestryPath(container, root)}`,
       );
     }
   }
+  return issues;
 };
 
-const validateRecursive = (container: Container, root: Container): void => {
-  assertNotDestroyed(container, root, "Destroyed node found");
-
-  if (container.mask instanceof Sprite) {
-    assertNotDestroyed(container.mask, root, "Mask destroyed");
+const collectIssues = (
+  container: Container,
+  root: Container,
+  issues: string[],
+): void => {
+  const nodeIssue = describeDestroyedNode(
+    container,
+    root,
+    "Destroyed node found",
+  );
+  if (nodeIssue !== undefined) {
+    issues.push(nodeIssue);
   }
 
-  assertFiltersNotDestroyed(container, root);
+  if (container.mask instanceof Sprite) {
+    const maskIssue = describeDestroyedNode(
+      container.mask,
+      root,
+      "Mask destroyed",
+    );
+    if (maskIssue !== undefined) {
+      issues.push(maskIssue);
+    }
+  }
+
+  issues.push(...describeDestroyedFilters(container, root));
 
   for (const child of container.children) {
     if (!child.visible) continue;
-    validateRecursive(child as Container, root);
+    collectIssues(child as Container, root, issues);
   }
 };
 
@@ -75,5 +92,11 @@ const validateRecursive = (container: Container, root: Container): void => {
  * Traverse the scene graph looking for issues
  */
 export const validateSceneGraph = (container: Container): void => {
-  validateRecursive(container, container);
+  const issues: string[] = [];
+  collectIssues(container, container, issues);
+  if (issues.length > 0) {
+    throw new Error(
+      `Scene graph has ${issues.length} destroyed reference${issues.length > 1 ? "s" : ""}:\n\n${issues.join("\n\n")}`,
+    );
+  }
 };

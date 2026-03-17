@@ -9,7 +9,6 @@ import type { GeneralRenderContext } from "../../room/RoomRenderContexts";
 import type { HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import type { ButtonId } from "./OnScreenButtonRenderer";
 
-import { spritesheetData } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
 import { valuesIter } from "../../../../utils/entries";
 import { selectCurrentPlayableItem } from "../../../gameState/gameStateSelectors/selectPlayableItem";
 import { carryAndJumpButtonAppearance } from "./buttonAppearances/carryAndJumpButtonAppearance";
@@ -248,4 +247,3 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     this.#container.destroy({ children: true });
   }
 }
-export const buttonSpriteSize = spritesheetData.frames.button.frame;

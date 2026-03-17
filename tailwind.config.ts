@@ -100,12 +100,21 @@ export default {
       // have to be specifically referenced
       pattern: /texture-hud_char_/,
     },
+    {
+      // playable character animations are referenced dynamically via playableTailwindSpriteClassname
+      pattern: /texture-animated-(head|heels)_(walking|idle)_/,
+      variants: ["selectedMenuItem", "activated", "[button:hover_&]"],
+    },
+    {
+      // playable character static textures referenced dynamically
+      pattern: /texture-(head|heels)_(walking|standing|blinking)_/,
+    },
   ],
   theme: {
     colors: coloursCssVariables,
     spacing: {
       // for when rendering with (stacked) sprites - how much to pull-up the bottom sprite
-      bottomStackPullup: `calc(var(--scale) * 17px)`,
+      bottomStackPullup: `calc(var(--scale) * 20px)`,
       // quite specialist - in markdown, when showing a smaller item stacked on a larger one,
       // how much to move the smaller one over (with margin-left/ml)
       centreSmallBlockOnLarge: `calc(var(--scale) * 4px)`,
@@ -148,18 +157,21 @@ export default {
     minWidth: {
       ...blockMultiples,
       full: "100%",
+      none: "none",
     },
     maxWidth: {
       ...blockMultiples,
       // widest dialog is 50% wider than the zx screen:
       widestDialog: `calc(var(--scale) * ${resolutions.zxSpectrum.size.x * 1.4}px)`,
       full: "100%",
+      none: "none",
     },
     maxHeight: {
       ...blockMultiples,
 
       min: "min-content",
       full: "100%",
+      none: "none",
     },
     gridTemplateColumns: {
       // min-content - typically 2 blocks but some menus can have custom leaders
@@ -198,6 +210,7 @@ export default {
     aspectRatio: {
       pal: "4 / 3",
     },
+    scrollMargin: blockMultiples,
     dropShadow: {
       oneBlock: "var(--block) var(--block) 0 rgba(0, 0, 0, 0.66)",
     },

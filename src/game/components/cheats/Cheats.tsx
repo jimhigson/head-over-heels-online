@@ -13,6 +13,10 @@ import type {
   JsonItemType,
 } from "../../../model/json/JsonItem";
 import type { IndividualCharacterName } from "../../../model/modelTypes";
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
+} from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { SelectableGameSpeeds } from "../../../store/slices/gameMenus/selectableGameSpeeds";
 import type { GameApi } from "../../GameApi";
 
@@ -42,6 +46,7 @@ import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { CssVariables } from "../CssVariables";
 import { useGameApi } from "../GameApiContext";
+import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/PlayableTailwindSprite";
 import { BitmapText } from "../tailwindSprites/Sprite";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
@@ -90,6 +95,7 @@ const SummonPlayableButton = <RoomId extends string>({
   gameApi,
   playableName,
 }: SummonPlayableButtonProps<RoomId>) => {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <Button
       className={cheatsButtonClasses}
@@ -172,16 +178,28 @@ const SummonPlayableButton = <RoomId extends string>({
     >
       {playableName === "headOverHeels" ?
         <>
-          <span className="sprite texture-head_walking_right_2 [button:hover_&]:texture-animated-head_walking_towards" />
+          <span
+            className={`sprite
+              ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}
+              [button:hover_&]:${spriteClassname({ character: "head", action: "walking", facingXy8: "towards" })}`}
+          />
           over
-          <span className="sprite texture-heels_standing_right [button:hover_&]:texture-animated-heels_walking_towards" />
+          <span
+            className={`sprite
+              ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}
+              [button:hover_&]:${spriteClassname({ character: "heels", action: "walking", facingXy8: "towards" })}`}
+          />
         </>
       : playableName === "heels" ?
         <span
-          className={`sprite texture-heels_standing_right [button:hover_&]:texture-animated-heels_walking_towards`}
+          className={`sprite
+            ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}
+            [button:hover_&]:${spriteClassname({ character: "heels", action: "walking", facingXy8: "towards" })}`}
         />
       : <span
-          className={`sprite texture-head_walking_right_2 [button:hover_&]:texture-animated-head_walking_towards`}
+          className={`sprite
+            ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}
+            [button:hover_&]:${spriteClassname({ character: "head", action: "walking", facingXy8: "towards" })}`}
         />
       }
     </Button>
@@ -219,6 +237,7 @@ let summonedItemNumber = 0;
 
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   const gameApi = useGameApi<RoomId>();
+  const spriteClassname = usePlayableTailwindSpriteClassname();
 
   useDebugClickOnItem();
 
@@ -263,7 +282,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         className="absolute bottom-0 right-1 flex flex-col z-cheats text-midRed hover:text-metallicBlue "
         onClick={(e) => e.currentTarget.blur()}
       >
-        <span className="sprite texture-helicopterBug_1 hover:texture-animated-helicopterBug zx:sprite-revert-to-two-tone" />
+        <span
+          className={`sprite ${"texture-helicopterBug_1" satisfies TextureTailwindClass} ${"hover:texture-animated-helicopterBug" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-two-tone`}
+        />
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div
@@ -342,7 +363,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-bag" />
+                <span
+                  className={`sprite ${"texture-bag" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -351,7 +374,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-hooter" />
+                <span
+                  className={`sprite ${"texture-hooter" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -360,7 +385,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-doughnuts" />
+                <span
+                  className={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -369,7 +396,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-cube" />
+                <span
+                  className={`sprite ${"texture-cube" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -378,7 +407,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-ball" />
+                <span
+                  className={`sprite ${"texture-ball" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -387,7 +418,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-spring_released" />
+                <span
+                  className={`sprite ${"texture-spring_released" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -400,7 +433,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-dalek_1 hover:texture-animated-dalek" />
+                <span
+                  className={`sprite ${"texture-dalek_1" satisfies TextureTailwindClass} ${"hover:texture-animated-dalek" satisfies AnimatedTextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -414,7 +449,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-turtle_towards_1 hover:texture-animated-turtle_towards" />
+                <span
+                  className={`sprite ${"texture-turtle_towards_1" satisfies TextureTailwindClass} ${"hover:texture-animated-turtle_towards" satisfies AnimatedTextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -430,7 +467,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-skiHead_greenAndPink_towards" />
+                <span
+                  className={`sprite ${"texture-skiHead_greenAndPink_towards" satisfies TextureTailwindClass}`}
+                />
               </Button>
             </div>
             <div className="flex flex-row items-center">
@@ -441,7 +480,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown_bookworld" />
+                <span
+                  className={`sprite ${"texture-crown_bookworld" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -450,7 +491,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown_egyptus" />
+                <span
+                  className={`sprite ${"texture-crown_egyptus" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -459,7 +502,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown_safari" />
+                <span
+                  className={`sprite ${"texture-crown_safari" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -471,7 +516,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown_penitentiary" />
+                <span
+                  className={`sprite ${"texture-crown_penitentiary" satisfies TextureTailwindClass}`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -483,7 +530,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-crown_blacktooth" />
+                <span
+                  className={`sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass}`}
+                />
               </Button>
             </div>
             <div className="flex flex-row items-center">
@@ -494,8 +543,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-whiteRabbit" />
-                <span className="sprite texture-hud_char_2 left-m2 relative" />
+                <span
+                  className={`sprite ${"texture-whiteRabbit_extra-life" satisfies TextureTailwindClass}`}
+                />
+                <span
+                  className={`sprite ${"texture-hud_char_2" satisfies TextureTailwindClass} left-m2 relative`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -504,8 +557,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-whiteRabbit" />
-                <span className="sprite texture-hud_char_🛡 left-m2 relative" />
+                <span
+                  className={`sprite ${"texture-whiteRabbit_shield" satisfies TextureTailwindClass}`}
+                />
+                <span
+                  className={`sprite ${"texture-hud_char_🛡" satisfies TextureTailwindClass} left-m2 relative`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -514,8 +571,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-whiteRabbit" />
-                <span className="sprite texture-hud_char_⚡ left-m2 relative" />
+                <span
+                  className={`sprite ${"texture-whiteRabbit_fast" satisfies TextureTailwindClass}`}
+                />
+                <span
+                  className={`sprite ${"texture-hud_char_⚡" satisfies TextureTailwindClass} left-m2 relative`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -524,8 +585,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-whiteRabbit" />
-                <span className="sprite texture-hud_char_♨ left-m2 relative" />
+                <span
+                  className={`sprite ${"texture-whiteRabbit_jumps" satisfies TextureTailwindClass}`}
+                />
+                <span
+                  className={`sprite ${"texture-hud_char_♨" satisfies TextureTailwindClass} left-m2 relative`}
+                />
               </Button>
               <Button
                 className={cheatsButtonClasses}
@@ -534,7 +599,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-fish_1 hover:texture-animated-fish" />
+                <span
+                  className={`sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"hover:texture-animated-fish" satisfies AnimatedTextureTailwindClass}`}
+                />
               </Button>
             </div>
 
@@ -712,8 +779,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   e?.currentTarget.blur();
                 }}
               >
-                <span className="sprite texture-head_walking_right_2" />
-                <span className="sprite texture-heels_standing_right" />
+                <span
+                  className={`sprite ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}`}
+                />
+                <span
+                  className={`sprite ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
+                />
               </Button>
             </div>
           </CssVariables>

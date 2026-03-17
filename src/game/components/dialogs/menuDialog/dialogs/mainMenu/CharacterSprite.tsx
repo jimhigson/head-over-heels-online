@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
+import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 import {
   type DirectionXy8,
   vectorClosestDirectionXy8,
 } from "../../../../../../utils/vectors/vectors";
 import { rotateInputVector45 } from "../../../../../input/analogueControlAdjustments";
-import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 
 const getDirectionFromMousePosition = (
   element: HTMLElement,
@@ -44,6 +45,7 @@ export const CharacterSprite = ({
 }) => {
   const [facing, setFacing] = useState<DirectionXy8>(defaultFacing);
   const [isHovered, setIsHovered] = useState(false);
+  const spriteClassname = usePlayableTailwindSpriteClassname();
 
   const spriteRef = useRef<HTMLDivElement>(null);
 
@@ -88,7 +90,7 @@ export const CharacterSprite = ({
   // Calculate action based on hover state
   const action: "idle" | "walking" = isHovered ? "walking" : "idle";
 
-  const spriteClassName = playableTailwindSpriteClassname({
+  const spriteClassName = spriteClassname({
     character,
     facingXy8: facing,
     action,
@@ -104,7 +106,9 @@ export const CharacterSprite = ({
       <span
         className={`sprite zx:sprite-revert-to-white ${spriteClassName} relative z-topSprite`}
       />
-      <span className="sprite zx:hidden texture-shadow_playable sprite-shadow absolute left-0 opacity-halfBrite" />
+      <span
+        className={`sprite zx:hidden ${"texture-shadow_playable" satisfies TextureTailwindClass} sprite-shadow absolute left-0 opacity-halfBrite`}
+      />
     </div>
   );
 };

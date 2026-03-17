@@ -1,14 +1,11 @@
-import type {
-  Page,
-  PageAssertionsToHaveScreenshotOptions,
-} from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
 import type { DialogId } from "../src/game/components/dialogs/menuDialog/DialogId";
+import type { SpriteOption } from "../src/store/slices/gameMenus/gameMenusSlice";
 
-import spritesheetColours from "../src/_generated/palette/spritesheetPalette.json" with { type: "json" };
 import {
   menuItemDataAttributeDisabled,
   menuItemDataAttributeHidden,
@@ -21,32 +18,38 @@ import { logSelectorExistence } from "./logSelectorExistence";
 import { osSlowness } from "./osSlowness";
 import { elapsed } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
+import { menuScreenshotOptions } from "./screenshotOptions";
 
 export const testTimeout = (process.env.CI ? 600_000 : 120_000) * osSlowness;
 
-export const colourisedModes =
-  process.env.NO_UNCOLOURISED ?
-    [{ uncolourised: false }]
-  : [{ uncolourised: false }, { uncolourised: true }];
+/** short label for a sprite option: "uncolourised", "toppy", or "" for default BlockStack */
+export const spriteOptionName = (spriteOption: SpriteOption): string =>
+  spriteOption.uncolourised ? "uncolourised"
+  : spriteOption.name === "Toppy" ? "toppy"
+    // no name otherwise - because it was the first variant, and I don't want to rename all the old files,
+    // Blockstack colourised gets no suffix/name added to files
+  : "";
 
-export const screenshotOptions = (
-  page: Page,
-  uncolourised: boolean,
-): PageAssertionsToHaveScreenshotOptions => ({
-  fullPage: false,
-  // use smaller 'css' screenshots to reduce file size:
-  scale: "css" as const,
-  animations: "disabled" as const,
-  // unlike in-game screenshots, this is using html rendering so needs to be a bit more lenient:
-  threshold: 0.1,
-  // non-integer scaling can sometimes cause different snapping of scaled
-  // nearest-neighbour graphics:
-  // results tend to be about 5M pixels, so 0.0001 is ~1,000 pixels difference allowed
-  maxDiffPixelRatio: 0.0002,
-  timeout: 10_000 * osSlowness,
-  mask: [page.locator(".screenshot-mask")],
-  maskColor: uncolourised ? "#ff00ff" : spritesheetColours.pink,
-});
+/** dash-prefixed suffix for filenames: "-uncolourised", "-toppy", or "" for default */
+export const spriteOptionSuffix = (spriteOption: SpriteOption): string => {
+  const name = spriteOptionName(spriteOption);
+  return name === "" ? "" : `-${name}`;
+};
+
+export const enabledSpriteModes: SpriteOption[] = [
+  { name: "BlockStack", uncolourised: false } as const,
+  ...(process.env.NO_UNCOLOURISED ?
+    []
+  : [
+      {
+        name: "BlockStack",
+        uncolourised: true,
+      } as const,
+    ]),
+  ...(process.env.NO_TOPPY ?
+    []
+  : [{ name: "Toppy", uncolourised: false } as const]),
+];
 
 // Track visited dialogs to avoid infinite loops and duplicates
 export type VisitedDialogs = Set<DialogId>;
@@ -64,7 +67,8 @@ export const takeDialogScreenshot = async (
   dialogId: DialogId,
   logHeader: string,
   filenameSuffix: (null | string)[] | string,
-  uncolourised: boolean,
+  spriteOption: SpriteOption,
+  projectName: string,
 ) => {
   const resolvedSuffix =
     typeof filenameSuffix === "string" ? filenameSuffix : (
@@ -95,7 +99,8 @@ export const takeDialogScreenshot = async (
       page,
       `${dialogId}${resolvedSuffix}`,
       logHeader,
-      uncolourised,
+      spriteOption,
+      projectName,
     );
   });
 };
@@ -108,7 +113,8 @@ export const takeScreenshot = async (
   page: Page,
   screenshotName: string,
   logHeader: string,
-  uncolourised: boolean,
+  spriteOption: SpriteOption,
+  projectName: string,
 ) => {
   const menuItems = page
     .locator(
@@ -133,7 +139,7 @@ export const takeScreenshot = async (
     .soft(page)
     .toHaveScreenshot(
       `${screenshotName}.png`,
-      screenshotOptions(page, uncolourised),
+      menuScreenshotOptions(page, spriteOption, projectName),
     );
 
   console.log(

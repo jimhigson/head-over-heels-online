@@ -8,6 +8,7 @@ import type {
 } from "../../../../model/ItemInPlay";
 import type { ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import type { CollideableItem } from "../../../collision/aabbCollision";
+import type { SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
 import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
 import type {
   ItemRenderContext,
@@ -245,11 +246,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         const { shadowCastTexture } = caster;
 
         const castTextureMultiplied = renderMultipliedXy(
-          typeof shadowCastTexture === "string" ?
-            // shadowCastTexture as a single string is deprecated, for compatibility with
-            // v 1.14.0 saved games
-            { textureId: shadowCastTexture }
-          : shadowCastTexture,
+          {
+            ...shadowCastTexture,
+            paused: this.renderContext.general.paused,
+          } as SpecifiedTextureCreateSpriteOptions,
           times,
         );
 

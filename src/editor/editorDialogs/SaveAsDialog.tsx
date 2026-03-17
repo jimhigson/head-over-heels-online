@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
@@ -116,9 +118,12 @@ export const SaveAsDialog = ({
             >
               <BitmapText>Save</BitmapText>
               <span
-                className={cn(`sprite texture-editor_tool_save relative`, {
-                  "sprite-revert-to-two-tone-dim": disabled,
-                })}
+                className={cn(
+                  `sprite ${"texture-editor_tool_save" satisfies TextureTailwindClass} relative`,
+                  {
+                    "sprite-revert-to-two-tone-dim": disabled,
+                  },
+                )}
               />
             </Button>
           </div>

@@ -71,7 +71,30 @@ export const textureToConsoleArgs = async (
 /**
  * Log textures as images to the console with stats at the end
  */
-const logTextures = async (maxSize?: number): Promise<void> => {
+const logTexturesJson = (): void => {
+  const trackingStart = getTrackingStartTime() ?? 0;
+  console.log(
+    getTrackedTextures().map((item) => ({
+      size: `${item.textureSource.width}x${item.textureSource.height}`,
+      format: item.textureSource.format ?? "unknown",
+      memory: formatMemory(getTextureMemory(item.textureSource)),
+      type: item.type ?? "unknown",
+      createdAt: formatDuration(item.createdAt - trackingStart),
+      stack: item.callStack.stack,
+    })),
+  );
+};
+
+type TextureInspectorOptions = { json: true } | number | undefined;
+
+const logTextures = async (
+  options?: TextureInspectorOptions,
+): Promise<void> => {
+  if (options !== undefined && typeof options === "object" && options.json) {
+    logTexturesJson();
+    return;
+  }
+  const maxSize = typeof options === "number" ? options : undefined;
   const trackedTextures = getTrackedTextures();
 
   if (trackedTextures.length === 0) {
@@ -217,7 +240,7 @@ const showTextureStats = (): void => {
 
 declare global {
   interface Window {
-    textureInspector: () => void;
+    textureInspector: (options?: TextureInspectorOptions) => void;
     textureInspectorStart: typeof patchPixiToTrackTextures;
   }
 }
@@ -232,6 +255,7 @@ export const addToConsole = (): void => {
 
     console.log(`✅ Texture inspector ready. Use these commands in the console:
   textureInspector(maxSize?)     - View all textures with images and statistics
+  textureInspector({ json: true }) - View all textures as JSON
   textureInspectorStart(app) - Start tracking textures (call from your app init code to track all from the start)`);
   }
 };

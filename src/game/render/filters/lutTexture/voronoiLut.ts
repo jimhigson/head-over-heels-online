@@ -4,43 +4,10 @@ import type { Color } from "pixi.js";
 
 import { Texture } from "pixi.js";
 
-import {
-  spritesheetPalette,
-  type SpritesheetPaletteColourName,
-} from "../../../../sprites/palette/spritesheetPalette";
 import { blockEncodeRgbBitDepth } from "./blockEncode";
 import { lutSize, lutW } from "./lutSize";
 
 const { floor, min } = Math;
-
-type SpritesheetPaletteMappings = {
-  [C in SpritesheetPaletteColourName]?: Color | SpritesheetPaletteColourName;
-};
-type ArbitraryMappings = Map<Color, Color>;
-
-const normaliseInput = (
-  inputMap: ArbitraryMappings | SpritesheetPaletteMappings,
-): ArbitraryMappings => {
-  if (inputMap instanceof Map) {
-    return inputMap;
-  }
-
-  const result = new Map<Color, Color>();
-
-  const entries = Object.entries(inputMap) as [
-    SpritesheetPaletteColourName,
-    Color | SpritesheetPaletteColourName,
-  ][];
-  for (const [key, value] of entries) {
-    const srcColor = spritesheetPalette[key];
-    const dstColor =
-      typeof value === "string" ? spritesheetPalette[value] : value;
-
-    result.set(srcColor, dstColor);
-  }
-
-  return result;
-};
 
 type SimpleColor = {
   red: number;
@@ -52,18 +19,12 @@ const black: SimpleColor = { red: 0, blue: 0, green: 0 };
 /* arbitrary amount to try to look ahead to block-fill some pixels */
 const lookahead = 9;
 
-export function voronoiLut(map: ArbitraryMappings): Texture;
-export function voronoiLut(map: SpritesheetPaletteMappings): Texture;
 /**
  * A (very) optimised lut generator in js (not shaders)
  * - js is fast enough after a lot of optimisation that it
  * doesn't make sense to switch
  */
-export function voronoiLut(
-  inputMap: ArbitraryMappings | SpritesheetPaletteMappings,
-) {
-  const map = normaliseInput(inputMap);
-
+export const voronoiLut = (map: Map<Color, Color>): Texture => {
   // Create RGBA texture data (4 bytes per pixel)
   const data = new Uint8Array(lutSize * 4)
     // fill with 255 for the alpha channel - rgb will be overwritten:
@@ -199,4 +160,4 @@ export function voronoiLut(
   });
 
   return texture;
-}
+};

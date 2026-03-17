@@ -11,10 +11,7 @@ import type { ItemPixiRenderer } from "./ItemRenderer";
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
 import { defaultUserSettings } from "../../../../store/slices/gameMenus/defaultUserSettings";
-import {
-  selectIsUncolourised,
-  selectShowBoundingBoxes,
-} from "../../../../store/slices/gameMenus/gameMenusSelectors";
+import { selectShowBoundingBoxes } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { debugItemClicked } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../../store/store";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
@@ -68,7 +65,7 @@ export const createItemRenderer = <T extends ItemInPlayType>(
 ): ItemRenderPipeline<T> => {
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
-  const colourise = !selectIsUncolourised(state);
+  const colourise = !itemRenderContext.general.spriteOption.uncolourised;
   const {
     general: { paused },
   } = itemRenderContext;
@@ -109,9 +106,9 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     );
   }
 
-  // non-colourised rendering doesn't have shadows (yet) since it prevents
+  // non-colourised rendering doesn't have shadows since it prevents
   // the colour revert shader from properly identifying black/non-black pixels
-  if (colourise && !paused) {
+  if (colourise) {
     const maybeItemShadowRenderer =
       maybeCreateItemShadowRenderer(itemRenderContext);
     if (maybeItemShadowRenderer !== undefined) {

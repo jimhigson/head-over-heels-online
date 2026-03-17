@@ -12,32 +12,32 @@ import { logUpscale } from "./logUpscale";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
-  colourisedModes,
+  enabledSpriteModes,
   exitCrownsDialog,
   openInGameMainMenu,
+  spriteOptionSuffix,
   takeScreenshot,
   testTimeout,
 } from "./menuSnapshotUtils";
 import { osSlowness } from "./osSlowness";
 import { elapsed, formatProjectName } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
-import { setIsUncolourised } from "./setIsUncolourised";
+import { setSpriteOption } from "./setSpriteOption";
 
-for (const { uncolourised } of colourisedModes) {
-  test.describe("Menu Visual Snapshots", () => {
-    test(`Snapshot in game dialogs (uncolourised = ${uncolourised})`, async ({
+for (const spriteOption of enabledSpriteModes) {
+  test.describe(`Menu Visual Snapshots ${JSON.stringify(spriteOption)}`, () => {
+    test(`Snapshot in game dialogs ${JSON.stringify(spriteOption)}`, async ({
       page,
     }, testInfo) => {
       const { mainMenuOnly, noUncolourised } = testInfo.project
         .use as ScreenshotTestOptions;
-      if (mainMenuOnly || (uncolourised && noUncolourised)) {
+      if (mainMenuOnly || (spriteOption.uncolourised && noUncolourised)) {
         test.skip();
         return;
       }
       test.setTimeout(testTimeout);
 
       const formattedName = formatProjectName(testInfo.project.name);
-      const filenameSuffix = uncolourised ? "-uncolourised" : "";
 
       forwardBrowserConsoleToNodeConsole(page, formattedName);
 
@@ -74,8 +74,8 @@ for (const { uncolourised } of colourisedModes) {
 
       await logUpscale(page, formattedName);
 
-      await test.step(`set colourised user setting`, async () => {
-        await setIsUncolourised(page, formattedName, uncolourised);
+      await test.step(`set sprite option to ${JSON.stringify(spriteOption)}`, async () => {
+        await setSpriteOption(page, formattedName, spriteOption);
       });
 
       await clickPlayTheGame(page, formattedName);
@@ -104,9 +104,10 @@ for (const { uncolourised } of colourisedModes) {
             );
             await takeScreenshot(
               page,
-              `crowns${filenameSuffix}`,
+              `crowns${spriteOptionSuffix(spriteOption)}`,
               formattedName,
-              uncolourised,
+              spriteOption,
+              testInfo.project.name,
             );
           },
           logHeader: formattedName,
@@ -155,9 +156,10 @@ for (const { uncolourised } of colourisedModes) {
             );
             await takeScreenshot(
               page,
-              `map${filenameSuffix}`,
+              `map${spriteOptionSuffix(spriteOption)}`,
               formattedName,
-              uncolourised,
+              spriteOption,
+              testInfo.project.name,
             );
           },
           logHeader: formattedName,
@@ -226,9 +228,10 @@ for (const { uncolourised } of colourisedModes) {
             );
             await takeScreenshot(
               page,
-              `hold${filenameSuffix}`,
+              `hold${spriteOptionSuffix(spriteOption)}`,
               formattedName,
-              uncolourised,
+              spriteOption,
+              testInfo.project.name,
             );
           },
           logHeader: formattedName,
@@ -270,9 +273,10 @@ for (const { uncolourised } of colourisedModes) {
             );
             await takeScreenshot(
               page,
-              `main-inGame${filenameSuffix}`,
+              `main-inGame${spriteOptionSuffix(spriteOption)}`,
               formattedName,
-              uncolourised,
+              spriteOption,
+              testInfo.project.name,
             );
           },
           logHeader: formattedName,
@@ -318,9 +322,10 @@ for (const { uncolourised } of colourisedModes) {
             );
             await takeScreenshot(
               page,
-              `score${filenameSuffix}`,
+              `score${spriteOptionSuffix(spriteOption)}`,
               formattedName,
-              uncolourised,
+              spriteOption,
+              testInfo.project.name,
             );
           },
           logHeader: formattedName,
@@ -353,9 +358,10 @@ for (const { uncolourised } of colourisedModes) {
             );
             await takeScreenshot(
               page,
-              `proclaimEmperor${filenameSuffix}`,
+              `proclaimEmperor${spriteOptionSuffix(spriteOption)}`,
               formattedName,
-              uncolourised,
+              spriteOption,
+              testInfo.project.name,
             );
           },
           logHeader: formattedName,

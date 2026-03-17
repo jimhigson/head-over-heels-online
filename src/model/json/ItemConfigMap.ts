@@ -27,7 +27,7 @@ export type ScrollConfig =
   | {
       gives: "scroll";
       source: "inline";
-      markdown: string;
+      markdown: string | string[];
     }
   | {
       gives: "scroll";
@@ -124,6 +124,22 @@ type TeleporterConfig<RoomId extends string> = ConsolidatableConfig & {
       }
   );
 
+export type FloorConfig<ScN extends SceneryName> =
+  | {
+      /** the room has no floor, but it is included to draw the floor edge */
+      floorType: Subset<FloorType, "none">;
+      times: Xy;
+    }
+  | {
+      floorType: Subset<FloorType, "deadly">;
+      times: Xy;
+    }
+  | {
+      floorType: Subset<FloorType, "standable">;
+      scenery: ScN;
+      times: Xy;
+    };
+
 export type ItemConfigMap<
   RoomId extends string,
   /** ids of items in this room */
@@ -132,21 +148,7 @@ export type ItemConfigMap<
 > = {
   door: DoorConfig<RoomId>;
 
-  floor:
-    | {
-        /** the room has no floor, but it is included to draw the floor edge */
-        floorType: Subset<FloorType, "none">;
-        times: Xy;
-      }
-    | {
-        floorType: Subset<FloorType, "deadly">;
-        times: Xy;
-      }
-    | {
-        floorType: Subset<FloorType, "standable">;
-        scenery: ScN;
-        times: Xy;
-      };
+  floor: FloorConfig<ScN>;
   wall: WallJsonConfig<ScN>;
   teleporter: TeleporterConfig<RoomId>;
   portableTeleporter: TeleporterConfig<RoomId>;

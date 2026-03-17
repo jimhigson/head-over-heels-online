@@ -1,3 +1,8 @@
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
+} from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
@@ -7,8 +12,7 @@ import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 
-const crownClass =
-  "sprite texture-crown_blacktooth zx:texture-crown_uncolourised zx:sprite-tinted zx:text-zxYellow";
+const crownClass = `sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass} ${"zx:texture-crown_uncolourised" satisfies TextureTailwindClass} zx:sprite-tinted zx:text-zxYellow`;
 
 export const ProclaimEmperorDialog = () => {
   return (
@@ -23,11 +27,15 @@ export const ProclaimEmperorDialog = () => {
           <div className="flex gap-7">
             <div className="flex flex-col gap-y-oneScaledPix items-center me-1">
               <span className={crownClass} />
-              <span className="sprite zx:sprite-revert-zxYellow texture-animated-head_idle_right hover:texture-animated-head_walking_right relative z-topSprite" />
+              <span
+                className={`sprite zx:sprite-revert-zxYellow ${"texture-animated-head_idle_right" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-head_walking_right" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
+              />
             </div>
             <div className="flex flex-col items-center me-1">
               <span className={crownClass} />
-              <span className="sprite zx:sprite-revert-zxYellow texture-animated-heels_idle_towards hover:texture-animated-heels_walking_towards relative z-topSprite" />
+              <span
+                className={`sprite zx:sprite-revert-zxYellow ${"texture-animated-heels_idle_towards" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-heels_walking_towards" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
+              />
             </div>
           </div>
           <div className="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan">

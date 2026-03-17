@@ -8,7 +8,7 @@ import { parseHex } from "./parseHex";
 export const amigaHalfBriteBrightness = 0.4;
 /**
  * an alternative brightness level for when calculating replacements for placeholder
- * colours that can be used if halfbright looks too dark
+ * colours that can be used if halfbrite looks too dark
  */
 export const slightlyBrighterReducedBrightness = 0.5;
 

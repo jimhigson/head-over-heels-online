@@ -21,4 +21,6 @@ export const AssetLoadGateHoc = (load: () => Promise<unknown>) => {
   return LoadGate;
 };
 
-export const LoadSpritesheetGate = AssetLoadGateHoc(loadSpritesheetAssets);
+export const LoadSpritesheetGate = AssetLoadGateHoc(() =>
+  loadSpritesheetAssets("BlockStack"),
+);

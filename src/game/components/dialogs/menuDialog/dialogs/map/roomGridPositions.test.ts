@@ -212,7 +212,7 @@ test("traversing original campaign from the start room", () => {
       "blacktooth1head/*": {
         "boundaries": {
           "away": "wall",
-          "left": "wall",
+          "left": "doorway",
           "right": "doorway",
           "towards": "wall",
         },
@@ -2054,6 +2054,21 @@ test("traversing original campaign from the start room", () => {
         "roomId": "moonbase9",
         "subRoomId": "*",
       },
+      "switch_room/*": {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+        },
+        "roomId": "switch_room",
+        "subRoomId": "*",
+      },
     }
   `);
 });
@@ -2266,7 +2281,7 @@ test("traversing original campaign from the final room", () => {
       "blacktooth1head/*": {
         "boundaries": {
           "away": "wall",
-          "left": "wall",
+          "left": "doorway",
           "right": "doorway",
           "towards": "wall",
         },
@@ -4106,6 +4121,21 @@ test("traversing original campaign from the final room", () => {
           "z": 0,
         },
         "roomId": "moonbase9",
+        "subRoomId": "*",
+      },
+      "switch_room/*": {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": -49,
+          "y": -52,
+          "z": 2,
+        },
+        "roomId": "switch_room",
         "subRoomId": "*",
       },
     }

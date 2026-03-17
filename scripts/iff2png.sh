@@ -28,7 +28,7 @@ OUT_DIR="gfx"
 # we write everything to a temp dir, then switch, to avoid vite, tsc, etc picking up half-converted files
 TMP_DIR="gfx_temp"
 TMP_DIR_ICONS="icon_temp"
-colorNames=(
+blockstackColourNames=(
 pureBlack
 shadow
 midGrey
@@ -64,16 +64,33 @@ shadow_brown
 shadow_magenta
 shadow_blue
 )
-lastColorIndex=$((${#colorNames[@]} - 1))
-
+toppyColourNames=(
+warm1
+warm2
+warm3
+warm4
+warm5
+warm6
+pink1
+pink2
+grey1
+grey2
+grey3
+black
+cool1
+cool2
+cool3
+cool4
+replaceLight
+replaceDark
+)
 # palette sampling grid position
 paletteStartX=562
 paletteStartY=663
 paletteStepY=10
 paletteStepX=90
-paletteColorsPerColumn=17
 
-# call like : print_with_bg_color message hexColor 
+# call like : print_with_bg_color message hexColor
 print_with_bg_color() {
     local message=$1
     local hex=$2
@@ -90,30 +107,35 @@ print_with_bg_color() {
     printf "\e[${fg_color};48;2;$(printf '%d;%d;%d' $r $g $b)m $message \e[0m\n"
 }
 
-# call like : write_palette(sourcePng, destinationName, [floodFillTransparent])
+# call like : write_palette sourcePng destinationName colourNamesArray colorsPerColumn [removeSample]
 write_palette() {
     local sourcePng=$1
     local destName=$2
-    local removeSample=${3:-false}
+    local colourNamesRef=$3
+    local colorsPerColumn=$4
+    local removeSample=${5:-false}
+    local sizeVar="${colourNamesRef}[@]"
+    local -a colourNames=("${!sizeVar}")
+    local lastColourIndex=$((${#colourNames[@]} - 1))
 
     echo "🤖 sampling 🎨 palette from $sourcePng -> $destName.json"
     echo "{" >> "$TMP_DIR/$destName.json"
 
-    for i in $(seq 0 $lastColorIndex);
+    for i in $(seq 0 $lastColourIndex);
     do
-        x=$((paletteStartX + (i / paletteColorsPerColumn) * paletteStepX))
-        y=$((paletteStartY + (i % paletteColorsPerColumn) * paletteStepY))
+        x=$((paletteStartX + (i / colorsPerColumn) * paletteStepX))
+        y=$((paletteStartY + (i % colorsPerColumn) * paletteStepY))
         # taking the first 7 chars strips off the alpha, ie '#AABBCCFF' -> '#AABBCC'
         color=$(magick "$sourcePng" -format "#%[hex:u.p{$x,$y}]" info: | cut -c1-7);
-        print_with_bg_color "$(printf '%-16s' "${colorNames[$i]}") ($x,$y) $color" "$color"
-        echo "  \"${colorNames[$i]}\": \"$color\"" >> "$TMP_DIR/$destName.json"
+        print_with_bg_color "$(printf '%-16s' "${colourNames[$i]}") ($x,$y) $color" "$color"
+        echo "  \"${colourNames[$i]}\": \"$color\"" >> "$TMP_DIR/$destName.json"
 
         # flood-fill the sampled location with transparent to remove palette swatches from image
         if [ "$removeSample" = "true" ]; then
             magick "$sourcePng" -fill transparent -floodfill "+${x}+${y}" "$color" "$sourcePng"
         fi
 
-        if [ $i -ne $lastColorIndex ]; then
+        if [ $i -ne $lastColourIndex ]; then
             echo "," >> "$TMP_DIR/$destName.json"
         fi
     done
@@ -138,10 +160,12 @@ cd ..
 cp "$TMP_DIR/sprites.png" "$TMP_DIR/sprites.borders".png
 
 echo "🤖 sampling palette -> {json, ts}"
-write_palette "$TMP_DIR/sprites.png" spritesheetPalette true
+write_palette "$TMP_DIR/sprites.png" spritesheetPalette blockstackColourNames 17 true
 # sprites_dim_lut.png has been edited using the curves tool in Krita to adjust the colours; we don't use most of the image
 # but we can sample the palette from it:
-write_palette gfx/palette_dim_lut.png spritesheetPaletteDim
+write_palette gfx/palette_dim_lut.png spritesheetPaletteDim blockstackColourNames 17
+
+write_palette gfx/spritesToppy.png spritesheetToppyPalette toppyColourNames 999
 
 
 # make sprite mask colours actually transparent in the png (dpaint uses rgb colours, no alpha channel)

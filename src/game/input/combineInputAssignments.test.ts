@@ -148,7 +148,7 @@ it("combines two partial input assignments without duplicates", () => {
         gamepadButtons: [],
         keys: [],
       },
-      toggleColourisation: {
+      cycleSprites: {
         gamepadButtons: [],
         keys: [],
       },
@@ -328,7 +328,7 @@ it("combines two partial input with duplicates by later values overriding earlie
         gamepadButtons: [],
         keys: [],
       },
-      toggleColourisation: {
+      cycleSprites: {
         gamepadButtons: [],
         keys: [],
       },
