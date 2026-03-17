@@ -123,6 +123,8 @@ export const selectPlanetsLiberatedCount = (state: RootState) =>
     ),
   );
 
+export const selectSpritesOption = selectUserSetting("displaySettings.sprites");
+
 export const selectShowBoundingBoxes = selectUserSetting(
   "displaySettings.showBoundingBoxes",
 );

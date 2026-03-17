@@ -76,12 +76,15 @@ export const spritesTailwindPlugin = plugin(
       },
 
       /**
-       * sets the (unchanging during run time) vars to describe the spritesheet
+       * sets the default vars to describe the spritesheet
        */
       ".set-spritesheet-vars": {
         "--spritesheetUrl": `url('gfx/sprites.png')`,
         "--spritesheetW": `${spritesheetSize.width}px`,
         "--spritesheetH": `${spritesheetSize.height}px`,
+      },
+      ".toppy-spritesheet": {
+        "--spritesheetUrl": `url('gfx/sprites-by_toppy.png')`,
       },
       ".sprites-double-height": {
         "--doubleHeight": "2",

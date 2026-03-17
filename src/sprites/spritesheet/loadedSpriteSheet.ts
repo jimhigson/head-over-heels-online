@@ -4,7 +4,7 @@ import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 
 import type { TextureId } from "./spritesheetData/spriteSheetData";
 
-import spritesheetUrl from "../../../gfx/sprites.png";
+import spritesheetUrl from "../../../gfx/sprites-by_toppy.png";
 import { PreprocessShadowTexturesFilter } from "../../game/render/filters/PreprocessShadowTexturesFilter";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 import { stripIccProfile } from "../../utils/png/stripIccProfile";

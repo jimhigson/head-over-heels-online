@@ -25,6 +25,7 @@ export const defaultUserSettings: DefaultUserSettings = {
     uncolourised: false,
     emulatedResolution:
       detectDeviceType() === "mobile" ? "handheld" : "zxSpectrum",
+    sprites: "BlockStack",
   },
 
   gameSpeed: 1.2,
