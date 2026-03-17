@@ -54,6 +54,7 @@ import {
   selectEmulatedResolutionName,
   selectGameSpeed,
   selectInputDirectionMode,
+  selectSpritesOption,
 } from "./gameMenusSelectors";
 import {
   selectableGameSpeeds,
@@ -106,6 +107,9 @@ export type OpenMenu =
       menuParam: EmptyObject;
     });
 
+export const spriteOptionValues = ["BlockStack", "Toppy"] as const;
+export type SpriteOption = (typeof spriteOptionValues)[number];
+
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
   crtFilter?: boolean;
@@ -113,6 +117,7 @@ export type DisplaySettings = {
   uncolourised?: false;
   showBoundingBoxes?: ShowBoundingBoxes;
   showShadowMasks?: boolean;
+  sprites?: SpriteOption;
 };
 
 export const inputDirectionModes = ["4-way", "8-way", "analogue"] as const;
@@ -601,6 +606,12 @@ export const gameMenusSlice = createSlice({
       state.userSettings.displaySettings.showShadowMasks = showShadowMasks;
     },
 
+    nextSpritesOption(state) {
+      state.userSettings.displaySettings.sprites = nextInCycle(
+        spriteOptionValues,
+        selectSpritesOption({ gameMenus: state } as RootState),
+      );
+    },
     toggleUserSetting(
       state,
       {
@@ -962,6 +973,7 @@ export const {
   mapPressed,
   menuOpenOrExitPressed,
   nextDirectionRelativeTo,
+  nextSpritesOption,
   nextInputDirectionMode,
   reincarnationAccepted,
   reincarnationFishEaten,
