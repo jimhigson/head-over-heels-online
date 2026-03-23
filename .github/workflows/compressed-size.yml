@@ -15,21 +15,30 @@ jobs:
         with:
           node-version: 25.x
           cache: "pnpm"
-      - uses: preactjs/compressed-size-action@v2
+      - name: Game bundle size
+        uses: preactjs/compressed-size-action@v2
         with:
           build-script: "build:game"
-          pattern: "./dist/assets/*.js"
+          clean-script: "clean"
+          pattern: "./dist/assets/*.{js,css,mp3}"
           # strip content hashes from filenames (e.g. App-DK0reEgR.js → App.js)
           # so the action can match chunks across the base and PR branches
           strip-hash: "(-[a-zA-Z0-9_-]{8})\\."
           compression: "gzip"
+          minimum-change-threshold: 50
           comment-key: "game"
           sort-by: "Size:desc"
-      - uses: preactjs/compressed-size-action@v2
+      # The first action leaves HEAD on main, so re-checkout the PR merge
+      # commit before running the second action
+      - uses: actions/checkout@v4
+      - name: Editor bundle size
+        uses: preactjs/compressed-size-action@v2
         with:
           build-script: "build:editor"
-          pattern: "./dist/editor/assets/*.js"
+          clean-script: "clean"
+          pattern: "./dist/editor/assets/*.{js,css,mp3}"
           strip-hash: "(-[a-zA-Z0-9_-]{8})\\."
           compression: "gzip"
+          minimum-change-threshold: 50
           comment-key: "editor"
           sort-by: "Size:desc"
