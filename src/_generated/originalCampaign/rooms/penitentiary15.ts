@@ -7,6 +7,11 @@ export const room = inferRoomJson({
   height: 12,
   id: "penitentiary15",
   items: {
+    block: {
+      config: { style: "organic", times: { y: 4 } },
+      position: { x: 7, y: 3, z: 0 },
+      type: "block",
+    },
     "block@0,0,0": {
       config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
@@ -38,7 +43,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     "block@7,1,0": {
-      config: { style: "organic", times: { y: 6 } },
+      config: { style: "organic" },
       position: { x: 7, y: 1, z: 0 },
       type: "block",
     },
@@ -66,6 +71,11 @@ export const room = inferRoomJson({
       config: { floorType: "none", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
+    },
+    lift: {
+      config: { bottom: 0, top: 0 },
+      position: { x: 7, y: 2, z: 0 },
+      type: "lift",
     },
     "monster@7,7,1": {
       config: {
