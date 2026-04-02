@@ -6,9 +6,9 @@ import { loader } from "@monaco-editor/react";
 // language services, and the LSP client — we only need JSON. This halves the
 // editor build output.
 import * as monaco from "monaco-editor/esm/vs/editor/edcore.main";
-import "monaco-editor/esm/vs/language/json/monaco.contribution";
 import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
+import { jsonDefaults } from "monaco-editor/esm/vs/language/json/monaco.contribution";
 
 import paletteJson from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import { halfbriteHex } from "../../utils/colour/halfBrite";
@@ -38,6 +38,20 @@ loader.config({ monaco });
 
 export const monacoLoader = async (): Promise<typeof Monaco> => {
   const monacoInstance = await loader.init();
+
+  const roomSchema = await import("../../_generated/room.schema.json").then(
+    ({ default: schema }) => schema,
+  );
+  jsonDefaults.setDiagnosticsOptions({
+    validate: true,
+    schemas: [
+      {
+        uri: "https://blockstack.org/room.schema.json",
+        fileMatch: ["*"],
+        schema: roomSchema,
+      },
+    ],
+  });
 
   monacoInstance.editor.defineTheme("hoh-dark", {
     base: "vs-dark",

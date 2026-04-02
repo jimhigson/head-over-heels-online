@@ -1,23 +1,16 @@
-import type * as Monaco from "monaco-editor";
 import type { editor } from "monaco-editor";
 
 import { Editor } from "@monaco-editor/react";
 import { useState } from "react";
 
-import { importOnce } from "../../utils/importOnce";
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useItemIconDecorations } from "./ItemIconDecorations";
 import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";
+import { useLoadMonaco } from "./useLoadMonaco";
 import { useSyncMonacoCaretToStoreItemSelection } from "./useSyncMonacoCaretToStoreItemSelection";
 import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncSelectionWithMonaco";
 import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
-
-const importRoomSchemaOnce = importOnce(() =>
-  import("../../_generated/room.schema.json").then(
-    ({ default: schema }) => schema,
-  ),
-);
 
 const JsonRoomEditor = () => {
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(
@@ -27,6 +20,7 @@ const JsonRoomEditor = () => {
     (state) => state.levelEditor.currentlyEditingRoomId,
   );
 
+  const monacoLoaded = !!useLoadMonaco();
   const updateStoreWhenJsonEdited = useUpdateStoreWhenJsonEdited(editor);
   useSyncMonacoCaretToStoreItemSelection(editor);
   useSyncStoreItemSelectionToMonacoDecorations(editor);
@@ -34,36 +28,25 @@ const JsonRoomEditor = () => {
   useUpdateJsonTextWhenStoreChanges(editor);
   useItemIconDecorations(editor);
 
-  const handleEditorMount = (
-    editor: editor.IStandaloneCodeEditor,
-    monaco: typeof Monaco,
-  ) => {
-    setEditor(editor);
-
-    importRoomSchemaOnce()
-      .then((roomSchema) => {
-        monaco.json.jsonDefaults.setDiagnosticsOptions({
-          validate: true,
-          schemas: [
-            {
-              uri: "https://blockstack.org/room.schema.json",
-              fileMatch: ["*"],
-              schema: roomSchema,
-            },
-          ],
-        });
-      })
-      .catch((e) =>
-        console.error(
-          new Error("could not load room jsonSchema", { cause: e }),
-        ),
-      );
+  const handleEditorMount = (mountedEditor: editor.IStandaloneCodeEditor) => {
+    setEditor(mountedEditor);
+    // onLanguage("json") fires when the editor first attaches a JSON model and
+    // sets up the token provider asynchronously via getMode().then(setupMode).
+    // Monaco re-tokenizes lazily — visible lines aren't tokenized until the
+    // viewport changes. setTimeout(0) defers past the setupMode microtask, then
+    // nudging the scroll position triggers viewport re-tokenization.
+    setTimeout(() => {
+      const scroll = mountedEditor.getScrollTop();
+      mountedEditor.setScrollTop(scroll + 1);
+      mountedEditor.setScrollTop(scroll);
+    }, 0);
   };
 
   // which of the possibly multiple models in monaco are we currently using?
   const path = `${currentlyEditingRoomId}.json`;
 
-  //if (monaco !== null) { <- this wait stops json loading properly in vite dev for some reason
+  if (!monacoLoaded) return null;
+
   return (
     <Editor
       className="no-keyboard-shortcuts"
@@ -100,7 +83,6 @@ const JsonRoomEditor = () => {
       onMount={handleEditorMount}
     />
   );
-  //}
 };
 
 // default export for lazy loading
