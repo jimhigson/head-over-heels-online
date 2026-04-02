@@ -1,6 +1,6 @@
-import type { AnyWall } from "../model/modelTypes";
-import type { SceneryName } from "../sprites/planets";
-import type { AxisXy } from "../utils/vectors/vectors";
+import type { AnyWall } from "../../src/model/modelTypes";
+import type { SceneryName } from "../../src/sprites/planets";
+import type { AxisXy } from "../../src/utils/vectors/vectors";
 
 import { wallNumbers } from "./wallNumbers";
 

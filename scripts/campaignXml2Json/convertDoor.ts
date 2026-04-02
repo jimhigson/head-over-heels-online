@@ -1,7 +1,7 @@
-import type { JsonItemUnion } from "../model/json/JsonItem";
-import type { DirectionXy4 } from "../utils/vectors/vectors";
+import type { JsonItemUnion } from "../../src/model/json/JsonItem";
+import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
 
-import { addXy, perpendicularAxisXy } from "../utils/vectors/vectors";
+import { addXy, perpendicularAxisXy } from "../../src/utils/vectors/vectors";
 import { autoZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertRoomId } from "./convertRoomId";

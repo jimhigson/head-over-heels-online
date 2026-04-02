@@ -1,7 +1,7 @@
-import type { AnyRoomJson } from "../model/RoomJson";
+import type { AnyRoomJson } from "../../src/model/RoomJson";
 
-import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
-import { keyItems } from "../utils/keyItems";
+import { consolidateItemsMap } from "../../src/consolidateItems/consolidateItems";
+import { keyItems } from "../../src/utils/keyItems";
 import { convertRoomColour, map } from "./convertCampaign";
 import { convertFloor } from "./convertFloor";
 import { convertItemsArray } from "./convertItems";

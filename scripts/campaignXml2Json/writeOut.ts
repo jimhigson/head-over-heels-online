@@ -3,10 +3,10 @@ import { canonicalize } from "json-canonicalize";
 import { orderBy } from "natural-orderby";
 import { writeFile } from "node:fs/promises";
 
-import type { Campaign } from "../model/modelTypes";
-import type { AnyRoomJson } from "../model/RoomJson";
+import type { Campaign } from "../../src/model/modelTypes";
+import type { AnyRoomJson } from "../../src/model/RoomJson";
 
-import { iterate } from "../utils/iterate";
+import { iterate } from "../../src/utils/iterate";
 
 const roomTs = (room: AnyRoomJson): string =>
   `

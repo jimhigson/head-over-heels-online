@@ -18,7 +18,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": false,
-    "baseUrl": "."
+    "types": ["umami"]
   },
   "include": ["src", "e2eAugmentations.d.ts"]
 }

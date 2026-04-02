@@ -2,13 +2,16 @@ import type { AllUnionFields } from "type-fest";
 
 import chalk from "chalk";
 
-import type { JsonItemUnion } from "../model/json/JsonItem";
-import type { Campaign } from "../model/modelTypes";
+import type { JsonItemUnion } from "../../src/model/json/JsonItem";
+import type { Campaign } from "../../src/model/modelTypes";
 
-import { iterateRoomJsonItemsWithIds, type RoomJson } from "../model/RoomJson";
-import { entries } from "../utils/entries";
-import { transformObject } from "../utils/transformObject";
-import { xyzEqual } from "../utils/vectors/vectors";
+import {
+  iterateRoomJsonItemsWithIds,
+  type RoomJson,
+} from "../../src/model/RoomJson";
+import { entries } from "../../src/utils/entries";
+import { transformObject } from "../../src/utils/transformObject";
+import { xyzEqual } from "../../src/utils/vectors/vectors";
 
 /**
  * Simplify teleporter configs where possible - if the destination room

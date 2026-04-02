@@ -1,5 +1,5 @@
-import type { JsonItem } from "../model/json/JsonItem";
-import type { AxisXy, Xyz } from "../utils/vectors/vectors";
+import type { JsonItem } from "../../src/model/json/JsonItem";
+import type { AxisXy, Xyz } from "../../src/utils/vectors/vectors";
 import type { Xml2JsonRoom } from "./readToJson";
 
 import { convertX, convertY } from "./convertCampaign";

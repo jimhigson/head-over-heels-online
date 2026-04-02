@@ -1,4 +1,3 @@
-import { readFileSync } from "fs";
 import { describe, expect, test } from "vitest";
 
 import type { JsonItem, JsonItemUnion } from "../model/json/JsonItem";
@@ -2004,15 +2003,10 @@ test("consolidateItems does not mutate input", () => {
 });
 
 describe("actual room items", () => {
-  test("safari2", () => {
-    const result = consolidateItemsMap(
-      JSON.parse(
-        readFileSync(
-          "./src/consolidateItems/__test__/safari2Input.json",
-          "utf-8",
-        ),
-      ),
-    );
+  test("safari2", async () => {
+    const safari2Input = (await import("./__test__/safari2Input.json"))
+      .default as Record<string, JsonItemUnion>;
+    const result = consolidateItemsMap(safari2Input);
 
     expect(result).toMatchSnapshot();
   });
