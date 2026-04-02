@@ -1,4 +1,4 @@
-import type { PlanetName, SceneryName } from "../sprites/planets";
+import type { PlanetName, SceneryName } from "../../src/sprites/planets";
 import type { XmlScenery } from "./readToJson";
 
 export const convertSceneryName = (

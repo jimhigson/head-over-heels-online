@@ -1,4 +1,4 @@
-import type { Subset } from "../utils/subset";
+import type { Subset } from "../../src/utils/subset";
 import type { CompassDirections, CompassDirectionsNESW } from "./readToJson";
 
 // just the behavio(u)rs that we care to parse

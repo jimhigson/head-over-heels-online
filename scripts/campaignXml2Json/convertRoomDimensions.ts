@@ -1,4 +1,4 @@
-import type { Xy } from "../utils/vectors/vectors";
+import type { Xy } from "../../src/utils/vectors/vectors";
 import type { Xml2JsonRoom } from "./readToJson";
 import type { SidesWithDoors } from "./xmlRoomSidesWithDoors";
 

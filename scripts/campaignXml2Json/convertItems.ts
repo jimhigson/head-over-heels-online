@@ -1,19 +1,22 @@
 import chalk from "chalk";
 
-import type { ItemConfigMap } from "../model/json/ItemConfigMap";
-import type { JsonItemType, JsonItemUnion } from "../model/json/JsonItem";
-import type { JsonMovement } from "../model/json/utilityJsonConfigTypes";
+import type { ItemConfigMap } from "../../src/model/json/ItemConfigMap";
+import type {
+  JsonItemType,
+  JsonItemUnion,
+} from "../../src/model/json/JsonItem";
+import type { JsonMovement } from "../../src/model/json/utilityJsonConfigTypes";
 import type { LooseDoorMap } from "./convertCampaign";
 import type { MapXml2Json, Xml2JsonRoom } from "./readToJson";
 import type { Xml2JsonItem, XmlItemMonsterBehaviour } from "./Xml2JsonItem";
 
-import { itemKey } from "../utils/keyItems";
+import { itemKey } from "../../src/utils/keyItems";
 import {
   addXyz,
   type DirectionXy4,
   scaleXy,
   subXy,
-} from "../utils/vectors/vectors";
+} from "../../src/utils/vectors/vectors";
 import { convertXYZ } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertDoor } from "./convertDoor";

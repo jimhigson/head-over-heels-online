@@ -47,7 +47,7 @@ import { createSprite } from "../createSprite";
 // Mock window object for test environment
 beforeEach(() => {
   // Create a mock window object for tests
-  global.window = {} as Window & typeof globalThis;
+  globalThis.window = {} as Window & typeof globalThis;
 
   // Create a proxy that returns mock textures for any texture ID
   const mockTextures = new Proxy(
@@ -88,7 +88,7 @@ beforeEach(() => {
 
 afterEach(() => {
   // Clean up the global window mock
-  delete (global as { window?: Window & typeof globalThis }).window;
+  delete (globalThis as { window?: Window & typeof globalThis }).window;
 });
 
 test("creates sprites for text", () => {

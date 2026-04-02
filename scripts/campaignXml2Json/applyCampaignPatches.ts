@@ -5,10 +5,10 @@ import fastJsonPatch from "fast-json-patch";
 import { objectValues } from "iter-tools-es";
 import { readFile } from "node:fs/promises";
 
-import type { Campaign } from "../model/modelTypes";
-import type { AnyRoomJson } from "../model/RoomJson";
+import type { Campaign } from "../../src/model/modelTypes";
+import type { AnyRoomJson } from "../../src/model/RoomJson";
 
-import { iterate } from "../utils/iterate";
+import { iterate } from "../../src/utils/iterate";
 
 const targetDir = "src/_generated/originalCampaign/";
 const patchFilename = (roomId: string) =>
