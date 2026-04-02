@@ -63,6 +63,15 @@ export default defineConfig({
     },
   },
 
+  optimizeDeps: {
+    // Excluding monaco-editor forces all its sub-modules to use native ESM in
+    // dev. This guarantees a single shared ILanguageService instance across
+    // edcore.main, monaco.contribution, and jsonMode — pre-bundling them as
+    // separate entry points causes duplicate instances where language
+    // registration is invisible to setTokensProvider.
+    exclude: ["monaco-editor"],
+  },
+
   server: {
     // want to test on my iphone
     host: true,
