@@ -41,13 +41,28 @@
   },
   {
     "op": "replace",
+    "path": "/items/hushPuppy@3,7,2/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
     "path": "/items/hushPuppy@2,7,1/position/y",
     "value": 9
   },
   {
     "op": "replace",
+    "path": "/items/hushPuppy@2,7,1/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
     "path": "/items/hushPuppy@1,7,0/position/y",
     "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/hushPuppy@1,7,0/position/x",
+    "value": 0
   },
   {
     "op": "replace",
@@ -60,9 +75,8 @@
     "value": 10
   },
   {
-    "op": "replace",
-    "path": "/items/block@4,7,3/position/y",
-    "value": 9
+    "op": "remove",
+    "path": "/items/block@4,7,3"
   },
   {
     "op": "add",
@@ -71,11 +85,12 @@
       "config": {
         "style": "artificial",
         "times": {
-          "z": 3
+          "x": 2,
+          "z": 4
         }
       },
       "position": {
-        "x": 4,
+        "x": 3,
         "y": 9,
         "z": 0
       },
@@ -92,7 +107,7 @@
         "which": "dalek"
       },
       "position": {
-        "x": 3,
+        "x": 2,
         "y": 9,
         "z": 3
       },

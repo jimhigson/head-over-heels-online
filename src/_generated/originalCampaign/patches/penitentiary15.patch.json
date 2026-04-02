@@ -1,5 +1,43 @@
 [
   {
+    "op": "remove",
+    "path": "/items/block@7,1,0/config/times"
+  },
+  {
+    "op": "add",
+    "path": "/items/block",
+    "value": {
+      "config": {
+        "style": "organic",
+        "times": {
+          "y": 4
+        }
+      },
+      "position": {
+        "x": 7,
+        "y": 3,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/lift",
+    "value": {
+      "config": {
+        "bottom": 0,
+        "top": 0
+      },
+      "position": {
+        "x": 7,
+        "y": 2,
+        "z": 0
+      },
+      "type": "lift"
+    }
+  },
+  {
     "op": "replace",
     "path": "/color/hue",
     "value": "yellow"
