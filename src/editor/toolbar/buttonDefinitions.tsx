@@ -326,7 +326,7 @@ Stationary, but deadly`,
       type: "monster",
       config: {
         which: "emperorsGuardian",
-        activated: "while-player-near",
+        activated: "on",
         movement: "towards-analogue-unless-planet-crowns",
       },
     },
@@ -351,7 +351,7 @@ does not *like doughnuts*
       type: "monster",
       config: {
         which: "emperor",
-        activated: "while-player-near",
+        activated: "on",
         movement: "towards-analogue",
       },
     },

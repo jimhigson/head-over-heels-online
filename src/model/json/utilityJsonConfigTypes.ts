@@ -28,8 +28,6 @@ export type MovementActivated =
   | "on"
   // wakes up once when the player is near and does not turn off if they move away
   | "after-player-near"
-  // wakes up once when the player is near and ignores them after they move away
-  | "while-player-near"
   // ie, moving blocks that start when you stand on them
   | "on-stand";
 

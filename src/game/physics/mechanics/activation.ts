@@ -61,12 +61,16 @@ const activateBasedOnProximityToPlayer = <
 >(
   itemWithActivation: ItemWithActivation<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
-  gameState: GameState<RoomId>,
-  deltaMS: number,
-  sticky: boolean,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
-  if (sticky && itemWithActivation.state.activated) {
-    // if sticky, once it is on, it stays on:
+  if (itemWithActivation.state.activated) {
+    // this is sticky - once it is on, it doesn't flip to off when the
+    // player is no longer near
+    return unitMechanicalResult;
+  }
+  if (itemWithActivation.state.everActivated) {
+    // this is one-time only - once the monster is activated,
+    // the ability to become activated again by the player being near is lost,
+    // only a switch etc can re-activate it:
     return unitMechanicalResult;
   }
 
@@ -119,24 +123,15 @@ export const tickActivation: Mechanic<"monster" | "movingPlatform"> = <
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<"monster" | "movingPlatform", RoomId, RoomItemId> => {
+  if ((itemWithActivation.config.activated as string) === "while-player-near") {
+    // while-player-near was removed from configs - avoid a crash if given a save that
+    // still has it (can be removed later, added Apr '26)
+    return unitMechanicalResult;
+  }
+
   switch (itemWithActivation.config.activated) {
     case "after-player-near": {
-      return activateBasedOnProximityToPlayer(
-        itemWithActivation,
-        room,
-        gameState,
-        deltaMS,
-        true,
-      );
-    }
-    case "while-player-near": {
-      return activateBasedOnProximityToPlayer(
-        itemWithActivation,
-        room,
-        gameState,
-        deltaMS,
-        false,
-      );
+      return activateBasedOnProximityToPlayer(itemWithActivation, room);
     }
     case "on-stand": {
       return activateBasedOnBeingStoodOn(
@@ -152,11 +147,8 @@ export const tickActivation: Mechanic<"monster" | "movingPlatform"> = <
     default:
       itemWithActivation.config satisfies never;
       throw new Error(
-        `unrecognised item.config.activation ${
-          (itemWithActivation as ItemWithActivation<RoomId, RoomItemId>).config
-            .activated
-        } in ${itemWithActivation.id}:
-        ${JSON.stringify(itemWithActivation, null, 2)}`,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is deliberately accessing a value that should be impossible
+        `unrecognised item.config.activated ${(itemWithActivation.config as any).activated}`,
       );
   }
 };

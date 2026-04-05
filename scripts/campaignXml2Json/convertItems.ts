@@ -669,7 +669,7 @@ const convertItem = async ({
           waitsThenTowards ?
             {
               which: "helicopterBug",
-              activated: "while-player-near",
+              activated: "on",
               movement: "towards-analogue",
             }
           : {
@@ -686,7 +686,7 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "emperor",
-          activated: "while-player-near",
+          activated: "on",
           movement: "towards-analogue",
         },
         position,
@@ -697,7 +697,7 @@ const convertItem = async ({
         type: "monster",
         config: {
           which: "emperorsGuardian",
-          activated: "while-player-near",
+          activated: "on",
           movement: "towards-analogue-unless-planet-crowns",
         },
         position,

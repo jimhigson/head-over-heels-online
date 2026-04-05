@@ -27,7 +27,7 @@ export const room = inferRoomJson({
     },
     "monster@2,4,0": {
       config: {
-        activated: "while-player-near",
+        activated: "on",
         movement: "towards-analogue",
         which: "helicopterBug",
       },

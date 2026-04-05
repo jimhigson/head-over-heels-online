@@ -1,7 +1,6 @@
 import type { Container, Sprite } from "pixi.js";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { ItemConfigMap } from "../../../model/json/ItemConfigMap";
 import type { RoomState } from "../../../model/RoomState";
 import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
@@ -18,18 +17,6 @@ import {
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { createStackedSprites, stackedTopSymbol } from "./createStackedSprites";
-
-type MonsterWhich = ItemConfigMap<string, string>["monster"]["which"];
-
-const greyWhileDeactivated: Array<MonsterWhich> = [
-  "cyberman",
-  "dalek",
-  "skiHead",
-  "bubbleRobot",
-  "computerBot",
-  "turtle",
-  "homingBot",
-];
 
 type MonsterRenderProps = {
   walking?: boolean;
@@ -60,8 +47,6 @@ const maybeAddBob = (
   room: RoomState<string, string>,
   currentOutput: Container,
 ): Container => {
-  const bobsWhileDeactivated =
-    which === "emperorsGuardian" || which === "helicopterBug";
   const isStacked =
     which === "cyberman" ||
     which === "bubbleRobot" ||
@@ -70,7 +55,7 @@ const maybeAddBob = (
 
   const isBobbingMonster = isStacked || which === "helicopterBug";
 
-  if ((isBobbingMonster && state.activated) || bobsWhileDeactivated) {
+  if (isBobbingMonster && state.activated) {
     const nervousStyle = which === "computerBot" || which === "helicopterBug";
     const bobPeriod = nervousStyle ? bobPeriodNervous : bobPeriodSlow;
 
@@ -114,7 +99,7 @@ export const monsterAppearance: ItemAppearance<
   const spritesheetVariant: SpritesheetVariant =
     !colourised ? "uncolourised"
     : busyLickingDoughnutsOffFace ? "doughnutted"
-    : !activated && greyWhileDeactivated.includes(config.which) ? "deactivated"
+    : !activated ? "deactivated"
     : "for-current-room";
 
   switch (config.which) {
@@ -345,12 +330,15 @@ export const monsterAppearance: ItemAppearance<
               item,
               room,
               createStackedSprites({
-                top: {
-                  animationId: "bubbles.blueGreen",
-                  randomiseStartFrame: id,
-                  paused,
-                  spritesheetVariant,
-                },
+                top:
+                  activated && !busyLickingDoughnutsOffFace ?
+                    {
+                      animationId: "bubbles.blueGreen",
+                      randomiseStartFrame: id,
+                      paused,
+                      spritesheetVariant,
+                    }
+                  : { textureId: "bubbles.blueGreen.1", spritesheetVariant },
                 bottom: {
                   textureId: "headlessBase",
                   spritesheetVariant,
@@ -368,11 +356,10 @@ export const monsterAppearance: ItemAppearance<
               room,
               createStackedSprites({
                 top: { textureId: `ball.blueGreen`, spritesheetVariant },
-                bottom: {
-                  animationId: "bubbles.cold",
-                  spritesheetVariant,
-                  paused,
-                },
+                bottom:
+                  activated && !busyLickingDoughnutsOffFace ?
+                    { animationId: "bubbles.cold", spritesheetVariant, paused }
+                  : { textureId: "bubbles.cold.1", spritesheetVariant },
               }),
             ),
             renderProps,
@@ -380,11 +367,11 @@ export const monsterAppearance: ItemAppearance<
 
         case "emperor":
           return {
-            output: createSprite({
-              animationId: "bubbles.cold",
-              spritesheetVariant,
-              paused,
-            }),
+            output: createSprite(
+              activated && !busyLickingDoughnutsOffFace ?
+                { animationId: "bubbles.cold", spritesheetVariant, paused }
+              : { textureId: "bubbles.cold.1", spritesheetVariant },
+            ),
             renderProps,
           };
         default:

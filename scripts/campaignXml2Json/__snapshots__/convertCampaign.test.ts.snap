@@ -9816,7 +9816,7 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
     "monster@2,4,0": {
       "config": {
-        "activated": "while-player-near",
+        "activated": "on",
         "movement": "towards-analogue",
         "which": "helicopterBug",
       },
@@ -12096,7 +12096,7 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
     "monster@4,1,0": {
       "config": {
-        "activated": "while-player-near",
+        "activated": "on",
         "movement": "towards-analogue",
         "which": "helicopterBug",
       },
@@ -17209,7 +17209,7 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
     "monster@1,3,0": {
       "config": {
-        "activated": "while-player-near",
+        "activated": "on",
         "movement": "towards-analogue-unless-planet-crowns",
         "which": "emperorsGuardian",
       },
@@ -17444,7 +17444,7 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
     "monster@6,3,1": {
       "config": {
-        "activated": "while-player-near",
+        "activated": "on",
         "movement": "towards-analogue",
         "which": "emperor",
       },

@@ -52,18 +52,18 @@ export type MonsterJsonConfig =
   | {
       which: "emperor";
       movement: MovementsSubset<"towards-analogue">;
-      activated: ActivatedWhenSubset<"while-player-near">;
+      activated: ActivatedWhenSubset<"off" | "on">;
     }
   | {
       which: "emperorsGuardian";
       movement: MovementsSubset<"towards-analogue-unless-planet-crowns">;
-      activated: ActivatedWhenSubset<"while-player-near">;
+      activated: ActivatedWhenSubset<"off" | "on">;
     }
   | {
       which: "helicopterBug";
       // blacktooth53market
       movement: MovementsSubset<"towards-analogue">;
-      activated: ActivatedWhenSubset<"while-player-near">;
+      activated: ActivatedWhenSubset<"off" | "on">;
     }
   | {
       which: "helicopterBug";
