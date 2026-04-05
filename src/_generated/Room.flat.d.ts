@@ -325,17 +325,17 @@ export type RoomJsonSchema = {
           | {
               which: "emperor";
               movement: "towards-analogue";
-              activated: "while-player-near";
+              activated: "off" | "on";
             }
           | {
               which: "emperorsGuardian";
               movement: "towards-analogue-unless-planet-crowns";
-              activated: "while-player-near";
+              activated: "off" | "on";
             }
           | {
               which: "helicopterBug";
               movement: "towards-analogue";
-              activated: "while-player-near";
+              activated: "off" | "on";
             }
           | {
               which: "helicopterBug";
@@ -918,17 +918,17 @@ export type RoomJsonSchema = {
                           | {
                               which: "emperor";
                               movement: "towards-analogue";
-                              activated: "while-player-near";
+                              activated: "off" | "on";
                             }
                           | {
                               which: "emperorsGuardian";
                               movement: "towards-analogue-unless-planet-crowns";
-                              activated: "while-player-near";
+                              activated: "off" | "on";
                             }
                           | {
                               which: "helicopterBug";
                               movement: "towards-analogue";
-                              activated: "while-player-near";
+                              activated: "off" | "on";
                             }
                           | {
                               which: "helicopterBug";
@@ -1290,17 +1290,17 @@ export type RoomJsonSchema = {
                           | {
                               which: "emperor";
                               movement: "towards-analogue";
-                              activated: "while-player-near";
+                              activated: "off" | "on";
                             }
                           | {
                               which: "emperorsGuardian";
                               movement: "towards-analogue-unless-planet-crowns";
-                              activated: "while-player-near";
+                              activated: "off" | "on";
                             }
                           | {
                               which: "helicopterBug";
                               movement: "towards-analogue";
-                              activated: "while-player-near";
+                              activated: "off" | "on";
                             }
                           | {
                               which: "helicopterBug";
@@ -1973,17 +1973,17 @@ export type RoomJsonSchema = {
                   | {
                       which: "emperor";
                       movement: "towards-analogue";
-                      activated: "while-player-near";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "emperorsGuardian";
                       movement: "towards-analogue-unless-planet-crowns";
-                      activated: "while-player-near";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "helicopterBug";
                       movement: "towards-analogue";
-                      activated: "while-player-near";
+                      activated: "off" | "on";
                     }
                   | {
                       which: "helicopterBug";
@@ -2705,17 +2705,17 @@ export type RoomJsonSchema = {
                       | {
                           which: "emperor";
                           movement: "towards-analogue";
-                          activated: "while-player-near";
+                          activated: "off" | "on";
                         }
                       | {
                           which: "emperorsGuardian";
                           movement: "towards-analogue-unless-planet-crowns";
-                          activated: "while-player-near";
+                          activated: "off" | "on";
                         }
                       | {
                           which: "helicopterBug";
                           movement: "towards-analogue";
-                          activated: "while-player-near";
+                          activated: "off" | "on";
                         }
                       | {
                           which: "helicopterBug";
@@ -3057,17 +3057,17 @@ export type RoomJsonSchema = {
                       | {
                           which: "emperor";
                           movement: "towards-analogue";
-                          activated: "while-player-near";
+                          activated: "off" | "on";
                         }
                       | {
                           which: "emperorsGuardian";
                           movement: "towards-analogue-unless-planet-crowns";
-                          activated: "while-player-near";
+                          activated: "off" | "on";
                         }
                       | {
                           which: "helicopterBug";
                           movement: "towards-analogue";
-                          activated: "while-player-near";
+                          activated: "off" | "on";
                         }
                       | {
                           which: "helicopterBug";

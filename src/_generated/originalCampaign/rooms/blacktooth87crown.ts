@@ -61,7 +61,7 @@ export const room = inferRoomJson({
     },
     "monster@6,3,1": {
       config: {
-        activated: "while-player-near",
+        activated: "on",
         movement: "towards-analogue",
         which: "emperor",
       },
