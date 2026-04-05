@@ -3,7 +3,7 @@ import type { Renderer } from "pixi.js";
 import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 
 import type { SpriteOption } from "../../store/slices/gameMenus/gameMenusSlice";
-import type { TextureId } from "./spritesheetData/spriteSheetData";
+import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 
 import blockStackSpritesheetUrl from "../../../gfx/sprites.png";
 import toppySpritesheetUrl from "../../../gfx/spritesToppy.png";
@@ -13,8 +13,8 @@ import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 import { stripIccProfile } from "../../utils/png/stripIccProfile";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
-import { makeSpritesheetData } from "./spritesheetData/spriteSheetData";
-import { spritesheetMetas } from "./spritesheetData/spritesheetMetas";
+import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
+import { spritesheetMetas } from "./spritesheetData/spritesheetMetaData";
 
 export type AppSpritesheetData = ReturnType<typeof makeSpritesheetData>;
 export type AppSpritesheet = Spritesheet<AppSpritesheetData>;

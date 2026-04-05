@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
+import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
 import { emptyObject } from "../../../utils/empty";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
@@ -15,22 +15,22 @@ const lineHeightPx = 12;
 const maxLineHeight = blockSizePx.z * 3;
 
 const lightening = [
-  spritesheetPalette.shadow,
-  spritesheetPalette.redShadow,
-  spritesheetPalette.midGrey,
-  spritesheetPalette.metallicBlue,
-  spritesheetPalette.midRed,
-  spritesheetPalette.moss,
-  spritesheetPalette.pink,
-  spritesheetPalette.lightBeige,
-  spritesheetPalette.pastelBlue,
-  spritesheetPalette.lightGrey,
-  spritesheetPalette.highlightBeige,
+  paletteBlockstack.shadow,
+  paletteBlockstack.redShadow,
+  paletteBlockstack.midGrey,
+  paletteBlockstack.metallicBlue,
+  paletteBlockstack.midRed,
+  paletteBlockstack.moss,
+  paletteBlockstack.pink,
+  paletteBlockstack.lightBeige,
+  paletteBlockstack.pastelBlue,
+  paletteBlockstack.lightGrey,
+  paletteBlockstack.highlightBeige,
 ];
 
 const fadeOrderColourised = [
   ...lightening,
-  ...new Array(20).fill(spritesheetPalette.white),
+  ...new Array(20).fill(paletteBlockstack.white),
   ...lightening.toReversed(),
 ];
 

@@ -4,7 +4,7 @@ import { range } from "iter-tools-es";
 import { AnimatedSprite } from "pixi.js";
 import { type Container, type Renderer, RenderTexture, Sprite } from "pixi.js";
 
-import type { AnimationId } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 import {
   animationSpeed,

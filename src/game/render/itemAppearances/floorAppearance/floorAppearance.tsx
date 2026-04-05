@@ -1,17 +1,16 @@
 import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import type { Subset } from "../../../../utils/subset";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
 import { iterateRoomItems, type RoomState } from "../../../../model/RoomState";
-import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
+import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
-import { getAmbientSwoppedColour } from "../../../../sprites/spritesheet/variants/currentRoomSpritesheetVariant";
 import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
@@ -261,10 +260,12 @@ export const floorAppearance: ItemAppearance<"floor"> =
       const tilesTop = projectWorldXyzToScreenXy(aabb);
 
       const outlineFilter = new OutlineFilter({
-        color:
-          spriteOption === "Speccy" ?
-            zxSpectrumColors.black
-          : getAmbientSwoppedColour("pureBlack"),
+        // TODO: this should use ambient swops, same as the spritesheet
+        // swopped black to:
+        color: paletteBlockstack.pureBlack,
+        // spriteOption === "Speccy" ?
+        //   zxSpectrumColors.black
+        // : getAmbientSwoppedColour("pureBlack"),
         width: 1,
       });
 

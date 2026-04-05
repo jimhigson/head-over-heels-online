@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type {
   FramesWithSpeed,
   TextureId,
-} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { Xy } from "../../utils/vectors/vectors";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
@@ -56,7 +56,7 @@ const AnimationPreview = ({
       <style ref={styleRef} />
       <BitmapText>In animation {animationName}</BitmapText>
       <div
-        className="[background:repeating-conic-gradient(#999_0_25%,_#888_0_50%)_50%_/_10px_10px] w-min"
+        className="[background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_10px_10px] w-min"
         style={{ "--scale": 4 }}
       >
         <div
@@ -89,7 +89,7 @@ const SpriteOverlayTooltip = ({ textureId }: { textureId: TextureId }) => {
   return (
     <>
       <div
-        className="[background:repeating-conic-gradient(#999_0_25%,_#888_0_50%)_50%_/_10px_10px] w-min"
+        className="[background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_10px_10px] w-min"
         style={{ "--scale": 4 }}
       >
         <div
@@ -170,7 +170,7 @@ export const SpritesheetImage = ({
   return (
     <div
       ref={containerRef}
-      className="relative w-full cursor-crosshair [background:repeating-conic-gradient(#999_0_25%,_#888_0_50%)_50%_/_20px_20px]"
+      className="relative w-full cursor-crosshair [background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_20px_20px]"
       style={{
         aspectRatio: "var(--spritesheetW) / var(--spritesheetH)",
       }}

@@ -9,7 +9,7 @@ import type { RoomRenderContextInGame } from "../render/room/RoomRenderContexts"
 import type { RoomRendererType } from "../render/room/RoomRendererType";
 
 import { audioCtx } from "../../sound/audioCtx";
-import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetas";
+import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import {
   selectInputDirectionMode,
   selectIsPaused,

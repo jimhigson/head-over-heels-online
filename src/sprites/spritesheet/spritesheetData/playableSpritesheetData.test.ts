@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { entries } from "../../../utils/entries";
 import { playableSpritesheetData } from "./playableSpritesheetData";
-import { spritesheetMetas } from "./spritesheetMetas";
+import { spritesheetMetas } from "./spritesheetMetaData";
 
 describe.for(entries(spritesheetMetas))("%s", ([, meta]) => {
   test("frame names", () => {

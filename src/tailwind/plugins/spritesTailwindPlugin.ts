@@ -11,8 +11,8 @@ import {
   type FramesWithSpeed,
   makeSpritesheetData,
   type TextureId,
-} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
-import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetas";
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { halfbriteHex } from "../../utils/colour/halfBrite";
 import { entries, fromEntries, objectEntriesIter } from "../../utils/entries";
 import {

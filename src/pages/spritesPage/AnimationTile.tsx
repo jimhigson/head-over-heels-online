@@ -4,7 +4,7 @@ import type { AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteS
 import type {
   FramesWithSpeed,
   TextureId,
-} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";

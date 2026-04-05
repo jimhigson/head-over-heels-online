@@ -2,7 +2,7 @@ import type { AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteS
 import type {
   FramesWithSpeed,
   TextureId,
-} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 import { zxSpectrumFrameRate } from "../../originalGame";
 

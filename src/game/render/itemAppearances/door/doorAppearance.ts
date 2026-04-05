@@ -7,10 +7,12 @@ import type { AppSpritesheet } from "../../../../sprites/spritesheet/loadedSprit
 import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
+import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
 import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
 import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
+import { resolveSwops } from "../../../../utils/palette/palette";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import {
@@ -181,14 +183,17 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
         room;
 
       const filter = new PaletteSwapFilter({
-        paletteSwaps: replacementColours(
-          useColoursFromRoom.color.hue,
-          spritesheetMeta.useAltPaletteInDimmedRoom === true &&
-            room.color.shade === "dimmed",
-          room.planet === "moonbase" ?
-            // moonbase doors are illuminated:
-            "light-mid"
-          : "light-dark",
+        swops: resolveSwops(
+          paletteBlockstack,
+          replacementColours(
+            useColoursFromRoom.color.hue,
+            spritesheetMeta.paletteDim !== undefined &&
+              room.color.shade === "dimmed",
+            room.planet === "moonbase" ?
+              // moonbase doors are illuminated:
+              "light-mid"
+            : "light-dark",
+          ),
         ),
         lutType: "sparse",
       });

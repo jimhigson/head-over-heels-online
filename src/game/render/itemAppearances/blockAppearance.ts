@@ -1,6 +1,6 @@
 import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import type { SceneryName } from "../../../sprites/planets";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { isTextureId } from "../../../sprites/assertIsTextureId";

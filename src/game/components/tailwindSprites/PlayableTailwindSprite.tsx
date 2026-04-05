@@ -7,7 +7,7 @@ import type {
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 
 import { twClass } from "../../../editor/twClass";
-import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetas";
+import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useAppSelector } from "../../../store/hooks";
 import { selectSpritesOption } from "../../../store/slices/gameMenus/gameMenusSelectors";
 

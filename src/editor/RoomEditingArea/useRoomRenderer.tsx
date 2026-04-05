@@ -11,7 +11,7 @@ import type {
 } from "../editorTypes";
 
 import { RoomRenderer } from "../../game/render/room/roomRenderer";
-import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetas";
+import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";

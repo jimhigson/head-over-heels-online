@@ -76,10 +76,11 @@ pink2
 grey1
 grey2
 grey3
-grey4
+black
 cool1
 cool2
 cool3
+cool4
 replaceLight
 replaceDark
 )

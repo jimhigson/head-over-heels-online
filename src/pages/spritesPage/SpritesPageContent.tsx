@@ -1,7 +1,7 @@
 import type {
   FramesWithSpeed,
   TextureId,
-} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { Xy } from "../../utils/vectors/vectors";
 
 import { BitmapText } from "../../game/components/tailwindSprites/Sprite";

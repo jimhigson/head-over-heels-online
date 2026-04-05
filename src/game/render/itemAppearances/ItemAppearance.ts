@@ -7,7 +7,7 @@ import type {
   ItemInPlayConfig,
   ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type {
   AppearanceOptions,
   AppearanceReturn,

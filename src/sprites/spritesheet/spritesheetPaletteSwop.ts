@@ -1,38 +1,39 @@
-import type { Color, Filter, Renderer } from "pixi.js";
+import type { Color, Filter } from "pixi.js";
 
 import { concat } from "iter-tools-es";
 import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 
-import type { PaletteSwaps } from "../../game/render/filters/lutTexture/sparseLut";
 import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
+import type { NamedColours } from "../../utils/palette/palette";
 import type { AppSpritesheet, AppSpritesheetData } from "./loadedSpriteSheet";
-import type { LoadableSpriteOption } from "./loadedSpriteSheet";
-import type { TextureId } from "./spritesheetData/spriteSheetData";
+import type { TextureId } from "./spritesheetData/makeSpritesheetData";
+import type { SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData";
+import type { VariantBuildContext } from "./VariantBuildContext";
 
 import { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
 import { emptyArray } from "../../utils/empty";
+import { entries } from "../../utils/entries";
 import { iterate } from "../../utils/iterate";
-import { transformObject } from "../../utils/transformObject";
-import {
-  spritesheetPalette,
-  spritesheetPaletteDim,
-} from "../palette/spritesheetPalette";
+import { resolveSwops } from "../../utils/palette/palette";
 import {
   baseSpritesheetTexture,
   originalSpriteSheet,
 } from "./loadedSpriteSheet";
 import { reifyTextureIds } from "./reifyTextureIds";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
-import { makeSpritesheetData } from "./spritesheetData/spriteSheetData";
-import { spritesheetMetas } from "./spritesheetData/spritesheetMetas";
+import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
+import { spritesheetMetas } from "./spritesheetData/spritesheetMetaData";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TextureIdsListOrPredicate;
-  paletteSwaps: PaletteSwaps;
+  swops: Map<Color, Color>;
   /** if true, the ambient swops won't apply on top of the swops given for this texture */
   dodgeAmbient?: boolean;
 };
 
+/**
+ * top-level spec for the swops to be done to a spritesheet to create a variant
+ */
 export type SpritesheetTextureSwops = {
   ambient: Array<PaletteSwopSpec>;
   textureSpecific?: Array<TextureSpecificPaletteSwops>;
@@ -54,20 +55,25 @@ const isNeverSwoppedTextureId = (
   name.startsWith("shadowMask.") ||
   name.startsWith("hud.");
 
-const createPlaceholderMaskFilter = (placeholder: Color, others: Color) =>
-  new PaletteSwapFilter({
-    paletteSwaps: transformObject(spritesheetPalette, ([name]) => {
-      if (name === "replaceDark" || name === "replaceLight") {
-        return [name, placeholder];
-      } else {
-        return [name, others];
-      }
-    }),
-    lutType: "sparse",
-  });
+const createPlaceholderMaskFilter = (
+  placeholderColoursReplacedWith: Color,
+  otherColoursReplacedWith: Color,
+  palette: NamedColours<string>,
+) => {
+  const swops = new Map<Color, Color>();
+  for (const [name, colour] of entries(palette)) {
+    swops.set(
+      colour,
+      name === "replaceDark" || name === "replaceLight" ?
+        placeholderColoursReplacedWith
+      : otherColoursReplacedWith,
+    );
+  }
+  return new PaletteSwapFilter({ swops, lutType: "sparse" });
+};
 
-export const spritesheetPaletteSwop = (
-  pixiRenderer: Renderer,
+const spritesheetPaletteSwop = (
+  context: Pick<VariantBuildContext, "pixiRenderer" | "spritesheetMetaData">,
   {
     ambient,
     textureSpecific = emptyArray,
@@ -81,10 +87,11 @@ export const spritesheetPaletteSwop = (
   baseTexture: Texture = baseSpritesheetTexture(),
   spritesheetData: AppSpritesheetData,
 ): Texture => {
+  const { pixiRenderer, spritesheetMetaData } = context;
   const filters: Filter[] = [];
 
   // Create texture-specific filters with masks that only apply to their frame rectangles
-  for (const { textureIds, paletteSwaps } of textureSpecific) {
+  for (const { textureIds, swops } of textureSpecific) {
     // Create mask to apply swops only to this texture:
     const specificMaskTexture = renderMaskTexture(pixiRenderer, {
       rects: {
@@ -96,7 +103,7 @@ export const spritesheetPaletteSwop = (
     });
 
     const textureFilter = new PaletteSwapFilter(
-      { paletteSwaps, lutType: "sparse" },
+      { swops, lutType: "sparse" },
       specificMaskTexture,
     );
 
@@ -106,7 +113,7 @@ export const spritesheetPaletteSwop = (
   // Draw black rectangles over shadow/shadowMask/hud frames (filter does not apply)
   const placeholderMaskFilter =
     noReplacePlaceholderTextures !== undefined ?
-      createPlaceholderMaskFilter(black, white)
+      createPlaceholderMaskFilter(black, white, spritesheetMetaData.palette)
     : undefined;
 
   const doNotFilterTexture = renderMaskTexture(pixiRenderer, {
@@ -162,16 +169,6 @@ export const spritesheetPaletteSwop = (
     target: swoppedTexture,
   });
 
-  // Promise.all([
-  //   textureToConsoleArgs(doNotFilterTexture.source, pixiRenderer, 1024),
-  //   textureToConsoleArgs(swoppedTexture.source, pixiRenderer, 1024),
-  // ]).then(([args1, args2]) => {
-  //   console.group("setSpritesheetPaletteSwops: created swoppedTexture:");
-  //   console.log(...args1);
-  //   console.log(...args2);
-  //   console.groupEnd();
-  // });
-
   /////////////
   // CLEANUP //
   /////////////
@@ -197,14 +194,17 @@ export const spritesheetPaletteSwop = (
 };
 
 export const createSpritesheetVariant = (
-  pixiRenderer: Renderer,
+  context: Pick<
+    VariantBuildContext,
+    "pixiRenderer" | "spriteOption" | "spritesheetMetaData"
+  >,
   spritesheetTextureSwops: SpritesheetTextureSwops,
-  spriteOption: LoadableSpriteOption,
   baseTexture?: Texture,
 ) => {
+  const { spriteOption } = context;
   const spritesheetData = makeSpritesheetData(spritesheetMetas[spriteOption]);
   const swoppedTexture = spritesheetPaletteSwop(
-    pixiRenderer,
+    context,
     spritesheetTextureSwops,
     baseTexture,
     spritesheetData,
@@ -218,29 +218,51 @@ export const createSpritesheetVariant = (
   return swoppedSpritesheet;
 };
 
-export const dimSwops: SpritesheetTextureSwops = {
-  ambient: [{ paletteSwaps: spritesheetPaletteDim, lutType: "sparse" }],
+/** dim swops for any spritesheet meta with a palette and paletteDim
+ * - creates a SpritesheetTextureSwops that replaces the palette colours
+ * with their dimmed variation
+ */
+export const ambientDimSwops = <PaletteColourName extends string>(
+  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+): SpritesheetTextureSwops | undefined => {
+  if (spritesheetMeta.paletteDim === undefined) {
+    // this skin does not support dim swops:
+    return undefined;
+  }
+
+  return {
+    ambient: [
+      {
+        swops: resolveSwops(
+          spritesheetMeta.palette,
+          spritesheetMeta.paletteDim,
+        ),
+        lutType: "sparse",
+      },
+    ],
+  };
 };
 
 /**
- * Applies dim palette swaps to an existing spritesheet variant, creating a new
- * dimmed version. The base spritesheet is destroyed after the dimmed version is created.
+ * Applies palette swaps to an existing spritesheet variant, creating a new
+ * swopped version. The base spritesheet is destroyed after the new version is created.
  */
 export const replaceSpritesheetWithSwopped = (
-  pixiRenderer: Renderer,
+  context: Pick<
+    VariantBuildContext,
+    "pixiRenderer" | "spriteOption" | "spritesheetMetaData"
+  >,
   baseSpritesheet: AppSpritesheet,
   swops: SpritesheetTextureSwops,
-  spriteOption: LoadableSpriteOption,
 ): AppSpritesheet => {
   const baseTexture = Texture.from(baseSpritesheet.textureSource);
-  const dimmedSpritesheet = createSpritesheetVariant(
-    pixiRenderer,
+  const swoppedSpritesheet = createSpritesheetVariant(
+    context,
     swops,
-    spriteOption,
     baseTexture,
   );
   baseTexture.destroy();
   baseSpritesheet.textureSource.destroy();
   baseSpritesheet.destroy(true);
-  return dimmedSpritesheet;
+  return swoppedSpritesheet;
 };

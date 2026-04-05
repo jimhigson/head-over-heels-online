@@ -1,6 +1,7 @@
 import { bench } from "vitest";
 
-import { spritesheetPalette } from "../../../../sprites/palette/spritesheetPalette";
+import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
+import { resolveSwops } from "../../../../utils/palette/palette";
 import { voronoiLut } from "./voronoiLut";
 
 /*
@@ -15,7 +16,7 @@ import { voronoiLut } from "./voronoiLut";
 bench(
   "voronoiLut (palette + halfbrite)",
   () => {
-    voronoiLut(spritesheetPalette);
+    voronoiLut(resolveSwops(paletteBlockstack, paletteBlockstack));
   },
   { iterations: 500 },
 );

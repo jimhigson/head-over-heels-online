@@ -1,25 +1,24 @@
-import type { Renderer } from "pixi.js";
+import type { PartialNamedColours } from "../../../utils/palette/palette";
+import type { AppSpritesheet } from "../loadedSpriteSheet";
+import type { VariantBuildContext } from "../VariantBuildContext";
 
-import type { PaletteSwaps } from "../../../game/render/filters/lutTexture/sparseLut";
-import type {
-  AppSpritesheet,
-  LoadableSpriteOption,
-} from "../loadedSpriteSheet";
-
-import { spritesheetPalette } from "../../palette/spritesheetPalette";
+import { resolveSwops } from "../../../utils/palette/palette";
+import { paletteBlockstack } from "../../palette/spritesheetPalette";
 import {
+  ambientDimSwops,
   createSpritesheetVariant,
-  dimSwops,
   replaceSpritesheetWithSwopped,
 } from "../spritesheetPaletteSwop";
 
 let swopped: AppSpritesheet | undefined = undefined;
 
 /** Change the appearance of the citizens of Freedom to distinguish from the player */
-export const sceneryPlayerSwaps: PaletteSwaps = {
-  pastelBlue: spritesheetPalette.moss,
-  metallicBlue: spritesheetPalette.moss,
-  pink: spritesheetPalette.moss,
+export const sceneryPlayerSwaps: PartialNamedColours<
+  keyof typeof paletteBlockstack
+> = {
+  pastelBlue: paletteBlockstack.moss,
+  metallicBlue: paletteBlockstack.moss,
+  pink: paletteBlockstack.moss,
 };
 
 export const destroySceneryPlayerSpritesheetVariant = () => {
@@ -31,25 +30,26 @@ export const destroySceneryPlayerSpritesheetVariant = () => {
 };
 
 export const createSceneryPlayerSpritesheetVariant = (
-  pixiRenderer: Renderer,
-  isDim: boolean,
-  spriteOption: LoadableSpriteOption,
+  context: VariantBuildContext,
 ): void => {
+  const { roomColor, spritesheetMetaData } = context;
   destroySceneryPlayerSpritesheetVariant();
 
-  let result = createSpritesheetVariant(
-    pixiRenderer,
-    { ambient: [{ paletteSwaps: sceneryPlayerSwaps, lutType: "sparse" }] },
-    spriteOption,
-  );
+  let result = createSpritesheetVariant(context, {
+    ambient: [
+      {
+        swops: resolveSwops(paletteBlockstack, sceneryPlayerSwaps),
+        lutType: "sparse",
+      },
+    ],
+  });
 
-  if (isDim) {
-    result = replaceSpritesheetWithSwopped(
-      pixiRenderer,
-      result,
-      dimSwops,
-      spriteOption,
-    );
+  // a second swop is possible to apply dimming:
+  if (roomColor.shade === "dimmed") {
+    const dimSwops = ambientDimSwops(spritesheetMetaData);
+    if (dimSwops !== undefined) {
+      result = replaceSpritesheetWithSwopped(context, result, dimSwops);
+    }
   }
 
   swopped = result;

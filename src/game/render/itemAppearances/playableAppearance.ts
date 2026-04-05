@@ -3,6 +3,7 @@ import { AnimatedSprite } from "pixi.js";
 
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import type { AppSpritesheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
@@ -19,8 +20,8 @@ import {
   type ZxSpectrumRoomColour,
 } from "../../../originalGame";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
+import { effectColour } from "../../../sprites/palette/spritesheetPalette";
 import { playableWalkAnimationSpeed } from "../../../sprites/spritesheet/spritesheetData/playableSpritesheetData";
-import { getAmbientSwoppedColour } from "../../../sprites/spritesheet/variants/currentRoomSpritesheetVariant";
 import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { isEmptyObject } from "../../../utils/empty";
 import {
@@ -37,7 +38,6 @@ import {
 import { createSprite } from "../createSprite";
 import { OneColourFilter } from "../filters/oneColourFilter";
 import { OutlineFilter } from "../filters/outlineFilter";
-import { playableAccentColours } from "../gameColours/colourScheme";
 import {
   stackedBottomSymbol,
   stackedTopSymbol,
@@ -187,13 +187,20 @@ const updateIndividualPlayableSprite = (
 //   pastelBlue: spritesheetPalette.pink,
 // });
 
-const createOutputContainer = (
+const createOutputContainer = <PaletteColourName extends string>(
   name: IndividualCharacterName,
   inSymbio: boolean,
   paused: boolean,
   spriteOption: SpriteOption,
-  overrideColour?: ZxSpectrumRoomColour,
+  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+  roomColour: ZxSpectrumRoomColour,
 ): IndividualPlayableRenderingContainer => {
+  const isDim = roomColour.shade === "dimmed";
+  const accentColour =
+    spriteOption === "Speccy" ?
+      zxSpectrumColor(roomColour)
+    : effectColour(spritesheetMeta, isDim, name);
+
   const container = new Container() as IndividualPlayableRenderingContainer;
   const playableSpriteContainer = new Container();
   container[playableSpriteContainerSymbol] = playableSpriteContainer;
@@ -213,25 +220,16 @@ const createOutputContainer = (
     //switchedToHighlightOutline: OutlineFilter,
     // don't use the singleton per-colour outline filters since we set .enabled on these
     // and would change the enabled status for all containers that are using it
-    new OutlineFilter({
-      color:
-        overrideColour ?
-          zxSpectrumColor(overrideColour)
-        : getAmbientSwoppedColour(playableAccentColours[name]),
-    }),
+    new OutlineFilter({ color: accentColour }),
     //invulnerableOutline: OutlineFilter,
     new OutlineFilter({
       color:
-        overrideColour ?
-          zxSpectrumColor(overrideColour)
-        : getAmbientSwoppedColour("midRed"),
+        spriteOption === "Speccy" ?
+          zxSpectrumColor(roomColour)
+        : effectColour(spritesheetMeta, isDim, "invulnerable"),
     }),
     //invulnerableFlashAfterDeathFilter: OneColourFilter,
-    new OneColourFilter(
-      overrideColour ?
-        zxSpectrumColor(overrideColour)
-      : getAmbientSwoppedColour(playableAccentColours[name]),
-    ),
+    new OneColourFilter(accentColour),
   ];
   for (const f of container.filters) {
     f.enabled = false;
@@ -333,8 +331,8 @@ const playableAppearanceImpl: ItemAppearance<
 > = ({
   renderContext: {
     item: subject,
-    general: { gameState, paused, spriteOption },
-    room,
+    general: { gameState, paused, spriteOption, spritesheetMeta },
+    room: { roomTime, color: roomColor },
   },
   currentRendering,
 }) => {
@@ -384,7 +382,7 @@ const playableAppearanceImpl: ItemAppearance<
     (!isEmptyObject(subject.state.stoodOnBy) ||
       // keep eyes closed for a short time after being stepped off of, so that instantaneous
       // jumps off head still get this effect:
-      subject.state.stoodOnUntilRoomTime + 300 > room.roomTime);
+      subject.state.stoodOnUntilRoomTime + 300 > roomTime);
 
   const renderProps: PlayableRenderProps = {
     action,
@@ -412,8 +410,6 @@ const playableAppearanceImpl: ItemAppearance<
   const spritesheetVariant =
     spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
   const spritesheet = getSpriteSheetVariant(spritesheetVariant);
-  const effectsColourFromRoom =
-    spriteOption === "Speccy" ? room.color : undefined;
 
   if (type === "headOverHeels") {
     outputContainer =
@@ -424,14 +420,16 @@ const playableAppearanceImpl: ItemAppearance<
           true,
           paused,
           spriteOption,
-          effectsColourFromRoom,
+          spritesheetMeta,
+          roomColor,
         ),
         bottom: createOutputContainer(
           "heels",
           true,
           paused,
           spriteOption,
-          effectsColourFromRoom,
+          spritesheetMeta,
+          roomColor,
         ),
       });
 
@@ -462,7 +460,8 @@ const playableAppearanceImpl: ItemAppearance<
         false,
         paused,
         spriteOption,
-        effectsColourFromRoom,
+        spritesheetMeta,
+        roomColor,
       );
 
     updateIndividualsRendering(

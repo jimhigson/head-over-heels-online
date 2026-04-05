@@ -1,7 +1,7 @@
 import type { SpritesheetData } from "pixi.js";
 
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import type { SpritesheetMetaData } from "./spritesheetMetas";
+import type { SpritesheetMetadata } from "./spritesheetMetaData";
 
 import { objectEntriesIter } from "../../../utils/entries";
 import { doorSpritesheetData } from "./doorSpritesheetData";
@@ -30,7 +30,10 @@ export type FramesWithSpeed<TFrames extends string[] = TextureId[]> =
   };
 
 export const makeSpritesheetData = (
-  spritesheetMetaData: SpritesheetMetaData,
+  spritesheetMetaData: Pick<
+    SpritesheetMetadata,
+    "missedTextures" | "overrides" | "playable"
+  >,
 ) => {
   const playable = playableSpritesheetData(spritesheetMetaData.playable);
 

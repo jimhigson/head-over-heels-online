@@ -21,8 +21,8 @@ import type {
 } from "./gameMenusSlice";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
-import { makeSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
-import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetas";
+import { makeSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { objectEntriesIter } from "../../../utils/entries";
 import { getAtPath } from "../../../utils/getAtPath";
 import { iterate } from "../../../utils/iterate";

@@ -7,8 +7,10 @@ import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusS
 import type { ButtonId } from "./OnScreenButtonRenderer";
 
 import { zxSpectrumColor } from "../../../../originalGame";
+import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 import { halfbrite } from "../../../../utils/colour/halfBrite";
+import { resolveSwops } from "../../../../utils/palette/palette";
 import { renderContainerToTexture } from "../../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../../createSprite";
 import { PaletteSwapFilter } from "../../filters/PaletteSwapFilter";
@@ -114,11 +116,12 @@ export class ArcadeStyleButtonContainer<
 
     const filter = new PaletteSwapFilter({
       lutType: "sparse",
-      paletteSwaps: {
+      // all skins currently use the blockstack palette for the buttons colours:
+      swops: resolveSwops(paletteBlockstack, {
         replaceLight: colour,
         replaceDark: colourDim,
         pureBlack: colourBlack,
-      },
+      }),
     });
     spriteTemplate.filters = filter;
 

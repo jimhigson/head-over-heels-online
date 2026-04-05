@@ -1,4 +1,4 @@
-import type { FramesWithSpeed } from "./spriteSheetData";
+import type { FramesWithSpeed } from "./makeSpritesheetData";
 
 // add extra data into the spritesheet that pixi doesn't know about so we can keep the animation speed in
 // the spritesheet too:

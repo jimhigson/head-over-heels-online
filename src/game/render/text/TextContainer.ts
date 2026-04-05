@@ -5,11 +5,11 @@ import { Container, Rectangle, Sprite } from "pixi.js";
 
 import type { PokeableNumber } from "../../../model/ItemStateMap";
 import type { AppSpritesheetData } from "../../../sprites/spritesheet/loadedSpriteSheet";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
-import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
+import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
@@ -100,7 +100,7 @@ export class TextContainer extends Container {
     };
     if (outline) {
       this.#characterSpriteContainer.filters = new OutlineFilter({
-        color: spritesheetPalette.pureBlack,
+        color: paletteBlockstack.pureBlack,
         width: 1,
       });
     }

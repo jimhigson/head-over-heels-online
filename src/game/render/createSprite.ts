@@ -7,7 +7,7 @@ import type { AppSpritesheet } from "../../sprites/spritesheet/loadedSpriteSheet
 import type {
   AnimationId,
   TextureId,
-} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { SpritesheetVariant } from "../../sprites/spritesheet/variants/SpritesheetVariant";
 
 import { completeTimesXyz } from "../../model/times";

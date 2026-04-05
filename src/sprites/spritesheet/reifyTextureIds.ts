@@ -1,5 +1,5 @@
 import type { AppSpritesheetData } from "./loadedSpriteSheet";
-import type { TextureId } from "./spritesheetData/spriteSheetData";
+import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 
 import { keysIter } from "../../utils/entries";
 import { iterate } from "../../utils/iterate";

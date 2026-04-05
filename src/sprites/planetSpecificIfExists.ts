@@ -1,6 +1,6 @@
 import type { SceneryName } from "./planets";
 import type { AppSpritesheetData } from "./spritesheet/loadedSpriteSheet";
-import type { TextureId } from "./spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "./spritesheet/spritesheetData/makeSpritesheetData";
 
 import { isTextureId } from "./assertIsTextureId";
 

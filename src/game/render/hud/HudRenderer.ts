@@ -1,4 +1,4 @@
-import type { Texture } from "pixi.js";
+import type { Color, Texture } from "pixi.js";
 
 import { Container, Sprite } from "pixi.js";
 
@@ -11,7 +11,10 @@ import type {
   IndividualCharacterName,
 } from "../../../model/modelTypes";
 import type { RoomState } from "../../../model/RoomState";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { ZxSpectrumRoomColour } from "../../../originalGame";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import type { PortableItem } from "../../physics/itemPredicates";
@@ -24,12 +27,12 @@ import type {
 
 import { individualCharacterNames } from "../../../model/modelTypes";
 import { zxSpectrumColor } from "../../../originalGame";
-import { getSpritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
+import { effectColour } from "../../../sprites/palette/spritesheetPalette";
 import {
   type LoadableSpriteOption,
   originalSpriteSheet,
 } from "../../../sprites/spritesheet/loadedSpriteSheet";
-import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetas";
+import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import {
   hudCharTextureSize,
   smallItemTextureSize,
@@ -44,10 +47,7 @@ import {
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { outlineFilters } from "../filters/outlineFilter";
-import {
-  getRoomColorScheme,
-  playableAccentColours,
-} from "../gameColours/colourScheme";
+import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { TextContainer } from "../text/TextContainer";
 import { FpsRenderer } from "./FpsRenderer";
 import { OnScreenControls } from "./onScreenControls/OnScreenControls";
@@ -645,6 +645,25 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     );
   }
 
+  #characterTextColour<PaletteColourName extends string>(
+    spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+    spriteOption: SpriteOption,
+    characterName: IndividualCharacterName,
+    isActive: boolean,
+    roomColour: ZxSpectrumRoomColour,
+  ): Color {
+    if (spriteOption === "Speccy") {
+      return zxSpectrumColor(getRoomColorScheme(roomColour).hud.brightHue);
+    }
+
+    const isDim = roomColour.shade === "dimmed";
+    return effectColour(
+      spritesheetMeta,
+      isDim,
+      isActive ? characterName : "dimText",
+    );
+  }
+
   #updateLivesText(
     characterName: IndividualCharacterName,
     {
@@ -674,19 +693,13 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     livesTextContainer.text = livesText;
 
-    const isActive = this.#characterIsActive(gameState, characterName);
-    const useDimmedColours =
-      spritesheetMeta.useAltPaletteInDimmedRoom === true &&
-      room.color.shade === "dimmed";
-
-    const tintColour =
-      spriteOption === "Speccy" ?
-        zxSpectrumColor(getRoomColorScheme(room.color).hud.brightHue)
-      : getSpritesheetPalette(useDimmedColours)[
-          isActive ? playableAccentColours[characterName] : "midGrey"
-        ];
-
-    livesTextContainer.tint = tintColour;
+    livesTextContainer.tint = this.#characterTextColour(
+      spritesheetMeta,
+      spriteOption,
+      characterName,
+      this.#characterIsActive(gameState, characterName),
+      room.color,
+    );
   }
 
   tick(tickContext: HudRendererTickContext<RoomId, RoomItemId>) {

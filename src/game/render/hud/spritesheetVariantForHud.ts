@@ -1,7 +1,7 @@
 import { Color } from "pixi.js";
 
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
-import type { SpritesheetMetaData } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetas";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
 
@@ -34,7 +34,7 @@ export const tintForHud = (
   spriteOption: SpriteOption,
   roomColor: ZxSpectrumRoomColour,
   active: boolean,
-  spritesheetMeta: SpritesheetMetaData,
+  spritesheetMeta: SpritesheetMetadata,
 ): Color => {
   const colorScheme = getRoomColorScheme(roomColor);
 
@@ -43,7 +43,7 @@ export const tintForHud = (
     : replacementColour(
         colorScheme.hud[active ? "brightHue" : "dimmedHue"],
         false,
-        spritesheetMeta.useAltPaletteInDimmedRoom === true &&
+        spritesheetMeta.paletteDim !== undefined &&
           roomColor.shade === "dimmed",
       );
 };

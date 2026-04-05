@@ -1,8 +1,7 @@
+import type { Color } from "pixi.js";
+
 import { defaultFilterVert, Filter, GlProgram, Texture } from "pixi.js";
 
-import type { PaletteSwaps } from "./lutTexture/sparseLut";
-
-import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
 import { sparseLut } from "./lutTexture/sparseLut";
 import { voronoiLut } from "./lutTexture/voronoiLut";
 import fragment from "./paletteSwap.frag";
@@ -13,12 +12,15 @@ const glProgram = GlProgram.from({
   name: "palette-swop-filter1",
 });
 
-// Cache for PaletteSwapFilter instances
-const filterCache = new Map<string, PaletteSwapFilter>();
-
 export type LutType = "sparse" | "voronoi";
 
-export type PaletteSwopSpec = { paletteSwaps: PaletteSwaps; lutType: LutType };
+export type PaletteSwopSpec = {
+  /**
+   * the resolved source-colour → target-colour mapping to apply
+   */
+  swops: Map<Color, Color>;
+  lutType: LutType;
+};
 
 /**
  * Filter to emulate palette swopping from the indexed graphics days
@@ -30,16 +32,15 @@ export class PaletteSwapFilter extends Filter {
    * @param options - Options for the PaletteSwapFilter constructor.
    */
   constructor(
-    { paletteSwaps, lutType }: PaletteSwopSpec,
+    { swops, lutType }: PaletteSwopSpec,
     /**
      * where to mask the effect - white is on, black is off -
      * default to all white to apply everywhere
      */
     private mask: Texture = Texture.WHITE,
   ) {
-    const lutTexture = (lutType === "voronoi" ? voronoiLut : sparseLut)(
-      paletteSwaps,
-    );
+    const lutTexture =
+      lutType === "voronoi" ? voronoiLut(swops) : sparseLut(swops);
 
     super({
       glProgram,
@@ -99,67 +100,3 @@ export class PaletteSwapFilter extends Filter {
     return this.#lutTexture;
   }
 }
-
-/**
- * Generate a hash key for a PaletteSwaps object
- */
-const hashSwops = (swops: PaletteSwaps): string => {
-  return Object.entries(swops)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([key, color]) => `${key}:${color.toHex()}`)
-    .join("|");
-};
-
-/**
- * Factory function to get or create a cached PaletteSwapFilter
- * This prevents creating duplicate filters for the same palette swaps
- */
-export const getPaletteSwapFilter = (
-  paletteSwaps: PaletteSwaps,
-  lutType: "sparse" | "voronoi" = "sparse",
-): PaletteSwapFilter => {
-  const key = `${lutType}|${hashSwops(paletteSwaps)}`;
-
-  let filter = filterCache.get(key);
-  if (!filter) {
-    filter = new PaletteSwapFilter({ paletteSwaps, lutType });
-    filterCache.set(key, filter);
-  }
-
-  return filter;
-};
-
-export const swopsToConsoleLog = (
-  message: string,
-  { lutType, paletteSwaps }: PaletteSwopSpec,
-): [string, ...string[]] => {
-  const fgForColour = (colour: { red: number; green: number; blue: number }) =>
-    (colour.red + colour.green + colour.blue) / 3 > 0.5 ? "black" : "white";
-
-  const formatParts: string[] = [];
-  const cssArgs: string[] = [];
-  for (const [name, toColour] of Object.entries(paletteSwaps)) {
-    const fromColour =
-      spritesheetPalette[name as keyof typeof spritesheetPalette];
-    const fromHex = fromColour.toHex();
-    const toHex = toColour.toHex();
-    formatParts.push(`%c ${name.padEnd(16)}%c ➡ %c ${toHex} %c`);
-    cssArgs.push(
-      `background: ${fromHex}; color: ${fgForColour(fromColour)}; padding: 2px;`,
-      "",
-      `background: ${toHex}; color: ${fgForColour(toColour)}; padding: 2px;`,
-      "",
-    );
-  }
-  const lutTypeColour =
-    lutType === "sparse" ?
-      spritesheetPalette.pink.toHex()
-    : spritesheetPalette.pastelBlue.toHex();
-
-  return [
-    `${message}\n%c ${lutType} LUT %c\n${formatParts.join("\n")}`,
-    `background: ${lutTypeColour}; color: white; padding: 2px;`,
-    "",
-    ...cssArgs,
-  ];
-};

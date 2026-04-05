@@ -3,12 +3,12 @@ import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { DirectionXy8, Xy } from "../../../utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import type { FramesWithSpeed } from "./spriteSheetData";
+import type { FramesWithSpeed } from "./makeSpritesheetData";
 import type {
   PlayableDirectionFrames,
   PlayableSpritesheetFrames,
   PlayableSpritesheetMetaData,
-} from "./spritesheetMetas";
+} from "./spritesheetMetaData";
 
 import { zxSpectrumFrameRate } from "../../../originalGame";
 import { fromEntries } from "../../../utils/entries";

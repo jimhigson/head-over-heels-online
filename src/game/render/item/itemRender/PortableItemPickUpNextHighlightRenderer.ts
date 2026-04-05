@@ -9,10 +9,7 @@ import type {
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
 import { zxSpectrumColor } from "../../../../originalGame";
-import {
-  spritesheetPalette,
-  spritesheetPaletteDim,
-} from "../../../../sprites/palette/spritesheetPalette";
+import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
 import {
   isPortable,
   type PortableItemType,
@@ -34,7 +31,7 @@ class PortableItemPickUpNextHighlightRenderer
     this.output.addChild(childRenderer.output);
 
     const {
-      general: { spriteOption },
+      general: { spriteOption, spritesheetMeta },
       room,
     } = renderContext;
 
@@ -42,10 +39,7 @@ class PortableItemPickUpNextHighlightRenderer
       color:
         spriteOption === "Speccy" ?
           zxSpectrumColor(room.color)
-        : (room.color.shade === "dimmed" ?
-            spritesheetPaletteDim
-          : spritesheetPalette
-          ).moss,
+        : effectColour(spritesheetMeta, room.color.shade === "dimmed", "carry"),
     });
     this.#outlineFilter.enabled = false;
     this.output.filters = this.#outlineFilter;

@@ -1,7 +1,18 @@
-import type { SpritesheetMetaData } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetas";
+import type { SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 
-const blockStack: SpritesheetMetaData = {
-  useAltPaletteInDimmedRoom: true,
+import {
+  type BlockstackPaletteColourName,
+  paletteBlockstack,
+  paletteBlockstackDim,
+} from "../../src/sprites/palette/spritesheetPalette";
+
+export const blockStackSpritesheetMeta: SpritesheetMetadata<
+  BlockstackPaletteColourName,
+  "BlockStack"
+> = {
+  name: "BlockStack",
+  palette: paletteBlockstack,
+  paletteDim: paletteBlockstackDim,
   playable: {
     head: {
       awayLeft: {
@@ -79,5 +90,47 @@ const blockStack: SpritesheetMetaData = {
     "head.falling.towardsLeft": { pivot: { x: 13, y: 24 } },
     "head.falling.awayLeft": { pivot: { x: 12, y: 25 } },
   },
+  swops: {
+    deactivated: {
+      colours: {
+        lightBeige: "lightGrey",
+        redShadow: "shadow",
+        pink: "lightGrey",
+        moss: "lightGrey",
+        midRed: "midGrey",
+        highlightBeige: "lightGrey",
+        pastelBlue: "lightGrey",
+        metallicBlue: "midGrey",
+        replaceLight: "lightGrey",
+        replaceDark: "midGrey",
+      },
+      playableDeactivatedPreserveColours: {
+        head: ["metallicBlue", "pastelBlue"],
+        heels: ["pink"],
+      },
+    },
+    doughnutted: {
+      colours: {
+        midGrey: "midRed",
+        lightGrey: "lightBeige",
+        white: "highlightBeige",
+        metallicBlue: "redShadow",
+        shadow: "redShadow",
+        pastelBlue: "lightBeige",
+        pink: "midRed",
+        moss: "midRed",
+        replaceDark: "midRed",
+        replaceLight: "lightBeige",
+      },
+    },
+  },
+  effectColours: {
+    head: "pastelBlue",
+    heels: "pink",
+    left: "moss",
+    right: "midRed",
+    invulnerable: "midRed",
+    dimText: "midGrey",
+    carry: "moss",
+  },
 };
-export default blockStack;

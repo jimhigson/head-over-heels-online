@@ -5,7 +5,7 @@ import type {
   IndividualCharacterName,
 } from "../../../../model/modelTypes";
 import type { AppSpritesheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
-import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { ItemAppearance } from "../ItemAppearance";
 
 import { isTextureId } from "../../../../sprites/assertIsTextureId";

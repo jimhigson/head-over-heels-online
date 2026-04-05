@@ -1,7 +1,7 @@
 import type {
   AnimationId,
   TextureId,
-} from "./spritesheet/spritesheetData/spriteSheetData";
+} from "./spritesheet/spritesheetData/makeSpritesheetData";
 
 import { type AppSpritesheetData } from "./spritesheet/loadedSpriteSheet";
 

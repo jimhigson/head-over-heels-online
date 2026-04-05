@@ -1,6 +1,6 @@
 import "react";
 
-import type { TextureId } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { Xy } from "../../utils/vectors/vectors";
 
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";

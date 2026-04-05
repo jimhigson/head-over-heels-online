@@ -35,23 +35,23 @@ import {
 } from "../../../../editor/slice/levelEditorSlice";
 import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
 import { iterateRoomItems } from "../../../../model/RoomState";
-import { spritesheetPalette } from "../../../../sprites/palette/spritesheetPalette";
+import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
 import { store } from "../../../../store/store";
 import { outlineFilters } from "../../filters/outlineFilter";
 import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
 import { noFilters } from "../../filters/standardFilters";
 import { TextContainer } from "../../text/TextContainer";
 
-const selectionColour = spritesheetPalette.pastelBlue;
+const selectionColour = paletteBlockstack.pastelBlue;
 const pointerHoverFilter = outlineFilters.highlightBeige;
-const monsterWakesColour = spritesheetPalette.lightBeige;
+const monsterWakesColour = paletteBlockstack.lightBeige;
 const monsterWakesFilter = outlineFilters.lightBeige;
 const eyeDropperHoverFilter = outlineFilters.midRed;
 const controlHighlightFilter = outlineFilters.white;
 const selectedFilter = new RevertColouriseFilter(selectionColour);
-const textAnnotationNormalColour = spritesheetPalette.white;
-const textAnnotationErrorColour = spritesheetPalette.midRed;
-const textClickableAnnotationHoverColour = spritesheetPalette.pastelBlue;
+const textAnnotationNormalColour = paletteBlockstack.white;
+const textAnnotationErrorColour = paletteBlockstack.midRed;
+const textClickableAnnotationHoverColour = paletteBlockstack.pastelBlue;
 
 const directionArrows = {
   left: `↖`,

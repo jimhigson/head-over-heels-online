@@ -1,64 +1,66 @@
-import type { Renderer } from "pixi.js";
-
-import type { PaletteSwaps } from "../../../game/render/filters/lutTexture/sparseLut";
-import type { ZxSpectrumRoomColour } from "../../../originalGame";
-import type { SceneryName } from "../../planets";
+import type { PartialNamedColours } from "../../../utils/palette/palette";
 import type {
   AppSpritesheet,
   LoadableSpriteOption,
 } from "../loadedSpriteSheet";
+import type { SpritesheetMetadata } from "../spritesheetData/spritesheetMetaData";
 import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
+import type { VariantBuildContext } from "../VariantBuildContext";
 
-import { omit } from "../../../utils/pick";
-import { spritesheetPalette } from "../../palette/spritesheetPalette";
-import { ambienceSwops } from "../roomSpritesheetTextureSwops";
-import { spritesheetMetaForOption } from "../spritesheetData/spritesheetMetas";
+import { resolveSwops } from "../../../utils/palette/palette";
+import { resolveNamedColourSwops } from "../../../utils/palette/palette";
+import { omitArray } from "../../../utils/pick";
+import { blockstackAmbienceSwops } from "../roomSpritesheetTextureSwops";
 import {
+  ambientDimSwops,
   createSpritesheetVariant,
-  dimSwops,
+  noopSpritesheetTextureSwops,
   replaceSpritesheetWithSwopped,
 } from "../spritesheetPaletteSwop";
 
 let swopped: AppSpritesheet | undefined = undefined;
 
-export const greySwaps: PaletteSwaps = {
-  lightBeige: spritesheetPalette.lightGrey,
-  redShadow: spritesheetPalette.shadow,
-  pink: spritesheetPalette.lightGrey,
-  moss: spritesheetPalette.lightGrey,
-  midRed: spritesheetPalette.midGrey,
-  highlightBeige: spritesheetPalette.lightGrey,
-  pastelBlue: spritesheetPalette.lightGrey,
-  metallicBlue: spritesheetPalette.midGrey,
-  replaceLight: spritesheetPalette.lightGrey,
-  replaceDark: spritesheetPalette.midGrey,
-};
+const buildDeactivatedSwops = <
+  PaletteColourName extends string,
+  SO extends LoadableSpriteOption,
+>(
+  spritesheetMetaData: SpritesheetMetadata<PaletteColourName, SO>,
+): SpritesheetTextureSwops => {
+  const deactivated = spritesheetMetaData.swops?.deactivated;
 
-export const greyFilterExceptBlue = omit(
-  greySwaps,
-  "metallicBlue",
-  "pastelBlue",
-);
+  if (deactivated === undefined) {
+    return noopSpritesheetTextureSwops;
+  }
 
-export const greyFilterExceptPink = omit(greySwaps, "pink");
+  const { palette } = spritesheetMetaData;
 
-export const deactivatedSpritesheetTextureSwops: SpritesheetTextureSwops = {
-  ambient: [{ paletteSwaps: greySwaps, lutType: "sparse" }],
-  //texture specific swops let head/heels keep blue/pink while deactivated (ie, in hud)
-  textureSpecific: [
-    {
-      textureIds: (tid) => tid.startsWith("head."),
-      paletteSwaps: greyFilterExceptBlue,
-      // don't let the ambient swop blue out first:
-      dodgeAmbient: true,
-    },
-    {
-      textureIds: (tid) => tid.startsWith("heels."),
-      paletteSwaps: greyFilterExceptPink,
-      // don't let the ambient swop pink out first:
-      dodgeAmbient: true,
-    },
-  ],
+  const ambientNamed: PartialNamedColours<PaletteColourName> =
+    resolveNamedColourSwops(deactivated.colours, palette);
+
+  const preserveHead =
+    deactivated?.playableDeactivatedPreserveColours?.head ?? [];
+  const preserveHeels =
+    deactivated?.playableDeactivatedPreserveColours?.heels ?? [];
+
+  return {
+    ambient: [
+      { swops: resolveSwops(palette, ambientNamed), lutType: "sparse" },
+    ],
+    // texture-specific swops let head/heels keep their characteristic colours
+    textureSpecific: [
+      {
+        textureIds: (tid) => tid.startsWith("head."),
+        swops: resolveSwops(palette, omitArray(ambientNamed, preserveHead)),
+        // don't let the ambient swop out these colours first:
+        dodgeAmbient: true,
+      },
+      {
+        textureIds: (tid) => tid.startsWith("heels."),
+        swops: resolveSwops(palette, omitArray(ambientNamed, preserveHeels)),
+        dodgeAmbient: true,
+      },
+    ],
+  };
 };
 
 export const destroyDeactivatedSpritesheetVariant = () => {
@@ -70,40 +72,26 @@ export const destroyDeactivatedSpritesheetVariant = () => {
 };
 
 export const createDeactivatedSpritesheetVariant = (
-  pixiRenderer: Renderer,
-  roomScenery: SceneryName,
-  roomColor: ZxSpectrumRoomColour,
-  spriteOption: LoadableSpriteOption,
+  context: VariantBuildContext,
 ): void => {
+  const { roomScenery, roomColor, spritesheetMetaData } = context;
   destroyDeactivatedSpritesheetVariant();
 
   let result = createSpritesheetVariant(
-    pixiRenderer,
-    deactivatedSpritesheetTextureSwops,
-    spriteOption,
+    context,
+    buildDeactivatedSwops(spritesheetMetaData),
   );
 
-  const spritesheetMeta = spritesheetMetaForOption(spriteOption);
-
-  if (
-    roomColor.shade === "dimmed" &&
-    spritesheetMeta.useAltPaletteInDimmedRoom === true
-  ) {
-    result = replaceSpritesheetWithSwopped(
-      pixiRenderer,
-      result,
-      dimSwops,
-      spriteOption,
-    );
+  if (roomColor.shade === "dimmed") {
+    const dimSwops = ambientDimSwops(spritesheetMetaData);
+    if (dimSwops !== undefined) {
+      result = replaceSpritesheetWithSwopped(context, result, dimSwops);
+    }
   } else {
-    result = replaceSpritesheetWithSwopped(
-      pixiRenderer,
-      result,
-      {
-        ambient: [ambienceSwops(roomScenery, roomColor)],
-      },
-      spriteOption,
-    );
+    // TODO: incorrectly applying blockstack ambience here it seems (to deactivated)
+    result = replaceSpritesheetWithSwopped(context, result, {
+      ambient: [blockstackAmbienceSwops(roomScenery, roomColor)],
+    });
   }
 
   swopped = result;

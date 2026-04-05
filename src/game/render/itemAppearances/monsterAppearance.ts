@@ -2,7 +2,7 @@ import type { Container, Sprite } from "pixi.js";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { AnimatedCreateSpriteOptions } from "../createSprite";
@@ -361,7 +361,10 @@ export const monsterAppearance: ItemAppearance<
               item,
               room,
               createStackedSprites({
-                top: { animationId: `emperorsGuardian`, spritesheetVariant },
+                top:
+                  activated && !busyLickingDoughnutsOffFace ?
+                    { animationId: `emperorsGuardian`, spritesheetVariant }
+                  : { textureId: `emperorsGuardian.1`, spritesheetVariant },
                 bottom:
                   activated && !busyLickingDoughnutsOffFace ?
                     { animationId: "bubbles.cold", spritesheetVariant, paused }

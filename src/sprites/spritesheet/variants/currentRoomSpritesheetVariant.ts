@@ -1,17 +1,7 @@
-import { type Renderer } from "pixi.js";
-
-import type { ZxSpectrumRoomColour } from "../../../originalGame";
-import type { SceneryName } from "../../planets";
-import type {
-  AppSpritesheet,
-  LoadableSpriteOption,
-} from "../loadedSpriteSheet";
+import type { AppSpritesheet } from "../loadedSpriteSheet";
 import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
+import type { VariantBuildContext } from "../VariantBuildContext";
 
-import {
-  spritesheetPalette,
-  type SpritesheetPaletteColourName,
-} from "../../palette/spritesheetPalette";
 import { roomSpritesheetTextureSwops } from "../roomSpritesheetTextureSwops";
 import {
   createSpritesheetVariant,
@@ -19,8 +9,6 @@ import {
 } from "../spritesheetPaletteSwop";
 
 let swopped: AppSpritesheet | undefined = undefined;
-let spritesheetTextureSwops: SpritesheetTextureSwops =
-  noopSpritesheetTextureSwops;
 
 export const destroyCurrentRoomSpritesheetVariant = () => {
   if (swopped !== undefined) {
@@ -35,24 +23,18 @@ export const destroyCurrentRoomSpritesheetVariant = () => {
  * other rendering occurs. Promise resolves when the swopped spritesheet is ready
  */
 export const createCurrentRoomSpritesheetVariant = (
-  pixiRenderer: Renderer,
-  roomScenery: SceneryName,
-  roomColor: ZxSpectrumRoomColour,
-  spriteOption: LoadableSpriteOption,
+  context: VariantBuildContext,
 ) => {
+  const { roomScenery, roomColor, spriteOption } = context;
   // throw away previous swopped version of spritesheet - these are
   // short-lived and created on-demand:
   destroyCurrentRoomSpritesheetVariant();
 
-  spritesheetTextureSwops =
+  const spritesheetTextureSwops: SpritesheetTextureSwops =
     roomSpritesheetTextureSwops(roomScenery, roomColor, spriteOption) ??
     noopSpritesheetTextureSwops;
 
-  swopped = createSpritesheetVariant(
-    pixiRenderer,
-    spritesheetTextureSwops,
-    spriteOption,
-  );
+  swopped = createSpritesheetVariant(context, spritesheetTextureSwops);
 };
 
 /**
@@ -68,23 +50,4 @@ export const currentRoomSpritesheetVariant = (): AppSpritesheet => {
   }
 
   return swopped!;
-};
-
-/**
- * try to get a colour from the swapped palette that is actually being used, according to
- * the current ambient swops
- *
- * // NOTE: this doesn't currently support double-swops
- * // NOTE: also doesn't support texture-specific swops
- */
-export const getAmbientSwoppedColour = (
-  colourName: SpritesheetPaletteColourName,
-) => {
-  let swoppedColour = spritesheetPalette[colourName];
-
-  for (const ambient of spritesheetTextureSwops.ambient) {
-    swoppedColour = ambient.paletteSwaps[colourName] ?? swoppedColour;
-  }
-
-  return swoppedColour;
 };

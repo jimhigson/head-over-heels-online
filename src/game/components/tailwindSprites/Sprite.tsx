@@ -9,7 +9,7 @@ import {
 import "react";
 import { twMerge } from "tailwind-merge";
 
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { ClassnameWrap } from "../../../utils/react/ClassnameWrap";

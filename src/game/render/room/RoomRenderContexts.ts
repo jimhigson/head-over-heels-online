@@ -2,7 +2,7 @@ import type { Renderer } from "pixi.js";
 import type { SetRequired } from "type-fest";
 
 import type { RoomState } from "../../../model/RoomState";
-import type { SpritesheetMetaData } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetas";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import type {
   DisplaySettings,
   SoundSettings,
@@ -30,7 +30,7 @@ export type GeneralRenderContext<RoomId extends string> = {
   gameState?: Omit<GameState<RoomId>, "pickupsCollected">;
   paused: boolean;
   spriteOption: SpriteOption;
-  spritesheetMeta: SpritesheetMetaData;
+  spritesheetMeta: SpritesheetMetadata;
   upscale: Upscale;
 
   onScreenControls: boolean;
