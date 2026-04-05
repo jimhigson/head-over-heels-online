@@ -1,5 +1,33 @@
 # Changelog
 
+## [22.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v21.0.0...v22.0.0) (2026-04-05)
+
+
+### Bug Fixes
+
+* all monster types can be rendered as deactivated ([#789](https://github.com/jimhigson/head-over-heels-online/issues/789)) ([dda6a92](https://github.com/jimhigson/head-over-heels-online/commit/dda6a92196d3414ac5bb099c7f3872f1d363451e))
+* portable teleporters get the same standard sound effects as other movable items (falling, scraping, etc) ([#778](https://github.com/jimhigson/head-over-heels-online/issues/778)) ([a75559e](https://github.com/jimhigson/head-over-heels-online/commit/a75559e2af8d5c38db98dd169ccb4c0c2dbef593))
+
+
+### Room Changes
+
+* minor changes in two original campaign penitentiary rooms ([#782](https://github.com/jimhigson/head-over-heels-online/issues/782)) ([aa17048](https://github.com/jimhigson/head-over-heels-online/commit/aa1704825f3b4f8f2cda7d8190c8aab45c66ea2a))
+* moonbase16 avoids a sudden death on entering the room because enemy starts close to the player ([#780](https://github.com/jimhigson/head-over-heels-online/issues/780)) ([6295d89](https://github.com/jimhigson/head-over-heels-online/commit/6295d89368b3f4baeca510ee726f0e4fb761a3f7))
+
+
+### Editor Changes
+
+* cmd-k command palette ([#775](https://github.com/jimhigson/head-over-heels-online/issues/775)) ([13bcaab](https://github.com/jimhigson/head-over-heels-online/commit/13bcaaba49d745175a7a0c0a748315655966be13))
+* fix race condition in loading monaco editor ([#783](https://github.com/jimhigson/head-over-heels-online/issues/783)) ([fa2ea77](https://github.com/jimhigson/head-over-heels-online/commit/fa2ea7711c130e880988b6400930267044b07b78))
+* only package monaco workers that we need ([#777](https://github.com/jimhigson/head-over-heels-online/issues/777)) ([c553c17](https://github.com/jimhigson/head-over-heels-online/commit/c553c173d9de952a3cae4e82f46996b9f2656604))
+* refactor json schema for room json in editor to be ~70% smaller by reducing duplication ([#770](https://github.com/jimhigson/head-over-heels-online/issues/770)) ([023a950](https://github.com/jimhigson/head-over-heels-online/commit/023a9508e8023e47b53023153c81fdb19ebb4b50))
+
+
+### Miscellaneous
+
+* add tsgo as an alternative to tsc ([#786](https://github.com/jimhigson/head-over-heels-online/issues/786)) ([af95d65](https://github.com/jimhigson/head-over-heels-online/commit/af95d65c8a7ea7bdcd72ea25352ad2841985bdd2))
+* upgraded to typescript v6 ([#781](https://github.com/jimhigson/head-over-heels-online/issues/781)) ([75dcbb9](https://github.com/jimhigson/head-over-heels-online/commit/75dcbb9f2f1bc22128f0d441d4706af56e61219b))
+
 ## [21.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v20.0.0...v21.0.0) (2026-03-15)
 
 
