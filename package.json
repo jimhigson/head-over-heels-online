@@ -63,6 +63,7 @@
     "@tauri-apps/plugin-process": "^2.3.1",
     "@types/nano-equal": "^2.0.2",
     "@types/natural-compare-lite": "^1.4.2",
+    "@typescript/native-preview": "7.0.0-dev.20260405.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
     "es-iterator-helpers": "^1.2.1",
