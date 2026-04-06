@@ -51,7 +51,7 @@ vi.mock("../../sprites/spritesheet/variants/getSpriteSheetVariant", () => ({
   getSpriteSheetVariant: vi.fn(() => mockSpriteSheet),
 }));
 
-import type { TextureId } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "./createSprite";
 

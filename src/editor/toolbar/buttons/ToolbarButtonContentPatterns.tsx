@@ -1,5 +1,10 @@
 import type { ReactElement } from "react";
 
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
+} from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
 import { twClass } from "../../twClass";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
@@ -34,7 +39,7 @@ export const DissapearingItemToolbarIcon = ({
   return (
     <StackedToolbarIcons
       topClasses={twClass(
-        "texture-bubbles_white_2 activated:texture-animated-bubbles_white",
+        `${"texture-bubbles_white_2" satisfies TextureTailwindClass} ${"activated:texture-animated-bubbles_white" satisfies AnimatedTextureTailwindClass}`,
       )}
       bottomClasses={iconClassName}
     />
@@ -42,7 +47,7 @@ export const DissapearingItemToolbarIcon = ({
 };
 export const StackedToolbarIcons = ({
   topClasses,
-  bottomClasses = "texture-headlessBase",
+  bottomClasses = "texture-headlessBase" satisfies TextureTailwindClass,
 }: {
   topClasses: string;
   bottomClasses?: string;

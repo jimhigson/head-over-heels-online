@@ -1,13 +1,13 @@
 ## Bag
 
-![](texture-bag)The *bag* may be used to carry small objects around a room. It is essential for
+![](texture-bag ?float-left&clear-left)![](texture-cube ?float-left&clear-left)![](texture-drum ?float-left&clear-left)![](texture-spring_compressed ?float-left&clear-left)![](texture-sticks ?float-left&clear-left)The *bag* may be used to carry small objects around a room. It is essential for
 Heels to find and get the bag as it is impossible to get far without it.
 
 The object in the bag will be displayed immediately above the bag’s icon at the
-bottom right of the screen. To pick up an object, stand on top of it and
-press *carry*. 
+bottom right of the screen.
 
-![](texture-cube)![](texture-drum)![](texture-spring_compressed)![](texture-sticks)
+To pick up an object, stand on top of it and
+press *carry*. 
 
 It is not possible to take items through doorways.
 

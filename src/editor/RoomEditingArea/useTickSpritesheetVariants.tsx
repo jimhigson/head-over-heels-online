@@ -19,6 +19,6 @@ export const useTickSpritesheetVariants = () => {
   }, [pixiRenderer]);
 
   useEffect(() => {
-    tickSpritesheetVariants(pixiRenderer, true, planet, color);
+    tickSpritesheetVariants(pixiRenderer, planet, color, "BlockStack");
   }, [color, pixiRenderer, planet]);
 };

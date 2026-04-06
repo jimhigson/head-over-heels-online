@@ -2,12 +2,15 @@ import type { Container, Sprite } from "pixi.js";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { AnimatedCreateSpriteOptions } from "../createSprite";
 import type { StackedSpritesContainer } from "./createStackedSprites";
 import type { ItemAppearance } from "./ItemAppearance";
 
+import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
+import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
 import {
   originXy,
@@ -87,7 +90,7 @@ export const monsterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused, colourised },
+    general: { paused, spriteOption },
   },
   currentRendering,
 }) => {
@@ -97,7 +100,7 @@ export const monsterAppearance: ItemAppearance<
   const { activated, busyLickingDoughnutsOffFace } = state;
 
   const spritesheetVariant: SpritesheetVariant =
-    !colourised ? "uncolourised"
+    spriteOption === "Speccy" ? "uncolourised"
     : busyLickingDoughnutsOffFace ? "doughnutted"
     : !activated ? "deactivated"
     : "for-current-room";
@@ -133,15 +136,21 @@ export const monsterAppearance: ItemAppearance<
       };
 
       switch (config.which) {
-        case "skiHead":
-          // directional, style, no anim
+        case "skiHead": {
+          // directional, style, no anim — fall back to first style if this one is missing
+          const preferredId = `${config.which}.${config.style}.${facingXy4}`;
+          const spritesheetData = originalSpriteSheet().data;
           return {
             output: createSprite({
-              textureId: `${config.which}.${config.style}.${facingXy4}`,
+              textureId:
+                isTextureId(preferredId, spritesheetData) ? preferredId : (
+                  (`${config.which}.greenAndPink.${facingXy4}` as TextureId)
+                ),
               spritesheetVariant,
             }),
             renderProps,
           };
+        }
         case "elephantHead":
           // directional, no style, no anim
           return {
@@ -305,10 +314,7 @@ export const monsterAppearance: ItemAppearance<
                       (
                         config.which === "dalek" &&
                         room.color.shade === "dimmed" &&
-                        // only use the dark dalek variant in scenery that has a dark variant:
-                        (room.planet === "blacktooth" ||
-                          room.planet === "egyptus" ||
-                          room.planet === "moonbase")
+                        isAnimationId("dalek.dark", originalSpriteSheet().data)
                       ) ?
                         "dalek.dark"
                       : config.which,
@@ -355,7 +361,10 @@ export const monsterAppearance: ItemAppearance<
               item,
               room,
               createStackedSprites({
-                top: { textureId: `ball.blueGreen`, spritesheetVariant },
+                top:
+                  activated && !busyLickingDoughnutsOffFace ?
+                    { animationId: `emperorsGuardian`, spritesheetVariant }
+                  : { textureId: `emperorsGuardian.1`, spritesheetVariant },
                 bottom:
                   activated && !busyLickingDoughnutsOffFace ?
                     { animationId: "bubbles.cold", spritesheetVariant, paused }

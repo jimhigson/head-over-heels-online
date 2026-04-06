@@ -1,8 +1,10 @@
 import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import type { SceneryName } from "../../../sprites/planets";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { ItemAppearance } from "./ItemAppearance";
 
+import { isTextureId } from "../../../sprites/assertIsTextureId";
+import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
 
@@ -18,21 +20,31 @@ const blockTextureId = (
   isDissapearing: boolean,
   scenery: SceneryName,
 ): TextureId => {
+  const spritesheetData = originalSpriteSheet().data;
+
   if (style === "tower") {
-    return scenery === "moonbase" ? "tower.moonbase" : "tower";
+    const sceneryTower = `tower.${scenery}`;
+    return isTextureId(sceneryTower, spritesheetData) ?
+        (sceneryTower as TextureId)
+      : "tower";
   }
   if (style === "book") {
     return `book.x`;
   }
-  if (style === "organic" && isDark) {
-    return `block.organic.dark${isDissapearing ? ".disappearing" : ""}`;
+  const base = `block.${style}`;
+  const suffix = isDissapearing ? ".disappearing" : "";
+  if (isDark) {
+    const darkId = `${base}.dark${suffix}`;
+    if (isTextureId(darkId, spritesheetData)) {
+      return darkId as TextureId;
+    }
   }
-  return `block.${style}${isDissapearing ? ".disappearing" : ""}`;
+  return `${base}${suffix}` as TextureId;
 };
 
 export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
-    general: { pixiRenderer, colourised },
+    general: { pixiRenderer, spriteOption },
     item: {
       config: { style, times },
       state: { disappearing: disappear },
@@ -62,7 +74,8 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           room.planet,
         ),
         times,
-        spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+        spritesheetVariant:
+          spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
       }),
     ),
     renderProps: { isDissapearing },

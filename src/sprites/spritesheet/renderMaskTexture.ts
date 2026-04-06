@@ -3,15 +3,11 @@ import type { ContainerChild, Renderer } from "pixi.js";
 import { Color, Container, Graphics, RenderTexture, Sprite } from "pixi.js";
 
 import type { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
-import type { AppSpritesheet } from "./loadedSpriteSheet";
-import type { TextureId } from "./spritesheetData/spriteSheetData";
+import type { AppSpritesheet, AppSpritesheetData } from "./loadedSpriteSheet";
+import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 
-import { iterate } from "../../utils/iterate";
-import {
-  spritesheetData,
-  spritesheetSize,
-  textureIds,
-} from "./spritesheetData/spriteSheetData";
+import { reifyTextureIds } from "./reifyTextureIds";
+import { spritesheetSize } from "./spritesheetData/makeSpritesheetData";
 
 export const black = new Color(0x000000);
 export const white = new Color(0xffffff);
@@ -21,10 +17,15 @@ type TextureIdsListOrPredicate =
   | Iterable<TextureId>;
 
 export type RenderMaskTextureOptions = {
+  /**
+   * if given, masks out the rectangles of the given textures
+   */
   rects?: {
     /** either a list of texture ids, or the criteria for a texture id being selected to filter */
     textureIds: TextureIdsListOrPredicate;
     color: Color;
+    /** the frames that define the rects for the given textureIds */
+    spritesheetDataFrames: AppSpritesheetData["frames"];
   };
   /**
    * where to mask out only the placeholder colours - this is useful if the game engine needs to replace the
@@ -32,7 +33,7 @@ export type RenderMaskTextureOptions = {
    * that they lead to
    */
   placeholderColoursMasks?: {
-    textureIds: TextureId[];
+    textureIds: TextureIdsListOrPredicate;
     /** the colours write over the placeholder colours */
     placeholder: Color;
     /** colour to write over all non-placeholder colours */
@@ -44,14 +45,6 @@ export type RenderMaskTextureOptions = {
   };
   /** colour for the background of the texture */
   clearColour?: Color;
-};
-
-const reifyTextureIds = (
-  textureIdsOrPredicate: TextureIdsListOrPredicate,
-): Iterable<TextureId> => {
-  return typeof textureIdsOrPredicate === "function" ?
-      iterate(textureIds).filter(textureIdsOrPredicate)
-    : textureIdsOrPredicate;
 };
 
 export const renderMaskTexture = (
@@ -68,25 +61,29 @@ export const renderMaskTexture = (
   }
 
   if (rects !== undefined) {
+    const { spritesheetDataFrames } = rects;
     const { textureIds: textureIdsOrPredicate, color } = rects;
 
-    const maskedTextureIds = reifyTextureIds(textureIdsOrPredicate);
+    const maskedTextureIds = reifyTextureIds(
+      textureIdsOrPredicate,
+      spritesheetDataFrames,
+    );
 
     for (const tid of maskedTextureIds) {
       const {
         frame: { x, y, w, h },
-      } = spritesheetData.frames[tid];
+      } = spritesheetDataFrames[tid];
       graphics.rect(x, y, w, h).fill(color);
     }
   }
 
-  if (
-    placeholderColoursMasks !== undefined &&
-    placeholderColoursMasks.textureIds.length > 0
-  ) {
+  if (placeholderColoursMasks !== undefined) {
     const { textureIds, filter, originalSpritesheet } = placeholderColoursMasks;
 
-    for (const tid of textureIds) {
+    for (const tid of reifyTextureIds(
+      textureIds,
+      originalSpritesheet.data.frames,
+    )) {
       const maskSprite = new Sprite({
         texture: originalSpritesheet.textures[tid],
         x: originalSpritesheet.data.frames[tid].frame.x,

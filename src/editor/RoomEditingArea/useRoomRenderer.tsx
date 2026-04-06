@@ -11,6 +11,7 @@ import type {
 } from "../editorTypes";
 
 import { RoomRenderer } from "../../game/render/room/roomRenderer";
+import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
@@ -33,7 +34,8 @@ const editorGeneralRenderContext = (
   // what does the room renderer need to do with the game state? Could it take a Pick< from it instead?
   gameState: undefined,
   paused: false,
-  colourised: true,
+  spriteOption: "BlockStack",
+  spritesheetMeta: spritesheetMetaForOption("BlockStack"),
   upscale: selectUpscale(store.getState()),
   onScreenControls: false,
   editor: true,

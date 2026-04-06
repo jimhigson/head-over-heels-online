@@ -1,3 +1,5 @@
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { store } from "../../../store/store";
 import {
   setTool,
@@ -24,7 +26,9 @@ export const EyeDropperButton = () => {
 
 click on an item in the room to copy it and put a copy down somewhere else`}
     >
-      <span className="relative sprite texture-editor_tool_eyedropper leading-none" />
+      <span
+        className={`relative sprite ${"texture-editor_tool_eyedropper" satisfies TextureTailwindClass} leading-none`}
+      />
     </ToolbarButton>
   );
 };

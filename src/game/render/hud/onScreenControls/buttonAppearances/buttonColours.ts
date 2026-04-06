@@ -1,5 +1,5 @@
 import type { ZxSpectrumHue } from "../../../../../originalGame";
-import type { SpritesheetPaletteColourName } from "../../../../../sprites/palette/spritesheetPalette";
+import type { BlockstackPaletteColourName } from "../../../../../sprites/palette/spritesheetPalette";
 import type { ButtonId } from "../OnScreenButtonRenderer";
 
 export const buttonColours = {
@@ -10,7 +10,7 @@ export const buttonColours = {
     carryAndJump: "midRed",
     menu: "lightGrey",
     map: "lightGrey",
-  } satisfies Record<ButtonId, SpritesheetPaletteColourName>,
+  } satisfies Record<ButtonId, BlockstackPaletteColourName>,
   zx: {
     jump: "blue",
     fire: "yellow",

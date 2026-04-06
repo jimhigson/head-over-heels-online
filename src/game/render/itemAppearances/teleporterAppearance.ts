@@ -18,7 +18,7 @@ export const teleporterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused, colourised },
+    general: { paused, spriteOption },
   },
   currentRendering,
 }) => {
@@ -45,7 +45,7 @@ export const teleporterAppearance: ItemAppearance<
   }
 
   const spritesheetVariant: SpritesheetVariant =
-    colourised ? "for-current-room" : "uncolourised";
+    spriteOption === "Speccy" ? "uncolourised" : "for-current-room";
 
   return {
     output:

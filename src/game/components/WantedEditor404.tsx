@@ -4,11 +4,12 @@ import { Dialog } from "../../ui/dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { directionsXy8 } from "../../utils/vectors/vectors";
 import { BlockyMarkdown } from "./BlockyMarkdown";
-import { playableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
 
 const editorUrl = import.meta.env.VITE_EDITOR_URL;
 
 export const WantedEditor404 = () => {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <DialogPortal>
       <Border className="loading-border" />
@@ -17,7 +18,7 @@ export const WantedEditor404 = () => {
           {directionsXy8.map((d) => (
             <span
               key={d}
-              className={`sprite ${playableTailwindSpriteClassname({ action: "idle", character: "head", facingXy8: d })}`}
+              className={`sprite ${spriteClassname({ action: "idle", character: "head", facingXy8: d })}`}
             />
           ))}
         </div>
@@ -37,7 +38,7 @@ The link I have is: [${editorUrl}](${editorUrl})
           {directionsXy8.toReversed().map((d) => (
             <span
               key={d}
-              className={`sprite ${playableTailwindSpriteClassname({ action: "idle", character: "heels", facingXy8: d })}`}
+              className={`sprite ${spriteClassname({ action: "idle", character: "heels", facingXy8: d })}`}
             />
           ))}
         </div>

@@ -2,25 +2,51 @@ import type { Renderer } from "pixi.js";
 
 import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 
-import type { TextureId } from "./spritesheetData/spriteSheetData";
+import type { SpriteOption } from "../../store/slices/gameMenus/gameMenusSlice";
+import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 
-import spritesheetUrl from "../../../gfx/sprites.png";
+import blockStackSpritesheetUrl from "../../../gfx/sprites.png";
+import toppySpritesheetUrl from "../../../gfx/spritesToppy.png";
 import { PreprocessShadowTexturesFilter } from "../../game/render/filters/PreprocessShadowTexturesFilter";
+import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
+import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 import { stripIccProfile } from "../../utils/png/stripIccProfile";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
-import { spritesheetData } from "./spritesheetData/spriteSheetData";
+import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
+import { spritesheetMetas } from "./spritesheetData/spritesheetMetaData";
 
-export type AppSpritesheet = Spritesheet<typeof spritesheetData>;
+export type AppSpritesheetData = ReturnType<typeof makeSpritesheetData>;
+export type AppSpritesheet = Spritesheet<AppSpritesheetData>;
 
-let loaded: AppSpritesheet | undefined = undefined;
-let texture: Texture | undefined = undefined;
+// the speccy spritesheet is a variant of the BlockStack one, so it is never loaded as an original
+// - in that case, BlockStack would have been loaded
+export type LoadableSpriteOption = Exclude<SpriteOption, "Speccy">;
 
-export const loadSpritesheetAssets = async () => {
-  if (loaded !== undefined) {
-    return loaded;
+let loadedFor: LoadableSpriteOption | undefined;
+let loadedTexture: Texture | undefined;
+let currentSpritesheet: AppSpritesheet | undefined;
+
+/**
+ * fetch the spritesheet image and store the base Texture,
+ * ready to be processed into a Spritesheet by initOriginalSpritesheet()
+ */
+export const loadSpritesheetAssets = async (
+  spriteOption: LoadableSpriteOption,
+) => {
+  if (loadedFor === spriteOption) {
+    return;
   }
 
+  const overrideBlobUrl = selectSpritesheetOverrideBlobUrl(
+    store.getState(),
+    spriteOption,
+  );
+  const url =
+    overrideBlobUrl ??
+    (spriteOption === "BlockStack" ?
+      blockStackSpritesheetUrl
+    : toppySpritesheetUrl);
   let strippedImageObjectUrl: string | undefined = undefined;
 
   try {
@@ -30,7 +56,7 @@ export const loadSpritesheetAssets = async () => {
     // - the ICC profile in the PNG is still used when loaded via CSS
     // - the final image shown on the canvas will be in p3 to make it more vibrant, but all the calculations
     //   are done in raw sRGB/hex space
-    const response = await fetch(spritesheetUrl);
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} - ${response.statusText}`);
@@ -49,7 +75,8 @@ export const loadSpritesheetAssets = async () => {
     const img = new Image();
     img.src = strippedImageObjectUrl;
     await img.decode();
-    texture = Texture.from(img);
+    loadedTexture = Texture.from(img);
+    loadedFor = spriteOption;
   } catch (e) {
     // allows the game to run in vitest without using @pixi/node to load the
     // sprites in node. This could be dangerous in an actual browser where
@@ -58,12 +85,11 @@ export const loadSpritesheetAssets = async () => {
       console.warn(
         "did not load textures - we are running under node so will use Texture.EMPTY",
       );
-      texture = Texture.EMPTY;
+      loadedTexture = Texture.EMPTY;
+      loadedFor = spriteOption;
     } else {
-      // analyse what exactly happened. This can fail to decode rather than fail to download
-      // so check if the file actually exists by trying to download it:
       throw new Error(
-        `failed to load spritesheet from ${spritesheetUrl} while not running under node`,
+        `failed to load spritesheet from ${url} while not running under node`,
         {
           cause: e,
         },
@@ -76,15 +102,21 @@ export const loadSpritesheetAssets = async () => {
   }
 };
 
+export const isTextureLoaded = (spriteOption: LoadableSpriteOption): boolean =>
+  loadedFor === spriteOption;
+
 export const initOriginalSpritesheet = (pixiRenderer: Renderer): void => {
-  if (texture === undefined) {
-    throw new Error("cannot init original spritesheet before texture load");
+  if (loadedTexture === undefined || loadedFor === undefined) {
+    throw new Error(`cannot init spritesheet before texture load`);
   }
+  const texture = loadedTexture;
+  const spriteSheetData = makeSpritesheetData(spritesheetMetas[loadedFor]);
 
   const shadowSpritesMask = renderMaskTexture(pixiRenderer, {
     rects: {
       textureIds: (candidate: TextureId) => candidate.startsWith("shadow."),
       color: white,
+      spritesheetDataFrames: spriteSheetData.frames,
     },
     clearColour: black,
   });
@@ -106,50 +138,37 @@ export const initOriginalSpritesheet = (pixiRenderer: Renderer): void => {
     target: processedTexture,
   });
 
-  const spriteSheet = new Spritesheet(processedTexture, spritesheetData);
+  const spriteSheet = new Spritesheet(processedTexture, spriteSheetData);
   spriteSheet.parseSync();
   spriteSheet.textureSource.scaleMode = "nearest";
-  loaded = spriteSheet;
-
-  // Promise.all([
-  //   textureToConsoleArgs(texture.source, pixiRenderer, 1024),
-  //   textureToConsoleArgs(shadowSpritesMask.source, pixiRenderer, 1024),
-  //   textureToConsoleArgs(processedTexture.source, pixiRenderer, 1024),
-  // ]).then(([c1, c2, c3]) => {
-  //   console.group("initOriginalSpritesheet");
-  //   console.log(...c1);
-  //   console.log(...c2);
-  //   console.log(...c3);
-  //   console.groupEnd();
-  // });
+  currentSpritesheet = spriteSheet;
 
   sprite.destroy();
-  shadowSpritesMask.destroy(true);
+  //shadowSpritesMask.destroy(true);
 };
 
 /**
- * NOTE: this is only safe to call after the spritesheet has had load() called
- * and it resolved! - this is a sync export since we need to get the spritesheet
- * inside the update/render loop synchronously many times
+ * returns the current base spritesheet, as set by the most recent initSpritesheet() call.
+ * managed by tickSpritesheetVariants like all other variant spritesheets
  */
 export const originalSpriteSheet = (): AppSpritesheet => {
-  if (loaded === undefined) {
+  if (currentSpritesheet === undefined) {
     throw new Error(
-      `spritesheet not loaded - only call this from inside code 
-      (like in a render loop) that is protected and only executed once 
+      `spritesheet not loaded - only call this from inside code
+      (like in a render loop) that is protected and only executed once
       loading has happened`,
     );
   }
-  return loaded;
+  return currentSpritesheet;
 };
 
 export const baseSpritesheetTexture = (): Texture => {
-  if (texture === undefined) {
+  if (loadedTexture === undefined) {
     throw new Error(
-      `spritesheet not loaded - only call this from inside code 
-      (like in a render loop) that is protected and only executed once 
+      `spritesheet texture not loaded - only call this from inside code
+      (like in a render loop) that is protected and only executed once
       loading has happened`,
     );
   }
-  return texture;
+  return loadedTexture;
 };

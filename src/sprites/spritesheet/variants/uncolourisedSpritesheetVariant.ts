@@ -2,23 +2,33 @@ import { Color, type Renderer } from "pixi.js";
 
 import type { AppSpritesheet } from "../loadedSpriteSheet";
 
+import { resolveSwops } from "../../../utils/palette/palette";
+import { paletteBlockstack } from "../../palette/spritesheetPalette";
+import { spritesheetMetaForOption } from "../spritesheetData/spritesheetMetaData";
 import { createSpritesheetVariant } from "../spritesheetPaletteSwop";
 
 let swopped: AppSpritesheet | undefined = undefined;
 
 export const createUncolourisedSpritesheet = (pixiRenderer: Renderer): void => {
-  swopped = createSpritesheetVariant(pixiRenderer, {
-    ambient: [
-      {
-        lutType: "voronoi",
-        paletteSwaps: {
-          pureBlack: new Color(0x000000),
-          shadow: new Color(0xffffff),
-          redShadow: new Color(0xffffff),
+  swopped = createSpritesheetVariant(
+    {
+      pixiRenderer,
+      spriteOption: "BlockStack",
+      spritesheetMetaData: spritesheetMetaForOption("BlockStack"),
+    },
+    {
+      ambient: [
+        {
+          lutType: "voronoi",
+          swops: resolveSwops(paletteBlockstack, {
+            pureBlack: new Color(0x000000),
+            shadow: new Color(0xffffff),
+            redShadow: new Color(0xffffff),
+          }),
         },
-      },
-    ],
-  });
+      ],
+    },
+  );
 };
 
 export const uncolourisedSpritesheetVariant = (): AppSpritesheet => {

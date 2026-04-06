@@ -71,7 +71,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     public readonly renderContext: RoomRenderContext<RoomId, RoomItemId>,
   ) {
     const {
-      general: { colourised, soundSettings },
+      general: { spriteOption, soundSettings },
       room,
     } = renderContext;
 
@@ -88,7 +88,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     };
 
     this.output.graphics.addChild(this.#itemsContainer);
-    if (!colourised) {
+    if (spriteOption === "Speccy") {
       this.#colourClashLayer = new RenderLayer({
         sortableChildren: false,
       });
@@ -97,7 +97,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     // layer in front of all else - for floating text, etc
     this.output.graphics.addChild(this.#frontLayer);
 
-    if (!colourised) {
+    if (spriteOption === "Speccy") {
       this.#itemsContainer.tint = zxSpectrumColor(room.color);
     }
   }

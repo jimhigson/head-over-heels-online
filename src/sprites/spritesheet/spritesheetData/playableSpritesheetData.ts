@@ -3,9 +3,15 @@ import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { DirectionXy8, Xy } from "../../../utils/vectors/vectors";
 import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import type { FramesWithSpeed } from "./spriteSheetData";
+import type { FramesWithSpeed } from "./makeSpritesheetData";
+import type {
+  PlayableDirectionFrames,
+  PlayableSpritesheetFrames,
+  PlayableSpritesheetMetaData,
+} from "./spritesheetMetaData";
 
 import { zxSpectrumFrameRate } from "../../../originalGame";
+import { fromEntries } from "../../../utils/entries";
 import { directionsXy8 } from "../../../utils/vectors/vectors";
 import {
   seriesOfAnimationFrameTextureIds,
@@ -27,6 +33,8 @@ type WalkingTextureId<
 type PlayableTextureId<P extends CharacterName = CharacterName> =
   | `${P}.blinking.${DirectionXy8}`
   | `${P}.falling.${DirectionXy8}`
+  | `${P}.looking1.${DirectionXy8}`
+  | `${P}.looking2.${DirectionXy8}`
   | `${P}.standing.${DirectionXy8}`
   | `shadowMask.${P}.${DirectionXy8}`
   | `shadowMask.${P}.falling.${DirectionXy8}`
@@ -43,50 +51,122 @@ export const playableWalkAnimationSpeed = 0.5;
 const headBlinkPeriod = 5_000;
 const heelsBlinkPeriod = headBlinkPeriod * 2;
 
-const headBlinking = (direction: DirectionXy8, neutralWalkFrame: number) => {
+const standingTextureId = <P extends CharacterName>(
+  p: P,
+  direction: DirectionXy8,
+  directionFrames: PlayableDirectionFrames,
+):
+  | `${P}.standing.${DirectionXy8}`
+  | `${P}.walking.${DirectionXy8}.${1 | 2 | 3}` => {
+  const { standing } = directionFrames;
+  if (!standing) {
+    throw new Error(`no standing defined for ${p}.${direction}`);
+  }
+
+  return standing === true ?
+      `${p}.standing.${direction}`
+    : `${p}.walking.${direction}.${standing}`;
+};
+
+const headBlinkingFrames = (
+  direction: DirectionXy8,
+  directionFrames: PlayableDirectionFrames,
+) => {
   const totalFrames = Math.round(headBlinkPeriod / (zxSpectrumFrameRate * 4));
 
-  const neutralTextureId = `head.walking.${direction}.${neutralWalkFrame}`;
-  const blinkingTextureId = `head.blinking.${direction}`;
-  const blinkingFrames: Array<keyof typeof frames> = [
-    ...new Array(totalFrames - 3).fill(neutralTextureId),
-    blinkingTextureId,
+  const neutralTextureId: PlayableFrame = standingTextureId(
+    "head",
+    direction,
+    directionFrames,
+  );
+
+  const look1TextureId: PlayableFrame | undefined =
+    directionFrames.looking1 ? `head.looking1.${direction}` : undefined;
+  const look2TextureId: PlayableFrame | undefined =
+    directionFrames.looking2 ? `head.looking2.${direction}` : undefined;
+  const blinkingTextureId: PlayableFrame | undefined =
+    directionFrames.blinking ? `head.blinking.${direction}` : undefined;
+
+  const frameIndex = (u: number) => {
+    return Math.floor(totalFrames * u);
+  };
+
+  const blinkingFrames: Array<PlayableFrame> = new Array(totalFrames).fill(
     neutralTextureId,
-    blinkingTextureId,
-  ];
+  );
+  if (look1TextureId) {
+    blinkingFrames.fill(look1TextureId, frameIndex(0.15), frameIndex(0.35));
+  }
+  if (look2TextureId) {
+    blinkingFrames.fill(look2TextureId, frameIndex(0.35), frameIndex(0.55));
+  }
+  if (look1TextureId && look2TextureId && blinkingTextureId) {
+    // blinking frame in-between looking left/right:
+    blinkingFrames[frameIndex(0.35)] = blinkingTextureId;
+  }
+
+  if (blinkingTextureId) {
+    // double-blink at the end: blink, neutral, blink
+    blinkingFrames[totalFrames - 3] = blinkingTextureId;
+    blinkingFrames[totalFrames - 1] = blinkingTextureId;
+  }
+
+  // extra frames at the start if more is happening:
+  const extraFrames =
+    (look1TextureId ? frameIndex(0.4) : 0) +
+    (look2TextureId ? frameIndex(0.4) : 0);
+  blinkingFrames.unshift(...new Array(extraFrames).fill(neutralTextureId));
+
   return withSpeed(blinkingFrames, 0.5);
 };
 
-const heelsBlinking = (
+const heelsBlinkingFrames = (
   direction: DirectionXy8,
-  neutralWalkFrame: number = 2,
+  directionFrames: PlayableDirectionFrames,
 ) => {
   const totalFrames = Math.round(heelsBlinkPeriod / (zxSpectrumFrameRate * 4));
 
-  const neutralTextureId =
-    direction === "towards" || direction === "right" ?
-      `heels.standing.${direction}`
-    : `heels.walking.${direction}.${neutralWalkFrame}`;
-  const blinkingTextureId = `heels.blinking.${direction}`;
+  const neutralTextureId: PlayableFrame = standingTextureId(
+    "heels",
+    direction,
+    directionFrames,
+  );
+  const look1TextureId: PlayableFrame | undefined =
+    directionFrames.looking1 ? `heels.looking1.${direction}` : undefined;
+  const look2TextureId: PlayableFrame | undefined =
+    directionFrames.looking2 ? `heels.looking2.${direction}` : undefined;
+  const blinkingTextureId: PlayableFrame | undefined =
+    directionFrames.blinking ? `heels.blinking.${direction}` : undefined;
 
-  const blinkingFrames: Array<keyof typeof frames> = [
-    ...new Array(Math.floor(totalFrames * 0.8)).fill(neutralTextureId),
-    ...new Array(Math.ceil(totalFrames * 0.2)).fill(blinkingTextureId),
-  ];
+  const frameIndex = (u: number) => {
+    return Math.floor(totalFrames * u);
+  };
+
+  const blinkingFrames: Array<PlayableFrame> = new Array(totalFrames).fill(
+    neutralTextureId,
+  );
+
+  if (look1TextureId) {
+    blinkingFrames.fill(look1TextureId, frameIndex(0.4), frameIndex(0.55));
+  }
+  if (look2TextureId) {
+    blinkingFrames.fill(look2TextureId, frameIndex(0.55), frameIndex(0.7));
+  }
+  if (look1TextureId && look2TextureId && blinkingTextureId) {
+    // blinking frame in-between looking left/right:
+    blinkingFrames[frameIndex(0.55)] = blinkingTextureId;
+  }
+  if (blinkingTextureId) {
+    blinkingFrames.fill(blinkingTextureId, frameIndex(0.8), frameIndex(1));
+  }
+
   return withSpeed(blinkingFrames, 0.5);
 };
 
 const playableFrames = <P extends CharacterName>(
   p: P,
   gridLocation: Xy,
-  missingFrames: {
-    [D in DirectionXy8]?: {
-      noBlinking?: boolean;
-      noShadowMask?: boolean;
-      noShadowMaskFalling?: boolean;
-      noStanding?: boolean;
-    };
-  },
+  availableFrames: PlayableSpritesheetFrames,
   overrides: {
     [t in PlayableTextureId<P>]?: {
       w?: number;
@@ -112,7 +192,7 @@ const playableFrames = <P extends CharacterName>(
     for (let iD = 0; iD < directionsXy8.length; iD++) {
       const d = directionsOrderOnSpritesheet[iD];
 
-      if (!missingFrames[d]?.noShadowMaskFalling) {
+      if (!(d in availableFrames) || availableFrames[d]?.shadowMaskFalling) {
         const textureId = `shadowMask.${p}.falling.${d}` as const;
         yield [
           textureId,
@@ -129,7 +209,7 @@ const playableFrames = <P extends CharacterName>(
         ] as const;
       }
 
-      if (!missingFrames[d]?.noShadowMask) {
+      if (!(d in availableFrames) || availableFrames[d]?.shadowMask) {
         const textureId = `shadowMask.${p}.${d}` as const;
         yield [
           textureId,
@@ -177,7 +257,7 @@ const playableFrames = <P extends CharacterName>(
         },
       ] as const;
 
-      if (!missingFrames[d]?.noBlinking) {
+      if (!(d in availableFrames) || availableFrames[d]?.blinking) {
         const textureId = `${p}.blinking.${d}` as const;
         yield [
           textureId,
@@ -194,14 +274,48 @@ const playableFrames = <P extends CharacterName>(
         ] as const;
       }
 
-      if (!missingFrames[d]?.noStanding) {
-        const textureId = `${p}.standing.${d}` as const;
+      if (!(d in availableFrames) || availableFrames[d]?.looking1) {
+        const textureId = `${p}.looking1.${d}` as const;
         yield [
           textureId,
           {
             frame: {
               ...smallItemGridLocation({
                 x: gridLocation.x + 7,
+                y: gridLocation.y + iD,
+              }),
+              ...smallItemTextureSize,
+              ...overrides[textureId],
+            },
+          },
+        ] as const;
+      }
+
+      if (!(d in availableFrames) || availableFrames[d]?.looking2) {
+        const textureId = `${p}.looking2.${d}` as const;
+        yield [
+          textureId,
+          {
+            frame: {
+              ...smallItemGridLocation({
+                x: gridLocation.x + 8,
+                y: gridLocation.y + iD,
+              }),
+              ...smallItemTextureSize,
+              ...overrides[textureId],
+            },
+          },
+        ] as const;
+      }
+
+      if (!(d in availableFrames) || availableFrames[d]?.standing === true) {
+        const textureId = `${p}.standing.${d}` as const;
+        yield [
+          textureId,
+          {
+            frame: {
+              ...smallItemGridLocation({
+                x: gridLocation.x + 9,
                 y: gridLocation.y + iD,
               }),
               ...smallItemTextureSize,
@@ -248,249 +362,221 @@ function walkingAnimation<P extends CharacterName>(p: P) {
   >;
 }
 
-const frames = {
-  ...seriesOfNumberedTextures(
-    "bubbles.head",
-    6,
-    smallItemGridLocation({ x: 1, y: 10 }),
-    smallItemTextureSize,
-  ),
-  ...playableFrames(
-    "head",
-    { x: 0, y: 11 },
-    {
-      awayLeft: {
-        noBlinking: true,
-        noStanding: true,
-        noShadowMaskFalling: true,
-      },
-      away: { noBlinking: true, noStanding: true },
-      awayRight: { noStanding: true },
-      right: { noStanding: true },
-      towardsRight: { noStanding: true },
-      towards: {
-        noShadowMask: true,
-        noStanding: true,
-        noShadowMaskFalling: true,
-      },
-      towardsLeft: {
-        noShadowMask: true,
-        noStanding: true,
-        noShadowMaskFalling: true,
-      },
-      left: {
-        noBlinking: true,
-        noShadowMask: true,
-        noStanding: true,
-        noShadowMaskFalling: true,
+const makeFrames = (playableSpritesheetMetaData: PlayableSpritesheetMetaData) =>
+  ({
+    ...seriesOfNumberedTextures(
+      "bubbles.head",
+      6,
+      smallItemGridLocation({ x: 1, y: 10 }),
+      smallItemTextureSize,
+    ),
+    ...playableFrames(
+      "head",
+      { x: 0, y: 11 },
+      playableSpritesheetMetaData.head,
+    ),
+
+    // Heels
+    // ------------
+    ...seriesOfNumberedTextures(
+      "bubbles.heels",
+      6,
+      smallItemGridLocation({ x: 10, y: 10 }),
+      smallItemTextureSize,
+    ),
+    ...playableFrames(
+      "heels",
+      { x: 9, y: 11 },
+      playableSpritesheetMetaData.heels,
+    ),
+
+    ...seriesOfNumberedTextures(
+      "shine.head",
+      6,
+      largeItemGridLocation({ x: 0, y: 4 }),
+      largeItemTextureSize,
+      3,
+    ),
+    ...seriesOfNumberedTextures(
+      "shine.heels",
+      6,
+      largeItemGridLocation({ x: 0, y: 6 }),
+      largeItemTextureSize,
+      3,
+    ),
+
+    // deliberately blank sprite to use as a noop
+    blank: {
+      frame: {
+        ...largeItemGridLocation({ x: 0, y: 8 }),
+        ...largeItemTextureSize,
       },
     },
-    {
-      // override the sprite's pivot to get the 'lean forward' effect when falling
-      // where it isn't already baked into the sprite:
-      "head.falling.awayRight": {
-        pivot: { x: 11, y: 24 },
-      },
-      "head.falling.towardsLeft": {
-        pivot: { x: 13, y: 24 },
-      },
-      "head.falling.awayLeft": {
-        pivot: { x: 12, y: 25 },
+
+    "shadow.playable": {
+      frame: {
+        ...smallItemGridLocation({ x: 7, y: 10 }),
+        ...smallItemTextureSize,
       },
     },
-  ),
+  }) as const satisfies SpritesheetData["frames"];
 
-  // Heels
-  // ------------
-  ...seriesOfNumberedTextures(
-    "bubbles.heels",
-    6,
-    smallItemGridLocation({ x: 9, y: 10 }),
-    smallItemTextureSize,
-  ),
-  ...playableFrames(
-    "heels",
-    { x: 8, y: 11 },
-    {
-      awayLeft: {
-        noBlinking: true,
-        noStanding: true,
-        noShadowMaskFalling: true,
-      },
-      away: { noBlinking: true, noStanding: true, noShadowMaskFalling: true },
-      awayRight: {
-        noStanding: true,
-        noShadowMaskFalling: true,
-      },
-      right: { noShadowMaskFalling: true },
-      towardsRight: { noStanding: true, noShadowMaskFalling: true },
-      towards: { noShadowMask: true, noShadowMaskFalling: true },
-      towardsLeft: {
-        noShadowMask: true,
-        noStanding: true,
-        noShadowMaskFalling: true,
-      },
-      left: {
-        noBlinking: true,
-        noShadowMask: true,
-        noStanding: true,
-        noShadowMaskFalling: true,
-      },
+type PlayableFrame = keyof ReturnType<typeof makeFrames>;
+
+export const playableSpritesheetData = (
+  playableSpritesheetMetaData: PlayableSpritesheetMetaData,
+) => {
+  const frames = makeFrames(playableSpritesheetMetaData);
+
+  type IdleAnimationId = `${CharacterName}.idle.${DirectionXy8}`;
+
+  function* idleAnimationsFor(
+    character: CharacterName,
+    characterFrames: PlayableSpritesheetFrames,
+    blinkFn: (
+      d: DirectionXy8,
+      directionFrames: PlayableDirectionFrames,
+    ) => FramesWithSpeed<PlayableFrame[]>,
+  ): Generator<[IdleAnimationId, FramesWithSpeed<PlayableFrame[]>]> {
+    for (const d of directionsXy8) {
+      if (characterFrames[d]?.blinking && characterFrames[d]?.standing) {
+        yield [`${character}.idle.${d}`, blinkFn(d, characterFrames[d])];
+      }
+    }
+  }
+
+  const idleAnimations = {
+    ...fromEntries(
+      idleAnimationsFor(
+        "head",
+        playableSpritesheetMetaData.head,
+        headBlinkingFrames,
+      ),
+    ),
+    ...fromEntries(
+      idleAnimationsFor(
+        "heels",
+        playableSpritesheetMetaData.heels,
+        heelsBlinkingFrames,
+      ),
+    ),
+  };
+
+  return {
+    frames,
+    animations: {
+      ...walkingAnimation("head"),
+      ...walkingAnimation("heels"),
+      "heels.screenDirections": withSpeed(
+        [
+          "heels.walking.towardsRight.2",
+          "heels.walking.towardsLeft.2",
+          "heels.walking.awayLeft.2",
+          "heels.walking.awayRight.2",
+        ] as const,
+        1 / 16,
+      ),
+      "heels.worldDirections": withSpeed(
+        [
+          // ignore standing frames or that frame 3 might be the standing frame from the walking animation sometimes,
+          // these aren't that important so just hardcode to 2, which will always exist
+          "heels.walking.towards.2",
+          "heels.walking.left.2",
+          "heels.walking.away.2",
+          "heels.walking.right.2",
+        ] as const,
+        1 / 16,
+      ),
+      "heels.mixedDirections": withSpeed(
+        [
+          "heels.walking.towardsRight.2",
+          "heels.walking.towards.2",
+          "heels.walking.towardsLeft.2",
+          "heels.walking.left.2",
+          "heels.walking.awayLeft.2",
+          "heels.walking.away.2",
+          "heels.walking.awayRight.2",
+          "heels.walking.right.2",
+        ] as const,
+        1 / 8,
+      ),
+      ...idleAnimations,
+      // teleport or death animations
+      // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
+      // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5
+      "head.fadeOut": withSpeed(
+        [
+          "bubbles.head.1",
+          "bubbles.head.2",
+          "bubbles.head.4",
+          "bubbles.head.3",
+          "bubbles.head.4",
+          "bubbles.head.6",
+          "bubbles.head.5",
+          "bubbles.head.6",
+          "bubbles.head.5",
+        ] as const,
+        0.5,
+      ),
+      "heels.fadeOut": withSpeed(
+        [
+          "bubbles.heels.1",
+          "bubbles.heels.2",
+          "bubbles.heels.4",
+          "bubbles.heels.3",
+          "bubbles.heels.4",
+          "bubbles.heels.6",
+          "bubbles.heels.5",
+          "bubbles.heels.6",
+          "bubbles.heels.5",
+        ] as const,
+        0.5,
+      ),
+      "shine.head": withSpeed(
+        seriesOfAnimationFrameTextureIds("shine.head", 6),
+        0.5,
+      ),
+      "shine.heels": withSpeed(
+        seriesOfAnimationFrameTextureIds("shine.heels", 6),
+        0.5,
+      ),
+      "shine.headInSymbio": withSpeed(
+        [
+          "shine.head.1",
+          "shine.head.2",
+          "shine.head.3",
+          "blank",
+          "blank",
+          "blank",
+          "blank",
+          "blank",
+          "blank",
+          "shine.head.4",
+          "shine.head.5",
+          "shine.head.6",
+        ] as const,
+        0.5,
+      ),
+      "shine.heelsInSymbio": withSpeed(
+        [
+          "blank",
+          "blank",
+          "blank",
+          "shine.heels.1",
+          "shine.heels.2",
+          "shine.heels.3",
+          "shine.heels.4",
+          "shine.heels.5",
+          "shine.heels.6",
+          "blank",
+          "blank",
+          "blank",
+        ] as const,
+        0.5,
+      ),
     },
-  ),
-
-  ...seriesOfNumberedTextures(
-    "shine.head",
-    6,
-    largeItemGridLocation({ x: 0, y: 4 }),
-    largeItemTextureSize,
-    3,
-  ),
-  ...seriesOfNumberedTextures(
-    "shine.heels",
-    6,
-    largeItemGridLocation({ x: 0, y: 6 }),
-    largeItemTextureSize,
-    3,
-  ),
-
-  // deliberately blank sprite to use as a noop
-  blank: {
-    frame: {
-      ...smallItemGridLocation({ x: 0, y: 2 }),
-      ...smallItemTextureSize,
-    },
-  },
-
-  "shadow.playable": {
-    frame: {
-      ...smallItemGridLocation({ x: 7, y: 10 }),
-      ...smallItemTextureSize,
-    },
-  },
-} as const satisfies SpritesheetData["frames"];
-
-export const playableSpritesheetData = {
-  frames,
-  animations: {
-    ...walkingAnimation("head"),
-    ...walkingAnimation("heels"),
-    "heels.screenDirections": withSpeed(
-      [
-        "heels.walking.towardsRight.2",
-        "heels.walking.towardsLeft.2",
-        "heels.walking.awayLeft.2",
-        "heels.walking.awayRight.2",
-      ] as const,
-      1 / 16,
-    ),
-    "heels.worldDirections": withSpeed(
-      [
-        "heels.standing.towards",
-        "heels.walking.left.2",
-        "heels.walking.away.2",
-        "heels.standing.right",
-      ] as const,
-      1 / 16,
-    ),
-    "heels.mixedDirections": withSpeed(
-      [
-        "heels.walking.towardsRight.2",
-        "heels.standing.towards",
-        "heels.walking.towardsLeft.2",
-        "heels.walking.left.2",
-        "heels.walking.awayLeft.2",
-        "heels.walking.away.2",
-        "heels.walking.awayRight.2",
-        "heels.standing.right",
-      ] as const,
-      1 / 8,
-    ),
-    "head.idle.right": headBlinking("right", 3),
-    "head.idle.towards": headBlinking("towards", 3),
-    "head.idle.towardsRight": headBlinking("towardsRight", 2),
-    "head.idle.towardsLeft": headBlinking("towardsLeft", 3),
-    "head.idle.awayRight": headBlinking("awayRight", 3),
-    "heels.idle.right": heelsBlinking("right"),
-    "heels.idle.towards": heelsBlinking("towards"),
-    "heels.idle.towardsRight": heelsBlinking("towardsRight", 2),
-    "heels.idle.towardsLeft": heelsBlinking("towardsLeft", 2),
-    "heels.idle.awayRight": heelsBlinking("awayRight", 2),
-    // teleport or death animations
-    // frames in the original are: 1, 1-r, 2-r, 2, 2-r, 3-r, 3, 3-r, 3
-    // as converted: 1, 2, 4, 3, 4, 6, 5, 6, 5
-    "head.fadeOut": withSpeed(
-      [
-        "bubbles.head.1",
-        "bubbles.head.2",
-        "bubbles.head.4",
-        "bubbles.head.3",
-        "bubbles.head.4",
-        "bubbles.head.6",
-        "bubbles.head.5",
-        "bubbles.head.6",
-        "bubbles.head.5",
-      ] as const,
-      0.5,
-    ),
-    "heels.fadeOut": withSpeed(
-      [
-        "bubbles.heels.1",
-        "bubbles.heels.2",
-        "bubbles.heels.4",
-        "bubbles.heels.3",
-        "bubbles.heels.4",
-        "bubbles.heels.6",
-        "bubbles.heels.5",
-        "bubbles.heels.6",
-        "bubbles.heels.5",
-      ] as const,
-      0.5,
-    ),
-    "shine.head": withSpeed(
-      seriesOfAnimationFrameTextureIds("shine.head", 6),
-      0.5,
-    ),
-    "shine.heels": withSpeed(
-      seriesOfAnimationFrameTextureIds("shine.heels", 6),
-      0.5,
-    ),
-    "shine.headInSymbio": withSpeed(
-      [
-        "shine.head.1",
-        "shine.head.2",
-        "shine.head.3",
-        "blank",
-        "blank",
-        "blank",
-        "blank",
-        "blank",
-        "blank",
-        "shine.head.4",
-        "shine.head.5",
-        "shine.head.6",
-      ] as const,
-      0.5,
-    ),
-    "shine.heelsInSymbio": withSpeed(
-      [
-        "blank",
-        "blank",
-        "blank",
-        "shine.heels.1",
-        "shine.heels.2",
-        "shine.heels.3",
-        "shine.heels.4",
-        "shine.heels.5",
-        "shine.heels.6",
-        "blank",
-        "blank",
-        "blank",
-      ] as const,
-      0.5,
-    ),
-  },
-} as const satisfies Pick<
-  SpritesheetData,
-  "animations" | "frames"
-> satisfies AnimationsOfFrames<keyof typeof frames>;
+  } as const satisfies Pick<
+    SpritesheetData,
+    "animations" | "frames"
+  > satisfies AnimationsOfFrames<PlayableFrame>;
+};

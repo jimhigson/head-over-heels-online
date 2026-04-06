@@ -1,7 +1,7 @@
 import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
 import fragment from "./attributeBlock.frag";
-import { spectrumLut } from "./lutTexture/stdLuts/spectrumLut";
+import { blockstackToSpectrumLut } from "./lutTexture/stdLuts/blockstackToSpectrumLut";
 
 const glProgram = GlProgram.from({
   vertex: defaultFilterVert,
@@ -43,7 +43,7 @@ export class AttributeBlockFilter extends Filter {
             type: "f32",
           },
         },
-        uLut: spectrumLut.source,
+        uLut: blockstackToSpectrumLut.source,
       },
     });
   }

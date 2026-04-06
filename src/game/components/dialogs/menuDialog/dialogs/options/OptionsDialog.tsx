@@ -1,3 +1,5 @@
+import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectGameSpeed,
@@ -71,7 +73,7 @@ export const OptionsDialog = () => {
               }
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite texture-joystick_whole sprites-normal-height zx:sprite-revert-to-white`}
+                  className={`${spriteLeaderClasses} sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
             />
@@ -140,7 +142,7 @@ export const OptionsDialog = () => {
               label="∞ Lives Poke"
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite texture-whiteRabbit sprites-normal-height zx:sprite-revert-to-white`}
+                  className={`${spriteLeaderClasses} sprite ${"texture-whiteRabbit_extra-life" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               hint={
@@ -165,7 +167,7 @@ export const OptionsDialog = () => {
               hintInline
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite texture-doughnuts sprites-normal-height zx:sprite-revert-to-white`}
+                  className={`${spriteLeaderClasses} sprite ${"texture-doughnuts" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               className="sprites-double-height"

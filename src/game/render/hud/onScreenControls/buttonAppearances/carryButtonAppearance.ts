@@ -39,7 +39,6 @@ const createSurface = (): Container<Container | Sprite> => {
 
 export type CarryButtonRenderProps = {
   pressed: boolean;
-  colourised: boolean;
   hasBag: boolean;
   carrying: null | PortableItem<string, string>;
   disabled: boolean;
@@ -55,7 +54,7 @@ export const carryButtonAppearance: ButtonAppearance<
   const {
     button,
     inputStateTracker,
-    general: { colourised, pixiRenderer },
+    general: { spriteOption, pixiRenderer },
   } = renderContext;
   const { currentPlayable, room } = tickContext;
   const previouslyRenderedProps = currentRendering?.renderProps;
@@ -80,7 +79,7 @@ export const carryButtonAppearance: ButtonAppearance<
   const container =
     previousRendering ??
     new ArcadeStyleButtonContainer<Container>(
-      colourised,
+      spriteOption,
       button.which,
       pixiRenderer,
       createSurface(),
@@ -99,16 +98,11 @@ export const carryButtonAppearance: ButtonAppearance<
   const [carriedContainer, bag] = container.shownOnSurface
     .children as SurfaceContentChildren;
 
-  if (
-    disabled !== previouslyRenderedProps?.disabled ||
-    colourised !== previouslyRenderedProps?.colourised ||
-    roomChanged
-  ) {
+  if (disabled !== previouslyRenderedProps?.disabled || roomChanged) {
     const spritesheet = getSpriteSheetVariant(
-      colourised ?
-        disabled ? "deactivated"
-        : "for-current-room"
-      : "uncolourised",
+      spriteOption === "Speccy" ? "uncolourised"
+      : disabled ? "deactivated"
+      : "for-current-room",
     );
     bag.texture = spritesheet.textures["bag"];
   }
@@ -137,7 +131,6 @@ export const carryButtonAppearance: ButtonAppearance<
     renderProps: {
       pressed,
       hasBag,
-      colourised,
       carrying,
       disabled,
       renderedInRoom: room,

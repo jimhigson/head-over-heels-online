@@ -5,7 +5,7 @@ import type {
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { CharacterName } from "../../../model/modelTypes";
 import type { PlayableItem } from "../../physics/itemPredicates";
-import type { CreateSpriteOptions } from "../../render/createSprite";
+import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
@@ -22,7 +22,7 @@ import { originalGameStartingLives } from "../../physics/mechanicsConstants";
 import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
-const shadowPlayable: CreateSpriteOptions = Object.freeze({
+const shadowPlayable: SpecifiedTextureCreateSpriteOptions = Object.freeze({
   textureId: "shadow.playable",
   spritesheetVariant: "original",
 });

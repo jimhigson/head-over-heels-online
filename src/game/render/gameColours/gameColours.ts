@@ -1,22 +1,25 @@
 import type { Color } from "pixi.js";
-import type { Simplify } from "type-fest";
 
-import type { PaletteSwaps } from "../filters/lutTexture/sparseLut";
+import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { NamedColours } from "../../../utils/palette/palette";
 
+import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import {
   zxSpectrumColors,
   type ZxSpectrumRoomHue,
 } from "../../../originalGame";
 import {
-  getSpritesheetPalette,
-  type SpritesheetPaletteColourName,
+  type BlockstackPaletteColourName,
+  maybeDimPalette,
 } from "../../../sprites/palette/spritesheetPalette";
 
 export const gameColour = (
-  colourName: SpritesheetPaletteColourName,
+  colourName: BlockstackPaletteColourName,
   inDimmedPalette: boolean = false,
 ): Color => {
-  return getSpritesheetPalette(inDimmedPalette)[colourName];
+  return maybeDimPalette(blockStackSpritesheetMeta, inDimmedPalette)[
+    colourName
+  ];
 };
 
 export const replacementColour = (
@@ -27,16 +30,18 @@ export const replacementColour = (
   return gameColour(`swop_${hue}${dim ? "Dim" : ""}`, inDimmedPalette);
 };
 
-type PaletteSwapsForPlaceholderColours = Simplify<
-  Required<Pick<PaletteSwaps, "replaceDark" | "replaceLight">>
+type PaletteSwapsForPlaceholderColours = NamedColours<
+  "replaceDark" | "replaceLight"
 >;
+
+type Trend = "light-dark" | "light-mid" | "mid-dark";
 
 export const replacementColours = (
   hue: ZxSpectrumRoomHue,
   inDimmedPalette: boolean = false,
-  trend: "light-dark" | "light-mid" | "mid-dark" = "light-dark",
+  trend: Trend = "light-dark",
 ): PaletteSwapsForPlaceholderColours => {
-  const palette = getSpritesheetPalette(inDimmedPalette);
+  const palette = maybeDimPalette(blockStackSpritesheetMeta, inDimmedPalette);
 
   const requestedMid = trend === "light-mid" || trend === "mid-dark";
 
@@ -48,11 +53,11 @@ export const replacementColours = (
       if (trend === "light-mid") {
         return {
           replaceLight: palette[baseColourKey],
-          replaceDark: palette[midKey as SpritesheetPaletteColourName],
+          replaceDark: palette[midKey as BlockstackPaletteColourName],
         };
       } else {
         return {
-          replaceLight: palette[midKey as SpritesheetPaletteColourName],
+          replaceLight: palette[midKey as BlockstackPaletteColourName],
           replaceDark: palette[`${baseColourKey}Dim`],
         };
       }
@@ -65,5 +70,8 @@ export const replacementColours = (
   };
 };
 
-export const getWhite = (colourised: boolean, dim: boolean = false): Color =>
-  colourised ? gameColour("white", dim) : zxSpectrumColors.white;
+export const getWhite = (
+  spriteOption: SpriteOption,
+  dim: boolean = false,
+): Color =>
+  spriteOption === "Speccy" ? zxSpectrumColors.white : gameColour("white", dim);

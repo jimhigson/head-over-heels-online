@@ -7,7 +7,7 @@ import type {
   ItemInPlayConfig,
   ItemInPlayType,
 } from "../../../model/ItemInPlay";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type {
   AppearanceOptions,
   AppearanceReturn,
@@ -60,7 +60,7 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
     ({
       renderContext: {
         item: subject,
-        general: { colourised },
+        general: { spriteOption },
       },
     }) => {
       if (isMultipliedItem(subject)) {
@@ -69,14 +69,16 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
             { textureId: createSpriteOptions }
           : createSpriteOptions),
           times: itemInPlayTimes(subject),
-          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+          spritesheetVariant:
+            spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
         });
       } else {
         return createSprite({
           ...(typeof createSpriteOptions === "string" ?
             { textureId: createSpriteOptions }
           : createSpriteOptions),
-          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+          spritesheetVariant:
+            spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
         });
       }
     },
@@ -84,15 +86,15 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
 
 export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
   createSpriteOptions: Omit<
-    Omit<AnimatedCreateSpriteOptions, "spritesheetVariant">,
-    "gameSpeed" | "paused"
+    AnimatedCreateSpriteOptions,
+    "gameSpeed" | "paused" | "spritesheetVariant"
   >,
 ): ItemAppearance<T> =>
   itemAppearanceRenderOnce(
     ({
       renderContext: {
         item: subject,
-        general: { paused, colourised },
+        general: { paused, spriteOption },
       },
     }) => {
       if (isMultipliedItem(subject)) {
@@ -100,13 +102,15 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
           ...createSpriteOptions,
           times: itemInPlayTimes(subject),
           paused,
-          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+          spritesheetVariant:
+            spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
         });
       } else {
         return createSprite({
           ...createSpriteOptions,
           paused,
-          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+          spritesheetVariant:
+            spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
         });
       }
     },

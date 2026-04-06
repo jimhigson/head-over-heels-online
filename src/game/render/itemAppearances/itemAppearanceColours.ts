@@ -1,3 +1,3 @@
-import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
+import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
 
-export const carryableOutlineColour = spritesheetPalette.moss;
+export const carryableOutlineColour = paletteBlockstack.moss;

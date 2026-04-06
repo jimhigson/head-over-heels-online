@@ -538,7 +538,6 @@ export type RoomJsonSchema = {
                 | "onScreenControls"
                 | "soundSettings"
                 | "displaySettings.crtFilter"
-                | "displaySettings.uncolourised"
                 | "displaySettings.showShadowMasks"
                 | "soundSettings.mute"
                 | "soundSettings.noRoomEntryTunes"

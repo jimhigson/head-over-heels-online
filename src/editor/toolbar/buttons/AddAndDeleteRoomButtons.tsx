@@ -1,3 +1,4 @@
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { Xy } from "../../../utils/vectors/vectors";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
@@ -65,7 +66,9 @@ export const AddAndDeleteRoomButtons = () => {
             onClick={useDispatchActionCallback(addRoom, {})}
             tooltipContent={addTooltipMarkdown}
           >
-            <span className={`sprite texture-hud_char_+ relative`} />
+            <span
+              className={`sprite ${"texture-hud_char_+" satisfies TextureTailwindClass} relative`}
+            />
           </ToolbarButton>
         }
       >
@@ -75,7 +78,7 @@ export const AddAndDeleteRoomButtons = () => {
             key="8x8"
             roomSize={{ x: 8, y: 8 }}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_single sprite-tinted text-highlightBeige inline-block bg-pureBlack",
+              `sprite ${"texture-editor_addRoom_single" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige inline-block bg-pureBlack`,
             )}
           />,
           <AddRoomMenuItem
@@ -83,7 +86,7 @@ export const AddAndDeleteRoomButtons = () => {
             key="6x6"
             roomSize={{ x: 6, y: 6 }}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_single sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_single" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -91,7 +94,7 @@ export const AddAndDeleteRoomButtons = () => {
             key="8x2"
             roomSize={{ x: 8, y: 2 }}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_corridor sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_corridor" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -99,7 +102,7 @@ export const AddAndDeleteRoomButtons = () => {
             key="2x8"
             roomSize={{ x: 2, y: 8 }}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_corridor sprite-tinted text-highlightBeige scale-x-[-1]",
+              `sprite ${"texture-editor_addRoom_corridor" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige scale-x-[-1]`,
             )}
           />,
 
@@ -112,7 +115,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 0 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_double sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_double" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -123,7 +126,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 0, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_double sprite-tinted text-highlightBeige scale-x-[-1]",
+              `sprite ${"texture-editor_addRoom_double" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige scale-x-[-1]`,
             )}
           />,
 
@@ -137,7 +140,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 2, y: 0 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_triple_line sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_triple_line" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -149,7 +152,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 0, y: 2 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_triple_line sprite-tinted text-highlightBeige scale-x-[-1]",
+              `sprite ${"texture-editor_addRoom_triple_line" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige scale-x-[-1]`,
             )}
           />,
           <AddRoomMenuItem
@@ -161,7 +164,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: -1, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_triple_^ sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_triple_^" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -173,7 +176,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 0, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_triple_^ sprite-tinted text-highlightBeige scale-y-[-1]",
+              `sprite ${"texture-editor_addRoom_triple_^" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige scale-y-[-1]`,
             )}
           />,
           <AddRoomMenuItem
@@ -185,7 +188,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_triple_^ sprite-tinted text-highlightBeige rotate-90",
+              `sprite ${"texture-editor_addRoom_triple_^" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-90`,
             )}
           />,
           <AddRoomMenuItem
@@ -197,7 +200,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_triple_^ sprite-tinted text-highlightBeige rotate-90 scale-y-[-1]",
+              `sprite ${"texture-editor_addRoom_triple_^" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-90 scale-y-[-1]`,
             )}
           />,
 
@@ -212,7 +215,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_square sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_quad_square" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -225,7 +228,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 2 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_s sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_quad_s" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -238,7 +241,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 2, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_s sprite-tinted text-highlightBeige scale-x-[-1]",
+              `sprite ${"texture-editor_addRoom_quad_s" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige scale-x-[-1]`,
             )}
           />,
           <AddRoomMenuItem
@@ -251,7 +254,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: -2, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_s sprite-tinted text-highlightBeige rotate-90",
+              `sprite ${"texture-editor_addRoom_quad_s" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-90`,
             )}
           />,
           <AddRoomMenuItem
@@ -264,7 +267,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: -1, y: 2 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_s sprite-tinted text-highlightBeige scale-x-[-1] rotate-90",
+              `sprite ${"texture-editor_addRoom_quad_s" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige scale-x-[-1] rotate-90`,
             )}
           />,
 
@@ -278,7 +281,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 2, y: -1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_31 sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_quad_31" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -291,7 +294,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 2, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_31 sprite-tinted text-highlightBeige rotate-[270deg] scale-x-[-1]",
+              `sprite ${"texture-editor_addRoom_quad_31" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-[270deg] scale-x-[-1]`,
             )}
           />,
           <AddRoomMenuItem
@@ -304,7 +307,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 0, y: -1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_31 sprite-tinted text-highlightBeige rotate-90 scale-x-[-1]",
+              `sprite ${"texture-editor_addRoom_quad_31" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-90 scale-x-[-1]`,
             )}
           />,
           <AddRoomMenuItem
@@ -317,7 +320,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 0, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_31 sprite-tinted text-highlightBeige rotate-180",
+              `sprite ${"texture-editor_addRoom_quad_31" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-180`,
             )}
           />,
 
@@ -331,7 +334,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 2 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_31 sprite-tinted text-highlightBeige rotate-90",
+              `sprite ${"texture-editor_addRoom_quad_31" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-90`,
             )}
           />,
 
@@ -345,7 +348,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: -1, y: 2 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_31 sprite-tinted text-highlightBeige scale-x-[-1]",
+              `sprite ${"texture-editor_addRoom_quad_31" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige scale-x-[-1]`,
             )}
           />,
 
@@ -359,7 +362,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 0 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_31 sprite-tinted text-highlightBeige rotate-180 scale-x-[-1]",
+              `sprite ${"texture-editor_addRoom_quad_31" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-180 scale-x-[-1]`,
             )}
           />,
           <AddRoomMenuItem
@@ -372,7 +375,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: -1, y: -2 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_31 sprite-tinted text-highlightBeige rotate-[270deg]",
+              `sprite ${"texture-editor_addRoom_quad_31" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-[270deg]`,
             )}
           />,
 
@@ -387,7 +390,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: -1, y: -1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_t sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_quad_t" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
           <AddRoomMenuItem
@@ -400,7 +403,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_t sprite-tinted text-highlightBeige rotate-90",
+              `sprite ${"texture-editor_addRoom_quad_t" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-90`,
             )}
           />,
           <AddRoomMenuItem
@@ -413,7 +416,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 1, y: 1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_t sprite-tinted text-highlightBeige rotate-180",
+              `sprite ${"texture-editor_addRoom_quad_t" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-180`,
             )}
           />,
           <AddRoomMenuItem
@@ -426,7 +429,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: -1, y: -1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_quad_t sprite-tinted text-highlightBeige rotate-[270deg]",
+              `sprite ${"texture-editor_addRoom_quad_t" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige rotate-[270deg]`,
             )}
           />,
 
@@ -442,7 +445,7 @@ export const AddAndDeleteRoomButtons = () => {
               { x: 0, y: -1 },
             ]}
             iconClass={twClass(
-              "sprite texture-editor_addRoom_5_x sprite-tinted text-highlightBeige",
+              `sprite ${"texture-editor_addRoom_5_x" satisfies TextureTailwindClass} sprite-tinted text-highlightBeige`,
             )}
           />,
         ]}
@@ -453,7 +456,9 @@ export const AddAndDeleteRoomButtons = () => {
         disabled={!hasOtherRooms}
         tooltipContent={deleteTooltipMarkdown}
       >
-        <span className={`sprite texture-hud_char_X relative`} />
+        <span
+          className={`sprite ${"texture-hud_char_X" satisfies TextureTailwindClass} relative`}
+        />
       </ToolbarButton>
     </>
   );

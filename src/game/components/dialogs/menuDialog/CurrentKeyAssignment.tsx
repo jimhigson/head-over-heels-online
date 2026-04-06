@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
+import type { TextureTailwindClass } from "../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { BooleanAction } from "../../../input/actions";
 import type { Key } from "../../../input/keys";
 
@@ -186,7 +187,9 @@ export const CurrentKeyAssignments = ({
         );
       })}
       {flashingCursor && (
-        <span className="sprite texture-hud_char_space bg-[currentColor] animate-flash" />
+        <span
+          className={`sprite ${"texture-hud_char_space" satisfies TextureTailwindClass} bg-[currentColor] animate-flash`}
+        />
       )}
     </>
   );
@@ -227,7 +230,9 @@ export const CurrentKeyAssignments = ({
         );
       })}
       {flashingCursor && (
-        <span className="sprite texture-hud_char_space bg-[currentColor] animate-flash" />
+        <span
+          className={`sprite ${"texture-hud_char_space" satisfies TextureTailwindClass} bg-[currentColor] animate-flash`}
+        />
       )}
     </>
   );

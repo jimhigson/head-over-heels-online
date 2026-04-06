@@ -3,6 +3,7 @@ import { Container } from "pixi.js";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import type { RoomState } from "../../../../model/RoomState";
+import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusSlice";
 
 import { iterateRoomItems } from "../../../../model/RoomState";
 import { wallTimes } from "../../../../model/times";
@@ -21,7 +22,7 @@ import { projectWorldXyzToScreenXy } from "../../projections";
 export const renderFloorOverdraws = (
   { state: { position: floorPosition } }: ItemInPlay<"floor", string, string>,
   roomState: RoomState<string, string>,
-  colourised: boolean,
+  spriteOption: SpriteOption,
 ): Container => {
   const isOnFarSide = (
     item: ItemTypeUnion<"doorFrame" | "wall", string, string>,
@@ -64,7 +65,8 @@ export const renderFloorOverdraws = (
             : { [perpendicularAxisXy(tangentAxis(direction))]: 2 },
           anchor: { x: 0, y: 1 },
           flipX: direction === "away",
-          spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+          spritesheetVariant:
+            spriteOption === "Speccy" ? "uncolourised" : "for-current-room",
         });
       }),
     new Container({ label: "floorOverdraws" }),

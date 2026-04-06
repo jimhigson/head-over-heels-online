@@ -1,5 +1,10 @@
 import Portal from "@mutabazia/react-portal";
 
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
+} from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   backToParentMenu,
@@ -11,6 +16,7 @@ import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { useGameApi } from "../../../../GameApiContext";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { spriteLeaderClasses } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
@@ -19,6 +25,17 @@ import { SelectedItemHint } from "../../SelectedItemHint";
 import { reincarnateSelected } from "../offerReincarnation/OfferReincarnationDialog";
 
 export const QuitGameConfirmDialog = () => {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
+  const noUnselectedTextureClass = spriteClassname({
+    character: "head",
+    action: "idle",
+    facingXy8: "awayLeft",
+  });
+  const noSelectedTextureClass = `selectedMenuItem:${spriteClassname({
+    character: "head",
+    action: "walking",
+    facingXy8: "towardsRight",
+  })}`;
   const hasReincarnationPoint = useAppSelector(
     (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
   );
@@ -43,7 +60,7 @@ export const QuitGameConfirmDialog = () => {
                 className="selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen"
                 leader={
                   <span
-                    className={`${spriteLeaderClasses} sprite texture-head_walking_awayLeft_2 selectedMenuItem:texture-animated-head_walking_towardsRight sprites-normal-height zx:sprite-revert-to-white`}
+                    className={`${spriteLeaderClasses} sprite ${noUnselectedTextureClass} ${noSelectedTextureClass} sprites-normal-height zx:sprite-revert-to-white`}
                   />
                 }
                 onSelect={useDispatchActionCallback(backToParentMenu)}
@@ -58,7 +75,7 @@ export const QuitGameConfirmDialog = () => {
                   className="selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxBlue"
                   leader={
                     <span
-                      className={`${spriteLeaderClasses} sprite texture-fish_1 selectedMenuItem:texture-animated-fish sprites-normal-height zx:sprite-revert-to-white`}
+                      className={`${spriteLeaderClasses} sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"selectedMenuItem:texture-animated-fish" satisfies AnimatedTextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                     />
                   }
                   onSelect={() => reincarnateSelected(gameApi)}
@@ -81,7 +98,7 @@ export const QuitGameConfirmDialog = () => {
                 })}
                 leader={
                   <span
-                    className={`${spriteLeaderClasses} sprite texture-bubbles_white_1 selectedMenuItem:texture-animated-bubbles_bounce_white sprites-normal-height zx:sprite-revert-to-white`}
+                    className={`${spriteLeaderClasses} sprite ${"texture-bubbles_white_1" satisfies TextureTailwindClass} ${"selectedMenuItem:texture-animated-bubbles_bounce_white" satisfies AnimatedTextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                   />
                 }
                 hint={

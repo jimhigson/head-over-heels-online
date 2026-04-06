@@ -8,9 +8,10 @@ import type {
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
 import { iterateRoomItems } from "../../../../model/RoomState";
+import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
 import {
-  spritesheetPalette,
-  spritesheetPaletteDim,
+  effectColour,
+  paletteBlockstack,
 } from "../../../../sprites/palette/spritesheetPalette";
 import { isModifier } from "../../../physics/itemPredicates";
 import { OneColourFilter } from "../../filters/oneColourFilter";
@@ -35,15 +36,27 @@ export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
   ) {
     this.output.addChild(childRenderer.output);
 
-    const palette =
-      renderContext.room.color.shade === "dimmed" ?
-        spritesheetPaletteDim
-      : spritesheetPalette;
+    const { spriteOption, spritesheetMeta } = renderContext.general;
+    const { color: roomColor } = renderContext.room;
 
-    this.#leftColourFilter = new OneColourFilter(palette.moss);
-    this.#rightColourFilter = new OneColourFilter(palette.midRed);
+    const useDim = roomColor.shade === "dimmed";
+
+    let leftColour;
+    let rightColour;
+    if (spriteOption === "Speccy") {
+      // Speccy is two-tone - either room colour or black:
+      leftColour = zxSpectrumColor(roomColor);
+      rightColour = zxSpectrumColors.black;
+    } else {
+      leftColour = effectColour(spritesheetMeta, useDim, "left");
+      rightColour = effectColour(spritesheetMeta, useDim, "right");
+    }
+
+    this.#leftColourFilter = new OneColourFilter(leftColour);
+    this.#rightColourFilter = new OneColourFilter(rightColour);
+
     this.#outlineFilter = new OutlineFilter({
-      color: palette.pureBlack,
+      color: paletteBlockstack.pureBlack,
     });
 
     this.#leftColourFilter.enabled = false;

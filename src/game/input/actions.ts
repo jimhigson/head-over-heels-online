@@ -17,7 +17,7 @@ export const booleanActions = [
   "swop.head",
   "swop.heels",
   "hold", // aka pause in modern games
-  "toggleColourisation",
+  "cycleSprites",
   "toggleCrtFilter",
   "cycleResolution",
   "toggleShowFps",
