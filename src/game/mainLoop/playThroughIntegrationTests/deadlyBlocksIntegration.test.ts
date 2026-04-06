@@ -52,6 +52,67 @@ test("player loses life on touching volcano", () => {
   expect(selectCurrentRoomState(gameState)?.id).toBe("secondRoom");
 });
 
+test.for([
+  ["deadlyBlock", 1],
+  ["deadlyBlock", 2],
+  ["spikes", 1],
+  ["spikes", 2],
+] as const)(
+  "player walks off block onto %s and loses a life (walking from block height %i)",
+  ([deadlyType, walkFromHeight]) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          config: {
+            which: "head",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: walkFromHeight,
+          },
+        },
+        block: {
+          type: "block",
+          config: {
+            style: "organic",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: walkFromHeight - 1,
+          },
+        },
+        deadly:
+          deadlyType === "deadlyBlock" ?
+            {
+              type: "deadlyBlock",
+              config: { style: "volcano", times: { x: 4 } },
+              position: { x: 1, y: 0, z: 0 },
+            }
+          : {
+              type: "spikes",
+              config: { times: { x: 4 } },
+              position: { x: 1, y: 0, z: 0 },
+            },
+      },
+    });
+
+    expect(headState(gameState).lives).toBe(8);
+
+    playGameThrough(gameState, {
+      setupInitialInput(inputState) {
+        inputState.mockDirectionPressed = "left";
+      },
+      until(gameState) {
+        return headState(gameState).lives === 7;
+      },
+      frameRate: { fps: [15] },
+    });
+  },
+);
+
 test("can't jump off of spikes during death animation", () => {
   const gameState = setUpBasicGame({
     firstRoomItems: {

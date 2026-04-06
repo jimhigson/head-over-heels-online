@@ -303,3 +303,15 @@ export const isChargingCyberman = (i: FreeItem<string, string>): boolean =>
   isMonster(i) &&
   i.config.which === "cyberman" &&
   i.state.everActivated === false;
+
+export const itemIsStandingOnSomething = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+): item is FreeItem<RoomId, RoomItemId> & {
+  state: { standingOnItemId: string };
+} => {
+  return !!(item.state as { standingOnItemId?: null | string })
+    .standingOnItemId;
+};

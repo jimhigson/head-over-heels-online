@@ -29,6 +29,8 @@ import {
   isFirer,
   isLift,
   isMoving,
+  isPickup,
+  itemIsStandingOnSomething,
 } from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
 import { isPlayableItem } from "../physics/itemPredicates";
@@ -153,6 +155,52 @@ function* itemMechanicResultGen<
   }
 }
 
+const tickItemStandingOnForDeadly = <
+  T extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: ItemTypeUnion<T, RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
+  gameState: GameState<RoomId>,
+  deltaMS: number,
+) => {
+  if (!itemIsStandingOnSomething(item)) {
+    return;
+  }
+
+  if (isPlayableItem(item)) {
+    const stoodOn = stoodOnItem(item.state.standingOnItemId, room);
+
+    if (isDeadly(stoodOn) || stoodOn.type === "spikes") {
+      // the player has a shield that has only just expired - if they are standing on a deadly
+      // item, it should kill them. This would normally have already killed them, but it is possible
+      // they had a shield when they walked onto the deadly thing
+      handlePlayerTouchingDeadly({
+        gameState,
+        room,
+        movingItem: item,
+        touchedItem: stoodOn,
+        deltaMS,
+        movementVector: { x: 0, y: 0, z: -1 },
+      });
+    }
+  } else if (isDeadly(item)) {
+    const stoodOn = stoodOnItem(item.state.standingOnItemId, room);
+
+    if (isPlayableItem(stoodOn)) {
+      handlePlayerTouchingDeadly({
+        gameState,
+        room,
+        movingItem: stoodOn,
+        touchedItem: item,
+        deltaMS,
+        movementVector: { x: 0, y: 0, z: -1 },
+      });
+    }
+  }
+};
+
 const tickItemStandingOn = <
   T extends ItemInPlayType,
   RoomId extends string,
@@ -163,16 +211,17 @@ const tickItemStandingOn = <
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  if (!isFreeItem(item) || item.state.standingOnItemId === null) {
+  if (!itemIsStandingOnSomething(item)) {
     return;
   }
 
+  // the item this item is standing on
   const standingOn = stoodOnItem(item.state.standingOnItemId, room);
 
   // walking onto a platform that is activate on stand
   if (isPlayableItem(item)) {
     // case of walking onto a pickup from another platform, not colliding with it
-    if (standingOn.type === "pickup") {
+    if (isPickup(standingOn)) {
       handlePlayerTouchingPickup({
         gameState,
         movingItem: item,
@@ -183,20 +232,52 @@ const tickItemStandingOn = <
       });
     }
   }
+  // handle opposite case - something deadly standing on player:
+  else if (isPlayableItem(standingOn)) {
+    if (isPickup(item)) {
+      handlePlayerTouchingPickup({
+        gameState,
+        movingItem: standingOn,
+        touchedItem: item,
+        room,
+        movementVector: { x: 0, y: 0, z: 1 },
+        deltaMS,
+      });
+    }
+  }
 
   // handle standing on an item with dissppear='onStand' - eg, if got onto this item
   // by walking onto it from another item, there would have been no collision with it
   // to set the standing on property
   const {
-    state: { disappearing: disappear },
+    state: { disappearing: standingOnDisappear },
   } = standingOn;
 
   if (
-    disappear !== null &&
-    (disappear.byType === undefined || disappear.byType.includes(item.type))
+    standingOnDisappear !== null &&
+    (standingOnDisappear.byType === undefined ||
+      standingOnDisappear.byType.includes(item.type))
   ) {
     makeItemFadeOut({
       touchedItem: standingOn,
+      gameState,
+      room,
+    });
+  }
+
+  // opposite case - disappear if item is standing on player (we already know item is free)
+  const {
+    state: { disappearing: disappearItem },
+  } = item;
+
+  if (
+    disappearItem !== null &&
+    disappearItem.on === "touch" &&
+    (disappearItem.byType === undefined ||
+      disappearItem.byType.includes(standingOn.type))
+  ) {
+    makeItemFadeOut({
+      touchedItem: item,
       gameState,
       room,
     });
@@ -225,22 +306,11 @@ export const tickItem = <
   gameState: GameState<RoomId>,
   deltaMS: number,
 ) => {
-  if (isPlayableItem(item) && item.state.standingOnItemId !== null) {
-    const stoodOn = stoodOnItem(item.state.standingOnItemId, room);
-    if (isDeadly(stoodOn) || stoodOn.type === "spikes") {
-      // the player has a shield that has only just expired - if they are standing on a deadly
-      // item, it should kill them. This would normally have already killed them, but it is possible
-      // they had a shield when they walked onto the deadly thing
-      handlePlayerTouchingDeadly({
-        gameState,
-        room,
-        movingItem: item,
-        touchedItem: stoodOn,
-        deltaMS,
-        movementVector: { x: 0, y: 0, z: -1 },
-      });
-    }
-  }
+  // this is done before mechanicsResults are generated because otherwise the mechanic
+  // result would not see the death state that this sets. The mechanics being calculated
+  // can check for the deadly state and decline to return a delta for the item while it is
+  // playing its death animation.
+  tickItemStandingOnForDeadly(item, room, gameState, deltaMS);
 
   // by spreading the generator onto an array, we run the mechanics at the 'same'
   // time, before the previous ones have changed the game state. This is good for
@@ -253,9 +323,9 @@ export const tickItem = <
     deltaMS,
   ).toArray();
 
-  // this is done after the mechanicsResults are generated, so that the player
-  // can do one more jump on a dissapearing block before the touch on that block
-  // is handled
+  // this is done after the mechanicsResults are generated, but before they are
+  // applied, so that the player can do one more jump on a disappearing block
+  // before the touch on that block is handled (and removes it)
   tickItemStandingOn(item, room, gameState, deltaMS);
 
   // continue even if there are no mechanicsResults, since item still may be moving (ie, a fired doughnut)
