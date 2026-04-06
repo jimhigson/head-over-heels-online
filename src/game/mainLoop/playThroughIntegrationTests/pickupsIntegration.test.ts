@@ -8,7 +8,11 @@ import {
   secondRoomId,
   setUpBasicGame,
 } from "../../../_testUtils/basicRoom";
-import { headState, heelsState } from "../../../_testUtils/characterState";
+import {
+  headState,
+  heelsState,
+  itemState,
+} from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -312,5 +316,105 @@ test.todo(
     );
     expect(gameState.characterRooms.heels?.id).toBe("firstRoom");
     expect(gameState.characterRooms.heels?.items.pickupOnFloor).toBeUndefined();
+  },
+);
+
+test.for([1, 2] as const)(
+  "pickups can move onto the player and are collected (falling from block height %i)",
+  (fallFromHeight) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          config: {
+            which: "head",
+          },
+          position: {
+            x: 4,
+            y: 0,
+            z: 0,
+          },
+        },
+        conveyor: {
+          type: "conveyor",
+          config: {
+            direction: "left",
+            times: {
+              x: 4,
+            },
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: fallFromHeight - 1,
+          },
+        },
+        pickup: {
+          type: "pickup",
+          config: {
+            gives: "doughnuts",
+          },
+          position: {
+            x: 2,
+            y: 0,
+            z: fallFromHeight,
+          },
+        },
+        pusher: {
+          type: "portableBlock",
+          config: {
+            style: "drum",
+          },
+          position: {
+            x: 1,
+            y: 0,
+            z: fallFromHeight,
+          },
+        },
+        pusher2: {
+          type: "portableBlock",
+          config: {
+            style: "drum",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: fallFromHeight,
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      until(gameState) {
+        return headState(gameState).doughnuts === 6;
+      },
+      frameCallbacks(gameState) {
+        const pickup = itemState<"pickup">(gameState, "pickup");
+        if (pickup && pickup.standingOnItemId === "floor") {
+          expect.fail(
+            "pickup slid on head, over them, and landed on the floor without being collected",
+          );
+        }
+      },
+      frameRate: { fps: [15] },
+    });
+
+    // protect against double pickup:
+    playGameThrough(gameState, {
+      until: 1_000,
+      frameCallbacks(gameState) {
+        const doughnutCount = headState(gameState).doughnuts as number;
+        if (doughnutCount > 6) {
+          expect.fail("pickup was collected more than once");
+        }
+      },
+      frameRate: { fps: [15] },
+    });
+
+    expect(
+      itemState(gameState, "pickup"),
+      "pickup should be removed from the room",
+    ).toBeUndefined();
   },
 );

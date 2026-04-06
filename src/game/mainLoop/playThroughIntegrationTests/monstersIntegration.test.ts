@@ -6,7 +6,7 @@ vi.mock("../../sprites/samplePalette", () => ({
 import type { CharacterName } from "../../../model/modelTypes";
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
-import { itemState } from "../../../_testUtils/characterState";
+import { headState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { xyzEqual } from "../../../utils/vectors/vectors";
@@ -187,3 +187,85 @@ test("activated:after-player-near", () => {
 
   expect(itemState<"monster">(gameState, "monster").activated).toBe(false);
 });
+
+test.for([1, 2] as const)(
+  "monster can walk onto the player and player loses a life (walking from block height %i)",
+  (walkFromHeight) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        block: {
+          type: "block",
+          config: {
+            style: "artificial",
+            times: {
+              x: 3,
+            },
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: walkFromHeight - 1,
+          },
+        },
+        head: {
+          type: "player",
+          config: {
+            which: "head",
+          },
+          position: {
+            x: 3,
+            y: 0,
+            z: 0,
+          },
+        },
+        skiHead: {
+          type: "monster",
+          config: {
+            which: "skiHead",
+            style: "greenAndPink",
+            activated: "on",
+            movement: "forwards",
+            startDirection: "left",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: walkFromHeight,
+          },
+        },
+        switch: {
+          type: "switch",
+          config: {
+            initialSetting: "left",
+            type: "in-room",
+            modifies: [],
+          },
+          position: {
+            x: 7,
+            y: 0,
+            z: 0,
+          },
+        },
+      },
+    });
+
+    const startingLives = headState(gameState).lives as number;
+
+    playGameThrough(gameState, {
+      until(gameState) {
+        return headState(gameState).lives === startingLives - 1;
+      },
+      frameCallbacks(gameState) {
+        if (
+          headState(gameState).lives === startingLives &&
+          itemState<"switch">(gameState, "switch").setting === "right"
+        ) {
+          expect.fail(
+            "monster slid right over head and hit the switch without any lives being lost",
+          );
+        }
+      },
+      frameRate: { fps: [15] },
+    });
+  },
+);
