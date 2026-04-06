@@ -40,12 +40,20 @@ export const buttonPressAndRelease = <
   const release = !isStoodOn && roomTime > deactivateTime && pressed;
   if (release) {
     applyModifiesList(buttonItem.config.modifies, "right", buttonItem, room);
-    return releasedMechanicResult;
+    return releasedMechanicResult as MechanicResult<
+      "button",
+      RoomId,
+      RoomItemId
+    >;
   }
 
   if (!pressed && isStoodOn) {
     applyModifiesList(buttonItem.config.modifies, "left", buttonItem, room);
-    return pressedMechanicResult;
+    return pressedMechanicResult as MechanicResult<
+      "button",
+      RoomId,
+      RoomItemId
+    >;
   }
 
   return unitMechanicalResult;

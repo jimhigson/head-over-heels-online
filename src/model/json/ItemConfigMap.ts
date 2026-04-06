@@ -204,10 +204,27 @@ export type ItemConfigMap<
      * how long between emissions?
      */
     period: number;
+
     /**
-     * how many should this emitter emit? Null for no limit
+     * how long to delay until the first emitting?
+     * after this time the first emit will happen, then all others will
+     * continue at the period interval.
+     * undefined is treated the same as 0
+     */
+    delay?: number;
+
+    /**
+     * how many total should this emitter emit? Null for no limit
      */
     maximum: null | number;
+
+    /**
+     * How many items emitted from this emitter can be in the room at once?
+     * If undefined, no limit. If already this many items in the room, the
+     * items will have to be removed from the room before more can be emitted
+     * (for example, collecting an emitted pickup)
+     */
+    maximumAtOnce?: number;
   };
   firedDoughnut: {
     // if the doughnut is given via json, can be used to give its direction

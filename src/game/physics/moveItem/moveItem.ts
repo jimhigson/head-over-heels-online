@@ -355,7 +355,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         });
         // that recursive call is done now, and path is edited in-place to reduce gc
         visited.delete(subjectItem.id);
-      } else {
+      } else if (log) {
         console.warn("hit recursion depth limit", new Error());
       }
 
