@@ -6,7 +6,7 @@ vi.mock("../../sprites/samplePalette", () => ({
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
-import { heelsState } from "../../../_testUtils/characterState";
+import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -68,6 +68,48 @@ describe("conveyors", () => {
       y: blockSizePx.y,
       z: blockSizePx.z,
     });
+  });
+
+  test("speed=2 conveyor moves a block further than a standard conveyor in the same time", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 4, y: 4, z: 0 },
+          config: { which: "heels" },
+        },
+        // standard speed conveyor at x=0, 4 blocks long
+        standardConveyor: {
+          type: "conveyor",
+          position: { x: 0, y: 0, z: 0 },
+          config: { direction: "away", times: { y: 4 } },
+        },
+        // fast conveyor at x=2, 4 blocks long
+        fastConveyor: {
+          type: "conveyor",
+          position: { x: 2, y: 0, z: 0 },
+          config: { direction: "away", speed: 2, times: { y: 4 } },
+        },
+        standardBlock: {
+          type: "portableBlock",
+          position: { x: 0, y: 0, z: 1 },
+          config: { style: "cube" },
+        },
+        fastBlock: {
+          type: "portableBlock",
+          position: { x: 2, y: 0, z: 1 },
+          config: { style: "cube" },
+        },
+      },
+    });
+
+    playGameThrough(gameState, { until: 500 });
+
+    const standardBlockY = itemState(gameState, "standardBlock").position.y;
+    const fastBlockY = itemState(gameState, "fastBlock").position.y;
+
+    // the fast block should have moved further in +y than the standard one
+    expect(fastBlockY).toBeGreaterThan(standardBlockY);
   });
 
   test("conveyors can take item around corners (see blacktooth26)", () => {

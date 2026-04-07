@@ -205,6 +205,10 @@ export type RoomJsonSchema = {
             z?: number;
           };
           direction: "right" | "towards" | "away" | "left";
+          /**
+           * speed multiplier — undefined is treated as 1 (original game speed)
+           */
+          speed?: number;
           disappearing?: {
             on: "stand";
           };
