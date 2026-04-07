@@ -4,6 +4,7 @@ import type { toggleUserSetting } from "../src/store/slices/gameMenus/gameMenusS
 
 import { dispatchToStore } from "./e2eStoreUtils";
 import { osSlowness } from "./osSlowness";
+import { elapsed } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
 
 export const setIsUncolourised = async (
@@ -13,7 +14,9 @@ export const setIsUncolourised = async (
 ) => {
   await retryWithRecovery({
     async action() {
-      console.log(`${formattedName}: setting uncolourised to ${uncolourised}`);
+      console.log(
+        `${formattedName} ${elapsed()}: setting uncolourised to ${uncolourised}`,
+      );
 
       type ToggleUserSetting = ReturnType<typeof toggleUserSetting>;
       const successSetUnColourised = await dispatchToStore(page, {
@@ -34,7 +37,9 @@ export const setIsUncolourised = async (
       await page.waitForTimeout(100 * osSlowness);
     },
     async recovery() {
-      console.log(`${formattedName}: Retrying to set uncolourised setting`);
+      console.log(
+        `${formattedName} ${elapsed()}: Retrying to set uncolourised setting`,
+      );
     },
     logHeader: formattedName,
     actionDescription: "Change uncolourised setting",

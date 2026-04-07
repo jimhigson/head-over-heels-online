@@ -16,8 +16,10 @@ import {
 } from "../src/game/components/dialogs/menuDialog/dialogs/menus/menuItemDataAttributes";
 import { dispatchKeyPress } from "./dispatchKeyPress";
 import { formatDuration } from "./formatDuration";
+import { maximumWaitForStep } from "./gameTestUtils";
 import { logSelectorExistence } from "./logSelectorExistence";
 import { osSlowness } from "./osSlowness";
+import { elapsed } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
 
 export const testTimeout = (process.env.CI ? 600_000 : 120_000) * osSlowness;
@@ -71,7 +73,7 @@ export const takeDialogScreenshot = async (
 
   await test.step(`Screenshot: ${dialogId}`, async () => {
     console.log(
-      `${logHeader} Taking screenshot for dialog: ${chalk.cyan(dialogId)}`,
+      `${logHeader} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan(dialogId)}`,
     );
 
     await retryWithRecovery({
@@ -135,7 +137,7 @@ export const takeScreenshot = async (
     );
 
   console.log(
-    `${logHeader} ...screenshot took`,
+    `${logHeader} ${elapsed()} ...screenshot took`,
     chalk.yellow(formatDuration(performance.now() - screenshotStart)),
   );
 };
@@ -167,7 +169,7 @@ export const navigateToSubmenu = async (
   await retryWithRecovery({
     async action() {
       console.log(
-        `${logHeader}: Clicking menu item: ${chalk.cyan(menuItemId)}`,
+        `${logHeader} ${elapsed()}: Clicking menu item: ${chalk.cyan(menuItemId)}`,
       );
 
       const selector = `[data-menuitem_id="${menuItemId}"]`;
@@ -185,7 +187,7 @@ export const navigateToSubmenu = async (
 export const clickBackButton = async (page: Page, logHeader: string) => {
   await retryWithRecovery({
     async action() {
-      console.log(`${logHeader}: Clicking back button`);
+      console.log(`${logHeader} ${elapsed()}: Clicking back button`);
 
       const backSelector = "[data-to-parent-menu='true']";
       const backButtonExists = await page.locator(backSelector).count();
@@ -211,7 +213,7 @@ export const clickPlayTheGame = async (page: Page, logHeader: string) => {
     await retryWithRecovery({
       async action() {
         const playGameSelector = "[data-menuitem_id=playGame]";
-        console.log(`${logHeader}: Clicking Play The Game`);
+        console.log(`${logHeader} ${elapsed()}: Clicking Play The Game`);
         await logSelectorExistence(page, playGameSelector, logHeader);
         await page.click(playGameSelector);
         await page.waitForTimeout(500);
@@ -229,7 +231,7 @@ export const clickOriginalCampaign = async (page: Page, logHeader: string) => {
     await retryWithRecovery({
       async action() {
         const originalGameSelector = "[data-menuitem_id=originalGame]";
-        console.log(`${logHeader}: Clicking Original Campaign`);
+        console.log(`${logHeader} ${elapsed()}: Clicking Original Campaign`);
         await logSelectorExistence(page, originalGameSelector, logHeader);
         await page.click(originalGameSelector);
         await page.waitForTimeout(500);
@@ -242,19 +244,95 @@ export const clickOriginalCampaign = async (page: Page, logHeader: string) => {
   });
 };
 
+const crownsDialogSelector = "[data-dialog-id=crowns]";
+
 export const exitCrownsDialog = async (page: Page, logHeader: string) => {
   await test.step("Exit crowns dialog", async () => {
     await retryWithRecovery({
-      async action() {
-        const crownsDialogSelector = "[data-dialog-id=crowns]";
-        console.log(`${logHeader}: Exiting crowns dialog`);
-        await page.click(crownsDialogSelector);
+      async action(attempt) {
+        const isRetry = attempt > 0;
+        let cancelled = false;
 
-        await page.waitForSelector(crownsDialogSelector, {
-          state: "detached",
-          timeout: 5_000 * osSlowness,
-        });
-        await page.waitForTimeout(500);
+        await Promise.race([
+          (async () => {
+            if (isRetry) {
+              const stepStart = performance.now();
+              await page
+                .screenshot({
+                  path: `test-results/crowns-attempt-${attempt}-before-check.png`,
+                  fullPage: false,
+                })
+                .catch(() => {});
+              console.log(
+                `${logHeader} ${elapsed()}: screenshot (before-check) took ${formatDuration(performance.now() - stepStart)}`,
+              );
+              if (cancelled) return;
+            }
+
+            const crownsDialogVisible = await page
+              .locator(crownsDialogSelector)
+              .isVisible()
+              .catch(() => false);
+            if (cancelled) return;
+
+            if (crownsDialogVisible) {
+              console.log(
+                `${logHeader} ${elapsed()}: exiting crowns dialog...`,
+              );
+
+              if (isRetry) {
+                const stepStart = performance.now();
+                await page
+                  .screenshot({
+                    path: `test-results/crowns-attempt-${attempt}-before-click.png`,
+                    fullPage: false,
+                  })
+                  .catch(() => {});
+                console.log(
+                  `${logHeader} ${elapsed()}: screenshot (before-click) took ${formatDuration(performance.now() - stepStart)}`,
+                );
+                if (cancelled) return;
+
+                await logSelectorExistence(
+                  page,
+                  crownsDialogSelector,
+                  logHeader,
+                );
+              }
+
+              await page.click(crownsDialogSelector);
+              console.log(`${logHeader} ${elapsed()}: crowns dialog closed`);
+            } else {
+              if (isRetry) {
+                const stepStart = performance.now();
+                await page
+                  .screenshot({
+                    path: `test-results/crowns-attempt-${attempt}-already-closed.png`,
+                    fullPage: false,
+                  })
+                  .catch(() => {});
+                console.log(
+                  `${logHeader} ${elapsed()}: screenshot (already-closed) took ${formatDuration(performance.now() - stepStart)}`,
+                );
+                if (cancelled) return;
+              }
+
+              console.log(
+                `${logHeader} ${elapsed()}: crowns dialog not shown, continuing...`,
+              );
+            }
+          })(),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => {
+              cancelled = true;
+              return reject(
+                new Error(
+                  `Timeout exiting crowns dialog after ${formatDuration(maximumWaitForStep)}`,
+                ),
+              );
+            }, maximumWaitForStep),
+          ),
+        ]);
       },
       logHeader,
       actionDescription: "exit crowns dialog",
@@ -268,7 +346,9 @@ export const openInGameMainMenu = async (page: Page, logHeader: string) => {
   await test.step("Open in-game main menu", async () => {
     await retryWithRecovery({
       async action() {
-        console.log(`${logHeader}: Pressing Escape to open in-game main menu`);
+        console.log(
+          `${logHeader} ${elapsed()}: Pressing Escape to open in-game main menu`,
+        );
         await dispatchKeyPress(page, "Escape", "Escape");
         await page.waitForTimeout(500);
 

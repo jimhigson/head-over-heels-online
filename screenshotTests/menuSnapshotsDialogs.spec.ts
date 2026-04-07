@@ -19,7 +19,7 @@ import {
   type VisitedDialogs,
 } from "./menuSnapshotUtils";
 import { osSlowness } from "./osSlowness";
-import { formatProjectName } from "./projectName";
+import { elapsed, formatProjectName } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
 import { setIsUncolourised } from "./setIsUncolourised";
 
@@ -35,20 +35,20 @@ const traverseMenuDepthFirst = async (
   const currentDialogId = await getCurrentDialogId(page);
 
   if (!currentDialogId) {
-    console.log(`${logHeader}: No dialog found, skipping`);
+    console.log(`${logHeader} ${elapsed()}: No dialog found, skipping`);
     return;
   }
 
   if (visited.has(currentDialogId)) {
     console.log(
-      `${logHeader}: Dialog ${chalk.cyan(currentDialogId)} already visited, skipping`,
+      `${logHeader} ${elapsed()}: Dialog ${chalk.cyan(currentDialogId)} already visited, skipping`,
     );
     return;
   }
 
   const indent = "  ".repeat(depth);
   console.log(
-    `${logHeader}: ${indent}Visiting dialog: ${chalk.cyan(currentDialogId)} (depth: ${depth})`,
+    `${logHeader} ${elapsed()}: ${indent}Visiting dialog: ${chalk.cyan(currentDialogId)} (depth: ${depth})`,
   );
 
   // Mark as visited
@@ -67,13 +67,13 @@ const traverseMenuDepthFirst = async (
   const submenuItemIds = await getSubmenuItems(page);
 
   console.log(
-    `${logHeader}: ${indent}Found ${submenuItemIds.length} submenu items: [${submenuItemIds.join(", ")}]`,
+    `${logHeader} ${elapsed()}: ${indent}Found ${submenuItemIds.length} submenu items: [${submenuItemIds.join(", ")}]`,
   );
 
   // Visit each submenu (depth-first)
   for (const itemId of submenuItemIds) {
     console.log(
-      `${logHeader}: ${indent}Descending into submenu via: ${chalk.cyan(itemId)}`,
+      `${logHeader} ${elapsed()}: ${indent}Descending into submenu via: ${chalk.cyan(itemId)}`,
     );
 
     // Click the menu item to open submenu
@@ -92,13 +92,13 @@ const traverseMenuDepthFirst = async (
 
     // Go back to parent
     console.log(
-      `${logHeader}: ${indent}Returning from submenu to: ${chalk.cyan(currentDialogId)}`,
+      `${logHeader} ${elapsed()}: ${indent}Returning from submenu to: ${chalk.cyan(currentDialogId)}`,
     );
     await clickBackButton(page, logHeader);
   }
 
   console.log(
-    `${logHeader}: ${indent}Finished visiting dialog: ${chalk.cyan(currentDialogId)}`,
+    `${logHeader} ${elapsed()}: ${indent}Finished visiting dialog: ${chalk.cyan(currentDialogId)}`,
   );
 };
 
@@ -120,14 +120,14 @@ for (const { uncolourised } of colourisedModes) {
 
       forwardBrowserConsoleToNodeConsole(page, formattedName);
 
-      console.log(`${formattedName} starting menu snapshot test`);
+      console.log(`${formattedName} ${elapsed()} starting menu snapshot test`);
 
       const visited: VisitedDialogs = new Set();
 
       await test.step("Navigate to home page and wait for main menu", async () => {
         await retryWithRecovery({
           async action() {
-            console.log(`${formattedName}: Navigating to /`);
+            console.log(`${formattedName} ${elapsed()}: Navigating to /`);
             await page.goto("/?track=0");
 
             // Wait for main menu to appear (it opens automatically)
@@ -142,7 +142,7 @@ for (const { uncolourised } of colourisedModes) {
           async recovery() {
             // Reload the page on failure
             console.log(
-              `${formattedName}: Retrying navigation with page reload`,
+              `${formattedName} ${elapsed()}: Retrying navigation with page reload`,
             );
             await page.reload();
           },
@@ -172,7 +172,7 @@ for (const { uncolourised } of colourisedModes) {
         });
       } catch (error) {
         console.error(
-          `${formattedName}: Failed during menu traversal - ${error}`,
+          `${formattedName} ${elapsed()}: Failed during menu traversal - ${error}`,
         );
         await page.screenshot({
           path: `test-results/traversal-failure-${testInfo.project.name}.png`,
@@ -182,7 +182,7 @@ for (const { uncolourised } of colourisedModes) {
       }
 
       console.log(
-        `${formattedName}: ✓ Visited ${visited.size} dialogs: [${Array.from(visited).join(", ")}]`,
+        `${formattedName} ${elapsed()}: ✓ Visited ${visited.size} dialogs: [${Array.from(visited).join(", ")}]`,
       );
     });
   });

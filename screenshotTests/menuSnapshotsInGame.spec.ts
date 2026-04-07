@@ -19,7 +19,7 @@ import {
   testTimeout,
 } from "./menuSnapshotUtils";
 import { osSlowness } from "./osSlowness";
-import { formatProjectName } from "./projectName";
+import { elapsed, formatProjectName } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
 import { setIsUncolourised } from "./setIsUncolourised";
 
@@ -41,12 +41,14 @@ for (const { uncolourised } of colourisedModes) {
 
       forwardBrowserConsoleToNodeConsole(page, formattedName);
 
-      console.log(`${formattedName} starting in game dialogs snapshot test`);
+      console.log(
+        `${formattedName} ${elapsed()} starting in game dialogs snapshot test`,
+      );
 
       await test.step("Navigate to home page and wait for main menu", async () => {
         await retryWithRecovery({
           async action() {
-            console.log(`${formattedName}: Navigating to /`);
+            console.log(`${formattedName} ${elapsed()}: Navigating to /`);
             await page.goto("/?track=0");
 
             // Wait for main menu to appear
@@ -59,7 +61,7 @@ for (const { uncolourised } of colourisedModes) {
           },
           async recovery() {
             console.log(
-              `${formattedName}: Retrying navigation with page reload`,
+              `${formattedName} ${elapsed()}: Retrying navigation with page reload`,
             );
             await page.reload();
           },
@@ -83,7 +85,9 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             const crownsDialogSelector = "[data-dialog-id=crowns]";
-            console.log(`${formattedName}: Waiting for crowns dialog`);
+            console.log(
+              `${formattedName} ${elapsed()}: Waiting for crowns dialog`,
+            );
             await page.waitForSelector(crownsDialogSelector, {
               timeout: 5_000 * osSlowness,
             });
@@ -96,7 +100,7 @@ for (const { uncolourised } of colourisedModes) {
             await page.waitForTimeout(500);
 
             console.log(
-              `${formattedName} Taking screenshot for dialog: ${chalk.cyan("crowns")}`,
+              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("crowns")}`,
             );
             await takeScreenshot(
               page,
@@ -118,7 +122,7 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             console.log(
-              `${formattedName}: Clicking canvas and pressing M to open map`,
+              `${formattedName} ${elapsed()}: Clicking canvas and pressing M to open map`,
             );
             await page.waitForTimeout(500);
 
@@ -147,7 +151,7 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             console.log(
-              `${formattedName} Taking screenshot for dialog: ${chalk.cyan("map")}`,
+              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("map")}`,
             );
             await takeScreenshot(
               page,
@@ -167,7 +171,9 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             const mapDialogSelector = "[data-dialog-id=map]";
-            console.log(`${formattedName}: Pressing Escape to exit map`);
+            console.log(
+              `${formattedName} ${elapsed()}: Pressing Escape to exit map`,
+            );
             await dispatchKeyPress(page, "Escape", "Escape");
 
             // Wait for the map dialog to disappear
@@ -188,7 +194,7 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             console.log(
-              `${formattedName}: Clicking canvas and pressing P to open hold`,
+              `${formattedName} ${elapsed()}: Clicking canvas and pressing P to open hold`,
             );
             await page.waitForTimeout(500);
 
@@ -216,7 +222,7 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             console.log(
-              `${formattedName} Taking screenshot for dialog: ${chalk.cyan("hold")}`,
+              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("hold")}`,
             );
             await takeScreenshot(
               page,
@@ -236,7 +242,9 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             const holdDialogSelector = "[data-dialog-id=hold]";
-            console.log(`${formattedName}: Pressing P to exit hold`);
+            console.log(
+              `${formattedName} ${elapsed()}: Pressing P to exit hold`,
+            );
             await dispatchKeyPress(page, "p", "KeyP");
 
             await page.waitForSelector(holdDialogSelector, {
@@ -258,7 +266,7 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             console.log(
-              `${formattedName} Taking screenshot for dialog: ${chalk.cyan("main-inGame")}`,
+              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("main-inGame")}`,
             );
             await takeScreenshot(
               page,
@@ -278,7 +286,9 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             const progressSelector = "[data-menuitem_id=viewCrowns]";
-            console.log(`${formattedName}: Clicking progress so far`);
+            console.log(
+              `${formattedName} ${elapsed()}: Clicking progress so far`,
+            );
             await logSelectorExistence(page, progressSelector, formattedName);
             await page.click(progressSelector);
             await page.waitForTimeout(500);
@@ -304,7 +314,7 @@ for (const { uncolourised } of colourisedModes) {
         await retryWithRecovery({
           async action() {
             console.log(
-              `${formattedName} Taking screenshot for dialog: ${chalk.cyan("score")}`,
+              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("score")}`,
             );
             await takeScreenshot(
               page,
@@ -339,7 +349,7 @@ for (const { uncolourised } of colourisedModes) {
             }
 
             console.log(
-              `${formattedName} Taking screenshot for dialog: ${chalk.cyan("proclaimEmperor")}`,
+              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("proclaimEmperor")}`,
             );
             await takeScreenshot(
               page,
@@ -355,7 +365,7 @@ for (const { uncolourised } of colourisedModes) {
         });
       });
 
-      console.log(`${formattedName}: ✓ Captured in game dialogs`);
+      console.log(`${formattedName} ${elapsed()}: ✓ Captured in game dialogs`);
     });
   });
 }

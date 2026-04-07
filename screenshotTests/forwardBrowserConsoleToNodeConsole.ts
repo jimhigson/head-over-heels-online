@@ -2,6 +2,8 @@ import type { ConsoleMessage, Page } from "@playwright/test";
 
 import chalk from "chalk";
 
+import { elapsed } from "./projectName";
+
 type Colour = (a: string) => string;
 
 const colours = {
@@ -25,14 +27,14 @@ export const forwardBrowserConsoleToNodeConsole = (
     const colour = colours[type] ?? identity;
 
     console.log(
-      `${formattedName} [${chalk.yellow("Console")} type="${colour(type)}"] ${text}`,
+      `${formattedName} ${elapsed()} [${chalk.yellow("Console")} type="${colour(type)}"] ${text}`,
     );
   });
 
   // Capture browser errors
   page.on("pageerror", (error) => {
     console.error(
-      `${formattedName} ${chalk.red("[Page Error]")} ${error.message}`,
+      `${formattedName} ${elapsed()} ${chalk.red("[Page Error]")} ${error.message}`,
     );
     console.error(error.stack);
   });

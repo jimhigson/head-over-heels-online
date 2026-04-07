@@ -39,10 +39,10 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
 
       - name: Use Node.js 25.x
         uses: actions/setup-node@v6
@@ -95,7 +95,7 @@ jobs:
 
       - name: Upload artifacts (non-release)
         if: github.event_name != 'release'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.toolchain && format('{0}-{1}', matrix.platform, matrix.toolchain) || matrix.platform }}
           path: |

@@ -16,7 +16,7 @@ import {
   testTimeout,
 } from "./menuSnapshotUtils";
 import { osSlowness } from "./osSlowness";
-import { formatProjectName } from "./projectName";
+import { elapsed, formatProjectName } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
 import { setIsUncolourised } from "./setIsUncolourised";
 
@@ -47,7 +47,7 @@ for (const { uncolourised } of colourisedModes) {
           await retryWithRecovery({
             async action() {
               console.log(
-                `${formattedName}: Navigating to / with deployment=${deploymentType}`,
+                `${formattedName} ${elapsed()}: Navigating to / with deployment=${deploymentType}`,
               );
               await page.goto(`/?track=0&deployment=${deploymentType}`);
 
@@ -61,7 +61,7 @@ for (const { uncolourised } of colourisedModes) {
             },
             async recovery() {
               console.log(
-                `${formattedName}: Retrying navigation with page reload`,
+                `${formattedName} ${elapsed()}: Retrying navigation with page reload`,
               );
               await page.reload();
             },

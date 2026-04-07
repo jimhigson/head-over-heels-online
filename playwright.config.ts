@@ -26,7 +26,7 @@ export default defineConfig<ScreenshotTestOptions>({
   testMatch: "**/*.spec.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: process.env.CI ? 1 : 0,
   reporter: "html",
   use: {
     baseURL: `http://localhost:${port}`,

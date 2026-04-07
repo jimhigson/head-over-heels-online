@@ -23,8 +23,9 @@ import {
 } from "./gameTestUtils";
 import { logSelectorExistence } from "./logSelectorExistence";
 import { logUpscale } from "./logUpscale";
+import { exitCrownsDialog } from "./menuSnapshotUtils";
 import { osSlowness } from "./osSlowness";
-import { formatProjectName, progressLogHeader } from "./projectName";
+import { elapsed, formatProjectName, progressLogHeader } from "./projectName";
 import { resolveRoomIds } from "./resolveRoomIds";
 import { retryWithRecovery } from "./retryWithRecovery";
 import { setIsUncolourised } from "./setIsUncolourised";
@@ -79,7 +80,7 @@ const screenshotThreshold = ({
     : 0.02;
 
   console.log(
-    `${logHeader} Threshold for image comparison will be ${threshold} since:
+    `${logHeader} ${elapsed()} Threshold for image comparison will be ${threshold} since:
         ci is ${ci}
         platform is ${platform}
         projectName is ${projectName}`,
@@ -142,8 +143,6 @@ const perTestRooms = Array.from({ length: parallelTestsCount }, (_, index) => {
 
 // Selectors for menu navigation
 const originalGameSelector = "[data-menuitem_id=originalGame]";
-const crownsDialogSelector = "[data-dialog-id=crowns]";
-
 const startOriginalGame = async (page: Page, projectName: string) => {
   // we can't stop the losing branch completely from finishing its operation, but
   // we can stop it from doing its next step:
@@ -159,40 +158,42 @@ const startOriginalGame = async (page: Page, projectName: string) => {
       let stepStart = performance.now();
       await page.goto(`/?cheats=1&track=0#finalroom`);
       console.log(
-        `${formattedName}: goto took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: goto took ${formatDuration(performance.now() - stepStart)}`,
       );
       if (cancelled) return;
 
       // start a game:
-      console.log(`${formattedName}: clicking Play The Game...`);
+      console.log(`${formattedName} ${elapsed()}: clicking Play The Game...`);
       stepStart = performance.now();
       await logSelectorExistence(page, playGameMenuItemSelector, formattedName);
 
       console.log(
-        `${formattedName}: logSelectorExistence (playGame) took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: logSelectorExistence (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
       if (cancelled) return;
 
       stepStart = performance.now();
       await page.click(playGameMenuItemSelector);
       console.log(
-        `${formattedName}: click (playGame) took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: click (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
       if (cancelled) return;
 
       // select original campaign:
-      console.log(`${formattedName}: choosing original campaign...`);
+      console.log(
+        `${formattedName} ${elapsed()}: choosing original campaign...`,
+      );
       stepStart = performance.now();
       await logSelectorExistence(page, originalGameSelector, formattedName);
       console.log(
-        `${formattedName}: logSelectorExistence (originalGame) took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: logSelectorExistence (originalGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
       if (cancelled) return;
 
       stepStart = performance.now();
       await page.click(originalGameSelector);
       console.log(
-        `${formattedName}: click (originalGame) took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: click (originalGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
     })(),
     new Promise<never>((_, reject) =>
@@ -251,7 +252,9 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
         throw new Error(`gameApi not found on window`);
       }
 
-      console.log(`${formattedName}: Set game speed to 0 via gameApi`);
+      console.log(
+        `${formattedName} ${elapsed()}: Set game speed to 0 via gameApi`,
+      );
     },
     async recovery() {
       // Wait a bit for the game to initialize
@@ -261,113 +264,6 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
     actionDescription: "set game speed to zero",
     page,
     screenshotPrefix: `speed-${projectName}`,
-  });
-};
-
-const exitCrownsDialog = async (page: Page, projectName: string) => {
-  const formattedName = formatProjectName(projectName);
-
-  await retryWithRecovery({
-    async action(attempt) {
-      // we can't stop the losing branch completely from finishing its operation, but
-      // we can stop it from doing its next step:
-      let cancelled = false;
-
-      await Promise.race([
-        (async () => {
-          // Screenshot before checking dialog
-          let stepStart = performance.now();
-          await page
-            .screenshot({
-              path: `test-results/crowns-${projectName}-attempt-${attempt}-before-check.png`,
-              fullPage: false,
-            })
-            .catch(() => {});
-          console.log(
-            `${formattedName}: screenshot (before-check) took ${formatDuration(performance.now() - stepStart)}`,
-          );
-          if (cancelled) return;
-
-          // Check if the crowns dialog is visible
-          stepStart = performance.now();
-          const crownsDialogVisible = await page
-            .locator(crownsDialogSelector)
-            .isVisible()
-            .catch(() => false);
-          console.log(
-            `${formattedName}: isVisible check took ${formatDuration(performance.now() - stepStart)}`,
-          );
-          if (cancelled) return;
-
-          if (crownsDialogVisible) {
-            console.log(`${formattedName}: exiting crowns dialog...`);
-
-            // Screenshot before clicking dialog
-            stepStart = performance.now();
-            await page
-              .screenshot({
-                path: `test-results/crowns-${projectName}-attempt-${attempt}-before-click.png`,
-                fullPage: false,
-              })
-              .catch(() => {});
-            console.log(
-              `${formattedName}: screenshot (before-click) took ${formatDuration(performance.now() - stepStart)}`,
-            );
-            if (cancelled) return;
-
-            // Log selector existence before clicking
-            stepStart = performance.now();
-            await logSelectorExistence(
-              page,
-              crownsDialogSelector,
-              formattedName,
-            );
-            console.log(
-              `${formattedName}: logSelectorExistence took ${formatDuration(performance.now() - stepStart)}`,
-            );
-            if (cancelled) return;
-
-            stepStart = performance.now();
-            await page.click(crownsDialogSelector);
-            console.log(
-              `${formattedName}: click (crowns) took ${formatDuration(performance.now() - stepStart)}`,
-            );
-            console.log(`${formattedName}: crowns dialog closed`);
-          } else {
-            // Screenshot before clicking dialog
-            stepStart = performance.now();
-            await page
-              .screenshot({
-                path: `test-results/crowns-${projectName}-attempt-${attempt}-already-closed.png`,
-                fullPage: false,
-              })
-              .catch(() => {});
-            console.log(
-              `${formattedName}: screenshot (already-closed) took ${formatDuration(performance.now() - stepStart)}`,
-            );
-            if (cancelled) return;
-
-            console.log(
-              `${formattedName}: crowns dialog not shown, continuing...`,
-            );
-          }
-        })(),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => {
-            cancelled = true;
-            return reject(
-              new Error(
-                `Timeout exiting crowns dialog after ${formatDuration(maximumWaitForStep)}`,
-              ),
-            );
-          }, maximumWaitForStep),
-        ),
-      ]);
-    },
-    logHeader: formattedName,
-    actionDescription: "exit crowns dialog",
-    page,
-    screenshotPrefix: `crowns-${projectName}`,
   });
 };
 
@@ -410,14 +306,18 @@ test.describe("Room Visual Snapshots", () => {
 
       forwardBrowserConsoleToNodeConsole(page, formattedName);
 
-      console.log(`${formattedName} starting test ${formattedName} `);
+      console.log(
+        `${formattedName} ${elapsed()} starting test ${formattedName} `,
+      );
 
       try {
         await test.step(`starting the game`, async () => {
           await startOriginalGame(page, testInfo.project.name);
         });
       } catch (error) {
-        console.error(`${formattedName}: Failed to start game - ${error}`);
+        console.error(
+          `${formattedName} ${elapsed()}: Failed to start game - ${error}`,
+        );
         await page.screenshot({
           path: `test-results/startup-failure-${testInfo.project.name}.png`,
           fullPage: false,
@@ -433,7 +333,9 @@ test.describe("Room Visual Snapshots", () => {
           await gameRunsAtZeroSpeed(page, testInfo.project.name);
         });
       } catch (error) {
-        console.error(`${formattedName}: Failed to set game speed - ${error}`);
+        console.error(
+          `${formattedName} ${elapsed()}: Failed to set game speed - ${error}`,
+        );
         await page.screenshot({
           path: `test-results/speed-failure-${testInfo.project.name}.png`,
           fullPage: false,
@@ -443,11 +345,11 @@ test.describe("Room Visual Snapshots", () => {
 
       try {
         await test.step(`leaving crowns dialog`, async () => {
-          await exitCrownsDialog(page, testInfo.project.name);
+          await exitCrownsDialog(page, formattedName);
         });
       } catch (error) {
         console.error(
-          `${formattedName}: Failed to exit crowns dialog - ${error}`,
+          `${formattedName} ${elapsed()}: Failed to exit crowns dialog - ${error}`,
         );
         await page.screenshot({
           path: `test-results/crowns-failure-${testInfo.project.name}.png`,
@@ -473,7 +375,7 @@ test.describe("Room Visual Snapshots", () => {
 
           if (charactersCurrentRoomId !== previousRoomId) {
             console.log(
-              `${logHeader} will pre-load previous room: ${chalk.blue(previousRoomId)} to set correct entry point to target room: ${chalk.blue(includedTestRooms[0])} (was in room: ${chalk.blue(charactersCurrentRoomId)})`,
+              `${logHeader} ${elapsed()} will pre-load previous room: ${chalk.blue(previousRoomId)} to set correct entry point to target room: ${chalk.blue(includedTestRooms[0])} (was in room: ${chalk.blue(charactersCurrentRoomId)})`,
             );
 
             await navigateToRoom(logHeader, previousRoomId, false);
@@ -483,7 +385,7 @@ test.describe("Room Visual Snapshots", () => {
         await retryWithRecovery({
           async action(attempt) {
             console.log(
-              `${logHeader} Navigating to room: ${chalk.cyan(targetRoomId)}`,
+              `${logHeader} ${elapsed()} Navigating to room: ${chalk.cyan(targetRoomId)}`,
             );
 
             // Screenshot before navigation
@@ -530,7 +432,7 @@ test.describe("Room Visual Snapshots", () => {
           );
 
           console.log(
-            `${formattedName} ${chalk.cyanBright("🚪 room step:")} ${chalk.blue(roomId)} ${chalk.red("___")}`,
+            `${formattedName} ${elapsed()} ${chalk.cyanBright("🚪 room step:")} ${chalk.blue(roomId)} ${chalk.red("___")}`,
           );
 
           await navigateToRoom(logHeader, roomId);
@@ -544,7 +446,7 @@ test.describe("Room Visual Snapshots", () => {
             currentUncolourisedState = uncolourised;
 
             console.log(
-              `${logHeader} Taking screenshot for room: ${chalk.cyan(roomId)} (uncolourised: ${uncolourised})`,
+              `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} (uncolourised: ${uncolourised})`,
             );
             const screenshotStart = performance.now();
             await expect
@@ -558,7 +460,7 @@ test.describe("Room Visual Snapshots", () => {
                 maxDiffPixels: 0,
               });
             console.log(
-              `${logHeader} ...screenshot took`,
+              `${logHeader} ${elapsed()} ...screenshot took`,
               chalk.yellow(formatDuration(performance.now() - screenshotStart)),
             );
           }
