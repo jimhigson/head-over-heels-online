@@ -61,23 +61,29 @@ export const onConveyor: Mechanic<FreeItemTypes> = <
   }
 
   const {
+    config: { speed: configSpeed },
     state: { direction },
   } = standingOn;
+
+  const speedMultiplier = configSpeed ?? 1;
 
   /**
    * conveyors magically move quicker when heels is fighting against them, so that all
    * characters can only just stay still when walking against them, regardless of how
-   * fast the character walks
+   * fast the character walks. Only applies at the standard (1×) conveyor speed.
    */
 
   const heelsWalkingAgainst =
+    speedMultiplier === 1 &&
     isHeels(item) &&
     item.state.action === "moving" &&
     vectorClosestDirectionXy4(item.state.facing) ===
       oppositeDirection(direction);
 
   const conveyorSpeed =
-    heelsWalkingAgainst ? moveSpeedPixPerMs.heels : conveyorSpeedPixPerMs;
+    heelsWalkingAgainst ?
+      moveSpeedPixPerMs.heels
+    : conveyorSpeedPixPerMs * speedMultiplier;
 
   const conveyorVelocity = scaleXyz(unitVectors[direction], conveyorSpeed);
 

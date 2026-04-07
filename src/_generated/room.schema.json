@@ -340,6 +340,10 @@
                       "disappearing": {
                         "$ref": "#/definitions/r55"
                       },
+                      "speed": {
+                        "description": "speed multiplier — undefined is treated as 1 (original game speed)",
+                        "type": "number"
+                      },
                       "times": {
                         "$ref": "#/definitions/r37"
                       }
