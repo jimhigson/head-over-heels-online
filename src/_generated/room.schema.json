@@ -1177,6 +1177,10 @@
                   "config": {
                     "additionalProperties": false,
                     "properties": {
+                      "delay": {
+                        "description": "how long to delay until the first emitting? after this time the first emit will happen, then all others will continue at the period interval. undefined is treated the same as 0",
+                        "type": "number"
+                      },
                       "emits": {
                         "anyOf": [
                           {
@@ -1492,6 +1496,10 @@
                       },
                       "maximum": {
                         "$ref": "#/definitions/r60"
+                      },
+                      "maximumAtOnce": {
+                        "description": "How many items emitted from this emitter can be in the room at once? If undefined, no limit. If already this many items in the room, the items will have to be removed from the room before more can be emitted (for example, collecting an emitted pickup)",
+                        "type": "number"
                       },
                       "period": {
                         "description": "how long between emissions?",
@@ -2370,6 +2378,10 @@
     "r1": {
       "additionalProperties": false,
       "properties": {
+        "delay": {
+          "description": "how long to delay until the first emitting? after this time the first emit will happen, then all others will continue at the period interval. undefined is treated the same as 0",
+          "type": "number"
+        },
         "emits": {
           "$ref": "#/definitions/r2"
         },
@@ -2378,6 +2390,10 @@
         },
         "maximum": {
           "$ref": "#/definitions/r60"
+        },
+        "maximumAtOnce": {
+          "description": "How many items emitted from this emitter can be in the room at once? If undefined, no limit. If already this many items in the room, the items will have to be removed from the room before more can be emitted (for example, collecting an emitted pickup)",
+          "type": "number"
         },
         "period": {
           "description": "how long between emissions?",
@@ -3426,7 +3442,7 @@
       "type": "string"
     },
     "r60": {
-      "description": "how many should this emitter emit? Null for no limit",
+      "description": "how many total should this emitter emit? Null for no limit",
       "type": ["null", "number"]
     },
     "r61": {

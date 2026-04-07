@@ -63,6 +63,13 @@ export type BaseItemState<RoomItemId extends string = string> = {
 
   /** the roomTime when this item last had a force applied to it, and who did the pushing/acting */
   actedOnAt: TimedRelationWithOtherItemOnAxis<RoomItemId>;
+
+  /**
+   * if given and not undefined, the id of the emitter that created this item.
+   * The emitter can use this to count how many items it has created that are
+   * currently in the room
+   */
+  createdByEmitter?: RoomItemId;
 };
 
 export type ItemState<
