@@ -176,6 +176,19 @@ const coloredBrowserNames: Record<string, string> = {
   "mobile-safari": safariMobileColored,
 };
 
+const testStartTime = performance.now();
+
+export const elapsed = (): string => {
+  const ms = performance.now() - testStartTime;
+  const totalSeconds = Math.floor(ms / 1_000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  const millis = Math.floor(ms % 1_000);
+  return chalk.gray(
+    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(millis).padStart(3, "0")}`,
+  );
+};
+
 export const getProjectColour = (projectName: string): ChalkInstance => {
   const isMobile = projectName.includes("mobile");
   const baseColours: Record<string, ChalkInstance> = {

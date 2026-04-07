@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-24.04-arm
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
       - uses: actions/setup-node@v6
         with:
           node-version: 25.x
@@ -30,7 +30,7 @@ jobs:
           sort-by: "Size:desc"
       # The first action leaves HEAD on main, so re-checkout the PR merge
       # commit before running the second action
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Editor bundle size
         uses: preactjs/compressed-size-action@v2
         with:

@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { formatDuration } from "./formatDuration";
 import { logSelectorExistence } from "./logSelectorExistence";
 import { osSlowness } from "./osSlowness";
-import { formatProjectName } from "./projectName";
+import { elapsed, formatProjectName } from "./projectName";
 
 export const maximumWaitForStep = 15_000 * osSlowness;
 
@@ -88,37 +88,37 @@ export const startGame = async (
       let stepStart = performance.now();
       await page.goto("/?cheats=1&track=0");
       console.log(
-        `${formattedName}: goto took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: goto took ${formatDuration(performance.now() - stepStart)}`,
       );
       if (cancelled) return;
 
-      console.log(`${formattedName}: clicking Play The Game...`);
+      console.log(`${formattedName} ${elapsed()}: clicking Play The Game...`);
       stepStart = performance.now();
       await logSelectorExistence(page, playGameMenuItemSelector, formattedName);
       console.log(
-        `${formattedName}: logSelectorExistence (playGame) took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: logSelectorExistence (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
       if (cancelled) return;
 
       stepStart = performance.now();
       await page.click(playGameMenuItemSelector);
       console.log(
-        `${formattedName}: click (playGame) took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: click (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
       if (cancelled) return;
 
-      console.log(`${formattedName}: choosing campaign...`);
+      console.log(`${formattedName} ${elapsed()}: choosing campaign...`);
       stepStart = performance.now();
       await logSelectorExistence(page, campaignSelector, formattedName);
       console.log(
-        `${formattedName}: logSelectorExistence (campaign) took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: logSelectorExistence (campaign) took ${formatDuration(performance.now() - stepStart)}`,
       );
       if (cancelled) return;
 
       stepStart = performance.now();
       await page.click(campaignSelector);
       console.log(
-        `${formattedName}: click (campaign) took ${formatDuration(performance.now() - stepStart)}`,
+        `${formattedName} ${elapsed()}: click (campaign) took ${formatDuration(performance.now() - stepStart)}`,
       );
     })(),
     new Promise<never>((_, reject) =>

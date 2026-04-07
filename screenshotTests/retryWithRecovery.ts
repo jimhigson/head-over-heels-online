@@ -3,6 +3,8 @@ import type { Page } from "@playwright/test";
 import chalk from "chalk";
 
 import { formatDuration } from "./formatDuration";
+import { osSlowness } from "./osSlowness";
+import { elapsed } from "./projectName";
 
 export const retryWithRecovery = async <T>({
   action,
@@ -23,25 +25,27 @@ export const retryWithRecovery = async <T>({
 }): Promise<T> => {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     console.log(
-      `${logHeader} Attempting ${actionDescription} (attempt ${attempt}/${maxAttempts - 1})...`,
+      `${logHeader} ${elapsed()} Attempting ${actionDescription} (attempt ${attempt}/${maxAttempts - 1})...`,
     );
 
     const startTime = performance.now();
     try {
       const result = await action(attempt);
       console.log(
-        `${logHeader} ... succeeded after`,
+        `${logHeader} ${elapsed()} ... succeeded after`,
         chalk.yellow(formatDuration(performance.now() - startTime)),
       );
       return result;
     } catch (error) {
       console.log(
-        `${logHeader} ${chalk.red(`Failed on attempt ${attempt}`)}: ${error}`,
+        `${logHeader} ${elapsed()} ${chalk.red(`Failed on attempt ${attempt}`)}: ${error}`,
       );
 
       // Take a screenshot on failure
       const screenshotPath = `test-results/${screenshotPrefix}-attempt-${attempt}-failed.png`;
-      console.log(`${logHeader} Saving screenshot to ${screenshotPath}`);
+      console.log(
+        `${logHeader} ${elapsed()} Saving screenshot to ${screenshotPath}`,
+      );
       await page
         .screenshot({
           path: screenshotPath,
@@ -49,14 +53,16 @@ export const retryWithRecovery = async <T>({
         })
         .catch((screenshotError) => {
           console.log(
-            `${logHeader} Failed to save screenshot: ${screenshotError}`,
+            `${logHeader} ${elapsed()} Failed to save screenshot: ${screenshotError}`,
           );
         });
 
-      if (attempt < maxAttempts - 1 && recovery) {
-        await page.waitForTimeout(1_000);
-        await recovery(attempt);
-      } else if (attempt === maxAttempts - 1) {
+      if (attempt < maxAttempts - 1) {
+        await page.waitForTimeout(500 * osSlowness);
+        if (recovery) {
+          await recovery(attempt);
+        }
+      } else {
         throw new Error(
           `Failed ${actionDescription} after ${maxAttempts} attempts: ${error}`,
         );
