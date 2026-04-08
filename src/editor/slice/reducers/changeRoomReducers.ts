@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { type SliceCaseReducers } from "@reduxjs/toolkit";
+import { type SliceCaseReducers, type SliceSelectors } from "@reduxjs/toolkit";
 
 import type { EditorRoomId } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
@@ -16,37 +16,51 @@ export const changeRoomReducers = {
     changeCurrentRoomInPlace(state, roomId);
   },
 
-  roomBack(_state) {
+  roomBack(_state, { payload: n = 1 }: PayloadAction<number | undefined>) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
     const { editingRoomIdHistory } = state;
-    if (editingRoomIdHistory.back.length === 0) {
-      // no back history available
+    if (editingRoomIdHistory.back.length < n) {
       return;
     }
 
-    const previousRoomId = editingRoomIdHistory.back.pop() as EditorRoomId;
     editingRoomIdHistory.forward.push(state.currentlyEditingRoomId);
-    changeCurrentRoomInPlace(state, previousRoomId, true);
+    for (let i = 0; i < n - 1; i++) {
+      editingRoomIdHistory.forward.push(
+        editingRoomIdHistory.back.pop() as EditorRoomId,
+      );
+    }
+    const targetRoomId = editingRoomIdHistory.back.pop() as EditorRoomId;
+    changeCurrentRoomInPlace(state, targetRoomId, true);
   },
 
-  roomForward(_state) {
+  roomForward(_state, { payload: n = 1 }: PayloadAction<number | undefined>) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
     const { editingRoomIdHistory } = state;
-    if (editingRoomIdHistory.forward.length === 0) {
-      // no forward history available
+    if (editingRoomIdHistory.forward.length < n) {
       return;
     }
 
-    const nextRoomId = editingRoomIdHistory.forward.pop() as EditorRoomId;
     editingRoomIdHistory.back.push(state.currentlyEditingRoomId);
-    changeCurrentRoomInPlace(state, nextRoomId, true);
+    for (let i = 0; i < n - 1; i++) {
+      editingRoomIdHistory.back.push(
+        editingRoomIdHistory.forward.pop() as EditorRoomId,
+      );
+    }
+    const targetRoomId = editingRoomIdHistory.forward.pop() as EditorRoomId;
+    changeCurrentRoomInPlace(state, targetRoomId, true);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
+
+export const changeRoomSelectors = {
+  selectBackRooms: (state: LevelEditorState) => state.editingRoomIdHistory.back,
+  selectForwardRooms: (state: LevelEditorState) =>
+    state.editingRoomIdHistory.forward,
+} satisfies SliceSelectors<LevelEditorState>;
