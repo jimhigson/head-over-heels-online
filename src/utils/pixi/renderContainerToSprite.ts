@@ -1,6 +1,5 @@
 import type { Texture } from "pixi.js";
 
-import { range } from "iter-tools-es";
 import { AnimatedSprite } from "pixi.js";
 import { type Container, type Renderer, RenderTexture, Sprite } from "pixi.js";
 
@@ -10,7 +9,7 @@ import {
   animationSpeed,
   framesWithOriginalGameTimings,
 } from "../../game/render/createSprite";
-import { iterate } from "../iterate";
+import { range } from "../iterators/range";
 import { pixiContainerToString } from "./pixiContainerToString";
 import { UniqueTextureAnimatedSprite } from "./UniqueTextureAnimatedSprite";
 import { UniqueTextureSprite } from "./UniqueTextureSprite";
@@ -151,7 +150,7 @@ export const maybeRenderContainerToAnimatedSprite = <
     // if no animated sprites, create a single frame:
     1;
 
-  const textures = iterate(range(0, frameCount))
+  const textures = range(0, frameCount)
     .map((frameNo): Texture => {
       if (frameNo > 0) {
         for (const child of container.children) {

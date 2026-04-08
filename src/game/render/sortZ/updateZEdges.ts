@@ -1,9 +1,8 @@
 //# allFunctionsCalledOnLoad
 
-import { objectValues } from "iter-tools-es";
-
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 
+import { valuesIter } from "../../../utils/entries";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
 import { zComparator } from "./zComparator";
@@ -27,13 +26,14 @@ export const updateZEdges = <
   // this should not be done in-game, since the index can be kept between frames
   // and minimally updated
   spatialIndex: GridSpatialIndex<string, Tid, TItem> = new GridSpatialIndex(
-    objectValues(items),
+    valuesIter(items),
   ),
   /**
    * the nodes that have moved - nodes that did not move are not considered
-   *  - if not given, wil consider all
+   *  - if not given, will consider all.
+   * Must be re-iterable since it is iterated twice, hence Array or Set (not iterable type)
    */
-  moved: Iterable<TItem> = objectValues(items),
+  moved: Array<TItem> | Set<TItem> = Object.values(items),
   /**
    * if given, will create an incremental update starting from the previous edges
    */

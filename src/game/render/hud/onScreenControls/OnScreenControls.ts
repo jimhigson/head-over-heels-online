@@ -1,6 +1,5 @@
 import type { SetRequired } from "type-fest";
 
-import { objectValues } from "iter-tools-es";
 import { Container } from "pixi.js";
 
 import type { InputDirectionMode } from "../../../../store/slices/gameMenus/gameMenusSlice";
@@ -11,6 +10,7 @@ import type { HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import type { ButtonId } from "./OnScreenButtonRenderer";
 
 import { spritesheetData } from "../../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import { valuesIter } from "../../../../utils/entries";
 import { selectCurrentPlayableItem } from "../../../gameState/gameStateSelectors/selectPlayableItem";
 import { carryAndJumpButtonAppearance } from "./buttonAppearances/carryAndJumpButtonAppearance";
 import { carryButtonAppearance } from "./buttonAppearances/carryButtonAppearance";
@@ -154,7 +154,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
         button: { which },
       },
       output,
-    } of objectValues(buttons)) {
+    } of valuesIter(buttons)) {
       if (which === "menu" || which === "map") {
         this.#container.addChild(output);
       } else {
@@ -184,7 +184,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
       },
     } = this;
 
-    for (const buttonRenderer of objectValues(this.#hudElements.buttons)) {
+    for (const buttonRenderer of valuesIter(this.#hudElements.buttons)) {
       const {
         renderContext: {
           button: { actions },
@@ -228,7 +228,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     } = this.renderContext;
 
     this.#updateElementPositions(screenSize);
-    for (const b of objectValues(this.#hudElements.buttons)) {
+    for (const b of valuesIter(this.#hudElements.buttons)) {
       b.tick({
         ...tickContext,
         currentPlayable: selectCurrentPlayableItem(gameState),

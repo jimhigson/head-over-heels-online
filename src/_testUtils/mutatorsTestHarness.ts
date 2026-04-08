@@ -1,4 +1,3 @@
-import { first, objectValues } from "iter-tools-es";
 import { expect, vi } from "vitest";
 
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
@@ -34,7 +33,7 @@ import {
 } from "../model/modelTypes";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameOver } from "../store/slices/gameMenus/gameMenusSlice";
-import { iterate } from "../utils/iterate";
+import { valuesIter } from "../utils/entries";
 import { addXyz } from "../utils/vectors/vectors";
 import { gameStartedWithCampaign } from "./initStoreForTests";
 import { MockInputStateTracker } from "./MockInputStateTracker";
@@ -199,7 +198,7 @@ export const mutatorsTestHarness = () => {
       if (sourceRoom === undefined) {
         throw new Error(`Could not find room for ${playableName}`);
       }
-      const sourcePortal = iterate(objectValues(sourceRoom.items)).find(
+      const sourcePortal = valuesIter(sourceRoom.items).find(
         (i) => i.type === "portal" && i.config.toRoom === roomId,
       ) as ItemInPlay<"portal", TestCampaignRoomId>;
 
@@ -389,17 +388,20 @@ export const mutatorsTestHarness = () => {
           expect.fail(`Could not find heels abilities`);
         }
         const room = this.selectRoomOfPlayable(playableName);
-        heelsAbilities.carrying = first(
-          loadItemFromJson(
-            "carriedBlock",
-            {
-              type: "portableBlock",
-              config: { style: "cube" },
-              position: { x: 0, y: 0, z: 0 },
-            },
-            room!.roomJson,
-          ),
-        ) as ItemTypeUnion<PortableItemType, TestCampaignRoomId, string>;
+        const [carrying] = loadItemFromJson(
+          "carriedBlock",
+          {
+            type: "portableBlock",
+            config: { style: "cube" },
+            position: { x: 0, y: 0, z: 0 },
+          },
+          room!.roomJson,
+        );
+        heelsAbilities.carrying = carrying as ItemTypeUnion<
+          PortableItemType,
+          TestCampaignRoomId,
+          string
+        >;
       }
     },
     expectPlayableToBeStoodAtPortal<R extends TestCampaignRoomId>(

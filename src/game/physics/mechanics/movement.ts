@@ -1,4 +1,3 @@
-import { objectValues } from "iter-tools-es";
 import { Ticker } from "pixi.js";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
@@ -12,6 +11,7 @@ import { playablesInRoom, type RoomState } from "../../../model/RoomState";
 import { selectHasAllPlanetCrowns } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
+import { valuesIter } from "../../../utils/entries";
 import { nonZero } from "../../../utils/epsilon";
 import { randomFromArray } from "../../../utils/random/randomFromArray";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -80,7 +80,7 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
     };
   }
 
-  for (const player of objectValues(playablesInRoom(room.items))) {
+  for (const player of valuesIter(playablesInRoom(room.items))) {
     if (player === undefined) continue;
 
     const vectorXyToPlayer = subXy(player.state.position, position);

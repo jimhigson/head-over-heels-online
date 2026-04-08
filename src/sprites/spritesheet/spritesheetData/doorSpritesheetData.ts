@@ -1,10 +1,9 @@
 import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
 
-import { concat } from "iter-tools-es";
-
 import type { AxisXy, Xy } from "../../../utils/vectors/vectors";
 
 import { fromAllEntries } from "../../../utils/entries";
+import { concat } from "../../../utils/iterators/concat";
 import { addXy } from "../../../utils/vectors/vectors";
 
 // which sceneries have their own door styles?

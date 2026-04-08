@@ -3,7 +3,7 @@ import type { RoomJson } from "../../../model/RoomJson";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
-  iterateRoomItems,
+  roomItemsIterable,
   type RoomStateItems,
 } from "../../../model/RoomState";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -29,7 +29,7 @@ const floorsCombinedFootprint = <
 >(
   roomStateItems: RoomStateItems<RoomId, RoomItemId>,
 ) => {
-  const limits = iterateRoomItems(roomStateItems)
+  const limits = roomItemsIterable(roomStateItems)
     .filter(isFloor)
     .reduce(
       (

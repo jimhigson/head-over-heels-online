@@ -1,4 +1,3 @@
-import { objectValues } from "iter-tools-es";
 import { Ticker } from "pixi.js";
 
 import type { CharacterName } from "../../model/modelTypes";
@@ -8,7 +7,7 @@ import type { MovedItems, ProgressGameState } from "./progressGameState";
 
 import { playablesInRoom, type RoomStateItems } from "../../model/RoomState";
 import { emptyObject } from "../../utils/empty";
-import { iterate } from "../../utils/iterate";
+import { valuesIter } from "../../utils/entries";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 
@@ -41,8 +40,8 @@ export const progressWithSubTicks =
         gameState,
       )?.items;
       if (roomItemsAfterSwop !== undefined) {
-        const playablesIter = iterate(
-          objectValues(playablesInRoom(roomItemsAfterSwop)),
+        const playablesIter = valuesIter(
+          playablesInRoom(roomItemsAfterSwop),
         ).filter((p) => p !== undefined);
 
         for (const playable of playablesIter) {

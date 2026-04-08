@@ -1,14 +1,11 @@
-import { objectValues } from "iter-tools-es";
-
 import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { RoomJson } from "../../../model/RoomJson";
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type JsonItem } from "../../../model/json/JsonItem";
-import { iterate } from "../../../utils/iterate";
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
@@ -60,8 +57,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   let adjustedPositionBlocks = naturalPositionBlocks;
   let adjustedSizeBlocks = naturalAabbBlocks;
 
-  const doorsIter = iterate(objectValues<JsonItemUnion>(roomJson.items)).filter(
-    (jsonItem) => jsonItem.type === "door",
+  const doorsIter = roomJsonItemsIterable(roomJson).filter(
+    (jsonItem): jsonItem is JsonItem<"door", RoomId, RoomItemId> =>
+      jsonItem.type === "door",
   );
 
   // not possible in the original game where floors are always at height 0,

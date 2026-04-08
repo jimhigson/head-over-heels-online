@@ -1,13 +1,12 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import { first, objectValues } from "iter-tools-es";
 
 import type { EditorCampaign } from "../../editorTypes";
 
-import { iterateRoomJsonItems } from "../../../model/RoomJson";
-import { keysIter } from "../../../utils/entries";
-import { iterate } from "../../../utils/iterate";
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { keysIter, valuesIter } from "../../../utils/entries";
+import { first } from "../../../utils/iterators/first";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { type LevelEditorState } from "../levelEditorSlice";
 
@@ -33,13 +32,13 @@ export const saveAndLoadReducers = {
     // choose which room to start the editor in.
     const startingRoom =
       // First look for head's room as the traditional starting room:
-      iterate(objectValues(campaign.rooms)).find((room) => {
-        return iterateRoomJsonItems(room).some(
+      valuesIter(campaign.rooms).find((room) => {
+        return roomJsonItemsIterable(room).some(
           (item) => item.type === "player" && item.config.which === "head",
         );
       })?.id ??
-      iterate(objectValues(campaign.rooms)).find((room) => {
-        return iterateRoomJsonItems(room).some(
+      valuesIter(campaign.rooms).find((room) => {
+        return roomJsonItemsIterable(room).some(
           (item) => item.type === "player" && item.config.which === "heels",
         );
       })?.id ??

@@ -14,7 +14,7 @@ import type {
 import type { RoomState } from "../../../model/RoomState";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
-import { iterateRoomItems } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/RoomState";
 import { toggleUserSetting } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
@@ -116,7 +116,7 @@ export const applyModifiesList = <
 
   for (const modifiesItem of modifiesList) {
     // loop here because there could be multiple items with the same jsonItemId
-    for (const roomItem of iterateRoomItems(room.items)) {
+    for (const roomItem of roomItemsIterable(room.items)) {
       const { targets } = modifiesItem;
 
       if (roomItem.type !== modifiesItem.expectType) {

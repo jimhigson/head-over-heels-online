@@ -1,5 +1,3 @@
-import { objectEntries, objectKeys } from "iter-tools-es";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ObjectKeys = <K extends keyof any>(
   o: Partial<Record<K, unknown>>,
@@ -25,9 +23,41 @@ export type ObjectEntriesIter = <K extends keyof any, V>(
 ) => IterableIterator<[K, V]>;
 
 export const entries = Object.entries as ObjectEntries;
-export const objectEntriesIter = objectEntries as ObjectEntriesIter;
 export const keys = Object.keys as ObjectKeys;
-export const keysIter = objectKeys as ObjectKeysIter;
+
+/** Lazily iterate entries of a plain object. Only plain objects are supported. */
+function* objectEntriesIterGen<K extends keyof any, V>(
+  o: Partial<Record<K, V>>,
+): IterableIterator<[K, V]> {
+  for (const k in o) {
+    yield [k as K, o[k] as V];
+  }
+}
+export const objectEntriesIter = objectEntriesIterGen as ObjectEntriesIter;
+
+/** Lazily iterate keys of a plain object. Only plain objects are supported. */
+function* objectKeysIterGen<K extends keyof any>(
+  o: Partial<Record<K, unknown>>,
+): IterableIterator<K> {
+  for (const k in o) {
+    yield k as K;
+  }
+}
+export const keysIter = objectKeysIterGen as ObjectKeysIter;
+
+export type ObjectValuesIter = <V>(
+  o: Partial<Record<keyof any, V>>,
+) => IterableIterator<V>;
+
+/** Lazily iterate values of a plain object. Only plain objects are supported. */
+function* objectValuesIterGen<V>(
+  o: Partial<Record<keyof any, V>>,
+): IterableIterator<V> {
+  for (const k in o) {
+    yield o[k] as V;
+  }
+}
+export const valuesIter = objectValuesIterGen as ObjectValuesIter;
 
 export type ObjectFromEntries = <K extends keyof any, V>(
   o: Iterable<[K, V]>,

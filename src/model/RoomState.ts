@@ -1,13 +1,11 @@
 import type { Simplify, ValueOf } from "type-fest";
 
-import { objectEntries, objectValues } from "iter-tools-es";
-
 import type { GridSpatialIndex } from "../game/physics/gridSpace/GridSpatialIndex";
 import type { SceneryName } from "../sprites/planets";
 import type { ItemInPlay, UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import type { RoomJson } from "./RoomJson";
 
-import { iterate } from "../utils/iterate";
+import { objectEntriesIter, valuesIter } from "../utils/entries";
 
 /*type RoomItemIdWithKnownIds = (
   | "head"
@@ -70,25 +68,14 @@ export const roomItemsArray = <
   return Object.values(roomItems);
 };
 
-export const roomItemsIterable = <
+/** Re-export of valuesIter under a more convenient type specialised for room items */
+export const roomItemsIterable = valuesIter as <
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
 >(
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
-): IterableIterator<ValueOf<typeof roomItems>> => {
-  return objectValues(roomItems);
-};
-
-export const iterateRoomItems = <
-  RoomId extends string,
-  RoomItemId extends string,
-  ScN extends SceneryName = SceneryName,
->(
-  roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
-) => {
-  return iterate(roomItemsIterable(roomItems));
-};
+) => IterableIterator<ValueOf<RoomStateItems<RoomId, RoomItemId, ScN>>>;
 
 export const iterateRoomItemEntries = <
   RoomId extends string,
@@ -97,9 +84,9 @@ export const iterateRoomItemEntries = <
 >(
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
 ) => {
-  return iterate(objectEntries(roomItems)) as IteratorObject<
-    [RoomItemId, ValueOf<typeof roomItems>]
-  >;
+  return objectEntriesIter(
+    roomItems as Partial<Record<RoomItemId, ValueOf<typeof roomItems>>>,
+  ) as IterableIterator<[RoomItemId, ValueOf<typeof roomItems>]>;
 };
 
 /**

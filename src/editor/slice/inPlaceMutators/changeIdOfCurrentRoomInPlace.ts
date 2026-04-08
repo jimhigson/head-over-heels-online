@@ -1,9 +1,8 @@
-import { objectValues } from "iter-tools-es";
-
 import type { EditorJsonItem, EditorRoomId } from "../../../editor/editorTypes";
 import type { LevelEditorState } from "../../../editor/slice/levelEditorSlice";
 
-import { iterateRoomJsonItems } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { valuesIter } from "../../../utils/entries";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const changeIdOfCurrentRoomInPlace = (
@@ -13,9 +12,9 @@ export const changeIdOfCurrentRoomInPlace = (
   const prevRoomId = state.currentlyEditingRoomId;
   const prevRoom = selectCurrentRoomFromLevelEditorState(state);
 
-  for (const room of objectValues(state.campaignInProgress.rooms)) {
+  for (const room of valuesIter(state.campaignInProgress.rooms)) {
     // update any doors and teleporters that reference the old room id
-    iterateRoomJsonItems(room)
+    roomJsonItemsIterable(room)
       .filter(
         (
           item,

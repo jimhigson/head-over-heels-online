@@ -6,7 +6,6 @@ import type { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFil
 import type { AppSpritesheet } from "./loadedSpriteSheet";
 import type { TextureId } from "./spritesheetData/spriteSheetData";
 
-import { iterate } from "../../utils/iterate";
 import {
   spritesheetData,
   spritesheetSize,
@@ -50,7 +49,7 @@ const reifyTextureIds = (
   textureIdsOrPredicate: TextureIdsListOrPredicate,
 ): Iterable<TextureId> => {
   return typeof textureIdsOrPredicate === "function" ?
-      iterate(textureIds).filter(textureIdsOrPredicate)
+      Iterator.from(textureIds).filter(textureIdsOrPredicate)
     : textureIdsOrPredicate;
 };
 

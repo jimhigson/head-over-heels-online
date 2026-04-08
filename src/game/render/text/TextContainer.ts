@@ -1,6 +1,5 @@
 import type { Color, Renderer } from "pixi.js";
 
-import { size } from "iter-tools-es";
 import { Container, Rectangle, Sprite } from "pixi.js";
 
 import type { PokeableNumber } from "../../../model/ItemStateMap";
@@ -11,6 +10,7 @@ import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { size } from "../../../utils/iterators/size";
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
 import { OutlineFilter } from "../filters/outlineFilter";
 

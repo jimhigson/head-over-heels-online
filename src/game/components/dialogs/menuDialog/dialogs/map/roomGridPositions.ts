@@ -1,5 +1,3 @@
-import { objectValues } from "iter-tools-es";
-
 import type { JsonItem } from "../../../../../../model/json/JsonItem";
 import type { Campaign } from "../../../../../../model/modelTypes";
 import type { SubRooms } from "../../../../../../model/RoomJson";
@@ -10,8 +8,7 @@ import type {
 } from "../../../../../../utils/vectors/vectors";
 
 import { exitGameRoomId } from "../../../../../../model/json/ItemConfigMap";
-import { entries } from "../../../../../../utils/entries";
-import { iterate } from "../../../../../../utils/iterate";
+import { objectEntriesIter, valuesIter } from "../../../../../../utils/entries";
 import { unitVectors } from "../../../../../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -117,7 +114,7 @@ function* _roomGridPositions<RoomId extends string>({
   }
 
   const doors = [
-    ...iterate(objectValues(room.items))
+    ...valuesIter(room.items)
       .filter((item) => item.type === "door")
       // DOORS ARE NOT DETECTED AS IN THE SUB_ROOM - use closest instead!!
       .filter(
@@ -177,7 +174,7 @@ function* _roomGridPositions<RoomId extends string>({
     for (const [
       nextSubRoomId,
       { gridPosition: nextSubroomGridPosition },
-    ] of iterate(entries(subRooms))) {
+    ] of objectEntriesIter(subRooms)) {
       if (nextSubRoomId === subRoomId) {
         continue;
       }

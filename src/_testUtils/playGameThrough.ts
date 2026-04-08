@@ -1,5 +1,3 @@
-import { cycle } from "iter-tools-es";
-
 import type {
   GameStateWithMockInput,
   MockInputStateTracker,
@@ -9,6 +7,7 @@ import type { FrameRateSpec } from "./testFrameRates";
 import { progressGameState } from "../game/mainLoop/progressGameState";
 import { progressWithSubTicks } from "../game/mainLoop/progressWithSubTicks";
 import { maxSubTickDeltaMs } from "../game/physics/mechanicsConstants";
+import { cycle } from "../utils/iterators/cycle";
 
 type FrameCallback = (
   gameState: GameStateWithMockInput,

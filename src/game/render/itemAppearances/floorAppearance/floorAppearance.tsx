@@ -6,7 +6,7 @@ import type { Subset } from "../../../../utils/subset";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
-import { iterateRoomItems, type RoomState } from "../../../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
 import { getAmbientSwoppedColour } from "../../../../sprites/spritesheet/variants/currentRoomSpritesheetVariant";
@@ -65,7 +65,7 @@ const floorLeftRightCutOffMask = <
 
   const offsetX = projectWorldXyzToScreenX(subXy(originXyz, floorPosition));
 
-  const { left, right } = iterateRoomItems(room.items)
+  const { left, right } = roomItemsIterable(room.items)
     .filter(isWallOrDoorFrame)
     .filter((item) => {
       const {

@@ -1,4 +1,3 @@
-import { first } from "iter-tools-es";
 import { describe, expect, test } from "vitest";
 
 import type { FreeItem } from "../physics/itemPredicates";
@@ -15,19 +14,18 @@ import {
 describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
   test("prefers blocks over conveyors even if the conveyor has more overlap", () => {
     const roomJson = basicEmptyRoom("firstRoom");
+    const [movable] = loadItemFromJson(
+      "movable",
+      {
+        type: "pushableBlock",
+        config: {},
+        position: { x: 2.1, y: 0, z: 1 },
+      },
+      roomJson,
+      {},
+    );
     const result = findStandingOnWithHighestPriorityAndMostOverlap(
-      first(
-        loadItemFromJson(
-          "movable",
-          {
-            type: "pushableBlock",
-            config: {},
-            position: { x: 2.1, y: 0, z: 1 },
-          },
-          roomJson,
-          {},
-        ),
-      ) as FreeItem<string, string>,
+      movable as FreeItem<string, string>,
       [
         ...loadItemFromJson(
           "conv",
@@ -62,19 +60,18 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
 
   test("given two blocks, choses one with most overlap", () => {
     const roomJson = basicEmptyRoom("firstRoom");
+    const [movable] = loadItemFromJson(
+      "movable",
+      {
+        type: "pushableBlock",
+        config: {},
+        position: { x: 2.2, y: 0, z: 1 },
+      },
+      roomJson,
+      {},
+    );
     const result = findStandingOnWithHighestPriorityAndMostOverlap(
-      first(
-        loadItemFromJson(
-          "movable",
-          {
-            type: "pushableBlock",
-            config: {},
-            position: { x: 2.2, y: 0, z: 1 },
-          },
-          roomJson,
-          {},
-        ),
-      ) as FreeItem<string, string>,
+      movable as FreeItem<string, string>,
       [
         ...loadItemFromJson(
           "block1",
@@ -111,31 +108,27 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
 describe("spatiallyCheckStandingOn", () => {
   test("simple case of being directly on top -> is standing on", () => {
     const roomJson = basicEmptyRoom("firstRoom");
-    const playable = first(
-      loadItemFromJson(
-        "player",
-        {
-          type: "player",
-          config: { which: "heels" },
-          position: { x: 2, y: 0, z: 1 },
-        },
-        roomJson,
-        {},
-      ),
+    const [playable] = loadItemFromJson(
+      "player",
+      {
+        type: "player",
+        config: { which: "heels" },
+        position: { x: 2, y: 0, z: 1 },
+      },
+      roomJson,
+      {},
     );
 
-    const itemMaybeBeingStoodOn = first(
-      loadItemFromJson(
-        "block",
-        {
-          type: "block",
-          config: { style: "organic" },
-          position: { x: 2, y: 0, z: 0 },
-        },
-        roomJson,
-        {},
-      ),
-    )!;
+    const [itemMaybeBeingStoodOn] = loadItemFromJson(
+      "block",
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 2, y: 0, z: 0 },
+      },
+      roomJson,
+      {},
+    );
 
     const result = spatiallyCheckStandingOn(
       playable as FreeItem<string, string>,
@@ -147,36 +140,32 @@ describe("spatiallyCheckStandingOn", () => {
 
   test("simple case of being very slightly inside item in but mostly above with zero allowed overlap", () => {
     const roomJson = basicEmptyRoom("firstRoom");
-    const playable = first(
-      loadItemFromJson(
-        "player",
-        {
-          type: "player",
-          config: { which: "heels" },
-          position: {
-            x: 2,
-            y: 0,
-            // overlapping by 1% of a block height
-            z: 0.99,
-          },
+    const [playable] = loadItemFromJson(
+      "player",
+      {
+        type: "player",
+        config: { which: "heels" },
+        position: {
+          x: 2,
+          y: 0,
+          // overlapping by 1% of a block height
+          z: 0.99,
         },
-        roomJson,
-        {},
-      ),
+      },
+      roomJson,
+      {},
     );
 
-    const itemMaybeBeingStoodOn = first(
-      loadItemFromJson(
-        "block",
-        {
-          type: "block",
-          config: { style: "organic" },
-          position: { x: 2, y: 0, z: 0 },
-        },
-        roomJson,
-        {},
-      ),
-    )!;
+    const [itemMaybeBeingStoodOn] = loadItemFromJson(
+      "block",
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 2, y: 0, z: 0 },
+      },
+      roomJson,
+      {},
+    );
 
     const result = spatiallyCheckStandingOn(
       playable as FreeItem<string, string>,
@@ -189,36 +178,32 @@ describe("spatiallyCheckStandingOn", () => {
 
   test("simple case of being very slightly inside item in but mostly above", () => {
     const roomJson = basicEmptyRoom("firstRoom");
-    const playable = first(
-      loadItemFromJson(
-        "player",
-        {
-          type: "player",
-          config: { which: "heels" },
-          position: {
-            x: 2,
-            y: 0,
-            // overlapping by 1% of a block height
-            z: 0.99,
-          },
+    const [playable] = loadItemFromJson(
+      "player",
+      {
+        type: "player",
+        config: { which: "heels" },
+        position: {
+          x: 2,
+          y: 0,
+          // overlapping by 1% of a block height
+          z: 0.99,
         },
-        roomJson,
-        {},
-      ),
+      },
+      roomJson,
+      {},
     );
 
-    const itemMaybeBeingStoodOn = first(
-      loadItemFromJson(
-        "block",
-        {
-          type: "block",
-          config: { style: "organic" },
-          position: { x: 2, y: 0, z: 0 },
-        },
-        roomJson,
-        {},
-      ),
-    )!;
+    const [itemMaybeBeingStoodOn] = loadItemFromJson(
+      "block",
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 2, y: 0, z: 0 },
+      },
+      roomJson,
+      {},
+    );
 
     const result = spatiallyCheckStandingOn(
       playable as FreeItem<string, string>,
@@ -231,31 +216,27 @@ describe("spatiallyCheckStandingOn", () => {
 
   test("simple case of being very slightly overlapping in z, but not in x or y", () => {
     const roomJson = basicEmptyRoom("firstRoom");
-    const playable = first(
-      loadItemFromJson(
-        "player",
-        {
-          type: "player",
-          config: { which: "heels" },
-          position: { x: 3, y: 0, z: 0.99 },
-        },
-        roomJson,
-        {},
-      ),
+    const [playable] = loadItemFromJson(
+      "player",
+      {
+        type: "player",
+        config: { which: "heels" },
+        position: { x: 3, y: 0, z: 0.99 },
+      },
+      roomJson,
+      {},
     );
 
-    const itemMaybeBeingStoodOn = first(
-      loadItemFromJson(
-        "block",
-        {
-          type: "block",
-          config: { style: "organic" },
-          position: { x: 2, y: 0, z: 0 },
-        },
-        roomJson,
-        {},
-      ),
-    )!;
+    const [itemMaybeBeingStoodOn] = loadItemFromJson(
+      "block",
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: { x: 2, y: 0, z: 0 },
+      },
+      roomJson,
+      {},
+    );
 
     const result = spatiallyCheckStandingOn(
       playable as FreeItem<string, string>,
@@ -267,31 +248,27 @@ describe("spatiallyCheckStandingOn", () => {
 
   test("case of being adjacent on the same level but to the side and slightly overlapping in x", () => {
     const roomJson = basicEmptyRoom("firstRoom");
-    const playable = first(
-      loadItemFromJson(
-        "player",
-        {
-          type: "player",
-          config: { which: "heels" },
-          position: originXyz, // <- doesn't matter, will be overwritten soon
-        },
-        roomJson,
-        {},
-      ),
-    )!;
+    const [playable] = loadItemFromJson(
+      "player",
+      {
+        type: "player",
+        config: { which: "heels" },
+        position: originXyz, // <- doesn't matter, will be overwritten soon
+      },
+      roomJson,
+      {},
+    );
 
-    const itemMaybeBeingStoodOn = first(
-      loadItemFromJson(
-        "block",
-        {
-          type: "block",
-          config: { style: "organic" },
-          position: originXyz, // <- doesn't matter, will be overwritten soon
-        },
-        roomJson,
-        {},
-      ),
-    )!;
+    const [itemMaybeBeingStoodOn] = loadItemFromJson(
+      "block",
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: originXyz, // <- doesn't matter, will be overwritten soon
+      },
+      roomJson,
+      {},
+    );
 
     playable.state.position = { x: 4.1, y: 0, z: 2 };
     itemMaybeBeingStoodOn.state.position = { x: blockSizePx.x, y: 0, z: 0 };
@@ -306,31 +283,27 @@ describe("spatiallyCheckStandingOn", () => {
 
   test("found bug case", () => {
     const roomJson = basicEmptyRoom("firstRoom");
-    const playable = first(
-      loadItemFromJson(
-        "player",
-        {
-          type: "player",
-          config: { which: "heels" },
-          position: originXyz, // <- doesn't matter, will be overwritten soon
-        },
-        roomJson,
-        {},
-      ),
-    )!;
+    const [playable] = loadItemFromJson(
+      "player",
+      {
+        type: "player",
+        config: { which: "heels" },
+        position: originXyz, // <- doesn't matter, will be overwritten soon
+      },
+      roomJson,
+      {},
+    );
 
-    const itemMaybeBeingStoodOn = first(
-      loadItemFromJson(
-        "block",
-        {
-          type: "block",
-          config: { style: "organic" },
-          position: originXyz, // <- doesn't matter, will be overwritten soon
-        },
-        roomJson,
-        {},
-      ),
-    )!;
+    const [itemMaybeBeingStoodOn] = loadItemFromJson(
+      "block",
+      {
+        type: "block",
+        config: { style: "organic" },
+        position: originXyz, // <- doesn't matter, will be overwritten soon
+      },
+      roomJson,
+      {},
+    );
 
     playable.state.position = {
       // slightly overlapping in x (player is 12 wide)

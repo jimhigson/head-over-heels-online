@@ -1,7 +1,7 @@
 import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 import type { RoomJson } from "../../RoomJson";
 
-import { iterateRoomJsonItems } from "../../RoomJson";
+import { roomJsonItemsIterable } from "../../RoomJson";
 import { wallTimes } from "../../times";
 
 export const roomJsonMatchers = {
@@ -13,7 +13,7 @@ export const roomJsonMatchers = {
     },
   ) {
     // Find all floors in the room
-    const floors = Array.from(iterateRoomJsonItems(received)).filter(
+    const floors = Array.from(roomJsonItemsIterable(received)).filter(
       (item) => item.type === "floor",
     );
 
@@ -70,7 +70,7 @@ export const roomJsonMatchers = {
     },
   ) {
     // Find walls with the specified direction
-    const walls = Array.from(iterateRoomJsonItems(received))
+    const walls = Array.from(roomJsonItemsIterable(received))
       .filter((item) => item.type === "wall")
       .filter((wall) => wall.config.direction === expected.direction);
 

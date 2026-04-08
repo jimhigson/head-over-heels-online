@@ -1,7 +1,5 @@
 import type { AllUnionFields } from "type-fest";
 
-import { first } from "iter-tools-es";
-
 import type {
   ItemInPlay,
   UnionOfAllItemInPlayTypes,
@@ -17,7 +15,7 @@ import type { GameState } from "../GameState";
 
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
 import {
-  iterateRoomItems,
+  roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
@@ -103,7 +101,7 @@ const findDestinationPortal = <
 ): ItemInPlay<"portal", RoomId, RoomItemId> | undefined => {
   switch (changeType) {
     case "portal":
-      return iterateRoomItems(toRoom.items).find(
+      return roomItemsIterable(toRoom.items).find(
         (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
           isPortal(i) &&
           i.config.toRoom === fromRoom.id &&
@@ -119,7 +117,7 @@ const findDestinationPortal = <
 
     case "level-select":
       return (
-        iterateRoomItems(toRoom.items).find(
+        roomItemsIterable(toRoom.items).find(
           (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // find a door coming from the right room (if the level select was from
@@ -131,14 +129,14 @@ const findDestinationPortal = <
           // fall back to horizontal/vertical portal:
         ) ??
         // find a door in the right direction:
-        iterateRoomItems(toRoom.items).find(
+        roomItemsIterable(toRoom.items).find(
           (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // any horizontal portal (ie, not floor/ceiling)
             i.config.direction.z === 0,
           // fall back to horizontal/vertical portal:
         ) ??
-        iterateRoomItems(toRoom.items).find(
+        roomItemsIterable(toRoom.items).find(
           (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
             isPortal(i) &&
             // any ceiling portal - the floor would mean falling
@@ -146,7 +144,7 @@ const findDestinationPortal = <
             i.config.direction.z > 0,
         ) ??
         // fall back to any portal:
-        iterateRoomItems(toRoom.items).find(isPortal)
+        roomItemsIterable(toRoom.items).find(isPortal)
       );
 
     default:
@@ -208,7 +206,7 @@ const findTeleporterDestinationPosition = <
   }
 
   if (destinationItem === undefined) {
-    for (const teleporter of iterateRoomItems(toRoom.items).filter(
+    for (const teleporter of roomItemsIterable(toRoom.items).filter(
       isTeleporter,
     )) {
       if (teleporter === sourceItem) {
@@ -570,12 +568,10 @@ export const changeCharacterRoom = <
   }
 
   if (log) {
-    const collisionInDestinationRoom = first(
-      collisionItemWithIndex(
-        playableItem,
-        toRoom[roomSpatialIndexKey],
-        (item) => !isPortal(item) && isSolid(item),
-      ),
+    const [collisionInDestinationRoom] = collisionItemWithIndex(
+      playableItem,
+      toRoom[roomSpatialIndexKey],
+      (item) => !isPortal(item) && isSolid(item),
     );
     if (collisionInDestinationRoom !== undefined) {
       console.warn(

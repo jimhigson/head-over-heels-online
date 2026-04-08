@@ -5,7 +5,6 @@ import type { FreeItem } from "../physics/itemPredicates";
 import type { CollideableItem } from "./aabbCollision";
 
 import { epsilon } from "../../utils/epsilon";
-import { iterate } from "../../utils/iterate";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
 import { isSolid } from "../physics/itemPredicates";
 import { collision2Items } from "./aabbCollision";
@@ -119,7 +118,7 @@ export const findStandingOnWithHighestPriorityAndMostOverlap = <
   item: FreeItem<RoomId, RoomItemId>,
   itemsMaybeBeingStoodOn: Iterable<Item>,
 ): Item | undefined => {
-  const potentiallyStoodOn = iterate(itemsMaybeBeingStoodOn).filter((i) =>
+  const potentiallyStoodOn = Iterator.from(itemsMaybeBeingStoodOn).filter((i) =>
     spatiallyCheckStandingOn(item, i),
   );
 

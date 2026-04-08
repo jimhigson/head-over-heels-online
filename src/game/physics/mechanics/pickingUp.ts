@@ -2,7 +2,7 @@ import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { HeelsAbilities } from "../../../model/ItemStateMap";
 import type { GameState } from "../../gameState/GameState";
 
-import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
@@ -34,7 +34,9 @@ export const pickingUp = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
-  const portableRoomItemsIter = iterateRoomItems(room.items).filter(isPortable);
+  const portableRoomItemsIter = roomItemsIterable(room.items).filter(
+    isPortable,
+  );
   const itemToPickup =
     carrying === null ? findItemToPickup(carrier, room) : undefined;
 
@@ -90,7 +92,7 @@ export const findItemToPickup = <
     // can only pick up deadly items if you have a shield:
     (hasShield || !isDeadly(i));
 
-  const portableItemsIter = iterateRoomItems(room.items).filter(
+  const portableItemsIter = roomItemsIterable(room.items).filter(
     itemIsPortableForCarrier,
   );
 

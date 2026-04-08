@@ -20,7 +20,6 @@ import {
   wallTimes,
 } from "../../../../model/times";
 import { keys } from "../../../../utils/entries";
-import { iterate } from "../../../../utils/iterate";
 import { eachAxis } from "../../../../utils/vectors/eachAxis";
 import {
   addXyz,
@@ -170,7 +169,7 @@ function* changeWallsAndDoorsForFloorChangeInPlace(
   const floorOldEnd = addXyz(floor.position, floorOldTimes);
   const floorNewEnd = addXyz(floorNewPosition, floorNewTimes);
 
-  for (const [id, item] of iterate(items)) {
+  for (const [id, item] of Iterator.from(items)) {
     if (item.type === "wall" && item.position.z !== floor.position.z) {
       continue;
     }

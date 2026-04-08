@@ -2,7 +2,7 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { Xy, Xyz } from "../../../utils/vectors/vectors";
 
-import { iterateRoomJsonItems, type RoomJson } from "../../../model/RoomJson";
+import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import { addXyz, type DirectionXy4 } from "../../../utils/vectors/vectors";
@@ -49,7 +49,7 @@ export function* maybeLoadExtraCornerShadow<
   >();
 
   // first, collect stats on the json walls in the room:
-  for (const jsonItem of iterateRoomJsonItems(roomJson)) {
+  for (const jsonItem of roomJsonItemsIterable(roomJson)) {
     switch (jsonItem.type) {
       case "wall":
         addDirectionalItemToLocationMap(jsonItem, wallLocations);

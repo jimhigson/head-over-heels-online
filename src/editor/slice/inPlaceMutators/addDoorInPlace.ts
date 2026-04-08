@@ -11,7 +11,6 @@ import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { keys } from "../../../utils/entries";
-import { iterate } from "../../../utils/iterate";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   oppositeDirection,
@@ -46,8 +45,8 @@ const getDestinationRoom = ({
     subRoomId,
   });
 
-  const existingRoomGridPositionSpec = iterate(gridPositions).find(
-    ({ gridPosition }) => xyzEqual(gridPosition, unitVectors[direction]),
+  const existingRoomGridPositionSpec = gridPositions.find(({ gridPosition }) =>
+    xyzEqual(gridPosition, unitVectors[direction]),
   );
 
   if (existingRoomGridPositionSpec) {

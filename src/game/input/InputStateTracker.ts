@@ -15,7 +15,6 @@ import {
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
-import { iterate } from "../../utils/iterate";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -365,7 +364,7 @@ export class InputStateTracker {
       const [singlePressedNow] = pressVs;
 
       const previousFramePressVectors = [
-        ...iterate(this.#frameInputBuffer)
+        ...Iterator.from(this.#frameInputBuffer)
           .drop(1)
           .map((buffer) => [
             ...this.#pressVectors(buffer, directionsXy4, unitVectors),

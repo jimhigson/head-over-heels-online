@@ -13,7 +13,7 @@ import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
 import type { RoomRendererType } from "./RoomRendererType";
 
 import {
-  iterateRoomItems,
+  roomItemsIterable,
   roomSpatialIndexKey,
 } from "../../../model/RoomState";
 import { zxSpectrumColor } from "../../../originalGame";
@@ -269,7 +269,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         {
           ...givenTickContext,
           // if we have never rendered before, consider that all items have moved:
-          movedItems: new Set(iterateRoomItems(this.renderContext.room.items)),
+          movedItems: new Set(roomItemsIterable(this.renderContext.room.items)),
         }
       );
 

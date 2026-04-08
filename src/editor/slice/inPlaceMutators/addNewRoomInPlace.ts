@@ -1,5 +1,3 @@
-import { range } from "iter-tools-es";
-
 import type { SceneryName } from "../../../sprites/planets";
 import type { Xy } from "../../../utils/vectors/vectors";
 import type {
@@ -14,7 +12,6 @@ import {
   type ZxSpectrumRoomColour,
   zxSpectrumRoomHue,
 } from "../../../originalGame";
-import { iterate } from "../../../utils/iterate";
 import { randomFromArray } from "../../../utils/random/randomFromArray";
 import { starterRoom } from "../createStarterRoom";
 import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";
@@ -152,10 +149,14 @@ export const addNewRoomInPlace = ({
   roomSize = defaultRoomSize,
   gridPositions = [{ x: 0, y: 0 }],
 }: AddNewRoomInPlaceOptions): EditorRoomJson => {
-  const firstUntakenRoomNumber = iterate(range({ start: 0 })).find(
-    (n) =>
-      state.campaignInProgress.rooms[`room_${n}` as EditorRoomId] === undefined,
-  );
+  let firstUntakenRoomNumber = 0;
+  while (
+    state.campaignInProgress.rooms[
+      `room_${firstUntakenRoomNumber}` as EditorRoomId
+    ] !== undefined
+  ) {
+    firstUntakenRoomNumber++;
+  }
 
   const newRoomId = `room_${firstUntakenRoomNumber}` as EditorRoomId;
 

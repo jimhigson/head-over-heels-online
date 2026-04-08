@@ -5,7 +5,7 @@ import type { EditorRoomItemId } from "../../editorTypes";
 import { hasCollisionItemWithIndex } from "../../../game/collision/aabbCollision";
 import { updateItemPosition } from "../../../game/gameState/mutators/updateItemPosition";
 import {
-  iterateRoomItems,
+  roomItemsIterable,
   roomSpatialIndexKey,
 } from "../../../model/RoomState";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
@@ -28,7 +28,7 @@ export const mutateRoomMoveItemForDrag = (
 ) => {
   // could be multiple in-play items to move for a single json id - find them all:
   const itemsToDrag = Array.from(
-    iterateRoomItems(roomState.items).filter(
+    roomItemsIterable(roomState.items).filter(
       (item) => item.jsonItemId === jsonItemId,
     ),
   );

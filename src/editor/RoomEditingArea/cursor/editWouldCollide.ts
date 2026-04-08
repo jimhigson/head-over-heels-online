@@ -1,5 +1,4 @@
 import { produce } from "immer";
-import { filter, flatMap, isEmpty, map, pipe, some } from "iter-tools-es";
 
 import type { JsonItemType } from "../../../model/json/JsonItem";
 import type {
@@ -14,8 +13,8 @@ import type { ItemTool } from "../interactivity/Tool";
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { isSolid } from "../../../game/physics/itemPredicates";
-import { iterateRoomItems } from "../../../model/RoomState";
-import { iterate } from "../../../utils/iterate";
+import { roomItemsIterable } from "../../../model/RoomState";
+import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 
@@ -25,15 +24,15 @@ import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResiz
  */
 export const collideableItemsInRoom = (
   roomState: EditorRoomState,
-): Iterable<EditorUnionOfAllItemInPlayTypes> => {
-  return iterateRoomItems(roomState.items).filter((item) => isSolid(item));
+): IterableIterator<EditorUnionOfAllItemInPlayTypes> => {
+  return roomItemsIterable(roomState.items).filter((item) => isSolid(item));
 };
 
 const collideableForItem = (
   roomState: EditorRoomState,
   forItemType: JsonItemType,
 ) => {
-  const collideableItems = iterate(collideableItemsInRoom(roomState));
+  const collideableItems = collideableItemsInRoom(roomState);
 
   const collideableItemsForThisItem =
     forItemType === "door" ?
@@ -57,18 +56,17 @@ export const itemMoveOrResizeWouldCollide = ({
   blockPositionDelta: Xyz;
   timesDelta?: Xyz;
 }) => {
-  const modifyAndLoadPipe = pipe(
+  const loadedModifiedItemTuples = Iterator.from(jsonItemIds)
     // get the json items from the room json:
-    map(
-      (jsonItemId: EditorRoomItemId) =>
+    .map(
+      (jsonItemId) =>
         [jsonItemId, roomState.roomJson.items[jsonItemId]] as [
           EditorRoomItemId,
           EditorJsonItemUnion,
         ],
-    ),
-
+    )
     // modify the json items to their new position/size:
-    map(
+    .map(
       ([jsonItemId, jsonItem]) =>
         [
           jsonItemId,
@@ -83,10 +81,9 @@ export const itemMoveOrResizeWouldCollide = ({
             );
           }),
         ] as [EditorRoomItemId, EditorJsonItemUnion],
-    ),
-
-    // load the json items to in-play items (could me multiple per json item)
-    flatMap(function* ([jsonItemId, modifiedJsonItem]) {
+    )
+    // load the json items to in-play items (could be multiple per json item)
+    .flatMap(function* ([jsonItemId, modifiedJsonItem]) {
       for (const loadedItem of loadItemFromJson(
         jsonItemId,
         modifiedJsonItem,
@@ -98,68 +95,52 @@ export const itemMoveOrResizeWouldCollide = ({
           EditorUnionOfAllItemInPlayTypes,
         ];
       }
-    }),
-
+    })
     // ignore any non-solid items we just loaded:
-    filter(([, , loadedItem]) => isSolid(loadedItem)),
-  );
+    .filter(([, , loadedItem]) => isSolid(loadedItem))
+    .toArray();
 
-  const loadedModifiedItemTuples = Array.from(modifyAndLoadPipe(jsonItemIds));
+  return loadedModifiedItemTuples.some(([, modifiedJsonItem, loadedItem]) => {
+    // check for collisions with items that were already in the room:
+    const collideableItemsAlreadyInRoom = collideableForItem(
+      roomState,
+      modifiedJsonItem.type,
+    ).filter(
+      // do not colliding with the items we are currently moving - that will come next
+      (item) => item.jsonItemId && !jsonItemIds.includes(item.jsonItemId),
+    );
 
-  const collidePipe = pipe(
-    some(
-      ([, modifiedJsonItem, loadedItem]: [
-        EditorRoomItemId,
-        EditorJsonItemUnion,
-        EditorUnionOfAllItemInPlayTypes,
-      ]) => {
-        // check for collisions with items that were already in the room:
-        const collideableItemsAlreadyInRoom = iterate(
-          collideableForItem(roomState, modifiedJsonItem.type),
-        ).filter(
-          // do not colliding with the items we are currently moving - that will come next
-          (item) => item.jsonItemId && !jsonItemIds.includes(item.jsonItemId),
-        );
+    for (const c of collision1toManyIter(
+      loadedItem,
+      collideableItemsAlreadyInRoom,
+    )) {
+      console.warn(
+        loadedItem.id,
+        "colliding with static item",
+        c.id,
+        "after moving by",
+        blockPositionDelta,
+        timesDelta ? "with timesDelta" : "",
+        timesDelta ?? "",
+      );
+      return true;
+    }
 
-        for (const c of collision1toManyIter(
-          loadedItem,
-          collideableItemsAlreadyInRoom,
-        )) {
-          console.warn(
-            loadedItem.id,
-            "colliding with static item",
-            c.id,
-            "after moving by",
-            blockPositionDelta,
-            timesDelta ? "with timesDelta" : "",
-            timesDelta ?? "",
-          );
-          return true;
-        }
+    // check for collisions with other items we just loaded
+    for (const c of collision1toManyIter(
+      loadedItem,
+      loadedModifiedItemTuples.map(([, , otherLoaded]) => otherLoaded),
+    )) {
+      console.warn(loadedItem.id, "colliding with other mutating item", c.id);
+      return true;
+    }
 
-        // check for collisions with other items we just loaded
-        for (const c of collision1toManyIter(
-          loadedItem,
-          loadedModifiedItemTuples.map(([_, __, otherLoaded]) => otherLoaded),
-        )) {
-          console.warn(
-            loadedItem.id,
-            "colliding with other mutating item",
-            c.id,
-          );
-          return true;
-        }
+    // we also need to check for collisions with the other items being moved/resized.
+    // for moving, this generally won't be an issue, since they'll all move by the same amount,
+    // but resizing could make them overlap each other.
 
-        // we also need to check for collisions with the other items being moved/resized.
-        // for moving, this generally won't be an issue, since they'll all move by the same amount,
-        // but resizing could make them overlap each other.
-
-        return false;
-      },
-    ),
-  );
-
-  return collidePipe(loadedModifiedItemTuples);
+    return false;
+  });
 };
 
 export const addingItemWouldCollide = ({

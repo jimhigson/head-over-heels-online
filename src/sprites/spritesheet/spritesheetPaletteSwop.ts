@@ -1,6 +1,5 @@
 import type { Color, Filter, Renderer } from "pixi.js";
 
-import { concat } from "iter-tools-es";
 import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 
 import type { PaletteSwaps } from "../../game/render/filters/lutTexture/sparseLut";
@@ -10,7 +9,7 @@ import type { TextureId } from "./spritesheetData/spriteSheetData";
 
 import { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
 import { emptyArray } from "../../utils/empty";
-import { iterate } from "../../utils/iterate";
+import { concat } from "../../utils/iterators/concat";
 import { transformObject } from "../../utils/transformObject";
 import {
   spritesheetPalette,
@@ -44,7 +43,7 @@ type TextureIdsListOrPredicate =
   | ((candidate: TextureId) => boolean)
   | Iterable<TextureId>;
 
-const neverSwoppedTextureIds = iterate(textureIds)
+const neverSwoppedTextureIds = Iterator.from(textureIds)
   .filter(
     (
       name,
@@ -62,7 +61,7 @@ const reifyTextureIds = (
   textureIdsOrPredicate: TextureIdsListOrPredicate,
 ): Iterable<TextureId> =>
   typeof textureIdsOrPredicate === "function" ?
-    iterate(textureIds).filter(textureIdsOrPredicate)
+    Iterator.from(textureIds).filter(textureIdsOrPredicate)
   : textureIdsOrPredicate;
 
 const createPlaceholderMaskFilter = (placeholder: Color, others: Color) =>
@@ -120,7 +119,7 @@ export const spritesheetPaletteSwop = (
     rects: {
       textureIds: concat(
         neverSwoppedTextureIds,
-        iterate(textureSpecific)
+        Iterator.from(textureSpecific)
           .filter(({ dodgeAmbient }) => dodgeAmbient)
           .flatMap(({ textureIds }) => reifyTextureIds(textureIds)),
       ),

@@ -1,4 +1,4 @@
-import { iterateRoomItems, type RoomState } from "../../../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
 
 /** debug code - checks standingOn two-way linking for every item in a room */
@@ -8,7 +8,7 @@ export const validateStandingOn = <
 >(
   room: RoomState<RoomId, RoomItemId>,
 ) => {
-  for (const bottom of iterateRoomItems(room.items)) {
+  for (const bottom of roomItemsIterable(room.items)) {
     // check what is standing on this item. Since the standing relationship is linked two-way,
     // also implies checking what the items are stood on.
     for (const top of iterateStoodOnByItems(bottom.state.stoodOnBy, room)) {

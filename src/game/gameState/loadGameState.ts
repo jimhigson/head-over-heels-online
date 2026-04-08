@@ -1,5 +1,3 @@
-import { objectValues } from "iter-tools-es";
-
 import type { CharacterName } from "../../model/modelTypes";
 import type { RoomJson } from "../../model/RoomJson";
 import type { RoomState } from "../../model/RoomState";
@@ -13,13 +11,14 @@ import {
 } from "../../model/modelTypes";
 import {
   getRoomItem,
-  iterateRoomItems,
+  roomItemsIterable,
   roomSpatialIndexKey,
 } from "../../model/RoomState";
 import { typedURLSearchParams } from "../../options/queryParams";
 import { store } from "../../store/store";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { emptyObject } from "../../utils/empty";
+import { valuesIter } from "../../utils/entries";
 import {
   cheatRoomIdFromUrlHash,
   cheatsOn,
@@ -123,7 +122,7 @@ type LoadGameStateOptions<RoomId extends string> = {
 const addIndexToIndexSavedCharacterRooms = <RoomId extends string>(
   loadedCharacterRooms: SavedCharacterRooms<RoomId>,
 ): CharacterRooms<RoomId> => {
-  for (const loadedRoomState of objectValues(loadedCharacterRooms)) {
+  for (const loadedRoomState of valuesIter(loadedCharacterRooms)) {
     const asIndexed = loadedRoomState as RoomState<RoomId, string>;
 
     if (asIndexed[roomSpatialIndexKey] !== undefined) {
@@ -133,7 +132,7 @@ const addIndexToIndexSavedCharacterRooms = <RoomId extends string>(
     }
 
     asIndexed[roomSpatialIndexKey] = new GridSpatialIndex(
-      iterateRoomItems(loadedRoomState.items),
+      roomItemsIterable(loadedRoomState.items),
     );
   }
 

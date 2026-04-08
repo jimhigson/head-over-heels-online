@@ -1,5 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { objectKeys, objectValues, size } from "iter-tools-es";
 
 import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 import type { RootState } from "../../../../../../store/store";
@@ -14,7 +13,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { iterate } from "../../../../../../utils/iterate";
+import { objectSize } from "../../../../../../utils/objectSize";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -100,7 +99,7 @@ export const ScoreDialog = () => {
       gameMenus: {
         gameInPlay: { roomsExplored },
       },
-    }) => size(iterate(objectValues(roomsExplored))),
+    }) => objectSize(roomsExplored),
   );
 
   const freeCharacters = useAppSelector(selectFreeCharacters);
@@ -111,7 +110,7 @@ export const ScoreDialog = () => {
     freeCharacters.length,
   );
 
-  const roomCount = size(objectKeys(campaign.rooms));
+  const roomCount = objectSize(campaign.rooms);
   const maxScore = calculateScore(roomCount, 5, 2);
 
   const scoreLabel = getScoreLabel(score, maxScore);

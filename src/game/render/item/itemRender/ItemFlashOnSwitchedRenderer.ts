@@ -7,7 +7,7 @@ import type {
 } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemRenderer";
 
-import { iterateRoomItems } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/RoomState";
 import {
   spritesheetPalette,
   spritesheetPaletteDim,
@@ -92,7 +92,7 @@ export const maybeWrapInFlashOnSwitchedRenderer = <T extends ItemInPlayType>(
     room: { items },
   } = itemRenderContext;
 
-  const isModifiedItem = iterateRoomItems(items)
+  const isModifiedItem = roomItemsIterable(items)
     .filter(isModifier)
     .some(({ config: { modifies } }) => {
       return modifies.some((m) =>

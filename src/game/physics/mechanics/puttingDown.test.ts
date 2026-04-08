@@ -1,4 +1,3 @@
-import { first } from "iter-tools-es";
 import { describe, expect, test } from "vitest";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
@@ -10,76 +9,75 @@ import { combinePlayablesInSymbiosis } from "../../gameState/mutators/symbiosis"
 import { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
 import { checkSpaceAvailableToPutDown } from "./puttingDown";
 
-const makeHeels = (position: Xyz) =>
-  first(
-    loadItemFromJson(
-      "heels",
-      {
-        type: "player",
-        position,
-        config: { which: "heels" },
-      },
-      basicEmptyRoom("firstRoom"),
-      {},
-    ),
-  ) as ItemInPlay<"heels">;
-
-const makeHeadOverHeels = (position: Xyz) => {
-  const heels = first(
-    loadItemFromJson(
-      "heels",
-      {
-        type: "player",
-        position,
-        config: { which: "heels" },
-      },
-      basicEmptyRoom("firstRoom"),
-      {},
-    ),
-  ) as ItemInPlay<"heels">;
-  const head = first(
-    loadItemFromJson(
-      "heels",
-      {
-        type: "player",
-        position: addXyz(position, { z: 1 }),
-        config: { which: "head" },
-      },
-      basicEmptyRoom("firstRoom"),
-      {},
-    ),
-  ) as ItemInPlay<"head">;
-
-  return combinePlayablesInSymbiosis({ head, heels });
+const makeHeels = (position: Xyz) => {
+  const [heels] = loadItemFromJson(
+    "heels",
+    {
+      type: "player",
+      position,
+      config: { which: "heels" },
+    },
+    basicEmptyRoom("firstRoom"),
+    {},
+  );
+  return heels as ItemInPlay<"heels">;
 };
 
-const makeBlock = (position: Xyz) =>
-  first(
-    loadItemFromJson(
-      "block",
-      {
-        type: "block",
-        position,
-        config: { style: "organic" },
-      },
-      basicEmptyRoom("firstRoom"),
-      {},
-    ),
-  ) as ItemInPlay<"block">;
+const makeHeadOverHeels = (position: Xyz) => {
+  const [heels] = loadItemFromJson(
+    "heels",
+    {
+      type: "player",
+      position,
+      config: { which: "heels" },
+    },
+    basicEmptyRoom("firstRoom"),
+    {},
+  );
+  const [head] = loadItemFromJson(
+    "heels",
+    {
+      type: "player",
+      position: addXyz(position, { z: 1 }),
+      config: { which: "head" },
+    },
+    basicEmptyRoom("firstRoom"),
+    {},
+  );
 
-const makePortableBlock = (position: Xyz) =>
-  first(
-    loadItemFromJson(
-      "portableBlock",
-      {
-        type: "portableBlock",
-        position,
-        config: { style: "cube" },
-      },
-      basicEmptyRoom("firstRoom"),
-      {},
-    ),
-  ) as ItemInPlay<"block">;
+  return combinePlayablesInSymbiosis({
+    head: head as ItemInPlay<"head">,
+    heels: heels as ItemInPlay<"heels">,
+  });
+};
+
+const makeBlock = (position: Xyz) => {
+  const [block] = loadItemFromJson(
+    "block",
+    {
+      type: "block",
+      position,
+      config: { style: "organic" },
+    },
+    basicEmptyRoom("firstRoom"),
+    {},
+  );
+  return block as ItemInPlay<"block">;
+};
+
+const makePortableBlock = (position: Xyz) => {
+  const [portableBlock] = loadItemFromJson(
+    "portableBlock",
+    {
+      type: "portableBlock",
+      position,
+      config: { style: "cube" },
+    },
+    basicEmptyRoom("firstRoom"),
+    {},
+  );
+  return portableBlock as ItemInPlay<"block">;
+};
 
 describe("checkSpaceAvailableToPutDown", () => {
   test("if heels is the only item in the room, can put down", () => {

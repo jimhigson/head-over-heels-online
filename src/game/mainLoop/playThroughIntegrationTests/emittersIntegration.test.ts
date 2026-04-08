@@ -8,7 +8,7 @@ import type { FrameRateSpec } from "../../../_testUtils/testFrameRates";
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { iterateRoomItems } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/RoomState";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
@@ -19,7 +19,7 @@ const frameRate: FrameRateSpec = { fps: [100] };
 
 const countEmittedItems = (gameState: ReturnType<typeof setUpBasicGame>) => {
   const room = selectCurrentRoomState(gameState)!;
-  return iterateRoomItems(room.items)
+  return roomItemsIterable(room.items)
     .filter((item) => item.state.createdByEmitter === "emitter")
     .toArray().length;
 };

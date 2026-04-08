@@ -1,5 +1,3 @@
-import { size } from "iter-tools-es";
-
 import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
 import type { ItemInPlay } from "../../model/ItemInPlay";
 import type { RoomState } from "../../model/RoomState";
@@ -8,6 +6,7 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
 import { isChargingCyberman } from "../../game/physics/itemPredicates";
 import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
+import { size } from "../../utils/iterators/size";
 import { audioCtx } from "../audioCtx";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 
