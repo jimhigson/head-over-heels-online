@@ -23,7 +23,10 @@ import {
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
 import { applyItemToolReducers } from "./reducers/applyItemToolReducers";
 import { campaignManagementReducers } from "./reducers/campaignManagementReducers";
-import { changeRoomReducers } from "./reducers/changeRoomReducers";
+import {
+  changeRoomReducers,
+  changeRoomSelectors,
+} from "./reducers/changeRoomReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
@@ -134,6 +137,7 @@ export const levelEditorSlice = createSlice({
     selectHoveredItem: (state) => state.hoveredItem,
     selectItemIsSelected: selectItemIsSelectedInLevelEditorState,
     ...undoSelectors,
+    ...changeRoomSelectors,
   },
 });
 
@@ -182,12 +186,14 @@ export const {
   undo,
 } = levelEditorSlice.actions;
 export const {
+  selectBackRooms,
   selectCanRedo,
   selectCanUndo,
   selectCurrentCampaignInProgress,
   selectCurrentEditingRoomColour,
   selectCurrentEditingRoomJson,
   selectCurrentEditingRoomScenery,
+  selectForwardRooms,
   selectHoveredItem,
   selectItem,
   selectItemIsSelected,

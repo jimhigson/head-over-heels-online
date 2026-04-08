@@ -76,11 +76,17 @@ export const MenuButton = ({
 export const MenuItemButton = ({
   onClick,
   children,
+  style,
 }: {
   onClick: () => void;
   children: React.ReactNode;
+  style?: React.CSSProperties;
 }) => (
-  <Button className="px-1 py-half w-full justify-between" onClick={onClick}>
+  <Button
+    className="px-1 py-half w-full justify-between"
+    onClick={onClick}
+    style={style}
+  >
     {typeof children === "string" ?
       <BitmapText>{children}</BitmapText>
     : children}
