@@ -1,10 +1,8 @@
-import { first } from "iter-tools-es";
-
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
 import type { GameState } from "../../gameState/GameState";
 
-import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { originXyz, scaleXyz, subXyz } from "../../../utils/vectors/vectors";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
@@ -15,7 +13,7 @@ const hasFewerThanInRoom = <RoomId extends string, RoomItemId extends string>(
   room: RoomState<RoomId, RoomItemId>,
 ): boolean => {
   let count = 0;
-  for (const item of iterateRoomItems(room.items)) {
+  for (const item of roomItemsIterable(room.items)) {
     if (item.state.createdByEmitter === emitterId) {
       count++;
       if (count >= limit) {
@@ -59,19 +57,17 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
     if (hasFewerThanInRoom(maximumAtOnce, emitterId, room)) {
       const { emits } = state;
 
-      const newlyEmittedItem = first(
-        loadItemFromJson(
-          // by using roomTime, this emitter can be reset by switch/button
-          // and emit another number 1, 2, etc - avoids id clashes so long as no
-          // two are emitted at the same millisecond
-          `${emitterId}-${quantityEmitted}-${Math.floor(roomTime)}`,
-          {
-            ...emits,
-            // temporary position, to be overwritten in item-in-play
-            position: originXyz,
-          } as EmittableItemJson,
-          room.roomJson,
-        ),
+      const [newlyEmittedItem] = loadItemFromJson(
+        // by using roomTime, this emitter can be reset by switch/button
+        // and emit another number 1, 2, etc - avoids id clashes so long as no
+        // two are emitted at the same millisecond
+        `${emitterId}-${quantityEmitted}-${Math.floor(roomTime)}`,
+        {
+          ...emits,
+          // temporary position, to be overwritten in item-in-play
+          position: originXyz,
+        } as EmittableItemJson,
+        room.roomJson,
       );
       if (newlyEmittedItem === undefined) {
         throw new Error("emitter failed to create a new item");

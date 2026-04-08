@@ -1,4 +1,3 @@
-import { first } from "iter-tools-es";
 import { describe, expect, test } from "vitest";
 
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
@@ -18,35 +17,31 @@ const player = loadPlayer({
   position: originXyz,
 });
 
-const monster = first(
-  loadItemFromJson(
-    "monster",
-    {
-      type: "monster",
-      config: {
-        which: "dalek",
-        movement: "patrol-randomly-diagonal",
-        activated: "on",
-      },
-      position: originXyz,
+const [monster] = loadItemFromJson(
+  "monster",
+  {
+    type: "monster",
+    config: {
+      which: "dalek",
+      movement: "patrol-randomly-diagonal",
+      activated: "on",
     },
-    basicEmptyRoom("firstRoom"),
-    {},
-  ),
-)!;
+    position: originXyz,
+  },
+  basicEmptyRoom("firstRoom"),
+  {},
+);
 
-const pushableBlock = first(
-  loadItemFromJson(
-    "mb",
-    {
-      type: "pushableBlock",
-      config: {},
-      position: originXyz,
-    },
-    basicEmptyRoom("firstRoom"),
-    {},
-  ),
-)!;
+const [pushableBlock] = loadItemFromJson(
+  "mb",
+  {
+    type: "pushableBlock",
+    config: {},
+    position: originXyz,
+  },
+  basicEmptyRoom("firstRoom"),
+  {},
+);
 
 const horizontalPortal: UnionOfAllItemInPlayTypes = {
   ...defaultItemProperties,

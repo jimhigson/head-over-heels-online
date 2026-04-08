@@ -1,4 +1,3 @@
-import { objectValues } from "iter-tools-es";
 import { canonicalize } from "json-canonicalize";
 import { orderBy } from "natural-orderby";
 import { writeFile } from "node:fs/promises";
@@ -6,7 +5,7 @@ import { writeFile } from "node:fs/promises";
 import type { Campaign } from "../../src/model/modelTypes";
 import type { AnyRoomJson } from "../../src/model/RoomJson";
 
-import { iterate } from "../../src/utils/iterate";
+import { valuesIter } from "../../src/utils/entries";
 
 const roomTs = (room: AnyRoomJson): string =>
   `
@@ -63,7 +62,7 @@ export const writeOut = async ({
   await Promise.all([
     writeTsBarrell,
     writeOriginalCampaignRoomIdType,
-    ...iterate(objectValues(convertedRoomsAndExtraRooms)).map(async (room) => {
+    ...valuesIter(convertedRoomsAndExtraRooms).map(async (room) => {
       try {
         if (room.id === undefined) {
           throw new Error("room without an id");

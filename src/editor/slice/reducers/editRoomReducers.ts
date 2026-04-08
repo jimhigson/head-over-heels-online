@@ -18,8 +18,8 @@ import {
   type FloorType,
 } from "../../../model/json/ItemConfigMap";
 import {
-  iterateRoomJsonItems,
   iterateRoomJsonItemsWithIds,
+  roomJsonItemsIterable,
 } from "../../../model/RoomJson";
 import { keysIter } from "../../../utils/entries";
 import { oppositeDirection, scaleXyz } from "../../../utils/vectors/vectors";
@@ -55,7 +55,7 @@ const changeFloorTypeInPlace = (
   roomJson: EditorRoomJson,
   floorType: FloorType,
 ) => {
-  iterateRoomJsonItems(roomJson)
+  roomJsonItemsIterable(roomJson)
     .filter((item) => item.type === "floor")
     .filter((item) => item.position.z === 0)
     .forEach((floor) => {

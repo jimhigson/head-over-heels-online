@@ -1,8 +1,7 @@
-import { cycle, drop, take } from "iter-tools-es";
-
 import type { SceneryName } from "../../sprites/planets";
 
 import { type Wall } from "../../sprites/planets";
+import { cycle } from "../../utils/iterators/cycle";
 
 /**
  * some standard wall patterns that can be repeated for creating the wall tiles
@@ -37,7 +36,7 @@ export const rotatingSceneryTiles = <S extends SceneryName>(
   const normalizedStart =
     ((startingAtOrdinal % patternLength) + patternLength) % patternLength;
 
-  const c = cycle(pattern);
-
-  return drop(normalizedStart, take(numberOfTiles + normalizedStart, c));
+  return cycle(pattern)
+    .take(numberOfTiles + normalizedStart)
+    .drop(normalizedStart);
 };

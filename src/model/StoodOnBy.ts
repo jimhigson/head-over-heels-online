@@ -3,7 +3,8 @@
  * saving the game state to the redux store
  */
 
-import { objectKeys, size } from "iter-tools-es";
+import { objectEmpty } from "../utils/objectEmpty";
+import { objectSize } from "../utils/objectSize";
 
 export type StoodOnBy<RoomItemId extends string = string> = {
   [r in RoomItemId]: true;
@@ -13,15 +14,12 @@ export type StoodOnBy<RoomItemId extends string = string> = {
  * convenience to get how many items are standing on an item
  */
 export const stoodOnByCount = (stoodOnBy: StoodOnBy) => {
-  return size(objectKeys(stoodOnBy));
+  return objectSize(stoodOnBy);
 };
 
 /**
  * convenience to get how many items are standing on an item
  */
 export const isStoodOn = (stoodOnBy: StoodOnBy) => {
-  for (const _ in stoodOnBy) {
-    return true;
-  }
-  return false;
+  return !objectEmpty(stoodOnBy);
 };

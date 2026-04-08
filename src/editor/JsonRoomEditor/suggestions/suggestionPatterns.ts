@@ -6,7 +6,6 @@ import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice
 
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { emptyArray, emptySet } from "../../../utils/empty";
-import { iterate } from "../../../utils/iterate";
 import {
   type DirectionXy4,
   oppositeDirection,
@@ -44,8 +43,8 @@ const getJoystickControllableItemIds = (
   const existingTargets =
     (targetsArray.children &&
       new Set(
-        iterate(targetsArray.children)
-          ?.map((c) => c.value)
+        Iterator.from(targetsArray.children)
+          .map((c) => c.value)
           .filter((s) => typeof s === "string"),
       )) ??
     (emptySet as Set<string>);
@@ -124,8 +123,8 @@ export const suggestionPatterns: SuggestionPatterns = {
     const existingTargets =
       (targetsArrayNode.children &&
         new Set(
-          iterate(targetsArrayNode.children)
-            ?.map((c) => c.value)
+          Iterator.from(targetsArrayNode.children)
+            .map((c) => c.value)
             .filter((s) => typeof s === "string"),
         )) ??
       (emptySet as Set<string>);

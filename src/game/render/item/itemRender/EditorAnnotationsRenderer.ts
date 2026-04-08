@@ -34,7 +34,7 @@ import {
   setClickableAnnotationHovered,
 } from "../../../../editor/slice/levelEditorSlice";
 import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
-import { iterateRoomItems } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/RoomState";
 import { spritesheetPalette } from "../../../../sprites/palette/spritesheetPalette";
 import { store } from "../../../../store/store";
 import { outlineFilters } from "../../filters/outlineFilter";
@@ -444,7 +444,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     const showControlHighlight = () =>
       jsonItemId !== undefined &&
       // when switch is hovered, highlight the items it controls:
-      (iterateRoomItems(room.items).some((otherItem) => {
+      (roomItemsIterable(room.items).some((otherItem) => {
         return (
           otherItem.jsonItemId === hoveredJsonItem?.jsonItemId &&
           isItemThatControlsOtherItems(otherItem) &&
@@ -458,7 +458,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
       }) ||
         // highlight the switch when the item it is connected to is hovered
         (isItemThatControlsOtherItems(item) &&
-          iterateRoomItems(room.items).some(
+          roomItemsIterable(room.items).some(
             ({
               jsonItemId: maybeSwitchedItemJsonItemId,
               type: maybeSwitchedItemType,
@@ -479,7 +479,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           )) ||
         // highlight charles when controlling joystick hovered:
         (item.type === "charles" &&
-          iterateRoomItems(room.items).some((otherItem) => {
+          roomItemsIterable(room.items).some((otherItem) => {
             return (
               otherItem.jsonItemId === hoveredJsonItem?.jsonItemId &&
               otherItem.type === "joystick" &&

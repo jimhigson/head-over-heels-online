@@ -1,7 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { type SliceCaseReducers } from "@reduxjs/toolkit";
-import { filter, first, objectKeys } from "iter-tools-es";
 
 import type { Xy } from "../../../utils/vectors/vectors";
 import type { EditorRoomId } from "../../editorTypes";
@@ -9,6 +8,8 @@ import type { LevelEditorState } from "../levelEditorSlice";
 
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { keysIter } from "../../../utils/entries";
+import { first } from "../../../utils/iterators/first";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
@@ -40,11 +41,8 @@ export const addOrRemoveRoomReducers = {
       first(iterateRoomJsonItemsWithIds(currentRoom.items, "teleporter"));
 
     const nextRoom = (doorOrTeleporterEntry?.[1].config.toRoom ??
-      first(
-        filter(
-          (roomId) => roomId !== state.currentlyEditingRoomId,
-          objectKeys(state.campaignInProgress.rooms),
-        ),
+      keysIter(state.campaignInProgress.rooms).find(
+        (roomId) => roomId !== state.currentlyEditingRoomId,
       )) as EditorRoomId | undefined;
 
     if (nextRoom === undefined || nextRoom === exitGameRoomId) {

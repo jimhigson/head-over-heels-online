@@ -7,7 +7,6 @@ import type {
 
 import { isJoystick } from "../../game/physics/itemPredicates";
 import { keysIter } from "../../utils/entries";
-import { iterate } from "../../utils/iterate";
 import { audioCtx } from "../audioCtx";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
@@ -56,7 +55,7 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
 
     const controlledByJoystick =
       roomTime === roomTimeActedOn &&
-      iterate(keysIter(by)).some((id) => isJoystick(items[id]));
+      keysIter(by).some((id) => isJoystick(items[id]));
 
     this.#servoBracketed(controlledByJoystick);
 

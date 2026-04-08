@@ -1,5 +1,4 @@
 import { produce } from "immer";
-import { first } from "iter-tools-es";
 import { describe, expect, test } from "vitest";
 
 import type {
@@ -117,11 +116,9 @@ describe("changing the id of the current room updates all references to that roo
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
-    const doorItem = first(
-      iterateRoomJsonItemsWithIds(otherRoom.items, "door"),
-    )?.[1];
+    const [doorItem] = iterateRoomJsonItemsWithIds(otherRoom.items, "door");
 
-    expect(doorItem && doorItem.config.toRoom).toBe(newRoomId);
+    expect(doorItem && doorItem[1].config.toRoom).toBe(newRoomId);
   });
   test("teleporters that reference the old room id in their config", () => {
     const state1 = produce(stateWithTwoRooms, (draft) => {
@@ -146,11 +143,12 @@ describe("changing the id of the current room updates all references to that roo
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
-    const teleporterItem = first(
-      iterateRoomJsonItemsWithIds(otherRoom.items, "teleporter"),
-    )?.[1];
+    const [teleporterItem] = iterateRoomJsonItemsWithIds(
+      otherRoom.items,
+      "teleporter",
+    );
 
-    expect(teleporterItem && teleporterItem.config.toRoom).toBe(newRoomId);
+    expect(teleporterItem && teleporterItem[1].config.toRoom).toBe(newRoomId);
   });
 
   test("portableTeleporters that reference the old room id in their config", () => {
@@ -176,13 +174,14 @@ describe("changing the id of the current room updates all references to that roo
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
-    const portableTeleporterItem = first(
-      iterateRoomJsonItemsWithIds(otherRoom.items, "portableTeleporter"),
-    )?.[1];
-
-    expect(portableTeleporterItem && portableTeleporterItem.config.toRoom).toBe(
-      newRoomId,
+    const [portableTeleporterItem] = iterateRoomJsonItemsWithIds(
+      otherRoom.items,
+      "portableTeleporter",
     );
+
+    expect(
+      portableTeleporterItem && portableTeleporterItem[1].config.toRoom,
+    ).toBe(newRoomId);
   });
 
   test("above/below room references that reference the old room id", () => {

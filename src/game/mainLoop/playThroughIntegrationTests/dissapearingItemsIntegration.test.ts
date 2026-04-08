@@ -3,13 +3,12 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import { size } from "iter-tools-es";
-
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { heelsState, item } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { iterateRoomItems } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/RoomState";
+import { size } from "../../../utils/iterators/size";
 
 beforeEach(() => {
   resetStore();
@@ -116,7 +115,7 @@ describe("dissapearing items", () => {
     });
 
     const blocksInRoomCount = size(
-      iterateRoomItems(gameState.characterRooms.heels!.items).filter(
+      roomItemsIterable(gameState.characterRooms.heels!.items).filter(
         (item) => item.type === "block",
       ),
     );

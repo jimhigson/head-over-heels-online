@@ -1,6 +1,6 @@
 import { type Container, Graphics } from "pixi.js";
 
-import { iterateRoomItems, type RoomState } from "../../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
 import { isWallOrDoorFrame } from "../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../projections";
@@ -16,7 +16,7 @@ export function* roomRendererOcclusions<
   RoomId extends string,
   RoomItemId extends string,
 >(room: RoomState<RoomId, RoomItemId>): Generator<Container> {
-  const { left, right } = iterateRoomItems(room.items)
+  const { left, right } = roomItemsIterable(room.items)
     .filter(isWallOrDoorFrame)
     .reduce(
       (acc, { aabb, renderAabb, renderAabbOffset, state: { position } }) => {

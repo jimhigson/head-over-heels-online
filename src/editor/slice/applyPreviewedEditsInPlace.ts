@@ -1,17 +1,19 @@
 import type { ValueOf } from "type-fest";
 
-import { objectEntries } from "iter-tools-es";
-
 import type { EditorRoomItemId, EditorRoomJson } from "../editorTypes";
 import type { PreviewedRoomItemEdits } from "./levelEditorSlice";
+
+import { objectEntriesIter } from "../../utils/entries";
 
 export const applyPreviewedEditsInPlace = (
   draftRoomJson: EditorRoomJson,
   previewedEdits: PreviewedRoomItemEdits,
 ) => {
-  const previewedEditsEntryIter = objectEntries(previewedEdits) as Iterable<
-    [EditorRoomItemId, ValueOf<typeof previewedEdits>]
-  >;
+  const previewedEditsEntryIter = objectEntriesIter(
+    previewedEdits as Partial<
+      Record<EditorRoomItemId, ValueOf<typeof previewedEdits>>
+    >,
+  );
 
   for (const [itemId, itemPreview] of previewedEditsEntryIter) {
     if (itemPreview === null) {

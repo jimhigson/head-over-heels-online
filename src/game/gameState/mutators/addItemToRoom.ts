@@ -1,5 +1,3 @@
-import { first } from "iter-tools-es";
-
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type {
   JsonItem,
@@ -45,13 +43,11 @@ export const addItemFromJsonToRoom = <
   };
 
   const itemId = `${itemType}/${additionalIdPart}`;
-  const item = first(
-    loadItemFromJson(
-      itemId,
-      itemJson as JsonItemUnion<RoomId>,
-      room.roomJson,
-      gameState.pickupsCollected[room.id] ?? emptyObject,
-    ),
+  const [item] = loadItemFromJson(
+    itemId,
+    itemJson as JsonItemUnion<RoomId>,
+    room.roomJson,
+    gameState.pickupsCollected[room.id] ?? emptyObject,
   );
   if (item === undefined) {
     console.error("failed to generate any items for json", itemId, itemJson);

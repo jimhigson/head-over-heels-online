@@ -1,8 +1,8 @@
-import { objectValues } from "iter-tools-es";
 import { describe, expect, test } from "vitest";
 
 import type { DrawOrderComparable } from "./DrawOrderComparable";
 
+import { valuesIter } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { toposort } from "./toposort/toposort";
@@ -38,7 +38,7 @@ test("detects behind in x", () => {
     },
   };
 
-  const spatialIndex = new GridSpatialIndex(objectValues(items));
+  const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
   const edges = updateZEdges(items, spatialIndex);
   // front => behind
@@ -87,7 +87,7 @@ test("detects behind in y", () => {
     },
   };
 
-  const spatialIndex = new GridSpatialIndex(objectValues(items));
+  const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
   const relations = updateZEdges(items, spatialIndex);
   // front => behind
@@ -136,7 +136,7 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
     },
   };
 
-  const spatialIndex = new GridSpatialIndex(objectValues(items));
+  const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
   const relations = updateZEdges(items, spatialIndex);
   // front => behind
@@ -174,7 +174,7 @@ test("detects as in front if on top and set back while overlapping", () => {
     },
   };
 
-  const spatialIndex = new GridSpatialIndex(objectValues(items));
+  const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
   const relations = updateZEdges(items, spatialIndex);
   // front => behind - top in front of bottom:
@@ -218,7 +218,7 @@ test("detects a tall item is front of two smaller items", () => {
     },
   };
 
-  const spatialIndex = new GridSpatialIndex(objectValues(items));
+  const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
   const relations = updateZEdges(items, spatialIndex);
   expect(relations).toMatchInlineSnapshot(`
@@ -266,7 +266,7 @@ test("incremental updates requiring both removal and addition of edges", () => {
       state: { position: { x: 30, y: 0, z: 0 } },
     },
   };
-  const spatialIndex = new GridSpatialIndex(objectValues(items));
+  const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
   const edges = updateZEdges(items, spatialIndex);
   // front => behind
@@ -327,7 +327,7 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
       state: { position: { x: 20, y: 20, z: 0 } },
     },
   };
-  const spatialIndex = new GridSpatialIndex(objectValues(items));
+  const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
   const edges = updateZEdges(items, spatialIndex);
   // front => behind
@@ -383,7 +383,7 @@ test("incremental updates can completely empty the graph", () => {
       state: { position: { x: 20, y: 20, z: 0 } },
     },
   };
-  const spatialIndex = new GridSpatialIndex(objectValues(items));
+  const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
   const edges = updateZEdges(items, spatialIndex);
   // front => behind
@@ -446,7 +446,7 @@ describe("cyclic dependencies", () => {
       },
     };
 
-    const spatialIndex = new GridSpatialIndex(objectValues(items));
+    const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
     const relations = updateZEdges(items, spatialIndex);
     expect(() => toposort(relations)).not.toThrow();
@@ -502,12 +502,12 @@ describe("cyclic dependencies", () => {
     } as const;
 
     // verify that the items aren't illegally colliding (which would make this test maybe invalid)
-    for (const i of Object.values(items)) {
-      const index = new GridSpatialIndex(objectValues(items));
+    for (const i of valuesIter(items)) {
+      const index = new GridSpatialIndex(valuesIter(items));
       expect(collisionItemWithIndex(i, index).toArray()).toEqual([]);
     }
 
-    const spatialIndex = new GridSpatialIndex(objectValues(items));
+    const spatialIndex = new GridSpatialIndex(valuesIter(items));
 
     const relations = updateZEdges(items, spatialIndex);
 

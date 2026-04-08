@@ -1,4 +1,3 @@
-import { objectValues } from "iter-tools-es";
 import { Ticker } from "pixi.js";
 import { useEffect } from "react";
 
@@ -10,6 +9,7 @@ import type {
   EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 
+import { valuesIter } from "../../utils/entries";
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
@@ -32,7 +32,7 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
           EditorRoomId,
           EditorRoomItemId
         > = new Set(
-          objectValues(
+          valuesIter(
             currentEditingRoomState.items,
           ) as Iterable<EditorUnionOfAllItemInPlayTypes>,
         );

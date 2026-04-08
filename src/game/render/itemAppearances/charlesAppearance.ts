@@ -2,7 +2,6 @@ import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/S
 import type { ItemAppearance } from "./ItemAppearance";
 
 import { keysIter } from "../../../utils/entries";
-import { iterate } from "../../../utils/iterate";
 import {
   type DirectionXy4,
   vectorClosestDirectionXy4,
@@ -38,7 +37,7 @@ export const charlesAppearance: ItemAppearance<
 
   const controlledByJoystick =
     roomTime === roomTimeActedOn &&
-    iterate(keysIter(by)).some((id) => isJoystick(items[id]));
+    keysIter(by).some((id) => isJoystick(items[id]));
 
   const render =
     currentlyRenderedProps === undefined ||

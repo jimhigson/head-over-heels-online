@@ -25,7 +25,6 @@ import {
 } from "../../../../game/render/projections";
 import { store } from "../../../../store/store";
 import { emptyArray } from "../../../../utils/empty";
-import { iterate } from "../../../../utils/iterate";
 import { planeAxesDesc } from "../../../../utils/vectors/orthoPlane";
 import {
   addXyz,
@@ -106,7 +105,9 @@ const getDragPlaneNormal = (
   // element-wise product of all the consolidatable vectors of the items:
   // - ie, can resize in the axes that all the items are consolidatable on
   const consolidatableVector = elementWiseProductXyz(
-    ...iterate(jsonItems).map((jsonItem) => getConsolidatableVector(jsonItem)),
+    ...Iterator.from(jsonItems).map((jsonItem) =>
+      getConsolidatableVector(jsonItem),
+    ),
   );
 
   const resizeDirection = elementWiseProductXyz(
@@ -122,7 +123,7 @@ const getDragPlaneNormal = (
   // not all items can be moved in all directions - get the legal directions
   // for the current selections:
   const movableVector = elementWiseProductXyz(
-    ...iterate(jsonItems).map((jsonItem) => getMovableVector(jsonItem)),
+    ...Iterator.from(jsonItems).map((jsonItem) => getMovableVector(jsonItem)),
   );
 
   const movableVectorDesc = planeAxesDesc(movableVector);

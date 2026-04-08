@@ -13,7 +13,7 @@ import type {
 import { isSolid } from "../../../game/physics/itemPredicates";
 import { blockSizePx } from "../../../game/physics/mechanicsConstants";
 import { unprojectScreenXyToWorldXyzOnFace } from "../../../game/render/projections";
-import { iterateRoomItems } from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/RoomState";
 import { orthoPlaneForNormal } from "../../../utils/vectors/orthoPlane";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
@@ -126,7 +126,7 @@ export const findPointerPointingAt = (
   tool: Tool,
   gridResolution: GridResolution,
 ): MaybePointingAtSomething => {
-  const intersections = iterateRoomItems(room.items)
+  const intersections = roomItemsIterable(room.items)
     .filter(isPointableItemForTool(tool))
     .map((item): [typeof item, PointerItemMaybeIntersection] => [
       item,

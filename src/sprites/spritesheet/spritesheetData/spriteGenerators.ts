@@ -1,11 +1,9 @@
 import type { SpritesheetFrameData } from "pixi.js";
 
-import { range } from "iter-tools-es";
-
 import type { SpriteSize } from "../../../model/modelTypes";
 import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 
-import { iterate } from "../../../utils/iterate";
+import { range } from "../../../utils/iterators/range";
 import { addXy } from "../../../utils/vectors/vectors";
 
 type DirectionalTexture<TName extends string> = `${TName}.${DirectionXy4}`;
@@ -178,7 +176,7 @@ export const seriesOfAnimationFrameTextureIds = <
   name: TName,
   n: N,
 ): Array<NumberedTextureName<TName, N>> => [
-  ...iterate(range(1, n + 1)).map(
+  ...range(1, n + 1).map(
     (i) => `${name}.${String(i) as FrameNumbers<N>}` as const,
   ),
 ];

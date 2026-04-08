@@ -2,7 +2,7 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { SoundId } from "../../../sound/soundUrls";
 import type { UserSettings } from "../../../store/slices/gameMenus/gameMenusSlice";
 
-import { iterateRoomJsonItems, type RoomJson } from "../../../model/RoomJson";
+import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import { isSoundId } from "../../../sound/soundUrls";
 import { defaultUserSettings } from "../../../store/slices/gameMenus/defaultUserSettings";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
@@ -19,7 +19,7 @@ const resolveSoundId = (
 ): SoundId | undefined => {
   if (
     isNewGame &&
-    iterateRoomJsonItems(roomJson).some(
+    roomJsonItemsIterable(roomJson).some(
       // bit of a hack, but since the game always plays for head, we can detect
       // head in the room and use it to decide if this new game room state that is
       // loading is the first room that will be shown:

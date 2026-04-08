@@ -62,9 +62,6 @@ importers:
       husky:
         specifier: ^9.1.7
         version: 9.1.7
-      iter-tools-es:
-        specifier: ^7.5.4
-        version: 7.5.4
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
@@ -3575,9 +3572,6 @@ packages:
 
   ismobilejs@1.1.1:
     resolution: {integrity: sha512-VaFW53yt8QO61k2WJui0dHf4SlL8lxBofUuUmwBo0ljPk0Drz2TiuDW4jo3wDcv41qy/SxrJ+VAzJ/qYqsmzRw==}
-
-  iter-tools-es@7.5.4:
-    resolution: {integrity: sha512-Of+EJp3cTuxdYmt/bidzODOuhH/MbHBJf9nK21dqlO6hyPjKYzhw0lnZlDYfOzZ2baL5NwnsICC6mccV+CNRPg==}
 
   iterator.prototype@1.1.5:
     resolution: {integrity: sha512-H0dkQoCa3b2VEeKQBOxFph+JAbcrQdE7KC0UkqwpLmv2EC4P41QXP+rqo9wYodACiG5/WM5s9oDApTU8utwj9g==}
@@ -8359,8 +8353,6 @@ snapshots:
   isexe@2.0.0: {}
 
   ismobilejs@1.1.1: {}
-
-  iter-tools-es@7.5.4: {}
 
   iterator.prototype@1.1.5:
     dependencies:

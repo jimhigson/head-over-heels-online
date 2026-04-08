@@ -1,7 +1,7 @@
 import type { AnyRoomJson } from "../../../model/RoomJson";
 import type { Xyz } from "../../../utils/vectors/vectors";
 
-import { iterateRoomJsonItems } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../../physics/mechanicsConstants";
@@ -159,7 +159,7 @@ const nullRoomJsonFloorsExtent: RoomJsonFloorsExtent = {
 export const roomJsonFloorsExtent = (
   roomJson: AnyRoomJson,
 ): RoomJsonFloorsExtent | undefined => {
-  const res = iterateRoomJsonItems(roomJson)
+  const res = roomJsonItemsIterable(roomJson)
     .filter((item) => item.type === "floor")
     .reduce((acc: RoomJsonFloorsExtent, item) => {
       const {

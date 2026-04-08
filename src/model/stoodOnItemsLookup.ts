@@ -7,7 +7,6 @@ import type { StoodOnBy } from "./StoodOnBy";
 
 import { coyoteTime } from "../game/physics/mechanicsConstants";
 import { keysIter } from "../utils/entries";
-import { iterate } from "../utils/iterate";
 
 /**
  * iterate stood on by, while giving the item objects, not the item ids that are stored on the
@@ -21,7 +20,7 @@ export const iterateStoodOnByItems = <
   stoodOnBy: StoodOnBy<RoomItemId>,
   room: UnindexedRoomState<RoomId, RoomItemId>,
 ) => {
-  return iterate(keysIter(stoodOnBy)).map((stoodOnByItemId) => {
+  return keysIter(stoodOnBy).map((stoodOnByItemId) => {
     const standingItem = room.items[stoodOnByItemId];
     if (standingItem === undefined) {
       throw new Error(
@@ -29,7 +28,7 @@ export const iterateStoodOnByItems = <
       );
     }
     return standingItem;
-  }) as IteratorObject<FreeItem<RoomId, RoomItemId>>; // cast: we know that only free items can stand on something:
+  }) as IterableIterator<FreeItem<RoomId, RoomItemId>>; // cast: we know that only free items can stand on something:
 };
 
 /**

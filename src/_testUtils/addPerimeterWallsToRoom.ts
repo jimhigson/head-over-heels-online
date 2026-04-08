@@ -4,7 +4,7 @@ import type { Wall } from "../sprites/planets";
 import type { Xy } from "../utils/vectors/vectors";
 
 import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
-import { iterateRoomJsonItems, type RoomJson } from "../model/RoomJson";
+import { type RoomJson, roomJsonItemsIterable } from "../model/RoomJson";
 import { type SceneryName, wallTiles } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
 import {
@@ -34,7 +34,7 @@ export const addPerimeterWallsToRoom = <
   const isDoorAt = (coord: Xy, direction: DirectionXy4) => {
     const axis = tangentAxis(direction);
     const crossAxis = perpendicularAxisXy(axis);
-    return iterateRoomJsonItems(roomJson).some(
+    return roomJsonItemsIterable(roomJson).some(
       (item) =>
         item.type === "door" &&
         item.config.direction === direction &&
@@ -45,7 +45,7 @@ export const addPerimeterWallsToRoom = <
   };
 
   // going to assume there is only one floor in the room:
-  const floor = iterateRoomJsonItems(roomJson).find((i) => i.type === "floor");
+  const floor = roomJsonItemsIterable(roomJson).find((i) => i.type === "floor");
   if (floor === undefined) {
     throw new Error("No floor found in room to add perimeter walls to");
   }

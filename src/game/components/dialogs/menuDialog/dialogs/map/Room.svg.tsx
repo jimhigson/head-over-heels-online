@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-import { range } from "iter-tools-es";
 import { Suspense } from "react";
 
 import type {
@@ -14,7 +13,8 @@ import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
 
 import { hudLowercaseCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { LazyTooltip } from "../../../../../../ui/LazyTooltip";
-import { iterate } from "../../../../../../utils/iterate";
+import { valuesIter } from "../../../../../../utils/entries";
+import { range } from "../../../../../../utils/iterators/range";
 import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { BitmapText } from "../../../../tailwindSprites/Sprite";
@@ -120,7 +120,7 @@ const floorPathFillPathD = (
 };
 
 const spikyN = 4;
-const deadlyFloorPathD: string = iterate(range(spikyN))
+const deadlyFloorPathD: string = range(spikyN)
   .map(
     (i) => `
 M${project({ x: roomGridSizeXY * ((i + 0.5) / spikyN), y: 0 })}
@@ -204,7 +204,9 @@ export const RoomSvg = <RoomId extends string>({
     subRoomId,
   );
 
-  const floors = Object.values(items).filter((item) => item.type === "floor");
+  const floors = valuesIter(items)
+    .filter((item) => item.type === "floor")
+    .toArray();
   const noFloor = floors.every((floor) => floor.config.floorType === "none");
   const deadlyFloor = floors.some(
     (floor) => floor.config.floorType === "deadly",

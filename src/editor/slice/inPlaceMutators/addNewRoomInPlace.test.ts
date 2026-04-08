@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { EditorRoomId } from "../../editorTypes";
 
 import { roomJsonMatchers } from "../../../model/json/__test__/roomJsonMatchers";
-import { iterateRoomJsonItems } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { createNewRoom } from "./addNewRoomInPlace";
 
 expect.extend(roomJsonMatchers);
@@ -34,7 +34,7 @@ describe("createNewRoom with gridPositions", () => {
     });
 
     // Check walls exist with correct dimensions
-    const walls = iterateRoomJsonItems(room)
+    const walls = roomJsonItemsIterable(room)
       .filter((item) => item.type === "wall")
       .toArray();
 
@@ -109,7 +109,7 @@ describe("createNewRoom with gridPositions", () => {
     });
 
     // Check walls
-    const walls = iterateRoomJsonItems(room)
+    const walls = roomJsonItemsIterable(room)
       .filter((item) => item.type === "wall")
       .toArray();
 
@@ -209,7 +209,7 @@ describe("createNewRoom with gridPositions", () => {
     });
 
     // Check walls - should have exactly 8 walls forming the perimeter
-    const walls = iterateRoomJsonItems(room)
+    const walls = roomJsonItemsIterable(room)
       .filter((item) => item.type === "wall")
       .toArray();
 
@@ -339,7 +339,7 @@ describe("createNewRoom with gridPositions", () => {
     });
 
     // Check walls - should have 12 walls forming the cross perimeter
-    const walls = iterateRoomJsonItems(room)
+    const walls = roomJsonItemsIterable(room)
       .filter((item) => item.type === "wall")
       .toArray();
 

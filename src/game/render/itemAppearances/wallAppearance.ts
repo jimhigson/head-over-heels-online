@@ -1,4 +1,3 @@
-import { isEmpty } from "iter-tools-es";
 import { Container } from "pixi.js";
 
 import type { Xy } from "../../../utils/vectors/vectors";
@@ -7,6 +6,7 @@ import type { CollideableItem } from "../../collision/aabbCollision";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
   perpendicularAxisXy,

@@ -2,13 +2,12 @@ import type { Operation } from "fast-json-patch";
 
 import chalk from "chalk";
 import fastJsonPatch from "fast-json-patch";
-import { objectValues } from "iter-tools-es";
 import { readFile } from "node:fs/promises";
 
 import type { Campaign } from "../../src/model/modelTypes";
 import type { AnyRoomJson } from "../../src/model/RoomJson";
 
-import { iterate } from "../../src/utils/iterate";
+import { valuesIter } from "../../src/utils/entries";
 
 const targetDir = "src/_generated/originalCampaign/";
 const patchFilename = (roomId: string) =>
@@ -24,7 +23,7 @@ export const applyCampaignPatches = async (
 ): Promise<Campaign<string>> => {
   const patchedRooms = Object.fromEntries(
     await Promise.all(
-      iterate(objectValues(campaign.rooms)).map(async (room) => {
+      valuesIter(campaign.rooms).map(async (room) => {
         if (room.id === undefined) {
           throw new Error("room without an id");
         }

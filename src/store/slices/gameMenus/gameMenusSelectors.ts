@@ -1,7 +1,6 @@
 import type { WritableDraft } from "immer";
 import type { Get, Paths } from "type-fest";
 
-import { objectValues, size } from "iter-tools-es";
 import nanoEqual from "nano-equal";
 
 import type { KeyAssignmentPresetName } from "../../../game/input/keyAssignmentPresets";
@@ -16,9 +15,9 @@ import type {
 } from "./gameMenusSlice";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
-import { objectEntriesIter } from "../../../utils/entries";
+import { objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { getAtPath } from "../../../utils/getAtPath";
-import { iterate } from "../../../utils/iterate";
+import { size } from "../../../utils/iterators/size";
 import { selectorHook } from "../../../utils/react/selectorHook";
 import { useAppSelector } from "../../hooks";
 import { selectMaybeLoadedCampaignData } from "../campaigns/campaignsApiSlice";
@@ -57,9 +56,7 @@ export const selectCurrentInputPreset = (
     return "Default";
   }
 
-  for (const [name, preset] of iterate(
-    objectEntriesIter(keyAssignmentPresets),
-  )) {
+  for (const [name, preset] of objectEntriesIter(keyAssignmentPresets)) {
     if (
       nanoEqual(
         preset.inputAssignment,
@@ -117,11 +114,7 @@ export const useInputDirectionMode = (): InputDirectionMode =>
   useAppSelector(selectInputDirectionMode);
 
 export const selectPlanetsLiberatedCount = (state: RootState) =>
-  size(
-    iterate(objectValues(state.gameMenus.gameInPlay.planetsLiberated)).filter(
-      Boolean,
-    ),
-  );
+  size(valuesIter(state.gameMenus.gameInPlay.planetsLiberated).filter(Boolean));
 
 export const selectShowBoundingBoxes = selectUserSetting(
   "displaySettings.showBoundingBoxes",

@@ -1,10 +1,9 @@
-import { objectValues } from "iter-tools-es";
-
 import type { CharacterName } from "../../../model/modelTypes";
 import type { RootState } from "../../../store/store";
 import type { GameState } from "../GameState";
 
 import { badJsonClone } from "../../../utils/badJsonClone";
+import { valuesIter } from "../../../utils/entries";
 import { pick } from "../../../utils/pick";
 import { deleteItemFromUnindexedRoom } from "../mutators/deleteItemFromRoom";
 import { type SavedGame, savedGameStateFields } from "./SavedGameState";
@@ -52,7 +51,7 @@ export const createSavedGame = <RoomId extends string>(
 
     const collectedRoomId = roomOfCharacterPickingUp.id;
 
-    for (const room of objectValues(savedGameState.characterRooms)) {
+    for (const room of valuesIter(savedGameState.characterRooms)) {
       // note we may have to remove the item from multiple copies of the same room,
       // since serialising to json will convert multiple references to the same object
       // into multiple copies of that object

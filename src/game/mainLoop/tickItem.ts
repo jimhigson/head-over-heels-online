@@ -1,5 +1,3 @@
-import { objectValues } from "iter-tools-es";
-
 import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import type {
   ItemInPlayType,
@@ -10,6 +8,7 @@ import type { Xyz } from "../../utils/vectors/vectors";
 import type { GameState } from "../gameState/GameState";
 
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
+import { valuesIter } from "../../utils/entries";
 import {
   addXyzInPlace,
   originXyz,
@@ -342,7 +341,7 @@ export const tickItem = <
   // velocities for this item have now been updated - get the aggregate movement, including vels
   // that stood from previous frames (did not change)
   if (isMovableThing) {
-    for (const vel of objectValues(item.state.vels)) {
+    for (const vel of valuesIter(item.state.vels)) {
       addXyzInPlace(
         tickItemPosDeltaAccumulationBuffer,
         scaleXyzWriteInto(scaleVelBuffer, { ...originXyz, ...vel }, deltaMS),

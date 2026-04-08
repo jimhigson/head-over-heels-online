@@ -4,7 +4,7 @@ import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import type { RoomState } from "../../../../model/RoomState";
 
-import { iterateRoomItems } from "../../../../model/RoomState";
+import { roomItemsIterable } from "../../../../model/RoomState";
 import { wallTimes } from "../../../../model/times";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import {
@@ -29,7 +29,7 @@ export const renderFloorOverdraws = (
     item.config.direction === "away" || item.config.direction === "left";
 
   const floorOverdraws = iterateToContainer(
-    iterateRoomItems(roomState.items)
+    roomItemsIterable(roomState.items)
       .filter(
         (
           otherItem,

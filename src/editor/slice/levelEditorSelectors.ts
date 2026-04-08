@@ -2,7 +2,6 @@ import type { ValueOf } from "type-fest";
 
 import { createSelector } from "@reduxjs/toolkit";
 import { produce } from "immer";
-import { objectEntries } from "iter-tools-es";
 
 import type {
   EditorJsonItemUnion,
@@ -20,6 +19,7 @@ import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
 import { emptyUserSettings } from "../../store/slices/gameMenus/emptyUserSettings";
 import { emptyObject } from "../../utils/empty";
+import { objectEntriesIter } from "../../utils/entries";
 import { selectorHook } from "../../utils/react/selectorHook";
 
 export const useCurrentEditingRoomJson = selectorHook((state) =>
@@ -38,9 +38,11 @@ export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
   (roomJson, previewedEdits): EditorRoomJson => {
     // apply previews on top of the current room:
     return produce(roomJson, (draftRoomJson) => {
-      const previewedEditsEntryIter = objectEntries(previewedEdits) as Iterable<
-        [EditorRoomItemId, ValueOf<typeof previewedEdits>]
-      >;
+      const previewedEditsEntryIter = objectEntriesIter(
+        previewedEdits as Partial<
+          Record<EditorRoomItemId, ValueOf<typeof previewedEdits>>
+        >,
+      );
 
       for (const [itemId, itemPreview] of previewedEditsEntryIter) {
         if (itemPreview === null) {

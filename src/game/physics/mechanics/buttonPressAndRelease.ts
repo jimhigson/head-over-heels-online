@@ -1,8 +1,7 @@
-import { isEmpty, objectKeys } from "iter-tools-es";
-
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 
+import { objectEmpty } from "../../../utils/objectEmpty";
 import { applyModifiesList } from "../handleTouch/handleItemTouchingSwitch";
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { buttonStayPressedAfterReleasePeriod } from "../mechanicsConstants";
@@ -34,7 +33,7 @@ export const buttonPressAndRelease = <
   const deactivateTime =
     stoodOnUntilRoomTime + buttonStayPressedAfterReleasePeriod;
   const { roomTime } = room;
-  const isStoodOn = !isEmpty(objectKeys(stoodOnBy));
+  const isStoodOn = !objectEmpty(stoodOnBy);
 
   // check is we just stepped over deactivate time:
   const release = !isStoodOn && roomTime > deactivateTime && pressed;

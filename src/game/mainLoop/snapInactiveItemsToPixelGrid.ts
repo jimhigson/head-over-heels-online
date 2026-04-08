@@ -3,7 +3,7 @@ import type { Xyz } from "../../utils/vectors/vectors";
 import type { MovedItems } from "./progressGameState";
 
 import {
-  iterateRoomItems,
+  roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
 } from "../../model/RoomState";
@@ -67,7 +67,7 @@ export const snapInactiveItemsToPixelGrid = <
    */
   movedItems: MovedItems<RoomId, RoomItemId>,
 ) => {
-  for (const item of iterateRoomItems(room.items)) {
+  for (const item of roomItemsIterable(room.items)) {
     if (!isFreeItem(item)) {
       continue;
     }

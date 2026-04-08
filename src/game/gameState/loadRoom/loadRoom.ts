@@ -7,7 +7,7 @@ import type {
 import type { RoomPickupsCollected } from "../GameState";
 
 import {
-  iterateRoomItems,
+  roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
   type RoomStateItems,
@@ -91,10 +91,10 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     [outOfBoundsItem.id]: outOfBoundsItem,
   };
 
-  const spatialIndex = new GridSpatialIndex(iterateRoomItems(items));
+  const spatialIndex = new GridSpatialIndex(roomItemsIterable(items));
 
   // warn if anything is overlapping in the room
-  for (const i of iterateRoomItems(items)) {
+  for (const i of roomItemsIterable(items)) {
     const collisions = collisionItemWithIndex(i, spatialIndex);
     const solidCol = collisions.find(
       (col) =>
@@ -113,10 +113,10 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   }
 
   // check for items that are standing on other items:
-  for (const i of iterateRoomItems(items).filter(isFreeItem)) {
+  for (const i of roomItemsIterable(items).filter(isFreeItem)) {
     const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
       i,
-      iterateRoomItems(items).filter((j) => j.id !== i.id),
+      roomItemsIterable(items).filter((j) => j.id !== i.id),
     );
     if (newStandingOn !== undefined) {
       setStandingOnWithoutRemovingOldFirst({ above: i, below: newStandingOn });
