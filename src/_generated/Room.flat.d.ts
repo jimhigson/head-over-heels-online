@@ -3527,6 +3527,7 @@ export type RoomJsonSchema = {
     nonContiguousRelationship?: {
       with: {
         room: string;
+        subRoom?: string;
       };
       /**
        * the other room needs to have the opposite (* -1) of this

@@ -81,7 +81,7 @@ export type RoomJson<
      * have any physical connection
      */
     nonContiguousRelationship?: {
-      with: { room: RoomId };
+      with: { room: RoomId; subRoom?: string };
       /**
        * the other room needs to have the opposite (* -1) of this
        */

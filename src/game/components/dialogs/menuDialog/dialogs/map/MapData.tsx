@@ -13,7 +13,13 @@ import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPosition
  * the implementation of how we get this data can differ (provided by different hooks)
  * depending on if we are in the editor or in-game
  */
+export type MapDataError = {
+  isError: true;
+  errors: Array<string>;
+};
+
 export type MapData<RoomId extends string> = {
+  isError: false;
   campaign: MaybeUnnamedCampaign<RoomId>;
   characterRooms: CharacterRooms<RoomId>;
   currentCharacterName: CharacterName;
