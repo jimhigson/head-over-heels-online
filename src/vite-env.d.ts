@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+declare const __GIT_BRANCH__: string;
+
 declare module "*.frag" {
   const content: string;
   export default content;

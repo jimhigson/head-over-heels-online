@@ -40,12 +40,10 @@ export const GitRepoInfo = () => {
           href={`${repository.url}/releases`}
           target="_blank"
           onClick={linkOpenExternalClickHandler}
-          className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack"
+          className="screenshot-mask bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack"
         >
-          <BitmapText> v</BitmapText>
-          <BitmapText className="screenshot-mask mr-1 inline-block">
-            {/* extra space pulls away from rounded corners of phone screens and app windows */}
-            {deployedMajor}
+          <BitmapText className="mr-1 inline-block">
+            {__GIT_BRANCH__ ? ` ${__GIT_BRANCH__}` : ` v${deployedMajor}`}
           </BitmapText>
           {isOutdated && (
             <BitmapText className="animate-flash text-midRed zx:text-zxRed">

@@ -1,6 +1,7 @@
 import type { PluginOption } from "vite";
 
 import react from "@vitejs/plugin-react-swc";
+import { execSync } from "child_process";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
@@ -14,6 +15,19 @@ type Mode = "development" | "production" | "tauri" | "visual-regression";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode: _mode }) => {
   const mode = _mode as Mode;
+
+  const gitBranch = (() => {
+    try {
+      const branch = execSync("git rev-parse --abbrev-ref HEAD")
+        .toString()
+        .trim();
+      return branch !== "main" && branch !== "production" ?
+          branch.slice(0, 3)
+        : "";
+    } catch {
+      return "";
+    }
+  })();
 
   return {
     // don't conflict with the editor's vite cache
@@ -87,6 +101,10 @@ export default defineConfig(({ mode: _mode }) => {
         minify: true,
       }),
     ],
+
+    define: {
+      __GIT_BRANCH__: JSON.stringify(gitBranch),
+    },
 
     build: {
       // keep tauri builds in their own dir, since they have tauri-specific
