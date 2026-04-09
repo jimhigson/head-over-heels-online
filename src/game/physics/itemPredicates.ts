@@ -287,6 +287,8 @@ export const isCrown = <RoomId extends string, RoomItemId extends string>(
 
 export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
+/** items that should not trigger helpful movement vectors — player should snag on these to keep pushing */
+export const isNonHmvItem = isItemType("joystick", "switch");
 export const isConveyor = isItemType("conveyor");
 export const isHushPuppy = isItemType("hushPuppy");
 export const isFiredDoughnut = isItemType("firedDoughnut");

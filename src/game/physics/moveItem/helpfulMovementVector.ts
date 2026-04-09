@@ -18,7 +18,7 @@ import {
 } from "../../collision/aabbCollision";
 import {
   isDeadly,
-  isJoystick,
+  isNonHmvItem,
   isPlayableItem,
   isPushable,
   isSolid,
@@ -168,8 +168,8 @@ export const helpfulMovementVector = <
       c === subjectItem || !isSolid(c) ? slideScoreColWithNone
       : c.type === "doorFrame" ? slideScoreColWithDoorFrame
       : isPushable(subjectItem, c) ? slideScoreColWithPushable
-        // we don't apply hmv when colliding with joysticks since you want to snag on them to keep pushing:
-      : isJoystick(c) ? slideScoreColWithNonSliding
+        // non-hmv items (joysticks, switches) — player should snag on these to keep pushing:
+      : isNonHmvItem(c) ? slideScoreColWithNonSliding
       : slideScoreColWithUnpushable;
 
     return Math.max(ac, score);
@@ -181,7 +181,7 @@ export const helpfulMovementVector = <
   ).reduce(accumulateCollisionScore, 0);
 
   if (slideScoreNegSide === slideScoreColWithNonSliding) {
-    // colliding with something that prohibits sliding (ie, joystick)
+    // colliding with a non-hmv item that prohibits sliding
     return;
   }
 
@@ -215,7 +215,7 @@ export const helpfulMovementVector = <
   ).reduce(accumulateCollisionScore, 0);
 
   if (slideScorePosSide === slideScoreColWithNonSliding) {
-    // colliding with something that prohibits sliding (ie, joystick)
+    // colliding with a non-hmv item that prohibits sliding
     return;
   }
 
