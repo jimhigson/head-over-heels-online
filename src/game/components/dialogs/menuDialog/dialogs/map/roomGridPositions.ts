@@ -251,15 +251,14 @@ function* _roomGridPositions<RoomId extends string>({
   const nonContiguousRelationship = room.meta?.nonContiguousRelationship;
   if (nonContiguousRelationship !== undefined) {
     const {
-      with: { room: withRoom },
+      with: { room: withRoom, subRoom: withSubRoom },
       gridOffset,
     } = nonContiguousRelationship;
     yield* roomGridPositions({
       roomId: withRoom,
+      subRoomId: withSubRoom,
       campaign,
       visited,
-      // big rooms can't have this relationship because meh
-      subRoomId: "*",
       vectorFromPrevious: gridOffset,
       previousRoomGridPosition: gridPosition,
     });

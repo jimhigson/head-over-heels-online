@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 
-import type { MapData } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
+import type {
+  MapData,
+  MapDataError,
+} from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
 import type {
   CharacterRooms,
   PickupsCollected,
@@ -11,12 +14,13 @@ import { findMapBounds } from "../../game/components/dialogs/menuDialog/dialogs/
 import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
 import { emptyObject } from "../../utils/empty";
+import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import {
   selectCurrentEditingRoomJson,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
 
-export const useEditorMapData = (): MapData<EditorRoomId> | undefined => {
+export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {
   const campaign = useAppSelectorWithLevelEditorSlice(
     (state) => state.levelEditor.campaignInProgress,
   );
@@ -56,13 +60,14 @@ export const useEditorMapData = (): MapData<EditorRoomId> | undefined => {
         campaign,
         roomsExplored: emptyObject as Record<EditorRoomId, true>,
         curRoomScenery,
+        isError: false,
       };
     } catch (e) {
       console.error(Error("error getting map data", { cause: e }));
-      // since this is the level editor, we're expecting the campaign to be invalid
-      // sometimes - so instead of throwing an error, we just return undefined so the component
-      // can decide not to render until we are valid again
-      return undefined;
+      const errors = createSerialisableErrors(e)
+        .map((err) => err.message)
+        .reverse();
+      return { isError: true, errors };
     }
   }, [campaign, curRoomEditingRoomId, curRoomScenery, curRoomSubroom]);
 };

@@ -16,12 +16,17 @@ export const EditorMap = () => {
   } = useResizeDetector();
   const mapData = useEditorMapData();
 
-  if (mapData === undefined) {
+  if (mapData.isError) {
     return (
-      <div className="h-full flex justify-center items-center w-full scale-editor bg-shadow text-white">
-        <BitmapText>
+      <div className="p-1 h-full flex flex-col gap-y-1 w-full scale-editor bg-shadow text-white overflow-scroll">
+        <BitmapText className="text-midRed sprites-double-height">
           Could not solve map geometry - will show again on valid map data
         </BitmapText>
+        {mapData.errors.map((msg, i) => (
+          <div key={i}>
+            <BitmapText>{msg}</BitmapText>
+          </div>
+        ))}
       </div>
     );
   }

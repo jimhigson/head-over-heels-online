@@ -76,6 +76,7 @@ export const useMapDataForCurrentGame = <
         campaign,
         roomsExplored,
         curRoomScenery: curRoom?.planet,
+        isError: false,
       };
     } catch (e) {
       throw new Error("error getting map data", { cause: e });

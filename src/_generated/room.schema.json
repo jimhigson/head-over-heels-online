@@ -1985,6 +1985,9 @@
                   "properties": {
                     "room": {
                       "type": "string"
+                    },
+                    "subRoom": {
+                      "type": "string"
                     }
                   },
                   "required": ["room"],
