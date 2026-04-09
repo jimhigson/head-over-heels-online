@@ -85,8 +85,8 @@ export const toposort = <N>(graph: ZGraph<N>): N[] => {
                 2,
               ),
             );
+            console.groupEnd();
           }
-          console.groupEnd();
           parentEdges.set(node, true);
         }
       }
