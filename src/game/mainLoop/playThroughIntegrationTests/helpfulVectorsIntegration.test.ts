@@ -57,38 +57,56 @@ test("player slides at a normal to the input direction when partially overlappin
   expect(heelsState(gameState).position.y).toBeGreaterThan(startY);
 });
 
-test("player doesn't slide on joysticks since we want to keep pushing these", () => {
-  const gameState = setUpBasicGame({
-    firstRoomItems: {
-      heels: {
-        type: "player",
-        position: { x: 4, y: 4, z: 0 },
-        config: {
-          which: "heels",
-        },
-      },
-      soothingToRunInto: {
-        type: "joystick",
-        position: { x: 2, y: 3.5, z: 0 },
-        config: {
-          controls: [],
-        },
+test.for([
+  {
+    label: "joystick",
+    item: {
+      type: "joystick" as const,
+      position: { x: 2, y: 3.5, z: 0 },
+      config: { controls: [] },
+    },
+  },
+  {
+    label: "switch",
+    item: {
+      type: "switch" as const,
+      position: { x: 2, y: 3.5, z: 0 },
+      config: {
+        initialSetting: "left" as const,
+        type: "in-room" as const,
+        modifies: [],
       },
     },
-  });
+  },
+])(
+  "player doesn't slide on $label since we want to keep pushing these",
+  ({ item }) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 4, y: 4, z: 0 },
+          config: {
+            which: "heels",
+          },
+        },
+        soothingToRunInto: item,
+      },
+    });
 
-  const startY = heelsState(gameState).position.y;
+    const startY = heelsState(gameState).position.y;
 
-  playGameThrough(gameState, {
-    setupInitialInput(mockInputStateTracker) {
-      mockInputStateTracker.mockDirectionPressed = "right";
-    },
-    until: 5_000,
-  });
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "right";
+      },
+      until: 5_000,
+    });
 
-  // did not slide in y - still at same ordinal:
-  expect(heelsState(gameState).position.y).toEqual(startY);
-});
+    // did not slide in y - still at same ordinal:
+    expect(heelsState(gameState).position.y).toEqual(startY);
+  },
+);
 
 test("player slides at a normal to the input direction after initially pushing a portable block without sliding", () => {
   const gameState = setUpBasicGame({
