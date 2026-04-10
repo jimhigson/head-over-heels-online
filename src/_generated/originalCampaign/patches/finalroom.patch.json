@@ -134,7 +134,7 @@
           "type": "firedDoughnut"
         },
         "maximum": 10,
-        "period": 2000
+        "period": 4000
       },
       "position": {
         "x": 2,
