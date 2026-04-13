@@ -46,7 +46,7 @@ export const room = inferRoomJson({
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },
-      position: { x: 2, y: 5, z: 0 },
+      position: { x: 3, y: 6, z: 0 },
       type: "monster",
     },
     "monster@3,2,0": {
@@ -55,7 +55,7 @@ export const room = inferRoomJson({
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },
-      position: { x: 3, y: 2, z: 0 },
+      position: { x: 2, y: 2, z: 0 },
       type: "monster",
     },
     "monster@4,4,0": {
@@ -64,7 +64,7 @@ export const room = inferRoomJson({
         movement: "patrol-randomly-diagonal",
         which: "dalek",
       },
-      position: { x: 4, y: 4, z: 0 },
+      position: { x: 4, y: 5, z: 0 },
       type: "monster",
     },
     "monster@5,4,0": {
@@ -73,7 +73,7 @@ export const room = inferRoomJson({
         movement: "towards-tripped-on-axis-xy4",
         which: "homingBot",
       },
-      position: { x: 5, y: 4, z: 0 },
+      position: { x: 5, y: 4.5, z: 0 },
       type: "monster",
     },
     "pickup@0,7,5": {
