@@ -16,7 +16,7 @@ jobs:
           node-version: 25.x
           cache: "pnpm"
       - name: Game bundle size
-        uses: preactjs/compressed-size-action@v2
+        uses: jimhigson/compressed-size-action@903b75ad9d180d0e863d38f441f20de5cdc44046 # until merged: https://github.com/preactjs/compressed-size-action/pull/146
         with:
           build-script: "build:game"
           clean-script: "clean"
@@ -28,11 +28,15 @@ jobs:
           minimum-change-threshold: 50
           comment-key: "game"
           sort-by: "Size:desc"
+          # For release-please PRs, compare against the production branch
+          # (= previous release) to show cumulative size change across the
+          # whole release rather than the empty diff of a version bump.
+          base-ref: ${{ startsWith(github.head_ref, 'release-please--') && 'production' || '' }}
       # The first action leaves HEAD on main, so re-checkout the PR merge
       # commit before running the second action
       - uses: actions/checkout@v6
       - name: Editor bundle size
-        uses: preactjs/compressed-size-action@v2
+        uses: jimhigson/compressed-size-action@903b75ad9d180d0e863d38f441f20de5cdc44046 # until merged: https://github.com/preactjs/compressed-size-action/pull/146
         with:
           build-script: "build:editor"
           clean-script: "clean"
@@ -42,3 +46,4 @@ jobs:
           minimum-change-threshold: 50
           comment-key: "editor"
           sort-by: "Size:desc"
+          base-ref: ${{ startsWith(github.head_ref, 'release-please--') && 'production' || '' }}
