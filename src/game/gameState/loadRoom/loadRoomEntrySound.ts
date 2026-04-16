@@ -15,7 +15,7 @@ const roomEntrySoundPos: Xyz = blockXyzToFineXyz({ x: -2, y: -2, z: -2 });
 const resolveSoundId = (
   roomJson: RoomJson<string, string>,
   isNewGame: boolean,
-  noRoomEntryTunes: boolean,
+  noRoomEntryTunesSetting: boolean,
 ): SoundId | undefined => {
   if (
     isNewGame &&
@@ -29,7 +29,7 @@ const resolveSoundId = (
     return "fanfare";
   }
 
-  if (noRoomEntryTunes) {
+  if (noRoomEntryTunesSetting) {
     return undefined;
   }
 
@@ -52,15 +52,11 @@ export const loadRoomEntrySound = <
     return undefined;
   }
 
-  const noRoomEntryTunes =
+  const noRoomEntryTunesSetting =
     userSettings.soundSettings.noRoomEntryTunes ??
     defaultUserSettings.soundSettings.noRoomEntryTunes;
 
-  if (noRoomEntryTunes) {
-    return undefined;
-  }
-
-  const soundId = resolveSoundId(roomJson, isNewGame, noRoomEntryTunes);
+  const soundId = resolveSoundId(roomJson, isNewGame, noRoomEntryTunesSetting);
 
   if (!soundId) {
     return undefined;
