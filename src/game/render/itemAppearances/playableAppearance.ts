@@ -1,11 +1,13 @@
 import { Container } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
 
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import type { AppSpritesheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
+import type { GameState } from "../../gameState/GameState";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import type { CreateSpriteOptions } from "../createSprite";
 import type { StackedSpritesContainer } from "./createStackedSprites";
@@ -82,10 +84,12 @@ const playableCreateSpriteOptions = ({
   paused,
   spritesheet,
   isStoodOn,
+  isInSymbiosis,
 }: PlayableRenderProps & {
   name: IndividualCharacterName;
   paused: boolean;
   spritesheet: AppSpritesheet;
+  isInSymbiosis: boolean;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
@@ -111,7 +115,13 @@ const playableCreateSpriteOptions = ({
     };
   }
 
-  if (action === "moving") {
+  if (
+    action === "moving" &&
+    !(
+      // head along for the ride:
+      (isInSymbiosis && name === "head")
+    )
+  ) {
     return {
       animationId: `${name}.walking.${facingXy8}`,
       paused,
@@ -174,6 +184,7 @@ const updateIndividualPlayableSprite = (
     name: IndividualCharacterName;
     paused: boolean;
     spritesheet: AppSpritesheet;
+    isInSymbiosis: boolean;
   },
 ) => {
   container[playableSpriteContainerSymbol].removeChildren();
@@ -256,6 +267,30 @@ export const isHighlighted = (
   );
 };
 
+export const isHighlightedPlayableItem = (
+  gameState: Pick<GameState, "currentCharacterName"> | undefined,
+  playableItem: ItemTypeUnion<
+    "head" | "headOverHeels" | "heels",
+    string,
+    string
+  >,
+): boolean => {
+  const result =
+    // if no game state, there isn't any game (probably rendering for the level editor) so
+    // do not highlight
+    gameState !== undefined &&
+    (playableItem.type === "headOverHeels" ?
+      // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
+      // characters - they were switched to at the same time so it doesn't matter:
+      isHighlighted(playableItem.state.head, "headOverHeels", "headOverHeels")
+    : isHighlighted(
+        playableItem.state,
+        playableItem.type,
+        gameState.currentCharacterName,
+      ));
+  return result;
+};
+
 /** should player have the flashing effect after losing a life */
 export const isFlashing = (playableItem: PlayableItem): boolean => {
   if (!playerDiedRecently(playableItem)) {
@@ -307,6 +342,7 @@ const updateIndividualsRendering = (
   renderProps: PlayableRenderProps,
   paused: boolean,
   spritesheet: AppSpritesheet,
+  isInSymbiosis: boolean,
 ) => {
   if (refreshSprites) {
     updateIndividualPlayableSprite(individualContainer, {
@@ -314,6 +350,7 @@ const updateIndividualsRendering = (
       ...renderProps,
       paused,
       spritesheet,
+      isInSymbiosis,
     });
   }
   applyFilters(renderProps, individualContainer);
@@ -357,19 +394,7 @@ const playableAppearanceImpl: ItemAppearance<
   /**
    * show the outline highlight from when the player has just switched to the character?
    */
-  const highlighted =
-    // if no game state, there isn't any game (probably rendering for the level editor) so
-    // do not highlight
-    gameState !== undefined &&
-    (subject.type === "headOverHeels" ?
-      // cheat by just looking if head is highlighted inside the symbiosis and use that result for both
-      // characters - they were switched to at the same time so it doesn't matter:
-      isHighlighted(subject.state.head, "headOverHeels", "headOverHeels")
-    : isHighlighted(
-        subject.state,
-        subject.type,
-        gameState.currentCharacterName,
-      ));
+  const highlighted = isHighlightedPlayableItem(gameState, subject);
 
   const flashing = isFlashing(subject);
   const shining = playableHasShield(subject);
@@ -443,6 +468,7 @@ const playableAppearanceImpl: ItemAppearance<
       renderProps,
       paused,
       spritesheet,
+      true,
     );
     updateIndividualsRendering(
       "heels",
@@ -451,6 +477,7 @@ const playableAppearanceImpl: ItemAppearance<
       renderProps,
       paused,
       spritesheet,
+      true,
     );
   } else {
     outputContainer =
@@ -471,6 +498,7 @@ const playableAppearanceImpl: ItemAppearance<
       renderProps,
       paused,
       spritesheet,
+      false,
     );
   }
 
