@@ -11,6 +11,8 @@ import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
 const roomEntrySoundPos: Xyz = blockXyzToFineXyz({ x: -2, y: -2, z: -2 });
+const roomEntryGain = 0.3;
+const roomEntryPlaybackRate = 1.2;
 
 const resolveSoundId = (
   roomJson: RoomJson<string, string>,
@@ -66,24 +68,46 @@ export const loadRoomEntrySound = <
     return undefined;
   }
 
-  return {
-    id: "roomEntrySound" as RoomItemId,
-    type: "soundEffect",
-    fixedZIndex: nonRenderingItemFixedZIndex,
-    config: {
-      soundOptions: {
-        soundId,
-        gain: 0.3,
-        playbackRate: 1.2,
-      },
-    },
-    aabb: originXyz,
-    castsShadowWhileStoodOn: false,
-    state: {
-      ...defaultBaseState(),
-      position: roomEntrySoundPos,
-      played: false,
-    },
+  return createRoomEntrySound({
+    soundId,
     noSoundPan: true,
-  };
+    gain: roomEntryGain,
+    playbackRate: roomEntryPlaybackRate,
+  });
 };
+
+export const createRoomEntrySound = <
+  RoomId extends string,
+  RoomItemId extends string,
+>({
+  soundId,
+  noSoundPan = true,
+  gain = 1,
+  playbackRate = 1,
+  id = "roomEntrySound" as RoomItemId,
+}: {
+  soundId: SoundId;
+  noSoundPan?: boolean;
+  gain?: number;
+  playbackRate?: number;
+  id?: RoomItemId;
+}): ItemInPlay<"soundEffect", RoomId, RoomItemId> => ({
+  id,
+  type: "soundEffect",
+  fixedZIndex: nonRenderingItemFixedZIndex,
+  config: {
+    soundOptions: {
+      soundId,
+      gain,
+      playbackRate,
+    },
+  },
+  aabb: originXyz,
+  castsShadowWhileStoodOn: false,
+  state: {
+    ...defaultBaseState(),
+    position: roomEntrySoundPos,
+    played: false,
+  },
+  noSoundPan,
+});
