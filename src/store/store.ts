@@ -24,6 +24,7 @@ import {
   debugItemClicked,
   gameMenusSlice,
 } from "./slices/gameMenus/gameMenusSlice";
+import { playMenuSoundsOnStoreChanges } from "./slices/gameMenus/playMenuSoundsOnStoreChanges";
 import { githubApiSlice } from "./slices/githubApiSlice";
 import { spritesheetOverrideSlice } from "./slices/spritesheetOverrideSlice";
 import {
@@ -87,6 +88,7 @@ if (typeof window !== "undefined") {
 
 updateUpscaleWhenEmulatedResolutionChanges();
 updateUpscaleWhenDisplaySettingsChange();
+playMenuSoundsOnStoreChanges();
 
 export const persistor = persistStore(store);
 
