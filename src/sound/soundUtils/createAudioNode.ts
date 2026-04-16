@@ -8,6 +8,8 @@ export type CreateAudioNodeOptionsObject = {
   playbackRate?: number;
   varyPlaybackRate?: boolean;
   randomiseStartPoint?: boolean;
+  /** random delay before the sound starts, in milliseconds */
+  randomDelayMaxMs?: number;
   loop?: boolean;
   connectTo?: AudioNode;
 };
@@ -29,6 +31,7 @@ export const createAudioNode = (
     loop = false,
     varyPlaybackRate = false,
     randomiseStartPoint = false,
+    randomDelayMaxMs = 0,
   } = resolvedParam;
 
   const node = audioCtx.createBufferSource();
@@ -39,12 +42,17 @@ export const createAudioNode = (
   node.playbackRate.value =
     varyPlaybackRate ? playbackRate - 0.05 + Math.random() * 0.1 : playbackRate;
 
+  const startTime =
+    randomDelayMaxMs > 0 ?
+      audioCtx.currentTime + (Math.random() * randomDelayMaxMs) / 1_000
+    : 0;
+
   if (loop && randomiseStartPoint) {
     // randomise the start time - otherwise if there are multiple playing at the same time
     // it will sound like one effect
-    node.start(0, buffer.duration * Math.random());
+    node.start(startTime, buffer.duration * Math.random());
   } else {
-    node.start();
+    node.start(startTime);
   }
 
   if (connectTo !== undefined) node.connect(connectTo);

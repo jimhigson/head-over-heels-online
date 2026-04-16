@@ -18,6 +18,7 @@ import {
   type BracketedSegmentOptions,
   createBracketedSound,
 } from "../soundUtils/createBracketedSound";
+import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 type PerMonsterSounds = {
@@ -37,6 +38,8 @@ const collisionSounds: PerMonsterSounds = {
 const turnaroundSounds: PerMonsterSounds = {
   cyberman: { soundId: "jetpackTurnaround", gain: 1.2 },
   dalek: { soundId: "mojoTurn", gain: 0.3 },
+  monkey: { soundId: "monkeyTurn" },
+  elephant: { soundId: "elephantHoot" },
 };
 const ambientSounds: PerMonsterSounds = {
   cyberman: { soundId: "jetpackLoop", gain: 0.7 },
@@ -72,6 +75,7 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
   #ambientBracketed: BracketedSound<boolean> | undefined;
   #freeItemSoundRenderer: FreeItemSoundRenderer;
   #movingBracketed: BracketedSound<boolean> | undefined;
+  #activatedBracketed: BracketedSound;
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<"monster">,
@@ -115,6 +119,11 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
         this.#ambientChannel,
       );
     }
+
+    this.#activatedBracketed = createBracketedSound(
+      activationBracketedSoundOptions,
+      this.#spotChannel,
+    );
   }
 
   tick(tickContext: ItemTickContext) {
@@ -140,6 +149,8 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
       this.#ambientBracketed(online);
     }
 
+    this.#activatedBracketed(activated);
+
     const isWalking = !xyzEqual(walking, originXyz);
     if (this.#movingBracketed) {
       this.#movingBracketed(isWalking);
@@ -152,6 +163,8 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
     // turn sounds off gracefully to avoid a click:
     this.#ambientBracketed?.(false);
     this.#movingBracketed?.(false);
+    // don't call #activatedBracketed(false) here — that would play the
+    // deactivation sound when leaving the room, not a real deactivation
     this.#freeItemSoundRenderer.destroy();
   }
 }

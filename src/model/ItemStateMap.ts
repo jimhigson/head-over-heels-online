@@ -286,7 +286,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     PortableItemState &
     ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
 
-  pushableBlock: FreeItemState<RoomItemId> & ItemWithMovementState;
+  pushableBlock: FreeItemState<RoomItemId>;
   movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomItemId>;
   sceneryCrown: FreeItemState<RoomItemId> & PortableItemState;

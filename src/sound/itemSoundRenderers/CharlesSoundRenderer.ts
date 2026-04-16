@@ -8,7 +8,11 @@ import type {
 import { isJoystick } from "../../game/physics/itemPredicates";
 import { keysIter } from "../../utils/entries";
 import { audioCtx } from "../audioCtx";
-import { createBracketedSound } from "../soundUtils/createBracketedSound";
+import {
+  type BracketedSound,
+  createBracketedSound,
+} from "../soundUtils/createBracketedSound";
+import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
@@ -26,6 +30,8 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
     this.#servoChannel,
   );
 
+  #activatedBracketed: BracketedSound;
+
   #freeItemSoundRenderer: FreeItemSoundRenderer;
 
   constructor(
@@ -33,6 +39,10 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
   ) {
     this.#servoChannel.connect(this.output);
     this.#servoChannel.gain.value = 0.5;
+    this.#activatedBracketed = createBracketedSound(
+      activationBracketedSoundOptions,
+      this.output,
+    );
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
       collision: { soundId: "metalHit", gain: 0.3 },
       pushed: { soundId: "heavyMetalScraping", gain: 0.4 },
@@ -58,12 +68,15 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
       keysIter(by).some((id) => isJoystick(items[id]));
 
     this.#servoBracketed(controlledByJoystick);
+    this.#activatedBracketed(item.state.activated ?? true);
 
     this.#freeItemSoundRenderer.tick(tickContext, controlledByJoystick);
   }
 
   destroy(): void {
     this.#servoBracketed(false);
+    // don't call #activatedBracketed(false) here — that would play the
+    // deactivation sound when leaving the room, not a real deactivation
     this.#freeItemSoundRenderer.destroy();
   }
 }

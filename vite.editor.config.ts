@@ -47,6 +47,11 @@ export default defineConfig({
   ],
 
   build: {
+    // don't inline mp3s < 4kb since base64 encoding will make them bigger, and http2 is fine to request them separately
+    assetsInlineLimit(filePath) {
+      if (filePath.endsWith(".mp3")) return false;
+      return undefined;
+    },
     target: "esnext",
     cssTarget: "esnext", // Don't transpile CSS for modern browsers
     minify: "esbuild", // Use esbuild for faster minification

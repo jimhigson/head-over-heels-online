@@ -11,11 +11,13 @@ import { ButtonSoundRenderer } from "./itemSoundRenderers/ButtonSoundRenderer";
 import { CharlesSoundRenderer } from "./itemSoundRenderers/CharlesSoundRenderer";
 import { ConveyorSoundRenderer } from "./itemSoundRenderers/ConveyorSoundRenderer";
 import { DrumSoundRenderer } from "./itemSoundRenderers/DrumSoundRenderer";
+import { EmitterSoundRenderer } from "./itemSoundRenderers/EmitterSoundRenderer";
 import { FiredDoughnutSoundRenderer } from "./itemSoundRenderers/FiredDoughnutSoundRenderer";
 import { FreeItemSoundRenderer } from "./itemSoundRenderers/generic/FreeItemSoundRenderer";
 import { LiftSoundRenderer } from "./itemSoundRenderers/LiftSoundRenderer";
 import { MonsterSoundRenderer } from "./itemSoundRenderers/MonsterSoundRenderer";
 import { MovingPlatformSoundRenderer } from "./itemSoundRenderers/MovingPlatformSoundRenderer";
+import { ParticleSoundRenderer } from "./itemSoundRenderers/ParticleSoundRenderer";
 import { PlayableSoundRenderer } from "./itemSoundRenderers/PlayableSoundRenderer";
 import { PushableBlockSoundRenderer } from "./itemSoundRenderers/PushableBlockSoundRenderer";
 import { SlidingBlockSoundRenderer } from "./itemSoundRenderers/SlidingBlockSoundRenderer";
@@ -29,33 +31,35 @@ import { ToasterSoundRenderer } from "./itemSoundRenderers/ToasterSoundRenderer"
 const rendererClasses: {
   [T in ItemInPlayType]?: ItemSoundRendererConstructableClass<T>;
 } = {
-  lift: LiftSoundRenderer,
-  switch: SwitchSoundRenderer,
-  button: ButtonSoundRenderer,
+  ball: BallSoundRenderer,
   bubbles: BubblesSoundRenderer,
+  button: ButtonSoundRenderer,
+  charles: CharlesSoundRenderer,
+  conveyor: ConveyorSoundRenderer,
+  emitter: EmitterSoundRenderer,
+  firedDoughnut: FiredDoughnutSoundRenderer,
   head: PlayableSoundRenderer,
-  heels: PlayableSoundRenderer,
   headOverHeels: PlayableSoundRenderer,
-  teleporter:
-    TeleporterSoundRenderer as ItemSoundRendererConstructableClass<"teleporter">,
+  heels: PlayableSoundRenderer,
+  lift: LiftSoundRenderer,
+  monster: MonsterSoundRenderer,
+  moveableDeadly: FreeItemSoundRenderer,
+  movingPlatform: MovingPlatformSoundRenderer,
+  particle: ParticleSoundRenderer,
+  pickup: FreeItemSoundRenderer,
+  portableBlock: FreeItemSoundRenderer,
   portableTeleporter:
     TeleporterSoundRenderer as ItemSoundRendererConstructableClass<"portableTeleporter">,
-  monster: MonsterSoundRenderer,
-  conveyor: ConveyorSoundRenderer,
-  spring: SpringSoundRenderer,
-  portableBlock: FreeItemSoundRenderer,
-  charles: CharlesSoundRenderer,
-  ball: BallSoundRenderer,
   pushableBlock: PushableBlockSoundRenderer,
-  firedDoughnut: FiredDoughnutSoundRenderer,
+  sceneryCrown: FreeItemSoundRenderer,
+  sceneryPlayer: FreeItemSoundRenderer,
   slidingBlock: SlidingBlockSoundRenderer,
-  pickup: FreeItemSoundRenderer,
-  movingPlatform: MovingPlatformSoundRenderer,
-  moveableDeadly: FreeItemSoundRenderer,
   slidingDeadly: SlidingDeadlySoundRenderer,
   soundEffect: SoundEffectSoundRenderer,
-  sceneryPlayer: FreeItemSoundRenderer,
-  sceneryCrown: FreeItemSoundRenderer,
+  spring: SpringSoundRenderer,
+  switch: SwitchSoundRenderer,
+  teleporter:
+    TeleporterSoundRenderer as ItemSoundRendererConstructableClass<"teleporter">,
 };
 
 export const createSoundRenderer = <T extends ItemInPlayType>(

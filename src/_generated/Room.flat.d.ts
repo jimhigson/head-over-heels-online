@@ -162,6 +162,9 @@ export type RoomJsonSchema = {
                 type: "disappearing";
               }
             | {
+                type: "firedDoughnut";
+              }
+            | {
                 type: "hushPuppy";
               }
             | {

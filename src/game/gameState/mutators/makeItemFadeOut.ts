@@ -42,6 +42,7 @@ export const makeItemFadeOut = <
     touchedItem.type === "pickup" ?
       { type: "pickup" as const, gives: touchedItem.config.gives }
     : touchedItem.type === "hushPuppy" ? { type: "hushPuppy" as const }
+    : touchedItem.type === "firedDoughnut" ? { type: "firedDoughnut" as const }
     : { type: "disappearing" as const };
 
   // need the bounding box from before it was multiplied 'times' was applied.

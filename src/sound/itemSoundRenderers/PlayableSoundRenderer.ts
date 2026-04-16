@@ -4,6 +4,7 @@ import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
 import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
+import { isHighlightedPlayableItem } from "../../game/render/itemAppearances/playableAppearance";
 import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
 import { epsilon } from "../../utils/epsilon";
 import { lengthXy } from "../../utils/vectors/vectors";
@@ -44,6 +45,8 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
 
+  #highlightedCharacterBracketedSound: BracketedSound;
+
   #currentTeleportingPhase: "in" | "out" | null = null;
 
   constructor(
@@ -72,6 +75,17 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       );
     }
 
+    this.#highlightedCharacterBracketedSound = createBracketedSound(
+      {
+        start: {
+          soundId: `${name}Accent`,
+          gain: 0.3,
+        },
+        noStartOnFirstFrame: false,
+      },
+      this.output,
+    );
+
     this.#jumpChannel.gain.value = jumpGain;
     this.#jumpChannel.connect(this.output);
     this.#carryChannel.gain.value = carryGain;
@@ -99,7 +113,10 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
 
   tick(tickContext: ItemTickContext) {
     const {
-      renderContext: { item },
+      renderContext: {
+        item,
+        general: { gameState },
+      },
     } = this;
     const {
       state: {
@@ -171,12 +188,17 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       // don't scrape if either walking or falling:
       playWalkSound || action === "falling",
     );
+
+    this.#highlightedCharacterBracketedSound(
+      isHighlightedPlayableItem(gameState, item),
+    );
   }
 
   destroy(): void {
     this.#walkBracketedSound?.(false);
     this.#jumpBracketedSound(false);
     this.#carryBracketedSound(false);
+    this.#highlightedCharacterBracketedSound(false);
     this.#freeItemSoundRenderer.destroy();
   }
 }

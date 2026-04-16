@@ -35,6 +35,13 @@ export class BubblesSoundRenderer implements ItemSoundRenderer<"bubbles"> {
         });
         break;
       }
+      case "firedDoughnut": {
+        createAudioNode({
+          soundId: "doughnutSplat",
+          connectTo: this.output,
+        });
+        break;
+      }
       case "hushPuppy": {
         this.output.gain.value = 0.5;
         createAudioNode({

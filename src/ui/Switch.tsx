@@ -1,13 +1,23 @@
 import clsx from "clsx";
-import { type MouseEvent, type ReactNode, useCallback } from "react";
+import {
+  type MouseEvent,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { twClass } from "../editor/twClass";
 import { BitmapText } from "../game/components/tailwindSprites/Sprite";
+import { soundUrls } from "../sound/soundUrls";
 import { cn } from "./cn";
 import { getSwitchPaddedLabels } from "./getSwitchPaddedLabels";
 import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
 import { Tooltip } from "./Tooltip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
+
+const uiSoundVolume = 0.1;
 
 const SwitchLabel = ({ label }: { label: string }) => (
   <BitmapText className="inline-block mr-1 text-lightGrey py-half" noSlitWords>
@@ -15,10 +25,12 @@ const SwitchLabel = ({ label }: { label: string }) => (
   </BitmapText>
 );
 
+type OnSwitchChange = (newValue: boolean, e?: MouseEvent<HTMLElement>) => void;
+
 export type SwitchProps = {
   value: boolean;
   className?: string;
-  onChange?: (newValue: boolean, e?: MouseEvent<HTMLElement>) => void;
+  onChange?: OnSwitchChange;
   trueLabel?: string;
   falseLabel?: string;
   label?: string;
@@ -40,6 +52,16 @@ export const Switch = ({
   const trueLabelPadded = trueLabel.padStart(labelLength, " ");
   const falseLabelPadded = falseLabel.padEnd(labelLength, " ");
 
+  const prevValueRef = useRef(value);
+  const [hasChanged, setHasChanged] = useState(false);
+
+  useEffect(() => {
+    if (prevValueRef.current !== value) {
+      setHasChanged(true);
+    }
+    prevValueRef.current = value;
+  }, [value]);
+
   useKeyboardShortcut(shortcutKeys, false, () => {
     onChange?.(!value, undefined);
   });
@@ -49,6 +71,16 @@ export const Switch = ({
       onClick={(e) => onChange?.(!value, e)}
       className={cn("inline-flex justify-between leading-none", className)}
     >
+      {hasChanged && (
+        <audio
+          src={value ? soundUrls.setting1 : soundUrls.setting0}
+          key={`${value}`}
+          autoPlay
+          ref={(el) => {
+            if (el) el.volume = uiSoundVolume;
+          }}
+        />
+      )}
       {label && <SwitchLabel label={label} />}
       <BitmapText
         role="switch"
@@ -94,6 +126,13 @@ const switchNColours = twClass([
   "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
 ]);
 
+const settingSounds = [
+  soundUrls.setting0,
+  soundUrls.setting1,
+  soundUrls.setting2,
+  soundUrls.setting3,
+] as const;
+
 export const SwitchN = <TValue extends number | string>({
   className,
   value,
@@ -106,6 +145,16 @@ export const SwitchN = <TValue extends number | string>({
 }: SwitchNProps<TValue>) => {
   const valueIndex = values.indexOf(value);
   const numValues = values.length;
+
+  const prevValueRef = useRef(value);
+  const [hasChanged, setHasChanged] = useState(false);
+
+  useEffect(() => {
+    if (prevValueRef.current !== value) {
+      setHasChanged(true);
+    }
+    prevValueRef.current = value;
+  }, [value]);
 
   const goToNextValue = useCallback(() => {
     const nextIndex = (valueIndex + 1) % numValues;
@@ -127,6 +176,16 @@ export const SwitchN = <TValue extends number | string>({
       onClick={goToNextValue}
       className={cn("inline-flex justify-between leading-none", className)}
     >
+      {hasChanged && (
+        <audio
+          src={settingSounds[valueIndex % 4]}
+          key={`${value}`}
+          autoPlay
+          ref={(el) => {
+            if (el) el.volume = uiSoundVolume;
+          }}
+        />
+      )}
       {label && <SwitchLabel label={label} />}
       <BitmapText
         role="switch"
