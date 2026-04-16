@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { NonEmptyRecord } from "../../src/utils/types/NonEmptyRecord";
+import type { NonEmptyRecord } from "../../../src/utils/types/NonEmptyRecord";
 
 type SubRoomData = {
   gridPosition: { x: number; y: number };

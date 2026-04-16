@@ -1,10 +1,12 @@
 import type { WritableDraft } from "immer";
 import type { Get, Paths } from "type-fest";
 
+import { createSelector } from "@reduxjs/toolkit";
 import nanoEqual from "nano-equal";
 
 import type { KeyAssignmentPresetName } from "../../../game/input/keyAssignmentPresets";
 import type { Campaign } from "../../../model/modelTypes";
+import type { AppSpritesheetData } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import type { RootState } from "../../store";
 import type {
   GameMenusState,
@@ -15,6 +17,8 @@ import type {
 } from "./gameMenusSlice";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
+import { makeSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { getAtPath } from "../../../utils/getAtPath";
 import { size } from "../../../utils/iterators/size";
@@ -82,9 +86,11 @@ export const selectGameSpeed = selectUserSetting("gameSpeed");
 export const useEmulatedResolutionName = () =>
   useAppSelector(selectEmulatedResolutionName);
 
-export const selectIsUncolourised = selectUserSetting(
-  "displaySettings.uncolourised",
-);
+export const selectIsUncolourised = (state: RootState): boolean =>
+  selectSpritesOption(state).uncolourised;
+
+export const useSpritesOption = () => useAppSelector(selectSpritesOption);
+
 export const useIsUncolourised = () => useAppSelector(selectIsUncolourised);
 export const selectIsCrtFilter = selectUserSetting("displaySettings.crtFilter");
 export const selectIsInfiniteLivesPoke = selectUserSetting("infiniteLivesPoke");
@@ -115,6 +121,8 @@ export const useInputDirectionMode = (): InputDirectionMode =>
 
 export const selectPlanetsLiberatedCount = (state: RootState) =>
   size(valuesIter(state.gameMenus.gameInPlay.planetsLiberated).filter(Boolean));
+
+export const selectSpritesOption = selectUserSetting("displaySettings.sprites");
 
 export const selectShowBoundingBoxes = selectUserSetting(
   "displaySettings.showBoundingBoxes",
@@ -193,3 +201,16 @@ export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
       selectMaybeLoadedCampaignData<RoomId>(state, currentCampaignLocator)
     );
 };
+
+/**
+ * caching selector to get the spritesheet data for the currently
+ * selected spritesOption
+ */
+export const selectCurrentSpritesheetData = createSelector(
+  [selectSpritesOption],
+  (spriteOption): AppSpritesheetData =>
+    makeSpritesheetData(spritesheetMetas[spriteOption.name]),
+);
+
+export const useCurrentSpritesheetData = () =>
+  useAppSelector(selectCurrentSpritesheetData);

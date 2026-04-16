@@ -22,6 +22,8 @@ export type ObjectEntriesIter = <K extends keyof any, V>(
   o: Partial<Record<K, V>>,
 ) => IterableIterator<[K, V]>;
 
+// TODO: consider replacing with type-fest version:
+//    https://github.com/sindresorhus/type-fest/blob/main/source/entries.d.ts
 export const entries = Object.entries as ObjectEntries;
 export const keys = Object.keys as ObjectKeys;
 

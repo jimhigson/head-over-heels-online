@@ -1,7 +1,8 @@
 #!/usr/bin/env -S pnpm tsx
 
-import { spritesheetData } from "../src/sprites/spritesheet/spritesheetData/spriteSheetData";
+import { makeSpritesheetData } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
-const { frame } = spritesheetData.frames["heels.walking.towardsRight.3"];
+const { frame } = makeSpritesheetData({ playable: { head: {}, heels: {} } })
+  .frames["heels.walking.towardsRight.3"];
 // conveniently write to imagemagick's preferred crop format:
 console.log(`${frame.w}x${frame.h}+${frame.x}+${frame.y}`);

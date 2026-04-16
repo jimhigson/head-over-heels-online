@@ -1,3 +1,5 @@
+import type { AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { twClass } from "../../../../../../editor/twClass";
 import {
   type DirectionsRelativeToMode,
@@ -8,6 +10,7 @@ import { nextDirectionRelativeTo } from "../../../../../../store/slices/gameMenu
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 import {
   optionsHintMarkdownClassname,
   spriteLeaderClasses,
@@ -23,18 +26,6 @@ More intuitive if you find directions confusing in isometric games, but means hi
     "**Mixed (default)**: *Analogue sticks* move relative to the *screen*, digital inputs like *keys* and *d-pad* move relative to the *world*",
 };
 
-const leaderClass: Record<DirectionsRelativeToMode, string> = {
-  screen: twClass(
-    "texture-heels_walking_towardsRight_2 selectedMenuItem:texture-animated-heels_screenDirections",
-  ),
-  world: twClass(
-    "texture-heels_standing_right selectedMenuItem:texture-animated-heels_worldDirections sprites-normal-height",
-  ),
-  mixed: twClass(
-    "texture-heels_standing_right selectedMenuItem:texture-animated-heels_mixedDirections sprites-normal-height",
-  ),
-};
-
 const ScreenRelativeControlValue = () => {
   const isScreenRelativeControl = useDirectionsRelativeTo();
 
@@ -48,6 +39,18 @@ const ScreenRelativeControlValue = () => {
 };
 
 export const ScreenRelativeControlMenuItem = () => {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
+  const leaderClass: Record<DirectionsRelativeToMode, string> = {
+    screen: twClass(
+      `${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_screenDirections" satisfies AnimatedTextureTailwindClass}`,
+    ),
+    world: twClass(
+      `${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })} ${"selectedMenuItem:texture-animated-heels_worldDirections" satisfies AnimatedTextureTailwindClass} sprites-normal-height`,
+    ),
+    mixed: twClass(
+      `${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })} ${"selectedMenuItem:texture-animated-heels_mixedDirections" satisfies AnimatedTextureTailwindClass} sprites-normal-height`,
+    ),
+  };
   const directionsRelativeTo = useDirectionsRelativeTo();
   return (
     <MenuItem

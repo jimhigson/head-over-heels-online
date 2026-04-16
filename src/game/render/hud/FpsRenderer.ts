@@ -3,9 +3,10 @@ import { Container } from "pixi.js";
 import type { Renderer } from "../Renderer";
 import type { HudRenderContext } from "./hudRendererContexts";
 
+import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import {
-  getSpritesheetPalette,
-  type SpritesheetPaletteColourName,
+  type BlockstackPaletteColourName,
+  maybeDimPalette,
 } from "../../../sprites/palette/spritesheetPalette";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import {
@@ -46,7 +47,7 @@ export class FpsRenderer
   #colourNameForFps(
     fpsValue: number,
     goodFps: number,
-  ): SpritesheetPaletteColourName {
+  ): BlockstackPaletteColourName {
     const ratio = fpsValue / goodFps;
     return (
       ratio > 1.95 ? "white"
@@ -65,7 +66,7 @@ export class FpsRenderer
       fpsValue === undefined ? "..." : `${Math.round(fpsValue)} FPS`;
     const colourName =
       fpsValue === undefined ? "white" : this.#colourNameForFps(fpsValue, 60);
-    const palette = getSpritesheetPalette(this.#isDark);
+    const palette = maybeDimPalette(blockStackSpritesheetMeta, this.#isDark);
     this.#fpsText.tint = palette[colourName];
   }
 

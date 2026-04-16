@@ -3,30 +3,33 @@ import type { Color, Renderer } from "pixi.js";
 import { Container, Rectangle, Sprite } from "pixi.js";
 
 import type { PokeableNumber } from "../../../model/ItemStateMap";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import type { AppSpritesheetData } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
-import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
+import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { size } from "../../../utils/iterators/size";
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
 import { OutlineFilter } from "../filters/outlineFilter";
 
-const characterSpriteTextureId = (char: string): TextureId => {
+const characterSpriteTextureId = (
+  char: string,
+  spritesheetData: AppSpritesheetData,
+): TextureId => {
   const textureId = `hud.char.${escapeCharForTailwind(char)}`;
 
-  try {
-    assertIsTextureId(textureId);
-  } catch (e) {
-    throw new Error(
-      `no texture id for char "${char}": ${(e as Error).message}`,
-      { cause: e },
-    );
+  if (import.meta.env.DEV) {
+    try {
+      assertIsTextureId(textureId, spritesheetData);
+    } catch (e) {
+      throw new Error(`no texture id for char "${char}"`, { cause: e });
+    }
   }
 
-  return textureId;
+  return textureId as TextureId;
 };
 
 const printableString = (input: PokeableNumber | string): string => {
@@ -97,7 +100,7 @@ export class TextContainer extends Container {
     };
     if (outline) {
       this.#characterSpriteContainer.filters = new OutlineFilter({
-        color: spritesheetPalette.pureBlack,
+        color: paletteBlockstack.pureBlack,
         width: 1,
       });
     }
@@ -155,11 +158,12 @@ export class TextContainer extends Container {
     const lengthChanged = strLength !== oldLength;
 
     try {
-      const spritesheetTextures = originalSpriteSheet().textures;
+      const spritesheet = originalSpriteSheet();
+      const spritesheetTextures = spritesheet.textures;
 
       let i = 0;
       for (const char of str) {
-        const textureId = characterSpriteTextureId(char);
+        const textureId = characterSpriteTextureId(char, spritesheet.data);
 
         let sprite: Sprite | undefined;
         if (i < oldLength) {

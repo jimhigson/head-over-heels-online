@@ -1,9 +1,10 @@
-import { Container } from "pixi.js";
+import { type Color, Container } from "pixi.js";
 
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import type { ItemAppearance } from "./ItemAppearance";
 
-import { spritesheetPalette } from "../../../sprites/palette/spritesheetPalette";
-import { emptyObject } from "../../../utils/empty";
+import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { getAmbientSwoppedColour } from "../../../utils/palette/palette";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveSpeedPixPerMs } from "../../physics/mechanicsConstants";
 import { TextContainer } from "../text/TextContainer";
@@ -14,51 +15,49 @@ const lineHeightPx = 12;
 /** above this height, lines are hidden */
 const maxLineHeight = blockSizePx.z * 3;
 
-const lightening = [
-  spritesheetPalette.shadow,
-  spritesheetPalette.redShadow,
-  spritesheetPalette.midGrey,
-  spritesheetPalette.metallicBlue,
-  spritesheetPalette.midRed,
-  spritesheetPalette.moss,
-  spritesheetPalette.pink,
-  spritesheetPalette.lightBeige,
-  spritesheetPalette.pastelBlue,
-  spritesheetPalette.lightGrey,
-  spritesheetPalette.highlightBeige,
-];
+const buildFadeOrder = <PaletteColourName extends string>(
+  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+): Color[] => {
+  const lightening = spritesheetMeta.floatingTextGradient.map((name) =>
+    getAmbientSwoppedColour(
+      spritesheetMeta.palette,
+      name,
+      getSpriteSheetVariant("for-current-room").ambient,
+    ),
+  );
+  const peakColour = lightening[lightening.length - 1];
+  return [
+    ...lightening,
+    ...new Array<Color>(20).fill(peakColour),
+    ...lightening.toReversed(),
+  ];
+};
 
-const fadeOrderColourised = [
-  ...lightening,
-  ...new Array(20).fill(spritesheetPalette.white),
-  ...lightening.toReversed(),
-];
+type FloatingTextRenderProps = {
+  fadeOrderColourised: Color[] | undefined;
+};
 
-// in zx it isn't colourised anyway so this doesn't matter
-// const fadeOrderZx = [
-//   zxSpectrumColors.zxWhite,
-//   zxSpectrumColors.zxYellow,
-//   zxSpectrumColors.zxCyan,
-//   zxSpectrumColors.zxGreen,
-//   zxSpectrumColors.zxRed,
-//   zxSpectrumColors.zxMagenta,
-//   zxSpectrumColors.zxBlue,
-// ];
-
-export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
+export const floatingTextAppearance: ItemAppearance<
+  "floatingText",
+  FloatingTextRenderProps
+> = ({
   renderContext: {
     item: {
       config: { textLines, appearanceRoomTime },
     },
     room: { roomTime },
-    general: {
-      displaySettings: { uncolourised },
-      pixiRenderer,
-    },
+    general: { spriteOption, spritesheetMeta, pixiRenderer },
     frontLayer,
   },
   currentRendering,
 }) => {
+  // cache the fade order on renderProps between frames — the result only
+  // changes when the current-room spritesheet variant is rebuilt, at which
+  // point the room renderer itself is recreated (taking its renderProps with it)
+  const fadeOrderColourised =
+    currentRendering ? currentRendering.renderProps.fadeOrderColourised
+    : spriteOption.uncolourised ? undefined
+    : buildFadeOrder(spritesheetMeta);
   const previousRendering = currentRendering?.output;
   let mainContainer: Container<Container>;
 
@@ -97,7 +96,7 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
     lineContainer.visible = visible;
     anyVisible ||= visible;
 
-    if (visible && !uncolourised) {
+    if (visible && fadeOrderColourised !== undefined) {
       const colourIndex = Math.floor(
         (lineHeight / maxLineHeight) * fadeOrderColourised.length,
       );
@@ -115,6 +114,6 @@ export const floatingTextAppearance: ItemAppearance<"floatingText"> = ({
 
   return {
     output: mainContainer,
-    renderProps: emptyObject,
+    renderProps: { fadeOrderColourised },
   };
 };

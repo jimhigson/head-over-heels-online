@@ -72,7 +72,7 @@ const standardKeyAssignment = {
     // f12 is taken in chrome/firefox - opens dev tools
     toggleCrtFilter: { keys: ["F8", "T"] },
     toggleShowFps: { keys: ["F9"] },
-    toggleColourisation: { keys: ["F10"] },
+    cycleSprites: { keys: ["F10"] },
     cycleResolution: { keys: ["0"] },
 
     pageDown: { keys: ["PageDown"] },

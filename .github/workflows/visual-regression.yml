@@ -108,20 +108,20 @@ jobs:
           # Win runners are slow so they get more batches to even it out
           # but not running every one since a representative sample of rooms
           # is sufficient for cross-OS differences, and this takes up too many agents on ci/cd:
-          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 0, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 1, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 2, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 3, batch_count: 14, parallel_tests: 1 }
-          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 4, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 5, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 6, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 7, batch_count: 14, parallel_tests: 1 }
-          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 8, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 9, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 10, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 11, batch_count: 14, parallel_tests: 1 }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 12, batch_count: 14, parallel_tests: 1 }
-          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 13, batch_count: 14, parallel_tests: 1 }
+          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 0, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 1, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 2, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 3, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 4, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 5, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 6, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 7, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 8, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 9, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 10, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 11, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 12, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 13, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
 
           # LUT SNAPSHOTS - single batch per os/browser combo
           - { os: ubuntu-24.04-arm, suite: lutSnapshot, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
@@ -131,10 +131,10 @@ jobs:
           - { os: ubuntu-24.04-arm, suite: menuSnapshotsDialogs, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
           - { os: ubuntu-24.04-arm, suite: menuSnapshotsInGame, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
           - { os: ubuntu-24.04-arm, suite: menuSnapshotsMainMenu, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
-          # skip uncolourised on windows to speed it up since it is the slowest:
-          - { os: windows-latest, suite: menuSnapshotsDialogs, projectOption: --project chromium-desktop, no_uncolourised: "1" }
-          - { os: windows-latest, suite: menuSnapshotsInGame, projectOption: --project chromium-desktop, no_uncolourised: "1" }
-          - { os: windows-latest, suite: menuSnapshotsMainMenu, projectOption: --project chromium-desktop, no_uncolourised: "1" }
+          # skip uncolourised and toppy on windows to speed it up since it is the slowest:
+          - { os: windows-latest, suite: menuSnapshotsDialogs, projectOption: --project chromium-desktop, no_uncolourised: "1", no_toppy: "1" }
+          - { os: windows-latest, suite: menuSnapshotsInGame, projectOption: --project chromium-desktop, no_uncolourised: "1", no_toppy: "1" }
+          - { os: windows-latest, suite: menuSnapshotsMainMenu, projectOption: --project chromium-desktop, no_uncolourised: "1", no_toppy: "1" }
 
           # PORTRAIT - room + menu snapshots on a single agent (suite filter not needed, project testMatch restricts specs)
           - { os: ubuntu-24.04-arm, suite: "", projectOption: --project mobile-safari-portrait }
@@ -231,6 +231,7 @@ jobs:
           # on Windows CI runners, Chrome complains unless this is turned on to enable software OpenGL rendering:
           PLAYWRIGHT_CHROMIUM_ARGS: ${{ runner.os == 'Windows' && '--enable-unsafe-swiftshader' || '' }}
           NO_UNCOLOURISED: ${{ matrix.no_uncolourised }}
+          NO_TOPPY: ${{ matrix.no_toppy }}
         run: pnpm playwright test ${{ matrix.suite }} ${{ matrix.projectOption }}
 
       - name: Upload test results

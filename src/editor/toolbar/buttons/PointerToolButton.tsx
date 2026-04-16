@@ -1,3 +1,5 @@
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { store } from "../../../store/store";
 import {
   selectTool,
@@ -23,7 +25,9 @@ export const PointerToolButton = () => {
       ]}
       tooltipContent={`## Pointer`}
     >
-      <span className={`sprite texture-editor_tool_pointer relative`} />
+      <span
+        className={`sprite ${"texture-editor_tool_pointer" satisfies TextureTailwindClass} relative`}
+      />
     </ToolbarButton>
   );
 };

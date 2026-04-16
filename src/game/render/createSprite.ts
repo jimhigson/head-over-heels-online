@@ -3,21 +3,52 @@ import type { Filter, PointData, SpritesheetFrameData } from "pixi.js";
 import { Container, Texture, Ticker } from "pixi.js";
 import { AnimatedSprite, Sprite } from "pixi.js";
 
+import type { AppSpritesheet } from "../../sprites/spritesheet/loadedSpriteSheet";
 import type {
   AnimationId,
   TextureId,
-} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { SpritesheetVariant } from "../../sprites/spritesheet/variants/SpritesheetVariant";
 
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
-import { spritesheetData } from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+import { originalSpriteSheet } from "../../sprites/spritesheet/loadedSpriteSheet";
 import { getSpriteSheetVariant } from "../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { hashStringToNumber0to1 } from "../../utils/maths/hashStringToNumber0to1";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 
-export type AnimatedCreateSpriteOptions = {
+/**
+ * allow spritesheet to be specified either by variant or by the whole spritesheet
+ */
+export type CreateSpriteSpritesheetSpecifier =
+  | {
+      spritesheet: AppSpritesheet;
+    }
+  | {
+      spritesheetVariant: SpritesheetVariant;
+    }
+  | {
+      textureId?: undefined;
+      // spritesheet variant can be undefined in the case where we have no textureId, since then we're getting
+      // the Texture.EMPTY texture
+      spritesheetVariant?: undefined;
+    };
+
+const spriteSheetForCreateSprite = (
+  options: CreateSpriteSpritesheetSpecifier,
+): AppSpritesheet | undefined => {
+  if ("spritesheet" in options) {
+    return options.spritesheet;
+  } else if (options.spritesheetVariant !== undefined) {
+    return getSpriteSheetVariant(options.spritesheetVariant);
+  }
+  // no spritesheet specified - we should have textureId: undefined, so we use Texture.EMPTY
+  // so we don't need a spritesheet
+  return undefined;
+};
+
+export type AnimatedCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
   // animated
   anchor?: PointData;
   pivot?: PointData;
@@ -45,14 +76,12 @@ export type AnimatedCreateSpriteOptions = {
   times?: Partial<Xyz>;
   label?: string;
 
-  spritesheetVariant: SpritesheetVariant;
-
   /** if the game is paused, nothing should animate - this will automatically create just
       a sprite with the first frame of the animation */
   paused?: boolean;
 };
 
-type BaseCreateSpriteOptions = {
+type BaseCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
   // not animated
   anchor?: PointData;
   pivot?: PointData;
@@ -61,7 +90,6 @@ type BaseCreateSpriteOptions = {
   y?: number;
   filter?: Filter | Filter[];
   label?: string;
-  spritesheetVariant?: SpritesheetVariant;
 };
 
 /**
@@ -177,11 +205,11 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
     sprite = createAnimatedSprite(options);
   } else {
     const { textureId } = options;
-    const spritesheet = getSpriteSheetVariant(
-      options.spritesheetVariant ?? "original",
-    );
+    const spritesheet = spriteSheetForCreateSprite(options);
     sprite = new Sprite(
-      textureId !== undefined ? spritesheet.textures[textureId] : Texture.EMPTY,
+      textureId !== undefined ?
+        spritesheet!.textures[textureId]
+      : Texture.EMPTY,
     );
   }
 
@@ -190,8 +218,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
       const { textureId } = options;
       const spritesheetFrameData: SpritesheetFrameData | undefined =
         textureId !== undefined ?
-          getSpriteSheetVariant(options.spritesheetVariant ?? "original").data
-            .frames[textureId]
+          spriteSheetForCreateSprite(options)!.data.frames[textureId]
         : undefined;
 
       if (
@@ -245,7 +272,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
   return sprite;
 };
 
-/** the animation speed, as should be passed to AnimatedSprite.animationSPeed */
+/** the animation speed, as should be passed to AnimatedSprite.animationSpeed */
 export const animationSpeed = (
   animationId: AnimationId,
   paused: boolean = false,
@@ -267,10 +294,15 @@ export const animationSpeed = (
       //    tickerSpeed = 1.2: Math.sqrt(1.2) / 1.2 = 1.095 / 1.2 = 0.913 → effective speed = 0.913 × 1.2 = 1.096x ✓
     : Math.sqrt(tickerSpeed) / tickerSpeed;
 
-  return (
-    spritesheetData.animations[animationId].animationSpeed *
-    animationSpeedModifier
-  );
+  const animation = originalSpriteSheet().data.animations[animationId];
+
+  if (animation === undefined) {
+    throw new Error(
+      `no animation with id "${animationId}" in the current original spritesheet`,
+    );
+  }
+
+  return animation.animationSpeed * animationSpeedModifier;
 };
 
 export const framesWithOriginalGameTimings = (animationTextures: Texture[]) => {
@@ -280,16 +312,14 @@ export const framesWithOriginalGameTimings = (animationTextures: Texture[]) => {
   }));
 };
 
-function createAnimatedSprite({
-  animationId,
-  reverse,
-  playOnce,
-  paused,
-  randomiseStartFrame,
-  spritesheetVariant,
-}: AnimatedCreateSpriteOptions): AnimatedSprite {
+function createAnimatedSprite(
+  options: AnimatedCreateSpriteOptions,
+): AnimatedSprite {
+  const { animationId, reverse, playOnce, paused, randomiseStartFrame } =
+    options;
+
   const animationTextures =
-    getSpriteSheetVariant(spritesheetVariant).animations[animationId];
+    spriteSheetForCreateSprite(options)!.animations[animationId];
 
   const animatedSpriteFrames = framesWithOriginalGameTimings(animationTextures);
 

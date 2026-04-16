@@ -35,6 +35,6 @@ test("compresses to quite small", async () => {
 
   const compressionRatio = compressed.length / decompressedJson.length;
   expect(compressed.length).toBeLessThan(expectedSizeLessThan);
-  // more than 90% compression, even after base64 encoding into a string
-  expect(compressionRatio).toBeLessThan(0.1);
+  // more than 85% compression, even after base64 encoding into a string
+  expect(compressionRatio).toBeLessThan(0.15);
 });

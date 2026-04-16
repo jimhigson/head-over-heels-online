@@ -1,4 +1,5 @@
 import type { TypedURLSearchParams } from "../../../options/queryParams";
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
 import { cn } from "../../../ui/cn";
@@ -47,9 +48,12 @@ export const ShareCampaignButton = () => {
         tooltipContent={tooltipMarkdown}
       >
         <span
-          className={cn(`sprite texture-editor_tool_share relative`, {
-            "sprite-revert-to-two-tone-dim": !remoteIsInSync,
-          })}
+          className={cn(
+            `sprite ${"texture-editor_tool_share" satisfies TextureTailwindClass} relative`,
+            {
+              "sprite-revert-to-two-tone-dim": !remoteIsInSync,
+            },
+          )}
         />
       </ToolbarButton>;
 };

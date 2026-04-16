@@ -28,7 +28,7 @@ export const charlesAppearance: ItemAppearance<
       },
     },
     room: { roomTime, items },
-    general: { colourised },
+    general: { spriteOption },
   },
   currentRendering,
 }) => {
@@ -50,10 +50,9 @@ export const charlesAppearance: ItemAppearance<
   }
 
   const spritesheetVariant: SpritesheetVariant =
-    colourised ?
-      activated ? "for-current-room"
-      : "deactivated"
-    : "uncolourised";
+    spriteOption.uncolourised ? "uncolourised"
+    : activated ? "for-current-room"
+    : "deactivated";
 
   return {
     output: createStackedSprites({

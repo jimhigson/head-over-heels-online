@@ -39,6 +39,7 @@ import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import { isInPlaytestMode } from "../../../game/isInPlaytestMode";
 import { typedURLSearchParams } from "../../../options/queryParams";
 import { resolutionNames } from "../../../originalGame";
+import { spriteOptionValues } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { emptyObject } from "../../../utils/empty";
 import { setAtPath } from "../../../utils/getAtPath";
@@ -59,6 +60,7 @@ import {
   selectableGameSpeeds,
   type SelectableGameSpeeds,
 } from "./selectableGameSpeeds";
+import { spriteOptionEquals } from "./spriteOptionEquals";
 
 export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
 export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
@@ -106,13 +108,17 @@ export type OpenMenu =
       menuParam: EmptyObject;
     });
 
+export type SpriteOption =
+  | { name: "BlockStack"; uncolourised: false }
+  | { name: "BlockStack"; uncolourised: true }
+  | { name: "Toppy"; uncolourised: false };
+
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
   crtFilter?: boolean;
-  // all settings named after the opposite of the default - hence, uncolourised, not colourised
-  uncolourised?: false;
   showBoundingBoxes?: ShowBoundingBoxes;
   showShadowMasks?: boolean;
+  sprites?: SpriteOption;
 };
 
 export const inputDirectionModes = ["4-way", "8-way", "analogue"] as const;
@@ -350,7 +356,12 @@ export const gameMenusSlice = createSlice({
           {
             menuId: `markdown/inline`,
             scrollableSelection: false,
-            menuParam: { markdown: scrollConfig.markdown },
+            menuParam: {
+              markdown:
+                Array.isArray(scrollConfig.markdown) ?
+                  scrollConfig.markdown.join("\n\n")
+                : scrollConfig.markdown,
+            },
           },
         ];
       }
@@ -601,6 +612,17 @@ export const gameMenusSlice = createSlice({
       state.userSettings.displaySettings.showShadowMasks = showShadowMasks;
     },
 
+    nextSpritesOption(state) {
+      state.userSettings.displaySettings.sprites = nextInCycle(
+        spriteOptionValues,
+        state.userSettings.displaySettings.sprites ??
+          defaultUserSettings.displaySettings.sprites,
+        spriteOptionEquals,
+      );
+    },
+    setSpritesOption(state, { payload }: PayloadAction<SpriteOption>) {
+      state.userSettings.displaySettings.sprites = payload;
+    },
     toggleUserSetting(
       state,
       {
@@ -962,6 +984,8 @@ export const {
   mapPressed,
   menuOpenOrExitPressed,
   nextDirectionRelativeTo,
+  nextSpritesOption,
+  setSpritesOption,
   nextInputDirectionMode,
   reincarnationAccepted,
   reincarnationFishEaten,

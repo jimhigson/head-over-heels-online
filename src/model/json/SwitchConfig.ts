@@ -193,11 +193,18 @@ export type SwitchConfig<
     >
 );
 
+export type StoreActionName = "nextSpritesOption";
+
 export type ButtonConfig<
   RoomId extends string,
   /** ids of items in this room */
   RoomItemId extends string,
-> = {
-  // list of all items (de)activated by this button
-  modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
-};
+> =
+  | {
+      type: "in-room";
+      modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
+    }
+  | {
+      type: "in-store";
+      action: StoreActionName;
+    };

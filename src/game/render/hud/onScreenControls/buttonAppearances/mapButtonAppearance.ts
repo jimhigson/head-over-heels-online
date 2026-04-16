@@ -13,18 +13,19 @@ export const mapButtonAppearance: ButtonAppearance<
   string,
   MapButtonRenderProps,
   TextContainer
-> = ({ currentRendering, tickContext, renderContext }) => {
+> = ({ currentRendering, tickContext, renderContext: { general } }) => {
   if (currentRendering !== undefined) {
     currentRendering.output!.tint = tintForHud(
-      renderContext.general.colourised,
+      general.spriteOption,
       tickContext.room.color,
       false,
+      general.spritesheetMeta,
     );
     return "no-update";
   }
 
   const output = new TextContainer({
-    pixiRenderer: renderContext.general.pixiRenderer,
+    pixiRenderer: general.pixiRenderer,
     label: "mapText",
     outline: true,
     text: "MAP",

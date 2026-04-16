@@ -1,7 +1,6 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 import type { GameState } from "../../gameState/GameState";
-import type { CreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import {
@@ -16,15 +15,11 @@ import {
   unitVector,
 } from "../../../utils/vectors/vectors";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
+import { shadowSmallRound } from "../../gameState/loadRoom/loadItemShadowCast";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
 import { blockSizePx } from "../mechanicsConstants";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
-
-const shadowSmallRound: CreateSpriteOptions = Object.freeze({
-  textureId: "shadow.smallRound",
-  spritesheetVariant: "original",
-});
 
 /**
  * how far ahead of head the doughnuts start.

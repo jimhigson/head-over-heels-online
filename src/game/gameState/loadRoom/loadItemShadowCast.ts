@@ -13,10 +13,11 @@ const shadowSmallBlock: SpecifiedTextureCreateSpriteOptions = Object.freeze({
   spritesheetVariant: "original",
 });
 
-const shadowSmallRound: SpecifiedTextureCreateSpriteOptions = Object.freeze({
-  textureId: "shadow.smallRound",
-  spritesheetVariant: "original",
-});
+export const shadowSmallRound: SpecifiedTextureCreateSpriteOptions =
+  Object.freeze({
+    textureId: "shadow.smallRound",
+    spritesheetVariant: "original",
+  });
 
 const shadowFullBlock: SpecifiedTextureCreateSpriteOptions = Object.freeze({
   textureId: "shadow.fullBlock",

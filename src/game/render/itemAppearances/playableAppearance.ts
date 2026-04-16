@@ -2,7 +2,9 @@ import { Container } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
 
 import type { PlayableActionState } from "../../../model/ItemStateMap";
-import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
+import type { AppSpritesheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import type { CreateSpriteOptions } from "../createSprite";
@@ -18,8 +20,9 @@ import {
   type ZxSpectrumRoomColour,
 } from "../../../originalGame";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
+import { effectColour } from "../../../sprites/palette/spritesheetPalette";
 import { playableWalkAnimationSpeed } from "../../../sprites/spritesheet/spritesheetData/playableSpritesheetData";
-import { getAmbientSwoppedColour } from "../../../sprites/spritesheet/variants/currentRoomSpritesheetVariant";
+import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { isEmptyObject } from "../../../utils/empty";
 import {
   lengthXyz,
@@ -35,7 +38,6 @@ import {
 import { createSprite } from "../createSprite";
 import { OneColourFilter } from "../filters/oneColourFilter";
 import { OutlineFilter } from "../filters/outlineFilter";
-import { playableAccentColours } from "../gameColours/colourScheme";
 import {
   stackedBottomSymbol,
   stackedTopSymbol,
@@ -78,18 +80,18 @@ const playableCreateSpriteOptions = ({
   teleportingPhase,
   gravityZ,
   paused,
-  spritesheetVariant,
+  spritesheet,
   isStoodOn,
 }: PlayableRenderProps & {
   name: IndividualCharacterName;
   paused: boolean;
-  spritesheetVariant: SpritesheetVariant;
+  spritesheet: AppSpritesheet;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      spritesheetVariant,
+      spritesheet,
     };
   }
 
@@ -97,7 +99,7 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      spritesheetVariant,
+      spritesheet,
     };
   }
 
@@ -105,7 +107,7 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.fadeOut`,
       paused,
-      spritesheetVariant,
+      spritesheet,
     };
   }
 
@@ -113,7 +115,7 @@ const playableCreateSpriteOptions = ({
     return {
       animationId: `${name}.walking.${facingXy8}`,
       paused,
-      spritesheetVariant,
+      spritesheet,
     };
   }
 
@@ -123,39 +125,39 @@ const playableCreateSpriteOptions = ({
         gravityZ < jumpSpriteGravityZThreshold ?
           `${name}.walking.${facingXy8}.2`
         : `${name}.walking.${facingXy8}.1`,
-      spritesheetVariant,
+      spritesheet,
     };
   }
 
   if (action === "falling") {
     const fallingTextureName = `${name}.falling.${facingXy8}`;
 
-    if (isTextureId(fallingTextureName))
-      return { textureId: fallingTextureName, spritesheetVariant };
+    if (isTextureId(fallingTextureName, spritesheet.data))
+      return { textureId: fallingTextureName, spritesheet };
   }
 
   if (name === "head" && isStoodOn) {
     // head (or head component of head-over-heels) - show with eyes closed
     const blinkingTextureId = `${name}.blinking.${facingXy8}`;
-    if (isTextureId(blinkingTextureId)) {
+    if (isTextureId(blinkingTextureId, spritesheet.data)) {
       return {
         textureId: blinkingTextureId,
-        spritesheetVariant,
+        spritesheet,
       };
     }
   }
 
   const idleAnimationId = `${name}.idle.${facingXy8}` as const;
-  if (isAnimationId(idleAnimationId)) {
+  if (isAnimationId(idleAnimationId, spritesheet.data)) {
     // we have an idle anim for this character/direction
     return {
       animationId: idleAnimationId,
       paused,
-      spritesheetVariant,
+      spritesheet,
     };
   }
   // no idle animation:
-  return { textureId: `${name}.walking.${facingXy8}.2`, spritesheetVariant };
+  return { textureId: `${name}.walking.${facingXy8}.2`, spritesheet };
 };
 
 const playableSpriteContainerSymbol: unique symbol = Symbol();
@@ -171,7 +173,7 @@ const updateIndividualPlayableSprite = (
   renderPropsWithNameAndPause: PlayableRenderProps & {
     name: IndividualCharacterName;
     paused: boolean;
-    spritesheetVariant: SpritesheetVariant;
+    spritesheet: AppSpritesheet;
   },
 ) => {
   container[playableSpriteContainerSymbol].removeChildren();
@@ -185,14 +187,20 @@ const updateIndividualPlayableSprite = (
 //   pastelBlue: spritesheetPalette.pink,
 // });
 
-const createOutputContainer = (
+const createOutputContainer = <PaletteColourName extends string>(
   name: IndividualCharacterName,
   inSymbio: boolean,
   paused: boolean,
-  colourised: boolean,
-  // for if in uncolourised mode; use this colour for all outlines:
-  overrideColour?: ZxSpectrumRoomColour,
+  spriteOption: SpriteOption,
+  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+  roomColour: ZxSpectrumRoomColour,
 ): IndividualPlayableRenderingContainer => {
+  const isDim = roomColour.shade === "dimmed";
+  const accentColour =
+    spriteOption.uncolourised ?
+      zxSpectrumColor(roomColour)
+    : effectColour(spritesheetMeta, isDim, name);
+
   const container = new Container() as IndividualPlayableRenderingContainer;
   const playableSpriteContainer = new Container();
   container[playableSpriteContainerSymbol] = playableSpriteContainer;
@@ -201,9 +209,9 @@ const createOutputContainer = (
   const shineSprite = createSprite({
     animationId: inSymbio ? `shine.${name}InSymbio` : `shine.${name}`,
     paused,
-    //filter: name === "heels" ? shineFilterForHeels : noFilters,
     flipX: name === "heels",
-    spritesheetVariant: colourised ? "for-current-room" : "uncolourised",
+    spritesheetVariant:
+      spriteOption.uncolourised ? "uncolourised" : "for-current-room",
   }) as AnimatedSprite;
 
   container.addChild(shineSprite);
@@ -212,25 +220,16 @@ const createOutputContainer = (
     //switchedToHighlightOutline: OutlineFilter,
     // don't use the singleton per-colour outline filters since we set .enabled on these
     // and would change the enabled status for all containers that are using it
-    new OutlineFilter({
-      color:
-        overrideColour ?
-          zxSpectrumColor(overrideColour)
-        : getAmbientSwoppedColour(playableAccentColours[name]),
-    }),
+    new OutlineFilter({ color: accentColour }),
     //invulnerableOutline: OutlineFilter,
     new OutlineFilter({
       color:
-        overrideColour ?
-          zxSpectrumColor(overrideColour)
-        : getAmbientSwoppedColour("midRed"),
+        spriteOption.uncolourised ?
+          zxSpectrumColor(roomColour)
+        : effectColour(spritesheetMeta, isDim, "invulnerable"),
     }),
     //invulnerableFlashAfterDeathFilter: OneColourFilter,
-    new OneColourFilter(
-      overrideColour ?
-        zxSpectrumColor(overrideColour)
-      : getAmbientSwoppedColour(playableAccentColours[name]),
-    ),
+    new OneColourFilter(accentColour),
   ];
   for (const f of container.filters) {
     f.enabled = false;
@@ -307,14 +306,14 @@ const updateIndividualsRendering = (
   refreshSprites: boolean,
   renderProps: PlayableRenderProps,
   paused: boolean,
-  spritesheetVariant: SpritesheetVariant,
+  spritesheet: AppSpritesheet,
 ) => {
   if (refreshSprites) {
     updateIndividualPlayableSprite(individualContainer, {
       name: individualCharacterName,
       ...renderProps,
       paused,
-      spritesheetVariant,
+      spritesheet,
     });
   }
   applyFilters(renderProps, individualContainer);
@@ -332,8 +331,8 @@ const playableAppearanceImpl: ItemAppearance<
 > = ({
   renderContext: {
     item: subject,
-    general: { gameState, paused, colourised },
-    room,
+    general: { gameState, paused, spriteOption, spritesheetMeta },
+    room: { roomTime, color: roomColor },
   },
   currentRendering,
 }) => {
@@ -383,7 +382,7 @@ const playableAppearanceImpl: ItemAppearance<
     (!isEmptyObject(subject.state.stoodOnBy) ||
       // keep eyes closed for a short time after being stepped off of, so that instantaneous
       // jumps off head still get this effect:
-      subject.state.stoodOnUntilRoomTime + 300 > room.roomTime);
+      subject.state.stoodOnUntilRoomTime + 300 > roomTime);
 
   const renderProps: PlayableRenderProps = {
     action,
@@ -408,8 +407,9 @@ const playableAppearanceImpl: ItemAppearance<
 
   let outputContainer: PlayableRenderOutput;
 
-  const spritesheetVariant = colourised ? "for-current-room" : "uncolourised";
-  const effectsColourFromRoom = !colourised ? room.color : undefined;
+  const spritesheetVariant =
+    spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+  const spritesheet = getSpriteSheetVariant(spritesheetVariant);
 
   if (type === "headOverHeels") {
     outputContainer =
@@ -419,15 +419,17 @@ const playableAppearanceImpl: ItemAppearance<
           "head",
           true,
           paused,
-          colourised,
-          effectsColourFromRoom,
+          spriteOption,
+          spritesheetMeta,
+          roomColor,
         ),
         bottom: createOutputContainer(
           "heels",
           true,
           paused,
-          colourised,
-          effectsColourFromRoom,
+          spriteOption,
+          spritesheetMeta,
+          roomColor,
         ),
       });
 
@@ -440,7 +442,7 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      spritesheetVariant,
+      spritesheet,
     );
     updateIndividualsRendering(
       "heels",
@@ -448,7 +450,7 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      spritesheetVariant,
+      spritesheet,
     );
   } else {
     outputContainer =
@@ -457,8 +459,9 @@ const playableAppearanceImpl: ItemAppearance<
         type,
         false,
         paused,
-        colourised,
-        effectsColourFromRoom,
+        spriteOption,
+        spritesheetMeta,
+        roomColor,
       );
 
     updateIndividualsRendering(
@@ -467,7 +470,7 @@ const playableAppearanceImpl: ItemAppearance<
       refreshSprites,
       renderProps,
       paused,
-      spritesheetVariant,
+      spritesheet,
     );
   }
 

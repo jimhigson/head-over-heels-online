@@ -1,17 +1,5 @@
 {
-  "extends": "../tsconfig.app.json",
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "lib": ["ESNext"],
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "downlevelIteration": true
-  },
-  "include": ["**/*.ts"],
+  "extends": "../tsconfig.node.json",
+  "include": ["**/*.ts", "../src", "../e2eAugmentations.d.ts"],
   "exclude": ["node_modules"]
 }

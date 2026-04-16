@@ -17,6 +17,7 @@ import {
   gameAssetsLoadingFinished,
   gameAssetsLoadingStarted,
 } from "../../store/slices/gameAssetsLoadingSlice.ts";
+import { selectSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import {
   useCheatsOn,
   useIsGameRunning,
@@ -41,7 +42,12 @@ import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
 const loadGameAssets = importOnce(() => {
-  return Promise.all([importGameMain(), loadSpritesheetAssets(), loadSounds()]);
+  const spriteOption = selectSpritesOption(store.getState());
+  return Promise.all([
+    importGameMain(),
+    loadSpritesheetAssets(spriteOption.name),
+    loadSounds(),
+  ]);
 });
 
 const useCreateGameApi = (): GameApi<string> | undefined => {

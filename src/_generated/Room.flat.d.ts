@@ -422,7 +422,7 @@ export type RoomJsonSchema = {
           | {
               gives: "scroll";
               source: "inline";
-              markdown: string;
+              markdown: string | string[];
             }
           | {
               gives: "scroll";
@@ -542,7 +542,6 @@ export type RoomJsonSchema = {
                 | "onScreenControls"
                 | "soundSettings"
                 | "displaySettings.crtFilter"
-                | "displaySettings.uncolourised"
                 | "displaySettings.showShadowMasks"
                 | "soundSettings.mute"
                 | "soundSettings.noRoomEntryTunes"
@@ -850,7 +849,7 @@ export type RoomJsonSchema = {
                           | {
                               gives: "scroll";
                               source: "inline";
-                              markdown: string;
+                              markdown: string | string[];
                             }
                           | {
                               gives: "scroll";
@@ -1236,7 +1235,7 @@ export type RoomJsonSchema = {
                           | {
                               gives: "scroll";
                               source: "inline";
-                              markdown: string;
+                              markdown: string | string[];
                             }
                           | {
                               gives: "scroll";
@@ -2112,7 +2111,7 @@ export type RoomJsonSchema = {
                   | {
                       gives: "scroll";
                       source: "inline";
-                      markdown: string;
+                      markdown: string | string[];
                     }
                   | {
                       gives: "scroll";
@@ -2386,1049 +2385,1095 @@ export type RoomJsonSchema = {
           y: number;
           z: number;
         };
-        config: {
-          modifies: (
-            | {
-                expectType: "monster" | "movingPlatform";
-                targets?: string[];
-                /**
-                 * true is a shorthand for monsters/platforms that are activated by default:
-                 *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
-                 * false is shorthand for monsters/platforms that are deactivated by default:
-                 *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
-                 */
-                activates?: false | true;
-                /**
-                 * shortcut - gives this direction for left state and opposite direction for right state
-                 */
-                switchedDirection?: "right" | "towards" | "away" | "left";
-                leftState?: {
-                  /**
-                   * if given, the item disappears after the specified interaction.
-                   * This must be null (not undefined) so switches can tell the difference
-                   * between having no setting, and having a setting to change to null
-                   * when they make something not disappearing
-                   */
-                  disappearing?: null | {
-                    on: "touch" | "stand";
+        config:
+          | {
+              type: "in-store";
+              action: "nextSpritesOption";
+            }
+          | {
+              type: "in-room";
+              modifies: (
+                | {
+                    expectType: "monster" | "movingPlatform";
+                    targets?: string[];
                     /**
-                     * if given, the item will disappear only if stood/touched by items of this type.
-                     * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
-                     * or ['head'] eg for doughnuts that only head can collect
+                     * true is a shorthand for monsters/platforms that are activated by default:
+                     *   {leftState: {activated: true, everActivated:true}, rightState: {activated:false}},
+                     * false is shorthand for monsters/platforms that are deactivated by default:
+                     *   {leftState: {activated: false}, rightState: {activated: true, everActivated:true}},
                      */
-                    byType?: (
-                      | "wall"
-                      | "ball"
-                      | "barrier"
-                      | "block"
-                      | "bubbles"
-                      | "charles"
-                      | "conveyor"
-                      | "deadlyBlock"
-                      | "hushPuppy"
-                      | "joystick"
-                      | "lift"
-                      | "monster"
-                      | "moveableDeadly"
-                      | "pickup"
-                      | "sceneryPlayer"
-                      | "slidingBlock"
-                      | "slidingDeadly"
-                      | "spring"
-                      | "switch"
-                      | "teleporter"
-                      | "portableTeleporter"
-                      | "movingPlatform"
-                      | "spikes"
-                      | "portableBlock"
-                      | "pushableBlock"
-                      | "emitter"
-                      | "firedDoughnut"
-                      | "button"
-                      | "sceneryCrown"
-                      | "floor"
-                      | "head"
-                      | "heels"
-                      | "headOverHeels"
-                      | "stopAutowalk"
-                      | "soundEffect"
-                      | "doorFrame"
-                      | "doorLegs"
-                      | "portal"
-                      | "blocker"
-                      | "particle"
-                      | "floatingText"
-                      | "outOfBounds"
-                    )[];
-                  };
-                  /**
-                   * activated for us is a boolean, not the many-states from the json config, ie it is stateful
-                   * on if the item is currently activated (so they can render differently)
-                   */
-                  activated?: false | true;
-                  /**
-                   * if this item has ever been activated, in the lifetime of the room. Charging cybermen will
-                   * have this flag as false so long as they are charging
-                   */
-                  everActivated?: false | true;
-                  /**
-                   * The item will be removed from the room after the room it is in has more than this roomTime.
-                   * To guarantee removal on the next frame (effectively immediately)
-                   * set to -1. Otherwise, can set to the current roomTime + duration of an animation
-                   * that needs to play
-                   *
-                   * If null, the item is not scheduled for removal (the normal case)
-                   */
-                  expires?: null | number;
-                  facing?: {
-                    x: number;
-                    y: number;
-                    z: number;
-                  };
-                };
-                rightState?: {
-                  /**
-                   * if given, the item disappears after the specified interaction.
-                   * This must be null (not undefined) so switches can tell the difference
-                   * between having no setting, and having a setting to change to null
-                   * when they make something not disappearing
-                   */
-                  disappearing?: null | {
-                    on: "touch" | "stand";
+                    activates?: false | true;
                     /**
-                     * if given, the item will disappear only if stood/touched by items of this type.
-                     * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
-                     * or ['head'] eg for doughnuts that only head can collect
+                     * shortcut - gives this direction for left state and opposite direction for right state
                      */
-                    byType?: (
-                      | "wall"
-                      | "ball"
-                      | "barrier"
-                      | "block"
-                      | "bubbles"
-                      | "charles"
-                      | "conveyor"
-                      | "deadlyBlock"
-                      | "hushPuppy"
-                      | "joystick"
-                      | "lift"
-                      | "monster"
-                      | "moveableDeadly"
-                      | "pickup"
-                      | "sceneryPlayer"
-                      | "slidingBlock"
-                      | "slidingDeadly"
-                      | "spring"
-                      | "switch"
-                      | "teleporter"
-                      | "portableTeleporter"
-                      | "movingPlatform"
-                      | "spikes"
-                      | "portableBlock"
-                      | "pushableBlock"
-                      | "emitter"
-                      | "firedDoughnut"
-                      | "button"
-                      | "sceneryCrown"
-                      | "floor"
-                      | "head"
-                      | "heels"
-                      | "headOverHeels"
-                      | "stopAutowalk"
-                      | "soundEffect"
-                      | "doorFrame"
-                      | "doorLegs"
-                      | "portal"
-                      | "blocker"
-                      | "particle"
-                      | "floatingText"
-                      | "outOfBounds"
-                    )[];
-                  };
-                  /**
-                   * activated for us is a boolean, not the many-states from the json config, ie it is stateful
-                   * on if the item is currently activated (so they can render differently)
-                   */
-                  activated?: false | true;
-                  /**
-                   * if this item has ever been activated, in the lifetime of the room. Charging cybermen will
-                   * have this flag as false so long as they are charging
-                   */
-                  everActivated?: false | true;
-                  /**
-                   * The item will be removed from the room after the room it is in has more than this roomTime.
-                   * To guarantee removal on the next frame (effectively immediately)
-                   * set to -1. Otherwise, can set to the current roomTime + duration of an animation
-                   * that needs to play
-                   *
-                   * If null, the item is not scheduled for removal (the normal case)
-                   */
-                  expires?: null | number;
-                  facing?: {
-                    x: number;
-                    y: number;
-                    z: number;
-                  };
-                };
-              }
-            | {
-                expectType: "switch";
-                targets?: string[];
-                /**
-                 * this switch will flip the other switch when it is flipped
-                 */
-                flip: true;
-              }
-            | {
-                expectType: "block";
-                targets?: string[];
-                /**
-                 * if true, equivalent to leftState disappearing on stand, right state not disappearing
-                 * if false, equivalent to leftState not disappearing, right state disappearing on stand
-                 */
-                makesStable: boolean;
-              }
-            | {
-                expectType: "block";
-                targets?: string[];
-                leftState: {
-                  disappearing?: {
-                    on: "stand";
-                  };
-                };
-                rightState: {
-                  disappearing?: null;
-                };
-              }
-            | {
-                expectType: "charles";
-                targets?: string[];
-                /**
-                 * true is a shorthand for charles bots that are activated by default:
-                 *   {leftState: {activated: true}, rightState: {activated: false}},
-                 * false is shorthand for charles bots that are deactivated by default:
-                 *   {leftState: {activated: false}, rightState: {activated: true}},
-                 */
-                activates?: false | true;
-                leftState?: {
-                  activated?: false | true;
-                };
-                rightState?: {
-                  activated?: false | true;
-                };
-              }
-            | {
-                expectType: "conveyor";
-                targets?: string[];
-                leftState: {
-                  direction?: "right" | "towards" | "away" | "left";
-                  disappearing?: null | {
-                    on: "stand";
-                  };
-                };
-                rightState: {
-                  direction?: "right" | "towards" | "away" | "left";
-                  disappearing?: null | {
-                    on: "stand";
-                  };
-                };
-              }
-            | {
-                expectType: "emitter";
-                targets?: string[];
-                leftState: {
-                  lastEmittedAtRoomTime?: number;
-                  quantityEmitted?: number;
-                  /**
-                   * what does this emitter emit? Could be (potentially) any free item
-                   */
-                  emits?: {
-                    type:
-                      | "ball"
-                      | "charles"
-                      | "monster"
-                      | "moveableDeadly"
-                      | "pickup"
-                      | "sceneryPlayer"
-                      | "slidingBlock"
-                      | "slidingDeadly"
-                      | "spring"
-                      | "portableTeleporter"
-                      | "movingPlatform"
-                      | "portableBlock"
-                      | "pushableBlock"
-                      | "firedDoughnut"
-                      | "sceneryCrown";
-                    config:
-                      | {
-                          gives: "crown";
-                          planet:
-                            | "blacktooth"
-                            | "bookworld"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari";
-                        }
-                      | {
-                          gives:
-                            | "shield"
-                            | "bag"
-                            | "doughnuts"
-                            | "extra-life"
-                            | "fast"
-                            | "hooter"
-                            | "jumps"
-                            | "reincarnation";
-                        }
-                      | {
-                          gives: "scroll";
-                          source: "inline";
-                          markdown: string;
-                        }
-                      | {
-                          gives: "scroll";
-                          source: "manual";
-                          page:
-                            | "blacktooth"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari"
-                            | "bag"
-                            | "doughnuts"
-                            | "hooter"
-                            | "teleportBack"
-                            | "historyOfTheBlacktoothEmpire"
-                            | "theGame"
-                            | "bookWorld"
-                            | "head"
-                            | "heels"
-                            | "reincarnationFish"
-                            | "cuddlyStuffedWhiteRabbits"
-                            | "crowns"
-                            | "teleports"
-                            | "springs"
-                            | "switches"
-                            | "conveyorBelts"
-                            | "hushPuppies"
-                            | "theEmperorsGuardian"
-                            | "swopKey"
-                            | "hintsAndTips"
-                            | "credits"
-                            | "installPwa"
-                            | "installNative";
-                        }
-                      | {
-                          activated?: false | true;
-                        }
-                      | {
-                          which: "bubbleRobot";
-                          movement: "patrol-randomly-xy8";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "computerBot";
-                          movement:
-                            | "patrol-randomly-xy4-and-reverse"
-                            | "towards-on-shortest-axis-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "dalek";
-                          movement: "patrol-randomly-diagonal";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "elephant";
-                          movement: "patrol-randomly-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "elephantHead";
-                          movement: "turn-to-player";
-                          startDirection: "right" | "towards" | "away" | "left";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "emperor";
-                          movement: "towards-analogue";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "emperorsGuardian";
-                          movement: "towards-analogue-unless-planet-crowns";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "helicopterBug";
-                          movement: "towards-analogue";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "helicopterBug";
-                          movement: "patrol-randomly-xy8";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "homingBot";
-                          movement: "towards-tripped-on-axis-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "monkey";
-                          movement:
-                            | "towards-on-shortest-axis-xy4"
-                            | "patrol-randomly-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "skiHead";
-                          activated: "off" | "on";
-                          movement: "back-forth" | "clockwise" | "forwards";
-                          startDirection: "right" | "towards" | "away" | "left";
-                          style: "greenAndPink" | "starsAndStripes";
-                        }
-                      | {
-                          which: "turtle";
-                          movement:
-                            | "back-forth"
-                            | "clockwise"
-                            | "forwards"
-                            | "anticlockwise";
-                          startDirection: "right" | "towards" | "away" | "left";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "cyberman";
-                          activated: "off" | "on" | "after-player-near";
-                          movement: "towards-on-shortest-axis-xy4";
-                          startDirection: "right" | "towards" | "away" | "left";
-                        }
-                      | {
-                          style: "deadFish";
-                        }
-                      | {
-                          which: "head" | "heels" | "headOverHeels";
-                          startDirection:
-                            | "right"
-                            | "towards"
-                            | "away"
-                            | "left"
-                            | "awayRight"
-                            | "towardsRight"
-                            | "towardsLeft"
-                            | "awayLeft";
-                        }
-                      | {
-                          style: "book" | "puck";
-                        }
-                      | {
-                          style: "spikyBall";
-                          startingPhase: 1 | 2;
-                        }
-                      | Record<string, any>
-                      | {
-                          times?: {
-                            x?: number;
-                            y?: number;
-                            z?: number;
-                          };
-                          activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
-                            | "planetsLiberated.blacktooth"
-                            | "planetsLiberated.bookworld"
-                            | "planetsLiberated.egyptus"
-                            | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
-                          /**
-                           * an item in the destination room this teleporter should go to - the
-                           * player will be moved to atop this item
-                           *
-                           * If not given, will find the (only teleporter) in the destination room
-                           *
-                           * note: not RoomItemId because that is the ids of items in *this* room, but this
-                           * is pointing to another room
-                           */
-                          toItemId?: string;
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item.
-                           */
-                          toRoom?: string;
-                        }
-                      | {
-                          times?: {
-                            x?: number;
-                            y?: number;
-                            z?: number;
-                          };
-                          activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
-                            | "planetsLiberated.blacktooth"
-                            | "planetsLiberated.bookworld"
-                            | "planetsLiberated.egyptus"
-                            | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
-                          /**
-                           * where in the destination room this teleporter should go - usually
-                           * to atop another teleporter, but could be anywhere.
-                           *
-                           * If not given, will find the (only teleporter) in the destination room
-                           */
-                          toPosition: {
-                            x: number;
-                            y: number;
-                            z: number;
-                          };
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item
-                           * If undefined, is a same-room teleporter
-                           */
-                          toRoom?: string;
-                        }
-                      | {
-                          movement:
-                            | "towards-analogue"
-                            | "back-forth"
-                            | "clockwise";
-                          activated: "off" | "on" | "on-stand";
-                          startDirection: "right" | "towards" | "away" | "left";
-                        }
-                      | {
-                          style: "cube" | "drum" | "sticks";
-                        }
-                      | {
-                          direction?:
-                            | "right"
-                            | "towards"
-                            | "away"
-                            | "left"
-                            | "awayRight"
-                            | "towardsRight"
-                            | "towardsLeft"
-                            | "awayLeft";
-                        }
-                      | {
-                          planet:
-                            | "blacktooth"
-                            | "bookworld"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari";
-                        };
-                  };
-                  /**
-                   * how long between emissions?
-                   */
-                  period?: number;
-                  /**
-                   * how long to delay until the first emitting?
-                   * after this time the first emit will happen, then all others will
-                   * continue at the period interval.
-                   * undefined is treated the same as 0
-                   */
-                  delay?: number;
-                  /**
-                   * how many total should this emitter emit? Null for no limit
-                   */
-                  maximum?: null | number;
-                  /**
-                   * How many items emitted from this emitter can be in the room at once?
-                   * If undefined, no limit. If already this many items in the room, the
-                   * items will have to be removed from the room before more can be emitted
-                   * (for example, collecting an emitted pickup)
-                   */
-                  maximumAtOnce?: number;
-                };
-                rightState: {
-                  lastEmittedAtRoomTime?: number;
-                  quantityEmitted?: number;
-                  /**
-                   * what does this emitter emit? Could be (potentially) any free item
-                   */
-                  emits?: {
-                    type:
-                      | "ball"
-                      | "charles"
-                      | "monster"
-                      | "moveableDeadly"
-                      | "pickup"
-                      | "sceneryPlayer"
-                      | "slidingBlock"
-                      | "slidingDeadly"
-                      | "spring"
-                      | "portableTeleporter"
-                      | "movingPlatform"
-                      | "portableBlock"
-                      | "pushableBlock"
-                      | "firedDoughnut"
-                      | "sceneryCrown";
-                    config:
-                      | {
-                          gives: "crown";
-                          planet:
-                            | "blacktooth"
-                            | "bookworld"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari";
-                        }
-                      | {
-                          gives:
-                            | "shield"
-                            | "bag"
-                            | "doughnuts"
-                            | "extra-life"
-                            | "fast"
-                            | "hooter"
-                            | "jumps"
-                            | "reincarnation";
-                        }
-                      | {
-                          gives: "scroll";
-                          source: "inline";
-                          markdown: string;
-                        }
-                      | {
-                          gives: "scroll";
-                          source: "manual";
-                          page:
-                            | "blacktooth"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari"
-                            | "bag"
-                            | "doughnuts"
-                            | "hooter"
-                            | "teleportBack"
-                            | "historyOfTheBlacktoothEmpire"
-                            | "theGame"
-                            | "bookWorld"
-                            | "head"
-                            | "heels"
-                            | "reincarnationFish"
-                            | "cuddlyStuffedWhiteRabbits"
-                            | "crowns"
-                            | "teleports"
-                            | "springs"
-                            | "switches"
-                            | "conveyorBelts"
-                            | "hushPuppies"
-                            | "theEmperorsGuardian"
-                            | "swopKey"
-                            | "hintsAndTips"
-                            | "credits"
-                            | "installPwa"
-                            | "installNative";
-                        }
-                      | {
-                          activated?: false | true;
-                        }
-                      | {
-                          which: "bubbleRobot";
-                          movement: "patrol-randomly-xy8";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "computerBot";
-                          movement:
-                            | "patrol-randomly-xy4-and-reverse"
-                            | "towards-on-shortest-axis-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "dalek";
-                          movement: "patrol-randomly-diagonal";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "elephant";
-                          movement: "patrol-randomly-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "elephantHead";
-                          movement: "turn-to-player";
-                          startDirection: "right" | "towards" | "away" | "left";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "emperor";
-                          movement: "towards-analogue";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "emperorsGuardian";
-                          movement: "towards-analogue-unless-planet-crowns";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "helicopterBug";
-                          movement: "towards-analogue";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "helicopterBug";
-                          movement: "patrol-randomly-xy8";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "homingBot";
-                          movement: "towards-tripped-on-axis-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "monkey";
-                          movement:
-                            | "towards-on-shortest-axis-xy4"
-                            | "patrol-randomly-xy4";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "skiHead";
-                          activated: "off" | "on";
-                          movement: "back-forth" | "clockwise" | "forwards";
-                          startDirection: "right" | "towards" | "away" | "left";
-                          style: "greenAndPink" | "starsAndStripes";
-                        }
-                      | {
-                          which: "turtle";
-                          movement:
-                            | "back-forth"
-                            | "clockwise"
-                            | "forwards"
-                            | "anticlockwise";
-                          startDirection: "right" | "towards" | "away" | "left";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "cyberman";
-                          activated: "off" | "on" | "after-player-near";
-                          movement: "towards-on-shortest-axis-xy4";
-                          startDirection: "right" | "towards" | "away" | "left";
-                        }
-                      | {
-                          style: "deadFish";
-                        }
-                      | {
-                          which: "head" | "heels" | "headOverHeels";
-                          startDirection:
-                            | "right"
-                            | "towards"
-                            | "away"
-                            | "left"
-                            | "awayRight"
-                            | "towardsRight"
-                            | "towardsLeft"
-                            | "awayLeft";
-                        }
-                      | {
-                          style: "book" | "puck";
-                        }
-                      | {
-                          style: "spikyBall";
-                          startingPhase: 1 | 2;
-                        }
-                      | Record<string, any>
-                      | {
-                          times?: {
-                            x?: number;
-                            y?: number;
-                            z?: number;
-                          };
-                          activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
-                            | "planetsLiberated.blacktooth"
-                            | "planetsLiberated.bookworld"
-                            | "planetsLiberated.egyptus"
-                            | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
-                          /**
-                           * an item in the destination room this teleporter should go to - the
-                           * player will be moved to atop this item
-                           *
-                           * If not given, will find the (only teleporter) in the destination room
-                           *
-                           * note: not RoomItemId because that is the ids of items in *this* room, but this
-                           * is pointing to another room
-                           */
-                          toItemId?: string;
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item.
-                           */
-                          toRoom?: string;
-                        }
-                      | {
-                          times?: {
-                            x?: number;
-                            y?: number;
-                            z?: number;
-                          };
-                          activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
-                            | "planetsLiberated.blacktooth"
-                            | "planetsLiberated.bookworld"
-                            | "planetsLiberated.egyptus"
-                            | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
-                          /**
-                           * where in the destination room this teleporter should go - usually
-                           * to atop another teleporter, but could be anywhere.
-                           *
-                           * If not given, will find the (only teleporter) in the destination room
-                           */
-                          toPosition: {
-                            x: number;
-                            y: number;
-                            z: number;
-                          };
-                          /**
-                           * note that if the other room contains exactly one teleporter, we need not
-                           * give the position or the item
-                           * If undefined, is a same-room teleporter
-                           */
-                          toRoom?: string;
-                        }
-                      | {
-                          movement:
-                            | "towards-analogue"
-                            | "back-forth"
-                            | "clockwise";
-                          activated: "off" | "on" | "on-stand";
-                          startDirection: "right" | "towards" | "away" | "left";
-                        }
-                      | {
-                          style: "cube" | "drum" | "sticks";
-                        }
-                      | {
-                          direction?:
-                            | "right"
-                            | "towards"
-                            | "away"
-                            | "left"
-                            | "awayRight"
-                            | "towardsRight"
-                            | "towardsLeft"
-                            | "awayLeft";
-                        }
-                      | {
-                          planet:
-                            | "blacktooth"
-                            | "bookworld"
-                            | "egyptus"
-                            | "penitentiary"
-                            | "safari";
-                        };
-                  };
-                  /**
-                   * how long between emissions?
-                   */
-                  period?: number;
-                  /**
-                   * how long to delay until the first emitting?
-                   * after this time the first emit will happen, then all others will
-                   * continue at the period interval.
-                   * undefined is treated the same as 0
-                   */
-                  delay?: number;
-                  /**
-                   * how many total should this emitter emit? Null for no limit
-                   */
-                  maximum?: null | number;
-                  /**
-                   * How many items emitted from this emitter can be in the room at once?
-                   * If undefined, no limit. If already this many items in the room, the
-                   * items will have to be removed from the room before more can be emitted
-                   * (for example, collecting an emitted pickup)
-                   */
-                  maximumAtOnce?: number;
-                };
-              }
-            | {
-                expectType: "joystick";
-                targets?: string[];
-                leftState: {
-                  controls?: string[];
-                };
-                rightState: {
-                  controls?: string[];
-                };
-              }
-            | {
-                expectType: "lift";
-                targets?: string[];
-                leftState: {
-                  direction?: "down" | "up";
-                  vels?: {
-                    lift: {
-                      x: number;
-                      y: number;
-                      z: number;
+                    switchedDirection?: "right" | "towards" | "away" | "left";
+                    leftState?: {
+                      /**
+                       * if given, the item disappears after the specified interaction.
+                       * This must be null (not undefined) so switches can tell the difference
+                       * between having no setting, and having a setting to change to null
+                       * when they make something not disappearing
+                       */
+                      disappearing?: null | {
+                        on: "touch" | "stand";
+                        /**
+                         * if given, the item will disappear only if stood/touched by items of this type.
+                         * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
+                         * or ['head'] eg for doughnuts that only head can collect
+                         */
+                        byType?: (
+                          | "wall"
+                          | "ball"
+                          | "barrier"
+                          | "block"
+                          | "bubbles"
+                          | "charles"
+                          | "conveyor"
+                          | "deadlyBlock"
+                          | "hushPuppy"
+                          | "joystick"
+                          | "lift"
+                          | "monster"
+                          | "moveableDeadly"
+                          | "pickup"
+                          | "sceneryPlayer"
+                          | "slidingBlock"
+                          | "slidingDeadly"
+                          | "spring"
+                          | "switch"
+                          | "teleporter"
+                          | "portableTeleporter"
+                          | "movingPlatform"
+                          | "spikes"
+                          | "portableBlock"
+                          | "pushableBlock"
+                          | "emitter"
+                          | "firedDoughnut"
+                          | "button"
+                          | "sceneryCrown"
+                          | "floor"
+                          | "head"
+                          | "heels"
+                          | "headOverHeels"
+                          | "stopAutowalk"
+                          | "soundEffect"
+                          | "doorFrame"
+                          | "doorLegs"
+                          | "portal"
+                          | "blocker"
+                          | "particle"
+                          | "floatingText"
+                          | "outOfBounds"
+                        )[];
+                      };
+                      /**
+                       * activated for us is a boolean, not the many-states from the json config, ie it is stateful
+                       * on if the item is currently activated (so they can render differently)
+                       */
+                      activated?: false | true;
+                      /**
+                       * if this item has ever been activated, in the lifetime of the room. Charging cybermen will
+                       * have this flag as false so long as they are charging
+                       */
+                      everActivated?: false | true;
+                      /**
+                       * The item will be removed from the room after the room it is in has more than this roomTime.
+                       * To guarantee removal on the next frame (effectively immediately)
+                       * set to -1. Otherwise, can set to the current roomTime + duration of an animation
+                       * that needs to play
+                       *
+                       * If null, the item is not scheduled for removal (the normal case)
+                       */
+                      expires?: null | number;
+                      facing?: {
+                        x: number;
+                        y: number;
+                        z: number;
+                      };
                     };
-                  };
-                  top?: number;
-                  bottom?: number;
-                };
-                rightState: {
-                  direction?: "down" | "up";
-                  vels?: {
-                    lift: {
-                      x: number;
-                      y: number;
-                      z: number;
+                    rightState?: {
+                      /**
+                       * if given, the item disappears after the specified interaction.
+                       * This must be null (not undefined) so switches can tell the difference
+                       * between having no setting, and having a setting to change to null
+                       * when they make something not disappearing
+                       */
+                      disappearing?: null | {
+                        on: "touch" | "stand";
+                        /**
+                         * if given, the item will disappear only if stood/touched by items of this type.
+                         * Eg, set to ['head', 'heels', 'headOverHeels'] to make only when touched by the player
+                         * or ['head'] eg for doughnuts that only head can collect
+                         */
+                        byType?: (
+                          | "wall"
+                          | "ball"
+                          | "barrier"
+                          | "block"
+                          | "bubbles"
+                          | "charles"
+                          | "conveyor"
+                          | "deadlyBlock"
+                          | "hushPuppy"
+                          | "joystick"
+                          | "lift"
+                          | "monster"
+                          | "moveableDeadly"
+                          | "pickup"
+                          | "sceneryPlayer"
+                          | "slidingBlock"
+                          | "slidingDeadly"
+                          | "spring"
+                          | "switch"
+                          | "teleporter"
+                          | "portableTeleporter"
+                          | "movingPlatform"
+                          | "spikes"
+                          | "portableBlock"
+                          | "pushableBlock"
+                          | "emitter"
+                          | "firedDoughnut"
+                          | "button"
+                          | "sceneryCrown"
+                          | "floor"
+                          | "head"
+                          | "heels"
+                          | "headOverHeels"
+                          | "stopAutowalk"
+                          | "soundEffect"
+                          | "doorFrame"
+                          | "doorLegs"
+                          | "portal"
+                          | "blocker"
+                          | "particle"
+                          | "floatingText"
+                          | "outOfBounds"
+                        )[];
+                      };
+                      /**
+                       * activated for us is a boolean, not the many-states from the json config, ie it is stateful
+                       * on if the item is currently activated (so they can render differently)
+                       */
+                      activated?: false | true;
+                      /**
+                       * if this item has ever been activated, in the lifetime of the room. Charging cybermen will
+                       * have this flag as false so long as they are charging
+                       */
+                      everActivated?: false | true;
+                      /**
+                       * The item will be removed from the room after the room it is in has more than this roomTime.
+                       * To guarantee removal on the next frame (effectively immediately)
+                       * set to -1. Otherwise, can set to the current roomTime + duration of an animation
+                       * that needs to play
+                       *
+                       * If null, the item is not scheduled for removal (the normal case)
+                       */
+                      expires?: null | number;
+                      facing?: {
+                        x: number;
+                        y: number;
+                        z: number;
+                      };
                     };
-                  };
-                  top?: number;
-                  bottom?: number;
-                };
-              }
-            | {
-                expectType: "teleporter";
-                targets?: string[];
-                leftState: {
-                  toRoom: string;
-                  toPosition: {
-                    x: number;
-                    y: number;
-                    z: number;
-                  };
-                };
-                rightState: {
-                  toRoom: string;
-                  toPosition: {
-                    x: number;
-                    y: number;
-                    z: number;
-                  };
-                };
-              }
-          )[];
-        };
+                  }
+                | {
+                    expectType: "switch";
+                    targets?: string[];
+                    /**
+                     * this switch will flip the other switch when it is flipped
+                     */
+                    flip: true;
+                  }
+                | {
+                    expectType: "block";
+                    targets?: string[];
+                    /**
+                     * if true, equivalent to leftState disappearing on stand, right state not disappearing
+                     * if false, equivalent to leftState not disappearing, right state disappearing on stand
+                     */
+                    makesStable: boolean;
+                  }
+                | {
+                    expectType: "block";
+                    targets?: string[];
+                    leftState: {
+                      disappearing?: {
+                        on: "stand";
+                      };
+                    };
+                    rightState: {
+                      disappearing?: null;
+                    };
+                  }
+                | {
+                    expectType: "charles";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for charles bots that are activated by default:
+                     *   {leftState: {activated: true}, rightState: {activated: false}},
+                     * false is shorthand for charles bots that are deactivated by default:
+                     *   {leftState: {activated: false}, rightState: {activated: true}},
+                     */
+                    activates?: false | true;
+                    leftState?: {
+                      activated?: false | true;
+                    };
+                    rightState?: {
+                      activated?: false | true;
+                    };
+                  }
+                | {
+                    expectType: "conveyor";
+                    targets?: string[];
+                    leftState: {
+                      direction?: "right" | "towards" | "away" | "left";
+                      disappearing?: null | {
+                        on: "stand";
+                      };
+                    };
+                    rightState: {
+                      direction?: "right" | "towards" | "away" | "left";
+                      disappearing?: null | {
+                        on: "stand";
+                      };
+                    };
+                  }
+                | {
+                    expectType: "emitter";
+                    targets?: string[];
+                    leftState: {
+                      lastEmittedAtRoomTime?: number;
+                      quantityEmitted?: number;
+                      /**
+                       * what does this emitter emit? Could be (potentially) any free item
+                       */
+                      emits?: {
+                        type:
+                          | "ball"
+                          | "charles"
+                          | "monster"
+                          | "moveableDeadly"
+                          | "pickup"
+                          | "sceneryPlayer"
+                          | "slidingBlock"
+                          | "slidingDeadly"
+                          | "spring"
+                          | "portableTeleporter"
+                          | "movingPlatform"
+                          | "portableBlock"
+                          | "pushableBlock"
+                          | "firedDoughnut"
+                          | "sceneryCrown";
+                        config:
+                          | {
+                              gives: "crown";
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            }
+                          | {
+                              gives:
+                                | "shield"
+                                | "bag"
+                                | "doughnuts"
+                                | "extra-life"
+                                | "fast"
+                                | "hooter"
+                                | "jumps"
+                                | "reincarnation";
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "inline";
+                              markdown: string | string[];
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "manual";
+                              page:
+                                | "blacktooth"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari"
+                                | "bag"
+                                | "doughnuts"
+                                | "hooter"
+                                | "teleportBack"
+                                | "historyOfTheBlacktoothEmpire"
+                                | "theGame"
+                                | "bookWorld"
+                                | "head"
+                                | "heels"
+                                | "reincarnationFish"
+                                | "cuddlyStuffedWhiteRabbits"
+                                | "crowns"
+                                | "teleports"
+                                | "springs"
+                                | "switches"
+                                | "conveyorBelts"
+                                | "hushPuppies"
+                                | "theEmperorsGuardian"
+                                | "swopKey"
+                                | "hintsAndTips"
+                                | "credits"
+                                | "installPwa"
+                                | "installNative";
+                            }
+                          | {
+                              activated?: false | true;
+                            }
+                          | {
+                              which: "bubbleRobot";
+                              movement: "patrol-randomly-xy8";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "computerBot";
+                              movement:
+                                | "patrol-randomly-xy4-and-reverse"
+                                | "towards-on-shortest-axis-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "dalek";
+                              movement: "patrol-randomly-diagonal";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephant";
+                              movement: "patrol-randomly-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephantHead";
+                              movement: "turn-to-player";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperor";
+                              movement: "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperorsGuardian";
+                              movement: "towards-analogue-unless-planet-crowns";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "helicopterBug";
+                              movement: "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "helicopterBug";
+                              movement: "patrol-randomly-xy8";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "homingBot";
+                              movement: "towards-tripped-on-axis-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "monkey";
+                              movement:
+                                | "towards-on-shortest-axis-xy4"
+                                | "patrol-randomly-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "skiHead";
+                              activated: "off" | "on";
+                              movement: "back-forth" | "clockwise" | "forwards";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                              style: "greenAndPink" | "starsAndStripes";
+                            }
+                          | {
+                              which: "turtle";
+                              movement:
+                                | "back-forth"
+                                | "clockwise"
+                                | "forwards"
+                                | "anticlockwise";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "cyberman";
+                              activated: "off" | "on" | "after-player-near";
+                              movement: "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                            }
+                          | {
+                              style: "deadFish";
+                            }
+                          | {
+                              which: "head" | "heels" | "headOverHeels";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left"
+                                | "awayRight"
+                                | "towardsRight"
+                                | "towardsLeft"
+                                | "awayLeft";
+                            }
+                          | {
+                              style: "book" | "puck";
+                            }
+                          | {
+                              style: "spikyBall";
+                              startingPhase: 1 | 2;
+                            }
+                          | Record<string, any>
+                          | {
+                              times?: {
+                                x?: number;
+                                y?: number;
+                                z?: number;
+                              };
+                              activatedOnStoreValue?:
+                                | "planetsLiberated"
+                                | "scrollsRead"
+                                | "freeCharacters"
+                                | "planetsLiberated.blacktooth"
+                                | "planetsLiberated.bookworld"
+                                | "planetsLiberated.egyptus"
+                                | "planetsLiberated.penitentiary"
+                                | "planetsLiberated.safari"
+                                | "scrollsRead.blacktooth"
+                                | "scrollsRead.egyptus"
+                                | "scrollsRead.penitentiary"
+                                | "scrollsRead.safari"
+                                | "scrollsRead.bag"
+                                | "scrollsRead.doughnuts"
+                                | "scrollsRead.hooter"
+                                | "scrollsRead.teleportBack"
+                                | "scrollsRead.historyOfTheBlacktoothEmpire"
+                                | "scrollsRead.theGame"
+                                | "scrollsRead.bookWorld"
+                                | "scrollsRead.head"
+                                | "scrollsRead.heels"
+                                | "scrollsRead.reincarnationFish"
+                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
+                                | "scrollsRead.crowns"
+                                | "scrollsRead.teleports"
+                                | "scrollsRead.springs"
+                                | "scrollsRead.switches"
+                                | "scrollsRead.conveyorBelts"
+                                | "scrollsRead.hushPuppies"
+                                | "scrollsRead.theEmperorsGuardian"
+                                | "scrollsRead.swopKey"
+                                | "scrollsRead.hintsAndTips"
+                                | "scrollsRead.credits"
+                                | "scrollsRead.installPwa"
+                                | "scrollsRead.installNative"
+                                | "freeCharacters.head"
+                                | "freeCharacters.heels";
+                              /**
+                               * an item in the destination room this teleporter should go to - the
+                               * player will be moved to atop this item
+                               *
+                               * If not given, will find the (only teleporter) in the destination room
+                               *
+                               * note: not RoomItemId because that is the ids of items in *this* room, but this
+                               * is pointing to another room
+                               */
+                              toItemId?: string;
+                              /**
+                               * note that if the other room contains exactly one teleporter, we need not
+                               * give the position or the item.
+                               */
+                              toRoom?: string;
+                            }
+                          | {
+                              times?: {
+                                x?: number;
+                                y?: number;
+                                z?: number;
+                              };
+                              activatedOnStoreValue?:
+                                | "planetsLiberated"
+                                | "scrollsRead"
+                                | "freeCharacters"
+                                | "planetsLiberated.blacktooth"
+                                | "planetsLiberated.bookworld"
+                                | "planetsLiberated.egyptus"
+                                | "planetsLiberated.penitentiary"
+                                | "planetsLiberated.safari"
+                                | "scrollsRead.blacktooth"
+                                | "scrollsRead.egyptus"
+                                | "scrollsRead.penitentiary"
+                                | "scrollsRead.safari"
+                                | "scrollsRead.bag"
+                                | "scrollsRead.doughnuts"
+                                | "scrollsRead.hooter"
+                                | "scrollsRead.teleportBack"
+                                | "scrollsRead.historyOfTheBlacktoothEmpire"
+                                | "scrollsRead.theGame"
+                                | "scrollsRead.bookWorld"
+                                | "scrollsRead.head"
+                                | "scrollsRead.heels"
+                                | "scrollsRead.reincarnationFish"
+                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
+                                | "scrollsRead.crowns"
+                                | "scrollsRead.teleports"
+                                | "scrollsRead.springs"
+                                | "scrollsRead.switches"
+                                | "scrollsRead.conveyorBelts"
+                                | "scrollsRead.hushPuppies"
+                                | "scrollsRead.theEmperorsGuardian"
+                                | "scrollsRead.swopKey"
+                                | "scrollsRead.hintsAndTips"
+                                | "scrollsRead.credits"
+                                | "scrollsRead.installPwa"
+                                | "scrollsRead.installNative"
+                                | "freeCharacters.head"
+                                | "freeCharacters.heels";
+                              /**
+                               * where in the destination room this teleporter should go - usually
+                               * to atop another teleporter, but could be anywhere.
+                               *
+                               * If not given, will find the (only teleporter) in the destination room
+                               */
+                              toPosition: {
+                                x: number;
+                                y: number;
+                                z: number;
+                              };
+                              /**
+                               * note that if the other room contains exactly one teleporter, we need not
+                               * give the position or the item
+                               * If undefined, is a same-room teleporter
+                               */
+                              toRoom?: string;
+                            }
+                          | {
+                              movement:
+                                | "towards-analogue"
+                                | "back-forth"
+                                | "clockwise";
+                              activated: "off" | "on" | "on-stand";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                            }
+                          | {
+                              style: "cube" | "drum" | "sticks";
+                            }
+                          | {
+                              direction?:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left"
+                                | "awayRight"
+                                | "towardsRight"
+                                | "towardsLeft"
+                                | "awayLeft";
+                            }
+                          | {
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            };
+                      };
+                      /**
+                       * how long between emissions?
+                       */
+                      period?: number;
+                      /**
+                       * how long to delay until the first emitting?
+                       * after this time the first emit will happen, then all others will
+                       * continue at the period interval.
+                       * undefined is treated the same as 0
+                       */
+                      delay?: number;
+                      /**
+                       * how many total should this emitter emit? Null for no limit
+                       */
+                      maximum?: null | number;
+                      /**
+                       * How many items emitted from this emitter can be in the room at once?
+                       * If undefined, no limit. If already this many items in the room, the
+                       * items will have to be removed from the room before more can be emitted
+                       * (for example, collecting an emitted pickup)
+                       */
+                      maximumAtOnce?: number;
+                    };
+                    rightState: {
+                      lastEmittedAtRoomTime?: number;
+                      quantityEmitted?: number;
+                      /**
+                       * what does this emitter emit? Could be (potentially) any free item
+                       */
+                      emits?: {
+                        type:
+                          | "ball"
+                          | "charles"
+                          | "monster"
+                          | "moveableDeadly"
+                          | "pickup"
+                          | "sceneryPlayer"
+                          | "slidingBlock"
+                          | "slidingDeadly"
+                          | "spring"
+                          | "portableTeleporter"
+                          | "movingPlatform"
+                          | "portableBlock"
+                          | "pushableBlock"
+                          | "firedDoughnut"
+                          | "sceneryCrown";
+                        config:
+                          | {
+                              gives: "crown";
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            }
+                          | {
+                              gives:
+                                | "shield"
+                                | "bag"
+                                | "doughnuts"
+                                | "extra-life"
+                                | "fast"
+                                | "hooter"
+                                | "jumps"
+                                | "reincarnation";
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "inline";
+                              markdown: string | string[];
+                            }
+                          | {
+                              gives: "scroll";
+                              source: "manual";
+                              page:
+                                | "blacktooth"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari"
+                                | "bag"
+                                | "doughnuts"
+                                | "hooter"
+                                | "teleportBack"
+                                | "historyOfTheBlacktoothEmpire"
+                                | "theGame"
+                                | "bookWorld"
+                                | "head"
+                                | "heels"
+                                | "reincarnationFish"
+                                | "cuddlyStuffedWhiteRabbits"
+                                | "crowns"
+                                | "teleports"
+                                | "springs"
+                                | "switches"
+                                | "conveyorBelts"
+                                | "hushPuppies"
+                                | "theEmperorsGuardian"
+                                | "swopKey"
+                                | "hintsAndTips"
+                                | "credits"
+                                | "installPwa"
+                                | "installNative";
+                            }
+                          | {
+                              activated?: false | true;
+                            }
+                          | {
+                              which: "bubbleRobot";
+                              movement: "patrol-randomly-xy8";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "computerBot";
+                              movement:
+                                | "patrol-randomly-xy4-and-reverse"
+                                | "towards-on-shortest-axis-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "dalek";
+                              movement: "patrol-randomly-diagonal";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephant";
+                              movement: "patrol-randomly-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "elephantHead";
+                              movement: "turn-to-player";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperor";
+                              movement: "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "emperorsGuardian";
+                              movement: "towards-analogue-unless-planet-crowns";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "helicopterBug";
+                              movement: "towards-analogue";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "helicopterBug";
+                              movement: "patrol-randomly-xy8";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "homingBot";
+                              movement: "towards-tripped-on-axis-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "monkey";
+                              movement:
+                                | "towards-on-shortest-axis-xy4"
+                                | "patrol-randomly-xy4";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "skiHead";
+                              activated: "off" | "on";
+                              movement: "back-forth" | "clockwise" | "forwards";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                              style: "greenAndPink" | "starsAndStripes";
+                            }
+                          | {
+                              which: "turtle";
+                              movement:
+                                | "back-forth"
+                                | "clockwise"
+                                | "forwards"
+                                | "anticlockwise";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                              activated: "off" | "on";
+                            }
+                          | {
+                              which: "cyberman";
+                              activated: "off" | "on" | "after-player-near";
+                              movement: "towards-on-shortest-axis-xy4";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                            }
+                          | {
+                              style: "deadFish";
+                            }
+                          | {
+                              which: "head" | "heels" | "headOverHeels";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left"
+                                | "awayRight"
+                                | "towardsRight"
+                                | "towardsLeft"
+                                | "awayLeft";
+                            }
+                          | {
+                              style: "book" | "puck";
+                            }
+                          | {
+                              style: "spikyBall";
+                              startingPhase: 1 | 2;
+                            }
+                          | Record<string, any>
+                          | {
+                              times?: {
+                                x?: number;
+                                y?: number;
+                                z?: number;
+                              };
+                              activatedOnStoreValue?:
+                                | "planetsLiberated"
+                                | "scrollsRead"
+                                | "freeCharacters"
+                                | "planetsLiberated.blacktooth"
+                                | "planetsLiberated.bookworld"
+                                | "planetsLiberated.egyptus"
+                                | "planetsLiberated.penitentiary"
+                                | "planetsLiberated.safari"
+                                | "scrollsRead.blacktooth"
+                                | "scrollsRead.egyptus"
+                                | "scrollsRead.penitentiary"
+                                | "scrollsRead.safari"
+                                | "scrollsRead.bag"
+                                | "scrollsRead.doughnuts"
+                                | "scrollsRead.hooter"
+                                | "scrollsRead.teleportBack"
+                                | "scrollsRead.historyOfTheBlacktoothEmpire"
+                                | "scrollsRead.theGame"
+                                | "scrollsRead.bookWorld"
+                                | "scrollsRead.head"
+                                | "scrollsRead.heels"
+                                | "scrollsRead.reincarnationFish"
+                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
+                                | "scrollsRead.crowns"
+                                | "scrollsRead.teleports"
+                                | "scrollsRead.springs"
+                                | "scrollsRead.switches"
+                                | "scrollsRead.conveyorBelts"
+                                | "scrollsRead.hushPuppies"
+                                | "scrollsRead.theEmperorsGuardian"
+                                | "scrollsRead.swopKey"
+                                | "scrollsRead.hintsAndTips"
+                                | "scrollsRead.credits"
+                                | "scrollsRead.installPwa"
+                                | "scrollsRead.installNative"
+                                | "freeCharacters.head"
+                                | "freeCharacters.heels";
+                              /**
+                               * an item in the destination room this teleporter should go to - the
+                               * player will be moved to atop this item
+                               *
+                               * If not given, will find the (only teleporter) in the destination room
+                               *
+                               * note: not RoomItemId because that is the ids of items in *this* room, but this
+                               * is pointing to another room
+                               */
+                              toItemId?: string;
+                              /**
+                               * note that if the other room contains exactly one teleporter, we need not
+                               * give the position or the item.
+                               */
+                              toRoom?: string;
+                            }
+                          | {
+                              times?: {
+                                x?: number;
+                                y?: number;
+                                z?: number;
+                              };
+                              activatedOnStoreValue?:
+                                | "planetsLiberated"
+                                | "scrollsRead"
+                                | "freeCharacters"
+                                | "planetsLiberated.blacktooth"
+                                | "planetsLiberated.bookworld"
+                                | "planetsLiberated.egyptus"
+                                | "planetsLiberated.penitentiary"
+                                | "planetsLiberated.safari"
+                                | "scrollsRead.blacktooth"
+                                | "scrollsRead.egyptus"
+                                | "scrollsRead.penitentiary"
+                                | "scrollsRead.safari"
+                                | "scrollsRead.bag"
+                                | "scrollsRead.doughnuts"
+                                | "scrollsRead.hooter"
+                                | "scrollsRead.teleportBack"
+                                | "scrollsRead.historyOfTheBlacktoothEmpire"
+                                | "scrollsRead.theGame"
+                                | "scrollsRead.bookWorld"
+                                | "scrollsRead.head"
+                                | "scrollsRead.heels"
+                                | "scrollsRead.reincarnationFish"
+                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
+                                | "scrollsRead.crowns"
+                                | "scrollsRead.teleports"
+                                | "scrollsRead.springs"
+                                | "scrollsRead.switches"
+                                | "scrollsRead.conveyorBelts"
+                                | "scrollsRead.hushPuppies"
+                                | "scrollsRead.theEmperorsGuardian"
+                                | "scrollsRead.swopKey"
+                                | "scrollsRead.hintsAndTips"
+                                | "scrollsRead.credits"
+                                | "scrollsRead.installPwa"
+                                | "scrollsRead.installNative"
+                                | "freeCharacters.head"
+                                | "freeCharacters.heels";
+                              /**
+                               * where in the destination room this teleporter should go - usually
+                               * to atop another teleporter, but could be anywhere.
+                               *
+                               * If not given, will find the (only teleporter) in the destination room
+                               */
+                              toPosition: {
+                                x: number;
+                                y: number;
+                                z: number;
+                              };
+                              /**
+                               * note that if the other room contains exactly one teleporter, we need not
+                               * give the position or the item
+                               * If undefined, is a same-room teleporter
+                               */
+                              toRoom?: string;
+                            }
+                          | {
+                              movement:
+                                | "towards-analogue"
+                                | "back-forth"
+                                | "clockwise";
+                              activated: "off" | "on" | "on-stand";
+                              startDirection:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left";
+                            }
+                          | {
+                              style: "cube" | "drum" | "sticks";
+                            }
+                          | {
+                              direction?:
+                                | "right"
+                                | "towards"
+                                | "away"
+                                | "left"
+                                | "awayRight"
+                                | "towardsRight"
+                                | "towardsLeft"
+                                | "awayLeft";
+                            }
+                          | {
+                              planet:
+                                | "blacktooth"
+                                | "bookworld"
+                                | "egyptus"
+                                | "penitentiary"
+                                | "safari";
+                            };
+                      };
+                      /**
+                       * how long between emissions?
+                       */
+                      period?: number;
+                      /**
+                       * how long to delay until the first emitting?
+                       * after this time the first emit will happen, then all others will
+                       * continue at the period interval.
+                       * undefined is treated the same as 0
+                       */
+                      delay?: number;
+                      /**
+                       * how many total should this emitter emit? Null for no limit
+                       */
+                      maximum?: null | number;
+                      /**
+                       * How many items emitted from this emitter can be in the room at once?
+                       * If undefined, no limit. If already this many items in the room, the
+                       * items will have to be removed from the room before more can be emitted
+                       * (for example, collecting an emitted pickup)
+                       */
+                      maximumAtOnce?: number;
+                    };
+                  }
+                | {
+                    expectType: "joystick";
+                    targets?: string[];
+                    leftState: {
+                      controls?: string[];
+                    };
+                    rightState: {
+                      controls?: string[];
+                    };
+                  }
+                | {
+                    expectType: "lift";
+                    targets?: string[];
+                    leftState: {
+                      direction?: "down" | "up";
+                      vels?: {
+                        lift: {
+                          x: number;
+                          y: number;
+                          z: number;
+                        };
+                      };
+                      top?: number;
+                      bottom?: number;
+                    };
+                    rightState: {
+                      direction?: "down" | "up";
+                      vels?: {
+                        lift: {
+                          x: number;
+                          y: number;
+                          z: number;
+                        };
+                      };
+                      top?: number;
+                      bottom?: number;
+                    };
+                  }
+                | {
+                    expectType: "teleporter";
+                    targets?: string[];
+                    leftState: {
+                      toRoom: string;
+                      toPosition: {
+                        x: number;
+                        y: number;
+                        z: number;
+                      };
+                    };
+                    rightState: {
+                      toRoom: string;
+                      toPosition: {
+                        x: number;
+                        y: number;
+                        z: number;
+                      };
+                    };
+                  }
+              )[];
+            };
       }
     | {
         type: "sceneryCrown";

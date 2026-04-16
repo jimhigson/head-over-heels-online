@@ -1,5 +1,7 @@
 import type { EmptyObject } from "type-fest";
 
+import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+
 import { jimAtBlockstackingUserId } from "../../../../../../gameInfo";
 import { originalCampaignLocator } from "../../../../../../model/modelTypes";
 import { gameStarted } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
@@ -7,6 +9,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Dialog } from "../../../../../../ui/dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 import {
   mainMenuScrollClasses,
   selectGameHintMarkdownClassName,
@@ -17,6 +20,7 @@ import { MenuItems } from "../../MenuItems";
 import { DialogTitleBar } from "../DialogTitleBar";
 
 export const WhichGameDialog = (_emptyProps: EmptyObject) => {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <DialogPortal>
       <Dialog
@@ -40,7 +44,11 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               })}
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite texture-head_walking_right_2 selectedMenuItem:texture-animated-head_walking_right sprites-normal-height zx:sprite-revert-to-white`}
+                  className={`${spriteLeaderClasses}
+                    sprite
+                    ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}
+                    selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "right" })}
+                    sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               hint={
@@ -64,7 +72,11 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               })}
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite texture-heels_standing_right selectedMenuItem:texture-animated-heels_walking_right sprites-normal-height zx:sprite-revert-to-white`}
+                  className={`${spriteLeaderClasses} 
+                    sprite 
+                    ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}
+                    selectedMenuItem:${spriteClassname({ character: "heels", action: "walking", facingXy8: "right" })}
+                    sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               hint={
@@ -82,7 +94,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               subMenuId="communityGames"
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite texture-charles_right sprites-normal-height zx:sprite-revert-to-white`}
+                  className={`${spriteLeaderClasses} sprite ${"texture-charles_right" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               hint={

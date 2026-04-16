@@ -6,7 +6,6 @@ import { type PropsWithChildren } from "react";
 import { SnarkdownInReact } from "snarkdown-in-react";
 import { twMerge } from "tailwind-merge";
 
-import { useTotalUpscale } from "../../store/slices/upscale/upscaleSelectors";
 import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
 import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
@@ -90,8 +89,6 @@ const markdownComponents: CustomComponentsOption = {
     );
   },
   img: function Img({ src }: JSX.IntrinsicElements["img"]) {
-    const scaleFactor = useTotalUpscale();
-
     if (src === undefined) throw new Error("image without src");
 
     // the src is actually tailwind classes, usually just giving a single texture, but
@@ -99,15 +96,12 @@ const markdownComponents: CustomComponentsOption = {
     const classes = src.split(/\?|&/);
 
     return (
-      // make double-size:
-      <span style={{ "--scale": scaleFactor * 2 }}>
-        <span
-          className={twMerge(
-            "sprite float-left mr-1 mb-1 zx:sprite-revert-to-two-tone",
-            classes.join(" "),
-          )}
-        />
-      </span>
+      <span
+        className={twMerge(
+          "sprite float-left mr-1 mb-1 zx:sprite-revert-to-two-tone",
+          classes.join(" "),
+        )}
+      />
     );
   },
   hr: function Hr() {

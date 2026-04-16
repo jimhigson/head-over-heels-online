@@ -108,8 +108,8 @@ export function* doorFrames<SN extends DoorSceneryName>(
 export const doorSpritesheetData = {
   frames: fromAllEntries(
     concat(
-      doorFrames("generic", "y", { x: 580, y: 415 }),
-      doorFrames("generic", "x", { x: 582, y: 415 }),
+      doorFrames("generic", "y", { x: 362, y: 617 }),
+      doorFrames("generic", "x", { x: 364, y: 617 }),
     ),
   ),
 } as const satisfies Pick<SpritesheetData, "frames">;

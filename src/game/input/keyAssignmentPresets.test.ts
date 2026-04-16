@@ -34,6 +34,12 @@ test("MAME assignment", () => {
               "0",
             ],
           },
+          "cycleSprites": {
+            "gamepadButtons": [],
+            "keys": [
+              "F10",
+            ],
+          },
           "end": {
             "gamepadButtons": [],
             "keys": [
@@ -168,12 +174,6 @@ test("MAME assignment", () => {
               "]",
             ],
           },
-          "toggleColourisation": {
-            "gamepadButtons": [],
-            "keys": [
-              "F10",
-            ],
-          },
           "toggleCrtFilter": {
             "gamepadButtons": [],
             "keys": [
@@ -246,6 +246,12 @@ test("Default assignment", () => {
             "gamepadButtons": [],
             "keys": [
               "0",
+            ],
+          },
+          "cycleSprites": {
+            "gamepadButtons": [],
+            "keys": [
+              "F10",
             ],
           },
           "end": {
@@ -402,12 +408,6 @@ test("Default assignment", () => {
             "keys": [
               "]",
               "S",
-            ],
-          },
-          "toggleColourisation": {
-            "gamepadButtons": [],
-            "keys": [
-              "F10",
             ],
           },
           "toggleCrtFilter": {

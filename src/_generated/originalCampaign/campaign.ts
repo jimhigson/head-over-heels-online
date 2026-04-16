@@ -278,6 +278,7 @@ import { room as safari34 } from "./rooms/safari34.ts";
 import { room as safari35 } from "./rooms/safari35.ts";
 import { room as safari36 } from "./rooms/safari36.ts";
 import { room as safari37crown } from "./rooms/safari37crown.ts";
+import { room as switch_room } from "./rooms/switch_room.ts";
 
 export const campaign = {
   locator: { campaignName: "original", userId: "@@original", version: -1 },
@@ -557,5 +558,6 @@ export const campaign = {
     safari35,
     safari36,
     safari37crown,
+    switch_room,
   },
 } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;

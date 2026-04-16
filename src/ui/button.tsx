@@ -51,6 +51,8 @@ export const Button = ({
            disabled:bg-midGrey disabled:text-lightGrey 
            data-[selected=true]:bg-lightBeige
            [&:not(:disabled):hover:not([data-selected=true])]:bg-pastelBlue 
+           zx:[&:not(:disabled):hover:not([data-selected=true])]:bg-zxYellow 
+           zx:[&:not(:disabled):hover:not([data-selected=true])]:text-zxBlack
            `,
         className,
       )}

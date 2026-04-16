@@ -3,10 +3,11 @@ import { Dialog } from "../../ui/dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { directionsXy8 } from "../../utils/vectors/vectors";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
-import { playableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
 import { BitmapText } from "./tailwindSprites/Sprite";
 
 export const NotFound404Page = () => {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <DialogPortal>
       <Border className="loading-border" />
@@ -15,7 +16,7 @@ export const NotFound404Page = () => {
           {directionsXy8.map((d) => (
             <span
               key={d}
-              className={`sprite zx:sprite-revert-to-white ${playableTailwindSpriteClassname({ action: "walking", character: "head", facingXy8: d })}`}
+              className={`sprite zx:sprite-revert-to-white ${spriteClassname({ action: "walking", character: "head", facingXy8: d })}`}
             />
           ))}
         </div>
@@ -33,7 +34,7 @@ export const NotFound404Page = () => {
           {directionsXy8.toReversed().map((d) => (
             <span
               key={d}
-              className={`sprite zx:sprite-revert-to-white ${playableTailwindSpriteClassname({ action: "walking", character: "heels", facingXy8: d })}`}
+              className={`sprite zx:sprite-revert-to-white ${spriteClassname({ action: "walking", character: "heels", facingXy8: d })}`}
             />
           ))}
         </div>

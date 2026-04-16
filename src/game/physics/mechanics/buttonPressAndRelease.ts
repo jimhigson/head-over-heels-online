@@ -1,6 +1,8 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 
+import { nextSpritesOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import { store } from "../../../store/store";
 import { objectEmpty } from "../../../utils/objectEmpty";
 import { applyModifiesList } from "../handleTouch/handleItemTouchingSwitch";
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
@@ -35,10 +37,14 @@ export const buttonPressAndRelease = <
   const { roomTime } = room;
   const isStoodOn = !objectEmpty(stoodOnBy);
 
+  const { config } = buttonItem;
+
   // check is we just stepped over deactivate time:
   const release = !isStoodOn && roomTime > deactivateTime && pressed;
   if (release) {
-    applyModifiesList(buttonItem.config.modifies, "right", buttonItem, room);
+    if (config.type !== "in-store") {
+      applyModifiesList(config.modifies, "right", buttonItem, room);
+    }
     return releasedMechanicResult as MechanicResult<
       "button",
       RoomId,
@@ -47,7 +53,12 @@ export const buttonPressAndRelease = <
   }
 
   if (!pressed && isStoodOn) {
-    applyModifiesList(buttonItem.config.modifies, "left", buttonItem, room);
+    if (config.type === "in-store") {
+      const storeActions = { nextSpritesOption } as const;
+      store.dispatch(storeActions[config.action]());
+    } else {
+      applyModifiesList(config.modifies, "left", buttonItem, room);
+    }
     return pressedMechanicResult as MechanicResult<
       "button",
       RoomId,

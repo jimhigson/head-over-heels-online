@@ -2,10 +2,14 @@ import type { MouseEvent } from "react";
 
 import type { JsonItem } from "../../../../../../model/json/JsonItem";
 import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
+import type {
+  AnimatedTextureTailwindClass,
+  TextureTailwindClass,
+} from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { Xyz } from "../../../../../../utils/vectors/vectors";
 
 import { vectorClosestDirectionXy8 } from "../../../../../../utils/vectors/vectors";
-import { playableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
 import { ScrollIntoView } from "./ScrollIntoView";
 
 /**
@@ -44,7 +48,7 @@ export const SpriteInRoom = ({
       style={{ pointerEvents: "none" }}
     >
       <div
-        className={`sprite zx:sprite-revert-to-two-tone ml-[calc(50px-var(--scale)*var(--w)/2)] mt-[calc(100px-var(--scale)*var(--h))] ${
+        className={`sprite zx:sprite-revert-to-two-tone ml-[calc(50px-var(--scale)*var(--w)*1px/2)] mt-[calc(100px-var(--scale)*var(--h)*1px)] ${
           className
         }`}
         onClick={onClick}
@@ -73,10 +77,11 @@ export const PlayableItemInRoom = ({
   yAdjust?: number;
   onClick?: (name: "head" | "heels") => void;
 }) => {
+  const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <SpriteInRoom
       className={`${onlyPlayableInRoom ? "[--scale:2.5]" : "[--scale:1.5]"}
-                ${playableTailwindSpriteClassname({
+                ${spriteClassname({
                   character: characterName,
                   action: isCurrent ? "walking" : "idle",
                   facingXy8: vectorClosestDirectionXy8(facing) ?? "towards",
@@ -99,35 +104,49 @@ export const NotableItemSvg = ({ item }: { item: NotableItem<string> }) => {
   if (item.type === "lift") {
     return (
       <>
-        <SpriteInRoom className={`${scaleClass} texture-lift_static`} />
-        <SpriteInRoom className={`${scaleClass} texture-lift_2`} />
+        <SpriteInRoom
+          className={`${scaleClass} ${"texture-lift_static" satisfies TextureTailwindClass}`}
+        />
+        <SpriteInRoom
+          className={`${scaleClass} ${"texture-lift_2" satisfies TextureTailwindClass}`}
+        />
       </>
     );
   }
 
   const spriteClassName =
     // the biggest sprites get scaled down so all sprites are about the same size:
-    item.type === "teleporter" ? "texture-teleporter"
-    : item.type === "hushPuppy" ? "texture-hushPuppy"
-    : (
-      item.config.gives === "extra-life" ||
-      item.config.gives === "fast" ||
-      item.config.gives === "jumps" ||
-      item.config.gives === "shield"
-    ) ?
-      "texture-whiteRabbit"
-    : item.config.gives === "doughnuts" ? "texture-doughnuts"
-    : item.config.gives === "hooter" ? "texture-hooter"
-    : item.config.gives === "bag" ? "texture-bag"
-    : item.config.gives === "reincarnation" ? "texture-animated-fish"
+    item.type === "teleporter" ?
+      ("texture-teleporter" satisfies TextureTailwindClass)
+    : item.type === "hushPuppy" ?
+      ("texture-hushPuppy" satisfies TextureTailwindClass)
+    : item.config.gives === "extra-life" ?
+      ("texture-whiteRabbit_extra-life" satisfies TextureTailwindClass)
+    : item.config.gives === "fast" ?
+      ("texture-whiteRabbit_fast" satisfies TextureTailwindClass)
+    : item.config.gives === "jumps" ?
+      ("texture-whiteRabbit_jumps" satisfies TextureTailwindClass)
+    : item.config.gives === "shield" ?
+      ("texture-whiteRabbit_shield" satisfies TextureTailwindClass)
+    : item.config.gives === "doughnuts" ?
+      ("texture-doughnuts" satisfies TextureTailwindClass)
+    : item.config.gives === "hooter" ?
+      ("texture-hooter" satisfies TextureTailwindClass)
+    : item.config.gives === "bag" ?
+      ("texture-bag" satisfies TextureTailwindClass)
+    : item.config.gives === "reincarnation" ?
+      ("texture-animated-fish" satisfies AnimatedTextureTailwindClass)
     : item.config.gives === "crown" ?
-      item.config.planet === "blacktooth" ? "texture-crown_blacktooth"
-      : item.config.planet === "egyptus" ? "texture-crown_egyptus"
-      : item.config.planet === "penitentiary" ? "texture-crown_penitentiary"
-      : item.config.planet === "safari" ? "texture-crown_safari"
-      : item.config.planet === "bookworld" ? "texture-crown_bookworld"
-      : "texture-crown_dark"
-    : "texture-block_organic";
+      item.config.planet === "blacktooth" ?
+        ("texture-crown_blacktooth" satisfies TextureTailwindClass)
+      : item.config.planet === "egyptus" ?
+        ("texture-crown_egyptus" satisfies TextureTailwindClass)
+      : item.config.planet === "penitentiary" ?
+        ("texture-crown_penitentiary" satisfies TextureTailwindClass)
+      : item.config.planet === "safari" ?
+        ("texture-crown_safari" satisfies TextureTailwindClass)
+      : ("texture-crown_bookworld" satisfies TextureTailwindClass)
+    : ("texture-block_organic" satisfies TextureTailwindClass);
 
   return <SpriteInRoom className={`${scaleClass} ${spriteClassName}`} />;
 };

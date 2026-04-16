@@ -25,6 +25,7 @@ test("an item landing on a button can activate it", () => {
       button1: {
         type: "button",
         config: {
+          type: "in-room",
           modifies: [
             {
               expectType: "block",
@@ -82,6 +83,7 @@ test("a button can make an item appear when jumped on repeatedly", () => {
       button1: {
         type: "button",
         config: {
+          type: "in-room",
           modifies: [
             {
               expectType: "emitter",

@@ -2,23 +2,26 @@ import type { Application, Ticker } from "pixi.js";
 
 import { Container, Rectangle } from "pixi.js";
 
+import type { SpriteOption } from "../../store/slices/gameMenus/gameMenusSlice";
 import type { Upscale } from "../../store/slices/upscale/Upscale";
 import type { GameState } from "../gameState/GameState";
 import type { RoomRenderContextInGame } from "../render/room/RoomRenderContexts";
 import type { RoomRendererType } from "../render/room/RoomRendererType";
 
 import { audioCtx } from "../../sound/audioCtx";
-import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
+import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import {
   selectInputDirectionMode,
   selectIsPaused,
   selectShouldRenderOnScreenControls,
   selectShowFps,
+  selectSpritesOption,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   errorCaught,
   selectHasError,
 } from "../../store/slices/gameMenus/gameMenusSlice";
+import { spriteOptionEquals } from "../../store/slices/gameMenus/spriteOptionEquals";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
@@ -42,6 +45,9 @@ import { topLevelFilters } from "./topLevelFilters";
 textInterfaceToShowDetailedFrameTiming();
 
 const quarterTurnClockwise = Math.PI / 2;
+const pausedDimTint = 0x999999;
+const noTint = 0xffffff;
+
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
   /**
@@ -54,6 +60,12 @@ export class MainLoop<RoomId extends string> {
   });
   #worldSound: AudioNode = audioCtx.createGain();
   #physicsTicker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
+  /**
+   * promise - if any async spritesheet generation is currently happening, the main loop should
+   * hold up ticking until this is resolved. Once resolved this goes back to undefined and rendering
+   * resumes on the next tick
+   */
+  #spritesheetLoadPromise: Promise<void> | undefined;
 
   #mainContainer = new Container({
     label: "MainLoop/mainContainer",
@@ -150,12 +162,17 @@ export class MainLoop<RoomId extends string> {
       upscale: { upscale: tickUpscale },
     } = store.getState();
 
-    const tickColourise =
-      !isPaused &&
-      !(
-        tickDisplaySettings?.uncolourised ??
-        defaultUserSettings.displaySettings.uncolourised
-      );
+    const selectedSpriteOption = selectSpritesOption(tickState);
+    const tickSpriteOption: SpriteOption =
+      (
+        isPaused &&
+        spritesheetMetaForOption(selectedSpriteOption.name).supportsUncolourised
+      ) ?
+        ({ ...selectedSpriteOption, uncolourised: true } as SpriteOption)
+      : selectedSpriteOption;
+
+    this.#mainContainer.tint =
+      isPaused && !tickSpriteOption.uncolourised ? pausedDimTint : noTint;
 
     // note that progressing the game state can change/reload the room,
     // so we need to tick physics considering recreating the room renderer
@@ -172,16 +189,30 @@ export class MainLoop<RoomId extends string> {
     const roomChanged = this.#roomRenderer?.renderContext.room !== tickEndRoom;
     if (
       (roomChanged ||
-        tickColourise !==
-          this.#roomRenderer?.renderContext.general.colourised) &&
-      tickEndRoom !== undefined
+        (this.#roomRenderer !== undefined &&
+          !spriteOptionEquals(
+            tickSpriteOption,
+            this.#roomRenderer.renderContext.general.spriteOption,
+          ))) &&
+      tickEndRoom !== undefined &&
+      this.#spritesheetLoadPromise === undefined
     ) {
-      tickSpritesheetVariants(
+      const loadResult = tickSpritesheetVariants(
         this.app.renderer,
-        tickColourise,
         tickEndRoom.planet,
         tickEndRoom.color,
+        tickSpriteOption,
       );
+      if (loadResult !== undefined) {
+        this.#spritesheetLoadPromise = loadResult.then(() => {
+          this.#spritesheetLoadPromise = undefined;
+        });
+      }
+    }
+
+    if (this.#spritesheetLoadPromise !== undefined) {
+      // still loading a spritesheet — skip rendering
+      return;
     }
 
     // render hud start
@@ -191,7 +222,7 @@ export class MainLoop<RoomId extends string> {
 
     const createNewHudRenderer = needsNewHudRenderer(
       this.#hudRenderer,
-      tickColourise,
+      tickSpriteOption,
       tickOnScreenControls,
       tickInputDirectionMode,
       tickUpscale,
@@ -206,7 +237,8 @@ export class MainLoop<RoomId extends string> {
           pixiRenderer: this.app.renderer,
           displaySettings: tickDisplaySettings,
           soundSettings: tickSoundSettings,
-          colourised: tickColourise,
+          spriteOption: tickSpriteOption,
+          spritesheetMeta: spritesheetMetaForOption(tickSpriteOption.name),
           upscale: tickUpscale,
           editor: false,
           onScreenControls: tickOnScreenControls,
@@ -249,7 +281,8 @@ export class MainLoop<RoomId extends string> {
             pixiRenderer: this.app.renderer,
             displaySettings: tickDisplaySettings,
             soundSettings: tickSoundSettings,
-            colourised: tickColourise,
+            spriteOption: tickSpriteOption,
+            spritesheetMeta: spritesheetMetaForOption(tickSpriteOption.name),
             upscale: tickUpscale,
             editor: false,
             onScreenControls: tickOnScreenControls,

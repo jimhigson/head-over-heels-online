@@ -3,6 +3,7 @@ import type { Page } from "@playwright/test";
 import { test } from "@playwright/test";
 import chalk from "chalk";
 
+import type { SpriteOption } from "../src/store/slices/gameMenus/gameMenusSlice";
 import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import { forwardBrowserConsoleToNodeConsole } from "./forwardBrowserConsoleToNodeConsole";
@@ -10,10 +11,11 @@ import { logSelectorExistence } from "./logSelectorExistence";
 import { logUpscale } from "./logUpscale";
 import {
   clickBackButton,
-  colourisedModes,
+  enabledSpriteModes,
   getCurrentDialogId,
   getSubmenuItems,
   navigateToSubmenu,
+  spriteOptionSuffix,
   takeDialogScreenshot,
   testTimeout,
   type VisitedDialogs,
@@ -21,15 +23,14 @@ import {
 import { osSlowness } from "./osSlowness";
 import { elapsed, formatProjectName } from "./projectName";
 import { retryWithRecovery } from "./retryWithRecovery";
-import { setIsUncolourised } from "./setIsUncolourised";
+import { setSpriteOption } from "./setSpriteOption";
 
 const traverseMenuDepthFirst = async (
   page: Page,
   visited: VisitedDialogs,
   logHeader: string,
   projectName: string,
-  filenameSuffix: string,
-  uncolourised: boolean,
+  spriteOption: SpriteOption,
   depth: number = 0,
 ): Promise<void> => {
   const currentDialogId = await getCurrentDialogId(page);
@@ -59,8 +60,9 @@ const traverseMenuDepthFirst = async (
     page,
     currentDialogId,
     logHeader,
-    filenameSuffix,
-    uncolourised,
+    spriteOptionSuffix(spriteOption),
+    spriteOption,
+    projectName,
   );
 
   // Get all submenu items
@@ -85,8 +87,7 @@ const traverseMenuDepthFirst = async (
       visited,
       logHeader,
       projectName,
-      filenameSuffix,
-      uncolourised,
+      spriteOption,
       depth + 1,
     );
 
@@ -102,21 +103,20 @@ const traverseMenuDepthFirst = async (
   );
 };
 
-for (const { uncolourised } of colourisedModes) {
-  test.describe("Menu Visual Snapshots", () => {
-    test(`Snapshot all menu dialogs (uncolourised = ${uncolourised})`, async ({
+for (const spriteOption of enabledSpriteModes) {
+  test.describe(`Menu Visual Snapshots ${JSON.stringify(spriteOption)}`, () => {
+    test(`Snapshot all menu dialogs ${JSON.stringify(spriteOption)}`, async ({
       page,
     }, testInfo) => {
       const { mainMenuOnly, noUncolourised } = testInfo.project
         .use as ScreenshotTestOptions;
-      if (mainMenuOnly || (uncolourised && noUncolourised)) {
+      if (mainMenuOnly || (spriteOption.uncolourised && noUncolourised)) {
         test.skip();
         return;
       }
       test.setTimeout(testTimeout);
 
       const formattedName = formatProjectName(testInfo.project.name);
-      const filenameSuffix = uncolourised ? "-uncolourised" : "";
 
       forwardBrowserConsoleToNodeConsole(page, formattedName);
 
@@ -155,8 +155,8 @@ for (const { uncolourised } of colourisedModes) {
 
       await logUpscale(page, formattedName);
 
-      await test.step(`set uncolourised user setting to ${uncolourised}`, async () => {
-        await setIsUncolourised(page, formattedName, uncolourised);
+      await test.step(`set sprite option to ${JSON.stringify(spriteOption)}`, async () => {
+        await setSpriteOption(page, formattedName, spriteOption);
       });
 
       try {
@@ -166,8 +166,7 @@ for (const { uncolourised } of colourisedModes) {
             visited,
             formattedName,
             testInfo.project.name,
-            filenameSuffix,
-            uncolourised,
+            spriteOption,
           );
         });
       } catch (error) {

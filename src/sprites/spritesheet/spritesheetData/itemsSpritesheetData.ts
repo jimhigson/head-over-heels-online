@@ -36,6 +36,12 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  thisIsABug: {
+    frame: {
+      ...smallItemGridLocation({ x: 1, y: 2 }),
+      ...smallItemTextureSize,
+    },
+  },
 
   headlessBase: {
     frame: {
@@ -197,25 +203,31 @@ const frames = {
 
   "joystick.stick": {
     frame: {
-      ...smallItemGridLocation({ x: 18, y: 1 }),
+      ...smallItemGridLocation({ x: (x = 17), y: (y = 1) }),
+      ...smallItemTextureSize,
+    },
+  },
+  "joystick.ball.active": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "joystick.ball": {
     frame: {
-      ...smallItemGridLocation({ x: 19, y: 1 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "joystick.whole": {
     frame: {
-      ...smallItemGridLocation({ x: 20, y: 1 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.joystick": {
     frame: {
-      ...smallItemGridLocation({ x: 21, y: 1 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
@@ -319,72 +331,127 @@ const frames = {
 
   "spring.compressed": {
     frame: {
-      ...smallItemGridLocation({ x: 19, y: 4 }),
+      ...smallItemGridLocation({ x: (x = 19), y: (y = 4) }),
       ...smallItemTextureSize,
     },
   },
   "spring.released": {
     frame: {
-      ...smallItemGridLocation({ x: 20, y: 4 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.spring.compressed": {
     frame: {
-      ...smallItemGridLocation({ x: 21, y: 4 }),
+      ...smallItemGridLocation({ x: (x += 2), y }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.spring.released": {
     frame: {
-      ...smallItemGridLocation({ x: 22, y: 4 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
 
+  "fish.dead": {
+    frame: {
+      ...smallItemGridLocation({ x: (x = 15), y: (y = 5) }),
+      ...smallItemTextureSize,
+    },
+  },
   ...seriesOfNumberedTextures(
     "fish",
     2,
-    smallItemGridLocation({ x: 16, y: 6 }),
+    smallItemGridLocation({ x: ++x, y }),
     smallItemTextureSize,
   ),
 
   doughnuts: {
     frame: {
-      ...smallItemGridLocation({ x: 18, y: 6 }),
+      ...smallItemGridLocation({ x: (x += 2), y }),
       ...smallItemTextureSize,
     },
   },
 
   "shadowMask.doughnuts": {
     frame: {
-      ...smallItemGridLocation({ x: 19, y: 6 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
 
   hooter: {
     frame: {
-      ...smallItemGridLocation({ x: 21, y: 6 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   bag: {
     frame: {
-      ...smallItemGridLocation({ x: 22, y: 6 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
 
-  whiteRabbit: {
+  "whiteRabbit.extra-life": {
     frame: {
-      ...smallItemGridLocation({ x: 24, y: 6 }),
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
+  "whiteRabbit.fast": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
+  "whiteRabbit.shield": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
+  "whiteRabbit.jumps": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.whiteRabbit": {
     frame: {
-      ...smallItemGridLocation({ x: 25, y: 6 }),
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
+
+  "planet.blacktooth": {
+    frame: {
+      ...smallItemGridLocation({ x: (x = 16), y: (y = 6) }),
+      ...smallItemTextureSize,
+    },
+  },
+  "planet.safari": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
+  "planet.egyptus": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
+  "planet.penitentiary": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
+  "planet.bookworld": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
@@ -448,9 +515,47 @@ const frames = {
     },
   },
 
+  ...seriesOfNumberedTextures(
+    "bubbles.white",
+    3,
+    smallItemGridLocation({ x: (x = 23), y: (y = 9) }),
+    smallItemTextureSize,
+  ),
+
+  ...seriesOfNumberedTextures(
+    "bubbles.taupe",
+    3,
+    smallItemGridLocation({ x, y: ++y }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "bubbles.jetpack",
+    2,
+    smallItemGridLocation({ x, y: ++y }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "bubbles.blueGreen",
+    2,
+    smallItemGridLocation({ x, y: ++y }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "bubbles.cold",
+    2,
+    smallItemGridLocation({ x, y: ++y }),
+    smallItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "emperorsGuardian",
+    2,
+    smallItemGridLocation({ x, y: ++y }),
+    smallItemTextureSize,
+  ),
+
   buttonInGame: {
     frame: {
-      ...smallItemGridLocation({ x: (x = 16), y: (y = 9) }),
+      ...smallItemGridLocation({ x: (x = 21), y: ++y }),
       ...smallItemTextureSize,
     },
   },
@@ -488,78 +593,40 @@ const frames = {
 
   "lift.static": {
     frame: {
-      ...smallItemGridLocation({ x: 16, y: (y = 10) }),
+      ...smallItemGridLocation({ x: (x = 21), y: ++y }),
       ...smallItemTextureSize,
     },
   },
   ...seriesOfNumberedTextures(
     "lift",
     4,
-    smallItemGridLocation({ x: 17, y }),
+    smallItemGridLocation({ x: ++x, y }),
     smallItemTextureSize,
   ),
   "shadow.smallBlock": {
     frame: {
-      ...smallItemGridLocation({ x: 21, y }),
+      ...smallItemGridLocation({ x: (x += 4), y }),
       ...smallItemTextureSize,
     },
   },
   "shadowMask.smallBlock": {
     frame: {
-      ...smallItemGridLocation({ x: 22, y }),
-      ...smallItemTextureSize,
-    },
-  },
-  "shadow.wallCorner": {
-    frame: {
-      ...smallItemGridLocation({ x: 21, y: y + 1 }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
   ...seriesOfNumberedTextures(
     "shadow.lift",
     4,
-    smallItemGridLocation({ x: 17, y: 11 }),
+    smallItemGridLocation({ x: 22, y: ++y }),
     smallItemTextureSize,
   ),
-
-  ...seriesOfNumberedTextures(
-    "bubbles.white",
-    3,
-    smallItemGridLocation({ x: (x = 23), y: (y = 9) }),
-    smallItemTextureSize,
-  ),
-
-  ...seriesOfNumberedTextures(
-    "bubbles.taupe",
-    3,
-    smallItemGridLocation({ x, y: ++y }),
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "bubbles.jetpack",
-    2,
-    smallItemGridLocation({ x, y: ++y }),
-    smallItemTextureSize,
-  ),
-  ...seriesOfNumberedTextures(
-    "bubbles.blueGreen",
-    2,
-    smallItemGridLocation({ x, y: ++y }),
-    smallItemTextureSize,
-  ),
-  "ball.blueGreen": {
+  "shadow.wallCorner": {
     frame: {
-      ...smallItemGridLocation({ x: x + 2, y }),
+      ...smallItemGridLocation({ x: 26, y }),
       ...smallItemTextureSize,
     },
   },
-  ...seriesOfNumberedTextures(
-    "bubbles.cold",
-    2,
-    smallItemGridLocation({ x, y: ++y }),
-    smallItemTextureSize,
-  ),
 
   portableTeleporter: {
     frame: {
@@ -893,6 +960,10 @@ export const itemsSpritesheetData = {
     ),
     "bubbles.blueGreen": withSpeed(
       ["bubbles.blueGreen.1", "bubbles.blueGreen.2"] as const,
+      0.25,
+    ),
+    emperorsGuardian: withSpeed(
+      ["emperorsGuardian.1", "emperorsGuardian.2"] as const,
       0.25,
     ),
     "bubbles.white": withSpeed(

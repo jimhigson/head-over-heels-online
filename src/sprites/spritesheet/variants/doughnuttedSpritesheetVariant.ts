@@ -1,29 +1,17 @@
-import type { Renderer } from "pixi.js";
-
-import type { PaletteSwaps } from "../../../game/render/filters/lutTexture/sparseLut";
 import type { AppSpritesheet } from "../loadedSpriteSheet";
+import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
+import type { VariantBuildContext } from "../VariantBuildContext";
 
-import { spritesheetPalette } from "../../palette/spritesheetPalette";
+import { resolveSwops } from "../../../utils/palette/palette";
+import { resolveNamedColourSwops } from "../../../utils/palette/palette";
 import {
+  ambientDimSwops,
   createSpritesheetVariant,
-  dimSwops,
+  noopSpritesheetTextureSwops,
   replaceSpritesheetWithSwopped,
 } from "../spritesheetPaletteSwop";
 
 let swopped: AppSpritesheet | undefined = undefined;
-
-export const doughnuttedSwaps: PaletteSwaps = {
-  midGrey: spritesheetPalette.midRed,
-  lightGrey: spritesheetPalette.lightBeige,
-  white: spritesheetPalette.highlightBeige,
-  metallicBlue: spritesheetPalette.redShadow,
-  shadow: spritesheetPalette.redShadow,
-  pastelBlue: spritesheetPalette.lightBeige,
-  pink: spritesheetPalette.midRed,
-  moss: spritesheetPalette.midRed,
-  replaceDark: spritesheetPalette.midRed,
-  replaceLight: spritesheetPalette.lightBeige,
-};
 
 export const destroyDoughnuttedSpritesheetVariant = () => {
   if (swopped !== undefined) {
@@ -34,17 +22,36 @@ export const destroyDoughnuttedSpritesheetVariant = () => {
 };
 
 export const createDoughnuttedSpritesheetVariant = (
-  pixiRenderer: Renderer,
-  isDim: boolean,
+  context: VariantBuildContext,
 ): void => {
+  const { roomColor, spritesheetMetaData } = context;
   destroyDoughnuttedSpritesheetVariant();
 
-  let result = createSpritesheetVariant(pixiRenderer, {
-    ambient: [{ paletteSwaps: doughnuttedSwaps, lutType: "sparse" }],
-  });
+  const { palette } = spritesheetMetaData;
+  const doughnuttedSwops = spritesheetMetaData.swops?.doughnutted;
 
-  if (isDim) {
-    result = replaceSpritesheetWithSwopped(pixiRenderer, result, dimSwops);
+  const swops: SpritesheetTextureSwops =
+    doughnuttedSwops === undefined ?
+      noopSpritesheetTextureSwops
+    : {
+        ambient: [
+          {
+            swops: resolveSwops(
+              palette,
+              resolveNamedColourSwops(doughnuttedSwops.colours, palette),
+            ),
+            lutType: "sparse",
+          },
+        ],
+      };
+
+  let result = createSpritesheetVariant(context, swops);
+
+  if (roomColor.shade === "dimmed") {
+    const dimSwops = ambientDimSwops(spritesheetMetaData);
+    if (dimSwops !== undefined) {
+      result = replaceSpritesheetWithSwopped(context, result, dimSwops);
+    }
   }
 
   swopped = result;

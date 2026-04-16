@@ -4,7 +4,7 @@ import type { EmptyObject } from "type-fest";
 import { Application } from "pixi.js";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { spritesheetPalette } from "../../sprites/palette/spritesheetPalette";
+import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { stopAppAutoRendering } from "../../utils/pixi/stopAppAutoRendering";
 
 const PixiApplicationContext = createContext<Application>(
@@ -25,7 +25,7 @@ export const PixiApplicationProvider = ({
 
     appThisEffect
       .init({
-        background: spritesheetPalette.pureBlack,
+        background: paletteBlockstack.pureBlack,
         // the room editor ticks like any other pixi app, it doesn't just react to changes:
         sharedTicker: true,
 

@@ -5,36 +5,81 @@ import plugin from "tailwindcss/plugin";
 
 import spritesheetPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
-import { zxSpectrumColors, zxSpectrumFrameRate } from "../../originalGame";
+import { zxSpectrumColors } from "../../originalGame";
 import { isTextureId } from "../../sprites/assertIsTextureId";
 import {
   type FramesWithSpeed,
-  spritesheetData,
+  makeSpritesheetData,
   type TextureId,
-} from "../../sprites/spritesheet/spritesheetData/spriteSheetData";
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { halfbriteHex } from "../../utils/colour/halfBrite";
-import { objectEntriesIter } from "../../utils/entries";
+import {
+  entries,
+  fromAllEntries,
+  objectEntriesIter,
+} from "../../utils/entries";
+import {
+  animatedSpriteIndirectCssVars,
+  animatedSpriteSpecificCssVars,
+  animationCssVarValues,
+  keyframesForAnimatedSprite,
+  spriteSpecificCssVars,
+} from "./spriteCss";
 
 const spritesheetSize = imageSize("gfx/sprites.png");
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
   ({ addUtilities, addBase, addVariant, e }) => {
+    /**
+     * A full version of the spritesheet data with every possible sprite loaded. So tailwind thinks every possible
+     * textureId exists. postcss can cut them down from there to what's actually used
+     */
+    const fullSpritesheetData = makeSpritesheetData({
+      playable: {
+        head: {},
+        heels: {},
+      },
+    });
+
+    const perSheetData = fromAllEntries(
+      entries(spritesheetMetas).map(
+        ([name, meta]) => [name, makeSpritesheetData(meta)] as const,
+      ),
+    );
+
+    const animationsAreEqual = (
+      a: FramesWithSpeed<TextureId[]>,
+      b: FramesWithSpeed<TextureId[]>,
+    ) =>
+      a.length === b.length &&
+      a.animationSpeed === b.animationSpeed &&
+      a.every((frame, i) => frame === b[i]);
+
     const sanitiseId = (id: string) => e(sanitiseForClassName(id));
 
     const base: CSSRuleObject = {};
 
     const spriteStyles = (type: "background" | "mask") => ({
       [`${type}Image`]: `var(--spritesheetUrl)`,
-      [`${type}Position`]: `calc(-1 * var(--x) * var(--scale, 1)) calc(-1 * var(--y) * var(--scale, 1) * var(--doubleHeight, 1))`,
-      [`${type}Size`]: `calc(var(--spritesheetW) * var(--scale, 1)) calc( var(--spritesheetH) * var(--scale, 1) * var(--doubleHeight, 1))`,
+      [`${type}Position`]: `calc(-1 * var(--x) * var(--totalScale) * 1px) calc(-1 * var(--y) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
+      [`${type}Size`]: `calc(var(--spritesheetW) * var(--totalScale) * 1px) calc(var(--spritesheetH) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
     });
+
+    const bugFrame =
+      fullSpritesheetData.frames["thisIsABug" as TextureId].frame;
 
     const utilities: CSSRuleObject = {
       ".sprite": {
+        "--totalScale": `calc(var(--scale, 1) * var(--sprite-scale, 1))`,
+        "--x": `${bugFrame.x}`,
+        "--y": `${bugFrame.y}`,
+        "--w": `${bugFrame.w}`,
+        "--h": `${bugFrame.h}`,
         display: "inline-block",
-        width: `calc(var(--w) * var(--scale, 1))`,
-        height: `calc(var(--h) * var(--scale, 1) * var(--doubleHeight, 1))`,
+        width: `calc(var(--w) * var(--totalScale) * 1px)`,
+        height: `calc(var(--h) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
         imageRendering: "pixelated",
         ...spriteStyles("background"),
       },
@@ -76,12 +121,20 @@ export const spritesTailwindPlugin = plugin(
       },
 
       /**
-       * sets the (unchanging during run time) vars to describe the spritesheet
+       * sets the default vars to describe the spritesheet
        */
       ".set-spritesheet-vars": {
+        "--spritesheetW": `${spritesheetSize.width}`,
+        "--spritesheetH": `${spritesheetSize.height}`,
+      },
+      ".blockstack-spritesheet": {
         "--spritesheetUrl": `url('gfx/sprites.png')`,
-        "--spritesheetW": `${spritesheetSize.width}px`,
-        "--spritesheetH": `${spritesheetSize.height}px`,
+      },
+      ".toppy-spritesheet": {
+        "--spritesheetUrl": `url('gfx/spritesToppy.png')`,
+      },
+      ".sprite-scale-2": {
+        "--sprite-scale": "2",
       },
       ".sprites-double-height": {
         "--doubleHeight": "2",
@@ -119,8 +172,8 @@ export const spritesTailwindPlugin = plugin(
         // does the same:
         "clip-path": `inset(
           0                                                         
-          clamp(0px, calc(18px - var(--w) * var(--scale)), calc(18px - var(--w) * var(--scale)))  
-          clamp(0px, calc(18px - var(--h) * var(--scale)), calc(18px - var(--h) * var(--scale)))  
+          clamp(0px, calc(18px - var(--w) * var(--scale) * 1px), calc(18px - var(--w) * var(--scale) * 1px))
+          clamp(0px, calc(18px - var(--h) * var(--scale) * 1px), calc(18px - var(--h) * var(--scale) * 1px))  
           0                                                         
         )`,
       },
@@ -221,13 +274,13 @@ export const spritesTailwindPlugin = plugin(
       {
         frame: { h, w, x, y },
       },
-    ] of objectEntriesIter(spritesheetData.frames)) {
-      utilities[`.texture-${sanitiseId(textureId)}`] = {
-        "--w": `${w}px`,
-        "--h": `${h}px`,
-        "--x": `${x}px`,
-        "--y": `${y}px`,
-      };
+    ] of objectEntriesIter(fullSpritesheetData.frames)) {
+      utilities[`.texture-${sanitiseId(textureId)}`] = spriteSpecificCssVars(
+        w,
+        h,
+        x,
+        y,
+      );
 
       // allow sprites-uppercase class to work as an equivalent to
       // text-transform: upper
@@ -235,97 +288,163 @@ export const spritesTailwindPlugin = plugin(
       if (hudCharMatch) {
         const { char } = hudCharMatch.groups!;
         const uppercaseTextureId = `hud.char.${char.toUpperCase()}`;
-        if (isTextureId(uppercaseTextureId)) {
-          const upperCaseFrame = spritesheetData.frames[uppercaseTextureId];
+        if (isTextureId(uppercaseTextureId, fullSpritesheetData)) {
+          const upperCaseFrame = fullSpritesheetData.frames[uppercaseTextureId];
           if (upperCaseFrame) {
             const {
               frame: { h: hUpper, w: wUpper, x: xUpper, y: yUpper },
             } = upperCaseFrame;
             // this is a char and there is also an upper-case version available:
             base[`.sprites-uppercase .texture-${sanitiseId(textureId)}`] = {
-              "--w": `${wUpper}px`,
-              "--h": `${hUpper}px`,
-              "--x": `${xUpper}px`,
-              "--y": `${yUpper}px`,
+              "--w": `${wUpper}`,
+              "--h": `${hUpper}`,
+              "--x": `${xUpper}`,
+              "--y": `${yUpper}`,
             };
           }
         }
       }
     }
 
-    for (const [animationName, frames] of objectEntriesIter(
-      spritesheetData.animations as Record<
-        string,
-        FramesWithSpeed<TextureId[]>
-      >,
-    )) {
-      const pixiJsAnimationSpeed = frames.animationSpeed;
-      const animationDuration =
-        (frames.length * (1 / zxSpectrumFrameRate)) / pixiJsAnimationSpeed;
+    type AnimationsRecord = Record<string, FramesWithSpeed<TextureId[]>>;
+    const blockStackAnimations = perSheetData.BlockStack!
+      .animations as AnimationsRecord;
+    const toppyAnimations = perSheetData.Toppy!.animations as AnimationsRecord;
+    const allAnimationNames = new Set([
+      ...Object.keys(blockStackAnimations),
+      ...Object.keys(toppyAnimations),
+    ]);
 
-      const firstFrame = spritesheetData.frames[frames[0]];
-      if (firstFrame === undefined) {
-        throw new Error(
-          `Animation ${animationName} has invalid first frame ${frames[0]}`,
+    const blockStackVars: CSSRuleObject = {};
+    const toppyVars: CSSRuleObject = {};
+
+    for (const animationName of allAnimationNames) {
+      const bsFrames = blockStackAnimations[animationName];
+      const toppyFrames = toppyAnimations[animationName];
+
+      const shared =
+        bsFrames && toppyFrames && animationsAreEqual(bsFrames, toppyFrames);
+
+      const emitUtilities = (
+        frames: FramesWithSpeed<TextureId[]>,
+        cssVarsFn: (
+          ...args: Parameters<typeof animatedSpriteSpecificCssVars>
+        ) => CSSRuleObject,
+      ) => {
+        utilities[`.texture-animated-${sanitiseId(animationName)}`] = cssVarsFn(
+          animationName,
+          sanitiseId,
+          frames,
+          fullSpritesheetData,
+        );
+        utilities[`.texture-animated-reversed-${sanitiseId(animationName)}`] =
+          cssVarsFn(
+            animationName,
+            sanitiseId,
+            frames,
+            fullSpritesheetData,
+            true,
+          );
+      };
+
+      const assignKeyframesToUtility = (
+        frames: FramesWithSpeed<TextureId[]>,
+        spritesheetData: ReturnType<typeof makeSpritesheetData>,
+        keyframePrefix = "",
+      ) => {
+        const normalUtility = utilities[
+          `.texture-animated-${sanitiseId(animationName)}`
+        ] as object;
+        Object.assign(
+          normalUtility,
+          keyframesForAnimatedSprite(
+            animationName,
+            sanitiseId,
+            frames,
+            spritesheetData,
+            keyframePrefix,
+          ),
+        );
+      };
+
+      if (shared) {
+        // identical in both spritesheets — direct animation shorthand, no CSS vars
+        emitUtilities(bsFrames, animatedSpriteSpecificCssVars);
+        assignKeyframesToUtility(bsFrames, fullSpritesheetData);
+      } else {
+        // differing or exclusive — use CSS variable indirection
+        const referenceFrames = bsFrames ?? toppyFrames;
+        emitUtilities(referenceFrames, animatedSpriteIndirectCssVars);
+
+        // the base utility class has --x/--y from the reference frames' first frame
+        // in fullSpritesheetData. For spritesheets where the first frame is at a
+        // different position, emit an override so that static rendering (eg,
+        // Playwright with animations disabled) shows the correct fallback frame.
+        const baseUtility = utilities[
+          `.texture-animated-${sanitiseId(animationName)}`
+        ] as Record<string, string>;
+        const baseFallbackX = baseUtility["--x"];
+        const baseFallbackY = baseUtility["--y"];
+
+        const sheetAnimationVariation = (
+          frames: FramesWithSpeed<TextureId[]> | undefined,
+          sheetData: ReturnType<typeof makeSpritesheetData>,
+          sheetPrefix: string,
+        ): Record<string, unknown> => {
+          if (frames === undefined) return {};
+
+          assignKeyframesToUtility(frames, sheetData, sheetPrefix);
+
+          const result: Record<string, unknown> = animationCssVarValues(
+            animationName,
+            sanitiseId,
+            frames,
+            sheetData,
+            sheetPrefix,
+          );
+
+          const fallback = sheetData.frames[frames[0]];
+          if (fallback) {
+            const overrides: Record<string, string> = {};
+            if (`${fallback.frame.x}` !== baseFallbackX) {
+              overrides["--x"] = `${fallback.frame.x}`;
+            }
+            if (`${fallback.frame.y}` !== baseFallbackY) {
+              overrides["--y"] = `${fallback.frame.y}`;
+            }
+            if (Object.keys(overrides).length > 0) {
+              result[`& .texture-animated-${sanitiseId(animationName)}`] =
+                overrides;
+            }
+          }
+
+          return result;
+        };
+
+        Object.assign(
+          blockStackVars,
+          sheetAnimationVariation(
+            bsFrames,
+            perSheetData.BlockStack,
+            "blockstack-",
+          ),
+        );
+        Object.assign(
+          toppyVars,
+          sheetAnimationVariation(toppyFrames, perSheetData.Toppy, "toppy-"),
         );
       }
-      utilities[`.texture-animated-${sanitiseId(animationName)}`] = {
-        // x and y will be overwritten by the animation keyframes, but including here
-        // makes the sprite appear correct if animation is disabled - eg, in playwright tests
-        "--x": `${firstFrame.frame.x}px`,
-        "--y": `${firstFrame.frame.y}px`,
-        "--w": `${firstFrame.frame.w}px`,
-        "--h": `${firstFrame.frame.h}px`,
-        animation: `sprite-animation-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) infinite`,
-      };
-
-      utilities[`.texture-animated-once-${sanitiseId(animationName)}`] = {
-        "--w": `${spritesheetData.frames[frames[0]].frame.w}px`,
-        "--h": `${spritesheetData.frames[frames[0]].frame.h}px`,
-        // let stay on the last frame after the animation ends:
-        "--x": `${spritesheetData.frames[frames.at(-1)!].frame.x}px`,
-        "--y": `${spritesheetData.frames[frames.at(-1)!].frame.y}px`,
-        animation: `sprite-animation-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) 1`,
-      };
-
-      base[`@keyframes sprite-animation-${sanitiseId(animationName)}`] =
-        Object.fromEntries(
-          frames.map((textureId, i) => {
-            const frame = spritesheetData.frames[textureId];
-            if (frame === undefined) {
-              throw new Error(
-                `Animation ${animationName} has invalid frame ${textureId}`,
-              );
-            }
-            return [
-              `${(i * 100) / (frames.length - 1)}%`,
-              {
-                "--x": `${frame.frame.x}px`,
-                "--y": `${frame.frame.y}px`,
-              },
-            ];
-          }),
-        );
-
-      const reversedFrames = frames.toReversed();
-      utilities[`.texture-animated-reversed-${sanitiseId(animationName)}`] = {
-        "--w": `${spritesheetData.frames[reversedFrames[0]].frame.w}px`,
-        "--h": `${spritesheetData.frames[reversedFrames[0]].frame.h}px`,
-        animation: `sprite-animation-reversed-${sanitiseId(animationName)} ${animationDuration}s steps(${frames.length}, end) infinite`,
-      };
-
-      base[
-        `@keyframes sprite-animation-reversed-${sanitiseId(animationName)}`
-      ] = Object.fromEntries(
-        reversedFrames.map((frame, i) => [
-          `${(i * 100) / (frames.length - 1)}%`,
-          {
-            "--x": `${spritesheetData.frames[frame].frame.x}px`,
-            "--y": `${spritesheetData.frames[frame].frame.y}px`,
-          },
-        ]),
-      );
     }
+
+    Object.assign(
+      utilities[".blockstack-spritesheet"] as object,
+      blockStackVars,
+    );
+    Object.assign(utilities[".toppy-spritesheet"] as object, toppyVars);
+
+    utilities[".sprite-play-once"] = {
+      animationIterationCount: "1",
+    };
 
     addUtilities(utilities);
     addBase(base);

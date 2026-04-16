@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import type { TypedURLSearchParams } from "../../../options/queryParams";
+import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 import { compressObject } from "../../../db/compressObject";
 import { store } from "../../../store/store";
@@ -47,7 +48,11 @@ export const PlayTestButton = () => {
           <IconWithTwoLineHoverText
             topText="pl"
             bottomText="ay"
-            icon={<span className="sprite texture-joystick_whole mt-half" />}
+            icon={
+              <span
+                className={`sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} mt-half`}
+              />
+            }
           />
         </ToolbarButton>
       }

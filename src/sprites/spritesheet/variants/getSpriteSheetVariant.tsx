@@ -1,4 +1,4 @@
-import type { TextureId } from "../spritesheetData/spriteSheetData";
+import type { TextureId } from "../spritesheetData/makeSpritesheetData";
 import type { SpritesheetVariant } from "./SpritesheetVariant";
 
 import { type AppSpritesheet, originalSpriteSheet } from "../loadedSpriteSheet";

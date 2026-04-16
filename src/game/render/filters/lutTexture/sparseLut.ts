@@ -2,26 +2,17 @@ import type { Color } from "pixi.js";
 
 import { Texture } from "pixi.js";
 
-import {
-  spritesheetPalette,
-  type SpritesheetPaletteColourName,
-} from "../../../../sprites/palette/spritesheetPalette";
 import { standardBrightnessLevels } from "../../../../utils/colour/halfBrite";
-import { objectEntriesIter } from "../../../../utils/entries";
 import { getBlockNeighborhood } from "./blockEncode";
 import { lutSize, lutW } from "./lutSize";
 
-export type PaletteSwaps = Partial<Record<SpritesheetPaletteColourName, Color>>;
-
-export const sparseLut = (swops: PaletteSwaps): Texture => {
+export const sparseLut = (swops: Map<Color, Color>): Texture => {
   // Create RGBA texture data (4 bytes per pixel)
   const data = new Uint8Array(lutSize * 4);
 
   // we also put the shadow-ed version of the colour in the LUT:
   for (const bright of standardBrightnessLevels) {
-    for (const [original, target] of objectEntriesIter(swops)) {
-      const originalColor = spritesheetPalette[original];
-
+    for (const [originalColor, target] of swops) {
       // Write to a neighborhood of positions to handle slight color variations
       // (e.g., from anti-aliasing, compression artifacts, or floating point errors)
       for (const { x, y, distance } of getBlockNeighborhood(

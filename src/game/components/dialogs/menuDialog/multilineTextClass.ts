@@ -3,4 +3,4 @@ export const multilineTextClass =
   // bottom margin on all char sprites spaces the text out
   // 1px keeps (almost) strictly on the grid for upper-case chars
   // 3px allows hanging chars (g,y,j etc) to not dangle into the line below
-  "leading-none [--line-gap:1px] [&_[class*='texture-hud']]:mb-[calc(var(--scale)*var(--line-gap))]";
+  "leading-none [--line-gap:1px] [&_[class*='texture-hud'].sprite]:mb-[calc(var(--scale)*var(--line-gap))]";
