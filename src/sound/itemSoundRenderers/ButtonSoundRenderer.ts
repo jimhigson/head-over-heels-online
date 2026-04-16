@@ -30,8 +30,7 @@ export class ButtonSoundRenderer implements ItemSoundRenderer<"button"> {
       this.#currentPressed !== pressed
     ) {
       createAudioNode({
-        soundId: "switchClick",
-        playbackRate: pressed ? 0.95 : 1.05,
+        soundId: pressed ? "buttonOn" : "buttonOff",
         connectTo: this.#channelNode,
       });
     }

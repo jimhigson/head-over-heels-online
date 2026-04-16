@@ -248,6 +248,7 @@ export type ItemConfigMap<
      */
     was:
       | { type: "disappearing" }
+      | { type: "firedDoughnut" }
       | { type: "hushPuppy" }
       | { type: "pickup"; gives: PickupConfig["gives"] };
   };

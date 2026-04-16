@@ -3,6 +3,11 @@ import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
 import { audioCtx } from "../audioCtx";
+import {
+  type BracketedSound,
+  createBracketedSound,
+} from "../soundUtils/createBracketedSound";
+import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 export class MovingPlatformSoundRenderer
@@ -11,6 +16,7 @@ export class MovingPlatformSoundRenderer
   public readonly output: GainNode = audioCtx.createGain();
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
+  #activatedBracketed: BracketedSound;
 
   constructor(
     public readonly renderContext: ItemSoundRenderContext<"movingPlatform">,
@@ -19,13 +25,20 @@ export class MovingPlatformSoundRenderer
       pushed: null,
     });
     this.#freeItemSoundRenderer.output.connect(this.output);
+    this.#activatedBracketed = createBracketedSound(
+      activationBracketedSoundOptions,
+      this.output,
+    );
   }
 
   tick(tickContext: ItemTickContext) {
+    this.#activatedBracketed(this.renderContext.item.state.activated);
     this.#freeItemSoundRenderer.tick(tickContext);
   }
 
   destroy(): void {
+    // don't call #activatedBracketed(false) here — that would play the
+    // deactivation sound when leaving the room, not a real deactivation
     this.#freeItemSoundRenderer.destroy();
   }
 }

@@ -260,6 +260,17 @@
                             "additionalProperties": false,
                             "properties": {
                               "type": {
+                                "const": "firedDoughnut",
+                                "type": "string"
+                              }
+                            },
+                            "required": ["type"],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "properties": {
+                              "type": {
                                 "const": "hushPuppy",
                                 "type": "string"
                               }
