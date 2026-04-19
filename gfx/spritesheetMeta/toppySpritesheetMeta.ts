@@ -149,4 +149,5 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
     "warm1", //  248.1
   ],
   supportsUncolourised: false,
+  showFloorOverDraw: false,
 };

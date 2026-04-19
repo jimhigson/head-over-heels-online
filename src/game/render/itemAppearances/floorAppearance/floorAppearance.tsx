@@ -347,9 +347,12 @@ export const floorAppearance: ItemAppearance<"floor"> =
           ...tilingSpriteRect,
         });
         tilesContainer.addChild(floorTilesTilingSprite);
-        tilesContainer.addChild(
-          renderFloorOverdraws(floorItem, room, spriteOption),
-        );
+
+        if (spritesheetMeta.showFloorOverDraw) {
+          tilesContainer.addChild(
+            renderFloorOverdraws(floorItem, room, spriteOption),
+          );
+        }
 
         const tilesMask = new Graphics()
           // top
