@@ -16,7 +16,7 @@ import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { DialogTitleBar } from "../DialogTitleBar";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 
-export const MarkdownDialog = (
+const MarkdownDialog = (
   props: (
     | {
         source: "inline";
@@ -84,3 +84,6 @@ export const MarkdownDialog = (
     </DialogPortal>
   );
 };
+
+/** default export for React.lazy */
+export default MarkdownDialog;

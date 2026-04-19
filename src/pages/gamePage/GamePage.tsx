@@ -16,7 +16,7 @@ import { useAppSelector } from "../../store/hooks.ts";
 import {
   gameAssetsLoadingFinished,
   gameAssetsLoadingStarted,
-} from "../../store/slices/gameAssetsLoadingSlice.ts";
+} from "../../store/slices/gameAssetsLoading/gameAssetsLoadingSlice.ts";
 import { selectSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import {
   useCheatsOn,

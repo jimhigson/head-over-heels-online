@@ -1,40 +1,27 @@
 import type { MarkdownPageName } from "../../../../manual/pages";
 
-import { markdownPages } from "../../../../manual/pages";
-import { keys } from "../../../../utils/entries";
-
-const manualDialogIds = keys(markdownPages).map(
-  (pageName) => `markdown/${pageName}`,
-) as `markdown/${MarkdownPageName}`[];
-
-export const dialogIds = [
-  "about",
-  "communityGames",
-  "controlOptions",
-  "crowns",
-  "emulatedResolution",
-  "errorCaught",
-  "hold",
-  "inputPreset",
-
-  "mainMenu",
-  "map",
-  "modernisationOptions",
-  "offerReincarnation",
-  "proclaimEmperor",
-  "quitGameConfirm",
-  "readTheManual",
-  "reincarnatedRestart",
-  "score",
-  "displayOptions",
-  "sound",
-  "sureWantEditor",
-  "whichGame",
-  "installGuide",
-  // 'standard' pages from the original game manual
-  ...manualDialogIds,
-  // inline markdown pages - the content is stored in the scroll item's json config
-  "markdown/inline",
-] as const;
-
-export type DialogId = (typeof dialogIds)[number];
+export type DialogId =
+  | "about"
+  | "communityGames"
+  | "controlOptions"
+  | "crowns"
+  | "displayOptions"
+  | "emulatedResolution"
+  | "errorCaught"
+  | "hold"
+  | "inputPreset"
+  | "installGuide"
+  | "mainMenu"
+  | "map"
+  | "markdown/inline"
+  | "modernisationOptions"
+  | "offerReincarnation"
+  | "proclaimEmperor"
+  | "quitGameConfirm"
+  | "readTheManual"
+  | "reincarnatedRestart"
+  | "score"
+  | "sound"
+  | "sureWantEditor"
+  | "whichGame"
+  | `markdown/${MarkdownPageName}`;

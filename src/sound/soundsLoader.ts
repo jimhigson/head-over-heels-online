@@ -1,18 +1,19 @@
-import { entries } from "../utils/entries";
+import type { SoundId } from "./soundUrls";
+
+import { entries, fromAllEntries } from "../utils/entries";
 import { importOnce } from "../utils/importOnce";
 import { loadAndDecode } from "./loadAndDecode";
 import { soundUrls } from "./soundUrls";
 
-type AppSounds = { [K in keyof typeof soundUrls]: AudioBuffer };
+type AppSounds = { [K in SoundId]: AudioBuffer };
 
 let loaded: AppSounds | undefined = undefined;
 
 const importSoundsOnce = importOnce(async (): Promise<AppSounds> => {
-  const decoded = {} as Record<string, AudioBuffer>;
-  for (const [id, url] of entries(soundUrls)) {
-    decoded[id] = await loadAndDecode(url);
-  }
-  return decoded as AppSounds;
+  const loadedEntries: [SoundId, AudioBuffer][] = await Promise.all(
+    entries(soundUrls).map(async ([id, url]) => [id, await loadAndDecode(url)]),
+  );
+  return fromAllEntries(loadedEntries);
 });
 
 export const loadSounds = async () => {

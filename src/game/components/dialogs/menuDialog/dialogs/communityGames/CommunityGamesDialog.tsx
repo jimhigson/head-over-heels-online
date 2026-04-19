@@ -43,7 +43,7 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
             <NonIdealState text="Failed to load campaigns" />
           : null}
           {isLoading ?
-            <SpinnerHead />
+            <SpinnerHead loadingBorder />
           : null}
           {data !== undefined ?
             <CampaignListContent campaigns={data} />

@@ -58,7 +58,7 @@ export const OpenCampaignDialog = ({
           : null}
 
           {isLoading ?
-            <SpinnerHead />
+            <SpinnerHead loadingBorder />
           : null}
 
           {data !== undefined ?

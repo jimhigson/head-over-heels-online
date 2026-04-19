@@ -18,12 +18,12 @@ import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
 import { InstallDialog } from "./dialogs/install/InstallDialog";
 import { MainMenuDialog } from "./dialogs/mainMenu/mainMenuDialog";
 import { LazyMapDialog } from "./dialogs/map/MapDialog.lazy";
-import { MarkdownDialog } from "./dialogs/markdown/MarkdownDialog";
+import { LazyMarkdownDialog } from "./dialogs/markdown/MarkdownDialog.lazy";
 import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
 import { OptionsDialog } from "./dialogs/options/OptionsDialog";
 import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/proclaimEmperorDialog";
 import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirm/quitGameConfirmDialog";
-import { ReadTheManualDialog } from "./dialogs/readTheManualDialog";
+import { LazyReadTheManualDialog } from "./dialogs/readTheManualDialog.lazy";
 import { ReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog";
 import { ScoreDialog } from "./dialogs/score/ScoreDialog";
 import { SoundDialog } from "./dialogs/sound/SoundDialog";
@@ -48,7 +48,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       // inline markdown pages are passed the markdown content directly - this is for scrolls added
       // in the level editor, since they can contain any text the room creator wants
       return (
-        <MarkdownDialog
+        <LazyMarkdownDialog
           source="inline"
           markdown={topOpenMenu.menuParam.markdown}
           dialogId="markdown/inline"
@@ -60,7 +60,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
         "markdown/".length,
       ) as MarkdownPageName;
       return (
-        <MarkdownDialog
+        <LazyMarkdownDialog
           source="manual"
           pageName={pageName}
           dialogId={topOpenMenu.menuId}
@@ -99,7 +99,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "quitGameConfirm":
       return <QuitGameConfirmDialog />;
     case "readTheManual":
-      return <ReadTheManualDialog />;
+      return <LazyReadTheManualDialog />;
     case "reincarnatedRestart":
       return <ReincarnatedRestartDialog />;
     case "score":

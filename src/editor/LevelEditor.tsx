@@ -20,7 +20,7 @@ const LevelEditor = () => {
         <TooltipProvider>
           <PanelGroup direction="horizontal" className="w-full h-full">
             <Panel id="jsonEditor" defaultSize={18} minSize={12} collapsible>
-              <Suspense fallback={<SpinnerHead />}>
+              <Suspense fallback={<SpinnerHead loadingBorder />}>
                 <LazyJsonRoomEditor />
               </Suspense>
             </Panel>
@@ -32,7 +32,7 @@ const LevelEditor = () => {
                 </Panel>
                 <PanelResizeHandle className="scale-editor h-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-b-[calc(1px*var(--scale))] border-metallicBlue" />
                 <Panel id="editingArea">
-                  <Suspense fallback={<SpinnerHeels />}>
+                  <Suspense fallback={<SpinnerHeels loadingBorder />}>
                     <LazyRoomEditingArea />
                   </Suspense>
                 </Panel>
