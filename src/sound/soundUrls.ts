@@ -38,6 +38,7 @@ import jetpackTurnaroundSoundUrl from "../../sounds/jetpack_turnaround.mp3";
 import jetpackLoopSoundUrl from "../../sounds/jetpackLoop.mp3";
 import landingSoundUrl from "../../sounds/landing.mp3";
 import lowHumSoundUrl from "../../sounds/lowHum.mp3";
+import menuSoundUrl from "../../sounds/menu.mp3";
 import metalHitSoundUrl from "../../sounds/metalClang.mp3";
 import heavyMetalScrapingSoundUrl from "../../sounds/metalicScraping.mp3";
 import mojoLoopSoundUrl from "../../sounds/mojo.mp3";
@@ -54,6 +55,7 @@ import safariMusicUrl from "../../sounds/music/safari.mp3";
 import robotBeepingLoopSoundUrl from "../../sounds/robotBeepingLoop.mp3";
 import robotWhirLoopSoundUrl from "../../sounds/robotWhirLoop.mp3";
 import rollingBallLoopSoundUrl from "../../sounds/rollingBallLoop.mp3";
+import scrollOpenSoundUrl from "../../sounds/scrollOpen.mp3";
 import servoLoopUrl from "../../sounds/servosLoop.mp3";
 import servoStartUrl from "../../sounds/servosStart.mp3";
 import servoStoptUrl from "../../sounds/servosStop.mp3";
@@ -110,6 +112,7 @@ export const soundUrls = {
   jetpackTurnaround: jetpackTurnaroundSoundUrl,
   landing: landingSoundUrl,
   lowHum: lowHumSoundUrl,
+  menu: menuSoundUrl,
   metalHit: metalHitSoundUrl,
   mojoLoop: mojoLoopSoundUrl,
   mojoTurn: mojoTurnSoundUrl,
@@ -118,6 +121,7 @@ export const soundUrls = {
   robotBeepingLoop: robotBeepingLoopSoundUrl,
   robotWhirLoop: robotWhirLoopSoundUrl,
   rollingBallLoop: rollingBallLoopSoundUrl,
+  scrollOpen: scrollOpenSoundUrl,
   servoLoop: servoLoopUrl,
   servoStart: servoStartUrl,
   servoStop: servoStoptUrl,

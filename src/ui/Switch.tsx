@@ -17,7 +17,7 @@ import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
 import { Tooltip } from "./Tooltip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
-const uiSoundVolume = 0.1;
+const uiSoundVolume = 0.3;
 
 const SwitchLabel = ({ label }: { label: string }) => (
   <BitmapText className="inline-block mr-1 text-lightGrey py-half" noSlitWords>

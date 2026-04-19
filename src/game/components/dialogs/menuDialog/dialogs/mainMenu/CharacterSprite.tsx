@@ -3,12 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
 import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
+import { soundUrls } from "../../../../../../sound/soundUrls";
 import {
   type DirectionXy8,
   vectorClosestDirectionXy8,
 } from "../../../../../../utils/vectors/vectors";
 import { rotateInputVector45 } from "../../../../../input/analogueControlAdjustments";
 import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+
+const walkGain = 0.8;
 
 const getDirectionFromMousePosition = (
   element: HTMLElement,
@@ -96,6 +99,8 @@ export const CharacterSprite = ({
     action,
   });
 
+  const walkSoundUrl = soundUrls[`${character}Walk`];
+
   return (
     <div
       ref={spriteRef}
@@ -103,6 +108,16 @@ export const CharacterSprite = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeaveSprite}
     >
+      {action === "walking" && (
+        <audio
+          src={walkSoundUrl}
+          autoPlay
+          loop
+          ref={(el) => {
+            if (el) el.volume = walkGain;
+          }}
+        />
+      )}
       <span
         className={`sprite zx:sprite-revert-to-white ${spriteClassName} relative z-topSprite`}
       />
