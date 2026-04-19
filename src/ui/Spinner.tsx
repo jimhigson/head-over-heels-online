@@ -1,8 +1,12 @@
 import type { AnimatedTextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-export const SpinnerHead = () => (
+type LoaderProps = {
+  loadingBorder?: boolean;
+};
+
+export const SpinnerHead = ({ loadingBorder }: LoaderProps = {}) => (
   <div
-    className="flex h-full items-center justify-center loading-border zx:zx-loading-border"
+    className={`flex h-full items-center justify-center ${loadingBorder ? "loading-border zx:zx-loading-border" : ""}`}
     role="status"
     aria-label="Loading"
   >
@@ -12,9 +16,9 @@ export const SpinnerHead = () => (
     />
   </div>
 );
-export const SpinnerHeels = () => (
+export const SpinnerHeels = ({ loadingBorder }: LoaderProps = {}) => (
   <div
-    className="flex h-full items-center justify-center loading-border zx:zx-loading-border"
+    className={`flex h-full items-center justify-center ${loadingBorder ? "loading-border zx:zx-loading-border" : ""}`}
     role="status"
     aria-label="Loading"
   >

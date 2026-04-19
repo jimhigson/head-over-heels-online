@@ -2,7 +2,7 @@ import type { RootState } from "../store";
 
 import { originalCampaignLocator } from "../../model/modelTypes";
 import { campaignsApiSlice } from "../slices/campaigns/campaignsApiSlice";
-import { selectGameAssetsLoadingCount } from "../slices/gameAssetsLoadingSlice";
+import { selectGameAssetsLoadingCount } from "../slices/gameAssetsLoading/gameAssetsLoadingSlice";
 
 /**
  * Check if any RTK Query queries or game assets loading operations are currently in progress

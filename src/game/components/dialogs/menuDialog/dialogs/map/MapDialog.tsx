@@ -17,7 +17,7 @@ import { getMapColoursClass } from "./mapColours";
 import { useAllowCharacterSwopping } from "./useCurrentCharacterName";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 
-export const MapDialog = <RoomId extends string>() => {
+const MapDialog = <RoomId extends string>() => {
   const { ref: mapContainerRef, width: mapContainerWidth } =
     useResizeDetector();
   const scrollingContentRef = useScrollingFromInput();
@@ -75,3 +75,6 @@ export const MapDialog = <RoomId extends string>() => {
     </DialogPortal>
   );
 };
+
+/** default export for React.lazy */
+export default MapDialog;

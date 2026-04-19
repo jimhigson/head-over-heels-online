@@ -19,7 +19,7 @@ import {
   spritesheetOverridePersistedReducer,
 } from "./persist/persist";
 import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
-import { gameAssetsLoadingSlice } from "./slices/gameAssetsLoadingSlice";
+import { gameAssetsLoadingSlice } from "./slices/gameAssetsLoading/gameAssetsLoadingSlice";
 import {
   debugItemClicked,
   gameMenusSlice,

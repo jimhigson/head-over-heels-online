@@ -34,7 +34,7 @@ const manualOrder = (Object.keys(manualPages) as ManualPageName[]).sort(
   (a, b) => pageTitle(manualPages[a]).localeCompare(pageTitle(manualPages[b])),
 );
 
-export const ReadTheManualDialog = () => {
+const ReadTheManualDialog = () => {
   return (
     <DialogPortal>
       <Border
@@ -91,3 +91,6 @@ export const ReadTheManualDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for React.lazy */
+export default ReadTheManualDialog;

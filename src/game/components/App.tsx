@@ -57,7 +57,7 @@ const AppInner = () => {
         </CssVariables>
       </Route>
       <Route path="/sprites">
-        <Suspense fallback={<SpinnerHead />}>
+        <Suspense fallback={<SpinnerHead loadingBorder />}>
           <LazySpritesPage />
         </Suspense>
       </Route>
