@@ -19,6 +19,7 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
+import { isSoundId } from "../../../sound/soundUrls";
 import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   characterRoomChange,
@@ -40,6 +41,7 @@ import { moveItem } from "../../physics/moveItem/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
+import { createRoomEntrySound } from "../loadRoom/loadRoomEntrySound";
 import { entryState } from "../PlayableEntryState";
 import { dispatchSaveGame } from "../saving/dispatchSaveGame";
 import { addItemToRoom } from "./addItemToRoom";
@@ -563,6 +565,21 @@ export const changeCharacterRoom = <
           playableItem.state.action = "moving";
 
         backOffAndPushBack(playableItem, portalDirection, gameState, toRoom);
+
+        // play a door sound:
+        const scenerySpecificDoorSoundId = `${toRoomJson.planet}Door`;
+        addItemToRoom({
+          room: toRoom,
+          item: createRoomEntrySound({
+            id: `doorEntry/${gameState.gameTime}` as RoomItemId,
+            soundId:
+              isSoundId(scenerySpecificDoorSoundId) ?
+                scenerySpecificDoorSoundId
+              : "door",
+            noSoundPan: false,
+          }),
+          atPosition: playableItem.state.position,
+        });
       }
     }
   }

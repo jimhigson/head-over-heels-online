@@ -15,6 +15,7 @@ import crownSparkleSoundUrl from "../../sounds/crownSparkle.mp3";
 import deactivateSoundUrl from "../../sounds/deactivate.mp3";
 import destroySoundUrl from "../../sounds/destroy.mp3";
 import detectSoundUrl from "../../sounds/detect.mp3";
+import doorSoundUrl from "../../sounds/door.mp3";
 import doughnutSplatSoundUrl from "../../sounds/doughnutSplat.mp3";
 import elephantHootSoundUrl from "../../sounds/elephantHoot.mp3";
 import emitSoundUrl from "../../sounds/emit.mp3";
@@ -42,6 +43,7 @@ import heavyMetalScrapingSoundUrl from "../../sounds/metalicScraping.mp3";
 import mojoLoopSoundUrl from "../../sounds/mojo.mp3";
 import mojoTurnSoundUrl from "../../sounds/mojoTurnSound.mp3";
 import monkeyTurnSoundUrl from "../../sounds/monkeyTurn.mp3";
+import moonbaseDoorSoundUrl from "../../sounds/moonbaseDoor.mp3";
 import blacktoothMusicUrl from "../../sounds/music/blacktooth.mp3";
 import bookworldMusicUrl from "../../sounds/music/bookworld.mp3";
 import egyptusMusicUrl from "../../sounds/music/egyptus.mp3";
@@ -83,6 +85,7 @@ export const soundUrls = {
   deactivate: deactivateSoundUrl,
   destroy: destroySoundUrl,
   detect: detectSoundUrl,
+  door: doorSoundUrl,
   doughnutSplat: doughnutSplatSoundUrl,
   drum: drumSoundUrl,
   elephantHoot: elephantHootSoundUrl,
@@ -111,6 +114,7 @@ export const soundUrls = {
   mojoLoop: mojoLoopSoundUrl,
   mojoTurn: mojoTurnSoundUrl,
   monkeyTurn: monkeyTurnSoundUrl,
+  moonbaseDoor: moonbaseDoorSoundUrl,
   robotBeepingLoop: robotBeepingLoopSoundUrl,
   robotWhirLoop: robotWhirLoopSoundUrl,
   rollingBallLoop: rollingBallLoopSoundUrl,
