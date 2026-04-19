@@ -1,6 +1,7 @@
 {
+  "$schema": "../../room.schema.json",
   "id": "switch_room",
-  "planet": "blacktooth",
+  "planet": "jail",
   "color": {
     "hue": "cyan",
     "shade": "basic"
@@ -10,7 +11,7 @@
       "type": "floor",
       "config": {
         "floorType": "standable",
-        "scenery": "blacktooth",
+        "scenery": "market",
         "times": {
           "x": 4,
           "y": 6
@@ -68,7 +69,7 @@
       "type": "wall",
       "config": {
         "direction": "away",
-        "tiles": ["plain", "armour", "armour", "plain"]
+        "tiles": ["bars", "bars", "bars", "bars"]
       },
       "position": {
         "x": 0,
@@ -80,7 +81,7 @@
       "type": "wall",
       "config": {
         "direction": "left",
-        "tiles": ["armour", "armour", "shield", "shield", "armour", "armour"]
+        "tiles": ["bars", "bars", "bars", "bars", "bars", "bars"]
       },
       "position": {
         "x": 4,

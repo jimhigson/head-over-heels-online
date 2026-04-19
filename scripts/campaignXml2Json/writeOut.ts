@@ -7,7 +7,7 @@ import type { AnyRoomJson } from "../../src/model/RoomJson";
 
 import { valuesIter } from "../../src/utils/entries";
 
-const roomTs = (room: AnyRoomJson): string =>
+const roomTs = ({ $schema: _, ...room }: AnyRoomJson): string =>
   `
 import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";\n
 import {type OriginalCampaignRoomId} from '../OriginalCampaignRoomId.ts';\n

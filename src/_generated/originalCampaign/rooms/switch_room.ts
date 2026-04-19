@@ -7,10 +7,7 @@ export const room = inferRoomJson({
   id: "switch_room",
   items: {
     awayWall: {
-      config: {
-        direction: "away",
-        tiles: ["plain", "armour", "armour", "plain"],
-      },
+      config: { direction: "away", tiles: ["bars", "bars", "bars", "bars"] },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
@@ -41,7 +38,7 @@ export const room = inferRoomJson({
     floor: {
       config: {
         floorType: "standable",
-        scenery: "blacktooth",
+        scenery: "market",
         times: { x: 4, y: 6 },
       },
       position: { x: 0, y: 0, z: 0 },
@@ -50,7 +47,7 @@ export const room = inferRoomJson({
     leftWall: {
       config: {
         direction: "left",
-        tiles: ["armour", "armour", "shield", "shield", "armour", "armour"],
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars"],
       },
       position: { x: 4, y: 0, z: 0 },
       type: "wall",
@@ -98,5 +95,5 @@ export const room = inferRoomJson({
       type: "wall",
     },
   },
-  planet: "blacktooth",
-}) satisfies RoomJson<OriginalCampaignRoomId, string, "blacktooth">;
+  planet: "jail",
+}) satisfies RoomJson<OriginalCampaignRoomId, string, "jail">;
