@@ -10,6 +10,8 @@ import {
 import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
+const walkGain = 0.8;
+
 export class MovingPlatformSoundRenderer
   implements ItemSoundRenderer<"movingPlatform">
 {
@@ -17,6 +19,9 @@ export class MovingPlatformSoundRenderer
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
   #activatedBracketed: BracketedSound;
+
+  #walkChannel: GainNode;
+  #walkBracketedSound: BracketedSound;
 
   readonly renderContext: ItemSoundRenderContext<"movingPlatform">;
 
@@ -30,9 +35,32 @@ export class MovingPlatformSoundRenderer
       activationBracketedSoundOptions,
       this.output,
     );
+
+    this.#walkChannel = audioCtx.createGain();
+    this.#walkChannel.gain.value = walkGain;
+    this.#walkChannel.connect(this.output);
+    this.#walkBracketedSound = createBracketedSound(
+      {
+        loop: {
+          soundId: "lowerSmallMotorLoop",
+          randomiseStartPoint: true,
+          gain: 0.5,
+        },
+      },
+      this.#walkChannel,
+    );
   }
 
   tick(tickContext: ItemTickContext) {
+    const {
+      renderContext: {
+        item: {
+          state: { activated },
+        },
+      },
+    } = this;
+
+    this.#walkBracketedSound(activated);
     this.#activatedBracketed(this.renderContext.item.state.activated);
     this.#freeItemSoundRenderer.tick(tickContext);
   }

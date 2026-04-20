@@ -52,7 +52,7 @@ export class ToasterSoundRenderer implements ItemSoundRenderer<"deadlyBlock"> {
 
     if (poppingUp) {
       createAudioNode({
-        soundId: "toasterPopUpSoundUrl",
+        soundId: "toasterPopUp",
         connectTo: this.output,
       });
     }
