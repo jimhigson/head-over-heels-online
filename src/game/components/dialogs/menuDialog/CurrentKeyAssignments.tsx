@@ -7,9 +7,9 @@ import type { Key } from "../../../input/keys";
 import { useAppSelector } from "../../../../store/hooks";
 import { selectInputAssignment } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { emptyArray } from "../../../../utils/empty";
-import { actionToAxisAndDirection } from "../../../input/actionToAxis";
+import { actionToAxisAndDirection } from "../../../input/actionToAxisAndDirection";
 import { standardControllerButtonNames } from "../../../input/controllers";
-import { MultipleBitmapText } from "../../tailwindSprites/Sprite";
+import { MultipleBitmapText } from "../../tailwindSprites/BitmapText";
 
 const specialCharClassName =
   "text-mossHalfbrite zx:text-zxGreen selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen";

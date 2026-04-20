@@ -9,7 +9,7 @@ import type { ButtonId } from "./OnScreenButtonRenderer";
 import { zxSpectrumColor } from "../../../../originalGame";
 import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
-import { halfbrite } from "../../../../utils/colour/halfBrite";
+import { halfbrite } from "../../../../utils/colour/halfbrite";
 import { resolveSwops } from "../../../../utils/palette/palette";
 import { renderContainerToTexture } from "../../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../../createSprite";

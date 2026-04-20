@@ -24,7 +24,7 @@ import {
   maybeRenderContainerToSprite,
   renderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
-import { renderMultipliedXy } from "../../../utils/pixi/renderMultpliedXy";
+import { renderMultipliedXy } from "../../../utils/pixi/renderMultipliedXy";
 import { isMultipliedItem } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";

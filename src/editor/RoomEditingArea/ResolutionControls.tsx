@@ -1,4 +1,4 @@
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { type ResolutionName, resolutionNames } from "../../originalGame";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
 import { useShortTimeDisplay } from "../toolbar/useShortTimeDisplay";

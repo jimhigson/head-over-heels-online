@@ -4,7 +4,7 @@ import type {
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { Xy } from "../../utils/vectors/vectors";
 
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { entries } from "../../utils/entries";
 import { AnimationTile } from "./AnimationTile";

@@ -2,7 +2,7 @@ import type { FreeItemTypes } from "../../game/physics/itemPredicates";
 import type { MarkdownPageName } from "../../manual/pages";
 import type { PlanetName, SceneryName } from "../../sprites/planets";
 import type { GameInPlayBooleanPaths } from "../../store/slices/gameMenus/gameMenusSlice";
-import type { Subset } from "../../utils/subset";
+import type { Subset } from "../../utils/Subset";
 import type {
   AxisXy,
   DirectionXy4,

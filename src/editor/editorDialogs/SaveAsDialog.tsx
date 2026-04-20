@@ -4,12 +4,12 @@ import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheet
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { store } from "../../store/store";
 import { Border } from "../../ui/Border";
-import { Button } from "../../ui/button";
+import { Button } from "../../ui/Button";
 import { cn } from "../../ui/cn";
-import { Dialog } from "../../ui/dialog";
+import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { Switch } from "../../ui/Switch";
 import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";

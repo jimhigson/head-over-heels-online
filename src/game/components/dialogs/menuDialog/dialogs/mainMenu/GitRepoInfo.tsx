@@ -7,7 +7,7 @@ import {
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
 import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 
 const parseMajorRegex = /v?(?<major>\d+)\./;
 const parseMajor = (version: string): number | undefined => {

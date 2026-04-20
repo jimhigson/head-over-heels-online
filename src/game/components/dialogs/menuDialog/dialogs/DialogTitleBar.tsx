@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 import { emptyArray } from "../../../../../utils/empty";
-import { BitmapText } from "../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../tailwindSprites/BitmapText";
 import { MenuItems } from "../MenuItems";
 import { MobileStyleBackButton } from "./MobileStyleBackButton";
 

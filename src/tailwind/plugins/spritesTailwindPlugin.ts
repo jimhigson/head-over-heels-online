@@ -13,7 +13,7 @@ import {
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { halfbriteHex } from "../../utils/colour/halfBrite";
+import { halfbriteHex } from "../../utils/colour/halfbrite";
 import {
   entries,
   fromAllEntries,

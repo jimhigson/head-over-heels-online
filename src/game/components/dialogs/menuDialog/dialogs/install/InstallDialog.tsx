@@ -1,7 +1,7 @@
 import type { EmptyObject } from "type-fest";
 
 import { Border } from "../../../../../../ui/Border";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { mainMenuScrollClasses } from "../../../dialogClasses";

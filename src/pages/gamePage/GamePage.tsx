@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 
 import type Cheats from "../../game/components/cheats/Cheats.tsx";
 
-import { AddTrackingToStore } from "../../analytics/addTrackingToStore.tsx";
+import { AddAnalyticsToStore } from "../../analytics/AddAnalyticsToStore.tsx";
 import { importCheats } from "../../game/components/cheats/Cheats.import.ts";
 import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
@@ -29,7 +29,7 @@ import {
 } from "../../store/slices/upscale/upscaleSlice.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
-import { SetSpeedOnSharedTickerFromStore } from "../../store/storeFlow/useSetSpeedOnTickerFromStore.tsx";
+import { SetSpeedOnSharedTickerFromStore } from "../../store/storeFlow/SetSpeedOnSharedTickerFromStore.tsx";
 import { importOnce } from "../../utils/importOnce.ts";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
@@ -166,7 +166,7 @@ export const GamePage = () => {
       />
       <GameApiProvider gameApi={gameApi}>
         <DispatchingErrorBoundary>
-          <AddTrackingToStore />
+          <AddAnalyticsToStore />
           <ConnectInputToStore />
           <SetSpeedOnSharedTickerFromStore />
           {/* 

@@ -1,6 +1,6 @@
 import type { EditorRoomId } from "../../editorTypes";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
 import { RoomSelect } from "../../../ui/RoomSelect";
 import { selectCurrentRoomFromLevelEditorState } from "../../slice/levelEditorSelectors";

@@ -21,13 +21,13 @@ import {
   selectSaveForCampaign,
 } from "../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../store/store";
-import { trackTextures } from "../textureInspector/main";
+import { trackTextures } from "../textureInspector/trackTextures";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
 import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
-import { MainLoop } from "./mainLoop/mainLoop";
+import { MainLoop } from "./mainLoop/MainLoop";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 

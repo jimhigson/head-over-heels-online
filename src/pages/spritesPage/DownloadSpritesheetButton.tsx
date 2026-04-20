@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
-import { Button } from "../../ui/button";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
+import { Button } from "../../ui/Button";
 import { spritesheetUrlFromCssVar } from "./spritesheetUrlFromCssVar";
 
 export const DownloadSpritesheetButton = () => {

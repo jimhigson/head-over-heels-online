@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
@@ -8,7 +8,7 @@ import {
   selectIsSpritesheetOverridden,
   setSpritesheetOverride,
 } from "../../store/slices/spritesheetOverrideSlice";
-import { Button } from "../../ui/button";
+import { Button } from "../../ui/Button";
 
 export const SpritesheetOverrideButtons = () => {
   const inputRef = useRef<HTMLInputElement>(null);

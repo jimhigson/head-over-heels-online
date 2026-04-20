@@ -3,7 +3,7 @@ import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";

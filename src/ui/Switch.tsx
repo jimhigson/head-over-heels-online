@@ -9,11 +9,11 @@ import {
 } from "react";
 
 import { twClass } from "../editor/twClass";
-import { BitmapText } from "../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { soundUrls } from "../sound/soundUrls";
 import { cn } from "./cn";
+import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
 import { getSwitchPaddedLabels } from "./getSwitchPaddedLabels";
-import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
 import { Tooltip } from "./Tooltip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 

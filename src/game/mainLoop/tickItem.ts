@@ -53,7 +53,7 @@ import { moveItem } from "../physics/moveItem/moveItem";
 import { recordActedOnBy } from "../physics/recordActedOnBy";
 import { addParticlesAroundCrown } from "./addParticlesToRoom";
 import { applyMechanicsResults } from "./applyMechanicsResults";
-import { constrainToMaximumSpeedInPlace } from "./constrainToMaximumSpeed";
+import { constrainToMaximumSpeedInPlace } from "./constrainToMaximumSpeedInPlace";
 
 function* itemMechanicResultGen<
   T extends ItemInPlayType,

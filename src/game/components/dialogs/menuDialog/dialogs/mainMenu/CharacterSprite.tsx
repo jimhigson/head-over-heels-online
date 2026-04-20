@@ -9,7 +9,7 @@ import {
   vectorClosestDirectionXy8,
 } from "../../../../../../utils/vectors/vectors";
 import { rotateInputVector45 } from "../../../../../input/analogueControlAdjustments";
-import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 
 const walkGain = 0.8;
 

@@ -1,4 +1,4 @@
-import { MultipleBitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { MultipleBitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenusSelectors";
 
 export const SpritesheetStats = () => {

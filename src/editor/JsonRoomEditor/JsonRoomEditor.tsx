@@ -4,11 +4,11 @@ import { Editor } from "@monaco-editor/react";
 import { useState } from "react";
 
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
-import { useItemIconDecorations } from "./ItemIconDecorations";
 import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";
+import { useItemIconDecorations } from "./useItemIconDecorations";
 import { useLoadMonaco } from "./useLoadMonaco";
 import { useSyncMonacoCaretToStoreItemSelection } from "./useSyncMonacoCaretToStoreItemSelection";
-import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncSelectionWithMonaco";
+import { useSyncStoreItemSelectionToMonacoDecorations } from "./useSyncStoreItemSelectionToMonacoDecorations";
 import { useUpdateJsonTextWhenStoreChanges } from "./useUpdateJsonTextWhenStoreChanges";
 import { useUpdateStoreWhenJsonEdited } from "./useUpdateStoreWhenJsonEdited";
 

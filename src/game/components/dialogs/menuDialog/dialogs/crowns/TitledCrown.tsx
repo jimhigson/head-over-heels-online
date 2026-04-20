@@ -5,7 +5,7 @@ import type { TailwindColourisedColourName } from "../../../../../../tailwind/ta
 import { twClass } from "../../../../../../editor/twClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 
 const colourCycle: Record<
   PlanetName,

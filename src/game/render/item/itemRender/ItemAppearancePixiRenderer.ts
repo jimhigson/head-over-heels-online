@@ -5,7 +5,7 @@ import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { AppearanceRenderer } from "../../appearance/AppearanceRenderer";
 

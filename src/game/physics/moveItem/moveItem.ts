@@ -20,7 +20,7 @@ import {
   collisionItemWithIndex,
 } from "../../collision/aabbCollision";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
-import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { updateItemPosition } from "../../gameState/mutators/updateItemPosition";
 import { sortObstaclesAboutPriorityAndVector } from "../collisionsOrder";
 import { isLift, isPushable, isSlidingItem } from "../itemPredicates";

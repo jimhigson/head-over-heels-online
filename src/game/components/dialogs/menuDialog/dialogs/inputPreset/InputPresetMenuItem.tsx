@@ -4,7 +4,7 @@ import {
   type KeyAssignmentPresetName,
   keyAssignmentPresets,
 } from "../../../../../input/keyAssignmentPresets";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 

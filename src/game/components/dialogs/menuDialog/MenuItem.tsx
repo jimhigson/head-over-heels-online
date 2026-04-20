@@ -7,7 +7,7 @@ import type { DialogId } from "./DialogId";
 import { useAppDispatch } from "../../../../store/hooks";
 import { goToSubmenu } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import { openExternal } from "../../../../utils/tauri/openExternalLink";
-import { BitmapText } from "../../tailwindSprites/Sprite";
+import { BitmapText } from "../../tailwindSprites/BitmapText";
 import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
 import { multilineTextClass } from "./multilineTextClass";

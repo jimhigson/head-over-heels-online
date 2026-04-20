@@ -11,7 +11,7 @@ import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
 import { jsonDefaults } from "monaco-editor/esm/vs/language/json/monaco.contribution";
 
 import paletteJson from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
-import { halfbriteHex } from "../../utils/colour/halfBrite";
+import { halfbriteHex } from "../../utils/colour/halfbrite";
 import { importOnce } from "../../utils/importOnce";
 
 // Must be called at module level, not inside a useEffect or async function.

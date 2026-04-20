@@ -19,7 +19,7 @@ import {
   getConsolidatableVector,
   isConsolidatable,
 } from "./ConsolidatableJsonItem";
-import { Grid } from "./grid";
+import { Grid } from "./Grid";
 
 export type ItemWithId = [itemId: string, item: JsonItemUnion];
 export type ConsolidatableItemWithId = [

@@ -5,7 +5,7 @@ import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
@@ -13,8 +13,8 @@ import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
 import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { isModifier } from "../../../physics/itemPredicates";
-import { OneColourFilter } from "../../filters/oneColourFilter";
-import { OutlineFilter } from "../../filters/outlineFilter";
+import { OneColourFilter } from "../../filters/OneColourFilter";
+import { OutlineFilter } from "../../filters/OutlineFilter";
 
 const flashDurationMs = 75;
 

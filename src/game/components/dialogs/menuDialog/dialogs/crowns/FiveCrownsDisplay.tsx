@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { TitledCrown } from "./TitledCrown";
 
 export const FiveCrownsDisplay = () => {

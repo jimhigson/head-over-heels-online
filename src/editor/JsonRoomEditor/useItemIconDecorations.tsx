@@ -11,7 +11,7 @@ import type {
 } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
 
-import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/PlayableTailwindSprite";
+import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { keys } from "../../utils/entries";
 import {
   selectCurrentEditingRoomJson,

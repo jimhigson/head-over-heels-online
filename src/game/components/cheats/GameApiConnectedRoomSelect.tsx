@@ -1,6 +1,6 @@
 import { RoomSelect } from "../../../ui/RoomSelect";
 import { useGameApi } from "../GameApiContext";
-import { useCurrentlyViewedRoom } from "./useCurrentRoom";
+import { useCurrentlyViewedRoom } from "./useCurrentlyViewedRoom";
 
 export const GameApiConnectedRoomSelect = <RoomId extends string>() => {
   const gameApi = useGameApi<RoomId>();

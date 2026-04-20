@@ -1,7 +1,7 @@
 import type { TypedURLSearchParams } from "../../../options/queryParams";
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { cn } from "../../../ui/cn";
 import { useAppSelectorWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 import { useRemoteIsInSync } from "../saving/useRemoteIsInSync";

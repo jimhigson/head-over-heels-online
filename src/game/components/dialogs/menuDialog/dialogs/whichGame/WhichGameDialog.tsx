@@ -6,10 +6,10 @@ import { jimAtBlockstackingUserId } from "../../../../../../gameInfo";
 import { originalCampaignLocator } from "../../../../../../model/modelTypes";
 import { gameStarted } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 import {
   mainMenuScrollClasses,
   selectGameHintMarkdownClassName,

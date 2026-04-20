@@ -19,7 +19,7 @@ import {
 import { persistor } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
 import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
@@ -29,7 +29,7 @@ import { useMaybeGameApi } from "../../../../GameApiContext";
 import {
   BitmapText,
   MultipleBitmapText,
-} from "../../../../tailwindSprites/Sprite";
+} from "../../../../tailwindSprites/BitmapText";
 import { MenuItem } from "../../MenuItem";
 import { GitRepoInfo } from "./GitRepoInfo";
 import { MainMenuFooter } from "./MainMenuFooter";

@@ -29,7 +29,7 @@ vi.mock("../../../sprites/assertIsTextureId", () => ({
 }));
 
 // Mock the OutlineFilter to avoid shader import issues in tests
-vi.mock("../filters/outlineFilter", () => ({
+vi.mock("../filters/OutlineFilter", () => ({
   OutlineFilter: class MockOutlineFilter {},
 }));
 

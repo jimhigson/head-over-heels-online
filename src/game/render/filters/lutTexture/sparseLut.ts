@@ -2,7 +2,7 @@ import type { Color } from "pixi.js";
 
 import { Texture } from "pixi.js";
 
-import { standardBrightnessLevels } from "../../../../utils/colour/halfBrite";
+import { standardBrightnessLevels } from "../../../../utils/colour/halfbrite";
 import { getBlockNeighborhood } from "./blockEncode";
 import { lutSize, lutW } from "./lutSize";
 

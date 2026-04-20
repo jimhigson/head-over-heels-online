@@ -13,7 +13,7 @@ import {
   zxSpectrumRoomHue,
 } from "../../../originalGame";
 import { randomFromArray } from "../../../utils/random/randomFromArray";
-import { starterRoom } from "../createStarterRoom";
+import { starterRoom } from "../starterRoom";
 import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";
 
 const defaultRoomSize: Xy = { x: 8, y: 8 };

@@ -5,7 +5,7 @@ import { Container, Graphics, Text } from "pixi.js";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { Aabb } from "../../../../utils/vectors/vectors";
 import type { ItemRenderContext } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { isItemType } from "../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../projections";

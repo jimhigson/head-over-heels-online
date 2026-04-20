@@ -32,7 +32,7 @@ import {
   setGameSpeed,
   setShowShadowMasks,
 } from "../../../store/slices/gameMenus/gameMenusSlice";
-import { Button } from "../../../ui/button";
+import { Button } from "../../../ui/Button";
 import { Switch } from "../../../ui/Switch";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -42,12 +42,12 @@ import {
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
-import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopCharacters";
+import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopPlayables";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { CssVariables } from "../CssVariables";
 import { useGameApi } from "../GameApiContext";
-import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/PlayableTailwindSprite";
-import { BitmapText } from "../tailwindSprites/Sprite";
+import { BitmapText } from "../tailwindSprites/BitmapText";
+import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { useDebugClickOnItem } from "./useDebugClickOnItem";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";

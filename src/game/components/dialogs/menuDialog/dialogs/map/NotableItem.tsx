@@ -9,7 +9,7 @@ import type {
 import type { Xyz } from "../../../../../../utils/vectors/vectors";
 
 import { vectorClosestDirectionXy8 } from "../../../../../../utils/vectors/vectors";
-import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 import { ScrollIntoView } from "./ScrollIntoView";
 
 /**

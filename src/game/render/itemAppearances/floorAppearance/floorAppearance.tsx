@@ -2,7 +2,7 @@ import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusSlice";
-import type { Subset } from "../../../../utils/subset";
+import type { Subset } from "../../../../utils/Subset";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
 
@@ -28,7 +28,7 @@ import { isWallOrDoorFrame } from "../../../physics/itemPredicates";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
-import { OutlineFilter } from "../../filters/outlineFilter";
+import { OutlineFilter } from "../../filters/OutlineFilter";
 import { floorTextureId } from "../../floorTextureId";
 import { edgeOriginalGameColour } from "../../gameColours/colourScheme";
 import {
@@ -38,7 +38,7 @@ import {
 } from "../../projections";
 import { nonRenderingItemFixedZIndex } from "../../sortZ/fixedZIndexes";
 import { itemAppearanceRenderOnce } from "../ItemAppearance";
-import { renderFloorOverdraws } from "./renderfloorOverdraw";
+import { renderFloorOverdraws } from "./renderFloorOverdraws";
 
 /**
  * create a rectangle mask for the floor that cuts off anything past the last

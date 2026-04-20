@@ -20,7 +20,7 @@ import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
-import { setStandingOnWithoutRemovingOldFirst } from "./standingOn/setStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "./standingOn/setStandingOnWithoutRemovingOldFirst";
 import {
   combinePlayablesInSymbiosis,
   uncombinePlayablesFromSymbiosis,

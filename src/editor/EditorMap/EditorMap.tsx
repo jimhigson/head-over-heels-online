@@ -3,7 +3,7 @@ import { useResizeDetector } from "react-resize-detector";
 import type { EditorRoomId } from "../editorTypes";
 
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { store } from "../../store/store";
 import { changeToRoom } from "../slice/levelEditorSlice";
 import { useEditorMapData } from "./useEditorMapData";

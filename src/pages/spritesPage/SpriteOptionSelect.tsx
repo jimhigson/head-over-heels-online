@@ -5,7 +5,7 @@ import type { SpriteOption } from "../../store/slices/gameMenus/gameMenusSlice";
 import {
   BitmapText,
   MultipleBitmapText,
-} from "../../game/components/tailwindSprites/Sprite";
+} from "../../game/components/tailwindSprites/BitmapText";
 import { spriteOptionValues } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useAppDispatch } from "../../store/hooks";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";

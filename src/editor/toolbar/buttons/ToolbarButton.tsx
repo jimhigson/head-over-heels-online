@@ -4,7 +4,7 @@ import { type PropsWithChildren } from "react";
 
 import type { ShortcutKeys } from "../../../ui/useKeyboardShortcut";
 
-import { Button } from "../../../ui/button";
+import { Button } from "../../../ui/Button";
 import {
   buttonSizeClassNames,
   buttonSmallSizeClassNames,

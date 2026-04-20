@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppSelector } from "../../store/hooks";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectIsSpritesheetOverridden } from "../../store/slices/spritesheetOverrideSlice";

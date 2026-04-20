@@ -1,7 +1,7 @@
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { Xy } from "../../../utils/vectors/vectors";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
 import {
   addRoom,

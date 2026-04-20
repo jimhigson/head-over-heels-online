@@ -6,7 +6,7 @@ import { GameAssetLoading } from "../store/slices/gameAssetsLoading/GameAssetLoa
 import { backToParentMenu } from "../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../store/useDispatchActionCallback";
 import { Border } from "./Border";
-import { Dialog } from "./dialog";
+import { Dialog } from "./Dialog";
 import { DialogPortal } from "./DialogPortal";
 import { SpinnerHead } from "./Spinner";
 

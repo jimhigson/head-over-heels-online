@@ -7,8 +7,8 @@ import type {
 import type { Xy } from "../../utils/vectors/vectors";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import {
   useCurrentSpritesheetData,
   useSpritesOption,

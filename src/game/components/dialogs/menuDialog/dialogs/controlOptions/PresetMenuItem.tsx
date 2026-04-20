@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { selectCurrentInputPreset } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { multilineTextClass } from "../../multilineTextClass";

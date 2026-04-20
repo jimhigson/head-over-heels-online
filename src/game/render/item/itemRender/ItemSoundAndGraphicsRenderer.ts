@@ -6,7 +6,7 @@ import type {
 } from "../../ItemRenderContexts";
 import type { Renderer } from "../../Renderer";
 import type { SoundAndGraphicsOutput } from "../../SoundAndGraphicsOutput";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 export class ItemSoundAndGraphicsRenderer<T extends ItemInPlayType>
   implements

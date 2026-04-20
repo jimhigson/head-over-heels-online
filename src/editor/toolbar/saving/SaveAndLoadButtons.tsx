@@ -5,7 +5,7 @@ import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesh
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import {
   loadCampaignFromApi,
   saveCampaignViaApi,

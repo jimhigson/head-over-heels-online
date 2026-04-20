@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import type { BooleanAction } from "../../../../../input/actions";
 
 import { useAppSelector } from "../../../../../../store/hooks";
-import { CurrentKeyAssignments } from "../../CurrentKeyAssignment";
+import { CurrentKeyAssignments } from "../../CurrentKeyAssignments";
 import { controlMenuValueClass } from "./controlMenuValueClass";
 
 export const SelectKeysMenuAssignmentValue = ({
