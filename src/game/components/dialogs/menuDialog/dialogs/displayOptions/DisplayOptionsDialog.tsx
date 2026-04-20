@@ -5,10 +5,10 @@ import {
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import {
   optionsDialogClasses,
   optionsHintMarkdownClassname,

@@ -5,8 +5,8 @@ import naturalCompare from "natural-compare-lite";
 import type { Campaign } from "../model/modelTypes";
 
 import { itemColourCss } from "../editor/toolbar/buttons/RoomColourSelect";
-import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/PlayableTailwindSprite";
-import { BitmapText } from "../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
+import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { useIsUncolourised } from "../store/slices/gameMenus/gameMenusSelectors";
 import { CommandItem } from "./command";
 import { Select } from "./Select";

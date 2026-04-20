@@ -1,10 +1,10 @@
 import { repository } from "../../../package.json";
 import { Border } from "../../ui/Border";
-import { Dialog } from "../../ui/dialog";
+import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { directionsXy8 } from "../../utils/vectors/vectors";
 import { BlockyMarkdown } from "./BlockyMarkdown";
-import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/playableTailwindSpriteClassname";
 
 const editorUrl = import.meta.env.VITE_EDITOR_URL;
 

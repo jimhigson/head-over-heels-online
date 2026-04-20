@@ -1,14 +1,14 @@
 import type { Provider } from "@supabase/supabase-js";
 
-import type { Subset } from "../../../utils/subset";
+import type { Subset } from "../../../utils/Subset";
 
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import {
   nerdFontDiscordChar,
   nerdFontGithubChar,
 } from "../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
-import { Button } from "../../../ui/button";
+import { Button } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
 import { useSupabaseUser } from "../useSupabaseUser";
 

@@ -6,7 +6,7 @@ import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { zxSpectrumColor } from "../../../../originalGame";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
@@ -14,7 +14,7 @@ import {
   isPortable,
   type PortableItemType,
 } from "../../../physics/itemPredicates";
-import { OutlineFilter } from "../../filters/outlineFilter";
+import { OutlineFilter } from "../../filters/OutlineFilter";
 
 class PortableItemPickUpNextHighlightRenderer
   implements ItemPixiRenderer<PortableItemType>

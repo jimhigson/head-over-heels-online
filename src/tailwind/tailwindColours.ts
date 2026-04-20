@@ -1,6 +1,6 @@
 import jsonPalette from "../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import { zxSpectrumColors, zxSpectrumColorsDimmed } from "../originalGame";
-import { halfbriteHex } from "../utils/colour/halfBrite";
+import { halfbriteHex } from "../utils/colour/halfbrite";
 import { srgbHexToP3 } from "../utils/colour/srgbHexToP3";
 import { transformObject } from "../utils/transformObject";
 

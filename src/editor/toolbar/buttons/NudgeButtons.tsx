@@ -1,7 +1,7 @@
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
 import { getConsolidatableVector } from "../../../consolidateItems/ConsolidatableJsonItem";
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { getJsonItemTimes } from "../../../model/times";
 import { useAppDispatch } from "../../../store/hooks";
 import { store } from "../../../store/store";

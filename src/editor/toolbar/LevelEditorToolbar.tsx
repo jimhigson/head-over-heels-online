@@ -1,4 +1,4 @@
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
 import { useAppDispatch } from "../../store/hooks";
 import { RoomSelect } from "../../ui/RoomSelect";
@@ -12,7 +12,7 @@ import { AutoCoalesceSwitch } from "./buttons/AutoCoalesceSwitch";
 import { BackAndForwardRoomButtons } from "./buttons/BackAndForwardRoomButtons";
 import { ClearRoomButton } from "./buttons/ClearRoomButton";
 import { CopyPasteButtons } from "./buttons/CopyPasteButtons";
-import { DeleteItemToolButton } from "./buttons/DeleteItemButton";
+import { DeleteItemToolButton } from "./buttons/DeleteItemToolButton";
 import { DoorToolButton } from "./buttons/DoorToolButton";
 import { EyeDropperButton } from "./buttons/EyeDropperButton";
 import { HalfGridResolutionSwitch } from "./buttons/HalfGridResolutionSwitch";
@@ -27,7 +27,7 @@ import {
 } from "./buttons/RoomsAboveOrBelow";
 import { RoomScenerySelect } from "./buttons/RoomScenerySelect";
 import { ShareCampaignButton } from "./buttons/ShareCampaignButton";
-import { ShowCmdKButton } from "./buttons/ShowCmdKPaletteButton";
+import { ShowCmdKButton } from "./buttons/ShowCmdKButton";
 import { UndoRedoButtons } from "./buttons/UndoRedoButtons";
 import { WallsFloorsLockedSwitch } from "./buttons/WallsFloorsLockedSwitch";
 import { WallToolButton } from "./buttons/WallToolButton";

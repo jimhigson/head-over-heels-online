@@ -9,7 +9,7 @@ import {
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { omit } from "../../../utils/pick";
-import { complexRoom } from "./laboratoryRoom";
+import { complexRoom } from "./complexRoom";
 
 test(
   'playing through a complex, deterministic room ("laboratory") should always give the same results after a fixed amount of time',

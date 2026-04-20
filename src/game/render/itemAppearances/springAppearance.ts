@@ -1,7 +1,7 @@
 import type { AnimatedSprite } from "pixi.js";
 
 import type { ItemAppearance } from "./ItemAppearance";
-import type { ItemShadowAppearanceOutsideView } from "./shadowMaskAppearances/shadowMaskAppearanceForitem";
+import type { ItemShadowAppearanceOutsideView } from "./shadowMaskAppearances/itemShadowMaskAppearanceForItem";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { createSprite } from "../createSprite";

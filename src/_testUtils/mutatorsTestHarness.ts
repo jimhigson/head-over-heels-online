@@ -18,11 +18,11 @@ import {
 } from "../game/gameState/loadGameState";
 import { loadItemFromJson } from "../game/gameState/loadRoom/loadItemFromJson";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
-import { playableLosesLife } from "../game/gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoom";
+import { playableLosesLife } from "../game/gameState/mutators/playableLosesLife";
 import { removeStandingOn } from "../game/gameState/mutators/standingOn/removeStandingOn";
-import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOn";
-import { swopPlayables } from "../game/gameState/mutators/swopCharacters";
+import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
+import { swopPlayables } from "../game/gameState/mutators/swopPlayables";
 import { updateItemPosition } from "../game/gameState/mutators/updateItemPosition";
 import { blockSizePx } from "../game/physics/mechanicsConstants";
 import {

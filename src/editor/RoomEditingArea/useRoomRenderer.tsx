@@ -10,7 +10,7 @@ import type {
   EditorRoomState,
 } from "../editorTypes";
 
-import { RoomRenderer } from "../../game/render/room/roomRenderer";
+import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";

@@ -13,7 +13,7 @@ import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSh
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { size } from "../../../utils/iterators/size";
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
-import { OutlineFilter } from "../filters/outlineFilter";
+import { OutlineFilter } from "../filters/OutlineFilter";
 
 const characterSpriteTextureId = (
   char: string,

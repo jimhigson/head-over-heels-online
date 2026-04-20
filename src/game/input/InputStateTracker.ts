@@ -27,7 +27,7 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { type BooleanAction, lookDirectionsXy4 } from "./actions";
-import { actionToAxisAndDirection } from "./actionToAxis";
+import { actionToAxisAndDirection } from "./actionToAxisAndDirection";
 import {
   rotateInputVector45InPlace,
   snapXyFnMap,

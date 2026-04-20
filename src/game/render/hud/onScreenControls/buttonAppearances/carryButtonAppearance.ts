@@ -13,7 +13,7 @@ import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/varian
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { findItemToPickup } from "../../../../physics/mechanics/pickingUp";
 import { createSprite } from "../../../createSprite";
-import { renderCarriedOnce } from "../../renderCarried";
+import { renderCarriedOnce } from "../../renderCarriedOnce";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 

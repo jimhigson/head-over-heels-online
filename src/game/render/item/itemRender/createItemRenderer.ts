@@ -6,7 +6,7 @@ import type {
 } from "../../../../model/ItemInPlay";
 import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
 import type { ItemRenderContext } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";

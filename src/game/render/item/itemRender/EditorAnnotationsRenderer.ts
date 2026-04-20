@@ -24,7 +24,7 @@ import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import {
   changeToRoom,
@@ -37,7 +37,7 @@ import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
 import { store } from "../../../../store/store";
-import { outlineFilters } from "../../filters/outlineFilter";
+import { outlineFilters } from "../../filters/OutlineFilter";
 import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
 import { noFilters } from "../../filters/standardFilters";
 import { TextContainer } from "../../text/TextContainer";

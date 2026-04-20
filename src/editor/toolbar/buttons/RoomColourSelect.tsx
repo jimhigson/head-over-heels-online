@@ -4,7 +4,7 @@ import { capitalize } from "string-transform";
 
 import type { ZxSpectrumRoomHue } from "../../../originalGame";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { gameColour } from "../../../game/render/gameColours/gameColours";
 import { zxSpectrumColor, zxSpectrumRoomHue } from "../../../originalGame";
 import { useAppDispatch } from "../../../store/hooks";

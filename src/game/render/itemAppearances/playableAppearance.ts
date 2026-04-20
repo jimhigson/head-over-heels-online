@@ -38,8 +38,8 @@ import {
   switchCharacterHighlightTime,
 } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
-import { OneColourFilter } from "../filters/oneColourFilter";
-import { OutlineFilter } from "../filters/outlineFilter";
+import { OneColourFilter } from "../filters/OneColourFilter";
+import { OutlineFilter } from "../filters/OutlineFilter";
 import {
   stackedBottomSymbol,
   stackedTopSymbol,

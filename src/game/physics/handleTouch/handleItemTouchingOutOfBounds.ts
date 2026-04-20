@@ -1,7 +1,7 @@
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
-import { playableResetAfterOutOfBounds } from "../../gameState/mutators/characterLosesLife";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
+import { playableResetAfterOutOfBounds } from "../../gameState/mutators/playableLosesLife";
 import { isPlayableItem } from "../itemPredicates";
 
 /**

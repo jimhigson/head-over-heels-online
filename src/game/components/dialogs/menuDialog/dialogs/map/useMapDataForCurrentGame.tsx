@@ -13,7 +13,7 @@ import { findMapBounds } from "./findMapBounds";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
-import { useTickingCurrentCharacterName } from "./useCurrentCharacterName";
+import { useTickingCurrentCharacterName } from "./useTickingCurrentCharacterName";
 
 /**
  * get everything needed to load the map for the current game

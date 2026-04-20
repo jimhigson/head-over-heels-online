@@ -1,7 +1,7 @@
 import type { EditorCampaign, EditorRoomId } from "../editorTypes";
 import type { LevelEditorState } from "./levelEditorSlice";
 
-import { starterRoom } from "./createStarterRoom";
+import { starterRoom } from "./starterRoom";
 
 const initialRoomId = "room_0" as EditorRoomId;
 const initialRoom = { id: initialRoomId, ...starterRoom({ x: 8, y: 8 }) };

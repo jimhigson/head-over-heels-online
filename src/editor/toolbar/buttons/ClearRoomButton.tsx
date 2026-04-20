@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { store } from "../../../store/store";
 import { clearRoom } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";

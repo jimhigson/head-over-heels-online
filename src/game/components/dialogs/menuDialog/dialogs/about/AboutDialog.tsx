@@ -7,9 +7,9 @@ import {
   nerdFontGithubChar,
 } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { Border } from "../../../../../../ui/Border";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { mainMenuScrollClasses } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";

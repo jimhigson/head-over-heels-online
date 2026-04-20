@@ -8,11 +8,11 @@ import {
 import { store } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { useGameApi } from "../../../../GameApiContext";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 

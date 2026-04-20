@@ -10,7 +10,7 @@ import { nextDirectionRelativeTo } from "../../../../../../store/slices/gameMenu
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/PlayableTailwindSprite";
+import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 import {
   optionsHintMarkdownClassname,
   spriteLeaderClasses,

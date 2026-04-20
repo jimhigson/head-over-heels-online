@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { store } from "../../../store/store";
 import { Border } from "../../../ui/Border";
 import {
@@ -11,7 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from "../../../ui/command";
-import { Dialog } from "../../../ui/dialog";
+import { Dialog } from "../../../ui/Dialog";
 import { DialogPortal } from "../../../ui/DialogPortal";
 import { keys } from "../../../utils/entries";
 import { setTool } from "../../slice/levelEditorSlice";

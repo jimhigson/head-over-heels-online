@@ -3,7 +3,7 @@ import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/game
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { multilineTextClass } from "../../multilineTextClass";

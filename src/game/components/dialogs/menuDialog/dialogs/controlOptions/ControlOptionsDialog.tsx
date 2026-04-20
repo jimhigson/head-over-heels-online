@@ -13,11 +13,11 @@ import {
 import { store } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
-import { Button } from "../../../../../../ui/button";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Button } from "../../../../../../ui/Button";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import {
   optionsDialogClasses,
   optionsMenuScrollClasses,
@@ -30,7 +30,7 @@ import { DialogTitleBar } from "../DialogTitleBar";
 import { InputDirectionModeMenuItem } from "./InputDirectionModeMenuItem";
 import { OnScreenControlsMenuItem } from "./OnScreenControlsMenuItem";
 import { PresetMenuItem } from "./PresetMenuItem";
-import { ScreenRelativeControlMenuItem } from "./ScreenRelativeControlSection";
+import { ScreenRelativeControlMenuItem } from "./ScreenRelativeControlMenuItem";
 import { SelectKeysMenuFooter } from "./SelectKeysMenuFooter";
 import { SelectTheKeysMenuItems } from "./SelectTheKeysMenuItems";
 

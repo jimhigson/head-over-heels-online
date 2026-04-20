@@ -8,7 +8,7 @@ import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { emptySet } from "../../../../utils/empty";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";

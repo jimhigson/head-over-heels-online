@@ -5,7 +5,7 @@ import {
   spatiallyCheckStandingOn,
 } from "../../../collision/checkStandingOn";
 import { removeStandingOn } from "./removeStandingOn";
-import { setStandingOnWithoutRemovingOldFirst } from "./setStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "./setStandingOnWithoutRemovingOldFirst";
 
 /**
  * Check over a room's items:

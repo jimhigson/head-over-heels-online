@@ -1,6 +1,6 @@
 import type { GameState } from "../gameState/GameState";
 
-import { swopPlayables } from "../gameState/mutators/swopCharacters";
+import { swopPlayables } from "../gameState/mutators/swopPlayables";
 
 export const swopPlayablesIfInput = <RoomId extends string>(
   gameState: GameState<RoomId>,

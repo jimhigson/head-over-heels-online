@@ -17,7 +17,7 @@ import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { isFreeItem, isSolid } from "../../physics/itemPredicates";
-import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { loadItemFromJson } from "./loadItemFromJson";
 import { loadOutOfBoundsItem } from "./loadOutOfBoundsItem";
 import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";

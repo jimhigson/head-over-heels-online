@@ -128,20 +128,20 @@ const loadUmamiScript = () => {
   document.head.appendChild(script);
 };
 
-const AddTrackingToStoreInner = () => {
+const AddAnalyticsToStoreInner = () => {
   useAddTrackingToStore();
   useEffect(loadUmamiScript, []);
   return null;
 };
 
-export const AddTrackingToStore = () => {
+export const AddAnalyticsToStore = () => {
   const trackingEnabledRef = useRef<boolean | null>(null);
   if (trackingEnabledRef.current === null) {
     trackingEnabledRef.current = shouldTrack();
   }
 
   if (trackingEnabledRef.current) {
-    return <AddTrackingToStoreInner />;
+    return <AddAnalyticsToStoreInner />;
   }
   return null;
 };

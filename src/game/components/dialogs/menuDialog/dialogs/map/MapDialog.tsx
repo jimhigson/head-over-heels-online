@@ -6,16 +6,16 @@ import type { OnRoomClick } from "./Map.svg";
 import { useCheatsOn } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { LazyTooltipProvider } from "../../../../../../ui/LazyTooltip";
-import { swopPlayables } from "../../../../../gameState/mutators/swopCharacters";
+import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
-import { useAllowCharacterSwopping } from "./useCurrentCharacterName";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
+import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";
 
 const MapDialog = <RoomId extends string>() => {
   const { ref: mapContainerRef, width: mapContainerWidth } =

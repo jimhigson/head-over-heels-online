@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { CharacterSprite } from "./CharacterSprite";
 import { mainMenuCycle } from "./mainMenuCycle";
 

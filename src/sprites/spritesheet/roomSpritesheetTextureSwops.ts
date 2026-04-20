@@ -19,7 +19,7 @@ import {
   gameColour,
   replacementColours,
 } from "../../game/render/gameColours/gameColours";
-import { halfbrite } from "../../utils/colour/halfBrite";
+import { halfbrite } from "../../utils/colour/halfbrite";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { resolveSwops } from "../../utils/palette/palette";
 import {

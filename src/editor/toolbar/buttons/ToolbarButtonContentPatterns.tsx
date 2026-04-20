@@ -5,7 +5,7 @@ import type {
   TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { twClass } from "../../twClass";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
 

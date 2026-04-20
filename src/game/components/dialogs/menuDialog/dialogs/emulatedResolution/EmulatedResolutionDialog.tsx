@@ -5,10 +5,10 @@ import { useAppSelector } from "../../../../../../store/hooks";
 import { selectEmulatedResolutionName } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { setEmulatedResolution } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { keys } from "../../../../../../utils/entries";
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import {
   optionsDialogClasses,
   optionsHintMarkdownClassname,

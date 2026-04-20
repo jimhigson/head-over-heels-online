@@ -1,4 +1,4 @@
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { Select } from "../../ui/Select";
 
 const scaleValues = ["1", "2", "3", "4", "5", "6", "7", "8"] as const;

@@ -43,12 +43,12 @@ import {
   shieldRemainingForAbilities,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { outlineFilters } from "../filters/outlineFilter";
+import { outlineFilters } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { TextContainer } from "../text/TextContainer";
 import { FpsRenderer } from "./FpsRenderer";
 import { OnScreenControls } from "./onScreenControls/OnScreenControls";
-import { renderCarriedOnce } from "./renderCarried";
+import { renderCarriedOnce } from "./renderCarriedOnce";
 import {
   spritesheetVariantForHud,
   tintForHud,

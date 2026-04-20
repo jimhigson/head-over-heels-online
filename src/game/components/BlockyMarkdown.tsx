@@ -8,7 +8,7 @@ import { twMerge } from "tailwind-merge";
 
 import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
-import { BitmapText, MultipleBitmapText } from "./tailwindSprites/Sprite";
+import { BitmapText, MultipleBitmapText } from "./tailwindSprites/BitmapText";
 
 const markdownComponents: CustomComponentsOption = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {

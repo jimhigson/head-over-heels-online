@@ -7,7 +7,7 @@ import type {
 } from "../../db/campaign";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import {
   type CampaignLocator,
   originalCampaignLocator,
@@ -15,7 +15,7 @@ import {
   originalUserId,
 } from "../../model/modelTypes";
 import { releaseDateIso8601 } from "../../originalGame";
-import { Button } from "../../ui/button";
+import { Button } from "../../ui/Button";
 
 const CampaignItem = ({
   campaign,

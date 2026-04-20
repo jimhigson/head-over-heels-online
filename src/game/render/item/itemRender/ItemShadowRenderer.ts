@@ -9,21 +9,21 @@ import type {
 import type { ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import type { CollideableItem } from "../../../collision/aabbCollision";
 import type { SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
-import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
+import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/itemShadowMaskAppearanceForItem";
 import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemRenderer";
+import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
-import { renderMultipliedXy } from "../../../../utils/pixi/renderMultpliedXy";
+import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
-import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/shadowMaskAppearanceForitem";
+import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/itemShadowMaskAppearanceForItem";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 

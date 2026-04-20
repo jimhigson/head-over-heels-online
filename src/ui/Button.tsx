@@ -7,7 +7,7 @@ import { type ReactNode } from "react";
 import type { ShortcutKeys } from "./useKeyboardShortcut";
 
 import { cn } from "./cn";
-import { enhanceTooltipWithHotkeys } from "./hotkeyTooltip";
+import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
 import { Tooltip } from "./Tooltip";
 import { useKeyboardShortcut } from "./useKeyboardShortcut";
 

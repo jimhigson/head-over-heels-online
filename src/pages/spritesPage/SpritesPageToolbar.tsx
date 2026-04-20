@@ -1,6 +1,6 @@
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
-import { Button } from "../../ui/button";
+import { Button } from "../../ui/Button";
 import { DownloadSpritesheetButton } from "./DownloadSpritesheetButton";
 import { ScaleSelect } from "./ScaleSelect";
 import { SpriteFilterInput } from "./SpriteFilterInput";

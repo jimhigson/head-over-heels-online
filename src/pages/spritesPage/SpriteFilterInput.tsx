@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
-import { Button } from "../../ui/button";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
+import { Button } from "../../ui/Button";
 
 export type SpriteFilterInputProps = {
   spriteFilter: string;

@@ -7,7 +7,7 @@ import type { EditorRoomItemId } from "../editorTypes";
 import type { LevelEditorState } from "../slice/levelEditorSlice";
 import type { ItemToolButtonProps } from "./ItemToolButton";
 
-import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/PlayableTailwindSprite";
+import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 import { rotatingSceneryTiles } from "../slice/rotatingSceneryTiles";

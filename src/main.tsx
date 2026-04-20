@@ -7,7 +7,7 @@ import { createRoot } from "react-dom/client";
 import { registerSW } from "virtual:pwa-register";
 
 import { importAppOnce } from "./game/components/App.import";
-import { Dialog } from "./ui/dialog";
+import { Dialog } from "./ui/Dialog";
 import { LoadingBorder } from "./ui/LoadingBorder";
 import { importOnceForReactSuspense } from "./utils/importOnce";
 

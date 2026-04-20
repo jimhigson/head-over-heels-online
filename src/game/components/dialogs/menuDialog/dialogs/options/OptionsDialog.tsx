@@ -13,7 +13,7 @@ import {
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { selectableGameSpeeds } from "../../../../../../store/slices/gameMenus/selectableGameSpeeds";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { Switch, SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";

@@ -567,7 +567,8 @@ export const changeCharacterRoom = <
         backOffAndPushBack(playableItem, portalDirection, gameState, toRoom);
 
         // play a door sound:
-        const scenerySpecificDoorSoundId = `${toRoomJson.planet}Door`;
+        const { planet } = toRoomJson;
+        const scenerySpecificDoorSoundId = `${planet}Door`;
         addItemToRoom({
           room: toRoom,
           item: createRoomEntrySound({
@@ -577,6 +578,7 @@ export const changeCharacterRoom = <
                 scenerySpecificDoorSoundId
               : "door",
             noSoundPan: false,
+            gain: planet === "moonbase" ? 0.3 : 1,
           }),
           atPosition: playableItem.state.position,
         });

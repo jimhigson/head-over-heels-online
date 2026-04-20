@@ -1,4 +1,4 @@
-import { BitmapText } from "../../../../tailwindSprites/Sprite";
+import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuFooter = () => (

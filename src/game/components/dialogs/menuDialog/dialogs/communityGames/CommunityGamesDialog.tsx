@@ -3,7 +3,7 @@ import type { EmptyObject } from "type-fest";
 import { useEffect } from "react";
 
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { NonIdealState } from "../../../../../../ui/NonIdealState";
 import { SpinnerHead } from "../../../../../../ui/Spinner";

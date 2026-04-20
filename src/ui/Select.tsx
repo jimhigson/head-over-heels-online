@@ -3,9 +3,9 @@ import type { CSSProperties, FC, ReactNode } from "react";
 import { useRef, useState } from "react";
 
 import { CssVariables } from "../game/components/CssVariables";
-import { BitmapText } from "../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { emptyObject } from "../utils/empty";
-import { Button } from "./button";
+import { Button } from "./Button";
 import { cn } from "./cn";
 import {
   Command,
@@ -15,7 +15,7 @@ import {
   CommandItem,
   CommandList,
 } from "./command";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 import { useMouseWheelOptions } from "./useMouseWheel";
 
 type OptionCommandItemComponent<Value extends string> = FC<{

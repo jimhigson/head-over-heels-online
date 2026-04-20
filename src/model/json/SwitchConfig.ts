@@ -1,5 +1,5 @@
 import type { UserSettingsBooleanPaths } from "../../store/slices/gameMenus/gameMenusSlice";
-import type { Subset } from "../../utils/subset";
+import type { Subset } from "../../utils/Subset";
 import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
 import type { SwitchSetting } from "../ItemInPlay";
 import type { ItemState } from "../ItemState";

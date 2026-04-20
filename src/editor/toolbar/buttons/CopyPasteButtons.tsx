@@ -2,7 +2,7 @@ import { produce } from "immer";
 
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
 import { store } from "../../../store/store";
 import { pick } from "../../../utils/pick";

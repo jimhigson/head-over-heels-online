@@ -1,4 +1,4 @@
-import { Dialog } from "../../../../../../ui/dialog";
+import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { keys } from "../../../../../../utils/entries";
 import { keyAssignmentPresets } from "../../../../../input/keyAssignmentPresets";

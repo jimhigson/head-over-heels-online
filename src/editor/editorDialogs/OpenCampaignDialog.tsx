@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 
 import type { CampaignLocator } from "../../model/modelTypes";
 
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useGetAllUsersLatestCampaignsQuery } from "../../store/slices/campaigns/campaignsApiSlice";
 import { Border } from "../../ui/Border";
-import { Button } from "../../ui/button";
-import { Dialog } from "../../ui/dialog";
+import { Button } from "../../ui/Button";
+import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { NonIdealState } from "../../ui/NonIdealState";
 import { SpinnerHead } from "../../ui/Spinner";

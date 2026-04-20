@@ -1,10 +1,10 @@
 import { Border } from "../../ui/Border";
-import { Dialog } from "../../ui/dialog";
+import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { directionsXy8 } from "../../utils/vectors/vectors";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
-import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/PlayableTailwindSprite";
-import { BitmapText } from "./tailwindSprites/Sprite";
+import { BitmapText } from "./tailwindSprites/BitmapText";
+import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/playableTailwindSpriteClassname";
 
 export const NotFound404Page = () => {
   const spriteClassname = usePlayableTailwindSpriteClassname();

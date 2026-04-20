@@ -6,8 +6,8 @@ import type {
   TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
-import { BitmapText } from "../../game/components/tailwindSprites/Sprite";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   animatedSpriteSpecificCssVars,

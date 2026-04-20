@@ -9,7 +9,7 @@ import { addXyz } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
-import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOn";
+import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 import { isSolid } from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
