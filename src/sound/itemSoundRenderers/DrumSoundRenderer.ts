@@ -13,9 +13,10 @@ export class DrumSoundRenderer implements ItemSoundRenderer<"portableBlock"> {
   #freeItemSoundRenderer: FreeItemSoundRenderer;
   #currentlyStoodOn = false;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"portableBlock">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"portableBlock">;
+
+  constructor(renderContext: ItemSoundRenderContext<"portableBlock">) {
+    this.renderContext = renderContext;
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
       standingOn: { soundId: "drum" },
     });

@@ -49,9 +49,10 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
 
   #currentTeleportingPhase: "in" | "out" | null = null;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<CharacterName>,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<CharacterName>;
+
+  constructor(renderContext: ItemSoundRenderContext<CharacterName>) {
+    this.renderContext = renderContext;
     const {
       general: { soundSettings },
       item: { type: name },

@@ -56,10 +56,15 @@ export class SoundPanRenderer<T extends ItemInPlayType>
   #soundPositionMinX;
   #soundPositionMaxX;
 
+  readonly renderContext: ItemSoundRenderContext<T>;
+  #childRenderer: ItemSoundRenderer<T>;
+
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<T>,
-    private readonly childRenderer: ItemSoundRenderer<T>,
+    renderContext: ItemSoundRenderContext<T>,
+    childRenderer: ItemSoundRenderer<T>,
   ) {
+    this.renderContext = renderContext;
+    this.#childRenderer = childRenderer;
     childRenderer.output.connect(this.output);
     this.output.rolloffFactor = 2;
     this.output.maxDistance = 5;
@@ -72,7 +77,7 @@ export class SoundPanRenderer<T extends ItemInPlayType>
   }
 
   tick(tickContext: ItemTickContext) {
-    this.childRenderer.tick(tickContext);
+    this.#childRenderer.tick(tickContext);
 
     const { item } = this.renderContext;
     const itemState = item.state;
@@ -131,6 +136,6 @@ export class SoundPanRenderer<T extends ItemInPlayType>
   }
 
   destroy(): void {
-    this.childRenderer.destroy();
+    this.#childRenderer.destroy();
   }
 }

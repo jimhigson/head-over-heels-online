@@ -10,9 +10,10 @@ export class EmitterSoundRenderer implements ItemSoundRenderer<"emitter"> {
 
   #lastEmittedAtRoomTime: number;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"emitter">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"emitter">;
+
+  constructor(renderContext: ItemSoundRenderContext<"emitter">) {
+    this.renderContext = renderContext;
     this.#lastEmittedAtRoomTime =
       renderContext.item.state.lastEmittedAtRoomTime;
     this.output.gain.value = 2.5;

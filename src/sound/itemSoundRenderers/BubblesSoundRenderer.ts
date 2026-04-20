@@ -7,9 +7,10 @@ import { createAudioNode } from "../soundUtils/createAudioNode";
 export class BubblesSoundRenderer implements ItemSoundRenderer<"bubbles"> {
   public readonly output: GainNode = audioCtx.createGain();
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"bubbles">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"bubbles">;
+
+  constructor(renderContext: ItemSoundRenderContext<"bubbles">) {
+    this.renderContext = renderContext;
     const {
       item: {
         config: { was },

@@ -67,10 +67,13 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
 
   currentPositionZ: number = 0;
 
+  readonly renderContext: ItemSoundRenderContext<FreeItemTypes>;
+
   constructor(
-    public readonly renderContext: ItemSoundRenderContext<FreeItemTypes>,
+    renderContext: ItemSoundRenderContext<FreeItemTypes>,
     options?: FreeItemSoundRendererConstructorOptions,
   ) {
+    this.renderContext = renderContext;
     const fallChannel: GainNode = audioCtx.createGain();
     fallChannel.connect(this.output);
     this.#fallBracketedSound = createBracketedSound(

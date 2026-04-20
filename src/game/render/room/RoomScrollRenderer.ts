@@ -103,10 +103,15 @@ export class RoomScrollRenderer<
 
   public output: SetRequired<SoundAndGraphicsOutput, "graphics">;
 
+  readonly renderContext: RoomRenderContextInGame<RoomId, RoomItemId>;
+  #childRenderer: RoomRendererType<RoomId, RoomItemId>;
+
   constructor(
-    public readonly renderContext: RoomRenderContextInGame<RoomId, RoomItemId>,
-    private readonly childRenderer: RoomRendererType<RoomId, RoomItemId>,
+    renderContext: RoomRenderContextInGame<RoomId, RoomItemId>,
+    childRenderer: RoomRendererType<RoomId, RoomItemId>,
   ) {
+    this.renderContext = renderContext;
+    this.#childRenderer = childRenderer;
     const {
       room,
       general: {
@@ -197,12 +202,12 @@ export class RoomScrollRenderer<
     // in the home position:
     this.#scrollableUp = this.#roomHomePosition.y + allItemsTopEdgeY < 0;
 
-    const childRendererGraphics = this.childRenderer.output.graphics;
+    const childRendererGraphics = this.#childRenderer.output.graphics;
     if (childRendererGraphics === undefined) {
       throw new Error("can't scroll a renderer without graphics");
     }
     const output = {
-      sound: this.childRenderer.output.sound,
+      sound: this.#childRenderer.output.sound,
       graphics: new Container({
         children: [childRendererGraphics],
         label: `RoomScrollRenderer(${room.id})`,
@@ -418,12 +423,12 @@ export class RoomScrollRenderer<
     this.#updateOutputXy();
     this.#everRendered = true;
 
-    this.childRenderer.tick(tickContext);
+    this.#childRenderer.tick(tickContext);
   }
 
   destroy(): void {
     this.output.graphics.destroy({ children: true });
-    this.childRenderer.destroy();
+    this.#childRenderer.destroy();
   }
 }
 

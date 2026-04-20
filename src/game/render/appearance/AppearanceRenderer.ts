@@ -31,15 +31,16 @@ export class AppearanceRenderer<
     label: `AppearanceRenderer`,
   });
 
+  readonly renderContext: RenderContext;
+  #appearance: Appearance<RenderContext, TickContext, RenderProps, Output>;
+
   constructor(
-    public readonly renderContext: RenderContext,
-    private appearance: Appearance<
-      RenderContext,
-      TickContext,
-      RenderProps,
-      Output
-    >,
-  ) {}
+    renderContext: RenderContext,
+    appearance: Appearance<RenderContext, TickContext, RenderProps, Output>,
+  ) {
+    this.renderContext = renderContext;
+    this.#appearance = appearance;
+  }
 
   destroy() {
     if (this.#currentRendering?.output) {
@@ -49,7 +50,7 @@ export class AppearanceRenderer<
   }
 
   tick(tickContext: TickContext) {
-    const rendering = this.appearance({
+    const rendering = this.#appearance({
       renderContext: this.renderContext,
       currentRendering: this.#currentRendering,
       tickContext,

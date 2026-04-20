@@ -89,7 +89,10 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
 {
   #container: Container;
 
-  constructor(public readonly renderContext: ItemRenderContext<T>) {
+  readonly renderContext: ItemRenderContext<T>;
+
+  constructor(renderContext: ItemRenderContext<T>) {
+    this.renderContext = renderContext;
     const { item } = renderContext;
 
     const color = bbColors[item.type] ?? "rgba(255,255,255)";

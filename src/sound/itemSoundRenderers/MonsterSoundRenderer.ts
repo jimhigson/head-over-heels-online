@@ -77,9 +77,10 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
   #movingBracketed: BracketedSound<boolean> | undefined;
   #activatedBracketed: BracketedSound;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"monster">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"monster">;
+
+  constructor(renderContext: ItemSoundRenderContext<"monster">) {
+    this.renderContext = renderContext;
     this.#spotChannel.connect(this.output);
     this.#ambientChannel.connect(this.output);
     this.#ambientChannel.gain.value = 0.66;

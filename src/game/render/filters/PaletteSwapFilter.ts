@@ -27,6 +27,7 @@ export type PaletteSwopSpec = {
  */
 export class PaletteSwapFilter extends Filter {
   #lutTexture: Texture;
+  #mask: Texture;
 
   /**
    * @param options - Options for the PaletteSwapFilter constructor.
@@ -37,7 +38,7 @@ export class PaletteSwapFilter extends Filter {
      * where to mask the effect - white is on, black is off -
      * default to all white to apply everywhere
      */
-    private mask: Texture = Texture.WHITE,
+    mask: Texture = Texture.WHITE,
   ) {
     const lutTexture =
       lutType === "voronoi" ? voronoiLut(swops) : sparseLut(swops);
@@ -52,6 +53,7 @@ export class PaletteSwapFilter extends Filter {
     });
 
     this.#lutTexture = lutTexture;
+    this.#mask = mask;
   }
 
   /**
@@ -88,7 +90,7 @@ export class PaletteSwapFilter extends Filter {
     this.#lutTexture = null as unknown as Texture;
 
     if (destroyMask) {
-      this.mask?.destroy(true);
+      this.#mask?.destroy(true);
     }
 
     // Call parent destroy

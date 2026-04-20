@@ -19,9 +19,11 @@ export class ConveyorSoundRenderer implements ItemSoundRenderer<"conveyor"> {
     this.output,
   );
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"conveyor">,
-  ) {}
+  readonly renderContext: ItemSoundRenderContext<"conveyor">;
+
+  constructor(renderContext: ItemSoundRenderContext<"conveyor">) {
+    this.renderContext = renderContext;
+  }
 
   tick() {
     const {

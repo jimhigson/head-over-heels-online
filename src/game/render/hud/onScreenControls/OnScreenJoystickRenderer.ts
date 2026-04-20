@@ -75,7 +75,10 @@ export class OnScreenJoystickRenderer
 
   #roomRenderedIn: RoomState<string, string> | undefined;
 
-  constructor(public readonly renderContext: JoystickRenderContext) {
+  readonly renderContext: JoystickRenderContext;
+
+  constructor(renderContext: JoystickRenderContext) {
+    this.renderContext = renderContext;
     const {
       inputDirectionMode,
       general: { spriteOption, pixiRenderer },

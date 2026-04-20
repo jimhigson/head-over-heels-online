@@ -29,10 +29,15 @@ export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
   #rightColourFilter: OneColourFilter;
   #outlineFilter: OutlineFilter;
 
+  readonly renderContext: ItemRenderContext<T>;
+  #childRenderer: ItemPixiRenderer<T>;
+
   constructor(
-    readonly renderContext: ItemRenderContext<T>,
-    private readonly childRenderer: ItemPixiRenderer<T>,
+    renderContext: ItemRenderContext<T>,
+    childRenderer: ItemPixiRenderer<T>,
   ) {
+    this.renderContext = renderContext;
+    this.#childRenderer = childRenderer;
     this.output.addChild(childRenderer.output);
 
     const { spriteOption, spritesheetMeta } = renderContext.general;
@@ -93,12 +98,12 @@ export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
     this.#rightColourFilter.enabled = isFlashing && !isLeft;
     this.#outlineFilter.enabled = isFlashing;
 
-    this.childRenderer.tick(tickContext);
+    this.#childRenderer.tick(tickContext);
   }
 
   destroy(): void {
     this.output.destroy();
-    this.childRenderer.destroy();
+    this.#childRenderer.destroy();
   }
 }
 

@@ -92,10 +92,15 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     Sprite
   >;
 
+  readonly renderContext: ItemRenderContext<T>;
+  #appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>;
+
   constructor(
-    public readonly renderContext: ItemRenderContext<T>,
-    private readonly appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>,
+    renderContext: ItemRenderContext<T>,
+    appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>,
   ) {
+    this.renderContext = renderContext;
+    this.#appearance = appearance;
     this.#output.addChild(this.#shadowsContainer);
     if (!this.#showShadowMasks) {
       this.#output.filters = new AlphaFilter({ alpha: shadowAlpha });
@@ -103,7 +108,8 @@ class ItemShadowRenderer<T extends ItemInPlayType>
   }
 
   initShadowMaskRenderer() {
-    const { renderContext, appearance } = this;
+    const { renderContext } = this;
+    const appearance = this.#appearance;
 
     // 'no-mask' means will accept any shadows without masking them - eg, on floors
     if (appearance !== "no-mask") {
