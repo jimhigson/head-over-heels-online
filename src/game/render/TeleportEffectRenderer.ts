@@ -32,16 +32,21 @@ export class TeleportEffectRenderer<
 
   #teleportingEffectFilter: TeleportingEffectFilter | undefined;
 
+  readonly renderContext: RoomRenderContextInGame<RoomId, RoomItemId>;
+  #childRenderer: RoomRendererType<RoomId, RoomItemId>;
+
   constructor(
-    public readonly renderContext: RoomRenderContextInGame<RoomId, RoomItemId>,
-    private readonly childRenderer: RoomRendererType<RoomId, RoomItemId>,
+    renderContext: RoomRenderContextInGame<RoomId, RoomItemId>,
+    childRenderer: RoomRendererType<RoomId, RoomItemId>,
   ) {
+    this.renderContext = renderContext;
+    this.#childRenderer = childRenderer;
     const { room } = renderContext;
 
-    const childRendererGraphics = this.childRenderer.output.graphics;
+    const childRendererGraphics = this.#childRenderer.output.graphics;
 
     const output = {
-      sound: this.childRenderer.output.sound,
+      sound: this.#childRenderer.output.sound,
       graphics: new Container({
         children: [childRendererGraphics],
         label: `TeleportEffectRenderer(${room.id})`,
@@ -157,13 +162,13 @@ export class TeleportEffectRenderer<
   }
 
   tick(tickContext: RoomTickContext<RoomId, RoomItemId>) {
-    this.childRenderer.tick(tickContext);
+    this.#childRenderer.tick(tickContext);
     this.#update();
   }
 
   destroy(): void {
     this.output.graphics.destroy({ children: true });
     this.#teleportingEffectFilter?.destroy();
-    this.childRenderer.destroy();
+    this.#childRenderer.destroy();
   }
 }

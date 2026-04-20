@@ -32,9 +32,10 @@ export class ToasterSoundRenderer implements ItemSoundRenderer<"deadlyBlock"> {
 
   #currentStoodOnCount: number | undefined = undefined;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"deadlyBlock">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"deadlyBlock">;
+
+  constructor(renderContext: ItemSoundRenderContext<"deadlyBlock">) {
+    this.renderContext = renderContext;
     this.output.gain.value = 2;
   }
 

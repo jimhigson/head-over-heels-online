@@ -12,7 +12,10 @@ export class ButtonSoundRenderer implements ItemSoundRenderer<"button"> {
 
   #currentPressed: boolean | undefined = undefined;
 
-  constructor(public readonly renderContext: ItemSoundRenderContext<"button">) {
+  readonly renderContext: ItemSoundRenderContext<"button">;
+
+  constructor(renderContext: ItemSoundRenderContext<"button">) {
+    this.renderContext = renderContext;
     this.#channelNode.connect(this.output);
   }
 

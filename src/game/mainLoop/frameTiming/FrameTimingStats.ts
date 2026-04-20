@@ -61,7 +61,11 @@ class FrameTimingStats {
 
   #events = mitt<{ stats: FrameTimingStatsEvent }>();
 
-  private constructor(private reportIntervalMs: number = 2_000) {}
+  #reportIntervalMs: number;
+
+  private constructor(reportIntervalMs: number = 2_000) {
+    this.#reportIntervalMs = reportIntervalMs;
+  }
 
   startPhysics() {
     this.#currentTimings.physicsStart = performance.now();
@@ -130,7 +134,7 @@ class FrameTimingStats {
    */
   tickDone() {
     const now = performance.now();
-    if (now - this.#lastReportTime >= this.reportIntervalMs) {
+    if (now - this.#lastReportTime >= this.#reportIntervalMs) {
       this.#reportAndReset(now);
     }
   }

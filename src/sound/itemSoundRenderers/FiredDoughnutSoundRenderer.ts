@@ -9,9 +9,10 @@ export class FiredDoughnutSoundRenderer
 {
   public readonly output: GainNode = audioCtx.createGain();
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"firedDoughnut">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"firedDoughnut">;
+
+  constructor(renderContext: ItemSoundRenderContext<"firedDoughnut">) {
+    this.renderContext = renderContext;
     createAudioNode({
       soundId: "hooter",
       connectTo: this.output,

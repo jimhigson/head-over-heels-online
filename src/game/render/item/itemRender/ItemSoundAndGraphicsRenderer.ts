@@ -14,13 +14,21 @@ export class ItemSoundAndGraphicsRenderer<T extends ItemInPlayType>
 {
   public readonly output: SoundAndGraphicsOutput;
 
+  readonly renderContext: ItemRenderContext<T>;
+  #componentRenderers: {
+    graphics?: ItemPixiRenderer<T>;
+    sound?: ItemSoundRenderer<T>;
+  };
+
   constructor(
-    public readonly renderContext: ItemRenderContext<T>,
-    private componentRenderers: {
+    renderContext: ItemRenderContext<T>,
+    componentRenderers: {
       graphics?: ItemPixiRenderer<T>;
       sound?: ItemSoundRenderer<T>;
     },
   ) {
+    this.renderContext = renderContext;
+    this.#componentRenderers = componentRenderers;
     this.output = {
       graphics: componentRenderers.graphics?.output,
       sound: componentRenderers.sound?.output,
@@ -28,12 +36,12 @@ export class ItemSoundAndGraphicsRenderer<T extends ItemInPlayType>
   }
 
   tick(tickContext: ItemTickContext): void {
-    this.componentRenderers.graphics?.tick(tickContext);
-    this.componentRenderers.sound?.tick(tickContext);
+    this.#componentRenderers.graphics?.tick(tickContext);
+    this.#componentRenderers.sound?.tick(tickContext);
   }
 
   destroy() {
-    this.componentRenderers.graphics?.destroy();
-    this.componentRenderers.sound?.destroy();
+    this.#componentRenderers.graphics?.destroy();
+    this.#componentRenderers.sound?.destroy();
   }
 }

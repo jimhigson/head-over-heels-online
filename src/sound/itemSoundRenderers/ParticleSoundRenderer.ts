@@ -7,9 +7,10 @@ import { createAudioNode } from "../soundUtils/createAudioNode";
 export class ParticleSoundRenderer implements ItemSoundRenderer<"particle"> {
   public readonly output: GainNode = audioCtx.createGain();
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"particle">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"particle">;
+
+  constructor(renderContext: ItemSoundRenderContext<"particle">) {
+    this.renderContext = renderContext;
     const {
       item: {
         //id,

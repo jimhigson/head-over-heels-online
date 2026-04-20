@@ -144,7 +144,10 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   #unlisten;
   #carryingItemRoom: RoomState<RoomId, RoomItemId> | undefined = undefined;
 
-  constructor(public readonly renderContext: HudRenderContext<RoomId>) {
+  readonly renderContext: HudRenderContext<RoomId>;
+
+  constructor(renderContext: HudRenderContext<RoomId>) {
+    this.renderContext = renderContext;
     const { general } = renderContext;
 
     this.#characterTextureIds = {

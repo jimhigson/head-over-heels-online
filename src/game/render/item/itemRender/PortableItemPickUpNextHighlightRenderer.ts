@@ -24,10 +24,15 @@ class PortableItemPickUpNextHighlightRenderer
   });
   #outlineFilter: OutlineFilter;
 
+  readonly renderContext: ItemRenderContext<PortableItemType>;
+  #childRenderer: ItemPixiRenderer<ItemInPlayType>;
+
   constructor(
-    readonly renderContext: ItemRenderContext<PortableItemType>,
-    private readonly childRenderer: ItemPixiRenderer<ItemInPlayType>,
+    renderContext: ItemRenderContext<PortableItemType>,
+    childRenderer: ItemPixiRenderer<ItemInPlayType>,
   ) {
+    this.renderContext = renderContext;
+    this.#childRenderer = childRenderer;
     this.output.addChild(childRenderer.output);
 
     const {
@@ -50,12 +55,12 @@ class PortableItemPickUpNextHighlightRenderer
 
     this.#outlineFilter.enabled = wouldPickUpNext;
 
-    this.childRenderer.tick(tickContext);
+    this.#childRenderer.tick(tickContext);
   }
 
   destroy(): void {
     this.output.destroy();
-    this.childRenderer.destroy();
+    this.#childRenderer.destroy();
   }
 }
 

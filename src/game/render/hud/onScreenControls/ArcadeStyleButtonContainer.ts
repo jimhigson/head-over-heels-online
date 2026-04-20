@@ -33,13 +33,20 @@ export class ArcadeStyleButtonContainer<
   #buttonSprite: Sprite;
   #pressedButtonSprite: Sprite;
 
+  #spriteOption: SpriteOption;
+  #which: ButtonId;
+  #pixiRenderer: Renderer;
+
   constructor(
-    private readonly spriteOption: SpriteOption,
-    private readonly which: ButtonId,
-    private readonly pixiRenderer: Renderer,
+    spriteOption: SpriteOption,
+    which: ButtonId,
+    pixiRenderer: Renderer,
     initiallyShowOnSurface: SurfaceContent,
   ) {
     super({ label: `arcadeButton (${which})` });
+    this.#spriteOption = spriteOption;
+    this.#which = which;
+    this.#pixiRenderer = pixiRenderer;
 
     // a container so that the whole button can move down together
     // to show the 'pressed' effect
@@ -90,7 +97,8 @@ export class ArcadeStyleButtonContainer<
   }
 
   generateButtonSpriteTextures(room: RoomState<string, string>): void {
-    const { which, spriteOption } = this;
+    const which = this.#which;
+    const spriteOption = this.#spriteOption;
 
     const spriteTemplate = createSprite({
       textureId: "button",
@@ -126,7 +134,7 @@ export class ArcadeStyleButtonContainer<
     spriteTemplate.filters = filter;
 
     const buttonTexture = renderContainerToTexture(
-      this.pixiRenderer,
+      this.#pixiRenderer,
       spriteTemplate,
       this.#buttonSprite.texture === Texture.EMPTY ?
         undefined
@@ -136,7 +144,7 @@ export class ArcadeStyleButtonContainer<
     spriteTemplate.texture = originalSpriteSheet().textures["button.pressed"];
 
     const pressedButtonTexture = renderContainerToTexture(
-      this.pixiRenderer,
+      this.#pixiRenderer,
       spriteTemplate,
       this.#pressedButtonSprite.texture === Texture.EMPTY ?
         undefined

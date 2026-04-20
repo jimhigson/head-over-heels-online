@@ -18,9 +18,10 @@ export class MovingPlatformSoundRenderer
   #freeItemSoundRenderer: FreeItemSoundRenderer;
   #activatedBracketed: BracketedSound;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"movingPlatform">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"movingPlatform">;
+
+  constructor(renderContext: ItemSoundRenderContext<"movingPlatform">) {
+    this.renderContext = renderContext;
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
       pushed: null,
     });

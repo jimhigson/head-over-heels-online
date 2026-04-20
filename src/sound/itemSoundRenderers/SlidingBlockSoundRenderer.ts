@@ -22,9 +22,10 @@ export class SlidingBlockSoundRenderer
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"slidingBlock">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"slidingBlock">;
+
+  constructor(renderContext: ItemSoundRenderContext<"slidingBlock">) {
+    this.renderContext = renderContext;
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(
       renderContext,
       renderContext.item.config.style === "puck" ? glassyOptions : undefined,

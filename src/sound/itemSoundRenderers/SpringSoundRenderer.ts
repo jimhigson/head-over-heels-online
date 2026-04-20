@@ -12,7 +12,10 @@ export class SpringSoundRenderer implements ItemSoundRenderer<"spring"> {
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
 
-  constructor(public readonly renderContext: ItemSoundRenderContext<"spring">) {
+  readonly renderContext: ItemSoundRenderContext<"spring">;
+
+  constructor(renderContext: ItemSoundRenderContext<"spring">) {
+    this.renderContext = renderContext;
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext);
     this.#freeItemSoundRenderer.output.connect(this.output);
   }

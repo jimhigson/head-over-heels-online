@@ -35,10 +35,15 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
   // store our hierarchy of making containers by the item id they are using to mask:
   #maskingContainers: Map<string, MaskingContainer> = new Map();
 
+  readonly renderContext: ItemRenderContext<T>;
+  #wrappedRenderer: ItemPixiRenderer<T>;
+
   constructor(
-    public readonly renderContext: ItemRenderContext<T>,
-    private wrappedRenderer: ItemPixiRenderer<T>,
+    renderContext: ItemRenderContext<T>,
+    wrappedRenderer: ItemPixiRenderer<T>,
   ) {
+    this.renderContext = renderContext;
+    this.#wrappedRenderer = wrappedRenderer;
     this.output = new Container({
       label: `ItemPositionRenderer ${renderContext.item.id}`,
       children: [wrappedRenderer.output],
@@ -66,7 +71,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
   }
 
   tick(tickContext: ItemTickContext) {
-    this.wrappedRenderer?.tick(tickContext);
+    this.#wrappedRenderer?.tick(tickContext);
 
     if (tickContext.movedItems.has(this.renderContext.item)) {
       // item has moved - update its position:
@@ -230,6 +235,6 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
 
   destroy(): void {
     this.output.destroy({ children: true });
-    this.wrappedRenderer?.destroy();
+    this.#wrappedRenderer?.destroy();
   }
 }

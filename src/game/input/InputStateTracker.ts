@@ -227,10 +227,16 @@ export class InputStateTracker {
    */
   #actionsHandled: Map<BooleanAction, number> = new Map();
 
+  #keyboardStateMap: KeyboardStateMap;
+  readonly hudInputState: HudInputState;
+
   constructor(
-    private keyboardStateMap: KeyboardStateMap,
-    public readonly hudInputState: HudInputState,
-  ) {}
+    keyboardStateMap: KeyboardStateMap,
+    hudInputState: HudInputState,
+  ) {
+    this.#keyboardStateMap = keyboardStateMap;
+    this.hudInputState = hudInputState;
+  }
 
   /**
    * Classic original-game-like handling of 4-way D-pad input
@@ -484,7 +490,7 @@ export class InputStateTracker {
     // input snapshot to use for the rest of this frame (until the next call to tick)
     const currentFrameInput: FrameInput = {
       // keyboard state is modified in-place, so we need a copy:
-      keyboardState: new Map(this.keyboardStateMap),
+      keyboardState: new Map(this.#keyboardStateMap),
       // hud input state is also modified in-place - make a copy:
       hudInputState: { ...this.hudInputState },
       gamepads: extractGamepadsState(navigator.getGamepads()),
@@ -595,7 +601,7 @@ export class InputStateTracker {
       return;
     }
 
-    for (const key of this.keyboardStateMap.keys()) {
+    for (const key of this.#keyboardStateMap.keys()) {
       if (
         previousFrameInput === undefined ||
         !previousFrameInput.keyboardState.has(key)

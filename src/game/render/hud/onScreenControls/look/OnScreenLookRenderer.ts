@@ -44,7 +44,10 @@ export class OnScreenLookRenderer<
   /** Handles all inertia physics */
   #dragInertia = new DragInertia();
 
-  constructor(public readonly renderContext: LookRenderContext) {
+  readonly renderContext: LookRenderContext;
+
+  constructor(renderContext: LookRenderContext) {
+    this.renderContext = renderContext;
     const { x: w, y: h } = renderContext.general.upscale.gameEngineScreenSize;
 
     this.output.on("touchstart", this.handleTouchStart);

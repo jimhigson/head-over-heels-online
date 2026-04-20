@@ -67,9 +67,10 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #itemRenderers: Map<RoomItemId, ItemRenderPipeline<ItemInPlayType>> =
     new Map();
 
-  constructor(
-    public readonly renderContext: RoomRenderContext<RoomId, RoomItemId>,
-  ) {
+  readonly renderContext: RoomRenderContext<RoomId, RoomItemId>;
+
+  constructor(renderContext: RoomRenderContext<RoomId, RoomItemId>) {
+    this.renderContext = renderContext;
     const {
       general: { spriteOption, soundSettings },
       room,

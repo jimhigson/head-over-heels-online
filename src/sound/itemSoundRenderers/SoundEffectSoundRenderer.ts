@@ -14,9 +14,10 @@ export class SoundEffectSoundRenderer
   public readonly output: GainNode = audioCtx.createGain();
   #source: AudioBufferSourceNode | undefined;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"soundEffect">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"soundEffect">;
+
+  constructor(renderContext: ItemSoundRenderContext<"soundEffect">) {
+    this.renderContext = renderContext;
     const {
       item: { state },
     } = renderContext;

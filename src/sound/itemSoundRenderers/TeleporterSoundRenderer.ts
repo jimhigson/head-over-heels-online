@@ -26,7 +26,10 @@ export class TeleporterSoundRenderer
   #sirenBracket;
   #freeItemSoundRenderer: FreeItemSoundRenderer | undefined;
 
-  constructor(public readonly renderContext: TeleporterContext) {
+  readonly renderContext: TeleporterContext;
+
+  constructor(renderContext: TeleporterContext) {
+    this.renderContext = renderContext;
     this.#sirenBracket = createBracketedSound(
       {
         loop: {

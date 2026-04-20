@@ -23,7 +23,10 @@ export class BallSoundRenderer implements ItemSoundRenderer<"ball"> {
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
 
-  constructor(public readonly renderContext: ItemSoundRenderContext<"ball">) {
+  readonly renderContext: ItemSoundRenderContext<"ball">;
+
+  constructor(renderContext: ItemSoundRenderContext<"ball">) {
+    this.renderContext = renderContext;
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
       pushed: pushedSound,
       collision: { soundId: "ballHit", gain: 0.7, varyPlaybackRate: true },

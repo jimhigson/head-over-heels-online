@@ -72,10 +72,12 @@ export class MainLoop<RoomId extends string> {
     children: [this.#worldContainer],
   });
 
-  constructor(
-    private app: Application,
-    private gameState: GameState<RoomId>,
-  ) {
+  #app: Application;
+  #gameState: GameState<RoomId>;
+
+  constructor(app: Application, gameState: GameState<RoomId>) {
+    this.#app = app;
+    this.#gameState = gameState;
     try {
       const storeState = store.getState();
 
@@ -110,7 +112,7 @@ export class MainLoop<RoomId extends string> {
       upscale: { upscale },
     } = store.getState();
 
-    this.app.stage.filters = topLevelFilters(displaySettings, upscale);
+    this.#app.stage.filters = topLevelFilters(displaySettings, upscale);
   }
 
   #tickAndCatch = (ticker: Ticker): void => {
@@ -129,9 +131,7 @@ export class MainLoop<RoomId extends string> {
     rotate90,
     gameEngineScreenSize,
   }: Upscale) {
-    const {
-      app: { stage },
-    } = this;
+    const { stage } = this.#app;
 
     stage.scale = gameEngineUpscale;
     this.#mainContainer.rotation = rotate90 ? quarterTurnClockwise : 0;
@@ -178,13 +178,13 @@ export class MainLoop<RoomId extends string> {
     // so we need to tick physics considering recreating the room renderer
     timingRecord?.startPhysics();
     const movedItems =
-      isPaused ? emptySet : this.#physicsTicker(this.gameState, deltaMS);
+      isPaused ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
     timingRecord?.endPhysics();
 
     timingRecord?.startUpdateSceneGraph();
     // the tick could end on a different room than it started on, eg if ticking
     // the physics caused the player to go through a door:
-    const tickEndRoom = selectCurrentRoomState(this.gameState);
+    const tickEndRoom = selectCurrentRoomState(this.#gameState);
 
     const roomChanged = this.#roomRenderer?.renderContext.room !== tickEndRoom;
     if (
@@ -198,7 +198,7 @@ export class MainLoop<RoomId extends string> {
       this.#spritesheetLoadPromise === undefined
     ) {
       const loadResult = tickSpritesheetVariants(
-        this.app.renderer,
+        this.#app.renderer,
         tickEndRoom.planet,
         tickEndRoom.color,
         tickSpriteOption,
@@ -232,9 +232,9 @@ export class MainLoop<RoomId extends string> {
       this.#hudRenderer?.destroy();
       this.#hudRenderer = new HudRenderer({
         general: {
-          gameState: this.gameState,
+          gameState: this.#gameState,
           paused: isPaused,
-          pixiRenderer: this.app.renderer,
+          pixiRenderer: this.#app.renderer,
           displaySettings: tickDisplaySettings,
           soundSettings: tickSoundSettings,
           spriteOption: tickSpriteOption,
@@ -276,9 +276,9 @@ export class MainLoop<RoomId extends string> {
       if (tickEndRoom) {
         const roomRenderContext: RoomRenderContextInGame<RoomId, string> = {
           general: {
-            gameState: this.gameState,
+            gameState: this.#gameState,
             paused: isPaused,
-            pixiRenderer: this.app.renderer,
+            pixiRenderer: this.#app.renderer,
             displaySettings: tickDisplaySettings,
             soundSettings: tickSoundSettings,
             spriteOption: tickSpriteOption,
@@ -331,12 +331,12 @@ export class MainLoop<RoomId extends string> {
     timingRecord?.endUpdateSceneGraph();
 
     if (import.meta.env.DEV) {
-      validateSceneGraph(this.app.stage);
+      validateSceneGraph(this.#app.stage);
     }
 
     try {
       timingRecord?.startPixiRender();
-      this.app.render();
+      this.#app.render();
       timingRecord?.endPixiRender();
       if (createNewRoomRenderer && tickEndRoom) {
         const event = new CustomEvent("firstRenderOfRoom", {
@@ -352,18 +352,18 @@ export class MainLoop<RoomId extends string> {
     timingRecord?.tickDone();
 
     // throttle framerate when paused to reduce CPU/GPU load (nothing is moving anyway)
-    this.app.ticker.maxFPS = isPaused ? 10 : maxFps;
+    this.#app.ticker.maxFPS = isPaused ? 10 : maxFps;
   };
 
   start() {
-    this.app.ticker.add(this.#tickAndCatch);
+    this.#app.ticker.add(this.#tickAndCatch);
     return this;
   }
   stop() {
-    this.app.stage.removeChild(this.#mainContainer);
+    this.#app.stage.removeChild(this.#mainContainer);
     this.#worldSound.disconnect();
     this.#roomRenderer?.destroy();
     this.#hudRenderer?.destroy();
-    this.app.ticker.remove(this.#tickAndCatch);
+    this.#app.ticker.remove(this.#tickAndCatch);
   }
 }

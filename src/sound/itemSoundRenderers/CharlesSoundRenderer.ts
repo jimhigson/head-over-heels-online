@@ -34,9 +34,10 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"charles">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"charles">;
+
+  constructor(renderContext: ItemSoundRenderContext<"charles">) {
+    this.renderContext = renderContext;
     this.#servoChannel.connect(this.output);
     this.#servoChannel.gain.value = 0.5;
     this.#activatedBracketed = createBracketedSound(

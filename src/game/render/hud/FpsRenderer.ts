@@ -32,7 +32,10 @@ export class FpsRenderer
     }
   }
 
-  constructor(public readonly renderContext: HudRenderContext<string>) {
+  readonly renderContext: HudRenderContext<string>;
+
+  constructor(renderContext: HudRenderContext<string>) {
+    this.renderContext = renderContext;
     this.#fpsText = new TextContainer({
       pixiRenderer: renderContext.general.pixiRenderer,
       label: "fps",

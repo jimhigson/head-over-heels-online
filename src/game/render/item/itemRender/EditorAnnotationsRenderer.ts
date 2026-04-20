@@ -180,10 +180,15 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     label: "EditorAnnotationsRenderer",
   });
 
+  readonly renderContext: ItemRenderContext<T>;
+  #childRenderer: ItemPixiRenderer<T>;
+
   constructor(
-    readonly renderContext: ItemRenderContext<T>,
-    private readonly childRenderer: ItemPixiRenderer<T>,
+    renderContext: ItemRenderContext<T>,
+    childRenderer: ItemPixiRenderer<T>,
   ) {
+    this.renderContext = renderContext;
+    this.#childRenderer = childRenderer;
     this.output.addChild(childRenderer.output);
 
     this.#initAnnotations();
@@ -421,7 +426,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
   tick(tickContext: ItemTickContext) {
     this.#updateSelectedAndHovered();
 
-    this.childRenderer.tick(tickContext);
+    this.#childRenderer.tick(tickContext);
   }
 
   #updateSelectedAndHovered() {
@@ -517,7 +522,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
   destroy(): void {
     this.output.destroy();
-    this.childRenderer.destroy();
+    this.#childRenderer.destroy();
   }
 }
 

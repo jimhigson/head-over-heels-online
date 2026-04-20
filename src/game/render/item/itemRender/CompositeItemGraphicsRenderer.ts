@@ -12,12 +12,15 @@ export class CompositeItemGraphicsRenderer<T extends ItemInPlayType>
 {
   #componentRenderers: ItemPixiRenderer<T>[];
   #container: Container = new Container({ label: "CompositeRenderer" });
+  readonly renderContext: ItemRenderContext<T>;
+
   constructor(
     componentRenderers: ItemPixiRenderer<T>[],
     /* the composite renderer doesn't actually use the render context, but it's needed
        to implement the interface */
-    public readonly renderContext: ItemRenderContext<T>,
+    renderContext: ItemRenderContext<T>,
   ) {
+    this.renderContext = renderContext;
     this.#componentRenderers = componentRenderers;
     this.#container.addChild(...componentRenderers.map((r) => r.output));
   }

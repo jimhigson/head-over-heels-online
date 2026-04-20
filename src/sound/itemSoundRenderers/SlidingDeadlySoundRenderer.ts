@@ -12,9 +12,10 @@ export class SlidingDeadlySoundRenderer
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
 
-  constructor(
-    public readonly renderContext: ItemSoundRenderContext<"slidingDeadly">,
-  ) {
+  readonly renderContext: ItemSoundRenderContext<"slidingDeadly">;
+
+  constructor(renderContext: ItemSoundRenderContext<"slidingDeadly">) {
+    this.renderContext = renderContext;
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
       collision: {
         soundId: "glassClink",

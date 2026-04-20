@@ -48,9 +48,10 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
   #hudElements;
 
-  constructor(
-    public readonly renderContext: OnScreenControlsRenderContext<RoomId>,
-  ) {
+  readonly renderContext: OnScreenControlsRenderContext<RoomId>;
+
+  constructor(renderContext: OnScreenControlsRenderContext<RoomId>) {
+    this.renderContext = renderContext;
     const {
       general: {
         gameState: { inputStateTracker },

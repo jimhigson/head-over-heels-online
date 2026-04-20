@@ -16,7 +16,10 @@ export class LiftSoundRenderer implements ItemSoundRenderer<"lift"> {
     connectTo: this.output,
   } as const);
 
-  constructor(public readonly renderContext: ItemSoundRenderContext<"lift">) {
+  readonly renderContext: ItemSoundRenderContext<"lift">;
+
+  constructor(renderContext: ItemSoundRenderContext<"lift">) {
+    this.renderContext = renderContext;
     // this sound is often in the background for a long time so make it not too loud:
     this.output.gain.value = 0.7;
   }

@@ -15,7 +15,10 @@ export class SwitchSoundRenderer implements ItemSoundRenderer<"switch"> {
 
   #currentSetting: SwitchSetting | undefined = undefined;
 
-  constructor(public readonly renderContext: ItemSoundRenderContext<"switch">) {
+  readonly renderContext: ItemSoundRenderContext<"switch">;
+
+  constructor(renderContext: ItemSoundRenderContext<"switch">) {
+    this.renderContext = renderContext;
     this.#channelNode.connect(this.output);
   }
 
