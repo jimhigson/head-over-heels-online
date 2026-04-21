@@ -66,6 +66,7 @@ export class MovingPlatformSoundRenderer
   }
 
   destroy(): void {
+    this.#walkBracketedSound(false);
     // don't call #activatedBracketed(false) here — that would play the
     // deactivation sound when leaving the room, not a real deactivation
     this.#freeItemSoundRenderer.destroy();
