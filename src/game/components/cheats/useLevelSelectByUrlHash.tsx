@@ -24,15 +24,23 @@ export const useLevelSelectByUrlHash = <RoomId extends string>(
         gameApi.changeRoom(roomIdFromHash as RoomId);
       }
     };
-    const onRoomChange = (roomId: RoomId) => {
-      window.location.hash = roomId;
-    };
-
     window.addEventListener("hashchange", onHashChange);
     const stopListeningToCharacterRoomChange = startAppListening({
       actionCreator: characterRoomChange,
       effect(action) {
-        onRoomChange(action.payload.roomId as RoomId);
+        // only update the hash if the current character changed room.
+        // ie, not if they pushed the other through a door.
+        // otherwise, this hash change gets picked up by us right away
+        // and we change to the other room even though the current
+        // character isn't even in there, so it does a level select
+        // into there
+        const currentCharacterChangedRoom =
+          action.payload.characterName ===
+          gameApi.gameState.currentCharacterName;
+
+        if (currentCharacterChangedRoom) {
+          window.location.hash = action.payload.roomId as RoomId;
+        }
       },
     });
 
