@@ -37,6 +37,7 @@ export type RoomJson<
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
 > = {
+  $schema?: string;
   id: RoomId;
   /**
    * custom room height that can be set per-room in blocks.

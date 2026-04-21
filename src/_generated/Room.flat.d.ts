@@ -5,6 +5,7 @@
 type RoomItemId = string;
 
 export type RoomJsonSchema = {
+  $schema?: string;
   id: string;
   /**
    * custom room height that can be set per-room in blocks.

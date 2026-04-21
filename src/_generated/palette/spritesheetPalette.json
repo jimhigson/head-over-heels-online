@@ -18,7 +18,7 @@
   "ss_background": "#7C7A98",
   "swop_yellow": "#F3EBA9",
   "swop_yellowMid": "#C0985B",
-  "swop_yellowDim": "#864E39",
+  "swop_yellowDim": "#654526",
   "swop_green": "#AD9E00",
   "swop_greenDim": "#585900",
   "swop_cyan": "#5CD2DA",
@@ -30,7 +30,7 @@
   "swop_whiteMid": "#C0AFA9",
   "swop_whiteDim": "#7C6E6C",
   "shadow_greyBlue": "#424249",
-  "shadow_brown": "#553720",
+  "shadow_brown": "#51341E",
   "shadow_magenta": "#554055",
-  "shadow_blue": "#404055"
+  "shadow_blue": "#333344"
 }
