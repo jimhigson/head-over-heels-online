@@ -21,8 +21,15 @@ export const playMenuSoundsOnStoreChanges = () => {
   loadAndDecode(soundUrls.menuSofter).then((b) => (menuBuffer = b));
   loadAndDecode(soundUrls.scrollOpen).then((b) => (scrollOpenBuffer = b));
 
+  let lastPlayTime = 0;
+  const minIntervalMs = 200;
+
   const play = (buffer: AudioBuffer | undefined, volume: number) => {
     if (buffer === undefined) return;
+    const now = performance.now();
+    if (now - lastPlayTime < minIntervalMs) return;
+    lastPlayTime = now;
+
     const gain = audioCtx.createGain();
     gain.gain.value = volume;
     gain.connect(audioCtx.destination);
