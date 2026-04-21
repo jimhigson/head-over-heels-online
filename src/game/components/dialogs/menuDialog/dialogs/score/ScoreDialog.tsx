@@ -81,10 +81,15 @@ const FreeCharacterText = ({
 }: {
   freeCharacterName: IndividualCharacterName;
 }) => (
-  <span className="block text-center mx-auto text-lightGrey zx:text-zxYellow">
+  <span className="block text-center mx-auto text-lightGrey zx:text-zxYellow toppy:text-toppyWarm3">
     {freeCharacterName === "head" ?
-      <BitmapText className="text-metallicBlue zx:text-zxBlue">Head</BitmapText>
-    : <BitmapText className="text-pink zx:text-zxWhite">Heels</BitmapText>}
+      <BitmapText className="text-metallicBlue zx:text-zxBlue toppy:text-toppyCool2">
+        Head
+      </BitmapText>
+    : <BitmapText className="text-pink zx:text-zxWhite toppy:text-toppyPink1">
+        Heels
+      </BitmapText>
+    }
     <BitmapText> is</BitmapText>
     <BitmapText classnameCycle={mainMenuCycle}> free</BitmapText>
   </span>
@@ -117,9 +122,9 @@ export const ScoreDialog = () => {
 
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlue zx:bg-zxCyan" />
+      <Border className="bg-metallicBlue zx:bg-zxCyan toppy:bg-toppyCool3" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed w-zx h-full flex flex-col"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 w-zx h-full flex flex-col"
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="score"
       >
@@ -131,7 +136,7 @@ export const ScoreDialog = () => {
           >
             {scoreLabel}
           </BitmapText>
-          <BitmapText className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow">
+          <BitmapText className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
             Score {score.toLocaleString()}
           </BitmapText>
           <div className="mt-1">
@@ -139,11 +144,11 @@ export const ScoreDialog = () => {
               <FreeCharacterText key={fc} freeCharacterName={fc} />
             ))}
           </div>
-          <BitmapText className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan">
+          <BitmapText className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan toppy:text-toppyPink1">
             Explored {roomsExploredCount} / {roomCount} rooms{" "}
             {`(${asPercentage(roomsExploredCount, roomCount)})`}
           </BitmapText>
-          <BitmapText className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite">
+          <BitmapText className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1">
             Liberated {planetsLiberatedCount} planets
           </BitmapText>
           <MenuItems className="hidden">

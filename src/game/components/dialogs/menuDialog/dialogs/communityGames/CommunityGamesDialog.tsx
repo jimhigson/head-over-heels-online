@@ -23,7 +23,7 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Dialog
         fullScreen
-        className="bg-metallicBlueHalfbrite text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white zx:bg-zxRed gap-y-2 resHandheld:gap-y-1"
+        className="bg-metallicBlueHalfbrite text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 zx:bg-zxRed toppy:bg-toppyCool4 gap-y-2 resHandheld:gap-y-1"
         dialogId="communityGames"
       >
         <DialogTitleBar path={["Play", "Community"]} className="mobile:px-4" />
@@ -34,6 +34,7 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
             "overflow-y-scroll scrollbar scrollbar-w-1 " +
             "scrollbar-thumb-lightGrey scrollbar-track-metallicBlueHalfbrite " +
             "zx:scrollbar-thumb-zxBlue zx:scrollbar-track-zxWhite " +
+            "toppy:scrollbar-thumb-toppyGrey1 toppy:scrollbar-track-toppyCool4 " +
             // bring away from any 'notch' on mobile devices:
             "mobile:px-3 " +
             "[--leader-col-width:theme(width.3)] "

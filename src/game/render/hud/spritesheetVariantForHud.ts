@@ -7,7 +7,10 @@ import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlic
 
 import { zxSpectrumColor } from "../../../originalGame";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
-import { replacementColour } from "../gameColours/gameColours";
+import {
+  replacementColour,
+  toppyReplacementColour,
+} from "../gameColours/gameColours";
 
 const noTint = new Color(0xffffff);
 
@@ -37,15 +40,20 @@ export const tintForHud = (
   spritesheetMeta: SpritesheetMetadata,
 ): Color => {
   const colorScheme = getRoomColorScheme(roomColor);
+  const hudHue = colorScheme.hud[active ? "brightHue" : "dimmedHue"];
 
-  return spriteOption.uncolourised ?
-      zxSpectrumColor(colorScheme.hud[active ? "brightHue" : "dimmedHue"])
-    : replacementColour(
-        colorScheme.hud[active ? "brightHue" : "dimmedHue"],
-        false,
-        spritesheetMeta.paletteDim !== undefined &&
-          roomColor.shade === "dimmed",
-      );
+  if (spriteOption.uncolourised) {
+    return zxSpectrumColor(hudHue);
+  }
+  if (spriteOption.name === "Toppy") {
+    return toppyReplacementColour(hudHue);
+  }
+  spriteOption.name satisfies "BlockStack";
+  return replacementColour(
+    hudHue,
+    false,
+    spritesheetMeta.paletteDim !== undefined && roomColor.shade === "dimmed",
+  );
 };
 
 export const tintForIcon = (
@@ -53,12 +61,14 @@ export const tintForIcon = (
   roomColor: ZxSpectrumRoomColour,
 ): Color => {
   const colorScheme = getRoomColorScheme(roomColor);
+  const iconHue = colorScheme.hud.icons;
 
-  return spriteOption.uncolourised ?
-      zxSpectrumColor(colorScheme.hud.icons)
-    : replacementColour(
-        colorScheme.hud.icons,
-        false,
-        roomColor.shade === "dimmed",
-      );
+  if (spriteOption.uncolourised) {
+    return zxSpectrumColor(iconHue);
+  }
+  if (spriteOption.name === "Toppy") {
+    return toppyReplacementColour(iconHue);
+  }
+  spriteOption.name satisfies "BlockStack";
+  return replacementColour(iconHue, false, roomColor.shade === "dimmed");
 };

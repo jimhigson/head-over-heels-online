@@ -22,7 +22,7 @@ export const DownloadSpritesheetButton = () => {
 
   return (
     <Button
-      className="px-1 bg-moss zx:bg-zxGreen zx:text-zxBlack"
+      className="px-1 bg-moss zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyBlack"
       ref={ref}
       onClick={handleClick}
       tooltipContent={<BitmapText>Download spritesheet image</BitmapText>}

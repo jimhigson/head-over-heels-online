@@ -19,9 +19,9 @@ import { DialogTitleBar } from "../DialogTitleBar";
 export const AboutDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlue zx:bg-zxRed" />
+      <Border className="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white gap-y-0 justify-center"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-0 justify-center"
         dialogId="about"
       >
         <DialogTitleBar className="pl-1" />
@@ -35,7 +35,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               hintInline
               hint={
                 <BitmapText
-                  className={`text-lightBeige zx:text-zxYellow ${multilineTextClass}`}
+                  className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
                 >
                   The original game manual, readable online
                 </BitmapText>
@@ -50,7 +50,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               hintInline
               hint={
                 <BitmapText
-                  className={`text-lightBeige zx:text-zxYellow ${multilineTextClass}`}
+                  className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
                 >
                   Join the community - the game’s Discord server
                 </BitmapText>
@@ -65,7 +65,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               hintInline
               hint={
                 <BitmapText
-                  className={`text-lightBeige zx:text-zxYellow ${multilineTextClass}`}
+                  className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
                 >
                   View the source code on GitHub
                 </BitmapText>
@@ -80,7 +80,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               hintInline
               hint={
                 <BitmapText
-                  className={`text-lightBeige zx:text-zxYellow ${multilineTextClass}`}
+                  className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
                 >
                   What's new?
                 </BitmapText>

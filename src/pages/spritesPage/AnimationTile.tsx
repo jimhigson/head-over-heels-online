@@ -48,16 +48,16 @@ export const AnimationTile = ({
 
   return (
     <div
-      className="bg-shadow zx:bg-zxRedDimmed m-[4px] p-[8px] text-left flex flex-col w-8"
+      className="bg-shadow zx:bg-zxRedDimmed toppy:bg-toppyGrey3 m-[4px] p-[8px] text-left flex flex-col w-8"
       data-animation-id={animationName}
     >
       <style ref={styleRef} />
       {missingFrameIds.length > 0 ?
-        <div className="text-midRed zx:text-zxRed">
+        <div className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
           missingFrame: {missingFrameIds[0]}
         </div>
       : <div
-          className={`sprite bg-pureBlack zx:bg-zxBlack hover:bg-moss zx:hover:bg-zxYellow border-shadow zx:border-zxRedDimmed box-content w-min
+          className={`sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2 box-content w-min
           ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
             animationName,
@@ -71,7 +71,7 @@ export const AnimationTile = ({
       <SpriteName name={animationName} />
       <Tooltip
         triggerContent={
-          <div className="text-lightGrey zx:text-zxWhiteDimmed cursor-help">
+          <div className="text-lightGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey1 cursor-help">
             {frames.length}&nbsp;frames
           </div>
         }
@@ -90,7 +90,7 @@ export const AnimationTile = ({
           </ul>
         }
       />
-      <div className="text-midGrey zx:text-zxWhiteDimmed">
+      <div className="text-midGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey2">
         speed:&nbsp;{frames.animationSpeed}
       </div>
     </div>

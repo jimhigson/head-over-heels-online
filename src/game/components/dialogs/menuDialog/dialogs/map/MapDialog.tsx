@@ -54,7 +54,7 @@ const MapDialog = <RoomId extends string>() => {
       <Dialog
         ref={mapContainerRef}
         fullScreen
-        className={`bg-white zx:bg-zxBlack pr-0 p-0 mobile:pl-0 justify-center ${mapColourClasses.containerClassName}`}
+        className={`bg-white zx:bg-zxBlack toppy:bg-toppyBlack pr-0 p-0 mobile:pl-0 justify-center ${mapColourClasses.containerClassName}`}
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="map"
       >

@@ -39,7 +39,7 @@ export const SpritesheetOverrideButtons = () => {
 
   return overridden ?
       <Button
-        className="px-1 bg-pink zx:bg-zxMagenta"
+        className="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
         onClick={() => dispatch(clearSpritesheetOverride(spriteOption.name))}
       >
         <BitmapText>x Clear override</BitmapText>
@@ -53,7 +53,7 @@ export const SpritesheetOverrideButtons = () => {
           onChange={handleFileChange}
         />
         <Button
-          className="px-1 bg-pink zx:bg-zxMagenta"
+          className="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
           onClick={() => inputRef.current?.click()}
           tooltipContent="Upload a local PNG to temporarily override the spritesheet image. The override persists across page reloads but is stored in your browser only."
         >

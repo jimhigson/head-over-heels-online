@@ -51,14 +51,14 @@ export const DisplayOptionsDialog = () => {
             verticalAlignItemsCentre
             label={
               <span className="align-top">
-                <span className="bg-shadow zx:bg-pureBlack inline-block">
-                  <BitmapText className="text-midRed zx:text-zxRed">
+                <span className="bg-shadow zx:bg-pureBlack toppy:bg-toppyGrey3 inline-block">
+                  <BitmapText className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
                     C
                   </BitmapText>
-                  <BitmapText className="text-moss zx:text-zxGreen">
+                  <BitmapText className="text-moss zx:text-zxGreen toppy:text-toppyCool2">
                     R
                   </BitmapText>
-                  <BitmapText className="text-pastelBlue zx:text-zxBlue">
+                  <BitmapText className="text-pastelBlue zx:text-zxBlue toppy:text-toppyCool3">
                     T
                   </BitmapText>
                 </span>

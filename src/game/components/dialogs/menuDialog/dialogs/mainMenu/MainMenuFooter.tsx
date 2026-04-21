@@ -4,7 +4,7 @@ import { mainMenuCycle } from "./mainMenuCycle";
 export const MainMenuFooter = () => (
   <footer className="flex justify-center gap-2 resHandheld:gap-1 leading-none h-[calc(26px*var(--scale))]">
     <div className="flex flex-col items-center">
-      <BitmapText className="text-pastelBlue zx:text-zxBlack relative left-oneScaledPix">
+      <BitmapText className="text-pastelBlue zx:text-zxBlack toppy:text-toppyCool2 relative left-oneScaledPix">
         1987 Original
       </BitmapText>
       <div className="flex gap-1">
@@ -34,7 +34,9 @@ export const MainMenuFooter = () => (
       </div>
     </div>
     <div className="flex flex-col items-center">
-      <BitmapText className="text-pink zx:text-zxBlack">2025 Remake</BitmapText>
+      <BitmapText className="text-pink zx:text-zxBlack toppy:text-toppyPink1">
+        2025 Remake
+      </BitmapText>
       <address className="flex relative left-[calc(0.5px*var(--scale))] bottom-oneScaledPix">
         <div className="flex flex-col items-center">
           <BitmapText

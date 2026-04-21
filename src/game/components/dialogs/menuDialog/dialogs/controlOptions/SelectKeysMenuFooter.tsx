@@ -3,7 +3,7 @@ import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignments";
 import { multilineTextClass } from "../../multilineTextClass";
 
-const highlightTextClass = "text-pink zx:text-zxCyan";
+const highlightTextClass = "text-pink zx:text-zxCyan toppy:text-toppyPink1";
 
 export const SelectKeysMenuFooter = () => {
   const actionBeingAssigned = useAppSelector(
@@ -19,6 +19,7 @@ export const SelectKeysMenuFooter = () => {
       className={`
         bg-metallicBlueHalfbrite text-white
         zx:bg-zxBlueDimmed zx:text-zxCyanDimmed
+        toppy:bg-toppyCool4 toppy:text-toppyCool1
 
         ${multilineTextClass} inline-block absolute inset-x-0 bottom-0 h-min pt-1 px-1`}
     >

@@ -46,13 +46,15 @@ export const Button = ({
       data-selected={selected}
       className={cn(
         `inline-flex items-center justify-center whitespace-nowrap 
-          bg-metallicBlue zx:bg-zxBlue border-none border-shadow
+          bg-metallicBlue zx:bg-zxBlue toppy:bg-toppyCool3 border-none border-shadow
           gap-2
-           disabled:bg-midGrey disabled:text-lightGrey 
+           disabled:bg-midGrey disabled:text-lightGrey
            data-[selected=true]:bg-lightBeige
-           [&:not(:disabled):hover:not([data-selected=true])]:bg-pastelBlue 
-           zx:[&:not(:disabled):hover:not([data-selected=true])]:bg-zxYellow 
+           [&:not(:disabled):hover:not([data-selected=true])]:bg-pastelBlue
+           zx:[&:not(:disabled):hover:not([data-selected=true])]:bg-zxYellow
            zx:[&:not(:disabled):hover:not([data-selected=true])]:text-zxBlack
+           toppy:[&:not(:disabled):hover:not([data-selected=true])]:bg-toppyWarm3
+           toppy:[&:not(:disabled):hover:not([data-selected=true])]:text-toppyBlack
            `,
         className,
       )}

@@ -40,7 +40,7 @@ export const GitRepoInfo = () => {
           href={`${repository.url}/releases`}
           target="_blank"
           onClick={linkOpenExternalClickHandler}
-          className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack"
+          className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool3"
         >
           <BitmapText> v</BitmapText>
           <BitmapText className="screenshot-mask mr-1 inline-block">
@@ -48,7 +48,7 @@ export const GitRepoInfo = () => {
             {deployedMajor}
           </BitmapText>
           {isOutdated && (
-            <BitmapText className="animate-flash text-midRed zx:text-zxRed">
+            <BitmapText className="animate-flash text-midRed zx:text-zxRed toppy:text-toppyPink2">
               {/* extra space pulls away from rounded corners of phone screens and app windows */}
               {"⬆ "}
             </BitmapText>
@@ -59,12 +59,12 @@ export const GitRepoInfo = () => {
         href={repository.url}
         onClick={linkOpenExternalClickHandler}
         target="_blank"
-        className="bitmap-text-link zx:bg-zxBlack bg-metallicBlue pl-1"
+        className="bitmap-text-link zx:bg-zxBlack toppy:bg-toppyCool3 bg-metallicBlue pl-1"
       >
-        <BitmapText className="text-highlightBeige zx:text-zxYellow">
+        <BitmapText className="text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm1">
           ★
         </BitmapText>
-        <span className="text-lightGrey zx:text-whiteHalfbrite mr-1">
+        <span className="text-lightGrey zx:text-whiteHalfbrite toppy:text-toppyGrey1 mr-1">
           <BitmapText className="resHandheld:hidden"> on</BitmapText>
           <BitmapText>{nerdFontGithubChar}</BitmapText>
           <BitmapText className="resHandheld:hidden">Github</BitmapText>

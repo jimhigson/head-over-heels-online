@@ -11,6 +11,8 @@ import {
 import {
   type BlockstackPaletteColourName,
   maybeDimPalette,
+  paletteToppy,
+  type ToppyPaletteColourName,
 } from "../../../sprites/palette/spritesheetPalette";
 
 export const gameColour = (
@@ -29,6 +31,17 @@ export const replacementColour = (
 ) => {
   return gameColour(`swop_${hue}${dim ? "Dim" : ""}`, inDimmedPalette);
 };
+
+const toppyHueMapping: Record<ZxSpectrumRoomHue, ToppyPaletteColourName> = {
+  white: "warm1",
+  yellow: "warm3",
+  cyan: "cool2",
+  green: "cool1",
+  magenta: "pink1",
+};
+
+export const toppyReplacementColour = (hue: ZxSpectrumRoomHue): Color =>
+  paletteToppy[toppyHueMapping[hue]];
 
 type PaletteSwapsForPlaceholderColours = NamedColours<
   "replaceDark" | "replaceLight"

@@ -32,12 +32,12 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
     <div
       key={textureId}
       id={`sprite-${sanitiseForClassName(textureId)}`}
-      className="bg-shadow zx:bg-zxRedDimmed m-[4px] p-[8px] text-left flex flex-col w-8 target:bg-white zx:target:bg-zxWhite scroll-mt-10"
+      className="bg-shadow zx:bg-zxRedDimmed toppy:bg-toppyGrey3 m-[4px] p-[8px] text-left flex flex-col w-8 target:bg-white zx:target:bg-zxWhite toppy:target:bg-toppyWarm1 scroll-mt-10"
       data-texture-id={textureId}
     >
       <div
         className={`
-        sprite bg-pureBlack zx:bg-zxBlack hover:bg-moss zx:hover:bg-zxYellow border-shadow zx:border-zxRedDimmed
+        sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2
         box-content w-min
         ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
         // most of these textures won't have classes loaded by tailwind due to ,
@@ -47,7 +47,7 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
       >
         {frame.pivot ?
           <div
-            className={`bg-midRed zx:bg-zxRed relative`}
+            className={`bg-midRed zx:bg-zxRed toppy:bg-toppyPink2 relative`}
             style={{
               width: `${pivotOutlineSizePx}px`,
               height: `${pivotOutlineSizePx}px`,
@@ -61,20 +61,20 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
       <div className="flex-grow" />
       <SpriteName name={textureId} />
 
-      <div className="text-lightGrey zx:text-zxWhiteDimmed">
+      <div className="text-lightGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey1">
         {frame.w}&nbsp;x&nbsp;{frame.h}
       </div>
 
       {frame.pivot ?
-        <div className="text-midRed zx:text-zxRed zx:bg-zxBlack">
+        <div className="text-midRed zx:text-zxRed toppy:text-toppyPink2 zx:bg-zxBlack toppy:bg-toppyBlack">
           pivot: ({frame.pivot.x},&nbsp;
           {frame.pivot.y})
         </div>
-      : <div className="text-metallicBlue zx:text-zxCyan zx:bg-zxBlack">
+      : <div className="text-metallicBlue zx:text-zxCyan toppy:text-toppyCool2 zx:bg-zxBlack toppy:bg-toppyBlack">
           no pivot
         </div>
       }
-      <div className="text-midGrey zx:text-zxWhiteDimmed zx:bg-zxBlack">
+      <div className="text-midGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey2 zx:bg-zxBlack toppy:bg-toppyBlack">
         @({frame.x},&nbsp;{frame.y})
       </div>
     </div>

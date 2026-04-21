@@ -221,7 +221,7 @@ export const RoomSvg = <RoomId extends string>({
         ${
           isCurrentRoom ?
             // make the current room look visually distinct by changing the floor colour:
-            `[--floorColor:theme(colors.shadow)] zx:[--floorColor:theme(colors.zxBlack)]`
+            `[--floorColor:theme(colors.shadow)] zx:[--floorColor:theme(colors.zxBlack)] toppy:[--floorColor:theme(colors.toppyGrey3)]`
           : `[--floorColor:theme(colors.white)]`
         } 
         ${
@@ -229,7 +229,8 @@ export const RoomSvg = <RoomId extends string>({
             `
             group/room
             hover:[--roomHintColor:theme(colors.midRed)] 
-            zx:hover:[--roomHintColor:theme(colors.zxRed)]`
+            zx:hover:[--roomHintColor:theme(colors.zxRed)]
+            toppy:hover:[--roomHintColor:theme(colors.toppyPink2)]`
           : ""
         }
         `}
@@ -260,7 +261,8 @@ export const RoomSvg = <RoomId extends string>({
                 highlightOnHover && !isCurrentRoom ?
                   `
                   group-hover/room:fill-pastelBlue
-                  zx:group-hover/room:fill-zxCyan`
+                  zx:group-hover/room:fill-zxCyan
+                  toppy:group-hover/room:fill-toppyCool1`
                 : ""
               }
             `}

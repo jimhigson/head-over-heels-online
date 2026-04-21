@@ -9,8 +9,6 @@ import {
 import "react";
 import { twMerge } from "tailwind-merge";
 
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { ClassnameWrap } from "../../../utils/react/ClassnameWrap";
 import { sanitiseForClassName } from "./SanitiseForClassName";
@@ -82,8 +80,7 @@ export const BitmapText = ({
           >
             {/* Array.from(string) is unicode-aware */}
             {Array.from(word).map((c, charIndex) => {
-              const textureId =
-                `hud.char.${escapeCharForTailwind(c)}` as TextureId;
+              const textureId = `hud.char.${escapeCharForTailwind(c)}`;
 
               const imgSpriteEle = (
                 <span

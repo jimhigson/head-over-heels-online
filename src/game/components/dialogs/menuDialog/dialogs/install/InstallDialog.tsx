@@ -17,9 +17,9 @@ or by downloading the app.`;
 export const InstallDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlue zx:bg-zxRed" />
+      <Border className="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white justify-center"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 justify-center"
         dialogId="installGuide"
       >
         <DialogTitleBar className="pl-1" path={["Install instructions"]} />

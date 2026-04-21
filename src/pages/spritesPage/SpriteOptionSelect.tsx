@@ -40,10 +40,12 @@ export const SpriteOptionSelect = () => {
   const currentLabel = spriteOptionLabel(spriteOption);
 
   return (
-    <div className="text-white zx:text-zxWhite flex-row flex gap-x-1">
+    <div className="text-white zx:text-zxWhite toppy:text-toppyWarm1 flex-row flex gap-x-1">
       <MultipleBitmapText>
-        <span className="text-midRed zx:text-zxRed">F10</span>to cycle skins, or
-        choose:
+        <span className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
+          F10
+        </span>
+        to cycle skins, or choose:
       </MultipleBitmapText>
       <Select
         value={currentLabel}

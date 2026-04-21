@@ -12,7 +12,7 @@ Builds aren't available yet for mobile, but they are possible in the future
 
 ### Using the Mac binary
 
-I don't pay Apple $99/year to sign the app. So to open on mac, you need to remove the quarantine flag first:
+I don't pay Apple $99/year to sign the app. So to open on Mac, you need to remove the quarantine flag first:
 
 ```sh
 xattr -d com.apple.quarantine "BlockStack Head over Heels.dmg"

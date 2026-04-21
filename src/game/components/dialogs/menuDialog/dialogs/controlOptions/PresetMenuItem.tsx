@@ -19,7 +19,7 @@ const CurrentPresetValue = ({ className }: { className?: string }) => {
       className={twMerge(
         `text-nowrap`,
         "ml-auto",
-        "text-pinkHalfbrite zx:text-zxRed selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed",
+        "text-pinkHalfbrite zx:text-zxRed toppy:text-toppyPink1 selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed toppy:selectedMenuItem:text-toppyPink2",
         className,
       )}
     >

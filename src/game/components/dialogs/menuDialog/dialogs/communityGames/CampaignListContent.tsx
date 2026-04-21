@@ -52,10 +52,10 @@ export const CampaignListContent = ({
 }) => {
   return (
     <>
-      <div className="zx:text-zxCyan  resHandheld:mt-half flex flex-col gap-2">
+      <div className="zx:text-zxCyan toppy:text-toppyCool1 resHandheld:mt-half flex flex-col gap-2">
         {Object.values(campaigns).flatMap((userEntry) => (
           <div key={userEntry.user.id} className="flex flex-col gap-half">
-            <BitmapText className="text-metallicBlue zx:text-zxYellow pl-4 sprites-double-height">
+            <BitmapText className="text-metallicBlue zx:text-zxYellow toppy:text-toppyWarm3 pl-4 sprites-double-height">
               By {userEntry.user.username}:
             </BitmapText>
             {Object.values(userEntry.campaigns).map((campaign) => (

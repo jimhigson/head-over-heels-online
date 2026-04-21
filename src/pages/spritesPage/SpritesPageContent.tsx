@@ -8,6 +8,7 @@ import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { entries } from "../../utils/entries";
 import { AnimationTile } from "./AnimationTile";
+import { PaletteSwatch } from "./PaletteSwatch";
 import { SpritesheetImage } from "./SpritesheetImage";
 import { SpriteTile } from "./SpriteTile";
 
@@ -31,15 +32,16 @@ export const SpritesPageContent = ({
   ).sort() as TextureId[];
   return (
     <div className="e2e-snapshot-target">
+      <PaletteSwatch />
       <SpritesheetImage spriteFilter={spriteFilter} />
       <BitmapText
         id="animations"
-        className="sprites-double-height text-metallicBlue zx:text-zxBlue mt-1"
+        className="sprites-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
         TagName="h1"
       >
         Animations
       </BitmapText>
-      <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack">
+      <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
         {animationEntries.map(([animationName, frames]) => (
           <AnimationTile
             key={animationName}
@@ -51,12 +53,12 @@ export const SpritesPageContent = ({
       </div>
       <BitmapText
         id="sprites"
-        className="sprites-double-height text-metallicBlue zx:text-zxBlue mt-1"
+        className="sprites-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
         TagName="h1"
       >
         Sprites
       </BitmapText>
-      <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack">
+      <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
         {textureIds.map((textureId) => {
           const { frame } = currentSpritesheetData.frames[textureId];
           const frameMaybeWithPivot = frame as typeof frame & {

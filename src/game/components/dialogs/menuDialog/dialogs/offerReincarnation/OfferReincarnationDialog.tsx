@@ -31,19 +31,19 @@ export const OfferReincarnationDialog = () => {
 
   return (
     <DialogPortal>
-      <Border className="bg-midRed zx:bg-zxYellow" />
+      <Border className="bg-midRed zx:bg-zxYellow toppy:bg-toppyPink2" />
       <Dialog
-        className="bg-white zx:bg-zxRed px-1"
+        className="bg-white zx:bg-zxRed toppy:bg-toppyWarm6 px-1"
         dialogId="offerReincarnation"
       >
-        <BitmapText className="sprites-double-height mt-1 mb-2 resHandheld:mt-0 text-redShadow zx:text-zxWhite">
+        <BitmapText className="sprites-double-height mt-1 mb-2 resHandheld:mt-0 text-redShadow zx:text-zxWhite toppy:text-toppyWarm1">
           Uh-oh! Game over.
         </BitmapText>
         <BlockyMarkdown
           markdown={markdown}
-          className="text-redShadow zx:text-zxWhite"
+          className="text-redShadow zx:text-zxWhite toppy:text-toppyWarm3"
         />
-        <MenuItems className="text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1">
+        <MenuItems className="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2 resHandheld:!gap-y-1">
           <MenuItem
             doubleHeightWhenFocussed
             id="reincarnate"

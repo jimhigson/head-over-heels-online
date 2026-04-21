@@ -215,7 +215,7 @@ export const SpritesheetImage = ({
       {mousePos && (
         <>
           <div
-            className="absolute pointer-events-none border bg-pink zx:bg-zxMagenta outline-2"
+            className="absolute pointer-events-none border bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1 outline-2"
             style={{
               left: xRelative(mousePos.x),
               top: yRelative(mousePos.y),
@@ -224,7 +224,7 @@ export const SpritesheetImage = ({
             }}
           />
           <div
-            className="absolute pointer-events-none bg-black zx:bg-zxBlack text-white zx:text-zxWhite px-1 text-xs font-mono"
+            className="absolute pointer-events-none bg-black zx:bg-zxBlack toppy:bg-toppyBlack text-white zx:text-zxWhite toppy:text-toppyWarm1 px-1 text-xs font-mono"
             style={{
               left: xRelative(mousePos.x),
               top: `calc(${yRelative(mousePos.y)} + 40px)`,

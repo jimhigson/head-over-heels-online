@@ -34,11 +34,11 @@ export const SpriteFilterInput = ({
         value={spriteFilter}
         onChange={(e) => onSpriteFilterChange(e.target.value)}
         placeholder="texture id..."
-        className="font-head-over-heels bg-pureBlack zx:bg-zxBlack text-white zx:text-zxWhite px-1 caret-midRed w-15"
+        className="font-head-over-heels bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack text-white zx:text-zxWhite toppy:text-toppyWarm1 px-1 caret-midRed w-15"
       />
       {spriteFilter && (
         <Button
-          className="bg-midRed zx:bg-zxRed"
+          className="bg-midRed zx:bg-zxRed toppy:bg-toppyPink2"
           onClick={() => onSpriteFilterChange("")}
         >
           <BitmapText>x</BitmapText>

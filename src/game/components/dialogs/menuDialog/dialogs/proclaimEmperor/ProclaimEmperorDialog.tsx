@@ -12,12 +12,12 @@ import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 
-const crownClass = `sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass} ${"zx:texture-crown_uncolourised" satisfies TextureTailwindClass} zx:sprite-tinted zx:text-zxYellow`;
+const crownClass = `sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass} ${"zx:texture-crown_uncolourised" satisfies TextureTailwindClass} zx:sprite-tinted zx:text-zxYellow toppy:text-toppyWarm1`;
 
 export const ProclaimEmperorDialog = () => {
   return (
     <DialogPortal>
-      <Border className="bg-pureBlack zx:bg-zxBlack" />
+      <Border className="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
       <Dialog
         className="bg-pureBlack w-zx h-full block p-0"
         onClick={useDispatchActionCallback(backToParentMenu)}
@@ -38,16 +38,16 @@ export const ProclaimEmperorDialog = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan">
+          <div className="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan toppy:text-toppyCool1">
             <BitmapText>The people salute your heroism</BitmapText>
             <BitmapText>and proclaim you</BitmapText>
           </div>
           <BitmapText
             className="text-highlightBeige sprites-double-height"
             classnameCycle={[
-              "text-pink zx:text-zxMagenta",
-              "text-metallicBlue zx:text-zxCyan",
-              "text-highlightBeige zx:text-zxYellow",
+              "text-pink zx:text-zxMagenta toppy:text-toppyPink1",
+              "text-metallicBlue zx:text-zxCyan toppy:text-toppyCool2",
+              "text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3",
             ]}
           >
             EMPEROR

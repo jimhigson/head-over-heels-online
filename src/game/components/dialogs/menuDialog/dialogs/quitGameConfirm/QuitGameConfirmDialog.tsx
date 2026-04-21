@@ -42,22 +42,22 @@ export const QuitGameConfirmDialog = () => {
   const gameApi = useGameApi();
   return (
     <DialogPortal>
-      <Border className="bg-midRed zx:bg-zxYellowDimmed" />
+      <Border className="bg-midRed zx:bg-zxYellowDimmed toppy:bg-toppyPink2" />
       <Dialog
-        className="bg-white zx:bg-zxRedDimmed px-1"
+        className="bg-white zx:bg-zxRedDimmed toppy:bg-toppyWarm6 px-1"
         dialogId="quitGameConfirm"
       >
         <Portal.Provider>
           <div className="flex flex-col gap-y-2 mt-1 items-center h-full">
-            <BitmapText className="sprites-double-height resHandheld:mt-0 text-midRed zx:text-zxWhite">
+            <BitmapText className="sprites-double-height resHandheld:mt-0 text-midRed zx:text-zxWhite toppy:text-toppyWarm1">
               End the Game?
             </BitmapText>
-            <MenuItems className="text-lightGrey zx:text-zxWhite resHandheld:mt-0 resHandheld:!gap-y-1">
+            <MenuItems className="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 resHandheld:mt-0 resHandheld:!gap-y-1">
               <MenuItem
                 doubleHeightWhenFocussed
                 id="no"
                 label="Back"
-                className="selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen"
+                className="selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen toppy:selectedMenuItem:text-toppyCool2"
                 leader={
                   <span
                     className={`${spriteLeaderClasses} sprite ${noUnselectedTextureClass} ${noSelectedTextureClass} sprites-normal-height zx:sprite-revert-to-white`}
@@ -72,7 +72,7 @@ export const QuitGameConfirmDialog = () => {
                   doubleHeightWhenFocussed
                   id="reincarnate"
                   label="Reincarnate"
-                  className="selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxBlue"
+                  className="selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxBlue toppy:selectedMenuItem:text-toppyCool3"
                   leader={
                     <span
                       className={`${spriteLeaderClasses} sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"selectedMenuItem:texture-animated-fish" satisfies AnimatedTextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
@@ -81,7 +81,7 @@ export const QuitGameConfirmDialog = () => {
                   onSelect={() => reincarnateSelected(gameApi)}
                   hint={
                     <BlockyMarkdown
-                      className="zx:[&_.strong]:text-zxYellow"
+                      className="zx:[&_.strong]:text-zxYellow toppy:[&_.strong]:text-toppyWarm1"
                       markdown="Go back and continue from the last **Reincarnation Fish** you ate"
                     />
                   }
@@ -92,7 +92,7 @@ export const QuitGameConfirmDialog = () => {
                 doubleHeightWhenFocussed
                 id="yes"
                 label="End game"
-                className="selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow"
+                className="selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2"
                 onSelect={useDispatchActionCallback(gameOver, {
                   offerReincarnation: false,
                 })}
@@ -103,14 +103,14 @@ export const QuitGameConfirmDialog = () => {
                 }
                 hint={
                   <BlockyMarkdown
-                    className="zx:[&_.strong]:text-zxYellow"
+                    className="zx:[&_.strong]:text-zxYellow toppy:[&_.strong]:text-toppyWarm1"
                     markdown="**Warning!** This game will end!"
                   />
                 }
                 verticalAlignItemsCentre
               />
             </MenuItems>
-            <SelectedItemHint className="text-midGrey zx:text-zxWhite resHandheld:hidden" />
+            <SelectedItemHint className="text-midGrey zx:text-zxWhite toppy:text-toppyGrey1 resHandheld:hidden" />
           </div>
         </Portal.Provider>
       </Dialog>
