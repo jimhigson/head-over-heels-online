@@ -37,8 +37,9 @@ import iceScrapeSoundUrl from "../../sounds/iceScrape.mp3";
 import jetpackTurnaroundSoundUrl from "../../sounds/jetpack_turnaround.mp3";
 import jetpackLoopSoundUrl from "../../sounds/jetpackLoop.mp3";
 import landingSoundUrl from "../../sounds/landing.mp3";
+import lowerSmallMotorLoopSoundUrl from "../../sounds/lowerSmallMotorLoop.mp3";
 import lowHumSoundUrl from "../../sounds/lowHum.mp3";
-import menuSoundUrl from "../../sounds/menu.mp3";
+import menuSofterSoundUrl from "../../sounds/menuSofter.mp3";
 import metalHitSoundUrl from "../../sounds/metalClang.mp3";
 import heavyMetalScrapingSoundUrl from "../../sounds/metalicScraping.mp3";
 import mojoLoopSoundUrl from "../../sounds/mojo.mp3";
@@ -111,8 +112,9 @@ export const soundUrls = {
   jetpackLoop: jetpackLoopSoundUrl,
   jetpackTurnaround: jetpackTurnaroundSoundUrl,
   landing: landingSoundUrl,
+  lowerSmallMotorLoop: lowerSmallMotorLoopSoundUrl,
   lowHum: lowHumSoundUrl,
-  menu: menuSoundUrl,
+  menuSofter: menuSofterSoundUrl,
   metalHit: metalHitSoundUrl,
   mojoLoop: mojoLoopSoundUrl,
   mojoTurn: mojoTurnSoundUrl,
@@ -135,7 +137,7 @@ export const soundUrls = {
   teleportIn: teleportInSoundUrl,
   teleportOut: teleportOutSoundUrl,
   teleportWarningSiren: teleportWarningSirenSoundUrl,
-  toasterPopUpSoundUrl,
+  toasterPopUp: toasterPopUpSoundUrl,
   woodScrape: woodScrapeSoundUrl,
   ...({
     "roomEntry.blacktooth": blacktoothMusicUrl,

@@ -18,7 +18,7 @@ export const playMenuSoundsOnStoreChanges = () => {
   let menuBuffer: AudioBuffer | undefined;
   let scrollOpenBuffer: AudioBuffer | undefined;
 
-  loadAndDecode(soundUrls.menu).then((b) => (menuBuffer = b));
+  loadAndDecode(soundUrls.menuSofter).then((b) => (menuBuffer = b));
   loadAndDecode(soundUrls.scrollOpen).then((b) => (scrollOpenBuffer = b));
 
   const play = (buffer: AudioBuffer | undefined, volume: number) => {
