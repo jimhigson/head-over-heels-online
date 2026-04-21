@@ -180,26 +180,22 @@ const SummonPlayableButton = <RoomId extends string>({
         <>
           <span
             className={`sprite
-              ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}
-              [button:hover_&]:${spriteClassname({ character: "head", action: "walking", facingXy8: "towards" })}`}
+              ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}`}
           />
           over
           <span
             className={`sprite
-              ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}
-              [button:hover_&]:${spriteClassname({ character: "heels", action: "walking", facingXy8: "towards" })}`}
+              ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
           />
         </>
       : playableName === "heels" ?
         <span
           className={`sprite
-            ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}
-            [button:hover_&]:${spriteClassname({ character: "heels", action: "walking", facingXy8: "towards" })}`}
+            ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
         />
       : <span
           className={`sprite
-            ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}
-            [button:hover_&]:${spriteClassname({ character: "head", action: "walking", facingXy8: "towards" })}`}
+            ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}`}
         />
       }
     </Button>

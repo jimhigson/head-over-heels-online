@@ -103,7 +103,7 @@ export default {
     {
       // playable character animations are referenced dynamically via playableTailwindSpriteClassname
       pattern: /texture-animated-(head|heels)_(walking|idle)_/,
-      variants: ["selectedMenuItem", "activated", "[button:hover_&]"],
+      variants: ["selectedMenuItem", "activated"],
     },
     {
       // playable character static textures referenced dynamically

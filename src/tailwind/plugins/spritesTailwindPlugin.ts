@@ -315,6 +315,7 @@ export const spritesTailwindPlugin = plugin(
         h,
         x,
         y,
+        fullSpritesheetData,
       );
 
       // allow sprites-uppercase class to work as an equivalent to
@@ -350,7 +351,7 @@ export const spritesTailwindPlugin = plugin(
           const otherCaseTextureId = `hud.char.${otherCase}`;
           if (!isTextureId(otherCaseTextureId, fullSpritesheetData)) {
             utilities[`.texture-${sanitiseId(otherCaseTextureId)}`] =
-              spriteSpecificCssVars(w, h, x, y);
+              spriteSpecificCssVars(w, h, x, y, fullSpritesheetData);
           }
         }
       }
@@ -401,6 +402,7 @@ export const spritesTailwindPlugin = plugin(
         frames: FramesWithSpeed<TextureId[]>,
         spritesheetData: ReturnType<typeof makeSpritesheetData>,
         keyframePrefix = "",
+        elideOverride?: { x?: boolean; y?: boolean },
       ) => {
         const normalUtility = utilities[
           `.texture-animated-${sanitiseId(animationName)}`
@@ -413,6 +415,7 @@ export const spritesTailwindPlugin = plugin(
             frames,
             spritesheetData,
             keyframePrefix,
+            elideOverride,
           ),
         );
       };
@@ -436,6 +439,27 @@ export const spritesTailwindPlugin = plugin(
         const baseFallbackX = baseUtility["--x"];
         const baseFallbackY = baseUtility["--y"];
 
+        // --x / --y can be elided from every keyframe step only when all frames
+        // in every sheet variant agree on a single value. The reversed utility
+        // class is only emitted once (no per-sheet override), so each sheet's
+        // keyframe needs to be safe against the reference sheet's fallback too.
+        const variantFrameXYs: { x: number; y: number }[] = [];
+        for (const [frames, sheetData] of [
+          [bsFrames, perSheetData.BlockStack] as const,
+          [toppyFrames, perSheetData.Toppy] as const,
+        ]) {
+          if (!frames || !sheetData) continue;
+          for (const id of frames) {
+            const frame = sheetData.frames[id];
+            if (frame) variantFrameXYs.push(frame.frame);
+          }
+        }
+        const [firstVariantFrame] = variantFrameXYs;
+        const elideAcrossSheets = firstVariantFrame && {
+          x: variantFrameXYs.every((f) => f.x === firstVariantFrame.x),
+          y: variantFrameXYs.every((f) => f.y === firstVariantFrame.y),
+        };
+
         const sheetAnimationVariation = (
           frames: FramesWithSpeed<TextureId[]> | undefined,
           sheetData: ReturnType<typeof makeSpritesheetData>,
@@ -443,7 +467,12 @@ export const spritesTailwindPlugin = plugin(
         ): Record<string, unknown> => {
           if (frames === undefined) return {};
 
-          assignKeyframesToUtility(frames, sheetData, sheetPrefix);
+          assignKeyframesToUtility(
+            frames,
+            sheetData,
+            sheetPrefix,
+            elideAcrossSheets || undefined,
+          );
 
           const result: Record<string, unknown> = animationCssVarValues(
             animationName,

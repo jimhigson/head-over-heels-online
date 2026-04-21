@@ -1,6 +1,7 @@
+import tailwindcss from "tailwindcss";
+
+import pruneUnused from "./postcss-prune-unused.js";
+
 export default {
-  plugins: {
-    tailwindcss: {},
-    // autoprefixer removed - targeting only modern browsers
-  },
+  plugins: [tailwindcss(), pruneUnused()],
 };
