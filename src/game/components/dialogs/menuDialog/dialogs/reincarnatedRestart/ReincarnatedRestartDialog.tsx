@@ -21,22 +21,22 @@ export const ReincarnatedRestartDialog = () => {
         dialogId="reincarnatedRestart"
       >
         <BitmapText
-          className={`${multilineTextClass} text-midRed zx:text-zxRed block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
+          className={`${multilineTextClass} text-midRed zx:text-zxRed toppy:text-toppyPink2 block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
         >
           You don’t go towards the light
         </BitmapText>
         <BitmapText
-          className={`${multilineTextClass} block text-highlightBeige zx:text-zxYellow w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
+          className={`${multilineTextClass} block text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
         >
           You have a horrible taste in your mouth
         </BitmapText>
         <BitmapText
-          className={`${multilineTextClass} block text-moss zx:text-zxGreen w-24 mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix`}
+          className={`${multilineTextClass} block text-moss zx:text-zxGreen toppy:text-toppyCool2 w-24 mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix`}
         >
           You have reincarnated!
         </BitmapText>
         <BitmapText
-          className={`${multilineTextClass} block text-pastelBlue zx:text-zxCyan w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
+          className={`${multilineTextClass} block text-pastelBlue zx:text-zxCyan toppy:text-toppyCool1 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
         >
           Everything is back to how it was when you ate the fish
         </BitmapText>

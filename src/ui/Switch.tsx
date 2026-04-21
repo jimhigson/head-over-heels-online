@@ -87,8 +87,8 @@ export const Switch = ({
         className={clsx(
           "inline-block w-min h-min py-half px-half sprites-uppercase",
           value ?
-            "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen"
-          : "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
+            "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen toppy:bg-toppyGrey3 toppy:text-toppyCool2"
+          : "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed toppy:bg-toppyGrey3 toppy:text-toppyPink2",
         )}
         noSlitWords
       >
@@ -120,10 +120,10 @@ export type SwitchNProps<TValue extends number | string> = {
 };
 
 const switchNColours = twClass([
-  "bg-redShadowHalfbrite text-highlightBeige zx:bg-zxBlack zx:text-zxGreen",
-  "bg-metallicBlueHalfbrite text-pastelBlue zx:bg-zxBlack zx:text-zxBlue",
-  "bg-pinkHalfbrite text-pink zx:bg-zxBlack zx:text-zxYellow",
-  "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed",
+  "bg-redShadowHalfbrite text-highlightBeige zx:bg-zxBlack zx:text-zxGreen toppy:bg-toppyGrey3 toppy:text-toppyCool2",
+  "bg-metallicBlueHalfbrite text-pastelBlue zx:bg-zxBlack zx:text-zxBlue toppy:bg-toppyGrey3 toppy:text-toppyCool3",
+  "bg-pinkHalfbrite text-pink zx:bg-zxBlack zx:text-zxYellow toppy:bg-toppyGrey3 toppy:text-toppyWarm3",
+  "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed toppy:bg-toppyGrey3 toppy:text-toppyPink2",
 ]);
 
 const settingSounds = [

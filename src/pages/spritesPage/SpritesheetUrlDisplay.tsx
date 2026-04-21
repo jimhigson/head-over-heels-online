@@ -22,7 +22,7 @@ export const SpritesheetUrlDisplay = () => {
 
   return (
     <span ref={ref}>
-      <BitmapText className="text-pastelBlue zx:text-zxCyan">
+      <BitmapText className="text-pastelBlue zx:text-zxCyan toppy:text-toppyCool2">
         {overridden ? "(overridden)" : url || " "}
       </BitmapText>
     </span>

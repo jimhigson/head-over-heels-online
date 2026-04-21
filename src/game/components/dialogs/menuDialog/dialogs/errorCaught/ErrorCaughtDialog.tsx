@@ -125,9 +125,9 @@ export const ErrorCaughtDialog = ({
 
   return (
     <DialogPortal>
-      <Border className="loading-border zx:zx-loading-border" />
+      <Border className="loading-border zx:zx-loading-border toppy:toppy-loading-border" />
       <Dialog
-        className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1"
+        className="bg-white zx:bg-zxRed toppy:bg-toppyWarm1 gap-y-0 text-redShadow zx:text-zxBlack toppy:text-toppyCool4 px-1"
         tall
         wide
         dialogId="errorCaught"
@@ -137,13 +137,14 @@ export const ErrorCaughtDialog = ({
             "overflow-y-scroll h-full " +
             "scrollbar scrollbar-w-1 pl-1 " +
             "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
-            "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan"
+            "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan " +
+            "toppy:scrollbar-thumb-toppyCool3 toppy:scrollbar-track-toppyCool1"
           }
         >
           <BlockyMarkdown markdown={markdownIntro} />
-          <hr className="bg-pastelBlue zx:bg-zxWhite h-1 my-1 border-none" />
+          <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
           <MenuItems
-            className={`text-lightGrey zx:text-zxWhite mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow resHandheld:!gap-y-1 ${multilineTextClass}`}
+            className={`text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2 resHandheld:!gap-y-1 ${multilineTextClass}`}
           >
             <MenuItem
               doubleHeightWhenFocussed
@@ -184,12 +185,12 @@ export const ErrorCaughtDialog = ({
               />
             }
           </MenuItems>
-          <hr className="bg-pastelBlue zx:bg-zxWhite h-1 my-1 border-none" />
-          <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite">
+          <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
+          <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite toppy:text-toppyPink2">
             Error message for nerds:
           </BitmapText>
           <pre
-            className={`bg-shadow zx:bg-zxBlack text-white zx:text-zxWhite leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
+            className={`bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
           >
             <StackTracesWithLinks>{errorsReportText}</StackTracesWithLinks>
           </pre>

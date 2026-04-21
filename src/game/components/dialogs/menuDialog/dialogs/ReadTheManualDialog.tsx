@@ -38,15 +38,15 @@ const ReadTheManualDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-midGrey zx:bg-zxCyan"
+        className="bg-midGrey zx:bg-zxCyan toppy:bg-toppyCool2"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
         tall
         className={
-          "bg-highlightBeige zx:bg-zxCyanDimmed max-h-min " +
-          `text-redShadow zx:text-zxWhite !gap-y-0 py-0 ` +
-          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack "
+          "bg-highlightBeige zx:bg-zxCyanDimmed toppy:bg-toppyCool1 max-h-min " +
+          `text-redShadow zx:text-zxWhite toppy:text-toppyCool4 !gap-y-0 py-0 ` +
+          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack toppy:selectedMenuItem:text-toppyBlack "
         }
         dialogId="readTheManual"
       >
@@ -57,13 +57,14 @@ const ReadTheManualDialog = () => {
             "overflow-y-scroll scrollbar scrollbar-w-1 pl-1 " +
             "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
             "zx:scrollbar-thumb-zxBlack zx:scrollbar-track-zxCyanDimmed " +
+            "toppy:scrollbar-thumb-toppyCool3 toppy:scrollbar-track-toppyCool1 " +
             // bring away from any 'notch' on mobile devices:
             "mobile:px-3 "
           }
         >
           <h1
             className={
-              "text-moss zx:text-zxBlack mx-auto flex flex-row justify-center items-center w-full" +
+              "text-moss zx:text-zxBlack toppy:text-toppyCool3 mx-auto flex flex-row justify-center items-center w-full" +
               " mb-1"
             }
           >

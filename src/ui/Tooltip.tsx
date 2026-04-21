@@ -26,7 +26,7 @@ export const Tooltip = ({ triggerContent, tooltipContent }: TooltipProps) => {
             <TooltipContent
               side="bottom"
               align="end"
-              className="bg-lightBeige zx:bg-zxYellowDimmed text-white p-1 mt-oneScaledPix drop-shadow-oneBlock z-popups"
+              className="bg-lightBeige zx:bg-zxYellowDimmed toppy:bg-toppyWarm2 text-white p-1 mt-oneScaledPix drop-shadow-oneBlock z-popups"
             >
               {typeof tooltipContent === "string" ?
                 <div className="max-w-16">

@@ -25,7 +25,7 @@ export const SpritesPageToolbar = ({
   const spriteOption = useSpritesOption();
 
   return (
-    <div className="sticky top-0 bg-metallicBlueHalfbrite zx:bg-zxWhiteDimmed z-dialog w-max gap-y-oneScaledPix flex flex-col">
+    <div className="sticky top-0 bg-metallicBlueHalfbrite zx:bg-zxWhiteDimmed toppy:bg-toppyCool4 z-dialog w-max gap-y-oneScaledPix flex flex-col">
       <SpriteOptionSelect />
       <ScaleSelect scale={scale} onScaleChange={onScaleChange} />
       <div className="flex flex-row gap-x-2">

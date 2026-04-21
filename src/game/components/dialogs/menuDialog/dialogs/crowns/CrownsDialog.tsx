@@ -20,7 +20,7 @@ export const CrownsDialog = ({
   const closeDialog = useDispatchActionCallback(backToParentMenu);
   return (
     <DialogPortal>
-      <Border className="bg-pureBlack zx:bg-zxBlack" />
+      <Border className="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
 
       <Dialog
         className="bg-pureBlack w-zx h-full block p-0"

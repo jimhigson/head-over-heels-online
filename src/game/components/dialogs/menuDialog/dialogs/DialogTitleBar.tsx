@@ -29,16 +29,16 @@ export const DialogTitleBar = ({
       <div className="flex flex-row items-center">
         {path.slice(0, -1).map((p, i) => (
           <div className="flex flex-row" key={i}>
-            <BitmapText className="text-midGrey zx:text-pureBlack">
+            <BitmapText className="text-midGrey zx:text-pureBlack toppy:text-toppyGrey3">
               {p}
             </BitmapText>
-            <BitmapText className="text-midRed zx:text-zxRedDimmed">
+            <BitmapText className="text-midRed zx:text-zxRedDimmed toppy:text-toppyPink2">
               ➡
             </BitmapText>
           </div>
         ))}
         {last && (
-          <div className="flex flex-row sprites-double-height text-midRed zx:text-zxBlue">
+          <div className="flex flex-row sprites-double-height text-midRed zx:text-zxBlue toppy:text-toppyPink2">
             <BitmapText TagName="h1">{last}</BitmapText>
           </div>
         )}

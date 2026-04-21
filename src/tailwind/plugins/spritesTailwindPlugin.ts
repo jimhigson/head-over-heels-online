@@ -4,9 +4,11 @@ import { imageSize } from "image-size";
 import plugin from "tailwindcss/plugin";
 
 import spritesheetPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
+import toppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumColors } from "../../originalGame";
 import { isTextureId } from "../../sprites/assertIsTextureId";
+import { charReplacements } from "../../sprites/escapeCharForTailwind";
 import {
   type FramesWithSpeed,
   makeSpritesheetData,
@@ -215,6 +217,10 @@ export const spritesTailwindPlugin = plugin(
       animation:
         "loading-border-scroll-down 1s steps(20) infinite, loading-border-flux 1s steps(20) infinite, zx-loading-bars-colour-cycle 6s steps(2, end) infinite",
     };
+    utilities[".toppy-loading-border"] = {
+      animation:
+        "loading-border-scroll-down 1s steps(24) infinite, loading-border-flux 1s steps(24) infinite, toppy-loading-bars-colour-cycle 12s steps(4, end) infinite",
+    };
     base["@property --t"] = {
       syntax: `"<number>"`,
       inherits: "false",
@@ -268,6 +274,35 @@ export const spritesTailwindPlugin = plugin(
         "--c2": halfbriteHex(spritesheetPalette.white),
       },
     };
+    base["@keyframes toppy-loading-bars-colour-cycle"] = {
+      "0%": {
+        "--c1": halfbriteHex(toppyPalette.cool3),
+        "--c2": halfbriteHex(toppyPalette.cool1),
+      },
+      "25%": {
+        "--c1": halfbriteHex(toppyPalette.pink2),
+        "--c2": halfbriteHex(toppyPalette.warm3),
+      },
+      "50%": {
+        "--c1": halfbriteHex(toppyPalette.cool2),
+        "--c2": halfbriteHex(toppyPalette.warm1),
+      },
+      "75%": {
+        "--c1": halfbriteHex(toppyPalette.pink1),
+        "--c2": halfbriteHex(toppyPalette.warm2),
+      },
+    };
+
+    // bidirectional map between lowercase and uppercase char replacement names
+    // so that eg DQUOTE correctly maps back to dQuote (not dquote)
+    const charCaseMap = new Map<string, string>();
+    for (const [, name] of entries(charReplacements)) {
+      const upper = name.toUpperCase();
+      if (upper !== name) {
+        charCaseMap.set(name, upper);
+        charCaseMap.set(upper, name);
+      }
+    }
 
     for (const [
       textureId,
@@ -301,6 +336,21 @@ export const spritesTailwindPlugin = plugin(
               "--x": `${xUpper}`,
               "--y": `${yUpper}`,
             };
+          }
+        }
+
+        // if this char doesn't have an opposite-case equivalent on the spritesheet,
+        // generate an alias so both cases resolve to the same sprite
+        const otherCase =
+          charCaseMap.get(char) ??
+          (char === char.toUpperCase() ?
+            char.toLowerCase()
+          : char.toUpperCase());
+        if (otherCase !== char) {
+          const otherCaseTextureId = `hud.char.${otherCase}`;
+          if (!isTextureId(otherCaseTextureId, fullSpritesheetData)) {
+            utilities[`.texture-${sanitiseId(otherCaseTextureId)}`] =
+              spriteSpecificCssVars(w, h, x, y);
           }
         }
       }
@@ -451,6 +501,7 @@ export const spritesTailwindPlugin = plugin(
     // add a variant for zx-spectrum-colour palette
     // this can be done differently in tw4: https://tailwindcss.com/docs/adding-custom-styles#adding-custom-variants
     addVariant("zx", ".zx &");
+    addVariant("toppy", ".toppy-spritesheet &");
 
     // for different screen size things:
     addVariant("mobile", ".mobile &");

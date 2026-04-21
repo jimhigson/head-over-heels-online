@@ -9,7 +9,7 @@ export type ScaleSelectProps = {
 };
 
 export const ScaleSelect = ({ scale, onScaleChange }: ScaleSelectProps) => (
-  <div className="text-white zx:text-zxWhite flex-row flex gap-x-1">
+  <div className="text-white zx:text-zxWhite toppy:text-toppyWarm1 flex-row flex gap-x-1">
     <BitmapText>Upscale:</BitmapText>
     <Select
       value={`${scale}` as (typeof scaleValues)[number]}

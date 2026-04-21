@@ -12,7 +12,7 @@ import { standardControllerButtonNames } from "../../../input/controllers";
 import { MultipleBitmapText } from "../../tailwindSprites/BitmapText";
 
 const specialCharClassName =
-  "text-mossHalfbrite zx:text-zxGreen selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen";
+  "text-mossHalfbrite zx:text-zxGreen toppy:text-toppyCool2 selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen toppy:selectedMenuItem:text-toppyCool2";
 
 /**
  * put the keys array into a more readable order for displaying on the mapping
@@ -106,25 +106,25 @@ const friendlyButtonName = (button: number) => {
       return "D-pad➡";
     case "a":
       return (
-        <span className="colourised:text-mossHalfbrite colourised:selectedMenuItem:text-moss zx:text-zxGreen">
+        <span className="colourised:text-mossHalfbrite colourised:selectedMenuItem:text-moss zx:text-zxGreen toppy:text-toppyCool2">
           A
         </span>
       );
     case "b":
       return (
-        <span className="colourised:text-midRedHalfbrite colourised:selectedMenuItem:text-midRed zx:text-zxRed">
+        <span className="colourised:text-midRedHalfbrite colourised:selectedMenuItem:text-midRed zx:text-zxRed toppy:text-toppyPink2">
           B
         </span>
       );
     case "x":
       return (
-        <span className="colourised:text-metallicBlueHalfbrite colourised:selectedMenuItem:text-metallicBlue zx:text-zxBlue">
+        <span className="colourised:text-metallicBlueHalfbrite colourised:selectedMenuItem:text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3">
           X
         </span>
       );
     case "y":
       return (
-        <span className="colourised:text-highlightBeigeHalfbrite colourised:selectedMenuItem:text-highlightBeige zx:text-zxYellow">
+        <span className="colourised:text-highlightBeigeHalfbrite colourised:selectedMenuItem:text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
           Y
         </span>
       );

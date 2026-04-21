@@ -66,7 +66,7 @@ const useKeyAssignmentInput = () => {
 
 const ExpandToShowAll = ({ showAll }: { showAll: () => void }) => {
   return (
-    <div className="text-metallicBlueHalfbrite zx:text-zxBlue">
+    <div className="text-metallicBlueHalfbrite zx:text-zxBlue toppy:text-toppyCool3">
       <BitmapText className={`block mb-1 ${multilineTextClass}`}>
         Detected that you are on a phone or tablet
       </BitmapText>
@@ -76,7 +76,7 @@ const ExpandToShowAll = ({ showAll }: { showAll: () => void }) => {
         keyboard or gamepad connected
       </BitmapText>
       <Button
-        className={`block w-full mb-2 text-white p-1 bg-midRed zx:text-zxRed ${multilineTextClass}`}
+        className={`block w-full mb-2 text-white p-1 bg-midRed zx:text-zxRed toppy:text-toppyPink2 toppy:bg-toppyWarm5 ${multilineTextClass}`}
         onClick={showAll}
       >
         <BitmapText>Tap here to show all settings</BitmapText>
@@ -101,7 +101,7 @@ export const ControlOptionsDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-lightGrey zx:bg-zxRedDimmed"
+        className="bg-lightGrey zx:bg-zxRedDimmed toppy:bg-toppyGrey1"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
@@ -126,7 +126,7 @@ export const ControlOptionsDialog = () => {
                 <PresetMenuItem />
                 <BitmapText
                   TagName="h1"
-                  className="text-midRed zx:text-zxBlue sprites-double-height mt-1 block col-span-3 text-center sprites-uppercase"
+                  className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 sprites-double-height mt-1 block col-span-3 text-center sprites-uppercase"
                 >
                   Select the Keys
                 </BitmapText>

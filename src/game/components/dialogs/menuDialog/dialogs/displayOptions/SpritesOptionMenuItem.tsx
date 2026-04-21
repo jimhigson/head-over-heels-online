@@ -33,8 +33,8 @@ const spritesOptionLabel = (spriteOption: SpriteOption): string =>
 
 const spritesOptionDescription = (spriteOption: SpriteOption): string =>
   spriteOption.uncolourised ? `Original *two-tone* zx-spectrum graphics`
-  : spriteOption.name === "Toppy" ? `*Toppy*'s redrawn and reworked sprites`
-  : `16 colour sprites, expanded but faithful to the original`;
+  : spriteOption.name === "Toppy" ? `*Toppy*'s pixel art`
+  : `Expanded 16-colour revision of the original`;
 
 const spriteOptionLabels = spriteOptionValues.map(spritesOptionLabel);
 
@@ -48,7 +48,7 @@ export const SpritesOptionMenuItem = () => {
       hintInline
       className="sprites-double-height"
       id="spritesOption"
-      label="Sprites"
+      label="Skin"
       valueElement={
         <SwitchN
           className="ml-auto"

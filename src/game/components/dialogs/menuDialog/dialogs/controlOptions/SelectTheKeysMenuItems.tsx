@@ -26,7 +26,7 @@ export const SelectTheKeysMenuItems = () => {
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
-          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
         >
           Movement
         </BitmapText>
@@ -105,7 +105,7 @@ export const SelectTheKeysMenuItems = () => {
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
-          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
         >
           Character-specific Abilities
         </BitmapText>
@@ -159,7 +159,7 @@ export const SelectTheKeysMenuItems = () => {
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
-          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
         >
           Character Swopping
         </BitmapText>
@@ -241,7 +241,7 @@ export const SelectTheKeysMenuItems = () => {
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
-          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
         >
           Stopping the Game
         </BitmapText>
@@ -284,7 +284,7 @@ export const SelectTheKeysMenuItems = () => {
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
-          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1 sprites-double-height pb-1`}
+          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1 sprites-double-height pb-1`}
         >
           Look controls
         </BitmapText>
@@ -333,7 +333,7 @@ export const SelectTheKeysMenuItems = () => {
       <div className="col-span-3">
         <BitmapText
           TagName="h2"
-          className={`text-midRed zx:text-zxBlue ${multilineTextClass} pt-1  sprites-double-height`}
+          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
         >
           Remake Option Toggles
         </BitmapText>

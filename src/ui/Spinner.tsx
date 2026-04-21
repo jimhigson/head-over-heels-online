@@ -6,24 +6,24 @@ type LoaderProps = {
 
 export const SpinnerHead = ({ loadingBorder }: LoaderProps = {}) => (
   <div
-    className={`flex h-full items-center justify-center ${loadingBorder ? "loading-border zx:zx-loading-border" : ""}`}
+    className={`flex h-full items-center justify-center ${loadingBorder ? "loading-border zx:zx-loading-border toppy:toppy-loading-border" : ""}`}
     role="status"
     aria-label="Loading"
   >
     <span
-      className={`sprite ${"texture-animated-head_walking_right" satisfies AnimatedTextureTailwindClass}`}
+      className={`sprite ${"texture-animated-head_walking_right" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-zxYellow`}
       aria-hidden
     />
   </div>
 );
 export const SpinnerHeels = ({ loadingBorder }: LoaderProps = {}) => (
   <div
-    className={`flex h-full items-center justify-center ${loadingBorder ? "loading-border zx:zx-loading-border" : ""}`}
+    className={`flex h-full items-center justify-center ${loadingBorder ? "loading-border zx:zx-loading-border toppy:toppy-loading-border" : ""}`}
     role="status"
     aria-label="Loading"
   >
     <span
-      className={`sprite ${"texture-animated-heels_walking_towards" satisfies AnimatedTextureTailwindClass}`}
+      className={`sprite ${"texture-animated-heels_walking_towards" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-zxYellow`}
       aria-hidden
     />
   </div>

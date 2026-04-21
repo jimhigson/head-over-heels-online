@@ -15,7 +15,7 @@ export const HoldDialog = () => {
     <DialogPortal>
       <Dialog
         // the original game is blue, but blue-on-black is poor contrast so using cyan:
-        className="!h-min !w-max text-center text-zxCyan p-0 bg-transparent"
+        className="!h-min !w-max text-center text-zxCyan toppy:text-toppyCool1 p-0 bg-transparent"
         // need to be able to click/tap on the hold dialog to exit, or it
         // isn't possible to leave it on devices with no keyboard/gamepad:
         onClick={useDispatchActionCallback(backToParentMenu)}
@@ -36,7 +36,7 @@ export const HoldDialog = () => {
                 <div className="flex flex-row gap-1 mx-auto">
                   <CurrentKeyAssignments
                     className="flex flex-row gap-1"
-                    keyClassName="text-pink zx:text-zxRed"
+                    keyClassName="text-pink zx:text-zxRed toppy:text-toppyPink2"
                     action="hold"
                   />
                 </div>
@@ -50,7 +50,7 @@ export const HoldDialog = () => {
                 <div className="flex flex-row gap-1 mx-auto">
                   <CurrentKeyAssignments
                     className="flex flex-row gap-1"
-                    keyClassName="text-pink zx:text-zxRed"
+                    keyClassName="text-pink zx:text-zxRed toppy:text-toppyPink2"
                     action="map"
                   />
                 </div>
@@ -59,7 +59,7 @@ export const HoldDialog = () => {
           : <div
               className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
             >
-              <BitmapText className="me-1 text-pink zx:text-zxRed">
+              <BitmapText className="me-1 text-pink zx:text-zxRed toppy:text-toppyPink2">
                 Tap screen
               </BitmapText>
               <BitmapText>to continue</BitmapText>

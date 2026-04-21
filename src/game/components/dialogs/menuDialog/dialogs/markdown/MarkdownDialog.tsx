@@ -49,16 +49,16 @@ const MarkdownDialog = (
       {isTopLevelMenu || (
         // if a top level menu, let the game show through under:
         <Border
-          className="bg-midGrey zx:bg-zxWhiteDimmed"
+          className="bg-midGrey zx:bg-zxWhiteDimmed toppy:bg-toppyGrey2"
           onClick={goBackCallback}
         />
       )}
       <Dialog
         tall={!isTopLevelMenu}
         className={
-          "bg-highlightBeige zx:bg-zxCyanDimmed " +
-          `text-shadow zx:text-zxWhite !gap-y-0 py-0 ` +
-          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack"
+          "bg-highlightBeige zx:bg-zxCyanDimmed toppy:bg-toppyCool1 " +
+          `text-shadow zx:text-zxWhite toppy:text-toppyCool4 !gap-y-0 py-0 ` +
+          "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack toppy:selectedMenuItem:text-toppyBlack"
         }
         dialogId={props.dialogId}
       >
@@ -72,6 +72,7 @@ const MarkdownDialog = (
               "scrollbar scrollbar-w-1 pl-1 pt-1 " +
               "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
               "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan " +
+              "toppy:scrollbar-thumb-toppyCool3 toppy:scrollbar-track-toppyCool1 " +
               "mobile:px-3",
           )}
           ref={contentRef}

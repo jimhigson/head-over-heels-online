@@ -68,7 +68,7 @@ const DownloadOrInstallMenuItem = () => {
   return (
     <MenuItem
       id="installGuide"
-      className="text-moss zx:text-zxGreen"
+      className="text-moss zx:text-zxGreen toppy:text-toppyCool2"
       label={deviceType === "mobile" ? "Install" : "Download & Install"}
       doubleHeightWhenFocussed
       leader={<BitmapText className="text-center w-2">⬇</BitmapText>}
@@ -103,7 +103,7 @@ const QuitGameMenuItem = () => {
     <MenuItem
       id="quitGame"
       label={hasReincarnationPoint ? "End game / reincarnate" : "End game"}
-      className="text-midRed zx:text-zxYellow"
+      className="text-midRed zx:text-zxYellow toppy:text-toppyPink2"
       subMenuId="quitGameConfirm"
       doubleHeightWhenFocussed
       hidden={!isGameRunning}
@@ -135,7 +135,11 @@ const ExitAppMenuItem = () => {
     <MenuItem
       id="exit"
       label={selectedOnce ? "Again to exit" : "Exit"}
-      className={selectedOnce ? "selectedMenuItem:text-midRed" : ""}
+      className={
+        selectedOnce ?
+          "selectedMenuItem:text-midRed toppy:selectedMenuItem:text-toppyPink2"
+        : ""
+      }
       leader={
         <BitmapText className="text-center">
           {selectedOnce ? "!" : "X"}
@@ -198,16 +202,16 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
 
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed" />
+      <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed gap-y-0 pt-0 pb-oneScaledPix resHandheld:w-30"
+        className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 gap-y-0 pt-0 pb-oneScaledPix resHandheld:w-30"
         dialogId="mainMenu"
       >
         <MainMenuHeading
           noSubtitle={isGameRunning}
           className={`${isGameRunning ? "resHandheld:hidden pt-3" : "pt-2"} resHandheld:pt-half`}
         />
-        <div className="flex-grow justify-around text-highlightBeige zx:text-zxCyan selectedMenuItem:text-white flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
+        <div className="flex-grow justify-around text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
           <MaybeTwoColumnMenuitems
             spaceOut={emulatedResolutionName !== "handheld"}
             columnCount={

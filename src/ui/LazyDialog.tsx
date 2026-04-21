@@ -16,7 +16,7 @@ export const LazyDialog = ({ children }: { children: ReactNode }) => (
       <DialogPortal>
         <GameAssetLoading />
         <Border onClick={useDispatchActionCallback(backToParentMenu)} />
-        <Dialog className="bg-highlightBeige zx:bg-zxWhite">
+        <Dialog className="bg-highlightBeige zx:bg-zxWhite toppy:bg-toppyCool1">
           <SpinnerHead />
         </Dialog>
       </DialogPortal>

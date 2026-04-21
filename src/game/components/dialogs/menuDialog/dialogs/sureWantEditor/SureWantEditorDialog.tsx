@@ -26,23 +26,23 @@ export const SureWantEditorDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-pureBlack zx:bg-zxBlack"
+        className="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
-        className="bg-shadowHalfbrite zx:bg-zxBlack px-1 py-1 selectedMenuItem:text-metallicBlue"
+        className="bg-shadowHalfbrite zx:bg-zxBlack toppy:bg-toppyGrey3 px-1 py-1 selectedMenuItem:text-metallicBlue toppy:selectedMenuItem:text-toppyCool2"
         dialogId="sureWantEditor"
       >
         <DialogTitleBar className="pl-0 text-midGrey" path={["Hoh-Ed"]} />
         <div className="flex flex-col gap-y-2 mt-1 h-full">
           <div>
             <BlockyMarkdown
-              className={`text-midGrey zx:text-zxWhite`}
+              className={`text-midGrey zx:text-zxWhite toppy:text-toppyGrey1`}
               markdown={blurbMarkdown}
             />
           </div>
 
-          <MenuItems className="text-lightGrey zx:text-zxWhite resHandheld:mt-0 zx:selectedMenuItem:text-zxCyan resHandheld:!gap-y-1">
+          <MenuItems className="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 resHandheld:mt-0 zx:selectedMenuItem:text-zxCyan toppy:selectedMenuItem:text-toppyCool2 resHandheld:!gap-y-1">
             <MenuItem
               className="sprites-double-height"
               id="yes"

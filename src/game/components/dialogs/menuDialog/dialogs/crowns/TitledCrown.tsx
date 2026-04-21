@@ -1,21 +1,38 @@
 import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { TailwindColourisedColourName } from "../../../../../../tailwind/tailwindColours";
 
 import { twClass } from "../../../../../../editor/twClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 
-const colourCycle: Record<
-  PlanetName,
-  `text-${TailwindColourisedColourName}`[]
-> = {
-  egyptus: ["text-lightBeige", "text-midRed", "text-highlightBeige"],
-  blacktooth: ["text-midGrey", "text-lightGrey", "text-moss", "text-midRed"],
-  safari: ["text-moss", "text-midRed", "text-highlightBeige"],
-  bookworld: ["text-midRed", "text-redShadow", "text-midGrey"],
-  penitentiary: ["text-shadow", "text-metallicBlue", "text-midGrey"],
+const colourCycle: Record<PlanetName, string[]> = {
+  egyptus: [
+    "text-lightBeige toppy:text-toppyWarm2",
+    "text-midRed toppy:text-toppyPink2",
+    "text-highlightBeige toppy:text-toppyWarm3",
+  ],
+  blacktooth: [
+    "text-midGrey toppy:text-toppyGrey2",
+    "text-lightGrey toppy:text-toppyGrey1",
+    "text-moss toppy:text-toppyCool2",
+    "text-midRed toppy:text-toppyPink2",
+  ],
+  safari: [
+    "text-moss toppy:text-toppyCool2",
+    "text-midRed toppy:text-toppyPink2",
+    "text-highlightBeige toppy:text-toppyWarm3",
+  ],
+  bookworld: [
+    "text-midRed toppy:text-toppyPink2",
+    "text-redShadow toppy:text-toppyWarm5",
+    "text-midGrey toppy:text-toppyGrey2",
+  ],
+  penitentiary: [
+    "text-shadow toppy:text-toppyGrey3",
+    "text-metallicBlue toppy:text-toppyCool3",
+    "text-midGrey toppy:text-toppyGrey2",
+  ],
 };
 
 const planetTextureClasses: {
@@ -58,20 +75,20 @@ export const TitledCrown = ({
       <span
         className={`sprite block mx-auto
           ${uncolourised ? `${"texture-crown_uncolourised" satisfies TextureTailwindClass} sprite-tinted` : crownTextureClasses[planet]} 
-          ${collected ? `zx:text-zxYellow` : "colourised:brightness-halfBrite zx:text-zxMagentaDimmed"}
+          ${collected ? `zx:text-zxYellow toppy:text-toppyWarm1` : "colourised:brightness-halfBrite zx:text-zxMagentaDimmed toppy:brightness-halfBrite"}
           `}
       />
       <span
         className={`sprite block 
           ${uncolourised ? ("texture-ball_uncolourised" satisfies TextureTailwindClass) : planetTextureClasses[planet]} 
           zx:sprite-tinted mx-auto 
-          ${collected ? `zx:text-zxWhite` : "zx:text-zxYellowDimmed colourised:brightness-halfBrite"} 
+          ${collected ? `zx:text-zxWhite toppy:text-toppyWarm1` : "zx:text-zxYellowDimmed colourised:brightness-halfBrite toppy:brightness-halfBrite"} 
           ${colourCycle[planet][0]}
           `}
       />
       <BitmapText
         classnameCycle={uncolourised ? undefined : colourCycle[planet]}
-        className={`block mx-auto ${collected ? "zx:text-zxMagenta" : "zx:text-zxMagentaDimmed colourised:brightness-halfBrite"}`}
+        className={`block mx-auto ${collected ? "zx:text-zxMagenta toppy:text-toppyPink1" : "zx:text-zxMagentaDimmed colourised:brightness-halfBrite toppy:brightness-halfBrite"}`}
       >
         {label}
       </BitmapText>
