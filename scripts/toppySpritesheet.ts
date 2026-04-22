@@ -41,7 +41,7 @@ program
       stdio: "inherit",
     });
     await run`pngquant -vf --quality 100-100 --ext .png -- ${finalPng}`;
-    await run`magick ${finalPng} -profile gfx/DisplayP3-v2-micro.icc ${finalPng}`;
+    //await run`magick ${finalPng} -profile gfx/DisplayP3-v2-micro.icc ${finalPng}`;
     await run`magick identify -verbose ${finalPng}`;
   });
 

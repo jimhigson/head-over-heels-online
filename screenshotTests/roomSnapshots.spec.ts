@@ -46,6 +46,7 @@ import { setSpriteOption } from "./setSpriteOption";
  * BATCH_NUMBER       - Which batch this runner processes, 0-indexed (default: 0)
  * PARALLEL_TESTS     - Number of parallel tests within this runner (default: 2, or 1 for small batches)
  * NO_UNCOLOURISED    - Skip uncolourised screenshots when set (faster local testing)
+ * NO_TOPPY
  * CI                 - Increases timeouts when running in CI environment
  *
  * Examples:

@@ -37,7 +37,9 @@ export const spriteOptionSuffix = (spriteOption: SpriteOption): string => {
 };
 
 export const enabledSpriteModes: SpriteOption[] = [
-  { name: "BlockStack", uncolourised: false } as const,
+  ...(process.env.NO_BLOCKSTACK ?
+    []
+  : [{ name: "BlockStack", uncolourised: false } as const]),
   ...(process.env.NO_UNCOLOURISED ?
     []
   : [
