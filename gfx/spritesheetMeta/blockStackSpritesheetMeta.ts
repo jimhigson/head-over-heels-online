@@ -148,4 +148,5 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
     "highlightBeige",
   ],
   supportsUncolourised: true,
+  showFloorOverDraw: true,
 };

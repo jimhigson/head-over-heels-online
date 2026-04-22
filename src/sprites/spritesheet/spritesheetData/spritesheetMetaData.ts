@@ -68,6 +68,8 @@ export type SpritesheetMetadata<
    */
   floatingTextGradient: PaletteColourName[];
   supportsUncolourised: boolean;
+  /** if true, shows original-game correct overdraws to emulate rendering artifacts on floors */
+  showFloorOverDraw: boolean;
 };
 
 export type PlayableSpritesheetMetaData = {
