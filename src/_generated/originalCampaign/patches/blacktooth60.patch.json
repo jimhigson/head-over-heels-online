@@ -1,35 +1,63 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@6,6,0/config/toPosition"
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/teleporter@6,6,0/config/toItemId",
-    "value": "teleporter@6,6,0"
-  },
-  {
-    "op": "remove",
-    "path": "/items/teleporter@0,6,0/config/toPosition"
-  },
-  {
-    "op": "add",
-    "path": "/items/teleporter@0,6,0/config/toItemId",
-    "value": "teleporter@0,6,0"
+    "path": "/items/w1/config/times/x",
+    "value": 3
   },
   {
     "op": "replace",
-    "path": "/items/floor@0,0,0/config/scenery",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t1/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/t1/config/toItemId",
+    "value": "t1"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/t/config/toItemId",
+    "value": "t"
+  },
+  {
+    "op": "replace",
+    "path": "/items/f/config/scenery",
     "value": "bookworld"
   },
   {
     "op": "replace",
-    "path": "/items/barrier@3,4,0/position/x",
+    "path": "/items/br1/position/x",
     "value": 2.6
   },
   {
     "op": "replace",
-    "path": "/items/barrier@0,3,0/position/y",
+    "path": "/items/br/position/y",
     "value": 3.4
   },
   {

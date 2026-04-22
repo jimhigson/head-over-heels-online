@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "bookworld27",
   items: {
-    "block@0,0,0": {
+    b: {
       config: { style: "book", times: { z: 2 } },
       position: { x: 0, y: 1, z: 0 },
       type: "block",
     },
-    "block@0,0,3": {
+    b1: {
       config: { style: "book", times: { x: 2, y: 2 } },
       position: { x: 0, y: 0, z: 3 },
       type: "block",
     },
-    "door@0,0,4": {
+    d: {
       config: {
         direction: "towards",
         meta: { toSubRoom: "right" },
@@ -25,12 +25,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 4 },
       type: "door",
     },
-    "door@0,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "bookworld23" },
       position: { x: 0, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -39,12 +39,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@2,0,0": {
+    w1: {
       config: {
         direction: "left",
         tiles: [

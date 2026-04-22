@@ -6,37 +6,37 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "bookworld21",
   items: {
-    "block@1,5,0": {
+    b: {
       config: { style: "book", times: { y: 2 } },
       position: { x: 1, y: 5, z: 0 },
       type: "block",
     },
-    "block@3,3,0": {
+    b1: {
       config: { style: "book" },
       position: { x: 3, y: 3, z: 0 },
       type: "block",
     },
-    "block@6,2,0": {
+    b2: {
       config: { style: "book" },
       position: { x: 6, y: 2, z: 0 },
       type: "block",
     },
-    "block@7,5,0": {
+    b3: {
       config: { style: "book" },
       position: { x: 7, y: 5, z: 0 },
       type: "block",
     },
-    "door@3,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "bookworld22" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@3,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "bookworld9" },
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -45,7 +45,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@0,4,0": {
+    m: {
       config: {
         activated: "on",
         movement: "towards-tripped-on-axis-xy4",
@@ -54,7 +54,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 4, z: 0 },
       type: "monster",
     },
-    monsterOnBook: {
+    m1: {
       config: {
         activated: "on",
         movement: "towards-tripped-on-axis-xy4",
@@ -63,7 +63,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 2, z: 1 },
       type: "monster",
     },
-    monsterOnBook2: {
+    m2: {
       config: {
         activated: "on",
         movement: "towards-tripped-on-axis-xy4",
@@ -72,37 +72,37 @@ export const room = inferRoomJson({
       position: { x: 7, y: 5, z: 1 },
       type: "monster",
     },
-    slidingOnBook: {
+    sb: {
       config: { style: "book" },
       position: { x: 1, y: 5, z: 1 },
       type: "slidingBlock",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["book", "book", "cowboy"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["cowboy", "book", "book"] },
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

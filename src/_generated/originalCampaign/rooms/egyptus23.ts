@@ -6,32 +6,32 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "egyptus23",
   items: {
-    "block@0,3,5": {
+    b: {
       config: { style: "organic" },
       position: { x: 0, y: 3, z: 5 },
       type: "block",
     },
-    "block@0,4,5": {
+    b1: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 0, y: 4, z: 5 },
       type: "block",
     },
-    "block@0,5,5": {
+    b2: {
       config: { style: "organic", times: { x: 6 } },
       position: { x: 0, y: 5, z: 5 },
       type: "block",
     },
-    "block@7,1,0": {
+    b3: {
       config: { style: "organic", times: { z: 2 } },
       position: { x: 7, y: 1, z: 0 },
       type: "block",
     },
-    "block@7,5,0": {
+    b4: {
       config: { style: "organic" },
       position: { x: 7, y: 5, z: 0 },
       type: "block",
     },
-    "block@7,5,1": {
+    b5: {
       config: {
         disappearing: { on: "stand" },
         style: "organic",
@@ -40,22 +40,22 @@ export const room = inferRoomJson({
       position: { x: 7, y: 5, z: 1 },
       type: "block",
     },
-    "deadlyBlock@0,0,0": {
-      config: { style: "volcano", times: { x: 3, y: 6 } },
-      position: { x: 0, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@3,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "egyptus22" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@3,6,0": {
+    d1: {
       config: { direction: "away", toRoom: "egyptus24" },
       position: { x: 3, y: 6, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano", times: { x: 3, y: 6 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "egyptus",
@@ -64,32 +64,24 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "pickup@0,3,6": {
+    pi: {
       config: { gives: "extra-life" },
       position: { x: 0, y: 3, z: 6 },
       type: "pickup",
     },
-    "spikes@7,2,0": {
-      config: {},
-      position: { x: 7, y: 2, z: 0 },
-      type: "spikes",
-    },
-    "spikes@7,4,0": {
-      config: {},
-      position: { x: 7, y: 4, z: 0 },
-      type: "spikes",
-    },
-    "wall(right)@0,0,0": {
+    sk: { config: {}, position: { x: 7, y: 2, z: 0 }, type: "spikes" },
+    sk1: { config: {}, position: { x: 7, y: 4, z: 0 }, type: "spikes" },
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
@@ -97,12 +89,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@5,6,0": {
+    w4: {
       config: {
         direction: "away",
         tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
@@ -110,7 +102,7 @@ export const room = inferRoomJson({
       position: { x: 5, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

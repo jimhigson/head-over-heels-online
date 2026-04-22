@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   id: "safari30",
   items: {
-    "door@0,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "safari17fish" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@0,3,5": {
+    d1: {
       config: { direction: "right", toRoom: "safari29" },
       position: { x: 0, y: 3, z: 5 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "safari",
@@ -25,22 +25,22 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w1: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["wall", "wall"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@2,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: [

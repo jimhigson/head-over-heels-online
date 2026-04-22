@@ -6,32 +6,32 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "penitentiary9",
   items: {
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "none", times: { x: 2, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@0,4,0": {
+    l: {
       config: { bottom: 0, top: 11 },
       position: { x: 0, y: 4, z: 0 },
       type: "lift",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["loop", "loop"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@2,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: [

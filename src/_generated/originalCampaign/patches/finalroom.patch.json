@@ -1,130 +1,509 @@
 [
   {
     "op": "remove",
-    "path": "/items/wall@0,8,0/config/tiles/11"
+    "path": "/items/w2/config/tiles/11"
   },
   {
     "op": "remove",
-    "path": "/items/wall@0,8,0/config/tiles/10"
+    "path": "/items/w2/config/tiles/10"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 12
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@9,7,0/config/startDirection",
-    "value": "towardsRight"
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@11,5,0/config/startDirection",
-    "value": "towardsRight"
+    "path": "/items/w/config/direction",
+    "value": "right"
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@11,0,0/config/startDirection",
+    "path": "/items/sp9/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp9/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp9/position/x",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp9/config/which",
+    "value": "headOverHeels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp9/config/startDirection",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp8/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp8/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp8/position/x",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp8/config/which",
+    "value": "headOverHeels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp8/config/startDirection",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp7/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp7/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp7/position/x",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp7/config/which",
+    "value": "headOverHeels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp7/config/startDirection",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp6/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp6/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp6/position/x",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp6/config/which",
+    "value": "headOverHeels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp6/config/startDirection",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp5/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp5/position/x",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp5/config/which",
+    "value": "headOverHeels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp5/config/startDirection",
     "value": "awayRight"
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@1,7,1/config/startDirection",
+    "path": "/items/sp4/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp4/config/startDirection",
     "value": "towardsLeft"
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@1,6,0/config/startDirection",
+    "path": "/items/sp3/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp3/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp3/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp3/config/which",
+    "value": "head"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp3/config/startDirection",
     "value": "towardsLeft"
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@0,7,1/config/startDirection",
+    "path": "/items/sp24/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp24/position/x",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp24/config/startDirection",
+    "value": "towardsRight"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp23/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp23/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp23/config/startDirection",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp22/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp22/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp22/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp22/config/which",
+    "value": "heels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp22/config/startDirection",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp21/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp21/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp21/config/which",
+    "value": "head"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp21/config/startDirection",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp20/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp20/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp20/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp20/config/which",
+    "value": "heels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp20/config/startDirection",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp2/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp2/config/which",
+    "value": "head"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp2/config/startDirection",
     "value": "towardsLeft"
   },
   {
     "op": "replace",
-    "path": "/items/sceneryPlayer@0,6,0/config/startDirection",
+    "path": "/items/sp19/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp19/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp19/config/which",
+    "value": "heels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp19/config/startDirection",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp18/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp18/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp18/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp18/config/which",
+    "value": "head"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp17/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp17/config/which",
+    "value": "head"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp16/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp16/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp16/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp15/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp14/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp14/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp14/config/which",
+    "value": "heels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp13/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp13/config/which",
+    "value": "head"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp12/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp12/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp12/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp12/config/which",
+    "value": "heels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp11/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp10/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp10/position/x",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp10/config/which",
+    "value": "headOverHeels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp10/config/startDirection",
+    "value": "towardsRight"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp1/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp1/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp1/config/which",
+    "value": "heels"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp1/config/startDirection",
     "value": "towardsLeft"
   },
   {
     "op": "replace",
-    "path": "/items/floor@0,0,0/config/scenery",
+    "path": "/items/sp/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/sp/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/f/config/scenery",
     "value": "penitentiary"
   },
   {
     "op": "add",
-    "path": "/items/crownBlacktooth",
+    "path": "/items/d",
     "value": {
       "config": {
-        "planet": "blacktooth"
+        "direction": "away",
+        "toRoom": "$$final"
       },
       "position": {
-        "x": 7,
-        "y": 2,
-        "z": 8
-      },
-      "type": "sceneryCrown"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/crownBookworld",
-    "value": {
-      "config": {
-        "planet": "bookworld"
-      },
-      "position": {
-        "x": 7,
-        "y": 1,
-        "z": 1
-      },
-      "type": "sceneryCrown"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/crownEgyptus",
-    "value": {
-      "config": {
-        "planet": "egyptus"
-      },
-      "position": {
-        "x": 7,
-        "y": 4,
+        "x": 10,
+        "y": 8,
         "z": 0
       },
-      "type": "sceneryCrown"
+      "type": "door"
     }
   },
   {
     "op": "add",
-    "path": "/items/crownPenitentiary",
-    "value": {
-      "config": {
-        "planet": "penitentiary"
-      },
-      "position": {
-        "x": 7,
-        "y": 0,
-        "z": 0
-      },
-      "type": "sceneryCrown"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/crownSafari",
-    "value": {
-      "config": {
-        "planet": "safari"
-      },
-      "position": {
-        "x": 7,
-        "y": 3,
-        "z": 1
-      },
-      "type": "sceneryCrown"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/emitter",
+    "path": "/items/e",
     "value": {
       "config": {
         "emits": {
@@ -146,7 +525,7 @@
   },
   {
     "op": "add",
-    "path": "/items/endGameInstructions",
+    "path": "/items/pi",
     "value": {
       "config": {
         "gives": "scroll",
@@ -163,18 +542,77 @@
   },
   {
     "op": "add",
-    "path": "/items/exitDoor",
+    "path": "/items/sc",
     "value": {
       "config": {
-        "direction": "away",
-        "toRoom": "$$final"
+        "planet": "blacktooth"
       },
       "position": {
-        "x": 10,
-        "y": 8,
+        "x": 7,
+        "y": 2,
+        "z": 8
+      },
+      "type": "sceneryCrown"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/sc1",
+    "value": {
+      "config": {
+        "planet": "bookworld"
+      },
+      "position": {
+        "x": 7,
+        "y": 1,
+        "z": 1
+      },
+      "type": "sceneryCrown"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/sc2",
+    "value": {
+      "config": {
+        "planet": "egyptus"
+      },
+      "position": {
+        "x": 7,
+        "y": 4,
         "z": 0
       },
-      "type": "door"
+      "type": "sceneryCrown"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/sc3",
+    "value": {
+      "config": {
+        "planet": "penitentiary"
+      },
+      "position": {
+        "x": 7,
+        "y": 0,
+        "z": 0
+      },
+      "type": "sceneryCrown"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/sc4",
+    "value": {
+      "config": {
+        "planet": "safari"
+      },
+      "position": {
+        "x": 7,
+        "y": 3,
+        "z": 1
+      },
+      "type": "sceneryCrown"
     }
   },
   {

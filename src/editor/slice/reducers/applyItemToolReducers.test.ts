@@ -63,7 +63,7 @@ describe("applying tools", () => {
       expect(
         next.campaignInProgress.rooms[testRoomId].items,
       ).toMatchObject<EditorRoomJsonItems>({
-        ["pickup" as EditorRoomItemId]: {
+        ["pi" as EditorRoomItemId]: {
           config: {
             gives: "bag",
           },
@@ -133,7 +133,7 @@ describe("applying tools", () => {
           expect(
             next.campaignInProgress.rooms[testRoomId].items,
           ).toMatchObject<EditorRoomJsonItems>({
-            ["cyberman" as EditorRoomItemId]: {
+            ["m" as EditorRoomItemId]: {
               type: "monster",
               config: {
                 which: "cyberman",
@@ -173,11 +173,11 @@ describe("applying tools", () => {
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
-          ["door" as EditorRoomItemId]: {
+          ["d" as EditorRoomItemId]: {
             config: {
               direction: "away",
               toRoom: "room_0" as EditorRoomId,
-              toDoor: "door",
+              toDoor: "d",
             },
             position: doorPosition,
             type: "door",
@@ -227,20 +227,20 @@ describe("applying tools", () => {
 
         expect(Object.keys(next.campaignInProgress.rooms[testRoomId].items))
           .toMatchInlineSnapshot(`
-          [
-            "testWall",
-            "door",
-          ]
-        `);
+            [
+              "testWall",
+              "d",
+            ]
+          `);
 
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
-          ["door" as EditorRoomItemId]: {
+          ["d" as EditorRoomItemId]: {
             config: {
               direction: "away",
               toRoom: "room_0" as EditorRoomId,
-              toDoor: "door",
+              toDoor: "d",
             },
             position: doorPosition,
             type: "door",
@@ -279,11 +279,11 @@ describe("applying tools", () => {
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
-          ["door" as EditorRoomItemId]: {
+          ["d" as EditorRoomItemId]: {
             config: {
               direction: "away",
               toRoom: "room_0" as EditorRoomId,
-              toDoor: "door",
+              toDoor: "d",
             },
             position: doorPosition,
             type: "door",
@@ -339,17 +339,17 @@ describe("applying tools", () => {
 
         expect(
           Object.keys(next.campaignInProgress.rooms[testRoomId].items),
-        ).toEqual(["door"]);
+        ).toEqual(["d"]);
 
         expect(
           next.campaignInProgress.rooms[testRoomId].items,
         ).toEqual<EditorRoomJsonItems>({
           // the wall is gone!
-          ["door" as EditorRoomItemId]: {
+          ["d" as EditorRoomItemId]: {
             config: {
               direction: "away",
               toRoom: "room_0" as EditorRoomId,
-              toDoor: "door",
+              toDoor: "d",
             },
             position: wallPosition,
             type: "door",
@@ -390,7 +390,7 @@ describe("applying tools", () => {
           id: "room_0",
           items: {
             // here's the return door:
-            door: {
+            d: {
               config: {
                 direction: "towards",
                 toRoom: "testRoomId",

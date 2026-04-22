@@ -1,14 +1,102 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/door@2,0,1/config/meta",
+    "path": "/items/w1/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "safari8"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/d1/config/meta",
     "value": {
       "toSubRoom": "left"
     }
   },
   {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "safari6triple"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
     "op": "add",
-    "path": "/items/door@0,2,1/config/meta",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "right"
     }

@@ -1,5 +1,98 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "penitentiary27"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "penitentiary30"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "penitentiary29"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
     "op": "replace",
     "path": "/color/shade",
     "value": "dimmed"

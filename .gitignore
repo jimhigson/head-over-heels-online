@@ -30,3 +30,4 @@ build-stats*.html
 
 src-tauri/gen
 src-tauri/target
+.gitnexus

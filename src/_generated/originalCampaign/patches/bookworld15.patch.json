@@ -1,7 +1,75 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/block@3,7,0/config/times",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "bookworld14"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "bookworld16"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/b3/config/times",
     "value": {
       "x": 2
     }

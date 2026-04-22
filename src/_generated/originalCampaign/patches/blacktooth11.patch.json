@@ -1,19 +1,127 @@
 [
   {
-    "op": "replace",
-    "path": "/items/floor@0,0,0/config/scenery",
-    "value": "market"
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/door@3,0,0/config/meta",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/f/config/scenery",
+    "value": "market"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d3/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d3/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d3/config/toRoom",
+    "value": "blacktooth12"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d3/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "blacktooth32"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth31"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/d1/config/meta",
     "value": {
       "toSubRoom": "right"
     }
   },
   {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth10"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
     "op": "add",
-    "path": "/items/door@0,3,0/config/meta",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "left"
     }

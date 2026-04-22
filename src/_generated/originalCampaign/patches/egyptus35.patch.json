@@ -1,17 +1,17 @@
 [
   {
     "op": "replace",
-    "path": "/items/wall@2,0,0/config/tiles/5",
+    "path": "/items/w2/config/tiles/5",
     "value": "hieroglyphics"
   },
   {
     "op": "replace",
-    "path": "/items/wall@2,0,0/config/tiles/2",
+    "path": "/items/w2/config/tiles/2",
     "value": "hieroglyphics"
   },
   {
     "op": "add",
-    "path": "/items/extra0",
+    "path": "/items/b5",
     "value": {
       "config": {
         "style": "tower",
@@ -30,7 +30,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extrab0",
+    "path": "/items/b6",
     "value": {
       "config": {
         "style": "tower",

@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/config/which",
+    "value": "cyberman"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/config/movement",
+    "value": "towards-on-shortest-axis-xy4"
+  },
+  {
+    "op": "add",
+    "path": "/items/m1/config/startDirection",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/which",
+    "value": "helicopterBug"
+  },
+  {
+    "op": "remove",
+    "path": "/items/m/config/startDirection"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/movement",
+    "value": "patrol-randomly-xy8"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "blacktooth52market"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth51"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth49market"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  }
+]

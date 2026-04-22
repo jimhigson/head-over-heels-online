@@ -1,21 +1,49 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
     "op": "replace",
-    "path": "/items/teleporter@3,3,0/config/toRoom",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/t/config/toRoom",
     "value": "safari33"
   },
   {
     "op": "remove",
-    "path": "/items/teleporter@3,3,0/config/toPosition"
+    "path": "/items/t/config/toPosition"
   },
   {
     "op": "replace",
-    "path": "/items/lift@7,7,0/config/top",
+    "path": "/items/l/config/top",
     "value": 11
   },
   {
     "op": "add",
-    "path": "/items/scroll",
+    "path": "/items/pi",
     "value": {
       "config": {
         "gives": "scroll",

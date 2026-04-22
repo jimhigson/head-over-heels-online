@@ -1,19 +1,112 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
     "op": "replace",
-    "path": "/items/block@7,3,2/position/y",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "blacktooth73"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth71"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth78"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b/position/y",
     "value": 2
   },
   {
     "op": "add",
-    "path": "/items/block@7,3,2/config/times",
+    "path": "/items/b/config/times",
     "value": {
       "y": 2
     }
   },
   {
     "op": "add",
-    "path": "/items/tower0",
+    "path": "/items/b3",
     "value": {
       "config": {
         "style": "tower",

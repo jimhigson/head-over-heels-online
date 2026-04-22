@@ -1,22 +1,356 @@
 [
   {
     "op": "replace",
-    "path": "/items/spikes@0,9,0/type",
-    "value": "block"
-  },
-  {
-    "op": "add",
-    "path": "/items/spikes@0,9,0/config/style",
-    "value": "organic"
+    "path": "/items/w7/position/y",
+    "value": 14
   },
   {
     "op": "replace",
-    "path": "/items/floor@0,0,0/config/times/y",
-    "value": 6
+    "path": "/items/w7/position/x",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/w7/config/tiles/5"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w7/config/tiles/4"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w7/config/tiles/3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w7/config/tiles/2"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w7/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w6/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w6/position/x",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/w6/config/tiles"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w6/config/direction",
+    "value": "towards"
   },
   {
     "op": "add",
-    "path": "/items/floorR",
+    "path": "/items/w6/config/times",
+    "value": {
+      "x": 10
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/position/x",
+    "value": 14
+  },
+  {
+    "op": "remove",
+    "path": "/items/w5/config/tiles/7"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w5/config/tiles/6"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/position/y",
+    "value": 0
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/w2/config/times",
+    "value": {
+      "y": 14
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/position/x",
+    "value": 6
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles",
+    "value": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/position/x",
+    "value": 6
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles",
+    "value": ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"]
+  },
+  {
+    "op": "remove",
+    "path": "/items/sk2"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sk1/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sk1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/sk1/position/x",
+    "value": 4
+  },
+  {
+    "op": "add",
+    "path": "/items/sk1/config/times",
+    "value": {
+      "y": 2
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/sk/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/f/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 14
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth59"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth57"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b6/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/b6/position/x",
+    "value": 8
+  },
+  {
+    "op": "remove",
+    "path": "/items/b6/config/disappearing"
+  },
+  {
+    "op": "add",
+    "path": "/items/b6/config/times",
+    "value": {
+      "x": 6
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/b5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/config/times/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/x",
+    "value": 13
+  },
+  {
+    "op": "remove",
+    "path": "/items/b3/config/times"
+  },
+  {
+    "op": "add",
+    "path": "/items/b3/config/disappearing",
+    "value": {
+      "on": "stand"
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/y",
+    "value": 13
+  },
+  {
+    "op": "remove",
+    "path": "/items/b1/config/disappearing"
+  },
+  {
+    "op": "add",
+    "path": "/items/b1/config/times",
+    "value": {
+      "x": 6
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/b/position/y",
+    "value": 11
+  },
+  {
+    "op": "remove",
+    "path": "/items/b/config/times"
+  },
+  {
+    "op": "add",
+    "path": "/items/b/config/disappearing",
+    "value": {
+      "on": "stand"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b7",
+    "value": {
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 0,
+        "y": 9,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/f1",
     "value": {
       "config": {
         "floorType": "deadly",

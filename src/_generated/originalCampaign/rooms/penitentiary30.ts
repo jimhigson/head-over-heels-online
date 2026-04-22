@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "penitentiary30",
   items: {
-    "block@0,3,3": {
+    b: {
       config: { style: "organic", times: { x: 6 } },
       position: { x: 0, y: 3, z: 3 },
       type: "block",
     },
-    "door@3,4,0": {
+    d: {
       config: { direction: "away", toRoom: "penitentiary28" },
       position: { x: 3, y: 4, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "penitentiary",
@@ -25,47 +25,47 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "portableBlock@0,3,0": {
+    pr: {
       config: { style: "sticks" },
       position: { x: 0, y: 3, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@7,0,0": {
+    pr1: {
       config: { style: "sticks" },
       position: { x: 7, y: 0, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@7,3,0": {
+    pr2: {
       config: { style: "sticks" },
       position: { x: 7, y: 3, z: 0 },
       type: "portableBlock",
     },
-    "teleporter@0,3,4": {
-      config: { toItemId: "teleporter@0,4,4", toRoom: "penitentiary18fish" },
+    t: {
+      config: { toItemId: "t", toRoom: "penitentiary18fish" },
       position: { x: 0, y: 3, z: 4 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w2: {
       config: { direction: "away", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@5,4,0": {
+    w3: {
       config: { direction: "away", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 5, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: ["loop", "loop", "skeleton", "loop"],

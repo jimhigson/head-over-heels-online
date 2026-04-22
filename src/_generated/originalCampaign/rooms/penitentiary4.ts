@@ -7,42 +7,42 @@ export const room = inferRoomJson({
   height: 11,
   id: "penitentiary4",
   items: {
-    "block@4,5,1": {
+    b: {
       config: { style: "artificial", times: { z: 2 } },
       position: { x: 4, y: 5, z: 0 },
       type: "block",
     },
-    "block@5,0,4": {
+    b1: {
       config: { style: "artificial", times: { z: 5 } },
       position: { x: 5, y: 0, z: 0 },
       type: "block",
     },
-    "block@5,0,7": {
+    b2: {
       config: { style: "artificial" },
       position: { x: 5, y: 0, z: 7 },
       type: "block",
     },
-    "block@5,1,2": {
+    b3: {
       config: { style: "artificial", times: { z: 3 } },
       position: { x: 5, y: 1, z: 0 },
       type: "block",
     },
-    "block@5,2,6": {
+    b4: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 5, y: 2, z: 6 },
       type: "block",
     },
-    "block@5,5,2": {
+    b5: {
       config: { style: "artificial", times: { z: 3 } },
       position: { x: 5, y: 5, z: 0 },
       type: "block",
     },
-    "door@0,2,0": {
+    d: {
       config: { direction: "right", toRoom: "penitentiary3" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "penitentiary",
@@ -51,27 +51,27 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "spikes@5,2,0": {
+    sk: {
       config: { times: { y: 2 } },
       position: { x: 5, y: 2, z: 0 },
       type: "spikes",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w2: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
@@ -79,7 +79,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],

@@ -1,7 +1,95 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/door@0,3,0/config/meta",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pu2/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/pu/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth20"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth17triple"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "left"
     }

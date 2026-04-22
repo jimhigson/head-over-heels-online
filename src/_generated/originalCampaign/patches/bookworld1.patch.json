@@ -1,18 +1,46 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@6,3,0/config/toPosition"
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/door@0,3,4/config/meta",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "left"
     }
   },
   {
     "op": "add",
-    "path": "/items/extraLanding",
+    "path": "/items/b2",
     "value": {
       "config": {
         "style": "book",

@@ -6,12 +6,12 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   id: "safari36",
   items: {
-    "block@4,3,0": {
+    b: {
       config: { style: "organic", times: { x: 2 } },
       position: { x: 4, y: 3, z: 0 },
       type: "block",
     },
-    "block@4,4,0": {
+    b1: {
       config: {
         disappearing: { on: "stand" },
         style: "organic",
@@ -20,47 +20,43 @@ export const room = inferRoomJson({
       position: { x: 4, y: 4, z: 0 },
       type: "block",
     },
-    "block@4,6,0": {
+    b2: {
       config: { style: "organic" },
       position: { x: 4, y: 6, z: 0 },
       type: "block",
     },
-    "block@6,3,0": {
+    b3: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 6, y: 3, z: 0 },
       type: "block",
     },
-    "block@7,3,0": {
+    b4: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "door@8,3,2": {
+    d: {
       config: { direction: "left", toRoom: "safari35" },
       position: { x: 8, y: 3, z: 2 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "none", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "spikes@4,3,1": {
-      config: {},
-      position: { x: 4, y: 3, z: 1 },
-      type: "spikes",
-    },
-    "wall(right)@0,0,0": {
+    sk: { config: {}, position: { x: 4, y: 3, z: 1 }, type: "spikes" },
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -77,12 +73,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: { direction: "left", tiles: ["wall", "shield", "wall"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,5,0": {
+    w4: {
       config: { direction: "left", tiles: ["wall", "window", "wall"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",

@@ -1,48 +1,243 @@
 [
   {
     "op": "remove",
-    "path": "/items/wall@8,5,0"
+    "path": "/items/w5"
   },
   {
     "op": "remove",
-    "path": "/items/wall@8,0,0"
-  },
-  {
-    "op": "remove",
-    "path": "/items/wall@5,0,0"
-  },
-  {
-    "op": "remove",
-    "path": "/items/wall(towards)@0,0,0"
+    "path": "/items/w4"
   },
   {
     "op": "replace",
-    "path": "/items/door@8,3,5/position/z",
+    "path": "/items/w3/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/x",
+    "value": 8
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles",
+    "value": [
+      "hieroglyphics",
+      "sarcophagus",
+      "sarcophagus",
+      "hieroglyphics",
+      "sarcophagus",
+      "hieroglyphics"
+    ]
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/position/x",
+    "value": 2
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/w2/config/times",
+    "value": {
+      "x": 6
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/position/y",
+    "value": 8
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles",
+    "value": [
+      "hieroglyphics",
+      "hieroglyphics",
+      "sarcophagus",
+      "hieroglyphics",
+      "hieroglyphics",
+      "sarcophagus",
+      "hieroglyphics",
+      "hieroglyphics"
+    ]
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "egyptus8"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
     "value": 4
   },
   {
     "op": "replace",
-    "path": "/items/door@8,3,5/position/y",
+    "path": "/items/d/position/y",
     "value": 0
   },
   {
     "op": "replace",
-    "path": "/items/door@3,0,4/position/x",
+    "path": "/items/d/position/x",
     "value": 0
   },
   {
     "op": "replace",
-    "path": "/items/block@7,7,3/position/y",
+    "path": "/items/d/config/toRoom",
+    "value": "egyptus5"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b6/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/b6/position/y",
     "value": 6
   },
   {
     "op": "replace",
-    "path": "/items/block@7,7,3/position/x",
+    "path": "/items/b6/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/b6/config/style",
+    "value": "tower"
+  },
+  {
+    "op": "add",
+    "path": "/items/b6/config/times",
+    "value": {
+      "x": 2,
+      "y": 2,
+      "z": 3
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/b5/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/b5/position/y",
+    "value": 0
+  },
+  {
+    "op": "add",
+    "path": "/items/b5/config/times/z",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/b5/config/style",
+    "value": "tower"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/x",
+    "value": 0
+  },
+  {
+    "op": "add",
+    "path": "/items/b4/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "add",
+    "path": "/items/b4/config/times/z",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/config/style",
+    "value": "tower"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/x",
     "value": 6
   },
   {
     "op": "add",
-    "path": "/items/block@7,7,3/config/times",
+    "path": "/items/b3/config/times",
     "value": {
       "x": 2,
       "y": 2
@@ -50,29 +245,29 @@
   },
   {
     "op": "replace",
-    "path": "/items/block@7,3,3/position/y",
+    "path": "/items/b2/position/y",
     "value": 0
   },
   {
-    "op": "remove",
-    "path": "/items/block@3,0,3"
+    "op": "replace",
+    "path": "/items/b2/position/x",
+    "value": 7
   },
   {
-    "op": "remove",
-    "path": "/items/block@2,7,3"
-  },
-  {
-    "op": "remove",
-    "path": "/items/block@0,7,3"
+    "op": "add",
+    "path": "/items/b2/config/times",
+    "value": {
+      "y": 2
+    }
   },
   {
     "op": "replace",
-    "path": "/items/block@0,5,3/position/y",
+    "path": "/items/b1/position/y",
     "value": 6
   },
   {
     "op": "add",
-    "path": "/items/block@0,5,3/config/times",
+    "path": "/items/b1/config/times",
     "value": {
       "x": 2,
       "y": 2
@@ -80,7 +275,7 @@
   },
   {
     "op": "add",
-    "path": "/items/block@0,0,3/config/times",
+    "path": "/items/b/config/times",
     "value": {
       "x": 2,
       "y": 2
@@ -88,7 +283,7 @@
   },
   {
     "op": "add",
-    "path": "/items/block",
+    "path": "/items/b7",
     "value": {
       "config": {
         "style": "tower",
@@ -104,106 +299,6 @@
         "z": 0
       },
       "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@0,5,3",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "x": 2,
-          "y": 2,
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 0,
-        "y": 6,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@7,3,3",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "y": 2,
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 7,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extrablock0@7,7,3",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "x": 2,
-          "y": 2,
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 6,
-        "y": 6,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/wall_2",
-    "value": {
-      "config": {
-        "direction": "towards",
-        "times": {
-          "x": 6
-        }
-      },
-      "position": {
-        "x": 2,
-        "y": 0,
-        "z": 0
-      },
-      "type": "wall"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/wall_3",
-    "value": {
-      "config": {
-        "direction": "left",
-        "tiles": [
-          "hieroglyphics",
-          "sarcophagus",
-          "sarcophagus",
-          "hieroglyphics",
-          "sarcophagus",
-          "hieroglyphics"
-        ]
-      },
-      "position": {
-        "x": 8,
-        "y": 2,
-        "z": 0
-      },
-      "type": "wall"
     }
   }
 ]

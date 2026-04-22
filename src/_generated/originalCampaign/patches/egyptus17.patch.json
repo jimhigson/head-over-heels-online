@@ -1,22 +1,85 @@
 [
   {
     "op": "replace",
-    "path": "/items/wall@4,0,0/position/x",
+    "path": "/items/w5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/position/x",
     "value": 7
   },
   {
+    "op": "remove",
+    "path": "/items/w5/config/tiles"
+  },
+  {
     "op": "replace",
-    "path": "/items/wall@4,0,0/config/times/x",
+    "path": "/items/w5/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/times",
+    "value": {
+      "x": 5
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/x",
+    "value": 12
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles",
+    "value": ["hieroglyphics", "hieroglyphics"]
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
     "value": 5
   },
   {
     "op": "replace",
-    "path": "/items/wall(towards)@0,0,0/config/times/x",
-    "value": 5
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 6
   },
   {
     "op": "replace",
-    "path": "/items/door@2,0,1/position/x",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
     "value": 5
   },
   {

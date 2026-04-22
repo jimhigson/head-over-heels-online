@@ -1,8 +1,63 @@
 [
   {
     "op": "replace",
-    "path": "/items/wall@2,5,0/config/tiles/0",
+    "path": "/items/w2/config/tiles/0",
     "value": "window3"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "moonbase19"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "moonbase12"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "moonbase10"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
   },
   {
     "op": "replace",

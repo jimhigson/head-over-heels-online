@@ -1,21 +1,99 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@3,3,0/config/toPosition"
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/teleporter@3,3,0/config/activatedOnStoreValue",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/t/config/activatedOnStoreValue",
     "value": "planetsLiberated.egyptus"
   },
   {
     "op": "add",
-    "path": "/items/teleporter@3,3,0/config/toItemId",
-    "value": "block@3,3,0"
+    "path": "/items/t/config/toItemId",
+    "value": "b2"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "egyptus39crown"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "egyptus37"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/bl3/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/bl3/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/bl/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/bl/position/x",
+    "value": 1
   },
   {
     "op": "add",
-    "path": "/items/scroll",
+    "path": "/items/pi",
     "value": {
       "config": {
         "gives": "scroll",

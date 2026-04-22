@@ -6,27 +6,27 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "blacktooth49market",
   items: {
-    "deadlyBlock@3,0,0": {
-      config: { style: "volcano", times: { x: 2, z: 2 } },
-      position: { x: 3, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,1,1": {
-      config: { style: "volcano", times: { x: 2 } },
-      position: { x: 3, y: 1, z: 1 },
-      type: "deadlyBlock",
-    },
-    "door@0,0,0": {
+    d: {
       config: { direction: "right", toRoom: "blacktooth48market" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,0,0": {
+    d1: {
       config: { direction: "left", toRoom: "blacktooth50market" },
       position: { x: 8, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano", times: { x: 2, z: 2 } },
+      position: { x: 3, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano", times: { x: 2 } },
+      position: { x: 3, y: 1, z: 1 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "market",
@@ -35,12 +35,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w1: {
       config: {
         direction: "away",
         tiles: [

@@ -1,102 +1,39 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@5,7,0/config/toPosition"
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/extra",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 1,
-        "y": 1,
-        "z": 0
-      },
-      "type": "pushableBlock"
-    }
+    "path": "/items/w1/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
   },
   {
     "op": "add",
-    "path": "/items/extra2",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 1,
-        "y": 4,
-        "z": 0
-      },
-      "type": "pushableBlock"
-    }
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
   },
   {
     "op": "add",
-    "path": "/items/extra3",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 1,
-        "y": 3.5,
-        "z": 1
-      },
-      "type": "pushableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra4",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 1,
-        "y": 1.5,
-        "z": 1
-      },
-      "type": "pushableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra5",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 1,
-        "y": 2,
-        "z": 2
-      },
-      "type": "pushableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra6",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 1,
-        "y": 3,
-        "z": 2
-      },
-      "type": "pushableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra7",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 1,
-        "y": 2.5,
-        "z": 3
-      },
-      "type": "pushableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/scroll",
+    "path": "/items/pi",
     "value": {
       "config": {
         "gives": "scroll",
@@ -109,6 +46,97 @@
         "z": 4
       },
       "type": "pickup"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pu",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 1,
+        "y": 1,
+        "z": 0
+      },
+      "type": "pushableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pu1",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 1,
+        "y": 4,
+        "z": 0
+      },
+      "type": "pushableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pu2",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 1,
+        "y": 3.5,
+        "z": 1
+      },
+      "type": "pushableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pu3",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 1,
+        "y": 1.5,
+        "z": 1
+      },
+      "type": "pushableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pu4",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 1,
+        "y": 2,
+        "z": 2
+      },
+      "type": "pushableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pu5",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 1,
+        "y": 3,
+        "z": 2
+      },
+      "type": "pushableBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pu6",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 1,
+        "y": 2.5,
+        "z": 3
+      },
+      "type": "pushableBlock"
     }
   }
 ]

@@ -1,7 +1,35 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/scroll",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/pi1",
     "value": {
       "config": {
         "gives": "scroll",

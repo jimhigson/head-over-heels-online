@@ -1,7 +1,84 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
     "op": "replace",
-    "path": "/items/lift@7,7,0/config/top",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/config/which",
+    "value": "dalek"
+  },
+  {
+    "op": "remove",
+    "path": "/items/m1/config/startDirection"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/config/movement",
+    "value": "patrol-randomly-diagonal"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/which",
+    "value": "cyberman"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/movement",
+    "value": "towards-on-shortest-axis-xy4"
+  },
+  {
+    "op": "add",
+    "path": "/items/m/config/startDirection",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/l/config/top",
     "value": 11
   }
 ]

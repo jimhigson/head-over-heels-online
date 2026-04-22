@@ -1,27 +1,40 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 6
+  },
+  {
     "op": "replace",
-    "path": "/items/door@6,2,0/position/z",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
     "value": 4
   },
   {
     "op": "add",
-    "path": "/items/block",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 3,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@3,3,0",
+    "path": "/items/b",
     "value": {
       "config": {
         "style": "artificial",
@@ -39,7 +52,7 @@
   },
   {
     "op": "add",
-    "path": "/items/block@4,3,1",
+    "path": "/items/b1",
     "value": {
       "config": {
         "style": "artificial",
@@ -57,7 +70,7 @@
   },
   {
     "op": "add",
-    "path": "/items/block@5,3,2",
+    "path": "/items/b2",
     "value": {
       "config": {
         "style": "artificial",
@@ -75,7 +88,22 @@
   },
   {
     "op": "add",
-    "path": "/items/turtle",
+    "path": "/items/b3",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/m",
     "value": {
       "config": {
         "activated": "on",
@@ -93,7 +121,7 @@
   },
   {
     "op": "add",
-    "path": "/items/turtle_2",
+    "path": "/items/m1",
     "value": {
       "config": {
         "activated": "on",

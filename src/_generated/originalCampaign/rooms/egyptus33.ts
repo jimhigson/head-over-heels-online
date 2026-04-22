@@ -6,12 +6,12 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "egyptus33",
   items: {
-    "door@3,2,0": {
+    d: {
       config: { direction: "away", toRoom: "egyptus34fish" },
       position: { x: 3, y: 2, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "egyptus",
@@ -20,17 +20,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
@@ -38,7 +38,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 2, z: 0 },
       type: "wall",
     },
-    "wall@5,2,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
@@ -46,7 +46,7 @@ export const room = inferRoomJson({
       position: { x: 5, y: 2, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",

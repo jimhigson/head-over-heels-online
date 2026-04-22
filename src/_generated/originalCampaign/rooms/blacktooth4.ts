@@ -6,32 +6,32 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "blacktooth4",
   items: {
-    block: {
+    b: {
       config: { style: "organic", times: { x: 2 } },
       position: { x: 3, y: 3, z: 0 },
       type: "block",
     },
-    block2: {
+    b1: {
       config: { style: "organic", times: { x: 2 } },
       position: { x: 3, y: 1, z: 0 },
       type: "block",
     },
-    blockDis1: {
+    b2: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 3, y: 2, z: 0 },
       type: "block",
     },
-    blockDis2: {
+    b3: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 4, y: 2, z: 0 },
       type: "block",
     },
-    "door@3,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "blacktooth5" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -40,27 +40,27 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    lift2: {
-      config: { bottom: 0, top: 11 },
-      position: { x: 4, y: 5, z: 11 },
-      type: "lift",
-    },
-    "lift@3,5,0": {
+    l: {
       config: { bottom: 0, top: 11 },
       position: { x: 3, y: 5, z: 0 },
       type: "lift",
     },
-    "wall(right)@0,0,0": {
+    l1: {
+      config: { bottom: 0, top: 11 },
+      position: { x: 4, y: 5, z: 11 },
+      type: "lift",
+    },
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -77,12 +77,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],

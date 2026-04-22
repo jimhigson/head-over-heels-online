@@ -1,49 +1,117 @@
 [
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/tiles/6",
+    "path": "/items/w4/config/tiles/6",
     "value": "plain"
   },
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/tiles/5",
+    "path": "/items/w4/config/tiles/5",
     "value": "shield"
   },
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/tiles/4",
+    "path": "/items/w4/config/tiles/4",
     "value": "armour"
   },
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/tiles/3",
+    "path": "/items/w4/config/tiles/3",
     "value": "plain"
   },
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/tiles/2",
+    "path": "/items/w4/config/tiles/2",
     "value": "armour"
   },
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/tiles/1",
+    "path": "/items/w4/config/tiles/1",
     "value": "shield"
   },
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
     "op": "replace",
-    "path": "/items/deadlyBlock@7,3,1/position/z",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/config/which",
+    "value": "emperor"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/config/movement",
+    "value": "towards-analogue"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/which",
+    "value": "dalek"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/movement",
+    "value": "patrol-randomly-diagonal"
+  },
+  {
+    "op": "replace",
+    "path": "/items/db5/position/z",
     "value": 2
   },
   {
     "op": "remove",
-    "path": "/items/deadlyBlock@7,3,1/config/times"
+    "path": "/items/db5/config/times"
   },
   {
     "op": "remove",
-    "path": "/items/deadlyBlock@6,4,1/config/times"
+    "path": "/items/db3/config/times"
   },
   {
     "op": "remove",
-    "path": "/items/deadlyBlock@6,2,1/config/times"
+    "path": "/items/db1/config/times"
   }
 ]

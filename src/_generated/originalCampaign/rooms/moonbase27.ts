@@ -6,22 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "moonbase27",
   items: {
-    "door@0,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "moonbase30" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@0,3,0": {
+    d1: {
       config: { direction: "right", toRoom: "moonbase26" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@0,8,0": {
+    d2: {
       config: { direction: "away", toRoom: "moonbase28" },
       position: { x: 0, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -30,17 +30,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w1: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@2,0,0": {
+    w2: {
       config: {
         direction: "left",
         tiles: [

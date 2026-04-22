@@ -1,48 +1,56 @@
 [
   {
-    "op": "remove",
-    "path": "/items/block@0,6,4"
+    "op": "replace",
+    "path": "/items/b3/position/z",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/y",
+    "value": 7
   },
   {
     "op": "remove",
-    "path": "/items/block@0,5,6"
+    "path": "/items/b2/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/block",
-    "value": {
-      "config": {
-        "style": "artificial",
-        "times": {
-          "z": 4
-        }
-      },
-      "position": {
-        "x": 0,
-        "y": 7,
-        "z": 0
-      },
-      "type": "block"
-    }
+    "path": "/items/b2/config/times/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/x",
+    "value": 1
   },
   {
     "op": "add",
-    "path": "/items/extra1",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 0,
-        "y": 5,
-        "z": 5
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra2",
+    "path": "/items/b4",
     "value": {
       "config": {
         "style": "artificial",
@@ -60,7 +68,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra3",
+    "path": "/items/b5",
     "value": {
       "config": {
         "style": "artificial",

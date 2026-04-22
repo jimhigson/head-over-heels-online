@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth42"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth39"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  }
+]

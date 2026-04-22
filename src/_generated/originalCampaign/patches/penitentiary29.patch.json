@@ -1,5 +1,53 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd1/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd1/config/startingPhase",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd/config/startingPhase",
+    "value": 2
+  },
+  {
     "op": "replace",
     "path": "/color/hue",
     "value": "yellow"

@@ -6,52 +6,52 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "penitentiary31",
   items: {
-    "block@0,0,0": {
+    b: {
       config: { style: "organic", times: { x: 6, y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "none", times: { x: 8, y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "portableBlock@1,1,1": {
+    pr: {
       config: { style: "sticks" },
       position: { x: 1, y: 1, z: 1 },
       type: "portableBlock",
     },
-    "slidingDeadly@5,0,1": {
+    sd: {
       config: { startingPhase: 2, style: "spikyBall" },
       position: { x: 5, y: 0, z: 1 },
       type: "slidingDeadly",
     },
-    "slidingDeadly@5,0,2": {
+    sd1: {
       config: { startingPhase: 1, style: "spikyBall" },
       position: { x: 5, y: 0, z: 2 },
       type: "slidingDeadly",
     },
-    "slidingDeadly@5,1,1": {
+    sd2: {
       config: { startingPhase: 1, style: "spikyBall" },
       position: { x: 5, y: 1, z: 1 },
       type: "slidingDeadly",
     },
-    "slidingDeadly@5,1,2": {
+    sd3: {
       config: { startingPhase: 2, style: "spikyBall" },
       position: { x: 5, y: 1, z: 2 },
       type: "slidingDeadly",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -68,7 +68,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 2, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: { direction: "left", tiles: ["loop", "loop"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",

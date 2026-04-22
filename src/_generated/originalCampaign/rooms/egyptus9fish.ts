@@ -6,32 +6,32 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "egyptus9fish",
   items: {
-    "block@3,1,4": {
+    b: {
       config: { style: "organic", times: { y: 4 } },
       position: { x: 3, y: 0, z: 4 },
       type: "block",
     },
-    "door@1,0,0": {
-      config: { direction: "towards", toRoom: "egyptus8" },
-      position: { x: 1, y: 0, z: 0 },
-      type: "door",
-    },
-    "door@1,8,0": {
-      config: { direction: "away", toRoom: "egyptus10" },
-      position: { x: 1, y: 8, z: 0 },
-      type: "door",
-    },
-    extrapillar: {
+    b1: {
       config: { style: "tower", times: { z: 4 } },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    extrapillar2: {
+    b2: {
       config: { style: "tower", times: { z: 4 } },
       position: { x: 3, y: 3, z: 0 },
       type: "block",
     },
-    "floor@0,0,0": {
+    d: {
+      config: { direction: "towards", toRoom: "egyptus8" },
+      position: { x: 1, y: 0, z: 0 },
+      type: "door",
+    },
+    d1: {
+      config: { direction: "away", toRoom: "egyptus10" },
+      position: { x: 1, y: 8, z: 0 },
+      type: "door",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "egyptus",
@@ -40,42 +40,42 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "pickup@3,3,5": {
+    pi: {
       config: { gives: "reincarnation" },
       position: { x: 3, y: 3, z: 5 },
       type: "pickup",
     },
-    "teleporter@2,0,5": {
+    t: {
       config: { toRoom: "egyptus13" },
       position: { x: 3, y: 0, z: 5 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["hieroglyphics"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["hieroglyphics"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

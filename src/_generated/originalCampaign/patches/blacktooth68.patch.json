@@ -1,29 +1,97 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
     "op": "replace",
-    "path": "/items/door@3,0,5/position/z",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth76"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
     "value": 1
   },
   {
     "op": "replace",
-    "path": "/items/block@7,4,3/position/y",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth66"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/y",
     "value": 3
   },
   {
     "op": "add",
-    "path": "/items/block@7,4,3/config/times",
+    "path": "/items/b4/config/times",
     "value": {
       "y": 2
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@3,0,3/position/z",
+    "path": "/items/b3/position/z",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block",
+    "path": "/items/b6",
     "value": {
       "config": {
         "style": "organic",
@@ -41,7 +109,7 @@
   },
   {
     "op": "add",
-    "path": "/items/block_2",
+    "path": "/items/b7",
     "value": {
       "config": {
         "style": "tower",

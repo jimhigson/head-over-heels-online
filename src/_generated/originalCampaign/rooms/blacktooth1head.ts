@@ -6,37 +6,37 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "blacktooth1head",
   items: {
-    "barrier@5,0,0": {
+    br: {
       config: { axis: "y" },
       position: { x: 5, y: 0, z: 0 },
       type: "barrier",
     },
-    "barrier@5,0,2": {
+    br1: {
       config: { axis: "y" },
       position: { x: 5, y: 0, z: 2 },
       type: "barrier",
     },
-    "barrier@5,0,4": {
+    br2: {
       config: { axis: "y" },
       position: { x: 5, y: 0, z: 4 },
       type: "barrier",
     },
-    "barrier@5,0,6": {
+    br3: {
       config: { axis: "y" },
       position: { x: 5, y: 0, z: 6 },
       type: "barrier",
     },
-    door: {
-      config: { direction: "left", toRoom: "switch_room" },
-      position: { x: 6, y: 3, z: 0 },
-      type: "door",
-    },
-    "door@0,3,0": {
+    d: {
       config: { direction: "right", toRoom: "blacktooth23heels" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    d1: {
+      config: { direction: "left", toRoom: "blacktooth0switches" },
+      position: { x: 6, y: 3, z: 0 },
+      type: "door",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "jail",
@@ -50,12 +50,12 @@ export const room = inferRoomJson({
       position: { x: 2.5, y: 2.5, z: 0 },
       type: "player",
     },
-    "pickup@5,0,7": {
+    pi: {
       config: { gives: "extra-life" },
       position: { x: 5, y: 0, z: 7 },
       type: "pickup",
     },
-    scrollRabbit: {
+    pi1: {
       config: {
         gives: "scroll",
         page: "cuddlyStuffedWhiteRabbits",
@@ -64,32 +64,32 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 0 },
       type: "pickup",
     },
-    scrollTheGame: {
+    pi2: {
       config: { gives: "scroll", page: "theGame", source: "manual" },
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
     },
-    "teleporter@5,7,0": {
+    t: {
       config: { toRoom: "blacktooth2" },
       position: { x: 5, y: 7, z: 0 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w2: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars"],
@@ -97,12 +97,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0/afterDoor": {
+    w4: {
       config: { direction: "left", tiles: ["bars", "bars", "bars"] },
       position: { x: 6, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0/beforeDoor": {
+    w5: {
       config: { direction: "left", tiles: ["bars", "bars", "bars"] },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",

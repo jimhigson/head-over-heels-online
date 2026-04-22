@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "moonbase28",
   items: {
-    "door@2,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "moonbase27" },
       position: { x: 2, y: 0, z: 0 },
       type: "door",
     },
-    "door@6,2,4": {
+    d1: {
       config: { direction: "left", toRoom: "moonbase29" },
       position: { x: 6, y: 2, z: 4 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -25,22 +25,22 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "hushPuppy@3,3,0": {
+    h: {
       config: { times: { y: 2 } },
       position: { x: 3, y: 2, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@4,3,1": {
+    h1: {
       config: { times: { y: 2 } },
       position: { x: 4, y: 2, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@5,3,2": {
+    h2: {
       config: { times: { y: 2 } },
       position: { x: 5, y: 2, z: 2 },
       type: "hushPuppy",
     },
-    "monster@0,5,0": {
+    m: {
       config: {
         activated: "on",
         movement: "towards-on-shortest-axis-xy4",
@@ -50,17 +50,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 5, z: 0 },
       type: "monster",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: ["window1", "coil", "window2", "window3", "coil", "window1"],
@@ -68,17 +68,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 4, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: { direction: "left", tiles: ["window2", "window3"] },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,4,0": {
+    w5: {
       config: { direction: "left", tiles: ["window3", "window1"] },
       position: { x: 6, y: 4, z: 0 },
       type: "wall",

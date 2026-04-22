@@ -1,5 +1,122 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times",
+    "value": {
+      "y": 16
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/sg1/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/sg/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth36"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth34"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b5/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/y",
+    "value": 12
+  },
+  {
+    "op": "remove",
+    "path": "/items/b2/config/disappearing"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/y",
+    "value": 10
+  },
+  {
+    "op": "add",
+    "path": "/items/b1/config/disappearing",
+    "value": {
+      "on": "stand"
+    }
+  },
+  {
     "op": "add",
     "path": "/meta",
     "value": {

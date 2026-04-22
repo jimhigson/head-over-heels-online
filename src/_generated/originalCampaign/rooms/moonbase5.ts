@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "moonbase5",
   items: {
-    "door@1,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "moonbase4" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "moonbase6" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -25,7 +25,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@0,4,0": {
+    m: {
       config: {
         activated: "on",
         movement: "towards-tripped-on-axis-xy4",
@@ -34,7 +34,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 4, z: 0 },
       type: "monster",
     },
-    "monster@3,2,0": {
+    m1: {
       config: {
         activated: "on",
         movement: "towards-tripped-on-axis-xy4",
@@ -43,7 +43,7 @@ export const room = inferRoomJson({
       position: { x: 3, y: 2, z: 0 },
       type: "monster",
     },
-    "monster@3,6,0": {
+    m2: {
       config: {
         activated: "on",
         movement: "towards-tripped-on-axis-xy4",
@@ -52,32 +52,32 @@ export const room = inferRoomJson({
       position: { x: 3, y: 6, z: 0 },
       type: "monster",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["window2"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["window1"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

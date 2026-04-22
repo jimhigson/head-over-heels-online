@@ -1,48 +1,55 @@
 [
   {
-    "op": "add",
-    "path": "/items/stair1",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 5,
-        "y": 0,
-        "z": 0
-      },
-      "type": "hushPuppy"
-    }
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/stair2",
-    "value": {
-      "config": {},
-      "position": {
-        "x": 6,
-        "y": 0,
-        "z": 1
-      },
-      "type": "hushPuppy"
-    }
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
   },
   {
     "op": "add",
-    "path": "/items/teleBackToCrownForHeelsIfSheFallsOffInTheCrownRoom",
-    "value": {
-      "config": {
-        "toRoom": "penitentiary34crown"
-      },
-      "position": {
-        "x": 7,
-        "y": 0,
-        "z": 2
-      },
-      "type": "teleporter"
-    }
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd1/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd1/config/startingPhase",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd/config/startingPhase",
+    "value": 1
   },
   {
     "op": "add",
-    "path": "/items/teleTower",
+    "path": "/items/b1",
     "value": {
       "config": {
         "style": "tower",
@@ -56,6 +63,47 @@
         "z": 0
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/h",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 5,
+        "y": 0,
+        "z": 0
+      },
+      "type": "hushPuppy"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/h1",
+    "value": {
+      "config": {},
+      "position": {
+        "x": 6,
+        "y": 0,
+        "z": 1
+      },
+      "type": "hushPuppy"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/t",
+    "value": {
+      "config": {
+        "toRoom": "penitentiary34crown"
+      },
+      "position": {
+        "x": 7,
+        "y": 0,
+        "z": 2
+      },
+      "type": "teleporter"
     }
   },
   {

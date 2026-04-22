@@ -2,7 +2,6 @@ import type {
   JsonItemConfig,
   JsonItemType,
 } from "../../../model/json/JsonItem";
-import type { MonsterJsonConfig } from "../../../model/json/MonsterJsonConfig";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type {
   EditorJsonItem,
@@ -17,18 +16,23 @@ import type {
   PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 
+import { typePrefix } from "../../../model/json/typePrefix";
 import { keys } from "../../../utils/entries";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
+/**
+ * Finds the next unused id of the form `<baseName>`, `<baseName>1`,
+ * `<baseName>2`, … — matches the scheme used by `keyItems` for auto-converted
+ * rooms so ids look consistent across both sources.
+ */
 export const nextItemId = (
   existingIds: Iterable<EditorRoomItemId>,
   baseName: string,
 ): EditorRoomItemId => {
   const existing = new Set(existingIds);
   // eslint-disable-next-line no-constant-condition -- while(true) is ok; this will terminate
-  for (let i = 1; true; i++) {
-    const itemId = (
-      i === 1 ? baseName : `${baseName}_${i}`) as EditorRoomItemId;
+  for (let i = 0; true; i++) {
+    const itemId = (i === 0 ? baseName : `${baseName}${i}`) as EditorRoomItemId;
     if (!existing.has(itemId)) {
       return itemId;
     }
@@ -54,13 +58,7 @@ export const nextItemIdForItemTool = <T extends JsonItemType = JsonItemType>(
     return (isPreview ? `preview-${which}` : which) as EditorRoomItemId;
   }
 
-  const baseName =
-    itemTool.type === "monster" ?
-      // special case monsters since they have so many variations:
-      (itemTool.config as MonsterJsonConfig).which
-    : itemTool.type;
-
-  return nextItemId(existingIds, baseName);
+  return nextItemId(existingIds, typePrefix[itemTool.type]);
 };
 
 export const addItemInPlace = <T extends JsonItemType = JsonItemType>(

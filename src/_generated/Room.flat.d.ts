@@ -279,7 +279,12 @@ export type RoomJsonSchema = {
           z: number;
         };
         config: {
-          controls: string[];
+          /**
+           * item ids of all the items (probably Charles) that this joystick controls.
+           * if omitted, the joystick controls every charles in its room — which is
+           * how the original game always behaved.
+           */
+          controls?: string[];
         };
       }
     | {
@@ -1583,9 +1588,19 @@ export type RoomJsonSchema = {
                     expectType: "joystick";
                     targets?: string[];
                     leftState: {
+                      /**
+                       * item ids of all the items (probably Charles) that this joystick controls.
+                       * if omitted, the joystick controls every charles in its room — which is
+                       * how the original game always behaved.
+                       */
                       controls?: string[];
                     };
                     rightState: {
+                      /**
+                       * item ids of all the items (probably Charles) that this joystick controls.
+                       * if omitted, the joystick controls every charles in its room — which is
+                       * how the original game always behaved.
+                       */
                       controls?: string[];
                     };
                   }
@@ -3422,9 +3437,19 @@ export type RoomJsonSchema = {
                     expectType: "joystick";
                     targets?: string[];
                     leftState: {
+                      /**
+                       * item ids of all the items (probably Charles) that this joystick controls.
+                       * if omitted, the joystick controls every charles in its room — which is
+                       * how the original game always behaved.
+                       */
                       controls?: string[];
                     };
                     rightState: {
+                      /**
+                       * item ids of all the items (probably Charles) that this joystick controls.
+                       * if omitted, the joystick controls every charles in its room — which is
+                       * how the original game always behaved.
+                       */
                       controls?: string[];
                     };
                   }

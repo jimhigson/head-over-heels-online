@@ -1,29 +1,57 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
     "op": "replace",
-    "path": "/items/movingPlatform@4,1,0/config/activated",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/mp/config/activated",
     "value": "on-stand"
   },
   {
     "op": "replace",
-    "path": "/items/block@4,0,0/position/x",
+    "path": "/items/b1/position/x",
     "value": 3
   },
   {
     "op": "add",
-    "path": "/items/block@4,0,0/config/times",
+    "path": "/items/b1/config/times",
     "value": {
       "x": 2
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@0,4,0/position/y",
+    "path": "/items/b/position/y",
     "value": 3
   },
   {
     "op": "add",
-    "path": "/items/block@0,4,0/config/times",
+    "path": "/items/b/config/times",
     "value": {
       "y": 2
     }

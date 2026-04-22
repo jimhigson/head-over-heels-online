@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "bookworld5",
   items: {
-    "door@1,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "bookworld6" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "bookworld4" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -25,7 +25,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@1,3,0": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-xy8",
@@ -34,7 +34,7 @@ export const room = inferRoomJson({
       position: { x: 1, y: 3, z: 0 },
       type: "monster",
     },
-    "monster@2,4,0": {
+    m1: {
       config: {
         activated: "on",
         movement: "patrol-randomly-xy8",
@@ -43,32 +43,32 @@ export const room = inferRoomJson({
       position: { x: 2, y: 4, z: 0 },
       type: "monster",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["book"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["book"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

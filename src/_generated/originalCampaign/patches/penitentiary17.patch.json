@@ -1,14 +1,42 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/door@3,8,2/config/meta",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "right"
     }
   },
   {
     "op": "add",
-    "path": "/items/extraBarrier1",
+    "path": "/items/br",
     "value": {
       "config": {
         "axis": "y",
@@ -26,7 +54,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extraBarrier2",
+    "path": "/items/br1",
     "value": {
       "config": {
         "axis": "y",

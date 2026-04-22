@@ -6,32 +6,32 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "blacktooth56",
   items: {
-    "block@3,0,0": {
+    b: {
       config: { style: "organic", times: { y: 2, z: 2 } },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "block@3,0,3": {
+    b1: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 3, y: 0, z: 3 },
       type: "block",
     },
-    "block@3,1,2": {
+    b2: {
       config: { style: "organic" },
       position: { x: 3, y: 1, z: 2 },
       type: "block",
     },
-    "door@0,0,4": {
+    d: {
       config: { direction: "right", toRoom: "blacktooth57" },
       position: { x: 0, y: 0, z: 4 },
       type: "door",
     },
-    "door@8,0,0": {
+    d1: {
       config: { direction: "left", toRoom: "blacktooth55" },
       position: { x: 8, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "market",
@@ -40,17 +40,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "spikes@0,0,0": {
+    sk: {
       config: { times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "spikes",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w1: {
       config: {
         direction: "away",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],

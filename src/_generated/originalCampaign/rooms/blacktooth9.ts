@@ -6,12 +6,12 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "blacktooth9",
   items: {
-    "block@0,4,0": {
+    b: {
       config: { style: "organic", times: { z: 3 } },
       position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
-    "block@3,4,0": {
+    b1: {
       config: {
         disappearing: { on: "stand" },
         style: "organic",
@@ -20,7 +20,7 @@ export const room = inferRoomJson({
       position: { x: 3, y: 4, z: 0 },
       type: "block",
     },
-    "block@3,7,0": {
+    b2: {
       config: {
         disappearing: { on: "stand" },
         style: "organic",
@@ -29,47 +29,47 @@ export const room = inferRoomJson({
       position: { x: 3, y: 7, z: 0 },
       type: "block",
     },
-    "block@7,0,0": {
+    b3: {
       config: { style: "organic", times: { y: 8 } },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
-    "block@7,7,1": {
+    b4: {
       config: { style: "organic", times: { z: 2 } },
       position: { x: 7, y: 7, z: 1 },
       type: "block",
     },
-    "door@8,3,2": {
+    d: {
       config: { direction: "left", toRoom: "blacktooth8fish" },
       position: { x: 8, y: 3, z: 2 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "deadly", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "pickup@0,4,7": {
+    pi: {
       config: { gives: "hooter" },
       position: { x: 0, y: 4, z: 7 },
       type: "pickup",
     },
-    scroll: {
+    pi1: {
       config: { gives: "scroll", page: "hooter", source: "manual" },
       position: { x: 7, y: 1, z: 1 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -86,12 +86,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,5,0": {
+    w4: {
       config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",

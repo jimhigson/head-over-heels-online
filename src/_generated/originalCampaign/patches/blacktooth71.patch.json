@@ -1,64 +1,233 @@
 [
   {
-    "op": "replace",
-    "path": "/items/wall@5,6,0/position/x",
-    "value": 7
-  },
-  {
     "op": "remove",
-    "path": "/items/wall@5,6,0/config/tiles/2"
-  },
-  {
-    "op": "remove",
-    "path": "/items/wall@5,6,0/config/tiles/1"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@0,6,0/config/tiles/3",
-    "value": "shield"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@0,6,0/config/tiles/4",
-    "value": "plain"
-  },
-  {
-    "op": "remove",
-    "path": "/items/wall@0,4,0"
+    "path": "/items/w6"
   },
   {
     "op": "replace",
-    "path": "/items/wall(right)@0,0,0/config/times/y",
-    "value": 4
-  },
-  {
-    "op": "replace",
-    "path": "/items/portableBlock@0,5,0/position/y",
+    "path": "/items/w5/position/y",
     "value": 0
   },
   {
     "op": "replace",
-    "path": "/items/door@3,6,0/position/x",
+    "path": "/items/w5/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/config/tiles/2",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/config/tiles/1",
+    "value": "armour"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/3",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/4",
+    "value": "armour"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/5",
+    "value": "plain"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/position/x",
+    "value": 7
+  },
+  {
+    "op": "remove",
+    "path": "/items/w4/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles",
+    "value": ["plain"]
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/x",
+    "value": 5
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/times",
+    "value": {
+      "x": 3
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/position/y",
+    "value": 6
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "add",
+    "path": "/items/w2/config/tiles",
+    "value": ["plain", "shield", "plain", "shield", "plain"]
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/db1/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
     "value": 5
   },
   {
     "op": "replace",
-    "path": "/items/door@0,2,4/position/y",
+    "path": "/items/d2/config/toRoom",
+    "value": "blacktooth72"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth70"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
     "value": 4
   },
   {
     "op": "replace",
-    "path": "/items/deadlyBlock@2,4,0/position/x",
+    "path": "/items/d/position/y",
     "value": 4
   },
   {
     "op": "replace",
-    "path": "/items/block@0,2,3/position/y",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth77"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b/position/y",
     "value": 4
   },
   {
     "op": "add",
-    "path": "/items/extraTower",
+    "path": "/items/b1",
     "value": {
       "config": {
         "style": "tower",
@@ -77,7 +246,7 @@
   },
   {
     "op": "add",
-    "path": "/items/scroll",
+    "path": "/items/pi",
     "value": {
       "config": {
         "gives": "scroll",

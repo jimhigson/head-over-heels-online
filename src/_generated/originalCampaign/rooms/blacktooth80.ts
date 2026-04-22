@@ -6,37 +6,37 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "blacktooth80",
   items: {
-    "deadlyBlock@0,3,0": {
-      config: { style: "volcano", times: { y: 3 } },
-      position: { x: 0, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,2,0": {
-      config: { style: "volcano", times: { x: 2 } },
-      position: { x: 1, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,5,0": {
-      config: { style: "volcano", times: { x: 3 } },
-      position: { x: 1, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,3,0": {
-      config: { style: "volcano", times: { y: 2 } },
-      position: { x: 3, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@1,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "blacktooth78" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "blacktooth81" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano", times: { y: 3 } },
+      position: { x: 0, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano", times: { x: 2 } },
+      position: { x: 1, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    db2: {
+      config: { style: "volcano", times: { x: 3 } },
+      position: { x: 1, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    db3: {
+      config: { style: "volcano", times: { y: 2 } },
+      position: { x: 3, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -45,7 +45,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@2,4,0": {
+    m: {
       config: {
         activated: "on",
         movement: "clockwise",
@@ -56,32 +56,32 @@ export const room = inferRoomJson({
       position: { x: 2, y: 4, z: 0 },
       type: "monster",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["shield"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["shield"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

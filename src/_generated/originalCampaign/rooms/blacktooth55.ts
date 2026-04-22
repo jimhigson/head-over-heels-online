@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "blacktooth55",
   items: {
-    "door@0,2,0": {
+    d: {
       config: { direction: "right", toRoom: "blacktooth56" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
-    "door@3,6,0": {
+    d1: {
       config: { direction: "away", toRoom: "blacktooth61" },
       position: { x: 3, y: 6, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "market",
@@ -25,42 +25,42 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@3,0,0": {
+    l: {
       config: { bottom: 0, top: 11 },
       position: { x: 3, y: 0, z: 0 },
       type: "lift",
     },
-    scroll: {
+    pi: {
       config: { gives: "scroll", page: "hushPuppies", source: "manual" },
       position: { x: 5, y: 5, z: 0 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w2: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w3: {
       config: { direction: "away", tiles: ["bars", "bars", "bars"] },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@5,6,0": {
+    w4: {
       config: { direction: "away", tiles: ["bars", "bars", "bars"] },
       position: { x: 5, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars"],

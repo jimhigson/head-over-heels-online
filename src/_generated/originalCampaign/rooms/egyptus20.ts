@@ -6,57 +6,57 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "egyptus20",
   items: {
-    "block@5,7,0": {
+    b: {
       config: { style: "organic" },
       position: { x: 5, y: 9, z: 0 },
       type: "block",
     },
-    "block@7,0,0": {
+    b1: {
       config: { style: "organic" },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
-    "block@7,3,0": {
+    b2: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "block@7,7,0": {
+    b3: {
       config: { style: "organic" },
       position: { x: 7, y: 9, z: 0 },
       type: "block",
     },
-    disappearingBlock: {
+    b4: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 7, y: 5, z: 0 },
       type: "block",
     },
-    "door@8,3,2": {
-      config: { direction: "left", toRoom: "egyptus21" },
-      position: { x: 8, y: 3, z: 2 },
-      type: "door",
-    },
-    "floor@0,0,0": {
-      config: { floorType: "none", times: { x: 8, y: 10 } },
-      position: { x: 0, y: 0, z: 0 },
-      type: "floor",
-    },
-    newBlockForLongerRoom: {
+    b5: {
       config: { style: "organic" },
       position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
-    "wall(right)@0,0,0": {
+    d: {
+      config: { direction: "left", toRoom: "egyptus21" },
+      position: { x: 8, y: 3, z: 2 },
+      type: "door",
+    },
+    f: {
+      config: { floorType: "none", times: { x: 8, y: 10 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "floor",
+    },
+    w: {
       config: { direction: "right", times: { y: 10 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -73,7 +73,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 10, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
@@ -81,7 +81,7 @@ export const room = inferRoomJson({
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,5,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

@@ -6,41 +6,41 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   id: "penitentiary33",
   items: {
-    "ball@1,1,3": { config: {}, position: { x: 1, y: 1, z: 3 }, type: "ball" },
-    "ball@1,6,3": { config: {}, position: { x: 1, y: 6, z: 3 }, type: "ball" },
-    "ball@6,1,3": { config: {}, position: { x: 6, y: 1, z: 3 }, type: "ball" },
-    "ball@6,6,3": { config: {}, position: { x: 6, y: 6, z: 3 }, type: "ball" },
-    "block@1,1,0": {
+    b: {
       config: { style: "tower", times: { z: 3 } },
       position: { x: 1, y: 1, z: 0 },
       type: "block",
     },
-    "block@1,6,0": {
+    b1: {
       config: { style: "tower", times: { z: 3 } },
       position: { x: 1, y: 6, z: 0 },
       type: "block",
     },
-    "block@6,1,0": {
+    b2: {
       config: { style: "tower", times: { z: 3 } },
       position: { x: 6, y: 1, z: 0 },
       type: "block",
     },
-    "block@6,6,0": {
+    b3: {
       config: { style: "tower", times: { z: 3 } },
       position: { x: 6, y: 6, z: 0 },
       type: "block",
     },
-    "door@3,0,0": {
+    bl: { config: {}, position: { x: 1, y: 1, z: 3 }, type: "ball" },
+    bl1: { config: {}, position: { x: 1, y: 6, z: 3 }, type: "ball" },
+    bl2: { config: {}, position: { x: 6, y: 1, z: 3 }, type: "ball" },
+    bl3: { config: {}, position: { x: 6, y: 6, z: 3 }, type: "ball" },
+    d: {
       config: { direction: "towards", toRoom: "penitentiary34crown" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@3,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "penitentiary32" },
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "penitentiary",
@@ -49,47 +49,47 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    scroll: {
+    pi: {
       config: { gives: "scroll", page: "teleportBack", source: "manual" },
       position: { x: 5, y: 6, z: 2 },
       type: "pickup",
     },
-    "teleporter@0,3,0": {
+    t: {
       config: {
         activatedOnStoreValue: "planetsLiberated.penitentiary",
         times: { x: 2, y: 2 },
-        toItemId: "block@0,3,0",
+        toItemId: "b",
         toRoom: "penitentiary2",
       },
       position: { x: 0, y: 3, z: 0 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

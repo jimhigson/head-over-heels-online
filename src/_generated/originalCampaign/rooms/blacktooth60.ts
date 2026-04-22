@@ -6,22 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   id: "blacktooth60",
   items: {
-    "barrier@0,3,0": {
+    br: {
       config: { axis: "x", times: { x: 3, z: 3 } },
       position: { x: 0, y: 3.4, z: 0 },
       type: "barrier",
     },
-    "barrier@3,4,0": {
+    br1: {
       config: { axis: "y", times: { y: 4, z: 3 } },
       position: { x: 2.6, y: 4, z: 0 },
       type: "barrier",
     },
-    "door@3,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "blacktooth59" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -30,40 +30,32 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "pickup@0,4,0": {
+    pi: {
       config: { gives: "extra-life" },
       position: { x: 0, y: 4, z: 0 },
       type: "pickup",
     },
-    "teleporter@0,6,0": {
-      config: {
-        times: { x: 2, y: 2 },
-        toItemId: "teleporter@0,6,0",
-        toRoom: "moonbase8",
-      },
+    t: {
+      config: { times: { x: 2, y: 2 }, toItemId: "t", toRoom: "moonbase8" },
       position: { x: 0, y: 6, z: 0 },
       type: "teleporter",
     },
-    "teleporter@6,6,0": {
-      config: {
-        times: { x: 2, y: 2 },
-        toItemId: "teleporter@6,6,0",
-        toRoom: "moonbase8",
-      },
+    t1: {
+      config: { times: { x: 2, y: 2 }, toItemId: "t1", toRoom: "moonbase8" },
       position: { x: 6, y: 6, z: 0 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -80,12 +72,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

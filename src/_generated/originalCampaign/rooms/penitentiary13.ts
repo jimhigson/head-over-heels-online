@@ -6,67 +6,72 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "penitentiary13",
   items: {
-    "block@0,3,5": {
+    b: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 0, y: 3, z: 5 },
       type: "block",
     },
-    "block@1,0,1": {
+    b1: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 1, y: 0, z: 1 },
       type: "block",
     },
-    "block@1,3,4": {
+    b2: {
       config: { style: "artificial" },
       position: { x: 1, y: 3, z: 4 },
       type: "block",
     },
-    "block@2,3,6": {
+    b3: {
       config: { style: "artificial" },
       position: { x: 2, y: 3, z: 6 },
       type: "block",
     },
-    "block@3,3,3": {
+    b4: {
       config: { style: "artificial" },
       position: { x: 3, y: 3, z: 3 },
       type: "block",
     },
-    "block@4,3,2": {
+    b5: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 4, y: 3, z: 2 },
       type: "block",
     },
-    "block@5,3,1": {
+    b6: {
       config: { style: "artificial" },
       position: { x: 5, y: 3, z: 1 },
       type: "block",
     },
-    "block@7,3,0": {
+    b7: {
       config: { style: "artificial" },
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "deadlyBlock@1,0,0": {
-      config: { style: "toaster", times: { x: 2 } },
-      position: { x: 1, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,3,0": {
-      config: { style: "toaster" },
-      position: { x: 4, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@3,0,0": {
-      config: { direction: "towards", toRoom: "penitentiary2" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "door",
-    },
-    extra1: {
+    b8: {
       config: { style: "artificial" },
       position: { x: 5, y: 3, z: 0 },
       type: "block",
     },
-    "floor@0,0,0": {
+    b9: {
+      config: { disappearing: { on: "stand" }, style: "artificial" },
+      position: { x: 2, y: 0, z: 1 },
+      type: "block",
+    },
+    d: {
+      config: { direction: "towards", toRoom: "penitentiary2" },
+      position: { x: 3, y: 0, z: 0 },
+      type: "door",
+    },
+    db: {
+      config: { style: "toaster", times: { x: 2 } },
+      position: { x: 1, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "toaster" },
+      position: { x: 4, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "penitentiary",
@@ -75,27 +80,18 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    secondOverToaster: {
-      config: { disappearing: { on: "stand" }, style: "artificial" },
-      position: { x: 2, y: 0, z: 1 },
-      type: "block",
-    },
-    "spring@2,3,7": {
-      config: {},
-      position: { x: 2, y: 3, z: 7 },
-      type: "spring",
-    },
-    "wall(right)@0,0,0": {
+    sg: { config: {}, position: { x: 2, y: 3, z: 7 }, type: "spring" },
+    w: {
       config: { direction: "right", times: { y: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -112,12 +108,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: ["loop", "loop", "skeleton", "loop"],

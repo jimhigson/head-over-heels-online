@@ -6,97 +6,57 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   id: "blacktooth6",
   items: {
-    "block@0,0,0": {
+    b: {
       config: { style: "organic" },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    "block@0,3,0": {
+    b1: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
-    "block@0,7,0": {
+    b2: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
-    "block@3,0,0": {
+    b3: {
       config: { style: "organic" },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "block@3,7,0": {
+    b4: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 3, y: 7, z: 0 },
       type: "block",
     },
-    "block@6,0,0": {
+    b5: {
       config: { style: "organic" },
       position: { x: 6, y: 0, z: 0 },
       type: "block",
     },
-    "block@7,7,0": {
+    b6: {
       config: { style: "organic" },
       position: { x: 7, y: 7, z: 0 },
       type: "block",
     },
-    "door@0,3,1": {
+    b7: {
+      config: { style: "organic" },
+      position: { x: 2, y: 3, z: 0 },
+      type: "block",
+    },
+    d: {
       config: { direction: "right", toRoom: "blacktooth5" },
       position: { x: 0, y: 3, z: 1 },
       type: "door",
     },
-    extraMonster: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 0, y: 0, z: 5 },
-      type: "monster",
-    },
-    extraMonster2: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 7, y: 7, z: 7 },
-      type: "monster",
-    },
-    extraMonster3: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 6, y: 7, z: 4 },
-      type: "monster",
-    },
-    extraMonster4: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 7, y: 3, z: 3 },
-      type: "monster",
-    },
-    extraMonster5: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 7, y: 4, z: 6 },
-      type: "monster",
-    },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "deadly", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@3,0,1": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -105,30 +65,66 @@ export const room = inferRoomJson({
       position: { x: 3, y: 0, z: 1 },
       type: "monster",
     },
-    "pickup@7,7,1": {
+    m1: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 0, y: 0, z: 5 },
+      type: "monster",
+    },
+    m2: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 7, y: 7, z: 7 },
+      type: "monster",
+    },
+    m3: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 6, y: 7, z: 4 },
+      type: "monster",
+    },
+    m4: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 7, y: 3, z: 3 },
+      type: "monster",
+    },
+    m5: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: { x: 7, y: 4, z: 6 },
+      type: "monster",
+    },
+    pi: {
       config: { gives: "doughnuts" },
       position: { x: 7, y: 7, z: 1 },
       type: "pickup",
     },
-    scroll: {
+    pi1: {
       config: { gives: "scroll", page: "doughnuts", source: "manual" },
       position: { x: 2, y: 3, z: 1 },
       type: "pickup",
     },
-    scrollBlock: {
-      config: { style: "organic" },
-      position: { x: 2, y: 3, z: 0 },
-      type: "block",
-    },
-    "switch@6,0,1": {
+    sw: {
       config: {
         initialSetting: "left",
         modifies: [
-          {
-            expectType: "block",
-            makesStable: false,
-            targets: ["block@0,7,0", "block@3,7,0"],
-          },
+          { expectType: "block", makesStable: false, targets: ["b2", "b4"] },
           { activates: true, expectType: "monster" },
         ],
         type: "in-room",
@@ -136,22 +132,22 @@ export const room = inferRoomJson({
       position: { x: 6, y: 0, z: 1 },
       type: "switch",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w2: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: [
@@ -168,7 +164,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

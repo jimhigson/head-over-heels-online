@@ -6,12 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "penitentiary17",
   items: {
-    "block@3,0,0": {
+    b: {
       config: { style: "organic", times: { x: 2, y: 8 } },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "door@3,8,2": {
+    br: {
+      config: { axis: "y", times: { y: 8 } },
+      position: { x: 2.5, y: 0, z: 1 },
+      type: "barrier",
+    },
+    br1: {
+      config: { axis: "y", times: { y: 8 } },
+      position: { x: 4.5, y: 0, z: 1 },
+      type: "barrier",
+    },
+    d: {
       config: {
         direction: "away",
         meta: { toSubRoom: "right" },
@@ -20,42 +30,32 @@ export const room = inferRoomJson({
       position: { x: 3, y: 8, z: 2 },
       type: "door",
     },
-    extraBarrier1: {
-      config: { axis: "y", times: { y: 8 } },
-      position: { x: 2.5, y: 0, z: 1 },
-      type: "barrier",
-    },
-    extraBarrier2: {
-      config: { axis: "y", times: { y: 8 } },
-      position: { x: 4.5, y: 0, z: 1 },
-      type: "barrier",
-    },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "none", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w3: {
       config: { direction: "away", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

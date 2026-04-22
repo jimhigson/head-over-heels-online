@@ -1,7 +1,58 @@
 [
   {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
     "op": "add",
-    "path": "/items/door@0,1,2/config/meta",
+    "path": "/items/w1/config/times",
+    "value": {
+      "x": 8
+    }
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "bookworld29"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "bookworld31"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "left"
     }

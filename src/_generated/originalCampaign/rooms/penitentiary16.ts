@@ -6,47 +6,47 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "penitentiary16",
   items: {
-    "block@7,0,0": {
+    b: {
       config: { style: "organic", times: { y: 8 } },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "none", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@3,0,0": {
+    l: {
       config: { bottom: 0, top: 11 },
       position: { x: 3, y: 0, z: 0 },
       type: "lift",
     },
-    "portableBlock@7,5,1": {
+    pr: {
       config: { style: "cube" },
       position: { x: 7, y: 5, z: 1 },
       type: "portableBlock",
     },
-    "portableBlock@7,6,1": {
+    pr1: {
       config: { style: "cube" },
       position: { x: 7, y: 6, z: 1 },
       type: "portableBlock",
     },
-    "portableBlock@7,7,1": {
+    pr2: {
       config: { style: "cube" },
       position: { x: 7, y: 7, z: 1 },
       type: "portableBlock",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -63,7 +63,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: [

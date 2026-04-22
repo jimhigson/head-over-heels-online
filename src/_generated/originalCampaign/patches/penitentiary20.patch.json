@@ -1,7 +1,85 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/hintAboveA",
+    "path": "/items/w1/config/times/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr6/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr5/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr5/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr4/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr3/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr3/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr2/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr1/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr1/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr/position/y",
+    "value": 1
+  },
+  {
+    "op": "add",
+    "path": "/items/b",
     "value": {
       "config": {
         "style": "organic",
@@ -19,7 +97,7 @@
   },
   {
     "op": "add",
-    "path": "/items/hintAboveL",
+    "path": "/items/b1",
     "value": {
       "config": {
         "style": "organic",
@@ -37,7 +115,7 @@
   },
   {
     "op": "add",
-    "path": "/items/hintAboveR",
+    "path": "/items/b2",
     "value": {
       "config": {
         "style": "organic",
@@ -55,7 +133,7 @@
   },
   {
     "op": "add",
-    "path": "/items/hintAboveSingle",
+    "path": "/items/b3",
     "value": {
       "config": {
         "disappearing": {
@@ -73,7 +151,7 @@
   },
   {
     "op": "add",
-    "path": "/items/hintAboveT",
+    "path": "/items/b4",
     "value": {
       "config": {
         "style": "organic",

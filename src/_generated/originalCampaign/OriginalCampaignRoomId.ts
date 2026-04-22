@@ -1,4 +1,5 @@
 export type OriginalCampaignRoomId =
+  | "blacktooth0switches"
   | "blacktooth1head"
   | "blacktooth2"
   | "blacktooth3"
@@ -273,5 +274,4 @@ export type OriginalCampaignRoomId =
   | "safari34"
   | "safari35"
   | "safari36"
-  | "safari37crown"
-  | "switch_room";
+  | "safari37crown";

@@ -10,7 +10,6 @@ import type { LooseDoorMap } from "./convertCampaign";
 import type { MapXml2Json, Xml2JsonRoom } from "./readToJson";
 import type { Xml2JsonItem, XmlItemMonsterBehaviour } from "./Xml2JsonItem";
 
-import { itemKey } from "../../src/utils/keyItems";
 import {
   addXyz,
   type DirectionXy4,
@@ -86,7 +85,6 @@ export const convertItemsArray = async (
           map,
           roomName,
           xml2JsonItem,
-          xml2JsonItems: xml2JsonRoom.items,
         }),
       ),
     )
@@ -99,7 +97,6 @@ type ConvertItemParams = {
   map: MapXml2Json;
   roomName: string;
   xml2JsonItem: Xml2JsonItem;
-  xml2JsonItems: Xml2JsonItem[];
 };
 
 const convertItem = async ({
@@ -108,7 +105,6 @@ const convertItem = async ({
   map,
   roomName,
   xml2JsonItem,
-  xml2JsonItems,
 }: ConvertItemParams): Promise<JsonItemUnion | undefined> => {
   const position = convertXYZ(xml2JsonItem, xml2JsonRoom, doorMap);
 
@@ -390,26 +386,12 @@ const convertItem = async ({
     }
 
     case "remote-control": {
-      const charlesXml2Json = xml2JsonRoom.items.find(
-        (i) => i.kind === "charles-robot",
-      );
-      if (charlesXml2Json === undefined) {
-        throw new Error("remote control with no Charles");
-      }
-      const charlesJson = await convertItem({
-        xml2JsonRoom,
-        doorMap,
-        map,
-        roomName,
-        xml2JsonItem: charlesXml2Json,
-        xml2JsonItems,
-      });
-      if (charlesJson === undefined) {
-        throw new Error("charles didn't convert while converting joystick");
-      }
+      // no controls list: joysticks control every charles in their room,
+      // matching the original game's behaviour
       return {
         type: "joystick",
-        config: { controls: [itemKey(charlesJson, [charlesJson])] },
+        // no config.controls specified = control all charles in the room
+        config: {},
         position,
       };
     }

@@ -1,1 +1,109 @@
-[]
+[
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m3/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/m3/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/m3/config/which",
+    "value": "elephantHead"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m3/config/movement",
+    "value": "turn-to-player"
+  },
+  {
+    "op": "add",
+    "path": "/items/m3/config/startDirection",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/which",
+    "value": "elephant"
+  },
+  {
+    "op": "remove",
+    "path": "/items/m/config/startDirection"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/movement",
+    "value": "patrol-randomly-xy4"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "safari12"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "safari10"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  }
+]

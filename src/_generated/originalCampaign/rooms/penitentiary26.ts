@@ -6,42 +6,42 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "penitentiary26",
   items: {
-    "block@0,4,0": {
+    b: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
-    "block@4,0,0": {
+    b1: {
       config: { style: "organic", times: { x: 2 } },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "deadlyBlock@0,7,1": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 7, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,3,0": {
-      config: { style: "volcano", times: { z: 2 } },
-      position: { x: 7, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,3,1": {
+    d: {
       config: { direction: "right", toRoom: "penitentiary27" },
       position: { x: 0, y: 3, z: 1 },
       type: "door",
     },
-    "door@3,0,1": {
+    d1: {
       config: { direction: "towards", toRoom: "penitentiary25" },
       position: { x: 3, y: 0, z: 1 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano" },
+      position: { x: 0, y: 7, z: 1 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano", times: { z: 2 } },
+      position: { x: 7, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: { floorType: "deadly", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "movingPlatform@4,1,0": {
+    mp: {
       config: {
         activated: "on-stand",
         movement: "clockwise",
@@ -50,22 +50,22 @@ export const room = inferRoomJson({
       position: { x: 4, y: 1, z: 0 },
       type: "movingPlatform",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w2: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: [
@@ -82,12 +82,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w4: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

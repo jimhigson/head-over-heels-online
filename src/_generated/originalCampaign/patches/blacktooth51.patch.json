@@ -1,11 +1,39 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@2,3,0/config/toPosition"
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 6
   },
   {
     "op": "replace",
-    "path": "/items/floor@0,0,0/config/scenery",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "replace",
+    "path": "/items/f/config/scenery",
     "value": "market"
   }
 ]

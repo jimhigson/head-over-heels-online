@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "magenta", shade: "basic" },
   id: "egyptus3",
   items: {
-    "door@0,0,0": {
+    d: {
       config: { direction: "right", toRoom: "egyptus2" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,0,4": {
+    d1: {
       config: { direction: "left", toRoom: "egyptus4" },
       position: { x: 8, y: 0, z: 4 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "egyptus",
@@ -25,17 +25,13 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "spring@4,1,0": {
-      config: {},
-      position: { x: 4, y: 0.5, z: 0 },
-      type: "spring",
-    },
-    "wall@0,0,0": {
+    sg: { config: {}, position: { x: 4, y: 0.5, z: 0 }, type: "spring" },
+    w: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w1: {
       config: {
         direction: "away",
         tiles: [

@@ -6,17 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "magenta", shade: "basic" },
   id: "penitentiary12",
   items: {
-    "block@0,2,3": {
+    b: {
       config: { style: "organic", times: { x: 2, y: 2 } },
       position: { x: 0, y: 1, z: 3 },
       type: "block",
     },
-    "block@7,0,0": {
+    b1: {
       config: { style: "artificial", times: { z: 3 } },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
-    "door@0,3,4": {
+    b2: {
+      config: { style: "tower", times: { x: 2, y: 2, z: 3 } },
+      position: { x: 0, y: 1, z: 0 },
+      type: "block",
+    },
+    d: {
       config: {
         direction: "right",
         meta: { toSubRoom: "left" },
@@ -25,22 +30,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 1, z: 4 },
       type: "door",
     },
-    "door@3,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "penitentiary19" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
     },
-    "door@8,3,0": {
+    d2: {
       config: { direction: "left", toRoom: "penitentiary11" },
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    extraTowers: {
-      config: { style: "tower", times: { x: 2, y: 2, z: 3 } },
-      position: { x: 0, y: 1, z: 0 },
-      type: "block",
-    },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "penitentiary",
@@ -49,52 +49,40 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "hushPuppy@0,0,0": {
-      config: {},
-      position: { x: 3, y: 0, z: 0 },
-      type: "hushPuppy",
-    },
-    "hushPuppy@0,1,3": {
+    h: { config: {}, position: { x: 3, y: 0, z: 0 }, type: "hushPuppy" },
+    h1: {
       config: { times: { x: 2 } },
       position: { x: 2, y: 1, z: 3 },
       type: "hushPuppy",
     },
-    "hushPuppy@1,0,1": {
-      config: {},
-      position: { x: 4, y: 0, z: 1 },
-      type: "hushPuppy",
-    },
-    "hushPuppy@1,1,2": {
-      config: {},
-      position: { x: 4, y: 1, z: 2 },
-      type: "hushPuppy",
-    },
-    "pickup@7,0,3": {
+    h2: { config: {}, position: { x: 4, y: 0, z: 1 }, type: "hushPuppy" },
+    h3: { config: {}, position: { x: 4, y: 1, z: 2 }, type: "hushPuppy" },
+    pi: {
       config: { gives: "doughnuts" },
       position: { x: 7, y: 0, z: 3 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 1 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w2: {
       config: { direction: "right", times: { y: 5 } },
       position: { x: 0, y: 3, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w3: {
       config: { direction: "away", tiles: ["loop"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w4: {
       config: {
         direction: "away",
         tiles: ["loop", "skeleton", "skeleton", "skeleton", "loop"],
@@ -102,12 +90,12 @@ export const room = inferRoomJson({
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: { direction: "left", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,5,0": {
+    w6: {
       config: { direction: "left", tiles: ["loop", "skeleton", "loop"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",

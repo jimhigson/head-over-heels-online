@@ -1,55 +1,83 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 6
+  },
+  {
     "op": "replace",
-    "path": "/items/block@5,5,2/position/z",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b5/position/z",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@5,5,2/config/times",
+    "path": "/items/b5/config/times",
     "value": {
       "z": 3
     }
   },
   {
     "op": "add",
-    "path": "/items/block@5,2,6/config/disappearing",
+    "path": "/items/b4/config/disappearing",
     "value": {
       "on": "stand"
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@5,1,2/position/z",
+    "path": "/items/b3/position/z",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@5,1,2/config/times",
+    "path": "/items/b3/config/times",
     "value": {
       "z": 3
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@5,0,4/position/z",
+    "path": "/items/b1/position/z",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@5,0,4/config/times",
+    "path": "/items/b1/config/times",
     "value": {
       "z": 5
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@4,5,1/position/z",
+    "path": "/items/b/position/z",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@4,5,1/config/times",
+    "path": "/items/b/config/times",
     "value": {
       "z": 2
     }

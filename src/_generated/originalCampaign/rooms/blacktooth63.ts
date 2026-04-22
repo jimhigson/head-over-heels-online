@@ -6,12 +6,12 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "blacktooth63",
   items: {
-    "block@6,0,3": {
+    b: {
       config: { style: "artificial", times: { y: 2 } },
       position: { x: 7, y: 0, z: 3 },
       type: "block",
     },
-    "block@7,0,3": {
+    b1: {
       config: {
         disappearing: { on: "stand" },
         style: "artificial",
@@ -20,12 +20,12 @@ export const room = inferRoomJson({
       position: { x: 6, y: 0, z: 3 },
       type: "block",
     },
-    "door@0,0,0": {
+    d: {
       config: { direction: "right", toRoom: "blacktooth59" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,0,5": {
+    d1: {
       config: {
         direction: "left",
         meta: { toSubRoom: "right" },
@@ -34,7 +34,7 @@ export const room = inferRoomJson({
       position: { x: 8, y: 0, z: 5 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -43,22 +43,22 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "hushPuppy@3,0,0": {
+    h: {
       config: { times: { y: 2 } },
       position: { x: 3, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@4,0,1": {
+    h1: {
       config: { times: { y: 2 } },
       position: { x: 4, y: 0, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@5,0,2": {
+    h2: {
       config: { times: { y: 2 } },
       position: { x: 5, y: 0, z: 2 },
       type: "hushPuppy",
     },
-    "monster@4,1,0": {
+    m: {
       config: {
         activated: "on",
         movement: "towards-analogue",
@@ -67,17 +67,17 @@ export const room = inferRoomJson({
       position: { x: 4, y: 1, z: 0 },
       type: "monster",
     },
-    "pickup@5,1,3": {
+    pi: {
       config: { gives: "jumps" },
       position: { x: 5, y: 1, z: 3 },
       type: "pickup",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w1: {
       config: {
         direction: "away",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],

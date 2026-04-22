@@ -1,52 +1,109 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times"
+  },
+  {
     "op": "replace",
-    "path": "/items/teleporter@2,0,5/position/x",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times",
+    "value": {
+      "y": 8
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/t/position/x",
     "value": 3
   },
   {
     "op": "remove",
-    "path": "/items/teleporter@2,0,5/config/toPosition"
+    "path": "/items/t/config/toPosition"
   },
   {
     "op": "remove",
-    "path": "/items/portableBlock@0,7,0"
+    "path": "/items/pr"
   },
   {
     "op": "replace",
-    "path": "/items/block@3,1,4/position/y",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "egyptus10"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
     "value": 0
   },
   {
     "op": "replace",
-    "path": "/items/block@3,1,4/config/times/y",
-    "value": 4
+    "path": "/items/d/config/toRoom",
+    "value": "egyptus8"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/y",
+    "value": 0
   },
   {
     "op": "remove",
-    "path": "/items/block@2,0,4"
+    "path": "/items/b1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/extrapillar",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "z": 4
-        }
-      },
-      "position": {
-        "x": 3,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
-    }
+    "path": "/items/b1/config/times/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/config/style",
+    "value": "tower"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b/position/x",
+    "value": 3
+  },
+  {
+    "op": "remove",
+    "path": "/items/b/config/times/x"
   },
   {
     "op": "add",
-    "path": "/items/extrapillar2",
+    "path": "/items/b/config/times/y",
+    "value": 4
+  },
+  {
+    "op": "add",
+    "path": "/items/b2",
     "value": {
       "config": {
         "style": "tower",

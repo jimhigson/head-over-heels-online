@@ -6,7 +6,7 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "bookworld30",
   items: {
-    "door@0,1,2": {
+    d: {
       config: {
         direction: "right",
         meta: { toSubRoom: "left" },
@@ -15,12 +15,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 1, z: 2 },
       type: "door",
     },
-    "door@8,1,2": {
+    d1: {
       config: { direction: "left", toRoom: "bookworld29" },
       position: { x: 8, y: 1, z: 2 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -29,7 +29,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@3,2,0": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -38,7 +38,7 @@ export const room = inferRoomJson({
       position: { x: 3, y: 2, z: 0 },
       type: "monster",
     },
-    "monster@4,1,0": {
+    m1: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -47,22 +47,22 @@ export const room = inferRoomJson({
       position: { x: 4, y: 1, z: 0 },
       type: "monster",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,3,0": {
+    w2: {
       config: { direction: "right" },
       position: { x: 0, y: 3, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: [
@@ -79,12 +79,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: { direction: "left", tiles: ["book"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,3,0": {
+    w5: {
       config: { direction: "left", tiles: ["book"] },
       position: { x: 8, y: 3, z: 0 },
       type: "wall",

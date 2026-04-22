@@ -1,59 +1,142 @@
 [
   {
     "op": "remove",
-    "path": "/items/wall@5,8,0"
+    "path": "/items/w5"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/tiles/2",
+    "value": "coil"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/tiles/1",
+    "value": "window3"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/tiles/0",
+    "value": "window2"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/3",
+    "value": "window2"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/4",
+    "value": "coil"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/5",
+    "value": "window1"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/direction",
+    "value": "left"
   },
   {
     "op": "remove",
-    "path": "/items/wall@0,8,0"
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
   },
   {
     "op": "replace",
-    "path": "/items/door@8,3,5/position/z",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
     "value": 4
   },
   {
     "op": "replace",
-    "path": "/items/door@3,8,5/position/z",
+    "path": "/items/d/position/z",
     "value": 4
   },
   {
     "op": "replace",
-    "path": "/items/door@3,8,5/position/x",
+    "path": "/items/d/position/x",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@7,3,3/config/times",
+    "path": "/items/b5/config/times",
     "value": {
       "y": 2
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@1,7,3/position/x",
+    "path": "/items/b1/position/x",
     "value": 0
   },
   {
     "op": "replace",
-    "path": "/items/block@1,7,3/config/times/x",
+    "path": "/items/b1/config/times/x",
     "value": 2
-  },
-  {
-    "op": "add",
-    "path": "/items/wall",
-    "value": {
-      "config": {
-        "direction": "away",
-        "tiles": ["window2", "window3", "coil", "window2", "coil", "window1"]
-      },
-      "position": {
-        "x": 2,
-        "y": 8,
-        "z": 0
-      },
-      "type": "wall"
-    }
   },
   {
     "op": "replace",

@@ -1,61 +1,136 @@
 [
   {
     "op": "remove",
-    "path": "/items/wall@8,5,0"
-  },
-  {
-    "op": "remove",
-    "path": "/items/wall@8,0,0"
+    "path": "/items/w5"
   },
   {
     "op": "replace",
-    "path": "/items/movingPlatform@1,1,1/config/activated",
+    "path": "/items/w4/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/tiles/2",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/tiles/1",
+    "value": "plain"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/tiles/0",
+    "value": "armour"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/3",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/4",
+    "value": "plain"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/5",
+    "value": "armour"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/mp/config/activated",
     "value": "on"
   },
   {
     "op": "replace",
-    "path": "/items/lift@1,1,0/config/top",
+    "path": "/items/l/config/top",
     "value": 11
   },
   {
     "op": "replace",
-    "path": "/items/door@8,3,5/position/y",
+    "path": "/items/d1/position/y",
     "value": 0
   },
   {
     "op": "replace",
-    "path": "/items/block@7,3,2/position/y",
+    "path": "/items/b3/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/z",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/x",
+    "value": 3
+  },
+  {
+    "op": "add",
+    "path": "/items/b2/config/times",
+    "value": {
+      "x": 2
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/z",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@7,3,2/config/times",
-    "value": {
-      "y": 2
-    }
+    "path": "/items/b1/config/times/z",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/config/style",
+    "value": "tower"
   },
   {
     "op": "add",
-    "path": "/items/block@3,7,0",
-    "value": {
-      "config": {
-        "style": "tower",
-        "times": {
-          "x": 2,
-          "z": 3
-        }
-      },
-      "position": {
-        "x": 3,
-        "y": 7,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/block@7,3,0",
+    "path": "/items/b4",
     "value": {
       "config": {
         "style": "tower",
@@ -74,18 +149,20 @@
   },
   {
     "op": "add",
-    "path": "/items/wall",
+    "path": "/items/b5",
     "value": {
       "config": {
-        "direction": "left",
-        "tiles": ["armour", "plain", "shield", "shield", "plain", "armour"]
+        "style": "organic",
+        "times": {
+          "y": 2
+        }
       },
       "position": {
-        "x": 8,
-        "y": 2,
-        "z": 0
+        "x": 7,
+        "y": 0,
+        "z": 2
       },
-      "type": "wall"
+      "type": "block"
     }
   }
 ]

@@ -1,27 +1,75 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 6
+  },
+  {
     "op": "replace",
-    "path": "/items/monster@3,3,0/position/z",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr3/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr3/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/z",
     "value": 11
   },
   {
     "op": "replace",
-    "path": "/items/monster@3,3,0/position/y",
+    "path": "/items/m/position/y",
     "value": 5
   },
   {
     "op": "replace",
-    "path": "/items/monster@3,3,0/position/x",
+    "path": "/items/m/position/x",
     "value": 5
   },
   {
     "op": "replace",
-    "path": "/items/lift@2,0,0/config/top",
+    "path": "/items/l/config/top",
     "value": 11
   },
   {
     "op": "add",
-    "path": "/items/door@2,6,5/config/meta",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "left"
     }

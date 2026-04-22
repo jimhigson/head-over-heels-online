@@ -1,8 +1,106 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
     "op": "replace",
-    "path": "/items/movingPlatform@6,7,0/config/activated",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/mp/config/activated",
     "value": "on"
+  },
+  {
+    "op": "replace",
+    "path": "/items/j3/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/j3/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/j/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/j/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth82"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth80"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
   },
   {
     "op": "replace",

@@ -6,22 +6,7 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   id: "safari16",
   items: {
-    "deadlyBlock@1,1,0": {
-      config: { style: "volcano", times: { y: 3 } },
-      position: { x: 0.5, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,5,0": {
-      config: { style: "volcano", times: { y: 2 } },
-      position: { x: 0.5, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,1,0": {
-      config: { style: "volcano", times: { y: 6 } },
-      position: { x: 2.5, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@1,0,0": {
+    d: {
       config: {
         direction: "towards",
         meta: { toSubRoom: "right" },
@@ -30,12 +15,27 @@ export const room = inferRoomJson({
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "safari17fish" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano", times: { y: 3 } },
+      position: { x: 0.5, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano", times: { y: 2 } },
+      position: { x: 0.5, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    db2: {
+      config: { style: "volcano", times: { y: 6 } },
+      position: { x: 2.5, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "safari",
@@ -44,7 +44,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@2,6,0": {
+    m: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -55,32 +55,32 @@ export const room = inferRoomJson({
       position: { x: 1.5, y: 6, z: 0 },
       type: "monster",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["wall"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["wall"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

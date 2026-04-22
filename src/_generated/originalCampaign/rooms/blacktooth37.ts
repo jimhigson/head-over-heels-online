@@ -6,28 +6,33 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "blacktooth37",
   items: {
-    "ball@0,1,0": { config: {}, position: { x: 0, y: 1, z: 0 }, type: "ball" },
-    block: {
+    b: {
       config: { style: "organic", times: { y: 5 } },
       position: { x: 3, y: 2, z: 2 },
       type: "block",
     },
-    block_2: {
+    b1: {
       config: { style: "tower", times: { z: 2 } },
       position: { x: 3, y: 2, z: 0 },
       type: "block",
     },
-    "door@1,0,0": {
+    b2: {
+      config: { style: "tower", times: { z: 2 } },
+      position: { x: 3, y: 6, z: 0 },
+      type: "block",
+    },
+    bl: { config: {}, position: { x: 0, y: 1, z: 0 }, type: "ball" },
+    d: {
       config: { direction: "towards", toRoom: "blacktooth36" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "blacktooth38" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -36,7 +41,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@0,5,0": {
+    m: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -47,7 +52,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 5, z: 0 },
       type: "monster",
     },
-    "monster@2,4,0": {
+    m1: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -58,7 +63,7 @@ export const room = inferRoomJson({
       position: { x: 2, y: 4, z: 0 },
       type: "monster",
     },
-    "monster@3,3,0": {
+    m2: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -69,12 +74,12 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3, z: 0 },
       type: "monster",
     },
-    pickup: {
+    pi: {
       config: { gives: "jumps" },
       position: { x: 3, y: 6, z: 3 },
       type: "pickup",
     },
-    "switch@0,7,0": {
+    sw: {
       config: {
         initialSetting: "left",
         modifies: [{ activates: true, expectType: "monster" }],
@@ -83,37 +88,32 @@ export const room = inferRoomJson({
       position: { x: 0, y: 7, z: 0 },
       type: "switch",
     },
-    tower: {
-      config: { style: "tower", times: { z: 2 } },
-      position: { x: 3, y: 6, z: 0 },
-      type: "block",
-    },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["shield"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["shield"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

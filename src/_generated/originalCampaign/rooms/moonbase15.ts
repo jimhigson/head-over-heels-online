@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "moonbase15",
   items: {
-    "door@0,0,0": {
+    d: {
       config: { direction: "right", toRoom: "moonbase7" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,0,4": {
+    d1: {
       config: { direction: "left", toRoom: "moonbase14" },
       position: { x: 8, y: 0, z: 4 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -25,32 +25,32 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "hushPuppy@5,0,0": {
+    h: {
       config: { times: { y: 2 } },
       position: { x: 5, y: 0, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@6,0,1": {
+    h1: {
       config: { times: { y: 2 } },
       position: { x: 6, y: 0, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@7,0,2": {
+    h2: {
       config: { times: { y: 2 } },
       position: { x: 7, y: 0, z: 2 },
       type: "hushPuppy",
     },
-    scroll: {
+    pi: {
       config: { gives: "scroll", page: "hushPuppies", source: "manual" },
       position: { x: 3, y: 1, z: 0 },
       type: "pickup",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w1: {
       config: {
         direction: "away",
         tiles: [

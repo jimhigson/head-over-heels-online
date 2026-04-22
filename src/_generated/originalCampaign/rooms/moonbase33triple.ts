@@ -6,52 +6,62 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "moonbase33triple",
   items: {
-    "deadlyBlock@0,10,0": {
-      config: { style: "toaster", times: { y: 4 } },
-      position: { x: 0, y: 10, z: 0 },
-      type: "deadlyBlock",
+    b: {
+      config: { style: "artificial", times: { z: 2 } },
+      position: { x: 5, y: 15, z: 0 },
+      type: "block",
     },
-    "deadlyBlock@11,1,0": {
-      config: { style: "toaster", times: { y: 5 } },
-      position: { x: 11, y: 1, z: 0 },
-      type: "deadlyBlock",
+    b1: {
+      config: { style: "artificial" },
+      position: { x: 4, y: 15, z: 0 },
+      type: "block",
     },
-    "deadlyBlock@11,14,0": {
-      config: { style: "toaster" },
-      position: { x: 11, y: 14, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@11,9,0": {
-      config: { style: "toaster" },
-      position: { x: 11, y: 9, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,10,0": {
-      config: { style: "toaster", times: { x: 2, y: 4 } },
-      position: { x: 5, y: 10, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,2,0": {
-      config: { style: "toaster", times: { y: 4 } },
-      position: { x: 6, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@12,11,0": {
+    d: {
       config: { direction: "left", toRoom: "moonbase34" },
       position: { x: 12, y: 11, z: 0 },
       type: "door",
     },
-    "door@2,16,0": {
+    d1: {
       config: { direction: "away", toRoom: "moonbase36" },
       position: { x: 2, y: 16, z: 0 },
       type: "door",
     },
-    "door@8,0,0": {
+    d2: {
       config: { direction: "towards", toRoom: "moonbase32" },
       position: { x: 8, y: 0, z: 0 },
       type: "door",
     },
-    floorL: {
+    db: {
+      config: { style: "toaster", times: { y: 4 } },
+      position: { x: 0, y: 10, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "toaster", times: { y: 5 } },
+      position: { x: 11, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    db2: {
+      config: { style: "toaster" },
+      position: { x: 11, y: 14, z: 0 },
+      type: "deadlyBlock",
+    },
+    db3: {
+      config: { style: "toaster" },
+      position: { x: 11, y: 9, z: 0 },
+      type: "deadlyBlock",
+    },
+    db4: {
+      config: { style: "toaster", times: { x: 2, y: 4 } },
+      position: { x: 5, y: 10, z: 0 },
+      type: "deadlyBlock",
+    },
+    db5: {
+      config: { style: "toaster", times: { y: 4 } },
+      position: { x: 6, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -60,7 +70,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 0, z: 0 },
       type: "floor",
     },
-    floorR: {
+    f1: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -69,7 +79,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "floor",
     },
-    "monster@0,10,1": {
+    m: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -79,7 +89,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 10, z: 1 },
       type: "monster",
     },
-    "monster@0,11,1": {
+    m1: {
       config: {
         activated: "after-player-near",
         movement: "towards-on-shortest-axis-xy4",
@@ -89,87 +99,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 11, z: 1 },
       type: "monster",
     },
-    "monster@0,12,1": {
-      config: {
-        activated: "off",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "left",
-        which: "cyberman",
-      },
-      position: { x: 0, y: 12, z: 1 },
-      type: "monster",
-    },
-    "monster@0,13,1": {
-      config: {
-        activated: "off",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "left",
-        which: "cyberman",
-      },
-      position: { x: 0, y: 13, z: 1 },
-      type: "monster",
-    },
-    "monster@11,1,1": {
-      config: {
-        activated: "off",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "right",
-        which: "cyberman",
-      },
-      position: { x: 11, y: 1, z: 1 },
-      type: "monster",
-    },
-    "monster@11,14,1": {
-      config: {
-        activated: "after-player-near",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "right",
-        which: "cyberman",
-      },
-      position: { x: 11, y: 14, z: 1 },
-      type: "monster",
-    },
-    "monster@11,2,1": {
-      config: {
-        activated: "off",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "right",
-        which: "cyberman",
-      },
-      position: { x: 11, y: 2, z: 1 },
-      type: "monster",
-    },
-    "monster@11,3,1": {
-      config: {
-        activated: "off",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "right",
-        which: "cyberman",
-      },
-      position: { x: 11, y: 3, z: 1 },
-      type: "monster",
-    },
-    "monster@11,4,1": {
-      config: {
-        activated: "off",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "right",
-        which: "cyberman",
-      },
-      position: { x: 11, y: 4, z: 1 },
-      type: "monster",
-    },
-    "monster@11,5,1": {
-      config: {
-        activated: "after-player-near",
-        movement: "towards-on-shortest-axis-xy4",
-        startDirection: "right",
-        which: "cyberman",
-      },
-      position: { x: 11, y: 5, z: 1 },
-      type: "monster",
-    },
-    "monster@11,9,1": {
+    m10: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -179,7 +109,7 @@ export const room = inferRoomJson({
       position: { x: 11, y: 9, z: 1 },
       type: "monster",
     },
-    "monster@5,10,1": {
+    m11: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -189,7 +119,7 @@ export const room = inferRoomJson({
       position: { x: 5, y: 10, z: 1 },
       type: "monster",
     },
-    "monster@5,11,1": {
+    m12: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -199,7 +129,7 @@ export const room = inferRoomJson({
       position: { x: 5, y: 11, z: 1 },
       type: "monster",
     },
-    "monster@5,12,1": {
+    m13: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -209,7 +139,7 @@ export const room = inferRoomJson({
       position: { x: 5, y: 12, z: 1 },
       type: "monster",
     },
-    "monster@5,13,1": {
+    m14: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -219,7 +149,7 @@ export const room = inferRoomJson({
       position: { x: 5, y: 13, z: 1 },
       type: "monster",
     },
-    "monster@6,10,1": {
+    m15: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -229,7 +159,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 10, z: 1 },
       type: "monster",
     },
-    "monster@6,11,1": {
+    m16: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -239,7 +169,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 11, z: 1 },
       type: "monster",
     },
-    "monster@6,12,1": {
+    m17: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -249,7 +179,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 12, z: 1 },
       type: "monster",
     },
-    "monster@6,13,1": {
+    m18: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -259,7 +189,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 13, z: 1 },
       type: "monster",
     },
-    "monster@6,2,1": {
+    m19: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -269,7 +199,17 @@ export const room = inferRoomJson({
       position: { x: 6, y: 2, z: 1 },
       type: "monster",
     },
-    "monster@6,3,1": {
+    m2: {
+      config: {
+        activated: "off",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "left",
+        which: "cyberman",
+      },
+      position: { x: 0, y: 12, z: 1 },
+      type: "monster",
+    },
+    m20: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -279,7 +219,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 3, z: 1 },
       type: "monster",
     },
-    "monster@6,4,1": {
+    m21: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -289,7 +229,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 4, z: 1 },
       type: "monster",
     },
-    "monster@6,5,1": {
+    m22: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -299,7 +239,77 @@ export const room = inferRoomJson({
       position: { x: 6, y: 5, z: 1 },
       type: "monster",
     },
-    uhohSwitch: {
+    m3: {
+      config: {
+        activated: "off",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "left",
+        which: "cyberman",
+      },
+      position: { x: 0, y: 13, z: 1 },
+      type: "monster",
+    },
+    m4: {
+      config: {
+        activated: "off",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        which: "cyberman",
+      },
+      position: { x: 11, y: 1, z: 1 },
+      type: "monster",
+    },
+    m5: {
+      config: {
+        activated: "after-player-near",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        which: "cyberman",
+      },
+      position: { x: 11, y: 14, z: 1 },
+      type: "monster",
+    },
+    m6: {
+      config: {
+        activated: "off",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        which: "cyberman",
+      },
+      position: { x: 11, y: 2, z: 1 },
+      type: "monster",
+    },
+    m7: {
+      config: {
+        activated: "off",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        which: "cyberman",
+      },
+      position: { x: 11, y: 3, z: 1 },
+      type: "monster",
+    },
+    m8: {
+      config: {
+        activated: "off",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        which: "cyberman",
+      },
+      position: { x: 11, y: 4, z: 1 },
+      type: "monster",
+    },
+    m9: {
+      config: {
+        activated: "after-player-near",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        which: "cyberman",
+      },
+      position: { x: 11, y: 5, z: 1 },
+      type: "monster",
+    },
+    sw: {
       config: {
         initialSetting: "right",
         modifies: [{ activates: true, expectType: "monster" }],
@@ -308,47 +318,37 @@ export const room = inferRoomJson({
       position: { x: 5, y: 15, z: 2 },
       type: "switch",
     },
-    uhohSwitchBlock: {
-      config: { style: "artificial", times: { z: 2 } },
-      position: { x: 5, y: 15, z: 0 },
-      type: "block",
-    },
-    uhohSwitchBlock2: {
-      config: { style: "artificial" },
-      position: { x: 4, y: 15, z: 0 },
-      type: "block",
-    },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall(right)@5,0,0": {
+    w1: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w2: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,7,0": {
+    w3: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@0,16,0": {
+    w4: {
       config: { direction: "away", tiles: ["window2", "window3"] },
       position: { x: 0, y: 16, z: 0 },
       type: "wall",
     },
-    "wall@10,0,0": {
+    w5: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 10, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@12,0,0": {
+    w6: {
       config: {
         direction: "left",
         tiles: [
@@ -368,12 +368,12 @@ export const room = inferRoomJson({
       position: { x: 12, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@12,13,0": {
+    w7: {
       config: { direction: "left", tiles: ["window2", "coil", "window1"] },
       position: { x: 12, y: 13, z: 0 },
       type: "wall",
     },
-    "wall@4,16,0": {
+    w8: {
       config: {
         direction: "away",
         tiles: [

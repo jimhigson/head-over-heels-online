@@ -1,14 +1,110 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
     "op": "add",
-    "path": "/items/door@4,3,0/config/meta",
+    "path": "/items/w/config/times",
+    "value": {
+      "y": 8
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/m3/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "moonbase16"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/d2/config/meta",
     "value": {
       "toSubRoom": "right"
     }
   },
   {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "moonbase14"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "moonbase3"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
     "op": "add",
-    "path": "/items/switch",
+    "path": "/items/sw",
     "value": {
       "config": {
         "initialSetting": "right",
@@ -34,7 +130,7 @@
   },
   {
     "op": "add",
-    "path": "/items/switch2",
+    "path": "/items/sw1",
     "value": {
       "config": {
         "initialSetting": "right",

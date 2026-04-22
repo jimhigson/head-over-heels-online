@@ -6,47 +6,47 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "blacktooth71",
   items: {
-    "block@0,2,3": {
+    b: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 0, y: 4, z: 3 },
       type: "block",
     },
-    "deadlyBlock@2,0,0": {
-      config: { style: "volcano", times: { y: 2 } },
-      position: { x: 2, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@2,4,0": {
-      config: { style: "volcano", times: { y: 2 } },
-      position: { x: 4, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,2,0": {
-      config: { style: "volcano", times: { y: 2 } },
-      position: { x: 3, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,2,4": {
-      config: { direction: "right", toRoom: "blacktooth77" },
-      position: { x: 0, y: 4, z: 4 },
-      type: "door",
-    },
-    "door@3,0,0": {
-      config: { direction: "towards", toRoom: "blacktooth70" },
-      position: { x: 3, y: 0, z: 0 },
-      type: "door",
-    },
-    "door@3,6,0": {
-      config: { direction: "away", toRoom: "blacktooth72" },
-      position: { x: 5, y: 6, z: 0 },
-      type: "door",
-    },
-    extraTower: {
+    b1: {
       config: { style: "tower", times: { y: 2, z: 4 } },
       position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
-    "floor@0,0,0": {
+    d: {
+      config: { direction: "right", toRoom: "blacktooth77" },
+      position: { x: 0, y: 4, z: 4 },
+      type: "door",
+    },
+    d1: {
+      config: { direction: "towards", toRoom: "blacktooth70" },
+      position: { x: 3, y: 0, z: 0 },
+      type: "door",
+    },
+    d2: {
+      config: { direction: "away", toRoom: "blacktooth72" },
+      position: { x: 5, y: 6, z: 0 },
+      type: "door",
+    },
+    db: {
+      config: { style: "volcano", times: { y: 2 } },
+      position: { x: 2, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano", times: { y: 2 } },
+      position: { x: 4, y: 4, z: 0 },
+      type: "deadlyBlock",
+    },
+    db2: {
+      config: { style: "volcano", times: { y: 2 } },
+      position: { x: 3, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -55,7 +55,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@2,3,0": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -64,12 +64,7 @@ export const room = inferRoomJson({
       position: { x: 2, y: 3, z: 0 },
       type: "monster",
     },
-    "portableBlock@0,5,0": {
-      config: { style: "cube" },
-      position: { x: 0, y: 0, z: 0 },
-      type: "portableBlock",
-    },
-    scroll: {
+    pi: {
       config: {
         gives: "scroll",
         page: "theEmperorsGuardian",
@@ -78,17 +73,22 @@ export const room = inferRoomJson({
       position: { x: 7, y: 4, z: 0 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    pr: {
+      config: { style: "cube" },
+      position: { x: 0, y: 0, z: 0 },
+      type: "portableBlock",
+    },
+    w: {
       config: { direction: "right", times: { y: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: ["plain", "shield", "plain", "shield", "plain"],
@@ -96,17 +96,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@5,6,0": {
+    w4: {
       config: { direction: "away", tiles: ["plain"] },
       position: { x: 7, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],

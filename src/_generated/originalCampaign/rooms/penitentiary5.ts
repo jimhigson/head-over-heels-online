@@ -7,77 +7,77 @@ export const room = inferRoomJson({
   height: 11,
   id: "penitentiary5",
   items: {
-    "block@0,5,7": {
+    b: {
       config: { style: "artificial" },
       position: { x: 0, y: 5, z: 7 },
       type: "block",
     },
-    "block@2,5,5": {
+    b1: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 2, y: 5, z: 5 },
       type: "block",
     },
-    "block@5,0,0": {
-      config: { style: "artificial" },
-      position: { x: 5, y: 0, z: 0 },
-      type: "block",
-    },
-    "block@5,4,0": {
-      config: { style: "artificial" },
-      position: { x: 5, y: 4, z: 0 },
-      type: "block",
-    },
-    "block@5,5,2": {
-      config: { style: "artificial", times: { z: 3 } },
-      position: { x: 5, y: 5, z: 0 },
-      type: "block",
-    },
-    "block@5,5,4": {
-      config: { style: "artificial" },
-      position: { x: 5, y: 5, z: 4 },
-      type: "block",
-    },
-    extra1: {
-      config: { disappearing: { on: "stand" }, style: "artificial" },
-      position: { x: 2, y: 5, z: 4 },
-      type: "block",
-    },
-    extra2: {
-      config: { disappearing: { on: "stand" }, style: "artificial" },
-      position: { x: 2, y: 5, z: 3 },
-      type: "block",
-    },
-    extra3: {
-      config: { disappearing: { on: "stand" }, style: "artificial" },
-      position: { x: 2, y: 5, z: 2 },
-      type: "block",
-    },
-    extra4: {
-      config: { disappearing: { on: "stand" }, style: "artificial" },
-      position: { x: 2, y: 5, z: 1 },
-      type: "block",
-    },
-    extra5: {
+    b10: {
       config: { disappearing: { on: "stand" }, style: "artificial" },
       position: { x: 2, y: 5, z: 0 },
       type: "block",
     },
-    "floor@0,0,0": {
+    b2: {
+      config: { style: "artificial" },
+      position: { x: 5, y: 0, z: 0 },
+      type: "block",
+    },
+    b3: {
+      config: { style: "artificial" },
+      position: { x: 5, y: 4, z: 0 },
+      type: "block",
+    },
+    b4: {
+      config: { style: "artificial", times: { z: 3 } },
+      position: { x: 5, y: 5, z: 0 },
+      type: "block",
+    },
+    b5: {
+      config: { style: "artificial" },
+      position: { x: 5, y: 5, z: 4 },
+      type: "block",
+    },
+    b6: {
+      config: { disappearing: { on: "stand" }, style: "artificial" },
+      position: { x: 2, y: 5, z: 4 },
+      type: "block",
+    },
+    b7: {
+      config: { disappearing: { on: "stand" }, style: "artificial" },
+      position: { x: 2, y: 5, z: 3 },
+      type: "block",
+    },
+    b8: {
+      config: { disappearing: { on: "stand" }, style: "artificial" },
+      position: { x: 2, y: 5, z: 2 },
+      type: "block",
+    },
+    b9: {
+      config: { disappearing: { on: "stand" }, style: "artificial" },
+      position: { x: 2, y: 5, z: 1 },
+      type: "block",
+    },
+    f: {
       config: { floorType: "none", times: { x: 6, y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
@@ -85,7 +85,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],

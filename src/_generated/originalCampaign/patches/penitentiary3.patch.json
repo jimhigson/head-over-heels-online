@@ -1,7 +1,45 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/switch@7,7,0/config/modifies/0",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sw1/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/sw1/position/x",
+    "value": 7
+  },
+  {
+    "op": "add",
+    "path": "/items/sw1/config/modifies/0",
     "value": {
       "expectType": "switch",
       "flip": true
@@ -9,17 +47,22 @@
   },
   {
     "op": "replace",
-    "path": "/items/switch@7,7,0/config/initialSetting",
+    "path": "/items/sw1/config/initialSetting",
     "value": "right"
   },
   {
     "op": "replace",
-    "path": "/items/switch@0,0,0/position/x",
+    "path": "/items/sw/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/sw/position/x",
     "value": 1
   },
   {
     "op": "add",
-    "path": "/items/switch@0,0,0/config/modifies/0",
+    "path": "/items/sw/config/modifies/0",
     "value": {
       "activates": true,
       "expectType": "movingPlatform"
@@ -27,7 +70,7 @@
   },
   {
     "op": "add",
-    "path": "/items/switch@0,0,0/config/modifies/1",
+    "path": "/items/sw/config/modifies/1",
     "value": {
       "expectType": "switch",
       "flip": true
@@ -35,17 +78,57 @@
   },
   {
     "op": "replace",
-    "path": "/items/switch@0,0,0/config/initialSetting",
+    "path": "/items/sw/config/initialSetting",
     "value": "right"
   },
   {
     "op": "replace",
-    "path": "/items/movingPlatform@0,1,0/config/startDirection",
+    "path": "/items/mp/config/startDirection",
     "value": "left"
   },
   {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "penitentiary4"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "penitentiary2"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
     "op": "add",
-    "path": "/items/block",
+    "path": "/items/b3",
     "value": {
       "config": {
         "style": "artificial"

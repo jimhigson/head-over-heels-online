@@ -6,22 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "blacktooth25",
   items: {
-    "conveyor@1,5,1": {
+    co: {
       config: { direction: "right" },
       position: { x: 1, y: 5, z: 1 },
       type: "conveyor",
     },
-    "deadlyBlock@0,5,0": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,2,0": {
+    d: {
       config: { direction: "right", toRoom: "blacktooth24" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano" },
+      position: { x: 0, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -30,32 +30,32 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@5,0,7": {
+    l: {
       config: { bottom: 0, top: 11 },
       position: { x: 5, y: 0, z: 7 },
       type: "lift",
     },
-    scroll: {
+    pi: {
       config: { gives: "scroll", page: "conveyorBelts", source: "manual" },
       position: { x: 3, y: 5, z: 0 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w2: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],
@@ -63,7 +63,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],

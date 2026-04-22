@@ -1,19 +1,59 @@
 [
   {
     "op": "replace",
-    "path": "/items/movingPlatform@6,0,0/config/activated",
+    "path": "/items/mp/config/activated",
     "value": "on-stand"
   },
   {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "penitentiary26"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "penitentiary28"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
     "op": "add",
-    "path": "/items/block@7,0,0/config/times",
+    "path": "/items/b1/config/times",
     "value": {
       "y": 2
     }
   },
   {
     "op": "add",
-    "path": "/items/block@0,0,0/config/times",
+    "path": "/items/b/config/times",
     "value": {
       "y": 2
     }
